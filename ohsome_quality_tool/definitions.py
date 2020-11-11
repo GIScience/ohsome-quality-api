@@ -4,9 +4,8 @@ from pathlib import Path
 
 from xdg import XDG_DATA_HOME
 
-
 # define logging file path and config
-DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome-quality-tool")
+DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 LOGGING_FILE_PATH = os.path.join(DATA_PATH, "oqt.log")
 

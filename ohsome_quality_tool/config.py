@@ -1,6 +1,5 @@
 import os
 
-
 # get Postgres config from environment
 POSTGRES_DB = os.getenv("POSTGRES_DB", default="oqt")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "postgres")

@@ -1,1 +1,0 @@
-from ohsome-quality-tool.definitions import logger
