@@ -8,6 +8,7 @@ authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>"]
 python = "^3.8"
 pre-commit = "^2.8.2"
 xdg = "^5.0.0"
+psycopg2-binary = "^2.8.6"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
