@@ -56,9 +56,9 @@ class Indicators(Enum):
     @property
     def constructor(self):
         from ohsome_quality_tool.indicators.building_completeness.indicator import (
-            Indicator as building_completeness_indicator,
+            Indicator as buildingCompletenessIndicator,
         )
 
-        indcators = {1: building_completeness_indicator}
+        indicators = {1: buildingCompletenessIndicator}
 
-        return indcators[self.value]
+        return indicators[self.value]
