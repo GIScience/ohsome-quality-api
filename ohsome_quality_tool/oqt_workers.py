@@ -1,5 +1,5 @@
-from ohsome_quality_tool.config import POSTGRES_DB
-from ohsome_quality_tool.definitions import Indicators, logger
+from ohsome_quality_tool.utils.config import POSTGRES_DB
+from ohsome_quality_tool.utils.definitions import Indicators, logger
 
 logger.info("hello")
 

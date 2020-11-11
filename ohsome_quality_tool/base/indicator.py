@@ -6,12 +6,15 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def __init__(self):
         """The function to initialize an indicator"""
-        self.name = "test"
+        # here we can put the default parameters for indicators
+        pass
 
     def run(self):
         self.preprocess()
         self.calculate()
 
+    # the abstract method defines that this function
+    # needs to be implemented by all children
     @abstractmethod
     def preprocess(self):
         pass
