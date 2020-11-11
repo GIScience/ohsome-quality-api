@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ohsome-quality-tool"
+name = "ohsome_quality_tool"
 version = "0.1.0"
 description = ""
 authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>"]
@@ -7,6 +7,7 @@ authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 pre-commit = "^2.8.2"
+xdg = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
