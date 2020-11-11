@@ -7,9 +7,10 @@ from ohsome_quality_tool.utils.definitions import Indicators, logger
 class Report(BaseReport):
     """The Building Completeness Indicator."""
 
+    name = "Waterproofing Data Flooding"
+
     def __init__(self, bpolys: FeatureCollection) -> None:
         super().__init__(bpolys=bpolys)
-        self.name = "Waterproofing Data Flooding"
         # TODO: check if this structure is good
         #   maybe we want to have an indicator for currentness
         #   and pass the objects as a filter instead

@@ -1,8 +1,6 @@
 import geojson
 
-from ohsome_quality_tool.utils.definitions import Indicators, Reports, logger
-
-logger.info("hello")
+from ohsome_quality_tool.utils.definitions import Indicators, Reports
 
 with open("./data/heidelberg_altstadt.geojson", "r") as file:
     bpolys = geojson.load(file)

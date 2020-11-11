@@ -12,7 +12,6 @@ class BaseIndicator(metaclass=ABCMeta):
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
         self.bpolys = bpolys
-        pass
 
     def run(self) -> None:
         """Run all steps to actually compute the indicator"""
