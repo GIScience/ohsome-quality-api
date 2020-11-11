@@ -1,10 +1,12 @@
 from abc import ABCMeta, abstractmethod
 
+from geojson import FeatureCollection
+
 
 class BaseIndicator(metaclass=ABCMeta):
     """The base class for all indicators."""
 
-    def __init__(self):
+    def __init__(self, bpolys: FeatureCollection):
         """The function to initialize an indicator"""
         # here we can put the default parameters for indicators
         pass
@@ -21,4 +23,8 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @abstractmethod
     def calculate(self):
+        pass
+
+    @abstractmethod
+    def export_figures(self):
         pass

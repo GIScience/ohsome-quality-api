@@ -1,14 +1,18 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
 class BaseReport(metaclass=ABCMeta):
     """The base class for all indicators."""
 
     def __init__(self):
-        """The function to initialize an indicator"""
+        """Initialize a report"""
         # here we can put the default parameters for reports
         pass
 
     def export_as_pdf(self):
-        """The function to generate the PDF report."""
+        """Generate the PDF report."""
+        pass
+
+    @abstractmethod
+    def calculate(self):
         pass
