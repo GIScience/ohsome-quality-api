@@ -9,9 +9,6 @@ What is OQT?
 
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
-## Development
-For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
-
 ## Quickstart
 Run the following lines to use the tool from a command line:
 ```
@@ -31,4 +28,7 @@ Run the following line to derive the `WATERPROOFING_DATA_FLOODING` report:
 ```
 oqt --verbose report -r WATERPROOFING_DATA_FLOODING -f data/heidelberg_altstadt.geojson
 ```
+
+## Development
+For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
 
