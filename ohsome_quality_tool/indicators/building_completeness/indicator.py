@@ -5,6 +5,7 @@ class Indicator(BaseIndicator):
     """The Building Completeness Indicator."""
 
     def __init__(self):
+        super.__init__()
         self.name = "Building Completeness"
         self.min = 0
         self.max = 1
