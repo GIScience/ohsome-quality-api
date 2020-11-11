@@ -1,4 +1,4 @@
-# Proof of Concept for Ohsome Quality Tools
+# Proof of Concept for Ohsome Quality Tool
 
 ## Vision
 What is OQT?
