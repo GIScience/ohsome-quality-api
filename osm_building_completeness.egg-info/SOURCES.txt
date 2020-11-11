@@ -1,8 +1,0 @@
-README.md
-setup.cfg
-setup.py
-osm_building_completeness/__init__.py
-osm_building_completeness.egg-info/PKG-INFO
-osm_building_completeness.egg-info/SOURCES.txt
-osm_building_completeness.egg-info/dependency_links.txt
-osm_building_completeness.egg-info/top_level.txt
