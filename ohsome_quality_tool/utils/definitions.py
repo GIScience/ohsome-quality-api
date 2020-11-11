@@ -6,6 +6,7 @@ from pathlib import Path
 from xdg import XDG_DATA_HOME
 
 
+# TODO: Is there a better way to define this?
 class Indicators(Enum):
     """Define supported indicators."""
 
@@ -28,6 +29,7 @@ class Indicators(Enum):
         return indicators[self.value]
 
 
+# TODO: Is there a better way to define this?
 class Reports(Enum):
     """Define supported indicators."""
 

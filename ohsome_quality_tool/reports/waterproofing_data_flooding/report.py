@@ -5,7 +5,7 @@ from ohsome_quality_tool.utils.definitions import Indicators, logger
 
 
 class Report(BaseReport):
-    """The Building Completeness Indicator."""
+    """The Waterproofing Data Flooding Report."""
 
     name = "Waterproofing Data Flooding"
 
