@@ -1,3 +1,5 @@
+![oqt_header](logo/oqt_header.png)
+
 # Proof of Concept for Ohsome Quality Tool
 
 ## Vision
