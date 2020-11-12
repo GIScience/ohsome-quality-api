@@ -13,23 +13,38 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 
 ## Quickstart
 Run the following lines to use the tool from a command line. Make sure that you have `Python3.8` and `poetry` installed on the system level already.
+
 ```
 git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
 cd ohsome-quality-tool
 poetry install
 poetry shell
-oqt --help
+```
+
+### Command Line Interface
+Run the following line to get an overview:
+```
+oqt --help 
 ```
 
 Run the following line to derive the `BUILDING_COMPLETENESS` indicator:
 ```
-oqt --verbose indicator -i BUILDING_COMPLETENESS -f data/heidelberg_altstadt.geojson 
+oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS -f data/heidelberg_altstadt.geojson 
 ```
 
 Run the following line to derive the `WATERPROOFING_DATA_FLOODING` report:
 ```
-oqt --verbose report -r WATERPROOFING_DATA_FLOODING -f data/heidelberg_altstadt.geojson
+oqt --verbose get-dynamic-report -r WATERPROOFING_DATA_FLOODING -f data/heidelberg_altstadt.geojson
 ```
+
+### API
+Run the following line to start the server:
+```
+uvicorn ohsome_quality_tool.app.main:app --reload
+```
+
+Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
+
 
 ## Development
 For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
