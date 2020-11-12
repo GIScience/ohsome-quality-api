@@ -12,7 +12,7 @@ What is OQT?
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
 ## Quickstart
-Run the following lines to use the tool from a command line:
+Run the following lines to use the tool from a command line. Make sure that you have `Python3.8` and `poetry` installed on the system level already.
 ```
 git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
 cd ohsome-quality-tool

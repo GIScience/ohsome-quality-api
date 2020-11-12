@@ -11,6 +11,8 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(self, bpolys: FeatureCollection) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
+        # TODO: make sure that users can either pass bpolys or
+        #   or specify a table in postgres to use
         self.bpolys = bpolys
 
     def run(self) -> None:
