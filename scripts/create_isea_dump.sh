@@ -9,3 +9,4 @@ pg_dump \
     -t isea3h_world_res_12_hex \
     -t isea3h_world_res_6_hex \
 > ohsome-hex-isea.sql
+sed -i '/GRANT SELECT/d' ohsome-hex-isea.sql  # Remove user specific permissions.

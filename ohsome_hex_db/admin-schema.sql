@@ -182,7 +182,7 @@ CREATE TABLE "admin"."user" (
 	id uuid NOT NULL,
 	realm text NULL,
 	username text NOT NULL,
-	email email NOT NULL,
+	email "admin".email NOT NULL,
 	emailverified bool NULL,
 	verificationtoken text NULL,
 	CONSTRAINT user_email_key UNIQUE (email),
