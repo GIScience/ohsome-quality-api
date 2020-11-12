@@ -51,6 +51,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def get_from_database(self) -> None:
         """Get pre-processed indicator results from geo database."""
+        self.results["score"] = 0.5
         pass
 
     @property

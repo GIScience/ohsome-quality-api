@@ -17,6 +17,7 @@ class Indicator(BaseIndicator):
 
     def calculate(self):
         logger.info(f"run calculation for {self.name} indicator")
+        self.results["score"] = 0.5
 
     def export_figures(self):
         # TODO: maybe not all indicators will export figures?
