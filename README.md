@@ -34,3 +34,4 @@ oqt --verbose report -r WATERPROOFING_DATA_FLOODING -f data/heidelberg_altstadt.
 ## Development
 For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
 
+![components](docs/componet_diagram_new.png)
