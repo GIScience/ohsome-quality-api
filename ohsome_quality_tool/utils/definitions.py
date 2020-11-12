@@ -1,12 +1,13 @@
 import logging.config
 import os
-from enum import Enum
+from enum import Enum, unique
 from pathlib import Path
 
 from xdg import XDG_DATA_HOME
 
 
 # TODO: Is there a better way to define this?
+@unique
 class Indicators(Enum):
     """Define supported indicators."""
 
