@@ -5,8 +5,8 @@
 # '2>> error-guf04.txt':
 # The standard error stream will be redirected to the file only, it will not be visible in the terminal. If the file already exists, the new data will get appended to the end of the file.
 
+geotiff=data/GHS_POP/GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0.tif
 
-geotiff=GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0.tif
 raster2pgsql \
     -I \
     -M \
@@ -14,11 +14,19 @@ raster2pgsql \
     -c \
     -t 100x100 \
     -s 954009 \
-    $geotiff public.ghspop 2>> error-ghspop.log \
+    $geotiff public.ghspop \
+    2>> error-ghspop.log \
     | \
-    psql -U postgres -d ohsome-hex 2>> error-ghspop.log
+    psql \
+        -h localhost \
+        -p 5432 \
+        -d hexadmin \
+        -U hexadmin \
+        2>> error-ghspop.log
 
 psql \
-    -U postgres \
-    -d ohsome-hex \
+    -h localhost \
+    -p 5432 \
+    -d hexadmin \
+    -U hexadmin \
     -c "SELECT AddRasterConstraints('ghspop'::name, 'rast'::name);"

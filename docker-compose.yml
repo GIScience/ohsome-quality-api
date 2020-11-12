@@ -10,3 +10,4 @@ services:
     restart: always
     environment:
       - POSTGRES_PASSWORD: "hzTZJ"
+      - POSTGRES_USER: "hexadmin"
