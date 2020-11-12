@@ -9,8 +9,16 @@ class Indicator(BaseIndicator):
 
     name = "POI Density"
 
-    def __init__(self, dynamic: bool, bpolys: FeatureCollection):
-        super().__init__(dynamic=dynamic, bpolys=bpolys)
+    def __init__(
+        self,
+        dynamic: bool,
+        bpolys: FeatureCollection = None,
+        table: str = None,
+        area_filter: str = None,
+    ) -> None:
+        super().__init__(
+            dynamic=dynamic, bpolys=bpolys, table=table, area_filter=area_filter
+        )
 
     def preprocess(self):
         logger.info(f"run preprocessing for {self.name} indicator")

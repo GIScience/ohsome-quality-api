@@ -9,13 +9,26 @@ from ohsome_quality_tool.utils.definitions import logger
 class BaseIndicator(metaclass=ABCMeta):
     """The base class for all indicators."""
 
-    def __init__(self, dynamic: bool, bpolys: FeatureCollection) -> None:
+    def __init__(
+        self,
+        dynamic: bool,
+        bpolys: FeatureCollection = None,
+        table: str = None,
+        area_filter: str = None,
+    ) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
-        # TODO: make sure that users can either pass bpolys or
-        #   or specify a table in postgres to use
-        self.bpolys = bpolys
         self.dynamic = dynamic
+
+        if self.dynamic:
+            # for dynamic calculation you need to provide geojson geometries
+            self.bpolys = bpolys
+        else:
+            # for static calculation you need to provide the table name and
+            # optionally an area_filter string, e.g. which geometry ids to use
+            self.table = table
+            self.area_filter = area_filter
+
         self.results = {
             "name": self.name,
         }

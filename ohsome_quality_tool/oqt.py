@@ -62,6 +62,15 @@ _infile_option = [
     )
 ]
 
+_outfile_option = [
+    click.option(
+        "--outfile",
+        help="PDF file for your report.",
+        type=str,
+        required=True,
+    )
+]
+
 _table_option = [
     click.option(
         "--table",
@@ -72,6 +81,7 @@ _table_option = [
     )
 ]
 
+# TODO: define and double check expected data type here
 _area_filter_option = [
     click.option(
         "--area_filter",
@@ -109,32 +119,42 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 
     indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
     indicator.get()
+    print(f"results: {indicator.results}")
+    return indicator.results
 
 
 @cli.command("get-static-indicator")
 @add_options(_indicator_option)
+@add_options(_table_option)
 @add_options(_area_filter_option)
-def get_static_indicator(indicator_name: str, area_filter: List[str]):
+def get_static_indicator(indicator_name: str, table: str, area_filter: List[str]):
     """Get indicator results for a pre-defined area.
 
     The results have been pre-processed and will be extracted from the geo database.
     """
     # TODO: adjust arguments dynamic and bpolys
-    indicator = Indicators[indicator_name].constructor(dynamic=False, bpolys="")
+    indicator = Indicators[indicator_name].constructor(
+        dynamic=False, table=table, area_filter=area_filter
+    )
     indicator.get()
+    print(f"results: {indicator.results}")
+    return indicator.results
 
 
 @cli.command("process-indicator")
 @add_options(_indicator_option)
 @add_options(_table_option)
-def process_indicator(indicator_name: str, table: str):
+@add_options(_area_filter_option)
+def process_indicator(indicator_name: str, table: str, area_filter: List[str]):
     """Process indicator and save results to geo database.
 
     The indicator(s) will be calculated for all geometries in the table.
     """
     # TODO: adjust arguments dynamic and bpolys
 
-    indicator = Indicators[indicator_name].constructor(dynamic=False, bpolys="")
+    indicator = Indicators[indicator_name].constructor(
+        dynamic=False, table=table, area_filter=area_filter
+    )
     indicator.run_processing()
     indicator.save_to_database()
 
@@ -155,17 +175,42 @@ def get_dynamic_report(report_name: str, infile: str):
 
     # TODO: add argument dynamic
     report = Reports[report_name].constructor(bpolys=bpolys)
-    report.run()
+    report.get()
+    print(f"results: {report.results}")
+    return report.results
 
 
 @cli.command("get-static-report")
 @add_options(_report_option)
+@add_options(_table_option)
 @add_options(_area_filter_option)
-def get_static_report(report_name: str, area_filter: str):
+def get_static_report(report_name: str, table: str, area_filter: str):
     """Get report with indicator results for a pre-defined area.
 
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
     # TODO: adjust arguments bpolys
-    report = Reports[report_name].constructor(bpolys="")
-    report.run()
+    report = Reports[report_name].constructor(
+        dynamic=False, table=table, area_filter=area_filter
+    )
+    report.get()
+    print(f"results: {report.results}")
+    return report.results
+
+
+@cli.command("get-static-report-pdf")
+@add_options(_report_option)
+@add_options(_table_option)
+@add_options(_area_filter_option)
+@add_options(_outfile_option)
+def get_static_report_pdf(report_name: str, table: str, area_filter: str, outfile: str):
+    """Get report as PDF with indicator results for a pre-defined area.
+
+    The indicator results have been pre-processed and
+    will be extracted from the geo database."""
+    # TODO: adjust arguments bpolys
+    report = Reports[report_name].constructor(
+        dynamic=False, table=table, area_filter=area_filter
+    )
+    report.get()
+    report.export_as_pdf(outfile=outfile)
