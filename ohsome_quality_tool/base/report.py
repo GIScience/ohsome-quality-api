@@ -29,7 +29,7 @@ class BaseReport(metaclass=ABCMeta):
             self.table = table
             self.area_filter = area_filter
 
-        self.results = {"name": self.name}
+        self.results = {"name": self.name, "indicator_results": {}}
 
     def get(self) -> Dict:
         """Pass the report containing the indicator results to the user.
@@ -38,10 +38,15 @@ class BaseReport(metaclass=ABCMeta):
         For non-dynamic (pre-processed) indicators this will
         extract the results from the geo database."""
         for i, indicator in enumerate(self.indicators):
-            results = indicator.constructor(
-                dynamic=self.dynamic, bpolys=self.bpolys
-            ).get()
-            self.results[indicator] = results
+            if self.dynamic:
+                results = indicator.constructor(
+                    dynamic=self.dynamic, bpolys=self.bpolys
+                ).get()
+            else:
+                results = indicator.constructor(
+                    dynamic=self.dynamic, table=self.table, area_filter=self.area_filter
+                ).get()
+            self.results["indicator_results"][indicator.name] = results
 
         self.combine_indicators()
 
