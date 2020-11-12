@@ -9,8 +9,8 @@ from ohsome_quality_tool.utils.config import (
 )
 
 
-class postgresDB(object):
-    """Helper calss for Postgres interactions"""
+class PostgresDB(object):
+    """Helper class for Postgres interactions"""
 
     _db_connection = None
     _db_cur = None

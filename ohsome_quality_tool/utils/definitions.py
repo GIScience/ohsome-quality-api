@@ -5,6 +5,47 @@ from pathlib import Path
 
 from xdg import XDG_DATA_HOME
 
+
+# TODO: Is there a better way to define this?
+class Indicators(Enum):
+    """Define supported indicators."""
+
+    BUILDING_COMPLETENESS = 1
+    POI_DENSITY = 2
+    AMENITY_AND_ROAD_SATURATION = 3
+    AMENITY_AND_ROAD_CURRENTNESS = 4
+
+    @property
+    def constructor(self):
+        from ohsome_quality_tool.indicators.building_completeness.indicator import (
+            Indicator as buildingCompletenessIndicator,
+        )
+        from ohsome_quality_tool.indicators.poi_density.indicator import (
+            Indicator as poiDensityIndicator,
+        )
+
+        indicators = {1: buildingCompletenessIndicator, 2: poiDensityIndicator}
+
+        return indicators[self.value]
+
+
+# TODO: Is there a better way to define this?
+class Reports(Enum):
+    """Define supported indicators."""
+
+    WATERPROOFING_DATA_FLOODING = 1
+
+    @property
+    def constructor(self):
+        from ohsome_quality_tool.reports.waterproofing_data_flooding.report import (
+            Report as waterproofingDataFloodingReport,
+        )
+
+        reports = {1: waterproofingDataFloodingReport}
+
+        return reports[self.value]
+
+
 # define logging file path and config
 DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
@@ -46,19 +87,3 @@ LOGGING_CONFIG = {
 
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("oqt")
-
-
-class Indicators(Enum):
-    """Definition of the supported indicators"""
-
-    BUILDING_COMPLETENESS = 1
-
-    @property
-    def constructor(self):
-        from ohsome_quality_tool.indicators.building_completeness.indicator import (
-            Indicator as building_completeness_indicator,
-        )
-
-        indcators = {1: building_completeness_indicator}
-
-        return indcators[self.value]

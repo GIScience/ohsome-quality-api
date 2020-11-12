@@ -5,9 +5,9 @@ from ohsome_quality_tool.utils.definitions import logger
 
 
 class Indicator(BaseIndicator):
-    """The Building Completeness Indicator."""
+    """The POI Density Indicator."""
 
-    name = "Building Completeness"
+    name = "POI Density"
 
     def __init__(self, bpolys: FeatureCollection):
         super().__init__(bpolys=bpolys)
