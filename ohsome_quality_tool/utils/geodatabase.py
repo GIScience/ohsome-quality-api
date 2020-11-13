@@ -39,9 +39,6 @@ def get_bpolys_from_database(table: str, feature_id: int) -> FeatureCollection:
         WHERE fid = %(feature_id)s
     """
     ).format(sql.Identifier(table))
-
-    print(query)
-
     data = {"feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
     bpolys = FeatureCollection(query_results[0][0])

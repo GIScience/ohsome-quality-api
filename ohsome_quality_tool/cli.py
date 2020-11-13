@@ -83,7 +83,7 @@ _table_option = [
 # TODO: define and double check expected data type here
 _feature_id_option = [
     click.option(
-        "--featured_id",
+        "--feature_id",
         required=True,
         type=int,
         help="""Provide the feature id of your area of interest.""",
