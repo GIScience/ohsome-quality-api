@@ -16,6 +16,7 @@ class Indicator(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
+        ohsome_api: str = None,
         osm_building_area: float = 0.0,
     ) -> None:
         super().__init__(
