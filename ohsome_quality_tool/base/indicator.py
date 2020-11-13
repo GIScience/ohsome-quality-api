@@ -16,6 +16,7 @@ class BaseIndicator(metaclass=ABCMeta):
         bpolys: FeatureCollection = None,
         table: str = None,
         feature_id: int = None,
+        ohsome_api: str = None,
     ) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
