@@ -70,13 +70,13 @@ _outfile_option = [
     )
 ]
 
-_table_option = [
+_dataset_option = [
     click.option(
-        "--table",
+        "--dataset",
         required=True,
         type=str,
-        help="""Choose a table containing geometries,
-            valid area tables are specified in definitions.py .""",
+        help="""Choose a dataset containing geometries,
+            valid area datasets are specified in definitions.py .""",
     )
 ]
 
@@ -111,22 +111,22 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 
 @cli.command("get-static-indicator")
 @add_options(_indicator_option)
-@add_options(_table_option)
+@add_options(_dataset_option)
 @add_options(_feature_id_option)
-def get_static_indicator(indicator_name: str, table: str, feature_id: int):
+def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     results = oqt.get_static_indicator(
-        indicator_name=indicator_name, table=table, feature_id=feature_id
+        indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
     )
     return results
 
 
 @cli.command("process-indicator")
 @add_options(_indicator_option)
-@add_options(_table_option)
+@add_options(_dataset_option)
 @add_options(_feature_id_option)
-def process_indicator(indicator_name: str, table: str, feature_id: int):
+def process_indicator(indicator_name: str, dataset: str, feature_id: int):
     oqt.process_indicator(
-        indicator_name=indicator_name, table=table, feature_id=feature_id
+        indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
     )
 
 
@@ -140,21 +140,23 @@ def get_dynamic_report(report_name: str, infile: str):
 
 @cli.command("get-static-report")
 @add_options(_report_option)
-@add_options(_table_option)
+@add_options(_dataset_option)
 @add_options(_feature_id_option)
-def get_static_report(report_name: str, table: str, feature_id: int):
+def get_static_report(report_name: str, dataset: str, feature_id: int):
     results = oqt.get_static_report(
-        report_name=report_name, table=table, feature_id=feature_id
+        report_name=report_name, dataset=dataset, feature_id=feature_id
     )
     return results
 
 
 @cli.command("get-static-report-pdf")
 @add_options(_report_option)
-@add_options(_table_option)
+@add_options(_dataset_option)
 @add_options(_feature_id_option)
 @add_options(_outfile_option)
-def get_static_report_pdf(report_name: str, table: str, feature_id: int, outfile: str):
+def get_static_report_pdf(
+    report_name: str, dataset: str, feature_id: int, outfile: str
+):
     oqt.get_static_report_pdf(
-        report_name=report_name, table=table, feature_id=feature_id, outfile=outfile
+        report_name=report_name, dataset=dataset, feature_id=feature_id, outfile=outfile
     )

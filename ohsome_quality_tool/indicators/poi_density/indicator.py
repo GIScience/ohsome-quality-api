@@ -13,11 +13,11 @@ class Indicator(BaseIndicator):
         self,
         dynamic: bool,
         bpolys: FeatureCollection = None,
-        table: str = None,
+        dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic, bpolys=bpolys, table=table, feature_id=feature_id
+            dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
 
     def preprocess(self):

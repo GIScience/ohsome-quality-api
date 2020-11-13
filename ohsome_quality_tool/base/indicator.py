@@ -4,7 +4,10 @@ from typing import Dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import logger
-from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_database
+from ohsome_quality_tool.utils.geodatabase import (
+    get_bpolys_from_db,
+    get_indicator_results_from_db,
+)
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -14,7 +17,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         dynamic: bool,
         bpolys: FeatureCollection = None,
-        table: str = None,
+        dataset: str = None,
         feature_id: int = None,
     ) -> None:
         """Initialize an indicator"""
@@ -27,13 +30,13 @@ class BaseIndicator(metaclass=ABCMeta):
             # for dynamic calculation you need to provide geojson geometries
             self.bpolys = bpolys
         else:
-            if table is None or feature_id is None:
+            if dataset is None or feature_id is None:
                 raise ValueError
-            # for static calculation you need to provide the table name and
+            # for static calculation you need to provide the dataset name and
             # optionally an feature_id string, e.g. which geometry ids to use
-            self.table = table
+            self.dataset = dataset
             self.feature_id = feature_id
-            self.bpolys = get_bpolys_from_database(self.table, self.feature_id)
+            self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
         self.results = {"name": self.name}
 
@@ -68,7 +71,9 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def get_from_database(self) -> None:
         """Get pre-processed indicator results from geo database."""
-        self.results["score"] = 0.5
+        self.results = get_indicator_results_from_db(
+            dataset=self.dataset, feature_id=self.feature_id, indicator=self.name
+        )
         pass
 
     @property

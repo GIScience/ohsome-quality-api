@@ -8,18 +8,18 @@ from ohsome_quality_tool.utils.definitions import logger
 class Indicator(BaseIndicator):
     """The Building Completeness Indicator."""
 
-    name = "Building Completeness"
+    name = "building_completeness"
 
     def __init__(
         self,
         dynamic: bool,
         bpolys: FeatureCollection = None,
-        table: str = None,
+        dataset: str = None,
         feature_id: int = None,
         osm_building_area: float = 0.0,
     ) -> None:
         super().__init__(
-            dynamic=dynamic, bpolys=bpolys, table=table, feature_id=feature_id
+            dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
 
     def preprocess(self):
