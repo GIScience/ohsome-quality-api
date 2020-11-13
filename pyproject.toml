@@ -14,6 +14,9 @@ click = "^7.1.2"
 fastapi = "^0.61.2"
 uvicorn = "^0.12.2"
 gunicorn = "^20.0.4"
+ohsomepy = {git = "https://github.com/GIScience/ohsome-py"}
+geopandas = "^0.8.1"
+requests = "^2.25.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
