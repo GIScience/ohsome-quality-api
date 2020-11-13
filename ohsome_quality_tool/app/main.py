@@ -11,16 +11,16 @@ async def get_test(indicator: str):
 
 
 @app.get("/static_indicator/{indicator}")
-async def get_static_indicator(indicator: str, table: str, area_filter: str):
+async def get_static_indicator(indicator: str, table: str, feature_id: int):
     results = oqt.get_static_indicator(
-        indicator_name=indicator, table=table, area_filter=area_filter
+        indicator_name=indicator, table=table, feature_id=feature_id
     )
     return results
 
 
 @app.get("/static_report/{report}")
-async def get_static_report(report: str, table: str, area_filter: str):
+async def get_static_report(report: str, table: str, feature_id: int):
     results = oqt.get_static_report(
-        report_name=report, table=table, area_filter=area_filter
+        report_name=report, table=table, feature_id=feature_id
     )
     return results

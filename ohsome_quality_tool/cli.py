@@ -81,13 +81,12 @@ _table_option = [
 ]
 
 # TODO: define and double check expected data type here
-_area_filter_option = [
+_feature_id_option = [
     click.option(
-        "--area_filter",
+        "--featured_id",
         required=True,
-        type=str,
-        help="""Choose a area filter,
-            valid area filters are specified in definitions.py .""",
+        type=int,
+        help="""Provide the feature id of your area of interest.""",
     )
 ]
 
@@ -113,10 +112,10 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 @cli.command("get-static-indicator")
 @add_options(_indicator_option)
 @add_options(_table_option)
-@add_options(_area_filter_option)
-def get_static_indicator(indicator_name: str, table: str, area_filter: str):
+@add_options(_feature_id_option)
+def get_static_indicator(indicator_name: str, table: str, feature_id: int):
     results = oqt.get_static_indicator(
-        indicator_name=indicator_name, table=table, area_filter=area_filter
+        indicator_name=indicator_name, table=table, feature_id=feature_id
     )
     return results
 
@@ -124,10 +123,10 @@ def get_static_indicator(indicator_name: str, table: str, area_filter: str):
 @cli.command("process-indicator")
 @add_options(_indicator_option)
 @add_options(_table_option)
-@add_options(_area_filter_option)
-def process_indicator(indicator_name: str, table: str, area_filter: str):
+@add_options(_feature_id_option)
+def process_indicator(indicator_name: str, table: str, feature_id: int):
     oqt.process_indicator(
-        indicator_name=indicator_name, table=table, area_filter=area_filter
+        indicator_name=indicator_name, table=table, feature_id=feature_id
     )
 
 
@@ -142,10 +141,10 @@ def get_dynamic_report(report_name: str, infile: str):
 @cli.command("get-static-report")
 @add_options(_report_option)
 @add_options(_table_option)
-@add_options(_area_filter_option)
-def get_static_report(report_name: str, table: str, area_filter: str):
+@add_options(_feature_id_option)
+def get_static_report(report_name: str, table: str, feature_id: int):
     results = oqt.get_static_report(
-        report_name=report_name, table=table, area_filter=area_filter
+        report_name=report_name, table=table, feature_id=feature_id
     )
     return results
 
@@ -153,9 +152,9 @@ def get_static_report(report_name: str, table: str, area_filter: str):
 @cli.command("get-static-report-pdf")
 @add_options(_report_option)
 @add_options(_table_option)
-@add_options(_area_filter_option)
+@add_options(_feature_id_option)
 @add_options(_outfile_option)
-def get_static_report_pdf(report_name: str, table: str, area_filter: str, outfile: str):
+def get_static_report_pdf(report_name: str, table: str, feature_id: int, outfile: str):
     oqt.get_static_report_pdf(
-        report_name=report_name, table=table, area_filter=area_filter, outfile=outfile
+        report_name=report_name, table=table, feature_id=feature_id, outfile=outfile
     )

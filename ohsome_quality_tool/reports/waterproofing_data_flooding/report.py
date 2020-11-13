@@ -20,10 +20,10 @@ class Report(BaseReport):
         dynamic: bool,
         bpolys: FeatureCollection = None,
         table: str = None,
-        area_filter: str = None,
+        feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic, bpolys=bpolys, table=table, area_filter=area_filter
+            dynamic=dynamic, bpolys=bpolys, table=table, feature_id=feature_id
         )
 
     def combine_indicators(self):

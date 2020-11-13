@@ -14,7 +14,7 @@ class BaseIndicator(metaclass=ABCMeta):
         dynamic: bool,
         bpolys: FeatureCollection = None,
         table: str = None,
-        area_filter: str = None,
+        feature_id: int = None,
     ) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
@@ -25,9 +25,9 @@ class BaseIndicator(metaclass=ABCMeta):
             self.bpolys = bpolys
         else:
             # for static calculation you need to provide the table name and
-            # optionally an area_filter string, e.g. which geometry ids to use
+            # optionally an feature_id string, e.g. which geometry ids to use
             self.table = table
-            self.area_filter = area_filter
+            self.feature_id = feature_id
 
         self.results = {
             "name": self.name,
