@@ -35,7 +35,7 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_database(self.table, self.feature_id)
 
-        self.results = {"name": self.name, "bpolys": self.bpolys}
+        self.results = {"name": self.name}
 
     def get(self) -> Dict:
         """Pass the indicator results to the user.
