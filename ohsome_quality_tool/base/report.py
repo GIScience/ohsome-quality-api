@@ -22,6 +22,8 @@ class BaseReport(metaclass=ABCMeta):
         self.dynamic = dynamic
 
         if self.dynamic:
+            if bpolys is None:
+                raise ValueError
             # for dynamic calculation you need to provide geojson geometries
             self.bpolys = bpolys
         else:
