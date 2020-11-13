@@ -37,7 +37,7 @@ def get_bpolys_from_database(table: str, feature_id: int) -> FeatureCollection:
     """
 
     data = {"feature_id": feature_id}
-    query_results = db.retr_query(query, data)
+    query_results = db.retr_query(query=query, data=data)
     print(query_results)
     bpolys = ""
     return bpolys
