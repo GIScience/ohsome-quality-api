@@ -1,9 +1,11 @@
 import json
+from typing import Dict
 
 import requests
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
+from ohsome_quality_tool.utils.config import OHSOME_API
 from ohsome_quality_tool.utils.definitions import logger
 
 
@@ -18,17 +20,16 @@ class Indicator(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
-        ohsome_api: str = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
 
-        self.density_per_category: dict = None
-
     def preprocess(self):
         logger.info(f"run preprocessing for {self.name} indicator")
 
+        # TODO: put these filters into a single dictionary and
+        #  use list if multiple tag values should be considered
         key_multiple_values_filters = {
             "tourism": "hotel,attraction",
             "natural": "water,peak",
@@ -48,15 +49,17 @@ class Indicator(BaseIndicator):
 
         # query ohsome for keys with multiple values
         for k, v in key_multiple_values_filters.items():
+            # TODO: refactor this into an external function
+            #   e.g. in utils/ohsome_api.py
             url = "/elements/count/density/groupBy/tag"
             values_separate = v.split(",")
             params = {
-                "bpolys": self.bpolys,
+                "bpolys": json.dumps(self.bpolys),
                 "groupByKey": k,
                 "groupByValues": v,
                 "types": "node,way",
             }  # noqa
-            result = requests.get(self.ohsome_api + url, params)
+            result = requests.get(OHSOME_API + url, params)
             result = json.loads(result.text)["groupByResult"]
             for gb_result in result:
                 for v_s in values_separate:
@@ -72,12 +75,12 @@ class Indicator(BaseIndicator):
         for k, v in key_value_filters.items():
             url = "/elements/count/density"
             params = {
-                "bpolys": self.bpolys,
+                "bpolys": json.dumps(self.bpolys),
                 "keys": k,
                 "values": v,
                 "types": "node,way",
             }  # noqa
-            result = requests.get(self.ohsome_api + url, params)
+            result = requests.get(OHSOME_API + url, params)
             result = json.loads(result.text)["result"][0]
             density_dict["density"] += result["value"]
             if v in density_dict:
@@ -88,8 +91,12 @@ class Indicator(BaseIndicator):
         # query ohsome for keys with no value
         for k in key_filters:
             url = "/elements/count/density"
-            params = {"bpolys": self.bpolys, "keys": k, "types": "node,way"}  # noqa
-            result = requests.get(self.ohsome_api + url, params)
+            params = {
+                "bpolys": json.dumps(self.bpolys),
+                "keys": k,
+                "types": "node,way",
+            }  # noqa
+            result = requests.get(OHSOME_API + url, params)
             result = json.loads(result.text)["result"][0]
             density_dict["density"] += result["value"]
             if k in density_dict:
@@ -117,11 +124,14 @@ class Indicator(BaseIndicator):
             density_dict["bus_stop"] + density_dict["station"]
         )
 
-        self.density_per_catgory = density_dict
+        preprocessing_results = density_dict
+        return preprocessing_results
 
-    def calculate(self):
+    def calculate(self, preprocessing_results: Dict):
         logger.info(f"run calculation for {self.name} indicator")
         # compute relative densities
+
+        # TODO: why is this named 'old' keys, let's make this more easy to understand
         old_keys = [
             "park",
             "national_park",
@@ -139,12 +149,13 @@ class Indicator(BaseIndicator):
         ]
 
         relative_density_dict = {}
-        for k, v in self.density_per_category.items():
+        for k, v in preprocessing_results.items():
             if k not in old_keys and k != "density":
                 relative_density_dict[k] = round(
-                    100 * v / self.density_per_category["density"], 2
+                    100 * v / preprocessing_results["density"], 2
                 )
-        self.results["relative_poi_densities"] = relative_density_dict
+        results = {"relative_poi_densities": relative_density_dict}
+        return results
 
     def export_figures(self):
         # TODO: maybe not all indicators will export figures?

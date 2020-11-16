@@ -58,8 +58,8 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def run_processing(self) -> Dict:
         """Run all steps needed to actually compute the indicator"""
-        preprocessed_results = self.preprocess()
-        results = self.calculate(preprocessed_results)
+        preprocessing_results = self.preprocess()
+        results = self.calculate(preprocessing_results)
         self.export_figures()
         logger.info(f"finished run for indicator {self.name}")
         return results
