@@ -1,3 +1,5 @@
+import json
+
 from geojson import FeatureCollection
 from ohsome import OhsomeClient
 
@@ -29,8 +31,11 @@ class Indicator(BaseIndicator):
         logger.info(f"run preprocessing for {self.name} indicator")
 
         client = OhsomeClient()
-        response = client.elements.area.post(bpolys=self.bpolys, filter="buildings=*")
+        response = client.elements.area.post(
+            bpolys=json.dumps(self.bpolys), filter="building=*"
+        )
         self.osm_building_area = response.as_dataframe().iloc[0]["value"]
+        logger.info(f"osm building area: {self.osm_building_area}")
         logger.info(f"extracted osm features for {self.name} indicator")
 
         # TODO: obtain Global Urban Footprint data
