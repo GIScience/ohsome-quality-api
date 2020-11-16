@@ -1,105 +1,95 @@
-import ast
-
-import click
 import geojson
 
-from ohsome_quality_tool.utils.definitions import Indicators, Reports, logger
+from ohsome_quality_tool.utils.definitions import Indicators, Reports
 
 
-class PythonLiteralOption(click.Option):
-    def type_cast_value(self, ctx, value):
-        try:
-            return ast.literal_eval(value)
-        except ValueError as e:
-            logger.exception(e)
-            raise click.BadParameter(value)
+def get_dynamic_indicator(indicator_name: str, infile: str):
+    """Get indicator results for given geojson file.
 
-
-@click.group()
-@click.version_option()
-@click.option("--verbose", "-v", is_flag=True, help="Enable logging.")
-def cli(verbose):
-    if not verbose:
-        logger.disabled = True
-    else:
-        logger.info("Logging enabled")
-
-
-@cli.command("indicator")
-@click.option(
-    "--indicator",
-    "-i",
-    help="Compute the indicator with the given name.",
-    type=str,
-)
-@click.option(
-    "--indicators",
-    cls=PythonLiteralOption,
-    default="[]",
-    help=(
-        "Derive multiple indicators. "
-        "Provide indicator name strings as a list: "
-        """'["indicator_a", "indicator_b"]'"""
-    ),
-)
-@click.option(
-    "infile",
-    "-f",
-    help="GeoJSON file for your area of interest.",
-    type=str,
-    required=True,
-)
-def derive_indicators(indicator, indicators, infile):
-    """Derive one or multiple indicators for given geojson file."""
-    if not indicator and not indicators:
-        click.echo("Missing argument")
-        return None
-    elif not indicators:
-        indicators = [indicator]
-
+    The results will be calculated dynamically,
+    e.g. by querying the ohsome api.
+    """
+    # TODO: replace this with a function that loads the file AND
+    #    checks the validity of the geometries, e.g. enforce polygons etc.
     with open(infile, "r") as file:
         bpolys = geojson.load(file)
 
-    for i, indicator_name in enumerate(indicators):
-        indicator = Indicators[indicator_name].constructor(bpolys=bpolys)
-        indicator.run()
+    indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
+    indicator.get()
+    print(f"results: {indicator.results}")
+    return indicator.results
 
 
-@cli.command("report")
-@click.option(
-    "--report",
-    "-r",
-    help="Compute the report with the given name.",
-    type=str,
-)
-@click.option(
-    "--reports",
-    cls=PythonLiteralOption,
-    default="[]",
-    help=(
-        "Derive multiple reports. "
-        "Provide report name strings as a list: "
-        """'["report_a", "report_b"]'"""
-    ),
-)
-@click.option(
-    "infile",
-    "-f",
-    help="GeoJSON file for your area of interest.",
-    type=str,
-    required=True,
-)
-def derive_reports(report, reports, infile):
-    """Derive one or multiple reports for given geojson file."""
-    if not report and not reports:
-        click.echo("Missing argument")
-        return None
-    elif not reports:
-        reports = [report]
+def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
+    """Get indicator results for a pre-defined area.
 
+    The results have been pre-processed and will be extracted from the geo database.
+    """
+    # TODO: adjust arguments dynamic and bpolys
+    indicator = Indicators[indicator_name].constructor(
+        dynamic=False, dataset=dataset, feature_id=feature_id
+    )
+    indicator.get()
+    print(f"results: {indicator.results}")
+    return indicator.results
+
+
+def process_indicator(indicator_name: str, dataset: str, feature_id: int):
+    """Process indicator and save results to geo database.
+
+    The indicator(s) will be calculated for all geometries in the dataset.
+    """
+    # TODO: adjust arguments dynamic and bpolys
+
+    indicator = Indicators[indicator_name].constructor(
+        dynamic=False, dataset=dataset, feature_id=feature_id
+    )
+    indicator.run_processing()
+    indicator.save_to_database()
+
+
+def get_dynamic_report(report_name: str, infile: str):
+    """Get report for given geojson file.
+
+    The indicator results will be calculated dynamically,
+    e.g. by querying the ohsome api.
+    """
+    # TODO: replace this with a function that loads the file AND
+    #    checks the validity of the geometries, e.g. enforce polygons etc.
     with open(infile, "r") as file:
         bpolys = geojson.load(file)
 
-    for i, report_name in enumerate(reports):
-        report = Reports[report_name].constructor(bpolys=bpolys)
-        report.run()
+    # TODO: add argument dynamic
+    report = Reports[report_name].constructor(dynamic=True, bpolys=bpolys)
+    report.get()
+    print(f"results: {report.results}")
+    return report.results
+
+
+def get_static_report(report_name: str, dataset: str, feature_id: int):
+    """Get report with indicator results for a pre-defined area.
+
+    The indicator results have been pre-processed and
+    will be extracted from the geo database."""
+    # TODO: adjust arguments bpolys
+    report = Reports[report_name].constructor(
+        dynamic=False, dataset=dataset, feature_id=feature_id
+    )
+    report.get()
+    print(f"results: {report.results}")
+    return report.results
+
+
+def get_static_report_pdf(
+    report_name: str, dataset: str, feature_id: int, outfile: str
+):
+    """Get report as PDF with indicator results for a pre-defined area.
+
+    The indicator results have been pre-processed and
+    will be extracted from the geo database."""
+    # TODO: adjust arguments bpolys
+    report = Reports[report_name].constructor(
+        dynamic=False, dataset=dataset, feature_id=feature_id
+    )
+    report.get()
+    report.export_as_pdf(outfile=outfile)

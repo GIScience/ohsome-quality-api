@@ -1,26 +1,81 @@
 from abc import ABCMeta, abstractmethod
+from typing import Dict
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.geodatabase import (
+    get_bpolys_from_db,
+    get_indicator_results_from_db,
+)
 
 
 class BaseIndicator(metaclass=ABCMeta):
     """The base class for all indicators."""
 
-    def __init__(self, bpolys: FeatureCollection) -> None:
+    def __init__(
+        self,
+        dynamic: bool,
+        bpolys: FeatureCollection = None,
+        dataset: str = None,
+        feature_id: int = None,
+        ohsome_api: str = None,
+    ) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
-        # TODO: make sure that users can either pass bpolys or
-        #   or specify a table in postgres to use
-        self.bpolys = bpolys
+        self.dynamic = dynamic
 
-    def run(self) -> None:
-        """Run all steps to actually compute the indicator"""
+        if self.dynamic:
+            if bpolys is None:
+                raise ValueError
+            # for dynamic calculation you need to provide geojson geometries
+            self.bpolys = bpolys
+        else:
+            if dataset is None or feature_id is None:
+                raise ValueError
+            # for static calculation you need to provide the dataset name and
+            # optionally an feature_id string, e.g. which geometry ids to use
+            self.dataset = dataset
+            self.feature_id = feature_id
+            self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
+
+        self.results = {"name": self.name}
+
+    def get(self) -> Dict:
+        """Pass the indicator results to the user.
+
+        For dynamic indicators this will trigger the processing.
+        For non-dynamic (pre-processed) indicators this will
+        extract the results from the geo database.
+        """
+        if self.dynamic:
+            logger.info(f"Run processing for dynamic indicator {self.name}.")
+            self.run_processing()
+        else:
+            logger.info(
+                f"Get pre-processed results from geo db for indicator {self.name}."
+            )
+            self.get_from_database()
+
+        return self.results
+
+    def run_processing(self) -> None:
+        """Run all steps needed to actually compute the indicator"""
         self.preprocess()
         self.calculate()
         self.export_figures()
         logger.info(f"finished run for indicator {self.name}")
+
+    def save_to_database(self) -> None:
+        """Save the results to the geo database."""
+        pass
+
+    def get_from_database(self) -> None:
+        """Get pre-processed indicator results from geo database."""
+        self.results = get_indicator_results_from_db(
+            dataset=self.dataset, feature_id=self.feature_id, indicator=self.name
+        )
+        pass
 
     @property
     @abstractmethod
