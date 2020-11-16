@@ -18,12 +18,13 @@ pre-commit install  # Install pre-commit hooks.
 
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8), [isort](https://github.com/PyCQA/isort) and [mypy](http://www.mypy-lang.org/) to ensure consistent code.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8), [isort](https://github.com/PyCQA/isort) and [mypy](http://www.mypy-lang.org/) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 
-[pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
-Those tools should already be installed in your virtual environment since they are listed in `requirements.txt`.
+Each of those tools can be integrated in most editors.
+
+In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
 To setup pre-commit simply run:
 
 ```bash
