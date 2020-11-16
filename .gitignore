@@ -141,4 +141,9 @@ cython_debug/
 .idea/
 
 # Custom
+# 
+# Data dir and big files
+pg_data/
 scripts/import/data
+ohsome_hex_db/ohsome-hex-db.sql
+ohsome_hex_db/ohsome-hex-isea.sql
