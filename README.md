@@ -29,12 +29,12 @@ oqt --help
 
 Run the following line to derive the `BUILDING_COMPLETENESS` indicator:
 ```
-oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS -f data/heidelberg_altstadt.geojson 
+oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS --infilef data/heidelberg_altstadt.geojson 
 ```
 
 Run the following line to derive the `WATERPROOFING_DATA_FLOODING` report:
 ```
-oqt --verbose get-dynamic-report -r WATERPROOFING_DATA_FLOODING -f data/heidelberg_altstadt.geojson
+oqt --verbose get-dynamic-report -r WATERPROOFING_DATA_FLOODING --infile data/heidelberg_altstadt.geojson
 ```
 
 ### API
@@ -54,6 +54,10 @@ docker-compose up oqt-workers
 ```
 
 For now this will run `oqt --help` within the docker container. This should be enough to test that the installation worked.
+
+```
+docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS --infile data/heidelberg_altstadt.geojson
+```
 
 ## Development
 For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
