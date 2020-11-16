@@ -46,6 +46,15 @@ uvicorn ohsome_quality_tool.app.main:app --reload
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
 
 
+### Docker
+You can also run the tool using docker, e.g. if you have problems installing on Windows.
+
+```
+docker-compose up oqt-workers
+```
+
+For now this will run `oqt --help` within the docker container. This should be enough to test that the installation worked.
+
 ## Development
 For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
 

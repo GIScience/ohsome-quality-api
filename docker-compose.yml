@@ -1,15 +1,27 @@
-version: "3.8"
+version: "3.3"
 services:
-  db:
+  oqt-workers:
     build:
-      context: ohsome_hex_db/
-    ports:
-      - "5432:5432"
-    volumes:
-      - ohsome_hex_db_data:/var/lib/postgresql/data
-    restart: always
+      context: ./
     environment:
-      - POSTGRES_PASSWORD: "hzTZJ"
-      - POSTGRES_USER: "hexadmin"
+      - POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'
+      - POSTGRES_USER='${POSTGRES_USER}'
+      - POSTGRES_DB='${POSTGRES_DB}'
+      - POSTGRES_HOST='postgres'
+      - POSTGRES_PORT=5432
+    command: oqt --help
+    restart: "no"
+
+  #oqt-db:
+  #  build:
+  #    context: ohsome_hex_db/
+  #  ports:
+  #    - "5432:5432"
+  #  volumes:
+  #    - ohsome_hex_db_data:/var/lib/postgresql/data
+  #  restart: always
+  #  environment:
+  #    - POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'
+  #    - POSTGRES_USER='${POSTGRES_USER}'
       # - POSTGIS_ENABLE_OUTDB_RASTERS: 1
       # - POSTGIS_GDAL_ENABLED_DRIVERS: "ENABLE_ALL"
