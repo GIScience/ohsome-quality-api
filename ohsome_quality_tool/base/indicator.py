@@ -19,7 +19,6 @@ class BaseIndicator(metaclass=ABCMeta):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
-        ohsome_api: str = None,
     ) -> None:
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
@@ -39,8 +38,6 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-        self.results = {"name": self.name}
-
     def get(self) -> Dict:
         """Pass the indicator results to the user.
 
@@ -50,32 +47,33 @@ class BaseIndicator(metaclass=ABCMeta):
         """
         if self.dynamic:
             logger.info(f"Run processing for dynamic indicator {self.name}.")
-            self.run_processing()
+            results = self.run_processing()
         else:
             logger.info(
                 f"Get pre-processed results from geo db for indicator {self.name}."
             )
-            self.get_from_database()
+            results = self.get_from_database()
 
-        return self.results
+        return results
 
-    def run_processing(self) -> None:
+    def run_processing(self) -> Dict:
         """Run all steps needed to actually compute the indicator"""
-        self.preprocess()
-        self.calculate()
+        preprocessed_results = self.preprocess()
+        results = self.calculate(preprocessed_results)
         self.export_figures()
         logger.info(f"finished run for indicator {self.name}")
+        return results
 
     def save_to_database(self) -> None:
         """Save the results to the geo database."""
         pass
 
-    def get_from_database(self) -> None:
+    def get_from_database(self) -> Dict:
         """Get pre-processed indicator results from geo database."""
-        self.results = get_indicator_results_from_db(
+        results = get_indicator_results_from_db(
             dataset=self.dataset, feature_id=self.feature_id, indicator=self.name
         )
-        pass
+        return results
 
     @property
     @abstractmethod
@@ -89,7 +87,7 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def calculate(self):
+    def calculate(self, preprocessing_results: Dict):
         pass
 
     @abstractmethod

@@ -15,9 +15,9 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
         bpolys = geojson.load(file)
 
     indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
-    indicator.get()
-    print(f"results: {indicator.results}")
-    return indicator.results
+    results = indicator.get()
+    print(f"results: {results}")
+    return results
 
 
 def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
@@ -29,9 +29,9 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     indicator = Indicators[indicator_name].constructor(
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
-    indicator.get()
-    print(f"results: {indicator.results}")
-    return indicator.results
+    results = indicator.get()
+    print(f"results: {results}")
+    return results
 
 
 def process_indicator(indicator_name: str, dataset: str, feature_id: int):

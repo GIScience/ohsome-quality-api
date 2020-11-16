@@ -1,4 +1,5 @@
 import json
+from typing import Dict
 
 from geojson import FeatureCollection
 from ohsome import OhsomeClient
@@ -18,32 +19,44 @@ class Indicator(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
-        ohsome_api: str = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
 
-        self.osm_building_area: float = 0.0
-        self.pop_density: float = 0.0
-
-    def preprocess(self):
+    def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
         client = OhsomeClient()
         response = client.elements.area.post(
             bpolys=json.dumps(self.bpolys), filter="building=*"
         )
-        self.osm_building_area = response.as_dataframe().iloc[0]["value"]
-        logger.info(f"osm building area: {self.osm_building_area}")
+        osm_building_area = response.as_dataframe().iloc[0]["value"]
+        logger.info(f"osm building area: {osm_building_area}")
         logger.info(f"extracted osm features for {self.name} indicator")
 
         # TODO: obtain Global Urban Footprint data
-        # self.pop_density =
+        pop_count = 160355
 
-    def calculate(self):
+        # ideally we would have this as a dataframe?
+        preprocessing_results = {
+            "osm_building_area": osm_building_area,
+            "pop_count": pop_count,
+        }
+
+        return preprocessing_results
+
+    def calculate(self, preprocessing_results: Dict):
+
+        results = {}
+
         logger.info(f"run calculation for {self.name} indicator")
-        self.results["score"] = 0.5
+        results["score"] = (
+            preprocessing_results["osm_building_area"]
+            / preprocessing_results["pop_count"]
+        )
+
+        return results
 
     def export_figures(self):
         # TODO: maybe not all indicators will export figures?
