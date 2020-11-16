@@ -17,11 +17,13 @@ class Indicator(BaseIndicator):
         dataset: str = None,
         feature_id: int = None,
         ohsome_api: str = None,
-        osm_building_area: float = 0.0,
     ) -> None:
         super().__init__(
             dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
+
+        self.osm_building_area: float = 0.0
+        self.pop_density: float = 0.0
 
     def preprocess(self):
         logger.info(f"run preprocessing for {self.name} indicator")
@@ -32,6 +34,7 @@ class Indicator(BaseIndicator):
         logger.info(f"extracted osm features for {self.name} indicator")
 
         # TODO: obtain Global Urban Footprint data
+        # self.pop_density =
 
     def calculate(self):
         logger.info(f"run calculation for {self.name} indicator")

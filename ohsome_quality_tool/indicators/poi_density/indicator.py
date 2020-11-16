@@ -19,11 +19,12 @@ class Indicator(BaseIndicator):
         dataset: str = None,
         feature_id: int = None,
         ohsome_api: str = None,
-        density_per_category: dict = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
+
+        self.density_per_category: dict = None
 
     def preprocess(self):
         logger.info(f"run preprocessing for {self.name} indicator")
