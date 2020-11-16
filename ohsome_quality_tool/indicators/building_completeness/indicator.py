@@ -2,16 +2,16 @@ import json
 from typing import Dict
 
 from geojson import FeatureCollection
-from ohsome import OhsomeClient
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
+from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import logger
 
 
 class Indicator(BaseIndicator):
     """The Building Completeness Indicator."""
 
-    name = "building_completeness"
+    name = "BUILDING_COMPLETENESS"
 
     def __init__(
         self,
@@ -27,13 +27,18 @@ class Indicator(BaseIndicator):
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        client = OhsomeClient()
-        response = client.elements.area.post(
-            bpolys=json.dumps(self.bpolys), filter="building=*"
+        # category name as key, filter string as value
+        categories = {
+            "buildings": "building=*",
+        }
+
+        query_results = ohsome_api.query_ohsome_api(
+            endpoint="/elements/area/",
+            categories=categories,
+            bpolys=json.dumps(self.bpolys),
         )
-        osm_building_area = response.as_dataframe().iloc[0]["value"]
-        logger.info(f"osm building area: {osm_building_area}")
-        logger.info(f"extracted osm features for {self.name} indicator")
+
+        osm_building_area = query_results["buildings"]["result"][0]["value"]
 
         # TODO: obtain Global Urban Footprint data
         pop_count = 160355

@@ -13,19 +13,25 @@ class Indicators(Enum):
 
     BUILDING_COMPLETENESS = 1
     POI_DENSITY = 2
-    AMENITY_AND_ROAD_SATURATION = 3
-    AMENITY_AND_ROAD_CURRENTNESS = 4
+    LAST_EDIT = 3
 
     @property
     def constructor(self):
         from ohsome_quality_tool.indicators.building_completeness.indicator import (
             Indicator as buildingCompletenessIndicator,
         )
+        from ohsome_quality_tool.indicators.last_edit.indicator import (
+            Indicator as lastEditIndicator,
+        )
         from ohsome_quality_tool.indicators.poi_density.indicator import (
             Indicator as poiDensityIndicator,
         )
 
-        indicators = {1: buildingCompletenessIndicator, 2: poiDensityIndicator}
+        indicators = {
+            1: buildingCompletenessIndicator,
+            2: poiDensityIndicator,
+            3: lastEditIndicator,
+        }
 
         return indicators[self.value]
 

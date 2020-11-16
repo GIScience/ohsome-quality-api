@@ -11,7 +11,7 @@ from ohsome_quality_tool.utils.definitions import logger
 class Indicator(BaseIndicator):
     """The POI Density Indicator."""
 
-    name = "POI Density"
+    name = "POI_DENSITY"
 
     def __init__(
         self,

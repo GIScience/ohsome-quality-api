@@ -9,7 +9,7 @@ class Report(BaseReport):
 
     name = "Waterproofing Data Flooding"
     # TODO: check if this structure is good
-    #   maybe we want to have an indicator for currentness
+    #   maybe we want to have an indicator for last_edit
     #   and pass the objects as a filter instead
     #   then the definition of which specific saturation to compute
     #   would be passed here in the report
