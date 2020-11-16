@@ -1,11 +1,10 @@
 import json
 from typing import Dict
 
-import requests
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils.config import OHSOME_API
+from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import logger
 
 
@@ -25,113 +24,42 @@ class Indicator(BaseIndicator):
             dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
         )
 
-    def preprocess(self):
+    def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        # TODO: put these filters into a single dictionary and
-        #  use list if multiple tag values should be considered
-        key_multiple_values_filters = {
-            "tourism": "hotel,attraction",
-            "natural": "water,peak",
-            "amenity": "place_of_worship,pharmacy,hospital,restaurant,fuel,townhall,school,university,college,police,fire_station",  # noqa
+        # category name as key, filter string as value
+        categories = {
+            "mountain": "natural=peak",
+            "gas_stations": "amenity=fuel",
+            "parks": "leisure=park or boundary=national_park",
+            "waterways": "natural=water or waterway=*",
+            "health_fac_pharmacies": "amenity in (pharmacy, hospital)",
+            "eduction": "amenity in (school, college, university)",
+            "public_safety": "amenity in (police, fire_station)",
+            "public_transport": "highway=bus_stop or railway=station",
+            "hotel": "tourism=hotel",
+            "attraction": "tourism=attraction",
+            "restaurant": "amenity=restaurant",
+            "townhall": "amenity=townhall",
+            "shop": "shop=*",
         }
 
-        key_value_filters = {
-            "highway": "bus_stop",
-            "railway": "station",
-            "leisure": "park",
-            "boundary": "national_park",
-        }
-
-        key_filters = ["shop", "waterway"]
-
-        density_dict = {"density": 0}  # result dictionary with category counts
-
-        # query ohsome for keys with multiple values
-        for k, v in key_multiple_values_filters.items():
-            # TODO: refactor this into an external function
-            #   e.g. in utils/ohsome_api.py
-            url = "/elements/count/density/groupBy/tag"
-            values_separate = v.split(",")
-            params = {
-                "bpolys": json.dumps(self.bpolys),
-                "groupByKey": k,
-                "groupByValues": v,
-                "types": "node,way",
-            }  # noqa
-            result = requests.get(OHSOME_API + url, params)
-            result = json.loads(result.text)["groupByResult"]
-            for gb_result in result:
-                for v_s in values_separate:
-                    if gb_result["groupByObjectId"] == f"{k}={v_s}":
-                        if v_s in density_dict:
-                            density_dict[v_s] += gb_result["result"][0]["value"]
-                        else:
-                            density_dict[v_s] = gb_result["result"][0]["value"]
-                if gb_result["groupByObjectId"] != "remainder":
-                    density_dict["density"] += gb_result["result"][0]["value"]
-
-        # query ohsome for keys with one value
-        for k, v in key_value_filters.items():
-            url = "/elements/count/density"
-            params = {
-                "bpolys": json.dumps(self.bpolys),
-                "keys": k,
-                "values": v,
-                "types": "node,way",
-            }  # noqa
-            result = requests.get(OHSOME_API + url, params)
-            result = json.loads(result.text)["result"][0]
-            density_dict["density"] += result["value"]
-            if v in density_dict:
-                density_dict[v] += result["value"]
-            else:
-                density_dict[v] = result["value"]
-
-        # query ohsome for keys with no value
-        for k in key_filters:
-            url = "/elements/count/density"
-            params = {
-                "bpolys": json.dumps(self.bpolys),
-                "keys": k,
-                "types": "node,way",
-            }  # noqa
-            result = requests.get(OHSOME_API + url, params)
-            result = json.loads(result.text)["result"][0]
-            density_dict["density"] += result["value"]
-            if k in density_dict:
-                density_dict[k] += result["value"]
-            else:
-                density_dict[k] = result["value"]
-
-        # merge and rename categories
-        density_dict["mountain"] = density_dict.pop("peak")
-        density_dict["gas_stations"] = density_dict.pop("fuel")
-        density_dict["parks"] = density_dict["park"] + density_dict["national_park"]
-        density_dict["waterways"] = density_dict["waterway"] + density_dict["water"]
-        density_dict["health_fac_pharmacies"] = (
-            density_dict["pharmacy"] + density_dict["hospital"]
-        )
-        density_dict["education"] = (
-            density_dict["school"]
-            + density_dict["college"]
-            + density_dict["university"]
-        )
-        density_dict["public_safety"] = (
-            density_dict["police"] + density_dict["fire_station"]
-        )
-        density_dict["public_transport"] = (
-            density_dict["bus_stop"] + density_dict["station"]
+        preprocessing_results = ohsome_api.query_ohsome_api(
+            endpoint="/elements/count/density/",
+            categories=categories,
+            bpolys=json.dumps(self.bpolys),
         )
 
-        preprocessing_results = density_dict
         return preprocessing_results
 
-    def calculate(self, preprocessing_results: Dict):
+    def calculate(self, preprocessing_results: Dict) -> Dict:
         logger.info(f"run calculation for {self.name} indicator")
         # compute relative densities
 
+        return preprocessing_results
+
         # TODO: why is this named 'old' keys, let's make this more easy to understand
+        """
         old_keys = [
             "park",
             "national_park",
@@ -148,6 +76,7 @@ class Indicator(BaseIndicator):
             "station",
         ]
 
+        # TODO: why do we compute relative density?
         relative_density_dict = {}
         for k, v in preprocessing_results.items():
             if k not in old_keys and k != "density":
@@ -155,7 +84,7 @@ class Indicator(BaseIndicator):
                     100 * v / preprocessing_results["density"], 2
                 )
         results = {"relative_poi_densities": relative_density_dict}
-        return results
+        """
 
     def export_figures(self):
         # TODO: maybe not all indicators will export figures?
