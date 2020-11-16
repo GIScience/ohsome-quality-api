@@ -29,4 +29,5 @@ psql \
     -p 5432 \
     -d hexadmin \
     -U hexadmin \
-    -c "SELECT AddRasterConstraints('ghspop'::name, 'rast'::name);"
+    -c "SELECT AddRasterConstraints('public.ghspop'::name, 'rast'::name);" \
+    2>> error-ghspop.log

@@ -11,3 +11,5 @@ services:
     environment:
       - POSTGRES_PASSWORD: "hzTZJ"
       - POSTGRES_USER: "hexadmin"
+      # - POSTGIS_ENABLE_OUTDB_RASTERS: 1
+      # - POSTGIS_GDAL_ENABLED_DRIVERS: "ENABLE_ALL"
