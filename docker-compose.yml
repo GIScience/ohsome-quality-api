@@ -9,8 +9,11 @@ services:
       - POSTGRES_DB='${POSTGRES_DB}'
       - POSTGRES_HOST='postgres'
       - POSTGRES_PORT=5432
-    command: oqt --help
+      - OHSOME_API='https://api.ohsome.org/v1/'
+    command: uvicorn ohsome_quality_tool.app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: "no"
+    ports:
+      - 8000:8000
 
   #oqt-db:
   #  build:
