@@ -1,3 +1,7 @@
+-- https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/hex/ohsomehex-db/-/tree/master
+-- Schema version: 3.1.3
+-- Replaced magic variables with values
+
 -- Setup required DB functionality
 
 CREATE EXTENSION IF NOT EXISTS citext;
