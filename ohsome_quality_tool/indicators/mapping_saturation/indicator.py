@@ -98,10 +98,7 @@ class Indicator(BaseIndicator):
                     message = (
                         f"The mapping of {cat} features might not be saturated yet."
                     )
-                elif last_slope == 0:
-                    level = 2
-                    message = f"The mapping of {cat} features seems to be saturated."
-                elif last_slope < 0:
+                elif last_slope <= 0:
                     level = 2
                     message = f"The mapping of {cat} features seems to be saturated."
 
