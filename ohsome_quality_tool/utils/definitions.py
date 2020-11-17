@@ -37,6 +37,7 @@ class Indicators(Enum):
     BUILDING_COMPLETENESS = 1
     POI_DENSITY = 2
     LAST_EDIT = 3
+    MAPPING_SATURATION = 4
 
     @property
     def constructor(self):
@@ -46,6 +47,9 @@ class Indicators(Enum):
         from ohsome_quality_tool.indicators.last_edit.indicator import (
             Indicator as lastEditIndicator,
         )
+        from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
+            Indicator as mappingSaturationIndicator,
+        )
         from ohsome_quality_tool.indicators.poi_density.indicator import (
             Indicator as poiDensityIndicator,
         )
@@ -54,6 +58,7 @@ class Indicators(Enum):
             1: buildingCompletenessIndicator,
             2: poiDensityIndicator,
             3: lastEditIndicator,
+            4: mappingSaturationIndicator,
         }
 
         return indicators[self.value]
