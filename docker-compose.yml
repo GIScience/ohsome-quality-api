@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3"
 services:
   oqt-workers:
     container_name: oqt-workers

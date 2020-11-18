@@ -21,3 +21,4 @@ CREATE INDEX nuts_rg_60m_2021_fid ON nuts_rg_60m_2021 USING btree (fid);
 CREATE INDEX nuts_rg_60m_2021_geom ON nuts_rg_60m_2021 USING gist (geom);
 
 CREATE INDEX ghs_pop_st_convexhull_idx  ON ghs_pop USING gist (public.st_convexhull(rast));
+CREATE INDEX guf04_st_convexhull_idx  ON guf04 USING gist (public.st_convexhull(rast));

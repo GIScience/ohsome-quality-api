@@ -16,7 +16,4 @@ gzip nuts_rg_60m_2021.sql
 
 gzip ghs_pop.sql
 
-
-
-
-
+pg_dump -U hexadmin -Z9 -Fc --data-only -t development.guf04 --schema=development -v -h localhost -p 5432 > guf04.dump

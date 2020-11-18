@@ -18,4 +18,4 @@ RUN pg_restore --version
 COPY init-db.sql /docker-entrypoint-initdb.d/1-init-db.sql
 COPY admin-schema.sql /docker-entrypoint-initdb.d/2-admin-schema.sql
 COPY restore-dev-tables.sh docker-entrypoint-initdb.d/3-restore-dev-tables.sh
-COPY create-indices.sh docker-entrypoint-initdb.d/4-create-indices.sh
+COPY create-indices.sql docker-entrypoint-initdb.d/4-create-indices.sql
