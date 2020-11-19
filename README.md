@@ -47,14 +47,12 @@ Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the
 
 
 ### Docker
-You can also run the tool using docker, e.g. if you have problems installing on Windows.
-
+You can also run the tool using docker, e.g. if you have problems installing on Windows. For now this will run the api at http://127.0.0.1:8000/docs. This should be enough to test that the installation worked.
 ```
-docker-compose up oqt-workers
+docker-compose up -d oqt-workers
 ```
 
-For now this will run `oqt --help` within the docker container. This should be enough to test that the installation worked.
-
+You can run a cli command using the docker image like this:
 ```
 docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS --infile data/heidelberg_altstadt.geojson
 ```

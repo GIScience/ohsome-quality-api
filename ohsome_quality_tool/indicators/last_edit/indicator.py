@@ -30,6 +30,10 @@ class Indicator(BaseIndicator):
         logger.info(f"run preprocessing for {self.name} indicator")
 
         # category name as key, filter string as value
+        # TODO: we should add more categories here
+        #   Can we even come up with a pre-defined list of categories
+        #   and respective tags, values in OSM
+        #   similar to what we've done for critical infrastructures
         categories = {"roads": "highway=*", "amenities": "amenity=*"}
         # TODO: adjust this to real time span
         #   this is to avoid querying too much data during development
