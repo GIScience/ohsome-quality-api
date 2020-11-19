@@ -17,6 +17,7 @@ services:
     container_name: oqt-postgres
     build:
       context: ohsome_hex_db/
+      dockerfile: Dockerfile.dev
     ports:
       - "5435:5432"
     volumes:
