@@ -11,14 +11,18 @@ WITH hex_pop AS (
     FROM (
         SELECT
             geohash_id,
+            -- it's important do to the union here and group by rid
+            -- otherwise we might count some pixel several times
             ST_SummaryStats (ST_Union (ST_Clip (rast, ST_Transform (geom, 954009)))) AS stats
-        -- it's important do to the union here and group by rid
-        -- otherwise we might count some pixel several times
     FROM
         ghs_pop,
         isea3h_world_res_12_hex
     WHERE
         ST_Intersects (rast, ST_Transform (geom, 954009))
+        -- Ignore grid cells at the very edge of the globe to avoid following ERROR:
+        -- rt_raster_new: Dimensions requested exceed the maximum permitted for a raster.
+        AND abs(ST_xMin (ST_Transform (geom, 954009)) - ST_xMax (ST_Transform (geom, 954009))) < 100000
+        AND abs(ST_yMin (ST_Transform (geom, 954009)) - ST_yMax (ST_Transform (geom, 954009))) < 100000
     GROUP BY
         geohash_id) AS summary_stats)
 UPDATE
