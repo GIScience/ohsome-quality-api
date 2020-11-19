@@ -15,6 +15,12 @@ pre-commit install  # Install pre-commit hooks.
 - To add dependencies: `poetry add package-name`
 - To update dependencies: `poetry update package-name`
 
+Set up a local postgis database using docker:
+* make sure that you have an `.env` file in place with `POSTGRES_PASSWORD`, `POSTGRES_DB`, `POSTGRES_USER` variables.
+* run `docker-compose up -d oqt-postgres`
+* it will take around 15 minutes until all layers are set up
+* you can check the progress of the setup in the logs `docker logs oqt-postgres`
+* once you get `database system is ready to accept connections` in the logs the import was successful
 
 ## Style Guide
 
