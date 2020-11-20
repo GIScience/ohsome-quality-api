@@ -37,7 +37,7 @@ class Indicator(BaseIndicator):
         timespan = "2008-01-01//P1Y"
 
         query_length = ohsome_api.query_ohsome_api(
-            endpoint="/elements/area/",
+            endpoint="/elements/length/",
             categories=categories_length,
             bpolys=json.dumps(self.bpolys),
             time=timespan,
