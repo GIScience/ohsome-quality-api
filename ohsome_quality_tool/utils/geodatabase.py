@@ -157,7 +157,10 @@ def get_value_from_db(dataset: str, feature_id: str, field_name: str):
 
 
 def get_zonal_stats_population(bpolys: Dict):
-    """Derive zonal population stats for given GeoJSON geometry."""
+    """Derive zonal population stats for given GeoJSON geometry.
+
+    This is based on the Global Human Settlement Layer Population.
+    """
 
     db = PostgresDB()
     query = sql.SQL(
@@ -183,5 +186,37 @@ def get_zonal_stats_population(bpolys: Dict):
     query_results = db.retr_query(query=query, data=data)
     results = query_results[0][0]
     logger.info("Got population for polygon.")
+
+    return results
+
+
+def get_zonal_stats_guf(bpolys: Dict):
+    """Derive zonal built up area stats for given GeoJSON geometry.
+
+    This is based on the Global Urban Footprint dataset.
+    """
+
+    db = PostgresDB()
+    query = sql.SQL(
+        """
+        SET SCHEMA %(schema)s;
+        SELECT
+        (public.ST_SummaryStats(
+            public.ST_Union(
+                public.ST_Clip(
+                    rast,
+                    public.ST_GeomFromGeoJSON(%(polygon)s)
+                )
+            )
+        )).sum built_up_area
+        FROM guf04
+        """
+    )
+    # need to get geometry only
+    polygon = json.dumps(bpolys["features"][0]["geometry"])
+    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
+    query_results = db.retr_query(query=query, data=data)
+    results = query_results[0][0]
+    logger.info("Got built up area for polygon.")
 
     return results

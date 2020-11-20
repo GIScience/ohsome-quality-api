@@ -11,7 +11,7 @@ from ohsome_quality_tool.utils.definitions import logger
 class Indicator(BaseIndicator):
     """Set number of features and population into perspective."""
 
-    name = "FEATURES_PER_POPULATION"
+    name = "GHSPOP_COMPARISON"
 
     def __init__(
         self,

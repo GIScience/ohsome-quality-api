@@ -42,15 +42,16 @@ DATASETS = [
 class Indicators(Enum):
     """Define supported indicators."""
 
-    FEATURES_PER_POPULATION = 1
+    GHSPOP_COMPARISON = 1
     POI_DENSITY = 2
     LAST_EDIT = 3
     MAPPING_SATURATION = 4
+    GUF_COMPARISON = 5
 
     @property
     def constructor(self):
-        from ohsome_quality_tool.indicators.features_per_population.indicator import (
-            Indicator as featuresPerPopulationIndicator,
+        from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
+            Indicator as ghspopComparisonIndicator,
         )
         from ohsome_quality_tool.indicators.last_edit.indicator import (
             Indicator as lastEditIndicator,
@@ -63,7 +64,7 @@ class Indicators(Enum):
         )
 
         indicators = {
-            1: featuresPerPopulationIndicator,
+            1: ghspopComparisonIndicator,
             2: poiDensityIndicator,
             3: lastEditIndicator,
             4: mappingSaturationIndicator,
