@@ -4,14 +4,14 @@ from typing import Dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import ohsome_api
+from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.definitions import logger
 
 
 class Indicator(BaseIndicator):
-    """The Building Completeness Indicator."""
+    """Set number of features and population into perspective."""
 
-    name = "BUILDING_COMPLETENESS"
+    name = "FEATURES_PER_POPULATION"
 
     def __init__(
         self,
@@ -33,19 +33,25 @@ class Indicator(BaseIndicator):
         }
 
         query_results = ohsome_api.query_ohsome_api(
-            endpoint="/elements/area/",
+            endpoint="/elements/count/",
             categories=categories,
             bpolys=json.dumps(self.bpolys),
         )
 
-        osm_building_area = query_results["buildings"]["result"][0]["value"]
+        feature_count = query_results["buildings"]["result"][0]["value"]
 
-        # TODO: obtain Global Urban Footprint data
-        pop_count = 160355
+        if self.dynamic:
+            pop_count = geodatabase.get_zonal_stats_population(bpolys=self.bpolys)
+        else:
+            pop_count = geodatabase.get_value_from_db(
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                field_name="population",
+            )
 
         # ideally we would have this as a dataframe?
         preprocessing_results = {
-            "osm_building_area": osm_building_area,
+            "osm_building_area": feature_count,
             "pop_count": pop_count,
         }
 
@@ -56,10 +62,12 @@ class Indicator(BaseIndicator):
         results = {}
 
         logger.info(f"run calculation for {self.name} indicator")
-        results["score"] = (
+        results["features_per_pop"] = (
             preprocessing_results["osm_building_area"]
             / preprocessing_results["pop_count"]
         )
+
+        # TODO: classification based on pop and building count
 
         return results
 

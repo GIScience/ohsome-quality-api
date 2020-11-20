@@ -5,6 +5,7 @@ from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_tool.utils.auth import PostgresDB
+from ohsome_quality_tool.utils.config import POSTGRES_SCHEMA
 from ohsome_quality_tool.utils.definitions import logger
 
 
@@ -36,7 +37,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
     # TODO: adjust this for other input tables
     query = sql.SQL(
         """
-        SET SCHEMA 'benni_test';
+        SET SCHEMA %(schema)s;
         SELECT json_build_object(
             'type', 'FeatureCollection',
             'crs',  json_build_object(
@@ -52,9 +53,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
                         -- list of fields
-                        'iso_code', iso_code,
-                        'country', country,
-                        'region', region
+                        'fid', fid
                     )
                 )
             )
@@ -63,9 +62,9 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
         WHERE fid = %(feature_id)s
     """
     ).format(sql.Identifier(dataset))
-    data = {"feature_id": feature_id}
+    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
-    bpolys = FeatureCollection(query_results[0][0])
+    bpolys = query_results[0][0]
     logger.info(f"got bpolys geometry from {dataset} for feature {feature_id}.")
     return bpolys
 
@@ -91,8 +90,7 @@ def save_indicator_results_to_db(
     #   of the indicator results we can add more columns here
     query = sql.SQL(
         """
-        SET SCHEMA 'benni_test';
-
+        SET SCHEMA %(schema)s;
         CREATE TABLE IF NOT EXISTS {} (
           fid integer,
           results json,
@@ -108,7 +106,11 @@ def save_indicator_results_to_db(
         sql.Identifier(table_constraint),
         sql.Identifier(table),
     )
-    data = {"feature_id": feature_id, "results": json.dumps(results)}
+    data = {
+        "schema": POSTGRES_SCHEMA,
+        "feature_id": feature_id,
+        "results": json.dumps(results),
+    }
     db.query(query=query, data=data)
     logger.info(f"Saved results for feature {feature_id} in {table}.")
 
@@ -122,14 +124,64 @@ def get_indicator_results_from_db(
     table = get_table_name(dataset, indicator)
     query = sql.SQL(
         """
-        SET SCHEMA 'benni_test';
+        SET SCHEMA %(schema)s;
         SELECT results
         FROM {}
         WHERE fid = %(feature_id)s;
     """
     ).format(sql.Identifier(table))
-    data = {"feature_id": feature_id}
+    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
     results = query_results[0][0]
     logger.info(f"Got results for feature {feature_id} from {table}.")
+    return results
+
+
+def get_value_from_db(dataset: str, feature_id: str, field_name: str):
+    """Get the value for a field of the given dataset and feature in the database."""
+
+    db = PostgresDB()
+    query = sql.SQL(
+        """
+        SET SCHEMA %(schema)s;
+        SELECT {}
+        FROM {}
+        WHERE fid = %(feature_id)s;
+    """
+    ).format(sql.Identifier(field_name), sql.Identifier(dataset))
+    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
+    query_results = db.retr_query(query=query, data=data)
+    results = query_results[0][0]
+    logger.info(f"Got '{field_name}' for feature '{feature_id}' from '{dataset}'.")
+    return results
+
+
+def get_zonal_stats_population(bpolys: Dict):
+    """Derive zonal population stats for given GeoJSON geometry."""
+
+    db = PostgresDB()
+    query = sql.SQL(
+        """
+        SET SCHEMA %(schema)s;
+        SELECT
+        (public.ST_SummaryStats(
+            public.ST_Union(
+                public.ST_Clip(
+                    rast,
+                    public.ST_Transform(
+                        public.ST_GeomFromGeoJSON(%(polygon)s)
+                        , 954009)
+                )
+            )
+        )).sum population
+        FROM ghs_pop
+        """
+    )
+    # need to get geometry only
+    polygon = json.dumps(bpolys["features"][0]["geometry"])
+    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
+    query_results = db.retr_query(query=query, data=data)
+    results = query_results[0][0]
+    logger.info("Got population for polygon.")
+
     return results

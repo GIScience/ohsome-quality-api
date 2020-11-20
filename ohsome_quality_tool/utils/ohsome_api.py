@@ -17,7 +17,7 @@ def query_ohsome_api(
     for cat, filter_string in categories.items():
         url = f"{OHSOME_API}{endpoint}"
         params = {"bpolys": bpolys, "filter": filter_string, "time": time}
-        result = json.loads(requests.get(url, params).text)
+        result = json.loads(requests.post(url, data=params).text)
         query_results[cat] = result
         logger.info(f"got query results for: cat='{cat}', filter='{filter_string}'")
 

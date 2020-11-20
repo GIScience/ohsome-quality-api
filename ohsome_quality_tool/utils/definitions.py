@@ -29,20 +29,28 @@ DEFAULT_CATEGORIES = {
 }
 
 
+DATASETS = [
+    "nuts_rg_60m_2021",
+    "nuts_rg_01m_2021",
+    "isea3h_world_res_6_hex",
+    "isea3h_world_res_12_hex",
+]
+
+
 # TODO: Is there a better way to define this?
 @unique
 class Indicators(Enum):
     """Define supported indicators."""
 
-    BUILDING_COMPLETENESS = 1
+    FEATURES_PER_POPULATION = 1
     POI_DENSITY = 2
     LAST_EDIT = 3
     MAPPING_SATURATION = 4
 
     @property
     def constructor(self):
-        from ohsome_quality_tool.indicators.building_completeness.indicator import (
-            Indicator as buildingCompletenessIndicator,
+        from ohsome_quality_tool.indicators.features_per_population.indicator import (
+            Indicator as featuresPerPopulationIndicator,
         )
         from ohsome_quality_tool.indicators.last_edit.indicator import (
             Indicator as lastEditIndicator,
@@ -55,7 +63,7 @@ class Indicators(Enum):
         )
 
         indicators = {
-            1: buildingCompletenessIndicator,
+            1: featuresPerPopulationIndicator,
             2: poiDensityIndicator,
             3: lastEditIndicator,
             4: mappingSaturationIndicator,

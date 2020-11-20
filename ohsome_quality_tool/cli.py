@@ -3,7 +3,7 @@ import ast
 import click
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils.definitions import Indicators, Reports, logger
+from ohsome_quality_tool.utils.definitions import DATASETS, Indicators, Reports, logger
 
 
 class PythonLiteralOption(click.Option):
@@ -74,7 +74,10 @@ _dataset_option = [
     click.option(
         "--dataset",
         required=True,
-        type=str,
+        type=click.Choice(
+            DATASETS,
+            case_sensitive=True,
+        ),
         help="""Choose a dataset containing geometries,
             valid area datasets are specified in definitions.py .""",
     )
@@ -85,7 +88,7 @@ _feature_id_option = [
     click.option(
         "--feature_id",
         required=True,
-        type=int,
+        type=str,
         help="""Provide the feature id of your area of interest.""",
     )
 ]
