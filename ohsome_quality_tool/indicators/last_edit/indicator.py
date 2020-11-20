@@ -40,7 +40,7 @@ class Indicator(BaseIndicator):
         time = "2019-01-01,2020-07-15"
 
         query_results = ohsome_api.query_ohsome_api(
-            endpoint="/contributions/centroid/",
+            endpoint="/contributions/latest/centroid/",
             categories=categories,
             bpolys=json.dumps(self.bpolys),
             time=time,
@@ -49,6 +49,7 @@ class Indicator(BaseIndicator):
         preprocessing_results = {}
         for cat in categories.keys():
             df = pd.json_normalize(query_results[cat]["features"])
+            print(df)
             df["timestamp"] = pd.to_datetime(df["properties.@timestamp"])
             # TODO: It's not clear what this actually means
             #   for instance it could be that many objects have been edited in the past

@@ -28,6 +28,9 @@ class Indicator(BaseIndicator):
         logger.info(f"run preprocessing for {self.name} indicator")
 
         # category name as key, filter string as value
+        # TODO: maybe we should have a more detailed filter for highways
+        #   e.g. selecting only the most common features such as primary,
+        #   secondary, residential, tertiary etc.?
         categories_length = {
             "highways": "highway=*",
         }
@@ -98,7 +101,7 @@ class Indicator(BaseIndicator):
                     message = (
                         f"The mapping of {cat} features might not be saturated yet."
                     )
-                elif last_slope <= 0:
+                elif last_slope <= THRESHOLD_YELLOW:
                     level = 2
                     message = f"The mapping of {cat} features seems to be saturated."
 
