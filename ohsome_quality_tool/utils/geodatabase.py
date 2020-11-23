@@ -178,6 +178,11 @@ def get_zonal_stats_population(bpolys: Dict):
             )
         )).sum population
         FROM ghs_pop
+        WHERE
+         public.ST_Intersects(
+            rast,
+            public.ST_GeomFromGeoJSON(%(polygon)s)
+         )
         """
     )
     # need to get geometry only
@@ -210,6 +215,11 @@ def get_zonal_stats_guf(bpolys: Dict):
             )
         )).sum built_up_area
         FROM guf04
+        WHERE
+         public.ST_Intersects(
+            rast,
+            public.ST_GeomFromGeoJSON(%(polygon)s)
+         )
         """
     )
     # need to get geometry only
