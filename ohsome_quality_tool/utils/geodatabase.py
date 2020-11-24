@@ -177,11 +177,16 @@ def get_zonal_stats_population(bpolys: Dict):
                 )
             )
         ).sum) population
+        ,public.ST_Area(
+            public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+        ) / (1000*1000) as area_sqkm
         FROM ghs_pop
         WHERE
          public.ST_Intersects(
             rast,
-            public.ST_GeomFromGeoJSON(%(polygon)s)
+            public.ST_Transform(
+                public.ST_GeomFromGeoJSON(%(polygon)s)
+                , 954009)
          )
         """
     )
@@ -189,10 +194,10 @@ def get_zonal_stats_population(bpolys: Dict):
     polygon = json.dumps(bpolys["features"][0]["geometry"])
     data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
-    results = query_results[0][0]
+    population, area = query_results[0]
     logger.info("Got population for polygon.")
 
-    return results
+    return population, area
 
 
 def get_zonal_stats_guf(bpolys: Dict):
@@ -204,7 +209,13 @@ def get_zonal_stats_guf(bpolys: Dict):
     db = PostgresDB()
     query = sql.SQL(
         """
-        SELECT Sum(public.ST_Area(geom::public.geography)) / (1000*1000) as area_sqkm
+        SELECT
+            Sum(
+                public.ST_Area(geom::public.geography)) /(1000*1000
+            ) as built_up_area_sqkm
+            ,public.ST_Area(
+                public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+            ) / (1000*1000) as area_sqkm
         FROM (
         SELECT dp.*
         FROM guf04,
@@ -226,7 +237,7 @@ def get_zonal_stats_guf(bpolys: Dict):
     polygon = json.dumps(bpolys["features"][0]["geometry"])
     data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
-    results = query_results[0][0]
+    built_up_area, area = query_results[0]
     logger.info("Got built up area for polygon.")
 
-    return results
+    return built_up_area, area

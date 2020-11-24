@@ -8,7 +8,7 @@ from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_db
 
 
 class BaseReport(metaclass=ABCMeta):
-    """The base class for all indicators."""
+    """The base class for all reports."""
 
     def __init__(
         self,

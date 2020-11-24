@@ -16,6 +16,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         dynamic: bool,
+        layers: Dict,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -23,6 +24,7 @@ class BaseIndicator(metaclass=ABCMeta):
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
         self.dynamic = dynamic
+        self.layers = layers
 
         if self.dynamic:
             if bpolys is None:
