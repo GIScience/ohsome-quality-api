@@ -62,7 +62,7 @@ class BaseIndicator(metaclass=ABCMeta):
         """Run all steps needed to actually compute the indicator"""
         preprocessing_results = self.preprocess()
         results = self.calculate(preprocessing_results)
-        self.export_figures()
+        self.export_figures(results)
         logger.info(f"finished run for indicator {self.name}")
         return results
 
@@ -93,5 +93,5 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def export_figures(self):
+    def export_figures(self, results: Dict):
         pass

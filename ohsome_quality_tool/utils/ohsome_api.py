@@ -18,7 +18,11 @@ def process_ohsome_api(
         filter_string = layers[layer]["filter"]
         unit = layers[layer]["unit"]
         result = query_ohsome_api(
-            endpoint=endpoint, filter_string=filter_string, unit=unit, bpolys=bpolys
+            endpoint=endpoint,
+            filter_string=filter_string,
+            unit=unit,
+            bpolys=bpolys,
+            time=time,
         )
         query_results[layer] = result
         logger.info(f"got query results for: cat='{layer}', filter='{filter_string}'")

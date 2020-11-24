@@ -2,10 +2,12 @@ import json
 from typing import Dict
 
 from geojson import FeatureCollection
+from numpy import diff
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.layers import LEVEL_1_LAYERS
 
 
 class Indicator(BaseIndicator):
@@ -16,13 +18,20 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
+        layers: Dict = LEVEL_1_LAYERS,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
+        time_range: str = "2008-01-01//P1Y",
     ) -> None:
         super().__init__(
-            dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
+            dynamic=dynamic,
+            layers=layers,
+            bpolys=bpolys,
+            dataset=dataset,
+            feature_id=feature_id,
         )
+        self.time_range = time_range
 
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
@@ -31,35 +40,49 @@ class Indicator(BaseIndicator):
         # TODO: maybe we should have a more detailed filter for highways
         #   e.g. selecting only the most common features such as primary,
         #   secondary, residential, tertiary etc.?
-        categories_length = {
-            "highways": "highway=*",
-        }
-        categories_density = {
-            "amenities": "amenity=*",
-        }
-        timespan = "2008-01-01//P1Y"
 
-        query_length = ohsome_api.query_ohsome_api(
-            endpoint="/elements/length/",
-            categories=categories_length,
+        query_results = ohsome_api.process_ohsome_api(
+            endpoint="elements",
+            layers=self.layers,
             bpolys=json.dumps(self.bpolys),
-            time=timespan,
+            time=self.time_range,
         )
 
-        query_density = ohsome_api.query_ohsome_api(
-            endpoint="/elements/count/density/",
-            categories=categories_density,
-            bpolys=json.dumps(self.bpolys),
-            time=timespan,
-        )
+        preprocessing_results = {}
 
-        preprocessing_results = {**query_length, **query_density}
+        for layer in self.layers.keys():
+            unit = self.layers[layer]["unit"]
+            results = [y_dict["value"] for y_dict in query_results[layer]["result"]]
+            timestamps = [
+                y_dict["timestamp"] for y_dict in query_results[layer]["result"]
+            ]
+            # normalize using maximum value for the time_range
+            # for most cases the maximum will be reached at the last timestamp
+            normalized_results = [float(i) / max(results) for i in results]
+            # e.g. 1 year between data points
+            # or usually always same distance between two timestamps,e .g. months
+            dx = 1
+            slopes_new = diff(normalized_results) / dx
+
+            # calculate slopes between years
+            slopes = [0]
+            for i in range(1, len(results)):
+                if results[i - 1] > 0:
+                    slopes.append((results[i] - results[i - 1]) / results[i - 1])
+
+            preprocessing_results["timestamps"] = timestamps
+            preprocessing_results[f"{layer}_{unit}"] = results
+            preprocessing_results[f"{layer}_{unit}_slopes"] = slopes
+            preprocessing_results[f"{layer}_{unit}_slopes_max"] = max(slopes)
+            preprocessing_results[f"{layer}_{unit}_slopes_new"] = slopes_new
+            preprocessing_results[f"{layer}_{unit}_slopes_new_max"] = max(slopes_new)
 
         return preprocessing_results
 
     def calculate(self, preprocessing_results: Dict) -> Dict:
         logger.info(f"run calculation for {self.name} indicator")
 
+        """
         # TODO: find better place to store threshold values
         THRESHOLD_MAJOR_CHANGE = 0.25
         THRESHOLD_YELLOW = 0.05
@@ -67,19 +90,6 @@ class Indicator(BaseIndicator):
 
         results = {}
         for cat in preprocessing_results.keys():
-            results_yearly = [
-                y_dict["value"] for y_dict in preprocessing_results[cat]["result"]
-            ]
-
-            # calculate slopes between years
-            slopes = [0]
-            for i in range(1, len(results_yearly)):
-                if results_yearly[i - 1] > 0:
-                    slopes.append(
-                        (results_yearly[i] - results_yearly[i - 1])
-                        / results_yearly[i - 1]
-                    )
-
             # determine saturation level
             if max(slopes) < THRESHOLD_MAJOR_CHANGE:
                 level = 0
@@ -110,9 +120,16 @@ class Indicator(BaseIndicator):
                 "saturation_level": level,
                 "message": message,
             }
+        """
+
+        results = {
+            "data": preprocessing_results,
+            "quality_level": "tbd",
+            "description": "tbd",
+        }
 
         return results
 
-    def export_figures(self):
+    def export_figures(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")
