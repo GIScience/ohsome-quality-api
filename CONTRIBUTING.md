@@ -40,3 +40,19 @@ pre-commit install
 > Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
 >
 > Tip 2: Mark inline that flake8 should not raise any error: `print()  # noqa`
+
+## Tests
+For each indicator and each report there should be a test in place. Ideally there will be several tests per indicator or report, e.g. a test for the dynamic processing and the another test for the static processing.
+
+During development you should use the tests to check if your code changes didn't break any existing functionality.
+
+You can run all tests like this:
+```
+python -m unittest discover tests/
+```
+
+When working on a specific part of the project it will be often enough to run a test for a single indicator or report. Use this line if you want to run only a specific test:
+
+```
+python -m unittest tests/test_indicator_mapping_saturation.py
+```

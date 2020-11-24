@@ -27,14 +27,14 @@ Run the following line to get an overview:
 oqt --help 
 ```
 
-Run the following line to derive the `BUILDING_COMPLETENESS` indicator:
+Run the following line to derive the `GHSPOP_COMPARISON` indicator:
 ```
-oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS --infilef data/heidelberg_altstadt.geojson 
+oqt --verbose get-dynamic-indicator -i GHSPOP_COMPARISON --infile data/heidelberg_altstadt.geojson 
 ```
 
-Run the following line to derive the `WATERPROOFING_DATA_FLOODING` report:
+Run the following line to derive the `SKETCHMAP_FITNESS` report:
 ```
-oqt --verbose get-dynamic-report -r WATERPROOFING_DATA_FLOODING --infile data/heidelberg_altstadt.geojson
+oqt --verbose get-dynamic-report -r SKETCHMAP_FITNESS --infile data/heidelberg_altstadt.geojson
 ```
 
 ### API
@@ -54,7 +54,7 @@ docker-compose up -d oqt-workers
 
 You can run a cli command using the docker image like this:
 ```
-docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i BUILDING_COMPLETENESS --infile data/heidelberg_altstadt.geojson
+docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i GHSPOP_COMPARISON --infile data/heidelberg_altstadt.geojson
 ```
 
 ## Development
