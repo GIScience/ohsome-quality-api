@@ -5,7 +5,8 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER
 
 
 class Indicator(BaseIndicator):
@@ -16,39 +17,34 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
+        layers: Dict = SKETCHMAP_FITNESS_POI_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
+            dynamic=dynamic,
+            layers=layers,
+            bpolys=bpolys,
+            dataset=dataset,
+            feature_id=feature_id,
         )
 
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        # category name as key, filter string as value
-        categories = {
-            "mountain": "natural=peak",
-            "gas_stations": "amenity=fuel",
-            "parks": "leisure=park or boundary=national_park",
-            "waterways": "natural=water or waterway=*",
-            "health_fac_pharmacies": "amenity in (pharmacy, hospital)",
-            "eduction": "amenity in (school, college, university)",
-            "public_safety": "amenity in (police, fire_station)",
-            "public_transport": "highway=bus_stop or railway=station",
-            "hotel": "tourism=hotel",
-            "attraction": "tourism=attraction",
-            "restaurant": "amenity=restaurant",
-            "townhall": "amenity=townhall",
-            "shop": "shop=*",
-        }
-
-        preprocessing_results = ohsome_api.query_ohsome_api(
+        query_results = ohsome_api.process_ohsome_api(
             endpoint="/elements/count/density/",
-            categories=categories,
+            layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
+
+        preprocessing_results = {}
+
+        for layer in self.layers.keys():
+            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][
+                0
+            ]["value"]
 
         return preprocessing_results
 
@@ -86,6 +82,6 @@ class Indicator(BaseIndicator):
         results = {"relative_poi_densities": relative_density_dict}
         """
 
-    def export_figures(self):
+    def export_figures(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")

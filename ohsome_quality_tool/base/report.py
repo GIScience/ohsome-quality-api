@@ -3,7 +3,7 @@ from typing import Dict
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_db
 
 
@@ -35,7 +35,7 @@ class BaseReport(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-        self.results = {"name": self.name, "indicator_results": {}}
+        self.results = {}
 
     def get(self) -> Dict:
         """Pass the report containing the indicator results to the user.
@@ -43,18 +43,21 @@ class BaseReport(metaclass=ABCMeta):
         For dynamic indicators this will trigger the processing.
         For non-dynamic (pre-processed) indicators this will
         extract the results from the geo database."""
-        for i, indicator in enumerate(self.indicators):
+        self.results["indicators"] = {}
+        for i, item in enumerate(self.indicators):
+            indicator, layers = item
             if self.dynamic:
                 results = indicator.constructor(
-                    dynamic=self.dynamic, bpolys=self.bpolys
+                    dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
                 results = indicator.constructor(
                     dynamic=self.dynamic,
+                    layers=layers,
                     dataset=self.dataset,
                     feature_id=self.feature_id,
                 ).get()
-            self.results["indicator_results"][indicator.name] = results
+            self.results["indicators"][indicator.name] = results
 
         self.combine_indicators()
 

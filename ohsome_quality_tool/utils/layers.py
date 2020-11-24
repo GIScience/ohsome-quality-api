@@ -7,23 +7,7 @@
 #   as the main categories to consider
 
 
-DEFAULT_LAYERS = {
-    "mountain": "natural=peak",
-    "gas_stations": "amenity=fuel",
-    "parks": "leisure=park or boundary=national_park",
-    "waterways": "natural=water or waterway=*",
-    "health_fac_pharmacies": "amenity in (pharmacy, hospital)",
-    "eduction": "amenity in (school, college, university)",
-    "public_safety": "amenity in (police, fire_station)",
-    "public_transport": "highway=bus_stop or railway=station",
-    "hotel": "tourism=hotel",
-    "attraction": "tourism=attraction",
-    "restaurant": "amenity=restaurant",
-    "townhall": "amenity=townhall",
-    "shop": "shop=*",
-}
-
-LEVEL_1_LAYERS = {
+LEVEL_ONE_LAYERS = {
     "waterways": {
         "filter": "natural=water or waterway=*",
         "unit": "length",
@@ -34,4 +18,33 @@ LEVEL_1_LAYERS = {
         "unit": "length",
     },
     "roads": {"filter": "highway=*", "unit": "length"},
+}
+
+
+SKETCHMAP_FITNESS_POI_LAYER = {
+    "mountain": {"filter": "natural=peak", "unit": "count"},
+    "gas_stations": {"filter": "amenity=fuel", "unit": "count"},
+    "parks": {"filter": "leisure=park or boundary=national_park", "unit": "count"},
+    "waterways": {"filter": "natural=water or waterway=*", "unit": "count"},
+    "health_fac_pharmacies": {
+        "filter": "amenity in (pharmacy, hospital)",
+        "unit": "count",
+    },
+    "eduction": {"filter": "amenity in (school, college, university)", "unit": "count"},
+    "public_safety": {"filter": "amenity in (police, fire_station)", "unit": "count"},
+    "public_transport": {
+        "filter": "highway=bus_stop or railway=station",
+        "unit": "count",
+    },
+    "hotel": {"filter": "tourism=hotel", "unit": "count"},
+    "attraction": {"filter": "tourism=attraction", "unit": "count"},
+    "restaurant": {"filter": "amenity=restaurant", "unit": "count"},
+    "townhall": {"filter": "amenity=townhall", "unit": "count"},
+    "shop": {"filter": "shop=*", "unit": "count"},
+}
+
+
+SKETCHMAP_FITNESS_FEATURES = {
+    "highways": {"filter": "highway=*", "unit": "length"},
+    "amenities": {"filter": "amenity=*", "unit": "count"},
 }

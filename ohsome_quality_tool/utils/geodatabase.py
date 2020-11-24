@@ -5,8 +5,7 @@ from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_tool.utils.auth import PostgresDB
-from ohsome_quality_tool.utils.config import POSTGRES_SCHEMA
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.config import POSTGRES_SCHEMA, logger
 
 
 def get_table_name(dataset: str, indicator: str) -> str:
@@ -209,6 +208,7 @@ def get_zonal_stats_guf(bpolys: Dict):
     db = PostgresDB()
     query = sql.SQL(
         """
+        SET SCHEMA %(schema)s;
         SELECT
             Sum(
                 public.ST_Area(geom::public.geography)) /(1000*1000

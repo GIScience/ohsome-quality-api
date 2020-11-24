@@ -3,15 +3,14 @@ from typing import Dict
 
 import requests
 
-from ohsome_quality_tool.utils.config import OHSOME_API
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.config import OHSOME_API, logger
 
 
 def process_ohsome_api(
     endpoint: str, layers: Dict, bpolys: str, time: str = None
 ) -> Dict:
     """Process many ohsome api queries for layers and respective filters."""
-
+    logger.info("start to query ohsome api for all layers")
     # TODO: Use threading here to run multiple queries at a time
     query_results = {}
     for layer in layers.keys():
@@ -25,8 +24,8 @@ def process_ohsome_api(
             time=time,
         )
         query_results[layer] = result
-        logger.info(f"got query results for: cat='{layer}', filter='{filter_string}'")
 
+    logger.info("finished ohsome query for all layers")
     return query_results
 
 
@@ -36,11 +35,9 @@ def query_ohsome_api(
 ) -> Dict:
     """Query ohsome api endpoint for respective filter."""
     # the contributions endpoint doesn't require a unit
-    if "contributions" in endpoint:
-        url = f"{OHSOME_API}{endpoint}"
-    # other endpoints need an unit, e.g. count, area, length
-    else:
-        url = f"{OHSOME_API}{endpoint}/{unit}/"
+    if "{unit}" in endpoint:
+        endpoint = endpoint.replace("{unit}", unit)
+    url = f"{OHSOME_API}{endpoint}"
     params = {"bpolys": bpolys, "filter": filter_string, "time": time}
     result = json.loads(requests.post(url, data=params).text)
     logger.info(f"got query results for: {url}, filter='{filter_string}'")

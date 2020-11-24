@@ -3,7 +3,8 @@ import ast
 import click
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils.definitions import DATASETS, Indicators, Reports, logger
+from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import DATASETS, Indicators, Reports
 
 
 class PythonLiteralOption(click.Option):

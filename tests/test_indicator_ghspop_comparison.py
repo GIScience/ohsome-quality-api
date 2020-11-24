@@ -8,7 +8,7 @@ from ohsome_quality_tool.utils.definitions import Indicators
 class TestGhspopComparisonIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = Indicators.GHSPOP_COMPARISON._name_
+        self.indicator_name = Indicators.GHSPOP_COMPARISON.name
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""

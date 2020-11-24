@@ -5,8 +5,8 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.definitions import logger
-from ohsome_quality_tool.utils.layers import LEVEL_1_LAYERS
+from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 
 class Indicator(BaseIndicator):
@@ -17,7 +17,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = LEVEL_1_LAYERS,
+        layers: Dict = LEVEL_ONE_LAYERS,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: str = None,
@@ -50,7 +50,7 @@ class Indicator(BaseIndicator):
         }
 
         query_results = ohsome_api.process_ohsome_api(
-            endpoint="elements",
+            endpoint="elements/{unit}/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
@@ -78,6 +78,6 @@ class Indicator(BaseIndicator):
 
         return results
 
-    def export_figures(self):
+    def export_figures(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")
