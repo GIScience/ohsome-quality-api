@@ -1,4 +1,4 @@
-ALTER TABLE isea3h_world_res_12_hex
+ALTER TABLE isea3h_world_res_6_hex
     ADD COLUMN IF NOT EXISTS population FLOAT;
 
 WITH hex_pop AS (
@@ -16,7 +16,7 @@ WITH hex_pop AS (
             ST_SummaryStats (ST_Union (ST_Clip (rast, ST_Transform (geom, 954009)))) AS stats
     FROM
         ghs_pop,
-        isea3h_world_res_12_hex
+        isea3h_world_res_6_hex
     WHERE
         ST_Intersects (rast, ST_Transform (geom, 954009))
         -- Ignore grid cells at the very edge of the globe to avoid following ERROR:
@@ -26,11 +26,10 @@ WITH hex_pop AS (
     GROUP BY
         geohash_id) AS summary_stats)
 UPDATE
-    isea3h_world_res_12_hex AS hex
+    isea3h_world_res_6_hex AS hex
 SET
     population = hex_pop.population
 FROM
     hex_pop
 WHERE
     hex.geohash_id = hex_pop.geohash_id;
-
