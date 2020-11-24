@@ -38,12 +38,13 @@ class Indicator(BaseIndicator):
             bpolys=json.dumps(self.bpolys),
         )
 
-        feature_count = query_results["buildings"]["result"][0]["value"]
+        # get area in square kilometers
+        feature_area = query_results["buildings"]["result"][0]["value"] / (1000 * 1000)
 
         if self.dynamic:
-            pop_count = geodatabase.get_zonal_stats_population(bpolys=self.bpolys)
+            built_up_area = geodatabase.get_zonal_stats_guf(bpolys=self.bpolys)
         else:
-            pop_count = geodatabase.get_value_from_db(
+            built_up_area = geodatabase.get_value_from_db(
                 dataset=self.dataset,
                 feature_id=self.feature_id,
                 field_name="population",
@@ -51,8 +52,8 @@ class Indicator(BaseIndicator):
 
         # ideally we would have this as a dataframe?
         preprocessing_results = {
-            "osm_building_area": feature_count,
-            "pop_count": pop_count,
+            "osm_building_area": feature_area,
+            "built_up_area": built_up_area,
         }
 
         return preprocessing_results
@@ -62,9 +63,9 @@ class Indicator(BaseIndicator):
         results = {}
 
         logger.info(f"run calculation for {self.name} indicator")
-        results["features_per_pop"] = (
+        results["feature_area_per_built_up_area"] = (
             preprocessing_results["osm_building_area"]
-            / preprocessing_results["pop_count"]
+            / preprocessing_results["built_up_area"]
         )
 
         # TODO: classification based on pop and building count

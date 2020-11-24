@@ -53,6 +53,9 @@ class Indicators(Enum):
         from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
             Indicator as ghspopComparisonIndicator,
         )
+        from ohsome_quality_tool.indicators.guf_comparison.indicator import (
+            Indicator as gufComparisonIndicator,
+        )
         from ohsome_quality_tool.indicators.last_edit.indicator import (
             Indicator as lastEditIndicator,
         )
@@ -68,6 +71,7 @@ class Indicators(Enum):
             2: poiDensityIndicator,
             3: lastEditIndicator,
             4: mappingSaturationIndicator,
+            5: gufComparisonIndicator,
         }
 
         return indicators[self.value]

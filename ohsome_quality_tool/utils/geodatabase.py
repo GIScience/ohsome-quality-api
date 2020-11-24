@@ -167,8 +167,8 @@ def get_zonal_stats_population(bpolys: Dict):
         """
         SET SCHEMA %(schema)s;
         SELECT
-        (public.ST_SummaryStats(
-            public.ST_Union(
+        SUM(
+            (public.ST_SummaryStats(
                 public.ST_Clip(
                     rast,
                     public.ST_Transform(
@@ -176,7 +176,7 @@ def get_zonal_stats_population(bpolys: Dict):
                         , 954009)
                 )
             )
-        )).sum population
+        ).sum) population
         FROM ghs_pop
         WHERE
          public.ST_Intersects(
@@ -204,22 +204,22 @@ def get_zonal_stats_guf(bpolys: Dict):
     db = PostgresDB()
     query = sql.SQL(
         """
-        SET SCHEMA %(schema)s;
-        SELECT
-        (public.ST_SummaryStats(
-            public.ST_Union(
-                public.ST_Clip(
-                    rast,
-                    public.ST_GeomFromGeoJSON(%(polygon)s)
-                )
-            )
-        )).sum built_up_area
-        FROM guf04
+        SELECT Sum(public.ST_Area(geom::public.geography)) / (1000*1000) as area_sqkm
+        FROM (
+        SELECT dp.*
+        FROM guf04,
+            LATERAL public.ST_PixelAsPolygons(
+                    public.ST_Clip(
+                        rast,
+                        public.ST_GeomFromGeoJSON(%(polygon)s)
+                    )
+            ) AS dp
         WHERE
          public.ST_Intersects(
             rast,
             public.ST_GeomFromGeoJSON(%(polygon)s)
-         )
+            )
+        ) foo
         """
     )
     # need to get geometry only
