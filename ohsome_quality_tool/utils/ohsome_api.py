@@ -30,13 +30,17 @@ def process_ohsome_api(
     return query_results
 
 
+# TODO: Use threading here to run multiple queries at a time
 def query_ohsome_api(
     endpoint: str, filter_string: str, unit: str, bpolys: str, time: str = None
 ) -> Dict:
     """Query ohsome api endpoint for respective filter."""
-
-    # TODO: Use threading here to run multiple queries at a time
-    url = f"{OHSOME_API}{endpoint}/{unit}/"
+    # the contributions endpoint doesn't require a unit
+    if "contributions" in endpoint:
+        url = f"{OHSOME_API}{endpoint}"
+    # other endpoints need an unit, e.g. count, area, length
+    else:
+        url = f"{OHSOME_API}{endpoint}/{unit}/"
     params = {"bpolys": bpolys, "filter": filter_string, "time": time}
     result = json.loads(requests.post(url, data=params).text)
     logger.info(f"got query results for: {url}, filter='{filter_string}'")
