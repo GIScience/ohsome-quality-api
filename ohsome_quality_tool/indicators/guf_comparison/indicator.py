@@ -53,7 +53,7 @@ class Indicator(BaseIndicator):
         # ideally we would have this as a dataframe?
         preprocessing_results = {
             "osm_building_area": feature_area,
-            "built_up_area": built_up_area,
+            "guf_built_up_area": built_up_area,
         }
 
         return preprocessing_results
@@ -65,7 +65,7 @@ class Indicator(BaseIndicator):
         logger.info(f"run calculation for {self.name} indicator")
         results["feature_area_per_built_up_area"] = (
             preprocessing_results["osm_building_area"]
-            / preprocessing_results["built_up_area"]
+            / preprocessing_results["guf_built_up_area"]
         )
 
         # TODO: classification based on pop and building count
