@@ -67,7 +67,7 @@ class Indicator(BaseIndicator):
             preprocessing_results[f"{layer}_histogram"] = test[
                 "contributions"
             ].to_numpy()
-            preprocessing_results[f"{layer}_timestamps"] = test.index.to_numpy()
+            preprocessing_results[f"{layer}_timestamps"] = test.index
 
         return preprocessing_results
 
