@@ -17,6 +17,10 @@ gunicorn = "^20.0.4"
 ohsomepy = {git = "https://github.com/GIScience/ohsome-py"}
 geopandas = "^0.8.1"
 requests = "^2.25.0"
+jupyter = "^1.0.0"
+ipykernel = "^5.3.4"
+matplotlib = "^3.3.3"
+seaborn = "^0.11.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"

@@ -72,6 +72,7 @@ class Indicator(BaseIndicator):
 
             preprocessing_results["timestamps"] = timestamps
             preprocessing_results[f"{layer}_{unit}"] = results
+            preprocessing_results[f"{layer}_{unit}_normalized"] = normalized_results
             preprocessing_results[f"{layer}_{unit}_slopes"] = slopes
             preprocessing_results[f"{layer}_{unit}_slopes_max"] = max(slopes)
             preprocessing_results[f"{layer}_{unit}_slopes_new"] = slopes_new

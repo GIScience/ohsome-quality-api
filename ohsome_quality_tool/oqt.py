@@ -16,7 +16,6 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 
     indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
     results = indicator.get()
-    print(f"results: {results}")
     return results
 
 
@@ -30,7 +29,6 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     results = indicator.get()
-    print(f"results: {results}")
     return results
 
 
@@ -62,7 +60,6 @@ def get_dynamic_report(report_name: str, infile: str):
     # TODO: add argument dynamic
     report = Reports[report_name].constructor(dynamic=True, bpolys=bpolys)
     report.get()
-    print(f"results: {report.results}")
     return report.results
 
 
@@ -76,7 +73,6 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     report.get()
-    print(f"results: {report.results}")
     return report.results
 
 
