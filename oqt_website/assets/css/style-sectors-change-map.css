@@ -1,0 +1,150 @@
+
+.info {
+	padding: 6px 8px;
+	font: 14px/16px Roboto Condensed;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info2 {
+	padding: 6px 8px;
+	font: 14px/16px Roboto Condensed;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+.info2 h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+.info2 p {
+	font-size: 10px;
+	line-height: 11px;
+	color: #666666;
+}
+.legend {
+	line-height: 18px;
+	color: #555;
+}
+.info2 h5 {
+	font-size: 11px;
+	line-height: 12px;
+	color: #666666;
+}
+.legend-color {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-right: 1em;
+}
+.legend2 {
+	line-height: 12px;
+	color: #555;
+}
+.legend i {
+	width: 18px;
+	height: 18px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+
+}
+.legend2 p{
+	font-size: 10px;
+	line-height: 10px;
+	color: #666666;
+	margin-bottom: 5px !important;
+}
+.legend2 i {
+	width: 12px;
+	height: 12px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+
+}
+.keinWert  {
+	width: 12px;
+	height: 12px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+	background-image: url("../img/stripes.PNG");
+}
+#support p{
+	font-size: 10px !important;
+	margin-bottom: 0px !important;
+}
+/*.section {
+padding: 30px 40px;
+}*/
+.logoConatiner {
+	background-color: white !important;
+}
+.map-caption {
+	max-width: 95%;
+	text-align: left;
+	font-size: 1.0em;
+	margin-top: 10px;
+	margin-bottom:30px;
+	padding-top: 30px !important;
+}
+#container {
+	width: 100%;
+	height: 300px;
+	margin: 0;
+	padding: 0;
+}
+.legend-container {
+	width: 120px;
+	height:280px;
+	margin-top:90px;
+	/*display:inline-block;*/
+	float:right;
+
+}
+
+.svg {
+	float:left;
+}
+#my_dataviz {
+	width: 580px;
+	overflow: hidden;
+	height:280px;
+}
+
+#section-graph {
+	width: 1080px;
+	margin-left:100px;
+
+}
+#section-graph h3 {
+
+	margin-left:50px;
+
+}
+#section-graph p {
+
+	margin-left:50px;
+
+}
+.legend, .myArea {
+	cursor: pointer;
+}
+.tick {
+	font-size: 12px; 
+}
+.legend span {
+	font-size: 11px; 
+}
+#my_dataviz text {
+	font-size: 12px; 
+}

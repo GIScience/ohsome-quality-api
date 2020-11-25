@@ -1,0 +1,101 @@
+
+.info {
+	padding: 6px 8px;
+	font: 14px/16px Roboto Condensed;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info2 {
+	padding: 6px 8px;
+	font: 14px/16px Roboto Condensed;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+.info2 h4 {
+	margin: 0 0 5px;
+	color: #777;
+}
+.info h5 {
+	font-size: 11px;
+	line-height: 12px;
+	color: #666666;
+}
+.info p {
+	font-size: 10px;
+	line-height: 11px;
+	color: #666666;
+}
+.legend {
+	line-height: 12px;
+	color: #555;
+}
+.legend p{
+	font-size: 10px;
+	line-height: 10px;
+	color: #666666;
+	margin-bottom: 5px !important;
+}
+.legend2 {
+	line-height: 12px;
+	color: #555;
+}
+.legend i {
+	width: 12px;
+	height: 12px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+
+}
+.legend2 i {
+	width: 18px;
+	height: 18px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+
+}
+.keinWert  {
+	width: 12px;
+	height: 12px;
+	float: left;
+	margin-right: 8px;
+	opacity: 1;
+	background-image: url("../img/stripes.PNG");
+}
+.page-data .hero-container {
+	background-image: url("../img/hero/Emissionen.jpeg");
+}
+
+.logoConatiner {
+	background-color: white !important;
+}
+#support p{
+	font-size: 10px !important;
+	margin-bottom: 0px !important;
+}
+.map-caption {
+	max-width: 95%;
+	text-align: left;
+	font-size: 1.0em;
+	margin-top: 10px;
+	margin-bottom:30px;
+	padding-top: 30px !important;
+}
+#container {
+	width: 100%;
+	height: 300px;
+	margin: 0;
+	padding: 0;
+}
+#psy.conatiner  {
+	padding-left:0px !important;
+}

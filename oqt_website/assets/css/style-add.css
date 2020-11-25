@@ -1,0 +1,77 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400&subset=latin,latin-ext);
+body {
+	font-family: Roboto Condensed !important;
+	font: inherit;
+}
+p {
+	font-size: 16px;
+	line-height: 24px;
+	color: #666666;
+}
+header {
+
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 150;
+	background-color: white;
+	box-shadow:;
+	}
+header .container .nav-menu .navlink.active {
+	background-color: white !important;
+	border:1px solid rgb(170, 170, 170);
+	font-size: 13px !important;
+}
+header .container .nav-menu .navlink.active.home {
+	background-color: white !important;
+	border:1px solid rgb(170, 170, 170);
+	height: 39.3px;
+		font-size: 13px !important;
+}
+header .container .nav-menu .navlink.active.home p{
+
+		font-size: 13px !important;
+}
+header .container .nav-menu .navlink.active p{
+
+		font-size: 13px !important;
+}
+header .container .nav-menu {
+	background-color: white;
+}
+.img-center {
+	display: flex;              /* establish flex container */
+    flex-direction: column;     /* stack flex items vertically */
+    justify-content: center;    /* center items vertically, in this case */
+    align-items: center;        /* center items horizontally, in this case */
+    height: 100px;
+
+}
+.img-center-img {
+	text-align:center;
+}
+h5 {
+    font-size: 22px;
+    line-height: 28px;
+	color: #666666;
+}
+#section-top {
+	padding: 85px 40px  15px 40px;
+
+}
+.section{
+	padding: 15px 40px  15px 40px;
+}
+.map-caption {
+	padding-top: 30px !important;
+}
+a {
+	color:#bf260f !important;
+	text-decoration:none;
+}
+.nav-tabs a {
+	font-size: 14px !important;
+}
+.logoContainer{
+	background-color: white !important;
+}

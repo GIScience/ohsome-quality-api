@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+	  <title>ohsome Quality</title>
+
+	  <!-- Start Component -->
+	  <meta charset="utf-8">
+
+		<meta name="description" content="">
+		<meta property="og:title" content="">
+		<meta property="og:description" content="">
+		<meta property="og:image" content="">
+		<meta name="twitter:card" content="summary">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="generator" content="Webflow">
+		<link href="https://fonts.googleapis.com/css?family=Hind:400,700&display=swap" rel="stylesheet">
+
+
+		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon/favicon-32x32.png">
+		<link rel="apple-touch-icon" href="">
+
+		<link rel="canonical" href="">
+		<!-- Add d3 -->
+		<script src="https://d3js.org/d3.v4.js"></script>
+		<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+			<!-- Add jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<!-- Add leaflet css -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin="" />		
+		<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.control.min.css" />
+
+		<!-- Make sure you put this AFTER Leaflet's CSS -->
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+		integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+		crossorigin=""></script>
+
+		<!-- Add Leaflet timedimension and Plotly -->
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
+		<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	
+
+		<!-- Add Bootstrap and jquery-->
+		<link rel="stylesheet" href="assets/css/bootstrap-tables.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		
+		<!-- Add custom css -->
+	<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+			<link rel="stylesheet" href="assets/css/style-sectors-map.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/style-add.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/navbar.css">
+		<style>
+
+
+* {
+  box-sizing: border-box !important;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left !important;
+  width: 40% !important;
+  padding: 10px !important;
+  margin: 3%;
+  height: 450px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row.osm:after {
+  content: "" !important;
+  display: table !important;
+  clear: both !important;
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 599px) {
+  
+  .column {
+    width: 100% !important;
+  }
+}
+.dropbtn {
+  background-color: white;
+  color: grey;
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border: 1px solid grey;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  height:5%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: white}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: white;
+}
+
+
+
+.select {
+  height: 40px;
+  width: 30%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  background-color:white;
+}
+
+.select:after {
+  content: "▼";
+  padding: 12px 8px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  width: 10%;
+  height: 100%;
+  pointer-events: none;
+}
+
+
+.minimal {
+  height: 40px;
+  width: 100%;
+  padding: 5px 15px;
+  color: #616263;
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+  -webkit-appearance: none;
+  /* for webkit browsers */
+  -moz-appearance: none;
+  /* for firefox */
+  appearance: none;
+  /* for modern browsers */
+}
+
+/* remove default caret for ie */
+
+.minimal::-ms-expand {
+  display: none;
+}
+
+.minimal:focus:invalid {
+  border-color: #FD6347;
+}
+
+.minimal:required:valid {
+  border-color: #006400;
+}
+
+
+.btn-submit, .btn-report{
+  color: #fff;
+  display: block;
+  padding: 15px;
+  text-transform: uppercase;
+  background: #535C69;
+
+  border: none;
+  border-radius: 5px;
+   cursor: pointer;
+    display: inline-block;
+}
+
+.btn-submit2 {
+  color: #fff;
+  display: block;
+  padding: 15px;
+  text-transform: uppercase;
+  background: grey;
+
+  border: none;
+  border-radius: 5px;
+   cursor: pointer;
+    display: inline-block;
+}
+.btn-report2{
+  color: #fff;
+  display: block;
+  padding: 15px;
+  text-transform: uppercase;
+  background: grey;
+
+  border: none;
+  border-radius: 5px;
+   cursor: pointer;
+    display: inline-block;
+}
+.btn-submit:hover
+{
+  background-color: grey;
+    color: white;
+
+}
+.btn-report:hover
+{
+  background-color: grey;
+    color: white;
+
+}
+.buttons {
+	float:left;
+}
+.buttons2 {
+	float:right;
+}
+
+	</style>
+	</head>
+
+	<body class="page-home">
+
+    <!-- ### theader navbar space ######## -->
+    <header>
+		<div class="wrapper">
+			<div class="container">
+				<a class="mapswipe-logo" href="index.html">
+					<img class="logo" style="height:36px" src="assets/img/logos/heigit_logo.png">
+				</a>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+			<div class="topnav" id="myTopnav">
+				<a href="index.html" class="active">Home</a>
+				<a href="about.html">About the tool</a>
+				<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+				<i class="fa fa-bars"></i>
+				</a>
+			</div> 
+				
+			</div>
+		</div>
+	</header>
+
+	<!-- ### title with blue background space ######## -->
+	<div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
+		<div class="section" >
+		<div class="section-container">
+		<div class="hero-content">
+			<h2>ohsome quality analyzer</h2>
+		</div>	</div>	</div>
+	</div>
+	
+	   <!-- ### sentence on top space ######## -->
+	<div class="section" >
+		<div class="section-container">
+
+			<div class="hero-content">
+				<h5>Get OpenStreetMap Data Quality for Specific Regions and Topics</h5>
+				<p>
+				  
+		
+				  </p>
+
+
+			</div>
+		</div>
+	</div>
+	 <!-- Start -->
+	<div class="section">
+		<div class="section-container ">
+		
+   <div class="content">
+   <!-- ### select area  space ######## -->
+<div class="row osm">
+		<p>Select an area on the map</p>
+  	 <div  class="map" id="map" style="width: 100%; height:300px; border: 1px solid #AAA;">
+	
+				
+				
+			</div>
+  <div   id="mapCheck" style="display:none;">country</div>
+</div>	
+<!-- ### select topic  space ######## -->
+<div class="row osm">
+		<p>Select one topic</p>
+  	
+	
+<div class="select">
+<select class="minimal" id="cardtype"  required>
+<option value="Topic" selected>Topic ...</option>
+  <option>Density of POIs</option>
+  <option>Building completeness</option>
+  <option>Saturation</option>
+  <option>Health care tag completness</option>
+  <option>Shadow routing fitness</option>
+  <option>Field paper for flooding fitness</option>
+</select>
+				
+	</div>			
+  
+</div>	
+<!--###  get Quality and get PDF button space ######## -->
+ <div class="row osm">
+		  <div class="buttons" style="margin-top:20px; ">
+
+  	  <button id="gQ" type="submit" class="btn-submit2" >Get Quality</button>
+	</div>
+		
+			
+			<div class="buttons2" style="margin-top:20px; padding-right:4%;">
+		<button id="gP" type="submit" class="btn-report2" >Download Report</button>
+  	
+	</div>	
+
+			</div>
+	<!--###  results announce space ######## -->			
+				<div id="results" class ="middle" style=" margin-left:40%; ">
+			<p>Results will be shown here</p>
+		
+			
+			
+			</div>	
+<!-- ################ graph space ######## -->
+   <div class="row osm" style="margin-top:40px;">
+		 <div class="graph"> 
+		 <div id="graph_space" style="width:50%; float:left; padding:10px;"> 
+		 
+	</div>	
+	<div id="text_space" style="width:50%; float:right; padding:10px;"> 
+		
+	</div>	
+	</div>	
+			</div>
+<!-- ################ additional info indicators space ######## -->
+	 <div class="row osm" style="margin-top:40px;">
+	 <div id="calc_space" style="width:100%;  padding:10px;"> 
+		
+	</div>	
+	 </div>
+</div>	
+</div>
+</div>
+ <!-- End  -->
+<!-- ################ footer ######## -->
+<div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
+	<footer>
+        <div class="wrapper"  >
+          <div class="container">
+            <div class="footer-column">
+              <a id="language"  href="https://heigit.org/contact/" class="navlink">Contact</a>
+              <a href="https://heigit.org/legal-notice/" class="navlink">Privacy</a>
+              <a href="https://heigit.org/imprint/" class="navlink">Imprint</a>
+            </div>
+            <div class="footer-column last-footer">
+              <p>Copyright © <span id="year">2020</span> HeiGIT </p>
+            </div>
+          </div>
+        </div>
+	</footer>
+	</div>
+
+
+	<script async defer src="assets/js/index.js"></script>
+	<script async defer src="assets/js/map-en.js"></script>
+	<script async defer src="assets/js/navbar.js"></script>
+	 
+
+	</body>
+
+</html>
