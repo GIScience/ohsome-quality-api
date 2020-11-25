@@ -170,7 +170,25 @@ function buildMap(err, ...charts){
 			  } else {
 				x.style.display = "none";
 			  }
-		
+			 // ######   traffic  ########
+			document.getElementById("trafficTop").innerHTML = 
+			
+				 '<h5>Overall quality</h5>';
+			document.getElementById("traffic_map_space").innerHTML = 
+			
+				 '<img src="assets/img/map.PNG">';
+				 document.getElementById("traffic_dots_space").innerHTML = 
+			
+				 '<img src="assets/img/ampel.PNG">';
+				 
+				  document.getElementById("traffic_text_space").innerHTML = 
+			
+				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
+				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.';
+				 // ######   graph ########
+			document.getElementById("graphTop").innerHTML = 
+			
+				 '<h5>Stats about traffic light calculation</h5>';
 			document.getElementById("graph_space").innerHTML = 
 			
 				 '<img src="assets/img/psy.PNG">';
@@ -181,8 +199,12 @@ function buildMap(err, ...charts){
 				'amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam '+    
 				'erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, '+    
 				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+			
+			 // ######   details ########
+			 document.getElementById("calcTop").innerHTML = 
+			
+			'<h5>Indicator calculation explanation</h5>';
 			document.getElementById("calc_space").innerHTML = 
-				'<h5>Indicator calculation explanation</h5>'+  
 				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
 				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. '+    
 				'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit'+    
@@ -255,7 +277,7 @@ function buildMap(err, ...charts){
 				alert("pdf")
 			}
 			else {
-				alert("Please click on the Gt Quality button first")
+				alert("Please click on the Get Quality button first")
 			}
 		}
 		document.getElementById("gP").onclick = function () {	
