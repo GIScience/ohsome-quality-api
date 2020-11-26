@@ -9,11 +9,26 @@
 
 LEVEL_ONE_LAYERS = {
     "waterways": {
+        "description": """
+            The waterways as defined by all objects tagged with
+            'waterway=*' or 'natural=water'.
+        """,
         "filter": "natural=water or waterway=*",
         "unit": "length",
     },
-    "buildings": {"filter": "building=*", "unit": "count"},
+    "buildings": {
+        "description": """
+            All buildings as defined by all objects tagged with 'building=*'.
+        """,
+        "filter": "building=*",
+        "unit": "count",
+    },
     "major_roads": {
+        "description": """
+            The road network defined by all objects which hold the principal tags for
+            the road network as defined in the OSM Wiki:
+            https://wiki.openstreetmap.org/wiki/Key:highway
+        """,
         "filter": "highway in (motorway, trunk, primary, secondary, tertiary, unclassified, residential)",  # noqa
         "unit": "length",
     },

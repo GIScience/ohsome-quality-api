@@ -78,6 +78,6 @@ class Indicator(BaseIndicator):
 
         return results
 
-    def export_figures(self, results: Dict):
+    def create_figure(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")

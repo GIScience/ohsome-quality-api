@@ -82,6 +82,6 @@ class Indicator(BaseIndicator):
         results = {"relative_poi_densities": relative_density_dict}
         """
 
-    def export_figures(self, results: Dict):
+    def create_figure(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")

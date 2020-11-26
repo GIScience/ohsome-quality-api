@@ -1,6 +1,8 @@
 import json
+from datetime import datetime
 from typing import Dict
 
+import pygal
 from geojson import FeatureCollection
 from numpy import diff
 
@@ -35,11 +37,6 @@ class Indicator(BaseIndicator):
 
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
-
-        # category name as key, filter string as value
-        # TODO: maybe we should have a more detailed filter for highways
-        #   e.g. selecting only the most common features such as primary,
-        #   secondary, residential, tertiary etc.?
 
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/{unit}/",
@@ -131,6 +128,24 @@ class Indicator(BaseIndicator):
 
         return results
 
-    def export_figures(self, results: Dict):
+    def create_figure(self, results: Dict):
         # TODO: maybe not all indicators will export figures?
+        timestamps = [
+            datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
+            for x in results["data"]["timestamps"]
+        ]
+        timestamps_labels = [x.year for x in timestamps]
+
+        line_chart = pygal.Line()
+        line_chart.title = "Mapping Saturation"
+        line_chart.x_labels = timestamps_labels
+
+        for layer in self.layers.keys():
+            unit = self.layers[layer]["unit"]
+            data = results["data"][f"{layer}_{unit}_normalized"]
+            line_chart.add(layer, data)
+
+        line_chart.render_in_browser()
+        figure = line_chart.render_response()
         logger.info(f"export figures for {self.name} indicator")
+        return figure
