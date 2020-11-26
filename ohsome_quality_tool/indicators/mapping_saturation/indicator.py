@@ -1,4 +1,5 @@
 import json
+import statistics
 from datetime import datetime
 from typing import Dict
 
@@ -9,6 +10,7 @@ from numpy import diff
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 
@@ -55,7 +57,10 @@ class Indicator(BaseIndicator):
             ]
             # normalize using maximum value for the time_range
             # for most cases the maximum will be reached at the last timestamp
-            normalized_results = [float(i) / max(results) for i in results]
+            if max(results) > 0:
+                normalized_results = [float(i) / max(results) for i in results]
+            else:
+                normalized_results = [0] * len(results)
             # e.g. 1 year between data points
             # or usually always same distance between two timestamps,e .g. months
             dx = 1
@@ -80,49 +85,88 @@ class Indicator(BaseIndicator):
     def calculate(self, preprocessing_results: Dict) -> Dict:
         logger.info(f"run calculation for {self.name} indicator")
 
-        """
-        # TODO: find better place to store threshold values
-        THRESHOLD_MAJOR_CHANGE = 0.25
-        THRESHOLD_YELLOW = 0.05
-        THRESHOLD_RED = 0.1
+        INCREASING_TREND_THRESHOLD = 0.02
+        DECREASING_TREND_THRESHOLD = -0.02
+        ONE_TIME_MAPPING_THRESHOLD = 0.5
+        NO_MAPPING_ACTIVITY_THRESHOLD = 0.005
 
-        results = {}
-        for cat in preprocessing_results.keys():
-            # determine saturation level
-            if max(slopes) < THRESHOLD_MAJOR_CHANGE:
-                level = 0
-                message = (
-                    f"Yearly increase of {cat} features never bigger "
-                    f"than {int(THRESHOLD_MAJOR_CHANGE*100)}. "
-                    f"There might be a lack of data in this area."
-                )
+        quality_levels = []
+        for layer in self.layers.keys():
+            # check slope for last year
+            unit = self.layers[layer]["unit"]
+            slopes = preprocessing_results[f"{layer}_{unit}_slopes_new"]
+            if slopes[-1] >= INCREASING_TREND_THRESHOLD:
+                trend = "increasing"
+            elif slopes[-1] <= DECREASING_TREND_THRESHOLD:
+                trend = "decreasing"
             else:
-                last_slope = slopes[-1]
-                if last_slope > THRESHOLD_RED:
-                    level = 0
-                    message = (
-                        f"The mapping of {cat} features seems to "
-                        "be far from a saturated state."
-                    )
-                elif last_slope > THRESHOLD_YELLOW:
-                    level = 1
-                    message = (
-                        f"The mapping of {cat} features might not be saturated yet."
-                    )
-                elif last_slope <= THRESHOLD_YELLOW:
-                    level = 2
-                    message = f"The mapping of {cat} features seems to be saturated."
+                trend = "no_trend"
 
-            results[cat] = {
-                "slope_last_year": round(last_slope, 2),
-                "saturation_level": level,
-                "message": message,
+            # check for one time mapping activity
+            # TODO: maybe this would be an indicator for itself?
+            one_time_mapping = False
+            one_time_mapping_times = []
+            one_time_mapping_slopes = []
+            for j, slope in enumerate(slopes):
+                if slope >= ONE_TIME_MAPPING_THRESHOLD:
+                    one_time_mapping = True
+                    timestamp = preprocessing_results["timestamps"][j]
+                    one_time_mapping_times.append(timestamp)
+                    one_time_mapping_slopes.append(slope)
+
+            # check for times without mapping activity
+            no_mapping = False
+            no_mapping_times = []
+            no_mapping_slopes = []
+            for k, slope in enumerate(slopes[::-1]):  # reversed slopes array
+                if abs(slope) <= NO_MAPPING_ACTIVITY_THRESHOLD:
+                    timestamp = preprocessing_results["timestamps"][::-1][k]
+                    no_mapping_times.append(timestamp)
+                    no_mapping_slopes.append(slope)
+                    no_mapping = True
+                else:
+                    break
+
+            # quality classification
+            QUALITY_LEVEL_GREEN_CONDITION = (
+                (trend == "no_trend" or trend == "decreasing")
+                and (one_time_mapping is False or max(one_time_mapping_times) < "2015")
+                and (no_mapping is False or len(no_mapping_times) < 3)
+            )
+
+            QUALITY_LEVEL_YELLOW_CONDITION = (
+                (trend == "increasing")
+                or (one_time_mapping is True)
+                or (len(no_mapping_times) >= 3)
+            )
+
+            if QUALITY_LEVEL_GREEN_CONDITION:
+                quality_level = TrafficLightQualityLevels.GREEN
+            elif QUALITY_LEVEL_YELLOW_CONDITION:
+                quality_level = TrafficLightQualityLevels.YELLOW
+            else:
+                quality_level = TrafficLightQualityLevels.RED
+
+            quality_results = {
+                "quality_level": quality_level,
+                "trend": trend,
+                "no_mapping": no_mapping,
+                "no_mapping_times": no_mapping_times,
+                "one_time_mapping": one_time_mapping,
+                "one_time_mapping_times": one_time_mapping_times,
+                "one_time_mapping_slopes": one_time_mapping_slopes,
             }
-        """
+            quality_levels.append(quality_level.value)
+            print(quality_results)
+
+        # get average quality level
+        overall_quality_level = int(round(statistics.mean(quality_levels)))
+        overall_quality_level = TrafficLightQualityLevels(overall_quality_level)
+        print(overall_quality_level)
 
         results = {
             "data": preprocessing_results,
-            "quality_level": "tbd",
+            "quality_level": overall_quality_level,
             "description": "tbd",
         }
 
@@ -145,7 +189,6 @@ class Indicator(BaseIndicator):
             data = results["data"][f"{layer}_{unit}_normalized"]
             line_chart.add(layer, data)
 
-        line_chart.render_in_browser()
-        figure = line_chart.render_response()
+        figure = line_chart.render(is_unicode=True)
         logger.info(f"export figures for {self.name} indicator")
         return figure

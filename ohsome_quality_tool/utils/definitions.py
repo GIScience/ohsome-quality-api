@@ -9,6 +9,14 @@ DATASETS = [
 ]
 
 
+class TrafficLightQualityLevels(Enum):
+    """The Quality Levels"""
+
+    GREEN = 1
+    YELLOW = 2
+    RED = 3
+
+
 # TODO: Is there a better way to define this?
 @unique
 class Indicators(Enum):
