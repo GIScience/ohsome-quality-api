@@ -1,13 +1,18 @@
 # Database
 
-The database represents a part of the official ohsomehex database.
-To build this database three SQL scripts are required:
+This database represents a part of the official ohsomehex database.
 
-- postgis-raster.sql: Enable raster driver.
-- [admin-schema.sql](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/hex/ohsomehex-db): Official schema of the ohsomehex database.
+
+## Information
+
+Information on scripts for database initialization:
+
 - ohsome-hex-isea.sql: SQL dump of two tables representing the hex grids at two zoom levels.
     - Excluded in this repository due to size
     - The script which has been used to create this dump can be found at `scripts/create_isea_dump.sh`
+
+
+## Building
 
 
 ```bash
