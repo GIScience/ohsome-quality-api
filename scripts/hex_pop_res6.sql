@@ -33,3 +33,4 @@ FROM
     hex_pop
 WHERE
     hex.geohash_id = hex_pop.geohash_id;
+
