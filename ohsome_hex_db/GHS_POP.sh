@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-wget http://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_MT_GLOBE_R2019A/GHS_POP_E2015_GLOBE_R2019A_54009_250/V1-0/GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0.zip
+wget https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_MT_GLOBE_R2019A/GHS_POP_E2015_GLOBE_R2019A_4326_9ss/V1-0/GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.zip
 
-unzip GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0
+unzip GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0
 
-geotiff=GHS_POP_E2015_GLOBE_R2019A_54009_250_V1_0.tif
+geotiff=GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.tif
 
 raster2pgsql \
     -I \
