@@ -133,65 +133,87 @@ function buildMap(err, ...charts){
 
 
 
-	// ###############   get quality button ###########
 
+	// what happens whlie onclick on the map
 	function selectStyle(e) {
-
+		// change value of mapCheck in html to signalize intern area was selected
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
-
+		// TODO style selected country
 		alert("I will be red");
+		var layer = e.target;
+		// get selected country
+		countryID = layer.feature.properties.name;
+		selectedCountry = getCountry(countryID)
 		
+		// get dataset ID
+		dataset = layer.feature.properties.featurecla; // = Admin-0 country
+		selectedDataset = getDataset(dataset)
 	}
-
-
-	document.getElementById("gQ").onclick = function () { 
-		var ddl = document.getElementById("cardtype");
-		var ddl2 = document.getElementById("mapCheck").innerHTML;
-
-		 var selectedValue = ddl.options[ddl.selectedIndex].value;
+	// initialize variables for storing area and dataset id from map geojson 
+	countryID = null; 
+	selectedCountry = null;
+	selectedDataset = null;
+	// grap country name while clicking on map
+	function getCountry(c) {
+		console.log("in getC")
+		console.log(c)
+		return c
+	}
+	// grap dataset id  while clicking on map
+	function getDataset(d) {
+		console.log("in getD")
+		console.log(d)
+		return d
+	}
+	// create a parameter string containing selected area, topic and dataset id
+	function getParams(region, topic, dataset) {
+		paramString = region + "," + topic + "," + dataset
+		return paramString
+	}
 	
-			
-		   
-			if (ddl2 == "country")
-		   {
-			
+	// ###############   get quality button ###########
+	document.getElementById("gQ").onclick = function () { 
+		var topic = document.getElementById("cardtype");
+		var areas = document.getElementById("mapCheck").innerHTML;
+
+		var selectedValue = topic.options[topic.selectedIndex].value;
+	
+		if (areas == "country") {			
 			alert("Please select a region");
-		   }
-			else if (selectedValue == "Topic")
-		   {
-		
+		}
+		else if (selectedValue == "Topic") {		
 			alert("Please select a topic");
-		   }
+		}
 		else {
 			var x = document.getElementById("results");
-			  if (x.style.display === "none") {
+			if (x.style.display === "none") {
 				x.style.display = "block";
-			  } else {
+			} else {
 				x.style.display = "none";
-			  }
-			 // ######   traffic  ########
+			}
+			// ######   traffic  light ########
 			document.getElementById("trafficTop").innerHTML = 
 			
 				 '<h5>Overall quality</h5>';
 			document.getElementById("traffic_map_space").innerHTML = 
 			
-				 '<img src="assets/img/map.PNG">';
-				 document.getElementById("traffic_dots_space").innerHTML = 
+				 '<img src="../assets/img/map.png">';
+			document.getElementById("traffic_dots_space").innerHTML = 
 			
-				 '<img src="assets/img/ampel.PNG">';
+				 '<img src="../assets/img/ampel.PNG">';
 				 
-				  document.getElementById("traffic_text_space").innerHTML = 
+			document.getElementById("traffic_text_space").innerHTML = 
 			
 				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
 				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.';
-				 // ######   graph ########
+			 // ######   graph ########
 			document.getElementById("graphTop").innerHTML = 
 			
 				 '<h5>Stats about traffic light calculation</h5>';
 			document.getElementById("graph_space").innerHTML = 
 			
-				 '<img src="assets/img/psy.PNG">';
+				 '<img src="../assets/img/psy.png">';
 			document.getElementById("text_space").innerHTML = 
 				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
 				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. '+    
@@ -200,8 +222,8 @@ function buildMap(err, ...charts){
 				'erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, '+    
 				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
 			
-			 // ######   details ########
-			 document.getElementById("calcTop").innerHTML = 
+			// ######   details ########
+			document.getElementById("calcTop").innerHTML = 
 			
 			'<h5>Indicator calculation explanation</h5>';
 			document.getElementById("calc_space").innerHTML = 
@@ -211,79 +233,83 @@ function buildMap(err, ...charts){
 				'amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam '+    
 				'erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, '+    
 				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+    	    // TODO implement nice waiting process delay
 			alert('Is prcessing ...!'); 
+			// get and send paramater for and to api
+			var region = getCountry(selectedCountry)
+			var dataset = getDataset(selectedDataset)
+			args = getParams(region, selectedValue, dataset);
+			console.log(args)
+			//sendParams(args);
 		}
+		// when params were send, get pdf button turns blue
 		changeColor() 
 	};
+	
+	// while clicking on the get quality button check for selections -> see changeColorQ()
 	document.getElementById("cardtype").onclick = function () {	
-		changeColorQ()
-		
+		changeColorQ()		
 	} ;
 	document.getElementById("map").onclick = function () {	
-		changeColorQ()
-	
+		changeColorQ()	
 	} ;
 	
-
-		function changeColorQ() {
-			var ddl = document.getElementById("cardtype");
-		var ddl2 = document.getElementById("mapCheck").innerHTML;
+	// function to style the get quality button depending on selections
+	function changeColorQ() {
+		var topic = document.getElementById("cardtype");
+		var areas = document.getElementById("mapCheck").innerHTML;
 		var div = document.getElementById('gQ');
-		 var selectedValue = ddl.options[ddl.selectedIndex].value;
-			console.log(selectedValue)
-			if (ddl2 == "country")
-		   {
+		var selectedValue = topic.options[topic.selectedIndex].value;
+		console.log(selectedValue)
+		// no selection of area so set buttons to grey
+		if (areas == "country") {
 			var divGP = document.getElementById('gP');
-					divGP.style.backgroundColor = 'grey';
-					divGP.className = "btn-report2";
-				document.getElementById("gQ").className = "btn-submit2";
-					div.style.backgroundColor = 'grey';
-				}
-		   
-			if (selectedValue == "Topic")
-		   {
-						console.log("imhere")
-					var divGP = document.getElementById('gP');
-					divGP.style.backgroundColor = 'grey';
-					divGP.className = "btn-report2";
-					document.getElementById("gQ").className = "btn-submit2";
-					div.style.backgroundColor = 'grey';
-				}
-		   
-	
-			else {
-				
-			
-				div.style.backgroundColor = '#535C69';
-				div.className = "btn-submit"
-			}
+			divGP.style.backgroundColor = 'grey';
+			divGP.className = "btn-report2";
+			document.getElementById("gQ").className = "btn-submit2";
+			div.style.backgroundColor = 'grey';
 		}
-		// ######    PDF button #############
-		function changeColor() {
-			var ifQ = document.getElementById("gQ").className
+	    // no selection of topic so set buttons to grey
+		if (selectedValue == "Topic") {
+			console.log("imhere")
 			var divGP = document.getElementById('gP');
-			if (ifQ == "btn-submit") {
-				
-				divGP.style.backgroundColor = '#535C69';
-				divGP.className = "btn-report";
-			}
+			divGP.style.backgroundColor = 'grey';
+			divGP.className = "btn-report2";
+			document.getElementById("gQ").className = "btn-submit2";
+			div.style.backgroundColor = 'grey';
 		}
-		function colorRepoort() {
-			var ifQ = document.getElementById("gQ").className
-			var divGP = document.getElementById('gP');
-			
-			if (divGP.className == "btn-report") {
-				
-				alert("pdf")
-			}
-			else {
-				alert("Please click on the Get Quality button first")
-			}
+	    // selection made. set color to blue
+		else {
+			div.style.backgroundColor = '#535C69';
+			div.className = "btn-submit"
 		}
-		document.getElementById("gP").onclick = function () {	
-			colorRepoort()
+	}
+	// #################    PDF button #############
+	function changeColor() {
+		var ifQ = document.getElementById("gQ").className
+		var divGP = document.getElementById('gP');
+		if (ifQ == "btn-submit") {
 			
-		} ;
+			divGP.style.backgroundColor = '#535C69';
+			divGP.className = "btn-report";
+		}
+	}
+	function colorRepoort() {
+		var ifQ = document.getElementById("gQ").className
+		var divGP = document.getElementById('gP');
+		
+		if (divGP.className == "btn-report") {
+			
+			alert("pdf")
+		}
+		else {
+			alert("Please click on the Get Quality button first")
+		}
+	}
+	document.getElementById("gP").onclick = function () {	
+		colorRepoort()
+		
+	} ;
 		
 		
 		
@@ -378,3 +404,10 @@ function buildMap(err, ...charts){
 	logo//.addTo(map)
 
  }
+ function topFunction() {
+	document.body.scrollTop = 0; // Sollte für Safari, aber ich habe keinen Mac und ich habe es nicht getestet
+	document.documentElement.scrollTop = 0; // Für Chrome, Firefox, IE and Opera
+}
+function bottomFunction() {
+	window.scrollTo(0, document.body.scrollHeight);
+}

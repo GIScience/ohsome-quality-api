@@ -922,8 +922,7 @@ color:black;		} }
 
 /* styles for map */
 .map {
-  height: 450px;
-  max-width: 95%;
+  max-width: 100%;
   z-index: 2;
   margin-top: 20px;
   margin-bottom: 20px;
