@@ -28,4 +28,14 @@ services:
     environment:
       - PGDATA=/var/lib/postgresql/data
 
+  oqt-website:
+    container_name: oqt-website
+    build:
+      context: website
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./website/website:/usr/share/nginx/html
+
 
