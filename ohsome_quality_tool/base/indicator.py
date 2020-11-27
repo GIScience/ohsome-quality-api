@@ -70,13 +70,14 @@ class BaseIndicator(metaclass=ABCMeta):
         preprocessing_results = self.preprocess()
         label, value, test, data = self.calculate(preprocessing_results)
         svg = self.create_figure(data)
+        print(len(svg))
         logger.info(f"finished run for indicator {self.name}")
 
         result = IndicatorResult(
-            label=TrafficLightQualityLevels.YELLOW,
+            label=TrafficLightQualityLevels.YELLOW.name,
             value=0.5,
             text="a textual description of the results",
-            svg=svg,
+            svg="test",
         )
 
         return result

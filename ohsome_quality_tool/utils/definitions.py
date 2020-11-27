@@ -13,6 +13,9 @@ DATASETS = [
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
 IndicatorMetadata = collections.namedtuple("Metadata", "name description")
 
+ReportResult = collections.namedtuple("Result", "label value text")
+ReportMetadata = collections.namedtuple("Metadata", "name description")
+
 
 class TrafficLightQualityLevels(Enum):
     """The Quality Levels"""
