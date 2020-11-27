@@ -47,9 +47,9 @@ Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the
 
 
 ### Docker
-You can also run the tool using docker, e.g. if you have problems installing on Windows. For now this will run the api at http://127.0.0.1:8000/docs. This should be enough to test that the installation worked.
+You can also run the tool using docker, e.g. if you have problems installing on Windows. For now this will run the api at http://127.0.0.1:8000/docs. The website will be served at http://127.0.0.1:8080. This should be enough to test that the installation worked.
 ```
-docker-compose up -d oqt-workers
+docker-compose up -d oqt-workers oqt-website
 ```
 
 You can run a cli command using the docker image like this:
