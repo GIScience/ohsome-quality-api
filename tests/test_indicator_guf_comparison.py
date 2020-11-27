@@ -13,14 +13,12 @@ class TestGufComparisonIndicator(unittest.TestCase):
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""
         infile = os.path.join(self.test_dir, "fixtures/antanarivo.geojson")
-        results = get_dynamic_indicator(
+        result, metadata = get_dynamic_indicator(
             indicator_name=self.indicator_name, infile=infile
         )
 
         # check if result dict contains the right keys
-        self.assertListEqual(
-            list(results.keys()), ["data", "quality_level", "description"]
-        )
+        self.assertListEqual(list(result._fields), ["label", "value", "text", "svg"])
 
 
 if __name__ == "__main__":

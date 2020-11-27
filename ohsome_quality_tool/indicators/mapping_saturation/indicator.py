@@ -1,7 +1,7 @@
 import json
 import statistics
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Tuple
 
 import pygal
 from geojson import FeatureCollection
@@ -18,6 +18,9 @@ class Indicator(BaseIndicator):
     """The Mapping Saturation Indicator."""
 
     name = "MAPPING_SATURATION"
+    description = """
+        Calculate if mapping has saturated.
+    """
 
     def __init__(
         self,
@@ -82,7 +85,9 @@ class Indicator(BaseIndicator):
 
         return preprocessing_results
 
-    def calculate(self, preprocessing_results: Dict) -> Dict:
+    def calculate(
+        self, preprocessing_results: Dict
+    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
         INCREASING_TREND_THRESHOLD = 0.02
@@ -164,19 +169,17 @@ class Indicator(BaseIndicator):
         overall_quality_level = TrafficLightQualityLevels(overall_quality_level)
         print(overall_quality_level)
 
-        results = {
-            "data": preprocessing_results,
-            "quality_level": overall_quality_level,
-            "description": "tbd",
-        }
+        # each indicator need to provide these
+        label = TrafficLightQualityLevels.YELLOW
+        value = 0.5
+        text = "test test test"
 
-        return results
+        return label, value, text, preprocessing_results
 
-    def create_figure(self, results: Dict):
+    def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
         timestamps = [
-            datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
-            for x in results["data"]["timestamps"]
+            datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ") for x in data["timestamps"]
         ]
         timestamps_labels = [x.year for x in timestamps]
 
@@ -186,8 +189,8 @@ class Indicator(BaseIndicator):
 
         for layer in self.layers.keys():
             unit = self.layers[layer]["unit"]
-            data = results["data"][f"{layer}_{unit}_normalized"]
-            line_chart.add(layer, data)
+            y_data = data[f"{layer}_{unit}_normalized"]
+            line_chart.add(layer, y_data)
 
         figure = line_chart.render(is_unicode=True)
         logger.info(f"export figures for {self.name} indicator")

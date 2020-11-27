@@ -59,8 +59,8 @@ def get_dynamic_report(report_name: str, infile: str):
 
     # TODO: add argument dynamic
     report = Reports[report_name].constructor(dynamic=True, bpolys=bpolys)
-    report.get()
-    return report.results
+    result, metadata = report.get()
+    return result, metadata
 
 
 def get_static_report(report_name: str, dataset: str, feature_id: int):
@@ -72,8 +72,8 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
     report = Reports[report_name].constructor(
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
-    report.get()
-    return report.results
+    result, metadata = report.get()
+    return result, metadata
 
 
 def get_static_report_pdf(

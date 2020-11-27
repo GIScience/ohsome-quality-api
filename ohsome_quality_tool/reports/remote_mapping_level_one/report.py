@@ -10,7 +10,12 @@ class Report(BaseReport):
     """The remote mapping level one Report."""
 
     name = "REMOTE_MAPPING_LEVEL_ONE"
-    indicators = [
+    description = """
+        This report shows the quality for map features that are usually
+        added on the basis of satellite imagery.
+    """
+
+    indicators_definition = [
         (Indicators.GHSPOP_COMPARISON, LEVEL_ONE_LAYERS),
         (Indicators.GUF_COMPARISON, LEVEL_ONE_LAYERS),
         (Indicators.MAPPING_SATURATION, LEVEL_ONE_LAYERS),
@@ -32,5 +37,5 @@ class Report(BaseReport):
         """Combine the individual scores per indicator."""
         logger.info(f"combine indicators for {self.name} report.")
 
-        self.results["quality_level"] = "tbd"
-        self.results["description"] = "tbd"
+        self.result["quality_level"] = "tbd"
+        self.result["description"] = "tbd"

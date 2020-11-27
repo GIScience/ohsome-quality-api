@@ -35,7 +35,12 @@ class BaseReport(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-        self.results = {}
+        self.result = {}
+        self.indicators = []
+        self.metadata = {
+            "name": self.name,
+            "description": self.description,
+        }
 
     def get(self) -> Dict:
         """Pass the report containing the indicator results to the user.
@@ -43,11 +48,10 @@ class BaseReport(metaclass=ABCMeta):
         For dynamic indicators this will trigger the processing.
         For non-dynamic (pre-processed) indicators this will
         extract the results from the geo database."""
-        self.results["indicators"] = {}
         for i, item in enumerate(self.indicators):
             indicator, layers = item
             if self.dynamic:
-                results = indicator.constructor(
+                result, metadata = indicator.constructor(
                     dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
@@ -57,11 +61,11 @@ class BaseReport(metaclass=ABCMeta):
                     dataset=self.dataset,
                     feature_id=self.feature_id,
                 ).get()
-            self.results["indicators"][indicator.name] = results
+            self.indicators.append(results)
 
         self.combine_indicators()
 
-        return self.results
+        return self.result, self.metadata
 
     def export_as_pdf(self, outfile: str):
         """Generate the PDF report."""
@@ -74,7 +78,12 @@ class BaseReport(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def indicators(self):
+    def description(self):
+        pass
+
+    @property
+    @abstractmethod
+    def indicators_definition(self):
         pass
 
     @abstractmethod

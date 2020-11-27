@@ -1,3 +1,4 @@
+import collections
 from enum import Enum, unique
 
 # TODO: Is there a better way to define this?
@@ -7,6 +8,10 @@ DATASETS = [
     "isea3h_world_res_6_hex",
     "isea3h_world_res_12_hex",
 ]
+
+
+IndicatorResult = collections.namedtuple("Result", "label value text svg")
+IndicatorMetadata = collections.namedtuple("Metadata", "name description")
 
 
 class TrafficLightQualityLevels(Enum):
