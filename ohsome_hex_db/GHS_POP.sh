@@ -23,3 +23,6 @@ raster2pgsql \
         -p 5432 \
         -d hexadmin \
         -U $POSTGRES_USER
+
+rm GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.*
+rm GHSL_Data_Package_2019_light.pdf
