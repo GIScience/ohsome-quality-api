@@ -1,22 +1,17 @@
-import geojson
+from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import Indicators, Reports
 
 
-def get_dynamic_indicator(indicator_name: str, infile: str):
+def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
     """Get indicator results for given geojson file.
 
     The results will be calculated dynamically,
     e.g. by querying the ohsome api.
     """
-    # TODO: replace this with a function that loads the file AND
-    #    checks the validity of the geometries, e.g. enforce polygons etc.
-    with open(infile, "r") as file:
-        bpolys = geojson.load(file)
-
     indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
-    results = indicator.get()
-    return results
+    result, metadata = indicator.get()
+    return result, metadata
 
 
 def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
@@ -28,8 +23,8 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     indicator = Indicators[indicator_name].constructor(
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
-    results = indicator.get()
-    return results
+    result, metadata = indicator.get()
+    return result, metadata
 
 
 def process_indicator(indicator_name: str, dataset: str, feature_id: int):
@@ -46,21 +41,17 @@ def process_indicator(indicator_name: str, dataset: str, feature_id: int):
     indicator.save_to_database()
 
 
-def get_dynamic_report(report_name: str, infile: str):
+def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
     """Get report for given geojson file.
 
     The indicator results will be calculated dynamically,
     e.g. by querying the ohsome api.
     """
-    # TODO: replace this with a function that loads the file AND
-    #    checks the validity of the geometries, e.g. enforce polygons etc.
-    with open(infile, "r") as file:
-        bpolys = geojson.load(file)
 
-    # TODO: add argument dynamic
-    report = Reports[report_name].constructor(dynamic=True, bpolys=bpolys)
-    report.get()
-    return report.results
+    result, indicators, metadata = (
+        Reports[report_name].constructor(dynamic=True, bpolys=bpolys).get()
+    )
+    return result, indicators, metadata
 
 
 def get_static_report(report_name: str, dataset: str, feature_id: int):
@@ -72,8 +63,8 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
     report = Reports[report_name].constructor(
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
-    report.get()
-    return report.results
+    result, indicators, metadata = report.get()
+    return result, indicators, metadata
 
 
 def get_static_report_pdf(
@@ -87,5 +78,5 @@ def get_static_report_pdf(
     report = Reports[report_name].constructor(
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
-    report.get()
+    result, indicators, metadata = report.get()
     report.export_as_pdf(outfile=outfile)

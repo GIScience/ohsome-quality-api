@@ -1,9 +1,14 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict
+from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import (
+    IndicatorMetadata,
+    IndicatorResult,
+    TrafficLightQualityLevels,
+)
 from ohsome_quality_tool.utils.geodatabase import (
     get_bpolys_from_db,
     get_indicator_results_from_db,
@@ -40,7 +45,9 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-    def get(self) -> Dict:
+        self.metadata = IndicatorMetadata(self.name, self.description)
+
+    def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
         """Pass the indicator results to the user.
 
         For dynamic indicators this will trigger the processing.
@@ -49,49 +56,65 @@ class BaseIndicator(metaclass=ABCMeta):
         """
         if self.dynamic:
             logger.info(f"Run processing for dynamic indicator {self.name}.")
-            results = self.run_processing()
+            result = self.run_processing()
         else:
             logger.info(
                 f"Get pre-processed results from geo db for indicator {self.name}."
             )
-            results = self.get_from_database()
+            result = self.get_from_database()
 
-        return results
+        return result, self.metadata
 
-    def run_processing(self) -> Dict:
+    def run_processing(self) -> IndicatorResult:
         """Run all steps needed to actually compute the indicator"""
         preprocessing_results = self.preprocess()
-        results = self.calculate(preprocessing_results)
-        self.create_figure(results)
+        label, value, test, data = self.calculate(preprocessing_results)
+        svg = self.create_figure(data)
+        print(len(svg))
         logger.info(f"finished run for indicator {self.name}")
-        return results
+
+        result = IndicatorResult(
+            label=TrafficLightQualityLevels.YELLOW.name,
+            value=0.5,
+            text="a textual description of the results",
+            svg="test",
+        )
+
+        return result
 
     def save_to_database(self) -> None:
         """Save the results to the geo database."""
         pass
 
-    def get_from_database(self) -> Dict:
+    def get_from_database(self) -> IndicatorResult:
         """Get pre-processed indicator results from geo database."""
-        results = get_indicator_results_from_db(
+        result = get_indicator_results_from_db(
             dataset=self.dataset, feature_id=self.feature_id, indicator=self.name
         )
-        return results
+        return result
 
     @property
     @abstractmethod
     def name(self):
         pass
 
+    @property
+    @abstractmethod
+    def description(self):
+        pass
+
     # the abstract method defines that this function
     # needs to be implemented by all children
     @abstractmethod
-    def preprocess(self):
+    def preprocess(self) -> Dict:
         pass
 
     @abstractmethod
-    def calculate(self, preprocessing_results: Dict):
+    def calculate(
+        self, preprocessing_results: Dict
+    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         pass
 
     @abstractmethod
-    def create_figure(self, results: Dict):
+    def create_figure(self, data: Dict):
         pass

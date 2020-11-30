@@ -45,7 +45,10 @@ SKETCHMAP_FITNESS_POI_LAYER = {
         "filter": "amenity in (pharmacy, hospital)",
         "unit": "count",
     },
-    "eduction": {"filter": "amenity in (school, college, university)", "unit": "count"},
+    "education": {
+        "filter": "amenity in (school, college, university)",
+        "unit": "count",
+    },
     "public_safety": {"filter": "amenity in (police, fire_station)", "unit": "count"},
     "public_transport": {
         "filter": "highway=bus_stop or railway=station",

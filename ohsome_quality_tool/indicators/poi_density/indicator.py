@@ -1,11 +1,12 @@
 import json
-from typing import Dict
+from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
 from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER
 
 
@@ -13,6 +14,9 @@ class Indicator(BaseIndicator):
     """The POI Density Indicator."""
 
     name = "POI_DENSITY"
+    description = """
+        Derive the density of OSM features
+    """
 
     def __init__(
         self,
@@ -48,11 +52,11 @@ class Indicator(BaseIndicator):
 
         return preprocessing_results
 
-    def calculate(self, preprocessing_results: Dict) -> Dict:
+    def calculate(
+        self, preprocessing_results: Dict
+    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
         # compute relative densities
-
-        return preprocessing_results
 
         # TODO: why is this named 'old' keys, let's make this more easy to understand
         """
@@ -82,6 +86,13 @@ class Indicator(BaseIndicator):
         results = {"relative_poi_densities": relative_density_dict}
         """
 
-    def create_figure(self, results: Dict):
+        # each indicator need to provide these
+        label = TrafficLightQualityLevels.YELLOW
+        value = 0.5
+        text = "test test test"
+
+        return label, value, text, preprocessing_results
+
+    def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")

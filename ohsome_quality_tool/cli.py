@@ -1,6 +1,7 @@
 import ast
 
 import click
+import geojson
 
 from ohsome_quality_tool import oqt
 from ohsome_quality_tool.utils.config import logger
@@ -109,8 +110,14 @@ def cli(verbose):
 @add_options(_indicator_option)
 @add_options(_infile_option)
 def get_dynamic_indicator(indicator_name: str, infile: str):
-    results = oqt.get_dynamic_indicator(indicator_name=indicator_name, infile=infile)
-    return results
+    # TODO: replace this with a function that loads the file AND
+    #    checks the validity of the geometries, e.g. enforce polygons etc.
+    with open(infile, "r") as file:
+        bpolys = geojson.load(file)
+    result, metadata = oqt.get_dynamic_indicator(
+        indicator_name=indicator_name, bpolys=bpolys
+    )
+    return result, metadata
 
 
 @cli.command("get-static-indicator")
@@ -118,10 +125,10 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
 def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
-    results = oqt.get_static_indicator(
+    result, metadata = oqt.get_static_indicator(
         indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
     )
-    return results
+    return result, metadata
 
 
 @cli.command("process-indicator")
@@ -138,8 +145,12 @@ def process_indicator(indicator_name: str, dataset: str, feature_id: int):
 @add_options(_report_option)
 @add_options(_infile_option)
 def get_dynamic_report(report_name: str, infile: str):
-    results = oqt.get_dynamic_report(report_name=report_name, infile=infile)
-    return results
+    with open(infile, "r") as file:
+        bpolys = geojson.load(file)
+    result, indicators, metadata = oqt.get_dynamic_report(
+        report_name=report_name, bpolys=bpolys
+    )
+    return result, indicators, metadata
 
 
 @cli.command("get-static-report")
@@ -147,10 +158,10 @@ def get_dynamic_report(report_name: str, infile: str):
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
 def get_static_report(report_name: str, dataset: str, feature_id: int):
-    results = oqt.get_static_report(
+    result, indicators, metadata = oqt.get_static_report(
         report_name=report_name, dataset=dataset, feature_id=feature_id
     )
-    return results
+    return result, indicators, metadata
 
 
 @cli.command("get-static-report-pdf")

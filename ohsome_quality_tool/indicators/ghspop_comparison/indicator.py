@@ -1,11 +1,12 @@
 import json
-from typing import Dict
+from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 
@@ -13,6 +14,10 @@ class Indicator(BaseIndicator):
     """Set number of features and population into perspective."""
 
     name = "GHSPOP_COMPARISON"
+    description = """
+        The number of features per population count.
+        This can give an estimate if mapping has been completed.
+    """
 
     def __init__(
         self,
@@ -66,19 +71,20 @@ class Indicator(BaseIndicator):
 
         return preprocessing_results
 
-    def calculate(self, preprocessing_results: Dict):
-
-        results = {
-            "data": preprocessing_results,
-            "quality_level": "tbd",
-            "description": "tbd",
-        }
+    def calculate(
+        self, preprocessing_results: Dict
+    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
         logger.info(f"run calculation for {self.name} indicator")
         # TODO: classification based on pop and building count
 
-        return results
+        # each indicator need to provide these
+        label = TrafficLightQualityLevels.YELLOW
+        value = 0.5
+        text = "test test test"
 
-    def create_figure(self, results: Dict):
+        return label, value, text, preprocessing_results
+
+    def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
         logger.info(f"export figures for {self.name} indicator")

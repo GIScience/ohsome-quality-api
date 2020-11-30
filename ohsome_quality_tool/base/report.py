@@ -1,9 +1,10 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict
+from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.config import logger
+from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult
 from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_db
 
 
@@ -35,35 +36,41 @@ class BaseReport(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-        self.results = {}
+        self.metadata = ReportMetadata(name=self.name, description=self.description)
 
-    def get(self) -> Dict:
+    def get(self) -> Tuple[ReportResult, Dict, ReportMetadata]:
         """Pass the report containing the indicator results to the user.
 
         For dynamic indicators this will trigger the processing.
         For non-dynamic (pre-processed) indicators this will
         extract the results from the geo database."""
-        self.results["indicators"] = {}
-        for i, item in enumerate(self.indicators):
+
+        indicators = []
+        for i, item in enumerate(self.indicators_definition):
             indicator, layers = item
             if self.dynamic:
-                results = indicator.constructor(
+                result, metadata = indicator.constructor(
                     dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
-                results = indicator.constructor(
+                result, metadata = indicator.constructor(
                     dynamic=self.dynamic,
                     layers=layers,
                     dataset=self.dataset,
                     feature_id=self.feature_id,
                 ).get()
-            self.results["indicators"][indicator.name] = results
 
-        self.combine_indicators()
+            indicators.append(
+                {"metadata": metadata._asdict(), "result": result._asdict()}
+            )
 
-        return self.results
+        result = self.combine_indicators(indicators)
 
-    def export_as_pdf(self, outfile: str):
+        return result, indicators, self.metadata
+
+    def export_as_pdf(
+        self, result: ReportResult, indicators, metadata: ReportMetadata, outfile: str
+    ):
         """Generate the PDF report."""
         logger.info(f"Export report as PDF for {self.name} to {outfile}")
 
@@ -74,10 +81,15 @@ class BaseReport(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def indicators(self):
+    def description(self):
+        pass
+
+    @property
+    @abstractmethod
+    def indicators_definition(self):
         pass
 
     @abstractmethod
-    def combine_indicators(self):
+    def combine_indicators(self, indicators) -> ReportResult:
         """Combine indicators e.g. using a weighting schema."""
         pass
