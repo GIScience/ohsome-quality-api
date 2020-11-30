@@ -15,10 +15,14 @@ WITH hex_pop AS (
             -- otherwise we might count some pixel several times
             ST_SummaryStats (ST_Union (ST_Clip (rast, geom4326))) AS stats
     FROM
-        ghs_pop,
+        ghs_pop_4326,
         isea3h_world_res_12_hex
     WHERE
         ST_Intersects (rast, geom4326)
+        -- Ignore grid cells at the very edge of the globe to avoid following ERROR:
+        -- rt_raster_new: Dimensions requested exceed the maximum permitted for a raster.
+        AND abs(ST_xMin (geom4326) - ST_xMax (geom4326)) <= 180
+        AND abs(ST_yMin (geom4326) - ST_yMax (geom4326)) <= 90
     GROUP BY
         geohash_id) AS summary_stats)
 UPDATE
