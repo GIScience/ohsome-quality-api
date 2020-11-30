@@ -192,6 +192,22 @@ function buildMap(err, ...charts){
 			} else {
 				x.style.display = "none";
 			}
+			// get and send paramater for and to api
+			var region = getCountry(selectedCountry)
+			var dataset = getDataset(selectedDataset)
+			args = getParams(region, selectedValue, dataset);
+			console.log(args)
+			//sendParams(args);
+			res = null;
+			httpGetAsync("https://api.ohsome.org/v1/elements/area?bboxes=8.625%2C49.3711%2C8.7334%2C49.4397&format=json&time=2014-01-01&filter=landuse%3Dfarmland%20and%20type%3Away", 
+			function(response) {
+				console.log("response")
+				console.log(response)
+				
+				res =  response
+			});
+			console.log("res")
+			console.log(res)
 			// ######   traffic  light ########
 			document.getElementById("trafficTop").innerHTML = 
 			
@@ -235,12 +251,7 @@ function buildMap(err, ...charts){
 				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
     	    // TODO implement nice waiting process delay
 			alert('Is prcessing ...!'); 
-			// get and send paramater for and to api
-			var region = getCountry(selectedCountry)
-			var dataset = getDataset(selectedDataset)
-			args = getParams(region, selectedValue, dataset);
-			console.log(args)
-			//sendParams(args);
+			
 		}
 		// when params were send, get pdf button turns blue
 		changeColor() 
@@ -410,4 +421,17 @@ function buildMap(err, ...charts){
 }
 function bottomFunction() {
 	window.scrollTo(0, document.body.scrollHeight);
+}
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+	console.log(theUrl)
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+	console.log(xmlHttp.responseText)
+	return xmlHttp.responseText;
 }
