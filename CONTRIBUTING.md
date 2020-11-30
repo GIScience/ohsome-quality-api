@@ -2,7 +2,7 @@
 
 ## Development Setup
 
-This project uses [Poetry](https://python-poetry.org/) for packaging and dependencies management.
+This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
 
 ```bash
