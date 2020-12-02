@@ -68,16 +68,15 @@ class BaseIndicator(metaclass=ABCMeta):
     def run_processing(self) -> IndicatorResult:
         """Run all steps needed to actually compute the indicator"""
         preprocessing_results = self.preprocess()
-        label, value, test, data = self.calculate(preprocessing_results)
+        label, value, text, data = self.calculate(preprocessing_results)
         svg = self.create_figure(data)
-        print(len(svg))
         logger.info(f"finished run for indicator {self.name}")
 
         result = IndicatorResult(
-            label=TrafficLightQualityLevels.YELLOW.name,
-            value=0.5,
-            text="a textual description of the results",
-            svg="test",
+            label=label,
+            value=value,
+            text=text,
+            svg=svg,
         )
 
         return result
