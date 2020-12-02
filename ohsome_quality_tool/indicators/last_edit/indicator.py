@@ -72,15 +72,14 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        text = ""
-
         # TODO: thresholds might be better defined for each OSM layer
         THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
         THRESHOLD_RED = 0.05  # more than 5% edited last year --> yellow
 
+        text = ""
         levels = []
         result_description_template = (
-            "{share}% of the {layer} in OSM have been edited during the last year."
+            "{share}% of the {layer} in OSM have been edited during the last year. "
             "This corresponds to a {level} label in regard to data quality.\n\n"
         )
 
