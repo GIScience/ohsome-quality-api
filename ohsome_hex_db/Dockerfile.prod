@@ -6,7 +6,8 @@ FROM postgis/postgis:10-3.0
 COPY init_db_prod.sql /docker-entrypoint-initdb.d/1-init_db_prod.sql
 COPY admin-schema.sql /docker-entrypoint-initdb.d/2-admin-schema.sql
 COPY ohsome-hex-isea.sql /docker-entrypoint-initdb.d/3-ohsome-hex-isea.sql
-COPY NUTS_2021.sh /docker-entrypoint-initdb.d/4-NUTS_2021.sh
-COPY GADM.sh /docker-entrypoint-initdb.d/5-GADM.sh
-COPY GADM.sql /docker-entrypoint-initdb.d/6-GADM.sql
-COPY GHS_POP.sql /docker-entrypoint-initdb.d/7-GHS_POP.sql
+
+COPY data_import_scripts/NUTS_2021.sh /docker-entrypoint-initdb.d/4-NUTS_2021.sh
+COPY data_import_scripts/GADM.sh /docker-entrypoint-initdb.d/5-GADM.sh
+COPY data_import_scripts/GADM.sql /docker-entrypoint-initdb.d/6-GADM.sql
+COPY data_import_scripts/GHS_POP.sql /docker-entrypoint-initdb.d/7-GHS_POP.sql

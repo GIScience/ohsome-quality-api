@@ -14,7 +14,7 @@ raster2pgsql \
     -c \
     -C \
     -t 100x100 \
-    -s 954009 \
+    -s 4326 \
     $geotiff public.ghs_pop \
     | \
     psql \
