@@ -191,7 +191,7 @@ def get_zonal_stats_population(bpolys: Dict):
     )
     # need to get geometry only
     polygon = json.dumps(bpolys["features"][0]["geometry"])
-    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
+    data = {"schema": "public", "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     population, area = query_results[0]
     logger.info("Got population for polygon.")
