@@ -7,8 +7,11 @@ from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
-from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER
+from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER_COMBINED
 
+# threshold values defining the color of the traffic light derived directly from sketchmap_fitness repo
+THRESHOLD_YELLOW = 30
+THRESHOLD_RED = 10
 
 class Indicator(BaseIndicator):
     """The POI Density Indicator."""
@@ -21,7 +24,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = SKETCHMAP_FITNESS_POI_LAYER,
+        layers: Dict = SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -35,7 +38,7 @@ class Indicator(BaseIndicator):
         )
 
     def preprocess(self) -> Dict:
-        logger.info(f"run preprocessing for {self.name} indicator")
+        logger.info(f"run preprocessing for {self.name} indicator")        
 
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/count/density/",
@@ -46,9 +49,7 @@ class Indicator(BaseIndicator):
         preprocessing_results = {}
 
         for layer in self.layers.keys():
-            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][
-                0
-            ]["value"]
+            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][0]["value"]
 
         return preprocessing_results
 
@@ -56,40 +57,24 @@ class Indicator(BaseIndicator):
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
-        # compute relative densities
 
-        # TODO: why is this named 'old' keys, let's make this more easy to understand
-        """
-        old_keys = [
-            "park",
-            "national_park",
-            "waterway",
-            "water",
-            "pharmacy",
-            "hospital",
-            "school",
-            "college",
-            "university",
-            "police",
-            "fire_station",
-            "bus_stop",
-            "station",
-        ]
-
-        # TODO: why do we compute relative density?
-        relative_density_dict = {}
-        for k, v in preprocessing_results.items():
-            if k not in old_keys and k != "density":
-                relative_density_dict[k] = round(
-                    100 * v / preprocessing_results["density"], 2
-                )
-        results = {"relative_poi_densities": relative_density_dict}
-        """
-
-        # each indicator need to provide these
-        label = TrafficLightQualityLevels.YELLOW
-        value = 0.5
-        text = "test test test"
+        result = preprocessing_results["combined_density"]
+        
+        # we still need to think of how to better define the values and text here
+        if result > THRESHOLD_YELLOW:
+            label = TrafficLightQualityLevels.GREEN
+            value = 0.75
+            text = "super green!"
+        elif THRESHOLD_YELLOW >= result > THRESHOLD_RED:
+            label = TrafficLightQualityLevels.YELLOW
+            value = 0.5
+            text = "medium yellow."
+        else:
+            label = TrafficLightQualityLevels.RED
+            value = 0.25
+            text = "bad red"
+            
+        logger.info(f"result density value: " + str(result) + " label: " + str(label) + " value: " + str(value) + " text: " + text)
 
         return label, value, text, preprocessing_results
 
