@@ -33,14 +33,14 @@ class BaseIndicator(metaclass=ABCMeta):
 
         if self.dynamic:
             if bpolys is None:
-                raise ValueError
-            # for dynamic calculation you need to provide geojson geometries
+                raise ValueError("Dynamic calculation requires a GeoJSON as input.")
             self.bpolys = bpolys
         else:
             if dataset is None or feature_id is None:
-                raise ValueError
-            # for static calculation you need to provide the dataset name and
-            # optionally an feature_id string, e.g. which geometry ids to use
+                raise ValueError(
+                    "Static calculation requires the dataset name "
+                    "and optionally the feature id as string."
+                )
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
@@ -63,7 +63,7 @@ class BaseIndicator(metaclass=ABCMeta):
             )
             result = self.get_from_database()
 
-        return result, self.metadata
+        return (result, self.metadata)
 
     def run_processing(self) -> IndicatorResult:
         """Run all steps needed to actually compute the indicator"""
