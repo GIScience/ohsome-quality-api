@@ -62,6 +62,14 @@ SKETCHMAP_FITNESS_POI_LAYER = {
 }
 
 
+SKETCHMAP_FITNESS_POI_LAYER_COMBINED = {
+    "combined": {"filter": """natural=peak or leisure=park or boundary=national_park or 
+    natural=water or waterway=* or highway=bus_stop or railway=station or shop=* or 
+    tourism in (hotel, attraction) or amenity in (fuel, pharmacy, hospital, school, 
+    college, university, police, fire_station, restaurant, townhall)""", "unit": "count"},
+}
+
+
 SKETCHMAP_FITNESS_FEATURES = {
     "highways": {"filter": "highway=*", "unit": "length"},
     "amenities": {"filter": "amenity=*", "unit": "count"},
