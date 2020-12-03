@@ -1,6 +1,10 @@
+from typing import Dict
+
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.definitions import Indicators, Reports
+from ohsome_quality_tool.utils.definitions import Reports, get_indicators
+
+INDICATORS: Dict = get_indicators()
 
 
 def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
@@ -9,7 +13,7 @@ def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
     The results will be calculated dynamically,
     e.g. by querying the ohsome api.
     """
-    indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
+    indicator = INDICATORS[indicator_name](dynamic=True, bpolys=bpolys)
     result, metadata = indicator.get()
     return result, metadata
 
@@ -20,7 +24,7 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     The results have been pre-processed and will be extracted from the geo database.
     """
     # TODO: adjust arguments dynamic and bpolys
-    indicator = Indicators[indicator_name].constructor(
+    indicator = INDICATORS[indicator_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     result, metadata = indicator.get()
@@ -34,7 +38,7 @@ def process_indicator(indicator_name: str, dataset: str, feature_id: int):
     """
     # TODO: adjust arguments dynamic and bpolys
 
-    indicator = Indicators[indicator_name].constructor(
+    indicator = INDICATORS[indicator_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     indicator.run_processing()

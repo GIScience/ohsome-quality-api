@@ -5,7 +5,7 @@ import geojson
 
 from ohsome_quality_tool import oqt
 from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import DATASETS, Indicators, Reports
+from ohsome_quality_tool.utils.definitions import DATASET_NAMES, Reports, get_indicators
 
 
 class PythonLiteralOption(click.Option):
@@ -34,7 +34,7 @@ _indicator_option = [
         "-i",
         required=True,
         type=click.Choice(
-            list(Indicators.__members__),
+            get_indicators().keys(),
             case_sensitive=True,
         ),
         help="Choose an indicator,valid indicators are specified in definitions.py .",
@@ -77,7 +77,7 @@ _dataset_option = [
         "--dataset",
         required=True,
         type=click.Choice(
-            DATASETS,
+            DATASET_NAMES,
             case_sensitive=True,
         ),
         help="""Choose a dataset containing geometries,

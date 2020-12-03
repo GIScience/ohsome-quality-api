@@ -1,11 +1,13 @@
+from typing import Dict
+
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.report import BaseReport
 from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
-    Indicators,
     ReportResult,
     TrafficLightQualityLevels,
+    get_indicators,
 )
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
@@ -19,11 +21,12 @@ class Report(BaseReport):
         added on the basis of satellite imagery.
     """
 
+    INDICATORS: Dict = get_indicators()
     indicators_definition = [
-        (Indicators.GHSPOP_COMPARISON, LEVEL_ONE_LAYERS),
-        (Indicators.GUF_COMPARISON, LEVEL_ONE_LAYERS),
-        (Indicators.MAPPING_SATURATION, LEVEL_ONE_LAYERS),
-        (Indicators.LAST_EDIT, LEVEL_ONE_LAYERS),
+        (INDICATORS["GHSPOP_COMPARISON"], LEVEL_ONE_LAYERS),
+        (INDICATORS["GUF_COMPARISON"], LEVEL_ONE_LAYERS),
+        (INDICATORS["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
+        (INDICATORS["LAST_EDIT"], LEVEL_ONE_LAYERS),
     ]
 
     def __init__(

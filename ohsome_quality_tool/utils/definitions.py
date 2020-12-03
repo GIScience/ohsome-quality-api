@@ -1,13 +1,20 @@
 import collections
-from enum import Enum, unique
+from enum import Enum
+from typing import Dict
 
-# TODO: Is there a better way to define this?
-DATASETS = [
+DATASET_NAMES = (
     "nuts_rg_60m_2021",
     "nuts_rg_01m_2021",
     "isea3h_world_res_6_hex",
     "isea3h_world_res_12_hex",
-]
+    "gadm",
+    "gadm_level_0",
+    "gadm_level_1",
+    "gadm_level_2",
+    "gadm_level_3",
+    "gadm_level_4",
+    "gadm_level_5",
+)
 
 
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
@@ -25,44 +32,32 @@ class TrafficLightQualityLevels(Enum):
     RED = 3
 
 
-# TODO: Is there a better way to define this?
-@unique
-class Indicators(Enum):
-    """Define supported indicators."""
+def get_indicators() -> Dict:
+    """Map indicator name to corresponding class"""
+    # To avoid circular imports classes are imported only once this function is called.
+    from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
+        Indicator as ghspopComparisonIndicator,
+    )
+    from ohsome_quality_tool.indicators.guf_comparison.indicator import (
+        Indicator as gufComparisonIndicator,
+    )
+    from ohsome_quality_tool.indicators.last_edit.indicator import (
+        Indicator as lastEditIndicator,
+    )
+    from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
+        Indicator as mappingSaturationIndicator,
+    )
+    from ohsome_quality_tool.indicators.poi_density.indicator import (
+        Indicator as poiDensityIndicator,
+    )
 
-    GHSPOP_COMPARISON = 1
-    POI_DENSITY = 2
-    LAST_EDIT = 3
-    MAPPING_SATURATION = 4
-    GUF_COMPARISON = 5
-
-    @property
-    def constructor(self):
-        from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
-            Indicator as ghspopComparisonIndicator,
-        )
-        from ohsome_quality_tool.indicators.guf_comparison.indicator import (
-            Indicator as gufComparisonIndicator,
-        )
-        from ohsome_quality_tool.indicators.last_edit.indicator import (
-            Indicator as lastEditIndicator,
-        )
-        from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
-            Indicator as mappingSaturationIndicator,
-        )
-        from ohsome_quality_tool.indicators.poi_density.indicator import (
-            Indicator as poiDensityIndicator,
-        )
-
-        indicators = {
-            1: ghspopComparisonIndicator,
-            2: poiDensityIndicator,
-            3: lastEditIndicator,
-            4: mappingSaturationIndicator,
-            5: gufComparisonIndicator,
-        }
-
-        return indicators[self.value]
+    return {
+        "GHSPOP_COMPARISON": ghspopComparisonIndicator,
+        "POI_DENSITY": poiDensityIndicator,
+        "LAST_EDIT": lastEditIndicator,
+        "MAPPING_SATURATION": mappingSaturationIndicator,
+        "GUF_COMPARISON": gufComparisonIndicator,
+    }
 
 
 # TODO: Is there a better way to define this?
