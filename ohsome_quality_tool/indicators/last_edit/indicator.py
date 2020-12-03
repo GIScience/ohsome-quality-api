@@ -42,14 +42,14 @@ class Indicator(BaseIndicator):
         logger.info(f"run preprocessing for {self.name} indicator")
 
         query_results_contributions = ohsome_api.process_ohsome_api(
-            endpoint="/contributions/latest/centroid/",
+            endpoint="contributions/latest/centroid/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
         )
 
         query_results_totals = ohsome_api.process_ohsome_api(
-            endpoint="/elements/count/",
+            endpoint="elements/count/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )

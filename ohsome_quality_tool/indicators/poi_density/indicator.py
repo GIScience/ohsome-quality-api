@@ -38,7 +38,7 @@ class Indicator(BaseIndicator):
         logger.info(f"run preprocessing for {self.name} indicator")
 
         query_results = ohsome_api.process_ohsome_api(
-            endpoint="/elements/count/density/",
+            endpoint="elements/count/density/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
