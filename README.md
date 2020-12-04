@@ -12,6 +12,8 @@ What is OQT?
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
 ## Quickstart
+To use OQT you need to set up a python environment and need access to a geo-database. You can either set the geo-database on your own or ask someone from the OQT team to get access to hosted version. Developers get full details how to get started in the [CONTRIBUTING.md](CONTRIBUTING.md) site.
+
 Run the following lines to use the tool from a command line. Make sure that you have `Python3.8` and `poetry` installed on the system level already.
 
 ```
@@ -20,6 +22,13 @@ cd ohsome-quality-tool
 poetry install
 poetry shell
 ```
+
+In any case you will need an `.env` file placed in the main directory which contains the credentials to access the geo-database. On Linux you can activate the environment like this:
+
+```
+export $(cat .env | xargs)
+```
+
 
 ### Command Line Interface
 Run the following line to get an overview:
