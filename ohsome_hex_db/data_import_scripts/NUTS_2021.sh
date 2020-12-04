@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+cd /
+
 wget https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_01M_2021_4326.geojson
 wget https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_60M_2021_4326.geojson
 
