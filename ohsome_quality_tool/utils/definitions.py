@@ -1,6 +1,11 @@
 import collections
+import logging.config
+import os
 from enum import Enum
+from pathlib import Path
 from typing import Dict
+
+from xdg import XDG_DATA_HOME
 
 DATASET_NAMES = (
     "nuts_rg_60m_2021",
@@ -15,6 +20,48 @@ DATASET_NAMES = (
     "gadm_level_4",
     "gadm_level_5",
 )
+
+OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
+
+DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
+LOGGING_FILE_PATH = os.path.join(DATA_PATH, "oqt.log")
+LOGGING_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa: E501
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "formatter": "standard",
+            "filename": LOGGING_FILE_PATH,
+            "when": "D",
+            "interval": 1,
+            "backupCount": 14,
+        },
+    },
+    "loggers": {
+        "root": {"handlers": ["console"], "level": "INFO"},
+        "oqt": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
+
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger("oqt")
 
 
 IndicatorResult = collections.namedtuple("Result", "label value text svg")

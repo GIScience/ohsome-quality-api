@@ -3,11 +3,11 @@ from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     IndicatorMetadata,
     IndicatorResult,
     TrafficLightQualityLevels,
+    logger,
 )
 from ohsome_quality_tool.utils.geodatabase import (
     get_bpolys_from_db,

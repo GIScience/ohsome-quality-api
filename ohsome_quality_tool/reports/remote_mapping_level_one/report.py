@@ -3,11 +3,11 @@ from typing import Dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.report import BaseReport
-from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     ReportResult,
     TrafficLightQualityLevels,
     get_indicator_classes,
+    logger,
 )
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 

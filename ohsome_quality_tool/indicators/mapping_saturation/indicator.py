@@ -9,8 +9,7 @@ from numpy import diff
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 

@@ -8,8 +8,7 @@ from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 
 
 class Indicator(BaseIndicator):

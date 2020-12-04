@@ -5,8 +5,7 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 
@@ -14,10 +13,10 @@ class Indicator(BaseIndicator):
     """Set number of features and population into perspective."""
 
     name = "GUF_COMPARISON"
-    description = """
-        Compare OSM features against built up area defined by
-        Global Urban Footprint dataset.
-    """
+    description = (
+        "Compare OSM features against built up area defined by "
+        "Global Urban Footprint dataset."
+    )
 
     def __init__(
         self,

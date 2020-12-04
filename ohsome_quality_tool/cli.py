@@ -4,11 +4,11 @@ import click
 import geojson
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     DATASET_NAMES,
     get_indicator_classes,
     get_report_classes,
+    logger,
 )
 
 

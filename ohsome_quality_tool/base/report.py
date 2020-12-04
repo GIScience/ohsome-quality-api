@@ -3,8 +3,7 @@ from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult
+from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult, logger
 from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_db
 
 

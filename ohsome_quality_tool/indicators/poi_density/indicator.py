@@ -5,13 +5,14 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER_COMBINED
 
-# threshold values defining the color of the traffic light derived directly from sketchmap_fitness repo
+# threshold values defining the color of the traffic light
+# derived directly from sketchmap_fitness repo
 THRESHOLD_YELLOW = 30
 THRESHOLD_RED = 10
+
 
 class Indicator(BaseIndicator):
     """The POI Density Indicator."""
@@ -38,7 +39,7 @@ class Indicator(BaseIndicator):
         )
 
     def preprocess(self) -> Dict:
-        logger.info(f"run preprocessing for {self.name} indicator")        
+        logger.info(f"run preprocessing for {self.name} indicator")
 
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/count/density/",
@@ -49,7 +50,9 @@ class Indicator(BaseIndicator):
         preprocessing_results = {}
 
         for layer in self.layers.keys():
-            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][0]["value"]
+            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][
+                0
+            ]["value"]
 
         return preprocessing_results
 
@@ -59,7 +62,7 @@ class Indicator(BaseIndicator):
         logger.info(f"run calculation for {self.name} indicator")
 
         result = preprocessing_results["combined_density"]
-        
+
         # we still need to think of how to better define the values and text here
         if result > THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
@@ -73,8 +76,17 @@ class Indicator(BaseIndicator):
             label = TrafficLightQualityLevels.RED
             value = 0.25
             text = "bad red"
-            
-        logger.info(f"result density value: " + str(result) + " label: " + str(label) + " value: " + str(value) + " text: " + text)
+
+        logger.info(
+            "result density value: "
+            + str(result)
+            + " label: "
+            + str(label)
+            + " value: "
+            + str(value)
+            + " text: "
+            + text
+        )
 
         return label, value, text, preprocessing_results
 
