@@ -28,7 +28,7 @@ class Indicator(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
-        time_range: str = "2008-01-01//P1Y",
+        time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(
             dynamic=dynamic,
@@ -38,12 +38,14 @@ class Indicator(BaseIndicator):
             feature_id=feature_id,
         )
         self.time_range = time_range
-
+ 
     def preprocess(self) -> Dict:
+        """Get data from ohsome API and db. Put timestamps + data in list"""
+   
         logger.info(f"run preprocessing for {self.name} indicator")
 
         query_results = ohsome_api.process_ohsome_api(
-            endpoint="elements/{unit}/",
+            endpoint="elements/{unit}/", # unit is defined in layers.py
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
@@ -57,120 +59,31 @@ class Indicator(BaseIndicator):
             timestamps = [
                 y_dict["timestamp"] for y_dict in query_results[layer]["result"]
             ]
-            # normalize using maximum value for the time_range
-            # for most cases the maximum will be reached at the last timestamp
-            if max(results) > 0:
-                normalized_results = [float(i) / max(results) for i in results]
-            else:
-                normalized_results = [0] * len(results)
-            # e.g. 1 year between data points
-            # or usually always same distance between two timestamps,e .g. months
-            dx = 1
-            slopes_new = diff(normalized_results) / dx
-
-            # calculate slopes between years
-            slopes = [0]
-            for i in range(1, len(results)):
-                if results[i - 1] > 0:
-                    slopes.append((results[i] - results[i - 1]) / results[i - 1])
-
+            
             preprocessing_results["timestamps"] = timestamps
             preprocessing_results[f"{layer}_{unit}"] = results
-            preprocessing_results[f"{layer}_{unit}_normalized"] = normalized_results
-            preprocessing_results[f"{layer}_{unit}_slopes"] = slopes
-            preprocessing_results[f"{layer}_{unit}_slopes_max"] = max(slopes)
-            preprocessing_results[f"{layer}_{unit}_slopes_new"] = slopes_new
-            preprocessing_results[f"{layer}_{unit}_slopes_new_max"] = max(slopes_new)
 
+        logger.info(preprocessing_results)
         return preprocessing_results
 
     def calculate(
+        """ 1 Log Func fitting for every layer. 
+            2 Check saturation
+            
+            """
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        INCREASING_TREND_THRESHOLD = 0.02
-        DECREASING_TREND_THRESHOLD = -0.02
-        ONE_TIME_MAPPING_THRESHOLD = 0.5
-        NO_MAPPING_ACTIVITY_THRESHOLD = 0.005
-
-        quality_levels = []
         for layer in self.layers.keys():
-            # check slope for last year
-            unit = self.layers[layer]["unit"]
-            slopes = preprocessing_results[f"{layer}_{unit}_slopes_new"]
-            if slopes[-1] >= INCREASING_TREND_THRESHOLD:
-                trend = "increasing"
-            elif slopes[-1] <= DECREASING_TREND_THRESHOLD:
-                trend = "decreasing"
-            else:
-                trend = "no_trend"
-
-            # check for one time mapping activity
-            # TODO: maybe this would be an indicator for itself?
-            one_time_mapping = False
-            one_time_mapping_times = []
-            one_time_mapping_slopes = []
-            for j, slope in enumerate(slopes):
-                if slope >= ONE_TIME_MAPPING_THRESHOLD:
-                    one_time_mapping = True
-                    timestamp = preprocessing_results["timestamps"][j]
-                    one_time_mapping_times.append(timestamp)
-                    one_time_mapping_slopes.append(slope)
-
-            # check for times without mapping activity
-            no_mapping = False
-            no_mapping_times = []
-            no_mapping_slopes = []
-            for k, slope in enumerate(slopes[::-1]):  # reversed slopes array
-                if abs(slope) <= NO_MAPPING_ACTIVITY_THRESHOLD:
-                    timestamp = preprocessing_results["timestamps"][::-1][k]
-                    no_mapping_times.append(timestamp)
-                    no_mapping_slopes.append(slope)
-                    no_mapping = True
-                else:
-                    break
-
-            # quality classification
-            QUALITY_LEVEL_GREEN_CONDITION = (
-                (trend == "no_trend" or trend == "decreasing")
-                and (one_time_mapping is False or max(one_time_mapping_times) < "2015")
-                and (no_mapping is False or len(no_mapping_times) < 3)
-            )
-
-            QUALITY_LEVEL_YELLOW_CONDITION = (
-                (trend == "increasing")
-                or (one_time_mapping is True)
-                or (len(no_mapping_times) >= 3)
-            )
-
-            if QUALITY_LEVEL_GREEN_CONDITION:
-                quality_level = TrafficLightQualityLevels.GREEN
-            elif QUALITY_LEVEL_YELLOW_CONDITION:
-                quality_level = TrafficLightQualityLevels.YELLOW
-            else:
-                quality_level = TrafficLightQualityLevels.RED
-
-            quality_results = {
-                "quality_level": quality_level,
-                "trend": trend,
-                "no_mapping": no_mapping,
-                "no_mapping_times": no_mapping_times,
-                "one_time_mapping": one_time_mapping,
-                "one_time_mapping_times": one_time_mapping_times,
-                "one_time_mapping_slopes": one_time_mapping_slopes,
-            }
-            quality_levels.append(quality_level.value)
-            print(quality_results)
-
-        # get average quality level
-        overall_quality_level = int(round(statistics.mean(quality_levels)))
-        overall_quality_level = TrafficLightQualityLevels(overall_quality_level)
-        print(overall_quality_level)
-
-        # each indicator need to provide these
+            # calculate traffic light value for each layer
+            pass
+        
+        # 4 values, calculate average value out of it
+        
+        # overall quality (placeholder)
         label = TrafficLightQualityLevels.YELLOW
-        value = 0.5
+        value = 0.5 # = average value
         text = "test test test"
 
         return label, value, text, preprocessing_results
