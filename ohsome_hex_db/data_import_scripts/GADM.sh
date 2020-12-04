@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-cd /
+mkdir -p /tmp
+cd /tmp
 
 wget https://biogeo.ucdavis.edu/data/gadm3.6/gadm36_gpkg.zip
 unzip gadm36_gpkg.zip
