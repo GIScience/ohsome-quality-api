@@ -16,6 +16,8 @@ gdal_translate \
     -of GTiff PG:"host=localhost port=5432 dbname=pop user=read_only_user password=6uPBpYXxpNTznB90FMrd7TiWM schema=public table=guf04 where='rast && ST_MakeEnvelope($bbox_formatted, 4326)' mode='2'" \
     $outfile
 
+gdalbuildvrt -vrtnodata "0 128" "Dar-Es-Salaam.vrt" $outfile
+
 raster2pgsql \
     -I \
     -M \
@@ -24,10 +26,28 @@ raster2pgsql \
     -C \
     -t 100x100 \
     -s 4326 \
-    $outfile public.guf04_daressalaam\
+    Dar-Es-Salaam.vrt public.guf04_daressalaam\
     | \
     PGPASSWORD=mypassword psql \
+        -h localhost \
+        -p 5445 \
+        -d hexadmin \
+        -U hexadmin
+
+PGPASSWORD=mypassword psql \
     -h localhost \
     -p 5445 \
     -d hexadmin \
-    -U hexadmin
+    -U hexadmin \
+    <<EOF
+DELETE FROM guf04
+WHERE NOT rid IN (
+        SELECT
+            rid
+        FROM
+            guf04
+        GROUP BY
+            rid
+        HAVING
+            ST_ValueCount (rast, 1, TRUE, 255) > 0);
+EOF
