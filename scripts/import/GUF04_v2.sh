@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# Script to import whole Global Urban Footprint (0.4 arc seconds) into database
+# Note: This will take several days to complete.
+#
 # '2>> guf04.log':
 # The standard error stream will be redirected to the file only, it will not be visible in the terminal. If the file already exists, the new data will get appended to the end of the file.
 
