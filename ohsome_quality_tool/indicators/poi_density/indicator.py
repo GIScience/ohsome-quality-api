@@ -7,6 +7,7 @@ from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER_COMBINED
+from ohsome_quality_tool.utils.label_interpretations import POI_DENSITY_LABEL_INTERPRETATIONS
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
@@ -21,6 +22,7 @@ class Indicator(BaseIndicator):
     description = """
         Derive the density of OSM features
     """
+    interpretations: Dict = POI_DENSITY_LABEL_INTERPRETATIONS
 
     def __init__(
         self,
@@ -38,7 +40,7 @@ class Indicator(BaseIndicator):
             feature_id=feature_id,
         )
 
-    def preprocess(self) -> Dict:
+    def preprocess(self) -> float:
         logger.info(f"run preprocessing for {self.name} indicator")
 
         query_results = ohsome_api.process_ohsome_api(
@@ -47,35 +49,32 @@ class Indicator(BaseIndicator):
             bpolys=json.dumps(self.bpolys),
         )
 
-        preprocessing_results = {}
+        preprocessing_result = query_results["combined"]["result"][0]["value"]
 
-        for layer in self.layers.keys():
-            preprocessing_results[f"{layer}_density"] = query_results[layer]["result"][
-                0
-            ]["value"]
-
-        return preprocessing_results
+        return preprocessing_result
 
     def calculate(
-        self, preprocessing_results: Dict
+        self, preprocessing_result: float
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        result = preprocessing_results["combined_density"]
+        result = preprocessing_result
+        text = "The density of landmarks (points of reference, e.g. waterbodies, supermarkets, " \
+               "churches, bus stops) is "+str(result)+" features per km&#x00B2. "
 
-        # we still need to think of how to better define the values and text here
+        #TODO: define a better way to derive the quality value from the result
         if result > THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
             value = 0.75
-            text = "super green!"
+            text = text + self.interpretations["green"]
         elif THRESHOLD_YELLOW >= result > THRESHOLD_RED:
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
-            text = "medium yellow."
+            text = text + self.interpretations["yellow"]
         else:
             label = TrafficLightQualityLevels.RED
             value = 0.25
-            text = "bad red"
+            text = text + self.interpretations["red"]
 
         logger.info(
             "result density value: "
@@ -88,7 +87,7 @@ class Indicator(BaseIndicator):
             + text
         )
 
-        return label, value, text, preprocessing_results
+        return label, value, text, result
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
