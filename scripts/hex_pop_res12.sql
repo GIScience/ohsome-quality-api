@@ -19,10 +19,14 @@ WITH hex_pop AS (
         isea3h_world_res_12_hex
     WHERE
         ST_Intersects (rast, geom4326)
-        -- Ignore grid cells at the very edge of the globe to avoid following ERROR:
-        -- rt_raster_new: Dimensions requested exceed the maximum permitted for a raster.
+        -- Ignore grid cells at the very edge of the globe.
+        -- Avoids following ERROR of rt_raster_new during ST_Clip:
+        -- Dimensions requested exceed the maximum permitted for a raster.
         AND abs(ST_xMin (geom4326) - ST_xMax (geom4326)) <= 180
         AND abs(ST_yMin (geom4326) - ST_yMax (geom4326)) <= 90
+        -- Avoid following ERROR of rt_raster_iterator during ST_Clip:
+        -- The set of rasters provided do not have the same alignment
+        AND ST_BandIsNoData (rast) = FALSE
     GROUP BY
         geohash_id) AS summary_stats)
 UPDATE
@@ -33,3 +37,4 @@ FROM
     hex_pop
 WHERE
     hex.geohash_id = hex_pop.geohash_id;
+
