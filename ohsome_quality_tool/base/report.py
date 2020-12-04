@@ -45,14 +45,14 @@ class BaseReport(metaclass=ABCMeta):
         extract the results from the geo database."""
 
         indicators = []
-        for i, item in enumerate(self.indicators_definition):
+        for item in self.indicators_definition.values():
             indicator, layers = item
             if self.dynamic:
-                result, metadata = indicator.constructor(
+                result, metadata = indicator(
                     dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
-                result, metadata = indicator.constructor(
+                result, metadata = indicator(
                     dynamic=self.dynamic,
                     layers=layers,
                     dataset=self.dataset,
