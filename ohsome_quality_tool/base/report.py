@@ -45,7 +45,7 @@ class BaseReport(metaclass=ABCMeta):
         extract the results from the geo database."""
 
         indicators = []
-        for item in self.indicators_definition.values():
+        for item in self.indicators_definition:
             indicator, layers = item
             if self.dynamic:
                 result, metadata = indicator(
