@@ -16,7 +16,7 @@ Information on scripts for database initialization:
 
 
 ```bash
-docker build .
+docker build Dockerfile.prod
 docker run \
     -d \
     -p 5445:5432 \
