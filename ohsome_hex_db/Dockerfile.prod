@@ -1,9 +1,11 @@
 # ohsomehex-db uses Postgis v.10
 FROM postgis/postgis:10-3.0
 
+# Install dependencies of data import scripts
 RUN apt-get update && \
     apt-get install -y wget && \
-    apt-get install -y gdal-bin
+    apt-get install -y gdal-bin && \
+    apt-get install -y libgdal-dev
 
 # Initialization scripts.
 # https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts
