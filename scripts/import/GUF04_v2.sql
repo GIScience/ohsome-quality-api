@@ -4,3 +4,13 @@ SELECT
 
 VACUUM (ANALYZE) guf04;
 
+DELETE FROM guf04
+WHERE NOT rid IN (
+        SELECT
+            rid
+        FROM
+            guf04
+        GROUP BY
+            rid
+        HAVING
+            ST_ValueCount (rast, 1, TRUE, 255) > 0);
