@@ -4,13 +4,12 @@ import unittest
 import geojson
 
 from ohsome_quality_tool.oqt import get_dynamic_report
-from ohsome_quality_tool.utils.definitions import Reports
 
 
 class TestSketchmapFitnessReport(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.report_name = Reports.SKETCHMAP_FITNESS.name
+        self.report_name = "SKETCHMAP_FITNESS"
 
     def test_get_dynamic_report(self):
         """Test if dynamic report can be calculated."""

@@ -4,13 +4,12 @@ import unittest
 import geojson
 
 from ohsome_quality_tool.oqt import get_dynamic_report
-from ohsome_quality_tool.utils.definitions import Reports
 
 
 class TestRemoteMappingLevelOneReport(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.report_name = Reports.REMOTE_MAPPING_LEVEL_ONE.name
+        self.report_name = "REMOTE_MAPPING_LEVEL_ONE"
 
     def test_get_dynamic_report(self):
         """Test if dynamic report can be calculated."""
