@@ -7,7 +7,7 @@ from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     ReportResult,
     TrafficLightQualityLevels,
-    get_indicators,
+    get_indicator_classes,
 )
 from ohsome_quality_tool.utils.layers import (
     SKETCHMAP_FITNESS_FEATURES,
@@ -21,11 +21,11 @@ class Report(BaseReport):
     name = "SKETCHMAP_FITNESS"
     description = "The sketchmap fitness report."
 
-    INDICATORS: Dict = get_indicators()
+    indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (INDICATORS["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
-        (INDICATORS["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
-        (INDICATORS["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER),
+        (indicator_classes["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER),
     ]
 
     def __init__(

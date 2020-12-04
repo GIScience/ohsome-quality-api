@@ -7,7 +7,7 @@ from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     ReportResult,
     TrafficLightQualityLevels,
-    get_indicators,
+    get_indicator_classes,
 )
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
@@ -21,12 +21,12 @@ class Report(BaseReport):
         added on the basis of satellite imagery.
     """
 
-    INDICATORS: Dict = get_indicators()
+    indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (INDICATORS["GHSPOP_COMPARISON"], LEVEL_ONE_LAYERS),
-        (INDICATORS["GUF_COMPARISON"], LEVEL_ONE_LAYERS),
-        (INDICATORS["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
-        (INDICATORS["LAST_EDIT"], LEVEL_ONE_LAYERS),
+        (indicator_classes["GHSPOP_COMPARISON"], LEVEL_ONE_LAYERS),
+        (indicator_classes["GUF_COMPARISON"], LEVEL_ONE_LAYERS),
+        (indicator_classes["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
+        (indicator_classes["LAST_EDIT"], LEVEL_ONE_LAYERS),
     ]
 
     def __init__(

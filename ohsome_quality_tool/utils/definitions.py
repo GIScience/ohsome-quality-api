@@ -32,7 +32,7 @@ class TrafficLightQualityLevels(Enum):
     RED = 3
 
 
-def get_indicators() -> Dict:
+def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
     # To avoid circular imports classes are imported only once this function is called.
     from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
@@ -60,22 +60,17 @@ def get_indicators() -> Dict:
     }
 
 
-# TODO: Is there a better way to define this?
-class Reports(Enum):
-    """Define supported indicators."""
+def get_report_classes() -> Dict:
+    """Map report name to corresponding class."""
+    # To avoid circular imports classes are imported only once this function is called.
+    from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
+        Report as remoteMappingLevelOneReport,
+    )
+    from ohsome_quality_tool.reports.sketchmap_fitness.report import (
+        Report as sketchmapFitnessReport,
+    )
 
-    SKETCHMAP_FITNESS = 1
-    REMOTE_MAPPING_LEVEL_ONE = 2
-
-    @property
-    def constructor(self):
-        from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
-            Report as remoteMappingLevelOneReport,
-        )
-        from ohsome_quality_tool.reports.sketchmap_fitness.report import (
-            Report as sketchmapFitnessReport,
-        )
-
-        reports = {1: sketchmapFitnessReport, 2: remoteMappingLevelOneReport}
-
-        return reports[self.value]
+    return {
+        "SKETCHMAP_FITNESS": sketchmapFitnessReport,
+        "REMOTE_MAPPING_LEVEL_ONE": remoteMappingLevelOneReport,
+    }

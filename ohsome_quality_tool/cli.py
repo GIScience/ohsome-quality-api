@@ -5,7 +5,11 @@ import geojson
 
 from ohsome_quality_tool import oqt
 from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import DATASET_NAMES, Reports, get_indicators
+from ohsome_quality_tool.utils.definitions import (
+    DATASET_NAMES,
+    get_indicator_classes,
+    get_report_classes,
+)
 
 
 class PythonLiteralOption(click.Option):
@@ -34,7 +38,7 @@ _indicator_option = [
         "-i",
         required=True,
         type=click.Choice(
-            get_indicators().keys(),
+            get_indicator_classes().keys(),
             case_sensitive=True,
         ),
         help="Choose an indicator,valid indicators are specified in definitions.py .",
@@ -47,7 +51,7 @@ _report_option = [
         "-r",
         required=True,
         type=click.Choice(
-            list(Reports.__members__),
+            get_report_classes().keys(),
             case_sensitive=True,
         ),
         help="Choose a report,valid reports are specified in definitions.py .",

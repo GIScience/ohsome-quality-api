@@ -39,7 +39,7 @@ class BaseIndicator(metaclass=ABCMeta):
             if dataset is None or feature_id is None:
                 raise ValueError(
                     "Static calculation requires the dataset name "
-                    "and optionally the feature id as string."
+                    "and the feature id as string."
                 )
             self.dataset = dataset
             self.feature_id = feature_id
