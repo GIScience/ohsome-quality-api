@@ -1,6 +1,8 @@
 # ohsomehex-db uses Postgis v.10
 FROM postgis/postgis:10-3.0
 
+RUN apt-get update && apt-get install -y wget
+
 # Initialization scripts.
 # https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts
 COPY init-db-prod.sql /docker-entrypoint-initdb.d/1-init_db_prod.sql
