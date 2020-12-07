@@ -13,11 +13,7 @@ FROM (
         ST_Intersects (rast, geom4326)
         -- Avoid following ERROR of rt_raster_from_two_rasters during ST_Clip:
         -- The two rasters provided do not have the same alignment
-        AND ST_BandIsNoData (rast) = FALSE
-    GROUP BY
-        geohash_id,
-        pixel_as_polygon
-    LIMIT 1) AS foo
+        AND ST_BandIsNoData (rast) = FALSE) AS foo
 GROUP BY
     geohash_id;
 
