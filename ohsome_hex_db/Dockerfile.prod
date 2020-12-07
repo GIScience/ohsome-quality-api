@@ -2,12 +2,13 @@
 FROM postgis/postgis:10-3.0
 
 # Install dependencies of data import scripts
+# (ogr2ogr, raster2pgsql)
 RUN apt-get update && \
     apt-get install -y wget && \
     apt-get install -y unzip && \
-    apt-get install -y gdal-bin && \  # ogr2ogr
-    apt-get install -y libgdal-dev && \  # raster2pgsql
-    apt-get install -y postgis  # raster2pgsql
+    apt-get install -y gdal-bin && \
+    apt-get install -y libgdal-dev && \
+    apt-get install -y postgis
 
 # Initialization scripts.
 # https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts
