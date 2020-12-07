@@ -4,8 +4,8 @@ from typing import Dict
 from geojson import FeatureCollection
 from psycopg2 import sql
 
-from ohsome_quality_tool.utils.auth import PostgresDB
-from ohsome_quality_tool.utils.config import POSTGRES_SCHEMA, logger
+from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
+from ohsome_quality_tool.utils.definitions import logger
 
 
 def get_table_name(dataset: str, indicator: str) -> str:
@@ -191,7 +191,7 @@ def get_zonal_stats_population(bpolys: Dict):
     )
     # need to get geometry only
     polygon = json.dumps(bpolys["features"][0]["geometry"])
-    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
+    data = {"schema": "public", "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     population, area = query_results[0]
     logger.info("Got population for polygon.")

@@ -1,13 +1,67 @@
 import collections
-from enum import Enum, unique
+import logging.config
+import os
+from enum import Enum
+from pathlib import Path
+from typing import Dict
 
-# TODO: Is there a better way to define this?
-DATASETS = [
+from xdg import XDG_DATA_HOME
+
+DATASET_NAMES = (
     "nuts_rg_60m_2021",
     "nuts_rg_01m_2021",
     "isea3h_world_res_6_hex",
     "isea3h_world_res_12_hex",
-]
+    "gadm",
+    "gadm_level_0",
+    "gadm_level_1",
+    "gadm_level_2",
+    "gadm_level_3",
+    "gadm_level_4",
+    "gadm_level_5",
+)
+
+OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
+
+DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
+LOGGING_FILE_PATH = os.path.join(DATA_PATH, "oqt.log")
+LOGGING_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa: E501
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "formatter": "standard",
+            "filename": LOGGING_FILE_PATH,
+            "when": "D",
+            "interval": 1,
+            "backupCount": 14,
+        },
+    },
+    "loggers": {
+        "root": {"handlers": ["console"], "level": "INFO"},
+        "oqt": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
+
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger("oqt")
 
 
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
@@ -25,62 +79,45 @@ class TrafficLightQualityLevels(Enum):
     RED = 3
 
 
-# TODO: Is there a better way to define this?
-@unique
-class Indicators(Enum):
-    """Define supported indicators."""
+def get_indicator_classes() -> Dict:
+    """Map indicator name to corresponding class"""
+    # To avoid circular imports classes are imported only once this function is called.
+    from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
+        Indicator as ghspopComparisonIndicator,
+    )
+    from ohsome_quality_tool.indicators.guf_comparison.indicator import (
+        Indicator as gufComparisonIndicator,
+    )
+    from ohsome_quality_tool.indicators.last_edit.indicator import (
+        Indicator as lastEditIndicator,
+    )
+    from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
+        Indicator as mappingSaturationIndicator,
+    )
+    from ohsome_quality_tool.indicators.poi_density.indicator import (
+        Indicator as poiDensityIndicator,
+    )
 
-    GHSPOP_COMPARISON = 1
-    POI_DENSITY = 2
-    LAST_EDIT = 3
-    MAPPING_SATURATION = 4
-    GUF_COMPARISON = 5
-
-    @property
-    def constructor(self):
-        from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
-            Indicator as ghspopComparisonIndicator,
-        )
-        from ohsome_quality_tool.indicators.guf_comparison.indicator import (
-            Indicator as gufComparisonIndicator,
-        )
-        from ohsome_quality_tool.indicators.last_edit.indicator import (
-            Indicator as lastEditIndicator,
-        )
-        from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
-            Indicator as mappingSaturationIndicator,
-        )
-        from ohsome_quality_tool.indicators.poi_density.indicator import (
-            Indicator as poiDensityIndicator,
-        )
-
-        indicators = {
-            1: ghspopComparisonIndicator,
-            2: poiDensityIndicator,
-            3: lastEditIndicator,
-            4: mappingSaturationIndicator,
-            5: gufComparisonIndicator,
-        }
-
-        return indicators[self.value]
+    return {
+        "GHSPOP_COMPARISON": ghspopComparisonIndicator,
+        "POI_DENSITY": poiDensityIndicator,
+        "LAST_EDIT": lastEditIndicator,
+        "MAPPING_SATURATION": mappingSaturationIndicator,
+        "GUF_COMPARISON": gufComparisonIndicator,
+    }
 
 
-# TODO: Is there a better way to define this?
-class Reports(Enum):
-    """Define supported indicators."""
+def get_report_classes() -> Dict:
+    """Map report name to corresponding class."""
+    # To avoid circular imports classes are imported only once this function is called.
+    from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
+        Report as remoteMappingLevelOneReport,
+    )
+    from ohsome_quality_tool.reports.sketchmap_fitness.report import (
+        Report as sketchmapFitnessReport,
+    )
 
-    SKETCHMAP_FITNESS = 1
-    REMOTE_MAPPING_LEVEL_ONE = 2
-
-    @property
-    def constructor(self):
-        from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
-            Report as remoteMappingLevelOneReport,
-        )
-        from ohsome_quality_tool.reports.sketchmap_fitness.report import (
-            Report as sketchmapFitnessReport,
-        )
-
-        reports = {1: sketchmapFitnessReport, 2: remoteMappingLevelOneReport}
-
-        return reports[self.value]
+    return {
+        "SKETCHMAP_FITNESS": sketchmapFitnessReport,
+        "REMOTE_MAPPING_LEVEL_ONE": remoteMappingLevelOneReport,
+    }

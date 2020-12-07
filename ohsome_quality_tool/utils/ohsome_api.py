@@ -3,7 +3,7 @@ from typing import Dict
 
 import requests
 
-from ohsome_quality_tool.utils.config import OHSOME_API, logger
+from ohsome_quality_tool.utils.definitions import OHSOME_API, logger
 
 
 def process_ohsome_api(

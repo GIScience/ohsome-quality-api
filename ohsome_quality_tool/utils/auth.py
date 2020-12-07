@@ -1,12 +1,8 @@
+import os
+
 import psycopg2
 
-from ohsome_quality_tool.utils.config import (
-    POSTGRES_DB,
-    POSTGRES_HOST,
-    POSTGRES_PASSWORD,
-    POSTGRES_PORT,
-    POSTGRES_USER,
-)
+POSTGRES_SCHEMA = os.getenv("POSTGRES_SCHEMA", default="development")
 
 
 class PostgresDB(object):
@@ -17,11 +13,11 @@ class PostgresDB(object):
 
     def __init__(self):
         self._db_connection = psycopg2.connect(
-            database=POSTGRES_DB,
-            host=POSTGRES_HOST,
-            password=POSTGRES_PASSWORD,
-            port=POSTGRES_PORT,
-            user=POSTGRES_USER,
+            host=os.getenv("POSTGRES_HOST", default="postgres"),
+            port=os.getenv("POSTGRES_PORT", default=5435),
+            database=os.getenv("POSTGRES_DB", default="oqt"),
+            user=os.getenv("POSTGRES_USER", default="oqt_workers"),
+            password=os.environ["POSTGRES_PASSWORD"],
         )
 
     def query(self, query, data=None):

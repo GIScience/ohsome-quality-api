@@ -4,13 +4,12 @@ import unittest
 import geojson
 
 from ohsome_quality_tool.oqt import get_dynamic_indicator
-from ohsome_quality_tool.utils.definitions import Indicators
 
 
 class TestLastEditIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = Indicators.LAST_EDIT.name
+        self.indicator_name = "LAST_EDIT"
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""

@@ -34,7 +34,7 @@ services:
       context: website
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "5000:80"
     volumes:
       - ./website/website:/usr/share/nginx/html
 

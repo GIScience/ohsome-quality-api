@@ -1,6 +1,14 @@
+from typing import Dict
+
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.definitions import Indicators, Reports
+from ohsome_quality_tool.utils.definitions import (
+    get_indicator_classes,
+    get_report_classes,
+)
+
+INDICATOR_CLASSES: Dict = get_indicator_classes()
+REPORT_CLASSES: Dict = get_report_classes()
 
 
 def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
@@ -9,7 +17,7 @@ def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
     The results will be calculated dynamically,
     e.g. by querying the ohsome api.
     """
-    indicator = Indicators[indicator_name].constructor(dynamic=True, bpolys=bpolys)
+    indicator = INDICATOR_CLASSES[indicator_name](dynamic=True, bpolys=bpolys)
     result, metadata = indicator.get()
     return result, metadata
 
@@ -20,7 +28,7 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     The results have been pre-processed and will be extracted from the geo database.
     """
     # TODO: adjust arguments dynamic and bpolys
-    indicator = Indicators[indicator_name].constructor(
+    indicator = INDICATOR_CLASSES[indicator_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     result, metadata = indicator.get()
@@ -34,7 +42,7 @@ def process_indicator(indicator_name: str, dataset: str, feature_id: int):
     """
     # TODO: adjust arguments dynamic and bpolys
 
-    indicator = Indicators[indicator_name].constructor(
+    indicator = INDICATOR_CLASSES[indicator_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     indicator.run_processing()
@@ -48,9 +56,9 @@ def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
     e.g. by querying the ohsome api.
     """
 
-    result, indicators, metadata = (
-        Reports[report_name].constructor(dynamic=True, bpolys=bpolys).get()
-    )
+    result, indicators, metadata = REPORT_CLASSES[report_name](
+        dynamic=True, bpolys=bpolys
+    ).get()
     return result, indicators, metadata
 
 
@@ -60,7 +68,7 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
     # TODO: adjust arguments bpolys
-    report = Reports[report_name].constructor(
+    report = REPORT_CLASSES[report_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     result, indicators, metadata = report.get()
@@ -75,7 +83,7 @@ def get_static_report_pdf(
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
     # TODO: adjust arguments bpolys
-    report = Reports[report_name].constructor(
+    report = REPORT_CLASSES[report_name](
         dynamic=False, dataset=dataset, feature_id=feature_id
     )
     result, indicators, metadata = report.get()

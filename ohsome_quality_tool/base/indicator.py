@@ -3,11 +3,11 @@ from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
     IndicatorMetadata,
     IndicatorResult,
     TrafficLightQualityLevels,
+    logger,
 )
 from ohsome_quality_tool.utils.geodatabase import (
     get_bpolys_from_db,
@@ -33,14 +33,14 @@ class BaseIndicator(metaclass=ABCMeta):
 
         if self.dynamic:
             if bpolys is None:
-                raise ValueError
-            # for dynamic calculation you need to provide geojson geometries
+                raise ValueError("Dynamic calculation requires a GeoJSON as input.")
             self.bpolys = bpolys
         else:
             if dataset is None or feature_id is None:
-                raise ValueError
-            # for static calculation you need to provide the dataset name and
-            # optionally an feature_id string, e.g. which geometry ids to use
+                raise ValueError(
+                    "Static calculation requires the dataset name "
+                    "and the feature id as string."
+                )
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
@@ -63,21 +63,20 @@ class BaseIndicator(metaclass=ABCMeta):
             )
             result = self.get_from_database()
 
-        return result, self.metadata
+        return (result, self.metadata)
 
     def run_processing(self) -> IndicatorResult:
         """Run all steps needed to actually compute the indicator"""
         preprocessing_results = self.preprocess()
-        label, value, test, data = self.calculate(preprocessing_results)
+        label, value, text, data = self.calculate(preprocessing_results)
         svg = self.create_figure(data)
-        print(len(svg))
         logger.info(f"finished run for indicator {self.name}")
 
         result = IndicatorResult(
-            label=TrafficLightQualityLevels.YELLOW.name,
-            value=0.5,
-            text="a textual description of the results",
-            svg="test",
+            label=label,
+            value=value,
+            text=text,
+            svg=svg,
         )
 
         return result

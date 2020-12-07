@@ -2,6 +2,8 @@
 
 ## Development Setup
 
+## Virtual Environment and Dependency Management 
+
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
 
@@ -15,15 +17,32 @@ pre-commit install  # Install pre-commit hooks.
 - To add dependencies: `poetry add package-name`
 - To update dependencies: `poetry update package-name`
 
-Set up environment variables:
-* make sure that you have an `.env` file in place with `POSTGRES_PASSWORD`, `POSTGRES_DB`, `POSTGRES_USER` variables.
-* activate the environment: `export $(cat .env | xargs)`
+
+## Environment Variables for accessing Database
+
+To access the Database various environment variables need to be set.
+To do this create a `.env` file at the root of the repository and write down following variables and their values:
+
+```bash
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=hexadmin
+POSTGRES_USER=hexadmin
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+```
+
+To make the variables available to current environment run following command:
+
+```
+export $(cat .env | xargs)
+```
 
 Set up a local postgis database using docker:
 * run `docker-compose up -d oqt-postgres`
 * it will take around 15 minutes until all layers are set up
 * you can check the progress of the setup in the logs `docker logs oqt-postgres`
 * once you get `database system is ready to accept connections` in the logs the import was successful
+
 
 ## Style Guide
 
@@ -44,7 +63,9 @@ pre-commit install
 >
 > Tip 2: Mark inline that flake8 should not raise any error: `print()  # noqa`
 
+
 ## Tests
+
 For each indicator and each report there should be a test in place. Ideally there will be several tests per indicator or report, e.g. a test for the dynamic processing and the another test for the static processing.
 
 During development you should use the tests to check if your code changes didn't break any existing functionality.

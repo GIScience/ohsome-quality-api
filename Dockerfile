@@ -20,10 +20,7 @@ ENV YOUR_ENV=${YOUR_ENV} \
   PATH="$PATH:/root/.poetry/bin"
 
 # Install pip
-RUN apt-get update
-RUN apt-get --yes install python3-pip
-RUN apt-get --yes install git
-
+RUN apt-get update && apt-get --yes install python3-pip git
 RUN pip3 install "poetry==$POETRY_VERSION"
 
 WORKDIR /root

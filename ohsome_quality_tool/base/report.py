@@ -3,8 +3,7 @@ from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.config import logger
-from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult
+from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult, logger
 from ohsome_quality_tool.utils.geodatabase import get_bpolys_from_db
 
 
@@ -46,14 +45,14 @@ class BaseReport(metaclass=ABCMeta):
         extract the results from the geo database."""
 
         indicators = []
-        for i, item in enumerate(self.indicators_definition):
+        for item in self.indicators_definition:
             indicator, layers = item
             if self.dynamic:
-                result, metadata = indicator.constructor(
+                result, metadata = indicator(
                     dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
-                result, metadata = indicator.constructor(
+                result, metadata = indicator(
                     dynamic=self.dynamic,
                     layers=layers,
                     dataset=self.dataset,

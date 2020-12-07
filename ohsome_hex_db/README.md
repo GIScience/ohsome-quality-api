@@ -1,30 +1,37 @@
 # Database
 
-This database represents a part of the official ohsomehex database.
+This database is a PostGIS database.
 
+The database contains serveral dataset including the hexagonal grids (isea_hex) from the official ohsomehex database.
 
-## Information
+## Setup
 
-Information on scripts for database initialization:
+To setup the database a Dockerfile and scripts for initialization of the database are provided.
 
-- ohsome-hex-isea.sql: SQL dump of two tables representing the hex grids at two zoom levels.
-    - Excluded in this repository due to size
-    - The script which has been used to create this dump can be found at `scripts/create_isea_dump.sh`
+During the first run of the container following datasets are imported:
 
+- ISEA_HEX
+- GADM
+- NUTS
+- GHS_POP
 
-## Building
+> NOTE: Currently the `ohsome-hex-isea.sql` is not included in the git repository and has to be downloaded manually.
+
+> NOTE 2: The script which has been used to create `ohsome-hex-isea.sql` dump can be found at `ohsome-quality-tools/scripts/create_isea_dump.sh`
 
 
 ```bash
-docker build .
+docker build --tag oqt-db --file Dockerfile.prod .
 docker run \
     -d \
-    -p 5445:5432 \
-    -e POSTGRES_PASSWORD="xxx" \
+    -p 5432:5432 \
+    -e POSTGRES_PASSWORD="mypassword" \
     -e POSTGRES_USER="hexadmin" \
     -v pg_data:/var/lib/postgresql/data \
-    image_id
+    oqt-db
 ```
+
+- Build time is roughly: `5 min`
 
 
 Make sure the port is open:

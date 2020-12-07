@@ -4,13 +4,12 @@ import unittest
 import geojson
 
 from ohsome_quality_tool.oqt import get_dynamic_indicator
-from ohsome_quality_tool.utils.definitions import Indicators
 
 
 class TestMappingSaturationIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = Indicators.MAPPING_SATURATION.name
+        self.indicator_name = "MAPPING_SATURATION"
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""

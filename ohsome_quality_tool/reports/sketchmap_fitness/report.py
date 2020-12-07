@@ -1,11 +1,13 @@
+from typing import Dict
+
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.report import BaseReport
-from ohsome_quality_tool.utils.config import logger
 from ohsome_quality_tool.utils.definitions import (
-    Indicators,
     ReportResult,
     TrafficLightQualityLevels,
+    get_indicator_classes,
+    logger,
 )
 from ohsome_quality_tool.utils.layers import (
     SKETCHMAP_FITNESS_FEATURES,
@@ -19,10 +21,11 @@ class Report(BaseReport):
     name = "SKETCHMAP_FITNESS"
     description = "The sketchmap fitness report."
 
+    indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (Indicators.MAPPING_SATURATION, SKETCHMAP_FITNESS_FEATURES),
-        (Indicators.POI_DENSITY, SKETCHMAP_FITNESS_POI_LAYER),
-        (Indicators.LAST_EDIT, SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER),
     ]
 
     def __init__(
