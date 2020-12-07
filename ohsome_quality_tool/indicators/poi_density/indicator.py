@@ -60,7 +60,7 @@ class Indicator(BaseIndicator):
 
         result = preprocessing_result
         text = "The density of landmarks (points of reference, e.g. waterbodies, supermarkets, " \
-               "churches, bus stops) is "+str(result)+" features per km&#x00B2. "
+               f"churches, bus stops) is {result} features per square-kilometer."
 
         #TODO: define a better way to derive the quality value from the result
         if result > THRESHOLD_YELLOW:
