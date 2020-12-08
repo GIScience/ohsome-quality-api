@@ -1,6 +1,7 @@
 import json
 
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 from ohsome_quality_tool import oqt
 from ohsome_quality_tool.utils import geodatabase
@@ -32,6 +33,36 @@ async def get_static_report(report_name: str, dataset: str, feature_id: int):
 @app.get("/dynamic_report/{report_name}")
 async def get_dynamic_report(report_name: str, bpolys: str):
     bpolys = json.loads(bpolys)
+
+    print(bpolys)
+
+    result, indicators, metadata = oqt.get_dynamic_report(
+        report_name=report_name, bpolys=bpolys
+    )
+
+    print(result, indicators, metadata)
+
+    response = {
+        "attribution": {
+            "url": "https://ohsome.org/copyrights",
+            "text": "© OpenStreetMap contributors",
+        },
+        "apiVersion": "0.1",
+        "metadata": metadata._asdict(),
+        "result": result._asdict(),
+        "indicators": indicators,
+    }
+
+    return response
+
+
+class Item(BaseModel):
+    bpolys: str
+
+
+@app.post("/dynamic_report/{report_name}")
+async def post_dynamic_report(report_name: str, item: Item):
+    bpolys = json.loads(item.dict()["bpolys"])
     result, indicators, metadata = oqt.get_dynamic_report(
         report_name=report_name, bpolys=bpolys
     )
