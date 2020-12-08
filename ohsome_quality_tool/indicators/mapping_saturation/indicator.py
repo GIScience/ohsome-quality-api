@@ -1,8 +1,6 @@
 import json
-from datetime import datetime
 from typing import Dict, Tuple
 
-import pygal
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
@@ -85,6 +83,7 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
+        """
         timestamps = [
             datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ") for x in data["timestamps"]
         ]
@@ -101,4 +100,6 @@ class Indicator(BaseIndicator):
 
         figure = line_chart.render(is_unicode=True)
         logger.info(f"export figures for {self.name} indicator")
+        """
+        figure = "test"
         return figure
