@@ -39,3 +39,10 @@ Make sure the port is open:
 ```bash
 sudo iptables -I INPUT -p tcp --dport 5445 -j ACCEPT
 ```
+
+
+## Import additional datasets.
+
+Scripts to import additional datasets can be found at `ohsome-quality-tool/scripts/import`. Those include the GlobalUrbanFootprint which is not part of the initial setup of the database due to size.
+
+The packages `gdal-bin` and `postgis` need to be installed on the server for the import scripts.
