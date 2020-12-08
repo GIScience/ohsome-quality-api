@@ -1,4 +1,5 @@
 import json
+from math import ceil
 from typing import Dict, Tuple
 
 import numpy as np
@@ -105,27 +106,38 @@ class Indicator(BaseIndicator):
         if preprocessing_results["buildings_count_per_pop"] <= yellowThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
-            value = TrafficLightQualityLevels.RED.value
+            value = TrafficLightQualityLevels.RED.value - preprocessing_results[
+                "buildings_count_per_pop"
+            ] / yellowThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
+
         elif preprocessing_results["buildings_count_per_pop"] <= greenThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
-            value = TrafficLightQualityLevels.YELLOW.value
+            green = greenThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
+            yellow = yellowThresholdFunction(
+                preprocessing_results["pop_count_per_sqkm"]
+            )
+            fraction = (preprocessing_results["buildings_count_per_pop"] - yellow) / (
+                green - yellow
+            )
+            value = TrafficLightQualityLevels.YELLOW.value - fraction
+
         else:
             value = TrafficLightQualityLevels.GREEN.value
 
-        label = TrafficLightQualityLevels(value)
+        label = TrafficLightQualityLevels(ceil(value))
 
         text = (
-            f"{preprocessing_results['pop_count']:.2f} of People live in this Area "
-            "following the GHS POP Dataset, with a total number "
-            f"{preprocessing_results['buildings_count']}"
+            f"{int(preprocessing_results['pop_count'])} of People live in this Area "
+            "following the GHS POP Dataset, with a total number of "
+            f"{int(preprocessing_results['buildings_count'])} "
             "buildings mapped in OSM. This results in "
-            f"{preprocessing_results['buildings_count_per_pop']:.2f}"
+            f"{preprocessing_results['buildings_count_per_pop']:.2f} "
             "buildings per person, "
             f"which together with a population density of "
-            f"{preprocessing_results['pop_count_per_sqkm']:.2f}"
+            f"{preprocessing_results['pop_count_per_sqkm']:.2f} "
             "people per sqkm,corresponds to a "
-            f"{label.name}"
+            f"{label.name} "
             "label in regards to Dataquality"
         )
 
@@ -155,6 +167,8 @@ class Indicator(BaseIndicator):
             "location", [(data["pop_count_per_sqkm"], data["buildings_count_per_pop"])]
         )
         xy_chart.title = "Buildings per person against people per sqkm"
+        xy_chart.x_title = "Population Density [1/km^2]"
+        xy_chart.y_title = "Buildings per Person [-]"
         figure = xy_chart.render(is_unicode=True)
         logger.info(f"export figures for {self.name} indicator")
         return figure
