@@ -21,7 +21,7 @@ raster2pgsql \
     $geotiff public.ghs_pop \
     | \
     psql \
-        -v ON_ERROR_STOP=1
+        -v ON_ERROR_STOP=1 \
         -d hexadmin \
         -U $POSTGRES_USER
 
