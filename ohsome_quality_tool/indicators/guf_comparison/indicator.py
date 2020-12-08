@@ -52,7 +52,9 @@ class Indicator(BaseIndicator):
             "area_sqkm": area,
             "guf_built_up_density": built_up_area / area,
         }
-
+        self.layers= {"buildings": {"filter": "buildings=*",
+        "unit": "area"}
+    }
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/{unit}/",
             layers=self.layers,
@@ -76,9 +78,20 @@ class Indicator(BaseIndicator):
 
         # TODO: classification based on pop and building count
 
-        # each indicator need to provide these
-        label = TrafficLightQualityLevels.YELLOW
-        value = 0.5
+        # which thresholds?
+        
+        ratio = preprocessing_results["buildings_area"]/preprocessing_results["guf_built_up_area_sqkm"]
+        GreenThreshold = 0.6
+        YellowThreshold = 0.2
+        
+        if ratio <= YellowThreshold:
+            value = TrafficLightQualityLevels.RED.value
+        elif ratio <= GreenThreshold:
+            value = TrafficLightQualityLevels.YELLOW.value
+        else: 
+            value = TrafficLightQualityLevels.GREEN.value
+        
+        label = TrafficLightQualityLevels(ceil(value))
         text = "test test test"
 
         return label, value, text, preprocessing_results
