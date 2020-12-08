@@ -1,6 +1,7 @@
 ALTER TABLE isea3h_world_res_12_hex
     ADD COLUMN IF NOT EXISTS population FLOAT;
 
+-- Execution time: Circa 30 minutes
 WITH hex_pop AS (
     SELECT
         geohash_id,
