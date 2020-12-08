@@ -8,14 +8,14 @@
 
 
 LEVEL_ONE_LAYERS = {
-    "waterways": {
-        "description": """
-            The waterways as defined by all objects tagged with
-            'waterway=*' or 'natural=water'.
-        """,
-        "filter": "natural=water or waterway=*",
-        "unit": "length",
-    },
+    # "waterways": {
+    #     "description": """
+    #         The waterways as defined by all objects tagged with
+    #         'waterway=*' or 'natural=water'.
+    #     """,
+    #     "filter": "natural=water or waterway=*",
+    #     "unit": "length",
+    # },
     "buildings": {
         "description": """
             All buildings as defined by all objects tagged with 'building=*'.
@@ -32,7 +32,7 @@ LEVEL_ONE_LAYERS = {
         "filter": "highway in (motorway, trunk, primary, secondary, tertiary, unclassified, residential)",  # noqa
         "unit": "length",
     },
-    "roads": {"filter": "highway=*", "unit": "length"},
+    # "roads": {"filter": "highway=*", "unit": "length"},
 }
 
 
@@ -63,10 +63,16 @@ SKETCHMAP_FITNESS_POI_LAYER = {
 
 
 SKETCHMAP_FITNESS_POI_LAYER_COMBINED = {
-    "combined": {"filter": """natural=peak or leisure=park or boundary=national_park or 
-    natural=water or waterway=* or highway=bus_stop or railway=station or shop=* or 
-    tourism in (hotel, attraction) or amenity in (fuel, pharmacy, hospital, school, 
-    college, university, police, fire_station, restaurant, townhall)""", "unit": "count"},
+    "combined": {
+        "filter": (
+            "natural=peak or leisure=park or boundary=national_park or "
+            "natural=water or waterway=* or highway=bus_stop or railway=station or "
+            "shop=* or tourism in (hotel, attraction) or "
+            " amenity in (fuel, pharmacy, hospital, school, college, university, "
+            "police, fire_station, restaurant, townhall)"
+        ),
+        "unit": "count",
+    },
 }
 
 

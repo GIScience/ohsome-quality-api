@@ -113,6 +113,7 @@ def get_report_classes() -> Dict:
     from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
         Report as remoteMappingLevelOneReport,
     )
+    from ohsome_quality_tool.reports.simple_report.report import Report as simpleReport
     from ohsome_quality_tool.reports.sketchmap_fitness.report import (
         Report as sketchmapFitnessReport,
     )
@@ -120,4 +121,5 @@ def get_report_classes() -> Dict:
     return {
         "SKETCHMAP_FITNESS": sketchmapFitnessReport,
         "REMOTE_MAPPING_LEVEL_ONE": remoteMappingLevelOneReport,
+        "SIMPLE_REPORT": simpleReport,
     }
