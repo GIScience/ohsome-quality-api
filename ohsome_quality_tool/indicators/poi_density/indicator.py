@@ -19,9 +19,7 @@ class Indicator(BaseIndicator):
     """The POI Density Indicator."""
 
     name = "POI_DENSITY"
-    description = """
-        Derive the density of OSM features
-    """
+    description = "Derive the density of OSM features (count divided by area in square-kilometers)"
     interpretations: Dict = POI_DENSITY_LABEL_INTERPRETATIONS
 
     def __init__(
@@ -60,7 +58,7 @@ class Indicator(BaseIndicator):
 
         result = preprocessing_result
         text = "The density of landmarks (points of reference, e.g. waterbodies, supermarkets, " \
-               f"churches, bus stops) is {result} features per square-kilometer."
+               f"churches, bus stops) is {result} features."
 
         #TODO: define a better way to derive the quality value from the result
         if result > THRESHOLD_YELLOW:
