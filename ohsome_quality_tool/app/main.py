@@ -8,6 +8,15 @@ from ohsome_quality_tool.utils import geodatabase
 
 app = FastAPI()
 
+response_template = {
+    "attribution": {
+        "url": "https://ohsome.org/copyrights",
+        "text": "© OpenStreetMap contributors",
+    },
+    "apiVersion": "0.1",
+    "metadata": "",
+    "result": "",
+}
 
 @app.get("/test/{indicator_name}")
 async def get_test(indicator_name: str):
@@ -20,6 +29,19 @@ async def get_static_indicator(indicator_name: str, dataset: str, feature_id: in
         indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
     )
     return results
+
+# added for now for testing purposes
+@app.get("/dynamic_indicator/{indicator_name}")
+async def get_dynamic_indicator(indicator_name: str, bpolys: str):
+    bpolys = json.loads(bpolys)
+    result, metadata = oqt.get_dynamic_indicator(
+        indicator_name=indicator_name, bpolys=bpolys
+    )
+    response = response_template
+    response['metadata'] = metadata._asdict()
+    response['result'] = result._asdict()
+
+    return response
 
 
 @app.get("/static_report/{report_name}")
