@@ -7,7 +7,7 @@ FROM (
         -- ST_PixelAsPolygons will exclude pixel with nodata values
         ST_PixelAsPolygons (ST_Clip (rast, geom4326)) AS pixel_as_polygon
     FROM
-        guf04_daressalaam,
+        guf04,
         isea3h_world_res_12_hex
     WHERE
         ST_Intersects (rast, geom4326)
@@ -16,4 +16,3 @@ FROM (
         AND ST_BandIsNoData (rast) = FALSE) AS foo
 GROUP BY
     geohash_id;
-
