@@ -16,7 +16,7 @@ WITH hex_pop AS (
             -- otherwise we might count some pixel several times
             ST_SummaryStats (ST_Union (ST_Clip (rast, geom4326))) AS stats
     FROM
-        ghs_pop_4326,
+        ghs_pop,
         isea3h_world_res_6_hex
     WHERE
         ST_Intersects (rast, geom4326)
