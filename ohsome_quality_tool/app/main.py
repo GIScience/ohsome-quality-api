@@ -64,16 +64,10 @@ async def get_dynamic_report(report_name: str, bpolys: str):
 
     print(result, indicators, metadata)
 
-    response = {
-        "attribution": {
-            "url": "https://ohsome.org/copyrights",
-            "text": "© OpenStreetMap contributors",
-        },
-        "apiVersion": "0.1",
-        "metadata": metadata._asdict(),
-        "result": result._asdict(),
-        "indicators": indicators,
-    }
+    response = response_template
+    response['metadata'] = metadata._asdict()
+    response['result'] = result._asdict()
+    response['indicators'] = indicators
 
     return response
 
@@ -91,16 +85,10 @@ async def post_dynamic_report(report_name: str, item: Item):
 
     print(result, indicators, metadata)
 
-    response = {
-        "attribution": {
-            "url": "https://ohsome.org/copyrights",
-            "text": "© OpenStreetMap contributors",
-        },
-        "apiVersion": "0.1",
-        "metadata": metadata._asdict(),
-        "result": result._asdict(),
-        "indicators": indicators,
-    }
+    response = response_template
+    response['metadata'] = metadata._asdict()
+    response['result'] = result._asdict()
+    response['indicators'] = indicators
 
     return response
 
