@@ -1,10 +1,15 @@
 # ohsomehex-db Postgis version is 10
 FROM postgis/postgis:10-3.0
 
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    gzip
+
+# Install dependencies of data import scripts
+# (ogr2ogr, raster2pgsql)
+RUN apt-get update && \
+    apt-get install -y wget && \
+    apt-get install -y unzip && \
+    apt-get install -y gdal-bin && \
+    apt-get install -y libgdal-dev && \
+    apt-get install -y postgis
 
 RUN mkdir -p /data
 RUN chmod -R 777 /data
@@ -18,5 +23,6 @@ RUN pg_restore --version
 COPY init_db.development/init-db.sql /docker-entrypoint-initdb.d/1-init-db.sql
 COPY admin-schema.sql /docker-entrypoint-initdb.d/2-admin-schema.sql
 COPY init_db.development/restore-dev-tables.sh docker-entrypoint-initdb.d/3-restore-dev-tables.sh
-COPY init_db.development/create-indices.sql docker-entrypoint-initdb.d/4-create-indices.sql
-COPY init_db.development/zonal-stats.sql docker-entrypoint-initdb.d/4-zonal-stats.sql
+COPY init_db.development/GHS_POP.sh /docker-entrypoint-initdb.d/4-GHS_POP.sh
+COPY init_db.development/create-indices.sql docker-entrypoint-initdb.d/5-create-indices.sql
+COPY init_db.development/zonal-stats.sql docker-entrypoint-initdb.d/6-zonal-stats.sql

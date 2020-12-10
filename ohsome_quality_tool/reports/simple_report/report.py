@@ -9,7 +9,10 @@ from ohsome_quality_tool.utils.definitions import (
     get_indicator_classes,
     logger,
 )
-from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
+from ohsome_quality_tool.utils.layers import (
+    LEVEL_ONE_LAYERS,
+    SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
+)
 
 
 class Report(BaseReport):
@@ -23,8 +26,8 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["GHSPOP_COMPARISON"], LEVEL_ONE_LAYERS),
         (indicator_classes["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
+        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
     ]
 
     def __init__(
