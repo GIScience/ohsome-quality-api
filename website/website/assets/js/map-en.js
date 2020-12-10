@@ -140,7 +140,7 @@ function buildMap(err, ...charts){
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
 		// TODO style selected country
-		alert("I will be red");
+		// alert("I will be red");
 		var layer = e.target;
 		// get selected country
 		countryID = layer.feature.properties.name;
@@ -174,11 +174,6 @@ function buildMap(err, ...charts){
 	
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
-		// scroll the page a bit up when clicking on the get quality button
-		document.querySelector('#results').scrollIntoView({
-			behavior: 'smooth'
-		});
-		// check selections
 		var topic = document.getElementById("cardtype");
 		var areas = document.getElementById("mapCheck").innerHTML;
 
@@ -200,69 +195,87 @@ function buildMap(err, ...charts){
 			// get and send paramater for and to api
 			var region = getCountry(selectedCountry)
 			var dataset = getDataset(selectedDataset)
-			args = getParams(region, selectedValue, dataset);
-			console.log(args)
-			// put args in url:
-			// 	"http://0.0.0.0:8000/indicator/poiDensity/"
-			// send Params
-			httpGetAsync("https://api.ohsome.org/v1/elements/area?bboxes=8.625%2C49.3711%2C8.7334%2C49.4397&format=json&time=2014-01-01&filter=landuse%3Dfarmland%20and%20type%3Away", 
-			
-		
-			function(response) {
-				console.log("response")
-				console.log(response)
-	
-			});
+			var feature_id = null
+			// args = getParams(region, selectedValue, dataset);
+			// prepare topic param
+			selectedValue = "indicator_name=" + selectedValue;
+			// prepare dataset param 
+			// split dataset to get feature_id from dataset
+			// assumption dataset is " " between datset and feature_id
+			var combinedVal = dataset.split(' ')
+			dataset = "dataset=" + combinedVal[1]
+			// prepare feature_id param
+			feature_id = "feature_id=" + combinedVal[0]
+			// console.log(args)
+			//sendParams(args);
+			res = null;
+			// var corsHeaderUrl = "https://cors-anywhere.herokuapp.com/"
+			var oqtUrl = "http://127.0.0.1:8000";
+			// var oqtUrl = "https://api.ohsome.org/v1";
+			// var params = { bpolys: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}] } 
+			// }
+			var params = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}]}"
 
-			// ######   traffic  light ########
-			document.getElementById("trafficTop").innerHTML = 
-			
-				 '<h5>Overall quality</h5>';
-			document.getElementById("traffic_map_space").innerHTML = 
-			
-				 '<img src="../assets/img/map.png">';
-			document.getElementById("traffic_dots_space").innerHTML = 
-			
-				 '<img src="../assets/img/ampel.PNG">';
-				 
-			document.getElementById("traffic_text_space").innerHTML = 
-			
-				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
-				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.';
-			 // ######   graph ########
-			document.getElementById("graphTop").innerHTML = 
-			
-				 '<h5>Stats about traffic light calculation</h5>';
-			document.getElementById("graph_space").innerHTML = 
-			
-				 '<img src="../assets/img/psy.png">';
-			document.getElementById("text_space").innerHTML = 
-				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
-				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. '+    
-				'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit'+    
-				'amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam '+    
-				'erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, '+    
-				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
-			
-			// ######   details ########
-			document.getElementById("calcTop").innerHTML = 
-			
-			'<h5>Indicator calculation explanation</h5>';
-			document.getElementById("calc_space").innerHTML = 
-				'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore '+    
-				'et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. '+    
-				'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit'+    
-				'amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam '+    
-				'erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, '+    
-				'no sea takimata sanctus est Lorem ipsum dolor sit amet.';
-    	    // TODO implement nice waiting process delay
-			alert('Is prcessing ...!'); 
-			
+			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params).replace(/\\"/g, '"'), handleGetQuality);
+			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", params, handleGetQuality);
+			getResponseFile(oqtUrl +"/dynamic_report/SIMPLE_REPORT", params, handleGetQuality)
+
 		}
 		// when params were send, get pdf button turns blue
 		changeColor() 
-	};
+	}; // getQuality Button click ends
 	
+	function handleGetQuality(response) {
+		console.log("response",response)
+		
+		// ######   traffic  light ########
+		document.getElementById("trafficTop").innerHTML = 
+				'<h5>Overall quality</h5>';
+		
+		document.getElementById("traffic_map_space").innerHTML = 
+				'<img src="../assets/img/map.png">';
+		
+		// var imgSrc = ''
+		// if(response.result.label === 1) {
+		// 	imgSrc = "../assets/img/green.PNG"
+		// }
+		// else if(response.result.label === 2) {
+		// 	imgSrc = "../assets/img/ampel.PNG"
+		// }
+		// else if(response.result.label === 3) {
+		// 	imgSrc = "../assets/img/red.PNG"
+		// }
+
+		// assumption 3=green, 2=yellow, 1=red
+		document.getElementById("traffic_dots_space").innerHTML = 
+				'<img src="../assets/img/traffic_light_'+ response.result.label +'.jpg">';
+				
+		document.getElementById("traffic_text_space").innerHTML = 
+			'<p style="font-weight: bold;">Over value: '+ response.result.value +'</p>'
+			+ '<p>'+ response.result.text +'</p>'
+			
+			if(response.indicators.length > 0) {
+				addIndicators(response.indicators)
+			}
+	}
+
+	/**
+	 * function adds indicator
+	 * 
+	 * @param indicators is an array of indicator
+	 */
+	function addIndicators(indicators) {
+		console.log('indicators ', indicators)
+		var indicatorDiv = document.getElementById("indicatorSpace");
+		// loop throw all indicators and add to DOM
+		indicators.forEach(indicator => {
+			var indiHeader = document.createElement("h3");
+			var indiHeadernode = document.createTextNode("Indicator: ", indicator.metadata.name);
+			indiHeader.appendChild(indiHeadernode);
+			indicatorDiv.insertBefore(indiHeader);
+		});
+	}
+
 	// while clicking on the get quality button check for selections -> see changeColorQ()
 	document.getElementById("cardtype").onclick = function () {	
 		changeColorQ()		
@@ -421,26 +434,53 @@ function buildMap(err, ...charts){
 	logo//.addTo(map)
 
  }
-// function to go to the top of page by onclick
-function topFunction() {
+ function topFunction() {
 	document.body.scrollTop = 0; // Sollte für Safari, aber ich habe keinen Mac und ich habe es nicht getestet
 	document.documentElement.scrollTop = 0; // Für Chrome, Firefox, IE and Opera
 }
-// function to go to the bottom of page by onclick
 function bottomFunction() {
 	window.scrollTo(0, document.body.scrollHeight);
 }
-// function to send user selection to api
+
 function httpGetAsync(theUrl, callback)
 {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
-    }
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() { 
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+			callback(xmlHttp.responseText);
+	}
 	console.log(theUrl)
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-    xmlHttp.send(null);
-	console.log(xmlHttp.responseText)
-	return xmlHttp.responseText;
+	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+	xmlHttp.send(null);
+	// console.log(xmlHttp.responseText)
+	// return xmlHttp.responseText;
+}
+
+function httpPostAsync(theUrl, params, callback)
+{
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() { 
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+			callback(xmlHttp.responseText);
+	}
+	console.log(theUrl)
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous 
+	// xmlHttp.setRequestHeader("Content-type", "application/json");
+	xmlHttp.send(params);
+	// console.log(xmlHttp.responseText)
+	// return xmlHttp.responseText;
+}
+
+function getResponseFile(url, params, callback) {
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() { 
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+			callback(JSON.parse(xmlHttp.responseText));
+	}
+	console.log(url)
+	// xmlHttp.open("POST", theUrl, true); // true for asynchronous 
+	// xmlHttp.setRequestHeader("Content-type", "application/json");
+	xmlHttp.open("GET", "assets/data/api_response.json", true);
+	xmlHttp.send(params);
+	
 }
