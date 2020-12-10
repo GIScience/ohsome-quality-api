@@ -1,6 +1,8 @@
 import json
 from typing import Dict, Tuple
 
+import dateutil.parser
+import pygal
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
@@ -55,11 +57,14 @@ class Indicator(BaseIndicator):
             timestamps = [
                 y_dict["timestamp"] for y_dict in query_results[layer]["result"]
             ]
+            max_value = max(results)
 
             preprocessing_results["timestamps"] = timestamps
             preprocessing_results[f"{layer}_{unit}"] = results
+            preprocessing_results[f"{layer}_{unit}_normalized"] = [
+                result / max_value for result in results
+            ]
 
-        logger.info(preprocessing_results)
         return preprocessing_results
 
     def calculate(
@@ -83,23 +88,34 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
-        """
-        timestamps = [
-            datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ") for x in data["timestamps"]
-        ]
-        timestamps_labels = [x.year for x in timestamps]
 
-        line_chart = pygal.Line()
-        line_chart.title = "Mapping Saturation"
-        line_chart.x_labels = timestamps_labels
+        line_chart = pygal.XY()
 
-        for layer in self.layers.keys():
+        # a complicated way to add labels
+        timestamps = data["timestamps"]
+        x_labels = []
+        for k, t in enumerate(timestamps):
+            timestamp = dateutil.parser.parse(t)
+            year = timestamp.year
+            month = timestamp.month
+            if month == 1:
+                x_labels.append({"value": k, "label": str(year)})
+
+        # add plot for each layer
+        for i, layer in enumerate(self.layers.keys()):
             unit = self.layers[layer]["unit"]
-            y_data = data[f"{layer}_{unit}_normalized"]
-            line_chart.add(layer, y_data)
+            query_results = data[f"{layer}_{unit}"]
+            max_value = max(query_results)
 
+            # use normalized values to be able to compare different features,
+            # e.g. buildings and highways
+            results_norm = [
+                (h, result / max_value) for h, result in enumerate(query_results)
+            ]
+
+            line_chart.add(layer, results_norm)
+
+        line_chart.x_labels = x_labels
         figure = line_chart.render(is_unicode=True)
-        logger.info(f"export figures for {self.name} indicator")
-        """
-        figure = "test"
+
         return figure
