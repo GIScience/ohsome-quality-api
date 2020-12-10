@@ -251,10 +251,13 @@ function buildMap(err, ...charts){
 				'<img src="../assets/img/traffic_light_'+ response.result.label +'.jpg">';
 				
 		document.getElementById("traffic_text_space").innerHTML = 
-			'<p style="font-weight: bold;">Over value: '+ response.result.value +'</p>'
+			'<p style="font-weight: bold;">Overall value: '+ response.result.value +'</p>'
 			+ '<p>'+ response.result.text +'</p>'
 			
 			if(response.indicators.length > 0) {
+				document.getElementById("graphTop").innerHTML = 
+				 '<h5>Stats about traffic light calculation</h5>';
+
 				addIndicators(response.indicators)
 			}
 	}
@@ -265,14 +268,43 @@ function buildMap(err, ...charts){
 	 * @param indicators is an array of indicator
 	 */
 	function addIndicators(indicators) {
-		console.log('indicators ', indicators)
-		var indicatorDiv = document.getElementById("indicatorSpace");
+		// console.log('indicators ', indicators)
+		var parentDiv = document.getElementById("indicatorSpace");
 		// loop throw all indicators and add to DOM
 		indicators.forEach(indicator => {
-			var indiHeader = document.createElement("h3");
-			var indiHeadernode = document.createTextNode("Indicator: ", indicator.metadata.name);
+
+			// console.log('indicator = ', indicator)
+			var indicatorDiv = document.createElement("div");
+			indicatorDiv.className = "row osm"
+
+			var indiHeader = document.createElement("h4");
+			var indiHeadernode = document.createTextNode("Indicator: "+ indicator.metadata.name);
 			indiHeader.appendChild(indiHeadernode);
-			indicatorDiv.insertBefore(indiHeader);
+			indicatorDiv.appendChild(indiHeader);
+
+			// graph part
+			var graph_space = document.createElement("div");
+			graph_space.style = "width:50%; float:left; padding:10px;"
+			graph_space.innerHTML = indicator.result.svg;
+			indicatorDiv.appendChild(graph_space)
+
+			// indicator text
+			var inidcator_traffic_light_div = document.createElement("div");
+			inidcator_traffic_light_div.style="width:10%; float:left; padding:10px;"
+
+			var inidcator_traffic_light = document.createElement("img");
+			inidcator_traffic_light.src="../assets/img/traffic_light_"+ indicator.result.label +".jpg";
+			inidcator_traffic_light_div.appendChild(inidcator_traffic_light);
+
+			var text_space = document.createElement("div");
+			text_space.style = "width:40%; float:right; padding:10px;"
+			text_space.innerHTML = indicator.result.text;
+			
+			indicatorDiv.appendChild(inidcator_traffic_light_div);
+			indicatorDiv.appendChild(text_space)
+
+			parentDiv.appendChild(indicatorDiv);
+			parentDiv.appendChild(document.createElement("hr"));
 		});
 	}
 
