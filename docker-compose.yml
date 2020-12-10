@@ -47,7 +47,7 @@ services:
     ports:
       - "5000:80"
     volumes:
-      - oqt-website:/usr/share/nginx/html
+      - ./website/website:/usr/share/nginx/html
 
 volumes:
   oqt-data: {}
