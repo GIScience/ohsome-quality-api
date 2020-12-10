@@ -9,6 +9,7 @@ from pygal.style import Style
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
 from ohsome_quality_tool.utils.label_interpretations import (
     POI_DENSITY_LABEL_INTERPRETATIONS,
 )
@@ -49,11 +50,16 @@ class Indicator(BaseIndicator):
     def preprocess(self) -> float:
         logger.info(f"run preprocessing for {self.name} indicator")
 
+        """
         query_results_density = ohsome_api.process_ohsome_api(
             endpoint="elements/count/density/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
+        """
+
+        # calculate area for polygon
+        area_sqkm = get_area_of_bpolys(self.bpolys)
 
         query_results_count = ohsome_api.process_ohsome_api(
             endpoint="elements/count/",
@@ -61,19 +67,16 @@ class Indicator(BaseIndicator):
             bpolys=json.dumps(self.bpolys),
         )
 
-        preprocessing_results = {}
+        preprocessing_results = {"area_sqkm": area_sqkm}
         # TODO: this indicator currently has only a single layer
         for layer in self.layers.keys():
-            preprocessing_results[f"{layer}_density"] = query_results_density[layer][
-                "result"
-            ][0]["value"]
             preprocessing_results[f"{layer}_count"] = query_results_count[layer][
                 "result"
             ][0]["value"]
-            preprocessing_results[f"{layer}_area_sqkm"] = (
-                preprocessing_results[f"{layer}_count"]
-                / preprocessing_results[f"{layer}_density"]
+            preprocessing_results[f"{layer}_density"] = (
+                preprocessing_results[f"{layer}_count"] / area_sqkm
             )
+
         return preprocessing_results
 
     def calculate(
@@ -117,7 +120,13 @@ class Indicator(BaseIndicator):
         # is it possible to comibine diffrent pygal chart types ie stacked and xy?
         CustomStyle = Style(colors=("green", "yellow", "blue"))
         xy_chart = pygal.XY(stroke=True, style=CustomStyle)
-        x = np.linspace(0, 200, 2)
+
+        # set x max value based on area
+        if data["area_sqkm"] < 10:
+            max_area = 10
+        else:
+            max_area = round(data["area_sqkm"] * 2 / 10) * 10
+        x = np.linspace(0, max_area, 2)
 
         def greenThresholdFunction(area):
             return THRESHOLD_YELLOW * area
@@ -132,7 +141,7 @@ class Indicator(BaseIndicator):
             " Yellow threshold ", [(xi, yellowThresholdFunction(xi)) for xi in x]
         )
 
-        xy_chart.add("location", [(data["combined_area_sqkm"], data["combined_count"])])
+        xy_chart.add("location", [(data["area_sqkm"], data["combined_count"])])
         xy_chart.title = "POI Density (POIs per Area)"
         xy_chart.x_title = "Area [sqkm]"
         xy_chart.y_title = "POIs"

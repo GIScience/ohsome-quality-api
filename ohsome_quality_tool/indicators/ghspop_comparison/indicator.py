@@ -10,6 +10,7 @@ from pygal.style import Style
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
 class Indicator(BaseIndicator):
@@ -24,15 +25,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = {
-            "buildings": {
-                "description": """
-            All buildings as defined by all objects tagged with 'building=*'.
-        """,
-                "filter": "building=*",
-                "unit": "count",
-            }
-        },
+        layers: Dict = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -78,6 +71,9 @@ class Indicator(BaseIndicator):
             preprocessing_results[f"{layer}_{unit}_per_pop"] = (
                 preprocessing_results[f"{layer}_{unit}"] / pop_count
             )
+            preprocessing_results[f"{layer}_{unit}_per_sqkm"] = (
+                preprocessing_results[f"{layer}_{unit}"] / area
+            )
 
         return preprocessing_results
 
@@ -89,19 +85,10 @@ class Indicator(BaseIndicator):
         # more precise values? maybe as fraction of the threshold functions?
 
         def greenThresholdFunction(pop_per_sqkm):
-            return 0.03 - (0.03 - 0.3) * np.exp(-0.0004 * pop_per_sqkm)
+            return 5 * np.sqrt(pop_per_sqkm)
 
         def yellowThresholdFunction(pop_per_sqkm):
-            return 1.5 * (10.0 ** (-2)) - (1.5 * (10.0 ** (-2)) - 0.1) * np.exp(
-                -0.0005 * pop_per_sqkm
-            )
-
-        """greenThresholdFunction = lambda pop_per_sqkm: 0.05 - (0.05 - 0.3) * np.exp(
-            -0.0002 * pop_per_sqkm
-        )
-        yellowThresholdFunction = lambda pop_per_sqkm: 10.0 ** (-2)*- (
-            10.0 ** (-2) - 0.04
-        ) * np.exp(-0.0003 * pop_per_sqkm)"""
+            return 0.75 * np.sqrt(pop_per_sqkm)
 
         if preprocessing_results["buildings_count_per_pop"] <= yellowThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
@@ -147,15 +134,19 @@ class Indicator(BaseIndicator):
         # is it possible to comibine diffrent pygal chart types ie stacked and xy?
         CustomStyle = Style(colors=("green", "yellow", "blue"))
         xy_chart = pygal.XY(stroke=True, style=CustomStyle)
-        x = np.linspace(0, 40000, 40)
+
+        # set x max value based on area
+        if data["pop_count_per_sqkm"] < 100:
+            max_area = 10
+        else:
+            max_area = round(data["pop_count_per_sqkm"] * 2 / 10) * 10
+        x = np.linspace(0, max_area, 20)
 
         def greenThresholdFunction(pop_per_sqkm):
-            return 0.03 - (0.03 - 0.3) * np.exp(-0.0004 * pop_per_sqkm)
+            return 5 * np.sqrt(pop_per_sqkm)
 
         def yellowThresholdFunction(pop_per_sqkm):
-            return 1.5 * (10.0 ** (-2)) - (1.5 * (10.0 ** (-2)) - 0.1) * np.exp(
-                -0.0005 * pop_per_sqkm
-            )
+            return 0.75 * np.sqrt(pop_per_sqkm)
 
         xy_chart.add(
             " Green threshold ", [(xi, greenThresholdFunction(xi)) for xi in x]
@@ -168,7 +159,7 @@ class Indicator(BaseIndicator):
         )
         xy_chart.title = "Buildings per person against people per sqkm"
         xy_chart.x_title = "Population Density [1/km^2]"
-        xy_chart.y_title = "Buildings per Person [-]"
+        xy_chart.y_title = "Building Density [1/km^2]"
         figure = xy_chart.render(is_unicode=True)
         logger.info(f"export figures for {self.name} indicator")
         return figure

@@ -35,6 +35,16 @@ LEVEL_ONE_LAYERS = {
     # "roads": {"filter": "highway=*", "unit": "length"},
 }
 
+BUILDING_COUNT_LAYER = {
+    "buildings": {
+        "description": """
+        All buildings as defined by all objects tagged with 'building=*'.
+    """,
+        "filter": "building=*",
+        "unit": "count",
+    }
+}
+
 
 SKETCHMAP_FITNESS_POI_LAYER = {
     "mountain": {"filter": "natural=peak", "unit": "count"},

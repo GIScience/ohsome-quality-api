@@ -170,9 +170,7 @@ def get_zonal_stats_population(bpolys: Dict):
             (public.ST_SummaryStats(
                 public.ST_Clip(
                     rast,
-                    public.ST_Transform(
-                        public.ST_GeomFromGeoJSON(%(polygon)s)
-                        , 954009)
+                    public.ST_GeomFromGeoJSON(%(polygon)s)
                 )
             )
         ).sum) population
@@ -183,9 +181,7 @@ def get_zonal_stats_population(bpolys: Dict):
         WHERE
          public.ST_Intersects(
             rast,
-            public.ST_Transform(
-                public.ST_GeomFromGeoJSON(%(polygon)s)
-                , 954009)
+            public.ST_GeomFromGeoJSON(%(polygon)s)
          )
         """
     )
@@ -240,3 +236,31 @@ def get_zonal_stats_guf(bpolys: Dict):
     logger.info("Got built up area for polygon.")
 
     return built_up_area, area
+
+
+def get_area_of_bpolys(bpolys: Dict):
+    """Calculates the area of a geojson geometry in postgis.
+
+    Using the database here so that we do not need to rely on
+    GDAL being installed for python.
+    """
+
+    db = PostgresDB()
+
+    query = sql.SQL(
+        """
+        SELECT
+            public.ST_Area(
+                public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+            ) / (1000*1000) as area_sqkm
+        """
+    )
+
+    polygon = json.dumps(bpolys["features"][0]["geometry"])
+    data = {"polygon": polygon}
+    query_results = db.retr_query(query=query, data=data)
+    area = query_results[0][0]
+
+    logger.info("Got area for polygon.")
+
+    return area
