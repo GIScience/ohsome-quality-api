@@ -11,7 +11,7 @@ from ohsome_quality_tool.utils.definitions import (
 )
 from ohsome_quality_tool.utils.layers import (
     SKETCHMAP_FITNESS_FEATURES,
-    SKETCHMAP_FITNESS_POI_LAYER,
+    SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
 )
 
 
@@ -25,7 +25,7 @@ class Report(BaseReport):
     indicators_definition = [
         (indicator_classes["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
         (indicator_classes["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER),
+        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
     ]
 
     def __init__(
