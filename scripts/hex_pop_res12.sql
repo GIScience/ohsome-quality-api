@@ -1,6 +1,7 @@
 ALTER TABLE isea3h_world_res_12_hex
     ADD COLUMN IF NOT EXISTS population FLOAT;
 
+-- Execution time: Circa 30 minutes
 WITH hex_pop AS (
     SELECT
         geohash_id,
@@ -15,7 +16,7 @@ WITH hex_pop AS (
             -- otherwise we might count some pixel several times
             ST_SummaryStats (ST_Union (ST_Clip (rast, geom4326))) AS stats
     FROM
-        ghs_pop_4326,
+        ghs_pop,
         isea3h_world_res_12_hex
     WHERE
         ST_Intersects (rast, geom4326)

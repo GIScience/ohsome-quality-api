@@ -10,21 +10,23 @@ from ohsome_quality_tool.utils.definitions import (
     logger,
 )
 from ohsome_quality_tool.utils.layers import (
-    SKETCHMAP_FITNESS_FEATURES,
+    LEVEL_ONE_LAYERS,
     SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
 )
 
 
 class Report(BaseReport):
-    """The Sketchmap Fitness Report."""
+    """The remote mapping level one Report."""
 
-    name = "SKETCHMAP_FITNESS"
-    description = "The sketchmap fitness report."
+    name = "SIMPLE_REPORT"
+    description = """
+        This report shows the quality for map features that are usually
+        added on the basis of satellite imagery.
+    """
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
         (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
     ]
 

@@ -12,11 +12,11 @@ RUN apt-get update && \
 
 # Initialization scripts.
 # https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts
-COPY init-db-prod.sql /docker-entrypoint-initdb.d/1-init_db_prod.sql
+COPY init_db.production/init_db.sql /docker-entrypoint-initdb.d/1-init_db.sql
 COPY admin-schema.sql /docker-entrypoint-initdb.d/2-admin-schema.sql
-COPY ohsome-hex-isea.sql /docker-entrypoint-initdb.d/3-ohsome-hex-isea.sql
+COPY init_db.production/ohsome-hex-isea.sql /docker-entrypoint-initdb.d/3-ohsome-hex-isea.sql
 
-COPY data_import_scripts/NUTS_2021.sh /docker-entrypoint-initdb.d/4-NUTS_2021.sh
-COPY data_import_scripts/GADM.sh /docker-entrypoint-initdb.d/5-GADM.sh
-COPY data_import_scripts/GADM.sql /docker-entrypoint-initdb.d/6-GADM.sql
-COPY data_import_scripts/GHS_POP.sh /docker-entrypoint-initdb.d/7-GHS_POP.sh
+COPY init_db.production/NUTS_2021.sh /docker-entrypoint-initdb.d/4-NUTS_2021.sh
+COPY init_db.production/GADM.sh /docker-entrypoint-initdb.d/5-GADM.sh
+COPY init_db.production/GADM.sql /docker-entrypoint-initdb.d/6-GADM.sql
+COPY init_db.production/GHS_POP.sh /docker-entrypoint-initdb.d/7-GHS_POP.sh

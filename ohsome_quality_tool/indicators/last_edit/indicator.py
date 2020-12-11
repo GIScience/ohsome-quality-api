@@ -4,11 +4,16 @@ from typing import Dict, Tuple
 
 import pygal
 from geojson import FeatureCollection
+from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
+
+# TODO: thresholds might be better defined for each OSM layer
+THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
+THRESHOLD_RED = 0.05  # more than 5% edited last year --> yellow
 
 
 class Indicator(BaseIndicator):
@@ -71,10 +76,6 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        # TODO: thresholds might be better defined for each OSM layer
-        THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
-        THRESHOLD_RED = 0.05  # more than 5% edited last year --> yellow
-
         text = ""
         levels = []
         result_description_template = (
@@ -108,13 +109,43 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
-        line_chart = pygal.Bar(range=(0, 1))
-        line_chart.title = "Features Edited Last Year"
 
-        for layer in self.layers.keys():
-            y_data = data[f"{layer}_share_edited"]
-            line_chart.add(layer, y_data)
+        CustomStyle = Style(colors=("green", "yellow", "black", "blue", "blue"))
+        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
 
-        figure = line_chart.render(is_unicode=True)
+        THRESHOLD_YELLOW = 0.20 * 100  # more than 20% edited last year --> green
+        THRESHOLD_RED = 0.05 * 100
+
+        x_max = 0.2 * (len(self.layers.keys()) + 1)
+
+        xy_chart.add(
+            "Green Threshold",
+            [(0, THRESHOLD_YELLOW), (x_max, THRESHOLD_YELLOW)],
+            stroke=True,
+        )
+
+        xy_chart.add(
+            "Yellow Threshold",
+            [(0, THRESHOLD_RED), (x_max, THRESHOLD_RED)],
+            stroke=True,
+        )
+
+        xy_chart.add("Maximum", [(0, 100), (x_max, 100)], stroke=True)
+
+        xy_chart.title = "% of Features Edited Last Year"
+        xy_chart.x_title = "% edited"
+
+        x_labels = []
+
+        for i, layer in enumerate(self.layers.keys()):
+            y_data = int(data[f"{layer}_share_edited"] * 100)
+            x_data = 0.2 + i * 0.2
+            x_labels.append({"label": layer, "value": x_data})
+
+            xy_chart.add(layer, [(x_data, y_data)], stroke=True)
+
+        xy_chart.x_labels = x_labels
+        figure = xy_chart.render(is_unicode=True)
+
         logger.info(f"export figures for {self.name} indicator")
         return figure

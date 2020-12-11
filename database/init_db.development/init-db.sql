@@ -56,12 +56,6 @@ CREATE TABLE IF NOT EXISTS  development.isea3h_world_res_12_hex
     pt_geom geometry(Point,3857)
 );
 
-CREATE TABLE IF NOT EXISTS  development.ghs_pop
-(
-    rid integer,
-    rast raster
-);
-
 CREATE TABLE IF NOT EXISTS  development.guf04
 (
     rid integer,

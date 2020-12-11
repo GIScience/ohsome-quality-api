@@ -1,0 +1,11 @@
+# Override original Compose file with production specific configuration.
+# Usage:
+# docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
+version: "3"
+services:
+  oqt-database:
+    build:
+      context: database/
+      dockerfile: Dockerfile.production
+    ports:
+      - "5432:5432"

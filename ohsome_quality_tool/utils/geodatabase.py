@@ -170,9 +170,7 @@ def get_zonal_stats_population(bpolys: Dict):
             (public.ST_SummaryStats(
                 public.ST_Clip(
                     rast,
-                    public.ST_Transform(
-                        public.ST_GeomFromGeoJSON(%(polygon)s)
-                        , 954009)
+                    public.ST_GeomFromGeoJSON(%(polygon)s)
                 )
             )
         ).sum) population
@@ -183,15 +181,13 @@ def get_zonal_stats_population(bpolys: Dict):
         WHERE
          public.ST_Intersects(
             rast,
-            public.ST_Transform(
-                public.ST_GeomFromGeoJSON(%(polygon)s)
-                , 954009)
+            public.ST_GeomFromGeoJSON(%(polygon)s)
          )
         """
     )
     # need to get geometry only
     polygon = json.dumps(bpolys["features"][0]["geometry"])
-    data = {"schema": "public", "polygon": polygon}
+    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     population, area = query_results[0]
     logger.info("Got population for polygon.")
@@ -204,40 +200,67 @@ def get_zonal_stats_guf(bpolys: Dict):
 
     This is based on the Global Urban Footprint dataset.
     """
-
     db = PostgresDB()
+
     query = sql.SQL(
         """
-        SET SCHEMA %(schema)s;
+    SET SCHEMA %(schema)s;
+    SELECT
+        SUM(ST_Area ((pixel_as_polygon).geom::geography))
+            / (1000*1000) as build_up_area_sqkm,
+        public.ST_Area(
+                    public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+                ) / (1000*1000) as area_sqkm
+    FROM (
         SELECT
-            Sum(
-                public.ST_Area(geom::public.geography)) /(1000*1000
-            ) as built_up_area_sqkm
-            ,public.ST_Area(
-                public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
-            ) / (1000*1000) as area_sqkm
-        FROM (
-        SELECT dp.*
-        FROM guf04,
-            LATERAL public.ST_PixelAsPolygons(
-                    public.ST_Clip(
-                        rast,
-                        public.ST_GeomFromGeoJSON(%(polygon)s)
-                    )
-            ) AS dp
+            -- ST_PixelAsPolygons will exclude pixel with nodata values
+            ST_PixelAsPolygons(
+                ST_Clip(
+                    rast, ST_GeomFromGeoJSON (%(polygon)s)
+                )
+            ) AS pixel_as_polygon
+        FROM
+            guf04_daressalaam
         WHERE
-         public.ST_Intersects(
-            rast,
-            public.ST_GeomFromGeoJSON(%(polygon)s)
-            )
-        ) foo
-        """
+            ST_Intersects (rast, ST_GeomFromGeoJSON (%(polygon)s))
+            -- Avoid following ERROR of rt_raster_from_two_rasters during ST_Clip:
+            -- The two rasters provided do not have the same alignment
+            AND ST_BandIsNoData (rast) = FALSE) AS foo;"""
     )
-    # need to get geometry only
+
     polygon = json.dumps(bpolys["features"][0]["geometry"])
-    data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
+    data = {"schema": "public", "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     built_up_area, area = query_results[0]
+
     logger.info("Got built up area for polygon.")
 
     return built_up_area, area
+
+
+def get_area_of_bpolys(bpolys: Dict):
+    """Calculates the area of a geojson geometry in postgis.
+
+    Using the database here so that we do not need to rely on
+    GDAL being installed for python.
+    """
+
+    db = PostgresDB()
+
+    query = sql.SQL(
+        """
+        SELECT
+            public.ST_Area(
+                public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+            ) / (1000*1000) as area_sqkm
+        """
+    )
+
+    polygon = json.dumps(bpolys["features"][0]["geometry"])
+    data = {"polygon": polygon}
+    query_results = db.retr_query(query=query, data=data)
+    area = query_results[0][0]
+
+    logger.info("Got area for polygon.")
+
+    return area
