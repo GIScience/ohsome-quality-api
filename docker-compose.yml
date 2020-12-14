@@ -1,6 +1,7 @@
 version: "3"
 networks:
   oqt-network:
+  oqt-website-network:
 
 services:
   oqt-workers:
@@ -23,6 +24,7 @@ services:
       - oqt-website:/root/.local/share/ohsome_quality_tool/data
     networks:
       - oqt-network
+      - oqt-website-network
 
   oqt-database:
     container_name: oqt-database
@@ -51,6 +53,8 @@ services:
     volumes:
       - ./website/website:/usr/share/nginx/html
       - oqt-website:/usr/share/nginx/html/data
+    networks:
+      - oqt-website-network
 
 volumes:
   oqt-data: {}

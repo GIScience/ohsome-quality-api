@@ -245,7 +245,7 @@ function buildMap(err, ...charts){
 			var params = JSON.stringify(featureCollectionPart)
 			
 			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params), handleGetQuality);
-			httpPostAsync(selectedTopic+'sss', JSON.stringify({ "bpolys": params}), handleGetQuality);
+			httpPostAsync(selectedTopic, JSON.stringify({ "bpolys": params}), handleGetQuality);
 			// getResponseFile(selectedTopic, params, handleGetQuality)
 
 		}
