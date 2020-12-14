@@ -1,4 +1,6 @@
 import json
+import os
+import uuid
 from statistics import mean
 from typing import Dict, Tuple
 
@@ -8,7 +10,11 @@ from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 # TODO: thresholds might be better defined for each OSM layer
@@ -145,7 +151,16 @@ class Indicator(BaseIndicator):
             xy_chart.add(layer, [(x_data, y_data)], stroke=True)
 
         xy_chart.x_labels = x_labels
-        figure = xy_chart.render(is_unicode=True)
 
-        logger.info(f"export figures for {self.name} indicator")
-        return figure
+        if self.dynamic:
+            # generate a random ID for the outfile name
+            random_id = uuid.uuid1()
+            outfile = os.path.join(DATA_PATH, f"{self.name}_{random_id}.svg")
+        else:
+            outfile = os.path.join(
+                DATA_PATH, f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+            )
+
+        xy_chart.render_to_file(outfile)
+        logger.info(f"exported figure: {outfile}")
+        return outfile

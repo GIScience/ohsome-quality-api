@@ -167,9 +167,15 @@ class Indicator(BaseIndicator):
         xy_chart.x_title = "Population Density [1/km^2]"
         xy_chart.y_title = "Building Density [1/km^2]"
 
-        # generate a random ID for the outfile name
-        random_id = uuid.uuid1()
-        outfile = os.path.join(DATA_PATH, f"{self.name}_{random_id}.svg")
-        figure = xy_chart.render_to_file(outfile)
-        logger.info(f"export figures for {self.name} indicator")
-        return figure
+        if self.dynamic:
+            # generate a random ID for the outfile name
+            random_id = uuid.uuid1()
+            outfile = os.path.join(DATA_PATH, f"{self.name}_{random_id}.svg")
+        else:
+            outfile = os.path.join(
+                DATA_PATH, f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+            )
+
+        xy_chart.render_to_file(outfile)
+        logger.info(f"exported figure: {outfile}")
+        return outfile
