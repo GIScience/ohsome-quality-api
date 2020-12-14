@@ -12,6 +12,8 @@ d3.queue()
   .await(buildMap)
   
 
+var selectedFeature = null;
+var selectedFeatureLayer = null;
 
 // If no value is avaiable in the data, there is a -77, return a stripe pattern as color for these ccases
 function getStripes(d) {
@@ -121,7 +123,6 @@ function buildMap(err, ...charts){
 	function resetHighlight(e) {
 		if(map.hasLayer(world)){
 			world.resetStyle(e.target);
-		
 		}
 		
 		info.updateAfter();
@@ -143,6 +144,19 @@ function buildMap(err, ...charts){
 		// alert("I will be red");
 		var layer = e.target;
 		// get selected country
+		selectedFeature = layer.feature
+		if(selectedFeatureLayer)
+			map.removeLayer(selectedFeatureLayer)
+		selectedFeatureLayer = L.geoJSON(selectedFeature, {
+			style: function (feature) {
+					return {
+						color: 'red',
+						fillColor: '#f03',
+						fillOpacity: 0.5
+					};
+			}
+		}).addTo(map);
+
 		countryID = layer.feature.properties.name;
 		selectedCountry = getCountry(countryID)
 		
@@ -156,8 +170,8 @@ function buildMap(err, ...charts){
 	selectedDataset = null;
 	// grap country name while clicking on map
 	function getCountry(c) {
-		console.log("in getC")
-		console.log(c)
+		// console.log("in getC")
+		// console.log(c)
 		return c
 	}
 	// grap dataset id  while clicking on map
@@ -177,15 +191,22 @@ function buildMap(err, ...charts){
 		var topic = document.getElementById("cardtype");
 		var areas = document.getElementById("mapCheck").innerHTML;
 
-		var selectedValue = topic.options[topic.selectedIndex].value;
+		var selectedTopic = topic.options[topic.selectedIndex].value;
 	
 		if (areas == "country") {			
 			alert("Please select a region");
 		}
-		else if (selectedValue == "Topic") {		
+		else if (selectedTopic == "Topic") {		
 			alert("Please select a topic");
 		}
 		else {
+			// show loader spinner
+			document.querySelector("#loader").classList.add("spinner-1");
+			// remove dynamically created Indicator divs 
+			removeIndicators()
+			// remove selected feature from map
+			map.removeLayer(selectedFeatureLayer)
+
 			var x = document.getElementById("results");
 			if (x.style.display === "none") {
 				x.style.display = "block";
@@ -196,9 +217,9 @@ function buildMap(err, ...charts){
 			var region = getCountry(selectedCountry)
 			var dataset = getDataset(selectedDataset)
 			var feature_id = null
-			// args = getParams(region, selectedValue, dataset);
+			// args = getParams(region, selectedTopic, dataset);
 			// prepare topic param
-			selectedValue = "indicator_name=" + selectedValue;
+			// selectedTopic = "indicator_name=" + selectedTopic;
 			// prepare dataset param 
 			// split dataset to get feature_id from dataset
 			// assumption dataset is " " between datset and feature_id
@@ -210,15 +231,22 @@ function buildMap(err, ...charts){
 			//sendParams(args);
 			res = null;
 			// var corsHeaderUrl = "https://cors-anywhere.herokuapp.com/"
-			var oqtUrl = "http://127.0.0.1:8000";
+			
 			// var oqtUrl = "https://api.ohsome.org/v1";
 			// var params = { bpolys: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}] } 
 			// }
-			var params = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}]}"
+			// var params = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}]}"
+			// params = params.replace(/\\"/g, '"')
 
-			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params).replace(/\\"/g, '"'), handleGetQuality);
-			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", params, handleGetQuality);
-			getResponseFile(oqtUrl +"/dynamic_report/SIMPLE_REPORT", params, handleGetQuality)
+			// var params = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}] } 
+			// params = JSON.stringify(params)
+			var featureCollectionPart = {"type":"FeatureCollection","features": [selectedFeature]}
+
+			var params = JSON.stringify(featureCollectionPart)
+			
+			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params), handleGetQuality);
+			httpPostAsync(selectedTopic+'sss', JSON.stringify({ "bpolys": params}), handleGetQuality);
+			// getResponseFile(selectedTopic, params, handleGetQuality)
 
 		}
 		// when params were send, get pdf button turns blue
@@ -227,13 +255,14 @@ function buildMap(err, ...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
+		document.querySelector("#loader").classList.remove("spinner-1");
 		
 		// ######   traffic  light ########
 		document.getElementById("trafficTop").innerHTML = 
 				'<h5>Overall quality</h5>';
-		
-		document.getElementById("traffic_map_space").innerHTML = 
-				'<img src="../assets/img/map.png">';
+
+		// show selected region on a map
+		addMiniMap();
 		
 		// var imgSrc = ''
 		// if(response.result.label === 1) {
@@ -254,16 +283,21 @@ function buildMap(err, ...charts){
 			'<p style="font-weight: bold;">Overall value: '+ response.result.value +'</p>'
 			+ '<p>'+ response.result.text +'</p>'
 			
-			if(response.indicators.length > 0) {
-				document.getElementById("graphTop").innerHTML = 
-				 '<h5>Stats about traffic light calculation</h5>';
+		if(response.indicators.length > 0) {
+			document.getElementById("graphTop").innerHTML = 
+				'<h5>Stats about traffic light calculation</h5>';
 
-				addIndicators(response.indicators)
-			}
+			addIndicators(response.indicators)
+		}
+		
+		document.getElementById("calc_space").innerHTML = 
+		'<p style="font-weight: bold;">Report: '+ response.metadata.name +'</p>'
+		+ '<p>'+ response.metadata.description +'</p>'
+
 	}
 
 	/**
-	 * function adds indicator
+	 * Adds indicator by creating div on DOM dynamically based on number of Indicators present
 	 * 
 	 * @param indicators is an array of indicator
 	 */
@@ -275,7 +309,7 @@ function buildMap(err, ...charts){
 
 			// console.log('indicator = ', indicator)
 			var indicatorDiv = document.createElement("div");
-			indicatorDiv.className = "row osm"
+			indicatorDiv.className = "row osm indicator"
 
 			var indiHeader = document.createElement("h4");
 			var indiHeadernode = document.createTextNode("Indicator: "+ indicator.metadata.name);
@@ -308,6 +342,58 @@ function buildMap(err, ...charts){
 		});
 	}
 
+	/**
+	 * Removes the dynamically created Indicator divs
+	 */
+	function removeIndicators() {
+		// clear overall results
+		document.getElementById("trafficTop").innerHTML = '';
+		
+		document.getElementById("traffic_map_space").innerHTML = ''
+		
+		document.getElementById("traffic_dots_space").innerHTML = ''
+				
+		document.getElementById("traffic_text_space").innerHTML = ''
+
+		document.getElementById("graphTop").innerHTML = ''
+
+		var parentDiv = document.getElementById("indicatorSpace");
+		while (parentDiv.firstChild) {
+			//The list is LIVE so it will re-index each call
+			parentDiv.removeChild(parentDiv.firstChild);
+		}
+	}
+
+	/**
+	 * Adds a small map to show the selected region
+	 */
+	function addMiniMap() {
+		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' style='width: 100%; height: 100%;'></div>";
+		var miniMap = L.map( 'miniMap', {
+			center: [31.4, -5],
+			minZoom: 2,
+			zoom: 2
+		})
+
+		// add references on the bottom of the map
+		L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | ',
+			subdomains: ['a', 'b', 'c']
+		}).addTo( miniMap )
+
+		var selectedFeatureLayer = L.geoJSON(selectedFeature, {
+			style: function (feature) {
+					return {
+						color: 'red',
+						fillColor: '#f03',
+						fillOpacity: 0.5
+					};
+			}
+		}).addTo(miniMap);
+	
+		miniMap.fitBounds(selectedFeatureLayer.getBounds());
+	}
+
 	// while clicking on the get quality button check for selections -> see changeColorQ()
 	document.getElementById("cardtype").onclick = function () {	
 		changeColorQ()		
@@ -321,8 +407,8 @@ function buildMap(err, ...charts){
 		var topic = document.getElementById("cardtype");
 		var areas = document.getElementById("mapCheck").innerHTML;
 		var div = document.getElementById('gQ');
-		var selectedValue = topic.options[topic.selectedIndex].value;
-		console.log(selectedValue)
+		var selectedTopic = topic.options[topic.selectedIndex].value;
+		console.log(selectedTopic)
 		// no selection of area so set buttons to grey
 		if (areas == "country") {
 			var divGP = document.getElementById('gP');
@@ -332,7 +418,7 @@ function buildMap(err, ...charts){
 			div.style.backgroundColor = 'grey';
 		}
 	    // no selection of topic so set buttons to grey
-		if (selectedValue == "Topic") {
+		if (selectedTopic == "Topic") {
 			console.log("imhere")
 			var divGP = document.getElementById('gP');
 			divGP.style.backgroundColor = 'grey';
@@ -488,31 +574,36 @@ function httpGetAsync(theUrl, callback)
 	// return xmlHttp.responseText;
 }
 
-function httpPostAsync(theUrl, params, callback)
-{
+function httpPostAsync(endPoint, params, callback) {
+	var theUrl = "http://localhost:8000";
+	theUrl = theUrl +"/dynamic_report/" + endPoint;
+
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-			callback(xmlHttp.responseText);
+			callback(JSON.parse(xmlHttp.responseText));
+		if (xmlHttp.readyState == 4 && xmlHttp.status !== 200) {
+			httpErrorHandle(xmlHttp)
+		}
 	}
 	console.log(theUrl)
 	xmlHttp.open("POST", theUrl, true); // true for asynchronous 
-	// xmlHttp.setRequestHeader("Content-type", "application/json");
+	// xmlHttp.setRequestHeader("Content-Type", "application/json");
 	xmlHttp.send(params);
-	// console.log(xmlHttp.responseText)
-	// return xmlHttp.responseText;
 }
 
-function getResponseFile(url, params, callback) {
+function getResponseFile( params, callback) {
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(JSON.parse(xmlHttp.responseText));
 	}
-	console.log(url)
-	// xmlHttp.open("POST", theUrl, true); // true for asynchronous 
-	// xmlHttp.setRequestHeader("Content-type", "application/json");
 	xmlHttp.open("GET", "assets/data/api_response.json", true);
 	xmlHttp.send(params);
-	
+}
+
+function httpErrorHandle(xmlHttp) {
+	console.log('xmlHttp = ', xmlHttp)
+	document.querySelector("#loader").classList.remove("spinner-1");
+	alert("Error: \n\n"+ xmlHttp.statusText)
 }

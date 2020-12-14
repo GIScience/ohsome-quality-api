@@ -60,6 +60,7 @@
 		<link rel="stylesheet" href="assets/css/style-sectors-map.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/style-add.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/navbar.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/custom-spinner.css">
 		<style>
 
 
@@ -139,12 +140,13 @@
 					<div class="select">
 						<select class="minimal" id="cardtype"  required>
 							<option value="Topic" selected>Topic ...</option>
-							  <option>Remote mapping</option>
+							<option value="SIMPLE_REPORT">Simple Report</option>
+							  <!-- <option>Remote mapping</option> -->
 							  <!--option>Building completeness</option>
 							  <option>Saturation</option>
 							  <option>Health care tag completness</option>
 							  <option>Shadow routing fitness</option-->
-							  <option>Sketch map fitness</option>
+							  <!-- <option>Sketch map fitness</option> -->
 						</select>
 									
 					</div>			
@@ -167,11 +169,10 @@
 				<!--###  results announce space ######## -->			
 				<div id="results" class ="middle" style=" margin-left:40%; ">
 					<p>Results will be shown here</p>
-		
-			
-			
 				</div>	
 				<!-- ################ traffic light space ######## -->
+				<div id="loader" ></div>
+
 				<div class="row osm" style="margin-top:40px;">
 					<div class="graph" id="trafficTop"> 
 					
@@ -179,10 +180,10 @@
 				</div>
 				<div class="row osm" style="margin-top:40px;">
 					<div class="graph"> 
-						<div id="traffic_map_space" style="width:20%; float:left; padding:10px;"> 
+						<div id="traffic_map_space" style="width:30%; height: 20vh; float:left; padding:10px;"> 
 		 
 						</div>	
-						<div id="traffic_dots_space" style="width:20%; float:left; margin-left:10%; padding:10px;"> 
+						<div id="traffic_dots_space" style="width:20%; float:left; padding:10px;"> 
 		 
 						</div>	
 						<div id="traffic_text_space" style="width:50%; float:right; margin-top:5%; padding:10px;"> 
@@ -196,7 +197,7 @@
 				
 					</div>	
 				</div>
-			    <div class="row osm" style="margin-top:40px;">
+			  <div class="row osm" style="margin-top:40px;">
 					<div class="graph" id="indicatorSpace"> 
 						<!-- <div id="graph_space" style="width:50%; float:left; padding:10px;"> 
 					 
@@ -208,14 +209,15 @@
 				</div>
 				<!-- ################ additional info indicators space ######## -->
 				<div class="row osm" style="margin-top:40px;">
-					<div class="graph" id="calcTop"> 
+					<!-- <div class="graph" id="calcTop"> 
 	
+					</div> -->
+					<div id="calc_space" style="width:100%;  padding:10px;"> 
+						
 					</div>
 				</div>
 				<div class="row osm" style="margin-top:40px;">
-					<div id="calc_space" style="width:100%;  padding:10px;"> 
-						
-					</div>	
+					
 					<!-- ################ go to top space ######## -->	
 					<div class="buttons2" style="margin-top:20px;">
 						<button onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
