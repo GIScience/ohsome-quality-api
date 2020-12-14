@@ -319,7 +319,7 @@ function buildMap(err, ...charts){
 			// graph part
 			var graph_space = document.createElement("div");
 			graph_space.style = "width:50%; float:left; padding:10px;"
-			graph_space.innerHTML = indicator.result.svg;
+			graph_space.innerHTML = '<img src="data/'+indicator.result.svg+'">';
 			indicatorDiv.appendChild(graph_space)
 
 			// indicator text
