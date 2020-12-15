@@ -5,54 +5,12 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.utils.definitions import (
     get_indicator_classes,
     get_report_classes,
-    logger
 )
-from ohsome_quality_tool.utils.geodatabase import (
-    get_fid_list,
-    create_error_table,
-    get_bpolys_from_db,
-    save_indicator_results_to_db,
-    insert_error,
-    )
+
 INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
 
-    
-def process_indicator(dataset, indicator):
-    """Processes an Indicator for a given dataset in the Database
-    
-    
-    The results will be stored in the database"""
-    
-    fids = get_fid_list(dataset)
-    create_error_table(dataset, indicator)
-    
-    for feature_id in fids:
-        try:       
-            bpolys = get_bpolys_from_db(dataset, feature_id)
-            results = get_dynamic_indicator(indicator, bpolys)
-            save_indicator_results_to_db(dataset, feature_id, indicator, results)
-        except Exception as E:
-            insert_error(dataset, indicator, feature_id, E)
-            logger.info(f"caught Exception{E} while processing {indicator} for feature {feature_id} of {dataset}.")
 
-def process_missing(dataset:str, indicator:str):
-    """Processes the missing FIDs for a given dataset / indicator
-    
-    
-    The results will be stored in the database"""
-    fids = get_fid_list(f"{dataset}_{indicator}_errors")
-    create_error_table(dataset, indicator)
-    
-    for feature_id in fids:
-        try:       
-            bpolys = get_bpolys_from_db(dataset, feature_id)
-            results = get_dynamic_indicator(indicator, bpolys)
-            save_indicator_results_to_db(dataset, feature_id, indicator, results)
-        except Exception as E:
-            insert_error(dataset, indicator, feature_id, E)
-            logger.info(f"caught Exception{E} while processing {indicator} for feature {feature_id} of {dataset}.")
-            
 def get_dynamic_indicator(indicator_name: str, bpolys: FeatureCollection):
     """Get indicator results for given geojson file.
 
@@ -76,6 +34,19 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
     result, metadata = indicator.get()
     return result, metadata
 
+
+def process_indicator(indicator_name: str, dataset: str, feature_id: int):
+    """Process indicator and save results to geo database.
+
+    The indicator(s) will be calculated for all geometries in the dataset.
+    """
+    # TODO: adjust arguments dynamic and bpolys
+
+    indicator = INDICATOR_CLASSES[indicator_name](
+        dynamic=False, dataset=dataset, feature_id=feature_id
+    )
+    indicator.run_processing()
+    indicator.save_to_database()
 
 
 def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
