@@ -1,11 +1,11 @@
+import io
 import json
 import os
 from math import ceil
 from typing import Dict, Tuple
 
-import pygal
+import matplotlib.pyplot as plt
 from geojson import FeatureCollection
-from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
@@ -38,8 +38,14 @@ class Indicator(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
+        # TODO: Change arbitrary thresholds
+        self.threshold_high: float = 0.6
+        self.threshold_low: float = 0.2
+        self.area: float = None
+        self.guf_built_up_area: float = None
+        self.osm_built_up_area: float = None
 
-    def preprocess(self) -> Dict:
+    def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
         db = PostgresDB()
 
@@ -52,14 +58,14 @@ class Indicator(BaseIndicator):
             with open(sql_file) as reader:
                 query = reader.read()
             result = db.retr_query(query=query, data=(aoi_geom, aoi_geom))
-            guf_built_up_area = result[0][0]
+            self.guf_built_up_area = result[0][0]
 
             # Get total area in square meter of AOI
             sql_file = os.path.join(directory, "get_area.sql")
             with open(sql_file) as reader:
                 query = reader.read()
             result = db.retr_query(query=query, data=(aoi_geom,))
-            area = result[0][0]
+            self.area = result[0][0]
         else:
             built_up_area = geodatabase.get_value_from_db(
                 dataset=self.dataset,
@@ -74,29 +80,17 @@ class Indicator(BaseIndicator):
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
-        osm_built_up_area = query_results["buildings"]["result"][0]["value"]
-
-        return {
-            "guf_built_up_area": guf_built_up_area,
-            "osm_built_up_area": osm_built_up_area,
-            "area": area,
-        }
+        self.osm_built_up_area = query_results["buildings"]["result"][0]["value"]
 
     def calculate(
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
-        ratio = (
-            preprocessing_results["osm_built_up_area"]
-            / preprocessing_results["guf_built_up_area"]
-        )
-        # TODO: Determine right thresholds
-        green_threshold = 0.6
-        yellow_threshold = 0.2
+        ratio = self.guf_built_up_area / self.osm_built_up_area
 
-        if ratio <= yellow_threshold:
+        if ratio <= self.threshold_low:
             value = TrafficLightQualityLevels.RED.value
-        elif ratio <= green_threshold:
+        elif ratio <= self.threshold_high:
             value = TrafficLightQualityLevels.YELLOW.value
         else:
             value = TrafficLightQualityLevels.GREEN.value
@@ -107,21 +101,40 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
-        # TODO: maybe not all indicators will export figures?
-        green_threshold = 0.6
-        yellow_threshold = 0.2
-        CustomStyle = Style(colors=("green", "yellow", "blue"))
-        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
+        fig = plt.figure()
+        ax = fig.add_subplot()
 
-        xy_chart.add("test", ((0, 0), (data["area"], green_threshold * data["area"])))
-        xy_chart.add("test2", ((0, 0), (data["area"], yellow_threshold * data["area"])))
+        # Plot thresholds as line.
+        ax.plot(
+            [0, self.area],
+            [0, self.area * self.threshold_high],
+            color="black",
+            label="Threshold",
+        )
+        ax.plot(
+            [0, self.area],
+            [0, self.area * self.threshold_low],
+            color="black",
+            label="Threshold",
+        )
 
-        xy_chart.add("test2", ((data["guf_built_up_area"], data["osm_built_up_area"])))
+        # Plot point as circle ("o").
+        ax.plot(
+            self.guf_built_up_area,
+            self.osm_built_up_area,
+            "o",
+            color="black",
+            label="Indicator value: {0}/{1}".format(
+                self.guf_built_up_area, self.osm_built_up_area
+            ),
+        )
 
-        xy_chart.title = "POI Density (POIs per Area)"
-        xy_chart.x_title = "GUF"
-        xy_chart.y_title = "OSM"
+        ax.set_ylabel("Open Street Map")  # Add a y-label to the axes.
+        ax.set_title("Built-Up Area")  # Add a title to the axes.
+        ax.legend()  # Add a legend.
 
-        figure = xy_chart.render(is_unicode=True)
-        xy_chart.render_to_png("/tmp/chart.png")
+        # Save as SVG to file-like object and return as string.
+        output_file = io.BytesIO()
+        plt.savefig("test.svg", format="svg")
         logger.info(f"export figures for {self.name} indicator")
+        return output_file.getvalue()
