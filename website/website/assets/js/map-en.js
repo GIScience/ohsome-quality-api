@@ -201,13 +201,20 @@ function buildMap(err, ...charts){
 		}
 		else {
 			// show loader spinner
-			document.querySelector("#loader").classList.add("spinner-1");
-			// remove dynamically created Indicator divs 
+			document.querySelector("#loader1").classList.add("spinner-1");
+			document.querySelector("#loader2").classList.add("spinner-1");
+			// remove dynamically created Indicator divs
 			removeIndicators()
 			// remove selected feature from map
 			map.removeLayer(selectedFeatureLayer)
 
-			var x = document.getElementById("results");
+			var x = document.getElementById("results1");
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			} else {
+				x.style.display = "none";
+			}
+			var x = document.getElementById("results2");
 			if (x.style.display === "none") {
 				x.style.display = "block";
 			} else {
@@ -255,8 +262,9 @@ function buildMap(err, ...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
-		document.querySelector("#loader").classList.remove("spinner-1");
-		
+		document.querySelector("#loader1").classList.remove("spinner-1");
+		document.querySelector("#loader2").classList.remove("spinner-1");
+
 		// ######   traffic  light ########
 		//document.getElementById("trafficTop").innerHTML =
 		//		'<h5>Overall quality</h5>';
