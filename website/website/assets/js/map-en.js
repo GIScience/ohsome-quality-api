@@ -271,15 +271,17 @@ function buildMap(err, ...charts){
 		// 1=green, 2=yellow, 3=red
 		switch (response.result.label) {
 		    case 1:
-		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span>'
+		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality'
 		    case 2:
-		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span>'
+		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
 		    case 3:
-		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span>'
+		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
 		}
 
         document.getElementById("traffic_dots_space").innerHTML =
-		            '<h4>' + traffic_lights + ' Report: '+ response.metadata.name + '</h4'
+		            '<h4>Report: '+ response.metadata.name + '</h4>' +
+		            '<p>' + traffic_lights + '</p>'
+
 
 
 		// ' <b>Overall value: '+ response.result.value + '</b></p>'
@@ -320,16 +322,20 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
+			indicatorHeading.innerHTML = indicator.metadata.name;
+			right_space.appendChild(indicatorHeading);
+
+			var indicatorQuality = document.createElement("p");
 			switch (indicator.result.label) {
                 case 1:
-                    traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span>'
+                    traffic_lights = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                 case 2:
-                    traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span>'
+                    traffic_lights = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
                 case 3:
-                    traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span>'
+                    traffic_lights = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
             }
-			indicatorHeading.innerHTML = traffic_lights + " Indicator: "+indicator.metadata.name;
-			right_space.appendChild(indicatorHeading);
+            indicatorQuality.innerHTML = traffic_lights;
+            right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");
 			indicatorText.innerHTML = indicator.result.text;
