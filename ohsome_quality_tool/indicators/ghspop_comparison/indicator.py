@@ -55,7 +55,8 @@ class Indicator(BaseIndicator):
                 feature_id=self.feature_id,
                 field_name="population",
             )
-
+        if pop_count is None:
+            pop_count = 0
         # ideally we would have this as a dataframe?
         preprocessing_results = {
             "pop_count": pop_count,
@@ -175,7 +176,7 @@ class Indicator(BaseIndicator):
         else:
             filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
             outfile = os.path.join(DATA_PATH, filename)
-
+        logger.info(f"exported figure: {outfile} tessstttttt")
         xy_chart.render_to_file(outfile)
         logger.info(f"exported figure: {outfile}")
         return filename
