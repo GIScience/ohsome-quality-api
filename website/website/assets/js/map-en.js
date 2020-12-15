@@ -265,45 +265,33 @@ function buildMap(err, ...charts){
 		document.querySelector("#loader1").classList.remove("spinner-1");
 		document.querySelector("#loader2").classList.remove("spinner-1");
 
-		// ######   traffic  light ########
-		//document.getElementById("trafficTop").innerHTML =
-		//		'<h5>Overall quality</h5>';
-
 		// show selected region on a map
 		addMiniMap();
-		
-		// var imgSrc = ''
-		// if(response.result.label === 1) {
-		// 	imgSrc = "../assets/img/green.PNG"
-		// }
-		// else if(response.result.label === 2) {
-		// 	imgSrc = "../assets/img/ampel.PNG"
-		// }
-		// else if(response.result.label === 3) {
-		// 	imgSrc = "../assets/img/red.PNG"
-		// }
 
-		// assumption 3=green, 2=yellow, 1=red
-		document.getElementById("traffic_dots_space").innerHTML = 
-				'<img class="traffic-lights-image" src="../assets/img/traffic_light_'+ response.result.label +'.jpg">';
-				
-		document.getElementById("traffic_text_space").innerHTML = 
-			'<p style="font-weight: bold;">Overall value: '+ response.result.value +'</p>'
-			+ '<p>'+ response.result.text +'</p>'
+		// 1=green, 2=yellow, 3=red
+		switch (response.result.label) {
+		    case 1:
+		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span>'
+		    case 2:
+		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span>'
+		    case 3:
+		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span>'
+		}
 
+        document.getElementById("traffic_dots_space").innerHTML =
+		            '<h4>' + traffic_lights + ' Report: '+ response.metadata.name + '</h4'
+
+
+		// ' <b>Overall value: '+ response.result.value + '</b></p>'
+
+
+		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.text +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		'<p style="font-weight: bold;">Report: '+ response.metadata.name +'</p>'
-		+ '<p>'+ response.metadata.description +'</p>'
+		    '<p class="metadata-text">'+ response.metadata.description +'</p>'
 			
 		if(response.indicators.length > 0) {
-			//document.getElementById("graphTop").innerHTML =
-			//	'<h5>Stats about traffic light calculation</h5>';
-
 			addIndicators(response.indicators)
 		}
-		
-
-
 	}
 
 	/**
@@ -332,17 +320,20 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = "Indicator: "+indicator.metadata.name;
+			switch (indicator.result.label) {
+                case 1:
+                    traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span>'
+                case 2:
+                    traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span>'
+                case 3:
+                    traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span>'
+            }
+			indicatorHeading.innerHTML = traffic_lights + " Indicator: "+indicator.metadata.name;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorText = document.createElement("p");
 			indicatorText.innerHTML = indicator.result.text;
 			right_space.appendChild(indicatorText);
-
-            var indicatorTrafficLights = document.createElement("img");
-            indicatorTrafficLights.className = 'traffic-lights-image'
-            indicatorTrafficLights.src="../assets/img/traffic_light_"+ indicator.result.label +".jpg";
-            right_space.appendChild(indicatorTrafficLights);
 
             sectionDiv.appendChild(right_space)
 			parentDiv.appendChild(sectionDiv);
