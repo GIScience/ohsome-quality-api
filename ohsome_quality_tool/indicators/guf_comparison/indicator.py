@@ -1,10 +1,15 @@
 import json
+import os
+from math import ceil
 from typing import Dict, Tuple
 
+import pygal
 from geojson import FeatureCollection
+from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
+from ohsome_quality_tool.utils.auth import PostgresDB
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
@@ -36,9 +41,25 @@ class Indicator(BaseIndicator):
 
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
+        db = PostgresDB()
 
         if self.dynamic:
-            built_up_area, area = geodatabase.get_zonal_stats_guf(bpolys=self.bpolys)
+            directory = os.path.dirname(os.path.abspath(__file__))
+            aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
+
+            # Get built-up area in square meter of GUF04 for AOI
+            sql_file = os.path.join(directory, "get_built_up_area.sql")
+            with open(sql_file) as reader:
+                query = reader.read()
+            result = db.retr_query(query=query, data=(aoi_geom, aoi_geom))
+            guf_built_up_area = result[0][0]
+
+            # Get total area in square meter of AOI
+            sql_file = os.path.join(directory, "get_area.sql")
+            with open(sql_file) as reader:
+                query = reader.read()
+            result = db.retr_query(query=query, data=(aoi_geom,))
+            area = result[0][0]
         else:
             built_up_area = geodatabase.get_value_from_db(
                 dataset=self.dataset,
@@ -46,51 +67,40 @@ class Indicator(BaseIndicator):
                 field_name="population",
             )
 
-        # ideally we would have this as a dataframe?
-        preprocessing_results = {
-            "guf_built_up_area_sqkm": built_up_area,
-            "area_sqkm": area,
-            "guf_built_up_density": built_up_area / area,
-        }
-        self.layers= {"buildings": {"filter": "buildings=*",
-        "unit": "area"}
-    }
+        # TODO: Difficult to read and understand.
+        self.layers = {"buildings": {"filter": "building=*", "unit": "area"}}
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/{unit}/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
+        osm_built_up_area = query_results["buildings"]["result"][0]["value"]
 
-        for layer in self.layers.keys():
-            unit = self.layers[layer]["unit"]
-            preprocessing_results[f"{layer}_{unit}"] = query_results[layer]["result"][
-                0
-            ]["value"]
-            preprocessing_results[f"{layer}_{unit}_per_guf_built_up"] = (
-                preprocessing_results[f"{layer}_{unit}"] / built_up_area
-            )
-
-        return preprocessing_results
+        return {
+            "guf_built_up_area": guf_built_up_area,
+            "osm_built_up_area": osm_built_up_area,
+            "area": area,
+        }
 
     def calculate(
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
-        # TODO: classification based on pop and building count
+        ratio = (
+            preprocessing_results["osm_built_up_area"]
+            / preprocessing_results["guf_built_up_area"]
+        )
+        # TODO: Determine right thresholds
+        green_threshold = 0.6
+        yellow_threshold = 0.2
 
-        # which thresholds?
-        
-        ratio = preprocessing_results["buildings_area"]/preprocessing_results["guf_built_up_area_sqkm"]
-        GreenThreshold = 0.6
-        YellowThreshold = 0.2
-        
-        if ratio <= YellowThreshold:
+        if ratio <= yellow_threshold:
             value = TrafficLightQualityLevels.RED.value
-        elif ratio <= GreenThreshold:
+        elif ratio <= green_threshold:
             value = TrafficLightQualityLevels.YELLOW.value
-        else: 
+        else:
             value = TrafficLightQualityLevels.GREEN.value
-        
+
         label = TrafficLightQualityLevels(ceil(value))
         text = "test test test"
 
@@ -98,4 +108,20 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
+        green_threshold = 0.6
+        yellow_threshold = 0.2
+        CustomStyle = Style(colors=("green", "yellow", "blue"))
+        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
+
+        xy_chart.add("test", ((0, 0), (data["area"], green_threshold * data["area"])))
+        xy_chart.add("test2", ((0, 0), (data["area"], yellow_threshold * data["area"])))
+
+        xy_chart.add("test2", ((data["guf_built_up_area"], data["osm_built_up_area"])))
+
+        xy_chart.title = "POI Density (POIs per Area)"
+        xy_chart.x_title = "GUF"
+        xy_chart.y_title = "OSM"
+
+        figure = xy_chart.render(is_unicode=True)
+        xy_chart.render_to_png("/tmp/chart.png")
         logger.info(f"export figures for {self.name} indicator")
