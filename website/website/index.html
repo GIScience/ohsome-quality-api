@@ -113,10 +113,10 @@
 		</div>
 		<div class="section-container">
 			<div  class="map" id="map" style="width: 100%; height:300px; border: 1px solid #AAA;"></div>
-			<div   id="mapCheck" style="display:none;">country</div>
+			<div  id="mapCheck" style="display:none;">country</div>
 		</div>
-		<div class="section-container">
-			<div class="rich-text">
+		<div class="section-container section-flex">
+			<div class="one-half">
 			<!-- ### select area  space ######## -->
 				<h3>2. Choose data quality topic.</h3>
 				<div class="select">
@@ -132,13 +132,11 @@
 					</select>
 				</div>
 			</div>
-		</div>
-		<div class="section-container">
-			<div class="rich-text">
+			<div class="one-half">
 			<!-- ### select area  space ######## -->
 				<h3>3. Run analysis.</h3>
-				<button id="gQ" type="submit" class="btn-submit2" >Get Quality</button>
-				<button id="gP" type="submit" class="btn-report2" >Download Report</button>
+				<button id="gQ" type="submit" class="btn-submit2" >Get Quality Report</button>
+				<button id="gP" type="submit" class="btn-report2" >Download PDF</button>
 			</div>
 		</div>
 	</div>
@@ -150,23 +148,21 @@
 			<div class="rich-text">
 			<!-- ### select area  space ######## -->
 				<h2>Results</h2>
-				<div id="results" class="middle">
-					<p>Results will be shown here</p>
-					<div id="loader"></div>
-				</div>
 			</div>
 		</div>
 		<div class="section-container">
 			<h3>Overall Data Quality Report</h3>
+			<div id="results1" class="middle">
+				<p>Results will be shown here</p>
+			</div>
+			<div id="loader1"></div>
 		</div>
 		<div class="section-container section-flex">
 			<div class="one-third">
 				<div id="traffic_map_space" style="height: 250px; padding:10px;"></div>
 			</div>
-			<div class="one-third">
-				<div id="traffic_dots_space" style="height: 250px; padding:10px;"></div>
-			</div>
-			<div class="one-third">
+			<div class="two-thirds">
+				<div id="traffic_dots_space"></div>
 				<div id="traffic_text_space"></div>
 				<div id="report_metadata_space"></div>
 			</div>
@@ -174,6 +170,10 @@
 
 		<div class="section-container">
 			<h3>Data Quality Indicators</h3>
+			<div id="results2" class="middle">
+				<p>Results will be shown here</p>
+			</div>
+			<div id="loader2"></div>
 		</div>
 		<div id="indicatorSpace">
 			<!-- here will will place the indicator results
@@ -186,7 +186,7 @@
 
 		<div class="section-container">
 			<div class="buttons2">
-				<button onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
+				<button class="btn-submit" onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
 			</div>
 		</div>
 	</div>

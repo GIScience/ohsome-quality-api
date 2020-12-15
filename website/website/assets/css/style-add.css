@@ -3,11 +3,13 @@ body {
 	font-family: Roboto Condensed !important;
 	font: inherit;
 }
+/*
 p {
 	font-size: 16px;
 	line-height: 24px;
 	color: #666666;
 }
+*/
 header {
 
 	position: fixed;
@@ -148,7 +150,6 @@ a {
 
 .select {
   height: 40px;
-  width: 30%;
   overflow: hidden;
   position: relative;
   border-radius: 4px;
@@ -261,4 +262,40 @@ a {
 #topButton {
 	float:right;
 	
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-yellow {
+  height: 25px;
+  width: 25px;
+  background-color: #FFFF00;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red {
+  height: 25px;
+  width: 25px;
+  background-color: #FF0000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green {
+  height: 25px;
+  width: 25px;
+  background-color: #008000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.metadata-text {
+    color: #666666;
 }
