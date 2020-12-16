@@ -3,7 +3,7 @@
 <html>
 
 	<head>
-	  <title>ohsome Quailty</title>
+	  <title>ohsomeQualityAnalyzer</title>
 
 	  <!-- Start Component -->
 	  <meta charset="utf-8">
@@ -22,86 +22,76 @@
 		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon/favicon-32x32.png">
 		<link rel="apple-touch-icon" href="">
 
-		<link rel="canonical" href="">
-
-		<!-- Add jQuery -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<!-- Add leaflet css -->
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-		   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-		   crossorigin=""/>
-
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.control.min.css" />
-
-		<!-- Make sure you put this AFTER Leaflet's CSS -->
-		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-		integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-		crossorigin=""></script>
-
-		<!-- Add Leaflet and Plotly -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
-		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-		  <!-- Add Bootstrap -->
-		<link rel="stylesheet" href="assets/css/bootstrap-tables.css">
-
-		<!-- Add Data Tables -->
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>	
-		
 		<!-- Add custom css -->
 		<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+		<link rel="stylesheet" href="assets/css/style-sectors-map.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/style-add.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/navbar.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/custom-spinner.css">
+
 	</head>
-	<style>
-	
-	</style>
-	<body class="page-home">
+
+	<body class="page-about">
 
  <!-- ### theader navbar space ######## -->
     <header>
 		<div class="wrapper">
 			<div class="container">
 				<a class="mapswipe-logo" href="index.html">
-					<img class="logo" style="height:36px" src="assets/img/logos/heigit_logo.png">
+					<img class="logo" src="assets/img/logos/heigit_logo.png">
 				</a>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-			<div class="topnav" id="myTopnav">
-				<a href="index.html" class="active">Home</a>
-				<a href="about.html">About the tool</a>
-				<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-				<i class="fa fa-bars"></i>
-				</a>
-			</div> 
-				
+				<div class="topnav" id="myTopnav">
+					<a href="index.html" class="topnav">Home</a>
+					<a class="topnav active" href="about.html">About</a>
+					<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+						<i class="fa fa-bars"></i>
+					</a>
+				</div>
+
 			</div>
 		</div>
 	</header>
 
-	<!-- ### title with blue background space ######## -->
-	<div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
-		<div class="section" >
-		<div class="section-container">
-		<div class="hero-content">
-			<h2>ohsome quality analyzer</h2>
-		</div>	</div>	</div>
+ 	<div class="hero-container">
+		<div class="wrapper">
+			<div class="hero-content">
+				<h1 class="hero-heading">About</h1>
+			</div>
+		</div>
 	</div>
+
 	
-	   <!-- ### sentence on top space ######## -->
+ 	<!-- ### sentence on top space ######## -->
 	<div class="section" >
 		<div class="section-container">
+			<div class="rich-text">
+				<h2>What is the ohsome Quality Analyzer (OQA)</h2>
+				<p>OQA is a tool that end users, e.g. humanitarian organisations and public administration, can use to get information on the quality of OSM data for their specific region and use-case.</p>
+				<p>It is a web application that builds upon HeiGIT's OSM analysis infrastructure, especially the ohsome-api, the ohsome-hex website and the ohsome dashboard.</p>
+				<p>Further, it functions as a data integration tool, that brings together a variety of intrinsic and extrinsic OSM data quality metrics.</p>
+			</div>
+		</div>
+	</div>
 
-			<div class="hero-content">
-				<h5>About the ohsome OpenStreetMap Data Quality Tool</h5>
-				<p>
-				  
-		
-				  </p>
+ 	<div class="section" >
+		<div class="section-container">
+			<div class="rich-text">
+				<h2>Related Works</h2>
+				<p>Raifer, Martin; Troilo, Rafael; Kowatsch, Fabian; Auer, Michael; Loos, Lukas; Marx, Sabrina; Przybill, Katharina; Fendrich, Sascha; Mocnik, Franz-Benjamin; Zipf, Alexander (2019): <a target="_blank" href="https://doi.org/10.1186/s40965-019-0061-3">OSHDB: a framework for spatio-temporal analysis of OpenStreetMap history data.</a> Open Geospatial Data, Software and Standards.</p>
+				<p>Auer, Michael; Eckle, Melanie; Fendrich, Sascha; Kowatsch, Fabian; Marx, Sabrina; Raifer, Martin; Schott, Moritz; Troilo, Rafael; Zipf, Alexander (2018): <a target="_blank" href="https://2018.stateofthemap.org/2018/A33-Comprehensive_OpenStreetMap_History_Data_Analyses-_for_and_with_the_OSM_community/">Comprehensive OpenStreetMap History Data Analyses- for and with the OSM community.</a> Talk at the State of the Map conference 2018, Milan.</p>
+				<p>Raifer, Martin (2017): <a target="_blank" href="https://2017.stateofthemap.org/2017/osm-history-analysis-using-big-data-technology/">OSM history analysis using big data technology.</a> Talk at the State of the Map conference 2017, Aizuwakamatsu.</p>
+			</div>
+		</div>
+	</div>
+
+ 	<div class="section" >
+		<div class="section-container">
+			<div class="rich-text">
+				<h2>The Team</h2>
+            <p>The data pre-processing and the service deployment is done by <a href="https://heigit.org/geoinformation-for-humanitarian-aid/" target="_blank">HeiGIT</a>. Please <a href="https://heigit.org/contact/" target="_blank">contact us</a> if you are interested in using it for your research, need stats for your own application or if you have any questions or suggestions related to the statistics presented on this website.</p>
+            <p>At HeiGIT we provide research and development to support decision making in the field of sustainable mobility and humanitarian aid. We accomplish this through open geoinformation, open methods, open software and close collaboration with our partners.</p>
 
 
 			</div>
@@ -110,7 +100,6 @@
 
 
 <!-- ################ footer ######## -->
-<div  style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
 	<footer>
         <div class="wrapper"  >
           <div class="container">
@@ -125,7 +114,6 @@
           </div>
         </div>
 	</footer>
-	</div>
 
 
 	<script async defer src="assets/js/index.js"></script>
