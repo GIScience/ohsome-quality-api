@@ -6,8 +6,11 @@ from typing import Dict, Tuple
 import dateutil.parser
 import pygal
 from geojson import FeatureCollection
+import numpy as np
+import pandas as pd
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
+from ohsome_quality_tool.indicators.mapping_saturation.sigmoid_curve import sigmoidCurve
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
@@ -15,15 +18,24 @@ from ohsome_quality_tool.utils.definitions import (
     logger,
 )
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
+from ohsome_quality_tool.utils.label_interpretations import (
+    MAPPING_SATURATION_LABEL_INTERPRETATIONS,
+)
 
+# threshold values defining the color of the traffic light
+# derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
+# 0 < f‘(x) <= 0.03 and years with saturation > 2
+THRESHOLD_YELLOW = 0.03
+THRESHOLD_RED = 10
 
 class Indicator(BaseIndicator):
     """The Mapping Saturation Indicator."""
 
-    name = "mapping-saturation"
+    name = "MAPPING_SATURATION"
     description = """
         Calculate if mapping has saturated.
     """
+    interpretations: Dict = MAPPING_SATURATION_LABEL_INTERPRETATIONS
 
     def __init__(
         self,
@@ -73,22 +85,94 @@ class Indicator(BaseIndicator):
 
         return preprocessing_results
 
+
     def calculate(
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
         logger.info(f"run calculation for {self.name} indicator")
 
+        # not nice work around to avoid error ".. is not indexable"
+        dfWorkarkound = pd.DataFrame(preprocessing_results)
+        li = []
+        for i in range(len(dfWorkarkound)):
+            li.append(i)
+
+        # dict to collect saturation values of each layer for individual layer traffic light
+        satValCollection = {}
+        # list for collecting saturation values of each layer
+        overallSaturation = []
+
         for layer in self.layers.keys():
             # calculate traffic light value for each layer
-            pass
+            unit = self.layers[layer]["unit"]
 
-        # 4 values, calculate average value out of it
+            #pass
+            df1 = pd.DataFrame(
+                {'timestamps': preprocessing_results["timestamps"],
+                 'yValues': preprocessing_results[f"{layer}_{unit}"],
+                 'li': li
+                 })
 
-        # overall quality (placeholder)
-        label = TrafficLightQualityLevels.YELLOW
-        value = 0.5  # = average value
-        text = "test test test"
+            # get init params for sigmoid curve with 2 jumps
+            sigmoid_curve = sigmoidCurve()
+
+            initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
+
+            x1 = round(initParams[0])
+            x2 = round(initParams[2])
+            L = round(initParams[1])
+            L2 = round(initParams[3])
+
+            # get initial slopes for the 2 curves
+            inits = sigmoid_curve.initparamsFor2JumpsCurve(df1.li, df1.yValues)
+            yY = sigmoid_curve.getFirstLastY(inits)
+            k1 = yY[0] / yY[1]
+            k2 = yY[1] / yY[2]
+
+            # TODO select best fitting curve, eg with mean_square_error
+
+            # check if data are more than start stadium
+            # The end of the start stage is defined with the maximum of the curvature function f''(x)
+            # here: simple check
+            if  (max(df1.yValues) <= 20):
+                # start stadium
+                label = TrafficLightQualityLevels.RED
+                value = 0.25
+                text = text + self.interpretations["red"]
+            else:
+                # if so
+                # calculate slope/growth of last 3 years
+                # take value in -36 month before end time and value in last month of data
+                earlyX = li[-36]
+                lastX = li[-1]
+                ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+                saturation = sigmoid_curve.getSaturationInLast3Years(earlyX, lastX, df1.li, ydata)
+                logger.info("satruation level last 3 years at: " + str(saturation) + " for " + f"{layer}_{unit}")
+                # perhaps needed for individual layer descirption/traffic light?
+                satValCollection[f"{layer}_{unit}" ] = saturation
+                overallSaturation.append(saturation)
+
+        # overall quality
+        result = sum(overallSaturation)/len(overallSaturation)
+        text = (
+            f"The saturation for the last 3 years is {result}."
+        )
+
+        if result <= THRESHOLD_YELLOW:
+            label = TrafficLightQualityLevels.GREEN
+            value = 0.75
+            text = text + self.interpretations["green"]
+        else:
+            # THRESHOLD_YELLOW > result > THRESHOLD_RED
+            label = TrafficLightQualityLevels.YELLOW
+            value = 0.5
+            text = text + self.interpretations["yellow"]
+
+        logger.info(
+            f"result density value: {result}, label: {label},"
+            f" value: {value}, text: {text}"
+        )
 
         return label, value, text, preprocessing_results
 
