@@ -89,6 +89,7 @@ _dataset_option = [
     )
 ]
 
+
 # TODO: define and double check expected data type here
 _feature_id_option = [
     click.option(
@@ -138,10 +139,18 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
 @cli.command("process-indicator")
 @add_options(_indicator_option)
 @add_options(_dataset_option)
-@add_options(_feature_id_option)
-def process_indicator(indicator_name: str, dataset: str, feature_id: int):
+@add_options(
+    [
+        click.option(
+            "--missing_fids",
+            is_flag=True,
+            help="Flag wether only should only missing FIDs be processed",
+        )
+    ]
+)
+def process_indicator(indicator_name: str, dataset: str, missing_fids: bool):
     oqt.process_indicator(
-        indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
+        dataset=dataset, indicator=indicator_name, only_missing_ids=missing_fids
     )
 
 

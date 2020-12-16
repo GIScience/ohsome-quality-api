@@ -173,16 +173,16 @@ def get_value_from_db(dataset: str, feature_id: str, field_name: str):
 
 def create_dataset_table(dataset: str):
     """Creates dataset table with collums fid and geom"""
-    with PostgresDB() as db:
-        exe = sql.SQL(
-            """DROP TABLE IF EXISTS {};
+    db = PostgresDB()
+    exe = sql.SQL(
+        """DROP TABLE IF EXISTS {};
         CREATE TABLE {} (
             fid integer NOT Null,
             geom geometry,
             PRIMARY KEY(fid)
         );"""
-        ).format(*[sql.Identifier(dataset)] * 2)
-        db.query(exe)
+    ).format(*[sql.Identifier(dataset)] * 2)
+    db.query(exe)
 
 
 def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
@@ -193,18 +193,17 @@ def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
     with open(infile) as inf:
         data = json.load(inf)
 
-    with PostgresDB() as db:
-        for feature in data["features"]:
-            polygon = json.dumps(feature["geometry"])
-
-            fid = feature["properties"][fid_key]
-            exe = sql.SQL(
-                """INSERT INTO {table} (fid, geom)
+    db = PostgresDB()
+    for feature in data["features"]:
+        polygon = json.dumps(feature["geometry"])
+        fid = feature["properties"][fid_key]
+        exe = sql.SQL(
+            """INSERT INTO {table} (fid, geom)
                           VALUES (%(fid)s , public.ST_GeomFromGeoJSON(%(polygon)s))
                           ON CONFLICT (fid) DO UPDATE
                           SET geom = excluded.geom;;"""
-            ).format(table=sql.Identifier(dataset))
-            db.query(exe, {"fid": fid, "polygon": polygon})
+        ).format(table=sql.Identifier(dataset))
+        db.query(exe, {"fid": fid, "polygon": polygon})
 
 
 def get_error_table_name(dataset: str, indicator: str):
@@ -218,11 +217,11 @@ def get_fid_list(table: str):
 
     Results are returned as list
     """
-    with PostgresDB() as db:
+    db = PostgresDB()
 
-        exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
-        fids = db.retr_query(exe)
-        return fids
+    exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
+    fids = db.retr_query(exe)
+    return [i[0] for i in fids]
 
 
 def create_error_table(dataset: str, indicator: str):
@@ -230,29 +229,29 @@ def create_error_table(dataset: str, indicator: str):
     of indicators.
     """
 
-    with PostgresDB() as db:
-        exe = sql.SQL(
-            """DROP TABLE IF EXISTS {};
+    db = PostgresDB()
+    exe = sql.SQL(
+        """DROP TABLE IF EXISTS {};
                         CREATE TABLE {} (
                         fid integer NOT Null,
                         error VARCHAR(256),
                         PRIMARY KEY(fid)
                         );"""
-        ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
-        db.query(exe)
+    ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
+    db.query(exe)
 
 
 def insert_error(dataset: str, indicator: str, fid: int, error: str):
     """handles exceptionsduring processing of indicators.
     Stores failed fid and error message
     """
-    with PostgresDB() as db:
-        exe = sql.SQL(
-            """
+    db = PostgresDB()
+    exe = sql.SQL(
+        """
                      INSERT INTO {}
                      VALUES (%(fid)s , %(error)s)
                      """
-        ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
+    ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
     db.query(exe, {"fid": fid, "error": str(error)})
 
 

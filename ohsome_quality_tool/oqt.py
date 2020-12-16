@@ -25,18 +25,20 @@ def process_indicator(dataset: str, indicator: str, only_missing_ids=False):
 
 
     The results will be stored in the database"""
-    if only_missing_ids is not False:
+    if only_missing_ids is False:
         fids = get_fid_list(dataset)
     else:
         fids = get_fid_list(get_error_table_name(dataset, indicator))
 
     create_error_table(dataset, indicator)
-
     for feature_id in fids:
         try:
             bpolys = get_bpolys_from_db(dataset, feature_id)
             results = get_dynamic_indicator(indicator, bpolys)
             save_indicator_results_to_db(dataset, feature_id, indicator, results)
+            logger.info(
+                (f"saved {indicator} results" f"for feature {feature_id} in {dataset}")
+            )
         except Exception as E:
             insert_error(dataset, indicator, feature_id, E)
             logger.info(
