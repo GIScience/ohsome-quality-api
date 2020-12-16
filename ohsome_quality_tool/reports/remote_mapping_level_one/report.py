@@ -15,7 +15,7 @@ from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 class Report(BaseReport):
     """The remote mapping level one Report."""
 
-    name = "REMOTE_MAPPING_LEVEL_ONE"
+    name = "remote-mapping-level-one"
     description = """
         This report shows the quality for map features that are usually
         added on the basis of satellite imagery.
@@ -23,10 +23,10 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["GHSPOP_COMPARISON"], LEVEL_ONE_LAYERS),
-        (indicator_classes["GUF_COMPARISON"], LEVEL_ONE_LAYERS),
-        (indicator_classes["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
-        (indicator_classes["LAST_EDIT"], LEVEL_ONE_LAYERS),
+        (indicator_classes["ghspop-comparison"], LEVEL_ONE_LAYERS),
+        (indicator_classes["guf-comparison"], LEVEL_ONE_LAYERS),
+        (indicator_classes["mapping-saturation"], LEVEL_ONE_LAYERS),
+        (indicator_classes["last-edit"], LEVEL_ONE_LAYERS),
     ]
 
     def __init__(

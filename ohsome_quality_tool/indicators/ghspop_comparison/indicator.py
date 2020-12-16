@@ -22,7 +22,7 @@ from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 class Indicator(BaseIndicator):
     """Set number of features and population into perspective."""
 
-    name = "GHSPOP_COMPARISON"
+    name = "ghspop-comparison"
     description = """
         The number of features per population count.
         This can give an estimate if mapping has been completed.

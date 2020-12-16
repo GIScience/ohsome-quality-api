@@ -30,7 +30,7 @@ THRESHOLD_RED = 10
 class Indicator(BaseIndicator):
     """The POI Density Indicator."""
 
-    name = "POI_DENSITY"
+    name = "poi-density"
     description = (
         "Derive the density of OSM features "
         "(count divided by area in square-kilometers)"

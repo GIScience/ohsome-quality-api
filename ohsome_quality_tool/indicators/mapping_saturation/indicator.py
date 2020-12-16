@@ -20,7 +20,7 @@ from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 class Indicator(BaseIndicator):
     """The Mapping Saturation Indicator."""
 
-    name = "MAPPING_SATURATION"
+    name = "mapping-saturation"
     description = """
         Calculate if mapping has saturated.
     """

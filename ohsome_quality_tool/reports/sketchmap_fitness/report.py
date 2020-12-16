@@ -18,14 +18,14 @@ from ohsome_quality_tool.utils.layers import (
 class Report(BaseReport):
     """The Sketchmap Fitness Report."""
 
-    name = "SKETCHMAP_FITNESS"
+    name = "sketchmap-fitness"
     description = "The sketchmap fitness report."
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["MAPPING_SATURATION"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["LAST_EDIT"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
+        (indicator_classes["mapping-saturation"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["last-edit"], SKETCHMAP_FITNESS_FEATURES),
+        (indicator_classes["poi-density"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
     ]
 
     def __init__(

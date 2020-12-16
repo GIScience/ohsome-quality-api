@@ -18,7 +18,7 @@ from ohsome_quality_tool.utils.layers import (
 class Report(BaseReport):
     """The remote mapping level one Report."""
 
-    name = "SIMPLE_REPORT"
+    name = "simple-report"
     description = """
         This report shows the quality for map features that are usually
         added on the basis of satellite imagery.
@@ -26,8 +26,8 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["MAPPING_SATURATION"], LEVEL_ONE_LAYERS),
-        (indicator_classes["POI_DENSITY"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
+        (indicator_classes["mapping-saturation"], LEVEL_ONE_LAYERS),
+        (indicator_classes["poi-density"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
     ]
 
     def __init__(

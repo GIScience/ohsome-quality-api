@@ -12,7 +12,7 @@ from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 class Indicator(BaseIndicator):
     """Set number of features and population into perspective."""
 
-    name = "GUF_COMPARISON"
+    name = "guf-comparison"
     description = (
         "Compare OSM features against built up area defined by "
         "Global Urban Footprint dataset."

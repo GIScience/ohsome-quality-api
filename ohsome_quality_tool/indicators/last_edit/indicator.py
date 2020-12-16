@@ -25,7 +25,7 @@ THRESHOLD_RED = 0.05  # more than 5% edited last year --> yellow
 class Indicator(BaseIndicator):
     """The Last Edit Indicator."""
 
-    name = "LAST_EDIT"
+    name = "last-edit"
     description = """
         Check the percentage of features that have been edited in the past two years.
     """

@@ -106,11 +106,11 @@ def get_indicator_classes() -> Dict:
     )
 
     return {
-        "GHSPOP_COMPARISON": ghspopComparisonIndicator,
-        "POI_DENSITY": poiDensityIndicator,
-        "LAST_EDIT": lastEditIndicator,
-        "MAPPING_SATURATION": mappingSaturationIndicator,
-        "GUF_COMPARISON": gufComparisonIndicator,
+        "ghspop-comparison": ghspopComparisonIndicator,
+        "poi-density": poiDensityIndicator,
+        "last-edit": lastEditIndicator,
+        "mapping-saturation": mappingSaturationIndicator,
+        "guf-comparison": gufComparisonIndicator,
     }
 
 
@@ -126,7 +126,7 @@ def get_report_classes() -> Dict:
     )
 
     return {
-        "SKETCHMAP_FITNESS": sketchmapFitnessReport,
-        "REMOTE_MAPPING_LEVEL_ONE": remoteMappingLevelOneReport,
-        "SIMPLE_REPORT": simpleReport,
+        "sketchmap-fitness": sketchmapFitnessReport,
+        "remote-mapping-leve-one": remoteMappingLevelOneReport,
+        "simple-report": simpleReport,
     }
