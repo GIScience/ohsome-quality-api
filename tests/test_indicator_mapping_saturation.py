@@ -9,7 +9,7 @@ from ohsome_quality_tool.oqt import get_dynamic_indicator
 class TestMappingSaturationIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "MAPPING_SATURATION"
+        self.indicator_name = "mapping-saturation"
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""
