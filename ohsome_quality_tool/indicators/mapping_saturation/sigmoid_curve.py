@@ -17,24 +17,26 @@ from ohsome_quality_tool.utils.definitions import (
     logger,
 )
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
-#from ohsome_quality_tool.utils.label_interpretations import (
-    #MAPPING_SATURATION_LABEL_INTERPRETATIONS,
-#)
+from ohsome_quality_tool.utils.label_interpretations import (
+    MAPPING_SATURATION_LABEL_INTERPRETATIONS,
+)
 
 
 
 # sigmoid stuff
 class sigmoidCurve():
     """Sigmoid stuff."""
+    # sigmoid curve functions inspired by Sven Lautenbach
     # simple logistic curve
     def logistic1(self, x, L, k, x0):
         return L / (1 + np.exp(k * (x - x0)))
 
-    # logistic curve with 2 jump
+    # logistic curve with 2 jumps
     def logistic2(self, x, x2, L, L2, k, k2, x0):
         return L / (1 + np.exp(k * (x - x0))) + (L2 - L) / (1 + np.exp(k2 * (x2 - x0)))
 
     # find initial values for the double curve
+    # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
     def initparamsFor2JumpsCurve(self, xdata, ydata):
         # Find the steepest single step
         # Careful... I'm making use of Pandas properties, but xdata could be just a vector, rather than a pd.Series

@@ -8,6 +8,7 @@ import pygal
 from geojson import FeatureCollection
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.indicators.mapping_saturation.sigmoid_curve import sigmoidCurve
@@ -85,7 +86,6 @@ class Indicator(BaseIndicator):
 
         return preprocessing_results
 
-
     def calculate(
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
@@ -107,7 +107,6 @@ class Indicator(BaseIndicator):
             # calculate traffic light value for each layer
             unit = self.layers[layer]["unit"]
 
-            #pass
             df1 = pd.DataFrame(
                 {'timestamps': preprocessing_results["timestamps"],
                  'yValues': preprocessing_results[f"{layer}_{unit}"],
@@ -178,35 +177,50 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         # TODO: maybe not all indicators will export figures?
+        # TODO: onevsg per layer?
 
-        line_chart = pygal.XY()
+        # get init params for sigmoid curve with 2 jumps
+        sigmoid_curve = sigmoidCurve()
+        # not nice work around to avoid error ".. is not indexable"
+        dfWorkarkound = pd.DataFrame(data)
+        li = []
+        for i in range(len(dfWorkarkound)):
+            li.append(i)
 
-        # a complicated way to add labels
-        timestamps = data["timestamps"]
-        x_labels = []
-        for k, t in enumerate(timestamps):
-            timestamp = dateutil.parser.parse(t)
-            year = timestamp.year
-            month = timestamp.month
-            if month == 1:
-                x_labels.append({"value": k, "label": str(year)})
+        plt.figure()
+        plt.title("Data with sigmoid curve")
+        # color the lines with different colors
+        # TODO: what if more than 5 layers are in there?
+        linecol = ['b-', 'g-', 'r-', 'y-', 'black-']
 
-        # add plot for each layer
         for i, layer in enumerate(self.layers.keys()):
+            # get API measure type (eg count, length)
             unit = self.layers[layer]["unit"]
-            query_results = data[f"{layer}_{unit}"]
-            max_value = max(query_results)
+            # create current dataframe
+            df1 = pd.DataFrame(
+                {'timestamps': data["timestamps"],
+                 'yValues': data[f"{layer}_{unit}"],
+                 'li': li
+                 })
+            # initial values for the sigmoid function
+            initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
 
-            # use normalized values to be able to compare different features,
-            # e.g. buildings and highways
-            results_norm = [
-                (h, result / max_value) for h, result in enumerate(query_results)
-            ]
+            x1 = round(initParams[0])
+            x2 = round(initParams[2])
+            L = round(initParams[1])
+            L2 = round(initParams[3])
 
-            line_chart.add(layer, results_norm)
+            # get initial slopes for the 2 curves
+            inits = sigmoid_curve.initparamsFor2JumpsCurve(df1.li, df1.yValues)
+            yY = sigmoid_curve.getFirstLastY(inits)
+            k1 = yY[0] / yY[1]
+            k2 = yY[1] / yY[2]
+            # calculate curve
+            ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+            plt.plot(df1.li, df1.yValues, linecol[i], label=f"{layer}_{unit}")
+            plt.plot(df1.li, ydata, linecol[i+2], label='Sigmoid curve with 2 jumps')
 
-        line_chart.x_labels = x_labels
-
+        # output creation
         if self.dynamic:
             # generate a random ID for the outfile name
             random_id = uuid.uuid1()
@@ -215,7 +229,8 @@ class Indicator(BaseIndicator):
         else:
             filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
             outfile = os.path.join(DATA_PATH, filename)
-
-        line_chart.render_to_file(outfile)
+        plt.legend()
+        plt.savefig(outfile)
         logger.info(f"exported figure: {outfile}")
+
         return filename
