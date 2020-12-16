@@ -23,4 +23,4 @@ MAPPING_SATURATION_LABEL_INTERPRETATIONS = \
                "because it depends on the growth rate over time. The growth could be "
                "near to saturated or still be in an high growth stadium.",
          red="No Saturation at all. The data in this region are in a start stadium. With regard "
-               "to completeness, this means bad quality."
+               "to completeness, this means bad quality.")
