@@ -1,4 +1,6 @@
 import json
+import os
+import uuid
 from math import ceil
 from typing import Dict, Tuple
 
@@ -9,7 +11,11 @@ from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
@@ -49,7 +55,8 @@ class Indicator(BaseIndicator):
                 feature_id=self.feature_id,
                 field_name="population",
             )
-
+        if pop_count is None:
+            pop_count = 0
         # ideally we would have this as a dataframe?
         preprocessing_results = {
             "pop_count": pop_count,
@@ -160,6 +167,16 @@ class Indicator(BaseIndicator):
         xy_chart.title = "Buildings per person against people per sqkm"
         xy_chart.x_title = "Population Density [1/km^2]"
         xy_chart.y_title = "Building Density [1/km^2]"
-        figure = xy_chart.render(is_unicode=True)
-        logger.info(f"export figures for {self.name} indicator")
-        return figure
+
+        if self.dynamic:
+            # generate a random ID for the outfile name
+            random_id = uuid.uuid1()
+            filename = f"{self.name}_{random_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+        else:
+            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+        logger.info(f"exported figure: {outfile} tessstttttt")
+        xy_chart.render_to_file(outfile)
+        logger.info(f"exported figure: {outfile}")
+        return filename

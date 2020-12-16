@@ -1,3 +1,4 @@
+-- Execution time: Circa 10 hours
 ALTER TABLE isea3h_world_res_6_hex
     ADD COLUMN IF NOT EXISTS area FLOAT;
 

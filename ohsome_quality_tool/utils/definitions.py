@@ -23,9 +23,16 @@ DATASET_NAMES = (
 
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 
-DATA_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+MAIN_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+Path(MAIN_PATH).mkdir(parents=True, exist_ok=True)
+
+DATA_PATH = os.path.join(MAIN_PATH, "data")
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-LOGGING_FILE_PATH = os.path.join(DATA_PATH, "oqt.log")
+
+LOGS_PATH = os.path.join(MAIN_PATH, "logs")
+Path(LOGS_PATH).mkdir(parents=True, exist_ok=True)
+
+LOGGING_FILE_PATH = os.path.join(LOGS_PATH, "oqt.log")
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": True,

@@ -1,6 +1,7 @@
 version: "3"
 networks:
   oqt-network:
+  oqt-website-network:
 
 services:
   oqt-workers:
@@ -19,8 +20,11 @@ services:
     restart: "no"
     ports:
       - "8000:8000"
+    volumes:
+      - oqt-website:/root/.local/share/ohsome_quality_tool/data
     networks:
       - oqt-network
+      - oqt-website-network
 
   oqt-database:
     container_name: oqt-database
@@ -48,6 +52,9 @@ services:
       - "5000:80"
     volumes:
       - ./website/website:/usr/share/nginx/html
+      - oqt-website:/usr/share/nginx/html/data
+    networks:
+      - oqt-website-network
 
 volumes:
   oqt-data: {}

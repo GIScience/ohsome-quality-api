@@ -1,4 +1,6 @@
 import json
+import os
+import uuid
 from typing import Dict, Tuple
 
 import dateutil.parser
@@ -7,7 +9,11 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 
@@ -116,6 +122,16 @@ class Indicator(BaseIndicator):
             line_chart.add(layer, results_norm)
 
         line_chart.x_labels = x_labels
-        figure = line_chart.render(is_unicode=True)
 
-        return figure
+        if self.dynamic:
+            # generate a random ID for the outfile name
+            random_id = uuid.uuid1()
+            filename = f"{self.name}_{random_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+        else:
+            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+
+        line_chart.render_to_file(outfile)
+        logger.info(f"exported figure: {outfile}")
+        return filename

@@ -75,15 +75,15 @@
 		<div class="wrapper">
 			<div class="container">
 				<a class="mapswipe-logo" href="index.html">
-					<img class="logo" style="height:36px" src="assets/img/logos/heigit_logo.png">
+					<img class="logo" src="assets/img/logos/heigit_logo.png">
 				</a>
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 				<div class="topnav" id="myTopnav">
-					<a href="index.html" class="active">Home</a>
-					<a href="about.html">About the tool</a>
+					<a href="index.html" class="topnav active">Home</a>
+					<a class="topnav" href="about.html">About</a>
 					<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-					<i class="fa fa-bars"></i>
+						<i class="fa fa-bars"></i>
 					</a>
 				</div> 
 				
@@ -92,146 +92,107 @@
 	</header>
 
 	<!-- ### title with blue background space ######## -->
-	<div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
-		<div class="section" >
-			<div class="section-container">
-				<div class="hero-content">
-					<h2>ohsome quality analyzer</h2>
-				</div>	
-			</div>	
-		</div>
-	</div>
-	
-	<!-- ### sentence on top space ######## -->
-	<div class="section" >
-		<div class="section-container">
-
+	<!-- <div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;"> -->
+	<div class="hero-container">
+		<div class="wrapper">
 			<div class="hero-content">
-				<h5>Get OpenStreetMap Data Quality for Specific Regions and Topics</h5>
-				<p>
-				  
-		
-				</p>
-
-
+				<h1 class="hero-heading">ohsome quality analyzer</h1>
+				<p class="hero-subheading">Get OpenStreetMap Data Quality for Specific Regions and Topics</p>
 			</div>
 		</div>
 	</div>
+	<!-- </div> -->
+
 	<!-- Start -->
 	<div class="section">
-		<div class="section-container ">
-		
-			<div class="content" style="padding-right:4%;">
+		<div class="section-container">
+			<div class="rich-text">
 			<!-- ### select area  space ######## -->
-				<div class="row osm">
-					<p>Select an area on the map</p>
-					<div  class="map" id="map" style="width: 100%; height:300px; border: 1px solid #AAA;">
-	
-				
-				
-					</div>
-					<div   id="mapCheck" style="display:none;">country</div>
-				</div>	
-				<!-- ### select topic  space ######## -->
-				<div class="row osm">
-					<p>Select one topic</p>
-  	
-	
-					<div class="select">
-						<select class="minimal" id="cardtype"  required>
-							<option value="Topic" selected>Topic ...</option>
-							<option value="SIMPLE_REPORT">Simple Report</option>
-							  <!-- <option>Remote mapping</option> -->
-							  <!--option>Building completeness</option>
-							  <option>Saturation</option>
-							  <option>Health care tag completness</option>
-							  <option>Shadow routing fitness</option-->
-							  <!-- <option>Sketch map fitness</option> -->
-						</select>
-									
-					</div>			
-					  
-				</div>	
-				<!--###  get Quality and get PDF button space ######## -->
-				<div class="row osm">
-					<div class="buttons" style="margin-top:20px; ">
-
-						<button id="gQ" type="submit" class="btn-submit2" >Get Quality</button>
-					</div>
-		
-			
-					<div class="buttons2" style="margin-top:20px; ">
-						<button id="gP" type="submit" class="btn-report2" >Download Report</button>
-  	
-					</div>	
-
+				<h3>1. Pick an area on the map.</h3>
+			</div>
+		</div>
+		<div class="section-container">
+			<div  class="map" id="map" style="width: 100%; height:300px; border: 1px solid #AAA;"></div>
+			<div  id="mapCheck" style="display:none;">country</div>
+		</div>
+		<div class="section-container section-flex">
+			<div class="one-half">
+			<!-- ### select area  space ######## -->
+				<h3>2. Choose data quality topic.</h3>
+				<div class="select">
+					<select class="minimal" id="cardtype"  required>
+						<option value="Topic" selected>Topic ...</option>
+						<option value="SIMPLE_REPORT">Simple Report</option>
+						  <!-- <option>Remote mapping</option> -->
+						  <!--option>Building completeness</option>
+						  <option>Saturation</option>
+						  <option>Health care tag completness</option>
+						  <option>Shadow routing fitness</option-->
+						  <!-- <option>Sketch map fitness</option> -->
+					</select>
 				</div>
-				<!--###  results announce space ######## -->			
-				<div id="results" class ="middle" style=" margin-left:40%; ">
-					<p>Results will be shown here</p>
-				</div>	
-				<!-- ################ traffic light space ######## -->
-				<div id="loader" ></div>
-
-				<div class="row osm" style="margin-top:40px;">
-					<div class="graph" id="trafficTop"> 
-					
-					</div>	
-				</div>
-				<div class="row osm" style="margin-top:40px;">
-					<div class="graph"> 
-						<div id="traffic_map_space" style="width:30%; height: 20vh; float:left; padding:10px;"> 
-		 
-						</div>	
-						<div id="traffic_dots_space" style="width:20%; float:left; padding:10px;"> 
-		 
-						</div>	
-						<div id="traffic_text_space" style="width:50%; float:right; margin-top:5%; padding:10px;"> 
-							
-						</div>	
-					</div>	
-				</div>
-				<!-- ################ graph space ######## -->
-				<div class="row osm" style="margin-top:40px;">
-					<div class="graph" id="graphTop"> 
-				
-					</div>	
-				</div>
-			  <div class="row osm" style="margin-top:40px;">
-					<div class="graph" id="indicatorSpace"> 
-						<!-- <div id="graph_space" style="width:50%; float:left; padding:10px;"> 
-					 
-						</div>	
-						<div id="text_space" style="width:50%; float:right; padding:10px;"> 
-		
-						</div>	 -->
-					</div>	
-				</div>
-				<!-- ################ additional info indicators space ######## -->
-				<div class="row osm" style="margin-top:40px;">
-					<!-- <div class="graph" id="calcTop"> 
-	
-					</div> -->
-					<div id="calc_space" style="width:100%;  padding:10px;"> 
-						
-					</div>
-				</div>
-				<div class="row osm" style="margin-top:40px;">
-					
-					<!-- ################ go to top space ######## -->	
-					<div class="buttons2" style="margin-top:20px;">
-						<button onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
-					</div>
-				</div>
-				 
-					  
-					
-			</div>	
+			</div>
+			<div class="one-half">
+			<!-- ### select area  space ######## -->
+				<h3>3. Run analysis.</h3>
+				<button id="gQ" type="submit" class="btn-submit2" >Get Quality Report</button>
+				<button id="gP" type="submit" class="btn-report2" >Download PDF</button>
+			</div>
 		</div>
 	</div>
+
+	<!-- Section for Results -->
+	<div class="section light-blue">
+
+		<div class="section-container">
+			<div class="rich-text">
+			<!-- ### select area  space ######## -->
+				<h2>Results</h2>
+			</div>
+		</div>
+		<div class="section-container">
+			<h3>Overall Data Quality Report</h3>
+			<div id="results1" class="middle">
+				<p>Results will be shown here</p>
+			</div>
+			<div id="loader1"></div>
+		</div>
+		<div class="section-container section-flex">
+			<div class="one-third">
+				<div id="traffic_map_space" style="height: 250px; padding:10px;"></div>
+			</div>
+			<div class="two-thirds">
+				<div id="traffic_dots_space"></div>
+				<div id="traffic_text_space"></div>
+				<div id="report_metadata_space"></div>
+			</div>
+		</div>
+
+		<div class="section-container">
+			<h3>Data Quality Indicators</h3>
+			<div id="results2" class="middle">
+				<p>Results will be shown here</p>
+			</div>
+			<div id="loader2"></div>
+		</div>
+		<div id="indicatorSpace">
+			<!-- here will will place the indicator results
+				<div class="section-container">
+					<div class="one-third"></div>
+					<div class="two-thirds"></div>
+				</div>
+			-->
+		</div>
+
+		<div class="section-container">
+			<div class="buttons2">
+				<button class="btn-submit" onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
+			</div>
+		</div>
+	</div>
+
 	<!-- End  -->
 	<!-- ################ footer ######## -->
-	<div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;">
 		<footer>
 			<div class="wrapper"  >
 			  <div class="container">
@@ -245,8 +206,7 @@
 				</div>
 			  </div>
 			</div>
-		</footer>			
-	</div>
+		</footer>
 
 
 	<script async defer src="assets/js/index.js"></script>

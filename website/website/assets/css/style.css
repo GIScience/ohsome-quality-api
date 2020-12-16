@@ -423,6 +423,9 @@ hr {
       width: auto;
       margin: 20px; }
 
+.page-home .hero-container {
+  background-image: url("/assets/img/hero/osm_grey.jpg"); }
+
 .page-data .hero-container {
   background-image: url("/assets/img/hero/msf_mapping.jpg"); }
 
@@ -501,8 +504,7 @@ footer .container {
       vertical-align: top; }
 
 footer {
-  background-color: #060e2f;
-  color: #fff;
+  background-color: #FFFFFF;
   padding: 10px 0;
   margin-top: 40px;}
   @media screen and (max-width: 479px) {
@@ -676,8 +678,7 @@ footer .container {
       vertical-align: top; }
 
 footer {
-  background-color: #060e2f;
-  color: #fff;
+  background-color: #FFFFFF;
   padding: 10px 0; }
   @media screen and (max-width: 479px) {
     footer {
@@ -778,7 +779,7 @@ footer {
 
 .hero-subheading {
   margin: 0 auto;
-  opacity: .8;
+  opacity: 1.0;
   font-size: 18px;
   line-height: 27px;
   font-weight: 300;
@@ -1038,13 +1039,13 @@ color:black;		} }
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400&subset=latin,latin-ext);
 /* Style the links inside the navigation bar */
 .topnav a {
+  font-size: 16px !important;
   float: left;
   display: block;
   color:  #bf260f ; /*#f2f2f2;*/
   text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 13px;
+  /*padding: 14px 16px;*/
+  /*text-decoration: none;*/
   font-family: Roboto Condensed !important;
   border-color: 
 
@@ -1060,7 +1061,6 @@ color:black;		} }
 .topnav a.active {
   background-color: #F8F8F8;
   color: white;
-
 }
 
 /* Hide the link that should open and close the topnav on small screens */
@@ -1199,4 +1199,17 @@ color:black;		} }
 }
 .cell:hover  #theme2 {
     display: block;
+}
+
+.logo {
+   height: 70px;
+   padding: 10px;
+}
+
+.indicator-graph {
+    max-height: 200px;
+}
+
+.traffic-lights-image {
+    max-height: 200px;
 }

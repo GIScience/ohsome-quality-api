@@ -1,11 +1,12 @@
 import json
+import os
 from typing import Dict
 
 from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.definitions import DATA_PATH, IndicatorResult, logger
 
 
 def get_table_name(dataset: str, indicator: str) -> str:
@@ -69,7 +70,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
 
 
 def save_indicator_results_to_db(
-    dataset: str, feature_id: int, indicator: str, results: Dict
+    dataset: str, feature_id: int, indicator: str, results
 ) -> None:
     """Save the indicator result for the given dataset and feature in the database.
 
@@ -92,23 +93,33 @@ def save_indicator_results_to_db(
         SET SCHEMA %(schema)s;
         CREATE TABLE IF NOT EXISTS {} (
           fid integer,
-          results json,
+          label VARCHAR(20),
+          value FLOAT,
+          text VARCHAR(1024),
+          svg  TEXT,
           CONSTRAINT {} PRIMARY KEY (fid)
         );
-        INSERT INTO {} (fid, results) VALUES
-        (%(feature_id)s, %(results)s)
+        INSERT INTO {} (fid, label, value, text, svg) VALUES
+        (%(feature_id)s, %(label)s, %(value)s ,%(text)s, %(svg)s)
         ON CONFLICT (fid) DO UPDATE
-            SET results = excluded.results;
+            SET (label, value, text, svg)=
+            (excluded.label, excluded.value, excluded.text, excluded.svg)
     """
     ).format(
         sql.Identifier(table),
         sql.Identifier(table_constraint),
         sql.Identifier(table),
     )
+    with open(os.path.join(DATA_PATH, results[0].svg)) as inf:
+        svg = inf.read()
+
     data = {
         "schema": POSTGRES_SCHEMA,
         "feature_id": feature_id,
-        "results": json.dumps(results),
+        "label": results[0].label.name,
+        "value": results[0].value,
+        "text": results[0].text,
+        "svg": svg,
     }
     db.query(query=query, data=data)
     logger.info(f"Saved results for feature {feature_id} in {table}.")
@@ -124,16 +135,21 @@ def get_indicator_results_from_db(
     query = sql.SQL(
         """
         SET SCHEMA %(schema)s;
-        SELECT results
+        SELECT (label, value, text, svg)
         FROM {}
         WHERE fid = %(feature_id)s;
     """
     ).format(sql.Identifier(table))
     data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
-    results = query_results[0][0]
     logger.info(f"Got results for feature {feature_id} from {table}.")
-    return results
+    result = IndicatorResult(
+        label=query_results[0][0],
+        value=query_results[0][1],
+        text=query_results[0][2],
+        svg=query_results[0][3],
+    )
+    return result
 
 
 def get_value_from_db(dataset: str, feature_id: str, field_name: str):
@@ -153,6 +169,109 @@ def get_value_from_db(dataset: str, feature_id: str, field_name: str):
     results = query_results[0][0]
     logger.info(f"Got '{field_name}' for feature '{feature_id}' from '{dataset}'.")
     return results
+
+
+def create_dataset_table(dataset: str):
+    db = PostgresDB()
+    conn = db._db_connection
+    cur = conn.cursor()
+    exe = sql.SQL(
+        """DROP TABLE IF EXISTS {};
+    CREATE TABLE {} (
+        fid integer NOT Null,
+        geom geometry,
+        PRIMARY KEY(fid)
+    );"""
+    ).format(*[sql.Identifier(dataset)] * 2)
+    cur.execute(exe)
+    conn.commit()
+    conn.close()
+    cur.close()
+
+
+def geojson_to_table(dataset, infile, fid_key="fid"):
+    """creates a table with fid and geomtry based on a input geojson"""
+
+    create_dataset_table(dataset)
+
+    with open(infile) as inf:
+        data = json.load(inf)
+
+    db = PostgresDB()
+    conn = db._db_connection
+    cur = conn.cursor()
+
+    for feature in data["features"]:
+        polygon = json.dumps(feature["geometry"])
+
+        fid = feature["properties"][fid_key]
+
+        db = PostgresDB()
+        conn = db._db_connection
+        cur = conn.cursor()
+        exe = sql.SQL(
+            """INSERT INTO {table} (fid, geom)
+                      VALUES (%(fid)s , public.ST_GeomFromGeoJSON(%(polygon)s))
+                      ON CONFLICT (fid) DO UPDATE
+                      SET geom = excluded.geom;;"""
+        ).format(table=sql.Identifier(dataset))
+        cur.execute(exe, {"fid": fid, "polygon": polygon})
+        conn.commit()
+
+    conn.close()
+    cur.close()
+
+
+def get_error_table_name(dataset, indicator):
+    """returns the name of the Error Table for the given dataset and indicator"""
+
+    return f"{dataset}_{indicator}_errors"
+
+
+def get_fid_list(table):
+    db = PostgresDB()
+    conn = db._db_connection
+    cur = conn.cursor()
+    exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
+    cur.execute(exe)
+    fids = cur.fetchall()
+    cur.close()
+    conn.close()
+    return fids
+
+
+def create_error_table(dataset, indicator):
+    db = PostgresDB()
+    conn = db._db_connection
+    cur = conn.cursor()
+    exe = sql.SQL(
+        """DROP TABLE IF EXISTS {};
+                    CREATE TABLE {} (
+                    fid integer NOT Null,
+                    error VARCHAR(256),
+                    PRIMARY KEY(fid)
+                    );"""
+    ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
+    cur.execute(exe)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def insert_error(dataset: str, indicator: str, fid: int, error: str):
+    db = PostgresDB()
+    conn = db._db_connection
+    cur = conn.cursor()
+    exe = sql.SQL(
+        """
+                 INSERT INTO {}
+                 VALUES (%(fid)s , %(error)s)
+                 """
+    ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
+    cur.execute(exe, {"fid": fid, "error": str(error)})
+    conn.commit()
+    cur.close()
+    conn.close()
 
 
 def get_zonal_stats_population(bpolys: Dict):

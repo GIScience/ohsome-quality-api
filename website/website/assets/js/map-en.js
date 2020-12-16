@@ -201,13 +201,20 @@ function buildMap(err, ...charts){
 		}
 		else {
 			// show loader spinner
-			document.querySelector("#loader").classList.add("spinner-1");
-			// remove dynamically created Indicator divs 
+			document.querySelector("#loader1").classList.add("spinner-1");
+			document.querySelector("#loader2").classList.add("spinner-1");
+			// remove dynamically created Indicator divs
 			removeIndicators()
 			// remove selected feature from map
 			map.removeLayer(selectedFeatureLayer)
 
-			var x = document.getElementById("results");
+			var x = document.getElementById("results1");
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			} else {
+				x.style.display = "none";
+			}
+			var x = document.getElementById("results2");
 			if (x.style.display === "none") {
 				x.style.display = "block";
 			} else {
@@ -245,7 +252,7 @@ function buildMap(err, ...charts){
 			var params = JSON.stringify(featureCollectionPart)
 			
 			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params), handleGetQuality);
-			httpPostAsync(selectedTopic+'sss', JSON.stringify({ "bpolys": params}), handleGetQuality);
+			httpPostAsync(selectedTopic, JSON.stringify({ "bpolys": params}), handleGetQuality);
 			// getResponseFile(selectedTopic, params, handleGetQuality)
 
 		}
@@ -255,45 +262,38 @@ function buildMap(err, ...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
-		document.querySelector("#loader").classList.remove("spinner-1");
-		
-		// ######   traffic  light ########
-		document.getElementById("trafficTop").innerHTML = 
-				'<h5>Overall quality</h5>';
+		document.querySelector("#loader1").classList.remove("spinner-1");
+		document.querySelector("#loader2").classList.remove("spinner-1");
 
 		// show selected region on a map
 		addMiniMap();
-		
-		// var imgSrc = ''
-		// if(response.result.label === 1) {
-		// 	imgSrc = "../assets/img/green.PNG"
-		// }
-		// else if(response.result.label === 2) {
-		// 	imgSrc = "../assets/img/ampel.PNG"
-		// }
-		// else if(response.result.label === 3) {
-		// 	imgSrc = "../assets/img/red.PNG"
-		// }
 
-		// assumption 3=green, 2=yellow, 1=red
-		document.getElementById("traffic_dots_space").innerHTML = 
-				'<img src="../assets/img/traffic_light_'+ response.result.label +'.jpg">';
-				
-		document.getElementById("traffic_text_space").innerHTML = 
-			'<p style="font-weight: bold;">Overall value: '+ response.result.value +'</p>'
-			+ '<p>'+ response.result.text +'</p>'
+		// 1=green, 2=yellow, 3=red
+		switch (response.result.label) {
+		    case 1:
+		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality'
+		    case 2:
+		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
+		    case 3:
+		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
+		}
+
+        document.getElementById("traffic_dots_space").innerHTML =
+		            '<h4>Report: '+ response.metadata.name + '</h4>' +
+		            '<p>' + traffic_lights + '</p>'
+
+
+
+		// ' <b>Overall value: '+ response.result.value + '</b></p>'
+
+
+		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.text +'</p>'
+		document.getElementById("report_metadata_space").innerHTML =
+		    '<p class="metadata-text">'+ response.metadata.description +'</p>'
 			
 		if(response.indicators.length > 0) {
-			document.getElementById("graphTop").innerHTML = 
-				'<h5>Stats about traffic light calculation</h5>';
-
 			addIndicators(response.indicators)
 		}
-		
-		document.getElementById("calc_space").innerHTML = 
-		'<p style="font-weight: bold;">Report: '+ response.metadata.name +'</p>'
-		+ '<p>'+ response.metadata.description +'</p>'
-
 	}
 
 	/**
@@ -308,37 +308,45 @@ function buildMap(err, ...charts){
 		indicators.forEach(indicator => {
 
 			// console.log('indicator = ', indicator)
-			var indicatorDiv = document.createElement("div");
-			indicatorDiv.className = "row osm indicator"
+			var sectionDiv = document.createElement("div");
+			sectionDiv.className = "section-container section-flex"
 
-			var indiHeader = document.createElement("h4");
-			var indiHeadernode = document.createTextNode("Indicator: "+ indicator.metadata.name);
-			indiHeader.appendChild(indiHeadernode);
-			indicatorDiv.appendChild(indiHeader);
+			// left part with plot
+			var left_space = document.createElement("div");
+			left_space.className = "one-third"
+			left_space.innerHTML = '<img class="indicator-graph" src="data/'+indicator.result.svg+'">';
+			sectionDiv.appendChild(left_space)
 
-			// graph part
-			var graph_space = document.createElement("div");
-			graph_space.style = "width:50%; float:left; padding:10px;"
-			graph_space.innerHTML = indicator.result.svg;
-			indicatorDiv.appendChild(graph_space)
+			// right part with heading, description and traffic lights
+			var right_space = document.createElement("div");
+			right_space.className = "two-thirds";
 
-			// indicator text
-			var inidcator_traffic_light_div = document.createElement("div");
-			inidcator_traffic_light_div.style="width:10%; float:left; padding:10px;"
+			var indicatorHeading = document.createElement("h4");
+			indicatorHeading.innerHTML = indicator.metadata.name;
+			right_space.appendChild(indicatorHeading);
 
-			var inidcator_traffic_light = document.createElement("img");
-			inidcator_traffic_light.src="../assets/img/traffic_light_"+ indicator.result.label +".jpg";
-			inidcator_traffic_light_div.appendChild(inidcator_traffic_light);
+			var indicatorQuality = document.createElement("p");
+			switch (indicator.result.label) {
+                case 1:
+                    traffic_lights = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
+                case 2:
+                    traffic_lights = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
+                case 3:
+                    traffic_lights = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
+            }
+            indicatorQuality.innerHTML = traffic_lights;
+            right_space.appendChild(indicatorQuality);
 
-			var text_space = document.createElement("div");
-			text_space.style = "width:40%; float:right; padding:10px;"
-			text_space.innerHTML = indicator.result.text;
-			
-			indicatorDiv.appendChild(inidcator_traffic_light_div);
-			indicatorDiv.appendChild(text_space)
+			var indicatorText = document.createElement("p");
+			indicatorText.innerHTML = indicator.result.text;
+			right_space.appendChild(indicatorText);
 
-			parentDiv.appendChild(indicatorDiv);
-			parentDiv.appendChild(document.createElement("hr"));
+            sectionDiv.appendChild(right_space)
+			parentDiv.appendChild(sectionDiv);
+
+			var horizontalLine = document.createElement("hr")
+			horizontalLine.className = "wrapper"
+			parentDiv.appendChild(horizontalLine);
 		});
 	}
 
@@ -347,15 +355,11 @@ function buildMap(err, ...charts){
 	 */
 	function removeIndicators() {
 		// clear overall results
-		document.getElementById("trafficTop").innerHTML = '';
-		
+		//document.getElementById("trafficTop").innerHTML = '';
 		document.getElementById("traffic_map_space").innerHTML = ''
-		
 		document.getElementById("traffic_dots_space").innerHTML = ''
-				
 		document.getElementById("traffic_text_space").innerHTML = ''
-
-		document.getElementById("graphTop").innerHTML = ''
+		//document.getElementById("graphTop").innerHTML = ''
 
 		var parentDiv = document.getElementById("indicatorSpace");
 		while (parentDiv.firstChild) {
