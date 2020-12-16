@@ -172,106 +172,88 @@ def get_value_from_db(dataset: str, feature_id: str, field_name: str):
 
 
 def create_dataset_table(dataset: str):
-    db = PostgresDB()
-    conn = db._db_connection
-    cur = conn.cursor()
-    exe = sql.SQL(
-        """DROP TABLE IF EXISTS {};
-    CREATE TABLE {} (
-        fid integer NOT Null,
-        geom geometry,
-        PRIMARY KEY(fid)
-    );"""
-    ).format(*[sql.Identifier(dataset)] * 2)
-    cur.execute(exe)
-    conn.commit()
-    conn.close()
-    cur.close()
+    """Creates dataset table with collums fid and geom"""
+    with PostgresDB() as db:
+        exe = sql.SQL(
+            """DROP TABLE IF EXISTS {};
+        CREATE TABLE {} (
+            fid integer NOT Null,
+            geom geometry,
+            PRIMARY KEY(fid)
+        );"""
+        ).format(*[sql.Identifier(dataset)] * 2)
+        db.query(exe)
 
 
-def geojson_to_table(dataset, infile, fid_key="fid"):
-    """creates a table with fid and geomtry based on a input geojson"""
+def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
+    """creates a table and loads the content of a geojson file to it"""
 
     create_dataset_table(dataset)
 
     with open(infile) as inf:
         data = json.load(inf)
 
-    db = PostgresDB()
-    conn = db._db_connection
-    cur = conn.cursor()
+    with PostgresDB() as db:
+        for feature in data["features"]:
+            polygon = json.dumps(feature["geometry"])
 
-    for feature in data["features"]:
-        polygon = json.dumps(feature["geometry"])
-
-        fid = feature["properties"][fid_key]
-
-        db = PostgresDB()
-        conn = db._db_connection
-        cur = conn.cursor()
-        exe = sql.SQL(
-            """INSERT INTO {table} (fid, geom)
-                      VALUES (%(fid)s , public.ST_GeomFromGeoJSON(%(polygon)s))
-                      ON CONFLICT (fid) DO UPDATE
-                      SET geom = excluded.geom;;"""
-        ).format(table=sql.Identifier(dataset))
-        cur.execute(exe, {"fid": fid, "polygon": polygon})
-        conn.commit()
-
-    conn.close()
-    cur.close()
+            fid = feature["properties"][fid_key]
+            exe = sql.SQL(
+                """INSERT INTO {table} (fid, geom)
+                          VALUES (%(fid)s , public.ST_GeomFromGeoJSON(%(polygon)s))
+                          ON CONFLICT (fid) DO UPDATE
+                          SET geom = excluded.geom;;"""
+            ).format(table=sql.Identifier(dataset))
+            db.query(exe, {"fid": fid, "polygon": polygon})
 
 
-def get_error_table_name(dataset, indicator):
+def get_error_table_name(dataset: str, indicator: str):
     """returns the name of the Error Table for the given dataset and indicator"""
 
     return f"{dataset}_{indicator}_errors"
 
 
-def get_fid_list(table):
-    db = PostgresDB()
-    conn = db._db_connection
-    cur = conn.cursor()
-    exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
-    cur.execute(exe)
-    fids = cur.fetchall()
-    cur.close()
-    conn.close()
-    return fids
+def get_fid_list(table: str):
+    """get all FIDs of a certain dataset
+
+    Results are returned as list
+    """
+    with PostgresDB() as db:
+
+        exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
+        fids = db.retr_query(exe)
+        return fids
 
 
-def create_error_table(dataset, indicator):
-    db = PostgresDB()
-    conn = db._db_connection
-    cur = conn.cursor()
-    exe = sql.SQL(
-        """DROP TABLE IF EXISTS {};
-                    CREATE TABLE {} (
-                    fid integer NOT Null,
-                    error VARCHAR(256),
-                    PRIMARY KEY(fid)
-                    );"""
-    ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
-    cur.execute(exe)
-    conn.commit()
-    cur.close()
-    conn.close()
+def create_error_table(dataset: str, indicator: str):
+    """(Re)Creates an error table to handle exceptions during processing
+    of indicators.
+    """
+
+    with PostgresDB() as db:
+        exe = sql.SQL(
+            """DROP TABLE IF EXISTS {};
+                        CREATE TABLE {} (
+                        fid integer NOT Null,
+                        error VARCHAR(256),
+                        PRIMARY KEY(fid)
+                        );"""
+        ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
+        db.query(exe)
 
 
 def insert_error(dataset: str, indicator: str, fid: int, error: str):
-    db = PostgresDB()
-    conn = db._db_connection
-    cur = conn.cursor()
-    exe = sql.SQL(
-        """
-                 INSERT INTO {}
-                 VALUES (%(fid)s , %(error)s)
-                 """
-    ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
-    cur.execute(exe, {"fid": fid, "error": str(error)})
-    conn.commit()
-    cur.close()
-    conn.close()
+    """handles exceptionsduring processing of indicators.
+    Stores failed fid and error message
+    """
+    with PostgresDB() as db:
+        exe = sql.SQL(
+            """
+                     INSERT INTO {}
+                     VALUES (%(fid)s , %(error)s)
+                     """
+        ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
+    db.query(exe, {"fid": fid, "error": str(error)})
 
 
 def get_zonal_stats_population(bpolys: Dict):

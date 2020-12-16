@@ -176,7 +176,6 @@ class Indicator(BaseIndicator):
         else:
             filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
             outfile = os.path.join(DATA_PATH, filename)
-        logger.info(f"exported figure: {outfile} tessstttttt")
         xy_chart.render_to_file(outfile)
         logger.info(f"exported figure: {outfile}")
         return filename

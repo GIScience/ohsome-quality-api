@@ -10,6 +10,7 @@ from ohsome_quality_tool.utils.definitions import (
 from ohsome_quality_tool.utils.geodatabase import (
     create_error_table,
     get_bpolys_from_db,
+    get_error_table_name,
     get_fid_list,
     insert_error,
     save_indicator_results_to_db,
@@ -19,13 +20,16 @@ INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
 
 
-def process_indicator(dataset, indicator):
+def process_indicator(dataset: str, indicator: str, only_missing_ids=False):
     """Processes an Indicator for a given dataset in the Database
 
 
     The results will be stored in the database"""
+    if only_missing_ids is not False:
+        fids = get_fid_list(dataset)
+    else:
+        fids = get_fid_list(get_error_table_name(dataset, indicator))
 
-    fids = get_fid_list(dataset)
     create_error_table(dataset, indicator)
 
     for feature_id in fids:
@@ -39,29 +43,6 @@ def process_indicator(dataset, indicator):
                 (
                     f"caught Exception{E} while processing {indicator}"
                     f"for feature {feature_id} of {dataset}."
-                )
-            )
-
-
-def process_missing(dataset: str, indicator: str):
-    """Processes the missing FIDs for a given dataset / indicator
-
-
-    The results will be stored in the database"""
-    fids = get_fid_list(f"{dataset}_{indicator}_errors")
-    create_error_table(dataset, indicator)
-
-    for feature_id in fids:
-        try:
-            bpolys = get_bpolys_from_db(dataset, feature_id)
-            results = get_dynamic_indicator(indicator, bpolys)
-            save_indicator_results_to_db(dataset, feature_id, indicator, results)
-        except Exception as E:
-            insert_error(dataset, indicator, feature_id, E)
-            logger.info(
-                (
-                    f"caught Exception{E} while processing {indicator}"
-                    " for feature {feature_id} of {dataset}."
                 )
             )
 
