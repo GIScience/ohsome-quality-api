@@ -35,25 +35,25 @@ response_template = {
 }
 
 
-@app.get("/test/{indicator_name}")
-async def get_test(indicator_name: str):
-    return {"indicator_name": indicator_name}
+@app.get("/test/{name}")
+async def get_test(name: str):
+    return {"indicator-name": name}
 
 
-@app.get("/static_indicator/{indicator_name}")
-async def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
+@app.get("/static/indicator/{name}")
+async def get_static_indicator(name: str, dataset: str, feature_id: int):
     results = oqt.get_static_indicator(
-        indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
+        indicator_name=name, dataset=dataset, feature_id=feature_id
     )
     return results
 
 
 # added for now for testing purposes
-@app.get("/dynamic_indicator/{indicator_name}")
-async def get_dynamic_indicator(indicator_name: str, bpolys: str, request: Request):
+@app.get("/dynamic/indicator/{name}")
+async def get_dynamic_indicator(name: str, bpolys: str, request: Request):
     bpolys = json.loads(bpolys)
     result, metadata = oqt.get_dynamic_indicator(
-        indicator_name=indicator_name, bpolys=bpolys
+        indicator_name=name, bpolys=bpolys
     )
     response = response_template
     response["metadata"] = metadata._asdict()
@@ -63,22 +63,22 @@ async def get_dynamic_indicator(indicator_name: str, bpolys: str, request: Reque
     return response
 
 
-@app.get("/static_report/{report_name}")
-async def get_static_report(report_name: str, dataset: str, feature_id: int):
+@app.get("/static/report/{name}")
+async def get_static_report(name: str, dataset: str, feature_id: int):
     results = oqt.get_static_report(
-        report_name=report_name, dataset=dataset, feature_id=feature_id
+        report_name=name, dataset=dataset, feature_id=feature_id
     )
     return results
 
 
-@app.get("/dynamic_report/{report_name}")
-async def get_dynamic_report(report_name: str, bpolys: str, request: Request):
+@app.get("/dynamic/report/{name}")
+async def get_dynamic_report(name: str, bpolys: str, request: Request):
     bpolys = json.loads(bpolys)
 
     print(bpolys)
 
     result, indicators, metadata = oqt.get_dynamic_report(
-        report_name=report_name, bpolys=bpolys
+        report_name=name, bpolys=bpolys
     )
 
     print(result, indicators, metadata)
@@ -96,11 +96,11 @@ class Item(BaseModel):
     bpolys: str
 
 
-@app.post("/dynamic_report/{report_name}")
-async def post_dynamic_report(report_name: str, item: Item, request: Request):
+@app.post("/dynamic/report/{name}")
+async def post_dynamic_report(name: str, item: Item, request: Request):
     bpolys = json.loads(item.dict()["bpolys"])
     result, indicators, metadata = oqt.get_dynamic_report(
-        report_name=report_name, bpolys=bpolys
+        report_name=name, bpolys=bpolys
     )
 
     print(result, indicators, metadata)
