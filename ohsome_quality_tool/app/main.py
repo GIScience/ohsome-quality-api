@@ -1,7 +1,7 @@
 import json
 
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ohsome_quality_tool import oqt
@@ -9,16 +9,9 @@ from ohsome_quality_tool.utils import geodatabase
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:5000",
-    "http://localhost:8000",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,9 +45,7 @@ async def get_static_indicator(name: str, dataset: str, feature_id: int):
 @app.get("/dynamic/indicator/{name}")
 async def get_dynamic_indicator(name: str, bpolys: str, request: Request):
     bpolys = json.loads(bpolys)
-    result, metadata = oqt.get_dynamic_indicator(
-        indicator_name=name, bpolys=bpolys
-    )
+    result, metadata = oqt.get_dynamic_indicator(indicator_name=name, bpolys=bpolys)
     response = response_template
     response["metadata"] = metadata._asdict()
     response["metadata"]["requestUrl"] = request.url._url
