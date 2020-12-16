@@ -130,24 +130,18 @@ def get_indicator_results_from_db(
 ) -> Dict:
     """Get the indicator result for the given dataset and feature in the database."""
 
-    db = PostgresDB()
     table = get_table_name(dataset, indicator)
-    query = sql.SQL(
-        """
-        SET SCHEMA %(schema)s;
-        SELECT (label, value, text, svg)
-        FROM {}
-        WHERE fid = %(feature_id)s;
-    """
-    ).format(sql.Identifier(table))
-    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
-    query_results = db.retr_query(query=query, data=data)
+    field = ["label", "value", "text", "svg"]
+    query_result = {}
+    for field in field:
+        query_result[field] = get_value_from_db(table, feature_id, field)
+
     logger.info(f"Got results for feature {feature_id} from {table}.")
     result = IndicatorResult(
-        label=query_results[0][0],
-        value=query_results[0][1],
-        text=query_results[0][2],
-        svg=query_results[0][3],
+        label=query_result["label"],
+        value=query_result["value"],
+        text=query_result["text"],
+        svg=query_result["svg"],
     )
     return result
 
