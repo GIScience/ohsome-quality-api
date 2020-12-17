@@ -47,6 +47,11 @@ class Indicator(BaseIndicator):
         self.layers = {"buildings": {"filter": "building=*", "unit": "area"}}
         self.ratio: float = None
 
+        # TODO: Run during init instead by oqt.py
+        # self.preprocess()
+        # self.calculate()
+        # self.create_figure()
+
     def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
         db = PostgresDB()
@@ -100,30 +105,41 @@ class Indicator(BaseIndicator):
 
     def create_figure(self, data: Dict) -> str:
         """Create a plot and return as SVG string."""
-        fig = plt.figure()
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_xlabel("Global Urban Footprint [%]")  # Add a y-label to the axes.
-        ax.set_ylabel("OpenStreetMap [%]")  # Add a y-label to the axes.
-        ax.set_title("Built-Up Area")  # Add a title to the axes.
+        ax.set_xlabel("Global Urban Footprint [%]")
+        ax.set_ylabel("OpenStreetMap [%]")
+        ax.set_title("Built-Up Area")
         ax.set_xlim((0, 100))
         ax.set_ylim((0, 100))
 
         # Plot thresholds as line.
+        x = [0, 100]
+        y1 = [0, 100 * self.threshold_high]
+        y2 = [0, 100 * self.threshold_low]
         line = line = ax.plot(
-            [0, 100],
-            [0, 100 * self.threshold_high],
+            x,
+            y1,
             color="black",
             label="Threshold A",
         )
         plt.setp(line, linestyle="--")
+
         line = ax.plot(
-            [0, 100],
-            [0, 100 * self.threshold_low],
+            x,
+            y2,
             color="black",
             label="Threshold B",
         )
         plt.setp(line, linestyle=":")
+
+        # Fill in space between thresholds
+        ax.fill_between(x, y2, 0, alpha=0.5, color="red")
+        ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
+        ax.fill_between(x, y1, 100, alpha=0.5, color="green")
 
         # Plot point as circle ("o").
         ax.plot(
@@ -143,6 +159,6 @@ class Indicator(BaseIndicator):
 
         # Save as SVG to file-like object and return as string.
         output_file = io.BytesIO()
-        plt.savefig("test.svg", format="svg")
+        plt.savefig(output_file, format="svg")
         logger.info(f"export figures for {self.name} indicator")
         return output_file.getvalue()
