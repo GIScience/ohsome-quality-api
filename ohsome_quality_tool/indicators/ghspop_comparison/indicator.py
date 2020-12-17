@@ -188,7 +188,6 @@ class Indicator(BaseIndicator):
         )
 
         ax.legend()
-        plt.show()
 
         # Save as SVG to file-like object and return as string.
         output_file = io.BytesIO()
