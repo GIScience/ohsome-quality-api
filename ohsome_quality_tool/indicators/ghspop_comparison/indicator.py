@@ -1,21 +1,15 @@
+import io
 import json
-import os
-import uuid
 from math import ceil
 from typing import Dict, Tuple
 
+import matplotlib.pyplot as plt
 import numpy as np
-import pygal
 from geojson import FeatureCollection
-from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
-    TrafficLightQualityLevels,
-    logger,
-)
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
@@ -149,18 +143,18 @@ class Indicator(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_title = "Buildings per person against people per sqkm"
-        ax.set_xlabel = "Population Density [1/km^2]"
-        ax.set_ylabel = "Building Density [1/km^2]"
+        ax.set_title("Buildings per person against people per $km^2$")
+        ax.set_xlabel("Population Density [$1/km^2$]")
+        ax.set_ylabel("Building Density [$1/km^2$]")
 
-        # set x max value based on area
+        # Set x max value based on area
         if data["pop_count_per_sqkm"] < 100:
             max_area = 10
         else:
             max_area = round(data["pop_count_per_sqkm"] * 2 / 10) * 10
+        x = np.linspace(0, max_area, 20)
 
         # Plot thresholds as line.
-        x = np.linspace(0, max_area, 20)
         y1 = [greenThresholdFunction(xi) for xi in x]
         y2 = [yellowThresholdFunction(xi) for xi in x]
         line = line = ax.plot(
@@ -180,9 +174,9 @@ class Indicator(BaseIndicator):
         plt.setp(line, linestyle=":")
 
         # Fill in space between thresholds
-        # ax.fill_between(x, y2, 0, alpha=0.5, color="red")
-        # ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
-        # ax.fill_between(x, y1, 100, alpha=0.5, color="green")
+        ax.fill_between(x, y2, 0, alpha=0.5, color="red")
+        ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
+        ax.fill_between(x, y1, max(y1), alpha=0.5, color="green")
 
         # Plot point as circle ("o").
         ax.plot(
@@ -193,14 +187,11 @@ class Indicator(BaseIndicator):
             label="location",
         )
 
-        # if self.dynamic:
-        #     # generate a random ID for the outfile name
-        #     random_id = uuid.uuid1()
-        #     filename = f"{self.name}_{random_id}.svg"
-        #     outfile = os.path.join(DATA_PATH, filename)
-        # else:
-        #     filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-        #     outfile = os.path.join(DATA_PATH, filename)
+        ax.legend()
         plt.show()
-        logger.info(f"exported figure: {outfile}")
-        return None
+
+        # Save as SVG to file-like object and return as string.
+        output_file = io.BytesIO()
+        plt.savefig(output_file, format="svg")
+        logger.info(f"export figures for {self.name} indicator")
+        return output_file.getvalue()
