@@ -102,15 +102,19 @@ class Indicator(BaseIndicator):
         # TODO: define a better way to derive the quality value from the result
         if result > THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
-            value = 0.75
+            value = 1.0
             text = text + self.interpretations["green"]
         elif THRESHOLD_YELLOW >= result > THRESHOLD_RED:
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
             text = text + self.interpretations["yellow"]
-        else:
+        elif THRESHOLD_RED >= result > 0:
             label = TrafficLightQualityLevels.RED
             value = 0.25
+            text = text + self.interpretations["red"]
+        else:
+            label = TrafficLightQualityLevels.RED
+            value = 0.0
             text = text + self.interpretations["red"]
 
         logger.info(
