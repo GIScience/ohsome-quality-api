@@ -10,8 +10,9 @@ from ohsome_quality_tool.utils.definitions import (
     logger,
 )
 from ohsome_quality_tool.utils.layers import (
-    SKETCHMAP_FITNESS_FEATURES,
-    SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
+    AMENITIES_LAYER,
+    MAJOR_ROADS_LAYER,
+    POI_LAYER,
 )
 
 
@@ -23,9 +24,10 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["mapping-saturation"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["last-edit"], SKETCHMAP_FITNESS_FEATURES),
-        (indicator_classes["poi-density"], SKETCHMAP_FITNESS_POI_LAYER_COMBINED),
+        (indicator_classes["mapping-saturation"], MAJOR_ROADS_LAYER),
+        (indicator_classes["last-edit"], AMENITIES_LAYER),
+        (indicator_classes["last-edit"], MAJOR_ROADS_LAYER),
+        (indicator_classes["poi-density"], POI_LAYER),
     ]
 
     def __init__(

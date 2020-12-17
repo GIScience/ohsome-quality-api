@@ -1,11 +1,15 @@
+import os
+import uuid
 from abc import ABCMeta, abstractmethod
 from typing import Dict, Tuple
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
     IndicatorMetadata,
     IndicatorResult,
+    LayerDefinition,
     TrafficLightQualityLevels,
     logger,
 )
@@ -22,7 +26,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict,
+        layer: LayerDefinition,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -30,7 +34,13 @@ class BaseIndicator(metaclass=ABCMeta):
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
         self.dynamic = dynamic
-        self.layers = layers
+        self.layer = layer
+        self.metadata = IndicatorMetadata(self.name, self.description)
+
+        # generate random id for filename to avoid overwriting existing files
+        random_id = uuid.uuid1()
+        self.filename = f"{self.name}_{self.layer.name}_{random_id}.svg"
+        self.outfile = os.path.join(DATA_PATH, self.filename)
 
         if self.dynamic:
             if bpolys is None:
@@ -45,8 +55,6 @@ class BaseIndicator(metaclass=ABCMeta):
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
-
-        self.metadata = IndicatorMetadata(self.name, self.description)
 
     def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
         """Pass the indicator results to the user.

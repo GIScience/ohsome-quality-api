@@ -46,16 +46,17 @@ class BaseReport(metaclass=ABCMeta):
 
         indicators = []
         for item in self.indicators_definition:
-            indicator, layers = item
+            indicator, layer = item
+
             if self.dynamic:
                 result, metadata = indicator(
-                    dynamic=True, layers=layers, bpolys=self.bpolys
+                    dynamic=True, layer=layer, bpolys=self.bpolys
                 ).get()
             else:
                 logger.info("get static indicator values")
                 result, metadata = indicator(
                     dynamic=False,
-                    layers=layers,
+                    layer=layer,
                     dataset=self.dataset,
                     feature_id=self.feature_id,
                 ).get()

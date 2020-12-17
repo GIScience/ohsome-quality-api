@@ -1,6 +1,4 @@
 import json
-import os
-import uuid
 from math import ceil
 from typing import Dict, Tuple
 
@@ -11,7 +9,7 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
+    LayerDefinition,
     TrafficLightQualityLevels,
     logger,
 )
@@ -30,7 +28,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = BUILDING_COUNT_LAYER,
+        layer: LayerDefinition = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -40,7 +38,7 @@ class Indicator(BaseIndicator):
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
-            layers=layers,
+            layer=layer,
         )
 
     def preprocess(self) -> Dict:
@@ -56,30 +54,26 @@ class Indicator(BaseIndicator):
         #    )
         if pop_count is None:
             pop_count = 0
+
+        query_results = ohsome_api.query_ohsome_api(
+            endpoint="elements/count/",
+            filter_string=self.layer.filter,
+            bpolys=json.dumps(self.bpolys),
+        )
+
+        count = query_results["result"][0]["value"]
+        count_per_pop = count / pop_count
+        count_per_sqkm = count / area
+
         # ideally we would have this as a dataframe?
         preprocessing_results = {
             "pop_count": pop_count,
             "area_sqkm": area,
             "pop_count_per_sqkm": pop_count / area,
+            "feature_count": count,
+            "feature_count_per_pop": count_per_pop,
+            "feature_count_per_sqkm": count_per_sqkm,
         }
-
-        query_results = ohsome_api.process_ohsome_api(
-            endpoint="elements/{unit}/",
-            layers=self.layers,
-            bpolys=json.dumps(self.bpolys),
-        )
-
-        for layer in self.layers.keys():
-            unit = self.layers[layer]["unit"]
-            preprocessing_results[f"{layer}_{unit}"] = query_results[layer]["result"][
-                0
-            ]["value"]
-            preprocessing_results[f"{layer}_{unit}_per_pop"] = (
-                preprocessing_results[f"{layer}_{unit}"] / pop_count
-            )
-            preprocessing_results[f"{layer}_{unit}_per_sqkm"] = (
-                preprocessing_results[f"{layer}_{unit}"] / area
-            )
 
         return preprocessing_results
 
@@ -96,21 +90,21 @@ class Indicator(BaseIndicator):
         def yellowThresholdFunction(pop_per_sqkm):
             return 0.75 * np.sqrt(pop_per_sqkm)
 
-        if preprocessing_results["buildings_count_per_pop"] <= yellowThresholdFunction(
+        if preprocessing_results["feature_count_per_sqkm"] <= yellowThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
             value = TrafficLightQualityLevels.RED.value - preprocessing_results[
-                "buildings_count_per_pop"
+                "feature_count_per_pop"
             ] / yellowThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
 
-        elif preprocessing_results["buildings_count_per_pop"] <= greenThresholdFunction(
+        elif preprocessing_results["feature_count_per_sqkm"] <= greenThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
             green = greenThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
             yellow = yellowThresholdFunction(
                 preprocessing_results["pop_count_per_sqkm"]
             )
-            fraction = (preprocessing_results["buildings_count_per_pop"] - yellow) / (
+            fraction = (preprocessing_results["feature_count_per_sqkm"] - yellow) / (
                 green - yellow
             )
             value = TrafficLightQualityLevels.YELLOW.value - fraction
@@ -123,10 +117,10 @@ class Indicator(BaseIndicator):
         text = (
             f"{int(preprocessing_results['pop_count'])} of People live in this Area "
             "following the GHS POP Dataset, with a total number of "
-            f"{int(preprocessing_results['buildings_count'])} "
+            f"{int(preprocessing_results['feature_count'])} "
             "buildings mapped in OSM. This results in "
-            f"{preprocessing_results['buildings_count_per_pop']:.2f} "
-            "buildings per person, "
+            f"{preprocessing_results['feature_count_per_pop']:.2f} "
+            "features per person, "
             f"which together with a population density of "
             f"{preprocessing_results['pop_count_per_sqkm']:.2f} "
             "people per sqkm,corresponds to a "
@@ -186,7 +180,7 @@ class Indicator(BaseIndicator):
         # Plot point as circle ("o").
         ax.plot(
             data["pop_count_per_sqkm"],
-            data["buildings_count_per_pop"],
+            data["feature_count_per_sqkm"],
             "o",
             color="black",
             label="location",
@@ -194,11 +188,7 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        random_id = uuid.uuid1()
-        filename = f"{self.name}_{random_id}.svg"
-        outfile = os.path.join(DATA_PATH, filename)
-
-        plt.savefig(outfile, format="svg")
+        plt.savefig(self.outfile, format="svg")
         plt.close("all")
         logger.info(f"export figures for {self.name} indicator")
-        return filename
+        return self.filename

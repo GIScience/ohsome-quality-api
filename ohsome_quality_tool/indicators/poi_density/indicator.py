@@ -1,6 +1,4 @@
 import json
-import os
-import uuid
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -10,7 +8,7 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
+    LayerDefinition,
     TrafficLightQualityLevels,
     logger,
 )
@@ -18,7 +16,7 @@ from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
 from ohsome_quality_tool.utils.label_interpretations import (
     POI_DENSITY_LABEL_INTERPRETATIONS,
 )
-from ohsome_quality_tool.utils.layers import SKETCHMAP_FITNESS_POI_LAYER_COMBINED
+from ohsome_quality_tool.utils.layers import POI_LAYER
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
@@ -39,48 +37,39 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = SKETCHMAP_FITNESS_POI_LAYER_COMBINED,
+        layer: LayerDefinition = POI_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic,
-            layers=layers,
+            layer=layer,
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
         )
 
-    def preprocess(self) -> float:
+    def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
-
-        """
-        query_results_density = ohsome_api.process_ohsome_api(
-            endpoint="elements/count/density/",
-            layers=self.layers,
-            bpolys=json.dumps(self.bpolys),
-        )
-        """
 
         # calculate area for polygon
         area_sqkm = get_area_of_bpolys(self.bpolys)
 
-        query_results_count = ohsome_api.process_ohsome_api(
+        query_results_count = ohsome_api.query_ohsome_api(
             endpoint="elements/count/",
-            layers=self.layers,
+            filter_string=self.layer.filter,
             bpolys=json.dumps(self.bpolys),
         )
 
-        preprocessing_results = {"area_sqkm": area_sqkm}
-        # TODO: this indicator currently has only a single layer
-        for layer in self.layers.keys():
-            preprocessing_results[f"{layer}_count"] = query_results_count[layer][
-                "result"
-            ][0]["value"]
-            preprocessing_results[f"{layer}_density"] = (
-                preprocessing_results[f"{layer}_count"] / area_sqkm
-            )
+        count = query_results_count["result"][0]["value"]
+        density = count / area_sqkm
+
+        preprocessing_results = {
+            "area_sqkm": area_sqkm,
+            "count": count,
+            "density": density,
+        }
 
         return preprocessing_results
 
@@ -91,7 +80,7 @@ class Indicator(BaseIndicator):
 
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        result = preprocessing_results["combined_density"]
+        result = preprocessing_results["density"]
         text = (
             "The density of landmarks (points of reference, "
             "e.g. waterbodies, supermarkets, "
@@ -150,7 +139,7 @@ class Indicator(BaseIndicator):
         y1 = [greenThresholdFunction(xi) for xi in x]
         y2 = [yellowThresholdFunction(xi) for xi in x]
 
-        line = line = ax.plot(
+        line = ax.plot(
             x,
             y1,
             color="black",
@@ -174,7 +163,7 @@ class Indicator(BaseIndicator):
         # Plot point as circle ("o").
         ax.plot(
             data["area_sqkm"],
-            data["combined_count"],
+            data["count"],
             "o",
             color="black",
             label="location",
@@ -182,15 +171,6 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        if self.dynamic:
-            # generate a random ID for the outfile name
-            random_id = uuid.uuid1()
-            filename = f"{self.name}_{random_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-        else:
-            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-
-        plt.savefig(outfile, format="svg")
+        plt.savefig(self.outfile, format="svg")
         logger.info(f"export figures for {self.name} indicator")
-        return filename
+        return self.filename

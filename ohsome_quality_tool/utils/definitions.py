@@ -73,6 +73,10 @@ logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("oqt")
 
 
+LayerDefinition = collections.namedtuple(
+    "LayerDefinition", "name description filter unit"
+)
+
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
 IndicatorMetadata = collections.namedtuple("Metadata", "name description")
 

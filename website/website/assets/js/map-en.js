@@ -77,23 +77,31 @@ function buildMap(err, ...charts){
 	
 // add base layers
 	world = L.geoJson(charts[0], {
-		
 		style: setStyle,
 		onEachFeature: function onEachFeature(feature, layer) {
-				  
 			layer.on({
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: selectStyle
-		  }
-			);
+			});
+			// display a marker instead of a polygon for test-regions
+			if (feature.geometry.type === 'Polygon') {
+                // Get bounds of polygon
+                var bounds = layer.getBounds();
+                // Get center of bounds
+                var center = bounds.getCenter();
+                // Use center to put marker on map
+                var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+            }
+            // end add marker for test regions
 		}
 
 	}).addTo(map);
 
-	
-	
-	
+    function zoomToMarker(e) {
+        map.setView(e.latlng, 10);
+    }
+
 
 	//Next we’ll define what happens on mouseover:
 	function highlightFeature(e) {
@@ -124,9 +132,6 @@ function buildMap(err, ...charts){
 	/*The handy geojson.resetStyle method will reset the layer style to its default state 
 	(defined by our style function). For this to work, make sure our GeoJSON layer is accessible 
 	through the geojson variable by defining it before our listeners and assigning the layer to it later:'*/
-
-
-
 
 	// what happens whlie onclick on the map
 	function selectStyle(e) {

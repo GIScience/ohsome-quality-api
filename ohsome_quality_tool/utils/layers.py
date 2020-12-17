@@ -5,73 +5,59 @@
 #   ideally this list should be shorter
 #   e.g. come up with roads, buildings, amenities, healthcare
 #   as the main categories to consider
+from ohsome_quality_tool.utils.definitions import LayerDefinition
+
+BUILDING_COUNT_LAYER = LayerDefinition(
+    name="building-count",
+    description="All buildings as defined by all objects tagged with 'building=*'.",
+    filter="building=*",
+    unit="count",
+)
 
 
-BUILDING_COUNT_LAYER = {
-    "buildings": {
-        "description": """
-        All buildings as defined by all objects tagged with 'building=*'.
-    """,
-        "filter": "building=*",
-        "unit": "count",
-    }
-}
+BUILDING_AREA_LAYER = LayerDefinition(
+    name="building-area",
+    description="All buildings as defined by all objects tagged with 'building=*'.",
+    filter="building=*",
+    unit="area",
+)
 
 
-MAJOR_ROADS_LAYER = {
-    "major_roads": {
-        "description": """
-            The road network defined by all objects which hold the principal tags for
-            the road network as defined in the OSM Wiki:
-            https://wiki.openstreetmap.org/wiki/Key:highway
-        """,
-        "filter": "highway in (motorway, trunk, primary, secondary, tertiary, unclassified, residential)",  # noqa
-        "unit": "length",
-    },
-}
+MAJOR_ROADS_LAYER = LayerDefinition(
+    name="major-roads",
+    description=(
+        "The road network defined by all objects which hold the principal tags for "
+        "the road network as defined in the OSM Wiki: "
+        "https://wiki.openstreetmap.org/wiki/Key:highway"
+    ),
+    filter=(
+        "highway in (motorway, trunk, primary, secondary, "
+        "tertiary, unclassified, residential)"
+    ),
+    unit="length",
+)
 
 
-SKETCHMAP_FITNESS_POI_LAYER = {
-    "mountain": {"filter": "natural=peak", "unit": "count"},
-    "gas_stations": {"filter": "amenity=fuel", "unit": "count"},
-    "parks": {"filter": "leisure=park or boundary=national_park", "unit": "count"},
-    "waterways": {"filter": "natural=water or waterway=*", "unit": "count"},
-    "health_fac_pharmacies": {
-        "filter": "amenity in (pharmacy, hospital)",
-        "unit": "count",
-    },
-    "education": {
-        "filter": "amenity in (school, college, university)",
-        "unit": "count",
-    },
-    "public_safety": {"filter": "amenity in (police, fire_station)", "unit": "count"},
-    "public_transport": {
-        "filter": "highway=bus_stop or railway=station",
-        "unit": "count",
-    },
-    "hotel": {"filter": "tourism=hotel", "unit": "count"},
-    "attraction": {"filter": "tourism=attraction", "unit": "count"},
-    "restaurant": {"filter": "amenity=restaurant", "unit": "count"},
-    "townhall": {"filter": "amenity=townhall", "unit": "count"},
-    "shop": {"filter": "shop=*", "unit": "count"},
-}
+AMENITIES_LAYER = LayerDefinition(
+    name="amenities",
+    description="All features with the amenities key.",
+    filter="amenity=*",
+    unit="count",
+)
 
 
-SKETCHMAP_FITNESS_POI_LAYER_COMBINED = {
-    "combined": {
-        "filter": (
-            "natural=peak or leisure=park or boundary=national_park or "
-            "natural=water or waterway=* or highway=bus_stop or railway=station or "
-            "shop=* or tourism in (hotel, attraction) or "
-            " amenity in (fuel, pharmacy, hospital, school, college, university, "
-            "police, fire_station, restaurant, townhall)"
-        ),
-        "unit": "count",
-    },
-}
-
-
-SKETCHMAP_FITNESS_FEATURES = {
-    "highways": {"filter": "highway=*", "unit": "length"},
-    "amenities": {"filter": "amenity=*", "unit": "count"},
-}
+POI_LAYER = LayerDefinition(
+    name="points-of-interests",
+    description=(
+        "A lot of different objects such related to natural features "
+        "transportation and amenities in a city."
+    ),
+    filter=(
+        "natural=peak or leisure=park or boundary=national_park or "
+        "natural=water or waterway=* or highway=bus_stop or railway=station or "
+        "shop=* or tourism in (hotel, attraction) or "
+        " amenity in (fuel, pharmacy, hospital, school, college, university, "
+        "police, fire_station, restaurant, townhall)"
+    ),
+    unit="count",
+)
