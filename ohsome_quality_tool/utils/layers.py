@@ -7,22 +7,18 @@
 #   as the main categories to consider
 
 
-LEVEL_ONE_LAYERS = {
-    # "waterways": {
-    #     "description": """
-    #         The waterways as defined by all objects tagged with
-    #         'waterway=*' or 'natural=water'.
-    #     """,
-    #     "filter": "natural=water or waterway=*",
-    #     "unit": "length",
-    # },
+BUILDING_COUNT_LAYER = {
     "buildings": {
         "description": """
-            All buildings as defined by all objects tagged with 'building=*'.
-        """,
+        All buildings as defined by all objects tagged with 'building=*'.
+    """,
         "filter": "building=*",
         "unit": "count",
-    },
+    }
+}
+
+
+MAJOR_ROADS_LAYER = {
     "major_roads": {
         "description": """
             The road network defined by all objects which hold the principal tags for
@@ -32,17 +28,6 @@ LEVEL_ONE_LAYERS = {
         "filter": "highway in (motorway, trunk, primary, secondary, tertiary, unclassified, residential)",  # noqa
         "unit": "length",
     },
-    # "roads": {"filter": "highway=*", "unit": "length"},
-}
-
-BUILDING_COUNT_LAYER = {
-    "buildings": {
-        "description": """
-        All buildings as defined by all objects tagged with 'building=*'.
-    """,
-        "filter": "building=*",
-        "unit": "count",
-    }
 }
 
 
