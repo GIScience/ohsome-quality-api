@@ -1,6 +1,9 @@
 -- This SQL Query is meant to be used with psycopg2.
+SET search_path TO public;
+
 SELECT
-    SUM(ST_Area ((pixel_as_polygon).geom::geography))
+    ST_Area (ST_GeomFromGeoJSON (%s)::geography) AS area,
+    SUM(ST_Area ((pixel_as_polygon).geom::geography)) AS guf_area
 FROM (
     SELECT
         -- ST_PixelAsPolygons will exclude pixel with nodata values
