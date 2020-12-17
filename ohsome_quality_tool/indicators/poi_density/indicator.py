@@ -1,20 +1,14 @@
+import io
 import json
-import os
-import uuid
 from typing import Dict, Tuple
 
+import matplotlib.pyplot as plt
 import numpy as np
-import pygal
 from geojson import FeatureCollection
-from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
-    TrafficLightQualityLevels,
-    logger,
-)
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
 from ohsome_quality_tool.utils.label_interpretations import (
     POI_DENSITY_LABEL_INTERPRETATIONS,
@@ -125,46 +119,66 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
-        # TODO: maybe not all indicators will export figures
-
-        # is it possible to comibine diffrent pygal chart types ie stacked and xy?
-        CustomStyle = Style(colors=("green", "yellow", "blue"))
-        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
-
-        # set x max value based on area
-        if data["area_sqkm"] < 10:
-            max_area = 10
-        else:
-            max_area = round(data["area_sqkm"] * 2 / 10) * 10
-        x = np.linspace(0, max_area, 2)
-
         def greenThresholdFunction(area):
             return THRESHOLD_YELLOW * area
 
         def yellowThresholdFunction(area):
             return THRESHOLD_RED * area
 
-        xy_chart.add(
-            " Green threshold ", [(xi, greenThresholdFunction(xi)) for xi in x]
-        )
-        xy_chart.add(
-            " Yellow threshold ", [(xi, yellowThresholdFunction(xi)) for xi in x]
-        )
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
 
-        xy_chart.add("location", [(data["area_sqkm"], data["combined_count"])])
-        xy_chart.title = "POI Density (POIs per Area)"
-        xy_chart.x_title = "Area [sqkm]"
-        xy_chart.y_title = "POIs"
+        ax.set_title("POI Density (POIs per Area)")
+        ax.set_xlabel("Area [$km^2$]")
+        ax.set_ylabel("POIs")
 
-        if self.dynamic:
-            # generate a random ID for the outfile name
-            random_id = uuid.uuid1()
-            filename = f"{self.name}_{random_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
+        # Set x max value based on area
+        if data["area_sqkm"] < 10:
+            max_area = 10
         else:
-            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
+            max_area = round(data["area_sqkm"] * 2 / 10) * 10
+        x = np.linspace(0, max_area, 2)
 
-        xy_chart.render_to_file(outfile)
-        logger.info(f"exported figure: {outfile}")
-        return filename
+        # Plot thresholds as line.
+        y1 = [greenThresholdFunction(xi) for xi in x]
+        y2 = [yellowThresholdFunction(xi) for xi in x]
+
+        line = line = ax.plot(
+            x,
+            y1,
+            color="black",
+            label="Threshold A",
+        )
+        plt.setp(line, linestyle="--")
+
+        line = ax.plot(
+            x,
+            y2,
+            color="black",
+            label="Threshold B",
+        )
+        plt.setp(line, linestyle=":")
+
+        # Fill in space between thresholds
+        ax.fill_between(x, y2, 0, alpha=0.5, color="red")
+        ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
+        ax.fill_between(x, y1, max(y1), alpha=0.5, color="green")
+
+        # Plot point as circle ("o").
+        ax.plot(
+            data["area_sqkm"],
+            data["combined_count"],
+            "o",
+            color="black",
+            label="location",
+        )
+
+        ax.legend()
+
+        # Save as SVG to file-like object and return as string.
+        output_file = io.BytesIO()
+        plt.savefig(output_file, format="svg")
+        logger.info(f"export figures for {self.name} indicator")
+        return output_file.getvalue()
