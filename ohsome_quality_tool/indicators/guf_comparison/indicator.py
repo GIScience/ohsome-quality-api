@@ -110,9 +110,9 @@ class Indicator(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
+        ax.set_title("Built-Up Area")
         ax.set_xlabel("Global Urban Footprint [%]")
         ax.set_ylabel("OpenStreetMap [%]")
-        ax.set_title("Built-Up Area")
         ax.set_xlim((0, 100))
         ax.set_ylim((0, 100))
 
