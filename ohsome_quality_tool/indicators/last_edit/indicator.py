@@ -1,20 +1,14 @@
+import io
 import json
-import os
-import uuid
 from statistics import mean
 from typing import Dict, Tuple
 
-import pygal
+import matplotlib.pyplot as plt
 from geojson import FeatureCollection
-from pygal.style import Style
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
-    TrafficLightQualityLevels,
-    logger,
-)
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 
 # TODO: thresholds might be better defined for each OSM layer
@@ -114,32 +108,45 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
-        # TODO: maybe not all indicators will export figures?
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
 
-        CustomStyle = Style(colors=("green", "yellow", "black", "blue", "blue"))
-        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
+        ax.set_title("Features Edited Last Year")
+        ax.set_xlabel("Edited [%]")
+        ax.set_ylabel("OpenStreetMap [%]")
+        ax.set_xlim((0, 100))
+        ax.set_ylim((0, 100))
 
-        THRESHOLD_YELLOW = 0.20 * 100  # more than 20% edited last year --> green
-        THRESHOLD_RED = 0.05 * 100
+        threshold_yellow = 0.20 * 100  # more than 20% edited last year --> green
+        threshold_red = 0.05 * 100
 
         x_max = 0.2 * (len(self.layers.keys()) + 1)
+        x1 = [0, threshold_yellow]
+        x2 = [0, threshold_red]
+        y1 = [x_max, threshold_yellow]
+        y2 = [x_max, threshold_red]
 
-        xy_chart.add(
-            "Green Threshold",
-            [(0, THRESHOLD_YELLOW), (x_max, THRESHOLD_YELLOW)],
-            stroke=True,
+        # Plot thresholds as line.
+        line = line = ax.plot(
+            x1,
+            y1,
+            color="black",
+            label="Threshold A",
         )
+        plt.setp(line, linestyle="--")
 
-        xy_chart.add(
-            "Yellow Threshold",
-            [(0, THRESHOLD_RED), (x_max, THRESHOLD_RED)],
-            stroke=True,
+        line = ax.plot(
+            x2,
+            y2,
+            color="black",
+            label="Threshold B",
         )
+        plt.setp(line, linestyle=":")
 
-        xy_chart.add("Maximum", [(0, 100), (x_max, 100)], stroke=True)
-
-        xy_chart.title = "% of Features Edited Last Year"
-        xy_chart.x_title = "% edited"
+        # TODO: Convert from pygal usage to matplotlib
+        # xy_chart.add("Maximum", [(0, 100), (x_max, 100)], stroke=True)
 
         x_labels = []
 
@@ -148,19 +155,15 @@ class Indicator(BaseIndicator):
             x_data = 0.2 + i * 0.2
             x_labels.append({"label": layer, "value": x_data})
 
-            xy_chart.add(layer, [(x_data, y_data)], stroke=True)
+            ax.plot(x_data, y_data, "o", color="black", label=layer)
 
-        xy_chart.x_labels = x_labels
+        ax.legend()
 
-        if self.dynamic:
-            # generate a random ID for the outfile name
-            random_id = uuid.uuid1()
-            filename = f"{self.name}_{random_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-        else:
-            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
+        # TODO: Convert from pygal usage to matplotlib
+        # xy_chart.x_labels = x_labels
 
-        xy_chart.render_to_file(outfile)
-        logger.info(f"exported figure: {outfile}")
-        return filename
+        # Save as SVG to file-like object and return as string.
+        output_file = io.BytesIO()
+        plt.savefig(output_file, format="svg")
+        logger.info(f"export figures for {self.name} indicator")
+        return output_file.getvalue()
