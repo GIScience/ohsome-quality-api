@@ -138,44 +138,69 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
-        # is it possible to comibine diffrent pygal chart types ie stacked and xy?
-        CustomStyle = Style(colors=("green", "yellow", "blue"))
-        xy_chart = pygal.XY(stroke=True, style=CustomStyle)
-
-        # set x max value based on area
-        if data["pop_count_per_sqkm"] < 100:
-            max_area = 10
-        else:
-            max_area = round(data["pop_count_per_sqkm"] * 2 / 10) * 10
-        x = np.linspace(0, max_area, 20)
-
         def greenThresholdFunction(pop_per_sqkm):
             return 5 * np.sqrt(pop_per_sqkm)
 
         def yellowThresholdFunction(pop_per_sqkm):
             return 0.75 * np.sqrt(pop_per_sqkm)
 
-        xy_chart.add(
-            " Green threshold ", [(xi, greenThresholdFunction(xi)) for xi in x]
-        )
-        xy_chart.add(
-            " Yellow threshold ", [(xi, yellowThresholdFunction(xi)) for xi in x]
-        )
-        xy_chart.add(
-            "location", [(data["pop_count_per_sqkm"], data["buildings_count_per_pop"])]
-        )
-        xy_chart.title = "Buildings per person against people per sqkm"
-        xy_chart.x_title = "Population Density [1/km^2]"
-        xy_chart.y_title = "Building Density [1/km^2]"
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
 
-        if self.dynamic:
-            # generate a random ID for the outfile name
-            random_id = uuid.uuid1()
-            filename = f"{self.name}_{random_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
+        ax.set_title = "Buildings per person against people per sqkm"
+        ax.set_xlabel = "Population Density [1/km^2]"
+        ax.set_ylabel = "Building Density [1/km^2]"
+
+        # set x max value based on area
+        if data["pop_count_per_sqkm"] < 100:
+            max_area = 10
         else:
-            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-        xy_chart.render_to_file(outfile)
+            max_area = round(data["pop_count_per_sqkm"] * 2 / 10) * 10
+
+        # Plot thresholds as line.
+        x = np.linspace(0, max_area, 20)
+        y1 = [greenThresholdFunction(xi) for xi in x]
+        y2 = [yellowThresholdFunction(xi) for xi in x]
+        line = line = ax.plot(
+            x,
+            y1,
+            color="black",
+            label="Threshold A",
+        )
+        plt.setp(line, linestyle="--")
+
+        line = ax.plot(
+            x,
+            y2,
+            color="black",
+            label="Threshold B",
+        )
+        plt.setp(line, linestyle=":")
+
+        # Fill in space between thresholds
+        # ax.fill_between(x, y2, 0, alpha=0.5, color="red")
+        # ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
+        # ax.fill_between(x, y1, 100, alpha=0.5, color="green")
+
+        # Plot point as circle ("o").
+        ax.plot(
+            data["pop_count_per_sqkm"],
+            data["buildings_count_per_pop"],
+            "o",
+            color="black",
+            label="location",
+        )
+
+        # if self.dynamic:
+        #     # generate a random ID for the outfile name
+        #     random_id = uuid.uuid1()
+        #     filename = f"{self.name}_{random_id}.svg"
+        #     outfile = os.path.join(DATA_PATH, filename)
+        # else:
+        #     filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+        #     outfile = os.path.join(DATA_PATH, filename)
+        plt.show()
         logger.info(f"exported figure: {outfile}")
-        return filename
+        return None
