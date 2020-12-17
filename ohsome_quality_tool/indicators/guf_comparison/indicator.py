@@ -44,28 +44,24 @@ class Indicator(BaseIndicator):
         self.area: float = None
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
+        self.layers = {"buildings": {"filter": "building=*", "unit": "area"}}
+        self.ratio: float = None
 
     def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
         db = PostgresDB()
 
+        # Get data from geodatabase
         if self.dynamic:
             directory = os.path.dirname(os.path.abspath(__file__))
             aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
-
-            # Get built-up area in square meter of GUF04 for AOI
-            sql_file = os.path.join(directory, "get_built_up_area.sql")
+            # Get total area and built-up area (GUF) in km^2 for AOI
+            sql_file = os.path.join(directory, "query.sql")
             with open(sql_file) as reader:
                 query = reader.read()
-            result = db.retr_query(query=query, data=(aoi_geom, aoi_geom))
-            self.guf_built_up_area = result[0][0]
-
-            # Get total area in square meter of AOI
-            sql_file = os.path.join(directory, "get_area.sql")
-            with open(sql_file) as reader:
-                query = reader.read()
-            result = db.retr_query(query=query, data=(aoi_geom,))
-            self.area = result[0][0]
+            result = db.retr_query(query=query, data=(aoi_geom, aoi_geom, aoi_geom))
+            self.area = result[0][0] / 1000000  # m^2 to km^2
+            self.guf_built_up_area = result[0][1] / 1000000
         else:
             built_up_area = geodatabase.get_value_from_db(
                 dataset=self.dataset,
@@ -73,24 +69,26 @@ class Indicator(BaseIndicator):
                 field_name="population",
             )
 
+        # Get data from ohsome API
         # TODO: Difficult to read and understand.
-        self.layers = {"buildings": {"filter": "building=*", "unit": "area"}}
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/{unit}/",
             layers=self.layers,
             bpolys=json.dumps(self.bpolys),
         )
-        self.osm_built_up_area = query_results["buildings"]["result"][0]["value"]
+        self.osm_built_up_area = (
+            query_results["buildings"]["result"][0]["value"] / 1000000
+        )
 
     def calculate(
         self, preprocessing_results: Dict
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
-        ratio = self.guf_built_up_area / self.osm_built_up_area
+        self.ratio = self.guf_built_up_area / self.osm_built_up_area
 
-        if ratio <= self.threshold_low:
+        if self.ratio <= self.threshold_low:
             value = TrafficLightQualityLevels.RED.value
-        elif ratio <= self.threshold_high:
+        elif self.ratio <= self.threshold_high:
             value = TrafficLightQualityLevels.YELLOW.value
         else:
             value = TrafficLightQualityLevels.GREEN.value
@@ -101,37 +99,48 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
+        """Create a plot and return as SVG string."""
         fig = plt.figure()
         ax = fig.add_subplot()
 
+        ax.set_xlabel("Global Urban Footprint [%]")  # Add a y-label to the axes.
+        ax.set_ylabel("OpenStreetMap [%]")  # Add a y-label to the axes.
+        ax.set_title("Built-Up Area")  # Add a title to the axes.
+        ax.set_xlim((0, 100))
+        ax.set_ylim((0, 100))
+
         # Plot thresholds as line.
-        ax.plot(
-            [0, self.area],
-            [0, self.area * self.threshold_high],
+        line = line = ax.plot(
+            [0, 100],
+            [0, 100 * self.threshold_high],
             color="black",
-            label="Threshold",
+            label="Threshold A",
         )
-        ax.plot(
-            [0, self.area],
-            [0, self.area * self.threshold_low],
+        plt.setp(line, linestyle="--")
+        line = ax.plot(
+            [0, 100],
+            [0, 100 * self.threshold_low],
             color="black",
-            label="Threshold",
+            label="Threshold B",
         )
+        plt.setp(line, linestyle=":")
 
         # Plot point as circle ("o").
         ax.plot(
-            self.guf_built_up_area,
-            self.osm_built_up_area,
+            self.guf_built_up_area * 100 / self.area,
+            self.osm_built_up_area * 100 / self.area,
             "o",
             color="black",
-            label="Indicator value: {0}/{1}".format(
-                self.guf_built_up_area, self.osm_built_up_area
+            label=(
+                f"Indicator value: {round(self.ratio)}"
+                # f"{round(self.guf_built_up_area)}/"
+                # f"{round(self.osm_built_up_area)} "
+                # f"[$km^2$]"
             ),
         )
 
-        ax.set_ylabel("Open Street Map")  # Add a y-label to the axes.
-        ax.set_title("Built-Up Area")  # Add a title to the axes.
-        ax.legend()  # Add a legend.
+        ax.legend()
+        plt.show()
 
         # Save as SVG to file-like object and return as string.
         output_file = io.BytesIO()
