@@ -52,6 +52,7 @@ class BaseReport(metaclass=ABCMeta):
                     dynamic=True, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
+                logger.info("get static indicator values")
                 result, metadata = indicator(
                     dynamic=False,
                     layers=layers,

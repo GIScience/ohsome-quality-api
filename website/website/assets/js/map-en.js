@@ -1,13 +1,6 @@
 // load geojson data, then build the map and the functionalities 
 d3.queue()
-  .defer(d3.json, 'assets/data/privHouse.geojson')
-  .defer(d3.json, 'assets/data/transport.geojson')
-  .defer(d3.json, 'assets/data/industry.geojson')
-  .defer(d3.json, 'assets/data/trades.geojson')
-  .defer(d3.json, 'assets/data/municipProp.geojson')
-  .defer(d3.json, 'assets/data/OSM_landuse_industrial.geojson')
-  .defer(d3.json, 'assets/data/OSM_shop_farm.geojson')
-  .defer(d3.json, 'assets/data/OSM_landuse_commercial.geojson')
+  .defer(d3.json, 'assets/data/test-regions.geojson')
   .defer(d3.json, 'assets/data/custom.geojson')
   .await(buildMap)
   
@@ -83,7 +76,7 @@ function buildMap(err, ...charts){
 
 	
 // add base layers
-	world = L.geoJson(charts[8], {
+	world = L.geoJson(charts[0], {
 		
 		style: setStyle,
 		onEachFeature: function onEachFeature(feature, layer) {
@@ -157,11 +150,12 @@ function buildMap(err, ...charts){
 			}
 		}).addTo(map);
 
-		countryID = layer.feature.properties.name;
+		countryID = layer.feature.properties.fid;
 		selectedCountry = getCountry(countryID)
 		
 		// get dataset ID
-		dataset = layer.feature.properties.featurecla; // = Admin-0 country
+		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
+		dataset = "test-regions" // = Admin-0 country
 		selectedDataset = getDataset(dataset)
 	}
 	// initialize variables for storing area and dataset id from map geojson 
@@ -237,23 +231,23 @@ function buildMap(err, ...charts){
 			// console.log(args)
 			//sendParams(args);
 			res = null;
-			// var corsHeaderUrl = "https://cors-anywhere.herokuapp.com/"
-			
-			// var oqtUrl = "https://api.ohsome.org/v1";
-			// var params = { bpolys: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}] } 
-			// }
-			// var params = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}]}"
-			// params = params.replace(/\\"/g, '"')
 
-			// var params = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[5.710744857788086,34.83219341191838],[5.724477767944336,34.83219341191838],[5.724477767944336,34.8457895767176],[5.710744857788086,34.8457895767176],[5.710744857788086,34.83219341191838]]]}}] } 
-			// params = JSON.stringify(params)
 			var featureCollectionPart = {"type":"FeatureCollection","features": [selectedFeature]}
 
 			var params = JSON.stringify(featureCollectionPart)
+
+
+
 			
 			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params), handleGetQuality);
-			httpPostAsync(selectedTopic, JSON.stringify({ "bpolys": params}), handleGetQuality);
+			//httpPostAsync(selectedTopic, JSON.stringify({ "bpolys": params}), handleGetQuality);
 			// getResponseFile(selectedTopic, params, handleGetQuality)
+
+			var params = {
+			    "dataset": getDataset(selectedDataset),
+			    "feature_id": getCountry(selectedCountry)
+			}
+			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
 
 		}
 		// when params were send, get pdf button turns blue
@@ -372,7 +366,7 @@ function buildMap(err, ...charts){
 	 * Adds a small map to show the selected region
 	 */
 	function addMiniMap() {
-		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' style='width: 100%; height: 100%;'></div>";
+		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
 		var miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
 			minZoom: 2,
@@ -495,14 +489,14 @@ function buildMap(err, ...charts){
 	// method that we will use to update the info box based on feature properties passed	
 	info.updateInfo = function (props) {
 		// get CO2 emission value as number from layer properties
-		var value = props.name ;
+		var value = props.fid ;
 		
 		// get corresponding year from layer properties
 		
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)){
 			this._div.innerHTML = '<h5>Click to select</h5>' +  (props ?
-				'<p><b>Country: ' + props.name 	+ '</b>'
+				'<p><b>Feature ID: ' + props.fid 	+ '</b>'
 				: '<p>Move the mouse over the map</p>'
 					);
 		}
@@ -580,7 +574,8 @@ function httpGetAsync(theUrl, callback)
 
 function httpPostAsync(endPoint, params, callback) {
 	var theUrl = "http://localhost:8000";
-	theUrl = theUrl +"/dynamic/report/" + endPoint;
+	//theUrl = theUrl +"/dynamic/report/" + endPoint;
+	theUrl = theUrl +"/static/report/" + endPoint;
 
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 

@@ -130,9 +130,9 @@ def get_indicator_results_from_db(
     """Get the indicator result for the given dataset and feature in the database."""
 
     table = get_table_name(dataset, indicator)
-    field = ["label", "value", "text", "svg"]
+    fields = ["label", "value", "text", "svg"]
     query_result = {}
-    for field in field:
+    for field in fields:
         query_result[field] = get_value_from_db(table, feature_id, field)
 
     logger.info(f"Got results for feature {feature_id} from {table}.")

@@ -279,7 +279,7 @@ hr {
       -ms-grid-row-align: center;
       align-self: center; }
   .one-third img {
-    max-width: 80%; }
+    max-width: 90%; }
 
 .two-thirds {
   -webkit-box-flex: 1;
@@ -1207,9 +1207,14 @@ color:black;		} }
 }
 
 .indicator-graph {
-    max-height: 200px;
+    width: 100%;
 }
 
 .traffic-lights-image {
     max-height: 200px;
+}
+
+.miniMap {
+    z-index: 1;
+    width: 90%;
 }
