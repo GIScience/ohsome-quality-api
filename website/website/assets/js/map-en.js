@@ -288,6 +288,9 @@ function buildMap(err, ...charts){
 		if(response.indicators.length > 0) {
 			addIndicators(response.indicators)
 		}
+
+		// scroll to results
+		document.getElementById('resultSection').scrollIntoView();
 	}
 
 	/**

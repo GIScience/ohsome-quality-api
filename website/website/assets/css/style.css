@@ -1218,3 +1218,7 @@ color:black;		} }
     z-index: 1;
     width: 90%;
 }
+
+html {
+    scroll-behavior: smooth;
+}
