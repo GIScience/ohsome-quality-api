@@ -271,7 +271,7 @@ def get_zonal_stats_population(bpolys: Dict):
         ,public.ST_Area(
             public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
         ) / (1000*1000) as area_sqkm
-        FROM ghs_pop
+        FROM public.ghs_pop
         WHERE
          public.ST_Intersects(
             rast,
