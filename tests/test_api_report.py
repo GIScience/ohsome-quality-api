@@ -14,7 +14,7 @@ client = TestClient(app)
 class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.report_name = "SIMPLE_REPORT"
+        self.report_name = "simple-report"
 
     def test_get_dynamic_report_api_request(self):
         """Test api response for dynamic report."""
@@ -22,7 +22,7 @@ class TestApiReport(unittest.TestCase):
         with open(infile) as f:
             bpolys = json.dumps(json.load(f))
 
-        url = f"http://127.0.0.1:8000/dynamic_report/{self.report_name}?bpolys={bpolys}"
+        url = f"http://127.0.0.1:8000/dynamic/report/{self.report_name}?bpolys={bpolys}"
         response = client.get(url)
 
         assert response.status_code == 200
@@ -35,7 +35,17 @@ class TestApiReport(unittest.TestCase):
 
         data = {"bpolys": bpolys}
 
-        url = f"http://127.0.0.1:8000/dynamic_report/{self.report_name}"
+        url = f"http://127.0.0.1:8000/dynamic/report/{self.report_name}"
+        response = client.post(url, json=data)
+
+        assert response.status_code == 200
+
+    def test_post_static_report_api_request(self):
+        """Test api response for dynamic report."""
+
+        data = {"dataset": "test-regions", "feature_id": 1}
+
+        url = f"http://127.0.0.1:8000/static/report/{self.report_name}"
         response = client.post(url, json=data)
 
         assert response.status_code == 200

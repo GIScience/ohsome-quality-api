@@ -1,5 +1,6 @@
-import io
 import json
+import os
+import uuid
 from math import ceil
 from typing import Dict, Tuple
 
@@ -9,7 +10,11 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
@@ -41,14 +46,14 @@ class Indicator(BaseIndicator):
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        if self.dynamic:
-            pop_count, area = geodatabase.get_zonal_stats_population(bpolys=self.bpolys)
-        else:
-            pop_count = geodatabase.get_value_from_db(
-                dataset=self.dataset,
-                feature_id=self.feature_id,
-                field_name="population",
-            )
+        # if self.dynamic:
+        pop_count, area = geodatabase.get_zonal_stats_population(bpolys=self.bpolys)
+        # else:
+        #    pop_count = geodatabase.get_value_from_db(
+        #        dataset=self.dataset,
+        #        feature_id=self.feature_id,
+        #        field_name="population",
+        #    )
         if pop_count is None:
             pop_count = 0
         # ideally we would have this as a dataframe?
@@ -189,8 +194,11 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        # Save as SVG to file-like object and return as string.
-        output_file = io.BytesIO()
-        plt.savefig(output_file, format="svg")
+        random_id = uuid.uuid1()
+        filename = f"{self.name}_{random_id}.svg"
+        outfile = os.path.join(DATA_PATH, filename)
+
+        plt.savefig(outfile, format="svg")
+        plt.close("all")
         logger.info(f"export figures for {self.name} indicator")
-        return output_file.getvalue()
+        return filename

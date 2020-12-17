@@ -20,6 +20,7 @@ DATASET_NAMES = (
     "gadm_level_4",
     "gadm_level_5",
     "test_data",
+    "test-regions",
 )
 
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")

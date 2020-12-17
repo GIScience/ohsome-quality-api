@@ -12,6 +12,7 @@ from ohsome_quality_tool.utils.definitions import (
 from ohsome_quality_tool.utils.geodatabase import (
     get_bpolys_from_db,
     get_indicator_results_from_db,
+    save_indicator_results_to_db,
 )
 
 
@@ -63,7 +64,7 @@ class BaseIndicator(metaclass=ABCMeta):
             )
             result = self.get_from_database()
 
-        return (result, self.metadata)
+        return result, self.metadata
 
     def run_processing(self) -> IndicatorResult:
         """Run all steps needed to actually compute the indicator"""
@@ -73,7 +74,7 @@ class BaseIndicator(metaclass=ABCMeta):
         logger.info(f"finished run for indicator {self.name}")
 
         result = IndicatorResult(
-            label=label,
+            label=label.name,
             value=value,
             text=text,
             svg=svg,
@@ -81,9 +82,9 @@ class BaseIndicator(metaclass=ABCMeta):
 
         return result
 
-    def save_to_database(self) -> None:
+    def save_to_database(self, result: IndicatorResult) -> None:
         """Save the results to the geo database."""
-        pass
+        save_indicator_results_to_db(self.dataset, self.feature_id, self.name, result)
 
     def get_from_database(self) -> IndicatorResult:
         """Get pre-processed indicator results from geo database."""

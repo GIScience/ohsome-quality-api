@@ -9,7 +9,7 @@ from ohsome_quality_tool.oqt import get_dynamic_indicator
 class TestGufComparisonIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "GUF_COMPARISON"
+        self.indicator_name = "guf-comparison"
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""

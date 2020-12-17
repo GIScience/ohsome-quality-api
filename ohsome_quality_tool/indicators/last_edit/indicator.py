@@ -9,7 +9,7 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
+from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 # TODO: thresholds might be better defined for each OSM layer
 THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
@@ -27,7 +27,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = LEVEL_ONE_LAYERS,
+        layers: Dict = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,

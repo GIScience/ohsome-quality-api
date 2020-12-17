@@ -1,5 +1,6 @@
-import io
 import json
+import os
+import uuid
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -8,7 +9,11 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
 from ohsome_quality_tool.utils.label_interpretations import (
     POI_DENSITY_LABEL_INTERPRETATIONS,
@@ -177,8 +182,15 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        # Save as SVG to file-like object and return as string.
-        output_file = io.BytesIO()
-        plt.savefig(output_file, format="svg")
+        if self.dynamic:
+            # generate a random ID for the outfile name
+            random_id = uuid.uuid1()
+            filename = f"{self.name}_{random_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+        else:
+            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
+            outfile = os.path.join(DATA_PATH, filename)
+
+        plt.savefig(outfile, format="svg")
         logger.info(f"export figures for {self.name} indicator")
-        return output_file.getvalue()
+        return filename

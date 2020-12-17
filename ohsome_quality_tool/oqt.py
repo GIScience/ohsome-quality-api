@@ -9,41 +9,38 @@ from ohsome_quality_tool.utils.definitions import (
 )
 from ohsome_quality_tool.utils.geodatabase import (
     create_error_table,
-    get_bpolys_from_db,
     get_error_table_name,
     get_fid_list,
     insert_error,
-    save_indicator_results_to_db,
 )
 
 INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
 
 
-def process_indicator(dataset: str, indicator: str, only_missing_ids=False):
-    """Processes an Indicator for a given dataset in the Database
-
-
-    The results will be stored in the database"""
+def process_indicator(
+    dataset: str, indicator_name: str, only_missing_ids: bool = False
+):
+    """Processes indicator and save results in geo database."""
     if only_missing_ids is False:
         fids = get_fid_list(dataset)
     else:
-        fids = get_fid_list(get_error_table_name(dataset, indicator))
+        fids = get_fid_list(get_error_table_name(dataset, indicator_name))
 
-    create_error_table(dataset, indicator)
+    create_error_table(dataset, indicator_name)
     for feature_id in fids:
         try:
-            bpolys = get_bpolys_from_db(dataset, feature_id)
-            results = get_dynamic_indicator(indicator, bpolys)
-            save_indicator_results_to_db(dataset, feature_id, indicator, results)
-            logger.info(
-                (f"saved {indicator} results" f"for feature {feature_id} in {dataset}")
+            indicator = INDICATOR_CLASSES[indicator_name](
+                dynamic=False, dataset=dataset, feature_id=feature_id
             )
+            result = indicator.run_processing()
+            indicator.save_to_database(result)
         except Exception as E:
-            insert_error(dataset, indicator, feature_id, E)
+            insert_error(dataset, indicator_name, feature_id, E)
             logger.info(
                 (
-                    f"caught Exception{E} while processing {indicator}"
+                    f"caught Exception while processing {indicator_name} "
+                    f"{E} "
                     f"for feature {feature_id} of {dataset}."
                 )
             )

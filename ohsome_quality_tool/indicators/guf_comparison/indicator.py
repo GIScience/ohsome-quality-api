@@ -1,6 +1,6 @@
-import io
 import json
 import os
+import uuid
 from math import ceil
 from typing import Dict, Tuple
 
@@ -10,8 +10,12 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.auth import PostgresDB
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
+from ohsome_quality_tool.utils.definitions import (
+    DATA_PATH,
+    TrafficLightQualityLevels,
+    logger,
+)
+from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
 class Indicator(BaseIndicator):
@@ -26,7 +30,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = LEVEL_ONE_LAYERS,
+        layers: Dict = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: str = None,
@@ -44,7 +48,6 @@ class Indicator(BaseIndicator):
         self.area: float = None
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
-        self.layers = {"buildings": {"filter": "building=*", "unit": "area"}}
         self.ratio: float = None
 
         # TODO: Run during init instead by oqt.py
@@ -68,7 +71,8 @@ class Indicator(BaseIndicator):
             self.area = result[0][0] / 1000000  # m^2 to km^2
             self.guf_built_up_area = result[0][1] / 1000000
         else:
-            built_up_area = geodatabase.get_value_from_db(
+            # TODO: check if this works here
+            self.guf_built_up_area = geodatabase.get_value_from_db(
                 dataset=self.dataset,
                 feature_id=self.feature_id,
                 field_name="population",
@@ -157,8 +161,11 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        # Save as SVG to file-like object and return as string.
-        output_file = io.BytesIO()
-        plt.savefig(output_file, format="svg")
+        random_id = uuid.uuid1()
+        filename = f"{self.name}_{random_id}.svg"
+        outfile = os.path.join(DATA_PATH, filename)
+
+        plt.savefig(outfile, format="svg")
+        plt.close("all")
         logger.info(f"export figures for {self.name} indicator")
-        return output_file.getvalue()
+        return filename

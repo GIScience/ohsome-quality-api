@@ -3,13 +3,15 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.oqt import get_dynamic_report
+from ohsome_quality_tool.oqt import get_dynamic_report, get_static_report
 
 
 class TestSketchmapFitnessReport(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.report_name = "sketchmap-fitness"
+        self.report_name = "simple-report"
+        self.dataset = "test-regions"
+        self.feature_id = 1
 
     def test_get_dynamic_report(self):
         """Test if dynamic report can be calculated."""
@@ -19,6 +21,18 @@ class TestSketchmapFitnessReport(unittest.TestCase):
 
         result, indicators, metadata = get_dynamic_report(
             report_name=self.report_name, bpolys=bpolys
+        )
+
+        # check if result dict contains the right keys
+        # check if result dict contains the right keys
+        self.assertListEqual(list(result._fields), ["label", "value", "text"])
+
+    def test_get_static_report(self):
+        """Test if dynamic report can be calculated."""
+        result, indicators, metadata = get_static_report(
+            report_name=self.report_name,
+            dataset=self.dataset,
+            feature_id=self.feature_id,
         )
 
         # check if result dict contains the right keys

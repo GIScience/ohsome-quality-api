@@ -3,12 +3,9 @@ import os
 import uuid
 from typing import Dict, Tuple
 
-import dateutil.parser
-import pygal
-from geojson import FeatureCollection
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
+from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.indicators.mapping_saturation.sigmoid_curve import sigmoidCurve
@@ -18,10 +15,10 @@ from ohsome_quality_tool.utils.definitions import (
     TrafficLightQualityLevels,
     logger,
 )
-from ohsome_quality_tool.utils.layers import LEVEL_ONE_LAYERS
 from ohsome_quality_tool.utils.label_interpretations import (
     MAPPING_SATURATION_LABEL_INTERPRETATIONS,
 )
+from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 # threshold values defining the color of the traffic light
 # derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
@@ -29,10 +26,11 @@ from ohsome_quality_tool.utils.label_interpretations import (
 THRESHOLD_YELLOW = 0.03
 THRESHOLD_RED = 10
 
+
 class Indicator(BaseIndicator):
     """The Mapping Saturation Indicator."""
 
-    name = "MAPPING_SATURATION"
+    name = "mapping-saturation"
     description = """
         Calculate if mapping has saturated.
     """
@@ -41,7 +39,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = LEVEL_ONE_LAYERS,
+        layers: Dict = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -98,20 +96,24 @@ class Indicator(BaseIndicator):
         for i in range(len(dfWorkarkound)):
             li.append(i)
 
-        # dict to collect saturation values of each layer for individual layer traffic light
+        # dict to collect saturation values of each layer
+        # for individual layer traffic light
         satValCollection = {}
         # list for collecting saturation values of each layer
         overallSaturation = []
+        text = ""
 
         for layer in self.layers.keys():
             # calculate traffic light value for each layer
             unit = self.layers[layer]["unit"]
 
             df1 = pd.DataFrame(
-                {'timestamps': preprocessing_results["timestamps"],
-                 'yValues': preprocessing_results[f"{layer}_{unit}"],
-                 'li': li
-                 })
+                {
+                    "timestamps": preprocessing_results["timestamps"],
+                    "yValues": preprocessing_results[f"{layer}_{unit}"],
+                    "li": li,
+                }
+            )
 
             # get init params for sigmoid curve with 2 jumps
             sigmoid_curve = sigmoidCurve()
@@ -132,9 +134,10 @@ class Indicator(BaseIndicator):
             # TODO select best fitting curve, eg with mean_square_error
 
             # check if data are more than start stadium
-            # The end of the start stage is defined with the maximum of the curvature function f''(x)
+            # The end of the start stage is defined with
+            # the maximum of the curvature function f''(x)
             # here: simple check
-            if  (max(df1.yValues) <= 20):
+            if max(df1.yValues) <= 20:
                 # start stadium
                 label = TrafficLightQualityLevels.RED
                 value = 0.25
@@ -142,21 +145,27 @@ class Indicator(BaseIndicator):
             else:
                 # if so
                 # calculate slope/growth of last 3 years
-                # take value in -36 month before end time and value in last month of data
+                # take value in -36 month before end
+                # time and value in last month of data
                 earlyX = li[-36]
                 lastX = li[-1]
                 ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
-                saturation = sigmoid_curve.getSaturationInLast3Years(earlyX, lastX, df1.li, ydata)
-                logger.info("satruation level last 3 years at: " + str(saturation) + " for " + f"{layer}_{unit}")
+                saturation = sigmoid_curve.getSaturationInLast3Years(
+                    earlyX, lastX, df1.li, ydata
+                )
+                logger.info(
+                    "satruation level last 3 years at: "
+                    + str(saturation)
+                    + " for "
+                    + f"{layer}_{unit}"
+                )
                 # perhaps needed for individual layer descirption/traffic light?
-                satValCollection[f"{layer}_{unit}" ] = saturation
+                satValCollection[f"{layer}_{unit}"] = saturation
                 overallSaturation.append(saturation)
 
         # overall quality
-        result = sum(overallSaturation)/len(overallSaturation)
-        text = (
-            f"The saturation for the last 3 years is {result}."
-        )
+        result = sum(overallSaturation) / len(overallSaturation)
+        text = f"The saturation for the last 3 years is {result}."
 
         if result <= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
@@ -191,17 +200,19 @@ class Indicator(BaseIndicator):
         plt.title("Data with sigmoid curve")
         # color the lines with different colors
         # TODO: what if more than 5 layers are in there?
-        linecol = ['b-', 'g-', 'r-', 'y-', 'black-']
+        linecol = ["b-", "g-", "r-", "y-", "black-"]
 
         for i, layer in enumerate(self.layers.keys()):
             # get API measure type (eg count, length)
             unit = self.layers[layer]["unit"]
             # create current dataframe
             df1 = pd.DataFrame(
-                {'timestamps': data["timestamps"],
-                 'yValues': data[f"{layer}_{unit}"],
-                 'li': li
-                 })
+                {
+                    "timestamps": data["timestamps"],
+                    "yValues": data[f"{layer}_{unit}"],
+                    "li": li,
+                }
+            )
             # initial values for the sigmoid function
             initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
 
@@ -218,19 +229,13 @@ class Indicator(BaseIndicator):
             # calculate curve
             ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
             plt.plot(df1.li, df1.yValues, linecol[i], label=f"{layer}_{unit}")
-            plt.plot(df1.li, ydata, linecol[i+2], label='Sigmoid curve with 2 jumps')
+            plt.plot(df1.li, ydata, linecol[i + 2], label="Sigmoid curve with 2 jumps")
 
-        # output creation
-        if self.dynamic:
-            # generate a random ID for the outfile name
-            random_id = uuid.uuid1()
-            filename = f"{self.name}_{random_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-        else:
-            filename = f"{self.name}_{self.dataset}_{self.feature_id}.svg"
-            outfile = os.path.join(DATA_PATH, filename)
-        plt.legend()
-        plt.savefig(outfile)
-        logger.info(f"exported figure: {outfile}")
+        random_id = uuid.uuid1()
+        filename = f"{self.name}_{random_id}.svg"
+        outfile = os.path.join(DATA_PATH, filename)
 
+        plt.savefig(outfile, format="svg")
+        plt.close("all")
+        logger.info(f"export figures for {self.name} indicator")
         return filename

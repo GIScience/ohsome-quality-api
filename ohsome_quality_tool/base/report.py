@@ -49,11 +49,11 @@ class BaseReport(metaclass=ABCMeta):
             indicator, layers = item
             if self.dynamic:
                 result, metadata = indicator(
-                    dynamic=self.dynamic, layers=layers, bpolys=self.bpolys
+                    dynamic=True, layers=layers, bpolys=self.bpolys
                 ).get()
             else:
                 result, metadata = indicator(
-                    dynamic=self.dynamic,
+                    dynamic=False,
                     layers=layers,
                     dataset=self.dataset,
                     feature_id=self.feature_id,

@@ -1,12 +1,11 @@
 import json
-import os
 from typing import Dict
 
 from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_tool.utils.definitions import DATA_PATH, IndicatorResult, logger
+from ohsome_quality_tool.utils.definitions import IndicatorResult, logger
 
 
 def get_table_name(dataset: str, indicator: str) -> str:
@@ -110,19 +109,19 @@ def save_indicator_results_to_db(
         sql.Identifier(table_constraint),
         sql.Identifier(table),
     )
-    with open(os.path.join(DATA_PATH, results[0].svg)) as inf:
-        svg = inf.read()
 
     data = {
         "schema": POSTGRES_SCHEMA,
         "feature_id": feature_id,
-        "label": results[0].label.name,
-        "value": results[0].value,
-        "text": results[0].text,
-        "svg": svg,
+        "label": results.label,
+        "value": results.value,
+        "text": results.text,
+        "svg": results.svg,
     }
     db.query(query=query, data=data)
-    logger.info(f"Saved results for feature {feature_id} in {table}.")
+    logger.info(
+        f"Saved '{indicator}' indicator result for feature {feature_id} in {table}."
+    )
 
 
 def get_indicator_results_from_db(
@@ -213,8 +212,14 @@ def get_fid_list(table: str):
     """
     db = PostgresDB()
 
-    exe = sql.SQL("""SELECT fid FROM {}""").format(sql.Identifier(table))
-    fids = db.retr_query(exe)
+    exe = sql.SQL(
+        """
+        SET SCHEMA %(schema)s;
+        SELECT fid FROM {}
+    """
+    ).format(sql.Identifier(table))
+    data = {"schema": POSTGRES_SCHEMA}
+    fids = db.retr_query(exe, data)
     return [i[0] for i in fids]
 
 
@@ -271,7 +276,7 @@ def get_zonal_stats_population(bpolys: Dict):
         ,public.ST_Area(
             public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
         ) / (1000*1000) as area_sqkm
-        FROM public.ghs_pop
+        FROM ghs_pop
         WHERE
          public.ST_Intersects(
             rast,

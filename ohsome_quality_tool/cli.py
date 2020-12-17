@@ -150,7 +150,7 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
 )
 def process_indicator(indicator_name: str, dataset: str, missing_fids: bool):
     oqt.process_indicator(
-        dataset=dataset, indicator=indicator_name, only_missing_ids=missing_fids
+        indicator_name=indicator_name, dataset=dataset, only_missing_ids=missing_fids
     )
 
 

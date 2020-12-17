@@ -9,7 +9,7 @@ from ohsome_quality_tool.oqt import get_dynamic_report
 class TestRemoteMappingLevelOneReport(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.report_name = "REMOTE_MAPPING_LEVEL_ONE"
+        self.report_name = "remote-mapping-level-one"
 
     def test_get_dynamic_report(self):
         """Test if dynamic report can be calculated."""
