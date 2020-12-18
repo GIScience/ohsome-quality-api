@@ -1,6 +1,4 @@
-import io
 import json
-from statistics import mean
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -8,7 +6,11 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.definitions import (
+    LayerDefinition,
+    TrafficLightQualityLevels,
+    logger,
+)
 from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 # TODO: thresholds might be better defined for each OSM layer
@@ -27,7 +29,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = BUILDING_COUNT_LAYER,
+        layer: LayerDefinition = BUILDING_COUNT_LAYER,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -35,7 +37,7 @@ class Indicator(BaseIndicator):
     ) -> None:
         super().__init__(
             dynamic=dynamic,
-            layers=layers,
+            layer=layer,
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
@@ -45,29 +47,27 @@ class Indicator(BaseIndicator):
     def preprocess(self) -> Dict:
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        query_results_contributions = ohsome_api.process_ohsome_api(
+        query_results_contributions = ohsome_api.query_ohsome_api(
             endpoint="contributions/latest/centroid/",
-            layers=self.layers,
+            filter_string=self.layer.filter,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
         )
 
-        query_results_totals = ohsome_api.process_ohsome_api(
+        query_results_totals = ohsome_api.query_ohsome_api(
             endpoint="elements/count/",
-            layers=self.layers,
+            filter_string=self.layer.filter,
             bpolys=json.dumps(self.bpolys),
         )
 
-        preprocessing_results = {}
-        for layer in self.layers.keys():
-            edited_features = len(query_results_contributions[layer]["features"])
-            total_features = query_results_totals[layer]["result"][0]["value"]
+        edited_features = len(query_results_contributions["features"])
+        total_features = query_results_totals["result"][0]["value"]
 
-            preprocessing_results[f"{layer}_edited"] = edited_features
-            preprocessing_results[f"{layer}_total"] = total_features
-            preprocessing_results[f"{layer}_share_edited"] = (
-                edited_features / total_features
-            )
+        preprocessing_results = {
+            "edited_features": edited_features,
+            "total_features": total_features,
+            "share_edited_features": edited_features / total_features,
+        }
 
         return preprocessing_results
 
@@ -76,34 +76,20 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        text = ""
-        levels = []
-        result_description_template = (
-            "{share}% of the {layer} in OSM have been edited during the last year. "
-            "This corresponds to a {level} label in regard to data quality.\n\n"
+        if preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
+            label = TrafficLightQualityLevels.GREEN
+        elif preprocessing_results["share_edited_features"] >= THRESHOLD_RED:
+            label = TrafficLightQualityLevels.YELLOW
+        else:
+            label = TrafficLightQualityLevels.RED
+
+        share = round(preprocessing_results["share_edited_features"] * 100)
+        text = (
+            f"{share}% of the {self.layer.name} in OSM have been edited "
+            "during the last year. "
+            f"This corresponds to a {label.name} label in regard to data quality.\n\n"
         )
-
-        for layer in self.layers.keys():
-            value = preprocessing_results[f"{layer}_share_edited"]
-
-            if value >= THRESHOLD_YELLOW:
-                layer_value = TrafficLightQualityLevels.GREEN.value
-            elif value >= THRESHOLD_RED:
-                layer_value = TrafficLightQualityLevels.YELLOW.value
-            else:
-                layer_value = TrafficLightQualityLevels.RED.value
-
-            text += result_description_template.format(
-                share=round(value * 100, 2),
-                layer=layer,
-                level=TrafficLightQualityLevels(layer_value).name,
-            )
-            levels.append(layer_value)
-
-        # get the mean of all labels
-        average_level = mean(levels)
-        label = TrafficLightQualityLevels(int(round(average_level)))
-        value = average_level
+        value = label.value
 
         return label, value, text, preprocessing_results
 
@@ -122,7 +108,7 @@ class Indicator(BaseIndicator):
         threshold_yellow = 0.20 * 100  # more than 20% edited last year --> green
         threshold_red = 0.05 * 100
 
-        x_max = 0.2 * (len(self.layers.keys()) + 1)
+        x_max = 1
         x1 = [0, threshold_yellow]
         x2 = [0, threshold_red]
         y1 = [x_max, threshold_yellow]
@@ -150,20 +136,18 @@ class Indicator(BaseIndicator):
 
         x_labels = []
 
-        for i, layer in enumerate(self.layers.keys()):
-            y_data = int(data[f"{layer}_share_edited"] * 100)
-            x_data = 0.2 + i * 0.2
-            x_labels.append({"label": layer, "value": x_data})
+        y_data = int(data["share_edited_features"] * 100)
+        x_data = 0.5
+        x_labels.append({"label": self.layer.name, "value": x_data})
 
-            ax.plot(x_data, y_data, "o", color="black", label=layer)
+        ax.plot(x_data, y_data, "o", color="black", label=self.layer.name)
 
         ax.legend()
 
         # TODO: Convert from pygal usage to matplotlib
         # xy_chart.x_labels = x_labels
 
-        # Save as SVG to file-like object and return as string.
-        output_file = io.BytesIO()
-        plt.savefig(output_file, format="svg")
-        logger.info(f"export figures for {self.name} indicator")
-        return output_file.getvalue()
+        plt.savefig(self.outfile, format="svg")
+        plt.close("all")
+        logger.info(f"saved plot: {self.filename}")
+        return self.filename

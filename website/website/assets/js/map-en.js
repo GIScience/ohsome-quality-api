@@ -329,8 +329,6 @@ function buildMap(err, ...charts){
 			indicatorHeading.innerHTML = indicator.metadata.name;
 			right_space.appendChild(indicatorHeading);
 
-            console.log(indicator.result.label)
-
 			var indicatorQuality = document.createElement("p");
 			switch (indicator.result.label) {
                 case "GREEN":
