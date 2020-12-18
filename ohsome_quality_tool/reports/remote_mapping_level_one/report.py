@@ -9,7 +9,6 @@ from ohsome_quality_tool.utils.definitions import (
     get_indicator_classes,
     logger,
 )
-from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER, MAJOR_ROADS_LAYER
 
 
 class Report(BaseReport):
@@ -23,13 +22,13 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["ghspop-comparison"], BUILDING_COUNT_LAYER),
+        (indicator_classes["ghspop-comparison"], "building-count"),
         # TODO: check the guf indicator and add then
         # (indicator_classes["guf-comparison"], BUILDING_COUNT_LAYER),
-        (indicator_classes["mapping-saturation"], BUILDING_COUNT_LAYER),
-        (indicator_classes["last-edit"], BUILDING_COUNT_LAYER),
-        (indicator_classes["mapping-saturation"], MAJOR_ROADS_LAYER),
-        (indicator_classes["last-edit"], MAJOR_ROADS_LAYER),
+        (indicator_classes["mapping-saturation"], "building-count"),
+        (indicator_classes["last-edit"], "building-count"),
+        (indicator_classes["mapping-saturation"], "major-roads"),
+        (indicator_classes["last-edit"], "major-roads"),
     ]
 
     def __init__(

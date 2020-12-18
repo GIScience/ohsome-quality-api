@@ -53,6 +53,9 @@ class Indicator(BaseIndicator):
         self.description: str = ""
 
         # TODO: Run during init instead by oqt.py
+        #   Benni: Not sure if it needs to be done during init
+        #   for instance we do not need to run this for
+        #   pre-processed results, so maybe okay outside init?
         # self.preprocess()
         # self.calculate()
         # self.create_figure()

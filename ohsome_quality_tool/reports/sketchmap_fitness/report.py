@@ -9,11 +9,6 @@ from ohsome_quality_tool.utils.definitions import (
     get_indicator_classes,
     logger,
 )
-from ohsome_quality_tool.utils.layers import (
-    AMENITIES_LAYER,
-    MAJOR_ROADS_LAYER,
-    POI_LAYER,
-)
 
 
 class Report(BaseReport):
@@ -24,10 +19,10 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["mapping-saturation"], MAJOR_ROADS_LAYER),
-        (indicator_classes["last-edit"], MAJOR_ROADS_LAYER),
-        (indicator_classes["last-edit"], AMENITIES_LAYER),
-        (indicator_classes["poi-density"], POI_LAYER),
+        (indicator_classes["mapping-saturation"], "major-roads"),
+        (indicator_classes["last-edit"], "major-roads"),
+        (indicator_classes["last-edit"], "amenities"),
+        (indicator_classes["poi-density"], "points-of-interests"),
     ]
 
     def __init__(

@@ -13,7 +13,6 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_fid_list,
     insert_error,
 )
-from ohsome_quality_tool.utils.layers import get_all_layer_definitions
 
 INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
@@ -29,18 +28,19 @@ def process_indicator(
     else:
         fids = get_fid_list(get_error_table_name(dataset, indicator_name))
 
-    layer = get_all_layer_definitions()[layer_name]
-
-    create_error_table(dataset, indicator_name, layer.name)
+    create_error_table(dataset, indicator_name, layer_name)
     for feature_id in fids:
         try:
             indicator = INDICATOR_CLASSES[indicator_name](
-                dynamic=False, dataset=dataset, feature_id=feature_id, layer=layer
+                dynamic=False,
+                dataset=dataset,
+                feature_id=feature_id,
+                layer_name=layer_name,
             )
             result = indicator.run_processing()
             indicator.save_to_database(result)
         except Exception as E:
-            insert_error(dataset, indicator_name, layer.name, feature_id, E)
+            insert_error(dataset, indicator_name, layer_name, feature_id, E)
             logger.info(
                 (
                     f"caught Exception while processing {indicator_name} "

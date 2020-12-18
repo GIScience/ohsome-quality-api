@@ -9,7 +9,6 @@ from ohsome_quality_tool.utils.definitions import (
     get_indicator_classes,
     logger,
 )
-from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
 class Report(BaseReport):
@@ -23,8 +22,8 @@ class Report(BaseReport):
 
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
-        (indicator_classes["mapping-saturation"], BUILDING_COUNT_LAYER),
-        (indicator_classes["ghspop-comparison"], BUILDING_COUNT_LAYER),
+        (indicator_classes["mapping-saturation"], "building-count"),
+        (indicator_classes["ghspop-comparison"], "building-count"),
     ]
 
     def __init__(
