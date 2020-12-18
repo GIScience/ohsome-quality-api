@@ -191,9 +191,8 @@ def process_all_indicators(dataset: str):
         ("mapping-saturation", "building-count"),
         ("mapping-saturation", "major-roads"),
         ("mapping-saturation", "amenities"),
-        ("mapping-saturation", "amenities"),
         ("last-edit", "major-roads"),
-        ("last-edit", "amenities"),
+        ("last-edit", "building-count"),
         ("last-edit", "amenities"),
         ("poi-density", "points-of-interest"),
     ]

@@ -8,12 +8,7 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
-from ohsome_quality_tool.utils.definitions import (
-    LayerDefinition,
-    TrafficLightQualityLevels,
-    logger,
-)
-from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 
 
 class Indicator(BaseIndicator):
@@ -28,7 +23,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layer: LayerDefinition = BUILDING_COUNT_LAYER,
+        layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -38,7 +33,7 @@ class Indicator(BaseIndicator):
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
-            layer=layer,
+            layer_name=layer_name,
         )
 
     def preprocess(self) -> Dict:

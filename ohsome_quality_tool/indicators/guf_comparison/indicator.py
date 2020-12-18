@@ -16,7 +16,6 @@ from ohsome_quality_tool.utils.definitions import (
     TrafficLightQualityLevels,
     logger,
 )
-from ohsome_quality_tool.utils.layers import BUILDING_COUNT_LAYER
 
 
 class Indicator(BaseIndicator):
@@ -31,14 +30,14 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layers: Dict = BUILDING_COUNT_LAYER,
+        layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: str = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic,
-            layer=layers,
+            layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,

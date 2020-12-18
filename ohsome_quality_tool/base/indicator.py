@@ -9,7 +9,6 @@ from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
     IndicatorMetadata,
     IndicatorResult,
-    LayerDefinition,
     TrafficLightQualityLevels,
     logger,
 )
@@ -18,6 +17,7 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_indicator_results_from_db,
     save_indicator_results_to_db,
 )
+from ohsome_quality_tool.utils.layers import get_all_layer_definitions
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -26,7 +26,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         dynamic: bool,
-        layer: LayerDefinition,
+        layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
@@ -34,7 +34,7 @@ class BaseIndicator(metaclass=ABCMeta):
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
         self.dynamic = dynamic
-        self.layer = layer
+        self.layer = get_all_layer_definitions()[layer_name]
         self.metadata = IndicatorMetadata(
             indicator_name=self.name,
             indicator_description=self.description,

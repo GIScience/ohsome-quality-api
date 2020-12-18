@@ -10,6 +10,7 @@ class TestGhspopComparisonIndicator(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
         self.indicator_name = "ghspop-comparison"
+        self.layer_name = "building-count"
         self.dataset = "test-regions"
         self.feature_id = 1
 
@@ -19,7 +20,9 @@ class TestGhspopComparisonIndicator(unittest.TestCase):
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
         result, metadata = get_dynamic_indicator(
-            indicator_name=self.indicator_name, bpolys=bpolys
+            indicator_name=self.indicator_name,
+            bpolys=bpolys,
+            layer_name=self.layer_name,
         )
 
         # check if result dict contains the right keys
@@ -31,6 +34,7 @@ class TestGhspopComparisonIndicator(unittest.TestCase):
             indicator_name=self.indicator_name,
             dataset=self.dataset,
             feature_id=self.feature_id,
+            layer_name=self.layer_name,
         )
 
         # check if result dict contains the right keys
