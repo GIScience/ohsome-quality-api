@@ -8,24 +8,24 @@ from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
 from ohsome_quality_tool.utils.definitions import IndicatorResult, logger
 
 
-def get_table_name(dataset: str, indicator: str) -> str:
+def get_table_name(dataset: str, indicator: str, layer_name: str) -> str:
     """Compose table name from dataset and indicator.
 
     The results table is composed of names for dataset and indicator
     e.g. "subnational_boundaries_building_completeness".
     """
 
-    return f"{dataset}_{indicator}"
+    return f"{dataset}_{indicator}_{layer_name}"
 
 
-def get_table_constraint_name(dataset: str, indicator: str) -> str:
+def get_table_constraint_name(dataset: str, indicator: str, layer_name: str) -> str:
     """Compose table constraint name from dataset and indicator.
 
     The results table constraint is composed of names for dataset and indicator
     e.g. "subnational_boundaries_building_completeness_pkey".
     """
 
-    return f"{dataset}_{indicator}_pkey"
+    return f"{dataset}_{indicator}_{layer_name}_pkey"
 
 
 def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
@@ -69,7 +69,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
 
 
 def save_indicator_results_to_db(
-    dataset: str, feature_id: int, indicator: str, results
+    dataset: str, feature_id: int, indicator: str, layer_name: str, results
 ) -> None:
     """Save the indicator result for the given dataset and feature in the database.
 
@@ -81,8 +81,8 @@ def save_indicator_results_to_db(
 
     # the results table is composed of the initial dataset name and the indicator
     # e.g. "subnational_boundaries_building_completeness"
-    table = get_table_name(dataset, indicator)
-    table_constraint = get_table_constraint_name(dataset, indicator)
+    table = get_table_name(dataset, indicator, layer_name)
+    table_constraint = get_table_constraint_name(dataset, indicator, layer_name)
 
     # TODO: double check table structure with ohsome-hex schema
     #   once we have a better understading of the structure
@@ -125,14 +125,15 @@ def save_indicator_results_to_db(
 
 
 def get_indicator_results_from_db(
-    dataset: str, feature_id: int, indicator: str
+    dataset: str, feature_id: int, indicator: str, layer_name: str
 ) -> Dict:
     """Get the indicator result for the given dataset and feature in the database."""
 
-    table = get_table_name(dataset, indicator)
+    table = get_table_name(dataset, indicator, layer_name)
     fields = ["label", "value", "text", "svg"]
     query_result = {}
     for field in fields:
+        # TODO: maybe this can be put into a single query
         query_result[field] = get_value_from_db(table, feature_id, field)
 
     logger.info(f"Got results for feature {feature_id} from {table}.")
@@ -199,10 +200,10 @@ def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
         db.query(exe, {"fid": fid, "polygon": polygon})
 
 
-def get_error_table_name(dataset: str, indicator: str):
+def get_error_table_name(dataset: str, indicator: str, layer_name: str):
     """returns the name of the Error Table for the given dataset and indicator"""
 
-    return f"{dataset}_{indicator}_errors"
+    return f"{dataset}_{indicator}_{layer_name}_errors"
 
 
 def get_fid_list(table: str):
@@ -223,34 +224,39 @@ def get_fid_list(table: str):
     return [i[0] for i in fids]
 
 
-def create_error_table(dataset: str, indicator: str):
+def create_error_table(dataset: str, indicator: str, layer_name: str):
     """(Re)Creates an error table to handle exceptions during processing
     of indicators.
     """
 
-    db = PostgresDB()
-    exe = sql.SQL(
-        """DROP TABLE IF EXISTS {};
-                        CREATE TABLE {} (
-                        fid integer NOT Null,
-                        error VARCHAR(256),
-                        PRIMARY KEY(fid)
-                        );"""
-    ).format(*[sql.Identifier(get_error_table_name(dataset, indicator))] * 2)
-    db.query(exe)
+    table = get_error_table_name(dataset, indicator, layer_name)
 
-
-def insert_error(dataset: str, indicator: str, fid: int, error: str):
-    """handles exceptionsduring processing of indicators.
-    Stores failed fid and error message
-    """
     db = PostgresDB()
     exe = sql.SQL(
         """
-                     INSERT INTO {}
-                     VALUES (%(fid)s , %(error)s)
-                     """
-    ).format(sql.Identifier(get_error_table_name(dataset, indicator)))
+        DROP TABLE IF EXISTS {};
+        CREATE TABLE {} (
+            fid integer NOT Null,
+            error VARCHAR(256),
+            PRIMARY KEY(fid)
+        );
+    """
+    ).format(*[sql.Identifier(table)] * 2)
+    db.query(exe)
+
+
+def insert_error(dataset: str, indicator: str, layer_name: str, fid: int, error: str):
+    """handles exceptionsduring processing of indicators.
+    Stores failed fid and error message
+    """
+    table = get_error_table_name(dataset, indicator, layer_name)
+    db = PostgresDB()
+    exe = sql.SQL(
+        """
+        INSERT INTO {}
+        VALUES (%(fid)s , %(error)s)
+    """
+    ).format(sql.Identifier(table))
     db.query(exe, {"fid": fid, "error": str(error)})
 
 

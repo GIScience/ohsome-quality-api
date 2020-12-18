@@ -25,8 +25,8 @@ class Report(BaseReport):
     indicator_classes: Dict = get_indicator_classes()
     indicators_definition = [
         (indicator_classes["mapping-saturation"], MAJOR_ROADS_LAYER),
-        (indicator_classes["last-edit"], AMENITIES_LAYER),
         (indicator_classes["last-edit"], MAJOR_ROADS_LAYER),
+        (indicator_classes["last-edit"], AMENITIES_LAYER),
         (indicator_classes["poi-density"], POI_LAYER),
     ]
 

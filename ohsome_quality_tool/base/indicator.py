@@ -35,7 +35,12 @@ class BaseIndicator(metaclass=ABCMeta):
         # here we can put the default parameters for indicators
         self.dynamic = dynamic
         self.layer = layer
-        self.metadata = IndicatorMetadata(self.name, self.description)
+        self.metadata = IndicatorMetadata(
+            indicator_name=self.name,
+            indicator_description=self.description,
+            layer_name=self.layer.name,
+            layer_description=self.layer.description,
+        )
 
         # generate random id for filename to avoid overwriting existing files
         random_id = uuid.uuid1()
@@ -92,12 +97,21 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def save_to_database(self, result: IndicatorResult) -> None:
         """Save the results to the geo database."""
-        save_indicator_results_to_db(self.dataset, self.feature_id, self.name, result)
+        save_indicator_results_to_db(
+            dataset=self.dataset,
+            feature_id=self.feature_id,
+            layer_name=self.layer.name,
+            indicator=self.name,
+            results=result,
+        )
 
     def get_from_database(self) -> IndicatorResult:
         """Get pre-processed indicator results from geo database."""
         result = get_indicator_results_from_db(
-            dataset=self.dataset, feature_id=self.feature_id, indicator=self.name
+            dataset=self.dataset,
+            feature_id=self.feature_id,
+            layer_name=self.layer.name,
+            indicator=self.name,
         )
         return result
 

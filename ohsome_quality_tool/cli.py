@@ -10,6 +10,7 @@ from ohsome_quality_tool.utils.definitions import (
     get_report_classes,
     logger,
 )
+from ohsome_quality_tool.utils.layers import get_all_layer_definitions
 
 
 class PythonLiteralOption(click.Option):
@@ -89,6 +90,21 @@ _dataset_option = [
     )
 ]
 
+_layer_name_option = [
+    click.option(
+        "--layer_name",
+        required=True,
+        type=click.Choice(
+            list(get_all_layer_definitions().keys()),
+            case_sensitive=True,
+        ),
+        help=(
+            "Choose a layer. This defines which OSM features will be considered "
+            "in the quality analysis."
+        ),
+    )
+]
+
 
 # TODO: define and double check expected data type here
 _feature_id_option = [
@@ -139,6 +155,7 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
 @cli.command("process-indicator")
 @add_options(_indicator_option)
 @add_options(_dataset_option)
+@add_options(_layer_name_option)
 @add_options(
     [
         click.option(
@@ -148,10 +165,45 @@ def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
         )
     ]
 )
-def process_indicator(indicator_name: str, dataset: str, missing_fids: bool):
+def process_indicator(
+    indicator_name: str, dataset: str, layer_name: str, missing_fids: bool
+):
     oqt.process_indicator(
-        indicator_name=indicator_name, dataset=dataset, only_missing_ids=missing_fids
+        indicator_name=indicator_name,
+        dataset=dataset,
+        layer_name=layer_name,
+        only_missing_ids=missing_fids,
     )
+
+
+@cli.command("process-all-indicators")
+@add_options(_dataset_option)
+def process_all_indicators(dataset: str):
+    # TODO: here we need to consider the different layers as well
+    #   this means that we might need to process an indicator
+    #   several times, e.g. for BUILDING_COUNT_LAYER and then also
+    #   for the MAJOR_ROADS_LAYER
+    #   Ideally we would check the reports for this
+    #   In the reports we will find information on which indicators
+    #   should be processed for which layers
+    indicators = [
+        ("ghspop-comparison", "building-count"),
+        ("mapping-saturation", "building-count"),
+        ("mapping-saturation", "major-roads"),
+        ("mapping-saturation", "amenities"),
+        ("mapping-saturation", "amenities"),
+        ("last-edit", "major-roads"),
+        ("last-edit", "amenities"),
+        ("last-edit", "amenities"),
+        ("poi-density", "poi-density"),
+    ]
+    for indicator_name, layer_name in indicators:
+        oqt.process_indicator(
+            indicator_name=indicator_name,
+            dataset=dataset,
+            layer_name=layer_name,
+            only_missing_ids=False,
+        )
 
 
 @cli.command("get-dynamic-report")

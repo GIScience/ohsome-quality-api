@@ -61,3 +61,14 @@ POI_LAYER = LayerDefinition(
     ),
     unit="count",
 )
+
+
+def get_all_layer_definitions():
+    """Returns all layer definitions"""
+    return {
+        "points-of-interests": POI_LAYER,
+        "building-count": BUILDING_COUNT_LAYER,
+        "building-area": BUILDING_AREA_LAYER,
+        "major-roads": MAJOR_ROADS_LAYER,
+        "amenities": AMENITIES_LAYER,
+    }

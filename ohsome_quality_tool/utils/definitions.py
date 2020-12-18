@@ -78,7 +78,9 @@ LayerDefinition = collections.namedtuple(
 )
 
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
-IndicatorMetadata = collections.namedtuple("Metadata", "name description")
+IndicatorMetadata = collections.namedtuple(
+    "Metadata", "indicator_name indicator_description layer_name layer_description"
+)
 
 ReportResult = collections.namedtuple("Result", "label value text")
 ReportMetadata = collections.namedtuple("Metadata", "name description")
@@ -133,6 +135,6 @@ def get_report_classes() -> Dict:
 
     return {
         "sketchmap-fitness": sketchmapFitnessReport,
-        "remote-mapping-leve-one": remoteMappingLevelOneReport,
+        "remote-mapping-level-one": remoteMappingLevelOneReport,
         "simple-report": simpleReport,
     }

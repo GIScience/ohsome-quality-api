@@ -219,34 +219,6 @@ function buildMap(err, ...charts){
 			} else {
 				x.style.display = "none";
 			}
-			// get and send paramater for and to api
-			var region = getCountry(selectedCountry)
-			var dataset = getDataset(selectedDataset)
-			var feature_id = null
-			// args = getParams(region, selectedTopic, dataset);
-			// prepare topic param
-			// selectedTopic = "indicator_name=" + selectedTopic;
-			// prepare dataset param 
-			// split dataset to get feature_id from dataset
-			// assumption dataset is " " between datset and feature_id
-			var combinedVal = dataset.split(' ')
-			dataset = "dataset=" + combinedVal[1]
-			// prepare feature_id param
-			feature_id = "feature_id=" + combinedVal[0]
-			// console.log(args)
-			//sendParams(args);
-			res = null;
-
-			var featureCollectionPart = {"type":"FeatureCollection","features": [selectedFeature]}
-
-			var params = JSON.stringify(featureCollectionPart)
-
-
-
-			
-			// httpPostAsync(oqtUrl +"/dynamic_report/SIMPLE_REPORT", JSON.stringify(params), handleGetQuality);
-			//httpPostAsync(selectedTopic, JSON.stringify({ "bpolys": params}), handleGetQuality);
-			// getResponseFile(selectedTopic, params, handleGetQuality)
 
 			var params = {
 			    "dataset": getDataset(selectedDataset),
@@ -290,7 +262,7 @@ function buildMap(err, ...charts){
 
 		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.text +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">'+ response.metadata.description +'</p>'
+		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
 			
 		if(response.indicators.length > 0) {
 			addIndicators(response.indicators)
@@ -326,7 +298,7 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.name;
+			indicatorHeading.innerHTML = indicator.metadata.indicator_name + ' for ' + indicator.metadata.layer_name ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
@@ -346,6 +318,11 @@ function buildMap(err, ...charts){
 			var indicatorText = document.createElement("p");
 			indicatorText.innerHTML = indicator.result.text;
 			right_space.appendChild(indicatorText);
+
+			var indicatorDescription = document.createElement("p");
+			indicatorDescription.className = "metadata-text"
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.indicator_description;
+			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
 			parentDiv.appendChild(sectionDiv);
@@ -615,6 +592,7 @@ function getResponseFile( params, callback) {
 
 function httpErrorHandle(xmlHttp) {
 	console.log('xmlHttp = ', xmlHttp)
-	document.querySelector("#loader").classList.remove("spinner-1");
+	document.querySelector("#loader1").classList.remove("spinner-1");
+	document.querySelector("#loader2").classList.remove("spinner-1");
 	alert("Error: \n\n"+ xmlHttp.statusText)
 }
