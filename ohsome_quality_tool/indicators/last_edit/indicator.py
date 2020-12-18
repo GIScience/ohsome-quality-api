@@ -1,6 +1,7 @@
 import json
 from typing import Dict, Tuple
 
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from geojson import FeatureCollection
 
@@ -94,58 +95,106 @@ class Indicator(BaseIndicator):
         return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
+        """Create a nested pie chart.
+
+        Slices are ordered and plotted counter-clockwise.
+        """
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
         ax.set_title("Features Edited Last Year")
-        ax.set_xlabel("Edited [%]")
-        ax.set_ylabel("OpenStreetMap [%]")
-        ax.set_xlim((0, 100))
-        ax.set_ylim((0, 100))
+        # ax.set_xlabel("Edited [%]")
+        # ax.set_ylabel("OpenStreetMap [%]")
 
-        threshold_yellow = 0.20 * 100  # more than 20% edited last year --> green
-        threshold_red = 0.05 * 100
+        size = 0.3  # Width of the pie
+        handles = []  # Handles for legend
 
-        x_max = 1
-        x1 = [0, threshold_yellow]
-        x2 = [0, threshold_red]
-        y1 = [x_max, threshold_yellow]
-        y2 = [x_max, threshold_red]
-
-        # Plot thresholds as line.
-        line = line = ax.plot(
-            x1,
-            y1,
-            color="black",
-            label="Threshold A",
+        # Plot outer Pie (Traffic Light)
+        radius = 1
+        sizes = [80, 15, 5]
+        colors = ["green", "yellow", "red"]
+        # TODO: Definie label names.
+        labels = colors
+        ax.pie(
+            sizes,
+            radius=radius,
+            colors=colors,
+            # autopct="%1.1f%%",
+            startangle=90,
+            wedgeprops={"width": size, "alpha": 0.5},
         )
-        plt.setp(line, linestyle="--")
 
-        line = ax.plot(
-            x2,
-            y2,
-            color="black",
-            label="Threshold B",
+        for c, s, l in zip(colors, sizes, labels):
+            handles.append(mpatches.Patch(color=c, label=f"{l}: {s} %"))
+
+        # Plot inner Pie (Indicator Value)
+        radius = 1 - size
+        share_edited_features = int(data["share_edited_features"] * 100)
+        sizes = (100 - share_edited_features, share_edited_features)
+        colors = ("white", "black")
+        ax.pie(
+            sizes,
+            radius=radius,
+            colors=colors,
+            # autopct="%1.1f%%",
+            startangle=90,
+            wedgeprops={"width": size},
         )
-        plt.setp(line, linestyle=":")
 
-        # TODO: Convert from pygal usage to matplotlib
-        # xy_chart.add("Maximum", [(0, 100), (x_max, 100)], stroke=True)
+        black_patch = mpatches.Patch(
+            color="black", label=f"{self.layer.name}: {share_edited_features} %"
+        )
+        handles.append(black_patch)
 
-        x_labels = []
+        ax.legend(handles=handles)
+        ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-        y_data = int(data["share_edited_features"] * 100)
-        x_data = 0.5
-        x_labels.append({"label": self.layer.name, "value": x_data})
+        # # TODO: Decide which plot type to use. Pi chart or bar chart?
+        # # Plot as bar chart
+        # px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        # figsize = (400 * px, 400 * px)
+        # fig = plt.figure(figsize=figsize)
+        # ax = fig.add_subplot()
 
-        ax.plot(x_data, y_data, "o", color="black", label=self.layer.name)
+        # ax.set_title("Features Edited Last Year")
 
-        ax.legend()
+        # ax.set_ylim((0, 100))
 
-        # TODO: Convert from pygal usage to matplotlib
-        # xy_chart.x_labels = x_labels
+        # threshold_yellow = 20  # more than 20% edited last year --> green
+        # threshold_red = 5
+
+        # x = [-1, 1]
+        # y1 = [threshold_yellow, threshold_yellow]
+        # y2 = [threshold_red, threshold_red]
+
+        # # Plot thresholds as line.
+        # line = line = ax.plot(
+        #     x,
+        #     y1,
+        #     color="black",
+        #     label="Threshold A",
+        # )
+        # plt.setp(line, linestyle="--")
+
+        # line = ax.plot(
+        #     x,
+        #     y2,
+        #     color="black",
+        #     label="Threshold B",
+        # )
+        # plt.setp(line, linestyle=":")
+        # ax.fill_between(x, y2, 0, alpha=0.5, color="red")
+        # ax.fill_between(x, y2, y1, alpha=0.5, color="yellow")
+        # ax.fill_between(x, y1, 100, alpha=0.5, color="green")
+
+        # y_data = int(data["share_edited_features"] * 100)
+        # ax.bar("self.layer.name", y_data, color="black", label=self.layer.name)
+
+        # # ax.plot(x_data, y_data, "o", color="black", label=self.layer.name)
+
+        # ax.legend()
 
         plt.savefig(self.outfile, format="svg")
         plt.close("all")
