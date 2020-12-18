@@ -226,5 +226,5 @@ class Indicator(BaseIndicator):
 
         plt.savefig(self.outfile, format="svg")
         plt.close("all")
-        logger.info(f"export figures for {self.name} indicator")
+        logger.info(f"saved plot: {self.filename}")
         return self.filename

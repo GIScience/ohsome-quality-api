@@ -271,8 +271,10 @@ function buildMap(err, ...charts){
 		switch (response.result.label) {
 		    case 1:
 		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality'
+		        break
 		    case 2:
 		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
+		        break
 		    case 3:
 		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
 		}
@@ -327,16 +329,20 @@ function buildMap(err, ...charts){
 			indicatorHeading.innerHTML = indicator.metadata.name;
 			right_space.appendChild(indicatorHeading);
 
+            console.log(indicator.result.label)
+
 			var indicatorQuality = document.createElement("p");
 			switch (indicator.result.label) {
-                case 1:
-                    traffic_lights = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
-                case 2:
-                    traffic_lights = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
-                case 3:
-                    traffic_lights = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
+                case "GREEN":
+                    traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
+                    break
+                case "YELLOW":
+                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
+                    break
+                case "RED":
+                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
             }
-            indicatorQuality.innerHTML = traffic_lights;
+            indicatorQuality.innerHTML = traffic_lights_indicator;
             right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");

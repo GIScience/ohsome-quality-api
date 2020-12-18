@@ -42,6 +42,8 @@ class BaseIndicator(metaclass=ABCMeta):
         self.filename = f"{self.name}_{self.layer.name}_{random_id}.svg"
         self.outfile = os.path.join(DATA_PATH, self.filename)
 
+        logger.info(self.filename)
+
         if self.dynamic:
             if bpolys is None:
                 raise ValueError("Dynamic calculation requires a GeoJSON as input.")
