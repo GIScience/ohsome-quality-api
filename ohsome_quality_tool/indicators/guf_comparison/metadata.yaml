@@ -1,0 +1,26 @@
+---
+# Metadata
+#
+# Top level key is the same as Python Class name.
+GUF_COMPARISON:
+  name: GUF Comparison
+  description: |
+    Compare OSM features against built up area defined by
+    Global Urban Footprint dataset.
+  label_interpretation:
+    green:
+      threshold: 0.6  # Between 0.6 and next threshold
+      description: |
+        It is probably easy to orientate on OSM-based sketchmaps of this region.
+    yellow:
+      threshold: 0.2  # Between 0.2 and next threshold
+      description: |
+        It might be difficult to orientate on OSM-based sketchmaps of this region.
+        There are not many orientation providing features available,
+        you should explore, if participants can orientate properly.
+    red: 
+      threshold: 0  # Beween 0 and next threshold
+      description: |
+        It is probably hard to orientate on OSM-based sketchmaps of this region.
+        There are just few orientation providing features available,
+        you should explore, if participants can orientate properly.
