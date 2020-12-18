@@ -17,6 +17,8 @@ pre-commit install  # Install pre-commit hooks.
 - To add dependencies: `poetry add package-name`
 - To update dependencies: `poetry update package-name`
 
+### MacOS
+When installing matplotlib freetype needed to be installed on the system level. Run: `brew install freetype`
 
 ## Environment Variables for accessing Database
 
