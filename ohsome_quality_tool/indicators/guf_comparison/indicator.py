@@ -5,6 +5,7 @@ from math import ceil
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
+import yaml
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
@@ -37,7 +38,7 @@ class Indicator(BaseIndicator):
     ) -> None:
         super().__init__(
             dynamic=dynamic,
-            layers=layers,
+            layer=layers,
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
@@ -49,11 +50,19 @@ class Indicator(BaseIndicator):
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
         self.ratio: float = None
+        self.name: str = ""
+        self.description: str = ""
 
         # TODO: Run during init instead by oqt.py
         # self.preprocess()
         # self.calculate()
         # self.create_figure()
+
+    def read_metadata(self):
+        directory = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(directory, "metadata.yaml")
+        with open(path, "r") as f:
+            return yaml.safe_load(f)
 
     def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
