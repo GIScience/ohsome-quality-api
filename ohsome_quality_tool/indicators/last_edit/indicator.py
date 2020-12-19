@@ -8,6 +8,9 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.label_interpretations import (
+    LAST_EDIT_LABEL_INTERPRETATIONS,
+)
 
 # TODO: thresholds might be better defined for each OSM layer
 THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
@@ -18,9 +21,10 @@ class Indicator(BaseIndicator):
     """The Last Edit Indicator."""
 
     name = "last-edit"
-    description = """
-        Check the percentage of features that have been edited in the past two years.
-    """
+    description = (
+        "Check the percentage of features that have been edited in the past year."
+    )
+    interpretations: Dict = LAST_EDIT_LABEL_INTERPRETATIONS
 
     def __init__(
         self,
@@ -29,6 +33,7 @@ class Indicator(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
+        # TODO: adjust time range here to always use last year
         time_range: str = "2019-07-15,2020-07-15",
     ) -> None:
         super().__init__(
@@ -72,20 +77,24 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
         logger.info(f"run calculation for {self.name} indicator")
 
-        if preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
-            label = TrafficLightQualityLevels.GREEN
-        elif preprocessing_results["share_edited_features"] >= THRESHOLD_RED:
-            label = TrafficLightQualityLevels.YELLOW
-        else:
-            label = TrafficLightQualityLevels.RED
-
         share = round(preprocessing_results["share_edited_features"] * 100)
         text = (
-            f"{share}% of the {self.layer.name} in OSM have been edited "
+            f"{share}% of the {self.layer.name} have been edited in OSM"
             "during the last year. "
-            f"This corresponds to a {label.name} label in regard to data quality.\n\n"
         )
-        value = label.value
+
+        if preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
+            label = TrafficLightQualityLevels.GREEN
+            value = 1.0
+            text += LAST_EDIT_LABEL_INTERPRETATIONS["green"]
+        elif preprocessing_results["share_edited_features"] >= THRESHOLD_RED:
+            label = TrafficLightQualityLevels.YELLOW
+            value = 0.5
+            text += LAST_EDIT_LABEL_INTERPRETATIONS["yellow"]
+        else:
+            label = TrafficLightQualityLevels.RED
+            value = 0.0
+            text += LAST_EDIT_LABEL_INTERPRETATIONS["red"]
 
         return label, value, text, preprocessing_results
 

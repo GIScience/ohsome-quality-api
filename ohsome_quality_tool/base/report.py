@@ -65,7 +65,8 @@ class BaseReport(metaclass=ABCMeta):
                 {"metadata": metadata._asdict(), "result": result._asdict()}
             )
 
-        result = self.combine_indicators(indicators)
+        label, value, text = self.combine_indicators(indicators)
+        result = ReportResult(label=label, value=value, text=text)
 
         return result, indicators, self.metadata
 

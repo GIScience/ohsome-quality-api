@@ -12,11 +12,11 @@ class TestMappingSaturationIndicator(unittest.TestCase):
         self.indicator_name = "mapping-saturation"
         self.layer_name = "building-count"
         self.dataset = "test-regions"
-        self.feature_id = 1
+        self.feature_id = 17  # Heidelberg
 
     def test_get_dynamic_indicator(self):
         """Test if dynamic indicator can be calculated."""
-        infile = os.path.join(self.test_dir, "fixtures/antanarivo.geojson")
+        infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
         result, metadata = get_dynamic_indicator(

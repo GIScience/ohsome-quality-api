@@ -125,7 +125,7 @@ class Indicator(BaseIndicator):
         if max(df1.yValues) <= 20:
             # start stadium
             label = TrafficLightQualityLevels.RED
-            value = 0.25
+            value = 0.0
             text = text + self.interpretations["red"]
         else:
             # if so
@@ -149,12 +149,15 @@ class Indicator(BaseIndicator):
             overallSaturation.append(saturation)
 
         # overall quality
-        result = sum(overallSaturation) / len(overallSaturation)
-        text = f"The saturation for the last 3 years is {result}."
+        # 0.0 = saturated
+        saturation = sum(overallSaturation) / len(overallSaturation)
+        # TODO: is growth the right term here?
+        growth = 1 - saturation
+        text = f"The saturation for the last 3 years is {saturation:.1f}. "
 
-        if result <= THRESHOLD_YELLOW:
+        if growth <= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
-            value = 0.75
+            value = 1.0
             text = text + self.interpretations["green"]
         else:
             # THRESHOLD_YELLOW > result > THRESHOLD_RED
@@ -163,7 +166,7 @@ class Indicator(BaseIndicator):
             text = text + self.interpretations["yellow"]
 
         logger.info(
-            f"result density value: {result}, label: {label},"
+            f"result density value: {saturation}, label: {label},"
             f" value: {value}, text: {text}"
         )
 

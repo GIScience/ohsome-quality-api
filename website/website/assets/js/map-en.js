@@ -342,6 +342,7 @@ function buildMap(err, ...charts){
 		document.getElementById("traffic_map_space").innerHTML = ''
 		document.getElementById("traffic_dots_space").innerHTML = ''
 		document.getElementById("traffic_text_space").innerHTML = ''
+		document.getElementById("report_metadata_space").innerHTML = ''
 		//document.getElementById("graphTop").innerHTML = ''
 
 		var parentDiv = document.getElementById("indicatorSpace");

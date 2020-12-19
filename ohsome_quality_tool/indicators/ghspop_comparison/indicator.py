@@ -88,7 +88,7 @@ class Indicator(BaseIndicator):
         if preprocessing_results["feature_count_per_sqkm"] <= yellowThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
-            value = TrafficLightQualityLevels.RED.value - preprocessing_results[
+            value = 0.5 - preprocessing_results[
                 "feature_count_per_pop"
             ] / yellowThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
 
@@ -102,10 +102,10 @@ class Indicator(BaseIndicator):
             fraction = (preprocessing_results["feature_count_per_sqkm"] - yellow) / (
                 green - yellow
             )
-            value = TrafficLightQualityLevels.YELLOW.value - fraction
+            value = 1.0 - fraction
 
         else:
-            value = TrafficLightQualityLevels.GREEN.value
+            value = 1.0
 
         label = TrafficLightQualityLevels(ceil(value))
 
