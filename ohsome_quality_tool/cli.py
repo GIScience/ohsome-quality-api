@@ -194,7 +194,7 @@ def process_all_indicators(dataset: str):
         ("last-edit", "major-roads"),
         ("last-edit", "building-count"),
         ("last-edit", "amenities"),
-        ("poi-density", "points-of-interest"),
+        ("poi-density", "points-of-interests"),
     ]
     for indicator_name, layer_name in indicators:
         oqt.process_indicator(
