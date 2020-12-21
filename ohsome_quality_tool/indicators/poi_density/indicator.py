@@ -148,7 +148,7 @@ class Indicator(BaseIndicator):
         # Fill in space between thresholds
         ax.fill_between(x, y2, 0, alpha=0.5, color="red")
         ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
-        ax.fill_between(x, y1, max(y1), alpha=0.5, color="green")
+        ax.fill_between(x, y1, max(max(y1), data["count"]), alpha=0.5, color="green")
 
         # Plot point as circle ("o").
         ax.plot(
