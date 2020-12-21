@@ -17,6 +17,7 @@ POI_DENSITY_LABEL_INTERPRETATIONS = dict(
         "There are just few orientation providing features available, "
         "you should explore, if participants can orientate properly."
     ),
+    undefined=("The quality level could not be calculated for this indicator."),
 )
 
 MAPPING_SATURATION_LABEL_INTERPRETATIONS = dict(
@@ -36,6 +37,13 @@ MAPPING_SATURATION_LABEL_INTERPRETATIONS = dict(
         "Saturation has not been reached at all. "
         "The mapping in this region are in just starting. "
         "With regard to completeness this means bad quality."
+    ),
+    undefined=(
+        "The quality level could not be calculated for this indicator."
+        "This is most likely due to the fact that no features have been mapped "
+        "for this area of interest. Refer to other indicators that rely on "
+        "an extrinsic comparison to identify if this means that data quality is "
+        "bad or if there is just nothing to map here."
     ),
 )
 
@@ -57,6 +65,13 @@ LAST_EDIT_LABEL_INTERPRETATIONS = dict(
         "You should carefully check this before using the data as it indicates bad "
         "data quality in respect to currentness."
     ),
+    undefined=(
+        "The quality level could not be calculated for this indicator."
+        "This is most likely due to the fact that no features have been mapped "
+        "for this area of interest. Refer to other indicators that rely on "
+        "an extrinsic comparison to identify if this means that data quality is "
+        "bad or if there is just nothing to map here."
+    ),
 )
 
 
@@ -75,6 +90,7 @@ GHSPOP_COMPARISON_LABEL_INTERPRETATIONS = dict(
         "a majority of buildings has not been mapped yet. This results in a bad "
         "data quality in respect to completness"
     ),
+    undefined=("The quality level could not be calculated for this indicator."),
 )
 
 
@@ -93,4 +109,5 @@ GUF_COMPARISON_LABEL_INTERPRETATIONS = dict(
         "of unmapped buildings and refers to a bad data quality in respect "
         "to completness."
     ),
+    undefined=("The quality level could not be calculated for this indicator."),
 )

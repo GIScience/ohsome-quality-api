@@ -92,6 +92,7 @@ class TrafficLightQualityLevels(Enum):
     GREEN = 1
     YELLOW = 2
     RED = 3
+    UNDEFINED = 4
 
 
 def get_indicator_classes() -> Dict:
