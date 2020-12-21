@@ -47,7 +47,6 @@ services:
     container_name: oqt-website
     build:
       context: website/
-      dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:
