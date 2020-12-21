@@ -39,9 +39,9 @@ export $(cat .env | xargs)
 ```
 
 Set up a local postgis database using docker:
-* run `docker-compose up -d oqt-postgres`
+* run `docker-compose up -d oqt-database`
 * it will take around 15 minutes until all layers are set up
-* you can check the progress of the setup in the logs `docker logs oqt-postgres`
+* you can check the progress of the setup in the logs `docker logs oqt-database`
 * once you get `database system is ready to accept connections` in the logs the import was successful
 
 
