@@ -94,7 +94,7 @@ class Indicator(BaseIndicator):
             "which results in a Population density "
             f"{ preprocessing_results['pop_count_per_sqkm']:.2f} of People per sqkm. "
             f"In OSM there are { preprocessing_results['feature_count_per_sqkm']}"
-            " Buildings per sqkm mapped."
+            " Buildings per sqkm mapped. "
         )
 
         if preprocessing_results["feature_count_per_sqkm"] <= yellowThresholdFunction(

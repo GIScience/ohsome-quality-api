@@ -23,7 +23,7 @@ class Indicator(BaseIndicator):
     name = "last-edit"
     description = (
         "Check the percentage of features that have been edited in the past year."
-        " This can estimate the dataquality in respect to curentness."
+        " This can estimate the dataquality in respect to currentness."
     )
     interpretations: Dict = LAST_EDIT_LABEL_INTERPRETATIONS
 
