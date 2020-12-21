@@ -298,7 +298,7 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.indicator_name + ' for ' + indicator.metadata.layer_name ;
+			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.metadata.filterName ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
@@ -321,7 +321,7 @@ function buildMap(err, ...charts){
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.indicator_description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
