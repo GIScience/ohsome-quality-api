@@ -563,7 +563,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	var theUrl = "http://localhost:8000";
+	var theUrl = "http://0.0.0.0:8080";
 	//theUrl = theUrl +"/dynamic/report/" + endPoint;
 	theUrl = theUrl +"/static/report/" + endPoint;
 
