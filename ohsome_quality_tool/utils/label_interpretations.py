@@ -68,7 +68,7 @@ GHSPOP_COMPARISON_LABEL_INTERPRETATIONS = dict(
     yellow=(
         "The comparison between population density and building density indicate "
         "that there are still unmapped buildings. This results in a medium "
-        "dataqualtiy in respect to completness."
+        "data qualtiy in respect to completness."
     ),
     red=(
         "The comparison of population density and building density shows, that "
@@ -80,17 +80,17 @@ GHSPOP_COMPARISON_LABEL_INTERPRETATIONS = dict(
 
 GUF_COMPARISON_LABEL_INTERPRETATIONS = dict(
     green=(
-        "This is a realativly high value and refers to  a good dataqualtiy "
+        "This is a realativly high value and refers to  a good data qualtiy "
         "in respect to complteness"
     ),
     yellow=(
         "This indicates, that some of the map features for this reagion"
-        "are still missing. This refers to a medium dataquality in respect"
+        "are still missing. This refers to a medium data quality in respect"
         "to complteness"
     ),
     red=(
         "This indicates, that there is a respictivly high amount "
-        "of unmapped buildings and refers to a bad dataquality in respect "
+        "of unmapped buildings and refers to a bad data quality in respect "
         "to completness."
     ),
 )
