@@ -4,9 +4,7 @@
 # the descriptions here are derived from the module poi_dens.py
 # within the sketchmap-fitness repo
 POI_DENSITY_LABEL_INTERPRETATIONS = dict(
-    green=(
-        "It is probably easy to orientate on OSM-based sketchmaps " "of this region."
-    ),
+    green=("It is probably easy to orientate on OSM-based sketchmaps of this region."),
     yellow=(
         "It might be difficult to orientate on OSM-based sketchmaps of "
         "this region. There are not many orientation providing features available, "
