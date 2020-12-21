@@ -60,7 +60,7 @@ LAST_EDIT_LABEL_INTERPRETATIONS = dict(
         "This refers to medium data quality in respect to currentness."
     ),
     red=(
-        "The vast majoriy of map features has not been updated in the last year. "
+        "The vast majority of map features has not been updated in the last year. "
         "Be aware that there it is very likely that many map features are outdated. "
         "You should carefully check this before using the data as it indicates bad "
         "data quality in respect to currentness."
@@ -77,18 +77,18 @@ LAST_EDIT_LABEL_INTERPRETATIONS = dict(
 
 GHSPOP_COMPARISON_LABEL_INTERPRETATIONS = dict(
     green=(
-        "For the given population density, this is a relativly high value and "
-        "indicates a good data quality in terms of completness."
+        "For the given population density, this is a relatively high value and "
+        "indicates a good data quality in terms of completeness."
     ),
     yellow=(
         "The comparison between population density and building density indicate "
         "that there are still unmapped buildings. This results in a medium "
-        "data qualtiy in respect to completness."
+        "data quality in respect to completeness."
     ),
     red=(
         "The comparison of population density and building density shows, that "
         "a majority of buildings has not been mapped yet. This results in a bad "
-        "data quality in respect to completness"
+        "data quality in respect to completeness"
     ),
     undefined=("The quality level could not be calculated for this indicator."),
 )
@@ -96,18 +96,18 @@ GHSPOP_COMPARISON_LABEL_INTERPRETATIONS = dict(
 
 GUF_COMPARISON_LABEL_INTERPRETATIONS = dict(
     green=(
-        "This is a realativly high value and refers to  a good data qualtiy "
-        "in respect to complteness"
+        "This is a relatively high value and refers to  a good data quality "
+        "in respect to completeness"
     ),
     yellow=(
-        "This indicates, that some of the map features for this reagion"
+        "This indicates, that some of the map features for this region"
         "are still missing. This refers to a medium data quality in respect"
-        "to complteness"
+        "to completeness"
     ),
     red=(
-        "This indicates, that there is a respictivly high amount "
+        "This indicates, that there is a relatively high amount "
         "of unmapped buildings and refers to a bad data quality in respect "
-        "to completness."
+        "to completeness."
     ),
     undefined=("The quality level could not be calculated for this indicator."),
 )
