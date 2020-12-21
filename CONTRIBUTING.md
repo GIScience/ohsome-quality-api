@@ -17,9 +17,7 @@ pre-commit install  # Install pre-commit hooks.
 - To add dependencies: `poetry add package-name`
 - To update dependencies: `poetry update package-name`
 
-*Note*: If during the installation of `matplotlib` an error occurs, then probably the package `freetype` needs to be installed on the system:
-- MacOS: `brew install freetype`
-- Fedora: `dnf install freetype-devel`
+*Note*: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
 
 ## Environment Variables for accessing Database
