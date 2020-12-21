@@ -79,7 +79,7 @@ class Indicator(BaseIndicator):
         text = (
             "The density of landmarks (points of reference, "
             "e.g. waterbodies, supermarkets, "
-            f"churches, bus stops) is {result} features."
+            f"churches, bus stops) is {result:.2f} features per sqkm."
         )
 
         if result >= THRESHOLD_YELLOW:

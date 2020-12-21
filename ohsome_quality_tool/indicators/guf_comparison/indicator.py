@@ -16,10 +16,13 @@ from ohsome_quality_tool.utils.definitions import (
     TrafficLightQualityLevels,
     logger,
 )
+from ohsome_quality_tool.utils.label_interpretations import (
+    GUF_COMPARISON_LABEL_INTERPRETATIONS,
+)
 
 
 class Indicator(BaseIndicator):
-    """Set number of features and population into perspective."""
+    """Comparison of the Buildup Area in the GUF Dataset and OSM"""
 
     name = "guf-comparison"
     description = (
@@ -106,15 +109,22 @@ class Indicator(BaseIndicator):
 
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
 
+        text = (
+            "The ratio between the GUF built up area and the OSM built"
+            f" up area is {self.ratio}."
+        )
+
         if self.ratio <= self.threshold_low:
             value = TrafficLightQualityLevels.RED.value
+            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["red"]
         elif self.ratio <= self.threshold_high:
             value = TrafficLightQualityLevels.YELLOW.value
+            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["yellow"]
         else:
             value = TrafficLightQualityLevels.GREEN.value
+            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["green"]
 
         label = TrafficLightQualityLevels(ceil(value))
-        text = "test test test"
 
         return label, value, text, preprocessing_results
 
