@@ -9,3 +9,7 @@ services:
       dockerfile: Dockerfile.production
     ports:
       - "5432:5432"
+
+  oqt-website:
+    ports:
+      - "80:80"
