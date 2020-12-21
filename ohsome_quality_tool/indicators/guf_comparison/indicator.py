@@ -9,7 +9,7 @@ import yaml
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import geodatabase, ohsome_api
+from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.auth import PostgresDB
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
@@ -86,23 +86,20 @@ class Indicator(BaseIndicator):
         db = PostgresDB()
 
         # Get data from geodatabase
+
+        directory = os.path.dirname(os.path.abspath(__file__))
         if self.dynamic:
-            directory = os.path.dirname(os.path.abspath(__file__))
             aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
-            # Get total area and built-up area (GUF) in km^2 for AOI
-            sql_file = os.path.join(directory, "query.sql")
-            with open(sql_file) as reader:
-                query = reader.read()
-            result = db.retr_query(query=query, data=(aoi_geom, aoi_geom, aoi_geom))
-            self.area = result[0][0] / 1000000  # m^2 to km^2
-            self.guf_built_up_area = result[0][1] / 1000000
         else:
-            # TODO: check if this works here
-            self.guf_built_up_area = geodatabase.get_value_from_db(
-                dataset=self.dataset,
-                feature_id=self.feature_id,
-                field_name="population",
-            )
+            aoi_geom = json.dumps(self.bpolys["geometry"])
+        # Get total area and built-up area (GUF) in km^2 for AOI
+        sql_file = os.path.join(directory, "query.sql")
+        with open(sql_file) as reader:
+            query = reader.read()
+        result = db.retr_query(query=query, data=(aoi_geom, aoi_geom, aoi_geom))
+        logger.info(result)
+        self.area = result[0][0] / 1000000  # m^2 to km^2
+        self.guf_built_up_area = result[0][1] / 1000000
 
         # Get data from ohsome API
         # TODO: Difficult to read and understand.
