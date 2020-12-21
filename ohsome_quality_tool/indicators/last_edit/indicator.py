@@ -62,7 +62,12 @@ class Indicator(BaseIndicator):
             bpolys=json.dumps(self.bpolys),
         )
 
-        edited_features = len(query_results_contributions["features"])
+        try:
+            edited_features = len(query_results_contributions["features"])
+        except KeyError:
+            # no feature has been edited in the time range
+            edited_features = 0
+
         total_features = query_results_totals["result"][0]["value"]
         share_edited_features = (
             (edited_features / total_features) if total_features != 0 else -1
