@@ -88,13 +88,13 @@ class Indicator(BaseIndicator):
             return 0.75 * np.sqrt(pop_per_sqkm)
 
         text = (
-            "Following the GHS POP dataset, there are"
-            f"{int(preprocessing_results['pop_count'])} People living,"
+            "Following the GHS POP dataset, there are "
+            f"{int(preprocessing_results['pop_count'])} people living "
             f" in an area of { preprocessing_results['area_sqkm']:.2f} sqkm, "
-            "which results in a Population density "
-            f"{ preprocessing_results['pop_count_per_sqkm']:.2f} of People per sqkm. "
-            f"In OSM there are { preprocessing_results['feature_count_per_sqkm']}"
-            " Buildings per sqkm mapped. "
+            "which results in a population density "
+            f"{ preprocessing_results['pop_count_per_sqkm']:.2f} of people per sqkm. "
+            f"In OSM there are { preprocessing_results['feature_count_per_sqkm']:.2f} "
+            "buildings per sqkm mapped. "
         )
 
         if preprocessing_results["feature_count_per_sqkm"] <= yellowThresholdFunction(
