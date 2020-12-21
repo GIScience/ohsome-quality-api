@@ -130,13 +130,14 @@ def cli(verbose):
 @cli.command("get-dynamic-indicator")
 @add_options(_indicator_option)
 @add_options(_infile_option)
-def get_dynamic_indicator(indicator_name: str, infile: str):
+@add_options(_layer_name_option)
+def get_dynamic_indicator(indicator_name: str, infile: str, layer_name: str):
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
     with open(infile, "r") as file:
         bpolys = geojson.load(file)
     result, metadata = oqt.get_dynamic_indicator(
-        indicator_name=indicator_name, bpolys=bpolys
+        indicator_name=indicator_name, bpolys=bpolys, layer_name=layer_name
     )
     return result, metadata
 
@@ -145,9 +146,15 @@ def get_dynamic_indicator(indicator_name: str, infile: str):
 @add_options(_indicator_option)
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
-def get_static_indicator(indicator_name: str, dataset: str, feature_id: int):
+@add_options(_layer_name_option)
+def get_static_indicator(
+    indicator_name: str, dataset: str, feature_id: int, layer_name: str
+):
     result, metadata = oqt.get_static_indicator(
-        indicator_name=indicator_name, dataset=dataset, feature_id=feature_id
+        indicator_name=indicator_name,
+        dataset=dataset,
+        feature_id=feature_id,
+        layer_name=layer_name,
     )
     return result, metadata
 
