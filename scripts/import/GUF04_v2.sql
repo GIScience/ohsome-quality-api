@@ -1,4 +1,5 @@
-CREATE INDEX guf04_st_convexhull_idx ON guf04 USING gist (ST_ConvexHull (rast)
+CREATE INDEX guf04_st_convexhull_idx ON guf04 USING gist (ST_ConvexHull (rast));
+
 SELECT
     AddRasterConstraints ('guf04'::name, 'rast'::name);
 
@@ -14,3 +15,4 @@ WHERE NOT rid IN (
             rid
         HAVING
             ST_ValueCount (rast, 1, TRUE, 255) > 0);
+
