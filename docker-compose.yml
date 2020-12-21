@@ -53,6 +53,7 @@ services:
     volumes:
       - ./website/website:/usr/share/nginx/html
       - oqt-website:/usr/share/nginx/html/data
+      - ./website/website:/usr/share/nginx/html
     networks:
       - oqt-website-network
 
