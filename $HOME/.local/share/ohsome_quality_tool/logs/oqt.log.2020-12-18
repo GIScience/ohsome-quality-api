@@ -1,0 +1,18 @@
+2020-12-18 10:10:16,840 - INFO - indicator.py - get - Run processing for dynamic indicator mapping-saturation.
+2020-12-18 10:10:16,841 - INFO - indicator.py - preprocess - run preprocessing for mapping-saturation indicator
+2020-12-18 10:10:16,842 - INFO - ohsome_api.py - query_ohsome_api - start to query ohsome api
+2020-12-18 10:10:33,460 - INFO - ohsome_api.py - query_ohsome_api - got query results for: https://api.ohsome.org/v1/elements/count/, filter='building=*'
+2020-12-18 10:10:33,462 - INFO - indicator.py - calculate - run calculation for mapping-saturation indicator
+2020-12-18 10:10:33,495 - INFO - indicator.py - calculate - saturation level last 3 years at: 0.13035741843745136 for building-count and unit count
+2020-12-18 10:10:33,496 - INFO - indicator.py - calculate - result density value: 0.13035741843745136, label: TrafficLightQualityLevels.YELLOW, value: 0.5, text: The saturation for the last 3 years is 0.13035741843745136.Saturation not yet reached. The data in this region still seem to be in a growth stadium  with a growth of data more than 3 % within the last 3 years. This indicates a difficult to sepcify quality in respect to completeness, because it depends on the growth rate over time. The growth could be near to saturated or still be in an high growth stadium.
+2020-12-18 10:10:33,977 - INFO - indicator.py - create_figure - saved plot: mapping-saturation_building-count_d841c080-4110-11eb-8f16-7c76350d2b9e.svg
+2020-12-18 10:10:33,977 - INFO - indicator.py - run_processing - finished run for indicator mapping-saturation
+2020-12-18 10:38:32,528 - INFO - indicator.py - get - Run processing for dynamic indicator mapping-saturation.
+2020-12-18 10:38:32,529 - INFO - indicator.py - preprocess - run preprocessing for mapping-saturation indicator
+2020-12-18 10:38:32,529 - INFO - ohsome_api.py - query_ohsome_api - start to query ohsome api
+2020-12-18 10:38:46,549 - INFO - ohsome_api.py - query_ohsome_api - got query results for: https://api.ohsome.org/v1/elements/count/, filter='building=*'
+2020-12-18 10:38:46,550 - INFO - indicator.py - calculate - run calculation for mapping-saturation indicator
+2020-12-18 10:38:46,586 - INFO - indicator.py - calculate - saturation level last 3 years at: 0.13035741843745136 for building-count and unit count
+2020-12-18 10:38:46,586 - INFO - indicator.py - calculate - result density value: 0.13035741843745136, label: TrafficLightQualityLevels.YELLOW, value: 0.5, text: The saturation for the last 3 years is 0.13035741843745136.Saturation not yet reached. The data in this region still seem to be in a growth stadium  with a growth of data more than 3 % within the last 3 years. This indicates a difficult to sepcify quality in respect to completeness, because it depends on the growth rate over time. The growth could be near to saturated or still be in an high growth stadium.
+2020-12-18 10:38:46,890 - INFO - indicator.py - create_figure - saved plot: mapping-saturation_building-count_caf7081f-4114-11eb-86dd-7c76350d2b9e.svg
+2020-12-18 10:38:46,891 - INFO - indicator.py - run_processing - finished run for indicator mapping-saturation

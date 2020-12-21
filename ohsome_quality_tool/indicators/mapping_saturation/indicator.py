@@ -2,6 +2,7 @@ import json
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from geojson import FeatureCollection
 
@@ -84,14 +85,9 @@ class Indicator(BaseIndicator):
         for i in range(len(dfWorkarkound)):
             li.append(i)
 
-        # dict to collect saturation values of each layer
-        # for individual layer traffic light
-        satValCollection = {}
-        # list for collecting saturation values of each layer
-        overallSaturation = []
         text = ""
 
-        # calculate traffic light value for each layer
+        # calculate traffic light value
         df1 = pd.DataFrame(
             {
                 "timestamps": preprocessing_results["timestamps"],
@@ -102,9 +98,7 @@ class Indicator(BaseIndicator):
 
         # get init params for sigmoid curve with 2 jumps
         sigmoid_curve = sigmoidCurve()
-
         initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
-
         x1 = round(initParams[0])
         x2 = round(initParams[2])
         L = round(initParams[1])
@@ -116,57 +110,96 @@ class Indicator(BaseIndicator):
         k1 = yY[0] / yY[1]
         k2 = yY[1] / yY[2]
 
-        # TODO select best fitting curve, eg with mean_square_error
+        # select best fitting curve, with mean_square_error
+        # mse for logistic1 with k as 10.0 / (maxx - minx) from initparamsingle()
+        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
+        yPred = sigmoid_curve.logistic1(
+            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
+        )
+        err1a = np.sum((yPred - df1.yValues) ** 2) / len(yPred)
+
+        # mse for logistic1 with k as 10.0 / (max(xdata) - min(xdata))
+        # from initparamsingleB()
+        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
+        yPredB = sigmoid_curve.logistic1(
+            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
+        )
+        err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
+
+        # mse for logistic2
+        yPred2 = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+        err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
+
+        # collect mse in one list
+        errorslist = [err1a, err1B, err2]
+        # collect corresponding function names
+        errorslistFuncs = ["logistic1", "logistic1B", "logistic2"]
+        # get the smallest mse with its index
+        minError = errorslist.index(min(errorslist))
+        bestfit = errorslistFuncs[minError]
 
         # check if data are more than start stadium
         # The end of the start stage is defined with
         # the maximum of the curvature function f''(x)
-        # here: simple check
+        # here: simple check <= 20
         if max(df1.yValues) <= 20:
             # start stadium
             label = TrafficLightQualityLevels.RED
             value = 0.0
             text = text + self.interpretations["red"]
         else:
-            # if so
             # calculate slope/growth of last 3 years
-            # take value in -36 month before end
-            # time and value in last month of data
+            # take value in -36. month and value in -1. month of data
             earlyX = li[-36]
             lastX = li[-1]
-            ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+            # depending on best fitted curve calculate ydata with correct function
+            if bestfit == "logistic2":
+                ydataForSat = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+            elif bestfit == "logistic1":
+                ydataForSat = sigmoid_curve.logistic1(
+                    initParamsSingle[4],
+                    initParamsSingle[3],
+                    initParamsSingle[1],
+                    df1.li,
+                )
+            elif bestfit == "logistic1B":
+                ydataForSat = sigmoid_curve.logistic1(
+                    initParamsSingleB[4],
+                    initParamsSingleB[3],
+                    initParamsSingleB[1],
+                    df1.li,
+                )
+            # get saturation level within last 3 years
             saturation = sigmoid_curve.getSaturationInLast3Years(
-                earlyX, lastX, df1.li, ydata
+                earlyX, lastX, df1.li, ydataForSat
             )
+            # if earlyX and lastX return same y value (means no growth any more),
+            # getSaturationInLast3Years returns 1.0
+            if saturation == 1.0:
+                saturation = 0.0
             logger.info(
                 "saturation level last 3 years at: "
                 + str(saturation)
                 + " for "
                 + f"{self.layer.name} and unit {self.layer.unit}"
             )
-            # perhaps needed for individual layer descirption/traffic light?
-            satValCollection["results"] = saturation
-            overallSaturation.append(saturation)
 
         # overall quality
         # 0.0 = saturated
-        saturation = sum(overallSaturation) / len(overallSaturation)
-        # TODO: is growth the right term here?
-        growth = 1 - saturation
         text = f"The saturation for the last 3 years is {saturation:.1f}. "
 
-        if growth <= THRESHOLD_YELLOW:
+        if saturation <= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
             text = text + self.interpretations["green"]
         else:
-            # THRESHOLD_YELLOW > result > THRESHOLD_RED
+            # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
             text = text + self.interpretations["yellow"]
 
         logger.info(
-            f"result density value: {saturation}, label: {label},"
+            f"result saturation value: {saturation}, label: {label},"
             f" value: {value}, text: {text}"
         )
 
@@ -185,7 +218,6 @@ class Indicator(BaseIndicator):
             li.append(i)
 
         plt.figure()
-        plt.title("Data with sigmoid curve")
         # color the lines with different colors
         # TODO: what if more than 5 layers are in there?
         linecol = ["b-", "g-", "r-", "y-", "black-"]
@@ -212,16 +244,49 @@ class Indicator(BaseIndicator):
         yY = sigmoid_curve.getFirstLastY(inits)
         k1 = yY[0] / yY[1]
         k2 = yY[1] / yY[2]
-        # calculate curve
-        ydata = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+
+        # select best fitting curve, with mean_square_error
+        # mse for logistic1 with k as 10.0 / (maxx - minx) from initparamsingle()
+        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
+        ydataSingle = sigmoid_curve.logistic1(
+            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
+        )
+        yPred = sigmoid_curve.logistic1(
+            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
+        )
+        err1a = np.sum((yPred - df1.yValues) ** 2) / len(yPred)
+        # mse for logistic1 with k as 10.0 / (max(xdata) - min(xdata)) from
+        # initparamsingleB()
+        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
+        ydataSingleB = sigmoid_curve.logistic1(
+            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
+        )
+        yPredB = sigmoid_curve.logistic1(
+            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
+        )
+        err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
+        # mse for logistic2
+        yPred2 = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
+        err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
+        # collect mse in one list
+        errorslist = [err1a, err1B, err2]
+        # collect corresponding function names
+        errorslistFuncs = ["logistic1", "logistic1B", "logistic2"]
+        # get the smallest mse with its index
+        minError = errorslist.index(min(errorslist))
+        bestfit = errorslistFuncs[minError]
+        # prepare plot
+        plt.title("Data with sigmoid curve, best fit: " + bestfit)
         plt.plot(
             df1.li,
             df1.yValues,
             linecol[0],
             label=f"{self.layer.name} - {self.layer.unit}",
         )
-        plt.plot(df1.li, ydata, linecol[2], label="Sigmoid curve with 2 jumps")
-
+        plt.plot(df1.li, yPred2, linecol[2], label="Sigmoid curve with 2 jumps")
+        plt.plot(df1.li, ydataSingle, linecol[3], label="logistic1")
+        plt.plot(df1.li, ydataSingleB, linecol[1], label="logistic1 B")
+        plt.legend()
         plt.savefig(self.outfile, format="svg")
         plt.close("all")
         logger.info(f"saved plot: {self.filename}")

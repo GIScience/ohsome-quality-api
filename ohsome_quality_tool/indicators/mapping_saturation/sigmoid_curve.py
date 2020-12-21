@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 # sigmoid stuff
@@ -9,6 +10,51 @@ class sigmoidCurve:
     # simple logistic curve
     def logistic1(self, x, L, k, x0):
         return L / (1 + np.exp(k * (x - x0)))
+
+    # init params for single curve
+    def initparamsSigmoid(self, xdata, ydata):
+        return [
+            (min(xdata) + max(xdata)) / 2.0,
+            10.0 / (max(xdata) - min(xdata)),
+            max(ydata),
+        ]
+
+    # returns x0, k,miny,maxy, xjump1,dy1
+    def initparamsingle(self, xdata, ydata):
+        # Find the steepest single step
+        dydata = ydata - ydata.shift(1)
+        if len(dydata[dydata > 0]) < 4:
+            return [np.nan] * 6
+        xjump1 = xdata.shift(1)[dydata == dydata.max()]
+        dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+        # to have an other x0 than min(x) and max(x)
+        minx = min(xdata) + (xjump1.values[0] / 2)
+        maxx = xjump1.values[0] + ((max(xdata) - xjump1.values[0]) / 2)
+        return [
+            (min(xdata) + max(xdata)) / 2.0,
+            10.0 / (maxx - minx),
+            min(ydata),
+            max(ydata),
+            xjump1.values[0],
+            dy1.values[0],
+        ]
+
+    # returns x0, k,miny,maxy, xjump1,dy1
+    def initparamsingleB(self, xdata, ydata):
+        # Find the steepest single step
+        dydata = ydata - ydata.shift(1)
+        if len(dydata[dydata > 0]) < 4:
+            return [np.nan] * 6
+        xjump1 = xdata.shift(1)[dydata == dydata.max()]
+        dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+        return [
+            (min(xdata) + max(xdata)) / 2.0,
+            10.0 / (max(xdata) - min(xdata)),
+            min(ydata),
+            max(ydata),
+            xjump1.values[0],
+            dy1.values[0],
+        ]
 
     # logistic curve with 2 jumps
     def logistic2(self, x, x2, L, L2, k, k2, x0):
@@ -91,6 +137,8 @@ class sigmoidCurve:
     # don't know why, result of initparamsFor2JumpsCurve() is not sorted
     def sortInits2curves(self, xdata, ydata):
         inits = self.initparamsFor2JumpsCurve(xdata, ydata)
+        print("inits from init func from 80%")
+        print(inits)
         allL = []
         lx = []
         ly = []
@@ -101,7 +149,8 @@ class sigmoidCurve:
 
         x = sorted(lx)
         y = sorted(ly)
-
+        print("  sorted(ly)  ")
+        print(y)
         allL.append(x[0])
         allL.append(y[0])
         allL.append(x[1])
@@ -113,16 +162,16 @@ class sigmoidCurve:
         x2 = x[0] + ((x[1] - x[0]) / 2)
         y2 = y[0] + ((y[1] - y[0]) / 2)
 
-        result.append(x2)
-        result.append(inits[3] - y2)
-        result.append(x[2])
-        result.append(inits[3])
+        result.append(x2)  # x1
+        result.append(inits[3] - y2)  # y1
+        result.append(x[2])  # x2
+        result.append(inits[3])  # y2
 
         return result, x, y, inits[0], inits[2]
 
     # TODO define initparamsFor2JumpsCurve(self, xdata, ydata) and
     #  sortInits2curves(self, xdata, ydata) for other
-    # sigmoid functions, too
+    #  sigmoid functions, too
 
     # logistic curve with 3 jumps
     def logistic3(self, x, x2, x3, L, L2, L3, k, k2, k3, x0):
@@ -164,3 +213,10 @@ class sigmoidCurve:
         yList = [inits[5], inits[7], inits[9]]
         yList = sorted(yList)
         return yList
+
+    def func_mean_square_error(self, xdata_, ydata_, func, params):
+        if pd.isnull(params).any():
+            return np.nan
+        yPred = func.f(xdata_, *params)
+        err = np.sum((yPred - ydata_) ** 2) / len(yPred)
+        return err
