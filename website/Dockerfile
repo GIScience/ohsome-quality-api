@@ -1,2 +1,3 @@
 FROM nginx:stable
-COPY nginx.conf /etc/nginx/conf.d/
+COPY website /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d
