@@ -83,7 +83,11 @@ class BaseIndicator(metaclass=ABCMeta):
         """Run all steps needed to actually compute the indicator"""
         preprocessing_results = self.preprocess()
         label, value, text, data = self.calculate(preprocessing_results)
-        svg = self.create_figure(data)
+        svg = (
+            self.create_figure(data)
+            if label != TrafficLightQualityLevels.UNDEFINED
+            else None
+        )
         logger.info(f"finished run for indicator {self.name}")
 
         result = IndicatorResult(
