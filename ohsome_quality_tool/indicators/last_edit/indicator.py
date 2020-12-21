@@ -64,13 +64,15 @@ class Indicator(BaseIndicator):
 
         edited_features = len(query_results_contributions["features"])
         total_features = query_results_totals["result"][0]["value"]
-
+        share_edited_features = (
+            (edited_features / total_features) if total_features != 0 else -1
+        )
         preprocessing_results = {
             "edited_features": edited_features,
             "total_features": total_features,
-            "share_edited_features": edited_features / total_features,
+            "share_edited_features": share_edited_features,
         }
-
+        logger.info(preprocessing_results)
         return preprocessing_results
 
     def calculate(
@@ -83,8 +85,14 @@ class Indicator(BaseIndicator):
             f"{share}% of the {self.layer.name} have been edited in OSM"
             "during the last year. "
         )
-
-        if preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
+        if preprocessing_results["share_edited_features"] == -1:
+            label = TrafficLightQualityLevels.UNDEFINED
+            value = -1.0
+            text = (
+                "Since the OHSOME query returned a count of 0 for this feature "
+                "a quality estimation can not be made for this filter"
+            )
+        elif preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
             text += LAST_EDIT_LABEL_INTERPRETATIONS["green"]
