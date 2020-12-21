@@ -19,7 +19,7 @@ services:
     command: uvicorn ohsome_quality_tool.app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: "no"
     ports:
-      - "8000:8000"
+      - "8080:8000"
     volumes:
       - oqt-website:/root/.local/share/ohsome_quality_tool/data
     networks:
@@ -49,7 +49,7 @@ services:
       context: website/
       dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "80:80"
     volumes:
       - oqt-website:/usr/share/nginx/html/data
     networks:
