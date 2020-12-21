@@ -82,23 +82,18 @@ class Indicator(BaseIndicator):
             f"churches, bus stops) is {result} features."
         )
 
-        # TODO: define a better way to derive the quality value from the result
-        if result > THRESHOLD_YELLOW:
-            label = TrafficLightQualityLevels.GREEN
+        if result >= THRESHOLD_YELLOW:
             value = 1.0
+            label = TrafficLightQualityLevels.GREEN
             text = text + self.interpretations["green"]
-        elif THRESHOLD_YELLOW >= result > THRESHOLD_RED:
-            label = TrafficLightQualityLevels.YELLOW
-            value = 0.5
-            text = text + self.interpretations["yellow"]
-        elif THRESHOLD_RED >= result > 0:
-            label = TrafficLightQualityLevels.RED
-            value = 0.25
-            text = text + self.interpretations["red"]
         else:
-            label = TrafficLightQualityLevels.RED
-            value = 0.0
-            text = text + self.interpretations["red"]
+            value = result / THRESHOLD_YELLOW
+            if result > THRESHOLD_RED:
+                label = TrafficLightQualityLevels.YELLOW
+                text = text + self.interpretations["yellow"]
+            else:
+                label = TrafficLightQualityLevels.RED
+                text = text + self.interpretations["red"]
 
         logger.info(
             f"result density value: {result}, label: {label},"
