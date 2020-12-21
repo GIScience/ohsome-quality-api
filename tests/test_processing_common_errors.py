@@ -11,13 +11,32 @@ class TestProcessingCommonErrors(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
 
-    def testLastEditFloatDivisionByZeroError(self):
+    def testMappingSaturationFloatDivisionByZeroError(self):
         """Test float division by zero."""
 
-        self.indicator_name = "last-edit"
-        self.layer_name = "amenities"
+        self.indicator_name = "mapping-saturation"
+        self.layer_name = "building-count"
         self.dataset = "test-regions"
-        self.feature_id = 37
+        self.feature_id = 30
+
+        indicator = INDICATOR_CLASSES[self.indicator_name](
+            dynamic=False,
+            dataset=self.dataset,
+            feature_id=self.feature_id,
+            layer_name=self.layer_name,
+        )
+        result = indicator.run_processing()
+
+        # check if result contains the right quality level
+        self.assertEqual(result.label, "UNDEFINED")
+
+    def testMappingSaturationCannotConvertNanError(self):
+        """Test float division by zero."""
+
+        self.indicator_name = "mapping-saturation"
+        self.layer_name = "building-count"
+        self.dataset = "test-regions"
+        self.feature_id = 30
 
         indicator = INDICATOR_CLASSES[self.indicator_name](
             dynamic=False,

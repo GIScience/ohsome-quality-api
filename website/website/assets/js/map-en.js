@@ -290,7 +290,12 @@ function buildMap(err, ...charts){
 			// left part with plot
 			var left_space = document.createElement("div");
 			left_space.className = "one-third"
-			left_space.innerHTML = '<img class="indicator-graph" src="data/'+indicator.result.svg+'">';
+			if (indicator.result.label == 'UNDEFINED'){
+			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
+			} else {
+			    left_space.innerHTML = '<img class="indicator-graph" src="data/'+indicator.result.svg+'">';
+
+			}
 			sectionDiv.appendChild(left_space)
 
 			// right part with heading, description and traffic lights
@@ -311,6 +316,9 @@ function buildMap(err, ...charts){
                     break
                 case "RED":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
+                case "UNDEFINED":
+                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+
             }
             indicatorQuality.innerHTML = traffic_lights_indicator;
             right_space.appendChild(indicatorQuality);

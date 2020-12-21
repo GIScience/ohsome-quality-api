@@ -63,7 +63,12 @@ class Indicator(BaseIndicator):
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
         max_value = max(results)
-        results_normalized = [result / max_value for result in results]
+
+        if max_value == 0:
+            results_normalized = -1
+            results = -1
+        else:
+            results_normalized = [result / max_value for result in results]
 
         preprocessing_results = {
             "timestamps": timestamps,
@@ -78,6 +83,16 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
         logger.info(f"run calculation for {self.name} indicator")
+
+        # check if any mapping happened in this region
+        # and directly return quality label if no mapping happened
+        if preprocessing_results["results"] == -1:
+            # start stadium
+            text = "No mapping has happened in this region. "
+            label = TrafficLightQualityLevels.UNDEFINED
+            value = -1
+            text = text + self.interpretations["undefined"]
+            return label, value, text, preprocessing_results
 
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(preprocessing_results)
