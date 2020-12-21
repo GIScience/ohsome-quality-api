@@ -65,7 +65,8 @@ class Report(BaseReport):
         values = []
 
         for indicator in indicators:
-            values.append(indicator["result"]["value"])
+            if indicator["result"]["label"] != "UNDEFINED":
+                values.append(indicator["result"]["value"])
 
         value = mean(values)
 
