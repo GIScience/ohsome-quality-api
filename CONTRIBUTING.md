@@ -27,8 +27,6 @@ To do this create a `.env` file at the root of the repository and write down fol
 
 ```bash
 POSTGRES_PASSWORD=mypassword
-POSTGRES_DB=hexadmin
-POSTGRES_USER=hexadmin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_SCHEMA=public
