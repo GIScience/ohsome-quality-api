@@ -1,5 +1,4 @@
 import json
-from math import ceil
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -9,6 +8,9 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import geodatabase, ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.label_interpretations import (
+    GHSPOP_COMPARISON_LABEL_INTERPRETATIONS,
+)
 
 
 class Indicator(BaseIndicator):
@@ -16,7 +18,7 @@ class Indicator(BaseIndicator):
 
     name = "ghspop-comparison"
     description = """
-        The number of features per population count.
+        Comparison between population density and feature density.
         This can give an estimate if mapping has been completed.
     """
 
@@ -85,12 +87,25 @@ class Indicator(BaseIndicator):
         def yellowThresholdFunction(pop_per_sqkm):
             return 0.75 * np.sqrt(pop_per_sqkm)
 
+        text = (
+            "Following the GHS POP dataset, there are"
+            f"{int(preprocessing_results['pop_count'])} People living,"
+            f" in an area of { preprocessing_results['area_sqkm']:.2f} sqkm, "
+            "which results in a Population density "
+            f"{ preprocessing_results['pop_count_per_sqkm']:.2f} of People per sqkm. "
+            f"In OSM there are { preprocessing_results['feature_count_per_sqkm']}"
+            " Buildings per sqkm mapped."
+        )
+
         if preprocessing_results["feature_count_per_sqkm"] <= yellowThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
         ):
-            value = 0.5 - preprocessing_results[
-                "feature_count_per_pop"
-            ] / yellowThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
+            value = (
+                preprocessing_results["feature_count_per_sqkm"]
+                / yellowThresholdFunction(preprocessing_results["pop_count_per_sqkm"])
+            ) * (0.5)
+            text += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["red"]
+            label = TrafficLightQualityLevels.RED
 
         elif preprocessing_results["feature_count_per_sqkm"] <= greenThresholdFunction(
             preprocessing_results["pop_count_per_sqkm"]
@@ -99,29 +114,19 @@ class Indicator(BaseIndicator):
             yellow = yellowThresholdFunction(
                 preprocessing_results["pop_count_per_sqkm"]
             )
-            fraction = (preprocessing_results["feature_count_per_sqkm"] - yellow) / (
-                green - yellow
+            fraction = (
+                (preprocessing_results["feature_count_per_sqkm"] - yellow)
+                / (green - yellow)
+                * 0.5
             )
-            value = 1.0 - fraction
+            value = 0.5 + fraction
+            text += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["yellow"]
+            label = TrafficLightQualityLevels.YELLOW
 
         else:
             value = 1.0
-
-        label = TrafficLightQualityLevels(ceil(value))
-
-        text = (
-            f"{int(preprocessing_results['pop_count'])} of People live in this Area "
-            "following the GHS POP Dataset, with a total number of "
-            f"{int(preprocessing_results['feature_count'])} "
-            "buildings mapped in OSM. This results in "
-            f"{preprocessing_results['feature_count_per_pop']:.2f} "
-            "features per person, "
-            f"which together with a population density of "
-            f"{preprocessing_results['pop_count_per_sqkm']:.2f} "
-            "people per sqkm,corresponds to a "
-            f"{label.name} "
-            "label in regards to Dataquality"
-        )
+            text += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["green"]
+            label = TrafficLightQualityLevels.GREEN
 
         return label, value, text, preprocessing_results
 
