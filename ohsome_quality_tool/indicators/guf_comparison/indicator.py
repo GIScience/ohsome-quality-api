@@ -33,7 +33,7 @@ class Indicator(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layer_name: str,
+        layer_name: str = "building-area",
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: str = None,
@@ -45,7 +45,7 @@ class Indicator(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
-        # TODO: Change arbitrary thresholds
+        # TODO: Change arbitrary thresholds. Or read from metadata.yml
         self.threshold_high: float = 0.6
         self.threshold_low: float = 0.2
         self.area: float = None
@@ -68,6 +68,18 @@ class Indicator(BaseIndicator):
         path = os.path.join(directory, "metadata.yaml")
         with open(path, "r") as f:
             return yaml.safe_load(f)
+
+    def set_metadata(self, metadata):
+        # TODO: Rename class to match toplevel key of metadata.yaml
+        # indicator_class_name = type(self).__name__
+        # metadata = metadata[indicator_class_name]
+        # TODO: Delete once above code worksame]
+        metadata = metadata[metadata.keys()[0]]
+        self.name = metadata["name"]
+        self.description = metadata["description"]
+        # TODO: Whats the best way to store label interpretations
+        # and threshold definitions? -> Each in own class variable.
+        self.label_interpretation = metadata["label_interpretation"]
 
     def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
