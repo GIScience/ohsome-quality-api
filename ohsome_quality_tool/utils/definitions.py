@@ -79,7 +79,7 @@ LayerDefinition = collections.namedtuple(
 
 IndicatorResult = collections.namedtuple("Result", "label value text svg")
 IndicatorMetadata = collections.namedtuple(
-    "Metadata", "indicator_name indicator_description layer_name layer_description"
+    "Metadata", "name description filterName filterDescription"
 )
 
 ReportResult = collections.namedtuple("Result", "label value text")

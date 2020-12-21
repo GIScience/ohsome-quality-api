@@ -36,10 +36,10 @@ class BaseIndicator(metaclass=ABCMeta):
         self.dynamic = dynamic
         self.layer = get_all_layer_definitions()[layer_name]
         self.metadata = IndicatorMetadata(
-            indicator_name=self.name,
-            indicator_description=self.description,
-            layer_name=self.layer.name,
-            layer_description=self.layer.description,
+            name=self.name,
+            description=self.description,
+            filterName=self.layer.name,
+            filterDescription=self.layer.description,
         )
 
         # generate random id for filename to avoid overwriting existing files
