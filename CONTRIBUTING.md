@@ -31,6 +31,7 @@ POSTGRES_DB=hexadmin
 POSTGRES_USER=hexadmin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
+POSTGRES_SCHEMA=public
 ```
 
 To make the variables available to current environment run following command:
