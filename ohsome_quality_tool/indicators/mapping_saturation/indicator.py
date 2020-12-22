@@ -190,8 +190,8 @@ class Indicator(BaseIndicator):
             )
             # if earlyX and lastX return same y value (means no growth any more),
             # getSaturationInLast3Years returns 1.0
-            if saturation == 1.0:
-                saturation = 0.0
+            # if saturation == 1.0:
+            #    saturation = 0.0
             logger.info(
                 "saturation level last 3 years at: "
                 + str(saturation)
