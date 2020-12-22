@@ -134,7 +134,7 @@ class Indicator(BaseIndicator):
         sizes = [80, 15, 5]
         colors = ["green", "yellow", "red"]
         # TODO: Definie label names.
-        labels = colors
+        labels = ["Good", "Medium", "Bad"]
         ax.pie(
             sizes,
             radius=radius,
@@ -145,7 +145,7 @@ class Indicator(BaseIndicator):
         )
 
         for c, s, l in zip(colors, sizes, labels):
-            handles.append(mpatches.Patch(color=c, label=f"{l}: {s} %"))
+            handles.append(mpatches.Patch(color=c, label=f"{l}"))
 
         # Plot inner Pie (Indicator Value)
         radius = 1 - size
