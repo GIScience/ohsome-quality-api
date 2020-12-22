@@ -316,6 +316,7 @@ function buildMap(err, ...charts){
                     break
                 case "RED":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
+                    break
                 case "UNDEFINED":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
 
