@@ -36,7 +36,7 @@ class TestProcessingCommonErrors(unittest.TestCase):
         self.indicator_name = "mapping-saturation"
         self.layer_name = "building-count"
         self.dataset = "test-regions"
-        self.feature_id = 30
+        self.feature_id = 2
 
         indicator = INDICATOR_CLASSES[self.indicator_name](
             dynamic=False,

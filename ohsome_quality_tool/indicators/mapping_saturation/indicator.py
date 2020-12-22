@@ -203,7 +203,10 @@ class Indicator(BaseIndicator):
         # 0.0 = saturated
         text = f"The saturation for the last 3 years is {saturation:.1f}. "
 
-        if saturation <= THRESHOLD_YELLOW:
+        # TODO: make clear what should be used here,
+        #   if saturation should be used then the threshold needs to be adjusted
+        growth = 1 - saturation
+        if growth <= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
             text = text + self.interpretations["green"]
