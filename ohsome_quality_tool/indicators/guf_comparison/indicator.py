@@ -88,10 +88,10 @@ class Indicator(BaseIndicator):
         # Get data from geodatabase
 
         directory = os.path.dirname(os.path.abspath(__file__))
-        if self.dynamic:
-            aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
-        else:
-            aoi_geom = json.dumps(self.bpolys["geometry"])
+        # if self.dynamic:
+        aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
+        # else:
+        #    aoi_geom = json.dumps(self.bpolys["geometry"])
         # Get total area and built-up area (GUF) in km^2 for AOI
         sql_file = os.path.join(directory, "query.sql")
         with open(sql_file) as reader:

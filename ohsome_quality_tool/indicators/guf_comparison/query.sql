@@ -9,7 +9,7 @@ FROM (
         -- ST_PixelAsPolygons will exclude pixel with nodata values
         ST_PixelAsPolygons (ST_Clip (rast, ST_GeomFromGeoJSON (%s))) AS pixel_as_polygon
     FROM
-        guf04_daressalaam
+        guf04
     WHERE
         ST_Intersects (rast, ST_GeomFromGeoJSON (%s))
         -- Avoid following ERROR of rt_raster_from_two_rasters during ST_Clip:
