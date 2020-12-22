@@ -139,6 +139,8 @@ def get_dynamic_indicator(indicator_name: str, infile: str, layer_name: str):
     result, metadata = oqt.get_dynamic_indicator(
         indicator_name=indicator_name, bpolys=bpolys, layer_name=layer_name
     )
+    print(result)
+    print(metadata)
     return result, metadata
 
 
