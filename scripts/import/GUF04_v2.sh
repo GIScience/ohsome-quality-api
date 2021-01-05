@@ -7,7 +7,7 @@
 # The standard error stream will be redirected to the file only, it will not be visible in the terminal. If the file already exists, the new data will get appended to the end of the file.
 
 i=0
-for filename in data/GUF04_v2/*.tif; do
+for filename in /data/GUF04_v2/*.tif; do
     if [[ $i -eq 0 ]]; then
         # Create raster table and import first geotiff.
         # gdal_calc.py -A $filename --outfile=guf04.tif --calc="1*(A==255)" --NoDataValue=0
@@ -17,6 +17,10 @@ for filename in data/GUF04_v2/*.tif; do
             -c \
             -t 100x100 \
             -s 4326 \
+            -N 0 \
+            -I \
+            -M \
+            -C \
             guf04.vrt \
             public.guf04 \
             2>> guf04.log \
@@ -37,13 +41,17 @@ for filename in data/GUF04_v2/*.tif; do
         -a \
         -t 100x100 \
         -s 4326 \
+        -N 0 \
+        -I \
+        -M \
+        -C \
         guf04.vrt \
         public.guf04 \
         2>> guf04.log \
         | \
         PGPASSWORD=mypassword psql \
         -h localhost \
-        -p 5445 \
+        -p 5432 \
         -U hexadmin \
         -d hexadmin \
         2>> guf04.log
@@ -55,9 +63,9 @@ done
 # Create Index
 # Add Raster Constraints
 # Vacum Analyze
-PGPASSWORD=mypassword psql \
-    -h localhost \
-    -p 5445 \
-    -U hexadmin \
-    -d hexadmin \
-    -f GUF04_v2.sql
+# PGPASSWORD=mypassword psql \
+#     -h localhost \
+#     -p 5432 \
+#     -U hexadmin \
+#     -d hexadmin \
+#     -f GUF04_v2.sql
