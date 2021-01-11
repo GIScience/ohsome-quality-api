@@ -13,11 +13,6 @@ What is OQT?
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
 
-## Components
-
-![Comonents](docs/component_diagram.png)
-
-
 ## Setup and Contributing
 
 Please see [Contributing Guidelines](CONTRIBUTING.md) for how to setup and how to contribute.
@@ -65,3 +60,10 @@ docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i GHSPOP_COM
 ```
 
 > NOTE: For the production setup of the Geodatabase please refer to [ohsome_hex_db/README.md](ohsome_hex_db/README.md).
+
+
+## Components
+
+![Comonents](docs/component_diagram.png)
+
+
