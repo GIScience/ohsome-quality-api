@@ -1,28 +1,29 @@
 import unittest
 
-from schema import Or, Schema
+from schema import Schema
 
 from ohsome_quality_tool.indicators.guf_comparison.indicator import GufComparison
 
 
-class TestStringMethods(unittest.TestCase):
+class TestReadMetadata(unittest.TestCase):
     def setUp(self):
         self.metadata = GufComparison(dynamic=True, bpolys="").read_metadata()
         self.schema = Schema(
             {
                 "name": str,
                 "description": str,
+                "ohsome_parameter": dict,
                 "label_interpretation": {
-                    "red": {"threshold": Or(float, int), "description": str},
-                    "yellow": {"threshold": Or(float, int), "description": str},
-                    "green": {"threshold": Or(float, int), "description": str},
-                    "undefined": {"threshold": None, "description": str},
+                    "red": {"description": str},
+                    "yellow": {"description": str},
+                    "green": {"description": str},
+                    "undefined": {"description": str},
                 },
             }
         )
 
     def test_validate_schema(self):
-        # self.schema.validate(self.metadata)  # Print information about validation
+        self.schema.validate(self.metadata)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(self.metadata))
 
 
