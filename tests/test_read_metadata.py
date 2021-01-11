@@ -1,30 +1,29 @@
 import unittest
 
-from schema import Schema
+from schema import Or, Schema
 
-from ohsome_quality_tool.indicators.guf_comparison.indicator import Indicator
+from ohsome_quality_tool.indicators.guf_comparison.indicator import GufComparison
 
 
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
-        self.metadata = Indicator(dynamic=True, bpolys="").read_metadata()
+        self.metadata = GufComparison(dynamic=True, bpolys="").read_metadata()
         self.schema = Schema(
-            [{"id": {"name": str, "description": str, "label_interpretation": dict}}]
+            {
+                "name": str,
+                "description": str,
+                "label_interpretation": {
+                    "red": {"threshold": Or(float, int), "description": str},
+                    "yellow": {"threshold": Or(float, int), "description": str},
+                    "green": {"threshold": Or(float, int), "description": str},
+                    "undefined": {"threshold": None, "description": str},
+                },
+            }
         )
 
-    def test_upper(self):
-        # TODO: Test if dict is of schema.
-        print(self.metadata)
-
-        self.assertIsInstance(self.metadata, dict)
-        self.assertEqual(len(self.metadata.keys()), 1)
-
-        for key, value in self.metadata.items():
-            for k in ("name", "description", "label_interpretation"):
-                self.assertIn(k, value.keys())
-
-    def validate_schema(self):
-        self.schema.is_valid(self.metadata)
+    def test_validate_schema(self):
+        # self.schema.validate(self.metadata)  # Print information about validation
+        self.assertTrue(self.schema.is_valid(self.metadata))
 
 
 if __name__ == "__main__":
