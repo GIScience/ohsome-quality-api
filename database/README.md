@@ -32,6 +32,7 @@ docker run \
 ```
 
 - Build time is roughly: `5 min`
+- First run time is much longer
 
 
 Make sure the port is open:

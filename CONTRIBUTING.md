@@ -2,12 +2,21 @@
 
 ## Development Setup
 
-## Virtual Environment and Dependency Management 
+### Requirements
+
+- Python 3.8
+- Poetry
+- Access to the database
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
 
+
+### Installation
+
 ```bash
+git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
+cd ohsome-quality-tool
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
@@ -20,7 +29,7 @@ pre-commit install  # Install pre-commit hooks.
 > Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
 
-## Environment Variables for accessing Database
+### Database Access
 
 To access the Database various environment variables need to be set.
 To do this create a `.env` file at the root of the repository and write down following variables and their values:
@@ -47,7 +56,7 @@ Set up a local postgis database using docker:
 
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8), [isort](https://github.com/PyCQA/isort) and [mypy](http://www.mypy-lang.org/) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 

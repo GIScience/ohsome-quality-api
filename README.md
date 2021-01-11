@@ -13,27 +13,12 @@ What is OQT?
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
 
-## Quickstart
+## Setup and Contributing
 
-To use OQT you need to set up a python environment and need access to a geo-database. You can either set the geo-database on your own or ask someone from the OQT team to get access to hosted version. Developers get full details how to get started in the [CONTRIBUTING.md](CONTRIBUTING.md) site.
-
-Run the following lines to use the tool from a command line. Make sure that you have `Python3.8` and `poetry` installed on the system level already.
-
-```
-git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
-cd ohsome-quality-tool
-poetry install
-poetry shell
-```
-
-In any case you will need an `.env` file placed in the main directory which contains the credentials to access the geo-database. On Linux you can activate the environment like this:
-
-```
-export $(cat .env | xargs)
-```
+Please see [Contributing Guidelines](CONTRIBUTING.md) for how to setup and how to contribute.
 
 
-### Command Line Interface
+## Usage of Command Line Interface
 
 Run the following line to get an overview:
 ```
@@ -51,7 +36,7 @@ oqt --verbose get-dynamic-report -r SKETCHMAP_FITNESS --infile data/heidelberg_a
 ```
 
 
-### API
+## API
 
 Run the following line to start the server:
 ```
@@ -61,7 +46,7 @@ uvicorn ohsome_quality_tool.app.main:app --reload
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
 
 
-### Docker
+## Docker
 
 You can also run the tool using docker, e.g. if you have problems installing on Windows. For now this will run the api at http://127.0.0.1:8000/docs. The website will be served at http://127.0.0.1:8080. This should be enough to test that the installation worked.
 
@@ -75,10 +60,3 @@ docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i GHSPOP_COM
 ```
 
 > NOTE: For the production setup of the Geodatabase please refer to [ohsome_hex_db/README.md](ohsome_hex_db/README.md).
-
-
-## Development
-
-For development setup and contributing setup please have look at [CONTRIBUTING.md](CONTRIBUTING.md)
-
-![components](docs/componet_diagram_new.png)
