@@ -17,6 +17,8 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 
 Please see [Contributing Guidelines](CONTRIBUTING.md) for how to setup and how to contribute.
 
+For the production setup of the database see: [database/README.md](database/README.md).
+
 
 ## Usage of Command Line Interface
 
