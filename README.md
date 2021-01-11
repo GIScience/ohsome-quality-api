@@ -13,6 +13,11 @@ What is OQT?
 For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
 
 
+## Components
+
+![Comonents](docs/component_diagram.png)
+
+
 ## Setup and Contributing
 
 Please see [Contributing Guidelines](CONTRIBUTING.md) for how to setup and how to contribute.
