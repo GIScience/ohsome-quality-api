@@ -29,7 +29,17 @@ pre-commit install  # Install pre-commit hooks.
 > Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
 
-### Database Access
+### Database
+
+To get access to a running database on a remote server please reach out.
+
+Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
+
+* run `docker-compose up -d oqt-database`
+* it will take around 15 minutes until all layers are set up
+* you can check the progress of the setup in the logs `docker logs oqt-database`
+* once you get `database system is ready to accept connections` in the logs the import was successful
+
 
 To access the Database various environment variables need to be set.
 To do this create a `.env` file at the root of the repository and write down following variables and their values:
@@ -46,12 +56,6 @@ To make the variables available to current environment run following command:
 ```
 export $(cat .env | xargs)
 ```
-
-Set up a local postgis database using docker:
-* run `docker-compose up -d oqt-database`
-* it will take around 15 minutes until all layers are set up
-* you can check the progress of the setup in the logs `docker logs oqt-database`
-* once you get `database system is ready to accept connections` in the logs the import was successful
 
 
 ## Style Guide
