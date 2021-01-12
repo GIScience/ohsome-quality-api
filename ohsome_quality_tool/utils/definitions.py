@@ -77,7 +77,7 @@ LayerDefinition = collections.namedtuple(
     "LayerDefinition", "name description filter unit"
 )
 
-IndicatorResult = collections.namedtuple("Result", "label value text svg")
+IndicatorResult = collections.namedtuple("Result", ["label", "value", "text", "svg"])
 IndicatorMetadata = collections.namedtuple(
     "Metadata", "name description filterName filterDescription"
 )
