@@ -2,6 +2,7 @@ import json
 import os
 import uuid
 from math import ceil
+from string import Template
 from typing import Dict, Tuple
 
 import matplotlib.pyplot as plt
@@ -16,14 +17,24 @@ from ohsome_quality_tool.utils.definitions import (
     TrafficLightQualityLevels,
     logger,
 )
-from ohsome_quality_tool.utils.label_interpretations import (
-    GUF_COMPARISON_LABEL_INTERPRETATIONS,
-)
 
 
-class Indicator(BaseIndicator):
+class Result:
+    def __init__(self):
+        self.label: str = None
+        self.value: float = None
+        self.text: str = None
+        self.svg: str = None
+
+    def get(self):
+        # TODO: Check for None values in attributes
+        return vars(self)
+
+
+class GufComparison(BaseIndicator):
     """Comparison of the Buildup Area in the GUF Dataset and OSM"""
 
+    # TODO: Remove once reading from metadata works
     name = "guf-comparison"
     description = (
         "Compare OSM features against built up area defined by "
@@ -45,53 +56,42 @@ class Indicator(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
-        # TODO: Change arbitrary thresholds. Or read from metadata.yml
-        self.threshold_high: float = 0.6
-        self.threshold_low: float = 0.2
+        self.threshold_high = 0.6
+        self.threshold_low = 0.2
         self.area: float = None
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
         self.ratio: float = None
-        self.name: str = ""
-        self.description: str = ""
+        # TODO: Factor out to base class
+        self.result = Result()
 
-        # TODO: Run during init instead by oqt.py
-        #   Benni: Not sure if it needs to be done during init
-        #   for instance we do not need to run this for
-        #   pre-processed results, so maybe okay outside init?
-        # self.preprocess()
-        # self.calculate()
-        # self.create_figure()
+        # TODO: Factor out to base class
+        metadata = self.load_metadata()
+        self.set_metadata(metadata)
 
-    def read_metadata(self):
+    # TODO: Factor out to base class
+    def load_metadata(self):
+        """Read metadata of indicator from text file."""
         directory = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(directory, "metadata.yaml")
         with open(path, "r") as f:
             return yaml.safe_load(f)
 
+    # TODO: Factor out to base class
     def set_metadata(self, metadata):
-        # TODO: Rename class to match toplevel key of metadata.yaml
-        # indicator_class_name = type(self).__name__
-        # metadata = metadata[indicator_class_name]
-        # TODO: Delete once above code worksame]
-        metadata = metadata[metadata.keys()[0]]
+        """Set attributes from metadata directory."""
         self.name = metadata["name"]
         self.description = metadata["description"]
-        # TODO: Whats the best way to store label interpretations
-        # and threshold definitions? -> Each in own class variable.
         self.label_interpretation = metadata["label_interpretation"]
+        self.ohsome_api_parameter = metadata["ohsome_api_parameter"]
+        self.result.text = metadata["result_description"]
 
     def preprocess(self) -> None:
         logger.info(f"run preprocessing for {self.name} indicator")
         db = PostgresDB()
 
-        # Get data from geodatabase
-
         directory = os.path.dirname(os.path.abspath(__file__))
-        # if self.dynamic:
         aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
-        # else:
-        #    aoi_geom = json.dumps(self.bpolys["geometry"])
         # Get total area and built-up area (GUF) in km^2 for AOI
         sql_file = os.path.join(directory, "query.sql")
         with open(sql_file) as reader:
@@ -103,6 +103,7 @@ class Indicator(BaseIndicator):
 
         # Get data from ohsome API
         # TODO: Difficult to read and understand.
+        # TODO: query_results = ohsome_api.process_ohsome_api(ohsome_api_parameter)
         query_results = ohsome_api.process_ohsome_api(
             endpoint="elements/{unit}/",
             layers=self.layers,
@@ -117,25 +118,21 @@ class Indicator(BaseIndicator):
     ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
 
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
-
-        text = (
-            "The ratio between the GUF built up area and the OSM built"
-            f" up area is {self.ratio}."
-        )
+        self.result.text = Template(self.result.text).substitude(ratio=self.ratio)
 
         if self.ratio <= self.threshold_low:
-            value = TrafficLightQualityLevels.RED.value
-            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["red"]
+            self.result.value = TrafficLightQualityLevels.RED.value
+            self.result.text += self.label_interpretation["red"]["description"]
         elif self.ratio <= self.threshold_high:
-            value = TrafficLightQualityLevels.YELLOW.value
-            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["yellow"]
+            self.result.value = TrafficLightQualityLevels.YELLOW.value
+            self.result.text += self.label_interpretation["yellow"]["description"]
         else:
-            value = TrafficLightQualityLevels.GREEN.value
-            text += GUF_COMPARISON_LABEL_INTERPRETATIONS["green"]
+            self.result.value = TrafficLightQualityLevels.GREEN.value
+            self.result.text += self.label_interpretation["green"]["description"]
 
-        label = TrafficLightQualityLevels(ceil(value))
-
-        return label, value, text, preprocessing_results
+        self.result.label = TrafficLightQualityLevels(ceil(self.result.value))
+        # TODO: Remove
+        # return label, value, text, preprocessing_results
 
     def create_figure(self, data: Dict) -> str:
         """Create a plot and return as SVG string."""
@@ -198,4 +195,6 @@ class Indicator(BaseIndicator):
         plt.savefig(outfile, format="svg")
         plt.close("all")
         logger.info(f"export figures for {self.name} indicator")
+
+        self.result.svg = filename
         return filename
