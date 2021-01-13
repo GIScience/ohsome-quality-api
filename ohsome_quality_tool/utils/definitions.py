@@ -102,7 +102,7 @@ def get_indicator_classes() -> Dict:
         Indicator as ghspopComparisonIndicator,
     )
     from ohsome_quality_tool.indicators.guf_comparison.indicator import (
-        Indicator as gufComparisonIndicator,
+        GufComparison as gufComparisonIndicator,
     )
     from ohsome_quality_tool.indicators.last_edit.indicator import (
         Indicator as lastEditIndicator,
