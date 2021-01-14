@@ -1,48 +1,15 @@
 import json
 import os
-import uuid
-from dataclasses import dataclass
 from math import ceil
 from string import Template
-from typing import Dict
 
 import matplotlib.pyplot as plt
-import yaml
-from dacite import from_dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.auth import PostgresDB
-from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
-    TrafficLightQualityLevels,
-    logger,
-)
-
-
-@dataclass
-class Metadata:
-    name: str
-    indicator_description: str
-    label_description: Dict
-    result_description: str
-
-
-@dataclass
-class LayerDefinition:
-    name: str
-    description: str
-    endpoint: str
-    filter: str
-
-
-@dataclass
-class Result:
-    label: str
-    value: float
-    description: str
-    svg: str
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 
 
 class GufComparison(BaseIndicator):
@@ -68,29 +35,6 @@ class GufComparison(BaseIndicator):
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
         self.ratio: float = None
-
-        # TODO: Factor out to base class
-
-        metadata = self.load_metadata()
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-
-        layer = self.load_layer_definition("building_area")
-        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
-
-        self.result: Result = None
-
-    # TODO: Factor out to base class
-    # TODO: Does os.path.abspath(__file__) still work when implemented in parent class?
-    def load_metadata(self) -> Dict:
-        """Read metadata of indicator from text file."""
-        directory = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(directory, "metadata.yaml")
-        with open(path, "r") as f:
-            return yaml.safe_load(f)
-
-    def load_layer_definition(self, layer_name: str) -> Dict:
-        layer_definitions = ohsome_client.load_layer_definitions()
-        return layer_definitions[layer_name]
 
     def preprocess(self) -> None:
         logger.info(f"Run preprocessing for {self.metadata.name} indicator")
@@ -133,7 +77,10 @@ class GufComparison(BaseIndicator):
             description += self.metadata.label_description["green"]
 
         label = TrafficLightQualityLevels(ceil(self.result.value))
-        self.result = Result(label, value, description, None)
+
+        self.result.label = label
+        self.result.value = value
+        self.result.description = description
 
     def create_figure(self) -> None:
         """Create a plot and return as SVG string."""
@@ -189,12 +136,8 @@ class GufComparison(BaseIndicator):
 
         ax.legend()
 
-        random_id = uuid.uuid1()
-        filename = f"{self.metadata.name}_{random_id}"
-        outfile = os.path.join(DATA_PATH, filename, ".svg")
-
         logger.info(f"Export figure for {self.metadata.name} indicator.")
-        plt.savefig(outfile, format="svg")
+        plt.savefig(self.figure, format="svg")
         plt.close("all")
 
-        self.result.svg = filename
+        self.result.svg = self.figure

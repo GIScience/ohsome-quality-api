@@ -1,8 +1,11 @@
 import os
 import uuid
 from abc import ABCMeta, abstractmethod
+from dataclasses import dataclass
 from typing import Dict, Tuple
 
+import yaml
+from dacite import from_dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import (
@@ -17,12 +20,34 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_indicator_results_from_db,
     save_indicator_results_to_db,
 )
-from ohsome_quality_tool.utils.layers import get_all_layer_definitions
+from ohsome_quality_tool.utils.ohsome import client as ohsome_client
+
+
+@dataclass
+class Metadata:
+    name: str
+    indicator_description: str
+    label_description: Dict
+    result_description: str
+
+
+@dataclass
+class LayerDefinition:
+    name: str
+    description: str
+    endpoint: str
+    filter: str
+
+
+@dataclass
+class Result:
+    label: str
+    value: float
+    description: str
+    svg: str
 
 
 class BaseIndicator(metaclass=ABCMeta):
-    """The base class for all indicators."""
-
     def __init__(
         self,
         dynamic: bool,
@@ -34,18 +59,6 @@ class BaseIndicator(metaclass=ABCMeta):
         """Initialize an indicator"""
         # here we can put the default parameters for indicators
         self.dynamic = dynamic
-        self.layer = get_all_layer_definitions()[layer_name]
-        self.metadata = IndicatorMetadata(
-            name=self.name,
-            description=self.description,
-            filterName=self.layer.name,
-            filterDescription=self.layer.description,
-        )
-
-        # generate random id for filename to avoid overwriting existing files
-        random_id = uuid.uuid1()
-        self.filename = f"{self.name}_{self.layer.name}_{random_id}.svg"
-        self.outfile = os.path.join(DATA_PATH, self.filename)
 
         if self.dynamic:
             if bpolys is None:
@@ -60,6 +73,31 @@ class BaseIndicator(metaclass=ABCMeta):
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
+
+        metadata = self.load_metadata()
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
+        layer = self.load_layer_definition("building_area")
+        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
+
+        random_id = uuid.uuid1()
+        filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
+        self.figure = os.path.join(DATA_PATH, filename)
+
+        self.result: Result = None
+
+    # TODO: Does os.path.abspath(__file__) still work when implemented in parent class?
+    def load_metadata(self) -> Dict:
+        """Read metadata of indicator from text file."""
+        directory = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(directory, "metadata.yaml")
+        with open(path, "r") as f:
+            return yaml.safe_load(f)
+
+    def load_layer_definition(self, layer_name: str) -> Dict:
+        """Read layer definition from text file."""
+        layer_definitions = ohsome_client.load_layer_definitions()
+        return layer_definitions[layer_name]
 
     def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
         """Pass the indicator results to the user.
