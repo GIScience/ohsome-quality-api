@@ -5,7 +5,7 @@ import os
 import pkgutil
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 import yaml
 from xdg import XDG_DATA_HOME
@@ -103,17 +103,18 @@ def get_module_dir(module_name: str) -> str:
     return os.path.dirname(module.get_filename())
 
 
-def load_indicator_metadata() -> List[Dict]:
+def load_indicator_metadata() -> Dict:
     """Read metadata of indicators from text files.
 
     Those text files are located in the directory of each indicator.
+    Returns a Dict with class names of the indicatros as keys and metadata as values.
     """
     directory = get_module_dir("ohsome_quality_tool.indicators")
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
-    metadata = []
+    metadata = {}
     for file in files:
         with open(file, "r") as f:
-            metadata.append(yaml.safe_load(f))
+            metadata = {**metadata, **yaml.safe_load(f)}  # Merge dicts
     return metadata
 
 
@@ -123,6 +124,30 @@ def load_layer_definitions() -> Dict:
     file = os.path.join(directory, "layer_definitions.yaml")
     with open(file, "r") as f:
         return yaml.safe_load(f)
+
+
+def get_layer_definition(layer_name: str) -> Dict:
+    """Get defintion of an layer based on layer name."""
+    layers = load_layer_definitions()
+    try:
+        return layers[layer_name]
+    except KeyError:
+        logger.info("Invalid layer name. Valid layer names are: " + str(layers.keys()))
+        raise
+    pass
+
+
+def get_indicator_metadata(indicator_name: str) -> Dict:
+    """Get metadata of an indicator based on indicator class name."""
+    indicators = load_indicator_metadata()
+    try:
+        return indicators[indicator_name]
+    except KeyError:
+        logger.info(
+            "Invalid indicator name. Valid indicator names are: "
+            + str(indicators.keys())
+        )
+        raise
 
 
 def get_indicator_classes() -> Dict:

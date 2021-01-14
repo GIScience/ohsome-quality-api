@@ -1,21 +1,22 @@
 ---
-name: GUF Comparison
-indicator_description: |
-  Compare OSM features against built up area defined by
-  Global Urban Footprint dataset.
-label_description:
-  red: |
-    It is probably hard to orientate on OSM-based sketchmaps of this region.
-    There are just few orientation providing features available,
-    you should explore, if participants can orientate properly.
-  yellow: |
-    It might be difficult to orientate on OSM-based sketchmaps of this region.
-    There are not many orientation providing features available,
-    you should explore, if participants can orientate properly.
-  green: |
-    It is probably easy to orientate on OSM-based sketchmaps of this region.
-  undefined: |
-    The quality level could not be calculated for this indicator.
-result_description: |
-  The ratio between the GUF built up area and the OSM built
-  up area is $ratio.
+GufComparison:
+  name: GUF Comparison
+  indicator_description: |
+    Compare OSM features against built up area defined by
+    Global Urban Footprint dataset.
+  label_description:
+    red: |
+      It is probably hard to orientate on OSM-based sketchmaps of this region.
+      There are just few orientation providing features available,
+      you should explore, if participants can orientate properly.
+    yellow: |
+      It might be difficult to orientate on OSM-based sketchmaps of this region.
+      There are not many orientation providing features available,
+      you should explore, if participants can orientate properly.
+    green: |
+      It is probably easy to orientate on OSM-based sketchmaps of this region.
+    undefined: |
+      The quality level could not be calculated for this indicator.
+  result_description: |
+    The ratio between the GUF built up area and the OSM built
+    up area is $ratio.

@@ -15,9 +15,6 @@ from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, log
 class GufComparison(BaseIndicator):
     """Comparison of the Buildup Area in the GUF Dataset and OSM"""
 
-    name = ""
-    description = ""
-
     def __init__(
         self,
         dynamic: bool,

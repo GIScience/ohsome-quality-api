@@ -1,10 +1,14 @@
+"""
+TODO:
+    Describe this module and how to implement child classes
+"""
+
 import os
 import uuid
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Tuple
 
-import yaml
 from dacite import from_dict
 from geojson import FeatureCollection
 
@@ -13,6 +17,8 @@ from ohsome_quality_tool.utils.definitions import (
     IndicatorMetadata,
     IndicatorResult,
     TrafficLightQualityLevels,
+    get_indicator_metadata,
+    get_layer_definition,
     logger,
 )
 from ohsome_quality_tool.utils.geodatabase import (
@@ -20,11 +26,12 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_indicator_results_from_db,
     save_indicator_results_to_db,
 )
-from ohsome_quality_tool.utils.ohsome import client as ohsome_client
 
 
 @dataclass
 class Metadata:
+    """Metadata of an indicator are defined in a metadata.yaml file"""
+
     name: str
     indicator_description: str
     label_description: Dict
@@ -33,6 +40,11 @@ class Metadata:
 
 @dataclass
 class LayerDefinition:
+    """Definitions of a layer are defined in the layer_definition.yaml file.
+
+    The definition consist of the ohsome API Parameter needed to create the layer.
+    """
+
     name: str
     description: str
     endpoint: str
@@ -41,6 +53,8 @@ class LayerDefinition:
 
 @dataclass
 class Result:
+    """The result of and indicator."""
+
     label: str
     value: float
     description: str
@@ -56,8 +70,6 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        """Initialize an indicator"""
-        # here we can put the default parameters for indicators
         self.dynamic = dynamic
 
         if self.dynamic:
@@ -74,30 +86,17 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-        metadata = self.load_metadata()
+        metadata = get_indicator_metadata(type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
 
-        layer = self.load_layer_definition("building_area")
+        layer = get_layer_definition(layer_name)
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
 
         random_id = uuid.uuid1()
         filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
         self.figure = os.path.join(DATA_PATH, filename)
 
-        self.result: Result = None
-
-    # TODO: Does os.path.abspath(__file__) still work when implemented in parent class?
-    def load_metadata(self) -> Dict:
-        """Read metadata of indicator from text file."""
-        directory = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(directory, "metadata.yaml")
-        with open(path, "r") as f:
-            return yaml.safe_load(f)
-
-    def load_layer_definition(self, layer_name: str) -> Dict:
-        """Read layer definition from text file."""
-        layer_definitions = ohsome_client.load_layer_definitions()
-        return layer_definitions[layer_name]
+        self.result: Result = Result(None, None, None, None)
 
     def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
         """Pass the indicator results to the user.
@@ -143,7 +142,7 @@ class BaseIndicator(metaclass=ABCMeta):
             dataset=self.dataset,
             feature_id=self.feature_id,
             layer_name=self.layer.name,
-            indicator=self.name,
+            indicator=self.metadata.name,
             results=result,
         )
 
@@ -153,7 +152,7 @@ class BaseIndicator(metaclass=ABCMeta):
             dataset=self.dataset,
             feature_id=self.feature_id,
             layer_name=self.layer.name,
-            indicator=self.name,
+            indicator=self.metadata.name,
         )
         return result
 
@@ -167,8 +166,6 @@ class BaseIndicator(metaclass=ABCMeta):
     def description(self):
         pass
 
-    # the abstract method defines that this function
-    # needs to be implemented by all children
     @abstractmethod
     def preprocess(self) -> Dict:
         pass
