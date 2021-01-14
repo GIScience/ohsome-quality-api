@@ -1,14 +1,9 @@
 ---
 name: GUF Comparison
-description: |
+indicator_description: |
   Compare OSM features against built up area defined by
   Global Urban Footprint dataset.
-ohsome_api_parameter:
-  description: |
-    All buildings as defined by all objects tagged with 'building=*'.
-  element: "area"
-  filter: "building=*"
-label_interpretation:
+label_description:
   red: |
     It is probably hard to orientate on OSM-based sketchmaps of this region.
     There are just few orientation providing features available,
