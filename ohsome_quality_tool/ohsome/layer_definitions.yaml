@@ -1,0 +1,49 @@
+---
+# A layer is a set of features.
+# Each layer is definied by ohsome API parameters.
+# https://docs.ohsome.org/ohsome-api/stable/
+
+building_count:
+  name: Building Count
+  description: |
+    All buildings as defined by all objects tagged with 'building=*'.
+  endpoint: elements/count
+  filter: building=*
+
+building_area:
+  name: Building Area"
+  description: |
+    All buildings as defined by all objects tagged with 'building=*'.
+  endpoint: elements/area
+  filter: building=*
+
+major_roads:
+  name: Major Roads
+  description: |
+    The road network defined by all objects which hold the principal tags for
+    the road network as defined in the OSM Wiki`:`
+    https://wiki.openstreetmap.org/wiki/Key:highway
+  endpoint: elements/length
+  filter: |
+      highway in (motorway, trunk, primary, secondary,
+      tertiary, unclassified, residential
+
+amenities:
+  name: Amenities
+  description: All features with the amenities key.
+  endpoint: elements/count
+  filter: amenity=*
+
+poi:
+  name: Points-Of-Interests
+  description: |
+      A lot of different objects such related to natural features
+      transportation and amenities in a city.
+  endpoint: elements/count
+  filter: |
+      natural=peak or leisure=park or boundary=national_park or
+      natural=water or waterway=* or highway=bus_stop or railway=station or
+      shop=* or tourism in (hotel, attraction) or
+      amenity in (fuel, pharmacy, hospital, school, college, university,
+      police, fire_station, restaurant, townhall)
+...

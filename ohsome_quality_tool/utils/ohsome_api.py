@@ -29,7 +29,6 @@ def process_ohsome_api(
     return query_results
 
 
-# TODO: Use threading here to run multiple queries at a time
 def query_ohsome_api(
     endpoint: str, filter_string: str, bpolys: str, time: str = None
 ) -> Dict:

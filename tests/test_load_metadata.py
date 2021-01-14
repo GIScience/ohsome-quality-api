@@ -7,13 +7,13 @@ from ohsome_quality_tool.indicators.guf_comparison.indicator import GufCompariso
 
 class TestReadMetadata(unittest.TestCase):
     def setUp(self):
-        self.metadata = GufComparison(dynamic=True, bpolys="").load_metadata()
+        self.indicator = GufComparison(dynamic=True)
+        self.metadata = self.indicator.load_metadata()
         self.schema = Schema(
             {
                 "name": str,
-                "description": str,
-                "ohsome_api_parameter": dict,
-                "label_interpretation": {
+                "indicator_description": str,
+                "label_description": {
                     "red": str,
                     "yellow": str,
                     "green": str,
