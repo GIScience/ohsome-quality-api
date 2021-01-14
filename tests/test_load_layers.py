@@ -2,7 +2,7 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_tool.ohsome.client import load_layer_definitions
+from ohsome_quality_tool.utils.definitions import load_layer_definitions
 
 
 class TestLoadLayers(unittest.TestCase):

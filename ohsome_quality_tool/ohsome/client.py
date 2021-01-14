@@ -1,8 +1,6 @@
-import os
 from typing import Dict
 
 import requests
-import yaml
 
 from ohsome_quality_tool.utils.definitions import OHSOME_API, logger
 
@@ -23,11 +21,3 @@ def query(layer, bpolys: str, time: str = None) -> Dict:
         logger.info("Query failed!")
 
     return response.json()
-
-
-def load_layer_definitions() -> Dict:
-    """Read ohsome API parameter of each layer from text file."""
-    directory = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(directory, "layer_definitions.yaml")
-    with open(path, "r") as f:
-        return yaml.safe_load(f)

@@ -1,10 +1,13 @@
 import collections
+import glob
 import logging.config
 import os
+import pkgutil
 from enum import Enum
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
+import yaml
 from xdg import XDG_DATA_HOME
 
 DATASET_NAMES = (
@@ -93,6 +96,33 @@ class TrafficLightQualityLevels(Enum):
     YELLOW = 2
     RED = 3
     UNDEFINED = 4
+
+
+def get_module_dir(module_name: str) -> str:
+    module = pkgutil.get_loader(module_name)
+    return os.path.dirname(module.get_filename())
+
+
+def load_indicator_metadata() -> List[Dict]:
+    """Read metadata of indicators from text files.
+
+    Those text files are located in the directory of each indicator.
+    """
+    directory = get_module_dir("ohsome_quality_tool.indicators")
+    files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
+    metadata = []
+    for file in files:
+        with open(file, "r") as f:
+            metadata.append(yaml.safe_load(f))
+    return metadata
+
+
+def load_layer_definitions() -> Dict:
+    """Read ohsome API parameter of each layer from text file."""
+    directory = get_module_dir("ohsome_quality_tool.ohsome")
+    file = os.path.join(directory, "layer_definitions.yaml")
+    with open(file, "r") as f:
+        return yaml.safe_load(f)
 
 
 def get_indicator_classes() -> Dict:
