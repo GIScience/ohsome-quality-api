@@ -5,11 +5,12 @@ import geojson
 import yaml
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.ohsome.client import load_layer_definitions
 from ohsome_quality_tool.utils.definitions import (
     DATASET_NAMES,
     get_indicator_classes,
     get_report_classes,
+    load_indicator_metadata,
+    load_layer_definitions,
     logger,
 )
 from ohsome_quality_tool.utils.layers import get_all_layer_definitions
@@ -131,12 +132,15 @@ def cli(verbose):
 
 @cli.command("list-indicators")
 def list_indicators():
-    pass
+    """List available indicators and their metadata."""
+    metadata = load_indicator_metadata()
+    metadata = yaml.dump(metadata, default_style="|")
+    click.echo(metadata)
 
 
 @cli.command("list-layers")
 def list_layers():
-    """List available layers and how they are definied (ohsome API parameters.)"""
+    """List available layers and how they are definied (ohsome API parameters)."""
     layers = load_layer_definitions()
     layers = yaml.dump(layers, default_style="|")
     click.echo(layers)
