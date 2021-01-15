@@ -18,7 +18,7 @@ class GufComparison(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
-        layer_name: str = "building-area",
+        layer_name: str = "building_area",
         bpolys: FeatureCollection = "",
     ) -> None:
         super().__init__(

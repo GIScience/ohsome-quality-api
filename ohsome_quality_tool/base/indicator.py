@@ -92,7 +92,7 @@ class BaseIndicator(metaclass=ABCMeta):
         layer = get_layer_definition(layer_name)
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
 
-        random_id = uuid.uuid1()
+        random_id = str(uuid.uuid1())
         filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
         self.figure = os.path.join(DATA_PATH, filename)
 
@@ -155,16 +155,6 @@ class BaseIndicator(metaclass=ABCMeta):
             indicator=self.metadata.name,
         )
         return result
-
-    @property
-    @abstractmethod
-    def name(self):
-        pass
-
-    @property
-    @abstractmethod
-    def description(self):
-        pass
 
     @abstractmethod
     def preprocess(self) -> Dict:
