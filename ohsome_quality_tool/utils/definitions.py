@@ -25,68 +25,9 @@ DATASET_NAMES = (
     "test_data",
     "test-regions",
 )
-
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
-
-MAIN_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
-Path(MAIN_PATH).mkdir(parents=True, exist_ok=True)
-
-DATA_PATH = os.path.join(MAIN_PATH, "data")
-Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-
-LOGS_PATH = os.path.join(MAIN_PATH, "logs")
-Path(LOGS_PATH).mkdir(parents=True, exist_ok=True)
-
-LOGGING_FILE_PATH = os.path.join(LOGS_PATH, "oqt.log")
-LOGGING_CONFIG = {
-    "version": 1,
-    "disable_existing_loggers": True,
-    "formatters": {
-        "standard": {
-            "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa: E501
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "standard",
-        },
-        "file": {
-            "level": "INFO",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "formatter": "standard",
-            "filename": LOGGING_FILE_PATH,
-            "when": "D",
-            "interval": 1,
-            "backupCount": 14,
-        },
-    },
-    "loggers": {
-        "root": {"handlers": ["console"], "level": "INFO"},
-        "oqt": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
-
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("oqt")
-
-
-LayerDefinition = collections.namedtuple(
-    "LayerDefinition", "name description filter unit"
-)
-
-IndicatorResult = collections.namedtuple("Result", ["label", "value", "text", "svg"])
-IndicatorMetadata = collections.namedtuple(
-    "Metadata", "name description filterName filterDescription"
-)
-
-ReportResult = collections.namedtuple("Result", "label value text")
-ReportMetadata = collections.namedtuple("Metadata", "name description")
+DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
 
 
 class TrafficLightQualityLevels(Enum):
@@ -96,6 +37,22 @@ class TrafficLightQualityLevels(Enum):
     YELLOW = 2
     RED = 3
     UNDEFINED = 4
+
+
+def get_logger():
+    logs_path = os.path.join(DATA_HOME_PATH, "logs")
+    logging_file_path = os.path.join(logs_path, "oqt.log")
+    logging_config_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
+    )
+    Path(logs_path).mkdir(parents=True, exist_ok=True)
+
+    with open(logging_config_path, "r") as f:
+        logging_config = yaml.safe_load(f)
+    logging_config["handlers"]["file"]["filename"] = logging_file_path
+    logging.config.dictConfig(logging_config)
+
+    return logging.getLogger("oqt")
 
 
 def get_module_dir(module_name: str) -> str:
@@ -194,3 +151,19 @@ def get_report_classes() -> Dict:
         "remote-mapping-level-one": remoteMappingLevelOneReport,
         "simple-report": simpleReport,
     }
+
+
+LayerDefinition = collections.namedtuple(
+    "LayerDefinition", "name description filter unit"
+)
+IndicatorResult = collections.namedtuple("Result", ["label", "value", "text", "svg"])
+IndicatorMetadata = collections.namedtuple(
+    "Metadata", "name description filterName filterDescription"
+)
+
+ReportResult = collections.namedtuple("Result", "label value text")
+ReportMetadata = collections.namedtuple("Metadata", "name description")
+Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
+Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
+
+logger = get_logger()

@@ -1,0 +1,29 @@
+version: 1
+disable_existing_loggers: true
+formatters:
+  standard:
+    format: '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: standard
+    level: INFO
+  file:
+    backupCount: 14
+    class: logging.handlers.TimedRotatingFileHandler
+    filename: LOGGING_FILE_PATH
+    formatter: standard
+    interval: 1
+    level: INFO
+    when: D
+loggers:
+  oqt:
+    handlers:
+    - console
+    - file
+    level: INFO
+    propagate: false
+root:
+  handlers:
+  - console
+  level: INFO
