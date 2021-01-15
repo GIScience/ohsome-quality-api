@@ -24,7 +24,11 @@ For the production setup of the database see: [database/README.md](database/READ
 
 Run the following line to get an overview:
 ```
-oqt --help 
+oqt --help
+# and/or
+oqt list-indicators
+# and/or
+oqt list-layers
 ```
 
 Run the following line to derive the `GHSPOP_COMPARISON` indicator:
