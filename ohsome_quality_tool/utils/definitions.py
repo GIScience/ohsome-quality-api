@@ -110,7 +110,7 @@ def get_indicator_metadata(indicator_name: str) -> Dict:
 def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
     # To avoid circular imports classes are imported only once this function is called.
-    from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
+    from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import (
         Indicator as ghspopComparisonIndicator,
     )
     from ohsome_quality_tool.indicators.guf_comparison.indicator import (
