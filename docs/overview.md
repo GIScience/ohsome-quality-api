@@ -1,5 +1,6 @@
 # Overview
-This document should give you an overview on what document what is currently working and what is still missing. It covers the following parts:
+This document should give you an overview on what is already implemented and works, and what is still missing and might 
+come in future releases. It covers the following parts:
 
 * Indicators
 * Reports
@@ -8,74 +9,86 @@ This document should give you an overview on what document what is currently wor
 * Command Line Interface
 
 ## Indicators
-So far we have implemented a few indicators which are either intrinsic or rely on extrinsic data sets.
+So far we have implemented a few indicators which are either intrinsic, or rely on extrinsic data sets.
 
 Extrinsic indicators:
-* Global Human Settlement Layer Comparison
-* Global Urban Footprint Comparison
+* Global human settlement layer comparison
+* Global urban footprint comparison
 
 Intrinsic Indicators:
-* Mapping Saturation
-* Points-of-interest Density
-* Last Edit
+* Mapping saturation
+* Points-of-interest density
+* Last edit
 
 Currently missing:
-* All indicators are area based. Hence, they provide a quality estimate for a region and not for single objects in OSM.
+* Feature-based indicators, as so far all indicators are area-based, meaning they provide a quality estimation for a 
+whole region and not for single OSM features
 
 ## Reports
-So far we have implemented a few reports which combine the existing indicators. Currently there are the following:
-* Simple Report
-* remote mapping report (buildings, roads)
-* sketch mapping report
+So far we have implemented a few reports, which combine different sets of indicators. Currently there are the following:
+* Simple report
+* Remote mapping report (buildings, roads)
+* Sketch mapping report
 
 Currently missing:
-* For all reports the indicators are aggregated using the same weight. 
+* Definition of individual weights for the indicators, as they are so far aggregated using the same weights
 
 ## Website
-The website can be accessed from within the university network only here: [129.206.4.240/index.html](http://129.206.4.240/index.html). The website relies on the OQT api and currently only queries the `static/report` endpoint.
+The website can only be accessed from within the university network here: 
+[129.206.4.240/index.html](http://129.206.4.240/index.html). The website relies on the OQT API and currently only 
+queries the `static/report` endpoint.
 
-The website is split up into two main parts, which will be explained in the following:
+The website is split up into two main parts:
 
 ### Website Part 1
-First, the user needs to select an area of interest and a respective data quality report. Currently, the set of available geometries has been picked manually and is defined in a [geojson file](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/assets/data/test-regions.geojson).
+First, the user needs to select an area of interest and a respective data quality report. Currently, the set of 
+available geometries has been picked manually and is defined in a 
+[GeoJSON file](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/assets/data/test-regions.geojson).
 
-User can select one of the following reports, which are hardcoded in website code [here](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/index.html):
-* simple report
-* remote mapping report (buildings, roads)
-* sketch mapping report
+The user can select one of the following reports, which are hardcoded in the 
+[website code](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/index.html):
+* Simple report
+* Remote mapping report (buildings, roads)
+* Sketch mapping report
 
 Currently missing:
-* users can't upload a geojson file with a custom extent
+* Definition of a custom area of interest, which can be uploaded for example as GeoJSON
 
 <img src="img/oqt_website_step1.png" width="450px">
 
 ### Website Part 2
 The second part visualizes the results of the selected data quality report. This part is split up into two sub-sections:
 
-* overall data quality report (aggregated quality value based on all indicators)
-* data quality indicators (quality value for each indicator)
+* Overall data quality report (aggregated quality value based on all indicators)
+* Data quality indicators (quality value for each indicator)
 
 Curently missing:
-* the plots are not interactive, but static images
+* Interactive plots, as there are only static images visualized in the website at the moment
 
 <img src="img/oqt_website_step2.png" width="450px">
 
 ## API
-The api can be accessed from within the university network only here: [http://129.206.4.240:8080](http://129.206.4.240:8080). There is a [swagger documentation](http://129.206.4.240:8080/docs) as well. 
+The API can be accessed from within the university network only via this address: 
+[http://129.206.4.240:8080](http://129.206.4.240:8080). 
+There is also a [swagger documentation](http://129.206.4.240:8080/docs) available. 
 
-Using the api one can either retrieve information on pre-processed reports or indicators from a postgres database (`static` endpoints) or dynamically trigger their computation (`dynamic` endpoints). These are the current endpoints:
+Using the API one can either retrieve information on pre-processed reports, or indicators from a postgres database 
+(`static` endpoints), or dynamically trigger their computation (`dynamic` endpoints). These are the current endpoints:
 
 * `static/indicator/{name}` (get)
 * `static/report/{name}` (get and post)
 * `dynamic/indicator/{name}` (get)
 * `dynamic/report/{name}` (get and post)
 
-It is NOT possible to trigger the pre-processing workflow (e.g. pre-process the mapping saturation indicator for all countries) using the api.
+It is NOT possible to trigger the pre-processing workflow (e.g. pre-process the mapping saturation indicator for all 
+countries) using the API.
 
 ## Command Line Interface
-The command line interface offers the biggest flexibility. Using the cli one can retrieve pre-processed report and indicators and trigger their pre-processing or dynamically trigger the calculation of any indicator or report for a custom geojson geometry.
+The command line interface offers the biggest flexibility. Using the cli one can retrieve pre-processed reports and 
+indicators, trigger their pre-processing, or dynamically trigger the calculation of any indicator or report for a 
+custom GeoJSON geometry.
 
-One can get an overview which functions are available when running:
+One can get an overview on which functions are available when running:
 ```
 oqt --help
 ```
@@ -99,4 +112,4 @@ Commands:
 ```
 
 Currently missing:
-* The results are not exported or saved to a file.
+* Exporting or saving the results to a file
