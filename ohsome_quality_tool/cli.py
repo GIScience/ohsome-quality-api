@@ -2,8 +2,10 @@ import ast
 
 import click
 import geojson
+import yaml
 
 from ohsome_quality_tool import oqt
+from ohsome_quality_tool.ohsome.client import load_layer_definitions
 from ohsome_quality_tool.utils.definitions import (
     DATASET_NAMES,
     get_indicator_classes,
@@ -125,6 +127,19 @@ def cli(verbose):
         logger.disabled = True
     else:
         logger.info("Logging enabled")
+
+
+@cli.command("list-indicators")
+def list_indicators():
+    pass
+
+
+@cli.command("list-layers")
+def list_layers():
+    """List available layers and how they are definied (ohsome API parameters.)"""
+    layers = load_layer_definitions()
+    layers = yaml.dump(layers, default_style="|")
+    click.echo(layers)
 
 
 @cli.command("get-dynamic-indicator")

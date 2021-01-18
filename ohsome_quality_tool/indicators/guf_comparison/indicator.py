@@ -1,16 +1,18 @@
 import json
 import os
 import uuid
+from dataclasses import dataclass
 from math import ceil
 from string import Template
-from typing import Dict, Tuple
+from typing import Dict
 
 import matplotlib.pyplot as plt
 import yaml
+from dacite import from_dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import ohsome_api
+from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.auth import PostgresDB
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
@@ -19,42 +21,46 @@ from ohsome_quality_tool.utils.definitions import (
 )
 
 
-class Result:
-    def __init__(self):
-        self.label: str = None
-        self.value: float = None
-        self.text: str = None
-        self.svg: str = None
+@dataclass
+class Metadata:
+    name: str
+    indicator_description: str
+    label_description: Dict
+    result_description: str
 
-    def get(self):
-        # TODO: Check for None values in attributes
-        return vars(self)
+
+@dataclass
+class LayerDefinition:
+    name: str
+    description: str
+    endpoint: str
+    filter: str
+
+
+@dataclass
+class Result:
+    label: str
+    value: float
+    description: str
+    svg: str
 
 
 class GufComparison(BaseIndicator):
     """Comparison of the Buildup Area in the GUF Dataset and OSM"""
 
-    # TODO: Remove once reading from metadata works
-    name = "guf-comparison"
-    description = (
-        "Compare OSM features against built up area defined by "
-        "Global Urban Footprint dataset."
-    )
+    name = ""
+    description = ""
 
     def __init__(
         self,
         dynamic: bool,
         layer_name: str = "building-area",
-        bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: str = None,
+        bpolys: FeatureCollection = "",
     ) -> None:
         super().__init__(
             dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
-            dataset=dataset,
-            feature_id=feature_id,
         )
         self.threshold_high = 0.6
         self.threshold_low = 0.2
@@ -62,37 +68,37 @@ class GufComparison(BaseIndicator):
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
         self.ratio: float = None
-        # TODO: Factor out to base class
-        self.result = Result()
 
         # TODO: Factor out to base class
+
         metadata = self.load_metadata()
-        self.set_metadata(metadata)
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
+        layer = self.load_layer_definition("building_area")
+        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
+
+        self.result: Result = None
 
     # TODO: Factor out to base class
-    def load_metadata(self):
+    # TODO: Does os.path.abspath(__file__) still work when implemented in parent class?
+    def load_metadata(self) -> Dict:
         """Read metadata of indicator from text file."""
         directory = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(directory, "metadata.yaml")
         with open(path, "r") as f:
             return yaml.safe_load(f)
 
-    # TODO: Factor out to base class
-    def set_metadata(self, metadata):
-        """Set attributes from metadata directory."""
-        self.name = metadata["name"]
-        self.description = metadata["description"]
-        self.label_interpretation = metadata["label_interpretation"]
-        self.ohsome_api_parameter = metadata["ohsome_api_parameter"]
-        self.result.text = metadata["result_description"]
+    def load_layer_definition(self, layer_name: str) -> Dict:
+        layer_definitions = ohsome_client.load_layer_definitions()
+        return layer_definitions[layer_name]
 
     def preprocess(self) -> None:
-        logger.info(f"run preprocessing for {self.name} indicator")
+        logger.info(f"Run preprocessing for {self.metadata.name} indicator")
         db = PostgresDB()
 
         directory = os.path.dirname(os.path.abspath(__file__))
         aoi_geom = json.dumps(self.bpolys["features"][0]["geometry"])
-        # Get total area and built-up area (GUF) in km^2 for AOI
+        # Get total area and built-up area (GUF) from Geodatabase in km^2 for AOI
         sql_file = os.path.join(directory, "query.sql")
         with open(sql_file) as reader:
             query = reader.read()
@@ -101,40 +107,35 @@ class GufComparison(BaseIndicator):
         self.area = result[0][0] / 1000000  # m^2 to km^2
         self.guf_built_up_area = result[0][1] / 1000000
 
-        # Get data from ohsome API
-        # TODO: Difficult to read and understand.
-        # TODO: query_results = ohsome_api.process_ohsome_api(ohsome_api_parameter)
-        query_results = ohsome_api.process_ohsome_api(
-            endpoint="elements/{unit}/",
-            layers=self.layers,
+        # Get OSM building area from ohsome API in km^2 for AOI
+        query_results = ohsome_client.query(
+            layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )
         self.osm_built_up_area = (
             query_results["buildings"]["result"][0]["value"] / 1000000
         )
 
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
-
+    def calculate(self) -> None:
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
-        self.result.text = Template(self.result.text).substitude(ratio=self.ratio)
+        description = Template(self.metadata.result_description).substitude(
+            ratio=self.ratio
+        )
 
         if self.ratio <= self.threshold_low:
-            self.result.value = TrafficLightQualityLevels.RED.value
-            self.result.text += self.label_interpretation["red"]["description"]
+            value = TrafficLightQualityLevels.RED.value
+            description += self.metadata.label_description["red"]
         elif self.ratio <= self.threshold_high:
-            self.result.value = TrafficLightQualityLevels.YELLOW.value
-            self.result.text += self.label_interpretation["yellow"]["description"]
+            value = TrafficLightQualityLevels.YELLOW.value
+            description += self.metadata.label_description["yellow"]
         else:
-            self.result.value = TrafficLightQualityLevels.GREEN.value
-            self.result.text += self.label_interpretation["green"]["description"]
+            value = TrafficLightQualityLevels.GREEN.value
+            description += self.metadata.label_description["green"]
 
-        self.result.label = TrafficLightQualityLevels(ceil(self.result.value))
-        # TODO: Remove
-        # return label, value, text, preprocessing_results
+        label = TrafficLightQualityLevels(ceil(self.result.value))
+        self.result = Result(label, value, description, None)
 
-    def create_figure(self, data: Dict) -> str:
+    def create_figure(self) -> None:
         """Create a plot and return as SVG string."""
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -189,12 +190,11 @@ class GufComparison(BaseIndicator):
         ax.legend()
 
         random_id = uuid.uuid1()
-        filename = f"{self.name}_{random_id}.svg"
-        outfile = os.path.join(DATA_PATH, filename)
+        filename = f"{self.metadata.name}_{random_id}"
+        outfile = os.path.join(DATA_PATH, filename, ".svg")
 
+        logger.info(f"Export figure for {self.metadata.name} indicator.")
         plt.savefig(outfile, format="svg")
         plt.close("all")
-        logger.info(f"export figures for {self.name} indicator")
 
         self.result.svg = filename
-        return filename

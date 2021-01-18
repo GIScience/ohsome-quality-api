@@ -2,25 +2,26 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_tool.indicators.guf_comparison.indicator import GufComparison
+from ohsome_quality_tool.utils.definitions import load_indicator_metadata
 
 
 class TestReadMetadata(unittest.TestCase):
     def setUp(self):
-        self.metadata = GufComparison(dynamic=True, bpolys="").load_metadata()
+        self.metadata = load_indicator_metadata()
         self.schema = Schema(
-            {
-                "name": str,
-                "description": str,
-                "ohsome_api_parameter": dict,
-                "label_interpretation": {
-                    "red": str,
-                    "yellow": str,
-                    "green": str,
-                    "undefined": str,
-                },
-                "result_description": str,
-            }
+            [
+                {
+                    "name": str,
+                    "indicator_description": str,
+                    "label_description": {
+                        "red": str,
+                        "yellow": str,
+                        "green": str,
+                        "undefined": str,
+                    },
+                    "result_description": str,
+                }
+            ]
         )
 
     def test_validate_schema(self):
