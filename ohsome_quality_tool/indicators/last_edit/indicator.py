@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import ohsome_api
+from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 
 
@@ -40,16 +40,14 @@ class LastEdit(BaseIndicator):
     def preprocess(self) -> Dict:
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        query_results_contributions = ohsome_api.query_ohsome_api(
-            endpoint="contributions/latest/centroid/",
-            filter_string=self.layer.filter,
+        query_results_contributions = ohsome_client.query(
+            layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
         )
 
-        query_results_totals = ohsome_api.query_ohsome_api(
-            endpoint="elements/count/",
-            filter_string=self.layer.filter,
+        query_results_totals = ohsome_client.query(
+            layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )
 
