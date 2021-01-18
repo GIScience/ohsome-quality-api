@@ -94,9 +94,9 @@ class BaseIndicator(metaclass=ABCMeta):
 
         random_id = str(uuid.uuid1())
         filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
-        self.figure = os.path.join(DATA_PATH, filename)
+        figure_path = os.path.join(DATA_PATH, filename)
 
-        self.result: Result = Result(None, None, None, None)
+        self.result: Result = Result(None, None, None, figure_path)
 
     def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
         """Pass the indicator results to the user.
