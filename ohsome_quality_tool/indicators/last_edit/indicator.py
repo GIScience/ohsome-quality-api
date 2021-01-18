@@ -1,5 +1,6 @@
 import json
-from typing import Dict, Tuple
+from string import Template
+from typing import Dict
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -12,21 +13,8 @@ from ohsome_quality_tool.utils.label_interpretations import (
     LAST_EDIT_LABEL_INTERPRETATIONS,
 )
 
-# TODO: thresholds might be better defined for each OSM layer
-THRESHOLD_YELLOW = 0.20  # more than 20% edited last year --> green
-THRESHOLD_RED = 0.05  # more than 5% edited last year --> yellow
 
-
-class Indicator(BaseIndicator):
-    """The Last Edit Indicator."""
-
-    name = "last-edit"
-    description = (
-        "Check the percentage of features that have been edited in the past year."
-        " This can estimate the dataquality in respect to currentness."
-    )
-    interpretations: Dict = LAST_EDIT_LABEL_INTERPRETATIONS
-
+class LastEdit(BaseIndicator):
     def __init__(
         self,
         dynamic: bool,
@@ -45,9 +33,15 @@ class Indicator(BaseIndicator):
             feature_id=feature_id,
         )
         self.time_range = time_range
+        # TODO: thresholds might be better defined for each OSM layer
+        self.threshold_yellow = 0.20  # more than 20% edited last year --> green
+        self.threshold_red = 0.05  # more than 5% edited last year --> yellow
+        self.edited_features = None
+        self.total_features = None
+        self.share_edited_features = None
 
     def preprocess(self) -> Dict:
-        logger.info(f"run preprocessing for {self.name} indicator")
+        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         query_results_contributions = ohsome_api.query_ohsome_api(
             endpoint="contributions/latest/centroid/",
@@ -63,60 +57,56 @@ class Indicator(BaseIndicator):
         )
 
         try:
-            edited_features = len(query_results_contributions["features"])
+            self.edited_features = len(query_results_contributions["features"])
         except KeyError:
             # no feature has been edited in the time range
-            edited_features = 0
+            self.edited_features = 0
 
-        total_features = query_results_totals["result"][0]["value"]
-        share_edited_features = (
-            (edited_features / total_features) if total_features != 0 else -1
+        self.total_features = query_results_totals["result"][0]["value"]
+        self.share_edited_features = (
+            (self.edited_features / self.total_features)
+            if self.total_features != 0
+            else -1
         )
-        preprocessing_results = {
-            "edited_features": edited_features,
-            "total_features": total_features,
-            "share_edited_features": share_edited_features,
-        }
-        logger.info(preprocessing_results)
-        return preprocessing_results
 
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
-        logger.info(f"run calculation for {self.name} indicator")
+    def calculate(self):
+        logger.info(f"Calculation for indicator: {self.metadata.name}")
 
-        share = round(preprocessing_results["share_edited_features"] * 100)
-        text = (
-            f"{share}% of the {self.layer.name} have been edited in OSM"
-            "during the last year. "
+        share = round(self.share_edited_features * 100)
+        description = Template(self.metadata.result_description).substitute(
+            share=share, layer_name=self.layer.name
         )
-        if preprocessing_results["share_edited_features"] == -1:
+        if self.share_edited_features == -1:
             label = TrafficLightQualityLevels.UNDEFINED
             value = -1.0
-            text = (
+            description = (
                 "Since the OHSOME query returned a count of 0 for this feature "
                 "a quality estimation can not be made for this filter"
             )
-        elif preprocessing_results["share_edited_features"] >= THRESHOLD_YELLOW:
+        elif self.share_edited_features >= self.threshold_yellow:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
-            text += LAST_EDIT_LABEL_INTERPRETATIONS["green"]
-        elif preprocessing_results["share_edited_features"] >= THRESHOLD_RED:
+            description += LAST_EDIT_LABEL_INTERPRETATIONS["green"]
+        elif self.share_edited_features >= self.threshold_red:
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
-            text += LAST_EDIT_LABEL_INTERPRETATIONS["yellow"]
+            description += LAST_EDIT_LABEL_INTERPRETATIONS["yellow"]
         else:
             label = TrafficLightQualityLevels.RED
             value = 0.0
-            text += LAST_EDIT_LABEL_INTERPRETATIONS["red"]
+            description += LAST_EDIT_LABEL_INTERPRETATIONS["red"]
 
-        return label, value, text, preprocessing_results
+        self.result.label = label
+        self.result.value = value
+        self.result.description = description
 
-    def create_figure(self, data: Dict) -> str:
+    def create_figure(self):
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
+        logger.info(f"Create firgure for indicator: {self.metadata.name}")
+
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -149,7 +139,7 @@ class Indicator(BaseIndicator):
 
         # Plot inner Pie (Indicator Value)
         radius = 1 - size
-        share_edited_features = int(data["share_edited_features"] * 100)
+        share_edited_features = int(self.share_edited_features * 100)
         sizes = (100 - share_edited_features, share_edited_features)
         colors = ("white", "black")
         ax.pie(
@@ -214,7 +204,6 @@ class Indicator(BaseIndicator):
 
         # ax.legend()
 
-        plt.savefig(self.outfile, format="svg")
+        logger.info(f"Export figure for indicator: {self.metadata.name}")
+        plt.savefig(self.result.svg, format="svg")
         plt.close("all")
-        logger.info(f"saved plot: {self.filename}")
-        return self.filename

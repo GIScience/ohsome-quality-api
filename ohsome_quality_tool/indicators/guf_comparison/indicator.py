@@ -139,7 +139,7 @@ class GufComparison(BaseIndicator):
 
         ax.legend()
 
-        logger.info(f"Export figure for {self.metadata.name} indicator.")
+        logger.info(f"Export figure for indicator: {self.metadata.name}")
         plt.savefig(self.figure, format="svg")
         plt.close("all")
 

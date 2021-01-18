@@ -6,7 +6,8 @@ import numpy as np
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import geodatabase, ohsome_api
+from ohsome_quality_tool.ohsome import client as ohsome_client
+from ohsome_quality_tool.utils import geodatabase
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 from ohsome_quality_tool.utils.label_interpretations import (
     GHSPOP_COMPARISON_LABEL_INTERPRETATIONS,
@@ -54,10 +55,8 @@ class GhsPopComparison(BaseIndicator):
         if self.pop_count is None:
             self.pop_count = 0
 
-        query_results = ohsome_api.query_ohsome_api(
-            endpoint="elements/count/",
-            filter_string=self.layer.filter,
-            bpolys=json.dumps(self.bpolys),
+        query_results = ohsome_client.query(
+            layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
 
         self.feature_count = query_results["result"][0]["value"]
