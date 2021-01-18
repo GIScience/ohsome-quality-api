@@ -66,6 +66,6 @@ docker-compose run oqt-workers oqt --verbose get-dynamic-indicator -i GHSPOP_COM
 
 ## Components
 
-![Comonents](docs/component_diagram.png)
+![Comonents](docs/UML-Component-Diagram.png)
 
 
