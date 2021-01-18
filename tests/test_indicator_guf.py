@@ -17,14 +17,8 @@ class TestIndicatorGufComparison(unittest.TestCase):
             bpolys = geojson.load(f)
         self.indicator = GufComparison(dynamic=True, bpolys=bpolys)
 
-    def test_preprocess(self):
+    def test(self):
         self.indicator.preprocess()
-
-    def test_calculate(self):
-        pass
-
-    def test_create_figure(self):
-        pass
 
 
 if __name__ == "__main__":

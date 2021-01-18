@@ -17,24 +17,28 @@ class GufComparison(BaseIndicator):
 
     def __init__(
         self,
+        dataset,
+        feature_id,
         dynamic: bool,
         layer_name: str = "building_area",
         bpolys: FeatureCollection = "",
     ) -> None:
         super().__init__(
+            dataset=dataset,
+            feature_id=feature_id,
             dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
         )
-        self.threshold_high = 0.6
-        self.threshold_low = 0.2
+        self.threshold_high: float = 0.6
+        self.threshold_low: float = 0.2
         self.area: float = None
         self.guf_built_up_area: float = None
         self.osm_built_up_area: float = None
         self.ratio: float = None
 
     def preprocess(self) -> None:
-        logger.info(f"Run preprocessing for {self.metadata.name} indicator")
+        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
         db = PostgresDB()
 
         directory = os.path.dirname(os.path.abspath(__file__))
@@ -58,8 +62,9 @@ class GufComparison(BaseIndicator):
         )
 
     def calculate(self) -> None:
+        logger.info(f"Calculation for indicator: {self.metadata.name}")
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
-        description = Template(self.metadata.result_description).substitude(
+        description = Template(self.metadata.result_description).substitute(
             ratio=self.ratio
         )
 
@@ -81,6 +86,7 @@ class GufComparison(BaseIndicator):
 
     def create_figure(self) -> None:
         """Create a plot and return as SVG string."""
+        logger.info(f"Create figure for indicator: {self.metadata.name}")
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
