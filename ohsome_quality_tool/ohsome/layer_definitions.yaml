@@ -35,7 +35,7 @@ amenities:
   filter: amenity=*
 
 poi:
-  name: Points-Of-Interests
+  name: Points-of-Interests
   description: |
       A lot of different objects such related to natural features
       transportation and amenities in a city.
