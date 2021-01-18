@@ -26,7 +26,7 @@ major_roads:
   endpoint: elements/length
   filter: |
       highway in (motorway, trunk, primary, secondary,
-      tertiary, unclassified, residential
+      tertiary, unclassified, residential)
 
 amenities:
   name: Amenities
