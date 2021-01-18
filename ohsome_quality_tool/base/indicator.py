@@ -14,9 +14,6 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
-    IndicatorMetadata,
-    IndicatorResult,
-    TrafficLightQualityLevels,
     get_indicator_metadata,
     get_layer_definition,
     logger,
@@ -98,7 +95,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
         self.result: Result = Result(None, None, None, figure_path)
 
-    def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
+    def get(self) -> Tuple[Result, Metadata]:
         """Pass the indicator results to the user.
 
         For dynamic indicators this will trigger the processing.
@@ -113,30 +110,16 @@ class BaseIndicator(metaclass=ABCMeta):
                 f"Get pre-processed results from geo db for indicator {self.name}."
             )
             result = self.get_from_database()
-
         return result, self.metadata
 
-    def run_processing(self) -> IndicatorResult:
+    def run_processing(self) -> Result:
         """Run all steps needed to actually compute the indicator"""
-        preprocessing_results = self.preprocess()
-        label, value, text, data = self.calculate(preprocessing_results)
-        svg = (
-            self.create_figure(data)
-            if label != TrafficLightQualityLevels.UNDEFINED
-            else None
-        )
-        logger.info(f"finished run for indicator {self.name}")
+        self.preprocess()
+        self.calculate()
+        self.create_figure()
+        return self.result
 
-        result = IndicatorResult(
-            label=label.name,
-            value=value,
-            text=text,
-            svg=svg,
-        )
-
-        return result
-
-    def save_to_database(self, result: IndicatorResult) -> None:
+    def save_to_database(self, result: Result) -> None:
         """Save the results to the geo database."""
         save_indicator_results_to_db(
             dataset=self.dataset,
@@ -146,7 +129,7 @@ class BaseIndicator(metaclass=ABCMeta):
             results=result,
         )
 
-    def get_from_database(self) -> IndicatorResult:
+    def get_from_database(self) -> Result:
         """Get pre-processed indicator results from geo database."""
         result = get_indicator_results_from_db(
             dataset=self.dataset,
@@ -157,15 +140,13 @@ class BaseIndicator(metaclass=ABCMeta):
         return result
 
     @abstractmethod
-    def preprocess(self) -> Dict:
+    def preprocess(self) -> None:
         pass
 
     @abstractmethod
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
+    def calculate(self) -> None:
         pass
 
     @abstractmethod
-    def create_figure(self, data: Dict):
+    def create_figure(self) -> None:
         pass
