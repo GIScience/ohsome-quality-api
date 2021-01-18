@@ -201,6 +201,8 @@ class LastEdit(BaseIndicator):
 
         # ax.legend()
 
-        logger.info(f"Export figure for indicator: {self.metadata.name}")
+        logger.info(
+            f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"
+        )
         plt.savefig(self.result.svg, format="svg")
         plt.close("all")

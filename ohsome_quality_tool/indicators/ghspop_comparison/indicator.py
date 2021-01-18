@@ -174,8 +174,8 @@ class GhsPopComparison(BaseIndicator):
 
         ax.legend()
 
-        plt.savefig(self.result.svg, format="svg")
-        plt.close("all")
         logger.info(
             f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"
         )
+        plt.savefig(self.result.svg, format="svg")
+        plt.close("all")
