@@ -9,9 +9,6 @@ from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils import geodatabase
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.label_interpretations import (
-    GHSPOP_COMPARISON_LABEL_INTERPRETATIONS,
-)
 
 
 class GhsPopComparison(BaseIndicator):
@@ -89,7 +86,7 @@ class GhsPopComparison(BaseIndicator):
                 self.feature_count_per_sqkm
                 / yellowThresholdFunction(self.pop_count_per_sqkm)
             ) * (0.5)
-            description += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["red"]
+            description += self.metadata.label_description.red
             label = TrafficLightQualityLevels.RED
 
         elif self.feature_count_per_sqkm <= greenThresholdFunction(
@@ -99,12 +96,12 @@ class GhsPopComparison(BaseIndicator):
             yellow = yellowThresholdFunction(self.pop_count_per_sqkm)
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
             value = 0.5 + fraction
-            description += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["yellow"]
+            description += self.metadata.label_description.yellow
             label = TrafficLightQualityLevels.YELLOW
 
         else:
             value = 1.0
-            description += GHSPOP_COMPARISON_LABEL_INTERPRETATIONS["green"]
+            description += self.metadata.label_description.green
             label = TrafficLightQualityLevels.GREEN
 
         self.result.label = label

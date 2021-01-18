@@ -9,9 +9,6 @@ from geojson import FeatureCollection
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.utils import ohsome_api
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.label_interpretations import (
-    LAST_EDIT_LABEL_INTERPRETATIONS,
-)
 
 
 class LastEdit(BaseIndicator):
@@ -86,15 +83,15 @@ class LastEdit(BaseIndicator):
         elif self.share_edited_features >= self.threshold_yellow:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
-            description += LAST_EDIT_LABEL_INTERPRETATIONS["green"]
+            description += self.metadata.label_description.green
         elif self.share_edited_features >= self.threshold_red:
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
-            description += LAST_EDIT_LABEL_INTERPRETATIONS["yellow"]
+            description += self.metadata.label_description.yellow
         else:
             label = TrafficLightQualityLevels.RED
             value = 0.0
-            description += LAST_EDIT_LABEL_INTERPRETATIONS["red"]
+            description += self.metadata.label_description.red
 
         self.result.label = label
         self.result.value = value
