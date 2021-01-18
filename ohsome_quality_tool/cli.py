@@ -13,7 +13,6 @@ from ohsome_quality_tool.utils.definitions import (
     load_layer_definitions,
     logger,
 )
-from ohsome_quality_tool.utils.layers import get_all_layer_definitions
 
 
 class PythonLiteralOption(click.Option):
@@ -98,7 +97,7 @@ _layer_name_option = [
         "--layer_name",
         required=True,
         type=click.Choice(
-            list(get_all_layer_definitions().keys()),
+            list(load_layer_definitions().keys()),
             case_sensitive=True,
         ),
         help=(
