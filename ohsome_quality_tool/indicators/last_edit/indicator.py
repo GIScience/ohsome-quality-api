@@ -83,15 +83,15 @@ class LastEdit(BaseIndicator):
         elif self.share_edited_features >= self.threshold_yellow:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
-            description += self.metadata.label_description.green
+            description += self.metadata.label_description["green"]
         elif self.share_edited_features >= self.threshold_red:
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
-            description += self.metadata.label_description.yellow
+            description += self.metadata.label_description["yellow"]
         else:
             label = TrafficLightQualityLevels.RED
             value = 0.0
-            description += self.metadata.label_description.red
+            description += self.metadata.label_description["red"]
 
         self.result.label = label
         self.result.value = value

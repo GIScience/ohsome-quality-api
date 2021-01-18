@@ -86,7 +86,7 @@ class GhsPopComparison(BaseIndicator):
                 self.feature_count_per_sqkm
                 / yellowThresholdFunction(self.pop_count_per_sqkm)
             ) * (0.5)
-            description += self.metadata.label_description.red
+            description += self.metadata.label_description["red"]
             label = TrafficLightQualityLevels.RED
 
         elif self.feature_count_per_sqkm <= greenThresholdFunction(
@@ -96,12 +96,12 @@ class GhsPopComparison(BaseIndicator):
             yellow = yellowThresholdFunction(self.pop_count_per_sqkm)
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
             value = 0.5 + fraction
-            description += self.metadata.label_description.yellow
+            description += self.metadata.label_description["yellow"]
             label = TrafficLightQualityLevels.YELLOW
 
         else:
             value = 1.0
-            description += self.metadata.label_description.green
+            description += self.metadata.label_description["green"]
             label = TrafficLightQualityLevels.GREEN
 
         self.result.label = label
