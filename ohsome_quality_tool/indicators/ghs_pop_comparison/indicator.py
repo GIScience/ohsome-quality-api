@@ -36,6 +36,14 @@ class GhsPopComparison(BaseIndicator):
         self.feature_count_per_pop = None
         self.feature_count_per_sqkm = None
 
+    def greenThresholdFunction(pop_per_sqkm):
+        # TODO: Add documentation
+        return 5 * np.sqrt(pop_per_sqkm)
+
+    def yellowThresholdFunction(pop_per_sqkm):
+        # TODO: Add documentation
+        return 0.75 * np.sqrt(pop_per_sqkm)
+
     def preprocess(self):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
@@ -64,11 +72,6 @@ class GhsPopComparison(BaseIndicator):
     def calculate(self):
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
-        def greenThresholdFunction(pop_per_sqkm):
-            return 5 * np.sqrt(pop_per_sqkm)
-
-        def yellowThresholdFunction(pop_per_sqkm):
-            return 0.75 * np.sqrt(pop_per_sqkm)
 
         logger.info(f"Calculation for indicator: {self.metadata.name}")
 
@@ -79,21 +82,21 @@ class GhsPopComparison(BaseIndicator):
             feature_count_per_sqkm=self.feature_count_per_sqkm,
         )
 
-        if self.feature_count_per_sqkm <= yellowThresholdFunction(
+        if self.feature_count_per_sqkm <= self.yellowThresholdFunction(
             self.pop_count_per_sqkm
         ):
             value = (
                 self.feature_count_per_sqkm
-                / yellowThresholdFunction(self.pop_count_per_sqkm)
+                / self.yellowThresholdFunction(self.pop_count_per_sqkm)
             ) * (0.5)
             description += self.metadata.label_description["red"]
             label = TrafficLightQualityLevels.RED
 
-        elif self.feature_count_per_sqkm <= greenThresholdFunction(
+        elif self.feature_count_per_sqkm <= self.greenThresholdFunction(
             self.pop_count_per_sqkm
         ):
-            green = greenThresholdFunction(self.pop_count_per_sqkm)
-            yellow = yellowThresholdFunction(self.pop_count_per_sqkm)
+            green = self.greenThresholdFunction(self.pop_count_per_sqkm)
+            yellow = self.yellowThresholdFunction(self.pop_count_per_sqkm)
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
             value = 0.5 + fraction
             description += self.metadata.label_description["yellow"]
@@ -109,11 +112,6 @@ class GhsPopComparison(BaseIndicator):
         self.result.description = description
 
     def create_figure(self):
-        def greenThresholdFunction(pop_per_sqkm):
-            return 5 * np.sqrt(pop_per_sqkm)
-
-        def yellowThresholdFunction(pop_per_sqkm):
-            return 0.75 * np.sqrt(pop_per_sqkm)
 
         logger.info(f"Create figure for indicator: {self.metadata.name}")
 
@@ -134,8 +132,8 @@ class GhsPopComparison(BaseIndicator):
         x = np.linspace(0, max_area, 20)
 
         # Plot thresholds as line.
-        y1 = [greenThresholdFunction(xi) for xi in x]
-        y2 = [yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.greenThresholdFunction(xi) for xi in x]
+        y2 = [self.yellowThresholdFunction(xi) for xi in x]
         line = line = ax.plot(
             x,
             y1,
