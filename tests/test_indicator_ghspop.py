@@ -3,7 +3,7 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.indicators.ghspop_comparison.indicator import GhsPopComparison
+from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import GhsPopComparison
 
 
 class TestIndicatorGhsPopComparison(unittest.TestCase):
