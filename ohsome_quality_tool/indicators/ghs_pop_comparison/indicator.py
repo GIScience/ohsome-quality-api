@@ -37,12 +37,16 @@ class GhsPopComparison(BaseIndicator):
         self.feature_count_per_pop = None
         self.feature_count_per_sqkm = None
 
-    def greenThresholdFunction(pop_per_sqkm):
-        # TODO: Add documentation
+    def greenThresholdFunction(self, pop_per_sqkm):
+        # TODO: Add docstring
+        # TODO: adjust threshold functions
+        # more precise values? maybe as fraction of the threshold functions?
         return 5 * np.sqrt(pop_per_sqkm)
 
-    def yellowThresholdFunction(pop_per_sqkm):
-        # TODO: Add documentation
+    def yellowThresholdFunction(self, pop_per_sqkm):
+        # TODO: Add docstring
+        # TODO: adjust threshold functions
+        # more precise values? maybe as fraction of the threshold functions?
         return 0.75 * np.sqrt(pop_per_sqkm)
 
     def preprocess(self):
@@ -63,9 +67,6 @@ class GhsPopComparison(BaseIndicator):
         self.pop_count_per_sqkm = self.pop_count / self.area
 
     def calculate(self):
-        # TODO: adjust threshold functions
-        # more precise values? maybe as fraction of the threshold functions?
-
         logger.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
