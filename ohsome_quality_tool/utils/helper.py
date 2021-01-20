@@ -1,8 +1,10 @@
 import importlib
+import os
+import pkgutil
 import re
 
 
-def name_to_class(class_name: str) -> object:
+def name_to_class(class_name: str):
     """Convert class name of indicator to the class.
 
     Assumptions:
@@ -23,3 +25,9 @@ def name_to_class(class_name: str) -> object:
 def camel_to_snake(string: str) -> str:
     """Converts Camel Case to Snake Case."""
     return re.sub(r"(?<!^)(?=[A-Z])", "_", string).lower()
+
+
+def get_module_dir(module_name: str) -> str:
+    """Get directory of module name."""
+    module = pkgutil.get_loader(module_name)
+    return os.path.dirname(module.get_filename())
