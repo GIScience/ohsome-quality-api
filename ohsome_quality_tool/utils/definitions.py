@@ -2,13 +2,14 @@ import collections
 import glob
 import logging.config
 import os
-import pkgutil
 from enum import Enum
 from pathlib import Path
 from typing import Dict
 
 import yaml
 from xdg import XDG_DATA_HOME
+
+from ohsome_quality_tool.utils.helper import get_module_dir
 
 DATASET_NAMES = (
     "nuts_rg_60m_2021",
@@ -28,6 +29,8 @@ DATASET_NAMES = (
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
 DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
+Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
+Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
 class TrafficLightQualityLevels(Enum):
@@ -53,11 +56,6 @@ def get_logger():
     logging.config.dictConfig(logging_config)
 
     return logging.getLogger("oqt")
-
-
-def get_module_dir(module_name: str) -> str:
-    module = pkgutil.get_loader(module_name)
-    return os.path.dirname(module.get_filename())
 
 
 def load_indicator_metadata() -> Dict:
@@ -120,19 +118,19 @@ def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
     # To avoid circular imports classes are imported only once this function is called.
     from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import (
-        Indicator as ghspopComparisonIndicator,
+        GhsPopComparison as ghspopComparisonIndicator,
     )
     from ohsome_quality_tool.indicators.guf_comparison.indicator import (
         GufComparison as gufComparisonIndicator,
     )
     from ohsome_quality_tool.indicators.last_edit.indicator import (
-        Indicator as lastEditIndicator,
+        LastEdit as lastEditIndicator,
     )
     from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
-        Indicator as mappingSaturationIndicator,
+        MappingSatruation as mappingSaturationIndicator,
     )
     from ohsome_quality_tool.indicators.poi_density.indicator import (
-        Indicator as poiDensityIndicator,
+        PoiDensity as poiDensityIndicator,
     )
 
     return {
@@ -172,7 +170,5 @@ IndicatorMetadata = collections.namedtuple(
 
 ReportResult = collections.namedtuple("Result", "label value text")
 ReportMetadata = collections.namedtuple("Metadata", "name description")
-Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
-Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 logger = get_logger()
