@@ -29,6 +29,7 @@ class GhsPopComparison(BaseIndicator):
             layer_name=layer_name,
             bpolys=bpolys,
         )
+        # Those attributes will be set during lifecycle of the object.
         self.pop_count = None
         self.area = None
         self.pop_count_per_sqkm = None
