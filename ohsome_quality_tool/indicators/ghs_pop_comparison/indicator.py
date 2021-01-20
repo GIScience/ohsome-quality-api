@@ -47,23 +47,15 @@ class GhsPopComparison(BaseIndicator):
     def preprocess(self):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        # if self.dynamic:
         self.pop_count, self.area = geodatabase.get_zonal_stats_population(
             bpolys=self.bpolys
         )
-        # else:
-        #    pop_count = geodatabase.get_value_from_db(
-        #        dataset=self.dataset,
-        #        feature_id=self.feature_id,
-        #        field_name="population",
-        #    )
         if self.pop_count is None:
             self.pop_count = 0
 
         query_results = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
-
         self.feature_count = query_results["result"][0]["value"]
         self.feature_count_per_pop = self.feature_count / self.pop_count
         self.feature_count_per_sqkm = self.feature_count / self.area
