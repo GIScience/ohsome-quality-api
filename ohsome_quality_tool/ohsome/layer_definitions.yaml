@@ -11,7 +11,7 @@ building_count:
   filter: building=*
 
 building_area:
-  name: Building Area"
+  name: Building Area
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
