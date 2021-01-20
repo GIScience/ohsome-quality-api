@@ -61,10 +61,11 @@ def get_module_dir(module_name: str) -> str:
 
 
 def load_indicator_metadata() -> Dict:
-    """Read metadata of indicators from text files.
+    """Read metadata of indicators from YAML files.
 
     Those text files are located in the directory of each indicator.
-    Returns a Dict with class names of the indicatros as keys and metadata as values.
+    Returns a Dict with the class names of the indicators as keys and
+    metadata as values.
     """
     directory = get_module_dir("ohsome_quality_tool.indicators")
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
@@ -76,7 +77,7 @@ def load_indicator_metadata() -> Dict:
 
 
 def load_layer_definitions() -> Dict:
-    """Read ohsome API parameter of each layer from text file."""
+    """Read ohsome API parameter of each layer from YAML file."""
     directory = get_module_dir("ohsome_quality_tool.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
     with open(file, "r") as f:
@@ -84,18 +85,26 @@ def load_layer_definitions() -> Dict:
 
 
 def get_layer_definition(layer_name: str) -> Dict:
-    """Get defintion of an layer based on layer name."""
+    """Get defintion of an layer based on layer name.
+
+    This is implemented outsite of the indicator or layer class to
+    be able to access layer definitions of all indicators without
+    instantiation of those.
+    """
     layers = load_layer_definitions()
     try:
         return layers[layer_name]
     except KeyError:
         logger.info("Invalid layer name. Valid layer names are: " + str(layers.keys()))
         raise
-    pass
 
 
 def get_indicator_metadata(indicator_name: str) -> Dict:
-    """Get metadata of an indicator based on indicator class name."""
+    """Get metadata of an indicator based on indicator class name.
+
+    This is implemented outsite of the indicator or metadata class to
+    be able to access metadata of all indicators without instantiation of those.
+    """
     indicators = load_indicator_metadata()
     try:
         return indicators[indicator_name]
