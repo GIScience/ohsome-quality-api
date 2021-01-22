@@ -1,3 +1,7 @@
+"""
+Standalone helper functions.
+"""
+
 import importlib
 import os
 import pkgutil

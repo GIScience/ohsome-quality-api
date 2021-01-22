@@ -1,6 +1,6 @@
 """
 Controller for the creation of Indicators and Reports.
-Functions are triggert the CLI and API.
+Functions are triggert by the CLI and API.
 """
 
 from typing import Dict
