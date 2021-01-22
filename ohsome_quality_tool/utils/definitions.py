@@ -116,7 +116,10 @@ def get_indicator_metadata(indicator_name: str) -> Dict:
 
 def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
-    raise NotImplementedError("Use utils.helper.name_to_class() instead")
+    raise NotImplementedError(
+        "Use utils.definitions.load_indicator_metadata() or "
+        + "utils.helper.name_to_class() instead"
+    )
 
 
 def get_report_classes() -> Dict:
