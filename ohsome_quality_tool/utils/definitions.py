@@ -116,30 +116,7 @@ def get_indicator_metadata(indicator_name: str) -> Dict:
 
 def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
-    # To avoid circular imports classes are imported only once this function is called.
-    from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import (
-        GhsPopComparison as ghspopComparisonIndicator,
-    )
-    from ohsome_quality_tool.indicators.guf_comparison.indicator import (
-        GufComparison as gufComparisonIndicator,
-    )
-    from ohsome_quality_tool.indicators.last_edit.indicator import (
-        LastEdit as lastEditIndicator,
-    )
-    from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
-        MappingSatruation as mappingSaturationIndicator,
-    )
-    from ohsome_quality_tool.indicators.poi_density.indicator import (
-        PoiDensity as poiDensityIndicator,
-    )
-
-    return {
-        "ghspop-comparison": ghspopComparisonIndicator,
-        "poi-density": poiDensityIndicator,
-        "last-edit": lastEditIndicator,
-        "mapping-saturation": mappingSaturationIndicator,
-        "guf-comparison": gufComparisonIndicator,
-    }
+    raise NotImplementedError("Use utils.helper.name_to_class() instead")
 
 
 def get_report_classes() -> Dict:

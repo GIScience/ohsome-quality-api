@@ -10,3 +10,6 @@ python -m unittest test_name_to_class.py
 python -m unittest test_indicator_ghspop.py
 python -m unittest test_indicator_last_edit_2.py
 python -m unittest test_indicator_poi_density_2.py
+
+# oqt.py
+python -m unittest oqt.py

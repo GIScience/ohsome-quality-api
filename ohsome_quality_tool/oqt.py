@@ -1,22 +1,48 @@
+"""
+Controller for the creation of Indicators and Reports.
+Functions are triggert the CLI and API.
+"""
+
 from typing import Dict
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.utils.definitions import (
-    get_indicator_classes,
-    get_report_classes,
-    logger,
-)
-from ohsome_quality_tool.utils.geodatabase import (
+from ohsome_quality_tool.geodatabase.client import (
     create_error_table,
     get_error_table_name,
     get_fid_list,
     insert_error,
 )
+from ohsome_quality_tool.utils.definitions import get_report_classes, logger
 from ohsome_quality_tool.utils.helper import name_to_class
 
-INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
+
+
+def create_indicator(
+    indicator_name: str,
+    layer_name: str,
+    bpolys: FeatureCollection = None,
+    dataset: str = None,
+    feature_id: int = None,
+):
+    """
+    Create an indicator.
+
+    An indicator is created by either calculating the indicator
+    for a geomtry or by fetching already calculated results of the
+    indicator from the geodatabase.
+    """
+    indicator_class = name_to_class(indicator_name)
+    if bpolys:
+        indicator = indicator_class(dynamic=True, layer_name=layer_name, bpolys=bpolys)
+        indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
+        return indicator
+    else:
+        # TODO: Fetch indicator results from Geodatabase
+        pass
 
 
 def process_indicator(
@@ -54,57 +80,16 @@ def process_indicator(
             )
 
 
-def create_indicator(
-    indicator_name: str,
-    layer_name: str,
-    bpolys: FeatureCollection = None,
-    dataset: str = None,
-    feature_id: int = None,
-):
-    indicator_class = name_to_class(indicator_name)
-    if bpolys:
-        indicator = indicator_class(
-            dynamic=False,
-            dataset=dataset,
-            feature_id=feature_id,
-            layer_name=layer_name,
-        )
-        indicator.preprocess()
-        indicator.calculate()
-        indicator.create_figure()
-    else:
-        # TODO: Fetch indicator results from Geodatabase
-        pass
-
-
 def get_dynamic_indicator(
     indicator_name: str, bpolys: FeatureCollection, layer_name: str
 ):
-    """Get indicator results for given geojson file.
-
-    The results will be calculated dynamically,
-    e.g. by querying the ohsome api.
-    """
-    indicator = INDICATOR_CLASSES[indicator_name](
-        dynamic=True, bpolys=bpolys, layer_name=layer_name
-    )
-    result, metadata = indicator.get()
-    return result, metadata
+    raise NotImplementedError("Use create_indicator() instead")
 
 
 def get_static_indicator(
     indicator_name: str, dataset: str, feature_id: int, layer_name: str
 ):
-    """Get indicator results for a pre-defined area.
-
-    The results have been pre-processed and will be extracted from the geo database.
-    """
-    # TODO: adjust arguments dynamic and bpolys
-    indicator = INDICATOR_CLASSES[indicator_name](
-        dynamic=False, dataset=dataset, feature_id=feature_id, layer_name=layer_name
-    )
-    result, metadata = indicator.get()
-    return result, metadata
+    raise NotImplementedError("Use create_indicator() instead")
 
 
 def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
