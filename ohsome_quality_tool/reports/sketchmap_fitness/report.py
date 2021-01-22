@@ -11,7 +11,7 @@ from ohsome_quality_tool.utils.definitions import (
 )
 
 
-class Report(BaseReport):
+class SketchmapFitness(BaseReport):
     """The Sketchmap Fitness Report."""
 
     name = "sketchmap-fitness"

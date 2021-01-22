@@ -12,7 +12,7 @@ from ohsome_quality_tool.utils.definitions import (
 )
 
 
-class Report(BaseReport):
+class RemoteMappingLevel(BaseReport):
     """The remote mapping level one Report."""
 
     name = "remote-mapping-level-one"

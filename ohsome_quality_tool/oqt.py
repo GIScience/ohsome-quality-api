@@ -3,8 +3,6 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 
-from typing import Dict
-
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.geodatabase.client import (
@@ -13,10 +11,8 @@ from ohsome_quality_tool.geodatabase.client import (
     get_fid_list,
     insert_error,
 )
-from ohsome_quality_tool.utils.definitions import get_report_classes, logger
+from ohsome_quality_tool.utils.definitions import logger
 from ohsome_quality_tool.utils.helper import name_to_class
-
-# REPORT_CLASSES: Dict = get_report_classes()
 
 
 def create_indicator(
@@ -32,7 +28,7 @@ def create_indicator(
     An indicator is created by either calculating the indicator
     for a geometry or by fetching already calculated from the geodatabase.
     """
-    indicator_class = name_to_class(indicator_name)
+    indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     if bpolys:
         indicator = indicator_class(dynamic=True, layer_name=layer_name, bpolys=bpolys)
         indicator.preprocess()
@@ -57,7 +53,7 @@ def process_indicator(
     create_error_table(dataset, indicator_name, layer_name)
     for feature_id in fids:
         try:
-            indicator_class = name_to_class(indicator_name)
+            indicator_class = name_to_class(class_type="indicator", name=indicator_name)
             indicator = indicator_class(
                 dynamic=False,
                 dataset=dataset,
@@ -97,10 +93,8 @@ def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
     The indicator results will be calculated dynamically,
     e.g. by querying the ohsome api.
     """
-
-    result, indicators, metadata = REPORT_CLASSES[report_name](
-        dynamic=True, bpolys=bpolys
-    ).get()
+    report_class = name_to_class(class_type="report", name=report_name)
+    result, indicators, metadata = report_class(dynamic=True, bpolys=bpolys).get()
     return result, indicators, metadata
 
 
@@ -110,9 +104,8 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
     # TODO: adjust arguments bpolys
-    report = REPORT_CLASSES[report_name](
-        dynamic=False, dataset=dataset, feature_id=feature_id
-    )
+    report_class = name_to_class(class_type="report", name=report_name)
+    report = report_class(dynamic=False, dataset=dataset, feature_id=feature_id)
     result, indicators, metadata = report.get()
     return result, indicators, metadata
 
@@ -125,8 +118,7 @@ def get_static_report_pdf(
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
     # TODO: adjust arguments bpolys
-    report = REPORT_CLASSES[report_name](
-        dynamic=False, dataset=dataset, feature_id=feature_id
-    )
+    report_class = name_to_class(class_type="report", name=report_name)
+    report = report_class(dynamic=False, dataset=dataset, feature_id=feature_id)
     result, indicators, metadata = report.get()
     report.export_as_pdf(outfile=outfile)
