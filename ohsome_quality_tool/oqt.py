@@ -13,6 +13,7 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_fid_list,
     insert_error,
 )
+from ohsome_quality_tool.utils.helper import name_to_class
 
 INDICATOR_CLASSES: Dict = get_indicator_classes()
 REPORT_CLASSES: Dict = get_report_classes()
@@ -31,14 +32,17 @@ def process_indicator(
     create_error_table(dataset, indicator_name, layer_name)
     for feature_id in fids:
         try:
-            indicator = INDICATOR_CLASSES[indicator_name](
+            indicator_class = name_to_class(indicator_name)
+            indicator = indicator_class(
                 dynamic=False,
                 dataset=dataset,
                 feature_id=feature_id,
                 layer_name=layer_name,
             )
-            result = indicator.run_processing()
-            indicator.save_to_database(result)
+            indicator.preprocess()
+            indicator.calculate()
+            indicator.create_figure()
+            indicator.save_to_database()
         except Exception as E:
             insert_error(dataset, indicator_name, layer_name, feature_id, E)
             logger.info(
@@ -48,6 +52,29 @@ def process_indicator(
                     f"for feature {feature_id} of {dataset}."
                 )
             )
+
+
+def create_indicator(
+    indicator_name: str,
+    layer_name: str,
+    bpolys: FeatureCollection = None,
+    dataset: str = None,
+    feature_id: int = None,
+):
+    indicator_class = name_to_class(indicator_name)
+    if bpolys:
+        indicator = indicator_class(
+            dynamic=False,
+            dataset=dataset,
+            feature_id=feature_id,
+            layer_name=layer_name,
+        )
+        indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
+    else:
+        # TODO: Fetch indicator results from Geodatabase
+        pass
 
 
 def get_dynamic_indicator(
