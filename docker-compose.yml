@@ -17,7 +17,7 @@ services:
       POSTGRES_PORT: "${POSTGRES_PORT}"
       POSTGRES_HOST: "${POSTGRES_HOST}"
       POSTGRES_SCHEMA: "${POSTGRES_SCHEMA}"
-    command: uvicorn ohsome_quality_tool.app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn ohsome_quality_tool.api --host 0.0.0.0 --port 8000 --reload
     restart: "no"
     ports:
       - "8080:8000"
