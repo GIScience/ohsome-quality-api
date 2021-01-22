@@ -8,14 +8,14 @@ building_count:
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
-  filter: building=*
+  filter: building=* and geometry:polygon
 
 building_area:
   name: Building Area
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
-  filter: building=*
+  filter: building=* and geometry:polygon
 
 major_roads:
   name: Major Roads
@@ -26,13 +26,13 @@ major_roads:
   endpoint: elements/length
   filter: |
       highway in (motorway, trunk, primary, secondary,
-      tertiary, unclassified, residential)
+      tertiary, unclassified, residential) and type:way
 
 amenities:
   name: Amenities
   description: All features with the amenities key.
   endpoint: elements/count
-  filter: amenity=*
+  filter: amenity=* and (type:way or type:node)
 
 poi:
   name: Points-of-Interests

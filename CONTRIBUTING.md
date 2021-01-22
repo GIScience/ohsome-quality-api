@@ -1,12 +1,19 @@
 # Contributing
 
-## Development Setup
+## Issues
+
+Please create an issue about what you are working on.
+Issues should have at least one label attached to them.
+If no labels fits the issue create a new one.
+
+
+## Setup
 
 ### Requirements
 
 - Python 3.8
 - Poetry
-- Access to the database
+- (Access to the database)
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
@@ -56,6 +63,22 @@ To make the variables available to current environment run following command:
 ```
 export $(cat .env | xargs)
 ```
+
+
+## Feature Branch
+
+To contribute please create dedicated `feature` branches based on the `dev` branch. After the changes create a Pull Request of the `feature` branch into the `dev` branch on GitHub:
+
+```bash
+git checkout dev
+git checkout -b featureA
+# Hack away ...
+git commit -am 'Describe changes.'
+git push -u origin featureA
+# Create a Pull Request from feature branch into the dev branch on GitHub.
+```
+
+> Note: If a bug in production (master branch) needs fixing before a new versions gets released (merging dev into master branch), a hotfix branch should be created. In the hotfix branch the bug should be fixed and then merged with the master branch (and also dev).
 
 
 ## Style Guide
