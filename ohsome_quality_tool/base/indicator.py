@@ -83,6 +83,7 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
+        # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_indicator_metadata(type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
 
