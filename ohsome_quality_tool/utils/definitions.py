@@ -59,7 +59,8 @@ def get_logger():
 
 
 def load_indicator_metadata() -> Dict:
-    """Read metadata of indicators from YAML files.
+    """
+    Read metadata of indicators from YAML files.
 
     Those text files are located in the directory of each indicator.
     Returns a Dict with the class names of the indicators as keys and
@@ -75,7 +76,11 @@ def load_indicator_metadata() -> Dict:
 
 
 def load_layer_definitions() -> Dict:
-    """Read ohsome API parameter of each layer from YAML file."""
+    """
+    Read ohsome API parameter of each layer from YAML file.
+
+    Returns a Dict with the layer names of the layers as keys.
+    """
     directory = get_module_dir("ohsome_quality_tool.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
     with open(file, "r") as f:
@@ -83,9 +88,10 @@ def load_layer_definitions() -> Dict:
 
 
 def get_layer_definition(layer_name: str) -> Dict:
-    """Get defintion (ohsome API parameters) of an layer based on layer name.
+    """
+    Get ohsome API parameters of an layer based on layer name.
 
-    This is implemented outsite of the indicator or layer class to
+    This is implemented outsite of the layer class to
     be able to access layer definitions of all indicators without
     instantiation of those.
     """
