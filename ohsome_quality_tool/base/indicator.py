@@ -12,16 +12,16 @@ from typing import Dict, Tuple
 from dacite import from_dict
 from geojson import FeatureCollection
 
+from ohsome_quality_tool.geodatabase.client import (
+    get_bpolys_from_db,
+    get_indicator_results_from_db,
+    save_indicator_results_to_db,
+)
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
     get_indicator_metadata,
     get_layer_definition,
     logger,
-)
-from ohsome_quality_tool.utils.geodatabase import (
-    get_bpolys_from_db,
-    get_indicator_results_from_db,
-    save_indicator_results_to_db,
 )
 
 

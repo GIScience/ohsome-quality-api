@@ -6,8 +6,8 @@ import numpy as np
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
+from ohsome_quality_tool.geodatabase import client as db_client
 from ohsome_quality_tool.ohsome import client as ohsome_client
-from ohsome_quality_tool.utils import geodatabase
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
 
 
@@ -52,7 +52,7 @@ class GhsPopComparison(BaseIndicator):
     def preprocess(self):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        self.pop_count, self.area = geodatabase.get_zonal_stats_population(
+        self.pop_count, self.area = db_client.get_zonal_stats_population(
             bpolys=self.bpolys
         )
         if self.pop_count is None:

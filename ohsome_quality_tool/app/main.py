@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils import geodatabase
+from ohsome_quality_tool.geodatabase import client as db_client
 
 app = FastAPI()
 
@@ -123,5 +123,5 @@ async def post_static_report(name: str, item: StaticReportItem, request: Request
 
 @app.get("/geometries/{dataset}")
 async def get_bpolys_from_db(dataset: str, feature_id: int):
-    bpolys = geodatabase.get_bpolys_from_db(dataset=dataset, feature_id=feature_id)
+    bpolys = db_client.get_bpolys_from_db(dataset=dataset, feature_id=feature_id)
     return bpolys

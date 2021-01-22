@@ -6,9 +6,9 @@ import numpy as np
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
+from ohsome_quality_tool.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
