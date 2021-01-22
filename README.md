@@ -46,7 +46,7 @@ oqt --verbose get-dynamic-report -r SKETCHMAP_FITNESS --infile data/heidelberg_a
 
 Run the following line to start the server:
 ```
-uvicorn ohsome_quality_tool.app.main:app --reload
+uvicorn ohsome_quality_tool.api:app --reload
 ```
 
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
