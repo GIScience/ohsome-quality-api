@@ -113,21 +113,14 @@ class BaseIndicator(metaclass=ABCMeta):
             result = self.get_from_database()
         return result, self.metadata
 
-    def run_processing(self) -> Result:
-        """Run all steps needed to actually compute the indicator"""
-        self.preprocess()
-        self.calculate()
-        self.create_figure()
-        return self.result
-
-    def save_to_database(self, result: Result) -> None:
+    def save_to_database(self) -> None:
         """Save the results to the geo database."""
         save_indicator_results_to_db(
             dataset=self.dataset,
             feature_id=self.feature_id,
             layer_name=self.layer.name,
             indicator=self.metadata.name,
-            results=result,
+            results=self.result,
         )
 
     def get_from_database(self) -> Result:
