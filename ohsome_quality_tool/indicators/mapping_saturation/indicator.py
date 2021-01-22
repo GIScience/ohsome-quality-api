@@ -8,11 +8,8 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.indicators.mapping_saturation.sigmoid_curve import sigmoidCurve
-from ohsome_quality_tool.utils import ohsome_api
+from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.label_interpretations import (
-    MAPPING_SATURATION_LABEL_INTERPRETATIONS,
-)
 
 # threshold values defining the color of the traffic light
 # derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
@@ -21,14 +18,8 @@ THRESHOLD_YELLOW = 0.03
 THRESHOLD_RED = 10
 
 
-class Indicator(BaseIndicator):
+class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator."""
-
-    name = "mapping-saturation"
-    description = """
-        Calculate if mapping has saturated.
-    """
-    interpretations: Dict = MAPPING_SATURATION_LABEL_INTERPRETATIONS
 
     def __init__(
         self,
@@ -53,9 +44,8 @@ class Indicator(BaseIndicator):
 
         logger.info(f"run preprocessing for {self.name} indicator")
 
-        query_results = ohsome_api.query_ohsome_api(
-            endpoint=f"elements/{self.layer.unit}/",  # unit is defined in layers.py
-            filter_string=self.layer.filter,
+        query_results = ohsome_client.query(
+            layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
         )
