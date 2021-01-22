@@ -83,7 +83,7 @@ def load_layer_definitions() -> Dict:
 
 
 def get_layer_definition(layer_name: str) -> Dict:
-    """Get defintion of an layer based on layer name.
+    """Get defintion (ohsome API parameters) of an layer based on layer name.
 
     This is implemented outsite of the indicator or layer class to
     be able to access layer definitions of all indicators without
