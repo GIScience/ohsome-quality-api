@@ -13,3 +13,4 @@ python -m unittest test_indicator_poi_density_2.py
 
 # oqt.py
 python -m unittest oqt.py
+python -m unittest cli.py

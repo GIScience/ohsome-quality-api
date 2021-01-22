@@ -5,10 +5,8 @@ import geojson
 import yaml
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils.definitions import (
+from ohsome_quality_tool.utils.definitions import (  # get_report_classes,
     DATASET_NAMES,
-    get_indicator_classes,
-    get_report_classes,
     load_indicator_metadata,
     load_layer_definitions,
     logger,
@@ -41,7 +39,7 @@ _indicator_option = [
         "-i",
         required=True,
         type=click.Choice(
-            get_indicator_classes().keys(),
+            load_indicator_metadata().keys(),
             case_sensitive=True,
         ),
         help="Choose an indicator,valid indicators are specified in definitions.py .",
@@ -54,7 +52,9 @@ _report_option = [
         "-r",
         required=True,
         type=click.Choice(
-            get_report_classes().keys(),
+            # TODO
+            # get_report_classes().keys(),
+            [],
             case_sensitive=True,
         ),
         help="Choose a report,valid reports are specified in definitions.py .",
@@ -66,7 +66,7 @@ _infile_option = [
         "--infile",
         help="GeoJSON file for your area of interest.",
         type=str,
-        required=True,
+        default=None,
     )
 ]
 
@@ -82,13 +82,13 @@ _outfile_option = [
 _dataset_option = [
     click.option(
         "--dataset",
-        required=True,
         type=click.Choice(
             DATASET_NAMES,
             case_sensitive=True,
         ),
         help="""Choose a dataset containing geometries,
             valid area datasets are specified in definitions.py .""",
+        default=None,
     )
 ]
 
@@ -112,9 +112,9 @@ _layer_name_option = [
 _feature_id_option = [
     click.option(
         "--feature_id",
-        required=True,
         type=str,
         help="""Provide the feature id of your area of interest.""",
+        default=None,
     )
 ]
 
@@ -145,21 +145,36 @@ def list_layers():
     click.echo(layers)
 
 
-@cli.command("get-dynamic-indicator")
+@cli.command("create-indicator")
 @add_options(_indicator_option)
-@add_options(_infile_option)
 @add_options(_layer_name_option)
-def get_dynamic_indicator(indicator_name: str, infile: str, layer_name: str):
+@add_options(_infile_option)
+@add_options(_dataset_option)
+@add_options(_feature_id_option)
+def create_indicator(
+    indicator_name: str, infile: str, layer_name: str, feature_id, dataset
+):
+    # TODO: Add docstring -> Will be printed as --help.
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
-    with open(infile, "r") as file:
-        bpolys = geojson.load(file)
-    result, metadata = oqt.get_dynamic_indicator(
-        indicator_name=indicator_name, bpolys=bpolys, layer_name=layer_name
+    if infile:
+        with open(infile, "r") as file:
+            bpolys = geojson.load(file)
+    elif feature_id is None and dataset is None:
+        click.echo(
+            "Invalid arguments. " + "Provide either infile or feature-id and dataset"
+        )
+        return None
+    indicator = oqt.create_indicator(
+        indicator_name=indicator_name,
+        bpolys=bpolys,
+        layer_name=layer_name,
+        feature_id=feature_id,
+        dataset=dataset,
     )
-    print(result)
-    print(metadata)
-    return result, metadata
+    # TODO: Print out readable format.
+    click.echo(indicator.metadata)
+    click.echo(indicator.result)
 
 
 @cli.command("get-static-indicator")
