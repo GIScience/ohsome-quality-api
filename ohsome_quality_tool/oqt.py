@@ -16,7 +16,7 @@ from ohsome_quality_tool.geodatabase.client import (
 from ohsome_quality_tool.utils.definitions import get_report_classes, logger
 from ohsome_quality_tool.utils.helper import name_to_class
 
-REPORT_CLASSES: Dict = get_report_classes()
+# REPORT_CLASSES: Dict = get_report_classes()
 
 
 def create_indicator(
@@ -30,8 +30,7 @@ def create_indicator(
     Create an indicator.
 
     An indicator is created by either calculating the indicator
-    for a geomtry or by fetching already calculated results of the
-    indicator from the geodatabase.
+    for a geometry or by fetching already calculated from the geodatabase.
     """
     indicator_class = name_to_class(indicator_name)
     if bpolys:
