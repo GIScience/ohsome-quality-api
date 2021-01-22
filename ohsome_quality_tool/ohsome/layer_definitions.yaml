@@ -11,7 +11,7 @@ building_count:
   filter: building=*
 
 building_area:
-  name: Building Area"
+  name: Building Area
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
@@ -26,7 +26,7 @@ major_roads:
   endpoint: elements/length
   filter: |
       highway in (motorway, trunk, primary, secondary,
-      tertiary, unclassified, residential
+      tertiary, unclassified, residential)
 
 amenities:
   name: Amenities
@@ -35,7 +35,7 @@ amenities:
   filter: amenity=*
 
 poi:
-  name: Points-Of-Interests
+  name: Points-of-Interests
   description: |
       A lot of different objects such related to natural features
       transportation and amenities in a city.

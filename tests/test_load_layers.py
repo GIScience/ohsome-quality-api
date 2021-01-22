@@ -2,7 +2,10 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_tool.utils.definitions import load_layer_definitions
+from ohsome_quality_tool.utils.definitions import (
+    get_layer_definition,
+    load_layer_definitions,
+)
 
 
 class TestLoadLayers(unittest.TestCase):
@@ -15,6 +18,12 @@ class TestLoadLayers(unittest.TestCase):
     def test_validate_schema(self):
         self.schema.validate(self.layers)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(self.layers))
+
+    def test_get_layer_definition(self):
+        self.assertRaises(KeyError, get_layer_definition, "")
+        self.assertRaises(KeyError, get_layer_definition, "ajsjdh")
+        self.assertRaises(KeyError, get_layer_definition, None)
+        self.assertIsInstance(get_layer_definition("building_area"), dict)
 
 
 if __name__ == "__main__":

@@ -1,15 +1,21 @@
+"""
+TODO:
+    Describe this module and how to implement child classes
+"""
+
 import os
 import uuid
 from abc import ABCMeta, abstractmethod
+from dataclasses import dataclass
 from typing import Dict, Tuple
 
+from dacite import from_dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
-    IndicatorMetadata,
-    IndicatorResult,
-    TrafficLightQualityLevels,
+    get_indicator_metadata,
+    get_layer_definition,
     logger,
 )
 from ohsome_quality_tool.utils.geodatabase import (
@@ -17,12 +23,42 @@ from ohsome_quality_tool.utils.geodatabase import (
     get_indicator_results_from_db,
     save_indicator_results_to_db,
 )
-from ohsome_quality_tool.utils.layers import get_all_layer_definitions
+
+
+@dataclass
+class Metadata:
+    """Metadata of an indicator are defined in a metadata.yaml file"""
+
+    name: str
+    indicator_description: str
+    label_description: Dict
+    result_description: str
+
+
+@dataclass
+class LayerDefinition:
+    """Definitions of a layer are defined in the layer_definition.yaml file.
+
+    The definition consist of the ohsome API Parameter needed to create the layer.
+    """
+
+    name: str
+    description: str
+    endpoint: str
+    filter: str
+
+
+@dataclass
+class Result:
+    """The result of and indicator."""
+
+    label: str
+    value: float
+    description: str
+    svg: str
 
 
 class BaseIndicator(metaclass=ABCMeta):
-    """The base class for all indicators."""
-
     def __init__(
         self,
         dynamic: bool,
@@ -31,21 +67,7 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        """Initialize an indicator"""
-        # here we can put the default parameters for indicators
         self.dynamic = dynamic
-        self.layer = get_all_layer_definitions()[layer_name]
-        self.metadata = IndicatorMetadata(
-            name=self.name,
-            description=self.description,
-            filterName=self.layer.name,
-            filterDescription=self.layer.description,
-        )
-
-        # generate random id for filename to avoid overwriting existing files
-        random_id = uuid.uuid1()
-        self.filename = f"{self.name}_{self.layer.name}_{random_id}.svg"
-        self.outfile = os.path.join(DATA_PATH, self.filename)
 
         if self.dynamic:
             if bpolys is None:
@@ -61,7 +83,20 @@ class BaseIndicator(metaclass=ABCMeta):
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
 
-    def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
+        # setattr(object, key, value) could be used instead of relying on from_dict.
+        metadata = get_indicator_metadata(type(self).__name__)
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
+        layer = get_layer_definition(layer_name)
+        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
+
+        random_id = str(uuid.uuid1())
+        filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
+        figure_path = os.path.join(DATA_PATH, filename)
+
+        self.result: Result = Result(None, None, None, figure_path)
+
+    def get(self) -> Tuple[Result, Metadata]:
         """Pass the indicator results to the user.
 
         For dynamic indicators this will trigger the processing.
@@ -76,71 +111,36 @@ class BaseIndicator(metaclass=ABCMeta):
                 f"Get pre-processed results from geo db for indicator {self.name}."
             )
             result = self.get_from_database()
-
         return result, self.metadata
 
-    def run_processing(self) -> IndicatorResult:
-        """Run all steps needed to actually compute the indicator"""
-        preprocessing_results = self.preprocess()
-        label, value, text, data = self.calculate(preprocessing_results)
-        svg = (
-            self.create_figure(data)
-            if label != TrafficLightQualityLevels.UNDEFINED
-            else None
-        )
-        logger.info(f"finished run for indicator {self.name}")
-
-        result = IndicatorResult(
-            label=label.name,
-            value=value,
-            text=text,
-            svg=svg,
-        )
-
-        return result
-
-    def save_to_database(self, result: IndicatorResult) -> None:
+    def save_to_database(self) -> None:
         """Save the results to the geo database."""
         save_indicator_results_to_db(
             dataset=self.dataset,
             feature_id=self.feature_id,
             layer_name=self.layer.name,
-            indicator=self.name,
-            results=result,
+            indicator=self.metadata.name,
+            results=self.result,
         )
 
-    def get_from_database(self) -> IndicatorResult:
+    def get_from_database(self) -> Result:
         """Get pre-processed indicator results from geo database."""
         result = get_indicator_results_from_db(
             dataset=self.dataset,
             feature_id=self.feature_id,
             layer_name=self.layer.name,
-            indicator=self.name,
+            indicator=self.metadata.name,
         )
         return result
 
-    @property
     @abstractmethod
-    def name(self):
-        pass
-
-    @property
-    @abstractmethod
-    def description(self):
-        pass
-
-    # the abstract method defines that this function
-    # needs to be implemented by all children
-    @abstractmethod
-    def preprocess(self) -> Dict:
+    def preprocess(self) -> None:
         pass
 
     @abstractmethod
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
+    def calculate(self) -> None:
         pass
 
     @abstractmethod
-    def create_figure(self, data: Dict):
+    def create_figure(self) -> None:
         pass
