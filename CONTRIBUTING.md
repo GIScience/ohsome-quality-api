@@ -1,19 +1,14 @@
 # Contributing
 
-## Issues
 
-Please create an issue about what you are working on.
-Issues should have at least one label attached to them.
-If no labels fits the issue create a new one.
+Please contribute to this repository through pull requests.
+
+https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment
 
 
 ## Setup
 
 ### Requirements
-
-- Python 3.8
-- Poetry
-- (Access to the database)
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
@@ -22,16 +17,11 @@ Please make sure it is installed on your system.
 ### Installation
 
 ```bash
-git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
-cd ohsome-quality-tool
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
 # Hack away ...
 ```
-
-- To add dependencies: `poetry add package-name`
-- To update dependencies: `poetry update package-name`
 
 > Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
@@ -72,34 +62,13 @@ setx POSTGRES_SCHEMA public
 ```
 (Caution: They are now global)
 
-## Contribute through pull requests
-
-To contribute please create dedicated `feature` branches. After the changes create a Pull Request of the `feature` branch into the `master` branch on GitLab. Example:
-
-```bash
-git checkout -b featureA
-# Hack away ...
-git add file.py
-git commit -m "Describe changes."
-git push -u origin featureA
-# Create a Pull Request from feature branch into the dev branch on GitHub.
-```
-
-
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 
-Each of those tools can be integrated in most editors.
-
 In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
-To setup pre-commit simply run:
-
-```bash
-pre-commit install
-```
 
 > Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
 >
