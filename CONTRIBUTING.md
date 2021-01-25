@@ -125,7 +125,11 @@ C:\Users\user\ohsome-quality-tool>
 
 -> Make sure poetry is running, use command ```poetry shell```
 
+output (sth like):
+
+Spawning shell within C:\Users\user\AppData\Local\pypoetry\Cache\virtualenvs\ohsome-quality-tool-WEZPxd1Z-py3.8
+
 
 - Connection to the database fails
 
--> Make sure you are in the VPN of the university
+-> Make sure you are in the ```VPN``` of the university
