@@ -106,3 +106,26 @@ When working on a specific part of the project it will be often enough to run a 
 ```
 python -m unittest tests/test_indicator_mapping_saturation.py
 ```
+
+## Miss behaviour and solutions
+**Windows**
+
+- Make sure that you are not in any other virtual env (anaconda, ..):
+
+(ohsome-quality-tool) C:\Users\user\ohsome-quality-tool>
+
+-> use command ```deactivate```
+
+output:
+
+C:\Users\user\ohsome-quality-tool>
+
+
+- Error: ModuleNotFoundError: No module named 'ohsome_quality_tool'
+
+-> Make sure poetry is running, use command ```poetry shell```
+
+
+- Connection to the database fails
+
+-> Make sure you are in the VPN of the university
