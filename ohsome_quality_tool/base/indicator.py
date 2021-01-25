@@ -27,7 +27,7 @@ from ohsome_quality_tool.utils.definitions import (
 
 @dataclass
 class Metadata:
-    """Metadata of an indicator are defined in a metadata.yaml file"""
+    """Metadata of an indicator as defined in the metadata.yaml file"""
 
     name: str
     indicator_description: str
@@ -37,7 +37,7 @@ class Metadata:
 
 @dataclass
 class LayerDefinition:
-    """Definitions of a layer are defined in the layer_definition.yaml file.
+    """Definitions of a layer as defined in the layer_definition.yaml file.
 
     The definition consist of the ohsome API Parameter needed to create the layer.
     """
@@ -50,7 +50,7 @@ class LayerDefinition:
 
 @dataclass
 class Result:
-    """The result of and indicator."""
+    """The result of the Indicator."""
 
     label: str
     value: float
