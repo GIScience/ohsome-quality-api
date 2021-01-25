@@ -61,6 +61,7 @@ setx POSTGRES_PORT 5432
 setx POSTGRES_SCHEMA public
 ```
 (Caution: They are now global)
+To be able to access the database, make sure you are in the **VPN** of the university!
 
 ## Style Guide
 
