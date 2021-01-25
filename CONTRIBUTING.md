@@ -65,20 +65,18 @@ export $(cat .env | xargs)
 ```
 
 
-## Feature Branch
+## Contribute through pull requests
 
-To contribute please create dedicated `feature` branches based on the `dev` branch. After the changes create a Pull Request of the `feature` branch into the `dev` branch on GitHub:
+To contribute please create dedicated `feature` branches. After the changes create a Pull Request of the `feature` branch into the `master` branch on GitLab. Example:
 
 ```bash
-git checkout dev
 git checkout -b featureA
 # Hack away ...
-git commit -am 'Describe changes.'
+git add file.py
+git commit -m "Describe changes."
 git push -u origin featureA
 # Create a Pull Request from feature branch into the dev branch on GitHub.
 ```
-
-> Note: If a bug in production (master branch) needs fixing before a new versions gets released (merging dev into master branch), a hotfix branch should be created. In the hotfix branch the bug should be fixed and then merged with the master branch (and also dev).
 
 
 ## Style Guide
