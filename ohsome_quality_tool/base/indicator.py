@@ -59,30 +59,36 @@ class Result:
 
 
 class BaseIndicator(metaclass=ABCMeta):
+    """
+    The base class of every indicator.
+
+    An indicator can be created in two ways:
+
+    One; Calculate from scratch for an area of interest.
+    This is done by providing a bounding polygone as input parameter.
+
+    Two; Fetch the precaclulated results from the Geodatabase.
+    This is done by providing the dataset name and feature id as input parameter.
+    """
+
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        self.dynamic = dynamic
-
-        if self.dynamic:
-            if bpolys is None:
-                raise ValueError("Dynamic calculation requires a GeoJSON as input.")
+        if bpolys is None:
             self.bpolys = bpolys
-        else:
-            if dataset is None or feature_id is None:
-                raise ValueError(
-                    "Static calculation requires the dataset name "
-                    "and the feature id as string."
-                )
+        elif dataset and feature_id:
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
-
+        else:
+            raise ValueError(
+                "Provice either a GeoJSON as input "
+                + "or the dataset name and the feature id"
+            )
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_indicator_metadata(type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
