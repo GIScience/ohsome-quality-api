@@ -68,10 +68,10 @@ Check if the variables are in yur environment:
 In the command line enter the following lines:
 ```python
 import os 
-print(os.getenv("POSTGRES_HOST", default="postgres"))
-print(os.getenv("POSTGRES_PORT", default=5435))
-print(os.getenv("POSTGRES_DB", default="oqt"))
-print(os.getenv("POSTGRES_USER", default="oqt_workers"))
+print(os.getenv("POSTGRES_HOST"))
+print(os.getenv("POSTGRES_PORT"))
+print(os.getenv("POSTGRES_DB"))
+print(os.getenv("POSTGRES_USER"))
 print(os.environ["POSTGRES_PASSWORD"])
 ```
 
