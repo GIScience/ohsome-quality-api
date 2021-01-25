@@ -54,6 +54,7 @@ To make the variables available to current environment run following command:
 export $(cat .env | xargs)
 ```
 For Windows you can set the variables in the command line as following:
+To get the correct content of "mypassword" and "localhost" please contact the team.
 ```
 setx POSTGRES_PASSWORD mypassword
 setx POSTGRES_HOST localhost
@@ -62,6 +63,7 @@ setx POSTGRES_SCHEMA public
 ```
 (Caution: They are now global)
 To be able to access the database, make sure you are in the **VPN** of the university!
+
 
 ## Style Guide
 
