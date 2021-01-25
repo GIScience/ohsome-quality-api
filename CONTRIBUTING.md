@@ -53,9 +53,10 @@ To make the variables available to current environment run following command:
 ```
 export $(cat .env | xargs)
 ```
+**Windows**
 For Windows you can set the variables in the command line as following:
 To get the correct content of "mypassword" and "localhost" please contact the team.
-```
+```bash
 setx POSTGRES_PASSWORD mypassword
 setx POSTGRES_HOST localhost
 setx POSTGRES_PORT 5432
@@ -63,7 +64,18 @@ setx POSTGRES_SCHEMA public
 ```
 (Caution: They are now global)
 To be able to access the database, make sure you are in the **VPN** of the university!
+Check if the variables are in yur environment:
+In the command line enter the following lines:
+```python
+import os 
+print(os.getenv("POSTGRES_HOST", default="postgres"))
+print(os.getenv("POSTGRES_PORT", default=5435))
+print(os.getenv("POSTGRES_DB", default="oqt"))
+print(os.getenv("POSTGRES_USER", default="oqt_workers"))
+print(os.environ["POSTGRES_PASSWORD"])
+```
 
+If the variables are not as expected, make sure your system updated access (close command line and open a new one and enter the lines again / restart pycharm).
 
 ## Style Guide
 
