@@ -63,7 +63,14 @@ To make the variables available to current environment run following command:
 ```
 export $(cat .env | xargs)
 ```
-
+For Windows you can set the variables in the command line as following:
+```
+setx POSTGRES_PASSWORD mypassword
+setx POSTGRES_HOST localhost
+setx POSTGRES_PORT 5432
+setx POSTGRES_SCHEMA public
+```
+(Caution: They are now global)
 
 ## Contribute through pull requests
 
