@@ -1,19 +1,14 @@
 # Contributing
 
-## Issues
 
-Please create an issue about what you are working on.
-Issues should have at least one label attached to them.
-If no labels fits the issue create a new one.
+Please contribute to this repository through pull requests.
+
+https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment
 
 
 ## Setup
 
 ### Requirements
-
-- Python 3.8
-- Poetry
-- (Access to the database)
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
@@ -22,16 +17,11 @@ Please make sure it is installed on your system.
 ### Installation
 
 ```bash
-git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
-cd ohsome-quality-tool
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
 # Hack away ...
 ```
-
-- To add dependencies: `poetry add package-name`
-- To update dependencies: `poetry update package-name`
 
 > Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
@@ -63,38 +53,37 @@ To make the variables available to current environment run following command:
 ```
 export $(cat .env | xargs)
 ```
-
-
-## Feature Branch
-
-To contribute please create dedicated `feature` branches based on the `dev` branch. After the changes create a Pull Request of the `feature` branch into the `dev` branch on GitHub:
-
+**Windows**
+For Windows you can set the variables in the command line as following:
+To get the correct content of "mypassword" and "localhost" please contact the team.
 ```bash
-git checkout dev
-git checkout -b featureA
-# Hack away ...
-git commit -am 'Describe changes.'
-git push -u origin featureA
-# Create a Pull Request from feature branch into the dev branch on GitHub.
+setx POSTGRES_PASSWORD mypassword
+setx POSTGRES_HOST localhost
+setx POSTGRES_PORT 5432
+setx POSTGRES_SCHEMA public
+```
+(Caution: They are now global)
+To be able to access the database, make sure you are in the **VPN** of the university!
+Check if the variables are in yur environment:
+In the command line enter the following lines:
+```python
+import os 
+print(os.getenv("POSTGRES_HOST"))
+print(os.getenv("POSTGRES_PORT"))
+print(os.getenv("POSTGRES_DB"))
+print(os.getenv("POSTGRES_USER"))
+print(os.environ["POSTGRES_PASSWORD"])
 ```
 
-> Note: If a bug in production (master branch) needs fixing before a new versions gets released (merging dev into master branch), a hotfix branch should be created. In the hotfix branch the bug should be fixed and then merged with the master branch (and also dev).
-
+If the variables are not as expected, make sure your system updated access (close command line and open a new one and enter the lines again / restart pycharm).
 
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 
-Each of those tools can be integrated in most editors.
-
 In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
-To setup pre-commit simply run:
-
-```bash
-pre-commit install
-```
 
 > Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
 >
@@ -117,3 +106,30 @@ When working on a specific part of the project it will be often enough to run a 
 ```
 python -m unittest tests/test_indicator_mapping_saturation.py
 ```
+
+## Miss behaviour and solutions
+**Windows**
+
+- Make sure that you are not in any other virtual env (anaconda, ..):
+
+(ohsome-quality-tool) C:\Users\user\ohsome-quality-tool>
+
+-> use command ```deactivate```
+
+output:
+
+C:\Users\user\ohsome-quality-tool>
+
+
+- Error: ModuleNotFoundError: No module named 'ohsome_quality_tool'
+
+-> Make sure poetry is running, use command ```poetry shell```
+
+output (sth like):
+
+Spawning shell within C:\Users\user\AppData\Local\pypoetry\Cache\virtualenvs\ohsome-quality-tool-WEZPxd1Z-py3.8
+
+
+- Connection to the database fails
+
+-> Make sure you are in the ```VPN``` of the university
