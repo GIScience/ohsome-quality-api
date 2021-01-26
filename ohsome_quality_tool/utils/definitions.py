@@ -58,15 +58,23 @@ def get_logger():
     return logging.getLogger("oqt")
 
 
-def load_indicator_metadata() -> Dict:
+# def load_indicator_metadata(class_type: str) -> Dict:
+def load_metadata(module_name: str) -> Dict:
     """
-    Read metadata of indicators from YAML files.
+    Read metadata of all indicators or reports from YAML files.
 
-    Those text files are located in the directory of each indicator.
-    Returns a Dict with the class names of the indicators as keys and
-    metadata as values.
+    Those text files are located in the directory of each indicator/report.
+
+    Args:
+        module_name: Either indicators or reports.
+    Returns:
+        A Dict with the class names of the indicators/reports
+        as keys and metadata as values.
     """
-    directory = get_module_dir("ohsome_quality_tool.indicators")
+    if module_name != "indicators" and module_name != "reports":
+        raise ValueError("module name value can only be 'indicators' or 'reports'.")
+
+    directory = get_module_dir("ohsome_quality_tool.{0}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     metadata = {}
     for file in files:
@@ -75,11 +83,40 @@ def load_indicator_metadata() -> Dict:
     return metadata
 
 
+# def get_indicator_metadata(module_name: str, class_name: str) -> Dict:
+def get_metadata(module_name: str, class_name: str) -> Dict:
+    """Get metadata of an indicator or report based on its class name.
+
+    This is implemented outsite of the metadata class to be able to
+    access metadata of all indicators/reports without instantiation of those.
+
+    Args:
+        module_name: Either indicators or reports.
+        class_name: Any class name in Camel Case which is implemented
+                    as report or indicator
+    """
+    if module_name != "indicators" and module_name != "reports":
+        raise ValueError("module name value can only be 'indicators' or 'reports'.")
+
+    metadata = load_metadata(module_name)
+    try:
+        return metadata[class_name]
+    except KeyError:
+        logger.info(
+            "Invalid {0} class name. Valid {0} class names are: ".format(
+                module_name[:-1]
+            )
+            + str(metadata.keys())
+        )
+        raise
+
+
 def load_layer_definitions() -> Dict:
     """
-    Read ohsome API parameter of each layer from YAML file.
+    Read ohsome API parameters of all layer from YAML file.
 
-    Returns a Dict with the layer names of the layers as keys.
+    Returns:
+        A Dict with the layer names of the layers as keys.
     """
     directory = get_module_dir("ohsome_quality_tool.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
@@ -89,7 +126,7 @@ def load_layer_definitions() -> Dict:
 
 def get_layer_definition(layer_name: str) -> Dict:
     """
-    Get ohsome API parameters of an layer based on layer name.
+    Get ohsome API parameters of a single layer based on layer name.
 
     This is implemented outsite of the layer class to
     be able to access layer definitions of all indicators without
@@ -103,56 +140,21 @@ def get_layer_definition(layer_name: str) -> Dict:
         raise
 
 
-def get_indicator_metadata(indicator_name: str) -> Dict:
-    """Get metadata of an indicator based on indicator class name.
-
-    This is implemented outsite of the indicator or metadata class to
-    be able to access metadata of all indicators without instantiation of those.
-    """
-    indicators = load_indicator_metadata()
-    try:
-        return indicators[indicator_name]
-    except KeyError:
-        logger.info(
-            "Invalid indicator name. Valid indicator names are: "
-            + str(indicators.keys())
-        )
-        raise
-
-
 def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
     raise NotImplementedError(
-        "Use utils.definitions.load_indicator_metadata() or "
+        "Use utils.definitions.load_indicator_metadata() and"
         + "utils.helper.name_to_class() instead"
     )
 
 
 def get_report_classes() -> Dict:
     """Map report name to corresponding class."""
-    # To avoid circular imports classes are imported only once this function is called.
-    from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
-        Report as remoteMappingLevelOneReport,
-    )
-    from ohsome_quality_tool.reports.simple_report.report import Report as simpleReport
-    from ohsome_quality_tool.reports.sketchmap_fitness.report import (
-        Report as sketchmapFitnessReport,
+    raise NotImplementedError(
+        "Use utils.definitions.load_indicator_metadata() and"
+        + "utils.helper.name_to_class() instead"
     )
 
-    return {
-        "sketchmap-fitness": sketchmapFitnessReport,
-        "remote-mapping-level-one": remoteMappingLevelOneReport,
-        "simple-report": simpleReport,
-    }
-
-
-LayerDefinition = collections.namedtuple(
-    "LayerDefinition", "name description filter unit"
-)
-IndicatorResult = collections.namedtuple("Result", ["label", "value", "text", "svg"])
-IndicatorMetadata = collections.namedtuple(
-    "Metadata", "name description filterName filterDescription"
-)
 
 ReportResult = collections.namedtuple("Result", "label value text")
 ReportMetadata = collections.namedtuple("Metadata", "name description")
