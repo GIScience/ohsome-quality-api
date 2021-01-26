@@ -28,16 +28,24 @@ def create_indicator(
     An indicator is created by either calculating the indicator
     for a geometry or by fetching already calculated from the geodatabase.
     """
+
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     if bpolys:
-        indicator = indicator_class(dynamic=True, layer_name=layer_name, bpolys=bpolys)
+        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
-        return indicator
+    elif dataset and feature_id:
+        indicator = indicator_class(
+            layer_name=layer_name, dataset=dataset, feature_id=feature_id
+        )
+        indicator.get_from_database()
     else:
-        # TODO: Fetch indicator results from Geodatabase
-        pass
+        raise ValueError(
+            "Provide either a bounding polygone"
+            + "or dataset name and feature id as parameter."
+        )
+    return indicator
 
 
 def process_indicator(
