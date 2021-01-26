@@ -14,7 +14,6 @@ from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, log
 class LastEdit(BaseIndicator):
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
@@ -23,7 +22,6 @@ class LastEdit(BaseIndicator):
         time_range: str = "2019-07-15,2020-07-15",
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,

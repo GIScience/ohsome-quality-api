@@ -17,14 +17,12 @@ from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, log
 class PoiDensity(BaseIndicator):
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,

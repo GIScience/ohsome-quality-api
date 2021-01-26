@@ -19,14 +19,12 @@ class GufComparison(BaseIndicator):
         self,
         dataset,
         feature_id,
-        dynamic: bool,
         layer_name: str = "building_area",
         bpolys: FeatureCollection = "",
     ) -> None:
         super().__init__(
             dataset=dataset,
             feature_id=feature_id,
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
         )

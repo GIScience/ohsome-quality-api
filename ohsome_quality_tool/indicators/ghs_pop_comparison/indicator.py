@@ -16,7 +16,6 @@ class GhsPopComparison(BaseIndicator):
 
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         dataset: str = None,
         feature_id: int = None,
@@ -25,7 +24,6 @@ class GhsPopComparison(BaseIndicator):
         super().__init__(
             dataset=dataset,
             feature_id=feature_id,
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
         )
