@@ -5,7 +5,7 @@ import geojson
 import yaml
 
 from ohsome_quality_tool import oqt
-from ohsome_quality_tool.utils.definitions import (  # get_report_classes,
+from ohsome_quality_tool.utils.definitions import (
     DATASET_NAMES,
     load_layer_definitions,
     load_metadata,
