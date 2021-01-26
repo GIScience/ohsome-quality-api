@@ -102,7 +102,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
     try:
         return metadata[class_name]
     except KeyError:
-        logger.info(
+        logger.error(
             "Invalid {0} class name. Valid {0} class names are: ".format(
                 module_name[:-1]
             )
@@ -136,7 +136,7 @@ def get_layer_definition(layer_name: str) -> Dict:
     try:
         return layers[layer_name]
     except KeyError:
-        logger.info("Invalid layer name. Valid layer names are: " + str(layers.keys()))
+        logger.error("Invalid layer name. Valid layer names are: " + str(layers.keys()))
         raise
 
 
