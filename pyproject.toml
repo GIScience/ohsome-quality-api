@@ -27,6 +27,7 @@ pymannkendall = "^1.4.1"
 pandas = "^1.1.5"
 schema = "^0.7.3"
 dacite = "^1.6.0"
+psycopg2 = "^2.8.6"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
