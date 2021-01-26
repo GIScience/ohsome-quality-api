@@ -68,6 +68,7 @@ def create_report(
     report_class = name_to_class(class_type="report", name=report_name)
     if bpolys:
         report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+        report.create()
     elif dataset and feature_id:
         report = None
         pass
