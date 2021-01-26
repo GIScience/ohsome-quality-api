@@ -5,7 +5,7 @@ from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_tool.utils.definitions import IndicatorResult, logger
+from ohsome_quality_tool.utils.definitions import logger
 
 
 def get_table_name(dataset: str, indicator: str, layer_name: str) -> str:
@@ -137,13 +137,14 @@ def get_indicator_results_from_db(
         query_result[field] = get_value_from_db(table, feature_id, field)
 
     logger.info(f"Got results for feature {feature_id} from {table}.")
-    result = IndicatorResult(
-        label=query_result["label"],
-        value=query_result["value"],
-        text=query_result["text"],
-        svg=query_result["svg"],
-    )
-    return result
+    # TODO Rewrite to use Result class definied in BaseIndicator class
+    # result = IndicatorResult(
+    #     label=query_result["label"],
+    #     value=query_result["value"],
+    #     text=query_result["text"],
+    #     svg=query_result["svg"],
+    # )
+    return None
 
 
 def get_value_from_db(dataset: str, feature_id: str, field_name: str):
