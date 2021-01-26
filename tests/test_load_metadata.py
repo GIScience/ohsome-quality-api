@@ -2,16 +2,12 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_tool.utils.definitions import (
-    get_indicator_metadata,
-    load_indicator_metadata,
-)
+from ohsome_quality_tool.utils.definitions import get_metadata, load_metadata
 
 
 class TestReadMetadata(unittest.TestCase):
-    def setUp(self):
-        self.metadata = load_indicator_metadata()
-        self.schema = Schema(
+    def test_validate_indicator_schema(self):
+        schema = Schema(
             {
                 str: {
                     "name": str,
@@ -26,16 +22,38 @@ class TestReadMetadata(unittest.TestCase):
                 }
             }
         )
+        metadata = load_metadata("indicators")
+        schema.validate(metadata)  # Print information if validation fails
+        self.assertTrue(schema.is_valid(metadata))
 
-    def test_validate_schema(self):
-        self.schema.validate(self.metadata)  # Print information if validation fails
-        self.assertTrue(self.schema.is_valid(self.metadata))
+    def test_validate_report_schema(self):
+        schema = Schema(
+            {
+                str: {
+                    "name": str,
+                    "report_description": str,
+                    "label_description": {
+                        "red": str,
+                        "yellow": str,
+                        "green": str,
+                        "undefined": str,
+                    },
+                }
+            }
+        )
+        metadata = load_metadata("reports")
+        schema.validate(metadata)  # Print information if validation fails
+        self.assertTrue(schema.is_valid(metadata))
 
     def test_get_indicator_metadata(self):
-        self.assertRaises(KeyError, get_indicator_metadata, "")
-        self.assertRaises(KeyError, get_indicator_metadata, "ajsjdh")
-        self.assertRaises(KeyError, get_indicator_metadata, None)
-        self.assertIsInstance(get_indicator_metadata("GufComparison"), dict)
+        self.assertRaises(ValueError, get_metadata, "", "")
+        self.assertRaises(KeyError, get_metadata, "indicators", "ajsjdh")
+        self.assertIsInstance(get_metadata("indicators", "GufComparison"), dict)
+
+    def test_get_report_metadata(self):
+        self.assertRaises(ValueError, get_metadata, "", "")
+        self.assertRaises(KeyError, get_metadata, "reports", "ajsjdh")
+        self.assertIsInstance(get_metadata("reports", "SimpleReport"), dict)
 
 
 if __name__ == "__main__":
