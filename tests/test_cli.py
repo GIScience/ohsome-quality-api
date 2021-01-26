@@ -19,19 +19,12 @@ class TestCli(unittest.TestCase):
         result = self.runner.invoke(cli, ["--help"])
         assert result.exit_code == 0
 
-    # def testCli(self):
-    # result = self.runner.invoke(cli)
-    # assert result.exit_code == 0
-
-    #         result = self.runner.invoke(cli, ['--verbose', "list-indicators"])
-    #         assert result.exit_code == 0
-    #         print(result.output.__contains__("Logging enabled"))
-    #         print(result.output)
-    # print(type(result.output))
-    # assert "Logging enabled" in result.output
-
     def testListIndicators(self):
         result = self.runner.invoke(cli, ["list-indicators"])
+        assert result.exit_code == 0
+
+    def testListReports(self):
+        result = self.runner.invoke(cli, ["list-reports"])
         assert result.exit_code == 0
 
     def testListLayers(self):
@@ -39,7 +32,6 @@ class TestCli(unittest.TestCase):
         assert result.exit_code == 0
 
     def testCreateIndicator(self):
-
         result = self.runner.invoke(
             cli,
             [
