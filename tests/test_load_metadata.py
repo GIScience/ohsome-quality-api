@@ -53,7 +53,7 @@ class TestReadMetadata(unittest.TestCase):
     def test_get_report_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")
         self.assertRaises(KeyError, get_metadata, "reports", "ajsjdh")
-        self.assertIsInstance(get_metadata("reports", "SimpleReport"), dict)
+        self.assertIsInstance(get_metadata("reports", "RemoteMappingLevelOne"), dict)
 
 
 if __name__ == "__main__":
