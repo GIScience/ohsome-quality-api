@@ -19,8 +19,8 @@ from ohsome_quality_tool.geodatabase.client import (
 )
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
-    get_indicator_metadata,
     get_layer_definition,
+    get_metadata,
     logger,
 )
 
@@ -78,10 +78,11 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        self.bpolys = bpolys
-        self.dataset = dataset
-        self.feature_id = feature_id
-        if bpolys is None and dataset and feature_id:
+        if bpolys:
+            self.bpolys = bpolys
+        elif bpolys is None and dataset and feature_id:
+            self.dataset = dataset
+            self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
@@ -89,7 +90,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 + "or dataset name and feature id as parameter."
             )
         # setattr(object, key, value) could be used instead of relying on from_dict.
-        metadata = get_indicator_metadata(type(self).__name__)
+        metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
 
         layer = get_layer_definition(layer_name)
