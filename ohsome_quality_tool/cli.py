@@ -7,8 +7,8 @@ import yaml
 from ohsome_quality_tool import oqt
 from ohsome_quality_tool.utils.definitions import (  # get_report_classes,
     DATASET_NAMES,
-    load_indicator_metadata,
     load_layer_definitions,
+    load_metadata,
     logger,
 )
 
@@ -39,7 +39,7 @@ _indicator_option = [
         "-i",
         required=True,
         type=click.Choice(
-            load_indicator_metadata().keys(),
+            load_metadata("indicators").keys(),
             case_sensitive=True,
         ),
         help="Choose an indicator,valid indicators are specified in definitions.py .",
@@ -132,7 +132,15 @@ def cli(verbose):
 @cli.command("list-indicators")
 def list_indicators():
     """List available indicators and their metadata."""
-    metadata = load_indicator_metadata()
+    metadata = load_metadata("indicators")
+    metadata = yaml.dump(metadata, default_style="|")
+    click.echo(metadata)
+
+
+@cli.command("list-reports")
+def list_reports():
+    """List available reports and their metadata."""
+    metadata = load_metadata("reports")
     metadata = yaml.dump(metadata, default_style="|")
     click.echo(metadata)
 
