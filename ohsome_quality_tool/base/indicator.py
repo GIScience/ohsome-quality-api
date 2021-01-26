@@ -78,16 +78,15 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        if bpolys is None:
-            self.bpolys = bpolys
-        elif dataset and feature_id:
-            self.dataset = dataset
-            self.feature_id = feature_id
+        self.bpolys = bpolys
+        self.dataset = dataset
+        self.feature_id = feature_id
+        if bpolys is None and dataset and feature_id:
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
-                "Provice either a GeoJSON as input "
-                + "or the dataset name and the feature id"
+                "Provide either a bounding polygone"
+                + "or dataset name and feature id as parameter."
             )
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_indicator_metadata(type(self).__name__)
