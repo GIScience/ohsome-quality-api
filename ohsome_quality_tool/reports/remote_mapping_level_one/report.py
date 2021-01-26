@@ -8,8 +8,6 @@ from ohsome_quality_tool.utils.helper import name_to_class
 
 
 class RemoteMappingLevelOne(BaseReport):
-    """The remote mapping level one Report."""
-
     def __init__(
         self,
         bpolys: FeatureCollection = None,

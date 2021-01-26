@@ -13,6 +13,8 @@ python -m unittest test_indicator_poi_density_2.py
 
 # Reports
 python -m unittest test_report_remote_mapping_level_one.py
+python -m unittest test_report_simple_report.py
+python -m unittest test_report_sketchmap_fitness.py
 
 # oqt.py
 python -m unittest oqt.py
