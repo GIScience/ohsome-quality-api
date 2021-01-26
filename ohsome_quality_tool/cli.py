@@ -35,7 +35,7 @@ def add_options(options):
 
 _indicator_option = [
     click.option(
-        "--indicator_name",
+        "--indicator-name",
         "-i",
         required=True,
         type=click.Choice(
@@ -48,13 +48,11 @@ _indicator_option = [
 
 _report_option = [
     click.option(
-        "--report_name",
+        "--report-name",
         "-r",
         required=True,
         type=click.Choice(
-            # TODO
-            # get_report_classes().keys(),
-            [],
+            load_metadata("reports").keys(),
             case_sensitive=True,
         ),
         help="Choose a report,valid reports are specified in definitions.py .",
@@ -94,7 +92,7 @@ _dataset_option = [
 
 _layer_name_option = [
     click.option(
-        "--layer_name",
+        "--layer-name",
         required=True,
         type=click.Choice(
             list(load_layer_definitions().keys()),
@@ -111,7 +109,7 @@ _layer_name_option = [
 # TODO: define and double check expected data type here
 _feature_id_option = [
     click.option(
-        "--feature_id",
+        "--feature-id",
         type=str,
         help="""Provide the feature id of your area of interest.""",
         default=None,
@@ -162,17 +160,12 @@ def list_layers():
 def create_indicator(
     indicator_name: str, infile: str, layer_name: str, feature_id, dataset
 ):
-    # TODO: Add docstring -> Will be printed as --help.
+    """Create an Indicator and print results to stdout."""
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
-    elif feature_id is None and dataset is None:
-        click.echo(
-            "Invalid arguments. " + "Provide either infile or feature-id and dataset"
-        )
-        return None
     indicator = oqt.create_indicator(
         indicator_name=indicator_name,
         bpolys=bpolys,
@@ -185,21 +178,21 @@ def create_indicator(
     click.echo(indicator.result)
 
 
-@cli.command("get-static-indicator")
-@add_options(_indicator_option)
+@cli.command("create-report")
+@add_options(_report_option)
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
-@add_options(_layer_name_option)
-def get_static_indicator(
-    indicator_name: str, dataset: str, feature_id: int, layer_name: str
-):
-    result, metadata = oqt.get_static_indicator(
-        indicator_name=indicator_name,
-        dataset=dataset,
-        feature_id=feature_id,
-        layer_name=layer_name,
+def create_report(report_name: str, infile: str, dataset: str, feature_id: int):
+    """Create a Report and print results to stdout."""
+    if infile:
+        with open(infile, "r") as file:
+            bpolys = geojson.load(file)
+    report = oqt.create_report(
+        report_name=report_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
-    return result, metadata
+    # TODO: Print out readable format.
+    click.echo(report.metadata)
+    click.echo(report.result)
 
 
 @cli.command("process-indicator")
@@ -255,16 +248,22 @@ def process_all_indicators(dataset: str):
         )
 
 
+@cli.command("get-static-indicator")
+@add_options(_indicator_option)
+@add_options(_dataset_option)
+@add_options(_feature_id_option)
+@add_options(_layer_name_option)
+def get_static_indicator(
+    indicator_name: str, dataset: str, feature_id: int, layer_name: str
+):
+    raise NotImplementedError("Depricated. Use 'create_indicator' instead.")
+
+
 @cli.command("get-dynamic-report")
 @add_options(_report_option)
 @add_options(_infile_option)
 def get_dynamic_report(report_name: str, infile: str):
-    with open(infile, "r") as file:
-        bpolys = geojson.load(file)
-    result, indicators, metadata = oqt.get_dynamic_report(
-        report_name=report_name, bpolys=bpolys
-    )
-    return result, indicators, metadata
+    raise NotImplementedError("Depricated. Use 'create_indicator' instead.")
 
 
 @cli.command("get-static-report")
@@ -272,10 +271,7 @@ def get_dynamic_report(report_name: str, infile: str):
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
 def get_static_report(report_name: str, dataset: str, feature_id: int):
-    result, indicators, metadata = oqt.get_static_report(
-        report_name=report_name, dataset=dataset, feature_id=feature_id
-    )
-    return result, indicators, metadata
+    raise NotImplementedError("Depricated. Use 'create_indicator' instead.")
 
 
 @cli.command("get-static-report-pdf")

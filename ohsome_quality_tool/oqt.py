@@ -22,11 +22,13 @@ def create_indicator(
     dataset: str = None,
     feature_id: int = None,
 ):
-    """
-    Create an indicator.
+    """Create an indicator.
 
     An indicator is created by either calculating the indicator
     for a geometry or by fetching already calculated from the geodatabase.
+
+    Returns:
+        Indicator object
     """
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
@@ -42,10 +44,36 @@ def create_indicator(
         indicator.get_from_database()
     else:
         raise ValueError(
-            "Provide either a bounding polygone"
+            "Provide either a bounding polygone "
             + "or dataset name and feature id as parameter."
         )
     return indicator
+
+
+def create_report(
+    report_name: str, bpolys: FeatureCollection, dataset: str, feature_id: int
+):
+    """Create a report.
+
+    A Report is created by either calculaating each indicator
+    from scratch and combine the results together or
+    by fetching already calculated and combined reports from the geodatabase.
+
+    Returns:
+        Report object
+    """
+    report_class = name_to_class(class_type="report", name=report_name)
+    if bpolys:
+        report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+    elif dataset and feature_id:
+        report = None
+        pass
+    else:
+        raise ValueError(
+            "Provide either a bounding polygone "
+            + "or dataset name and feature id as parameter."
+        )
+    return report
 
 
 def process_indicator(
@@ -96,26 +124,11 @@ def get_static_indicator(
 
 
 def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
-    """Get report for given geojson file.
-
-    The indicator results will be calculated dynamically,
-    e.g. by querying the ohsome api.
-    """
-    report_class = name_to_class(class_type="report", name=report_name)
-    result, indicators, metadata = report_class(dynamic=True, bpolys=bpolys).get()
-    return result, indicators, metadata
+    raise NotImplementedError("Use create_report() instead")
 
 
 def get_static_report(report_name: str, dataset: str, feature_id: int):
-    """Get report with indicator results for a pre-defined area.
-
-    The indicator results have been pre-processed and
-    will be extracted from the geo database."""
-    # TODO: adjust arguments bpolys
-    report_class = name_to_class(class_type="report", name=report_name)
-    report = report_class(dynamic=False, dataset=dataset, feature_id=feature_id)
-    result, indicators, metadata = report.get()
-    return result, indicators, metadata
+    raise NotImplementedError("Use create_report() instead")
 
 
 def get_static_report_pdf(
@@ -125,8 +138,4 @@ def get_static_report_pdf(
 
     The indicator results have been pre-processed and
     will be extracted from the geo database."""
-    # TODO: adjust arguments bpolys
-    report_class = name_to_class(class_type="report", name=report_name)
-    report = report_class(dynamic=False, dataset=dataset, feature_id=feature_id)
-    result, indicators, metadata = report.get()
-    report.export_as_pdf(outfile=outfile)
+    raise NotImplementedError()
