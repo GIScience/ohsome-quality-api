@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 from dacite import from_dict
 from geojson import FeatureCollection
@@ -10,7 +10,7 @@ from ohsome_quality_tool.geodatabase.client import get_bpolys_from_db
 from ohsome_quality_tool.utils.definitions import (
     ReportMetadata,
     ReportResult,
-    get_report_metadata,
+    get_metadata,
     logger,
 )
 
@@ -34,39 +34,42 @@ class Result:
 
 
 class BaseReport(metaclass=ABCMeta):
+    """Subclass has to create and append indicator objects to indicators list."""
+
     def __init__(
         self,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ):
-        self.bpolys = bpolys
-        self.dataset = dataset
-        self.feature_id = feature_id
-        if bpolys is None and dataset and feature_id:
+        if bpolys:
+            self.bpolys = bpolys
+        elif self.bpolys is None and dataset and feature_id:
+            self.dataset = dataset
+            self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
-                "Provide either a bounding polygone"
+                "Provide either a bounding polygone "
                 + "or dataset name and feature id as parameter."
             )
 
         self.indicators: List[BaseIndicator] = []
         # self.metadata = ReportMetadata(name=self.name, description=self.description)
-        metadata = get_report_metadata(type(self).__name__)
+        metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
+        # Results will be written during the lifecycle of the report object (combine())
+        self.result = Result(None, None, None)
 
     def create(self) -> None:
         for indicator in self.indicators:
-            indicator.processing()
-            indicator.calculation()
+            indicator.preprocess()
+            indicator.calculate()
             indicator.create_figure()
-        label, value, text = self.combine()
-        self.result.label = label
-        self.result.value = value
-        self.result.description = text
+        self.combine()
 
-    def get(self) -> Tuple[ReportResult, Dict, ReportMetadata]:
+    def get(self):
         """Pass the report containing the indicator results to the user.
 
         For dynamic indicators this will trigger the processing.
@@ -116,11 +119,6 @@ class BaseReport(metaclass=ABCMeta):
     # @abstractmethod
     # def description(self):
     #     pass
-
-    @property
-    @abstractmethod
-    def indicators_definition(self):
-        pass
 
     @abstractmethod
     def combine(self, indicators) -> ReportResult:
