@@ -51,7 +51,10 @@ def create_indicator(
 
 
 def create_report(
-    report_name: str, bpolys: FeatureCollection, dataset: str, feature_id: int
+    report_name: str,
+    bpolys: FeatureCollection = None,
+    dataset: str = None,
+    feature_id: int = None,
 ):
     """Create a report.
 

@@ -36,10 +36,23 @@ class TestCli(unittest.TestCase):
             cli,
             [
                 "create-indicator",
-                "--indicator_name",
+                "--indicator-name",
                 "GhsPopComparison",
-                "--layer_name",
+                "--layer-name",
                 "building_count",
+                "--infile",
+                self.infile,
+            ],
+        )
+        assert result.exit_code == 0
+
+    def testCreateReport(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-report",
+                "--report-name",
+                "SimpleReport",
                 "--infile",
                 self.infile,
             ],

@@ -180,6 +180,7 @@ def create_indicator(
 
 @cli.command("create-report")
 @add_options(_report_option)
+@add_options(_infile_option)
 @add_options(_dataset_option)
 @add_options(_feature_id_option)
 def create_report(report_name: str, infile: str, dataset: str, feature_id: int):
