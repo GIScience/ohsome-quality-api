@@ -1,41 +1,70 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict, Tuple
+from dataclasses import dataclass
+from typing import Dict, List, Tuple
 
+from dacite import from_dict
 from geojson import FeatureCollection
 
+from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.geodatabase.client import get_bpolys_from_db
-from ohsome_quality_tool.utils.definitions import ReportMetadata, ReportResult, logger
+from ohsome_quality_tool.utils.definitions import (
+    ReportMetadata,
+    ReportResult,
+    get_report_metadata,
+    logger,
+)
+
+
+@dataclass
+class Metadata:
+    """Metadata of an report as defined in the metadata.yaml file"""
+
+    name: str
+    report_description: str
+    label_description: Dict
+
+
+@dataclass
+class Result:
+    """The result of the Report."""
+
+    label: str
+    value: float
+    description: str
 
 
 class BaseReport(metaclass=ABCMeta):
-    """The base class for all reports."""
-
     def __init__(
         self,
-        dynamic: bool,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ):
-        """Initialize a report"""
-        # here we can put the default parameters for reports
-        self.dynamic = dynamic
-
-        if self.dynamic:
-            if bpolys is None:
-                raise ValueError
-            # for dynamic calculation you need to provide geojson geometries
-            self.bpolys = bpolys
-        else:
-            if dataset is None or feature_id is None:
-                raise ValueError
-            # for static calculation you need to provide the dataset name and
-            # optionally an feature_id string, e.g. which geometry ids to use
-            self.dataset = dataset
-            self.feature_id = feature_id
+        self.bpolys = bpolys
+        self.dataset = dataset
+        self.feature_id = feature_id
+        if bpolys is None and dataset and feature_id:
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
+        else:
+            raise ValueError(
+                "Provide either a bounding polygone"
+                + "or dataset name and feature id as parameter."
+            )
 
-        self.metadata = ReportMetadata(name=self.name, description=self.description)
+        self.indicators: List[BaseIndicator] = []
+        # self.metadata = ReportMetadata(name=self.name, description=self.description)
+        metadata = get_report_metadata(type(self).__name__)
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
+    def create(self) -> None:
+        for indicator in self.indicators:
+            indicator.processing()
+            indicator.calculation()
+            indicator.create_figure()
+        label, value, text = self.combine()
+        self.result.label = label
+        self.result.value = value
+        self.result.description = text
 
     def get(self) -> Tuple[ReportResult, Dict, ReportMetadata]:
         """Pass the report containing the indicator results to the user.
@@ -44,7 +73,6 @@ class BaseReport(metaclass=ABCMeta):
         For non-dynamic (pre-processed) indicators this will
         extract the results from the geo database."""
 
-        indicators = []
         for item in self.indicators_definition:
             indicator, layer_name = item
 
@@ -61,14 +89,16 @@ class BaseReport(metaclass=ABCMeta):
                     feature_id=self.feature_id,
                 ).get()
 
-            indicators.append(
+            self.indicators.append(
                 {"metadata": metadata._asdict(), "result": result._asdict()}
             )
 
-        label, value, text = self.combine_indicators(indicators)
-        result = ReportResult(label=label, value=value, text=text)
+        label, value, text = self.combine_indicators(self.indicators)
+        self.result.label = label
+        self.result.value = value
+        self.result.description = text
 
-        return result, indicators, self.metadata
+        # return result, indicators, self.metadata
 
     def export_as_pdf(
         self, result: ReportResult, indicators, metadata: ReportMetadata, outfile: str
@@ -76,15 +106,16 @@ class BaseReport(metaclass=ABCMeta):
         """Generate the PDF report."""
         logger.info(f"Export report as PDF for {self.name} to {outfile}")
 
-    @property
-    @abstractmethod
-    def name(self):
-        pass
+    # TODO: Delete
+    # @property
+    # @abstractmethod
+    # def name(self):
+    #     pass
 
-    @property
-    @abstractmethod
-    def description(self):
-        pass
+    # @property
+    # @abstractmethod
+    # def description(self):
+    #     pass
 
     @property
     @abstractmethod
@@ -92,6 +123,6 @@ class BaseReport(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def combine_indicators(self, indicators) -> ReportResult:
+    def combine(self, indicators) -> ReportResult:
         """Combine indicators e.g. using a weighting schema."""
         pass
