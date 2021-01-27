@@ -17,8 +17,11 @@ class RemoteMappingLevelOne(BaseReport):
         """Create a list of indicator objects."""
 
         super().__init__(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+
+    def create_indicators(self) -> None:
         for indicator_name, layer_name in (
-            # TODO ("GufComparison"], "building-area"),
+            # TODO: Uncomment once implemented
+            # ("GufComparison"], "building-area"),
             # ("MappingSaturation", "building_count"),
             # ("MappingSaturation", "major_roads"),
             ("GhsPopComparison", "building_count"),
@@ -26,11 +29,13 @@ class RemoteMappingLevelOne(BaseReport):
             ("LastEdit", "major_roads"),
         ):
             indicator_class = name_to_class(class_type="indicator", name=indicator_name)
-            indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
+            indicator = indicator_class(layer_name=layer_name, bpolys=self.bpolys)
+            indicator.preprocess()
+            indicator.calculate()
+            indicator.create_figure()
             self.indicators.append(indicator)
 
-    def combine(self):
-        """Combine the results of all indicators."""
+    def combine_indicators(self) -> None:
         logger.info(f"Combine indicators for report: {self.metadata.name}")
 
         values = []

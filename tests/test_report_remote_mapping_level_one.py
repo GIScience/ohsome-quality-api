@@ -20,7 +20,8 @@ class TestReportRemoteMappingLevelOne(unittest.TestCase):
         self.report = RemoteMappingLevelOne(bpolys=bpolys)
 
     def test(self):
-        self.report.create()
+        self.report.create_indicators()
+        self.report.combine_indicators()
         self.assertIsNotNone(self.report.result.label)
         self.assertIsNotNone(self.report.result.value)
         self.assertIsNotNone(self.report.result.description)

@@ -62,13 +62,6 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
 
-    def create(self) -> None:
-        for indicator in self.indicators:
-            indicator.preprocess()
-            indicator.calculate()
-            indicator.create_figure()
-        self.combine()
-
     def get(self):
         """Pass the report containing the indicator results to the user.
 
@@ -121,6 +114,11 @@ class BaseReport(metaclass=ABCMeta):
     #     pass
 
     @abstractmethod
-    def combine(self, indicators) -> ReportResult:
-        """Combine indicators e.g. using a weighting schema."""
+    def create_indicators(self) -> None:
+        """Create indicators and store them in attribute 'indicators'."""
+        pass
+
+    @abstractmethod
+    def combine_indicators(self) -> None:
+        """Combine indicators results and create the report result object."""
         pass
