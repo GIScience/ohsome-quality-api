@@ -4,7 +4,7 @@ from typing import Dict
 from geojson import FeatureCollection
 from psycopg2 import sql
 
-from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
+from ohsome_quality_tool.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
 from ohsome_quality_tool.utils.definitions import logger
 
 
