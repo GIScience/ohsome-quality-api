@@ -23,7 +23,6 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
@@ -31,7 +30,6 @@ class MappingSaturation(BaseIndicator):
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,
