@@ -1,8 +1,8 @@
 import json
-from typing import Dict, Tuple
+from string import Template
+from typing import Dict
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from geojson import FeatureCollection
 
@@ -38,264 +38,177 @@ class MappingSaturation(BaseIndicator):
             feature_id=feature_id,
         )
         self.time_range = time_range
+        # Those attributes will be set during lifecycle of the object.
+        self.saturation = None
+        self.growth = None
+        self.preprocessing_results = None
 
     def preprocess(self) -> Dict:
         """Get data from ohsome API and db. Put timestamps + data in list"""
 
-        logger.info(f"run preprocessing for {self.name} indicator")
+        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         query_results = ohsome_client.query(
-            layer=self.layer,
-            bpolys=json.dumps(self.bpolys),
-            time=self.time_range,
+            layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
         )
-
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
         max_value = max(results)
-
+        y_end_value = results[-1]
+        # check if data are there, in case of 0 = no data
         if max_value == 0:
             results_normalized = -1
             results = -1
+        # check if data at the end of time period are still there
+        elif max_value > 0 and y_end_value == 0:
+            results_normalized = -2
+            results = -2
         else:
             results_normalized = [result / max_value for result in results]
 
-        preprocessing_results = {
+        self.preprocessing_results = {
             "timestamps": timestamps,
             "results": results,
             "results_normalized": results_normalized,
         }
 
-        return preprocessing_results
+    def calculate(self):
 
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
+        logger.info(f"run calculation for : {self.metadata.name}")
 
-        logger.info(f"run calculation for {self.name} indicator")
-
+        description = Template(self.metadata.result_description).substitute(
+            saturation=self.saturation, growth=self.growth
+        )
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
-        if preprocessing_results["results"] == -1:
+        if self.preprocessing_results["results"] == -1:
             # start stadium
             text = "No mapping has happened in this region. "
             label = TrafficLightQualityLevels.UNDEFINED
             value = -1
-            text = text + self.interpretations["undefined"]
-            return label, value, text, preprocessing_results
-
+            description += self.metadata.label_description["undefined"]
+            return label, value, text, self.preprocessing_results
+        if self.preprocessing_results["results"] == -2:
+            # deletion of all data
+            text = "Mapping has happened in this region but data " "were deleted. "
+            label = TrafficLightQualityLevels.UNDEFINED
+            value = -1
+            description += self.metadata.label_description["undefined"]
+            return label, value, text, self.preprocessing_results
+        # prepare the data
         # not nice work around to avoid error ".. is not indexable"
-        dfWorkarkound = pd.DataFrame(preprocessing_results)
+        dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
         for i in range(len(dfWorkarkound)):
             li.append(i)
-
-        text = ""
-
-        # calculate traffic light value
+        # create current data frame
         df1 = pd.DataFrame(
             {
-                "timestamps": preprocessing_results["timestamps"],
-                "yValues": preprocessing_results["results"],
+                "timestamps": self.preprocessing_results["timestamps"],
+                "yValues": self.preprocessing_results["results"],
                 "li": li,
             }
         )
-
-        # get init params for sigmoid curve with 2 jumps
+        # get y values fot best fitting sigmid curve, with these y the
+        # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
-        initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
-        x1 = round(initParams[0])
-        x2 = round(initParams[2])
-        L = round(initParams[1])
-        L2 = round(initParams[3])
-
-        # get initial slopes for the 2 curves
-        inits = sigmoid_curve.initparamsFor2JumpsCurve(df1.li, df1.yValues)
-        yY = sigmoid_curve.getFirstLastY(inits)
-        k1 = yY[0] / yY[1]
-        k2 = yY[1] / yY[2]
-
-        # select best fitting curve, with mean_square_error
-        # mse for logistic1 with k as 10.0 / (maxx - minx) from initparamsingle()
-        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
-        yPred = sigmoid_curve.logistic1(
-            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
-        )
-        err1a = np.sum((yPred - df1.yValues) ** 2) / len(yPred)
-
-        # mse for logistic1 with k as 10.0 / (max(xdata) - min(xdata))
-        # from initparamsingleB()
-        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
-        yPredB = sigmoid_curve.logistic1(
-            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
-        )
-        err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
-
-        # mse for logistic2
-        yPred2 = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
-        err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
-
-        # collect mse in one list
-        errorslist = [err1a, err1B, err2]
-        # collect corresponding function names
-        errorslistFuncs = ["logistic1", "logistic1B", "logistic2"]
-        # get the smallest mse with its index
-        minError = errorslist.index(min(errorslist))
-        bestfit = errorslistFuncs[minError]
-
+        ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
         # check if data are more than start stadium
         # The end of the start stage is defined with
         # the maximum of the curvature function f''(x)
         # here: simple check <= 20
+        # TODO check for what size (of area or of data) the saturation
+        #  makes sense to be calculated
+        """
+        For buildings-count in a small area, this could return a wrong
+        interpretation, eg a little collection of farm house and buildings
+        with eg less than 8 buildings, but all buildings are mapped, the value
+        would be red, but its all mapped...
+        """
+        # calculate/define traffic light value and label
         if max(df1.yValues) <= 20:
             # start stadium
             label = TrafficLightQualityLevels.RED
             value = 0.0
-            text = text + self.interpretations["red"]
+            description += self.metadata.label_description["red"]
         else:
             # calculate slope/growth of last 3 years
             # take value in -36. month and value in -1. month of data
             earlyX = li[-36]
             lastX = li[-1]
-            # depending on best fitted curve calculate ydata with correct function
-            if bestfit == "logistic2":
-                ydataForSat = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
-            elif bestfit == "logistic1":
-                ydataForSat = sigmoid_curve.logistic1(
-                    initParamsSingle[4],
-                    initParamsSingle[3],
-                    initParamsSingle[1],
-                    df1.li,
-                )
-            elif bestfit == "logistic1B":
-                ydataForSat = sigmoid_curve.logistic1(
-                    initParamsSingleB[4],
-                    initParamsSingleB[3],
-                    initParamsSingleB[1],
-                    df1.li,
-                )
             # get saturation level within last 3 years
-            saturation = sigmoid_curve.getSaturationInLast3Years(
+            self.saturation = sigmoid_curve.getSaturationInLast3Years(
                 earlyX, lastX, df1.li, ydataForSat
             )
-            # if earlyX and lastX return same y value (means no growth any more),
+            # if earlyX and lastX return same y value
+            # (means no growth any more),
             # getSaturationInLast3Years returns 1.0
             # if saturation == 1.0:
             #    saturation = 0.0
-            logger.info(
-                "saturation level last 3 years at: "
-                + str(saturation)
-                + " for "
-                + f"{self.layer.name} and unit {self.layer.unit}"
-            )
 
-        # overall quality
-        # 0.0 = saturated
-        text = f"The saturation for the last 3 years is {saturation:.1f}. "
+        self.growth = 1 - self.saturation
 
         # TODO: make clear what should be used here,
-        #   if saturation should be used then the threshold needs to be adjusted
-        growth = 1 - saturation
-        if growth <= THRESHOLD_YELLOW:
+        #  if saturation should be used then the threshold
+        #  needs to be adjusted
+        if self.growth <= THRESHOLD_YELLOW:
             label = TrafficLightQualityLevels.GREEN
             value = 1.0
-            text = text + self.interpretations["green"]
+            description += self.metadata.label_description["green"]
         else:
             # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
             label = TrafficLightQualityLevels.YELLOW
             value = 0.5
-            text = text + self.interpretations["yellow"]
+            description += self.metadata.label_description["yellow"]
 
+        description = Template(self.metadata.result_description).substitute(
+            saturation=self.saturation, growth=self.growth
+        )
+        self.result.label = label
+        self.result.value = value
+        self.result.description = description
         logger.info(
-            f"result saturation value: {saturation}, label: {label},"
-            f" value: {value}, text: {text}"
+            f"result saturation value: {self.saturation}, label: {label},"
+            f" value: {value}, description: {description}"
         )
 
-        return label, value, text, preprocessing_results
-
-    def create_figure(self, data: Dict) -> str:
-        # TODO: maybe not all indicators will export figures?
-        # TODO: onevsg per layer?
-
-        # get init params for sigmoid curve with 2 jumps
-        sigmoid_curve = sigmoidCurve()
+    def create_figure(self) -> str:
         # not nice work around to avoid error ".. is not indexable"
-        dfWorkarkound = pd.DataFrame(data)
+        dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
         for i in range(len(dfWorkarkound)):
             li.append(i)
-
-        plt.figure()
-        # color the lines with different colors
-        # TODO: what if more than 5 layers are in there?
-        linecol = ["b-", "g-", "r-", "y-", "black-"]
-
-        # get API measure type (eg count, length)
         # create current dataframe
         df1 = pd.DataFrame(
             {
-                "timestamps": data["timestamps"],
-                "yValues": data["results"],
+                "timestamps": self.preprocessing_results["timestamps"],
+                "yValues": self.preprocessing_results["results"],
                 "li": li,
             }
         )
-        # initial values for the sigmoid function
-        initParams = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
-
-        x1 = round(initParams[0])
-        x2 = round(initParams[2])
-        L = round(initParams[1])
-        L2 = round(initParams[3])
-
-        # get initial slopes for the 2 curves
-        inits = sigmoid_curve.initparamsFor2JumpsCurve(df1.li, df1.yValues)
-        yY = sigmoid_curve.getFirstLastY(inits)
-        k1 = yY[0] / yY[1]
-        k2 = yY[1] / yY[2]
-
-        # select best fitting curve, with mean_square_error
-        # mse for logistic1 with k as 10.0 / (maxx - minx) from initparamsingle()
-        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
-        ydataSingle = sigmoid_curve.logistic1(
-            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
-        )
-        yPred = sigmoid_curve.logistic1(
-            initParamsSingle[4], initParamsSingle[3], initParamsSingle[1], df1.li
-        )
-        err1a = np.sum((yPred - df1.yValues) ** 2) / len(yPred)
-        # mse for logistic1 with k as 10.0 / (max(xdata) - min(xdata)) from
-        # initparamsingleB()
-        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
-        ydataSingleB = sigmoid_curve.logistic1(
-            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
-        )
-        yPredB = sigmoid_curve.logistic1(
-            initParamsSingleB[4], initParamsSingleB[3], initParamsSingleB[1], df1.li
-        )
-        err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
-        # mse for logistic2
-        yPred2 = sigmoid_curve.logistic2(x1, x2, L, L2, k1, k2, df1.li)
-        err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
-        # collect mse in one list
-        errorslist = [err1a, err1B, err2]
-        # collect corresponding function names
-        errorslistFuncs = ["logistic1", "logistic1B", "logistic2"]
-        # get the smallest mse with its index
-        minError = errorslist.index(min(errorslist))
-        bestfit = errorslistFuncs[minError]
+        # get y values fot best fitting sigmoid curve, with these y the
+        # saturation will be calculated
+        sigmoid_curve = sigmoidCurve()
+        ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
         # prepare plot
-        plt.title("Data with sigmoid curve, best fit: " + bestfit)
+        # color the lines with different colors
+        linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
+        plt.figure()
+        # show nice dates on x axis in plot
+        df1["timestamps"] = pd.to_datetime(df1["timestamps"])
+        plt.title("Saturation level of the data")
+        # plot the data
         plt.plot(
-            df1.li,
+            df1.timestamps,
             df1.yValues,
             linecol[0],
-            label=f"{self.layer.name} - {self.layer.unit}",
+            label=f"{self.layer.name} - {self.layer.endpoint}",
         )
-        plt.plot(df1.li, yPred2, linecol[2], label="Sigmoid curve with 2 jumps")
-        plt.plot(df1.li, ydataSingle, linecol[3], label="logistic1")
-        plt.plot(df1.li, ydataSingleB, linecol[1], label="logistic1 B")
+        # plot sigmoid curve
+        plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         plt.legend()
-        plt.savefig(self.outfile, format="svg")
+        plt.savefig(self.result.svg, format="svg")
         plt.close("all")
-        logger.info(f"saved plot: {self.filename}")
-        return self.filename
+        logger.info(
+            f"Save figure for indicator {self.metadata.name} to: {self.result.svg}"
+        )
