@@ -166,6 +166,8 @@ def create_indicator(
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
+    else:
+        bpolys = None
     indicator = oqt.create_indicator(
         indicator_name=indicator_name,
         bpolys=bpolys,
