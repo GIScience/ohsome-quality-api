@@ -4,12 +4,15 @@ Functions are triggert by the CLI and API.
 """
 
 from geojson import FeatureCollection
+from psycopg2.errors import UndefinedTable
 
 from ohsome_quality_tool.geodatabase.client import (
     create_error_table,
     get_error_table_name,
     get_fid_list,
     insert_error,
+    load_indicator_results,
+    save_indicator_results,
 )
 from ohsome_quality_tool.utils.definitions import logger
 from ohsome_quality_tool.utils.helper import name_to_class
@@ -25,28 +28,28 @@ def create_indicator(
     """Create an indicator.
 
     An indicator is created by either calculating the indicator
-    for a geometry or by fetching already calculated from the geodatabase.
+    for a geometry or by fetching already calculated indicator from the geodatabase.
 
     Returns:
         Indicator object
     """
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
-    if bpolys:
-        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
+    indicator = indicator_class(
+        layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
+    )
+    if bpolys and dataset is None and feature_id is None:
         indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
-    elif dataset and feature_id:
-        indicator = indicator_class(
-            layer_name=layer_name, dataset=dataset, feature_id=feature_id
-        )
-        indicator.get_from_database()
-    else:
-        raise ValueError(
-            "Provide either a bounding polygone "
-            + "or dataset name and feature id as parameter."
-        )
+    if dataset and feature_id:
+        try:
+            load_indicator_results(indicator)
+        except UndefinedTable:
+            indicator.preprocess()
+            indicator.calculate()
+            indicator.create_figure()
+            save_indicator_results(indicator)
     return indicator
 
 
