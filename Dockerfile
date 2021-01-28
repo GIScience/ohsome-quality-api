@@ -1,37 +1,20 @@
-FROM osgeo/gdal:ubuntu-small-latest
+FROM osgeo/gdal:ubuntu-small-3.2.1
 
 # Set C.UTF-8 locale as default (Needed by the Click library)
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-ARG YOUR_ENV
+RUN apt-get -q update && apt-get -q --yes install python3-pip
 
-ENV YOUR_ENV=${YOUR_ENV} \
-  PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  POETRY_VERSION=1.1.4 \
-  POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=false \
-  POETRY_CACHE_DIR='/var/cache/pypoetry' \
-  PATH="$PATH:/root/.poetry/bin"
-
-# Install pip
-RUN apt-get update && apt-get --yes install python3-pip git
-RUN pip3 install "poetry==$POETRY_VERSION"
-
-WORKDIR /root
-
-# Create directories for config, data and logs
+RUN useradd --create-home oqt
+WORKDIR /home/oqt
+USER oqt
+# Create data directory
 RUN mkdir --parents .local/share/oqt
 
-# Copy mapswipe workers repo from local repo
-COPY . .
+COPY pyproject.toml .
+COPY ohsome_quality_tool ohsome_quality_tool
 
-RUN poetry config virtualenvs.create false
-RUN poetry install  --no-dev
+RUN pip3 install .
 
-
+ENV PATH="/home/opt/.local/bin:${PATH}"
