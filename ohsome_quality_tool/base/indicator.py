@@ -7,21 +7,16 @@ import os
 import uuid
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Tuple
+from typing import Dict
 
 from dacite import from_dict
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.geodatabase.client import (
-    get_bpolys_from_db,
-    get_indicator_results_from_db,
-    save_indicator_results_to_db,
-)
+import ohsome_quality_tool.geodatabase.client as db_client
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
     get_layer_definition,
     get_metadata,
-    logger,
 )
 
 
@@ -83,7 +78,7 @@ class BaseIndicator(metaclass=ABCMeta):
         elif bpolys is None and dataset and feature_id:
             self.dataset = dataset
             self.feature_id = feature_id
-            self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
+            self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
                 "Provide either a bounding polygone"
@@ -101,43 +96,6 @@ class BaseIndicator(metaclass=ABCMeta):
         figure_path = os.path.join(DATA_PATH, filename)
 
         self.result: Result = Result(None, None, None, figure_path)
-
-    def get(self) -> Tuple[Result, Metadata]:
-        """Pass the indicator results to the user.
-
-        For dynamic indicators this will trigger the processing.
-        For non-dynamic (pre-processed) indicators this will
-        extract the results from the geo database.
-        """
-        if self.dynamic:
-            logger.info(f"Run processing for dynamic indicator {self.name}.")
-            result = self.run_processing()
-        else:
-            logger.info(
-                f"Get pre-processed results from geo db for indicator {self.name}."
-            )
-            result = self.get_from_database()
-        return result, self.metadata
-
-    def save_to_database(self) -> None:
-        """Save the results to the geo database."""
-        save_indicator_results_to_db(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer.name,
-            indicator=self.metadata.name,
-            results=self.result,
-        )
-
-    def get_from_database(self) -> Result:
-        """Get pre-processed indicator results from geo database."""
-        result = get_indicator_results_from_db(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer.name,
-            indicator=self.metadata.name,
-        )
-        return result
 
     @abstractmethod
     def preprocess(self) -> None:
