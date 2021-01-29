@@ -16,9 +16,11 @@ python -m unittest test_report_remote_mapping_level_one.py
 python -m unittest test_report_simple_report.py
 python -m unittest test_report_sketchmap_fitness.py
 
-# oqt.py
+# oqt, cli and api
 python -m unittest test_oqt.py
 python -m unittest test_cli.py
+python -m unittest test_api.py
+python -m unittest test_api_old.py
 
 # Geodatabase
 python -m unittest test_geodatabase.py

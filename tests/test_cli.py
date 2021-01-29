@@ -1,3 +1,8 @@
+"""
+Testing Click Applications:
+https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
+"""
+
 import os
 import unittest
 
