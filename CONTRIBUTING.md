@@ -1,9 +1,6 @@
 # Contributing
 
-
-Please contribute to this repository through pull requests.
-
-https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment
+Please contribute to this repository through [merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment)
 
 
 ## Setup
@@ -30,14 +27,6 @@ pre-commit install  # Install pre-commit hooks.
 
 To get access to a running database on a remote server please reach out.
 
-Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
-
-* run `docker-compose up -d oqt-database`
-* it will take around 15 minutes until all layers are set up
-* you can check the progress of the setup in the logs `docker logs oqt-database`
-* once you get `database system is ready to accept connections` in the logs the import was successful
-
-
 To access the Database various environment variables need to be set.
 To do this create a `.env` file at the root of the repository and write down following variables and their values:
 
@@ -48,34 +37,24 @@ POSTGRES_PORT=5432
 POSTGRES_SCHEMA=public
 ```
 
-To make the variables available to current environment run following command:
+To make the variables available to current environment run following command (Linux):
 
 ```
 export $(cat .env | xargs)
 ```
-**Windows**
-For Windows you can set the variables in the command line as following:
-To get the correct content of "mypassword" and "localhost" please contact the team.
-```bash
+
+> Windows user can set those environment variables with following commands:
+
+```
 setx POSTGRES_PASSWORD mypassword
 setx POSTGRES_HOST localhost
 setx POSTGRES_PORT 5432
 setx POSTGRES_SCHEMA public
 ```
-(Caution: They are now global)
-To be able to access the database, make sure you are in the **VPN** of the university!
-Check if the variables are in yur environment:
-In the command line enter the following lines:
-```python
-import os 
-print(os.getenv("POSTGRES_HOST"))
-print(os.getenv("POSTGRES_PORT"))
-print(os.getenv("POSTGRES_DB"))
-print(os.getenv("POSTGRES_USER"))
-print(os.environ["POSTGRES_PASSWORD"])
-```
 
-If the variables are not as expected, make sure your system updated access (close command line and open a new one and enter the lines again / restart pycharm).
+> Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
+
+
 
 ## Style Guide
 
@@ -92,44 +71,17 @@ In addition [pre-commit](https://pre-commit.com/) is setup to run those tools pr
 
 ## Tests
 
-For each indicator and each report there should be a test in place. Ideally there will be several tests per indicator or report, e.g. a test for the dynamic processing and the another test for the static processing.
+Please provide tests.
 
-During development you should use the tests to check if your code changes didn't break any existing functionality.
-
-You can run all tests like this:
-```
-python -m unittest discover tests/
-```
-
-When working on a specific part of the project it will be often enough to run a test for a single indicator or report. Use this line if you want to run only a specific test:
-
-```
+```bash
+# Run a single test:
 python -m unittest tests/test_indicator_mapping_saturation.py
+
+# Run all test:
+python -m unittest discover
 ```
 
-## Miss behaviour and solutions
-**Windows**
 
-- Make sure that you are not in any other virtual env (anaconda, ..):
+## Troubleshooting
 
-(ohsome-quality-tool) C:\Users\user\ohsome-quality-tool>
-
--> use command ```deactivate```
-
-output:
-
-C:\Users\user\ohsome-quality-tool>
-
-
-- Error: ModuleNotFoundError: No module named 'ohsome_quality_tool'
-
--> Make sure poetry is running, use command ```poetry shell```
-
-output (sth like):
-
-Spawning shell within C:\Users\user\AppData\Local\pypoetry\Cache\virtualenvs\ohsome-quality-tool-WEZPxd1Z-py3.8
-
-
-- Connection to the database fails
-
--> Make sure you are in the ```VPN``` of the university
+See [docs/troubleshooting.md](docs/troubleshooting.md)
