@@ -9,7 +9,7 @@ from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
 
 
 class TestIndicatorMappingSaturation(unittest.TestCase):
-    def setUp(self):
+    def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -17,18 +17,40 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         )
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        self.indicator = MappingSaturation(bpolys=bpolys, layer_name="major_roads")
+        layer_name = "major_roads"
 
-    def test(self):
-        self.indicator.preprocess()
+        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
+        indicator.preprocess()
 
-        self.indicator.calculate()
-        self.assertIsNotNone(self.indicator.result.label)
-        self.assertIsNotNone(self.indicator.result.value)
-        self.assertIsNotNone(self.indicator.result.description)
+        indicator.calculate()
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
 
-        self.indicator.create_figure()
-        self.assertIsNotNone(self.indicator.result.svg)
+        indicator.create_figure()
+        self.assertIsNotNone(indicator.result.svg)
+
+    def testFloatDivisionByZeroError(self):
+        layer_name = "building_count"
+        dataset = "test_regions"
+        feature_id = 30
+
+        indicator = MappingSaturation(
+            layer_name=layer_name, dataset=dataset, feature_id=feature_id
+        )
+        indicator.preprocess()
+        indicator.calculate()
+
+    def testCannotConvertNanError(self):
+        layer_name = "building_count"
+        dataset = "test_regions"
+        feature_id = 2
+
+        indicator = MappingSaturation(
+            layer_name=layer_name, dataset=dataset, feature_id=feature_id
+        )
+        indicator.preprocess()
+        indicator.calculate()
 
 
 if __name__ == "__main__":
