@@ -9,12 +9,12 @@ RUN apt-get -q update && apt-get -q --yes install python3-pip
 RUN useradd --create-home oqt
 WORKDIR /home/oqt
 USER oqt
-# Create data directory
+# Create data and bin directories
 RUN mkdir --parents .local/share/oqt
+RUN mkdir --parents .local/bin
+ENV PATH="/home/opt/.local/bin:${PATH}"
 
 COPY pyproject.toml .
 COPY ohsome_quality_tool ohsome_quality_tool
 
 RUN pip3 install .
-
-ENV PATH="/home/opt/.local/bin:${PATH}"
