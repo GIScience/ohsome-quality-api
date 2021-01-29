@@ -19,3 +19,6 @@ python -m unittest test_report_sketchmap_fitness.py
 # oqt.py
 python -m unittest test_oqt.py
 python -m unittest test_cli.py
+
+# Geodatabase
+python -m unittest test_geodatabase.py
