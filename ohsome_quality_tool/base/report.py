@@ -44,7 +44,7 @@ class BaseReport(metaclass=ABCMeta):
     ):
         if bpolys:
             self.bpolys = bpolys
-        elif self.bpolys is None and dataset and feature_id:
+        elif bpolys is None and dataset and feature_id:
             self.dataset = dataset
             self.feature_id = feature_id
             self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
