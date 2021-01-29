@@ -25,4 +25,4 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Deployment
 
-Please refer to [docs/deployment.md](docs/deployment.md)
+Please refer to [DEPLOYMENT.md](DEPLOYMENT.md)
