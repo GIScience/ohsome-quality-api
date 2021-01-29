@@ -81,7 +81,7 @@ class BaseIndicator(metaclass=ABCMeta):
             self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
-                "Provide either a bounding polygone"
+                "Provide either a bounding polygon "
                 + "or dataset name and feature id as parameter."
             )
         # setattr(object, key, value) could be used instead of relying on from_dict.
