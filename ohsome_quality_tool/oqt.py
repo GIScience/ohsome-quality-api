@@ -97,11 +97,45 @@ def create_report(
     return report
 
 
+def create_indicators_for_dataset(dataset_name):
+    """Create indicators for all features of a dataset.
+
+    Results are saved the database.
+    """
+    fids = get_fid_list(dataset_name)
+    for feature_id in fids:
+        for indicator_name, layer_name in (
+            ("GhsPopComparison", "building_count"),
+            # ("MappingSaturation", "building_count"),
+            # ("MappingSaturation", "major_roads"),
+            # ("MappingSaturation", "amenities"),
+            ("LastEdit", "major_roads"),
+            ("LastEdit", "building_count"),
+            ("LastEdit", "amenities"),
+            ("PoiDensity", "poi"),
+        ):
+            try:
+                create_indicator(
+                    indicator_name,
+                    layer_name,
+                    dataset=dataset_name,
+                    feature_id=feature_id,
+                )
+            except ValueError:
+                logger.error(
+                    f"ValueError occurred during creation of indicator "
+                    f"'{indicator_name}' for the dataset '{dataset_name}' "
+                    f"and feature_id '{feature_id}'. "
+                    f"Continue creation of the indicators for the other features."
+                )
+                continue
+
+
 def process_indicator(
     dataset: str, indicator_name: str, layer_name: str, only_missing_ids: bool = False
 ):
     """Processes indicator and save results in geo database."""
-    # TODO: we need to define here which layer should be processed
+    raise NotImplementedError("Deprecated.")
     if only_missing_ids is False:
         fids = get_fid_list(dataset)
     else:
@@ -155,8 +189,4 @@ def get_static_report(report_name: str, dataset: str, feature_id: int):
 def get_static_report_pdf(
     report_name: str, dataset: str, feature_id: int, outfile: str
 ):
-    """Get report as PDF with indicator results for a pre-defined area.
-
-    The indicator results have been pre-processed and
-    will be extracted from the geo database."""
-    raise NotImplementedError()
+    raise NotImplementedError("Use create_report() instead")

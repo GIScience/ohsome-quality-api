@@ -131,6 +131,13 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
     click.echo(report.result)
 
 
+@cli.command("create-indicators-for-dataset")
+@add_opts(dataset_name_opt)
+def create_indicators_for_dataset(dataset_name):
+    """Create indicators for all features of a dataset."""
+    oqt.create_indicators_for_dataset(dataset_name)
+
+
 @cli.command("process-all-indicators")
 @add_opts(dataset_name_opt)
 def process_all_indicators(dataset: str):
