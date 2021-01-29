@@ -5,6 +5,14 @@ import geojson
 import yaml
 
 from ohsome_quality_tool import oqt
+from ohsome_quality_tool.cli_opts import (
+    dataset_name_opt,
+    feature_id_opt,
+    indicator_name_opt,
+    infile_opt,
+    layer_name_opt,
+    report_name_opt,
+)
 from ohsome_quality_tool.utils.definitions import (
     DATASET_NAMES,
     load_layer_definitions,
@@ -22,99 +30,15 @@ class PythonLiteralOption(click.Option):
             raise click.BadParameter(value)
 
 
-def add_options(options):
-    """Functions adds options to cli."""
+def add_opts(options):
+    """Adds options to cli."""
 
-    def _add_options(func):
+    def _add_opts(func):
         for option in reversed(options):
             func = option(func)
         return func
 
-    return _add_options
-
-
-_indicator_option = [
-    click.option(
-        "--indicator-name",
-        "-i",
-        required=True,
-        type=click.Choice(
-            load_metadata("indicators").keys(),
-            case_sensitive=True,
-        ),
-        help="Choose an indicator,valid indicators are specified in definitions.py .",
-    )
-]
-
-_report_option = [
-    click.option(
-        "--report-name",
-        "-r",
-        required=True,
-        type=click.Choice(
-            load_metadata("reports").keys(),
-            case_sensitive=True,
-        ),
-        help="Choose a report,valid reports are specified in definitions.py .",
-    )
-]
-
-_infile_option = [
-    click.option(
-        "--infile",
-        help="GeoJSON file for your area of interest.",
-        type=str,
-        default=None,
-    )
-]
-
-_outfile_option = [
-    click.option(
-        "--outfile",
-        help="PDF file for your report.",
-        type=str,
-        required=True,
-    )
-]
-
-_dataset_option = [
-    click.option(
-        "--dataset",
-        type=click.Choice(
-            DATASET_NAMES,
-            case_sensitive=True,
-        ),
-        help="""Choose a dataset containing geometries,
-            valid area datasets are specified in definitions.py .""",
-        default=None,
-    )
-]
-
-_layer_name_option = [
-    click.option(
-        "--layer-name",
-        required=True,
-        type=click.Choice(
-            list(load_layer_definitions().keys()),
-            case_sensitive=True,
-        ),
-        help=(
-            "Choose a layer. This defines which OSM features will be considered "
-            "in the quality analysis."
-        ),
-    )
-]
-
-
-# TODO: define and double check expected data type here
-_feature_id_option = [
-    click.option(
-        "--feature-id",
-        type=str,
-        help="""Provide the feature id of your area of interest.""",
-        default=None,
-    )
-]
+    return _add_opts
 
 
 @click.group()
@@ -151,14 +75,20 @@ def list_layers():
     click.echo(layers)
 
 
+@cli.command("list-datasets")
+def list_datasets():
+    """List in the Geodatabase available datasets."""
+    click.echo(DATASET_NAMES)
+
+
 @cli.command("create-indicator")
-@add_options(_indicator_option)
-@add_options(_layer_name_option)
-@add_options(_infile_option)
-@add_options(_dataset_option)
-@add_options(_feature_id_option)
+@add_opts(indicator_name_opt)
+@add_opts(layer_name_opt)
+@add_opts(infile_opt)
+@add_opts(dataset_name_opt)
+@add_opts(feature_id_opt)
 def create_indicator(
-    indicator_name: str, infile: str, layer_name: str, feature_id, dataset
+    indicator_name: str, infile: str, layer_name: str, feature_id, dataset_name
 ):
     """Create an Indicator and print results to stdout."""
     # TODO: replace this with a function that loads the file AND
@@ -173,7 +103,7 @@ def create_indicator(
         bpolys=bpolys,
         layer_name=layer_name,
         feature_id=feature_id,
-        dataset=dataset,
+        dataset=dataset_name,
     )
     # TODO: Print out readable format.
     click.echo(indicator.metadata)
@@ -181,81 +111,37 @@ def create_indicator(
 
 
 @cli.command("create-report")
-@add_options(_report_option)
-@add_options(_infile_option)
-@add_options(_dataset_option)
-@add_options(_feature_id_option)
-def create_report(report_name: str, infile: str, dataset: str, feature_id: int):
+@add_opts(report_name_opt)
+@add_opts(infile_opt)
+@add_opts(dataset_name_opt)
+@add_opts(feature_id_opt)
+def create_report(report_name: str, infile: str, dataset_name: str, feature_id: int):
     """Create a Report and print results to stdout."""
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
     report = oqt.create_report(
-        report_name=report_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
+        report_name=report_name,
+        bpolys=bpolys,
+        dataset=dataset_name,
+        feature_id=feature_id,
     )
     # TODO: Print out readable format.
     click.echo(report.metadata)
     click.echo(report.result)
 
 
-@cli.command("process-indicator")
-@add_options(_indicator_option)
-@add_options(_dataset_option)
-@add_options(_layer_name_option)
-@add_options(
-    [
-        click.option(
-            "--missing_fids",
-            is_flag=True,
-            help="Flag wether only should only missing FIDs be processed",
-        )
-    ]
-)
-def process_indicator(
-    indicator_name: str, dataset: str, layer_name: str, missing_fids: bool
-):
-    oqt.process_indicator(
-        indicator_name=indicator_name,
-        dataset=dataset,
-        layer_name=layer_name,
-        only_missing_ids=missing_fids,
-    )
-
-
 @cli.command("process-all-indicators")
-@add_options(_dataset_option)
+@add_opts(dataset_name_opt)
 def process_all_indicators(dataset: str):
-    # TODO: here we need to consider the different layers as well
-    #   this means that we might need to process an indicator
-    #   several times, e.g. for BUILDING_COUNT_LAYER and then also
-    #   for the MAJOR_ROADS_LAYER
-    #   Ideally we would check the reports for this
-    #   In the reports we will find information on which indicators
-    #   should be processed for which layers
-    indicators = [
-        ("ghspop-comparison", "building-count"),
-        ("mapping-saturation", "building-count"),
-        ("mapping-saturation", "major-roads"),
-        ("mapping-saturation", "amenities"),
-        ("last-edit", "major-roads"),
-        ("last-edit", "building-count"),
-        ("last-edit", "amenities"),
-        ("poi-density", "points-of-interests"),
-    ]
-    for indicator_name, layer_name in indicators:
-        oqt.process_indicator(
-            indicator_name=indicator_name,
-            dataset=dataset,
-            layer_name=layer_name,
-            only_missing_ids=False,
-        )
+    raise NotImplementedError()
 
 
 @cli.command("get-static-indicator")
-@add_options(_indicator_option)
-@add_options(_dataset_option)
-@add_options(_feature_id_option)
-@add_options(_layer_name_option)
+@add_opts(indicator_name_opt)
+@add_opts(dataset_name_opt)
+@add_opts(feature_id_opt)
+@add_opts(layer_name_opt)
 def get_static_indicator(
     indicator_name: str, dataset: str, feature_id: int, layer_name: str
 ):
@@ -263,28 +149,23 @@ def get_static_indicator(
 
 
 @cli.command("get-dynamic-report")
-@add_options(_report_option)
-@add_options(_infile_option)
+@add_opts(report_name_opt)
+@add_opts(infile_opt)
 def get_dynamic_report(report_name: str, infile: str):
-    raise NotImplementedError("Depricated. Use 'create_indicator' instead.")
+    raise NotImplementedError("Depricated. Use 'create_report' instead.")
 
 
 @cli.command("get-static-report")
-@add_options(_report_option)
-@add_options(_dataset_option)
-@add_options(_feature_id_option)
+@add_opts(report_name_opt)
+@add_opts(dataset_name_opt)
+@add_opts(feature_id_opt)
 def get_static_report(report_name: str, dataset: str, feature_id: int):
-    raise NotImplementedError("Depricated. Use 'create_indicator' instead.")
+    raise NotImplementedError("Depricated. Use 'create_report' instead.")
 
 
 @cli.command("get-static-report-pdf")
-@add_options(_report_option)
-@add_options(_dataset_option)
-@add_options(_feature_id_option)
-@add_options(_outfile_option)
-def get_static_report_pdf(
-    report_name: str, dataset: str, feature_id: int, outfile: str
-):
-    oqt.get_static_report_pdf(
-        report_name=report_name, dataset=dataset, feature_id=feature_id, outfile=outfile
-    )
+@add_opts(report_name_opt)
+@add_opts(dataset_name_opt)
+@add_opts(feature_id_opt)
+def get_static_report_pdf(report_name: str, dataset: str, feature_id: int):
+    raise NotImplementedError("Depricated. Use 'create_report' instead.")
