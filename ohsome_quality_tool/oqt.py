@@ -14,7 +14,7 @@ from ohsome_quality_tool.geodatabase.client import (
     load_indicator_results,
     save_indicator_results,
 )
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_tool.utils.definitions import DATASET_NAMES, logger
 from ohsome_quality_tool.utils.helper import name_to_class
 
 
@@ -33,19 +33,28 @@ def create_indicator(
     Returns:
         Indicator object
     """
+    # Support only predefined datasets.
+    # Otherwise creation of arbitrary relations (tables) are possible.
+    if dataset is not None and dataset not in DATASET_NAMES:
+        raise ValueError("Given dataset name does not exist: " + dataset)
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     indicator = indicator_class(
         layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
+    # Create indicator from scratch
     if bpolys and dataset is None and feature_id is None:
         indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
-    if dataset and feature_id:
+    # Create indicator by loading existing results from database
+    # or in case it does not exist calculate from scratch and save results to database
+    elif dataset and feature_id:
         try:
-            load_indicator_results(indicator)
+            success = load_indicator_results(indicator)
         except UndefinedTable:
+            success = False
+        if not success:
             indicator.preprocess()
             indicator.calculate()
             indicator.create_figure()

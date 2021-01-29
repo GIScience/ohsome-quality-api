@@ -24,7 +24,7 @@ DATASET_NAMES = (
     "gadm_level_4",
     "gadm_level_5",
     "test_data",
-    "test-regions",
+    "test_regions",
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")

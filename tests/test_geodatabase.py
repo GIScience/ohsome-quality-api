@@ -4,7 +4,7 @@ import ohsome_quality_tool.geodatabase.client as db_client
 from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import GhsPopComparison
 
 
-class TestIndicatorGhsPopComparison(unittest.TestCase):
+class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.indicator = GhsPopComparison(
             dataset="test_regions", feature_id=2, layer_name="building_count"

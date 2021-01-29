@@ -133,8 +133,17 @@ def save_indicator_results(indicator) -> None:
     )
 
 
-def load_indicator_results(indicator):
-    """Get the indicator result for the given dataset and feature in the database."""
+def load_indicator_results(indicator) -> bool:
+    """Get the indicator result from the geodatabase.
+
+    Reads given dataset and feature_id from the indicator object.
+    Writes retrived results to the result attribute of the indicator object.
+
+    Returns:
+        bool:   True for results retrived.
+                False for no results retrived
+                (feature_id does not exist in the result relation/table).
+    """
 
     table = get_table_name(
         indicator.dataset, indicator.metadata.name, indicator.layer.name
@@ -154,6 +163,8 @@ def load_indicator_results(indicator):
         ).format(sql.Identifier(field), sql.Identifier(table))
         data = {"schema": POSTGRES_SCHEMA, "feature_id": indicator.feature_id}
         query_results = db.retr_query(query=query, data=data)
+        if not query_results:
+            return False
         results = query_results[0][0]
         query_result[field] = results
 
@@ -163,6 +174,7 @@ def load_indicator_results(indicator):
     indicator.result.value = query_result["value"]
     indicator.result.description = query_result["description"]
     indicator.result.svg = query_result["svg"]
+    return True
 
 
 def create_dataset_table(dataset: str):

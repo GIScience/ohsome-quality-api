@@ -16,9 +16,28 @@ class TestOqt(unittest.TestCase):
         with open(infile, "r") as f:
             self.bpolys = geojson.load(f)
 
-    def testCreateIndicator(self):
+    def testCreateIndicatorFromScratch(self):
+        # From scratch
         indicator = oqt.create_indicator(
-            "GhsPopComparison", "building_count", self.bpolys
+            "GhsPopComparison", "building_count", bpolys=self.bpolys
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
+
+    def testCreateIndicatorFromDatabase(self):
+        # Invalid dataset name
+        with self.assertRaises(ValueError):
+            oqt.create_indicator(
+                "GhsPopComparison",
+                "building_count",
+                dataset="test_region",
+                feature_id=1,
+            )
+
+        indicator = oqt.create_indicator(
+            "GhsPopComparison", "building_count", dataset="test_regions", feature_id=3
         )
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
