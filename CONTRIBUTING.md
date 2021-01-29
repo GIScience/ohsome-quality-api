@@ -43,7 +43,7 @@ To make the variables available to current environment run following command (Li
 export $(cat .env | xargs)
 ```
 
-> Windows user can set those environment variables with following commands:
+Windows user can set those environment variables with following commands:
 
 ```
 setx POSTGRES_PASSWORD mypassword
