@@ -73,8 +73,6 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        print(dataset)
-        print(feature_id)
         if bpolys:
             self.bpolys = bpolys
         elif bpolys is None and dataset is not None and feature_id is not None:
