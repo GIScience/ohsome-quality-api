@@ -27,8 +27,9 @@ def create_indicator(
 ):
     """Create an indicator.
 
-    An indicator is created by either calculating the indicator
-    for a geometry or by fetching already calculated indicator from the geodatabase.
+    An indicator is created by either calculating the indicator results
+    for a geometry from scratch or by fetching already calculated indicator
+    results from the geodatabase.
 
     Returns:
         Indicator object
@@ -42,13 +43,16 @@ def create_indicator(
     indicator = indicator_class(
         layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
+
     # Create indicator from scratch
     if bpolys and dataset is None and feature_id is None:
         indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
+
     # Create indicator by loading existing results from database
-    # or in case it does not exist calculate from scratch and save results to database
+    # or in case it this does fail create indicator from scratch and
+    # save results to database.
     elif dataset and feature_id:
         try:
             success = load_indicator_results(indicator)
