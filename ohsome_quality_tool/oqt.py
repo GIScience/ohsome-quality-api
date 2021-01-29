@@ -82,18 +82,9 @@ def create_report(
         Report object
     """
     report_class = name_to_class(class_type="report", name=report_name)
-    if bpolys:
-        report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
-        report.create_indicators()
-        report.combine_indicators()
-    elif dataset and feature_id:
-        report = None
-        pass
-    else:
-        raise ValueError(
-            "Provide either a bounding polygone "
-            + "or dataset name and feature id as parameter."
-        )
+    report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+    report.create_indicators()
+    report.combine_indicators()
     return report
 
 
