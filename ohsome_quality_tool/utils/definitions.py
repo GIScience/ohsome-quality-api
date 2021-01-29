@@ -11,6 +11,7 @@ from xdg import XDG_DATA_HOME
 
 from ohsome_quality_tool.utils.helper import get_module_dir
 
+# Dataset names which are available in the Geodatabase
 DATASET_NAMES = (
     "nuts_rg_60m_2021",
     "nuts_rg_01m_2021",
@@ -58,7 +59,6 @@ def get_logger():
     return logging.getLogger("oqt")
 
 
-# def load_indicator_metadata(class_type: str) -> Dict:
 def load_metadata(module_name: str) -> Dict:
     """
     Read metadata of all indicators or reports from YAML files.
@@ -83,7 +83,6 @@ def load_metadata(module_name: str) -> Dict:
     return metadata
 
 
-# def get_indicator_metadata(module_name: str, class_name: str) -> Dict:
 def get_metadata(module_name: str, class_name: str) -> Dict:
     """Get metadata of an indicator or report based on its class name.
 
