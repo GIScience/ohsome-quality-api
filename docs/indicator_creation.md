@@ -1,6 +1,13 @@
 ## Indicator Creation Guide
 
-To make contribution to the OQT easier we have compiled this guide which explains the parts that are needed to built an indicator.<br>
+To make contribution to the OQT easier we have compiled this guide which explains the parts and background knowledge that are needed to built an indicator.<br>
+To understand how to implement your indicator it is necassairy to know a few things from 
+
+-> 2 parts 1. BaseIndicator 2. build your own
+-> in 1. all 3 component classes (layer, result and metadata should be explained)
+
+
+
 If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_tool/indicators** e.g. ohsome_quality_tool/indicators/your_indicator_name.<br>
 The two files are named:
 
