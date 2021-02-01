@@ -99,9 +99,9 @@ def create_indicators_for_dataset(dataset_name):
     for feature_id in fids:
         for indicator_name, layer_name in (
             ("GhsPopComparison", "building_count"),
-            # ("MappingSaturation", "building_count"),
-            # ("MappingSaturation", "major_roads"),
-            # ("MappingSaturation", "amenities"),
+            ("MappingSaturation", "building_count"),
+            ("MappingSaturation", "major_roads"),
+            ("MappingSaturation", "amenities"),
             ("LastEdit", "major_roads"),
             ("LastEdit", "building_count"),
             ("LastEdit", "amenities"),
@@ -114,9 +114,11 @@ def create_indicators_for_dataset(dataset_name):
                     dataset=dataset_name,
                     feature_id=feature_id,
                 )
-            except ValueError:
+            # TODO: Those errors are raised during MappingCalculation creation.
+            except (ValueError, TypeError) as error:
+                logger.error(error)
                 logger.error(
-                    f"ValueError occurred during creation of indicator "
+                    f"Error occurred during creation of indicator "
                     f"'{indicator_name}' for the dataset '{dataset_name}' "
                     f"and feature_id '{feature_id}'. "
                     f"Continue creation of the indicators for the other features."
