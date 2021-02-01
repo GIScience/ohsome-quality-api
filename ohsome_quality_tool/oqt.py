@@ -115,6 +115,7 @@ def create_indicators_for_dataset(dataset_name):
                     feature_id=feature_id,
                 )
             # TODO: Those errors are raised during MappingCalculation creation.
+            # Issue 72
             except (ValueError, TypeError) as error:
                 logger.error(error)
                 logger.error(
