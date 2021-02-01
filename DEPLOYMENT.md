@@ -1,7 +1,7 @@
 # Deployment using Docker
 
 ```bash
-docker-compose up -d oqt-workers oqt-website
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
 Trigger a CLI command:
