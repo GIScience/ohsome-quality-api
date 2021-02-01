@@ -254,7 +254,7 @@ function buildMap(err, ...charts){
         document.getElementById("traffic_dots_space").innerHTML =
 		            '<h4>Report: '+ response.metadata.name + '</h4>' +
 		            '<p>' + traffic_lights + '</p>'
-
+                    // here place to display the name of the region?
 
 
 		// ' <b>Overall value: '+ response.result.value + '</b></p>'
@@ -512,7 +512,7 @@ function buildMap(err, ...charts){
 		
 	};
 
-	// add a legend to the map
+	/*// add a legend to the map
 	var legend = L.control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
@@ -531,7 +531,7 @@ function buildMap(err, ...charts){
 		}
 		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>' 		
 		return div;
-	};
+	};*/
 
 
 	info.addTo(map);
@@ -572,7 +572,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	var theUrl = "http://0.0.0.0:8080";
+	var theUrl = "http://129.206.4.240:8080";
 	//theUrl = theUrl +"/dynamic/report/" + endPoint;
 	theUrl = theUrl +"/static/report/" + endPoint;
 

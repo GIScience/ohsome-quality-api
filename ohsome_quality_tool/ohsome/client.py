@@ -8,7 +8,7 @@ from ohsome_quality_tool.utils.definitions import OHSOME_API, logger
 # TODO: Add documentation on time string format.
 def query(layer, bpolys: str, time: str = None) -> Dict:
     """Query ohsome API endpoint with filter."""
-    url = OHSOME_API + layer["endpoint"]
+    url = OHSOME_API + layer.endpoint
     data = {"bpolys": bpolys, "filter": layer.filter, "time": time}
     response = requests.post(url, data=data)
 

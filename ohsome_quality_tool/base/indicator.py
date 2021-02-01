@@ -1,146 +1,110 @@
+"""
+TODO:
+    Describe this module and how to implement child classes
+"""
+
 import os
 import uuid
 from abc import ABCMeta, abstractmethod
-from typing import Dict, Tuple
+from dataclasses import dataclass
+from typing import Dict
 
+from dacite import from_dict
 from geojson import FeatureCollection
 
+import ohsome_quality_tool.geodatabase.client as db_client
 from ohsome_quality_tool.utils.definitions import (
     DATA_PATH,
-    IndicatorMetadata,
-    IndicatorResult,
-    TrafficLightQualityLevels,
-    logger,
+    get_layer_definition,
+    get_metadata,
 )
-from ohsome_quality_tool.utils.geodatabase import (
-    get_bpolys_from_db,
-    get_indicator_results_from_db,
-    save_indicator_results_to_db,
-)
-from ohsome_quality_tool.utils.layers import get_all_layer_definitions
+
+
+@dataclass
+class Metadata:
+    """Metadata of an indicator as defined in the metadata.yaml file"""
+
+    name: str
+    indicator_description: str
+    label_description: Dict
+    result_description: str
+
+
+@dataclass
+class LayerDefinition:
+    """Definitions of a layer as defined in the layer_definition.yaml file.
+
+    The definition consist of the ohsome API Parameter needed to create the layer.
+    """
+
+    name: str
+    description: str
+    endpoint: str
+    filter: str
+
+
+@dataclass
+class Result:
+    """The result of the Indicator."""
+
+    label: str
+    value: float
+    description: str
+    svg: str
 
 
 class BaseIndicator(metaclass=ABCMeta):
-    """The base class for all indicators."""
+    """
+    The base class of every indicator.
+
+    An indicator can be created in two ways:
+
+    One; Calculate from scratch for an area of interest.
+    This is done by providing a bounding polygone as input parameter.
+
+    Two; Fetch the precaclulated results from the Geodatabase.
+    This is done by providing the dataset name and feature id as input parameter.
+    """
 
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        """Initialize an indicator"""
-        # here we can put the default parameters for indicators
-        self.dynamic = dynamic
-        self.layer = get_all_layer_definitions()[layer_name]
-        self.metadata = IndicatorMetadata(
-            name=self.name,
-            description=self.description,
-            filterName=self.layer.name,
-            filterDescription=self.layer.description,
-        )
-
-        # generate random id for filename to avoid overwriting existing files
-        random_id = uuid.uuid1()
-        self.filename = f"{self.name}_{self.layer.name}_{random_id}.svg"
-        self.outfile = os.path.join(DATA_PATH, self.filename)
-
-        if self.dynamic:
-            if bpolys is None:
-                raise ValueError("Dynamic calculation requires a GeoJSON as input.")
+        if bpolys:
             self.bpolys = bpolys
-        else:
-            if dataset is None or feature_id is None:
-                raise ValueError(
-                    "Static calculation requires the dataset name "
-                    "and the feature id as string."
-                )
+        elif bpolys is None and dataset is not None and feature_id is not None:
             self.dataset = dataset
             self.feature_id = feature_id
-            self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
-
-    def get(self) -> Tuple[IndicatorResult, IndicatorMetadata]:
-        """Pass the indicator results to the user.
-
-        For dynamic indicators this will trigger the processing.
-        For non-dynamic (pre-processed) indicators this will
-        extract the results from the geo database.
-        """
-        if self.dynamic:
-            logger.info(f"Run processing for dynamic indicator {self.name}.")
-            result = self.run_processing()
+            self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
         else:
-            logger.info(
-                f"Get pre-processed results from geo db for indicator {self.name}."
+            raise ValueError(
+                "Provide either a bounding polygon "
+                + "or dataset name and feature id as parameter."
             )
-            result = self.get_from_database()
+        # setattr(object, key, value) could be used instead of relying on from_dict.
+        metadata = get_metadata("indicators", type(self).__name__)
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
 
-        return result, self.metadata
+        layer = get_layer_definition(layer_name)
+        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
 
-    def run_processing(self) -> IndicatorResult:
-        """Run all steps needed to actually compute the indicator"""
-        preprocessing_results = self.preprocess()
-        label, value, text, data = self.calculate(preprocessing_results)
-        svg = (
-            self.create_figure(data)
-            if label != TrafficLightQualityLevels.UNDEFINED
-            else None
-        )
-        logger.info(f"finished run for indicator {self.name}")
+        random_id = str(uuid.uuid1())
+        filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
+        figure_path = os.path.join(DATA_PATH, filename)
 
-        result = IndicatorResult(
-            label=label.name,
-            value=value,
-            text=text,
-            svg=svg,
-        )
+        self.result: Result = Result(None, None, None, figure_path)
 
-        return result
-
-    def save_to_database(self, result: IndicatorResult) -> None:
-        """Save the results to the geo database."""
-        save_indicator_results_to_db(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer.name,
-            indicator=self.name,
-            results=result,
-        )
-
-    def get_from_database(self) -> IndicatorResult:
-        """Get pre-processed indicator results from geo database."""
-        result = get_indicator_results_from_db(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer.name,
-            indicator=self.name,
-        )
-        return result
-
-    @property
     @abstractmethod
-    def name(self):
-        pass
-
-    @property
-    @abstractmethod
-    def description(self):
-        pass
-
-    # the abstract method defines that this function
-    # needs to be implemented by all children
-    @abstractmethod
-    def preprocess(self) -> Dict:
+    def preprocess(self) -> None:
         pass
 
     @abstractmethod
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
+    def calculate(self) -> None:
         pass
 
     @abstractmethod
-    def create_figure(self, data: Dict):
+    def create_figure(self) -> None:
         pass

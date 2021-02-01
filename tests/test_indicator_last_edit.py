@@ -3,42 +3,30 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.oqt import get_dynamic_indicator, get_static_indicator
+from ohsome_quality_tool.indicators.last_edit.indicator import LastEdit
 
 
-class TestLastEditIndicator(unittest.TestCase):
+class TestIndicatorLastEdit(unittest.TestCase):
     def setUp(self):
-        self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "last-edit"
-        self.layer_name = "building-count"
-        self.dataset = "test-regions"
-        self.feature_id = 1
-
-    def test_get_dynamic_indicator(self):
-        """Test if dynamic indicator can be calculated."""
-        infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
-        with open(infile, "r") as file:
-            bpolys = geojson.load(file)
-        result, metadata = get_dynamic_indicator(
-            indicator_name=self.indicator_name,
-            bpolys=bpolys,
-            layer_name=self.layer_name,
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg_altstadt.geojson",
         )
+        with open(infile, "r") as f:
+            bpolys = geojson.load(f)
+        self.indicator = LastEdit(bpolys=bpolys, layer_name="major_roads")
 
-        # check if result dict contains the right keys
-        self.assertListEqual(list(result._fields), ["label", "value", "text", "svg"])
+    def test(self):
+        self.indicator.preprocess()
 
-    def test_get_static_indicator(self):
-        """Test if dynamic indicator can be calculated."""
-        result, metadata = get_static_indicator(
-            indicator_name=self.indicator_name,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer_name,
-        )
+        self.indicator.calculate()
+        self.assertIsNotNone(self.indicator.result.label)
+        self.assertIsNotNone(self.indicator.result.value)
+        self.assertIsNotNone(self.indicator.result.description)
+        self.assertIsNotNone(self.indicator.result.svg)
 
-        # check if result dict contains the right keys
-        self.assertListEqual(list(result._fields), ["label", "value", "text", "svg"])
+        self.indicator.create_figure()
 
 
 if __name__ == "__main__":

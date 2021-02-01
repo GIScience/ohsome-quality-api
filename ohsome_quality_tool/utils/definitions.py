@@ -1,15 +1,21 @@
+"""
+Global Variables and Functions.
+"""
+
 import collections
 import glob
 import logging.config
 import os
-import pkgutil
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 import yaml
 from xdg import XDG_DATA_HOME
 
+from ohsome_quality_tool.utils.helper import get_module_dir
+
+# Dataset names which are available in the Geodatabase
 DATASET_NAMES = (
     "nuts_rg_60m_2021",
     "nuts_rg_01m_2021",
@@ -23,70 +29,13 @@ DATASET_NAMES = (
     "gadm_level_4",
     "gadm_level_5",
     "test_data",
-    "test-regions",
+    "test_regions",
 )
-
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
-
-MAIN_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
-Path(MAIN_PATH).mkdir(parents=True, exist_ok=True)
-
-DATA_PATH = os.path.join(MAIN_PATH, "data")
+DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
+Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-
-LOGS_PATH = os.path.join(MAIN_PATH, "logs")
-Path(LOGS_PATH).mkdir(parents=True, exist_ok=True)
-
-LOGGING_FILE_PATH = os.path.join(LOGS_PATH, "oqt.log")
-LOGGING_CONFIG = {
-    "version": 1,
-    "disable_existing_loggers": True,
-    "formatters": {
-        "standard": {
-            "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa: E501
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "standard",
-        },
-        "file": {
-            "level": "INFO",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "formatter": "standard",
-            "filename": LOGGING_FILE_PATH,
-            "when": "D",
-            "interval": 1,
-            "backupCount": 14,
-        },
-    },
-    "loggers": {
-        "root": {"handlers": ["console"], "level": "INFO"},
-        "oqt": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
-
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger("oqt")
-
-
-LayerDefinition = collections.namedtuple(
-    "LayerDefinition", "name description filter unit"
-)
-
-IndicatorResult = collections.namedtuple("Result", ["label", "value", "text", "svg"])
-IndicatorMetadata = collections.namedtuple(
-    "Metadata", "name description filterName filterDescription"
-)
-
-ReportResult = collections.namedtuple("Result", "label value text")
-ReportMetadata = collections.namedtuple("Metadata", "name description")
 
 
 class TrafficLightQualityLevels(Enum):
@@ -98,74 +47,119 @@ class TrafficLightQualityLevels(Enum):
     UNDEFINED = 4
 
 
-def get_module_dir(module_name: str) -> str:
-    module = pkgutil.get_loader(module_name)
-    return os.path.dirname(module.get_filename())
+def get_logger():
+    logs_path = os.path.join(DATA_HOME_PATH, "logs")
+    logging_file_path = os.path.join(logs_path, "oqt.log")
+    logging_config_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
+    )
+    Path(logs_path).mkdir(parents=True, exist_ok=True)
+
+    with open(logging_config_path, "r") as f:
+        logging_config = yaml.safe_load(f)
+    logging_config["handlers"]["file"]["filename"] = logging_file_path
+    logging.config.dictConfig(logging_config)
+
+    return logging.getLogger("oqt")
 
 
-def load_indicator_metadata() -> List[Dict]:
-    """Read metadata of indicators from text files.
-
-    Those text files are located in the directory of each indicator.
+def load_metadata(module_name: str) -> Dict:
     """
-    directory = get_module_dir("ohsome_quality_tool.indicators")
+    Read metadata of all indicators or reports from YAML files.
+
+    Those text files are located in the directory of each indicator/report.
+
+    Args:
+        module_name: Either indicators or reports.
+    Returns:
+        A Dict with the class names of the indicators/reports
+        as keys and metadata as values.
+    """
+    if module_name != "indicators" and module_name != "reports":
+        raise ValueError("module name value can only be 'indicators' or 'reports'.")
+
+    directory = get_module_dir("ohsome_quality_tool.{0}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
-    metadata = []
+    metadata = {}
     for file in files:
         with open(file, "r") as f:
-            metadata.append(yaml.safe_load(f))
+            metadata = {**metadata, **yaml.safe_load(f)}  # Merge dicts
     return metadata
 
 
+def get_metadata(module_name: str, class_name: str) -> Dict:
+    """Get metadata of an indicator or report based on its class name.
+
+    This is implemented outsite of the metadata class to be able to
+    access metadata of all indicators/reports without instantiation of those.
+
+    Args:
+        module_name: Either indicators or reports.
+        class_name: Any class name in Camel Case which is implemented
+                    as report or indicator
+    """
+    if module_name != "indicators" and module_name != "reports":
+        raise ValueError("module name value can only be 'indicators' or 'reports'.")
+
+    metadata = load_metadata(module_name)
+    try:
+        return metadata[class_name]
+    except KeyError:
+        logger.error(
+            "Invalid {0} class name. Valid {0} class names are: ".format(
+                module_name[:-1]
+            )
+            + str(metadata.keys())
+        )
+        raise
+
+
 def load_layer_definitions() -> Dict:
-    """Read ohsome API parameter of each layer from text file."""
+    """
+    Read ohsome API parameters of all layer from YAML file.
+
+    Returns:
+        A Dict with the layer names of the layers as keys.
+    """
     directory = get_module_dir("ohsome_quality_tool.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
     with open(file, "r") as f:
         return yaml.safe_load(f)
 
 
+def get_layer_definition(layer_name: str) -> Dict:
+    """
+    Get ohsome API parameters of a single layer based on layer name.
+
+    This is implemented outsite of the layer class to
+    be able to access layer definitions of all indicators without
+    instantiation of those.
+    """
+    layers = load_layer_definitions()
+    try:
+        return layers[layer_name]
+    except KeyError:
+        logger.error("Invalid layer name. Valid layer names are: " + str(layers.keys()))
+        raise
+
+
 def get_indicator_classes() -> Dict:
     """Map indicator name to corresponding class"""
-    # To avoid circular imports classes are imported only once this function is called.
-    from ohsome_quality_tool.indicators.ghspop_comparison.indicator import (
-        Indicator as ghspopComparisonIndicator,
+    raise NotImplementedError(
+        "Use utils.definitions.load_indicator_metadata() and"
+        + "utils.helper.name_to_class() instead"
     )
-    from ohsome_quality_tool.indicators.guf_comparison.indicator import (
-        GufComparison as gufComparisonIndicator,
-    )
-    from ohsome_quality_tool.indicators.last_edit.indicator import (
-        Indicator as lastEditIndicator,
-    )
-    from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
-        Indicator as mappingSaturationIndicator,
-    )
-    from ohsome_quality_tool.indicators.poi_density.indicator import (
-        Indicator as poiDensityIndicator,
-    )
-
-    return {
-        "ghspop-comparison": ghspopComparisonIndicator,
-        "poi-density": poiDensityIndicator,
-        "last-edit": lastEditIndicator,
-        "mapping-saturation": mappingSaturationIndicator,
-        "guf-comparison": gufComparisonIndicator,
-    }
 
 
 def get_report_classes() -> Dict:
     """Map report name to corresponding class."""
-    # To avoid circular imports classes are imported only once this function is called.
-    from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
-        Report as remoteMappingLevelOneReport,
-    )
-    from ohsome_quality_tool.reports.simple_report.report import Report as simpleReport
-    from ohsome_quality_tool.reports.sketchmap_fitness.report import (
-        Report as sketchmapFitnessReport,
+    raise NotImplementedError(
+        "Use utils.definitions.load_indicator_metadata() and"
+        + "utils.helper.name_to_class() instead"
     )
 
-    return {
-        "sketchmap-fitness": sketchmapFitnessReport,
-        "remote-mapping-level-one": remoteMappingLevelOneReport,
-        "simple-report": simpleReport,
-    }
+
+ReportResult = collections.namedtuple("Result", "label value text")
+ReportMetadata = collections.namedtuple("Metadata", "name description")
+
+logger = get_logger()

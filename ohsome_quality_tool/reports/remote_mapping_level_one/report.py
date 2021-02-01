@@ -1,89 +1,59 @@
 from statistics import mean
-from typing import Dict
 
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.report import BaseReport
-from ohsome_quality_tool.utils.definitions import (
-    ReportResult,
-    TrafficLightQualityLevels,
-    get_indicator_classes,
-    logger,
-)
+from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_tool.utils.helper import name_to_class
 
 
-class Report(BaseReport):
-    """The remote mapping level one Report."""
-
-    name = "remote-mapping-level-one"
-    description = (
-        "This report shows the quality for map features that are usually "
-        "added on the basis of satellite imagery. It combines five indicators "
-        "to inspect the quality in regard to buildings and major roads."
-    )
-    interpretations: Dict = {
-        "green": (
-            "All indicators show a good quality. "
-            "The data in this regions seems to be completely mapped."
-        ),
-        "yellow": (
-            "At least one indicator shows only medium quality. "
-            "You should inspect the results for the individual indicators "
-            "to identify potential data quality concerns."
-        ),
-        "red": (
-            "The data quality in this region is low. "
-            "It is very likely that this regions has not been completely "
-            "mapped in OSM."
-        ),
-    }
-
-    indicator_classes: Dict = get_indicator_classes()
-    indicators_definition = [
-        (indicator_classes["ghspop-comparison"], "building-count"),
-        # TODO: check the guf indicator and add then
-        # (indicator_classes["guf-comparison"], BUILDING_COUNT_LAYER),
-        (indicator_classes["mapping-saturation"], "building-count"),
-        (indicator_classes["last-edit"], "building-count"),
-        (indicator_classes["mapping-saturation"], "major-roads"),
-        (indicator_classes["last-edit"], "major-roads"),
-    ]
-
+class RemoteMappingLevelOne(BaseReport):
     def __init__(
         self,
-        dynamic: bool,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        super().__init__(
-            dynamic=dynamic, bpolys=bpolys, dataset=dataset, feature_id=feature_id
-        )
+        """Create a list of indicator objects."""
 
-    def combine_indicators(self, indicators) -> ReportResult:
-        """Combine the individual scores per indicator."""
-        logger.info(f"combine indicators for {self.name} report.")
+        super().__init__(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
 
-        # get mean of indicator quality values
+    def create_indicators(self) -> None:
+        for indicator_name, layer_name in (
+            # TODO: Uncomment once implemented
+            # ("GufComparison"], "building-area"),
+            # ("MappingSaturation", "building_count"),
+            # ("MappingSaturation", "major_roads"),
+            ("GhsPopComparison", "building_count"),
+            ("LastEdit", "building_count"),
+            ("LastEdit", "major_roads"),
+        ):
+            indicator_class = name_to_class(class_type="indicator", name=indicator_name)
+            indicator = indicator_class(layer_name=layer_name, bpolys=self.bpolys)
+            indicator.preprocess()
+            indicator.calculate()
+            indicator.create_figure()
+            self.indicators.append(indicator)
+
+    def combine_indicators(self) -> None:
+        logger.info(f"Combine indicators for report: {self.metadata.name}")
+
         values = []
+        for indicator in self.indicators:
+            # TODO: Is it possible that a label == UNDEFINED?
+            if indicator.result.label != "UNDEFINED":
+                values.append(indicator.result.value)
+        self.result.value = mean(values)
 
-        for indicator in indicators:
-            if indicator["result"]["label"] != "UNDEFINED":
-                values.append(indicator["result"]["value"])
-
-        value = mean(values)
-
-        if value < 0.5:
-            label = TrafficLightQualityLevels.RED
-            text = self.interpretations["red"]
-        elif value < 1:
-            label = TrafficLightQualityLevels.YELLOW
-            text = self.interpretations["yellow"]
-        elif value >= 1:
-            label = TrafficLightQualityLevels.GREEN
-            text = self.interpretations["green"]
+        if self.result.value < 0.5:
+            self.result.label = TrafficLightQualityLevels.RED
+            self.result.description = self.metadata.label_description["red"]
+        elif self.result.value < 1:
+            self.result.label = TrafficLightQualityLevels.YELLOW
+            self.result.description = self.metadata.label_description["yellow"]
+        elif self.result.value >= 1:
+            self.result.label = TrafficLightQualityLevels.GREEN
+            self.result.description = self.metadata.label_description["green"]
         else:
-            label = None
-            text = "Could not derive quality level"
-
-        return label, value, text
+            self.result.label = None
+            self.result.description = "Could not derive quality level"

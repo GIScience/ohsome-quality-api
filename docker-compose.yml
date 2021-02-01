@@ -1,8 +1,4 @@
 version: "3"
-networks:
-  oqt-network:
-  oqt-website-network:
-
 services:
   oqt-workers:
     container_name: oqt-workers
@@ -17,8 +13,8 @@ services:
       POSTGRES_PORT: "${POSTGRES_PORT}"
       POSTGRES_HOST: "${POSTGRES_HOST}"
       POSTGRES_SCHEMA: "${POSTGRES_SCHEMA}"
-    command: uvicorn ohsome_quality_tool.app.main:app --host 0.0.0.0 --port 8000 --reload
-    restart: unless-stopped
+    command: .local/bin/uvicorn ohsome_quality_tool.api:app --host 0.0.0.0 --port 8000 --reload
+    restart: "unless-stopped"
     ports:
       - "8080:8000"
     volumes:
@@ -27,36 +23,44 @@ services:
       - oqt-network
       - oqt-website-network
 
-  oqt-database:
-    container_name: oqt-database
-    build:
-      context: database/
-      dockerfile: Dockerfile.development
-    environment:
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-      POSTGRES_USER: 'hexadmin'
-      POSTGRES_DB: 'hexadmin'
-    restart: unless-stopped
-    ports:
-      - "5435:5432"
-    volumes:
-      - oqt-data:/var/lib/postgresql/data
-    networks:
-      - oqt-network
+  # # Commented out because of current deployment described in database/README.md
+  # oqt-database:
+  #   container_name: oqt-database
+  #   build:
+  #     context: database/
+  #     dockerfile: Dockerfile.development
+  #   environment:
+  #     POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+  #     POSTGRES_USER: 'hexadmin'
+  #     POSTGRES_DB: 'hexadmin'
+  #   restart: "unless-stopped"
+  #   ports:
+  #     - "5435:5432"
+  #   volumes:
+  #     - oqt-data:/var/lib/postgresql/data
+  #   networks:
+  #     - oqt-network
 
   oqt-website:
     container_name: oqt-website
     build:
       context: website/
-    restart: unless-stopped
+      dockerfile: Dockerfile
+    depends_on:
+      - "oqt-workers"
+    restart: "unless-stopped"
     ports:
-      - "80:80"
+      - "8081:80"
     volumes:
-      - ./website/website:/usr/share/nginx/html
+      - ./website/website/:/usr/share/nginx/html
       - oqt-website:/usr/share/nginx/html/data
     networks:
       - oqt-website-network
 
+networks:
+  oqt-network:
+  oqt-website-network:
+
 volumes:
-  oqt-data: {}
-  oqt-website: {}
+  oqt-data:
+  oqt-website:

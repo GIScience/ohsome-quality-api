@@ -1,113 +1,84 @@
 import json
-from typing import Dict, Tuple
+from string import Template
 
 import matplotlib.pyplot as plt
 import numpy as np
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils import ohsome_api
+from ohsome_quality_tool.geodatabase.client import get_area_of_bpolys
+from ohsome_quality_tool.ohsome import client as ohsome_client
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.geodatabase import get_area_of_bpolys
-from ohsome_quality_tool.utils.label_interpretations import (
-    POI_DENSITY_LABEL_INTERPRETATIONS,
-)
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
-THRESHOLD_YELLOW = 30
-THRESHOLD_RED = 10
 
 
-class Indicator(BaseIndicator):
-    """The POI Density Indicator."""
-
-    name = "poi-density"
-    description = (
-        "Derive the density of OSM features "
-        "(count divided by area in square-kilometers)"
-    )
-    interpretations: Dict = POI_DENSITY_LABEL_INTERPRETATIONS
-
+class PoiDensity(BaseIndicator):
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,
             feature_id=feature_id,
         )
+        self.threshold_yellow = 30
+        self.threshold_red = 10
+        self.area_sqkm = None
+        self.count = None
+        self.density = None
 
-    def preprocess(self) -> Dict:
-        logger.info(f"run preprocessing for {self.name} indicator")
+    def greenThresholdFunction(self, area):
+        return self.threshold_yellow * area
 
-        # calculate area for polygon
-        area_sqkm = get_area_of_bpolys(self.bpolys)
+    def yellowThresholdFunction(self, area):
+        return self.threshold_red * area
 
-        query_results_count = ohsome_api.query_ohsome_api(
-            endpoint="elements/count/",
-            filter_string=self.layer.filter,
-            bpolys=json.dumps(self.bpolys),
+    def preprocess(self):
+        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+
+        query_results_count = ohsome_client.query(
+            layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
 
-        count = query_results_count["result"][0]["value"]
-        density = count / area_sqkm
+        self.area_sqkm = get_area_of_bpolys(self.bpolys)  # calc polygon area
+        self.count = query_results_count["result"][0]["value"]
+        self.density = self.count / self.area_sqkm
 
-        preprocessing_results = {
-            "area_sqkm": area_sqkm,
-            "count": count,
-            "density": density,
-        }
-
-        return preprocessing_results
-
-    def calculate(
-        self, preprocessing_results: Dict
-    ) -> Tuple[TrafficLightQualityLevels, float, str, Dict]:
-        logger.info(f"run calculation for {self.name} indicator")
-
+    def calculate(self):
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        result = preprocessing_results["density"]
-        text = (
-            "The density of landmarks (points of reference, "
-            "e.g. waterbodies, supermarkets, "
-            f"churches, bus stops) is {result:.2f} features per sqkm."
-        )
+        logger.info(f"Calculation for indicator: {self.metadata.name}")
 
-        if result >= THRESHOLD_YELLOW:
-            value = 1.0
-            label = TrafficLightQualityLevels.GREEN
-            text = text + self.interpretations["green"]
+        description = Template(self.metadata.result_description).substitute(
+            result=f"{self.density:.2f}"
+        )
+        if self.density >= self.threshold_yellow:
+            self.result.value = 1.0
+            self.result.label = TrafficLightQualityLevels.GREEN
+            self.result.description = (
+                description + self.metadata.label_description["green"]
+            )
         else:
-            value = result / THRESHOLD_YELLOW
-            if result > THRESHOLD_RED:
-                label = TrafficLightQualityLevels.YELLOW
-                text = text + self.interpretations["yellow"]
+            self.result.value = self.density / self.threshold_red
+            if self.density > self.threshold_red:
+                self.result.label = TrafficLightQualityLevels.YELLOW
+                self.result.description = (
+                    description + self.metadata.label_description["yellow"]
+                )
             else:
-                label = TrafficLightQualityLevels.RED
-                text = text + self.interpretations["red"]
+                self.result.label = TrafficLightQualityLevels.RED
+                self.result.description = (
+                    description + self.metadata.label_description["red"]
+                )
 
-        logger.info(
-            f"result density value: {result}, label: {label},"
-            f" value: {value}, text: {text}"
-        )
-
-        return label, value, text, preprocessing_results
-
-    def create_figure(self, data: Dict) -> str:
-        def greenThresholdFunction(area):
-            return THRESHOLD_YELLOW * area
-
-        def yellowThresholdFunction(area):
-            return THRESHOLD_RED * area
+    def create_figure(self) -> str:
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -119,15 +90,15 @@ class Indicator(BaseIndicator):
         ax.set_ylabel("POIs")
 
         # Set x max value based on area
-        if data["area_sqkm"] < 10:
+        if self.area_sqkm < 10:
             max_area = 10
         else:
-            max_area = round(data["area_sqkm"] * 2 / 10) * 10
+            max_area = round(self.area_sqkm * 2 / 10) * 10
         x = np.linspace(0, max_area, 2)
 
         # Plot thresholds as line.
-        y1 = [greenThresholdFunction(xi) for xi in x]
-        y2 = [yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.greenThresholdFunction(xi) for xi in x]
+        y2 = [self.yellowThresholdFunction(xi) for xi in x]
 
         line = ax.plot(
             x,
@@ -148,12 +119,12 @@ class Indicator(BaseIndicator):
         # Fill in space between thresholds
         ax.fill_between(x, y2, 0, alpha=0.5, color="red")
         ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
-        ax.fill_between(x, y1, max(max(y1), data["count"]), alpha=0.5, color="green")
+        ax.fill_between(x, y1, max(max(y1), self.count), alpha=0.5, color="green")
 
         # Plot point as circle ("o").
         ax.plot(
-            data["area_sqkm"],
-            data["count"],
+            self.area_sqkm,
+            self.count,
             "o",
             color="black",
             label="location",
@@ -161,6 +132,8 @@ class Indicator(BaseIndicator):
 
         ax.legend()
 
-        plt.savefig(self.outfile, format="svg")
-        logger.info(f"export figures for {self.name} indicator")
-        return self.filename
+        logger.info(
+            f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"
+        )
+        plt.savefig(self.result.svg, format="svg")
+        plt.close("all")

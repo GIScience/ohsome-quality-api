@@ -6,38 +6,28 @@ authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pre-commit = "^2.8.2"
 xdg = "^5.0.0"
 psycopg2-binary = "^2.8.6"
 geojson = "^2.5.0"
 click = "^7.1.2"
 fastapi = "^0.61.2"
 uvicorn = "^0.12.2"
-gunicorn = "^20.0.4"
-ohsomepy = {git = "https://github.com/GIScience/ohsome-py"}
 requests = "^2.25.0"
-jupyter = "^1.0.0"
-ipykernel = "^5.3.4"
 matplotlib = "3.2.2"
-seaborn = "^0.11.0"
-mpld3 = "^0.5.1"
-pygal = "^2.4.0"
-lxml = "^4.6.1"
-pymannkendall = "^1.4.1"
 pandas = "^1.1.5"
-schema = "^0.7.3"
 dacite = "^1.6.0"
-psycopg2 = "^2.8.6"
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
 Black = "^20.8b1"
 isort = "^5.6.4"
 mypy = "^0.790"
+pre-commit = "^2.10.0"
+schema = "^0.7.3"
 
 [tool.poetry.scripts]
 oqt = "ohsome_quality_tool.cli:cli"
-start = "ohsome_quality_tool.app:main"
 
 [build-system]
 requires = ["poetry>=0.12"]

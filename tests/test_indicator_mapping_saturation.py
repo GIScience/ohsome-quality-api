@@ -3,44 +3,55 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.oqt import get_dynamic_indicator, get_static_indicator
+from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
+    MappingSaturation,
+)
 
 
-class TestMappingSaturationIndicator(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "mapping-saturation"
-        self.layer_name = "building-count"
-        self.dataset = "test-regions"
-        self.feature_id = 17  # Heidelberg
-
-    def test_get_dynamic_indicator(self):
-        """Test if dynamic indicator can be calculated."""
-        infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
-        # heidelberg_altstadt.geojson
-        # UK_London_Westminster_good.geojson
-        with open(infile, "r") as file:
-            bpolys = geojson.load(file)
-        result, metadata = get_dynamic_indicator(
-            indicator_name=self.indicator_name,
-            bpolys=bpolys,
-            layer_name=self.layer_name,
+class TestIndicatorMappingSaturation(unittest.TestCase):
+    def test(self):
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg_altstadt.geojson",
         )
 
-        # check if result dict contains the right keys
-        self.assertListEqual(list(result._fields), ["label", "value", "text", "svg"])
+        with open(infile, "r") as f:
+            bpolys = geojson.load(f)
+        layer_name = "major_roads"
 
-    def test_get_static_indicator(self):
-        """Test if dynamic indicator can be calculated."""
-        result, metadata = get_static_indicator(
-            indicator_name=self.indicator_name,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            layer_name=self.layer_name,
+        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
+        indicator.preprocess()
+
+        indicator.calculate()
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+
+        indicator.create_figure()
+        self.assertIsNotNone(indicator.result.svg)
+
+    def testFloatDivisionByZeroError(self):
+        layer_name = "building_count"
+        dataset = "test_regions"
+        feature_id = 30
+
+        indicator = MappingSaturation(
+            layer_name=layer_name, dataset=dataset, feature_id=feature_id
         )
+        indicator.preprocess()
+        indicator.calculate()
 
-        # check if result dict contains the right keys
-        self.assertListEqual(list(result._fields), ["label", "value", "text", "svg"])
+    def testCannotConvertNanError(self):
+        layer_name = "building_count"
+        dataset = "test_regions"
+        feature_id = 2
+
+        indicator = MappingSaturation(
+            layer_name=layer_name, dataset=dataset, feature_id=feature_id
+        )
+        indicator.preprocess()
+        indicator.calculate()
 
 
 if __name__ == "__main__":
