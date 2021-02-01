@@ -7,12 +7,7 @@ from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
 from ohsome_quality_tool.geodatabase.client import get_bpolys_from_db
-from ohsome_quality_tool.utils.definitions import (
-    ReportMetadata,
-    ReportResult,
-    get_metadata,
-    logger,
-)
+from ohsome_quality_tool.utils.definitions import get_metadata
 
 
 @dataclass
@@ -61,57 +56,6 @@ class BaseReport(metaclass=ABCMeta):
 
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
-
-    def get(self):
-        """Pass the report containing the indicator results to the user.
-
-        For dynamic indicators this will trigger the processing.
-        For non-dynamic (pre-processed) indicators this will
-        extract the results from the geo database."""
-
-        for item in self.indicators_definition:
-            indicator, layer_name = item
-
-            if self.dynamic:
-                result, metadata = indicator(
-                    dynamic=True, layer_name=layer_name, bpolys=self.bpolys
-                ).get()
-            else:
-                logger.info("get static indicator values")
-                result, metadata = indicator(
-                    dynamic=False,
-                    layer_name=layer_name,
-                    dataset=self.dataset,
-                    feature_id=self.feature_id,
-                ).get()
-
-            self.indicators.append(
-                {"metadata": metadata._asdict(), "result": result._asdict()}
-            )
-
-        label, value, text = self.combine_indicators(self.indicators)
-        self.result.label = label
-        self.result.value = value
-        self.result.description = text
-
-        # return result, indicators, self.metadata
-
-    def export_as_pdf(
-        self, result: ReportResult, indicators, metadata: ReportMetadata, outfile: str
-    ):
-        """Generate the PDF report."""
-        logger.info(f"Export report as PDF for {self.name} to {outfile}")
-
-    # TODO: Delete
-    # @property
-    # @abstractmethod
-    # def name(self):
-    #     pass
-
-    # @property
-    # @abstractmethod
-    # def description(self):
-    #     pass
 
     @abstractmethod
     def create_indicators(self) -> None:
