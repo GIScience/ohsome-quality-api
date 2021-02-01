@@ -23,6 +23,7 @@ services:
       - oqt-network
       - oqt-website-network
 
+  # # Commented out because of current deployment described in database/README.md
   # oqt-database:
   #   container_name: oqt-database
   #   build:
