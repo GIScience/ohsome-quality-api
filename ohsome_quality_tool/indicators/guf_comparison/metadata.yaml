@@ -6,15 +6,11 @@ GufComparison:
     Global Urban Footprint dataset.
   label_description:
     red: |
-      It is probably hard to orientate on OSM-based sketchmaps of this region.
-      There are just few orientation providing features available,
-      you should explore, if participants can orientate properly.
+      TODO
     yellow: |
-      It might be difficult to orientate on OSM-based sketchmaps of this region.
-      There are not many orientation providing features available,
-      you should explore, if participants can orientate properly.
+      TODO
     green: |
-      It is probably easy to orientate on OSM-based sketchmaps of this region.
+      TODO
     undefined: |
       The quality level could not be calculated for this indicator.
   result_description: |
