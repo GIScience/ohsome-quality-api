@@ -88,6 +88,7 @@ def create_report(
     return report
 
 
+# TODO: Generalize. This is a temporary solution.
 def create_indicators_for_dataset(dataset_name):
     """Create indicators for all features of a dataset.
 
