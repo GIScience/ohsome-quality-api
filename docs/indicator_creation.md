@@ -1,12 +1,34 @@
 ## Indicator Creation Guide
 
 To make contribution to the OQT easier we have compiled this guide which explains the parts and background knowledge that are needed to built an indicator.<br>
-To understand how to implement your indicator it is necassairy to know a few things from 
+To understand how to implement your own indicator it is necessary to know a few things about how the BaseIndicator works and which components it has. This will be covered in the first part. The second part will give further guidelines in how to implement your own Indicator.
 
--> 2 parts 1. BaseIndicator 2. build your own
--> in 1. all 3 component classes (layer, result and metadata should be explained)
+## 1. BaseIndicator
 
 
+To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
+<div align="center">
+  <img src="./UML-Class-Diagram.png">
+</div>
+<br>
+
+As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml, the layer can be set during object creation (if you do not need a very specific custom layer you can ignore this component) and the result saves the result of an Indicator instance. 
+
+### Result
+The result object can hold 4 values. 
+
+1. label: This should be a member of TrafficLightQualityLevels found in ohsome_quality_tool/utils/definitions
+2. value: tbd
+3. description: label description for TrafficLightQualityLevel (see metadata.yaml in part 2)
+4. svg: unique file path which is created uppon object initialization
+
+### Layer
+If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI <a href=https://docs.ohsome.org/ohsome-api/stable/endpoints.html target="_blank">endpoint</a> as well as <a href=https://docs.ohsome.org/ohsome-api/stable/filter.html target="_blank">filters</a> for functionality.
+
+### Metadata
+See metadata.yaml in part 2.
+
+## 2. Your own Indicator
 
 If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_tool/indicators** e.g. ohsome_quality_tool/indicators/your_indicator_name.<br>
 The two files are named:
@@ -20,13 +42,6 @@ The metadata.yaml holds basic information about your indicator e.g. the indicato
 The easiest way to setup the metadata.yaml the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
 
 ### indicator.py
-
-To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
-<div align="center">
-  <img src="./UML-Class-Diagram.png">
-</div>
-
-As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml, the layer can be set during object creation and the result saves the result of a Indicator instance. if you do not need a very specific custom layer you can ignore this component.
 
 In your own indicator.py you only need to implement the three functions "preprocess", "calculate" and "create_figure" as well as an __init__ function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
 
