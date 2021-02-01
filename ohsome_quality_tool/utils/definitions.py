@@ -1,3 +1,7 @@
+"""
+Global Variables and Functions.
+"""
+
 import collections
 import glob
 import logging.config
