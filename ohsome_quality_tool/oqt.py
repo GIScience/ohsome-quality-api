@@ -28,8 +28,12 @@ def create_indicator(
     """Create an indicator.
 
     An indicator is created by either calculating the indicator results
-    for a geometry from scratch or by fetching already calculated indicator
-    results from the geodatabase.
+    for a geometry from scratch (bpolys) or by fetching indicator
+    results from the geodatabase (dataset, feature_id).
+
+    In case fetching indicator results from database does fail
+    the indicator is create from scratch and the results are saved
+    to the database.
 
     Returns:
         Indicator object
