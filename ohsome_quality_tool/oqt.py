@@ -7,10 +7,7 @@ from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
 
 from ohsome_quality_tool.geodatabase.client import (
-    create_error_table,
-    get_error_table_name,
     get_fid_list,
-    insert_error,
     load_indicator_results,
     save_indicator_results,
 )
@@ -125,64 +122,3 @@ def create_indicators_for_dataset(dataset_name):
                     f"Continue creation of the indicators for the other features."
                 )
                 continue
-
-
-def process_indicator(
-    dataset: str, indicator_name: str, layer_name: str, only_missing_ids: bool = False
-):
-    """Processes indicator and save results in geo database."""
-    raise NotImplementedError("Deprecated.")
-    if only_missing_ids is False:
-        fids = get_fid_list(dataset)
-    else:
-        fids = get_fid_list(get_error_table_name(dataset, indicator_name))
-
-    create_error_table(dataset, indicator_name, layer_name)
-    for feature_id in fids:
-        try:
-            indicator_class = name_to_class(class_type="indicator", name=indicator_name)
-            indicator = indicator_class(
-                dynamic=False,
-                dataset=dataset,
-                feature_id=feature_id,
-                layer_name=layer_name,
-            )
-            indicator.preprocess()
-            indicator.calculate()
-            indicator.create_figure()
-            indicator.save_to_database()
-        except Exception as E:
-            insert_error(dataset, indicator_name, layer_name, feature_id, E)
-            logger.info(
-                (
-                    f"caught Exception while processing {indicator_name} "
-                    f"{E} "
-                    f"for feature {feature_id} of {dataset}."
-                )
-            )
-
-
-def get_dynamic_indicator(
-    indicator_name: str, bpolys: FeatureCollection, layer_name: str
-):
-    raise NotImplementedError("Use create_indicator() instead")
-
-
-def get_static_indicator(
-    indicator_name: str, dataset: str, feature_id: int, layer_name: str
-):
-    raise NotImplementedError("Use create_indicator() instead")
-
-
-def get_dynamic_report(report_name: str, bpolys: FeatureCollection):
-    raise NotImplementedError("Use create_report() instead")
-
-
-def get_static_report(report_name: str, dataset: str, feature_id: int):
-    raise NotImplementedError("Use create_report() instead")
-
-
-def get_static_report_pdf(
-    report_name: str, dataset: str, feature_id: int, outfile: str
-):
-    raise NotImplementedError("Use create_report() instead")
