@@ -1,19 +1,11 @@
 # Contributing
 
-## Issues
-
-Please create an issue about what you are working on.
-Issues should have at least one label attached to them.
-If no labels fits the issue create a new one.
+Please contribute to this repository through [merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment).
 
 
 ## Setup
 
 ### Requirements
-
-- Python 3.8
-- Poetry
-- (Access to the database)
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
 Please make sure it is installed on your system.
@@ -22,16 +14,11 @@ Please make sure it is installed on your system.
 ### Installation
 
 ```bash
-git clone https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool.git
-cd ohsome-quality-tool
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
 # Hack away ...
 ```
-
-- To add dependencies: `poetry add package-name`
-- To update dependencies: `poetry update package-name`
 
 > Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
@@ -39,14 +26,6 @@ pre-commit install  # Install pre-commit hooks.
 ### Database
 
 To get access to a running database on a remote server please reach out.
-
-Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
-
-* run `docker-compose up -d oqt-database`
-* it will take around 15 minutes until all layers are set up
-* you can check the progress of the setup in the logs `docker logs oqt-database`
-* once you get `database system is ready to accept connections` in the logs the import was successful
-
 
 To access the Database various environment variables need to be set.
 To do this create a `.env` file at the root of the repository and write down following variables and their values:
@@ -58,43 +37,49 @@ POSTGRES_PORT=5432
 POSTGRES_SCHEMA=public
 ```
 
-To make the variables available to current environment run following command:
+To make the variables available to current environment run following command (Linux):
 
 ```
 export $(cat .env | xargs)
 ```
 
+Windows user can set those environment variables with following commands:
 
-## Feature Branch
-
-To contribute please create dedicated `feature` branches based on the `dev` branch. After the changes create a Pull Request of the `feature` branch into the `dev` branch on GitHub:
-
-```bash
-git checkout dev
-git checkout -b featureA
-# Hack away ...
-git commit -am 'Describe changes.'
-git push -u origin featureA
-# Create a Pull Request from feature branch into the dev branch on GitHub.
+```
+setx POSTGRES_PASSWORD mypassword
+setx POSTGRES_HOST localhost
+setx POSTGRES_PORT 5432
+setx POSTGRES_SCHEMA public
 ```
 
-> Note: If a bug in production (master branch) needs fixing before a new versions gets released (merging dev into master branch), a hotfix branch should be created. In the hotfix branch the bug should be fixed and then merged with the master branch (and also dev).
+> Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
+
+
+## Usage
+
+### OQT
+
+```
+oqt --help
+```
+
+### API
+
+```
+uvicorn ohsome_quality_tool.api:app --reload
+```
+
+Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
+
 
 
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 
-Each of those tools can be integrated in most editors.
-
 In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
-To setup pre-commit simply run:
-
-```bash
-pre-commit install
-```
 
 > Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
 >
@@ -103,17 +88,17 @@ pre-commit install
 
 ## Tests
 
-For each indicator and each report there should be a test in place. Ideally there will be several tests per indicator or report, e.g. a test for the dynamic processing and the another test for the static processing.
+Please provide tests.
 
-During development you should use the tests to check if your code changes didn't break any existing functionality.
-
-You can run all tests like this:
-```
-python -m unittest discover tests/
-```
-
-When working on a specific part of the project it will be often enough to run a test for a single indicator or report. Use this line if you want to run only a specific test:
-
-```
+```bash
+# Run a single test:
 python -m unittest tests/test_indicator_mapping_saturation.py
+
+# Run all test:
+python -m unittest discover
 ```
+
+
+## Troubleshooting
+
+Please refer to [docs/troubleshooting.md](docs/troubleshooting.md)

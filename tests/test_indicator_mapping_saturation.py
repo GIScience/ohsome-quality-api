@@ -15,6 +15,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             "fixtures",
             "heidelberg_altstadt.geojson",
         )
+
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
         layer_name = "major_roads"
