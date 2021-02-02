@@ -1,6 +1,6 @@
 // load geojson data, then build the map and the functionalities 
 d3.queue()
-  .defer(d3.json, 'assets/data/test-regions.geojson')
+  .defer(d3.json, 'assets/data/test_regions.geojson')
   .defer(d3.json, 'assets/data/custom.geojson')
   .await(buildMap)
   
@@ -160,7 +160,7 @@ function buildMap(err, ...charts){
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		dataset = "test-regions" // = Admin-0 country
+		dataset = "test_regions" // = Admin-0 country
 		selectedDataset = getDataset(dataset)
 	}
 	// initialize variables for storing area and dataset id from map geojson 
@@ -221,9 +221,10 @@ function buildMap(err, ...charts){
 			}
 
 			var params = {
-			    "dataset": getDataset(selectedDataset),
-			    "feature_id": getCountry(selectedCountry)
+			    "dataset": String(getDataset(selectedDataset)),
+			    "feature_id": String(getCountry(selectedCountry))
 			}
+			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
 
 		}
@@ -572,9 +573,8 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	var theUrl = "http://129.206.4.240:8080";
 	//theUrl = theUrl +"/dynamic/report/" + endPoint;
-	theUrl = theUrl +"/static/report/" + endPoint;
+	theUrl = apiUrl +"/static/report/" + endPoint;
 
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
@@ -585,7 +585,7 @@ function httpPostAsync(endPoint, params, callback) {
 		}
 	}
 	console.log(theUrl)
-	xmlHttp.open("POST", theUrl, true); // true for asynchronous 
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	// xmlHttp.setRequestHeader("Content-Type", "application/json");
 	xmlHttp.send(params);
 }
