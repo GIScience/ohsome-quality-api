@@ -363,6 +363,11 @@ class sigmoidCurve:
             xjump4.values[0],
             dy4.values[0],
         ]
+        print("len(res) ------------------------------------")
+        print(len(res))
+        if len(res) == 10:
+            res.append(0)
+            res.append(0)
         return res
 
     # don't know why, result of
@@ -381,6 +386,8 @@ class sigmoidCurve:
         x = sorted(lx)
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
+        if len(yValsAtPlateaus) == 3:
+            yValsAtPlateaus.append(0)
         # highest y value
         ymax = inits[3]
         # y value at the beginning of data history
@@ -607,8 +614,16 @@ class sigmoidCurve:
                 lx.append(j)
         # list of x values of mid points of the curves
         x = sorted(lx)
+        if len(x) == 3:
+            x.append(0)
+        if len(x) == 4:
+            x.append(0)
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
+        if len(yValsAtPlateaus) == 3:
+            yValsAtPlateaus.append(0)
+        if len(yValsAtPlateaus) == 4:
+            yValsAtPlateaus.append(0)
         # y value at the beginning of data history
         ystart = self.getYatCurveStart(x, xdata, ydata)
         # highest y value
