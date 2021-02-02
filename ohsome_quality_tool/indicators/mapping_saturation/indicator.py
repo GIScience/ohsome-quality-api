@@ -202,7 +202,6 @@ class MappingSaturation(BaseIndicator):
             linecol[0],
             label=f"{self.layer.name} - {self.layer.endpoint}",
         )
-        # plot sigmoid curve
         plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         plt.legend()
         plt.savefig(self.result.svg, format="svg")

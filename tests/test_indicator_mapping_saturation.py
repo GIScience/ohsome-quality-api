@@ -41,6 +41,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         )
         indicator.preprocess()
         indicator.calculate()
+        indicator.create_figure()
 
     def testCannotConvertNanError(self):
         layer_name = "building_count"
@@ -52,6 +53,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         )
         indicator.preprocess()
         indicator.calculate()
+        indicator.create_figure()
 
 
 if __name__ == "__main__":
