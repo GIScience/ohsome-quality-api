@@ -21,7 +21,7 @@ def create_indicator(
     bpolys: FeatureCollection = None,
     dataset: str = None,
     feature_id: int = None,
-):
+) -> object:
     """Create an indicator.
 
     An indicator is created by either calculating the indicator results
@@ -46,7 +46,7 @@ def create_indicator(
     )
 
     # Create indicator from scratch
-    if bpolys and dataset is None and feature_id is None:
+    if bpolys is not None and dataset is None and feature_id is None:
         indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
@@ -54,7 +54,7 @@ def create_indicator(
     # Create indicator by loading existing results from database
     # or in case it this does fail create indicator from scratch and
     # save results to database.
-    elif dataset and feature_id:
+    elif dataset is not None and feature_id is not None:
         try:
             success = load_indicator_results(indicator)
         except UndefinedTable:
@@ -72,7 +72,7 @@ def create_report(
     bpolys: FeatureCollection = None,
     dataset: str = None,
     feature_id: int = None,
-):
+) -> object:
     """Create a report.
 
     A Report is created by either calculaating each indicator
@@ -84,6 +84,7 @@ def create_report(
     """
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+    report.set_indicator_layer()
     report.create_indicators()
     report.combine_indicators()
     return report
