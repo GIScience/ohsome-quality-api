@@ -261,9 +261,9 @@ function buildMap(err, ...charts){
 		// ' <b>Overall value: '+ response.result.value + '</b></p>'
 
 
-		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.text +'</p>'
+		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.description +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
+		    '<p class="metadata-text">Report description:</br>'+ response.metadata.report_description +'</p>'
 			
 		if(response.indicators.length > 0) {
 			addIndicators(response.indicators)
@@ -304,21 +304,21 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.metadata.filterName ;
+			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.layer.name ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
 			switch (indicator.result.label) {
-                case "GREEN":
+                case "1":
                     traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                     break
-                case "YELLOW":
+                case "2":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
                     break
-                case "RED":
+                case "3":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
                     break
-                case "UNDEFINED":
+                case "4":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
 
             }
@@ -326,12 +326,12 @@ function buildMap(err, ...charts){
             right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicator.result.text;
+			indicatorText.innerHTML = indicator.result.description;
 			right_space.appendChild(indicatorText);
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.indicator_description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
