@@ -85,7 +85,15 @@ def create_report(
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
     report.set_indicator_layer()
-    report.create_indicators()
+    for indicator_name, layer_name in report.indicator_layer:
+        indicator = create_indicator(
+            indicator_name,
+            layer_name,
+            report.bpolys,
+            report.dataset,
+            report.feature_id,
+        )
+        report.indicators.append(indicator)
     report.combine_indicators()
     return report
 

@@ -6,8 +6,6 @@ from dacite import from_dict
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.geodatabase.client import get_bpolys_from_db
-from ohsome_quality_tool.oqt import create_indicator
 from ohsome_quality_tool.utils.definitions import get_metadata
 
 
@@ -45,36 +43,16 @@ class BaseReport(metaclass=ABCMeta):
     ):
         self.dataset = dataset
         self.feature_id = feature_id
-        if bpolys is not None:
-            self.bpolys = bpolys
-        elif dataset is not None and feature_id is not None:
-            self.bpolys = get_bpolys_from_db(self.dataset, self.feature_id)
-        else:
-            raise ValueError(
-                "Provide either a bounding polygone "
-                + "or dataset name and feature id as parameter."
-            )
+        self.bpolys = bpolys
 
         # Definies indicator+layer combinations
         self.indicator_layer: Tuple[IndicatorLayer] = []
         self.indicators: List[BaseIndicator] = []
+
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
-
-    def create_indicators(self) -> None:
-        """Create indicators and store them in attribute 'indicators'."""
-        for indicator_name, layer_name in self.indicator_layer:
-            self.indicators.append(
-                create_indicator(
-                    indicator_name,
-                    layer_name,
-                    self.bpolys,
-                    self.dataset,
-                    self.feature_id,
-                )
-            )
 
     @abstractmethod
     def set_indicator_layer(self) -> None:

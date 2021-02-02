@@ -3,6 +3,7 @@ import unittest
 
 import geojson
 
+from ohsome_quality_tool.oqt import create_indicator
 from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
     RemoteMappingLevelOne,
 )
@@ -21,7 +22,15 @@ class TestReportRemoteMappingLevelOne(unittest.TestCase):
 
     def test(self):
         self.report.set_indicator_layer()
-        self.report.create_indicators()
+        for indicator_name, layer_name in self.report.indicator_layer:
+            indicator = create_indicator(
+                indicator_name,
+                layer_name,
+                self.report.bpolys,
+                self.report.dataset,
+                self.report.feature_id,
+            )
+            self.report.indicators.append(indicator)
         self.report.combine_indicators()
         self.assertIsNotNone(self.report.result.label)
         self.assertIsNotNone(self.report.result.value)

@@ -36,6 +36,7 @@ class TestOqt(unittest.TestCase):
                 feature_id=1,
             )
 
+        # Valid parameters
         indicator = oqt.create_indicator(
             "GhsPopComparison", "building_count", dataset="test_regions", feature_id=3
         )
@@ -44,8 +45,14 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.description)
         self.assertIsNotNone(indicator.result.svg)
 
-    def testCreateReport(self):
+    def testCreateReportFromScratch(self):
         report = oqt.create_report("SimpleReport", self.bpolys)
+        self.assertIsNotNone(report.result.label)
+        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.description)
+
+    def testCreateReportFromDatabase(self):
+        report = oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
