@@ -73,28 +73,26 @@ class BaseIndicator(metaclass=ABCMeta):
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
-        if bpolys:
+        self.dataset = dataset
+        self.feature_id = feature_id
+        if bpolys is not None:
             self.bpolys = bpolys
-        elif bpolys is None and dataset is not None and feature_id is not None:
-            self.dataset = dataset
-            self.feature_id = feature_id
+        elif dataset is not None and feature_id is not None:
             self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
         else:
             raise ValueError(
                 "Provide either a bounding polygon "
                 + "or dataset name and feature id as parameter."
             )
+
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-
         layer = get_layer_definition(layer_name)
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
-
         random_id = str(uuid.uuid1())
         filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
         figure_path = os.path.join(DATA_PATH, filename)
-
         self.result: Result = Result(None, None, None, figure_path)
 
     @abstractmethod
