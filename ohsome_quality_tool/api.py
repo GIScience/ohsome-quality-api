@@ -86,14 +86,11 @@ async def get_report(
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
@@ -107,14 +104,11 @@ async def post_report(name: str, request: Request, item: ReportItem):
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
@@ -155,14 +149,11 @@ async def get_static_indicator(
 async def get_dynamic_report(name: str, bpolys: str, request: Request):
     bpolys = json.loads(bpolys)
     report = oqt.create_report(name, bpolys=bpolys)
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
@@ -170,14 +161,11 @@ async def get_dynamic_report(name: str, bpolys: str, request: Request):
 @app.get("/static/report/{name}")
 async def get_static_report(name: str, dataset: str, feature_id: str, request: Request):
     report = oqt.create_report(name, dataset=dataset, feature_id=feature_id)
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
@@ -188,14 +176,11 @@ async def post_dynamic_report(name: str, item: DynamicReportItem, request: Reque
     if bpolys:
         bpolys = json.loads(bpolys)
     report = oqt.create_report(name, bpolys=bpolys)
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
@@ -205,14 +190,11 @@ async def post_static_report(name: str, item: StaticReportItem, request: Request
     dataset = item.dict()["dataset"]
     feature_id = item.dict()["feature_id"]
     report = oqt.create_report(name, dataset=dataset, feature_id=feature_id)
-    indicator_names = []
-    for indicator in report.indicators:
-        indicator_names.append(indicator.metadata.name)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["result"] = vars(report.result)
-    response["indicators"] = indicator_names
+    response["indicators"] = [vars(indicator) for indicator in report.indicators]
     return response
 
 
