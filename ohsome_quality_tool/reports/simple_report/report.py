@@ -2,9 +2,8 @@ from statistics import mean
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.base.report import BaseReport
+from ohsome_quality_tool.base.report import BaseReport, IndicatorLayer
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.helper import name_to_class
 
 
 class SimpleReport(BaseReport):
@@ -16,18 +15,11 @@ class SimpleReport(BaseReport):
     ) -> None:
         super().__init__(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
 
-    def create_indicators(self) -> None:
-        for indicator_name, layer_name in (
-            # TODO uncomment once implemented
-            # ("MappingSaturation", "building_count"),
-            ("GhsPopComparison", "building_count"),
-        ):
-            indicator_class = name_to_class(class_type="indicator", name=indicator_name)
-            indicator = indicator_class(layer_name=layer_name, bpolys=self.bpolys)
-            indicator.preprocess()
-            indicator.calculate()
-            indicator.create_figure()
-            self.indicators.append(indicator)
+    def set_indicator_layer(self):
+        self.indicator_layer = (
+            IndicatorLayer("MappingSaturation", "building_count"),
+            IndicatorLayer("GhsPopComparison", "building_count"),
+        )
 
     def combine_indicators(self) -> None:
         """Combine the results of all indicators."""

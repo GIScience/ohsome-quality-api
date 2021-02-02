@@ -2,9 +2,8 @@ from statistics import mean
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.base.report import BaseReport
+from ohsome_quality_tool.base.report import BaseReport, IndicatorLayer
 from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
-from ohsome_quality_tool.utils.helper import name_to_class
 
 
 class SketchmapFitness(BaseReport):
@@ -16,20 +15,13 @@ class SketchmapFitness(BaseReport):
     ) -> None:
         super().__init__(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
 
-    def create_indicators(self) -> None:
-        for indicator_name, layer_name in (
-            # TODO
-            # ("MappingSaturation", "major_roads"),
-            ("LastEdit", "major_roads"),
-            ("LastEdit", "amenities"),
-            ("PoiDensity", "poi"),
-        ):
-            indicator_class = name_to_class(class_type="indicator", name=indicator_name)
-            indicator = indicator_class(layer_name=layer_name, bpolys=self.bpolys)
-            indicator.preprocess()
-            indicator.calculate()
-            indicator.create_figure()
-            self.indicators.append(indicator)
+    def set_indicator_layer(self):
+        self.indicator_layer = (
+            IndicatorLayer("MappingSaturation", "major_roads"),
+            IndicatorLayer("LastEdit", "major_roads"),
+            IndicatorLayer("LastEdit", "amenities"),
+            IndicatorLayer("PoiDensity", "poi"),
+        )
 
     def combine_indicators(self) -> None:
         logger.info(f"Combine indicators for report: {self.metadata.name}")

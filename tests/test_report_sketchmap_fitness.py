@@ -18,6 +18,7 @@ class TestReportSketchmapFitness(unittest.TestCase):
         self.report = SketchmapFitness(bpolys=bpolys)
 
     def test(self):
+        self.report.set_indicator_layer()
         self.report.create_indicators()
         self.report.combine_indicators()
         self.assertIsNotNone(self.report.result.label)
