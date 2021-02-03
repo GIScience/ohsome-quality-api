@@ -947,4 +947,5 @@ class sigmoidCurve:
                 )
             return ydataForSat
         else:
+            # no curve could be calculated
             return ["empty"]
