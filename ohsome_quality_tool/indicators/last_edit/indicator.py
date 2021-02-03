@@ -59,7 +59,7 @@ class LastEdit(BaseIndicator):
 
         self.total_features = query_results_totals["result"][0]["value"]
         self.share_edited_features = (
-            (self.edited_features / self.total_features) * 100
+            round((self.edited_features / self.total_features) * 100)
             if self.total_features != 0
             else -1
         )
@@ -67,9 +67,8 @@ class LastEdit(BaseIndicator):
     def calculate(self):
         logger.info(f"Calculation for indicator: {self.metadata.name}")
 
-        share = round(self.share_edited_features)
         description = Template(self.metadata.result_description).substitute(
-            share=share, layer_name=self.layer.name
+            share=self.share_edited_features, layer_name=self.layer.name
         )
         if self.share_edited_features == -1:
             label = TrafficLightQualityLevels.UNDEFINED
