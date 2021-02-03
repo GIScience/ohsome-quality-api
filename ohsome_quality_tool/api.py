@@ -54,6 +54,28 @@ async def get_indicator(
     return response
 
 
+@app.post("/indicator/{name}")
+async def post_indicator(
+    name: str,
+    request: Request,
+    layer_name: str,
+    item: Parameters
+):
+    bpolys = item.dict().get("bpolys", None)
+    dataset = item.dict().get("dataset", None)
+    feature_id = item.dict().get("feature_id", None)
+    if bpolys:
+        bpolys = json.loads(bpolys)
+    elif dataset is None and feature_id is None:
+        raise ValueError("Provide either bpolys or dataset and feature_id")
+    indicator = oqt.create_indicator(name, layer_name, bpolys, dataset, feature_id)
+    response = RESPONSE_TEMPLATE
+    response["metadata"] = vars(indicator.metadata)
+    response["metadata"]["requestUrl"] = request.url._url
+    response["result"] = vars(indicator.result)
+    return response
+
+
 @app.get("/report/{name}")
 async def get_report(
     name: str,
