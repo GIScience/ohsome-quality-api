@@ -1,10 +1,10 @@
 ## Indicator Creation Guide
 
-To make contribution to the OQT easier we have compiled this guide which explains the parts and background knowledge that are needed to built an indicator.<br>
-To understand how to implement your own indicator it is necessary to know a few things about how the BaseIndicator works and which components it has. This will be covered in the first part. The second part will give further guidelines in how to implement your own Indicator.
+To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to built an indicator.<br>
+To understand how to implement your own indicator it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
+
 
 ## 1. BaseIndicator
-
 
 To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
 <div align="center">
@@ -12,7 +12,7 @@ To illustrate the structure of an indicator we created a Class Diagram showing i
 </div>
 <br>
 
-As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml, the layer can be set during object creation (if you do not need a very specific custom layer you can ignore this component) and the result saves the result of an Indicator instance. 
+As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml (see part 2), the layer can be set during object creation and the result saves the result of an Indicator instance. 
 
 ### Result
 The result object can hold 4 values. 
@@ -46,7 +46,7 @@ The easiest way to setup the metadata.yaml the right way would be to copy it fro
 In your own indicator.py you only need to implement the three functions "preprocess", "calculate" and "create_figure" as well as an __init__ function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
 
 #### init
-Your init should look like this:
+Your init should call the BaseIndicator init and thus should start like this:
 ```python
 def __init__(
       self,
@@ -69,7 +69,7 @@ Additionally you can define variable placeholders for important values and preli
 
 #### preprocess
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which is can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a Bounding-Multipolygon and returns the the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too.
+This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too.
 
 #### calculate
 
@@ -77,4 +77,11 @@ Here you should execute all needed calculations and save the results in your res
 
 #### create_figure
 
-Finally you need to create a svg figure (e.g. with matplotlib) and save it to **self.result.svg** (e.g. plt.savefig(self.result.svg, format="svg")). This class attribute is created on initialization in the BaseIndicator class and holds a unique path.
+Finally you need to create a svg figure (e.g. with matplotlib) and save it to **self.result.svg** (e.g. plt.savefig(self.result.svg, format="svg")).
+
+<br>
+If you have defined these three functions your indicator is ready to go. To show how OQT uses your indicator to display on the OQT Website or in your command line interface we made a sequence diagram. 
+<div align="center">
+  <img src="./create_indicator.svg">
+</div>
+<br>
