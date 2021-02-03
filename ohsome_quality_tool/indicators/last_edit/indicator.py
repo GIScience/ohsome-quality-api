@@ -44,13 +44,13 @@ class LastEdit(BaseIndicator):
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
+            endpoint="contributions/centroid",
         )
 
         query_results_totals = ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )
-
         try:
             self.edited_features = len(query_results_contributions["features"])
         except KeyError:
@@ -59,7 +59,7 @@ class LastEdit(BaseIndicator):
 
         self.total_features = query_results_totals["result"][0]["value"]
         self.share_edited_features = (
-            (self.edited_features / self.total_features)
+            (self.edited_features / self.total_features) * 100
             if self.total_features != 0
             else -1
         )
@@ -67,7 +67,7 @@ class LastEdit(BaseIndicator):
     def calculate(self):
         logger.info(f"Calculation for indicator: {self.metadata.name}")
 
-        share = round(self.share_edited_features * 100)
+        share = round(self.share_edited_features)
         description = Template(self.metadata.result_description).substitute(
             share=share, layer_name=self.layer.name
         )
@@ -134,8 +134,7 @@ class LastEdit(BaseIndicator):
 
         # Plot inner Pie (Indicator Value)
         radius = 1 - size
-        share_edited_features = int(self.share_edited_features * 100)
-        sizes = (100 - share_edited_features, share_edited_features)
+        sizes = (100 - self.share_edited_features, self.share_edited_features)
         colors = ("white", "black")
         ax.pie(
             sizes,
@@ -147,7 +146,7 @@ class LastEdit(BaseIndicator):
         )
 
         black_patch = mpatches.Patch(
-            color="black", label=f"{self.layer.name}: {share_edited_features} %"
+            color="black", label=f"{self.layer.name}: {self.share_edited_features} %"
         )
         handles.append(black_patch)
 
