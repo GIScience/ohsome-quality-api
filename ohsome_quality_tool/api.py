@@ -27,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class ReportItem(BaseModel):
+class Parameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
     feature_id: Optional[str] = None
@@ -78,7 +78,7 @@ async def get_report(
 
 
 @app.post("/report/{name}")
-async def post_report(name: str, request: Request, item: ReportItem):
+async def post_report(name: str, request: Request, item: Parameters):
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("feature_id", None)
