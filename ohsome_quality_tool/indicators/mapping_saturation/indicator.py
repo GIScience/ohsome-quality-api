@@ -225,8 +225,8 @@ class MappingSaturation(BaseIndicator):
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
         plt.legend()
-        plt.savefig(self.result.svg, format="svg")
+        plt.savefig(self.figure_path, format="svg")
         plt.close("all")
         logger.info(
-            f"Save figure for indicator {self.metadata.name} to: {self.result.svg}"
+            f"Save figure for indicator {self.metadata.name} to: {self.figure_path}"
         )
