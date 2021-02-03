@@ -92,8 +92,9 @@ class BaseIndicator(metaclass=ABCMeta):
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
         random_id = str(uuid.uuid1())
         filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
-        figure_path = os.path.join(DATA_PATH, filename)
-        self.result: Result = Result(None, None, None, figure_path)
+        # the figure_path attribute should be used by the create_figure functions
+        self.figure_path = os.path.join(DATA_PATH, filename)
+        self.result: Result = Result(None, None, None, filename)
 
     @abstractmethod
     def preprocess(self) -> None:

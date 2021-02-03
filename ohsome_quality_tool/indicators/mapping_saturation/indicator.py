@@ -204,8 +204,8 @@ class MappingSaturation(BaseIndicator):
         )
         plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         plt.legend()
-        plt.savefig(self.result.svg, format="svg")
+        plt.savefig(self.figure_path, format="svg")
         plt.close("all")
         logger.info(
-            f"Save figure for indicator {self.metadata.name} to: {self.result.svg}"
+            f"Save figure for indicator {self.metadata.name} to: {self.figure_path}"
         )
