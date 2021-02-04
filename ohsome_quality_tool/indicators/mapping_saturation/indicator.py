@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from string import Template
 from typing import Dict
 
@@ -225,8 +226,10 @@ class MappingSaturation(BaseIndicator):
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
         plt.legend()
-        plt.savefig(self.figure_path, format="svg")
+
+        img_data = StringIO.StringIO()
+        plt.savefig(img_data, format="svg")
+        img_data.seek(0)  # rewind the data
+        self.result.svg = img_data.buf  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
-        logger.info(
-            f"Save figure for indicator {self.metadata.name} to: {self.figure_path}"
-        )
