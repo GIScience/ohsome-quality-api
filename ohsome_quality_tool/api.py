@@ -27,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Parameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
@@ -54,12 +55,9 @@ async def get_indicator(
     return response
 
 
-@app.post("/indicator/{name}")
+@app.post("/indicator/{name}/{layer_name}")
 async def post_indicator(
-    name: str,
-    request: Request,
-    layer_name: str,
-    item: Parameters
+    name: str, request: Request, layer_name: str, item: Parameters
 ):
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)

@@ -42,6 +42,18 @@ class TestApi(unittest.TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_post_indicator_bpolys(self):
+        data = {"bpolys": geojson.dumps(self.bpolys)}
+        url = f"/indicator/{self.indicator_name}/{self.layer_name}"
+        response = self.client.post(url, json=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_indicator_dataset(self):
+        data = {"dataset": self.dataset, "feature_id": self.feature_id}
+        url = f"/indicator/{self.indicator_name}/{self.layer_name}"
+        response = self.client.post(url, json=data)
+        self.assertEqual(response.status_code, 200)
+
     def test_get_report_bpolys(self):
         url = "/report/{0}?bpolys={1}".format(self.report_name, self.bpolys)
         response = self.client.get(url)
@@ -65,3 +77,7 @@ class TestApi(unittest.TestCase):
         url = f"/report/{self.report_name}"
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 200)
+
+
+if __name__ == "__main__":
+    unittest.main()
