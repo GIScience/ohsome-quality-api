@@ -4,6 +4,7 @@ from typing import Dict
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+from dateutil.relativedelta import relativedelta
 from geojson import FeatureCollection
 
 from ohsome_quality_tool.base.indicator import BaseIndicator
@@ -19,8 +20,7 @@ class LastEdit(BaseIndicator):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
-        # TODO: adjust time range here to always use last year
-        time_range: str = "2019-07-15,2020-07-15",
+        time_range: str = None,
     ) -> None:
         super().__init__(
             dynamic=dynamic,
@@ -29,7 +29,15 @@ class LastEdit(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
-        self.time_range = time_range
+        if time_range:
+            self.time_range = time_range
+        else:
+            latest_ohsome_stamp = ohsome_client.get_latest_ohsome_timestamp()
+            self.time_range = "{},{}".format(
+                (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d"),
+                latest_ohsome_stamp.strftime("%Y-%m-%d"),
+            )
+
         # TODO: thresholds might be better defined for each OSM layer
         self.threshold_yellow = 0.20  # more than 20% edited last year --> green
         self.threshold_red = 0.05  # more than 5% edited last year --> yellow
@@ -46,7 +54,6 @@ class LastEdit(BaseIndicator):
             time=self.time_range,
             endpoint="contributions/centroid",
         )
-
         query_results_totals = ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
@@ -107,8 +114,6 @@ class LastEdit(BaseIndicator):
         ax = fig.add_subplot()
 
         ax.set_title("Features Edited Last Year")
-        # ax.set_xlabel("Edited [%]")
-        # ax.set_ylabel("OpenStreetMap [%]")
 
         size = 0.3  # Width of the pie
         handles = []  # Handles for legend
@@ -123,7 +128,6 @@ class LastEdit(BaseIndicator):
             sizes,
             radius=radius,
             colors=colors,
-            # autopct="%1.1f%%",
             startangle=90,
             wedgeprops={"width": size, "alpha": 0.5},
         )
@@ -139,7 +143,6 @@ class LastEdit(BaseIndicator):
             sizes,
             radius=radius,
             colors=colors,
-            # autopct="%1.1f%%",
             startangle=90,
             wedgeprops={"width": size},
         )
@@ -151,51 +154,6 @@ class LastEdit(BaseIndicator):
 
         ax.legend(handles=handles)
         ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-        # # TODO: Decide which plot type to use. Pi chart or bar chart?
-        # # Plot as bar chart
-        # px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        # figsize = (400 * px, 400 * px)
-        # fig = plt.figure(figsize=figsize)
-        # ax = fig.add_subplot()
-
-        # ax.set_title("Features Edited Last Year")
-
-        # ax.set_ylim((0, 100))
-
-        # threshold_yellow = 20  # more than 20% edited last year --> green
-        # threshold_red = 5
-
-        # x = [-1, 1]
-        # y1 = [threshold_yellow, threshold_yellow]
-        # y2 = [threshold_red, threshold_red]
-
-        # # Plot thresholds as line.
-        # line = line = ax.plot(
-        #     x,
-        #     y1,
-        #     color="black",
-        #     label="Threshold A",
-        # )
-        # plt.setp(line, linestyle="--")
-
-        # line = ax.plot(
-        #     x,
-        #     y2,
-        #     color="black",
-        #     label="Threshold B",
-        # )
-        # plt.setp(line, linestyle=":")
-        # ax.fill_between(x, y2, 0, alpha=0.5, color="red")
-        # ax.fill_between(x, y2, y1, alpha=0.5, color="yellow")
-        # ax.fill_between(x, y1, 100, alpha=0.5, color="green")
-
-        # y_data = int(data["share_edited_features"] * 100)
-        # ax.bar("self.layer.name", y_data, color="black", label=self.layer.name)
-
-        # # ax.plot(x_data, y_data, "o", color="black", label=self.layer.name)
-
-        # ax.legend()
 
         logger.info(
             f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"

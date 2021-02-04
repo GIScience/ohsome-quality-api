@@ -1,3 +1,4 @@
+import datetime
 from typing import Dict
 
 import requests
@@ -24,3 +25,12 @@ def query(layer, bpolys: str, time: str = None, endpoint: str = None) -> Dict:
         logger.info("Query failed!")
 
     return response.json()
+
+
+def get_latest_ohsome_timestamp():
+    """Get unix timestamp of ohsome from ohsome api."""
+    url = "https://api.ohsome.org/v1/metadata"
+    r = requests.get(url)
+    timestamp_str = str(r.json()["extractRegion"]["temporalExtent"]["toTimestamp"])
+    timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%MZ")
+    return timestamp
