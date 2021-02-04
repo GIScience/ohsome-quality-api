@@ -69,7 +69,7 @@ Additionally you can define variable placeholders for important values and preli
 
 #### preprocess
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too.
+This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too.
 
 #### calculate
 
