@@ -1,4 +1,4 @@
-![oqt_header](logo/oqt_header.png)
+![](docs/img/oqt_header.png)
 
 # Proof of Concept for Ohsome Quality Tool
 
@@ -15,7 +15,7 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 
 ## Components
 
-![Comonents](docs/UML-Component-Diagram.png)
+![](docs/img/UML-Component-Diagram.png)
 
 
 ## Contributing
