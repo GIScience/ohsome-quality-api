@@ -188,7 +188,7 @@ class MappingSaturation(BaseIndicator):
             self.result.description = description
             return label, value, text, self.preprocessing_results
 
-    def create_figure(self) -> str:
+    def create_figure(self):
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
@@ -227,9 +227,8 @@ class MappingSaturation(BaseIndicator):
             plt.title("No Sigmoid curve could be fitted into the data")
         plt.legend()
 
-        img_data = StringIO.StringIO()
+        img_data = StringIO()
         plt.savefig(img_data, format="svg")
-        img_data.seek(0)  # rewind the data
-        self.result.svg = img_data.buf  # this is svg data
+        self.result.svg = img_data.getvalue()  # this is svg data
         logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

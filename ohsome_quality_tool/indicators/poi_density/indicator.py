@@ -79,7 +79,7 @@ class PoiDensity(BaseIndicator):
                     description + self.metadata.label_description["red"]
                 )
 
-    def create_figure(self) -> str:
+    def create_figure(self):
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -133,9 +133,8 @@ class PoiDensity(BaseIndicator):
 
         ax.legend()
 
-        img_data = StringIO.StringIO()
+        img_data = StringIO()
         plt.savefig(img_data, format="svg")
-        img_data.seek(0)  # rewind the data
-        self.result.svg = img_data.buf  # this is svg data
+        self.result.svg = img_data.getvalue()  # this is svg data
         logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

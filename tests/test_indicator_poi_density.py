@@ -27,9 +27,9 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.label)
         self.assertIsNotNone(self.indicator.result.value)
         self.assertIsNotNone(self.indicator.result.description)
-        self.assertIsNotNone(self.indicator.result.svg)
 
         self.indicator.create_figure()
+        self.assertIsNotNone(self.indicator.result.svg)
 
 
 if __name__ == "__main__":

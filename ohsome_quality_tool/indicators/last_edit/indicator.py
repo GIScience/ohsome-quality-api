@@ -154,9 +154,8 @@ class LastEdit(BaseIndicator):
         ax.legend(handles=handles)
         ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-        img_data = StringIO.StringIO()
+        img_data = StringIO()
         plt.savefig(img_data, format="svg")
-        img_data.seek(0)  # rewind the data
-        self.result.svg = img_data.buf  # this is svg data
+        self.result.svg = img_data.getvalue()  # this is svg data
         logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
