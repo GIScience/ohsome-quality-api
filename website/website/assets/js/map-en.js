@@ -573,9 +573,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	//theUrl = theUrl +"/dynamic/report/" + endPoint;
-	theUrl = apiUrl +"/static/report/" + endPoint;
-
+	var theUrl = apiUrl +"/report/" + endPoint;
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -586,7 +584,6 @@ function httpPostAsync(endPoint, params, callback) {
 	}
 	console.log(theUrl)
 	xmlHttp.open("POST", theUrl, true); // true for asynchronous
-	// xmlHttp.setRequestHeader("Content-Type", "application/json");
 	xmlHttp.send(params);
 }
 
