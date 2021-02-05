@@ -14,8 +14,6 @@ RESPONSE_TEMPLATE = {
         "text": "© OpenStreetMap contributors",
     },
     "apiVersion": "0.1",
-    "metadata": "",
-    "result": "",
 }
 
 app = FastAPI()
@@ -58,6 +56,9 @@ async def get_indicator(
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"].pop("result_description", None)
+    response["metadata"].pop("label_description", None)
+    response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
     return response
 
@@ -76,6 +77,9 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"].pop("result_description", None)
+    response["metadata"].pop("label_description", None)
+    response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
     return response
 
@@ -98,8 +102,17 @@ async def get_report(
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
-    response["indicators"] = [vars(indicator) for indicator in report.indicators]
+    response["indicators"] = []
+    for indicator in report.indicators:
+        i = {}
+        i["metadata"] = vars(indicator.metadata)
+        i["metadata"].pop("result_description", None)
+        i["metadata"].pop("label_description", None)
+        i["layer"] = vars(indicator.layer)
+        i["result"] = vars(indicator.result)
+        response["indicators"].append(i)
     return response
 
 
@@ -116,8 +129,18 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
-    response["indicators"] = [vars(indicator) for indicator in report.indicators]
+    response["indicators"] = []
+    for indicator in report.indicators:
+        i = {}
+        i["metadata"] = vars(indicator.metadata)
+        i["metadata"].pop("result_description", None)
+        i["metadata"].pop("label_description", None)
+        i["layer"] = vars(indicator.layer)
+        i["result"] = vars(indicator.result)
+        response["indicators"].append(i)
+    print(response)
     return response
 
 
