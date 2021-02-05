@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ohsome_quality_tool"
+name = "ohsome_quality_analyst"
 version = "0.1.0"
 description = ""
 authors = [
