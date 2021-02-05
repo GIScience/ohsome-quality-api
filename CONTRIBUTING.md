@@ -27,13 +27,16 @@ pre-commit install  # Install pre-commit hooks.
 
 To get access to a running database on a remote server please reach out.
 
-To access the Database various environment variables need to be set.
+To access the Database and to specify ohsome API URL various environment variables need to be set.
 To do this create a `.env` file at the root of the repository and write down following variables and their values:
 
 ```bash
-POSTGRES_PASSWORD=mypassword
+OHSOME_API=https://api.ohsome.org/v1/
+POSTGRES_DB=hexadmin
+POSTGRES_USER=hexadmin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
+POSTGRES_PASSWORD=mypassword
 POSTGRES_SCHEMA=public
 ```
 
