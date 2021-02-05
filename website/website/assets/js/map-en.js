@@ -536,7 +536,7 @@ function buildMap(err, ...charts){
 
 
 	info.addTo(map);
-	legend//.addTo(map);
+	//legend.addTo(map);
 	// add HeiGIT logo
 	var logo = L.control({ position: 'topleft' });
 	logo.onAdd = function (map) {
@@ -547,7 +547,7 @@ function buildMap(err, ...charts){
 		  <img src='assets/img/logos/Logo_UNI_GIScience_HD.png'/></a></div>`
 		  return logoContainer
 	}
-	logo//.addTo(map)
+	//logo.addTo(map)
 
  }
  function topFunction() {
