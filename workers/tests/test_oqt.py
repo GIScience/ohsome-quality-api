@@ -3,7 +3,7 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool import oqt
+from ohsome_quality_analyst import oqt
 
 
 class TestOqt(unittest.TestCase):

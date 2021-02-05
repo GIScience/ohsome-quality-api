@@ -2,7 +2,7 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_tool.utils.definitions import (
+from ohsome_quality_analyst.utils.definitions import (
     get_layer_definition,
     load_layer_definitions,
 )

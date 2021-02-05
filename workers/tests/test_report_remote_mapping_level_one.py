@@ -3,8 +3,8 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.oqt import create_indicator
-from ohsome_quality_tool.reports.remote_mapping_level_one.report import (
+from ohsome_quality_analyst.oqt import create_indicator
+from ohsome_quality_analyst.reports.remote_mapping_level_one.report import (
     RemoteMappingLevelOne,
 )
 

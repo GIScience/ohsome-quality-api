@@ -3,8 +3,8 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.oqt import create_indicator
-from ohsome_quality_tool.reports.sketchmap_fitness.report import SketchmapFitness
+from ohsome_quality_analyst.oqt import create_indicator
+from ohsome_quality_analyst.reports.sketchmap_fitness.report import SketchmapFitness
 
 
 class TestReportSketchmapFitness(unittest.TestCase):

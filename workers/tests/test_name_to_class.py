@@ -1,10 +1,12 @@
 import unittest
 
-from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import GhsPopComparison
+from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
+    GhsPopComparison,
+)
 
-# from ohsome_quality_tool.reports.simple_report.report import SimpleReport
-from ohsome_quality_tool.utils.definitions import load_metadata
-from ohsome_quality_tool.utils.helper import name_to_class
+# from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
+from ohsome_quality_analyst.utils.definitions import load_metadata
+from ohsome_quality_analyst.utils.helper import name_to_class
 
 
 class TestNameToClass(unittest.TestCase):

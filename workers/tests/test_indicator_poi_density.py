@@ -3,7 +3,7 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.indicators.poi_density.indicator import PoiDensity
+from ohsome_quality_analyst.indicators.poi_density.indicator import PoiDensity
 
 
 class TestIndicatorPoiDensity(unittest.TestCase):

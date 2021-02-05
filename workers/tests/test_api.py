@@ -10,7 +10,7 @@ import unittest
 import geojson
 from fastapi.testclient import TestClient
 
-from ohsome_quality_tool.api import app
+from ohsome_quality_analyst.api import app
 
 
 class TestApi(unittest.TestCase):

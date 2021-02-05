@@ -3,7 +3,7 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.indicators.mapping_saturation.indicator import (
+from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 

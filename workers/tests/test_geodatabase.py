@@ -1,7 +1,9 @@
 import unittest
 
-import ohsome_quality_tool.geodatabase.client as db_client
-from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import GhsPopComparison
+import ohsome_quality_analyst.geodatabase.client as db_client
+from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
+    GhsPopComparison,
+)
 
 
 class TestGeodatabase(unittest.TestCase):

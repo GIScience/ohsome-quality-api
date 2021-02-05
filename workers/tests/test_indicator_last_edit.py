@@ -3,7 +3,7 @@ import unittest
 
 import geojson
 
-from ohsome_quality_tool.indicators.last_edit.indicator import LastEdit
+from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
 
 
 class TestIndicatorLastEdit(unittest.TestCase):
