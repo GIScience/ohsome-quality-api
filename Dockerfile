@@ -12,10 +12,10 @@ USER oqt
 # Create data directory
 RUN mkdir --parents .local/share/oqt
 # Create bin directory and add to PATH
+RUN mkdir --parents /home/oqt/.local/bin
 # This is needed to be able to run oqt or uvicorn commands
-RUN mkdir --parents .local/bin
-RUN LOCAL_BIN=/home/oqt/.local/bin
-RUN PATH=$LOCAL_BIN:$PATH
+# without providing full path to binary of those programs
+ENV PATH="/home/oqt/.local/bin:${PATH}"
 
 COPY pyproject.toml .
 COPY ohsome_quality_tool ohsome_quality_tool
