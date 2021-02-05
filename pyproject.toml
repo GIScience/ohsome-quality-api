@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "ohsome_quality_tool"
+name = "ohsome_quality_analyst"
 version = "0.1.0"
 description = ""
-authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>"]
+authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>", "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>", "Benjamin Herfort <Benjamin.Herfort@heigit.org>", "Katharina Przybill", "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
