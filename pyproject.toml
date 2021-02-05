@@ -2,7 +2,13 @@
 name = "ohsome_quality_tool"
 version = "0.1.0"
 description = ""
-authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>", "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>", "Benjamin Herfort <Benjamin.Herfort@heigit.org>", "Katharina Przybill", "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>"]
+authors = [
+  "Benjamin Herfort <Benjamin.Herfort@heigit.org>",
+  "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>",
+  "Katharina Przybill",
+  "Matthias Schaub <Matthias.Schaub@heigit.org>",
+  "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>",
+  ]
 
 [tool.poetry.dependencies]
 python = "^3.8"
