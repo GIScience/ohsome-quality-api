@@ -294,7 +294,8 @@ function buildMap(err, ...charts){
 			if (indicator.result.label == 'UNDEFINED'){
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    left_space.innerHTML = '<img class="indicator-graph" src="data/'+indicator.result.svg+'">';
+			    // TODO: add svg here instead of image
+			    left_space.innerHTML = '<svg class="indicator-graph" src="data/'+indicator.result.svg+'">';
 
 			}
 			sectionDiv.appendChild(left_space)

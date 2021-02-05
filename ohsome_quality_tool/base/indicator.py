@@ -3,8 +3,6 @@ TODO:
     Describe this module and how to implement child classes
 """
 
-import os
-import uuid
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Dict
@@ -13,11 +11,7 @@ from dacite import from_dict
 from geojson import FeatureCollection
 
 import ohsome_quality_tool.geodatabase.client as db_client
-from ohsome_quality_tool.utils.definitions import (
-    DATA_PATH,
-    get_layer_definition,
-    get_metadata,
-)
+from ohsome_quality_tool.utils.definitions import get_layer_definition, get_metadata
 
 
 @dataclass
@@ -90,11 +84,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         layer = get_layer_definition(layer_name)
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
-        random_id = str(uuid.uuid1())
-        filename = "_".join([self.metadata.name, self.layer.name, random_id, ".svg"])
-        # the figure_path attribute should be used by the create_figure functions
-        self.figure_path = os.path.join(DATA_PATH, filename)
-        self.result: Result = Result(None, None, None, filename)
+        self.result: Result = Result(None, None, None, None)
 
     @abstractmethod
     def preprocess(self) -> None:

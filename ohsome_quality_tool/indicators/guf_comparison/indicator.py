@@ -1,5 +1,6 @@
 import json
 import os
+from io import StringIO
 from math import ceil
 from string import Template
 
@@ -137,8 +138,8 @@ class GufComparison(BaseIndicator):
 
         ax.legend()
 
-        logger.info(
-            f"Save figure for indicator: {self.metadata.name}\n to: {self.figure_path}"
-        )
-        plt.savefig(self.figure_path, format="svg")
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

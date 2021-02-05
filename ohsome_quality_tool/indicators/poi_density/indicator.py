@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from string import Template
 
 import matplotlib.pyplot as plt
@@ -78,7 +79,7 @@ class PoiDensity(BaseIndicator):
                     description + self.metadata.label_description["red"]
                 )
 
-    def create_figure(self) -> str:
+    def create_figure(self):
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -132,8 +133,8 @@ class PoiDensity(BaseIndicator):
 
         ax.legend()
 
-        logger.info(
-            f"Save figure for indicator: {self.metadata.name}\n to: {self.figure_path}"
-        )
-        plt.savefig(self.figure_path, format="svg")
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
