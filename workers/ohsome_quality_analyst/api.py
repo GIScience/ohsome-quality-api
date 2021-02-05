@@ -5,8 +5,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from ohsome_quality_tool import oqt
-from ohsome_quality_tool.geodatabase import client as db_client
+from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.geodatabase import client as db_client
 
 RESPONSE_TEMPLATE = {
     "attribution": {

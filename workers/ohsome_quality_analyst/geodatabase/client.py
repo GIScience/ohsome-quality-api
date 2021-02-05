@@ -4,8 +4,8 @@ from typing import Dict
 from geojson import FeatureCollection
 from psycopg2 import sql
 
-from ohsome_quality_tool.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_tool.utils.definitions import logger
+from ohsome_quality_analyst.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
+from ohsome_quality_analyst.utils.definitions import logger
 
 
 def get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:

@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 from dateutil.relativedelta import relativedelta
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.ohsome import client as ohsome_client
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
 
 
 class LastEdit(BaseIndicator):

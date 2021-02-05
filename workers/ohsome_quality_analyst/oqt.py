@@ -6,13 +6,13 @@ Functions are triggert by the CLI and API.
 from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
 
-from ohsome_quality_tool.geodatabase.client import (
+from ohsome_quality_analyst.geodatabase.client import (
     get_fid_list,
     load_indicator_results,
     save_indicator_results,
 )
-from ohsome_quality_tool.utils.definitions import DATASET_NAMES, logger
-from ohsome_quality_tool.utils.helper import name_to_class
+from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, logger
+from ohsome_quality_analyst.utils.helper import name_to_class
 
 
 def create_indicator(

@@ -19,7 +19,7 @@ def name_to_class(class_type: str, name: str):
     # - Hard code import of classes
     # - Dynamically import all classes in package
     #     - https://julienharbulot.com/python-dynamical-import.html
-    class_path = "ohsome_quality_tool.{0}s.{1}.{2}".format(
+    class_path = "ohsome_quality_analyst.{0}s.{1}.{2}".format(
         class_type,
         camel_to_snake(name),
         class_type,

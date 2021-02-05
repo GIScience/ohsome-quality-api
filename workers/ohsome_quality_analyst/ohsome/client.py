@@ -3,7 +3,7 @@ from typing import Dict
 
 import requests
 
-from ohsome_quality_tool.utils.definitions import OHSOME_API, logger
+from ohsome_quality_analyst.utils.definitions import OHSOME_API, logger
 
 
 # TODO: Add documentation on time string format.

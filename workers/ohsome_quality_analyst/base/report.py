@@ -5,8 +5,8 @@ from typing import Dict, List, NamedTuple, Tuple
 from dacite import from_dict
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.base.indicator import BaseIndicator
-from ohsome_quality_tool.utils.definitions import get_metadata
+from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.utils.definitions import get_metadata
 
 
 @dataclass

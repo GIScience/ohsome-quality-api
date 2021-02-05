@@ -13,7 +13,7 @@ from typing import Dict
 import yaml
 from xdg import XDG_DATA_HOME
 
-from ohsome_quality_tool.utils.helper import get_module_dir
+from ohsome_quality_analyst.utils.helper import get_module_dir
 
 # Dataset names which are available in the Geodatabase
 DATASET_NAMES = (
@@ -32,7 +32,7 @@ DATASET_NAMES = (
     "test_regions",
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
-DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_tool")
+DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
 DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
 Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
@@ -78,7 +78,7 @@ def load_metadata(module_name: str) -> Dict:
     if module_name != "indicators" and module_name != "reports":
         raise ValueError("module name value can only be 'indicators' or 'reports'.")
 
-    directory = get_module_dir("ohsome_quality_tool.{0}".format(module_name))
+    directory = get_module_dir("ohsome_quality_analyst.{0}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     metadata = {}
     for file in files:
@@ -121,7 +121,7 @@ def load_layer_definitions() -> Dict:
     Returns:
         A Dict with the layer names of the layers as keys.
     """
-    directory = get_module_dir("ohsome_quality_tool.ohsome")
+    directory = get_module_dir("ohsome_quality_analyst.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
     with open(file, "r") as f:
         return yaml.safe_load(f)

@@ -4,8 +4,8 @@ import click
 import geojson
 import yaml
 
-from ohsome_quality_tool import oqt
-from ohsome_quality_tool.cli_opts import (
+from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.cli_opts import (
     dataset_name_opt,
     feature_id_opt,
     indicator_name_opt,
@@ -13,7 +13,7 @@ from ohsome_quality_tool.cli_opts import (
     layer_name_opt,
     report_name_opt,
 )
-from ohsome_quality_tool.utils.definitions import (
+from ohsome_quality_analyst.utils.definitions import (
     DATASET_NAMES,
     load_layer_definitions,
     load_metadata,

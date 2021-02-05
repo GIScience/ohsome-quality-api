@@ -4,7 +4,7 @@ Define Click command options to avoid redundancy.
 
 import click
 
-from ohsome_quality_tool.utils.definitions import (
+from ohsome_quality_analyst.utils.definitions import (
     DATASET_NAMES,
     load_layer_definitions,
     load_metadata,

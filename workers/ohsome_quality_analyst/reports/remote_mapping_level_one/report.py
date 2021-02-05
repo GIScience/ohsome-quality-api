@@ -2,8 +2,8 @@ from statistics import mean
 
 from geojson import FeatureCollection
 
-from ohsome_quality_tool.base.report import BaseReport, IndicatorLayer
-from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
 
 
 class RemoteMappingLevelOne(BaseReport):

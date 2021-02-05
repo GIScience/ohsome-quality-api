@@ -10,8 +10,8 @@ from typing import Dict
 from dacite import from_dict
 from geojson import FeatureCollection
 
-import ohsome_quality_tool.geodatabase.client as db_client
-from ohsome_quality_tool.utils.definitions import get_layer_definition, get_metadata
+import ohsome_quality_analyst.geodatabase.client as db_client
+from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
 
 
 @dataclass
