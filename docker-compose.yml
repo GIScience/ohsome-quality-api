@@ -18,7 +18,7 @@ services:
     ports:
       - "8080:8000"
     volumes:
-      - oqt-website:/root/.local/share/ohsome_quality_tool/data
+      - oqt-website:/home/oqt/.local/share/ohsome_quality_tool/data
     networks:
       - oqt-network
       - oqt-website-network
