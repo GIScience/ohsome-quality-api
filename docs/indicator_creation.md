@@ -1,7 +1,7 @@
 # Indicator Creation Guide
 
 To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to built an indicator.<br>
-To understand how to implement your own indicator it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
+To understand how to implement your own indicator, it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
 
 
 ## 1. BaseIndicator
@@ -18,10 +18,10 @@ The result object can hold 4 values.
 1. label: This should be a member of TrafficLightQualityLevels found in ohsome_quality_tool/utils/definitions
 2. value: tbd
 3. description: label description for TrafficLightQualityLevel (see metadata.yaml in part 2)
-4. svg: unique file path which is created uppon object initialization
+4. svg: unique file path which is **automatially** created uppon object initialization by the BaseIndicator
 
 ### Layer
-If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Layer to describe teh result of an ohsomeAPI query. If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
@@ -69,7 +69,7 @@ Additionally you can define variable placeholders for important values and preli
 
 #### preprocess
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too.
+This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too. You can store your preliminary results as a class attributes to have access to them in the upcoming two functions.
 
 #### calculate
 
