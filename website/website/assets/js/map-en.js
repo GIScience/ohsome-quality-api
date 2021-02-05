@@ -290,13 +290,12 @@ function buildMap(err, ...charts){
 
 			// left part with plot
 			var left_space = document.createElement("div");
-			left_space.className = "one-third"
+			left_space.classList.add("one-third")
 			if (indicator.result.label == 'UNDEFINED'){
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    // TODO: add svg here instead of image
-			    left_space.innerHTML = '<svg class="indicator-graph" src="data/'+indicator.result.svg+'">';
-
+			    left_space.innerHTML = indicator.result.svg;
+			    left_space.classList.add("indicator-graph");
 			}
 			sectionDiv.appendChild(left_space)
 

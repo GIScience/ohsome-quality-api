@@ -1207,7 +1207,7 @@ color:black;		} }
 }
 
 .indicator-graph {
-    width: 100%;
+    padding-right: 25px;
 }
 
 .traffic-lights-image {
