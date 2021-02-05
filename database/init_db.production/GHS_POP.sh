@@ -22,7 +22,7 @@ raster2pgsql \
     | \
     psql \
         -v ON_ERROR_STOP=1 \
-        -d hexadmin \
+        -d $POSTGRES_DB \
         -U $POSTGRES_USER
 
 rm GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.*
