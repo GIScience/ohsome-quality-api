@@ -1,4 +1,4 @@
-## Indicator Creation Guide
+# Indicator Creation Guide
 
 To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to built an indicator.<br>
 To understand how to implement your own indicator it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
@@ -7,10 +7,8 @@ To understand how to implement your own indicator it is necessary to know a few 
 ## 1. BaseIndicator
 
 To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
-<div align="center">
-  <img src="./UML-Class-Diagram.png">
-</div>
-<br>
+
+![description](./UML-Class-Diagram.png)
 
 As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml (see part 2), the layer can be set during object creation and the result saves the result of an Indicator instance. 
 
@@ -23,14 +21,15 @@ The result object can hold 4 values.
 4. svg: unique file path which is created uppon object initialization
 
 ### Layer
-If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI <a href=https://docs.ohsome.org/ohsome-api/stable/endpoints.html target="_blank">endpoint</a> as well as <a href=https://docs.ohsome.org/ohsome-api/stable/filter.html target="_blank">filters</a> for functionality.
+If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](href=https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as filters (href=https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
 
 ## 2. Your own Indicator
 
-If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_tool/indicators** e.g. ohsome_quality_tool/indicators/your_indicator_name.<br>
+If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_tool/indicators** e.g. ohsome_quality_tool/indicators/your_indicator_name.
+
 The two files are named:
 
 1. **metadata.yaml**
@@ -38,7 +37,8 @@ The two files are named:
 
 ### metadata.yaml
 
-The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works and a standartized interpretation of it's possible results.<br>
+The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works and a standartized interpretation of it's possible results.
+
 The easiest way to setup the metadata.yaml the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
 
 ### indicator.py
@@ -79,9 +79,7 @@ Here you should execute all needed calculations and save the results in your res
 
 Finally you need to create a svg figure (e.g. with matplotlib) and save it to **self.result.svg** (e.g. plt.savefig(self.result.svg, format="svg")).
 
-<br>
+
 If you have defined these three functions your indicator is ready to go. To show how OQT uses your indicator to display on the OQT Website or in your command line interface we made a sequence diagram. 
-<div align="center">
-  <img src="./create_indicator.svg">
-</div>
-<br>
+
+![description](./create_indicator.svg)
