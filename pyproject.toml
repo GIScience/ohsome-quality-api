@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ohsome_quality_analyst"
+name = "ohsome_quality_tool"
 version = "0.1.0"
 description = ""
 authors = ["Matthias Schaub <schaub@stud.uni-heidelberg.de>", "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>", "Benjamin Herfort <Benjamin.Herfort@heigit.org>", "Katharina Przybill", "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>"]
