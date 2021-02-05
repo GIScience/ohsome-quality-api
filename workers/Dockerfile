@@ -17,7 +17,6 @@ RUN mkdir --parents /home/oqt/.local/bin
 # without providing full path to binary of those programs
 ENV PATH="/home/oqt/.local/bin:${PATH}"
 
-COPY pyproject.toml .
-COPY ohsome_quality_tool ohsome_quality_tool
+COPY . .
 
 RUN pip3 install .
