@@ -21,8 +21,3 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 ## Contributing
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
-
-
-## Deployment
-
-Please refer to [DEPLOYMENT.md](DEPLOYMENT.md)
