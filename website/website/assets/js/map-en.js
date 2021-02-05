@@ -222,7 +222,7 @@ function buildMap(err, ...charts){
 
 			var params = {
 			    "dataset": String(getDataset(selectedDataset)),
-			    "feature_id": String(getCountry(selectedCountry))
+			    "featureId": String(getCountry(selectedCountry))
 			}
 			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
