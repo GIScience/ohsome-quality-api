@@ -27,9 +27,15 @@ def name_to_class(class_type: str, name: str):
     return getattr(importlib.import_module(class_path), name)
 
 
-def camel_to_snake(string: str) -> str:
+def camel_to_snake(camel: str) -> str:
     """Converts Camel Case to Snake Case."""
-    return re.sub(r"(?<!^)(?=[A-Z])", "_", string).lower()
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", camel).lower()
+
+
+def snake_to_lower_camel(snake: str) -> str:
+    """Convertes Snake Case to Lower Camel Case."""
+    parts = snake.split("_")
+    return parts[0] + "".join(part.title() for part in parts[1:])
 
 
 def get_module_dir(module_name: str) -> str:
