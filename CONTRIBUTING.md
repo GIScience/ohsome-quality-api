@@ -43,7 +43,7 @@ To make the variables available to current environment run following command (Li
 export $(cat .env | xargs)
 ```
 
-Windows user can set those environment variables with following commands:
+Windows user can set those environment variables manually with following commands:
 
 ```
 setx POSTGRES_PASSWORD mypassword
@@ -52,7 +52,7 @@ setx POSTGRES_PORT 5432
 setx POSTGRES_SCHEMA public
 ```
 
-> Another possiblity is to setup a database for development localy. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
+> Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
 
 
 ## Usage
@@ -83,7 +83,7 @@ In addition [pre-commit](https://pre-commit.com/) is setup to run those tools pr
 
 > Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
 >
-> Tip 2: Mark inline that flake8 should not raise any error: `print()  # noqa`
+> Tip 2: Mark in-line that flake8 should not raise any error: `print()  # noqa`
 
 
 ## Tests
