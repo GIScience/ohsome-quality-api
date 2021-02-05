@@ -8,7 +8,7 @@ To understand how to implement your own indicator it is necessary to know a few 
 
 To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
 
-![description](./UML-Class-Diagram.png)
+![description](./img/UML-Class-Diagram.png)
 
 As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml (see part 2), the layer can be set during object creation and the result saves the result of an Indicator instance. 
 
