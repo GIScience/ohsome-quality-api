@@ -1,6 +1,6 @@
 # Contributing
 
-Please contribute to this repository through [merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment).
+Please contribute to this repository through [merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment). A quick guide on indicator creation can be found [here](./docs/indicator_creation.md).
 
 
 ## Setup
