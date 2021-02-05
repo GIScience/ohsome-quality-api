@@ -21,7 +21,7 @@ The result object can hold 4 values.
 4. svg: unique file path which is created uppon object initialization
 
 ### Layer
-If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](href=https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as filters (href=https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
