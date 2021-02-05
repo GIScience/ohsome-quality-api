@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from string import Template
 
 import matplotlib.pyplot as plt
@@ -16,7 +17,6 @@ class GhsPopComparison(BaseIndicator):
 
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         dataset: str = None,
         feature_id: int = None,
@@ -25,7 +25,6 @@ class GhsPopComparison(BaseIndicator):
         super().__init__(
             dataset=dataset,
             feature_id=feature_id,
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
         )
@@ -166,8 +165,8 @@ class GhsPopComparison(BaseIndicator):
 
         ax.legend()
 
-        logger.info(
-            f"Save figure for indicator {self.metadata.name} to: {self.result.svg}"
-        )
-        plt.savefig(self.result.svg, format="svg")
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

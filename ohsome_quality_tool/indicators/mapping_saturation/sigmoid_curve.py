@@ -1,3 +1,4 @@
+import math
 from typing import Dict
 
 import numpy as np
@@ -85,8 +86,8 @@ class sigmoidCurve:
     def initparamsingle(self, xdata, ydata) -> list:
         # Find the steepest single step
         dydata = ydata - ydata.shift(1)
-        if len(dydata[dydata > 0]) < 5:
-            return [np.nan] * 10
+        if len(dydata[dydata > 0]) < 4:
+            return [np.nan] * 6
         xjump1 = xdata.shift(1)[dydata == dydata.max()]
         dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         # to have an other x0 than min(x) and max(x)
@@ -105,8 +106,8 @@ class sigmoidCurve:
     def initparamsingleB(self, xdata, ydata) -> list:
         # Find the steepest single step
         dydata = ydata - ydata.shift(1)
-        if len(dydata[dydata > 0]) < 5:
-            return [np.nan] * 10
+        if len(dydata[dydata > 0]) < 4:
+            return [np.nan] * 6
         xjump1 = xdata.shift(1)[dydata == dydata.max()]
         dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         return [
@@ -135,8 +136,8 @@ class sigmoidCurve:
         # Careful... I'm making use of Pandas properties,
         # but xdata could be just a vector, rather than a pd.Series
         dydata = ydata - ydata.shift(1)
-        if len(dydata[dydata > 0]) < 5:
-            return [np.nan] * 10
+        if len(dydata[dydata > 0]) < 4:
+            return [np.nan] * 8
         xjump1 = xdata.shift(1)[dydata == dydata.max()]
         dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         flatter = dydata < dydata.mean()
@@ -161,6 +162,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump1.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump1.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[startMask:endMask] = 0
             # This zeros out the slope on a contiguous
             # region around our first jump.
@@ -171,32 +178,6 @@ class sigmoidCurve:
             # really pathalogical.
             xjump2 = xjump1
             dy2 = dy1
-
-        # These seems to work on every case except
-        # non-changing ydata (with one change only)
-        try:
-            iBoundaries = flatter[
-                boundaries
-            ].index  # This is where slope changes (crosses)
-            # its mean value
-            # Here is the index from which (inclusive) we
-            # should start masking away:
-            # ie  ind the latest boundary before our jump,
-            # and the first following it:
-            startMask, endMask = (
-                iBoundaries[iBoundaries < xjump2.index.values[0]].max(),
-                iBoundaries[iBoundaries > xjump2.index.values[0]].min(),
-            )
-            dydata.iloc[startMask:endMask] = 0
-            # This zeros out the slope on a contiguous region
-            # around our first jump.
-            xjump3 = xdata.shift(1)[dydata == dydata.max()]
-            dy3 = (ydata - ydata.shift(1))[dydata == dydata.max()]
-        except AttributeError:
-            assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
-            xjump3 = xjump2
-            dy3 = dy2
         return [
             (min(xdata) + max(xdata)) / 2.0,
             10.0 / (max(xdata) - min(xdata)),
@@ -206,8 +187,6 @@ class sigmoidCurve:
             dy1.values[0],
             xjump2.values[0],
             dy2.values[0],
-            xjump3.values[0],
-            dy3.values[0],
         ]
 
     # don't know why, result of initparamsFor2JumpsCurve() is not sorted
@@ -272,6 +251,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump1.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump1.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[
                 startMask:endMask
             ] = 0  # This zeros out the slope on a contiguous region
@@ -298,6 +283,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump2.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump2.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[
                 startMask:endMask
             ] = 0  # This zeros out the slope on a contiguous
@@ -309,23 +300,6 @@ class sigmoidCurve:
             # really pathalogical.
             xjump3 = xjump2
             dy3 = dy2
-        try:  # These seems to work on every case except non-changing ydata
-            # (with one change only)
-            iBoundaries = flatter[
-                boundaries
-            ].index  # This is where slope changes (crosses) its mean value
-            startMask, endMask = (
-                iBoundaries[iBoundaries < xjump3.index.values[0]].max(),
-                iBoundaries[iBoundaries > xjump3.index.values[0]].min(),
-            )
-            dydata.iloc[startMask:endMask] = 0
-            xjump4 = xdata.shift(1)[dydata == dydata.max()]
-            dy4 = (ydata - ydata.shift(1))[dydata == dydata.max()]
-        except AttributeError:
-            assert sum(boundaries) in [1, 2]  # This is
-            # actually really pathalogical.
-            xjump4 = xjump3
-            dy4 = dy3
         return [
             (min(xdata) + max(xdata)) / 2.0,
             10.0 / (max(xdata) - min(xdata)),
@@ -337,14 +311,12 @@ class sigmoidCurve:
             dy2.values[0],
             xjump3.values[0],
             dy3.values[0],
-            xjump4.values[0],
-            dy4.values[0],
         ]
 
     # don't know why, result of
     # initparamsFor3JumpsCurve() is not sorted
-    def sortInits3curves(self, xdata, ydata) -> tuple:
-        inits = self.initparamsFor3JumpsCurve(xdata, ydata)
+    def sortInits3curves(self, xdata, ydata, func) -> tuple:
+        inits = func(xdata, ydata)
         lx = []
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
@@ -386,6 +358,124 @@ class sigmoidCurve:
             + (ymax3 - ymax2) / (1 + np.exp(slope3 * (xmid3 - x)))
             + (ymax4 - ymax3) / (1 + np.exp(slope4 * (xmid4 - x)))
         )
+
+    # find initial values for the 4jumps curve
+    # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
+    def initparamsFor4JumpsCurve(self, xdata, ydata) -> list:
+        # Find the steepest single step
+        # Careful... I'm making use of Pandas properties, but
+        # xdata could be just a vector, rather than a pd.Series
+        dydata = ydata - ydata.shift(1)
+        if len(dydata[dydata > 0]) < 6:
+            return [np.nan] * 12
+        xjump1 = xdata.shift(1)[dydata == dydata.max()]
+        dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+
+        flatter = dydata < dydata.mean()
+        boundaries = np.hstack(
+            [np.array(False), np.diff(flatter.astype(int)).astype(bool)]
+        )  # hstack is because boundaries needs to be the same length
+        # as flatter; np.diff will be one short
+        try:  # These seems to work on every case except non-changing
+            # ydata (with one change only)
+            iBoundaries = flatter[
+                boundaries
+            ].index  # This is where slope changes (crosses)
+            # its mean value
+            # Here is the index from which (inclusive) we
+            # should start masking away:,
+            # ie  ind the latest boundary before our jump, and
+            # the first following it:
+            startMask, endMask = (
+                iBoundaries[iBoundaries < xjump1.index.values[0]].max(),
+                iBoundaries[iBoundaries > xjump1.index.values[0]].min(),
+            )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
+            dydata.iloc[
+                startMask:endMask
+            ] = 0  # This zeros out the slope on a contiguous region
+            # around our first jump.
+            xjump2 = xdata.shift(1)[dydata == dydata.max()]
+            dy2 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+        except AttributeError:
+            assert sum(boundaries) in [1]  # This is actually
+            # really pathalogical.
+            xjump2 = xjump1
+            dy2 = dy1
+
+        try:  # These seems to work on every case except non-changing
+            # ydata (with one change only)
+            iBoundaries = flatter[
+                boundaries
+            ].index  # This is where slope changes (crosses)
+            # its mean value
+            # Here is the index from which (inclusive)
+            # we should start masking away:,
+            # ie  ind the latest boundary before our jump,
+            # and the first following it:
+            startMask, endMask = (
+                iBoundaries[iBoundaries < xjump2.index.values[0]].max(),
+                iBoundaries[iBoundaries > xjump2.index.values[0]].min(),
+            )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
+            dydata.iloc[
+                startMask:endMask
+            ] = 0  # This zeros out the slope on a contiguous
+            # region around our first jump.
+            xjump3 = xdata.shift(1)[dydata == dydata.max()]
+            dy3 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+        except AttributeError:
+            assert sum(boundaries) in [1]  # This is actually
+            # really pathalogical.
+            xjump3 = xjump2
+            dy3 = dy2
+        try:  # These seems to work on every case except non-changing ydata
+            # (with one change only)
+            iBoundaries = flatter[
+                boundaries
+            ].index  # This is where slope changes (crosses) its mean value
+            startMask, endMask = (
+                iBoundaries[iBoundaries < xjump3.index.values[0]].max(),
+                iBoundaries[iBoundaries > xjump3.index.values[0]].min(),
+            )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
+            dydata.iloc[startMask:endMask] = 0
+            xjump4 = xdata.shift(1)[dydata == dydata.max()]
+            dy4 = (ydata - ydata.shift(1))[dydata == dydata.max()]
+        except AttributeError:
+            assert sum(boundaries) in [1, 2]  # This is
+            # actually really pathalogical.
+            xjump4 = xjump3
+            dy4 = dy3
+        return [
+            (min(xdata) + max(xdata)) / 2.0,
+            10.0 / (max(xdata) - min(xdata)),
+            min(ydata),
+            max(ydata),
+            xjump1.values[0],
+            dy1.values[0],
+            xjump2.values[0],
+            dy2.values[0],
+            xjump3.values[0],
+            dy3.values[0],
+            xjump4.values[0],
+            dy4.values[0],
+        ]
 
     # logistic curve with 5 jumps
     def logistic5(
@@ -436,8 +526,8 @@ class sigmoidCurve:
         # Careful... I'm making use of Pandas properties, but xdata
         # could be just a vector, rather than a pd.Series
         dydata = ydata - ydata.shift(1)
-        if len(dydata[dydata > 0]) < 5:
-            return [np.nan] * 10
+        if len(dydata[dydata > 0]) < 7:
+            return [np.nan] * 14
         xjump1 = xdata.shift(1)[dydata == dydata.max()]
         dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
 
@@ -460,6 +550,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump1.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump1.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[
                 startMask:endMask
             ] = 0  # This zeros out the slope on a contiguous
@@ -488,6 +584,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump2.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump2.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[
                 startMask:endMask
             ] = 0  # This zeros out the slope on a contiguous
@@ -509,6 +611,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump3.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump3.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[startMask:endMask] = 0
             xjump4 = xdata.shift(1)[dydata == dydata.max()]
             dy4 = (ydata - ydata.shift(1))[dydata == dydata.max()]
@@ -527,6 +635,12 @@ class sigmoidCurve:
                 iBoundaries[iBoundaries < xjump4.index.values[0]].max(),
                 iBoundaries[iBoundaries > xjump4.index.values[0]].min(),
             )
+            # ToDo is this the right way to avoid "slice indices must be
+            #  integers or None or have an __index__ method?"
+            if math.isnan(startMask):
+                startMask = None
+            if math.isnan(endMask):
+                endMask = None
             dydata.iloc[startMask:endMask] = 0
             xjump5 = xdata.shift(1)[dydata == dydata.max()]
             dy5 = (ydata - ydata.shift(1))[dydata == dydata.max()]
@@ -591,125 +705,8 @@ class sigmoidCurve:
                 "li": li,
             }
         )
-
-        # get init params for sigmoid curve with 2 jumps
-        sigmoid_curve = sigmoidCurve()
-        # initial values for the single sigmoid curve
-        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
-        # initial values for the single sigmoid curve with a different slope
-        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
-        # initial values for the sigmoid function with 2 jumps
-        initParamsY = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[1]
-        L = round(initParamsY[0])
-        initParamsX = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
-        x1 = round(initParamsX[0])
-        x2 = round(initParamsX[1])
-        # get initial slopes for the curve with 2 jumps
-        ystart2 = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[3]
-        k1 = 1 - (ystart2 / initParamsY[0])
-        k2 = 1 - (initParamsY[0] / initParamsY[1])
-        # get the max y value
-        yMax = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[2]
-        # --- sigmoid function with 3 and 4 jumps ---
-        # get initial y values for the curve with 3 and 4 jumps
-        initParamsY3 = sigmoid_curve.sortInits3curves(df1.li, df1.yValues)[1]
-        L3 = round(initParamsY3[0])
-        L23 = round(initParamsY3[1])
-        L34 = round(initParamsY3[2])
-        # get initial xmids for the curve with 3 and 4 jumps
-        initParamsX3 = sigmoid_curve.sortInits3curves(df1.li, df1.yValues)[0]
-        x13 = round(initParamsX3[0])
-        x23 = round(initParamsX3[1])
-        x33 = round(initParamsX3[2])
-        x4 = round(initParamsX3[3])
-        # get initial slopes for the curves with 3 and 4 jumps
-        ystart3 = sigmoid_curve.sortInits3curves(df1.li, df1.yValues)[3]
-        k313 = 1 - (ystart3 / initParamsY3[0])
-        k323 = 1 - (initParamsY3[0] / initParamsY3[1])
-        k333 = 1 - (initParamsY3[1] / initParamsY3[2])
-        k343 = 1 - (initParamsY3[2] / initParamsY3[3])
-        # --- sigmoid function with 5 jumps ---
-        initParamsY5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[1]
-        # get initial y values for the curve with 5 jumps
-        L51 = round(initParamsY5[0])
-        L52 = round(initParamsY5[1])
-        L53 = round(initParamsY5[2])
-        L54 = round(initParamsY5[3])
-        # get initial xmids for the curve with 5 jumps
-        initParamsX5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
-        x513 = round(initParamsX5[0])
-        x523 = round(initParamsX5[1])
-        x533 = round(initParamsX5[2])
-        x54 = round(initParamsX5[3])
-        x55 = round(initParamsX5[4])
-        # get initial slopes for the curve with 5 jumps
-        ystart5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[3]
-        k13 = 1 - (ystart5 / initParamsY5[0])
-        k23 = 1 - (initParamsY5[0] / initParamsY5[1])
-        k33 = 1 - (initParamsY5[1] / initParamsY5[2])
-        k4 = 1 - (initParamsY5[2] / initParamsY5[3])
-        k5 = 1 - (initParamsY5[3] / initParamsY5[4])
-        # --- select best fitting curve, with mean_square_error ---
-        # get possible xmids
-        xmidvalues = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
-        errorsListSingle = []
-        # check for the xmids the mse error
-        for i, xval in enumerate(xmidvalues):
-            yPredX = sigmoid_curve.logistic1(
-                xval, initParamsSingle[3], initParamsSingle[1], df1.li
-            )
-            errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
-            errorsListSingle.append(errX)
-        # choose the initial x value with min mse
-        minX = min(errorsListSingle)
-        prefX = xmidvalues[errorsListSingle.index(minX)]
-        # mse for logistic1
-        # with k as 10.0 / (maxx - minx) from initparamsingle()
-        yPredPref = sigmoid_curve.logistic1(
-            prefX, initParamsSingle[3], initParamsSingle[1], df1.li
-        )
-        err1 = np.sum((yPredPref - df1.yValues) ** 2) / len(yPredPref)
-        # mse for logistic1 with
-        # k as 10.0 / (max(xdata) - min(xdata)) from initparamsingleB()
-        yPredB = sigmoid_curve.logistic1(
-            prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
-        )
-        err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
-        # mse for logistic2
-        yPred2 = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
-        err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
-        # mse for logistic3
-        yPred3 = sigmoid_curve.logistic3(
-            x13, x23, x33, L3, L23, yMax, k313, k323, k333, df1.li
-        )
-        err3 = np.sum((yPred3 - df1.yValues) ** 2) / len(yPred3)
-        # mse for logistic4
-        yPred4 = sigmoid_curve.logistic4(
-            x13, x23, x33, x4, L3, L23, L34, yMax, k313, k323, k333, k343, df1.li
-        )
-        err4 = np.sum((yPred4 - df1.yValues) ** 2) / len(yPred4)
-        # mse for logistic5
-        yPred5 = sigmoid_curve.logistic5(
-            x513,
-            x523,
-            x533,
-            x54,
-            x55,
-            L51,
-            L52,
-            L53,
-            L54,
-            yMax,
-            k13,
-            k23,
-            k33,
-            k4,
-            k5,
-            df1.li,
-        )
-        err5 = np.sum((yPred5 - df1.yValues) ** 2) / len(yPred5)
         # collect mse in one list
-        errorslist = [err1, err1B, err2, err3, err4, err5]
+        errorslist = []
         # collect corresponding function names
         errorslistFuncs = [
             "logistic1",
@@ -719,43 +716,160 @@ class sigmoidCurve:
             "logistic4",
             "logistic5",
         ]
-        # get the smallest mse with its index
-        minError = errorslist.index(min(errorslist))
-        bestfit = errorslistFuncs[minError]
-        # depending on best fitted curve calculate ydata with
-        # correct function
-        if bestfit == "logistic2":
-            ydataForSat = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
-        elif bestfit == "logistic1":
-            ydataForSat = sigmoid_curve.logistic1(
+        # get init params for sigmoid curve with 2 jumps
+        sigmoid_curve = sigmoidCurve()
+        # initial values for the single sigmoid curve
+        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
+        if not math.isnan(initParamsSingle[3]):
+            # get possible xmids
+            xmidvalues = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
+            errorsListSingle = []
+            # check for the xmids the mse error
+            for i, xval in enumerate(xmidvalues):
+                yPredX = sigmoid_curve.logistic1(
+                    xval, initParamsSingle[3], initParamsSingle[1], df1.li
+                )
+                errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
+                errorsListSingle.append(errX)
+            # choose the initial x value with min mse
+            minX = min(errorsListSingle)
+            prefX = xmidvalues[errorsListSingle.index(minX)]
+            # mse for logistic1
+            # with k as 10.0 / (maxx - minx) from initparamsingle()
+            yPredPref = sigmoid_curve.logistic1(
                 prefX, initParamsSingle[3], initParamsSingle[1], df1.li
             )
-        elif bestfit == "logistic1B":
-            ydataForSat = sigmoid_curve.logistic1(
+            err1 = np.sum((yPredPref - df1.yValues) ** 2) / len(yPredPref)
+            errorslist.append(err1)
+            errorslistFuncs.append("logistic1")
+        # initial values for the single sigmoid curve with a different slope
+        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
+        if not math.isnan(initParamsSingleB[3]):
+            # get possible xmids
+            xmidvalues = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
+            errorsListSingle = []
+            # check for the xmids the mse error
+            for i, xval in enumerate(xmidvalues):
+                yPredX = sigmoid_curve.logistic1(
+                    xval, initParamsSingle[3], initParamsSingle[1], df1.li
+                )
+                errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
+                errorsListSingle.append(errX)
+            # choose the initial x value with min mse
+            minX = min(errorsListSingle)
+            prefX = xmidvalues[errorsListSingle.index(minX)]
+            # mse for logistic1 with
+            # k as 10.0 / (max(xdata) - min(xdata)) from initparamsingleB()
+            yPredB = sigmoid_curve.logistic1(
                 prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
             )
-        elif bestfit == "logistic3":
-            ydataForSat = sigmoid_curve.logistic3(
+            err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
+            errorslist.append(err1B)
+            errorslistFuncs.append("logistic1B")
+        # initial values for the sigmoid function with 2 jumps
+        initParamsY = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[1]
+        if not math.isnan(initParamsY[0]):
+            L = round(initParamsY[0])
+            initParamsX = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
+            x1 = round(initParamsX[0])
+            x2 = round(initParamsX[1])
+            # get initial slopes for the curve with 2 jumps
+            ystart2 = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[3]
+            k1 = 1 - (ystart2 / initParamsY[0])
+            k2 = 1 - (initParamsY[0] / initParamsY[1])
+            # get the max y value
+            yMax = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[2]
+            # mse for logistic2
+            yPred2 = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
+            err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
+            errorslist.append(err2)
+            errorslistFuncs.append("logistic2")
+        # --- sigmoid function with 3  jumps---
+        # get initial y values for the curve with 3
+        initParamsY3 = sigmoid_curve.sortInits3curves(
+            df1.li, df1.yValues, self.initparamsFor3JumpsCurve
+        )[1]
+        if not math.isnan(initParamsY3[0]):
+            L3 = round(initParamsY3[0])
+            L23 = round(initParamsY3[1])
+            # get initial xmids for the curve with 3
+            initParamsX3 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor3JumpsCurve
+            )[0]
+            x13 = round(initParamsX3[0])
+            x23 = round(initParamsX3[1])
+            x33 = round(initParamsX3[2])
+            # get initial slopes for the curves with 3
+            ystart3 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor3JumpsCurve
+            )[3]
+            k313 = 1 - (ystart3 / initParamsY3[0])
+            k323 = 1 - (initParamsY3[0] / initParamsY3[1])
+            k333 = 1 - (initParamsY3[1] / initParamsY3[2])
+            # mse for logistic3
+            yPred3 = sigmoid_curve.logistic3(
                 x13, x23, x33, L3, L23, yMax, k313, k323, k333, df1.li
             )
-        elif bestfit == "logistic4":
-            ydataForSat = sigmoid_curve.logistic4(
-                x13,
-                x23,
-                x33,
-                x4,
-                L3,
-                L23,
-                L34,
-                yMax,
-                k313,
-                k323,
-                k333,
-                k343,
-                df1.li,
+            err3 = np.sum((yPred3 - df1.yValues) ** 2) / len(yPred3)
+            errorslist.append(err3)
+            errorslistFuncs.append("logistic3")
+        # --- sigmoid function with 4 jumps ---
+        # get initial y values for the curve with 4 jumps
+        initParamsY4 = sigmoid_curve.sortInits3curves(
+            df1.li, df1.yValues, self.initparamsFor4JumpsCurve
+        )[1]
+        if not math.isnan(initParamsY3[0]):
+            L41 = round(initParamsY4[0])
+            L42 = round(initParamsY4[1])
+            L43 = round(initParamsY4[2])
+            # get initial xmids for the curve with 4 jumps
+            initParamsX4 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor4JumpsCurve
+            )[0]
+            x41 = round(initParamsX4[0])
+            x42 = round(initParamsX4[1])
+            x43 = round(initParamsX4[2])
+            x44 = round(initParamsX4[3])
+            # get initial slopes for the curves with 4 jumps
+            ystart4 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor4JumpsCurve
+            )[3]
+            k41 = 1 - (ystart4 / initParamsY4[0])
+            k42 = 1 - (initParamsY4[0] / initParamsY4[1])
+            k43 = 1 - (initParamsY4[1] / initParamsY4[2])
+            k44 = 1 - (initParamsY4[2] / initParamsY4[3])
+            # mse for logistic4
+            yPred4 = sigmoid_curve.logistic4(
+                x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44, df1.li
             )
-        elif bestfit == "logistic5":
-            ydataForSat = sigmoid_curve.logistic5(
+            err4 = np.sum((yPred4 - df1.yValues) ** 2) / len(yPred4)
+            errorslist.append(err4)
+            errorslistFuncs.append("logistic4")
+        # --- sigmoid function with 5 jumps ---
+        initParamsY5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[1]
+        if not math.isnan(initParamsY3[0]):
+            # get initial y values for the curve with 5 jumps
+            L51 = round(initParamsY5[0])
+            L52 = round(initParamsY5[1])
+            L53 = round(initParamsY5[2])
+            L54 = round(initParamsY5[3])
+            # get initial xmids for the curve with 5 jumps
+            initParamsX5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
+            x513 = round(initParamsX5[0])
+            x523 = round(initParamsX5[1])
+            x533 = round(initParamsX5[2])
+            x54 = round(initParamsX5[3])
+            x55 = round(initParamsX5[4])
+            # get initial slopes for the curve with 5 jumps
+            ystart5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[3]
+            k13 = 1 - (ystart5 / initParamsY5[0])
+            k23 = 1 - (initParamsY5[0] / initParamsY5[1])
+            k33 = 1 - (initParamsY5[1] / initParamsY5[2])
+            k4 = 1 - (initParamsY5[2] / initParamsY5[3])
+            k5 = 1 - (initParamsY5[3] / initParamsY5[4])
+            # --- select best fitting curve, with mean_square_error ---
+            # mse for logistic5
+            yPred5 = sigmoid_curve.logistic5(
                 x513,
                 x523,
                 x533,
@@ -773,4 +887,65 @@ class sigmoidCurve:
                 k5,
                 df1.li,
             )
-        return ydataForSat
+            err5 = np.sum((yPred5 - df1.yValues) ** 2) / len(yPred5)
+            errorslist.append(err5)
+            errorslistFuncs.append("logistic5")
+        if len(errorslist) > 0:
+            # get the smallest mse with its index
+            minError = errorslist.index(min(errorslist))
+            bestfit = errorslistFuncs[minError]
+            # depending on best fitted curve calculate ydata with
+            # correct function
+            if bestfit == "logistic2":
+                ydataForSat = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
+            elif bestfit == "logistic1":
+                ydataForSat = sigmoid_curve.logistic1(
+                    prefX, initParamsSingle[3], initParamsSingle[1], df1.li
+                )
+            elif bestfit == "logistic1B":
+                ydataForSat = sigmoid_curve.logistic1(
+                    prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
+                )
+            elif bestfit == "logistic3":
+                ydataForSat = sigmoid_curve.logistic3(
+                    x13, x23, x33, L3, L23, yMax, k313, k323, k333, df1.li
+                )
+            elif bestfit == "logistic4":
+                ydataForSat = sigmoid_curve.logistic4(
+                    x41,
+                    x42,
+                    x43,
+                    x44,
+                    L41,
+                    L42,
+                    L43,
+                    yMax,
+                    k41,
+                    k42,
+                    k43,
+                    k44,
+                    df1.li,
+                )
+            elif bestfit == "logistic5":
+                ydataForSat = sigmoid_curve.logistic5(
+                    x513,
+                    x523,
+                    x533,
+                    x54,
+                    x55,
+                    L51,
+                    L52,
+                    L53,
+                    L54,
+                    yMax,
+                    k13,
+                    k23,
+                    k33,
+                    k4,
+                    k5,
+                    df1.li,
+                )
+            return ydataForSat
+        else:
+            # no curve could be calculated
+            return ["empty"]

@@ -1,3 +1,8 @@
+"""
+Testing Click Applications:
+https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
+"""
+
 import os
 import unittest
 
@@ -19,35 +24,44 @@ class TestCli(unittest.TestCase):
         result = self.runner.invoke(cli, ["--help"])
         assert result.exit_code == 0
 
-    # def testCli(self):
-    # result = self.runner.invoke(cli)
-    # assert result.exit_code == 0
-
-    #         result = self.runner.invoke(cli, ['--verbose', "list-indicators"])
-    #         assert result.exit_code == 0
-    #         print(result.output.__contains__("Logging enabled"))
-    #         print(result.output)
-    # print(type(result.output))
-    # assert "Logging enabled" in result.output
-
     def testListIndicators(self):
         result = self.runner.invoke(cli, ["list-indicators"])
+        assert result.exit_code == 0
+
+    def testListReports(self):
+        result = self.runner.invoke(cli, ["list-reports"])
         assert result.exit_code == 0
 
     def testListLayers(self):
         result = self.runner.invoke(cli, ["list-layers"])
         assert result.exit_code == 0
 
-    def testCreateIndicator(self):
+    def testListDatasets(self):
+        result = self.runner.invoke(cli, ["list-datasets"])
+        assert result.exit_code == 0
 
+    def testCreateIndicator(self):
         result = self.runner.invoke(
             cli,
             [
                 "create-indicator",
-                "--indicator_name",
+                "--indicator-name",
                 "GhsPopComparison",
-                "--layer_name",
+                "--layer-name",
                 "building_count",
+                "--infile",
+                self.infile,
+            ],
+        )
+        assert result.exit_code == 0
+
+    def testCreateReport(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-report",
+                "--report-name",
+                "SimpleReport",
                 "--infile",
                 self.infile,
             ],

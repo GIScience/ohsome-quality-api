@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from string import Template
 from typing import Dict
 
@@ -23,7 +24,6 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
@@ -31,7 +31,6 @@ class MappingSaturation(BaseIndicator):
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,
@@ -87,6 +86,9 @@ class MappingSaturation(BaseIndicator):
             label = TrafficLightQualityLevels.UNDEFINED
             value = -1
             description += self.metadata.label_description["undefined"]
+            self.result.label = label
+            self.result.value = value
+            self.result.description = description
             return label, value, text, self.preprocessing_results
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
@@ -94,6 +96,9 @@ class MappingSaturation(BaseIndicator):
             label = TrafficLightQualityLevels.UNDEFINED
             value = -1
             description += self.metadata.label_description["undefined"]
+            self.result.label = label
+            self.result.value = value
+            self.result.description = description
             return label, value, text, self.preprocessing_results
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
@@ -113,66 +118,77 @@ class MappingSaturation(BaseIndicator):
         # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
         ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
-        # check if data are more than start stadium
-        # The end of the start stage is defined with
-        # the maximum of the curvature function f''(x)
-        # here: simple check <= 20
-        # TODO check for what size (of area or of data) the saturation
-        #  makes sense to be calculated
-        """
-        For buildings-count in a small area, this could return a wrong
-        interpretation, eg a little collection of farm house and buildings
-        with eg less than 8 buildings, but all buildings are mapped, the value
-        would be red, but its all mapped...
-        """
-        # calculate/define traffic light value and label
-        if max(df1.yValues) <= 20:
-            # start stadium
-            label = TrafficLightQualityLevels.RED
-            value = 0.0
-            description += self.metadata.label_description["red"]
-        else:
-            # calculate slope/growth of last 3 years
-            # take value in -36. month and value in -1. month of data
-            earlyX = li[-36]
-            lastX = li[-1]
-            # get saturation level within last 3 years
-            self.saturation = sigmoid_curve.getSaturationInLast3Years(
-                earlyX, lastX, df1.li, ydataForSat
+        if ydataForSat[0] != "empty":
+            # check if data are more than start stadium
+            # The end of the start stage is defined with
+            # the maximum of the curvature function f''(x)
+            # here: simple check <= 20
+            # TODO check for what size (of area or of data) the saturation
+            #  makes sense to be calculated
+            """
+            For buildings-count in a small area, this could return a wrong
+            interpretation, eg a little collection of farm house and buildings
+            with eg less than 8 buildings, but all buildings are mapped, the value
+            would be red, but its all mapped...
+            """
+            # calculate/define traffic light value and label
+            if max(df1.yValues) <= 20:
+                # start stadium
+                label = TrafficLightQualityLevels.RED
+                value = 0.0
+                description += self.metadata.label_description["red"]
+            else:
+                # calculate slope/growth of last 3 years
+                # take value in -36. month and value in -1. month of data
+                earlyX = li[-36]
+                lastX = li[-1]
+                # get saturation level within last 3 years
+                self.saturation = sigmoid_curve.getSaturationInLast3Years(
+                    earlyX, lastX, df1.li, ydataForSat
+                )
+                # if earlyX and lastX return same y value
+                # (means no growth any more),
+                # getSaturationInLast3Years returns 1.0
+                # if saturation == 1.0:
+                #    saturation = 0.0
+
+            self.growth = 1 - self.saturation
+
+            # TODO: make clear what should be used here,
+            #  if saturation should be used then the threshold
+            #  needs to be adjusted
+            if self.growth <= THRESHOLD_YELLOW:
+                label = TrafficLightQualityLevels.GREEN
+                value = 1.0
+                description += self.metadata.label_description["green"]
+            else:
+                # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
+                label = TrafficLightQualityLevels.YELLOW
+                value = 0.5
+                description += self.metadata.label_description["yellow"]
+
+            description = Template(self.metadata.result_description).substitute(
+                saturation=self.saturation, growth=self.growth
             )
-            # if earlyX and lastX return same y value
-            # (means no growth any more),
-            # getSaturationInLast3Years returns 1.0
-            # if saturation == 1.0:
-            #    saturation = 0.0
-
-        self.growth = 1 - self.saturation
-
-        # TODO: make clear what should be used here,
-        #  if saturation should be used then the threshold
-        #  needs to be adjusted
-        if self.growth <= THRESHOLD_YELLOW:
-            label = TrafficLightQualityLevels.GREEN
-            value = 1.0
-            description += self.metadata.label_description["green"]
+            self.result.label = label
+            self.result.value = value
+            self.result.description = description
+            logger.info(
+                f"result saturation value: {self.saturation}, label: {label},"
+                f" value: {value}, description: {description}"
+            )
         else:
-            # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
-            label = TrafficLightQualityLevels.YELLOW
-            value = 0.5
-            description += self.metadata.label_description["yellow"]
+            # deletion of all data
+            text = "Mapping has happened in this region but data " "were deleted. "
+            label = TrafficLightQualityLevels.UNDEFINED
+            value = -1
+            description += self.metadata.label_description["undefined"]
+            self.result.label = label
+            self.result.value = value
+            self.result.description = description
+            return label, value, text, self.preprocessing_results
 
-        description = Template(self.metadata.result_description).substitute(
-            saturation=self.saturation, growth=self.growth
-        )
-        self.result.label = label
-        self.result.value = value
-        self.result.description = description
-        logger.info(
-            f"result saturation value: {self.saturation}, label: {label},"
-            f" value: {value}, description: {description}"
-        )
-
-    def create_figure(self) -> str:
+    def create_figure(self):
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
@@ -196,7 +212,6 @@ class MappingSaturation(BaseIndicator):
         plt.figure()
         # show nice dates on x axis in plot
         df1["timestamps"] = pd.to_datetime(df1["timestamps"])
-        plt.title("Saturation level of the data")
         # plot the data
         plt.plot(
             df1.timestamps,
@@ -204,11 +219,16 @@ class MappingSaturation(BaseIndicator):
             linecol[0],
             label=f"{self.layer.name} - {self.layer.endpoint}",
         )
-        # plot sigmoid curve
-        plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
+        if ydataForSat[0] != "empty":
+            plt.title("Saturation level of the data")
+            # plot sigmoid curve
+            plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
+        else:
+            plt.title("No Sigmoid curve could be fitted into the data")
         plt.legend()
-        plt.savefig(self.result.svg, format="svg")
+
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
-        logger.info(
-            f"Save figure for indicator {self.metadata.name} to: {self.result.svg}"
-        )

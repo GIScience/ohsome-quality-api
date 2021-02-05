@@ -1,6 +1,6 @@
 // load geojson data, then build the map and the functionalities 
 d3.queue()
-  .defer(d3.json, 'assets/data/test-regions.geojson')
+  .defer(d3.json, 'assets/data/test_regions.geojson')
   .defer(d3.json, 'assets/data/custom.geojson')
   .await(buildMap)
   
@@ -160,7 +160,7 @@ function buildMap(err, ...charts){
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		dataset = "test-regions" // = Admin-0 country
+		dataset = "test_regions" // = Admin-0 country
 		selectedDataset = getDataset(dataset)
 	}
 	// initialize variables for storing area and dataset id from map geojson 
@@ -221,9 +221,10 @@ function buildMap(err, ...charts){
 			}
 
 			var params = {
-			    "dataset": getDataset(selectedDataset),
-			    "feature_id": getCountry(selectedCountry)
+			    "dataset": String(getDataset(selectedDataset)),
+			    "featureId": String(getCountry(selectedCountry))
 			}
+			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
 
 		}
@@ -254,15 +255,15 @@ function buildMap(err, ...charts){
         document.getElementById("traffic_dots_space").innerHTML =
 		            '<h4>Report: '+ response.metadata.name + '</h4>' +
 		            '<p>' + traffic_lights + '</p>'
-
+                    // here place to display the name of the region?
 
 
 		// ' <b>Overall value: '+ response.result.value + '</b></p>'
 
 
-		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.text +'</p>'
+		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.description +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
+		    '<p class="metadata-text">Report description:</br>'+ response.metadata.report_description +'</p>'
 			
 		if(response.indicators.length > 0) {
 			addIndicators(response.indicators)
@@ -289,12 +290,12 @@ function buildMap(err, ...charts){
 
 			// left part with plot
 			var left_space = document.createElement("div");
-			left_space.className = "one-third"
+			left_space.classList.add("one-third")
 			if (indicator.result.label == 'UNDEFINED'){
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    left_space.innerHTML = '<img class="indicator-graph" src="data/'+indicator.result.svg+'">';
-
+			    left_space.innerHTML = indicator.result.svg;
+			    left_space.classList.add("indicator-graph");
 			}
 			sectionDiv.appendChild(left_space)
 
@@ -303,21 +304,21 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.metadata.filterName ;
+			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.layer.name ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
 			switch (indicator.result.label) {
-                case "GREEN":
+                case "1":
                     traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                     break
-                case "YELLOW":
+                case "2":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
                     break
-                case "RED":
+                case "3":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
                     break
-                case "UNDEFINED":
+                case "4":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
 
             }
@@ -325,12 +326,12 @@ function buildMap(err, ...charts){
             right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicator.result.text;
+			indicatorText.innerHTML = indicator.result.description;
 			right_space.appendChild(indicatorText);
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.indicator_description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
@@ -512,7 +513,7 @@ function buildMap(err, ...charts){
 		
 	};
 
-	// add a legend to the map
+	/*// add a legend to the map
 	var legend = L.control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
@@ -531,11 +532,11 @@ function buildMap(err, ...charts){
 		}
 		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>' 		
 		return div;
-	};
+	};*/
 
 
 	info.addTo(map);
-	legend//.addTo(map);
+	//legend.addTo(map);
 	// add HeiGIT logo
 	var logo = L.control({ position: 'topleft' });
 	logo.onAdd = function (map) {
@@ -546,7 +547,7 @@ function buildMap(err, ...charts){
 		  <img src='assets/img/logos/Logo_UNI_GIScience_HD.png'/></a></div>`
 		  return logoContainer
 	}
-	logo//.addTo(map)
+	//logo.addTo(map)
 
  }
  function topFunction() {
@@ -572,10 +573,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	var theUrl = "http://0.0.0.0:8080";
-	//theUrl = theUrl +"/dynamic/report/" + endPoint;
-	theUrl = theUrl +"/static/report/" + endPoint;
-
+	var theUrl = apiUrl +"/report/" + endPoint;
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() { 
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -585,8 +583,7 @@ function httpPostAsync(endPoint, params, callback) {
 		}
 	}
 	console.log(theUrl)
-	xmlHttp.open("POST", theUrl, true); // true for asynchronous 
-	// xmlHttp.setRequestHeader("Content-Type", "application/json");
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	xmlHttp.send(params);
 }
 

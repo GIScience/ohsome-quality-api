@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from string import Template
 
 import matplotlib.pyplot as plt
@@ -17,14 +18,12 @@ from ohsome_quality_tool.utils.definitions import TrafficLightQualityLevels, log
 class PoiDensity(BaseIndicator):
     def __init__(
         self,
-        dynamic: bool,
         layer_name: str,
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
     ) -> None:
         super().__init__(
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
             dataset=dataset,
@@ -35,6 +34,12 @@ class PoiDensity(BaseIndicator):
         self.area_sqkm = None
         self.count = None
         self.density = None
+
+    def greenThresholdFunction(self, area):
+        return self.threshold_yellow * area
+
+    def yellowThresholdFunction(self, area):
+        return self.threshold_red * area
 
     def preprocess(self):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
@@ -74,12 +79,7 @@ class PoiDensity(BaseIndicator):
                     description + self.metadata.label_description["red"]
                 )
 
-    def create_figure(self) -> str:
-        def greenThresholdFunction(area):
-            return self.threshold_yellow * area
-
-        def yellowThresholdFunction(area):
-            return self.threshold_red * area
+    def create_figure(self):
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -98,8 +98,8 @@ class PoiDensity(BaseIndicator):
         x = np.linspace(0, max_area, 2)
 
         # Plot thresholds as line.
-        y1 = [greenThresholdFunction(xi) for xi in x]
-        y2 = [yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.greenThresholdFunction(xi) for xi in x]
+        y2 = [self.yellowThresholdFunction(xi) for xi in x]
 
         line = ax.plot(
             x,
@@ -133,8 +133,8 @@ class PoiDensity(BaseIndicator):
 
         ax.legend()
 
-        logger.info(
-            f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"
-        )
-        plt.savefig(self.result.svg, format="svg")
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

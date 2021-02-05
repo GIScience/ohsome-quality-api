@@ -4,28 +4,34 @@ from typing import Dict
 from geojson import FeatureCollection
 from psycopg2 import sql
 
-from ohsome_quality_tool.utils.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_tool.utils.definitions import IndicatorResult, logger
+from ohsome_quality_tool.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
+from ohsome_quality_tool.utils.definitions import logger
 
 
-def get_table_name(dataset: str, indicator: str, layer_name: str) -> str:
+def get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
     """Compose table name from dataset and indicator.
 
     The results table is composed of names for dataset and indicator
     e.g. "subnational_boundaries_building_completeness".
     """
+    indicator_name = indicator_name.replace(" ", "_")
+    indicator_name = indicator_name.replace("-", "_")
+    indicator_name = indicator_name.lower()
+    layer_name = layer_name.replace(" ", "_")
+    layer_name = layer_name.replace("-", "_")
+    layer_name = layer_name.lower()
+    return f"{dataset}_{indicator_name}_{layer_name}"
 
-    return f"{dataset}_{indicator}_{layer_name}"
 
-
-def get_table_constraint_name(dataset: str, indicator: str, layer_name: str) -> str:
+def get_table_constraint_name(
+    dataset: str, indicator_name: str, layer_name: str
+) -> str:
     """Compose table constraint name from dataset and indicator.
 
     The results table constraint is composed of names for dataset and indicator
     e.g. "subnational_boundaries_building_completeness_pkey".
     """
-
-    return f"{dataset}_{indicator}_{layer_name}_pkey"
+    return get_table_name(dataset, indicator_name, layer_name) + "_pkey"
 
 
 def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
@@ -68,9 +74,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
     return bpolys
 
 
-def save_indicator_results_to_db(
-    dataset: str, feature_id: int, indicator: str, layer_name: str, results
-) -> None:
+def save_indicator_results(indicator) -> None:
     """Save the indicator result for the given dataset and feature in the database.
 
     The results table is super simplistic. For now we only store the feature_id and
@@ -81,8 +85,12 @@ def save_indicator_results_to_db(
 
     # the results table is composed of the initial dataset name and the indicator
     # e.g. "subnational_boundaries_building_completeness"
-    table = get_table_name(dataset, indicator, layer_name)
-    table_constraint = get_table_constraint_name(dataset, indicator, layer_name)
+    table = get_table_name(
+        indicator.dataset, indicator.metadata.name, indicator.layer.name
+    )
+    table_constraint = get_table_constraint_name(
+        indicator.dataset, indicator.metadata.name, indicator.layer.name
+    )
 
     # TODO: double check table structure with ohsome-hex schema
     #   once we have a better understading of the structure
@@ -94,15 +102,15 @@ def save_indicator_results_to_db(
           fid integer,
           label VARCHAR(20),
           value FLOAT,
-          text VARCHAR(1024),
+          description VARCHAR(1024),
           svg  TEXT,
           CONSTRAINT {} PRIMARY KEY (fid)
         );
-        INSERT INTO {} (fid, label, value, text, svg) VALUES
-        (%(feature_id)s, %(label)s, %(value)s ,%(text)s, %(svg)s)
+        INSERT INTO {} (fid, label, value, description, svg) VALUES
+        (%(feature_id)s, %(label)s, %(value)s ,%(description)s, %(svg)s)
         ON CONFLICT (fid) DO UPDATE
-            SET (label, value, text, svg)=
-            (excluded.label, excluded.value, excluded.text, excluded.svg)
+            SET (label, value, description, svg)=
+            (excluded.label, excluded.value, excluded.description, excluded.svg)
     """
     ).format(
         sql.Identifier(table),
@@ -112,57 +120,61 @@ def save_indicator_results_to_db(
 
     data = {
         "schema": POSTGRES_SCHEMA,
-        "feature_id": feature_id,
-        "label": results.label,
-        "value": results.value,
-        "text": results.text,
-        "svg": results.svg,
+        "feature_id": indicator.feature_id,
+        "label": indicator.result.label.value,
+        "value": indicator.result.value,
+        "description": indicator.result.description,
+        "svg": indicator.result.svg,
     }
     db.query(query=query, data=data)
     logger.info(
-        f"Saved '{indicator}' indicator result for feature {feature_id} in {table}."
+        f"Saved '{indicator.metadata.name}' indicator result "
+        f"for feature {indicator.feature_id} in {table}."
     )
 
 
-def get_indicator_results_from_db(
-    dataset: str, feature_id: int, indicator: str, layer_name: str
-) -> Dict:
-    """Get the indicator result for the given dataset and feature in the database."""
+def load_indicator_results(indicator) -> bool:
+    """Get the indicator result from the geodatabase.
 
-    table = get_table_name(dataset, indicator, layer_name)
-    fields = ["label", "value", "text", "svg"]
+    Reads given dataset and feature_id from the indicator object.
+    Writes retrived results to the result attribute of the indicator object.
+
+    Returns:
+        bool:   True for results retrived.
+                False for no results retrived
+                (feature_id does not exist in the result relation/table).
+    """
+
+    table = get_table_name(
+        indicator.dataset, indicator.metadata.name, indicator.layer.name
+    )
+    fields = ["label", "value", "description", "svg"]
     query_result = {}
     for field in fields:
         # TODO: maybe this can be put into a single query
-        query_result[field] = get_value_from_db(table, feature_id, field)
-
-    logger.info(f"Got results for feature {feature_id} from {table}.")
-    result = IndicatorResult(
-        label=query_result["label"],
-        value=query_result["value"],
-        text=query_result["text"],
-        svg=query_result["svg"],
-    )
-    return result
-
-
-def get_value_from_db(dataset: str, feature_id: str, field_name: str):
-    """Get the value for a field of the given dataset and feature in the database."""
-
-    db = PostgresDB()
-    query = sql.SQL(
+        db = PostgresDB()
+        query = sql.SQL(
+            """
+            SET SCHEMA %(schema)s;
+            SELECT {}
+            FROM {}
+            WHERE fid = %(feature_id)s;
         """
-        SET SCHEMA %(schema)s;
-        SELECT {}
-        FROM {}
-        WHERE fid = %(feature_id)s;
-    """
-    ).format(sql.Identifier(field_name), sql.Identifier(dataset))
-    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
-    query_results = db.retr_query(query=query, data=data)
-    results = query_results[0][0]
-    logger.info(f"Got '{field_name}' for feature '{feature_id}' from '{dataset}'.")
-    return results
+        ).format(sql.Identifier(field), sql.Identifier(table))
+        data = {"schema": POSTGRES_SCHEMA, "feature_id": indicator.feature_id}
+        query_results = db.retr_query(query=query, data=data)
+        if not query_results:
+            return False
+        results = query_results[0][0]
+        query_result[field] = results
+
+    logger.info(f"Got results for feature {indicator.feature_id} from {table}.")
+    # TODO Rewrite to use Result class definied in BaseIndicator class
+    indicator.result.label = query_result["label"]
+    indicator.result.value = query_result["value"]
+    indicator.result.description = query_result["description"]
+    indicator.result.svg = query_result["svg"]
+    return True
 
 
 def create_dataset_table(dataset: str):

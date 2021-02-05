@@ -3,13 +3,13 @@ import unittest
 from ohsome_quality_tool.indicators.ghs_pop_comparison.indicator import GhsPopComparison
 
 # from ohsome_quality_tool.reports.simple_report.report import SimpleReport
-from ohsome_quality_tool.utils.definitions import load_indicator_metadata
+from ohsome_quality_tool.utils.definitions import load_metadata
 from ohsome_quality_tool.utils.helper import name_to_class
 
 
 class TestNameToClass(unittest.TestCase):
     def setUp(self):
-        self.indicators = load_indicator_metadata()
+        self.indicators = load_metadata("indicators")
 
     def test(self):
         self.assertIs(

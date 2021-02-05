@@ -1,5 +1,6 @@
 import json
 import os
+from io import StringIO
 from math import ceil
 from string import Template
 
@@ -19,14 +20,12 @@ class GufComparison(BaseIndicator):
         self,
         dataset,
         feature_id,
-        dynamic: bool,
         layer_name: str = "building_area",
         bpolys: FeatureCollection = "",
     ) -> None:
         super().__init__(
             dataset=dataset,
             feature_id=feature_id,
-            dynamic=dynamic,
             layer_name=layer_name,
             bpolys=bpolys,
         )
@@ -139,8 +138,8 @@ class GufComparison(BaseIndicator):
 
         ax.legend()
 
-        logger.info(
-            f"Save figure for indicator: {self.metadata.name}\n to: {self.result.svg}"
-        )
-        plt.savefig(self.result.svg, format="svg")
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg")
+        self.result.svg = img_data.getvalue()  # this is svg data
+        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
