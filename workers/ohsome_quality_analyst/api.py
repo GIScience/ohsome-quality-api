@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 RESPONSE_TEMPLATE = {
     "attribution": {
@@ -60,6 +61,7 @@ async def get_indicator(
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
+    response["result"]["label"] = str(indicator.result.label)
     return response
 
 
@@ -81,6 +83,7 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
+    response["result"]["label"] = str(indicator.result.label)
     return response
 
 
@@ -104,15 +107,25 @@ async def get_report(
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
+    response["result"]["label"] = str(report.result.label)
     response["indicators"] = []
     for indicator in report.indicators:
-        i = {}
-        i["metadata"] = vars(indicator.metadata)
-        i["metadata"].pop("result_description", None)
-        i["metadata"].pop("label_description", None)
-        i["layer"] = vars(indicator.layer)
-        i["result"] = vars(indicator.result)
-        response["indicators"].append(i)
+        metadata = vars(indicator.metadata)
+        metadata.pop("result_description", None)
+        metadata.pop("label_description", None)
+        result = vars(indicator.result)
+        result["label"] = str(indicator.result.label)
+        name = name_to_lower_camel(metadata["name"])
+        response["indicators"].append(
+            {
+                name: {
+                    "metadata": metadata,
+                    "layer": vars(indicator.layer),
+                    "result": result
+
+                }
+            }
+        )
     return response
 
 
@@ -126,21 +139,31 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
+    print(report)
+    print(vars(report))
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
+    response["result"]["label"] = str(report.result.label)
     response["indicators"] = []
     for indicator in report.indicators:
-        i = {}
-        i["metadata"] = vars(indicator.metadata)
-        i["metadata"].pop("result_description", None)
-        i["metadata"].pop("label_description", None)
-        i["layer"] = vars(indicator.layer)
-        i["result"] = vars(indicator.result)
-        response["indicators"].append(i)
-    print(response)
+        metadata = vars(indicator.metadata)
+        metadata.pop("result_description", None)
+        metadata.pop("label_description", None)
+        result = vars(indicator.result)
+        result["label"] = str(indicator.result.label)
+        name = name_to_lower_camel(metadata["name"])
+        response["indicators"].append(
+            {
+                name: {
+                    "metadata": metadata,
+                    "layer": vars(indicator.layer),
+                    "result": result,
+                }
+            }
+        )
     return response
 
 

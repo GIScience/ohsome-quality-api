@@ -28,15 +28,20 @@ def name_to_class(class_type: str, name: str):
 
 
 def camel_to_snake(camel: str) -> str:
-    """Converts Camel Case to Snake Case."""
+    """Converts Camel Case to Snake Case"""
     return re.sub(r"(?<!^)(?=[A-Z])", "_", camel).lower()
 
 
 def snake_to_lower_camel(snake: str) -> str:
-    """Convertes Snake Case to Lower Camel Case."""
+    """Convertes Snake Case to Lower Camel Case"""
     parts = snake.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
 
+def name_to_lower_camel(name: str) -> str:
+    """Convert name to Lower Camel Case"""
+    name = name.replace(" ", "_")
+    name = name.replace("-", "_")
+    return snake_to_lower_camel(name)
 
 def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
