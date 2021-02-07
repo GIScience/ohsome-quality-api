@@ -121,7 +121,7 @@ def save_indicator_results(indicator) -> None:
     data = {
         "schema": POSTGRES_SCHEMA,
         "feature_id": indicator.feature_id,
-        "label": indicator.result.label.value,
+        "label": indicator.result.label,
         "value": indicator.result.value,
         "description": indicator.result.description,
         "svg": indicator.result.svg,
