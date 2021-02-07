@@ -11,7 +11,7 @@ import unittest
 
 import geojson
 from fastapi.testclient import TestClient
-from schema import Or, Schema
+from schema import Schema
 
 from ohsome_quality_analyst.api import app
 
@@ -42,8 +42,7 @@ class TestApi(unittest.TestCase):
                 },
                 "result": {
                     "value": float,
-                    # TODO: Should either be int or string
-                    "label": Or(int, str),
+                    "label": str,
                     "description": str,
                 },
                 "indicators": [
@@ -61,8 +60,7 @@ class TestApi(unittest.TestCase):
                             },
                             "result": {
                                 "value": float,
-                                # TODO: Should either be int or string
-                                "label": Or(int, str),
+                                "label": str,
                                 "description": str,
                                 "svg": str,
                             },
