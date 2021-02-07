@@ -51,7 +51,6 @@ class TestApi(unittest.TestCase):
                         str: {
                             "metadata": {
                                 "name": str,
-                                # TODO Shoud be lower camel case
                                 "description": str,
                             },
                             "layer": {

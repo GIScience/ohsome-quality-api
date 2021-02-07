@@ -38,7 +38,6 @@ class TestApi(unittest.TestCase):
                 "metadata": {
                     "name": str,
                     "requestUrl": str,
-                    # TODO Shoud be lower camel case or just description
                     "description": str,
                 },
                 "layer": {
