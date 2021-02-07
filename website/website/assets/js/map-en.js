@@ -242,13 +242,13 @@ function buildMap(err, ...charts){
 
 		// 1=green, 2=yellow, 3=red
 		switch (response.result.label) {
-		    case 1:
+		    case 'green':
 		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality'
 		        break
-		    case 2:
+		    case 'yellow':
 		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
 		        break
-		    case 3:
+		    case 'red':
 		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
 		}
 
@@ -263,7 +263,7 @@ function buildMap(err, ...charts){
 
 		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.description +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ response.metadata.report_description +'</p>'
+		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
 			
 		if(response.indicators.length > 0) {
 			addIndicators(response.indicators)
@@ -331,7 +331,7 @@ function buildMap(err, ...charts){
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.indicator_description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
