@@ -49,6 +49,7 @@ async def get_indicator(
     dataset: Optional[str] = None,
     featureId: Optional[str] = None,
 ):
+    # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
         bpolys = json.loads(bpolys)
     elif dataset is None and featureId is None:
@@ -71,6 +72,7 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
     layer_name = item.dict().get("layerName", None)
+    # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
         bpolys = json.loads(bpolys)
     elif dataset is None and feature_id is None:
@@ -95,6 +97,7 @@ async def get_report(
     dataset: Optional[str] = None,
     featureId: Optional[str] = None,
 ):
+    # TODO: Error handling should happen in oqt.create_report
     if bpolys:
         bpolys = json.loads(bpolys)
     elif dataset is None and featureId is None:
@@ -113,15 +116,16 @@ async def get_report(
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
         metadata.pop("label_description", None)
+        layer = vars(indicator.layer),
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
-        name = name_to_lower_camel(metadata["name"])
+        indicator_name = name_to_lower_camel(metadata["name"])
         response["indicators"].append(
             {
-                name: {
+                indicator_name: {
                     "metadata": metadata,
-                    "layer": vars(indicator.layer),
-                    "result": result
+                    "layer": layer,
+                    "result": result,
 
                 }
             }
@@ -134,13 +138,12 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
+    # TODO: Error handling should happen in oqt.create_report
     if bpolys:
         bpolys = json.loads(bpolys)
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
-    print(report)
-    print(vars(report))
     response = RESPONSE_TEMPLATE
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
@@ -152,14 +155,15 @@ async def post_report(name: str, request: Request, item: ReportParameters):
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
         metadata.pop("label_description", None)
+        layer = vars(indicator.layer)
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
-        name = name_to_lower_camel(metadata["name"])
+        indicator_name = name_to_lower_camel(metadata["name"])
         response["indicators"].append(
             {
-                name: {
+                indicator_name: {
                     "metadata": metadata,
-                    "layer": vars(indicator.layer),
+                    "layer": layer,
                     "result": result,
                 }
             }
