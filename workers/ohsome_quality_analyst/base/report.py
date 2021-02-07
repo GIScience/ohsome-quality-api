@@ -14,7 +14,7 @@ class Metadata:
     """Metadata of an report as defined in the metadata.yaml file"""
 
     name: str
-    report_description: str
+    description: str
     label_description: Dict
 
 

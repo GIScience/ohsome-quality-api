@@ -1,7 +1,7 @@
 ---
 SketchmapFitness:
   name: Sketchmap Fitness
-  report_description: |
+  description: |
       The sketchmap fitness report consists of four data quality indicators
       (mapping saturation of major roads, currentness for major-roads and
       amenities, density of points-of-interest). The report tells you whether
