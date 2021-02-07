@@ -10,7 +10,7 @@ from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 
 class LastEdit(BaseIndicator):
@@ -77,22 +77,22 @@ class LastEdit(BaseIndicator):
             share=self.share_edited_features, layer_name=self.layer.name
         )
         if self.share_edited_features == -1:
-            label = TrafficLightQualityLevels.UNDEFINED
+            label = "undefined"
             value = -1.0
             description = (
                 "Since the OHSOME query returned a count of 0 for this feature "
                 "a quality estimation can not be made for this filter"
             )
         elif self.share_edited_features >= self.threshold_yellow:
-            label = TrafficLightQualityLevels.GREEN
+            label = "green"
             value = 1.0
             description += self.metadata.label_description["green"]
         elif self.share_edited_features >= self.threshold_red:
-            label = TrafficLightQualityLevels.YELLOW
+            label = "yellow"
             value = 0.5
             description += self.metadata.label_description["yellow"]
         else:
-            label = TrafficLightQualityLevels.RED
+            label = "red"
             value = 0.0
             description += self.metadata.label_description["red"]
 

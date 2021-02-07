@@ -3,7 +3,7 @@ from statistics import mean
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 
 class SketchmapFitness(BaseReport):
@@ -35,13 +35,13 @@ class SketchmapFitness(BaseReport):
         self.result.value = mean(values)
 
         if self.result.value < 0.5:
-            self.result.label = TrafficLightQualityLevels.RED
+            self.result.label = "red"
             self.result.description = self.metadata.label_description["red"]
         elif self.result.value < 1:
-            self.result.label = TrafficLightQualityLevels.YELLOW
+            self.result.label = "yellow"
             self.result.description = self.metadata.label_description["yellow"]
         elif self.result.value >= 1:
-            self.result.label = TrafficLightQualityLevels.GREEN
+            self.result.label = "green"
             self.result.description = self.metadata.label_description["green"]
         else:
             self.result.label = None

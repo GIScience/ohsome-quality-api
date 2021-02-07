@@ -9,7 +9,7 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 
 class GhsPopComparison(BaseIndicator):
@@ -83,7 +83,7 @@ class GhsPopComparison(BaseIndicator):
                 / self.yellowThresholdFunction(self.pop_count_per_sqkm)
             ) * (0.5)
             description += self.metadata.label_description["red"]
-            label = TrafficLightQualityLevels.RED
+            label = "red"
 
         elif self.feature_count_per_sqkm <= self.greenThresholdFunction(
             self.pop_count_per_sqkm
@@ -93,12 +93,12 @@ class GhsPopComparison(BaseIndicator):
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
             value = 0.5 + fraction
             description += self.metadata.label_description["yellow"]
-            label = TrafficLightQualityLevels.YELLOW
+            label = "yellow"
 
         else:
             value = 1.0
             description += self.metadata.label_description["green"]
-            label = TrafficLightQualityLevels.GREEN
+            label = "green"
 
         self.result.label = label
         self.result.value = value
