@@ -11,7 +11,7 @@ class TestReadMetadata(unittest.TestCase):
             {
                 str: {
                     "name": str,
-                    "indicator_description": str,
+                    "description": str,
                     "label_description": {
                         "red": str,
                         "yellow": str,

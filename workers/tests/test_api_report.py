@@ -37,8 +37,7 @@ class TestApi(unittest.TestCase):
                 "apiVersion": str,
                 "metadata": {
                     "name": str,
-                    # TODO Shoud be lower camel case or just description
-                    "report_description": str,
+                    "description": str,
                     "requestUrl": str,
                 },
                 "result": {
@@ -53,7 +52,7 @@ class TestApi(unittest.TestCase):
                             "metadata": {
                                 "name": str,
                                 # TODO Shoud be lower camel case
-                                "indicator_description": str,
+                                "description": str,
                             },
                             "layer": {
                                 "name": str,

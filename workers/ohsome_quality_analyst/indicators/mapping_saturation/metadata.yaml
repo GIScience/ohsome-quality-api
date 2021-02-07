@@ -1,7 +1,7 @@
 ---
 MappingSaturation:
   name: Mapping Saturation
-  indicator_description: |
+  description: |
     Calculate if mapping has saturated.
   label_description:
     red: |

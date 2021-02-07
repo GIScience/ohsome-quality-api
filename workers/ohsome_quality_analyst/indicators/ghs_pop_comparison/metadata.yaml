@@ -1,7 +1,7 @@
 ---
 GhsPopComparison:
   name: GHS-POP Comparison
-  indicator_description: |
+  description: |
     Comparison between population density and feature density.
     This can give an estimate if mapping has been completed.
   label_description:

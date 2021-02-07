@@ -19,7 +19,7 @@ class Metadata:
     """Metadata of an indicator as defined in the metadata.yaml file"""
 
     name: str
-    indicator_description: str
+    description: str
     label_description: Dict
     result_description: str
 

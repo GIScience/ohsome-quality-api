@@ -39,7 +39,7 @@ class TestApi(unittest.TestCase):
                     "name": str,
                     "requestUrl": str,
                     # TODO Shoud be lower camel case or just description
-                    "indicator_description": str,
+                    "description": str,
                 },
                 "layer": {
                     "name": str,
