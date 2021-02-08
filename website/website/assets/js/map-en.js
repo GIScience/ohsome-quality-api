@@ -308,16 +308,16 @@ function buildMap(err, ...charts){
 
 			var indicatorQuality = document.createElement("p");
 			switch (indicators[key].result.label) {
-                case "1":
+                case "green":
                     traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                     break
-                case "2":
+                case "yellow":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
                     break
-                case "3":
+                case "red":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
                     break
-                case "4":
+                case "undefinied":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
 
             }
