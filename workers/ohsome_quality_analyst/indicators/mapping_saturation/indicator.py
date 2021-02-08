@@ -211,23 +211,27 @@ class MappingSaturation(BaseIndicator):
         # prepare plot
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
-        plt.figure()
+
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
         # show nice dates on x axis in plot
         df1["timestamps"] = pd.to_datetime(df1["timestamps"])
         # plot the data
-        plt.plot(
+        ax.plot(
             df1.timestamps,
             df1.yValues,
             linecol[0],
             label=f"{self.layer.name} - {self.layer.endpoint}",
         )
         if ydataForSat[0] != "empty":
-            plt.title("Saturation level of the data")
+            ax.title("Saturation level of the data")
             # plot sigmoid curve
-            plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
+            ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
-        plt.legend()
+        ax.legend()
 
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
