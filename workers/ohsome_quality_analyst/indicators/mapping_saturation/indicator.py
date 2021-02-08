@@ -84,24 +84,24 @@ class MappingSaturation(BaseIndicator):
         # and directly return quality label if no mapping happened
         if self.preprocessing_results["results"] == -1:
             # start stadium
-            text = "No mapping has happened in this region. "
-            label = "undefinied"
+            # "No mapping has happened in this region. "
+            label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
-            text = "Mapping has happened in this region but data " "were deleted. "
-            label = "undefinied"
+            # "Mapping has happened in this region but data were deleted."
+            label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
@@ -181,14 +181,13 @@ class MappingSaturation(BaseIndicator):
             )
         else:
             # deletion of all data
-            text = "Mapping has happened in this region but data " "were deleted. "
             label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
 
     def create_figure(self):
         # not nice work around to avoid error ".. is not indexable"
