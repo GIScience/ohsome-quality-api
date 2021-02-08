@@ -125,12 +125,15 @@ def create_indicators_for_dataset(dataset_name):
                 )
             # TODO: Those errors are raised during MappingCalculation creation.
             # Issue 72
-            except (ValueError, TypeError) as error:
-                logger.error(error)
-                logger.error(
-                    f"Error occurred during creation of indicator "
-                    f"'{indicator_name}' for the dataset '{dataset_name}' "
-                    f"and feature_id '{feature_id}'. "
-                    f"Continue creation of the indicators for the other features."
-                )
-                continue
+            except (ValueError, TypeError, ZeroDivisionError) as error:
+                if indicator_name == "MappingSaturation":
+                    logger.error(error)
+                    logger.error(
+                        f"Error occurred during creation of indicator "
+                        f"'{indicator_name}' for the dataset '{dataset_name}' "
+                        f"and feature_id '{feature_id}'. "
+                        f"Continue creation of the indicators for the other features."
+                    )
+                    continue
+                else:
+                    raise (error)
