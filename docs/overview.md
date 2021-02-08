@@ -43,10 +43,10 @@ The website is split up into two main parts:
 ### Website Part 1
 First, the user needs to select an area of interest and a respective data quality report. Currently, the set of 
 available geometries has been picked manually and is defined in a 
-[GeoJSON file](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/assets/data/test-regions.geojson).
+[GeoJSON file](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/blob/master/website/website/assets/data/test_regions.geojson).
 
 The user can select one of the following reports, which are hardcoded in the 
-[website code](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/blob/master/website/website/index.html):
+[website code](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/blob/master/website/website/index.html):
 * Simple report
 * Remote mapping report (buildings, roads)
 * Sketch mapping report
