@@ -282,8 +282,7 @@ function buildMap(err, ...charts){
 		// console.log('indicators ', indicators)
 		var parentDiv = document.getElementById("indicatorSpace");
 		// loop throw all indicators and add to DOM
-		indicators.forEach(indicator => {
-
+    for (var key in indicators) {
 			// console.log('indicator = ', indicator)
 			var sectionDiv = document.createElement("div");
 			sectionDiv.className = "section-container section-flex"
@@ -291,10 +290,10 @@ function buildMap(err, ...charts){
 			// left part with plot
 			var left_space = document.createElement("div");
 			left_space.classList.add("one-third")
-			if (indicator.result.label == 'UNDEFINED'){
+			if (indicators[key].result.label == 'UNDEFINED'){
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    left_space.innerHTML = indicator.result.svg;
+			    left_space.innerHTML = indicators[key].result.svg;
 			    left_space.classList.add("indicator-graph");
 			}
 			sectionDiv.appendChild(left_space)
@@ -304,11 +303,11 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.layer.name ;
+			indicatorHeading.innerHTML = indicators[key].metadata.name + ' for ' + indicators[key].layer.name ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
-			switch (indicator.result.label) {
+			switch (indicators[key].result.label) {
                 case "1":
                     traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                     break
@@ -326,12 +325,12 @@ function buildMap(err, ...charts){
             right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicator.result.description;
+			indicatorText.innerHTML = indicators[key].result.description;
 			right_space.appendChild(indicatorText);
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicators[key].metadata.description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
