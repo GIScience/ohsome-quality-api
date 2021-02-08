@@ -1,7 +1,6 @@
 import json
 import os
 from io import StringIO
-from math import ceil
 from string import Template
 
 import matplotlib.pyplot as plt
@@ -10,7 +9,7 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.auth import PostgresDB
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 
 class GufComparison(BaseIndicator):
@@ -68,19 +67,17 @@ class GufComparison(BaseIndicator):
         )
 
         if self.ratio <= self.threshold_low:
-            value = TrafficLightQualityLevels.RED.value
             description += self.metadata.label_description["red"]
+            label = "red"
         elif self.ratio <= self.threshold_high:
-            value = TrafficLightQualityLevels.YELLOW.value
             description += self.metadata.label_description["yellow"]
+            label = "yellow"
         else:
-            value = TrafficLightQualityLevels.GREEN.value
             description += self.metadata.label_description["green"]
-
-        label = TrafficLightQualityLevels(ceil(self.result.value))
+            label = "green"
 
         self.result.label = label
-        self.result.value = value
+        self.result.value = self.ratio
         self.result.description = description
 
     def create_figure(self) -> None:

@@ -9,7 +9,7 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
@@ -62,19 +62,19 @@ class PoiDensity(BaseIndicator):
         )
         if self.density >= self.threshold_yellow:
             self.result.value = 1.0
-            self.result.label = TrafficLightQualityLevels.GREEN
+            self.result.label = "green"
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
         else:
             self.result.value = self.density / self.threshold_red
             if self.density > self.threshold_red:
-                self.result.label = TrafficLightQualityLevels.YELLOW
+                self.result.label = "yellow"
                 self.result.description = (
                     description + self.metadata.label_description["yellow"]
                 )
             else:
-                self.result.label = TrafficLightQualityLevels.RED
+                self.result.label = "red"
                 self.result.description = (
                     description + self.metadata.label_description["red"]
                 )

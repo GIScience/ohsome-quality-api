@@ -6,7 +6,6 @@ import collections
 import glob
 import logging.config
 import os
-from enum import Enum
 from pathlib import Path
 from typing import Dict
 
@@ -36,15 +35,6 @@ DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
 DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
 Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
-
-
-class TrafficLightQualityLevels(Enum):
-    """The Quality Levels"""
-
-    GREEN = 1
-    YELLOW = 2
-    RED = 3
-    UNDEFINED = 4
 
 
 def get_logger():

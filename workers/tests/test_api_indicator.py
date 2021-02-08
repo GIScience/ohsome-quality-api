@@ -2,13 +2,15 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-
+# API request tests are seperated for indicator and report
+# because of a bug when using two schemata.
 
 import os
 import unittest
 
 import geojson
 from fastapi.testclient import TestClient
+from schema import Schema
 
 from ohsome_quality_analyst.api import app
 
@@ -26,6 +28,33 @@ class TestApi(unittest.TestCase):
         with open(infile, "r") as f:
             self.bpolys = geojson.load(f)
 
+        self.schema = Schema(
+            {
+                "attribution": {
+                    "url": str,
+                    "text": str,
+                },
+                "apiVersion": str,
+                "metadata": {
+                    "name": str,
+                    "requestUrl": str,
+                    "description": str,
+                },
+                "layer": {
+                    "name": str,
+                    "description": str,
+                    "endpoint": str,
+                    "filter": str,
+                },
+                "result": {
+                    "value": float,
+                    "label": str,
+                    "description": str,
+                    "svg": str,
+                },
+            }
+        )
+
     def test_get_indicator_bpolys(self):
         url = "/indicator/{0}?layerName={1}&bpolys={2}".format(
             self.indicator_name,
@@ -33,20 +62,35 @@ class TestApi(unittest.TestCase):
             self.bpolys,
         )
         response = self.client.get(url)
+
         self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
 
     def test_get_indicator_dataset(self):
         url = "/indicator/{0}?layerName={1}&dataset={2}&featureId={3}".format(
             self.indicator_name, self.layer_name, self.dataset, self.feature_id
         )
         response = self.client.get(url)
+
         self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
 
     def test_post_indicator_bpolys(self):
         data = {"bpolys": geojson.dumps(self.bpolys), "layerName": self.layer_name}
         url = f"/indicator/{self.indicator_name}"
         response = self.client.post(url, json=data)
+
         self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
 
     def test_post_indicator_dataset(self):
         data = {
@@ -56,31 +100,12 @@ class TestApi(unittest.TestCase):
         }
         url = f"/indicator/{self.indicator_name}"
         response = self.client.post(url, json=data)
+
         self.assertEqual(response.status_code, 200)
 
-    def test_get_report_bpolys(self):
-        url = "/report/{0}?bpolys={1}".format(self.report_name, self.bpolys)
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_report_dataset(self):
-        url = "/report/{0}?dataset={1}&featureId={2}".format(
-            self.report_name, self.dataset, self.feature_id
-        )
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_post_report_bpolys(self):
-        data = {"bpolys": geojson.dumps(self.bpolys)}
-        url = f"/report/{self.report_name}"
-        response = self.client.post(url, json=data)
-        self.assertEqual(response.status_code, 200)
-
-    def test_post_report_dataset(self):
-        data = {"dataset": self.dataset, "featureId": self.feature_id}
-        url = f"/report/{self.report_name}"
-        response = self.client.post(url, json=data)
-        self.assertEqual(response.status_code, 200)
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
 
 
 if __name__ == "__main__":

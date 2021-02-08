@@ -1,7 +1,7 @@
 ---
 PoiDensity:
   name: POI Density
-  indicator_description: |
+  description: |
       Derive the density of OSM features 
       (count divided by area in square-kilometers)
   label_description:

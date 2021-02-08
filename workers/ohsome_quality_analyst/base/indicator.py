@@ -5,7 +5,7 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Literal
 
 from dacite import from_dict
 from geojson import FeatureCollection
@@ -19,7 +19,7 @@ class Metadata:
     """Metadata of an indicator as defined in the metadata.yaml file"""
 
     name: str
-    indicator_description: str
+    description: str
     label_description: Dict
     result_description: str
 
@@ -41,7 +41,7 @@ class LayerDefinition:
 class Result:
     """The result of the Indicator."""
 
-    label: str
+    label: Literal["green", "yellow", "red", "undefined"]
     value: float
     description: str
     svg: str

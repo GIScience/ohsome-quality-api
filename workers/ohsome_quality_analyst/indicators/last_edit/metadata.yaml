@@ -1,7 +1,7 @@
 ---
 LastEdit:
   name: Last Edit
-  indicator_description: |
+  description: |
     Check the percentage of features that have been edited in the past year.
     This can estimate the dataquality in respect to currentness.
   label_description:

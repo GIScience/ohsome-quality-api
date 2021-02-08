@@ -12,7 +12,7 @@ from ohsome_quality_analyst.indicators.mapping_saturation.sigmoid_curve import (
     sigmoidCurve,
 )
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import TrafficLightQualityLevels, logger
+from ohsome_quality_analyst.utils.definitions import logger
 
 # threshold values defining the color of the traffic light
 # derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
@@ -85,7 +85,7 @@ class MappingSaturation(BaseIndicator):
         if self.preprocessing_results["results"] == -1:
             # start stadium
             text = "No mapping has happened in this region. "
-            label = TrafficLightQualityLevels.UNDEFINED
+            label = "undefinied"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
@@ -95,7 +95,7 @@ class MappingSaturation(BaseIndicator):
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
             text = "Mapping has happened in this region but data " "were deleted. "
-            label = TrafficLightQualityLevels.UNDEFINED
+            label = "undefinied"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
@@ -136,7 +136,7 @@ class MappingSaturation(BaseIndicator):
             # calculate/define traffic light value and label
             if max(df1.yValues) <= 20:
                 # start stadium
-                label = TrafficLightQualityLevels.RED
+                label = "red"
                 value = 0.0
                 description += self.metadata.label_description["red"]
             else:
@@ -160,12 +160,12 @@ class MappingSaturation(BaseIndicator):
             #  if saturation should be used then the threshold
             #  needs to be adjusted
             if self.growth <= THRESHOLD_YELLOW:
-                label = TrafficLightQualityLevels.GREEN
+                label = "green"
                 value = 1.0
                 description += self.metadata.label_description["green"]
             else:
                 # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
-                label = TrafficLightQualityLevels.YELLOW
+                label = "yellow"
                 value = 0.5
                 description += self.metadata.label_description["yellow"]
 
@@ -182,7 +182,7 @@ class MappingSaturation(BaseIndicator):
         else:
             # deletion of all data
             text = "Mapping has happened in this region but data " "were deleted. "
-            label = TrafficLightQualityLevels.UNDEFINED
+            label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label

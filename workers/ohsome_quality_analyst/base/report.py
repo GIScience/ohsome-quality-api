@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, List, NamedTuple, Tuple
+from typing import Dict, List, Literal, NamedTuple, Tuple
 
 from dacite import from_dict
 from geojson import FeatureCollection
@@ -14,7 +14,7 @@ class Metadata:
     """Metadata of an report as defined in the metadata.yaml file"""
 
     name: str
-    report_description: str
+    description: str
     label_description: Dict
 
 
@@ -22,7 +22,7 @@ class Metadata:
 class Result:
     """The result of the Report."""
 
-    label: str
+    label: Literal["green", "yellow", "red", "undefined"]
     value: float
     description: str
 

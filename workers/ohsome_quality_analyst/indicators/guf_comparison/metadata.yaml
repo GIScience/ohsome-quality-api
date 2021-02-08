@@ -1,7 +1,7 @@
 ---
 GufComparison:
   name: GUF Comparison
-  indicator_description: |
+  description: |
     Compare OSM features against built up area defined by
     Global Urban Footprint dataset.
   label_description:
