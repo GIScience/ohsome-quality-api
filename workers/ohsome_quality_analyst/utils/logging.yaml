@@ -1,5 +1,5 @@
 version: 1
-disable_existing_loggers: true
+disable_existing_loggers: false
 formatters:
   standard:
     format: '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s'
