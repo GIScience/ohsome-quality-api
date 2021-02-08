@@ -53,6 +53,7 @@ class GhsPopComparison(BaseIndicator):
         self.pop_count, self.area = db_client.get_zonal_stats_population(
             bpolys=self.bpolys
         )
+        # TODO: ???
         if self.pop_count is None:
             self.pop_count = 0
 
