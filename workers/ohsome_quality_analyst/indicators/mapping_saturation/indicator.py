@@ -226,7 +226,7 @@ class MappingSaturation(BaseIndicator):
             label=f"{self.layer.name} - {self.layer.endpoint}",
         )
         if ydataForSat[0] != "empty":
-            ax.title("Saturation level of the data")
+            ax.set_title("Saturation level of the data")
             # plot sigmoid curve
             ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         else:
