@@ -298,7 +298,7 @@ def get_zonal_stats_population(bpolys: Dict):
         WHERE
          public.ST_Intersects(
             rast,
-            public.ST_GeomFromGeoJSON(%(polygon)s)
+            st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s), 4326)
          )
         """
     )
