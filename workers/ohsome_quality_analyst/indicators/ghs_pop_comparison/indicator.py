@@ -153,7 +153,7 @@ class GhsPopComparison(BaseIndicator):
             color="green",
         )
 
-        # Plot point as circle ("o").
+        # Plot pont as circle ("o").
         ax.plot(
             self.pop_count_per_sqkm,
             self.feature_count_per_sqkm,

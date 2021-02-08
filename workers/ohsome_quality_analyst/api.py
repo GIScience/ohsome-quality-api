@@ -14,7 +14,7 @@ RESPONSE_TEMPLATE = {
         "url": "https://ohsome.org/copyrights",
         "text": "© OpenStreetMap contributors",
     },
-    "apiVersion": "0.1",
+    "apiVersion": "0.1.0-rc1",
 }
 
 app = FastAPI()
