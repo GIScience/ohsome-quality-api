@@ -120,7 +120,7 @@ async def get_report(
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
         indicator_name = name_to_lower_camel(metadata["name"])
-        response[indicator_name] = {
+        response["indicators"][indicator_name] = {
             "metadata": metadata,
             "layer": layer,
             "result": result,
@@ -154,7 +154,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
         indicator_name = name_to_lower_camel(metadata["name"])
-        response[indicator_name] = {
+        response["indicators"][indicator_name] = {
             "metadata": metadata,
             "layer": layer,
             "result": result,
