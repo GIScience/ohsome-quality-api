@@ -33,7 +33,6 @@ class GhsPopComparison(BaseIndicator):
         self.area = None
         self.pop_count_per_sqkm = None
         self.feature_count = None
-        self.feature_count_per_pop = None
         self.feature_count_per_sqkm = None
 
     def greenThresholdFunction(self, pop_per_sqkm):
@@ -61,7 +60,6 @@ class GhsPopComparison(BaseIndicator):
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
         self.feature_count = query_results["result"][0]["value"]
-        self.feature_count_per_pop = self.feature_count / self.pop_count
         self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
 

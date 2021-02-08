@@ -125,7 +125,7 @@ def create_indicators_for_dataset(dataset_name):
                 )
             # TODO: Those errors are raised during MappingCalculation creation.
             # Issue 72
-            except (ValueError, TypeError, ZeroDivisionError) as error:
+            except (ValueError, TypeError) as error:
                 if indicator_name == "MappingSaturation":
                     logger.error(error)
                     logger.error(
