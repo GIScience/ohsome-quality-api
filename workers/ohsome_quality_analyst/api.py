@@ -111,7 +111,7 @@ async def get_report(
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
     response["result"]["label"] = str(report.result.label)
-    response["indicators"] = []
+    response["indicators"] = {}
     for indicator in report.indicators:
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
@@ -120,15 +120,11 @@ async def get_report(
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
         indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"].append(
-            {
-                indicator_name: {
-                    "metadata": metadata,
-                    "layer": layer,
-                    "result": result,
-                }
-            }
-        )
+        response[indicator_name] = {
+            "metadata": metadata,
+            "layer": layer,
+            "result": result,
+        }
     return response
 
 
@@ -149,7 +145,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
     response["result"]["label"] = str(report.result.label)
-    response["indicators"] = []
+    response["indicators"] = {}
     for indicator in report.indicators:
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
@@ -158,15 +154,11 @@ async def post_report(name: str, request: Request, item: ReportParameters):
         result = vars(indicator.result)
         result["label"] = str(indicator.result.label)
         indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"].append(
-            {
-                indicator_name: {
-                    "metadata": metadata,
-                    "layer": layer,
-                    "result": result,
-                }
-            }
-        )
+        response[indicator_name] = {
+            "metadata": metadata,
+            "layer": layer,
+            "result": result,
+        }
     return response
 
 
