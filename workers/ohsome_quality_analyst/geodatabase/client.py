@@ -205,7 +205,7 @@ def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
         fid = feature["properties"][fid_key]
         exe = sql.SQL(
             """INSERT INTO {table} (fid, geom)
-                          VALUES (%(fid)s , public.ST_GeomFromGeoJSON(%(polygon)s))
+                          VALUES (%(fid)s , st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s)), 4326)
                           ON CONFLICT (fid) DO UPDATE
                           SET geom = excluded.geom;;"""
         ).format(table=sql.Identifier(dataset))
@@ -287,12 +287,12 @@ def get_zonal_stats_population(bpolys: Dict):
             (public.ST_SummaryStats(
                 public.ST_Clip(
                     rast,
-                    public.ST_GeomFromGeoJSON(%(polygon)s)
+                    st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s), 4326)
                 )
             )
         ).sum) population
         ,public.ST_Area(
-            public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+            st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography, 4326)
         ) / (1000*1000) as area_sqkm
         FROM ghs_pop
         WHERE
@@ -368,7 +368,7 @@ def get_area_of_bpolys(bpolys: Dict):
         """
         SELECT
             public.ST_Area(
-                public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
+                st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography, 4326)
             ) / (1000*1000) as area_sqkm
         """
     )
