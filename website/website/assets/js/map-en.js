@@ -339,7 +339,7 @@ function buildMap(err, ...charts){
 			var horizontalLine = document.createElement("hr")
 			horizontalLine.className = "wrapper"
 			parentDiv.appendChild(horizontalLine);
-		});
+		};
 	}
 
 	/**
