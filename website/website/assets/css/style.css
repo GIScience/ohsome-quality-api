@@ -517,7 +517,7 @@ footer {
     font-size: 12px; }
 
 .section {
-  padding: 75px 40px; }
+  padding: 25px 40px; }
   @media screen and (max-width: 767px) {
     .section {
       padding: 40px; } }
