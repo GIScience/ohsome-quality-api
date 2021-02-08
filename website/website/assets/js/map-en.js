@@ -265,7 +265,7 @@ function buildMap(err, ...charts){
 		document.getElementById("report_metadata_space").innerHTML =
 		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
 			
-		if(response.indicators.length > 0) {
+		if(Object.keys(response.indicators).length > 0) {
 			addIndicators(response.indicators)
 		}
 
