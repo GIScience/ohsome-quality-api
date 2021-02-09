@@ -17,7 +17,7 @@ During the first run of the container following datasets are imported:
 
 > NOTE: Currently the `ohsome-hex-isea.sql` is not included in the git repository and has to be downloaded manually.
 
-> NOTE 2: The script which has been used to create `ohsome-hex-isea.sql` dump can be found at `ohsome-quality-tools/scripts/create_isea_dump.sh`
+> NOTE 2: The script which has been used to create `ohsome-hex-isea.sql` dump can be found at `ohsome-quality-analyst/scripts/create_isea_dump.sh`
 
 
 ```bash
@@ -44,7 +44,7 @@ sudo iptables -I INPUT -p tcp --dport 5445 -j ACCEPT
 
 ## Import additional datasets.
 
-Scripts to import additional datasets can be found at `ohsome-quality-tool/scripts/import`. Those include the GlobalUrbanFootprint which is not part of the initial setup of the database due to size.
+Scripts to import additional datasets can be found at `ohsome-quality-analyst/scripts/import`. Those include the GlobalUrbanFootprint which is not part of the initial setup of the database due to size.
 
 The packages `gdal-bin` and `postgis` need to be installed on the server for the import scripts.
 

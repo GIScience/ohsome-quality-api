@@ -3,11 +3,11 @@
 - Make sure that you are not in any other virtual env (anaconda, ..):
 
 ```
-(ohsome-quality-tool) C:\Users\user\ohsome-quality-tool> deactivate
-C:\Users\user\ohsome-quality-tool>
+(ohsome-quality-analyst) C:\Users\user\ohsome-quality-analyst> deactivate
+C:\Users\user\ohsome-quality-analyst>
 ```
 
-- Error: ModuleNotFoundError: No module named 'ohsome_quality_tool'
+- Error: ModuleNotFoundError: No module named 'ohsome_quality_analyst'
     - Make sure virtual environment is activated: `poetry shell`
 
 - Connection to the database fails

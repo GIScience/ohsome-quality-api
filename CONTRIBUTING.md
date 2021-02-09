@@ -55,7 +55,7 @@ setx POSTGRES_PORT 5432
 setx POSTGRES_SCHEMA public
 ```
 
-> Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-tool/-/issues/48
+> Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/48
 
 
 ## Usage
@@ -69,7 +69,7 @@ oqt --help
 ### API
 
 ```
-uvicorn ohsome_quality_tool.api:app --reload
+uvicorn ohsome_quality_analyst.api:app --reload
 ```
 
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
