@@ -1,4 +1,5 @@
 import json
+import logging
 from io import StringIO
 from string import Template
 
@@ -9,7 +10,6 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import logger
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
@@ -42,7 +42,7 @@ class PoiDensity(BaseIndicator):
         return self.threshold_red * area
 
     def preprocess(self):
-        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         query_results_count = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
@@ -55,7 +55,7 @@ class PoiDensity(BaseIndicator):
     def calculate(self):
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        logger.info(f"Calculation for indicator: {self.metadata.name}")
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
             result=f"{self.density:.2f}"
@@ -136,5 +136,5 @@ class PoiDensity(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

@@ -1,4 +1,5 @@
 import ast
+import logging
 
 import click
 import geojson
@@ -15,9 +16,9 @@ from ohsome_quality_analyst.cli_opts import (
 )
 from ohsome_quality_analyst.utils.definitions import (
     DATASET_NAMES,
+    configure_logging,
     load_layer_definitions,
     load_metadata,
-    logger,
 )
 
 
@@ -26,7 +27,7 @@ class PythonLiteralOption(click.Option):
         try:
             return ast.literal_eval(value)
         except ValueError as e:
-            logger.exception(e)
+            logging.exception(e)
             raise click.BadParameter(value)
 
 
@@ -43,12 +44,11 @@ def add_opts(options):
 
 @click.group()
 @click.version_option()
-@click.option("--verbose", "-v", is_flag=True, help="Enable logging.")
-def cli(verbose):
-    if not verbose:
-        logger.disabled = True
-    else:
-        logger.info("Logging enabled")
+@click.option("--quite", "-q", is_flag=True, help="Disable logging.")
+def cli(quite):
+    if not quite:
+        configure_logging()
+        logging.info("Logging enabled")
 
 
 @cli.command("list-indicators")

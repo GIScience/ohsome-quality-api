@@ -1,9 +1,9 @@
+import logging
 from statistics import mean
 
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 class SimpleReport(BaseReport):
@@ -23,7 +23,7 @@ class SimpleReport(BaseReport):
 
     def combine_indicators(self) -> None:
         """Combine the results of all indicators."""
-        logger.info(f"Combine indicators for report: {self.metadata.name}")
+        logging.info(f"Combine indicators for report: {self.metadata.name}")
 
         # get mean of indicator quality values
         values = []

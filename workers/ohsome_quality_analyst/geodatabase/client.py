@@ -1,11 +1,11 @@
 import json
+import logging
 from typing import Dict
 
 from geojson import FeatureCollection
 from psycopg2 import sql
 
 from ohsome_quality_analyst.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 def get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
@@ -70,7 +70,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
     data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
     bpolys = query_results[0][0]
-    logger.info(f"got bpolys geometry from {dataset} for feature {feature_id}.")
+    logging.info(f"got bpolys geometry from {dataset} for feature {feature_id}.")
     return bpolys
 
 
@@ -127,7 +127,7 @@ def save_indicator_results(indicator) -> None:
         "svg": indicator.result.svg,
     }
     db.query(query=query, data=data)
-    logger.info(
+    logging.info(
         f"Saved '{indicator.metadata.name}' indicator result "
         f"for feature {indicator.feature_id} in {table}."
     )
@@ -168,7 +168,7 @@ def load_indicator_results(indicator) -> bool:
         results = query_results[0][0]
         query_result[field] = results
 
-    logger.info(f"Got results for feature {indicator.feature_id} from {table}.")
+    logging.info(f"Got results for feature {indicator.feature_id} from {table}.")
     # TODO Rewrite to use Result class definied in BaseIndicator class
     indicator.result.label = query_result["label"]
     indicator.result.value = query_result["value"]
@@ -307,7 +307,7 @@ def get_zonal_stats_population(bpolys: Dict):
     data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     population, area = query_results[0]
-    logger.info("Got population for polygon.")
+    logging.info("Got population for polygon.")
 
     return population, area
 
@@ -350,7 +350,7 @@ def get_zonal_stats_guf(bpolys: Dict):
     query_results = db.retr_query(query=query, data=data)
     built_up_area, area = query_results[0]
 
-    logger.info("Got built up area for polygon.")
+    logging.info("Got built up area for polygon.")
 
     return built_up_area, area
 
@@ -378,6 +378,6 @@ def get_area_of_bpolys(bpolys: Dict):
     query_results = db.retr_query(query=query, data=data)
     area = query_results[0][0]
 
-    logger.info("Got area for polygon.")
+    logging.info("Got area for polygon.")
 
     return area
