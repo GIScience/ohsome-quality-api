@@ -265,7 +265,7 @@ function buildMap(err, ...charts){
 		document.getElementById("report_metadata_space").innerHTML =
 		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
 			
-		if(response.indicators.length > 0) {
+		if(Object.keys(response.indicators).length > 0) {
 			addIndicators(response.indicators)
 		}
 
@@ -275,15 +275,14 @@ function buildMap(err, ...charts){
 
 	/**
 	 * Adds indicator by creating div on DOM dynamically based on number of Indicators present
-	 * 
+	 *
 	 * @param indicators is an array of indicator
 	 */
 	function addIndicators(indicators) {
 		// console.log('indicators ', indicators)
 		var parentDiv = document.getElementById("indicatorSpace");
 		// loop throw all indicators and add to DOM
-		indicators.forEach(indicator => {
-
+    for (var key in indicators) {
 			// console.log('indicator = ', indicator)
 			var sectionDiv = document.createElement("div");
 			sectionDiv.className = "section-container section-flex"
@@ -291,10 +290,10 @@ function buildMap(err, ...charts){
 			// left part with plot
 			var left_space = document.createElement("div");
 			left_space.classList.add("one-third")
-			if (indicator.result.label == 'UNDEFINED'){
+			if (indicators[key].result.label == 'UNDEFINED'){
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    left_space.innerHTML = indicator.result.svg;
+			    left_space.innerHTML = indicators[key].result.svg;
 			    left_space.classList.add("indicator-graph");
 			}
 			sectionDiv.appendChild(left_space)
@@ -304,21 +303,26 @@ function buildMap(err, ...charts){
 			right_space.className = "two-thirds";
 
 			var indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator.metadata.name + ' for ' + indicator.layer.name ;
+			indicatorHeading.innerHTML = indicators[key].metadata.name + ' for ' + indicators[key].layer.name ;
 			right_space.appendChild(indicatorHeading);
 
 			var indicatorQuality = document.createElement("p");
-			switch (indicator.result.label) {
+			switch (indicators[key].result.label) {
+                case "green":
                 case "1":
                     traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
                     break
+                case "yellow":
                 case "2":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
                     break
+                case "red":
                 case "3":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
                     break
-                case "4":
+                case "undefinied":
+                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+                default:
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
 
             }
@@ -326,12 +330,12 @@ function buildMap(err, ...charts){
             right_space.appendChild(indicatorQuality);
 
 			var indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicator.result.description;
+			indicatorText.innerHTML = indicators[key].result.description;
 			right_space.appendChild(indicatorText);
 
 			var indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator.metadata.description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicators[key].metadata.description;
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
@@ -340,7 +344,7 @@ function buildMap(err, ...charts){
 			var horizontalLine = document.createElement("hr")
 			horizontalLine.className = "wrapper"
 			parentDiv.appendChild(horizontalLine);
-		});
+		};
 	}
 
 	/**
@@ -388,18 +392,18 @@ function buildMap(err, ...charts){
 					};
 			}
 		}).addTo(miniMap);
-	
+
 		miniMap.fitBounds(selectedFeatureLayer.getBounds());
 	}
 
 	// while clicking on the get quality button check for selections -> see changeColorQ()
-	document.getElementById("cardtype").onclick = function () {	
-		changeColorQ()		
+	document.getElementById("cardtype").onclick = function () {
+		changeColorQ()
 	} ;
-	document.getElementById("map").onclick = function () {	
-		changeColorQ()	
+	document.getElementById("map").onclick = function () {
+		changeColorQ()
 	} ;
-	
+
 	// function to style the get quality button depending on selections
 	function changeColorQ() {
 		var topic = document.getElementById("cardtype");
@@ -435,7 +439,7 @@ function buildMap(err, ...charts){
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
 		if (ifQ == "btn-submit") {
-			
+
 			divGP.style.backgroundColor = '#535C69';
 			divGP.className = "btn-report";
 		}
@@ -443,56 +447,56 @@ function buildMap(err, ...charts){
 	function colorRepoort() {
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
-		
+
 		if (divGP.className == "btn-report") {
-			
+
 			alert("pdf")
 		}
 		else {
 			alert("Please click on the Get Quality button first")
 		}
 	}
-	document.getElementById("gP").onclick = function () {	
+	document.getElementById("gP").onclick = function () {
 		colorRepoort()
-		
+
 	} ;
-		
-		
-		
+
+
+
 			//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
-	/*We could use the usual popups on click to show information about different states, but we’ll choose a 
+	/*We could use the usual popups on click to show information about different states, but we’ll choose a
 	different route — showing it on state hover inside a custom control.*/
 	var info = L.control();
 
 	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"	
+		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
 		this.updateAfter();
 		return this._div;
 	};
 
 
-	
-	// Text showing in info box before and while selecting a layer 
+
+	// Text showing in info box before and while selecting a layer
 	$('.leaflet-control-layers-selector').click(function(){
-			
+
 		var inside = document.getElementsByClassName("info").item(0);
 		// set timeslider to first year (2010)
-		
-				
+
+
 		if(map.hasLayer(world)) {
 			inside.innerHTML = '<p>Move the mouse over the map</p>';
 		}			;
-		
-			
+
+
 	});
-	
-	// method that we will use to update the info box based on feature properties passed	
+
+	// method that we will use to update the info box based on feature properties passed
 	info.updateInfo = function (props) {
 		// get CO2 emission value as number from layer properties
 		var value = props.fid ;
-		
+
 		// get corresponding year from layer properties
-		
+
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)){
 			this._div.innerHTML = '<h5>Click to select</h5>' +  (props ?
@@ -500,17 +504,17 @@ function buildMap(err, ...charts){
 				: '<p>Move the mouse over the map</p>'
 					);
 		}
-		
+
 	};
 
 	// Text showing in info box after mouseover
 	info.updateAfter = function () {
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)) {
-			this._div.innerHTML = 
+			this._div.innerHTML =
 			'<p>Move the mouse over the map</p>';
-		}			
-		
+		}
+
 	};
 
 	/*// add a legend to the map
@@ -521,16 +525,16 @@ function buildMap(err, ...charts){
 		var div = L.DomUtil.create('div', 'info legend'),
 			grades = [0,1,2,3,4,5,6,7,8],
 			labels = [];
-		// put color for exactly value 0 in legend	
-		div.innerHTML +='<p>t CO<sub>2</sub> eq. per capita</p>' 
-		div.innerHTML +='<p>0 <i style="background:' + getColor1(grades[0]) + '"></i> </p>' 
+		// put color for exactly value 0 in legend
+		div.innerHTML +='<p>t CO<sub>2</sub> eq. per capita</p>'
+		div.innerHTML +='<p>0 <i style="background:' + getColor1(grades[0]) + '"></i> </p>'
 		// loop through our density intervals and generate a label with a colored square for each interval
 		for (var i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor1(grades[i] + 1) + '"></i> <p>' +
 				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br></p>' : '+</p>');
 		}
-		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>' 		
+		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>'
 		return div;
 	};*/
 
@@ -561,12 +565,12 @@ function bottomFunction() {
 function httpGetAsync(theUrl, callback)
 {
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(xmlHttp.responseText);
 	}
 	console.log(theUrl)
-	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+	xmlHttp.open("GET", theUrl, true); // true for asynchronous
 	xmlHttp.send(null);
 	// console.log(xmlHttp.responseText)
 	// return xmlHttp.responseText;
@@ -575,7 +579,7 @@ function httpGetAsync(theUrl, callback)
 function httpPostAsync(endPoint, params, callback) {
 	var theUrl = apiUrl +"/report/" + endPoint;
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(JSON.parse(xmlHttp.responseText));
 		if (xmlHttp.readyState == 4 && xmlHttp.status !== 200) {
@@ -589,7 +593,7 @@ function httpPostAsync(endPoint, params, callback) {
 
 function getResponseFile( params, callback) {
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(JSON.parse(xmlHttp.responseText));
 	}
