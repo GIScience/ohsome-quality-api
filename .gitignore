@@ -139,14 +139,3 @@ cython_debug/
 
 # Pycharm
 .idea/
-
-# Custom
-# 
-# Data dir and big files
-pg_data/
-scripts/import/data
-ohsome_hex_db/ohsome-hex-db.sql
-ohsome_hex_db/ohsome-hex-isea.sql
-
-# Temporary ignore data
-GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.tif*
