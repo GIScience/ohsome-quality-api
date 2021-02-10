@@ -61,7 +61,7 @@ class GufComparison(BaseIndicator):
 
     def calculate(self) -> None:
         logger.info(f"Calculation for indicator: {self.metadata.name}")
-        self.ratio = self.guf_built_up_area / self.osm_built_up_area
+        self.ratio = round(self.guf_built_up_area / self.osm_built_up_area, 2)
         description = Template(self.metadata.result_description).substitute(
             ratio=self.ratio
         )

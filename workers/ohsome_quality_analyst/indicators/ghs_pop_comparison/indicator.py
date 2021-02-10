@@ -50,19 +50,19 @@ class GhsPopComparison(BaseIndicator):
     def preprocess(self):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        self.pop_count, self.area = db_client.get_zonal_stats_population(
-            bpolys=self.bpolys
-        )
+        pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
         # TODO: ???
-        if self.pop_count is None:
-            self.pop_count = 0
+        if pop_count is None:
+            pop_count = 0
+        self.area = round(area, 2)
+        self.pop_count = round(pop_count)
 
         query_results = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
         self.feature_count = query_results["result"][0]["value"]
-        self.feature_count_per_sqkm = self.feature_count / self.area
-        self.pop_count_per_sqkm = self.pop_count / self.area
+        self.feature_count_per_sqkm = round(self.feature_count / self.area, 2)
+        self.pop_count_per_sqkm = round(self.pop_count / self.area, 2)
 
     def calculate(self):
         logger.info(f"Calculation for indicator: {self.metadata.name}")
