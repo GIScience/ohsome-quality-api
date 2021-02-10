@@ -38,8 +38,8 @@ class LastEdit(BaseIndicator):
             )
 
         # TODO: thresholds might be better defined for each OSM layer
-        self.threshold_yellow = 0.20  # more than 20% edited last year --> green
-        self.threshold_red = 0.05  # more than 5% edited last year --> yellow
+        self.threshold_yellow = 20  # more than 20% edited last year --> green
+        self.threshold_red = 5  # more than 5% edited last year --> yellow
         self.edited_features = None
         self.total_features = None
         self.share_edited_features = None
@@ -51,7 +51,7 @@ class LastEdit(BaseIndicator):
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
-            endpoint="contributions/centroid",
+            endpoint="contributions/latest/centroid",
         )
         query_results_totals = ohsome_client.query(
             layer=self.layer,
