@@ -84,24 +84,24 @@ class MappingSaturation(BaseIndicator):
         # and directly return quality label if no mapping happened
         if self.preprocessing_results["results"] == -1:
             # start stadium
-            text = "No mapping has happened in this region. "
-            label = "undefinied"
+            # "No mapping has happened in this region. "
+            label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
-            text = "Mapping has happened in this region but data " "were deleted. "
-            label = "undefinied"
+            # "Mapping has happened in this region but data were deleted."
+            label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
@@ -181,14 +181,13 @@ class MappingSaturation(BaseIndicator):
             )
         else:
             # deletion of all data
-            text = "Mapping has happened in this region but data " "were deleted. "
             label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, text, self.preprocessing_results
+            return label, value, description, self.preprocessing_results
 
     def create_figure(self):
         # not nice work around to avoid error ".. is not indexable"
@@ -211,23 +210,28 @@ class MappingSaturation(BaseIndicator):
         # prepare plot
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
-        plt.figure()
+
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
         # show nice dates on x axis in plot
         df1["timestamps"] = pd.to_datetime(df1["timestamps"])
         # plot the data
-        plt.plot(
+        nl = "\n"
+        ax.plot(
             df1.timestamps,
             df1.yValues,
             linecol[0],
-            label=f"{self.layer.name} - {self.layer.endpoint}",
+            label=f"{self.layer.name} - {nl}{self.layer.endpoint}",
         )
         if ydataForSat[0] != "empty":
-            plt.title("Saturation level of the data")
+            ax.set_title("Saturation level of the data")
             # plot sigmoid curve
-            plt.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
+            ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
-        plt.legend()
+        ax.legend(loc="upper left")
 
         img_data = StringIO()
         plt.savefig(img_data, format="svg")

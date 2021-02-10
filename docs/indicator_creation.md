@@ -15,20 +15,20 @@ As you can see the indicator you are trying to create should inherit from BaseIn
 ### Result
 The result object can hold 4 values. 
 
-1. label: This should be a member of TrafficLightQualityLevels found in ohsome_quality_tool/utils/definitions
+1. label: This should be a member of TrafficLightQualityLevels found in ohsome_quality_analyst/utils/definitions
 2. value: tbd
 3. description: label description for TrafficLightQualityLevel (see metadata.yaml in part 2)
 4. svg: unique file path which is **automatially** created uppon object initialization by the BaseIndicator
 
 ### Layer
-In the OQT we used the term Layer to describe teh result of an ohsomeAPI query. If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_tool/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Layer to describe teh result of an ohsomeAPI query. If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_analyst/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
 
 ## 2. Your own Indicator
 
-If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_tool/indicators** e.g. ohsome_quality_tool/indicators/your_indicator_name.
+If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_analyst/indicators** e.g. ohsome_quality_analyst/indicators/your_indicator_name.
 
 The two files are named:
 
@@ -69,7 +69,7 @@ Additionally you can define variable placeholders for important values and preli
 
 #### preprocess
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_tool/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too. You can store your preliminary results as a class attributes to have access to them in the upcoming two functions.
+This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_analyst/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too. You can store your preliminary results as a class attributes to have access to them in the upcoming two functions.
 
 #### calculate
 

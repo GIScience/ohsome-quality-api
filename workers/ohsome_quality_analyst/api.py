@@ -14,7 +14,7 @@ RESPONSE_TEMPLATE = {
         "url": "https://ohsome.org/copyrights",
         "text": "© OpenStreetMap contributors",
     },
-    "apiVersion": "0.1",
+    "apiVersion": "0.1.0-rc1",
 }
 
 app = FastAPI()
@@ -62,7 +62,7 @@ async def get_indicator(
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
-    response["result"]["label"] = str(indicator.result.label)
+    response["result"]["label"] = indicator.result.label
     return response
 
 
@@ -85,7 +85,7 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
-    response["result"]["label"] = str(indicator.result.label)
+    response["result"]["label"] = indicator.result.label
     return response
 
 
@@ -110,25 +110,21 @@ async def get_report(
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
-    response["result"]["label"] = str(report.result.label)
-    response["indicators"] = []
+    response["result"]["label"] = report.result.label
+    response["indicators"] = {}
     for indicator in report.indicators:
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
         metadata.pop("label_description", None)
         layer = (vars(indicator.layer),)
         result = vars(indicator.result)
-        result["label"] = str(indicator.result.label)
+        result["label"] = indicator.result.label
         indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"].append(
-            {
-                indicator_name: {
-                    "metadata": metadata,
-                    "layer": layer,
-                    "result": result,
-                }
-            }
-        )
+        response["indicators"][indicator_name] = {
+            "metadata": metadata,
+            "layer": layer,
+            "result": result,
+        }
     return response
 
 
@@ -148,25 +144,21 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
-    response["result"]["label"] = str(report.result.label)
-    response["indicators"] = []
+    response["result"]["label"] = report.result.label
+    response["indicators"] = {}
     for indicator in report.indicators:
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
         metadata.pop("label_description", None)
         layer = vars(indicator.layer)
         result = vars(indicator.result)
-        result["label"] = str(indicator.result.label)
+        result["label"] = indicator.result.label
         indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"].append(
-            {
-                indicator_name: {
-                    "metadata": metadata,
-                    "layer": layer,
-                    "result": result,
-                }
-            }
-        )
+        response["indicators"][indicator_name] = {
+            "metadata": metadata,
+            "layer": layer,
+            "result": result,
+        }
     return response
 
 

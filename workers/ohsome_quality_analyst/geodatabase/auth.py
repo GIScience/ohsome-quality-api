@@ -13,10 +13,10 @@ class PostgresDB(object):
 
     def __init__(self):
         self._db_connection = psycopg2.connect(
-            host=os.getenv("POSTGRES_HOST", default="postgres"),
-            port=os.getenv("POSTGRES_PORT", default=5435),
+            host=os.getenv("POSTGRES_HOST", default="localhost"),
+            port=os.getenv("POSTGRES_PORT", default=5432),
             database=os.getenv("POSTGRES_DB", default="oqt"),
-            user=os.getenv("POSTGRES_USER", default="oqt_workers"),
+            user=os.getenv("POSTGRES_USER", default="oqt"),
             password=os.environ["POSTGRES_PASSWORD"],
         )
 

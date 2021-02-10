@@ -136,3 +136,7 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
 def create_indicators_for_dataset(dataset_name):
     """Create indicators for all features of a dataset."""
     oqt.create_indicators_for_dataset(dataset_name)
+
+
+if __name__ == "__main__":
+    cli()
