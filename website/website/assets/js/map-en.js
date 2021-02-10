@@ -275,7 +275,7 @@ function buildMap(err, ...charts){
 
 	/**
 	 * Adds indicator by creating div on DOM dynamically based on number of Indicators present
-	 * 
+	 *
 	 * @param indicators is an array of indicator
 	 */
 	function addIndicators(indicators) {
@@ -392,18 +392,18 @@ function buildMap(err, ...charts){
 					};
 			}
 		}).addTo(miniMap);
-	
+
 		miniMap.fitBounds(selectedFeatureLayer.getBounds());
 	}
 
 	// while clicking on the get quality button check for selections -> see changeColorQ()
-	document.getElementById("cardtype").onclick = function () {	
-		changeColorQ()		
+	document.getElementById("cardtype").onclick = function () {
+		changeColorQ()
 	} ;
-	document.getElementById("map").onclick = function () {	
-		changeColorQ()	
+	document.getElementById("map").onclick = function () {
+		changeColorQ()
 	} ;
-	
+
 	// function to style the get quality button depending on selections
 	function changeColorQ() {
 		var topic = document.getElementById("cardtype");
@@ -439,7 +439,7 @@ function buildMap(err, ...charts){
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
 		if (ifQ == "btn-submit") {
-			
+
 			divGP.style.backgroundColor = '#535C69';
 			divGP.className = "btn-report";
 		}
@@ -447,56 +447,56 @@ function buildMap(err, ...charts){
 	function colorRepoort() {
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
-		
+
 		if (divGP.className == "btn-report") {
-			
+
 			alert("pdf")
 		}
 		else {
 			alert("Please click on the Get Quality button first")
 		}
 	}
-	document.getElementById("gP").onclick = function () {	
+	document.getElementById("gP").onclick = function () {
 		colorRepoort()
-		
+
 	} ;
-		
-		
-		
+
+
+
 			//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
-	/*We could use the usual popups on click to show information about different states, but we’ll choose a 
+	/*We could use the usual popups on click to show information about different states, but we’ll choose a
 	different route — showing it on state hover inside a custom control.*/
 	var info = L.control();
 
 	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"	
+		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
 		this.updateAfter();
 		return this._div;
 	};
 
 
-	
-	// Text showing in info box before and while selecting a layer 
+
+	// Text showing in info box before and while selecting a layer
 	$('.leaflet-control-layers-selector').click(function(){
-			
+
 		var inside = document.getElementsByClassName("info").item(0);
 		// set timeslider to first year (2010)
-		
-				
+
+
 		if(map.hasLayer(world)) {
 			inside.innerHTML = '<p>Move the mouse over the map</p>';
 		}			;
-		
-			
+
+
 	});
-	
-	// method that we will use to update the info box based on feature properties passed	
+
+	// method that we will use to update the info box based on feature properties passed
 	info.updateInfo = function (props) {
 		// get CO2 emission value as number from layer properties
 		var value = props.fid ;
-		
+
 		// get corresponding year from layer properties
-		
+
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)){
 			this._div.innerHTML = '<h5>Click to select</h5>' +  (props ?
@@ -504,17 +504,17 @@ function buildMap(err, ...charts){
 				: '<p>Move the mouse over the map</p>'
 					);
 		}
-		
+
 	};
 
 	// Text showing in info box after mouseover
 	info.updateAfter = function () {
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)) {
-			this._div.innerHTML = 
+			this._div.innerHTML =
 			'<p>Move the mouse over the map</p>';
-		}			
-		
+		}
+
 	};
 
 	/*// add a legend to the map
@@ -525,16 +525,16 @@ function buildMap(err, ...charts){
 		var div = L.DomUtil.create('div', 'info legend'),
 			grades = [0,1,2,3,4,5,6,7,8],
 			labels = [];
-		// put color for exactly value 0 in legend	
-		div.innerHTML +='<p>t CO<sub>2</sub> eq. per capita</p>' 
-		div.innerHTML +='<p>0 <i style="background:' + getColor1(grades[0]) + '"></i> </p>' 
+		// put color for exactly value 0 in legend
+		div.innerHTML +='<p>t CO<sub>2</sub> eq. per capita</p>'
+		div.innerHTML +='<p>0 <i style="background:' + getColor1(grades[0]) + '"></i> </p>'
 		// loop through our density intervals and generate a label with a colored square for each interval
 		for (var i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor1(grades[i] + 1) + '"></i> <p>' +
 				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br></p>' : '+</p>');
 		}
-		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>' 		
+		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>'
 		return div;
 	};*/
 
@@ -565,12 +565,12 @@ function bottomFunction() {
 function httpGetAsync(theUrl, callback)
 {
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(xmlHttp.responseText);
 	}
 	console.log(theUrl)
-	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+	xmlHttp.open("GET", theUrl, true); // true for asynchronous
 	xmlHttp.send(null);
 	// console.log(xmlHttp.responseText)
 	// return xmlHttp.responseText;
@@ -579,7 +579,7 @@ function httpGetAsync(theUrl, callback)
 function httpPostAsync(endPoint, params, callback) {
 	var theUrl = apiUrl +"/report/" + endPoint;
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(JSON.parse(xmlHttp.responseText));
 		if (xmlHttp.readyState == 4 && xmlHttp.status !== 200) {
@@ -593,7 +593,7 @@ function httpPostAsync(endPoint, params, callback) {
 
 function getResponseFile( params, callback) {
 	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() { 
+	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(JSON.parse(xmlHttp.responseText));
 	}
