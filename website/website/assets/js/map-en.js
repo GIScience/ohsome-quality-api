@@ -1,9 +1,7 @@
-// load geojson data, then build the map and the functionalities 
-d3.queue()
-  .defer(d3.json, 'assets/data/test_regions.geojson')
-  .defer(d3.json, 'assets/data/custom.geojson')
-  .await(buildMap)
-  
+// load geojson data, then build the map and the functionalities
+Promise.all([
+	fetch('assets/data/test_regions.geojson').then(data => data.json()),
+]).then(buildMap).catch(err => console.error(err));
 
 var selectedFeature = null;
 var selectedFeatureLayer = null;
@@ -59,7 +57,7 @@ function getColor1(d) {
 }
 
 // Create base map, the layers, the legend and the info text
-function buildMap(err, ...charts){
+function buildMap(...charts){
 	
 	// create base map, location and zoom
 	map = L.map( 'map', {
