@@ -24,6 +24,9 @@ class TestCli(unittest.TestCase):
         result = self.runner.invoke(cli, ["--help"])
         assert result.exit_code == 0
 
+        result = self.runner.invoke(cli, ["--version"])
+        assert result.exit_code == 0
+
     def testListIndicators(self):
         result = self.runner.invoke(cli, ["list-indicators"])
         assert result.exit_code == 0
@@ -45,12 +48,14 @@ class TestCli(unittest.TestCase):
             cli,
             [
                 "create-indicator",
-                "--indicator-name",
+                "-i",
                 "GhsPopComparison",
-                "--layer-name",
+                "-l",
                 "building_count",
-                "--infile",
-                self.infile,
+                "-d",
+                "test_regions",
+                "-f",
+                "3",
             ],
         )
         assert result.exit_code == 0
@@ -58,15 +63,17 @@ class TestCli(unittest.TestCase):
     def testCreateReport(self):
         result = self.runner.invoke(
             cli,
-            [
-                "create-report",
-                "--report-name",
-                "SimpleReport",
-                "--infile",
-                self.infile,
-            ],
+            ["create-report", "-r", "SimpleReport", "-d", "test_regions", "-f", "3"],
         )
         assert result.exit_code == 0
+
+    def testCreateAllIndicators(self):
+        result = self.runner.invoke(
+            cli,
+            ["create-all-indicators", "-d", "test_regions"],
+            input="N\n",
+        )
+        assert result.exit_code == 1
 
 
 if __name__ == "__main__":
