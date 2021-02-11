@@ -48,8 +48,8 @@ poi:
       police, fire_station, restaurant, townhall)
 
 # JRC themes:
-health:
-  name: healthcare-facilities
+jrc-health:
+  name: JRC Healthcare Facilities
   description: |
       OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
   endpoint: elements/count
@@ -59,8 +59,8 @@ health:
       or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
       or (healthcare=* and name=* and name!="")
 
-education:
-  name: education-facilities
+jrc-education:
+  name: JRC Education Facilities
   description: |
       OSM amenities that are education facilities like college, school, kindergarten, university.
   endpoint: elements/count
@@ -69,7 +69,7 @@ education:
       or (amenity=school and name=* and name!="" and building=*)
 
 jrc-road-length:
-  name: jrc-road-length
+  name: JRC Road Length
   description: |
       Selection of OSM highways with maxspeed and oneway tag.
   endpoint: elements/length
@@ -79,15 +79,15 @@ jrc-road-length:
 
 
 jrc-railway-length:
-  name: jrc-railways-length
+  name: JRC Railways Length
   description: |
     Selection of OSM railways.
   endpoint: elements/length
   filter: |
     railway in (rail, subway, tram, light_rail, monorail)
 
-airport-count:
-  name: airports
+jrc-airport-count:
+  name: JRC Airports
   description: |
     OpenStreetMap Aeroway Aerodromes.
   endpoint: elements/count
@@ -95,40 +95,40 @@ airport-count:
     (aeroway=aerodrome and icao=* and icao!="" and name=*)
     or (aerodrome=* and icao=* and icao!="" and name=*)
 
-water-treatment-plant-count:
-  name: water-treatment-plant-count
+jrc-water-treatment-plant-count:
+  name: JRC Water-Treatment Plant Count
   description: |
     OpenStreetMap water treatment plants.
   endpoint: elements/count
   filter: |
     man_made=water_works
 
-power-generation-plant-count:
-  name: power-generation-plant-count
+jrc-power-generation-plant-count:
+  name: JRC Power-generation Plant Count
   description: |
     OpenStreetMap power-generation-plants.
   endpoint: elements/count
   filter: |
     power=plant and power=* and name=*
 
-cultural-heritage-site-count:
-  name: Cultural Heritage Sites Count
+jrc-cultural-heritage-site-count:
+  name: JRC Cultural Heritage Sites Count
   description: |
     OpenStreetMap cultural-heritage-sites.
   endpoint: elements/count
   filter: |
     heritage=* and description=* and image=* and name=* and name!=""
 
-bridge-count:
-  name: Bridge Count
+jrc-bridge-count:
+  name: JRC Bridge Count
   description: |
     OpenStreetMap bridges.
   endpoint: elements/count
   filter: |
     bridge=yes and name=* and surface=* and highway=* and highway!=""
 
-mass-gathering-sites:
-  name: Mass Gathering Sites Count
+jrc-mass-gathering-sites:
+  name: JRC Mass Gathering Sites Count
   description: |
     OpenStreetMap Mass Gathering Sites, where a lot of people could gather.
   endpoint: elements/count
