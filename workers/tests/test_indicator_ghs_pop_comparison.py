@@ -24,7 +24,6 @@ class TestIndicatorGhsPopComparison(unittest.TestCase):
         self.assertIsNotNone(self.indicator.pop_count)
         self.assertIsNotNone(self.indicator.area)
         self.assertIsNotNone(self.indicator.feature_count)
-        self.assertIsNotNone(self.indicator.feature_count_per_pop)
         self.assertIsNotNone(self.indicator.feature_count_per_sqkm)
         self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
 

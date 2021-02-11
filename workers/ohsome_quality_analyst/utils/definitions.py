@@ -31,6 +31,17 @@ DATASET_NAMES = (
     "test_data",
     "test_regions",
 )
+# Possible indicator layer combinations
+INDICATOR_LAYER = (
+    ("GhsPopComparison", "building_count"),
+    ("MappingSaturation", "building_count"),
+    ("MappingSaturation", "major_roads"),
+    ("MappingSaturation", "amenities"),
+    ("LastEdit", "major_roads"),
+    ("LastEdit", "building_count"),
+    ("LastEdit", "amenities"),
+    ("PoiDensity", "poi"),
+)
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
 DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
