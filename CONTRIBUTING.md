@@ -109,25 +109,3 @@ python -m unittest discover
 ## Troubleshooting
 
 Please refer to [docs/troubleshooting.md](docs/troubleshooting.md)
-
-
-## Releases
-
-The project follows [Sematic Versioning](https://semver.org/)
-
-Version numbers should be present as Git Tag and in following files:
-- `ohsome_quality_analyst/__init__.py`
-- `ohsome_quality_analyst/api.py`
-- `pyproject.toml`
-
-To create a Git Tag run:
-```bash
-export NEW_VERSION=<major-version>.<minor-version>
-git checkout -b $NEW_VERSION  # From master
-git tag $NEW_VERSION
-git push --tags
-# Merge into master.
-
-# To work on a specific version (tag) in seperate branch
-git checkout -b <branch_name> $NEW_VERSION
-```
