@@ -14,6 +14,7 @@ Please make sure it is installed on your system.
 ### Installation
 
 ```bash
+cd workers/
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
@@ -32,12 +33,12 @@ To do this create a `.env` file at the root of the repository and write down fol
 
 ```bash
 OHSOME_API=https://api.ohsome.org/v1/
-POSTGRES_DB=hexadmin
-POSTGRES_USER=hexadmin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
-POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=hexadmin
+POSTGRES_USER=hexadmin
 POSTGRES_SCHEMA=public
+POSTGRES_PASSWORD=mypassword
 ```
 
 To make the variables available to current environment run following command (Linux):
@@ -49,10 +50,13 @@ export $(cat .env | xargs)
 Windows user can set those environment variables manually with following commands:
 
 ```
-setx POSTGRES_PASSWORD mypassword
+setx OHSOME_API https://api.ohsome.org/v1/
 setx POSTGRES_HOST localhost
 setx POSTGRES_PORT 5432
+setx POSTGRES_DB hexadmin
+setx POSTGRES_USER hexadmin
 setx POSTGRES_SCHEMA public
+setx POSTGRES_PASSWORD mypassword
 ```
 
 > Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/48
@@ -105,3 +109,25 @@ python -m unittest discover
 ## Troubleshooting
 
 Please refer to [docs/troubleshooting.md](docs/troubleshooting.md)
+
+
+## Releases
+
+The project follows [Sematic Versioning](https://semver.org/)
+
+Version numbers should be present as Git Tag and in following files:
+- `ohsome_quality_analyst/__init__.py`
+- `ohsome_quality_analyst/api.py`
+- `pyproject.toml`
+
+To create a Git Tag run:
+```bash
+export NEW_VERSION=<major-version>.<minor-version>
+git checkout -b $NEW_VERSION  # From master
+git tag $NEW_VERSION
+git push --tags
+# Merge into master.
+
+# To work on a specific version (tag) in seperate branch
+git checkout -b <branch_name> $NEW_VERSION
+```

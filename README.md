@@ -15,6 +15,10 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 
 ## Components
 
+1. Database: PostGIS database
+2. Workers/Back-end: Python package ohsome_quality_analyst
+3. Website
+
 ![](docs/img/UML-Component-Diagram.png)
 
 
