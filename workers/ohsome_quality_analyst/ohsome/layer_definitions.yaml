@@ -46,4 +46,97 @@ poi:
       shop=* or tourism in (hotel, attraction) or
       amenity in (fuel, pharmacy, hospital, school, college, university,
       police, fire_station, restaurant, townhall)
+
+# JRC themes:
+health:
+  name: healthcare-facilities
+  description: |
+      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+  endpoint: elements/count
+  filter: |
+      (amenity=hospital and name=* and name!="" and wheelchair=*)
+      or (amenity=clinic and name=* and name!="" and operator=*)
+      or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
+      or (healthcare=* and name=* and name!="")
+
+education:
+  name: education-facilities
+  description: |
+      OSM amenities that are education facilities like college, school, kindergarten, university.
+  endpoint: elements/count
+  filter: |
+      (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
+      or (amenity=school and name=* and name!="" and building=*)
+
+jrc-road-length:
+  name: jrc-road-length
+  description: |
+      Selection of OSM highways with maxspeed and oneway tag.
+  endpoint: elements/length
+  filter: |
+      highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
+      and maxspeed=* and oneway=*
+
+
+jrc-railway-length:
+  name: jrc-railways-length
+  description: |
+    Selection of OSM railways.
+  endpoint: elements/length
+  filter: |
+    railway in (rail, subway, tram, light_rail, monorail)
+
+airport-count:
+  name: airports
+  description: |
+    OpenStreetMap Aeroway Aerodromes.
+  endpoint: elements/count
+  filter: |
+    (aeroway=aerodrome and icao=* and icao!="" and name=*)
+    or (aerodrome=* and icao=* and icao!="" and name=*)
+
+water-treatment-plant-count:
+  name: water-treatment-plant-count
+  description: |
+    OpenStreetMap water treatment plants.
+  endpoint: elements/count
+  filter: |
+    man_made=water_works
+
+power-generation-plant-count:
+  name: power-generation-plant-count
+  description: |
+    OpenStreetMap power-generation-plants.
+  endpoint: elements/count
+  filter: |
+    power=plant and power=* and name=*
+
+cultural-heritage-site-count:
+  name: Cultural Heritage Sites Count
+  description: |
+    OpenStreetMap cultural-heritage-sites.
+  endpoint: elements/count
+  filter: |
+    heritage=* and description=* and image=* and name=* and name!=""
+
+bridge-count:
+  name: Bridge Count
+  description: |
+    OpenStreetMap bridges.
+  endpoint: elements/count
+  filter: |
+    bridge=yes and name=* and surface=* and highway=* and highway!=""
+
+mass-gathering-sites:
+  name: Mass Gathering Sites Count
+  description: |
+    OpenStreetMap Mass Gathering Sites, where a lot of people could gather.
+  endpoint: elements/count
+  filter: |
+    (amenity in (place_of_worship, cinema, food_court, festival_grounds, events_venue, theatre,
+    sports_hall, conference_centre, nightclub, marketplace) and name=* and name!="")
+    or (leisure in (stadium, sport_centre, water_park) and name=* and name!="")
+    or (shop=mall and name=* and name!="" and @version=*)
+    or (tourism in (theme_park, zoo, museum) and name=* and name!="")
+
 ...
