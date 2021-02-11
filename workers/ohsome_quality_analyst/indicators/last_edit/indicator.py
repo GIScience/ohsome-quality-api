@@ -1,4 +1,5 @@
 import json
+import logging
 from io import StringIO
 from string import Template
 from typing import Dict
@@ -10,7 +11,6 @@ from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 class LastEdit(BaseIndicator):
@@ -45,7 +45,7 @@ class LastEdit(BaseIndicator):
         self.share_edited_features = None
 
     def preprocess(self) -> Dict:
-        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         query_results_contributions = ohsome_client.query(
             layer=self.layer,
@@ -71,7 +71,7 @@ class LastEdit(BaseIndicator):
         )
 
     def calculate(self):
-        logger.info(f"Calculation for indicator: {self.metadata.name}")
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
             share=self.share_edited_features, layer_name=self.layer.name
@@ -105,7 +105,7 @@ class LastEdit(BaseIndicator):
 
         Slices are ordered and plotted counter-clockwise.
         """
-        logger.info(f"Create firgure for indicator: {self.metadata.name}")
+        logging.info(f"Create firgure for indicator: {self.metadata.name}")
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -157,5 +157,5 @@ class LastEdit(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

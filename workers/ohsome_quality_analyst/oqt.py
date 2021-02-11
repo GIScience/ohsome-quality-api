@@ -2,6 +2,7 @@
 Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
+import logging
 
 from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
@@ -11,7 +12,7 @@ from ohsome_quality_analyst.geodatabase.client import (
     load_indicator_results,
     save_indicator_results,
 )
-from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, logger
+from ohsome_quality_analyst.utils.definitions import DATASET_NAMES
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
@@ -127,8 +128,8 @@ def create_indicators_for_dataset(dataset_name):
             # Issue 72
             except (ValueError, TypeError) as error:
                 if indicator_name == "MappingSaturation":
-                    logger.error(error)
-                    logger.error(
+                    logging.error(error)
+                    logging.error(
                         f"Error occurred during creation of indicator "
                         f"'{indicator_name}' for the dataset '{dataset_name}' "
                         f"and feature_id '{feature_id}'. "
@@ -136,4 +137,4 @@ def create_indicators_for_dataset(dataset_name):
                     )
                     continue
                 else:
-                    raise (error)
+                    raise error

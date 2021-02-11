@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import Optional
 
 from fastapi import FastAPI, Request
@@ -7,6 +8,7 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.utils.definitions import configure_logging
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 RESPONSE_TEMPLATE = {
@@ -16,6 +18,9 @@ RESPONSE_TEMPLATE = {
     },
     "apiVersion": "0.1.0-rc1",
 }
+
+configure_logging()
+logging.info("Logging enabled")
 
 app = FastAPI()
 app.add_middleware(
