@@ -136,7 +136,7 @@ mass-gathering-sites:
     (amenity in (place_of_worship, cinema, food_court, festival_grounds, events_venue, theatre,
     sports_hall, conference_centre, nightclub, marketplace) and name=* and name!="")
     or (leisure in (stadium, sport_centre, water_park) and name=* and name!="")
-    or (shop=mall and name=* and name!="" and @version=*)
+    or (shop=mall and name=* and name!="")
     or (tourism in (theme_park, zoo, museum) and name=* and name!="")
 
 ...
