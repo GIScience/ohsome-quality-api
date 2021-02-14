@@ -54,24 +54,24 @@ class GhsPopComparison(BaseIndicator):
         # TODO: ???
         if pop_count is None:
             pop_count = 0
-        self.area = round(area, 2)
-        self.pop_count = round(pop_count)
+        self.area = area
+        self.pop_count = pop_count
 
         query_results = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
         self.feature_count = query_results["result"][0]["value"]
-        self.feature_count_per_sqkm = round(self.feature_count / self.area, 2)
-        self.pop_count_per_sqkm = round(self.pop_count / self.area, 2)
+        self.feature_count_per_sqkm = self.feature_count / self.area
+        self.pop_count_per_sqkm = self.pop_count / self.area
 
     def calculate(self):
         logger.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
-            pop_count=self.pop_count,
-            area=self.area,
-            pop_count_per_sqkm=self.pop_count_per_sqkm,
-            feature_count_per_sqkm=self.feature_count_per_sqkm,
+            pop_count=round(self.pop_count),
+            area=round(self.area, 1),
+            pop_count_per_sqkm=round(self.pop_count_per_sqkm, 1),
+            feature_count_per_sqkm=round(self.feature_count_per_sqkm, 1),
         )
 
         if self.feature_count_per_sqkm <= self.yellowThresholdFunction(
