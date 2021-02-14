@@ -3,9 +3,12 @@ Standalone helper functions.
 """
 
 import importlib
+import logging
 import os
 import pkgutil
 import re
+
+import geojson
 
 
 def name_to_class(class_type: str, name: str):
@@ -37,13 +40,24 @@ def snake_to_lower_camel(snake: str) -> str:
     parts = snake.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
 
+
 def name_to_lower_camel(name: str) -> str:
     """Convert name to Lower Camel Case"""
     name = name.replace(" ", "_")
     name = name.replace("-", "_")
     return snake_to_lower_camel(name)
 
+
 def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
     module = pkgutil.get_loader(module_name)
     return os.path.dirname(module.get_filename())
+
+
+def validate_geojson(input) -> bool:
+    if type(input) is str:
+        input = geojson.loads(input)
+    if input.is_valid is False:
+        logging.warning("Input geometry is not valid.")
+        logging.warning(input.errors())
+    return input.is_valid
