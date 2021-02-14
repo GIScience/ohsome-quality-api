@@ -413,18 +413,18 @@ function buildMap(err, ...charts){
 		console.log(selectedTopic)
 		// no selection of area so set buttons to grey
 		if (areas == "country") {
-			var divGP = document.getElementById('gP');
-			divGP.style.backgroundColor = 'grey';
-			divGP.className = "btn-report2";
+			//var divGP = document.getElementById('gP');
+			//divGP.style.backgroundColor = 'grey';
+			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 			div.style.backgroundColor = 'grey';
 		}
 	    // no selection of topic so set buttons to grey
 		if (selectedTopic == "Topic") {
 			console.log("imhere")
-			var divGP = document.getElementById('gP');
-			divGP.style.backgroundColor = 'grey';
-			divGP.className = "btn-report2";
+			//var divGP = document.getElementById('gP');
+			//divGP.style.backgroundColor = 'grey';
+			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 			div.style.backgroundColor = 'grey';
 		}
@@ -437,14 +437,14 @@ function buildMap(err, ...charts){
 	// #################    PDF button #############
 	function changeColor() {
 		var ifQ = document.getElementById("gQ").className
-		var divGP = document.getElementById('gP');
+		//var divGP = document.getElementById('gP');
 		if (ifQ == "btn-submit") {
 			
-			divGP.style.backgroundColor = '#535C69';
-			divGP.className = "btn-report";
+			//divGP.style.backgroundColor = '#535C69';
+			//divGP.className = "btn-report";
 		}
 	}
-	function colorRepoort() {
+	/*function colorReport() {
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
 		
@@ -456,10 +456,10 @@ function buildMap(err, ...charts){
 			alert("Please click on the Get Quality button first")
 		}
 	}
-	document.getElementById("gP").onclick = function () {	
-		colorRepoort()
+	document.getElementById("gP").onclick = function () {
+		colorReport()
 		
-	} ;
+	} ;*/
 		
 		
 		
