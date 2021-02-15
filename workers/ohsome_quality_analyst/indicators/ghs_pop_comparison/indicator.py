@@ -51,7 +51,7 @@ class GhsPopComparison(BaseIndicator):
         logger.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
-        # TODO: ???
+
         if pop_count is None:
             pop_count = 0
         self.area = area
