@@ -78,7 +78,7 @@ class MappingSaturation(BaseIndicator):
         logging.info(f"run calculation for : {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
-            saturation=self.saturation, growth=self.growth
+            saturation=round(self.saturation, 3), growth=round(self.growth, 3)
         )
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened

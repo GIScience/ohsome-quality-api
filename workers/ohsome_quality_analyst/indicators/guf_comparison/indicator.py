@@ -63,7 +63,7 @@ class GufComparison(BaseIndicator):
         logging.info(f"Calculation for indicator: {self.metadata.name}")
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
         description = Template(self.metadata.result_description).substitute(
-            ratio=self.ratio
+            ratio=round(self.ratio, 2)
         )
 
         if self.ratio <= self.threshold_low:
