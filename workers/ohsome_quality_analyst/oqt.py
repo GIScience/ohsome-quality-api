@@ -9,7 +9,7 @@ from psycopg2.errors import UndefinedTable
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, INDICATOR_LAYER
-from ohsome_quality_analyst.utils.helper import name_to_class
+from ohsome_quality_analyst.utils.helper import name_to_class, validate_geojson
 
 
 def create_indicator(
@@ -32,6 +32,9 @@ def create_indicator(
     Returns:
         Indicator
     """
+    # check in bpolys are valid
+    if bpolys is not None:
+        validate_geojson(bpolys)
     # Support only predefined datasets.
     # Otherwise creation of arbitrary relations (tables) are possible.
     if dataset is not None and dataset not in DATASET_NAMES:
