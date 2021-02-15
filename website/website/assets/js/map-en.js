@@ -91,7 +91,8 @@ function buildMap(err, ...charts){
                 // Get center of bounds
                 var center = bounds.getCenter();
                 // Use center to put marker on map
-                var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+				marker.on('click', function(){layer.fire('click')})
             }
             // end add marker for test regions
 		}
