@@ -3,12 +3,13 @@ Standalone helper functions.
 """
 
 import importlib
-import logging
 import os
 import pkgutil
 import re
 
-import geojson
+from geojson import FeatureCollection
+
+from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 
 
 def name_to_class(class_type: str, name: str):
@@ -54,10 +55,19 @@ def get_module_dir(module_name: str) -> str:
     return os.path.dirname(module.get_filename())
 
 
-def validate_geojson(input) -> bool:
-    if type(input) is str:
-        input = geojson.loads(input)
+def validate_geojson(input: FeatureCollection) -> bool:
     if input.is_valid is False:
-        logging.warning("Input geometry is not valid.")
-        logging.warning(input.errors())
+        raise ValueError("Input geometry is not valid. {}".format(input.errors()))
+    area_in_sqkm = get_area_of_bpolys(input)
+    # todo: decide on final max-threshold
+    max_area_in_sqkm = 100
+    if area_in_sqkm > max_area_in_sqkm:
+        raise ValueError(
+            """
+            Input Geometry is to big ({} sqkm).
+            Polys should remain under {} sqkm.
+        """.format(
+                area_in_sqkm, max_area_in_sqkm
+            )
+        )
     return input.is_valid

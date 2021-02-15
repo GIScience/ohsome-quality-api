@@ -1,3 +1,4 @@
+import os
 import unittest
 
 import geojson
@@ -10,21 +11,24 @@ class TestHelper(unittest.TestCase):
         pass
 
     def test_validate_geojson(self):
-        gjson = """
-            {"geometries":
-                [{"coordinates": [[-115.81, 37.24]], "type": "MultiPoint"}],
-            "type": "GeometryCollection"}
-        """
-        gjson_i = """
-            {"geometries":
-                [{"coordinates": [[37.24]], "type": "MultiPoint"}],
-            "type": "GeometryCollection"}
-        """
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg_altstadt.geojson",
+        )
+        with open(infile, "r") as f:
+            hd_poly = geojson.load(f)
 
-        obj = geojson.loads(gjson)
-        assert helper.validate_geojson(gjson) is True
-        assert helper.validate_geojson(obj) is True
-        assert helper.validate_geojson(gjson_i) is False
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "europe.geojson",
+        )
+        with open(infile, "r") as f:
+            europe_poly = geojson.load(f)
+
+        self.assertTrue(helper.validate_geojson(hd_poly))
+        self.assertRaises(ValueError, helper.validate_geojson, europe_poly)
 
 
 if __name__ == "__main__":
