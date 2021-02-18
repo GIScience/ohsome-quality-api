@@ -44,9 +44,9 @@ def add_opts(options):
 
 @click.group()
 @click.version_option()
-@click.option("--quite", "-q", is_flag=True, help="Disable logging.")
-def cli(quite):
-    if not quite:
+@click.option("--quiet", "-q", is_flag=True, help="Disable logging.")
+def cli(quiet):
+    if not quiet:
         configure_logging()
         logging.info("Logging enabled")
 
@@ -137,7 +137,7 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
 @cli.command("create-all-indicators")
 @add_opts(dataset_name_opt)
 def create_all_indicators(dataset_name):
-    """Create all indicator for a specified dataset."""
+    """Create all indicators for a specified dataset."""
     click.echo("This command will calculate all indicators for the specified dataset.")
     click.confirm("Do you want to continue?", abort=True)
     oqt.create_all_indicators(dataset=dataset_name)
