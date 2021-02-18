@@ -1,83 +1,35 @@
 # Contributing
 
-Please contribute to this repository through [merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment). A quick guide on indicator creation can be found [here](./docs/indicator_creation.md).
+## How to Contribute
+
+Please contribute to this repository through creating [issues](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/new) and [merge requests](https://docs.gitlab.com/ce/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment).
 
 
-## Setup
+### Issues
 
-### Requirements
+Bugs reports and enhancement suggestions are tracked via issues. Each issue can contain following information:
 
-This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management.
-Please make sure it is installed on your system.
+- A clear and descriptive title
+- Description
+- Current behavior and expected behavior
+- Error message and stack trace
 
-
-### Installation
-
-```bash
-cd workers/
-poetry install
-poetry shell  # Spawns a shell within the virtual environment.
-pre-commit install  # Install pre-commit hooks.
-# Hack away ...
-```
-
-> Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
+Issues should serve as the basis for creating a merge request. They should have at least one tag associated with them.
 
 
-### Database
+### Merge Requests
 
-To get access to a running database on a remote server please reach out.
+Merge requests are created to address one single issue or multiple. Either the assignee or the creator of the merge request is responsible for merging.
+Each merge request has to be approved by at least one reviewer before merging it. A person can be assigned as reviewer by either mark them as such or asking for a review by tagging the person in the description/comment of the merge request.
 
-To access the Database and to specify ohsome API URL various environment variables need to be set.
-To do this create a `.env` file at the root of the repository and write down following variables and their values:
+A merge request can be made even if the branch is not ready to yet to be merged. When doing so please mark them as Work-in-Progress by writing `WIP` at the beginning of the title. This way people/reviewer know that currently someone is working to address an issue. This gives them the opportunity share their thoughts knowing that the merge request is still subject to changes and does not need a full review yet.
 
-```bash
-OHSOME_API=https://api.ohsome.org/v1/
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_DB=hexadmin
-POSTGRES_USER=hexadmin
-POSTGRES_SCHEMA=public
-POSTGRES_PASSWORD=mypassword
-```
-
-To make the variables available to current environment run following command (Linux):
-
-```
-export $(cat .env | xargs)
-```
-
-Windows user can set those environment variables manually with following commands:
-
-```
-setx OHSOME_API https://api.ohsome.org/v1/
-setx POSTGRES_HOST localhost
-setx POSTGRES_PORT 5432
-setx POSTGRES_DB hexadmin
-setx POSTGRES_USER hexadmin
-setx POSTGRES_SCHEMA public
-setx POSTGRES_PASSWORD mypassword
-```
-
-> Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/48
+The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It should contain a short description of the performed changes, as well as (a) link(s) to issue(s) or merge request.
 
 
-## Usage
+### Git Workflow
 
-### OQT
-
-```
-oqt --help
-```
-
-### API
-
-```
-uvicorn ohsome_quality_analyst.api:app --reload
-```
-
-Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
-
+All development work is based on the main branch (`master`). Merge requests are expected to target the main branch.
 
 
 ## Style Guide
@@ -106,6 +58,7 @@ python -m unittest discover
 ```
 
 
-## Troubleshooting
+## Miscellaneous
 
-Please refer to [docs/troubleshooting.md](docs/troubleshooting.md)
+- Troubleshooting -> [docs/troubleshooting.md](docs/troubleshooting.md)
+- How to create a new indicator? -> [docs/indicator_creation.md](docs/indicator_creation.md).
