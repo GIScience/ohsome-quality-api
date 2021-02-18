@@ -18,7 +18,9 @@ class TestHelper(unittest.TestCase):
         )
         with open(infile, "r") as f:
             hd_poly = geojson.load(f)
+        self.assertTrue(helper.validate_geojson(hd_poly))
 
+    def test_validate_geojson_size(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -26,8 +28,6 @@ class TestHelper(unittest.TestCase):
         )
         with open(infile, "r") as f:
             europe_poly = geojson.load(f)
-
-        self.assertTrue(helper.validate_geojson(hd_poly))
         self.assertRaises(ValueError, helper.validate_geojson, europe_poly)
 
 

@@ -1,7 +1,7 @@
-import json
 import logging
 from typing import Optional
 
+import geojson
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -56,7 +56,7 @@ async def get_indicator(
 ):
     # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
-        bpolys = json.loads(bpolys)
+        bpolys = geojson.loads(bpolys)
     elif dataset is None and featureId is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
     indicator = oqt.create_indicator(name, layerName, bpolys, dataset, featureId)
@@ -79,7 +79,7 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     layer_name = item.dict().get("layerName", None)
     # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
-        bpolys = json.loads(bpolys)
+        bpolys = geojson.loads(bpolys)
     elif dataset is None and feature_id is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
     indicator = oqt.create_indicator(name, layer_name, bpolys, dataset, feature_id)
@@ -104,7 +104,7 @@ async def get_report(
 ):
     # TODO: Error handling should happen in oqt.create_report
     if bpolys:
-        bpolys = json.loads(bpolys)
+        bpolys = geojson.loads(bpolys)
     elif dataset is None and featureId is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
     report = oqt.create_report(
@@ -140,7 +140,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     feature_id = item.dict().get("featureId", None)
     # TODO: Error handling should happen in oqt.create_report
     if bpolys:
-        bpolys = json.loads(bpolys)
+        bpolys = geojson.loads(bpolys)
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
