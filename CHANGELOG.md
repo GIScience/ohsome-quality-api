@@ -2,6 +2,7 @@
 
 ## 0.1.0
 
+- Development setup of database using Docker !33
 - Add contribution information on issues, merge requests and changelog !31
 
 ## 0.1.0-rc1
