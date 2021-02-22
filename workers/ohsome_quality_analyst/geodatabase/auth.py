@@ -2,7 +2,7 @@ import os
 
 import psycopg2
 
-POSTGRES_SCHEMA = os.getenv("POSTGRES_SCHEMA", default="development")
+POSTGRES_SCHEMA = os.getenv("POSTGRES_SCHEMA", default="public")
 
 
 class PostgresDB(object):
@@ -14,10 +14,10 @@ class PostgresDB(object):
     def __init__(self):
         self._db_connection = psycopg2.connect(
             host=os.getenv("POSTGRES_HOST", default="localhost"),
-            port=os.getenv("POSTGRES_PORT", default=5432),
+            port=os.getenv("POSTGRES_PORT", default=5445),
             database=os.getenv("POSTGRES_DB", default="oqt"),
             user=os.getenv("POSTGRES_USER", default="oqt"),
-            password=os.environ["POSTGRES_PASSWORD"],
+            password=os.getenv("POSTGRES_PASSWORD", default="oqt"),
         )
 
     def query(self, query, data=None):

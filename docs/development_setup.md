@@ -6,6 +6,13 @@ To run all components (OQT/API, Database, Website) in Docker containers simply r
 docker-compose -f docker-compose.development.yml up -d
 ```
 
+After all services are up they are available under:
+
+- Website: [http://127.0.0.1:8081/](http://127.0.0.1:8081/)
+- API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
+- Database: `host=localhost port=5445 dbname=oqt user=oqt password=oqt`
+
+
 ## OQT Python package
 
 ### Requirements
@@ -29,31 +36,31 @@ pre-commit install  # Install pre-commit hooks.
 
 ### Configuration
 
-To access the database and the ohsome API various environment variables need to be set:
+**Local database:**
+
+For local development no additional configuration is required. Per default OQT will connect to the database definied in `docker-compose.development.yml`.
+
+**Remote database:**
+
+If access to a remote database is required following environment variables need to be set:
 
 ```bash
-export OHSOME_API=https://api.ohsome.org/v1/
-export POSTGRES_DB=oqt
-export POSTGRES_USER=oqt
-export POSTGRES_PASSWORD=mypassword
-export POSTGRES_HOST=localhost
-export POSTGRES_PORT=5432
-export POSTGRES_SCHEMA=public
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+POSTGRES_HOST
+POSTGRES_PORT
+POSTGRES_SCHEMA
 ```
 
-> Tip: Above lines can be written to a file (E.g. `.env`) and sourced (`source .env`) to make them available to current environment.
+> Tip: Above lines can be written to a file (E.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
 
-Windows user can set those environment variables with following commands:
+Windows user can set those environment variables with following command `setx POSTGRES_DB`
 
-```
-setx OHSOME_API https://api.ohsome.org/v1/
-setx POSTGRES_DB oqt
-setx POSTGRES_USER oqt
-setx POSTGRES_PASSWORD mypassword
-setx POSTGRES_HOST localhost
-setx POSTGRES_PORT 5432
-setx POSTGRES_SCHEMA public
-```
+
+**ohsome API:**
+
+The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
 
 
 ### Usage
