@@ -2,8 +2,8 @@
 
 ## 0.1.0
 
+- Development setup of database using Docker !33 !37
 - Seperate integration tests from unit tests #116
-- Development setup of database using Docker !33
 - Add contribution information on issues, merge requests and changelog !31
 
 ## 0.1.0-rc1
