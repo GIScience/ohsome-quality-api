@@ -138,7 +138,7 @@ def drop_result_table(dataset_name, indicator_name, layer_name):
     db = PostgresDB()
     table = get_table_name(dataset_name, indicator_name, layer_name)
     logging.info("Dropping table '{0}'".format(table))
-    query = "DROP TABLE IF EXISTS {0}".format(table)
+    query = sql.SQL("DROP TABLE IF EXISTS {};").format(sql.Identifier(table))
     db.query(query)
 
 
