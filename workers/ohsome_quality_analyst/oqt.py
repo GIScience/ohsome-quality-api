@@ -2,22 +2,19 @@
 Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
+import logging
 
 from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
 
-from ohsome_quality_analyst.geodatabase.client import (
-    get_fid_list,
-    load_indicator_results,
-    save_indicator_results,
-)
-from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, logger
-from ohsome_quality_analyst.utils.helper import name_to_class
+import ohsome_quality_analyst.geodatabase.client as db_client
+from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.helper import name_to_class, validate_geojson
 
 
 def create_indicator(
-    indicator_name: str,
-    layer_name: str,
+    indicator_name: str = None,
+    layer_name: str = None,
     bpolys: FeatureCollection = None,
     dataset: str = None,
     feature_id: int = None,
@@ -29,42 +26,73 @@ def create_indicator(
     results from the geodatabase (dataset, feature_id).
 
     In case fetching indicator results from database does fail
-    the indicator is create from scratch and the results are saved
+    the indicator is created from scratch and the results are saved
     to the database.
 
     Returns:
-        Indicator object
+        Indicator
     """
+    # check in bpolys are valid
+    if bpolys is not None:
+        validate_geojson(bpolys)
     # Support only predefined datasets.
     # Otherwise creation of arbitrary relations (tables) are possible.
     if dataset is not None and dataset not in DATASET_NAMES:
         raise ValueError("Given dataset name does not exist: " + dataset)
+
+    def from_scratch():
+        """Create indicatore from scratch."""
+        indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
+
+    def from_database() -> bool:
+        """Create indicator by loading existing results from database"""
+        try:
+            db_client.load_indicator_results(indicator)
+            return True
+        except UndefinedTable:
+            return False
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     indicator = indicator_class(
         layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
 
-    # Create indicator from scratch
     if bpolys is not None and dataset is None and feature_id is None:
-        indicator.preprocess()
-        indicator.calculate()
-        indicator.create_figure()
-
-    # Create indicator by loading existing results from database
-    # or in case it this does fail create indicator from scratch and
-    # save results to database.
+        from_scratch()
     elif dataset is not None and feature_id is not None:
-        try:
-            success = load_indicator_results(indicator)
-        except UndefinedTable:
-            success = False
+        success = from_database()
         if not success:
-            indicator.preprocess()
-            indicator.calculate()
-            indicator.create_figure()
-            save_indicator_results(indicator)
+            from_scratch()
+            db_client.save_indicator_results(indicator)
     return indicator
+
+
+def create_all_indicators(dataset: str) -> None:
+    fids = db_client.get_fid_list(dataset)
+    for feature_id in fids:
+        for indicator_name, layer_name in INDICATOR_LAYER:
+            try:
+                create_indicator(
+                    indicator_name,
+                    layer_name,
+                    dataset=dataset,
+                    feature_id=feature_id,
+                )
+            # TODO: Those errors are raised during MappingCalculation creation.
+            except (ValueError) as error:
+                if indicator_name == "MappingSaturation":
+                    logging.error(error)
+                    logging.error(
+                        f"Error occurred during creation of indicator "
+                        f"'{indicator_name}' for the dataset '{dataset}' "
+                        f"and feature_id '{feature_id}'. "
+                        f"Continue creation of indicators."
+                    )
+                    continue
+                else:
+                    raise (error)
 
 
 def create_report(
@@ -75,12 +103,11 @@ def create_report(
 ) -> object:
     """Create a report.
 
-    A Report is created by either calculaating each indicator
-    from scratch and combine the results together or
-    by fetching already calculated and combined reports from the geodatabase.
+    A Reports creates indicators from scratch or fetches them from the database.
+    It then aggregates all indicators and calculates an overall quality scrore.
 
     Returns:
-        Report object
+        Report
     """
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
@@ -96,44 +123,3 @@ def create_report(
         report.indicators.append(indicator)
     report.combine_indicators()
     return report
-
-
-# TODO: Generalize. This is a temporary solution.
-def create_indicators_for_dataset(dataset_name):
-    """Create indicators for all features of a dataset.
-
-    Results are saved the database.
-    """
-    fids = get_fid_list(dataset_name)
-    for feature_id in fids:
-        for indicator_name, layer_name in (
-            ("GhsPopComparison", "building_count"),
-            ("MappingSaturation", "building_count"),
-            ("MappingSaturation", "major_roads"),
-            ("MappingSaturation", "amenities"),
-            ("LastEdit", "major_roads"),
-            ("LastEdit", "building_count"),
-            ("LastEdit", "amenities"),
-            ("PoiDensity", "poi"),
-        ):
-            try:
-                create_indicator(
-                    indicator_name,
-                    layer_name,
-                    dataset=dataset_name,
-                    feature_id=feature_id,
-                )
-            # TODO: Those errors are raised during MappingCalculation creation.
-            # Issue 72
-            except (ValueError, TypeError) as error:
-                if indicator_name == "MappingSaturation":
-                    logger.error(error)
-                    logger.error(
-                        f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for the dataset '{dataset_name}' "
-                        f"and feature_id '{feature_id}'. "
-                        f"Continue creation of the indicators for the other features."
-                    )
-                    continue
-                else:
-                    raise (error)

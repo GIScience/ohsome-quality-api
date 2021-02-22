@@ -818,7 +818,7 @@ class sigmoidCurve:
         initParamsY4 = sigmoid_curve.sortInits3curves(
             df1.li, df1.yValues, self.initparamsFor4JumpsCurve
         )[1]
-        if not math.isnan(initParamsY3[0]):
+        if not math.isnan(initParamsY4[0]):
             L41 = round(initParamsY4[0])
             L42 = round(initParamsY4[1])
             L43 = round(initParamsY4[2])
@@ -847,7 +847,7 @@ class sigmoidCurve:
             errorslistFuncs.append("logistic4")
         # --- sigmoid function with 5 jumps ---
         initParamsY5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[1]
-        if not math.isnan(initParamsY3[0]):
+        if not math.isnan(initParamsY5[0]):
             # get initial y values for the curve with 5 jumps
             L51 = round(initParamsY5[0])
             L52 = round(initParamsY5[1])

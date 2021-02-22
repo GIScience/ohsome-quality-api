@@ -1,4 +1,5 @@
 import ast
+import logging
 
 import click
 import geojson
@@ -15,9 +16,9 @@ from ohsome_quality_analyst.cli_opts import (
 )
 from ohsome_quality_analyst.utils.definitions import (
     DATASET_NAMES,
+    configure_logging,
     load_layer_definitions,
     load_metadata,
-    logger,
 )
 
 
@@ -26,7 +27,7 @@ class PythonLiteralOption(click.Option):
         try:
             return ast.literal_eval(value)
         except ValueError as e:
-            logger.exception(e)
+            logging.exception(e)
             raise click.BadParameter(value)
 
 
@@ -43,12 +44,11 @@ def add_opts(options):
 
 @click.group()
 @click.version_option()
-@click.option("--verbose", "-v", is_flag=True, help="Enable logging.")
-def cli(verbose):
-    if not verbose:
-        logger.disabled = True
-    else:
-        logger.info("Logging enabled")
+@click.option("--quite", "-q", is_flag=True, help="Disable logging.")
+def cli(quite):
+    if not quite:
+        configure_logging()
+        logging.info("Logging enabled")
 
 
 @cli.command("list-indicators")
@@ -120,6 +120,8 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
+    else:
+        bpolys = None
     report = oqt.create_report(
         report_name=report_name,
         bpolys=bpolys,
@@ -131,11 +133,14 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
     click.echo(report.result)
 
 
-@cli.command("create-indicators-for-dataset")
+# TODO: Dataset option is mandatory
+@cli.command("create-all-indicators")
 @add_opts(dataset_name_opt)
-def create_indicators_for_dataset(dataset_name):
-    """Create indicators for all features of a dataset."""
-    oqt.create_indicators_for_dataset(dataset_name)
+def create_all_indicators(dataset_name):
+    """Create all indicator for a specified dataset."""
+    click.echo("This command will calculate all indicators for the specified dataset.")
+    click.confirm("Do you want to continue?", abort=True)
+    oqt.create_all_indicators(dataset=dataset_name)
 
 
 if __name__ == "__main__":

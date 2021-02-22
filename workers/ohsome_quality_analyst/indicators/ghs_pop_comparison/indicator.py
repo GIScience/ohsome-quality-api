@@ -1,4 +1,5 @@
 import json
+import logging
 from io import StringIO
 from string import Template
 
@@ -9,7 +10,6 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 class GhsPopComparison(BaseIndicator):
@@ -48,14 +48,14 @@ class GhsPopComparison(BaseIndicator):
         return 0.75 * np.sqrt(pop_per_sqkm)
 
     def preprocess(self):
-        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        self.pop_count, self.area = db_client.get_zonal_stats_population(
-            bpolys=self.bpolys
-        )
-        # TODO: ???
-        if self.pop_count is None:
-            self.pop_count = 0
+        pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
+
+        if pop_count is None:
+            pop_count = 0
+        self.area = area
+        self.pop_count = pop_count
 
         query_results = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
@@ -65,13 +65,13 @@ class GhsPopComparison(BaseIndicator):
         self.pop_count_per_sqkm = self.pop_count / self.area
 
     def calculate(self):
-        logger.info(f"Calculation for indicator: {self.metadata.name}")
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
-            pop_count=self.pop_count,
-            area=self.area,
-            pop_count_per_sqkm=self.pop_count_per_sqkm,
-            feature_count_per_sqkm=self.feature_count_per_sqkm,
+            pop_count=round(self.pop_count),
+            area=round(self.area, 1),
+            pop_count_per_sqkm=round(self.pop_count_per_sqkm, 1),
+            feature_count_per_sqkm=round(self.feature_count_per_sqkm, 1),
         )
 
         if self.feature_count_per_sqkm <= self.yellowThresholdFunction(
@@ -105,7 +105,7 @@ class GhsPopComparison(BaseIndicator):
 
     def create_figure(self):
 
-        logger.info(f"Create figure for indicator: {self.metadata.name}")
+        logging.info(f"Create figure for indicator: {self.metadata.name}")
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -167,5 +167,5 @@ class GhsPopComparison(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

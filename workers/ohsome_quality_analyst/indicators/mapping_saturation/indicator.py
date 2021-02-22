@@ -1,4 +1,5 @@
 import json
+import logging
 from io import StringIO
 from string import Template
 from typing import Dict
@@ -12,7 +13,6 @@ from ohsome_quality_analyst.indicators.mapping_saturation.sigmoid_curve import (
     sigmoidCurve,
 )
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import logger
 
 # threshold values defining the color of the traffic light
 # derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
@@ -47,7 +47,7 @@ class MappingSaturation(BaseIndicator):
     def preprocess(self) -> Dict:
         """Get data from ohsome API and db. Put timestamps + data in list"""
 
-        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         query_results = ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
@@ -75,10 +75,10 @@ class MappingSaturation(BaseIndicator):
 
     def calculate(self):
 
-        logger.info(f"run calculation for : {self.metadata.name}")
+        logging.info(f"run calculation for : {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
-            saturation=self.saturation, growth=self.growth
+            saturation=round(self.saturation, 3), growth=round(self.growth, 3)
         )
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
@@ -175,7 +175,7 @@ class MappingSaturation(BaseIndicator):
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            logger.info(
+            logging.info(
                 f"result saturation value: {self.saturation}, label: {label},"
                 f" value: {value}, description: {description}"
             )
@@ -236,5 +236,5 @@ class MappingSaturation(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

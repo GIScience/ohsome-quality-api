@@ -19,10 +19,9 @@ for filename in /data/GUF04_v2/*.tif; do
             -s 4326 \
             -N 0 \
             -I \
-            -M \
             -C \
             guf04.vrt \
-            public.guf04 \
+            guf04 \
             2>> guf04.log \
             | \
             PGPASSWORD=mypassword psql \
@@ -42,9 +41,6 @@ for filename in /data/GUF04_v2/*.tif; do
         -t 100x100 \
         -s 4326 \
         -N 0 \
-        -I \
-        -M \
-        -C \
         guf04.vrt \
         public.guf04 \
         2>> guf04.log \

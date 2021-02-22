@@ -1,9 +1,9 @@
+import logging
 from statistics import mean
 
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 class RemoteMappingLevelOne(BaseReport):
@@ -29,7 +29,7 @@ class RemoteMappingLevelOne(BaseReport):
         )
 
     def combine_indicators(self) -> None:
-        logger.info(f"Combine indicators for report: {self.metadata.name}")
+        logging.info(f"Combine indicators for report: {self.metadata.name}")
 
         values = []
         for indicator in self.indicators:

@@ -14,6 +14,7 @@ Please make sure it is installed on your system.
 ### Installation
 
 ```bash
+cd workers/
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
@@ -32,12 +33,12 @@ To do this create a `.env` file at the root of the repository and write down fol
 
 ```bash
 OHSOME_API=https://api.ohsome.org/v1/
-POSTGRES_DB=hexadmin
-POSTGRES_USER=hexadmin
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
-POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=hexadmin
+POSTGRES_USER=hexadmin
 POSTGRES_SCHEMA=public
+POSTGRES_PASSWORD=mypassword
 ```
 
 To make the variables available to current environment run following command (Linux):
@@ -49,10 +50,13 @@ export $(cat .env | xargs)
 Windows user can set those environment variables manually with following commands:
 
 ```
-setx POSTGRES_PASSWORD mypassword
+setx OHSOME_API https://api.ohsome.org/v1/
 setx POSTGRES_HOST localhost
 setx POSTGRES_PORT 5432
+setx POSTGRES_DB hexadmin
+setx POSTGRES_USER hexadmin
 setx POSTGRES_SCHEMA public
+setx POSTGRES_PASSWORD mypassword
 ```
 
 > Another possibility is to setup a database for development locally. This is still work in progress. Please refer to this issue on GitLab for questions and progress regarding local development database: https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/48

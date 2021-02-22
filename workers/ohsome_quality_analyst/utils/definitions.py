@@ -4,6 +4,7 @@ Global Variables and Functions.
 
 import collections
 import glob
+import logging
 import logging.config
 import os
 from pathlib import Path
@@ -30,6 +31,17 @@ DATASET_NAMES = (
     "test_data",
     "test_regions",
 )
+# Possible indicator layer combinations
+INDICATOR_LAYER = (
+    ("GhsPopComparison", "building_count"),
+    ("MappingSaturation", "building_count"),
+    ("MappingSaturation", "major_roads"),
+    ("MappingSaturation", "amenities"),
+    ("LastEdit", "major_roads"),
+    ("LastEdit", "building_count"),
+    ("LastEdit", "amenities"),
+    ("PoiDensity", "poi"),
+)
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
 DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
@@ -37,20 +49,17 @@ Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
-def get_logger():
-    logs_path = os.path.join(DATA_HOME_PATH, "logs")
-    logging_file_path = os.path.join(logs_path, "oqt.log")
+def configure_logging(level: str = "INFO") -> None:
+    """Read configuration from file. Set logging file and level."""
     logging_config_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
     )
-    Path(logs_path).mkdir(parents=True, exist_ok=True)
-
     with open(logging_config_path, "r") as f:
         logging_config = yaml.safe_load(f)
+    logging_file_path = os.path.join(DATA_HOME_PATH, "oqt.log")
     logging_config["handlers"]["file"]["filename"] = logging_file_path
+    logging_config["root"]["level"] = level
     logging.config.dictConfig(logging_config)
-
-    return logging.getLogger("oqt")
 
 
 def load_metadata(module_name: str) -> Dict:
@@ -95,7 +104,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
     try:
         return metadata[class_name]
     except KeyError:
-        logger.error(
+        logging.error(
             "Invalid {0} class name. Valid {0} class names are: ".format(
                 module_name[:-1]
             )
@@ -129,7 +138,9 @@ def get_layer_definition(layer_name: str) -> Dict:
     try:
         return layers[layer_name]
     except KeyError:
-        logger.error("Invalid layer name. Valid layer names are: " + str(layers.keys()))
+        logging.error(
+            "Invalid layer name. Valid layer names are: " + str(layers.keys())
+        )
         raise
 
 
@@ -151,5 +162,3 @@ def get_report_classes() -> Dict:
 
 ReportResult = collections.namedtuple("Result", "label value text")
 ReportMetadata = collections.namedtuple("Metadata", "name description")
-
-logger = get_logger()

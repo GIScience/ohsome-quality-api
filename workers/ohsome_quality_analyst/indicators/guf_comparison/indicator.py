@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from io import StringIO
 from string import Template
@@ -9,7 +10,6 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.auth import PostgresDB
-from ohsome_quality_analyst.utils.definitions import logger
 
 
 class GufComparison(BaseIndicator):
@@ -36,7 +36,7 @@ class GufComparison(BaseIndicator):
         self.ratio: float = None
 
     def preprocess(self) -> None:
-        logger.info(f"Preprocessing for indicator: {self.metadata.name}")
+        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
         db = PostgresDB()
 
         directory = os.path.dirname(os.path.abspath(__file__))
@@ -46,7 +46,7 @@ class GufComparison(BaseIndicator):
         with open(sql_file) as reader:
             query = reader.read()
         result = db.retr_query(query=query, data=(aoi_geom, aoi_geom, aoi_geom))
-        logger.info(result)
+        logging.info(result)
         self.area = result[0][0] / 1000000  # m^2 to km^2
         self.guf_built_up_area = result[0][1] / 1000000
 
@@ -60,10 +60,10 @@ class GufComparison(BaseIndicator):
         )
 
     def calculate(self) -> None:
-        logger.info(f"Calculation for indicator: {self.metadata.name}")
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
         self.ratio = self.guf_built_up_area / self.osm_built_up_area
         description = Template(self.metadata.result_description).substitute(
-            ratio=self.ratio
+            ratio=round(self.ratio, 2)
         )
 
         if self.ratio <= self.threshold_low:
@@ -82,7 +82,7 @@ class GufComparison(BaseIndicator):
 
     def create_figure(self) -> None:
         """Create a plot and return as SVG string."""
-        logger.info(f"Create figure for indicator: {self.metadata.name}")
+        logging.info(f"Create figure for indicator: {self.metadata.name}")
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -138,5 +138,5 @@ class GufComparison(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logger.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
