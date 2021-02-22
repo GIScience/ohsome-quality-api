@@ -49,8 +49,7 @@ def create_indicator(
     def from_database() -> bool:
         """Create indicator by loading existing results from database"""
         try:
-            db_client.load_indicator_results(indicator)
-            return True
+            return db_client.load_indicator_results(indicator)
         except UndefinedTable:
             return False
 
@@ -69,7 +68,15 @@ def create_indicator(
     return indicator
 
 
-def create_all_indicators(dataset: str) -> None:
+def create_all_indicators(dataset: str, force: bool = False) -> None:
+    """Create all indicator/layer combination for a dataset.
+
+    Possible indicator/layer combinations are defined in `definitions.py`.
+    """
+    if force:
+        for indicator_name, layer_name in INDICATOR_LAYER:
+            db_client.drop_result_table(dataset, indicator_name, layer_name)
+
     fids = db_client.get_fid_list(dataset)
     for feature_id in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
