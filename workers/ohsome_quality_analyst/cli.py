@@ -149,9 +149,9 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
     "--force",
     is_flag=True,
     help=(
-        "Force recreation of indicators. ",
-        "This will drop the result table in database first ",
-        "before triggering the creation of all indicators.",
+        "Force recreation of indicators. "
+        + "This will drop the result table in database first "
+        + "before triggering the creation of all indicators."
     ),
 )
 def create_all_indicators(dataset_name, force):
