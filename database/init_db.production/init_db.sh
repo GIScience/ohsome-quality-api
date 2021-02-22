@@ -1,16 +1,12 @@
 # ohsome-hex-isea.sql is not included in repository due to file size.
 # Execution time: ~ 3h (2,5h for GHS_POP)
 
-export POSTGRES_DB=
+export POSTGRES_DB=oqt
 export POSTGRES_HOST=
 export POSTGRES_PASSWORD=
 export POSTGRES_PORT=
 export POSTGRES_SCHEMA=public
-export POSTGRES_USER=
-
-# Substitude hardcoded postgres role "hexadmin" with $PGUSER
-sed -i "s/hexadmin/${PGUSER}/g" admin-schema.sql
-sed -i "s/hexadmin/${$PGUSER}/g" ohsome-hex-isea.sql
+export POSTGRES_USER=oqt
 
 psql -f admin-schema.sql
 psql -f ohsome-hex-isea.sql
