@@ -121,7 +121,7 @@ async def get_report(
         metadata = vars(indicator.metadata)
         metadata.pop("result_description", None)
         metadata.pop("label_description", None)
-        layer = (vars(indicator.layer),)
+        layer = vars(indicator.layer)
         result = vars(indicator.result)
         result["label"] = indicator.result.label
         indicator_name = name_to_lower_camel(metadata["name"])
