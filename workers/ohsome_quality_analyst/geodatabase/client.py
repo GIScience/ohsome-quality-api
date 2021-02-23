@@ -137,8 +137,8 @@ def drop_result_table(dataset_name, indicator_name, layer_name):
     """Remove indicator results from the geodatabase."""
     db = PostgresDB()
     table = get_table_name(dataset_name, indicator_name, layer_name)
-    logging.info("Dropping table '{0}'".format(table))
-    query = "DROP TABLE IF EXISTS {0}".format(table)
+    logging.info(f"Dropping table '{table}'")
+    query = sql.SQL("DROP TABLE IF EXISTS {};").format(sql.Identifier(table))
     db.query(query)
 
 

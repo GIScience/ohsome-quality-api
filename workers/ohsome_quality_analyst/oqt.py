@@ -9,7 +9,11 @@ from psycopg2.errors import UndefinedTable
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, INDICATOR_LAYER
-from ohsome_quality_analyst.utils.helper import name_to_class, validate_geojson
+from ohsome_quality_analyst.utils.helper import (
+    camel_to_snake,
+    name_to_class,
+    validate_geojson,
+)
 
 
 def create_indicator(
@@ -75,6 +79,7 @@ def create_all_indicators(dataset: str, force: bool = False) -> None:
     """
     if force:
         for indicator_name, layer_name in INDICATOR_LAYER:
+            indicator_name = camel_to_snake(indicator_name)
             db_client.drop_result_table(dataset, indicator_name, layer_name)
 
     fids = db_client.get_fid_list(dataset)
