@@ -49,8 +49,7 @@ def create_indicator(
     def from_database() -> bool:
         """Create indicator by loading existing results from database"""
         try:
-            db_client.load_indicator_results(indicator)
-            return True
+            return db_client.load_indicator_results(indicator)
         except UndefinedTable:
             return False
 
