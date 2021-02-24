@@ -463,17 +463,8 @@ function buildMap(...charts){
 		colorReport()
 
 	} ;*/
-		
-		
-		
-	document.getElementById("gP").onclick = function () {
-		colorRepoort()
 
-	} ;
-
-
-
-			//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
+	//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
 	/*We could use the usual popups on click to show information about different states, but we’ll choose a
 	different route — showing it on state hover inside a custom control.*/
 	var info = L.control();
