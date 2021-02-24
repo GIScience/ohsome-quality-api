@@ -30,7 +30,10 @@ class SketchmapFitness(BaseReport):
         values = []
         for indicator in self.indicators:
             # TODO: Is it possible that a label == UNDEFINED?
-            if indicator.result.label != "UNDEFINED":
+            if (
+                indicator.result.label != "UNDEFINED"
+                and indicator.result.label is not None
+            ):
                 values.append(indicator.result.value)
         self.result.value = mean(values)
 

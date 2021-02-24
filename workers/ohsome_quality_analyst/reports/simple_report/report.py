@@ -28,10 +28,12 @@ class SimpleReport(BaseReport):
         # get mean of indicator quality values
         values = []
         for indicator in self.indicators:
-            if indicator.result.label != "UNDEFINED":
+            if (
+                indicator.result.label != "UNDEFINED"
+                and indicator.result.label is not None
+            ):
                 values.append(indicator.result.value)
         self.result.value = mean(values)
-
         if self.result.value < 0.5:
             self.result.label = "red"
             self.result.description = self.metadata.label_description["red"]
