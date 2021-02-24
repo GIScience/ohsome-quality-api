@@ -37,8 +37,6 @@ class LastEdit(BaseIndicator):
         self.share_edited_features = None
 
     async def preprocess(self) -> Dict:
-        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
-
         if self.time_range is None:
             latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
             self.time_range = "{},{}".format(
@@ -73,8 +71,6 @@ class LastEdit(BaseIndicator):
                 )
 
     def calculate(self) -> None:
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
-
         description = Template(self.metadata.result_description).substitute(
             share=self.share_edited_features, layer_name=self.layer.name
         )
@@ -107,7 +103,6 @@ class LastEdit(BaseIndicator):
 
         Slices are ordered and plotted counter-clockwise.
         """
-        logging.info(f"Create firgure for indicator: {self.metadata.name}")
         if self.share_edited_features is None:
             return None
 
@@ -161,5 +156,5 @@ class LastEdit(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.debug("Successful SVG figure creation")
         plt.close("all")

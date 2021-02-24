@@ -42,8 +42,6 @@ class PoiDensity(BaseIndicator):
         return self.threshold_red * area
 
     async def preprocess(self):
-        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
-
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
@@ -55,8 +53,6 @@ class PoiDensity(BaseIndicator):
     def calculate(self):
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
-
         description = Template(self.metadata.result_description).substitute(
             result=f"{self.density:.2f}"
         )
@@ -136,5 +132,5 @@ class PoiDensity(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.debug("Successful SVG figure creation")
         plt.close("all")

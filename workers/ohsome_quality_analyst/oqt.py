@@ -2,6 +2,8 @@
 Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
+import logging
+
 from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
 
@@ -34,9 +36,16 @@ async def create_indicator(
     Returns:
         Indicator
     """
-    # check in bpolys are valid
+    logging.info("Creating indicator ...")
     if bpolys is not None:
+        logging.info("Indicator name:\t" + indicator_name)
+        logging.info("Layer name:\t" + layer_name)
         validate_geojson(bpolys)
+    else:
+        logging.info("Indicator name:\t" + indicator_name)
+        logging.info("Layer name:\t" + layer_name)
+        logging.info("Dataset name:\t" + dataset)
+        logging.info("Feature id:\t" + str(feature_id))
     # Support only predefined datasets.
     # Otherwise creation of arbitrary relations (tables) are possible.
     if dataset is not None and dataset not in DATASET_NAMES:
@@ -44,8 +53,11 @@ async def create_indicator(
 
     async def from_scratch():
         """Create indicatore from scratch."""
+        logging.info("Run preprocessing")
         await indicator.preprocess()
+        logging.info("Run calculation")
         indicator.calculate()
+        logging.info("Run figure creation")
         indicator.create_figure()
 
     def from_database() -> bool:
