@@ -47,8 +47,8 @@ poi:
       amenity in (fuel, pharmacy, hospital, school, college, university,
       police, fire_station, restaurant, townhall)
 
-# JRC themes:
-jrc-health:
+# ------------------- JRC themes -------------------------------------------------------------------
+jrc-health-count:
   name: JRC Healthcare Facilities
   description: |
       OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
@@ -59,7 +59,7 @@ jrc-health:
       or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
       or (healthcare=* and name=* and name!="")
 
-jrc-education:
+jrc-education-count:
   name: JRC Education Facilities
   description: |
       OSM amenities that are education facilities like college, school, kindergarten, university.
@@ -127,7 +127,7 @@ jrc-bridge-count:
   filter: |
     bridge=yes and name=* and surface=* and highway=* and highway!=""
 
-jrc-mass-gathering-sites:
+jrc-mass-gathering-sites-count:
   name: JRC Mass Gathering Sites Count
   description: |
     OpenStreetMap Mass Gathering Sites, where a lot of people could gather.
