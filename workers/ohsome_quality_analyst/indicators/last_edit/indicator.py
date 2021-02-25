@@ -65,9 +65,13 @@ class LastEdit(BaseIndicator):
 
         self.total_features = query_results_totals["result"][0]["value"]
         if self.total_features != 0 and self.total_features is not None:
-            self.share_edited_features = round(
-                (self.edited_features / self.total_features) * 100
-            )
+            if self.edited_features > self.total_features:
+                # It can happen that features are counted which has been deleted since.
+                self.share_edited_features = 100
+            else:
+                self.share_edited_features = round(
+                    (self.edited_features / self.total_features) * 100
+                )
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
