@@ -12,13 +12,13 @@ class TestGeodatabase(unittest.TestCase):
             dataset="test_regions", feature_id=2, layer_name="building_count"
         )
 
-    def test_save(self):
+    def test_1_save(self):
         self.indicator.preprocess()
         self.indicator.calculate()
         self.indicator.create_figure()
         db_client.save_indicator_results(self.indicator)
 
-    def test_load(self):
+    def test_2_load(self):
         db_client.load_indicator_results(self.indicator)
         self.assertIsNotNone(self.indicator.result.label)
         self.assertIsNotNone(self.indicator.result.value)

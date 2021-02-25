@@ -2,6 +2,7 @@
 
 ## 0.1.0
 
+- Improve docs on development setup and testing !45
 - Force recreate all indicator through CLI !38
 - Development setup of database using Docker !33 !37
 - Seperate integration tests from unit tests #116
