@@ -47,15 +47,7 @@ In addition [pre-commit](https://pre-commit.com/) is setup to run those tools pr
 
 ## Tests
 
-Please provide tests.
-
-```bash
-# Run a single test:
-python -m unittest tests/test_indicator_mapping_saturation.py
-
-# Run all test:
-python -m unittest discover
-```
+Please provide [tests](docs/development_setup.md#tests).
 
 
 ## Miscellaneous

@@ -24,7 +24,10 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 
 ## Installation
 
+
 End users should use the [website](https://oqt.ohsome.org/). Following section is for advanced usage of Ohsome Quality analysT. To setup the project for development please refer to [docs/development_setup.md](docs/development_setup.md).
+
+Python 3.8 is required.
 
 Install the ohsome_quality_analyst Python package.
 
