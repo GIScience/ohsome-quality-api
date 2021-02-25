@@ -1,6 +1,6 @@
 ![](docs/img/oqt_header.png)
 
-# Proof of Concept for Ohsome Quality Tool
+# Proof of Concept for Ohsome Quality analysT
 
 ## Vision
 
@@ -10,7 +10,7 @@ What is OQT?
 * A **web app** that builds upon the existing infrastructure, especially ohsome-hex and the ohsome dashboard
 * A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics
 
-For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/oshdb/The+ohsome+Quality+Tool).
+For more information check [Confluence](https://confluence.gistools.geog.uni-heidelberg.de/display/OQT/OpenStreetMap+Quality+AnalysT+Home).
 
 
 ## Components
@@ -22,6 +22,36 @@ For more information check [Confluence](https://confluence.gistools.geog.uni-hei
 ![](docs/img/UML-Component-Diagram.png)
 
 
+## Installation
+
+
+End users should use the [website](https://oqt.ohsome.org/). Following section is for advanced usage of Ohsome Quality analysT. To setup the project for development please refer to [docs/development_setup.md](docs/development_setup.md).
+
+Python 3.8 is required.
+
+Install the ohsome_quality_analyst Python package.
+
+```bash
+cd workers
+pip install .
+```
+
+In addition to installing the Python package, access to the PostGIS database is required. Please reach out if you need one.
+
+
+## Usage of the Command Line Interface
+
+```bash
+oqt --help
+```
+
+
 ## Contributing
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
+
+
+## Development Setup
+
+Please refer to [docs/development_setup.md](docs/development_setup.md).
+

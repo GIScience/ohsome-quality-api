@@ -64,21 +64,20 @@ class LastEdit(BaseIndicator):
             self.edited_features = 0
 
         self.total_features = query_results_totals["result"][0]["value"]
-        self.share_edited_features = (
-            round((self.edited_features / self.total_features) * 100)
-            if self.total_features != 0
-            else -1
-        )
+        if self.total_features != 0 and self.total_features is not None:
+            self.share_edited_features = round(
+                (self.edited_features / self.total_features) * 100
+            )
 
-    def calculate(self):
+    def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         description = Template(self.metadata.result_description).substitute(
             share=self.share_edited_features, layer_name=self.layer.name
         )
-        if self.share_edited_features == -1:
+        if self.total_features is None:
             label = "undefined"
-            value = -1.0
+            value = None
             description = (
                 "Since the OHSOME query returned a count of 0 for this feature "
                 "a quality estimation can not be made for this filter"
@@ -100,12 +99,14 @@ class LastEdit(BaseIndicator):
         self.result.value = value
         self.result.description = description
 
-    def create_figure(self):
+    def create_figure(self) -> None:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
         logging.info(f"Create firgure for indicator: {self.metadata.name}")
+        if self.share_edited_features is None:
+            return None
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)

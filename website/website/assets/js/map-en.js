@@ -1,3 +1,6 @@
+// all references to gP are currently outcommented.
+// they refer to the getPDF button which will be implemented later.
+
 // load geojson data, then build the map and the functionalities
 Promise.all([
 	fetch('assets/data/test_regions.geojson').then(data => data.json()),
@@ -89,7 +92,8 @@ function buildMap(...charts){
                 // Get center of bounds
                 var center = bounds.getCenter();
                 // Use center to put marker on map
-                var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+				marker.on('click', function(){layer.fire('click')})
             }
             // end add marker for test regions
 		}
@@ -273,7 +277,7 @@ function buildMap(...charts){
 
 	/**
 	 * Adds indicator by creating div on DOM dynamically based on number of Indicators present
-	 *
+	 * 
 	 * @param indicators is an array of indicator
 	 */
 	function addIndicators(indicators) {
@@ -411,18 +415,18 @@ function buildMap(...charts){
 		console.log(selectedTopic)
 		// no selection of area so set buttons to grey
 		if (areas == "country") {
-			var divGP = document.getElementById('gP');
-			divGP.style.backgroundColor = 'grey';
-			divGP.className = "btn-report2";
+			//var divGP = document.getElementById('gP');
+			//divGP.style.backgroundColor = 'grey';
+			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 			div.style.backgroundColor = 'grey';
 		}
 	    // no selection of topic so set buttons to grey
 		if (selectedTopic == "Topic") {
 			console.log("imhere")
-			var divGP = document.getElementById('gP');
-			divGP.style.backgroundColor = 'grey';
-			divGP.className = "btn-report2";
+			//var divGP = document.getElementById('gP');
+			//divGP.style.backgroundColor = 'grey';
+			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 			div.style.backgroundColor = 'grey';
 		}
@@ -435,14 +439,15 @@ function buildMap(...charts){
 	// #################    PDF button #############
 	function changeColor() {
 		var ifQ = document.getElementById("gQ").className
-		var divGP = document.getElementById('gP');
+		//var divGP = document.getElementById('gP');
 		if (ifQ == "btn-submit") {
+			
+			//divGP.style.backgroundColor = '#535C69';
+			//divGP.className = "btn-report";
 
-			divGP.style.backgroundColor = '#535C69';
-			divGP.className = "btn-report";
 		}
 	}
-	function colorRepoort() {
+	/*function colorReport() {
 		var ifQ = document.getElementById("gQ").className
 		var divGP = document.getElementById('gP');
 
@@ -455,13 +460,11 @@ function buildMap(...charts){
 		}
 	}
 	document.getElementById("gP").onclick = function () {
-		colorRepoort()
+		colorReport()
 
-	} ;
+	} ;*/
 
-
-
-			//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
+	//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
 	/*We could use the usual popups on click to show information about different states, but we’ll choose a
 	different route — showing it on state hover inside a custom control.*/
 	var info = L.control();

@@ -133,6 +133,15 @@ def save_indicator_results(indicator) -> None:
     )
 
 
+def drop_result_table(dataset_name, indicator_name, layer_name):
+    """Remove indicator results from the geodatabase."""
+    db = PostgresDB()
+    table = get_table_name(dataset_name, indicator_name, layer_name)
+    logging.info(f"Dropping table '{table}'")
+    query = sql.SQL("DROP TABLE IF EXISTS {};").format(sql.Identifier(table))
+    db.query(query)
+
+
 def load_indicator_results(indicator) -> bool:
     """Get the indicator result from the geodatabase.
 
@@ -204,10 +213,15 @@ def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
         polygon = json.dumps(feature["geometry"])
         fid = feature["properties"][fid_key]
         exe = sql.SQL(
-            """INSERT INTO {table} (fid, geom)
-                          VALUES (%(fid)s , st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s)), 4326)
-                          ON CONFLICT (fid) DO UPDATE
-                          SET geom = excluded.geom;;"""
+            """
+        INSERT INTO {table} (fid, geom)
+            VALUES (
+                %(fid)s,
+                st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s), 4326)
+                )
+            ON CONFLICT (fid)
+                DO UPDATE SET geom = excluded.geom;
+        """
         ).format(table=sql.Identifier(dataset))
         db.query(exe, {"fid": fid, "polygon": polygon})
 
@@ -368,7 +382,10 @@ def get_area_of_bpolys(bpolys: Dict):
         """
         SELECT
             public.ST_Area(
-                st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography, 4326)
+                st_setsrid(
+                    public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography,
+                    4326
+                    )
             ) / (1000*1000) as area_sqkm
         """
     )

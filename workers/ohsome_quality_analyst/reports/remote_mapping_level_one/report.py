@@ -23,7 +23,7 @@ class RemoteMappingLevelOne(BaseReport):
             # IndicatorLayer("GufComparison"], "building_area"),
             IndicatorLayer("MappingSaturation", "building_count"),
             IndicatorLayer("MappingSaturation", "major_roads"),
-            IndicatorLayer("GhsPopComparison", "building_count"),
+            # IndicatorLayer("GhsPopComparison", "building_count"),
             IndicatorLayer("LastEdit", "building_count"),
             IndicatorLayer("LastEdit", "major_roads"),
         )
@@ -34,7 +34,10 @@ class RemoteMappingLevelOne(BaseReport):
         values = []
         for indicator in self.indicators:
             # TODO: Is it possible that a label == UNDEFINED?
-            if indicator.result.label != "UNDEFINED":
+            if (
+                indicator.result.label != "UNDEFINED"
+                and indicator.result.label is not None
+            ):
                 values.append(indicator.result.value)
         self.result.value = mean(values)
 

@@ -53,10 +53,7 @@ dataset_name_opt = [
             DATASET_NAMES,
             case_sensitive=True,
         ),
-        help=(
-            "Choose a dataset containing geometries, "
-            + " valid area datasets are specified in definitions.py ."
-        ),
+        help=("Choose a dataset containing geometries."),
         default=None,
     )
 ]
