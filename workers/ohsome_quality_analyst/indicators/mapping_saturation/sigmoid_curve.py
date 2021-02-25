@@ -73,227 +73,6 @@ class sigmoidCurve:
             ystart = np.interp(xmids[0] - 0.5, xdata, ydata)
         return ystart
 
-    def getSlopeAndHandleZeros(self, value1, value2) -> float:
-        if value1 == 0 or value2 == 0:
-            return 1
-        else:
-            return 1 - (value1 / value2)
-
-    def nanToZero(self, value1) -> float:
-        if math.isnan(value1):
-            return 0
-        else:
-            return value1
-
-    def calculateCurveParams(self, initParamsY, xvalues, yvalues):
-        incoms = [incom for incom in initParamsY if str(incom) != "nan"]
-        if len(incoms) == 2:
-            L = round(self.nanToZero(initParamsY[0]))
-            initParamsX = self.sortInits2curves(xvalues, yvalues)[0]
-            x1 = round(self.nanToZero(initParamsX[0]))
-            x2 = round(self.nanToZero(initParamsX[1]))
-            # get initial slopes for the curve with 2 jumps
-
-            ystart2 = self.sortInits2curves(xvalues, yvalues)[3]
-            k1 = self.getSlopeAndHandleZeros(ystart2, initParamsY[0])
-            k2 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
-            # get the max y value
-
-            yMax = self.sortInits2curves(xvalues, yvalues)[2]
-            # mse for logistic2
-            yPred2 = self.logistic2(x1, x2, L, yMax, k1, k2, xvalues)
-            err2 = np.sum((yPred2 - yvalues) ** 2) / len(yPred2)
-            params = [x1, x2, L, yMax, k1, k2]
-            return err2, params
-        if len(incoms) == 3:
-            L3 = round(self.nanToZero(initParamsY[0]))
-            L23 = round(self.nanToZero(initParamsY[1]))
-            # get initial xmids for the curve with 3
-            initParamsX3 = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor3JumpsCurve
-            )[0]
-
-            x13 = round(self.nanToZero(initParamsX3[0]))
-            x23 = round(self.nanToZero(initParamsX3[1]))
-            x33 = round(self.nanToZero(initParamsX3[2]))
-            # get initial slopes for the curves with 3
-            ystart3 = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor3JumpsCurve
-            )[3]
-
-            k313 = self.getSlopeAndHandleZeros(ystart3, initParamsY[0])
-            k323 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
-            k333 = self.getSlopeAndHandleZeros(initParamsY[1], initParamsY[2])
-            # get the max y value
-            yMax = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor3JumpsCurve
-            )[2]
-            # mse for logistic3
-            yPred3 = self.logistic3(
-                x13, x23, x33, L3, L23, yMax, k313, k323, k333, xvalues
-            )
-            err3 = np.sum((yPred3 - yvalues) ** 2) / len(yPred3)
-            params = [x13, x23, x33, L3, L23, yMax, k313, k323, k333]
-            return err3, params
-        if len(incoms) == 4:
-            L41 = round(self.nanToZero(initParamsY[0]))
-            L42 = round(self.nanToZero(initParamsY[1]))
-            L43 = round(self.nanToZero(initParamsY[2]))
-            # get initial xmids for the curve with 4 jumps
-            initParamsX4 = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor4JumpsCurve
-            )[0]
-            x41 = round(self.nanToZero(initParamsX4[0]))
-            x42 = round(self.nanToZero(initParamsX4[1]))
-            x43 = round(self.nanToZero(initParamsX4[2]))
-            x44 = round(self.nanToZero(initParamsX4[3]))
-            # get initial slopes for the curves with 4 jumps
-            ystart4 = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor4JumpsCurve
-            )[3]
-            k41 = self.getSlopeAndHandleZeros(ystart4, initParamsY[0])
-            k42 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
-            k43 = self.getSlopeAndHandleZeros(initParamsY[1], initParamsY[2])
-            k44 = self.getSlopeAndHandleZeros(initParamsY[2], initParamsY[3])
-            # get the max y value
-            yMax = self.sortInits3curves(
-                xvalues, yvalues, self.initparamsFor4JumpsCurve
-            )[2]
-            # mse for logistic4
-            yPred4 = self.logistic4(
-                x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44, xvalues
-            )
-
-            err4 = np.sum((yPred4 - yvalues) ** 2) / len(yPred4)
-            params = [x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44]
-            return err4, params
-        if len(incoms) == 5:
-            # get initial y values for the curve with 5 jumps
-            L51 = round(self.nanToZero(initParamsY[0]))
-            L52 = round(self.nanToZero(initParamsY[1]))
-            L53 = round(self.nanToZero(initParamsY[2]))
-            L54 = round(self.nanToZero(initParamsY[3]))
-            # get initial xmids for the curve with 5 jumps
-            initParamsX5 = self.sortInits5curves(xvalues, yvalues)[0]
-            x513 = round(self.nanToZero(initParamsX5[0]))
-            x523 = round(self.nanToZero(initParamsX5[1]))
-            x533 = round(self.nanToZero(initParamsX5[2]))
-            x54 = round(self.nanToZero(initParamsX5[3]))
-            x55 = round(self.nanToZero(initParamsX5[4]))
-            # get initial slopes for the curve with 5 jumps
-            ystart5 = self.sortInits5curves(xvalues, yvalues)[3]
-
-            k13 = self.getSlopeAndHandleZeros(ystart5, initParamsY[0])
-            k23 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
-            k33 = self.getSlopeAndHandleZeros(initParamsY[1], initParamsY[2])
-            k4 = self.getSlopeAndHandleZeros(initParamsY[2], initParamsY[3])
-            k5 = self.getSlopeAndHandleZeros(initParamsY[3], initParamsY[4])
-            # --- select best fitting curve, with mean_square_error ---
-            # get the max y value
-            yMax = self.sortInits5curves(xvalues, yvalues)[2]
-            # mse for logistic5
-            yPred5 = self.logistic5(
-                x513,
-                x523,
-                x533,
-                x54,
-                x55,
-                L51,
-                L52,
-                L53,
-                L54,
-                yMax,
-                k13,
-                k23,
-                k33,
-                k4,
-                k5,
-                xvalues,
-            )
-            err5 = np.sum((yPred5 - yvalues) ** 2) / len(yPred5)
-            params = [
-                x513,
-                x523,
-                x533,
-                x54,
-                x55,
-                L51,
-                L52,
-                L53,
-                L54,
-                yMax,
-                k13,
-                k23,
-                k33,
-                k4,
-                k5,
-            ]
-            return err5, params
-
-    def calculateCurve(self, params, xvalues):
-        if len(params) == 6:
-            yDataForSat = self.logistic2(
-                params[0],
-                params[1],
-                params[2],
-                params[3],
-                params[4],
-                params[5],
-                xvalues,
-            )
-            return yDataForSat
-        if len(params) == 9:
-            yDataForSat = self.logistic3(
-                params[0],
-                params[1],
-                params[2],
-                params[3],
-                params[4],
-                params[5],
-                params[6],
-                params[7],
-                params[8],
-                xvalues,
-            )
-            return yDataForSat
-        if len(params) == 12:
-            yDataForSat = self.logistic4(
-                params[0],
-                params[1],
-                params[2],
-                params[3],
-                params[4],
-                params[5],
-                params[6],
-                params[7],
-                params[8],
-                params[9],
-                params[10],
-                params[11],
-                xvalues,
-            )
-            return yDataForSat
-        if len(params) == 15:
-            yDataForSat = self.logistic5(
-                params[0],
-                params[1],
-                params[2],
-                params[3],
-                params[4],
-                params[5],
-                params[6],
-                params[7],
-                params[8],
-                params[9],
-                params[10],
-                params[11],
-                params[12],
-                params[13],
-                params[14],
-                xvalues,
-            )
-            return yDataForSat
-
     # sigmoid curve functions inspired by Sven Lautenbach
     # simple logistic curve
     def logistic1(self, xmid, ymax, slope, x) -> float:
@@ -413,21 +192,16 @@ class sigmoidCurve:
     # don't know why, result of initparamsFor2JumpsCurve() is not sorted
     def sortInits2curves(self, xdata, ydata) -> tuple:
         inits = self.initparamsFor2JumpsCurve(xdata, ydata)
-
         lx = []
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
                 lx.append(j)
         # list of x values of mid points of the curves
         xmids = sorted(lx)
-        for i, j in enumerate(xmids):
-            if str(j) == "nan":
-                xmids[i] = xmids[i - 1]
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(xmids, xdata, ydata)
         # highest y value
         ymax = inits[3]
-
         # y value at the beginning of data history
         ystart = self.getYatCurveStart(xmids, xdata, ydata)
         return xmids, yValsAtPlateaus, ymax, ystart
@@ -549,10 +323,6 @@ class sigmoidCurve:
                 lx.append(j)
         # list of x values of mid points of the curves
         x = sorted(lx)
-        for i, j in enumerate(x):
-            if str(j) == "nan":
-                x[i] = x[i - 1]
-
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
         # highest y value
@@ -905,9 +675,6 @@ class sigmoidCurve:
                 lx.append(j)
         # list of x values of mid points of the curves
         x = sorted(lx)
-        for i, j in enumerate(x):
-            if str(j) == "nan":
-                x[i] = x[i - 1]
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
         # y value at the beginning of data history
@@ -950,105 +717,177 @@ class sigmoidCurve:
             "logistic5",
         ]
         # get init params for sigmoid curve with 2 jumps
+        sigmoid_curve = sigmoidCurve()
         # initial values for the single sigmoid curve
-        initParamsSingle = self.initparamsingle(df1.li, df1.yValues)
-        errorsListSingle = []
+        initParamsSingle = sigmoid_curve.initparamsingle(df1.li, df1.yValues)
         if not math.isnan(initParamsSingle[3]):
-            inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
-                # get possible xmids
-                xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
-                # check for the xmids the mse error
-                for i, xval in enumerate(xmidvalues):
-                    yPredX = self.logistic1(
-                        xval, initParamsSingle[3], initParamsSingle[1], df1.li
-                    )
-                    errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
-                    errorsListSingle.append(errX)
-                # choose the initial x value with min mse
-                minX = min(errorsListSingle)
-                prefX = xmidvalues[errorsListSingle.index(minX)]
-                # mse for logistic1
-                # with k as 10.0 / (maxx - minx) from initparamsingle()
-                yPredPref = self.logistic1(
-                    prefX, initParamsSingle[3], initParamsSingle[1], df1.li
-                )
-                err1 = np.sum((yPredPref - df1.yValues) ** 2) / len(yPredPref)
-                errorslist.append(err1)
-                errorslistFuncs.append("logistic1")
-            else:
-                prefX = initParamsSingle[4]
-                yPredX = self.logistic1(
-                    prefX, initParamsSingle[3], initParamsSingle[1], df1.li
+            # get possible xmids
+            xmidvalues = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
+            errorsListSingle = []
+            # check for the xmids the mse error
+            for i, xval in enumerate(xmidvalues):
+                yPredX = sigmoid_curve.logistic1(
+                    xval, initParamsSingle[3], initParamsSingle[1], df1.li
                 )
                 errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
-                errorslist.append(errX)
-                errorslistFuncs.append("logistic1")
-
+                errorsListSingle.append(errX)
+            # choose the initial x value with min mse
+            minX = min(errorsListSingle)
+            prefX = xmidvalues[errorsListSingle.index(minX)]
+            # mse for logistic1
+            # with k as 10.0 / (maxx - minx) from initparamsingle()
+            yPredPref = sigmoid_curve.logistic1(
+                prefX, initParamsSingle[3], initParamsSingle[1], df1.li
+            )
+            err1 = np.sum((yPredPref - df1.yValues) ** 2) / len(yPredPref)
+            errorslist.append(err1)
+            errorslistFuncs.append("logistic1")
         # initial values for the single sigmoid curve with a different slope
-        initParamsSingleB = self.initparamsingleB(df1.li, df1.yValues)
+        initParamsSingleB = sigmoid_curve.initparamsingleB(df1.li, df1.yValues)
         if not math.isnan(initParamsSingleB[3]):
+            # get possible xmids
+            xmidvalues = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
             errorsListSingle = []
-            inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
-                # get possible xmids
-                xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
-                # incoms = [incom for incom in xmidvalues if str(incom) != 'nan']
-                # xmidvalues = incoms
-                # check for the xmids the mse error
-                for i, xval in enumerate(xmidvalues):
-                    yPredX = self.logistic1(
-                        xval, initParamsSingleB[3], initParamsSingleB[1], df1.li
-                    )
-                    errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
-                    errorsListSingle.append(errX)
-                # choose the initial x value with min mse
-                minX = min(errorsListSingle)
-                prefX = xmidvalues[errorsListSingle.index(minX)]
-                # mse for logistic1 with
-                # k as 10.0 / (max(xdata) - min(xdata)) from initparamsingleB()
-                yPredB = self.logistic1(
-                    prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
+            # check for the xmids the mse error
+            for i, xval in enumerate(xmidvalues):
+                yPredX = sigmoid_curve.logistic1(
+                    xval, initParamsSingle[3], initParamsSingle[1], df1.li
                 )
-                err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
-                errorslist.append(err1B)
-                errorslistFuncs.append("logistic1B")
-            else:
-                prefX = initParamsSingleB[4]
-                yPredXB = self.logistic1(
-                    prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
-                )
-                errXB = np.sum((yPredXB - df1.yValues) ** 2) / len(yPredXB)
-                errorslist.append(errXB)
-                errorslistFuncs.append("logistic1B")
+                errX = np.sum((yPredX - df1.yValues) ** 2) / len(yPredX)
+                errorsListSingle.append(errX)
+            # choose the initial x value with min mse
+            minX = min(errorsListSingle)
+            prefX = xmidvalues[errorsListSingle.index(minX)]
+            # mse for logistic1 with
+            # k as 10.0 / (max(xdata) - min(xdata)) from initparamsingleB()
+            yPredB = sigmoid_curve.logistic1(
+                prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
+            )
+            err1B = np.sum((yPredB - df1.yValues) ** 2) / len(yPredB)
+            errorslist.append(err1B)
+            errorslistFuncs.append("logistic1B")
         # initial values for the sigmoid function with 2 jumps
-        initParamsY = self.sortInits2curves(df1.li, df1.yValues)[1]
+        initParamsY = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[1]
         if not math.isnan(initParamsY[0]):
-            err2 = self.calculateCurveParams(initParamsY, df1.li, df1.yValues)[0]
+            L = round(initParamsY[0])
+            initParamsX = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[0]
+            x1 = round(initParamsX[0])
+            x2 = round(initParamsX[1])
+            # get initial slopes for the curve with 2 jumps
+            ystart2 = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[3]
+            k1 = 1 - (ystart2 / initParamsY[0])
+            k2 = 1 - (initParamsY[0] / initParamsY[1])
+            # get the max y value
+            yMax = sigmoid_curve.sortInits2curves(df1.li, df1.yValues)[2]
+            # mse for logistic2
+            yPred2 = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
+            err2 = np.sum((yPred2 - df1.yValues) ** 2) / len(yPred2)
             errorslist.append(err2)
             errorslistFuncs.append("logistic2")
         # --- sigmoid function with 3  jumps---
         # get initial y values for the curve with 3
-        initParamsY3 = self.sortInits3curves(
+        initParamsY3 = sigmoid_curve.sortInits3curves(
             df1.li, df1.yValues, self.initparamsFor3JumpsCurve
         )[1]
         if not math.isnan(initParamsY3[0]):
-            err3 = self.calculateCurveParams(initParamsY3, df1.li, df1.yValues)[0]
+            L3 = round(initParamsY3[0])
+            L23 = round(initParamsY3[1])
+            # get initial xmids for the curve with 3
+            initParamsX3 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor3JumpsCurve
+            )[0]
+            x13 = round(initParamsX3[0])
+            x23 = round(initParamsX3[1])
+            x33 = round(initParamsX3[2])
+            # get initial slopes for the curves with 3
+            ystart3 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor3JumpsCurve
+            )[3]
+            k313 = 1 - (ystart3 / initParamsY3[0])
+            k323 = 1 - (initParamsY3[0] / initParamsY3[1])
+            k333 = 1 - (initParamsY3[1] / initParamsY3[2])
+            # mse for logistic3
+            yPred3 = sigmoid_curve.logistic3(
+                x13, x23, x33, L3, L23, yMax, k313, k323, k333, df1.li
+            )
+            err3 = np.sum((yPred3 - df1.yValues) ** 2) / len(yPred3)
             errorslist.append(err3)
             errorslistFuncs.append("logistic3")
         # --- sigmoid function with 4 jumps ---
         # get initial y values for the curve with 4 jumps
-        initParamsY4 = self.sortInits3curves(
+        initParamsY4 = sigmoid_curve.sortInits3curves(
             df1.li, df1.yValues, self.initparamsFor4JumpsCurve
         )[1]
         if not math.isnan(initParamsY4[0]):
-            err4 = self.calculateCurveParams(initParamsY4, df1.li, df1.yValues)[0]
+            L41 = round(initParamsY4[0])
+            L42 = round(initParamsY4[1])
+            L43 = round(initParamsY4[2])
+            # get initial xmids for the curve with 4 jumps
+            initParamsX4 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor4JumpsCurve
+            )[0]
+            x41 = round(initParamsX4[0])
+            x42 = round(initParamsX4[1])
+            x43 = round(initParamsX4[2])
+            x44 = round(initParamsX4[3])
+            # get initial slopes for the curves with 4 jumps
+            ystart4 = sigmoid_curve.sortInits3curves(
+                df1.li, df1.yValues, self.initparamsFor4JumpsCurve
+            )[3]
+            k41 = 1 - (ystart4 / initParamsY4[0])
+            k42 = 1 - (initParamsY4[0] / initParamsY4[1])
+            k43 = 1 - (initParamsY4[1] / initParamsY4[2])
+            k44 = 1 - (initParamsY4[2] / initParamsY4[3])
+            # mse for logistic4
+            yPred4 = sigmoid_curve.logistic4(
+                x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44, df1.li
+            )
+            err4 = np.sum((yPred4 - df1.yValues) ** 2) / len(yPred4)
             errorslist.append(err4)
             errorslistFuncs.append("logistic4")
         # --- sigmoid function with 5 jumps ---
-        initParamsY5 = self.sortInits5curves(df1.li, df1.yValues)[1]
+        initParamsY5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[1]
         if not math.isnan(initParamsY5[0]):
-            err5 = self.calculateCurveParams(initParamsY5, df1.li, df1.yValues)[0]
+            # get initial y values for the curve with 5 jumps
+            L51 = round(initParamsY5[0])
+            L52 = round(initParamsY5[1])
+            L53 = round(initParamsY5[2])
+            L54 = round(initParamsY5[3])
+            # get initial xmids for the curve with 5 jumps
+            initParamsX5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[0]
+            x513 = round(initParamsX5[0])
+            x523 = round(initParamsX5[1])
+            x533 = round(initParamsX5[2])
+            x54 = round(initParamsX5[3])
+            x55 = round(initParamsX5[4])
+            # get initial slopes for the curve with 5 jumps
+            ystart5 = sigmoid_curve.sortInits5curves(df1.li, df1.yValues)[3]
+            k13 = 1 - (ystart5 / initParamsY5[0])
+            k23 = 1 - (initParamsY5[0] / initParamsY5[1])
+            k33 = 1 - (initParamsY5[1] / initParamsY5[2])
+            k4 = 1 - (initParamsY5[2] / initParamsY5[3])
+            k5 = 1 - (initParamsY5[3] / initParamsY5[4])
+            # --- select best fitting curve, with mean_square_error ---
+            # mse for logistic5
+            yPred5 = sigmoid_curve.logistic5(
+                x513,
+                x523,
+                x533,
+                x54,
+                x55,
+                L51,
+                L52,
+                L53,
+                L54,
+                yMax,
+                k13,
+                k23,
+                k33,
+                k4,
+                k5,
+                df1.li,
+            )
+            err5 = np.sum((yPred5 - df1.yValues) ** 2) / len(yPred5)
             errorslist.append(err5)
             errorslistFuncs.append("logistic5")
         if len(errorslist) > 0:
@@ -1058,33 +897,54 @@ class sigmoidCurve:
             # depending on best fitted curve calculate ydata with
             # correct function
             if bestfit == "logistic2":
-                params2curves = self.calculateCurveParams(
-                    initParamsY, df1.li, df1.yValues
-                )[1]
-                ydataForSat = self.calculateCurve(params2curves, df1.li)
+                ydataForSat = sigmoid_curve.logistic2(x1, x2, L, yMax, k1, k2, df1.li)
             elif bestfit == "logistic1":
-                ydataForSat = self.logistic1(
+                ydataForSat = sigmoid_curve.logistic1(
                     prefX, initParamsSingle[3], initParamsSingle[1], df1.li
                 )
             elif bestfit == "logistic1B":
-                ydataForSat = self.logistic1(
+                ydataForSat = sigmoid_curve.logistic1(
                     prefX, initParamsSingleB[3], initParamsSingleB[1], df1.li
                 )
             elif bestfit == "logistic3":
-                params3curves = self.calculateCurveParams(
-                    initParamsY3, df1.li, df1.yValues
-                )[1]
-                ydataForSat = self.calculateCurve(params3curves, df1.li)
+                ydataForSat = sigmoid_curve.logistic3(
+                    x13, x23, x33, L3, L23, yMax, k313, k323, k333, df1.li
+                )
             elif bestfit == "logistic4":
-                params4curves = self.calculateCurveParams(
-                    initParamsY4, df1.li, df1.yValues
-                )[1]
-                ydataForSat = self.calculateCurve(params4curves, df1.li)
+                ydataForSat = sigmoid_curve.logistic4(
+                    x41,
+                    x42,
+                    x43,
+                    x44,
+                    L41,
+                    L42,
+                    L43,
+                    yMax,
+                    k41,
+                    k42,
+                    k43,
+                    k44,
+                    df1.li,
+                )
             elif bestfit == "logistic5":
-                params5curves = self.calculateCurveParams(
-                    initParamsY5, df1.li, df1.yValues
-                )[1]
-                ydataForSat = self.calculateCurve(params5curves, df1.li)
+                ydataForSat = sigmoid_curve.logistic5(
+                    x513,
+                    x523,
+                    x533,
+                    x54,
+                    x55,
+                    L51,
+                    L52,
+                    L53,
+                    L54,
+                    yMax,
+                    k13,
+                    k23,
+                    k33,
+                    k4,
+                    k5,
+                    df1.li,
+                )
             return ydataForSat
         else:
             # no curve could be calculated
