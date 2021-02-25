@@ -87,12 +87,6 @@ class sigmoidCurve:
 
     def calculateCurveParams(self, initParamsY, xvalues, yvalues):
         incoms = [incom for incom in initParamsY if str(incom) != "nan"]
-        """incoms = []
-        for val in initParamsY:
-            if str(val) != 'nan':
-                incoms.append(val)
-            else:
-                incoms.append(0)"""
         if len(incoms) == 2:
             L = round(self.nanToZero(initParamsY[0]))
             initParamsX = self.sortInits2curves(xvalues, yvalues)[0]
