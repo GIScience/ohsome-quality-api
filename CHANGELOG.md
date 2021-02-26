@@ -2,6 +2,7 @@
 
 ## 0.1.0
 
+- Fix handling of NaN value errors in mapping saturation indicator !48
 - Fix response to be initialized for every request !47
 - Improve docs on development setup and testing !45
 - Force recreate all indicator through CLI !38

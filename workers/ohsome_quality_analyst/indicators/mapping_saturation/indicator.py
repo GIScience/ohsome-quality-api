@@ -77,9 +77,7 @@ class MappingSaturation(BaseIndicator):
 
         logging.info(f"run calculation for : {self.metadata.name}")
 
-        description = Template(self.metadata.result_description).substitute(
-            saturation=round(self.saturation, 3), growth=round(self.growth, 3)
-        )
+        description = ""
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
         if self.preprocessing_results["results"] == -1:
@@ -134,11 +132,14 @@ class MappingSaturation(BaseIndicator):
             would be red, but its all mapped...
             """
             # calculate/define traffic light value and label
-            if max(df1.yValues) <= 20:
+            if max(df1.yValues) <= 2:
+                # for jrc-health the value 20 from building-counts
+                # and major-roads is not good
                 # start stadium
                 label = "red"
                 value = 0.0
                 description += self.metadata.label_description["red"]
+                self.saturation = 0
             else:
                 # calculate slope/growth of last 3 years
                 # take value in -36. month and value in -1. month of data
@@ -180,7 +181,7 @@ class MappingSaturation(BaseIndicator):
                 f" value: {value}, description: {description}"
             )
         else:
-            # deletion of all data
+            # no data / deletion of all data
             label = "undefined"
             value = -1
             description += self.metadata.label_description["undefined"]
@@ -207,6 +208,7 @@ class MappingSaturation(BaseIndicator):
         # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
         ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
+
         # prepare plot
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
@@ -229,12 +231,26 @@ class MappingSaturation(BaseIndicator):
             ax.set_title("Saturation level of the data")
             # plot sigmoid curve
             ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
+        elif self.preprocessing_results["results"] == -1:
+            # start stadium
+            # "No mapping has happened in this region. "
+            plt.title(
+                "No Sigmoid curve could be fitted into the data"
+                + "\nNo mapping has happened in this region."
+            )
+        elif self.preprocessing_results["results"] == -2:
+            # deletion of all data
+            # "Mapping has happened in this region but data were deleted."
+            plt.title(
+                "No Sigmoid curve could be fitted into the data"
+                + "\nMapping has happened but data were deleted."
+            )
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
         ax.legend(loc="upper left")
-
+        fig.tight_layout()
         img_data = StringIO()
-        plt.savefig(img_data, format="svg")
+        plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
