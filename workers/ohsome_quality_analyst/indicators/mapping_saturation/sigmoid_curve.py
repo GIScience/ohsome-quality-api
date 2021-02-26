@@ -12,6 +12,10 @@ class sigmoidCurve:
     # get the y values where one curve ends and the next begins,
     # there where the data show sth like a plateau
     def getYvaluesAtPlateaus(self, x, xdata, ydata) -> list:
+        """
+        et the y values where one curve ends and the next begins,
+        there where the data show sth like a plateau
+        """
         yValsAtPlateaus = []
         # x = list of xmid values
         for i, xVal in enumerate(x):
@@ -55,6 +59,9 @@ class sigmoidCurve:
 
     # get the y value at the beginning of the curve, but not 0
     def getYatCurveStart(self, xmids, xdata, ydata) -> float:
+        """
+        get the y value at the beginning of the curve, but not 0
+        """
         # check the distance between first xmid and x=0
         # and define a x value in between to get a
         # start y value!=0
@@ -76,6 +83,10 @@ class sigmoidCurve:
     # if one of the values to calculate the slope for the curve
     # is 0, 1 should be returned
     def getSlopeAndHandleZeros(self, value1, value2) -> float:
+        """
+        if one of the values to calculate the slope for the curve
+        is 0, 1 should be returned
+        """
         if value1 == 0 or value2 == 0:
             return 1
         else:
@@ -93,6 +104,17 @@ class sigmoidCurve:
     # for 5 curves were calculated but nan was deleted, curve params
     # for 4 jumps will then be chosen
     def calculateCurveParams(self, initParamsY, xvalues, yvalues):
+        """
+        function that calculates the curve params (not single sigmoid
+        curve) after eliminating
+        nan values in initparams, so it might be, that if initparams
+        for 5 curves were calculated but nan was deleted, curve params
+        for 4 jumps will then be chosen
+        """
+        # ToDo assuming if in y list is a nan value, in the x
+        #  list at the same place are nan values,
+        #  what if this is not true? are the corresponding
+        #  y and x values taken for curve calculation?
         incoms = [incom for incom in initParamsY if str(incom) != "nan"]
         if len(incoms) == 2:
             L = round(self.nanToZero(initParamsY[0]))
@@ -234,6 +256,10 @@ class sigmoidCurve:
     # depending on length of curve params, calculate
     # the sigmoid curve
     def calculateCurve(self, params, xvalues):
+        """
+        depending on length of curve params, calculate
+        he sigmoid curve
+        """
         if len(params) == 6:
             yDataForSat = self.logistic2(
                 params[0],
@@ -306,8 +332,13 @@ class sigmoidCurve:
         # xmid: x value of midpoint of sigmoid curve
         return ymax / (1 + np.exp(slope * (xmid - x)))
 
-    # init params for single curve returns x0, k,miny,maxy, xjump1,dy1
+    # init params for single curve returns x0, k,
+    # miny, maxy, xjump1,dy1
     def initparamsingle(self, xdata, ydata) -> list:
+        """
+        Init params for single curve. Min x and max x are
+        calculated a bit different to initparamsingleB()
+        """
         # Find the steepest single step
         dydata = ydata - ydata.shift(1)
         if len(dydata[dydata > 0]) < 4:
@@ -328,6 +359,9 @@ class sigmoidCurve:
 
     # init params for single curve returns x0, k,miny,maxy, xjump1,dy1
     def initparamsingleB(self, xdata, ydata) -> list:
+        """
+        Init params for single curve
+        """
         # Find the steepest single step
         dydata = ydata - ydata.shift(1)
         if len(dydata[dydata > 0]) < 4:
@@ -356,6 +390,10 @@ class sigmoidCurve:
     # find initial values for the double curve
     # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
     def initparamsFor2JumpsCurve(self, xdata, ydata) -> list:
+        """
+        find initial values for the double curve
+        taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
+        """
         # Find the steepest single step
         # Careful... I'm making use of Pandas properties,
         # but xdata could be just a vector, rather than a pd.Series
@@ -415,17 +453,19 @@ class sigmoidCurve:
 
     # don't know why, result of initparamsFor2JumpsCurve() is not sorted
     def sortInits2curves(self, xdata, ydata) -> tuple:
+        """
+        Sort values that initparamsFor2JumpsCurve() returns,
+        sort the x values with corresponding  y values
+        """
         inits = self.initparamsFor2JumpsCurve(xdata, ydata)
-
+        # ToDo currrently sorted by size, what if curve
+        #  decreases and so the max x is not the last x?
         lx = []
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
                 lx.append(j)
         # list of x values of mid points of the curves
         xmids = sorted(lx)
-        for i, j in enumerate(xmids):
-            if str(j) == "nan":
-                xmids[i] = xmids[i - 1]
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(xmids, xdata, ydata)
         # highest y value
@@ -545,6 +585,11 @@ class sigmoidCurve:
     # don't know why, result of
     # initparamsFor3JumpsCurve() is not sorted
     def sortInits3curves(self, xdata, ydata, func) -> tuple:
+        """
+        Function to sort initparams from initparamsFor3JumpsCurve()
+        or initparamsFor4JumpsCurve(), so far could not see
+        differences in the values returned by these 2 functions
+        """
         inits = func(xdata, ydata)
         lx = []
         for i, j in enumerate(inits):
@@ -552,10 +597,6 @@ class sigmoidCurve:
                 lx.append(j)
         # list of x values of mid points of the curves
         x = sorted(lx)
-        for i, j in enumerate(x):
-            if str(j) == "nan":
-                x[i] = x[i - 1]
-
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
         # highest y value
@@ -908,9 +949,6 @@ class sigmoidCurve:
                 lx.append(j)
         # list of x values of mid points of the curves
         x = sorted(lx)
-        for i, j in enumerate(x):
-            if str(j) == "nan":
-                x[i] = x[i - 1]
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
         # y value at the beginning of data history
@@ -952,7 +990,6 @@ class sigmoidCurve:
             "logistic4",
             "logistic5",
         ]
-        # get init params for sigmoid curve with 2 jumps
         # initial values for the single sigmoid curve
         initParamsSingle = self.initparamsingle(df1.li, df1.yValues)
         errorsListSingle = []
