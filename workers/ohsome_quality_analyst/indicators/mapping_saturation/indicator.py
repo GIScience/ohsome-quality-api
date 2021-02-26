@@ -257,7 +257,7 @@ class MappingSaturation(BaseIndicator):
         ax.legend(loc="upper left")
         fig.tight_layout()
         img_data = StringIO()
-        plt.savefig(img_data, format="svg")
+        plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
