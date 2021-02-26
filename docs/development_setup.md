@@ -114,3 +114,20 @@ Unit tests should run without having access to the database or services the inte
 cd workers/
 pytest tests
 ```
+
+
+### Logging
+
+Logging is enabled by default.
+
+`ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
+The module is configured in `definitions.py`.  Both entry-points to `ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration function defined in `definitions.py`.
+The default log level is `INFO`. This can be overwritten by setting the environment variable `OQT_LOG_LEVEL`.
+
+**Usage:**
+
+```python
+import logging
+
+logging.info("Logging message")
+```
