@@ -231,29 +231,22 @@ class MappingSaturation(BaseIndicator):
             ax.set_title("Saturation level of the data")
             # plot sigmoid curve
             ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
-
         elif self.preprocessing_results["results"] == -1:
             # start stadium
             # "No mapping has happened in this region. "
             plt.title(
-                "No Sigmoid curve could be fitted "
-                + "\n"
-                + "into the data"
-                + "\n"
-                + "No mapping has happened in this region."
+                "No Sigmoid curve could be fitted into the data"
+                + "\nNo mapping has happened in this region."
             )
         elif self.preprocessing_results["results"] == -2:
             # deletion of all data
             # "Mapping has happened in this region but data were deleted."
             plt.title(
-                "No Sigmoid curve could be fitted "
-                + "\n"
-                + "into the data"
-                + "\n"
-                + "Mapping has happened but data were deleted."
+                "No Sigmoid curve could be fitted into the data"
+                + "\nMapping has happened but data were deleted."
             )
         else:
-            plt.title("No Sigmoid curve could be fitted " + "\n" + "into the data")
+            plt.title("No Sigmoid curve could be fitted into the data")
         ax.legend(loc="upper left")
         fig.tight_layout()
         img_data = StringIO()
