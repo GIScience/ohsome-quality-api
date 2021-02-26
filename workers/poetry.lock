@@ -526,7 +526,7 @@ full = ["aiofiles", "graphene", "itsdangerous", "jinja2", "python-multipart", "p
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -603,7 +603,7 @@ python-versions = ">=3.6,<4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "7f1251990361cb2781648211c354e1cd612ed2c2cc52ffa8ccd90ea7c7275d1e"
+content-hash = "89da6f4c1fdc36e4c934a4650b34472a890448318ca60e8ed777ff3de24e6028"
 
 [metadata.files]
 appdirs = [

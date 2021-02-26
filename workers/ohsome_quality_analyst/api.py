@@ -6,21 +6,26 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import configure_logging
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
-RESPONSE_TEMPLATE = {
-    "attribution": {
-        "url": "https://ohsome.org/copyrights",
-        "text": "© OpenStreetMap contributors",
-    },
-    "apiVersion": "0.1.0-rc1",
-}
-
 configure_logging()
 logging.info("Logging enabled")
+
+
+def empty_api_response() -> dict:
+    RESPONSE_TEMPLATE = {
+        "attribution": {
+            "url": "https://ohsome.org/copyrights",
+            "text": "© OpenStreetMap contributors",
+        },
+        "apiVersion": oqt_version,
+    }
+    return RESPONSE_TEMPLATE
+
 
 app = FastAPI()
 app.add_middleware(
@@ -60,7 +65,7 @@ async def get_indicator(
     elif dataset is None and featureId is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
     indicator = oqt.create_indicator(name, layerName, bpolys, dataset, featureId)
-    response = RESPONSE_TEMPLATE
+    response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("result_description", None)
@@ -83,7 +88,7 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     elif dataset is None and feature_id is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
     indicator = oqt.create_indicator(name, layer_name, bpolys, dataset, feature_id)
-    response = RESPONSE_TEMPLATE
+    response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("result_description", None)
@@ -110,7 +115,7 @@ async def get_report(
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=featureId
     )
-    response = RESPONSE_TEMPLATE
+    response = empty_api_response()
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
@@ -144,7 +149,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     report = oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
-    response = RESPONSE_TEMPLATE
+    response = empty_api_response()
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = request.url._url
     response["metadata"].pop("label_description", None)
