@@ -49,17 +49,11 @@ Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
-def configure_logging(level: str = "INFO") -> None:
-    """Read configuration from file. Set logging file and level."""
-    logging_config_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
-    )
-    with open(logging_config_path, "r") as f:
-        logging_config = yaml.safe_load(f)
-    logging_file_path = os.path.join(DATA_HOME_PATH, "oqt.log")
-    logging_config["handlers"]["file"]["filename"] = logging_file_path
-    logging_config["root"]["level"] = level
-    logging.config.dictConfig(logging_config)
+def configure_logging() -> None:
+    """Configure logging level and format"""
+    level = os.getenv("OQT_LOG_LEVEL", default="info")
+    format = "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"
+    logging.basicConfig(format=format, level=getattr(logging, level.upper()))
 
 
 def load_metadata(module_name: str) -> Dict:
