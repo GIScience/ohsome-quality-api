@@ -97,7 +97,8 @@ oqt --help
 
 API:
 ```bash
-uvicorn ohsome_quality_analyst.api:app --reload
+cd workers/
+python run_uvicorn.py
 ```
 
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
