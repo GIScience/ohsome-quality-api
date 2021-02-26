@@ -73,18 +73,25 @@ class sigmoidCurve:
             ystart = np.interp(xmids[0] - 0.5, xdata, ydata)
         return ystart
 
+    # if one of the values to calculate the slope for the curve
+    # is 0, 1 should be returned
     def getSlopeAndHandleZeros(self, value1, value2) -> float:
         if value1 == 0 or value2 == 0:
             return 1
         else:
             return 1 - (value1 / value2)
 
+    # if NaN value still left, turn them into 0
     def nanToZero(self, value1) -> float:
         if math.isnan(value1):
             return 0
         else:
             return value1
 
+    # function that calculates the curve params after eliminating
+    # nan values in initparams, so it might be, that if initparams
+    # for 5 curves were calculated but nan was deleted, curve params
+    # for 4 jumps will then be chosen
     def calculateCurveParams(self, initParamsY, xvalues, yvalues):
         incoms = [incom for incom in initParamsY if str(incom) != "nan"]
         if len(incoms) == 2:
@@ -93,12 +100,10 @@ class sigmoidCurve:
             x1 = round(self.nanToZero(initParamsX[0]))
             x2 = round(self.nanToZero(initParamsX[1]))
             # get initial slopes for the curve with 2 jumps
-
             ystart2 = self.sortInits2curves(xvalues, yvalues)[3]
             k1 = self.getSlopeAndHandleZeros(ystart2, initParamsY[0])
             k2 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
             # get the max y value
-
             yMax = self.sortInits2curves(xvalues, yvalues)[2]
             # mse for logistic2
             yPred2 = self.logistic2(x1, x2, L, yMax, k1, k2, xvalues)
@@ -112,7 +117,6 @@ class sigmoidCurve:
             initParamsX3 = self.sortInits3curves(
                 xvalues, yvalues, self.initparamsFor3JumpsCurve
             )[0]
-
             x13 = round(self.nanToZero(initParamsX3[0]))
             x23 = round(self.nanToZero(initParamsX3[1]))
             x33 = round(self.nanToZero(initParamsX3[2]))
@@ -120,7 +124,6 @@ class sigmoidCurve:
             ystart3 = self.sortInits3curves(
                 xvalues, yvalues, self.initparamsFor3JumpsCurve
             )[3]
-
             k313 = self.getSlopeAndHandleZeros(ystart3, initParamsY[0])
             k323 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
             k333 = self.getSlopeAndHandleZeros(initParamsY[1], initParamsY[2])
@@ -163,7 +166,6 @@ class sigmoidCurve:
             yPred4 = self.logistic4(
                 x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44, xvalues
             )
-
             err4 = np.sum((yPred4 - yvalues) ** 2) / len(yPred4)
             params = [x41, x42, x43, x44, L41, L42, L43, yMax, k41, k42, k43, k44]
             return err4, params
@@ -182,7 +184,6 @@ class sigmoidCurve:
             x55 = round(self.nanToZero(initParamsX5[4]))
             # get initial slopes for the curve with 5 jumps
             ystart5 = self.sortInits5curves(xvalues, yvalues)[3]
-
             k13 = self.getSlopeAndHandleZeros(ystart5, initParamsY[0])
             k23 = self.getSlopeAndHandleZeros(initParamsY[0], initParamsY[1])
             k33 = self.getSlopeAndHandleZeros(initParamsY[1], initParamsY[2])
@@ -230,6 +231,8 @@ class sigmoidCurve:
             ]
             return err5, params
 
+    # depending on length of curve params, calculate
+    # the sigmoid curve
     def calculateCurve(self, params, xvalues):
         if len(params) == 6:
             yDataForSat = self.logistic2(
