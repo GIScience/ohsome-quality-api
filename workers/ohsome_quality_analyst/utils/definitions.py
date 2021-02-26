@@ -7,6 +7,7 @@ import glob
 import logging
 import logging.config
 import os
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -49,11 +50,28 @@ Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
 Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
+def get_log_level():
+    if "pydevd" in sys.modules or "pdb" in sys.modules:
+        default_level = "DEBUG"
+    else:
+        default_level = "INFO"
+    return os.getenv("OQT_LOG_LEVEL", default=default_level)
+
+
+def get_log_config():
+    level = get_log_level()
+    logging_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
+    )
+    with open(logging_path, "r") as f:
+        logging_config = yaml.safe_load(f)
+    logging_config["root"]["level"] = getattr(logging, level.upper())
+    return logging_config
+
+
 def configure_logging() -> None:
     """Configure logging level and format"""
-    level = os.getenv("OQT_LOG_LEVEL", default="info")
-    format = "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"
-    logging.basicConfig(format=format, level=getattr(logging, level.upper()))
+    logging.config.dictConfig(get_log_config())
 
 
 def load_metadata(module_name: str) -> Dict:
