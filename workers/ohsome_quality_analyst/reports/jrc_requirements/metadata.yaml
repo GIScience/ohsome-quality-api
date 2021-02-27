@@ -1,0 +1,22 @@
+---
+JrcRequirements:
+  name: JRC Requirements
+  description: |
+      This report shows the quality for features that the jrc project is important.
+      It combines 14 indicators
+      to inspect the quality in regard to mapping saturation of various jrc features
+      as well as the currentness of all jrc related features.
+  label_description:
+    red: |
+      The data quality in this region is low.
+      It is very likely that this regions has not been completely
+      mapped in OSM.
+    yellow: |
+      At least one indicator shows only medium quality.
+      You should inspect the results for the individual indicators
+      to identify potential data quality concerns.
+    green: |
+      All indicators show a good quality.
+      The data in this regions seems to be good for jrc requirements.
+    undefined: |
+      Could not derive quality level.

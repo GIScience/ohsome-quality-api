@@ -18,7 +18,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
 
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        layer_name = "major_roads"
+        layer_name = "jrc_health_count"
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         indicator.preprocess()
@@ -32,7 +32,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     def testFloatDivisionByZeroError(self):
-        layer_name = "building_count"
+        layer_name = "jrc_health_count"
         dataset = "test_regions"
         feature_id = 30
 
@@ -44,7 +44,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
 
     def testCannotConvertNanError(self):
-        layer_name = "building_count"
+        layer_name = "jrc_health_count"
         dataset = "test_regions"
         feature_id = 2
 
