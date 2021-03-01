@@ -1,18 +1,18 @@
-## Miss behaviour and solutions for Windows
+## Misbehaviour and Solutions for Windows
 
-- Make sure that you are not in any other virtual env (anaconda, ..):
+- Make sure that you are not in any other virtual env (anaconda, ...):
 
 ```
 (ohsome-quality-analyst) C:\Users\user\ohsome-quality-analyst> deactivate
 C:\Users\user\ohsome-quality-analyst>
 ```
 
-- Error: ModuleNotFoundError: No module named 'ohsome_quality_analyst'
+- Error: `ModuleNotFoundError: No module named 'ohsome_quality_analyst'`
     - Make sure virtual environment is activated: `poetry shell`
 
 - Connection to the database fails
     - Make sure you are in the `VPN` of the university
-    - Check if the variables are in yur environment. Try following code:
+    - Check if the variables are in your environment. Try the following code:
 
 ```python
 import os 

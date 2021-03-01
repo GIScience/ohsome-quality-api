@@ -6,22 +6,22 @@ To understand how to implement your own indicator, it is necessary to know a few
 
 ## 1. BaseIndicator
 
-To illustrate the structure of an indicator we created a Class Diagram showing it's most important components. 
+To illustrate the structure of an indicator we created a Class Diagram showing its most important components. 
 
-![description](./img/UML-Class-Diagram.png)
+![UML class diagram of OQT](./img/UML-Class-Diagram.png)
 
-As you can see the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from it's corresponding metadata.yaml (see part 2), the layer can be set during object creation and the result saves the result of an Indicator instance. 
+As you can see, the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the layer can be set during object creation, and the result saves the result of an Indicator instance. 
 
 ### Result
 The result object can hold 4 values. 
 
-1. label: This should be a member of TrafficLightQualityLevels found in ohsome_quality_analyst/utils/definitions
-2. value: tbd
-3. description: label description for TrafficLightQualityLevel (see metadata.yaml in part 2)
-4. svg: unique file path which is **automatially** created uppon object initialization by the BaseIndicator
+1. label: This should be a member of `TrafficLightQualityLevels` found in [workers/ohsome_quality_analyst/utils/definitions.py](workers/ohsome_quality_analyst/utils/definitions.py)
+2. value: TBD
+3. description: label description for `TrafficLightQualityLevel` (see metadata.yaml in part 2)
+4. svg: unique file path which is **automatically** created upon object initialization by the `BaseIndicator`
 
 ### Layer
-In the OQT we used the term Layer to describe teh result of an ohsomeAPI query. If you need a custom layer from the ohsomeAPI you can specify new layers in ohsome_quality_analyst/ohsome/layer_defintions.yaml. The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsomeAPI [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_defintions.yaml](workers/ohsome_quality_analyst/ohsome/layer_defintions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
@@ -37,15 +37,16 @@ The two files are named:
 
 ### metadata.yaml
 
-The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works and a standartized interpretation of it's possible results.
+The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works, and a standardized interpretation of its possible results.
 
-The easiest way to setup the metadata.yaml the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
+The easiest way to set the metadata.yaml up the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
 
 ### indicator.py
 
-In your own indicator.py you only need to implement the three functions "preprocess", "calculate" and "create_figure" as well as an __init__ function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
+In your own indicator.py you only need to implement the three functions `preprocess`, `calculate`, and `create_figure` as well as an `__init__` function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
 
-#### init
+#### \_\_init\_\_ function
+
 Your init should call the BaseIndicator init and thus should start like this:
 ```python
 def __init__(
@@ -65,21 +66,21 @@ def __init__(
       )
 ```
 
-Additionally you can define variable placeholders for important values and preliminary results here.
+Additionally, you can define variable placeholders for important values and preliminary results here.
 
-#### preprocess
+#### preprocess function
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the **query** helper function which can be imported from **ohsome_quality_analyst/ohsome/client**. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsomeAPI. If you need additional data, e.g. the population in an area, you should prepare it here too. You can store your preliminary results as a class attributes to have access to them in the upcoming two functions.
+This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the `query` helper function which can be imported from `ohsome_quality_analyst.ohsome.client`. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsome API. If you need additional data, e.g. the population in an area, you should prepare it here, too. You can store your preliminary results as class attributes to have access to them in the upcoming two functions.
 
-#### calculate
+#### calculate function
 
-Here you should execute all needed calculations and save the results in your result object (**self.result.label, self.result.value and self.result.description**). 
+Here you should execute all needed calculations and save the results in your result object (`self.result.label`, `self.result.value` and `self.result.description`). 
 
-#### create_figure
+#### create_figure function
 
-Finally you need to create a svg figure (e.g. with matplotlib) and save it to **self.result.svg** (e.g. plt.savefig(self.result.svg, format="svg")).
+Finally, you need to create a svg figure (e.g. with matplotlib) and save it to `self.result.svg` (e.g. `plt.savefig(self.result.svg, format="svg")`).
 
 
-If you have defined these three functions your indicator is ready to go. To show how OQT uses your indicator to display on the OQT Website or in your command line interface we made a sequence diagram. 
+If you have defined these three functions, your indicator is ready to go. To show how OQT uses your indicator to be displayed on the OQT Website or in your command line interface, we made a sequence diagram. 
 
-![description](./create_indicator.svg)
+![UML flow diagram for indicator creation](./create_indicator.svg)
