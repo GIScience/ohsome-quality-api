@@ -3,6 +3,7 @@
 ## 0.1.0
 
 - Update to poetry 1.0 and update dependencies !51
+- Fixes `Last Edit` indicator in cases where it can not be calculated !50
 - Fix handling of NaN value errors in mapping saturation indicator !48
 - Fix response to be initialized for every request !47
 - Improve docs on development setup and testing !45

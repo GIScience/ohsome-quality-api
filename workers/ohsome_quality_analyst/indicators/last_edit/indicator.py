@@ -79,7 +79,7 @@ class LastEdit(BaseIndicator):
         description = Template(self.metadata.result_description).substitute(
             share=self.share_edited_features, layer_name=self.layer.name
         )
-        if self.total_features is None:
+        if self.total_features == 0 or self.total_features is None:
             label = "undefined"
             value = None
             description = (
