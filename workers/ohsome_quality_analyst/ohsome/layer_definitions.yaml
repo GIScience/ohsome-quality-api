@@ -77,7 +77,6 @@ jrc_road_length:
       highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
       and maxspeed=* and oneway=*
 
-
 jrc_railway_length:
   name: JRC Railways Length
   description: |
