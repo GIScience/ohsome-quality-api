@@ -74,7 +74,12 @@ class GhsPopComparison(BaseIndicator):
             feature_count_per_sqkm=round(self.feature_count_per_sqkm, 1),
         )
 
-        if self.feature_count_per_sqkm <= self.yellowThresholdFunction(
+        if self.pop_count_per_sqkm == 0:
+            label = "undefined"
+            value = None
+            description += self.metadata.label_description["undefined"]
+
+        elif self.feature_count_per_sqkm <= self.yellowThresholdFunction(
             self.pop_count_per_sqkm
         ):
             value = (
@@ -104,6 +109,9 @@ class GhsPopComparison(BaseIndicator):
         self.result.description = description
 
     def create_figure(self):
+        if self.label == "undefined":
+            logging.info("Skipping figure creation.")
+            return
 
         logging.info(f"Create figure for indicator: {self.metadata.name}")
 
