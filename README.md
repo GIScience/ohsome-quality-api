@@ -1,6 +1,6 @@
-![](docs/img/oqt_header.png)
+![](docs/img/oqt_logo.png)
 
-# Proof of Concept for Ohsome Quality analysT
+# ohsome quality analyst
 
 ## Vision
 
