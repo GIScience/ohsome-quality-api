@@ -26,13 +26,24 @@ class TestIndicatorLastEdit(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     def test_more_edited_features_then_features(self):
-        """It can happen that edited features includes deleted features."""
+        """It can happen that edited features includes deleted features"""
         indicator = LastEdit(
             layer_name="amenities", dataset="test_regions", feature_id=7
         )
         indicator.preprocess()
         self.assertLess(indicator.total_features, indicator.edited_features)
         self.assertEqual(indicator.share_edited_features, 100)
+
+    def test_no_amenities(self):
+        """Test area with no amenities"""
+        indicator = LastEdit(
+            layer_name="amenities", dataset="test_regions", feature_id=2
+        )
+        indicator.preprocess()
+        self.assertEqual(indicator.total_features, 0)
+        indicator.calculate()
+        self.assertEqual(indicator.result.label, "undefined")
+        self.assertEqual(indicator.result.value, None)
 
 
 if __name__ == "__main__":
