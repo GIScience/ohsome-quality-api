@@ -48,7 +48,7 @@ poi:
       police, fire_station, restaurant, townhall)
 
 # JRC themes:
-jrc-health:
+jrc_health_count:
   name: JRC Healthcare Facilities
   description: |
       OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
@@ -59,7 +59,7 @@ jrc-health:
       or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
       or (healthcare=* and name=* and name!="")
 
-jrc-education:
+jrc_education_count:
   name: JRC Education Facilities
   description: |
       OSM amenities that are education facilities like college, school, kindergarten, university.
@@ -68,7 +68,7 @@ jrc-education:
       (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
       or (amenity=school and name=* and name!="" and building=*)
 
-jrc-road-length:
+jrc_road_length:
   name: JRC Road Length
   description: |
       Selection of OSM highways with maxspeed and oneway tag.
@@ -78,7 +78,7 @@ jrc-road-length:
       and maxspeed=* and oneway=*
 
 
-jrc-railway-length:
+jrc_railway_length:
   name: JRC Railways Length
   description: |
     Selection of OSM railways.
@@ -86,7 +86,7 @@ jrc-railway-length:
   filter: |
     railway in (rail, subway, tram, light_rail, monorail)
 
-jrc-airport-count:
+jrc_airport_count:
   name: JRC Airports
   description: |
     OpenStreetMap Aeroway Aerodromes.
@@ -95,7 +95,7 @@ jrc-airport-count:
     (aeroway=aerodrome and icao=* and icao!="" and name=*)
     or (aerodrome=* and icao=* and icao!="" and name=*)
 
-jrc-water-treatment-plant-count:
+jrc_water_treatment_plant_count:
   name: JRC Water-Treatment Plant Count
   description: |
     OpenStreetMap water treatment plants.
@@ -103,7 +103,7 @@ jrc-water-treatment-plant-count:
   filter: |
     man_made=water_works
 
-jrc-power-generation-plant-count:
+jrc_power_generation_plant_count:
   name: JRC Power-generation Plant Count
   description: |
     OpenStreetMap power-generation-plants.
@@ -111,7 +111,7 @@ jrc-power-generation-plant-count:
   filter: |
     power=plant and power=* and name=*
 
-jrc-cultural-heritage-site-count:
+jrc_cultural_heritage_site_count:
   name: JRC Cultural Heritage Sites Count
   description: |
     OpenStreetMap cultural-heritage-sites.
@@ -119,7 +119,7 @@ jrc-cultural-heritage-site-count:
   filter: |
     heritage=* and description=* and image=* and name=* and name!=""
 
-jrc-bridge-count:
+jrc_bridge_count:
   name: JRC Bridge Count
   description: |
     OpenStreetMap bridges.
@@ -127,7 +127,7 @@ jrc-bridge-count:
   filter: |
     bridge=yes and name=* and surface=* and highway=* and highway!=""
 
-jrc-mass-gathering-sites:
+jrc_mass_gathering_sites_count:
   name: JRC Mass Gathering Sites Count
   description: |
     OpenStreetMap Mass Gathering Sites, where a lot of people could gather.
