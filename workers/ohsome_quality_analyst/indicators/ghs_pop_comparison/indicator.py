@@ -109,7 +109,7 @@ class GhsPopComparison(BaseIndicator):
         self.result.description = description
 
     def create_figure(self):
-        if self.label == "undefined":
+        if self.result.label == "undefined":
             logging.info("Skipping figure creation.")
             return
 
