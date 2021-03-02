@@ -13,12 +13,12 @@ class TestLogging(unittest.TestCase):
     def test_logging(self):
         configure_logging()
         with self.assertLogs(level="INFO") as captured:
-            logging.info("Test logging message")
-            logging.debug("Test logging message")
+            logging.info("Test info logging message")
+            logging.debug("Test debug logging message")
         # Test that there is only one log message
         self.assertEqual(len(captured.records), 1)
         # Test unformatted logging output message
-        self.assertEqual(captured.records[0].getMessage(), "Test logging message")
+        self.assertEqual(captured.records[0].getMessage(), "Test info logging message")
 
     def test_level(self):
         if "pydevd" in sys.modules or "pdb" in sys.modules:
