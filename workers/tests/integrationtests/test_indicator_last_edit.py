@@ -46,7 +46,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         self.assertEqual(indicator.result.value, None)'''
 
     def testAllRegions(self):
-        layer_name = "jrc_airport_count"
+        layer_name = "jrc_power_generation_plant_count"
         dataset = "test_regions"
         for region in range(0, 38):
 
