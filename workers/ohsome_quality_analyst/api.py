@@ -14,6 +14,7 @@ from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
 logging.info("Logging enabled")
+logging.debug("Debugging output enabled")
 
 
 def empty_api_response() -> dict:

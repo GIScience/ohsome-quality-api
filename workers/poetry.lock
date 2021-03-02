@@ -592,18 +592,10 @@ six = ">=1.9.0,<2"
 docs = ["proselint (>=0.10.2)", "sphinx (>=3)", "sphinx-argparse (>=0.2.5)", "sphinx-rtd-theme (>=0.4.3)", "towncrier (>=19.9.0rc1)"]
 testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "packaging (>=20.0)", "xonsh (>=0.9.16)"]
 
-[[package]]
-name = "xdg"
-version = "5.0.1"
-description = "Variables defined by the XDG Base Directory Specification"
-category = "main"
-optional = false
-python-versions = ">=3.6,<4.0"
-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "89da6f4c1fdc36e4c934a4650b34472a890448318ca60e8ed777ff3de24e6028"
+content-hash = "b2202ffe418e2c2ab75c91f0f8e3af5792ac3431ff1c0171825f78e5da3e4e9c"
 
 [metadata.files]
 appdirs = [
@@ -1101,8 +1093,4 @@ uvicorn = [
 virtualenv = [
     {file = "virtualenv-20.4.2-py2.py3-none-any.whl", hash = "sha256:2be72df684b74df0ea47679a7df93fd0e04e72520022c57b479d8f881485dbe3"},
     {file = "virtualenv-20.4.2.tar.gz", hash = "sha256:147b43894e51dd6bba882cf9c282447f780e2251cd35172403745fc381a0a80d"},
-]
-xdg = [
-    {file = "xdg-5.0.1-py3-none-any.whl", hash = "sha256:9ddd6649bee9148f952305603a08474e3ef37c909eb19dfcb9737d54ebcc407e"},
-    {file = "xdg-5.0.1.tar.gz", hash = "sha256:97a27058caa61b4ce04e05471643caa6bc8c563d2638f92c0516ac50208146d8"},
 ]

@@ -12,7 +12,6 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-xdg = "^5.0.0"
 psycopg2-binary = "^2.8.6"
 geojson = "^2.5.0"
 click = "^7.1.2"

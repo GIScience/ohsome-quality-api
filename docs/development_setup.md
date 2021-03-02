@@ -61,11 +61,11 @@ pre-commit install  # Install pre-commit hooks.
 
 ### Configuration
 
-**Local database:**
+#### Local database
 
 For local development no additional configuration is required. Per default OQT will connect to the database definied in `docker-compose.development.yml`.
 
-**Remote database:**
+#### Remote database
 
 If access to a remote database is required following environment variables need to be set:
 
@@ -83,7 +83,7 @@ POSTGRES_SCHEMA
 Windows user can set those environment variables with following command `setx POSTGRES_DB`
 
 
-**ohsome API:**
+#### ohsome API
 
 The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
 
@@ -97,7 +97,8 @@ oqt --help
 
 API:
 ```bash
-uvicorn ohsome_quality_analyst.api:app --reload
+cd workers/
+python run_uvicorn.py
 ```
 
 Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
@@ -113,4 +114,21 @@ Unit tests should run without having access to the database or services the inte
 ```bash
 cd workers/
 pytest tests
+```
+
+
+### Logging
+
+Logging is enabled by default.
+
+`ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
+The module is configured in `definitions.py`.  Both entry-points to `ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration function defined in `definitions.py`.
+The default log level is `INFO`. This can be overwritten by setting the environment variable `OQT_LOG_LEVEL`.
+
+#### Usage
+
+```python
+import logging
+
+logging.info("Logging message")
 ```

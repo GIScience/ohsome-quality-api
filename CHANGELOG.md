@@ -2,6 +2,8 @@
 
 ## 0.1.0
 
+- Add uvicorn runner for development setup !54
+- Improve logging !54
 - Add undefined label to GHS_POP
 - Update to poetry 1.0 and update dependencies !51
 - Fixes `Last Edit` indicator in cases where it can not be calculated !50
