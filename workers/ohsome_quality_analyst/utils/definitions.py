@@ -58,7 +58,8 @@ def get_log_level():
     return os.getenv("OQT_LOG_LEVEL", default=default_level)
 
 
-def get_log_config():
+def load_logging_config():
+    """Read logging config from configuration file"""
     level = get_log_level()
     logging_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
@@ -71,7 +72,7 @@ def get_log_config():
 
 def configure_logging() -> None:
     """Configure logging level and format"""
-    logging.config.dictConfig(get_log_config())
+    logging.config.dictConfig(load_logging_config())
 
 
 def load_metadata(module_name: str) -> Dict:
