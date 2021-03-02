@@ -466,6 +466,12 @@ footer .container {
     .prefooter .container .footer-column,
     footer .container .footer-column {
       margin-bottom: 10px; } }
+    footer .heigit-logo {
+      max-width: 150px; } }
+    @media screen and (max-width: 767px) {
+      footer .heigit-logo {
+        max-width: 160px;
+        padding: 10px 0; } }
 
 .prefooter {
   background-color: #0d1949;
@@ -828,10 +834,10 @@ header {
           background: white;
 		  border-style: solid;
 border-color:grey;		  } }
-    header .container .mapswipe-logo {
+    header .container .oqt-logo {
       max-width: 250px; }
       @media screen and (max-width: 767px) {
-        header .container .mapswipe-logo {
+        header .container .oqt-logo {
           max-width: 160px;
           padding: 10px 0; } }
     @media screen and (max-width: 767px) {
@@ -1202,7 +1208,6 @@ color:black;		} }
 }
 
 .logo {
-   height: 70px;
    padding: 10px;
 }
 

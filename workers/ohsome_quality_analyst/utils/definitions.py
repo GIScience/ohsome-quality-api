@@ -7,11 +7,10 @@ import glob
 import logging
 import logging.config
 import os
-from pathlib import Path
+import sys
 from typing import Dict
 
 import yaml
-from xdg import XDG_DATA_HOME
 
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
@@ -43,23 +42,31 @@ INDICATOR_LAYER = (
     ("PoiDensity", "poi"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
-DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
-DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
-Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
-Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
-def configure_logging(level: str = "INFO") -> None:
-    """Read configuration from file. Set logging file and level."""
-    logging_config_path = os.path.join(
+def get_log_level():
+    if "pydevd" in sys.modules or "pdb" in sys.modules:
+        default_level = "DEBUG"
+    else:
+        default_level = "INFO"
+    return os.getenv("OQT_LOG_LEVEL", default=default_level)
+
+
+def load_logging_config():
+    """Read logging config from configuration file"""
+    level = get_log_level()
+    logging_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
     )
-    with open(logging_config_path, "r") as f:
+    with open(logging_path, "r") as f:
         logging_config = yaml.safe_load(f)
-    logging_file_path = os.path.join(DATA_HOME_PATH, "oqt.log")
-    logging_config["handlers"]["file"]["filename"] = logging_file_path
-    logging_config["root"]["level"] = level
-    logging.config.dictConfig(logging_config)
+    logging_config["root"]["level"] = getattr(logging, level.upper())
+    return logging_config
+
+
+def configure_logging() -> None:
+    """Configure logging level and format"""
+    logging.config.dictConfig(load_logging_config())
 
 
 def load_metadata(module_name: str) -> Dict:

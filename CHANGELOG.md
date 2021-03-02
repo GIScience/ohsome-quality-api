@@ -2,7 +2,10 @@
 
 ## 0.1.0
 
-- Add undefined label to GHS_POP
+- Change description for Mapping Saturation indicator !63
+- Add undefined label to GHS_POP !55
+- Add uvicorn runner for development setup !54
+- Improve logging !54
 - Update to poetry 1.0 and update dependencies !51
 - Fixes `Last Edit` indicator in cases where it can not be calculated !50
 - Fix handling of NaN value errors in mapping saturation indicator !48
