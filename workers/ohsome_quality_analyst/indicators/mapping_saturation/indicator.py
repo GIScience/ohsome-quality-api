@@ -170,7 +170,7 @@ class MappingSaturation(BaseIndicator):
                 value = 0.5
                 description += self.metadata.label_description["yellow"]
 
-            description = Template(self.metadata.result_description).substitute(
+            description += Template(self.metadata.result_description).substitute(
                 saturation=self.saturation, growth=self.growth
             )
             self.result.label = label
