@@ -8,11 +8,9 @@ import logging
 import logging.config
 import os
 import sys
-from pathlib import Path
 from typing import Dict
 
 import yaml
-from xdg import XDG_DATA_HOME
 
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
@@ -44,10 +42,6 @@ INDICATOR_LAYER = (
     ("PoiDensity", "poi"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
-DATA_HOME_PATH = os.path.join(XDG_DATA_HOME, "ohsome_quality_analyst")
-DATA_PATH = os.path.join(DATA_HOME_PATH, "data")
-Path(DATA_HOME_PATH).mkdir(parents=True, exist_ok=True)
-Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
 
 def get_log_level():
