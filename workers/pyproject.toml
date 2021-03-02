@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_analyst"
-version = "0.1.0-rc1"
+version = "0.1.0"
 description = ""
 authors = [
   "Benjamin Herfort <Benjamin.Herfort@heigit.org>",
