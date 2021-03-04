@@ -15,7 +15,7 @@ from schema import Schema
 from ohsome_quality_analyst.api import app
 
 
-class TestApi(unittest.TestCase):
+class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.test_dir = os.path.dirname(os.path.abspath(__file__))

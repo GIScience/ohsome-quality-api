@@ -11,7 +11,7 @@ from click.testing import CliRunner
 from ohsome_quality_analyst.cli import cli
 
 
-class TestCli(unittest.TestCase):
+class TestCliIntegration(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
         self.infile = os.path.join(
