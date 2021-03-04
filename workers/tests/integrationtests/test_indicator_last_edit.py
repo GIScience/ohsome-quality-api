@@ -1,13 +1,13 @@
-# import os
+import os
 import unittest
+
+import geojson
 
 from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
 
-# import geojson
-
 
 class TestIndicatorLastEdit(unittest.TestCase):
-    '''def test(self):
+    def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -43,22 +43,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         self.assertEqual(indicator.total_features, 0)
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
-        self.assertEqual(indicator.result.value, None)'''
-
-    def testAllRegions(self):
-        layer_name = "jrc_power_generation_plant_count"
-        dataset = "test_regions"
-        for region in range(0, 38):
-
-            if region != 12:
-                feature_id = region
-
-                indicator = LastEdit(
-                    layer_name=layer_name, dataset=dataset, feature_id=feature_id
-                )
-                indicator.preprocess()
-                indicator.calculate()
-                indicator.create_figure(str(feature_id))
+        self.assertEqual(indicator.result.value, None)
 
 
 if __name__ == "__main__":
