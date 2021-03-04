@@ -103,7 +103,7 @@ class LastEdit(BaseIndicator):
         self.result.value = value
         self.result.description = description
 
-    def create_figure(self, id) -> None:
+    def create_figure(self) -> None:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
@@ -162,8 +162,5 @@ class LastEdit(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        plt.savefig(
-            "test_lastEdit_jrc" + id + ".png", format="png", bbox_inches="tight"
-        )
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
