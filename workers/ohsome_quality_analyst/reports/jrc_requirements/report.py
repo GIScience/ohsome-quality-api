@@ -19,22 +19,21 @@ class JrcRequirements(BaseReport):
 
     def set_indicator_layer(self) -> None:
         self.indicator_layer = (
-            # TODO: Uncomment once implemented
-            # IndicatorLayer("GufComparison"], "building_area"),
             IndicatorLayer("MappingSaturation", "jrc_health_count"),
             IndicatorLayer("MappingSaturation", "jrc_mass_gathering_sites_count"),
             IndicatorLayer("MappingSaturation", "jrc_railway_length"),
             IndicatorLayer("MappingSaturation", "jrc_road_length"),
-            # IndicatorLayer("LastEdit", "jrc_health_count"),
-            # IndicatorLayer("LastEdit", "jrc_education_count"),
-            # IndicatorLayer("LastEdit", "jrc_road_length"),
-            # IndicatorLayer("LastEdit", "jrc_railway_length"),
-            # IndicatorLayer("LastEdit", "jrc_airport_count"),
-            # IndicatorLayer("LastEdit", "jrc_water_treatment_plant_count"),
-            # IndicatorLayer("LastEdit", "jrc_power_generation_plant_count"),
-            # IndicatorLayer("LastEdit", "jrc_cultural_heritage_site_count"),
-            # IndicatorLayer("LastEdit", "jrc_bridge_count"),
-            # IndicatorLayer("LastEdit", "jrc_mass_gathering_sites_count"),
+            IndicatorLayer("MappingSaturation", "jrc_education_count"),
+            IndicatorLayer("LastEdit", "jrc_health_count"),
+            IndicatorLayer("LastEdit", "jrc_education_count"),
+            IndicatorLayer("LastEdit", "jrc_airport_count"),
+            IndicatorLayer("LastEdit", "jrc_water_treatment_plant_count"),
+            IndicatorLayer("LastEdit", "jrc_power_generation_plant_count"),
+            IndicatorLayer("LastEdit", "jrc_cultural_heritage_site_count"),
+            IndicatorLayer("LastEdit", "jrc_bridge_count"),
+            IndicatorLayer("LastEdit", "jrc_mass_gathering_sites_count"),
+            IndicatorLayer("GhsPopComparison", "jrc_road_length"),
+            IndicatorLayer("GhsPopComparison", "jrc_railway_length"),
         )
 
     def combine_indicators(self) -> None:
