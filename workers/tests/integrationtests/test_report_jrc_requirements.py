@@ -28,7 +28,6 @@ class TestReportJrcRequirements(unittest.TestCase):
                 self.report.dataset,
                 self.report.feature_id,
             )
-            print(layer_name)
             self.report.indicators.append(indicator)
         self.report.combine_indicators()
         self.assertIsNotNone(self.report.result.label)
