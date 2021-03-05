@@ -17,7 +17,7 @@ repository = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/
 keywords = [
   "osm",
   "gis",
-  "geography"
+  "geography",
   "metric",
   "ohsome",
   "quality",
