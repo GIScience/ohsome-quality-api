@@ -3,6 +3,7 @@
 ## 0.2.0
 
 - Refine `pyproject.toml` !65
+- Minor improvements of the documentation !67
 
 ## 0.1.0
 
