@@ -35,6 +35,7 @@ class LayerDefinition:
     description: str
     endpoint: str
     filter: str
+    filter2: str
 
 
 @dataclass
