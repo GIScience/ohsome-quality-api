@@ -2,8 +2,6 @@
 Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
-import logging
-
 from geojson import FeatureCollection
 from psycopg2.errors import UndefinedTable
 
@@ -85,26 +83,12 @@ def create_all_indicators(dataset: str, force: bool = False) -> None:
     fids = db_client.get_fid_list(dataset)
     for feature_id in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
-            try:
-                create_indicator(
-                    indicator_name,
-                    layer_name,
-                    dataset=dataset,
-                    feature_id=feature_id,
-                )
-            # TODO: Those errors are raised during MappingCalculation creation.
-            except (ValueError) as error:
-                if indicator_name == "MappingSaturation":
-                    logging.error(error)
-                    logging.error(
-                        f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for the dataset '{dataset}' "
-                        f"and feature_id '{feature_id}'. "
-                        f"Continue creation of indicators."
-                    )
-                    continue
-                else:
-                    raise (error)
+            create_indicator(
+                indicator_name,
+                layer_name,
+                dataset=dataset,
+                feature_id=feature_id,
+            )
 
 
 def create_report(
