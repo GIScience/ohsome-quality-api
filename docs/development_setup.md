@@ -90,18 +90,38 @@ The URL to a specific ohsome API can be set with the environment variable `OHSOM
 
 ### Usage
 
-CLI:
+#### CLI
+
 ```bash
 oqt --help
 ```
 
-API:
+#### API
+
+Start the API using Docker:
+
+```bash
+docker-compose -f docker-compose.development.yml up -d oqt-workers
+```
+
+Start the API using a Python script:
+
 ```bash
 cd workers/
 python run_uvicorn.py
 ```
 
-Go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check out the endpoints.
+Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
+
+Alternative query the API from a terminal using CURL:
+
+```bash
+# GET request for an indicator
+curl -X GET "http://127.0.0.1:8080/indicator/GhsPopComparison?layerName=building_count&dataset=test_regions&featureId=1" | python -m json.tool > response.json
+
+# POST request for a report
+curl -X POST "http://127.0.0.1:8080/report/SimpleReport" -d '{"dataset": "test_regions", "featureId": 1}' | python -m json.tool > response.json
+```
 
 
 ### Tests
