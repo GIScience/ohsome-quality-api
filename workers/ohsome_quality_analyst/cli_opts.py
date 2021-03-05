@@ -83,3 +83,14 @@ feature_id_opt = [
         default=None,
     )
 ]
+
+force_opt = [
+    click.option(
+        "--force",
+        is_flag=True,
+        help=(
+            "Force recreation of indicator. "
+            + "This will update the results of an indicator in the database."
+        ),
+    )
+]
