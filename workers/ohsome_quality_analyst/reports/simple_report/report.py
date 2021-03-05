@@ -29,8 +29,8 @@ class SimpleReport(BaseReport):
         values = []
         for indicator in self.indicators:
             if (
-                indicator.result.label != "UNDEFINED"
-                and indicator.result.label is not None
+                indicator.result.label != "undefined"
+                and str(indicator.result.label) != "None"
             ):
                 values.append(indicator.result.value)
         self.result.value = mean(values)
