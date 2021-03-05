@@ -35,7 +35,7 @@ class RemoteMappingLevelOne(BaseReport):
         for indicator in self.indicators:
             # TODO: Is it possible that a label == UNDEFINED?
             if (
-                indicator.result.label != "UNDEFINED"
+                indicator.result.label != "undefined"
                 and indicator.result.label is not None
             ):
                 values.append(indicator.result.value)
