@@ -1,13 +1,26 @@
 [tool.poetry]
 name = "ohsome_quality_analyst"
 version = "0.1.0"
-description = ""
+description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
 authors = [
   "Benjamin Herfort <Benjamin.Herfort@heigit.org>",
   "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>",
-  "Katharina Przybill",
+  "Jochen Stier <Jochen.Stier@heigit.org>",
+  "Johannes Visintini <Johannes.Visintini@heigit.org>",
+  "Katharina Przybill <Katharina.Przybill@heigit.org>",
   "Matthias Schaub <Matthias.Schaub@heigit.org>",
   "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>",
+
+  ]
+homepage = "https://oqt.ohsome.org"
+repository = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/"
+keywords = [
+  "osm",
+  "gis",
+  "geography",
+  "metric",
+  "ohsome",
+  "quality",
   ]
 
 [tool.poetry.dependencies]
@@ -36,6 +49,9 @@ pytest = "^6.2.2"
 [tool.poetry.scripts]
 oqt = "ohsome_quality_analyst.cli:cli"
 
+[tool.poetry.urls]
+"Issues" = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues"
+
 [build-system]
-requires = ["poetry>=1.0.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
