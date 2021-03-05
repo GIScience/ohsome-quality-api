@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- Refine `pyproject.toml` !65
+
 ## 0.1.0
 
 - Change description for Mapping Saturation indicator !63
