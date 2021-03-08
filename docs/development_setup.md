@@ -108,7 +108,15 @@ Start the API using a Python script:
 
 ```bash
 cd workers/
-python run_uvicorn.py
+python run_uvicorn.py  # Default host is 127.0.0.1 and port is 8080
+python start_api.py --help
+
+Usage: start_api.py [OPTIONS]
+
+Options:
+  --host TEXT
+  --port INTEGER
+  --help          Show this message and exit.
 ```
 
 Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.

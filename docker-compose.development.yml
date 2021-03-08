@@ -6,6 +6,7 @@ services:
       context: workers/
       dockerfile: Dockerfile
     environment:
+      OQT_LOG_LEVEL: DEBUG
       OHSOME_API: https://api.ohsome.org/v1/
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
@@ -13,9 +14,9 @@ services:
       POSTGRES_HOST: oqt-database
       POSTGRES_PORT: 5432
       POSTGRES_SCHEMA: public
-    command: uvicorn ohsome_quality_analyst.api:app --host 0.0.0.0 --port 8000 --reload
+    command: python scripts/start_api.py --host 0.0.0.0
     ports:
-      - "8080:8000"
+      - "127.0.0.1:8080:8080"
     networks:
       - oqt-dev-database
     depends_on:
