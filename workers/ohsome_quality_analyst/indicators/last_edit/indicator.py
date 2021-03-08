@@ -36,23 +36,23 @@ class LastEdit(BaseIndicator):
         self.total_features = None
         self.share_edited_features = None
 
-    def preprocess(self) -> Dict:
+    async def preprocess(self) -> Dict:
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         if self.time_range is None:
-            latest_ohsome_stamp = ohsome_client.get_latest_ohsome_timestamp()
+            latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
             self.time_range = "{},{}".format(
                 (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d"),
                 latest_ohsome_stamp.strftime("%Y-%m-%d"),
             )
 
-        query_results_contributions = ohsome_client.query(
+        query_results_contributions = await ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
             endpoint="contributions/latest/centroid",
         )
-        query_results_totals = ohsome_client.query(
+        query_results_totals = await ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )

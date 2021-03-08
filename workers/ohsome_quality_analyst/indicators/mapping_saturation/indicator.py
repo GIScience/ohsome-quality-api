@@ -44,12 +44,12 @@ class MappingSaturation(BaseIndicator):
         self.growth = None
         self.preprocessing_results = None
 
-    def preprocess(self) -> Dict:
+    async def preprocess(self) -> Dict:
         """Get data from ohsome API and db. Put timestamps + data in list"""
 
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        query_results = ohsome_client.query(
+        query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
         )
         results = [y_dict["value"] for y_dict in query_results["result"]]
@@ -169,9 +169,9 @@ class MappingSaturation(BaseIndicator):
                 label = "yellow"
                 value = 0.5
                 description += self.metadata.label_description["yellow"]
-            description_template = Template(self.metadata.result_description).substitute(
-                saturation=self.saturation, growth=self.growth
-            )
+            description_template = Template(
+                self.metadata.result_description
+            ).substitute(saturation=self.saturation, growth=self.growth)
             description = description_template + " " + description
             self.result.label = label
             self.result.value = value

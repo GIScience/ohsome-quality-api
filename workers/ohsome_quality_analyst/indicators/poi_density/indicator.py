@@ -41,10 +41,10 @@ class PoiDensity(BaseIndicator):
     def yellowThresholdFunction(self, area):
         return self.threshold_red * area
 
-    def preprocess(self):
+    async def preprocess(self):
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
-        query_results_count = ohsome_client.query(
+        query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
 

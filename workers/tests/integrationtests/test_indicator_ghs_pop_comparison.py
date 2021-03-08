@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -20,7 +21,7 @@ class TestIndicatorGhsPopComparison(unittest.TestCase):
         self.indicator = GhsPopComparison(bpolys=bpolys, layer_name="building_count")
 
     def test(self):
-        self.indicator.preprocess()
+        asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.pop_count)
         self.assertIsNotNone(self.indicator.area)
         self.assertIsNotNone(self.indicator.feature_count)

@@ -35,7 +35,7 @@ class GufComparison(BaseIndicator):
         self.osm_built_up_area: float = None
         self.ratio: float = None
 
-    def preprocess(self) -> None:
+    async def preprocess(self) -> None:
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
         db = PostgresDB()
 
@@ -51,7 +51,7 @@ class GufComparison(BaseIndicator):
         self.guf_built_up_area = result[0][1] / 1000000
 
         # Get OSM building area from ohsome API in km^2 for AOI
-        query_results = ohsome_client.query(
+        query_results = await ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )

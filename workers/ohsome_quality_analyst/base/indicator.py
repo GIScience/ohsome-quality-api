@@ -87,7 +87,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.result: Result = Result(None, None, None, None)
 
     @abstractmethod
-    def preprocess(self) -> None:
+    async def preprocess(self) -> None:
         pass
 
     @abstractmethod

@@ -14,7 +14,7 @@ from ohsome_quality_analyst.utils.helper import (
 )
 
 
-def create_indicator(
+async def create_indicator(
     indicator_name: str = None,
     layer_name: str = None,
     bpolys: FeatureCollection = None,
@@ -42,9 +42,9 @@ def create_indicator(
     if dataset is not None and dataset not in DATASET_NAMES:
         raise ValueError("Given dataset name does not exist: " + dataset)
 
-    def from_scratch():
+    async def from_scratch():
         """Create indicatore from scratch."""
-        indicator.preprocess()
+        await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
 
@@ -61,16 +61,16 @@ def create_indicator(
     )
 
     if bpolys is not None and dataset is None and feature_id is None:
-        from_scratch()
+        await from_scratch()
     elif dataset is not None and feature_id is not None:
         success = from_database()
         if not success:
-            from_scratch()
+            await from_scratch()
             db_client.save_indicator_results(indicator)
     return indicator
 
 
-def create_all_indicators(dataset: str, force: bool = False) -> None:
+async def create_all_indicators(dataset: str, force: bool = False) -> None:
     """Create all indicator/layer combination for a dataset.
 
     Possible indicator/layer combinations are defined in `definitions.py`.
@@ -83,7 +83,7 @@ def create_all_indicators(dataset: str, force: bool = False) -> None:
     fids = db_client.get_fid_list(dataset)
     for feature_id in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
-            create_indicator(
+            await create_indicator(
                 indicator_name,
                 layer_name,
                 dataset=dataset,
@@ -91,7 +91,7 @@ def create_all_indicators(dataset: str, force: bool = False) -> None:
             )
 
 
-def create_report(
+async def create_report(
     report_name: str,
     bpolys: FeatureCollection = None,
     dataset: str = None,
@@ -109,7 +109,7 @@ def create_report(
     report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
     report.set_indicator_layer()
     for indicator_name, layer_name in report.indicator_layer:
-        indicator = create_indicator(
+        indicator = await create_indicator(
             indicator_name,
             layer_name,
             report.bpolys,

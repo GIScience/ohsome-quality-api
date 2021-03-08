@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -16,7 +17,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
         indicator = LastEdit(bpolys=bpolys, layer_name="major_roads")
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
@@ -30,7 +31,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         indicator = LastEdit(
             layer_name="amenities", dataset="test_regions", feature_id=7
         )
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
         self.assertLess(indicator.total_features, indicator.edited_features)
         self.assertEqual(indicator.share_edited_features, 100)
 
@@ -39,7 +40,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         indicator = LastEdit(
             layer_name="amenities", dataset="test_regions", feature_id=2
         )
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.total_features, 0)
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")

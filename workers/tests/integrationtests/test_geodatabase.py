@@ -1,3 +1,4 @@
+import asyncio
 import unittest
 
 import ohsome_quality_analyst.geodatabase.client as db_client
@@ -7,18 +8,22 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
 
 
 class TestGeodatabase(unittest.TestCase):
-    def setUp(self):
+    # TODO: split tests by functionality (load and safe), but load test needs a saved
+    # indicator
+    def test_save_and_load(self):
+        # save
         self.indicator = GhsPopComparison(
             dataset="test_regions", feature_id=2, layer_name="building_count"
         )
-
-    def test_1_save(self):
-        self.indicator.preprocess()
+        asyncio.run(self.indicator.preprocess())
         self.indicator.calculate()
         self.indicator.create_figure()
         db_client.save_indicator_results(self.indicator)
 
-    def test_2_load(self):
+        # load
+        self.indicator = GhsPopComparison(
+            dataset="test_regions", feature_id=2, layer_name="building_count"
+        )
         db_client.load_indicator_results(self.indicator)
         self.assertIsNotNone(self.indicator.result.label)
         self.assertIsNotNone(self.indicator.result.value)

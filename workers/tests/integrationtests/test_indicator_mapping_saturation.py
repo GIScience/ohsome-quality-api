@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -21,7 +22,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         layer_name = "major_roads"
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
 
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
@@ -39,7 +40,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator = MappingSaturation(
             layer_name=layer_name, dataset=dataset, feature_id=feature_id
         )
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
 
@@ -51,7 +52,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator = MappingSaturation(
             layer_name=layer_name, dataset=dataset, feature_id=feature_id
         )
-        indicator.preprocess()
+        asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
 
