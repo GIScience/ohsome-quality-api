@@ -4,6 +4,7 @@
 
 - Refine `pyproject.toml` !65
 - Minor improvements of the documentation !67
+- Rename uvicorn runner script and integrate it into Docker setup !70
 - Minor changes to the code structure !77
 
 ## 0.1.0
