@@ -28,15 +28,7 @@ class LastEdit(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
-        if time_range:
-            self.time_range = time_range
-        else:
-            latest_ohsome_stamp = ohsome_client.get_latest_ohsome_timestamp()
-            self.time_range = "{},{}".format(
-                (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d"),
-                latest_ohsome_stamp.strftime("%Y-%m-%d"),
-            )
-
+        self.time_range = time_range
         # TODO: thresholds might be better defined for each OSM layer
         self.threshold_yellow = 20  # more than 20% edited last year --> green
         self.threshold_red = 5  # more than 5% edited last year --> yellow
@@ -46,6 +38,13 @@ class LastEdit(BaseIndicator):
 
     def preprocess(self) -> Dict:
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
+
+        if self.time_range is None:
+            latest_ohsome_stamp = ohsome_client.get_latest_ohsome_timestamp()
+            self.time_range = "{},{}".format(
+                (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d"),
+                latest_ohsome_stamp.strftime("%Y-%m-%d"),
+            )
 
         query_results_contributions = ohsome_client.query(
             layer=self.layer,
