@@ -3,9 +3,8 @@ import logging
 from typing import Dict
 
 from geojson import FeatureCollection
-from psycopg2 import sql
-
 from ohsome_quality_analyst.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
+from psycopg2 import sql
 
 
 def get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
@@ -75,17 +74,9 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
 
 
 def save_indicator_results(indicator) -> None:
-    """Save the indicator result for the given dataset and feature in the database.
-
-    The results table is super simplistic. For now we only store the feature_id and
-    the results as a json object.
-    """
+    """Save the indicator result for the given dataset and feature in the geodatabase"""
     logging.info("Saving indicator result to database")
-
     db = PostgresDB()
-
-    # the results table is composed of the initial dataset name and the indicator
-    # e.g. "subnational_boundaries_building_completeness"
     table = get_table_name(
         indicator.dataset, indicator.metadata.name, indicator.layer.name
     )
@@ -130,25 +121,12 @@ def save_indicator_results(indicator) -> None:
     db.query(query=query, data=data)
 
 
-def drop_result_table(dataset_name, indicator_name, layer_name):
-    """Remove indicator results from the geodatabase."""
-    db = PostgresDB()
-    table = get_table_name(dataset_name, indicator_name, layer_name)
-    logging.info(f"Dropping table '{table}'")
-    query = sql.SQL("DROP TABLE IF EXISTS {};").format(sql.Identifier(table))
-    db.query(query)
-
-
 def load_indicator_results(indicator) -> bool:
     """Get the indicator result from the geodatabase.
 
     Reads given dataset and feature_id from the indicator object.
+    Load indicators results from the geodatabase.
     Writes retrived results to the result attribute of the indicator object.
-
-    Returns:
-        bool:   True for results retrived.
-                False for no results retrived
-                (feature_id does not exist in the result relation/table).
     """
 
     table = get_table_name(
@@ -175,7 +153,6 @@ def load_indicator_results(indicator) -> bool:
         query_result[field] = results
 
     logging.info("Got indicator results from database")
-    # TODO Rewrite to use Result class definied in BaseIndicator class
     indicator.result.label = query_result["label"]
     indicator.result.value = query_result["value"]
     indicator.result.description = query_result["description"]
@@ -183,105 +160,32 @@ def load_indicator_results(indicator) -> bool:
     return True
 
 
-def create_dataset_table(dataset: str):
-    """Creates dataset table with column fid and geom"""
+def create_dataset_table(dataset_name: str) -> None:
+    """Creates dataset table with collums fid and geom"""
     db = PostgresDB()
-    exe = sql.SQL(
+    query = sql.SQL(
         """DROP TABLE IF EXISTS {};
         CREATE TABLE {} (
             fid integer NOT Null,
             geom geometry,
             PRIMARY KEY(fid)
         );"""
-    ).format(*[sql.Identifier(dataset)] * 2)
-    db.query(exe)
+    ).format(*[sql.Identifier(dataset_name)] * 2)
+    db.query(query)
 
 
-def geojson_to_table(dataset: str, infile: str, fid_key="fid"):
-    """creates a table and loads the content of a geojson file to it"""
-
-    create_dataset_table(dataset)
-
-    with open(infile) as inf:
-        data = json.load(inf)
-
+def get_fid_list(dataset_name: str) -> list:
+    """Get all feature ids of a certain dataset"""
     db = PostgresDB()
-    for feature in data["features"]:
-        polygon = json.dumps(feature["geometry"])
-        fid = feature["properties"][fid_key]
-        exe = sql.SQL(
-            """
-        INSERT INTO {table} (fid, geom)
-            VALUES (
-                %(fid)s,
-                st_setsrid(public.ST_GeomFromGeoJSON(%(polygon)s), 4326)
-                )
-            ON CONFLICT (fid)
-                DO UPDATE SET geom = excluded.geom;
-        """
-        ).format(table=sql.Identifier(dataset))
-        db.query(exe, {"fid": fid, "polygon": polygon})
-
-
-def get_error_table_name(dataset: str, indicator: str, layer_name: str):
-    """returns the name of the Error Table for the given dataset and indicator"""
-
-    return f"{dataset}_{indicator}_{layer_name}_errors"
-
-
-def get_fid_list(table: str):
-    """get all FIDs of a certain dataset
-
-    Results are returned as list
-    """
-    db = PostgresDB()
-
-    exe = sql.SQL(
+    query = sql.SQL(
         """
         SET SCHEMA %(schema)s;
         SELECT fid FROM {}
     """
-    ).format(sql.Identifier(table))
+    ).format(sql.Identifier(dataset_name))
     data = {"schema": POSTGRES_SCHEMA}
-    fids = db.retr_query(exe, data)
+    fids = db.retr_query(query, data)
     return [i[0] for i in fids]
-
-
-def create_error_table(dataset: str, indicator: str, layer_name: str):
-    """(Re)Creates an error table to handle exceptions during processing
-    of indicators.
-    """
-
-    table = get_error_table_name(dataset, indicator, layer_name)
-
-    db = PostgresDB()
-    exe = sql.SQL(
-        """
-        DROP TABLE IF EXISTS {};
-        CREATE TABLE {} (
-            fid integer NOT Null,
-            error VARCHAR(256),
-            PRIMARY KEY(fid)
-        );
-    """
-    ).format(*[sql.Identifier(table)] * 2)
-    db.query(exe)
-
-
-def insert_error(dataset: str, indicator: str, layer_name: str, fid: int, error: str):
-    """Handles exceptions during processing of indicators.
-
-    Stores failed fid and error message.
-    """
-    table = get_error_table_name(dataset, indicator, layer_name)
-    db = PostgresDB()
-    exe = sql.SQL(
-        """
-        INSERT INTO {}
-        VALUES (%(fid)s , %(error)s)
-    """
-    ).format(sql.Identifier(table))
-    db.query(exe, {"fid": fid, "error": str(error)})
 
 
 def get_zonal_stats_population(bpolys: Dict):
@@ -324,55 +228,8 @@ def get_zonal_stats_population(bpolys: Dict):
     return population, area
 
 
-def get_zonal_stats_guf(bpolys: Dict):
-    """Derive zonal built up area stats for given GeoJSON geometry.
-
-    This is based on the Global Urban Footprint dataset.
-    """
-    db = PostgresDB()
-
-    query = sql.SQL(
-        """
-    SET SCHEMA %(schema)s;
-    SELECT
-        SUM(ST_Area ((pixel_as_polygon).geom::geography))
-            / (1000*1000) as build_up_area_sqkm,
-        public.ST_Area(
-                    public.ST_GeomFromGeoJSON(%(polygon)s)::public.geography
-                ) / (1000*1000) as area_sqkm
-    FROM (
-        SELECT
-            -- ST_PixelAsPolygons will exclude pixel with nodata values
-            ST_PixelAsPolygons(
-                ST_Clip(
-                    rast, ST_GeomFromGeoJSON (%(polygon)s)
-                )
-            ) AS pixel_as_polygon
-        FROM
-            guf04_daressalaam
-        WHERE
-            ST_Intersects (rast, ST_GeomFromGeoJSON (%(polygon)s))
-            -- Avoid following ERROR of rt_raster_from_two_rasters during ST_Clip:
-            -- The two rasters provided do not have the same alignment
-            AND ST_BandIsNoData (rast) = FALSE) AS foo;"""
-    )
-
-    polygon = json.dumps(bpolys["features"][0]["geometry"])
-    data = {"schema": "public", "polygon": polygon}
-    query_results = db.retr_query(query=query, data=data)
-    built_up_area, area = query_results[0]
-
-    logging.info("Got built-up area of polygon")
-
-    return built_up_area, area
-
-
 def get_area_of_bpolys(bpolys: Dict):
-    """Calculates the area of a geojson geometry in postgis.
-
-    Using the database here so that we do not need to rely on
-    GDAL being installed for python.
-    """
+    """Calculates the area of a geojson geometry in postgis"""
 
     db = PostgresDB()
 
