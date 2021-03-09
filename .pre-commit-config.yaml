@@ -4,16 +4,17 @@ repos:
     rev: 20.8b1
     hooks:
       - id: black
+        args: ["--check"]
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
     hooks:
       - id: flake8
-        args: ["--config", "workers/setup.cfg"]
+        args: ["--count", "--config", "workers/setup.cfg"]
   - repo: https://github.com/PyCQA/isort
     rev: 5.6.4
     hooks:
       - id: isort
-        args: ["--settings-path", "workers/setup.cfg"]
+        args: ["--check", "--settings-path", "workers/setup.cfg"]
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v0.790
   #   hooks:
