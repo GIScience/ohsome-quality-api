@@ -2,10 +2,11 @@
 JrcRequirements:
   name: JRC Requirements
   description: |
-      This report shows the quality for features that the jrc project is important.
-      It combines 14 indicators
-      to inspect the quality in regard to mapping saturation of various jrc features
-      as well as the currentness of all jrc related features.
+      This report shows the quality for features that are potentially vulnerable
+      features to natural disasters thus relevant for jrc project.
+      This includes healthcare facilities, education facilities, bridges, roads and
+      railways, airports, water treatment and power generation plants, cultural
+      heritage and mass gathering sites.
   label_description:
     red: |
       The data quality in this region is low.
