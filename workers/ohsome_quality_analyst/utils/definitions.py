@@ -33,12 +33,27 @@ DATASET_NAMES = (
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("GhsPopComparison", "building_count"),
+    ("GhsPopComparison", "jrc_road_length"),
+    ("GhsPopComparison", "jrc_railway_length"),
     ("MappingSaturation", "building_count"),
     ("MappingSaturation", "major_roads"),
     ("MappingSaturation", "amenities"),
+    ("MappingSaturation", "jrc_health_count"),
+    ("MappingSaturation", "jrc_mass_gathering_sites_count"),
+    ("MappingSaturation", "jrc_railway_length"),
+    ("MappingSaturation", "jrc_road_length"),
+    ("MappingSaturation", "jrc_education_count"),
     ("LastEdit", "major_roads"),
     ("LastEdit", "building_count"),
     ("LastEdit", "amenities"),
+    ("LastEdit", "jrc_health_count"),
+    ("LastEdit", "jrc_education_count"),
+    ("LastEdit", "jrc_airport_count"),
+    ("LastEdit", "jrc_water_treatment_plant_count"),
+    ("LastEdit", "jrc_power_generation_plant_count"),
+    ("LastEdit", "jrc_cultural_heritage_site_count"),
+    ("LastEdit", "jrc_bridge_count"),
+    ("LastEdit", "jrc_mass_gathering_sites_count"),
     ("PoiDensity", "poi"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
