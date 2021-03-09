@@ -70,7 +70,15 @@ Additionally, you can define variable placeholders for important values and prel
 
 #### preprocess function
 
-This function should be used to gather and preprocess the needed data for your indicator. Usually you will need to get the features specified in your layer through the `query` helper function which can be imported from `ohsome_quality_analyst.ohsome.client`. This function can be called with a layer and a bounding-multipolygon and returns the resulting objects by calling the ohsome API. If you need additional data, e.g. the population in an area, you should prepare it here, too. You can store your preliminary results as class attributes to have access to them in the upcoming two functions.
+This function should be used to fetch and preprocess the data needed for your indicator. Usually this involves quering the ohsome API and geodatabase. To make this as easy as possible the modules `ohsome/client.py` and `geodatabase/client.py` are provided. Both modules implement asynchronity. Please make sure to [await](https://docs.python.org/3/library/asyncio-task.html#awaitables) the response when calling functions from those modules. This can be as simple as:
+
+```python
+async def preprocess(self):
+    query_result = await ohsome.client()
+```
+
+All data created during the preproccessing should be stored as attributes of the indicator object.
+
 
 #### calculate function
 

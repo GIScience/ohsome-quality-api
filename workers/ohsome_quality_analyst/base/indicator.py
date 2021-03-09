@@ -88,6 +88,11 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @abstractmethod
     async def preprocess(self) -> None:
+        """Get fetch and prepocess data
+
+        Fetch data from the ohsome API and/or from the geodatabase asynchronously.
+        Preprocess data for calculation in the calculate method.
+        """
         pass
 
     @abstractmethod
