@@ -47,7 +47,7 @@ class GhsPopComparison(BaseIndicator):
         # more precise values? maybe as fraction of the threshold functions?
         return 0.75 * np.sqrt(pop_per_sqkm)
 
-    def preprocess(self):
+    async def preprocess(self):
         logging.info(f"Preprocessing for indicator: {self.metadata.name}")
 
         pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
@@ -57,7 +57,7 @@ class GhsPopComparison(BaseIndicator):
         self.area = area
         self.pop_count = pop_count
 
-        query_results = ohsome_client.query(
+        query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
         self.feature_count = query_results["result"][0]["value"]

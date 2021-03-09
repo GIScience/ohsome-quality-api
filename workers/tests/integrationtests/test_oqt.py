@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -18,8 +19,10 @@ class TestOqt(unittest.TestCase):
 
     def testCreateIndicatorFromScratch(self):
         # From scratch
-        indicator = oqt.create_indicator(
-            "GhsPopComparison", "building_count", bpolys=self.bpolys
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparison", "building_count", bpolys=self.bpolys
+            )
         )
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
@@ -29,16 +32,23 @@ class TestOqt(unittest.TestCase):
     def testCreateIndicatorFromDatabase(self):
         # Invalid dataset name
         with self.assertRaises(ValueError):
-            oqt.create_indicator(
-                "GhsPopComparison",
-                "building_count",
-                dataset="test_region",
-                feature_id=1,
+            asyncio.run(
+                oqt.create_indicator(
+                    "GhsPopComparison",
+                    "building_count",
+                    dataset="test_region",
+                    feature_id=1,
+                )
             )
 
         # Valid parameters
-        indicator = oqt.create_indicator(
-            "GhsPopComparison", "building_count", dataset="test_regions", feature_id=3
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparison",
+                "building_count",
+                dataset="test_regions",
+                feature_id=3,
+            )
         )
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
@@ -46,13 +56,15 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     def testCreateReportFromScratch(self):
-        report = oqt.create_report("SimpleReport", self.bpolys)
+        report = asyncio.run(oqt.create_report("SimpleReport", self.bpolys))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
     def testCreateReportFromDatabase(self):
-        report = oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)
+        report = asyncio.run(
+            oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)
+        )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)

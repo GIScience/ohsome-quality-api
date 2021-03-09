@@ -65,7 +65,7 @@ async def get_indicator(
         bpolys = geojson.loads(bpolys)
     elif dataset is None and featureId is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
-    indicator = oqt.create_indicator(name, layerName, bpolys, dataset, featureId)
+    indicator = await oqt.create_indicator(name, layerName, bpolys, dataset, featureId)
     response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
@@ -88,7 +88,9 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
         bpolys = geojson.loads(bpolys)
     elif dataset is None and feature_id is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
-    indicator = oqt.create_indicator(name, layer_name, bpolys, dataset, feature_id)
+    indicator = await oqt.create_indicator(
+        name, layer_name, bpolys, dataset, feature_id
+    )
     response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = request.url._url
@@ -113,7 +115,7 @@ async def get_report(
         bpolys = geojson.loads(bpolys)
     elif dataset is None and featureId is None:
         raise ValueError("Provide either bpolys or dataset and feature_id")
-    report = oqt.create_report(
+    report = await oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=featureId
     )
     response = empty_api_response()
@@ -147,7 +149,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     # TODO: Error handling should happen in oqt.create_report
     if bpolys:
         bpolys = geojson.loads(bpolys)
-    report = oqt.create_report(
+    report = await oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
     response = empty_api_response()

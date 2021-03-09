@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -21,12 +22,14 @@ class TestReportSimpleReport(unittest.TestCase):
     def test(self):
         self.report.set_indicator_layer()
         for indicator_name, layer_name in self.report.indicator_layer:
-            indicator = create_indicator(
-                indicator_name,
-                layer_name,
-                self.report.bpolys,
-                self.report.dataset,
-                self.report.feature_id,
+            indicator = asyncio.run(
+                create_indicator(
+                    indicator_name,
+                    layer_name,
+                    self.report.bpolys,
+                    self.report.dataset,
+                    self.report.feature_id,
+                )
             )
             self.report.indicators.append(indicator)
         self.report.combine_indicators()

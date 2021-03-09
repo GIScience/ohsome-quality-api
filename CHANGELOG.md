@@ -7,6 +7,7 @@
 - Rename uvicorn runner script and integrate it into Docker setup !70
 - Minor changes to the code structure !77 !79
 - Update pre-commit to not make changes !69
+- ohsome API requests are performed asynchronously !80
 
 ## 0.1.0
 

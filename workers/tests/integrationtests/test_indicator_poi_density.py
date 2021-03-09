@@ -1,3 +1,4 @@
+import asyncio
 import os
 import unittest
 
@@ -18,7 +19,7 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         self.indicator = PoiDensity(bpolys=bpolys, layer_name="poi")
 
     def test(self):
-        self.indicator.preprocess()
+        asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)
         self.assertIsNotNone(self.indicator.count)
         self.assertIsNotNone(self.indicator.density)

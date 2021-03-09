@@ -1,4 +1,5 @@
 import ast
+import asyncio
 import logging
 
 import click
@@ -98,12 +99,14 @@ def create_indicator(
             bpolys = geojson.load(file)
     else:
         bpolys = None
-    indicator = oqt.create_indicator(
-        indicator_name=indicator_name,
-        bpolys=bpolys,
-        layer_name=layer_name,
-        feature_id=feature_id,
-        dataset=dataset_name,
+    indicator = asyncio.run(
+        oqt.create_indicator(
+            indicator_name=indicator_name,
+            bpolys=bpolys,
+            layer_name=layer_name,
+            feature_id=feature_id,
+            dataset=dataset_name,
+        )
     )
     # TODO: Print out readable format.
     click.echo(indicator.metadata)
@@ -122,11 +125,13 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
             bpolys = geojson.load(file)
     else:
         bpolys = None
-    report = oqt.create_report(
-        report_name=report_name,
-        bpolys=bpolys,
-        dataset=dataset_name,
-        feature_id=feature_id,
+    report = asyncio.run(
+        oqt.create_report(
+            report_name=report_name,
+            bpolys=bpolys,
+            dataset=dataset_name,
+            feature_id=feature_id,
+        )
     )
     # TODO: Print out readable format.
     click.echo(report.metadata)
@@ -158,7 +163,7 @@ def create_all_indicators(dataset_name, force):
     """Create all indicators for a specified dataset."""
     click.echo("This command will calculate all indicators for the specified dataset.")
     click.confirm("Do you want to continue?", abort=True)
-    oqt.create_all_indicators(dataset=dataset_name, force=force)
+    asyncio.run(oqt.create_all_indicators(dataset=dataset_name, force=force))
 
 
 if __name__ == "__main__":
