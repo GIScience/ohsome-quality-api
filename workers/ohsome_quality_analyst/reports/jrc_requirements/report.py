@@ -41,7 +41,6 @@ class JrcRequirements(BaseReport):
 
         values = []
         for indicator in self.indicators:
-            # TODO: Is it possible that a label == UNDEFINED?
             if indicator.result.label != "undefined":
                 values.append(indicator.result.value)
         self.result.value = mean(values)
