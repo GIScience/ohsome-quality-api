@@ -5,6 +5,7 @@
 - Refine `pyproject.toml` !65
 - Minor improvements of the documentation !67
 - Rename uvicorn runner script and integrate it into Docker setup !70
+- Improve error handling of database authetication module !72
 - Minor changes to the code structure !77 !79
 - Update pre-commit to not make changes !69
 - ohsome API requests are performed asynchronously !80
