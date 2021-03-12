@@ -77,7 +77,6 @@ async def create_indicator(
 
     if bpolys is not None and dataset is None and feature_id is None:
         await from_scratch()
-        db_client.save_indicator_results(indicator)
     elif dataset is not None and feature_id is not None:
         success = from_database()
         if not success or force:
