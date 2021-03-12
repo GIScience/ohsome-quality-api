@@ -70,7 +70,7 @@ def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
     data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
     query_results = db.retr_query(query=query, data=data)
     bpolys = query_results[0][0]
-    logging.info(f"got bpolys geometry from {dataset} for feature {feature_id}.")
+    logging.info("Got bpolys geometry")
     return bpolys
 
 
@@ -80,6 +80,7 @@ def save_indicator_results(indicator) -> None:
     The results table is super simplistic. For now we only store the feature_id and
     the results as a json object.
     """
+    logging.info("Saving indicator result to database")
 
     db = PostgresDB()
 
@@ -127,10 +128,6 @@ def save_indicator_results(indicator) -> None:
         "svg": indicator.result.svg,
     }
     db.query(query=query, data=data)
-    logging.info(
-        f"Saved '{indicator.metadata.name}' indicator result "
-        f"for feature {indicator.feature_id} in {table}."
-    )
 
 
 def drop_result_table(dataset_name, indicator_name, layer_name):
@@ -177,7 +174,7 @@ def load_indicator_results(indicator) -> bool:
         results = query_results[0][0]
         query_result[field] = results
 
-    logging.info(f"Got results for feature {indicator.feature_id} from {table}.")
+    logging.info("Got indicator results from database")
     # TODO Rewrite to use Result class definied in BaseIndicator class
     indicator.result.label = query_result["label"]
     indicator.result.value = query_result["value"]
@@ -187,7 +184,7 @@ def load_indicator_results(indicator) -> bool:
 
 
 def create_dataset_table(dataset: str):
-    """Creates dataset table with collums fid and geom"""
+    """Creates dataset table with column fid and geom"""
     db = PostgresDB()
     exe = sql.SQL(
         """DROP TABLE IF EXISTS {};
@@ -272,8 +269,9 @@ def create_error_table(dataset: str, indicator: str, layer_name: str):
 
 
 def insert_error(dataset: str, indicator: str, layer_name: str, fid: int, error: str):
-    """handles exceptionsduring processing of indicators.
-    Stores failed fid and error message
+    """Handles exceptions during processing of indicators.
+
+    Stores failed fid and error message.
     """
     table = get_error_table_name(dataset, indicator, layer_name)
     db = PostgresDB()
@@ -321,7 +319,7 @@ def get_zonal_stats_population(bpolys: Dict):
     data = {"schema": POSTGRES_SCHEMA, "polygon": polygon}
     query_results = db.retr_query(query=query, data=data)
     population, area = query_results[0]
-    logging.info("Got population for polygon.")
+    logging.info("Got population inside polygon")
 
     return population, area
 
@@ -364,7 +362,7 @@ def get_zonal_stats_guf(bpolys: Dict):
     query_results = db.retr_query(query=query, data=data)
     built_up_area, area = query_results[0]
 
-    logging.info("Got built up area for polygon.")
+    logging.info("Got built-up area of polygon")
 
     return built_up_area, area
 
@@ -395,6 +393,6 @@ def get_area_of_bpolys(bpolys: Dict):
     query_results = db.retr_query(query=query, data=data)
     area = query_results[0][0]
 
-    logging.info("Got area for polygon.")
+    logging.info("Got area of polygon")
 
     return area

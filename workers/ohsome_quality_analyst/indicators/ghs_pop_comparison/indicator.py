@@ -48,8 +48,6 @@ class GhsPopComparison(BaseIndicator):
         return 0.75 * np.sqrt(pop_per_sqkm)
 
     async def preprocess(self):
-        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
-
         pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
 
         if pop_count is None:
@@ -65,8 +63,6 @@ class GhsPopComparison(BaseIndicator):
         self.pop_count_per_sqkm = self.pop_count / self.area
 
     def calculate(self):
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
-
         description = Template(self.metadata.result_description).substitute(
             pop_count=round(self.pop_count),
             area=round(self.area, 1),
@@ -112,8 +108,6 @@ class GhsPopComparison(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Skipping figure creation.")
             return
-
-        logging.info(f"Create figure for indicator: {self.metadata.name}")
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -175,5 +169,5 @@ class GhsPopComparison(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.debug("Successful SVG figure creation")
         plt.close("all")

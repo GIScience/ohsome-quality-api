@@ -46,9 +46,6 @@ class MappingSaturation(BaseIndicator):
 
     async def preprocess(self) -> Dict:
         """Get data from ohsome API and db. Put timestamps + data in list"""
-
-        logging.info(f"Preprocessing for indicator: {self.metadata.name}")
-
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
         )
@@ -74,9 +71,6 @@ class MappingSaturation(BaseIndicator):
         }
 
     def calculate(self):
-
-        logging.info(f"run calculation for : {self.metadata.name}")
-
         description = ""
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
@@ -176,8 +170,8 @@ class MappingSaturation(BaseIndicator):
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            logging.info(
-                f"result saturation value: {self.saturation}, label: {label},"
+            logging.debug(
+                f"Saturation result value: {self.saturation}, label: {label},"
                 f" value: {value}, description: {description}"
             )
         else:
@@ -252,5 +246,5 @@ class MappingSaturation(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
+        logging.debug("Successful SVG figure creation")
         plt.close("all")

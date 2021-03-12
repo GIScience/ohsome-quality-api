@@ -24,11 +24,12 @@ async def query(layer, bpolys: str, time: str = None, endpoint: str = None) -> D
         resp = await client.post(url, data=data)
 
     logging.info("Query ohsome API.")
-    logging.info("Query URL: " + url)
-    logging.info("Query Filter: " + layer.filter)
+    logging.debug("Query URL: " + url)
+    logging.debug("Query Filter: " + layer.filter)
     if resp.status_code == 200:
         logging.info("Query successful!")
     elif resp.status_code == 404:
+        # TODO: Handle when query fails
         logging.info("Query failed!")
 
     return resp.json()
