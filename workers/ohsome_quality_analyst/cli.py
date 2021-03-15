@@ -10,6 +10,7 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.cli_opts import (
     dataset_name_opt,
     feature_id_opt,
+    force_opt,
     indicator_name_opt,
     infile_opt,
     layer_name_opt,
@@ -46,7 +47,7 @@ def add_opts(options):
 @click.group()
 @click.version_option()
 @click.option("--quiet", "-q", is_flag=True, help="Disable logging.")
-def cli(quiet):
+def cli(quiet: bool):
     if not quiet:
         configure_logging()
         logging.info("Logging enabled")
@@ -88,12 +89,23 @@ def list_datasets():
 @add_opts(infile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
+@add_opts(force_opt)
 def create_indicator(
-    indicator_name: str, infile: str, layer_name: str, feature_id, dataset_name
+    indicator_name: str,
+    infile: str,
+    layer_name: str,
+    feature_id: int,
+    dataset_name: str,
+    force: bool,
 ):
     """Create an Indicator and print results to stdout."""
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
+    if force:
+        click.echo(
+            "The argument 'force' will update the indicator result in the database."
+        )
+        click.confirm("Do you want to continue?", abort=True)
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
@@ -106,6 +118,7 @@ def create_indicator(
             layer_name=layer_name,
             feature_id=feature_id,
             dataset=dataset_name,
+            force=force,
         )
     )
     # TODO: Print out readable format.
@@ -118,7 +131,10 @@ def create_indicator(
 @add_opts(infile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
-def create_report(report_name: str, infile: str, dataset_name: str, feature_id: int):
+@add_opts(force_opt)
+def create_report(
+    report_name: str, infile: str, dataset_name: str, feature_id: int, force: bool
+):
     """Create a Report and print results to stdout."""
     if infile:
         with open(infile, "r") as file:
@@ -131,6 +147,7 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
             bpolys=bpolys,
             dataset=dataset_name,
             feature_id=feature_id,
+            force=force,
         )
     )
     # TODO: Print out readable format.
@@ -140,6 +157,7 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
 
 # TODO: Dataset option is mandatory
 @cli.command("create-all-indicators")
+@add_opts(force_opt)
 @click.option(
     "--dataset_name",
     "-d",
@@ -150,18 +168,16 @@ def create_report(report_name: str, infile: str, dataset_name: str, feature_id: 
     ),
     help=("Choose a dataset containing geometries."),
 )
-@click.option(
-    "--force",
-    is_flag=True,
-    help=(
-        "Force recreation of indicators. "
-        + "This will drop the result table in database first "
-        + "before triggering the creation of all indicators."
-    ),
-)
-def create_all_indicators(dataset_name, force):
+def create_all_indicators(dataset_name: str, force: bool):
     """Create all indicators for a specified dataset."""
-    click.echo("This command will calculate all indicators for the specified dataset.")
+    click.echo(
+        "This command will calculate all indicators for the specified dataset "
+        + "and may take a while to complete."
+    )
+    if force:
+        click.echo(
+            "The argument 'force' will update the indicator results in the database."
+        )
     click.confirm("Do you want to continue?", abort=True)
     asyncio.run(oqt.create_all_indicators(dataset=dataset_name, force=force))
 
