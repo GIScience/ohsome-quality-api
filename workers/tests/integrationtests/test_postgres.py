@@ -10,11 +10,6 @@ from ohsome_quality_analyst.geodatabase.auth import PostgresDB
 
 class TestPostgres(unittest.TestCase):
     def test_connection(self):
-        os.unsetenv("POSTGRES_HOST")  # Unset variable for the use of this script
-        os.unsetenv("POSTGRES_PORT")
-        os.unsetenv("POSTGRES_DB")
-        os.unsetenv("POSTGRES_USER")
-        os.unsetenv("POSTGRES_PASSWORD")
         db_client = PostgresDB()
         self.assertIsInstance(db_client._connection, psycopg_connection)
         self.assertIsInstance(db_client._cursor, psycopg_cursor)
