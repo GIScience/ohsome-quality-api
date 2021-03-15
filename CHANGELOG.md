@@ -7,8 +7,8 @@
 - Update pre-commit to not make changes !69
 - Rename uvicorn runner script and integrate it into Docker setup !70
 - Improve error handling of database authetication module !72
-- Minor changes to the code structure !77 !79
 - Add force recreate indicator/report option !75
+- Minor changes to the code structure !77 !79 !83
 - ohsome API requests are performed asynchronously !80
 - Use offical Python Dockerfile as base Dockerfile for OQT !81
 - Improve logging messages #146
