@@ -75,9 +75,6 @@ indicators as well as trigger the calculation of all indicators for all regions.
 
 One can get an overview on which functions are available when running:
 ```
-$ oqt --version
-oqt, version 0.1.0
-
 $ oqt --help
 Usage: oqt [OPTIONS] COMMAND [ARGS]...
 
