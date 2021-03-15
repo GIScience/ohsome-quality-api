@@ -9,6 +9,7 @@
 - Minor changes to the code structure !77 !79
 - Update pre-commit to not make changes !69
 - ohsome API requests are performed asynchronously !80
+- Use offical Python Dockerfile as base Dockerfile for OQT !81
 - Improve logging messages #146
 
 ## 0.1.0
