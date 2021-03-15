@@ -27,6 +27,11 @@ class TestPostgres(unittest.TestCase):
         os.environ["POSTGRES_PASSWORD"] = ""
         with self.assertRaises(OperationalError):
             PostgresDB()
+        os.environ.pop("POSTGRES_HOST")
+        os.environ.pop("POSTGRES_PORT")
+        os.environ.pop("POSTGRES_DB")
+        os.environ.pop("POSTGRES_USER")
+        os.environ.pop("POSTGRES_PASSWORD")
 
 
 if __name__ == "__main__":
