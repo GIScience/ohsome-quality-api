@@ -79,6 +79,8 @@ async def preprocess(self):
 
 All data created during the preproccessing should be stored as attributes of the indicator object.
 
+> Note: When writting tests for the new indicator class, this function has to be called with `asyncio.run(indicator.preprocess())`.
+
 
 #### calculate function
 

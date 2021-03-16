@@ -11,13 +11,9 @@ What is OQT?
 * A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics.
 
 
-## Components
+## Overview
 
-1. Database: PostGIS database
-2. Workers/Back-end: Python package ohsome_quality_analyst
-3. Website
-
-![](docs/img/UML-Component-Diagram.png)
+Please read following short document to get an overview of OQT: [docs/overview.md](docs/overview.md)
 
 
 ## Installation
@@ -36,7 +32,14 @@ pip install .
 In addition to installing the Python package, access to the PostGIS database is required. Please reach out if you need one.
 
 
-## Usage of the Command Line Interface
+## Usage of the API
+
+Head over to [https://oqt.ohsome.org/api/docs#/](https://oqt.ohsome.org/api/docs#/) to explore the API interactively.
+
+The response schema is defined here: [docs/api.md](docs/api.md)
+
+
+## Usage of the CLI
 
 ```bash
 $ oqt --help
@@ -61,6 +64,8 @@ Commands:
 ## Contributing
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Looking to implement a new indicator? Then please have a look at [docs/indicator_creation.md](docs/indicator_creation.md)
 
 
 ## Development Setup
