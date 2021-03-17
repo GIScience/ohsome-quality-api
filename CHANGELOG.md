@@ -13,6 +13,7 @@
 - Use offical Python Dockerfile as base Dockerfile for OQT !81
 - Improve docs structure !91
 - Improve logging messages #146
+- new indicator tag_ratio !85
 
 ## 0.1.0
 

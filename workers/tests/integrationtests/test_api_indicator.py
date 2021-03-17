@@ -10,7 +10,7 @@ import unittest
 
 import geojson
 from fastapi.testclient import TestClient
-from schema import Schema
+from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
 
@@ -45,6 +45,7 @@ class TestApiIndicator(unittest.TestCase):
                     "description": str,
                     "endpoint": str,
                     "filter": str,
+                    Optional("ratio_filter", default=None): Or(str, None),
                 },
                 "result": {
                     "value": float,

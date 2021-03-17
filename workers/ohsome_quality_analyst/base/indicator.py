@@ -5,7 +5,7 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Literal
+from typing import Dict, Literal, Optional
 
 from dacite import from_dict
 from geojson import FeatureCollection
@@ -35,6 +35,7 @@ class LayerDefinition:
     description: str
     endpoint: str
     filter: str
+    ratio_filter: Optional[str] = None
 
 
 @dataclass
