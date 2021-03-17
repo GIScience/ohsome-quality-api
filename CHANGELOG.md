@@ -12,6 +12,7 @@
 - ohsome API requests are performed asynchronously !80
 - Use offical Python Dockerfile as base Dockerfile for OQT !81
 - Improve docs structure !91
+- Bug fixes !92
 - Improve logging messages #146
 
 ## 0.1.0
