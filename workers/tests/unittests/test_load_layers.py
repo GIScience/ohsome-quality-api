@@ -1,6 +1,6 @@
 import unittest
 
-from schema import Schema
+from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.utils.definitions import (
     get_layer_definition,
@@ -12,7 +12,15 @@ class TestLoadLayers(unittest.TestCase):
     def setUp(self):
         self.layers = load_layer_definitions()
         self.schema = Schema(
-            {str: {"name": str, "description": str, "endpoint": str, "filter": str}}
+            {
+                str: {
+                    "name": str,
+                    "description": str,
+                    "endpoint": str,
+                    "filter": str,
+                    Optional("ratio_filter", default=None): Or(str, None),
+                }
+            }
         )
 
     def test_validate_schema(self):

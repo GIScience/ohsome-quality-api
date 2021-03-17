@@ -14,6 +14,7 @@
 - Improve docs structure !91
 - Bug fixes !92
 - Improve logging messages #146
+- new indicator tag_ratio !85
 
 ## 0.1.0
 
