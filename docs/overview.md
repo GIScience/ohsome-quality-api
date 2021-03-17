@@ -1,6 +1,6 @@
 # Overview
-This document should give you an overview on what is already implemented and works, and what is still missing and might 
-come in future releases. It covers the following parts:
+
+This document should give you an overview on what is already implemented and works, and what is still missing and might come in future releases. It covers the following parts:
 
 * Indicators
 * Reports
@@ -8,7 +8,11 @@ come in future releases. It covers the following parts:
 * API
 * Command Line Interface
 
-## Indicators
+
+## OSM Quality Indicators and Reports
+
+### Indicators
+
 So far we have implemented a few indicators which are either intrinsic, or rely on extrinsic data sets.
 
 Extrinsic indicators:
@@ -24,19 +28,32 @@ Currently missing:
 * Feature-based indicators, as so far all indicators are area-based, meaning they provide a quality estimation for a 
 whole region and not for single OSM features
 
-## Reports
+### Reports
+
 So far we have implemented a few reports, which combine different sets of indicators. Currently, there are the following:
 * Simple report
 * Remote mapping report (buildings, roads)
 * Sketch mapping report
 
-## Website
+
+## Components
+
+1. Website
+2. Workers/Backend: Python package ohsome_quality_analyst
+    - API
+    - CLI
+3. Database: PostGIS database
+
+![](docs/img/UML-Component-Diagram.png)
+
+
+### Website
 
 [https://oqt.ohsome.org](https://oqt.ohsome.org)
 
 The website relies on the OQT API. It is split up into two main parts:
 
-### Website Part 1
+#### Website Part 1
 First, the user needs to select an area of interest, and a respective data quality report. Currently, the set of
 available geometries has been picked manually and is defined in a
 [GeoJSON file](website/website/assets/data/test_regions.geojson).
@@ -48,7 +65,7 @@ The user can select one of the following reports, which are hardcoded in the [we
 
 ![Screenshot of the area picking part of the website](./img/oqt_website_step1.png)
 
-### Website Part 2
+#### Website Part 2
 The second part visualizes the results of the selected data quality report. This part is split up into two sub-sections:
 
 * Overall data quality report (aggregated quality value based on all indicators)
@@ -56,7 +73,7 @@ The second part visualizes the results of the selected data quality report. This
 
 ![Screenshot of the result part of the website](./img/oqt_website_step2.png)
 
-## API
+### API
 The API can be accessed via this address: [https://oqt.ohsome.org/api](https://oqt.ohsome.org/api). 
 There is also a [swagger documentation](https://oqt.ohsome.org/api/docs) available. 
 
@@ -69,7 +86,7 @@ dataset and feature id, or a custom input region is provided in the API query.
 
 It is NOT possible to trigger the calculation of all indicators for all regions using the API.
 
-## Command Line Interface
+### Command Line Interface
 The command line interface offers the biggest flexibility. Using the CLI one can retrieve reports and 
 indicators as well as trigger the calculation of all indicators for all regions.
 
