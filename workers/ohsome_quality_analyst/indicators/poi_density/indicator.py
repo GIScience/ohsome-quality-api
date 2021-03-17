@@ -48,7 +48,7 @@ class PoiDensity(BaseIndicator):
         if query_results_count is None:
             return False
 
-        self.area_sqkm = get_area_of_bpolys(self.bpolys)  # calc polygon area
+        self.area_sqkm = await get_area_of_bpolys(self.bpolys)  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
         self.density = self.count / self.area_sqkm
         return True

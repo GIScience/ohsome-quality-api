@@ -37,6 +37,7 @@ dacite = "^1.6.0"
 PyYAML = "^5.4.1"
 toml = "^0.10.2"
 httpx = "^0.17.0"
+asyncpg = "^0.22.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "3.8.4"
