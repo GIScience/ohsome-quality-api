@@ -15,18 +15,25 @@ class TestPostgres(unittest.TestCase):
         self.assertIsInstance(db_client._cursor, psycopg_cursor)
 
     def test_connection_fails(self):
-        os.environ["POSTGRES_HOST"] = ""
-        os.environ["POSTGRES_PORT"] = ""
-        os.environ["POSTGRES_DB"] = ""
-        os.environ["POSTGRES_USER"] = ""
-        os.environ["POSTGRES_PASSWORD"] = ""
+        """Test connection failure error due to wrong credentials"""
+        env = "POSTGRES_PORT"  # Default if no custom DB credentials are set
+        for var in (
+            "POSTGRES_HOST",
+            "POSTGRES_PORT",
+            "POSTGRES_DB",
+            "POSTGRES_USER",
+            "POSTGRES_PASSWORD",
+        ):
+            try:
+                value = os.environ.pop(var)
+                env = var
+                break
+            except KeyError:
+                continue
+        os.environ[env] = ""
         with self.assertRaises(OperationalError):
             PostgresDB()
-        os.environ.pop("POSTGRES_HOST")
-        os.environ.pop("POSTGRES_PORT")
-        os.environ.pop("POSTGRES_DB")
-        os.environ.pop("POSTGRES_USER")
-        os.environ.pop("POSTGRES_PASSWORD")
+        os.environ[env] = value
 
 
 if __name__ == "__main__":
