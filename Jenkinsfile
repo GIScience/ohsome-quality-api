@@ -96,7 +96,7 @@ pipeline {
       steps {
         script {
           WORKERS.inside {
-            sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --diff --no-color .'
+            sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
             sh 'cd ${WORK_DIR} && ${POETRY_RUN} flake8 --count --statistics --config setup.cfg .'
             sh 'cd ${WORK_DIR} && ${POETRY_RUN} isort --check --diff --settings-path setup.cfg .'
           }
