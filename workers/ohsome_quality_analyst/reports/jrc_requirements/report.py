@@ -26,14 +26,26 @@ class JrcRequirements(BaseReport):
             IndicatorLayer("MappingSaturation", "jrc_education_count"),
             IndicatorLayer("LastEdit", "jrc_health_count"),
             IndicatorLayer("LastEdit", "jrc_education_count"),
+            IndicatorLayer("LastEdit", "jrc_road_length"),
+            IndicatorLayer("LastEdit", "jrc_railway_length"),
             IndicatorLayer("LastEdit", "jrc_airport_count"),
             IndicatorLayer("LastEdit", "jrc_water_treatment_plant_count"),
             IndicatorLayer("LastEdit", "jrc_power_generation_plant_count"),
             IndicatorLayer("LastEdit", "jrc_cultural_heritage_site_count"),
             IndicatorLayer("LastEdit", "jrc_bridge_count"),
             IndicatorLayer("LastEdit", "jrc_mass_gathering_sites_count"),
-            IndicatorLayer("GhsPopComparison", "jrc_road_length"),
-            IndicatorLayer("GhsPopComparison", "jrc_railway_length"),
+            # TODO define threshoulds for GhsPopComparison with jrc
+            #  layer topics
+            # IndicatorLayer("GhsPopComparison", "jrc_road_length"),
+            # IndicatorLayer("GhsPopComparison", "jrc_railway_length"),
+            IndicatorLayer("TagsRatio", "jrc_health_count"),
+            IndicatorLayer("TagsRatio", "jrc_education_count"),
+            IndicatorLayer("TagsRatio", "jrc_road_length"),
+            IndicatorLayer("TagsRatio", "jrc_airport_count"),
+            IndicatorLayer("TagsRatio", "jrc_power_generation_plant_count"),
+            IndicatorLayer("TagsRatio", "jrc_cultural_heritage_site_count"),
+            IndicatorLayer("TagsRatio", "jrc_bridge_count"),
+            IndicatorLayer("TagsRatio", "jrc_mass_gathering_sites_count"),
         )
 
     def combine_indicators(self) -> None:
