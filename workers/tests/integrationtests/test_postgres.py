@@ -16,24 +16,29 @@ class TestPostgres(unittest.TestCase):
 
     def test_connection_fails(self):
         """Test connection failure error due to wrong credentials"""
-        env = "POSTGRES_PORT"  # Default if no custom DB credentials are set
-        for var in (
+        env_backup = {}
+        env_names = [
             "POSTGRES_HOST",
             "POSTGRES_PORT",
             "POSTGRES_DB",
             "POSTGRES_USER",
             "POSTGRES_PASSWORD",
-        ):
+        ]
+        for env_name in env_names:
             try:
-                value = os.environ.pop(var)
-                env = var
-                break
+                value = os.environ.pop(env_name)
+                print(value)
+                env_backup[env_name] = value
             except KeyError:
-                continue
-        os.environ[env] = ""
+                pass
+            os.environ[env_name] = ""
         with self.assertRaises(OperationalError):
             PostgresDB()
-        os.environ[env] = value
+        for env_name in env_names:
+            if env_name in env_backup:
+                os.environ[env_name] = env_backup[env_name]
+            else:
+                os.environ.pop(env_name)
 
 
 if __name__ == "__main__":
