@@ -34,15 +34,31 @@ All development work is based on the main branch (`master`). Merge requests are 
 
 ## Style Guide
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies definied in the `pyproject.toml` file.
+### Tools
+
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies defined in the `pyproject.toml` file.
 
 The configuration of flake8 and isort is stored in `setup.cfg`.
 
-In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit.
+Run black, flake8 and isort with following commands:
 
-> Tip 1: Ignore a hook: `SKIP=flake8 git commit -m "foo"`
->
-> Tip 2: Mark in-line that flake8 should not raise any error: `print()  # noqa`
+```bash
+cd workers/
+black .
+flake8 .
+isort .
+```
+
+Black and isort will autoformat the code. Flake8 shows only what should be fixed but will not make any changes to the code base.
+
+Changes can be checked manually with `git diff`.
+
+> Tip: Mark in-line that flake8 should not raise any error: `print()  # noqa`
+
+
+### Pre-Commit
+
+In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit. In contrast to above described commands running these hooks will not apply any changes to the code base. Instead 'pre-commit' checks if there would be any changes to be made. In that case simply run above commands manually.
 
 
 ## Tests
