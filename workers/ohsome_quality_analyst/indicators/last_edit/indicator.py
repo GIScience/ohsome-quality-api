@@ -2,7 +2,6 @@ import json
 import logging
 from io import StringIO
 from string import Template
-from typing import Dict
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -36,7 +35,7 @@ class LastEdit(BaseIndicator):
         self.total_features = None
         self.share_edited_features = None
 
-    async def preprocess(self) -> Dict:
+    async def preprocess(self) -> bool:
         if self.time_range is None:
             latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
             self.time_range = "{},{}".format(
@@ -54,6 +53,8 @@ class LastEdit(BaseIndicator):
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )
+        if query_results_contributions is None or query_results_totals is None:
+            return False
         try:
             self.edited_features = len(query_results_contributions["features"])
         except KeyError:
@@ -69,43 +70,47 @@ class LastEdit(BaseIndicator):
                 self.share_edited_features = round(
                     (self.edited_features / self.total_features) * 100
                 )
+        return True
 
-    def calculate(self) -> None:
+    def calculate(self) -> bool:
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
+
         description = Template(self.metadata.result_description).substitute(
             share=self.share_edited_features, layer_name=self.layer.name
         )
-        if self.total_features == 0 or self.total_features is None:
-            label = "undefined"
-            value = None
-            description = (
+        if self.total_features == 0:
+            self.result.label = "undefined"
+            self.result.value = None
+            self.result.description = (
                 "Since the OHSOME query returned a count of 0 for this feature "
                 "a quality estimation can not be made for this filter"
             )
+            return False
         elif self.share_edited_features >= self.threshold_yellow:
-            label = "green"
-            value = 1.0
-            description += self.metadata.label_description["green"]
+            self.result.label = "green"
+            self.result.value = 1.0
+            self.result.description = (
+                description + self.metadata.label_description["green"]
+            )
         elif self.share_edited_features >= self.threshold_red:
-            label = "yellow"
-            value = 0.5
-            description += self.metadata.label_description["yellow"]
+            self.result.label = "yellow"
+            self.result.value = 0.5
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
         else:
-            label = "red"
-            value = 0.0
-            description += self.metadata.label_description["red"]
+            self.result.label = "red"
+            self.result.value = 0.0
+            self.result.description = (
+                description + self.metadata.label_description["red"]
+            )
+        return True
 
-        self.result.label = label
-        self.result.value = value
-        self.result.description = description
-
-    def create_figure(self) -> None:
+    def create_figure(self) -> bool:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
-        if self.share_edited_features is None:
-            return None
-
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -158,3 +163,4 @@ class LastEdit(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+        return True

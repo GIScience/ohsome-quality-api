@@ -49,11 +49,12 @@ async def create_indicator(
     async def from_scratch():
         """Create indicatore from scratch."""
         logging.info("Run preprocessing")
-        await indicator.preprocess()
-        logging.info("Run calculation")
-        indicator.calculate()
-        logging.info("Run figure creation")
-        indicator.create_figure()
+        if await indicator.preprocess():
+            logging.info("Run calculation")
+            if indicator.calculate():
+                logging.info("Run figure creation")
+                if indicator.create_figure():
+                    pass
 
     def from_database() -> bool:
         """Create indicator by loading existing results from database"""

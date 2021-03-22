@@ -35,19 +35,19 @@ class GhsPopComparison(BaseIndicator):
         self.feature_count = None
         self.feature_count_per_sqkm = None
 
-    def greenThresholdFunction(self, pop_per_sqkm):
+    def greenThresholdFunction(self, pop_per_sqkm) -> float:
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
-        return 5 * np.sqrt(pop_per_sqkm)
+        return 5.0 * np.sqrt(pop_per_sqkm)
 
-    def yellowThresholdFunction(self, pop_per_sqkm):
+    def yellowThresholdFunction(self, pop_per_sqkm) -> float:
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
         return 0.75 * np.sqrt(pop_per_sqkm)
 
-    async def preprocess(self):
+    async def preprocess(self) -> bool:
         pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
 
         if pop_count is None:
@@ -58,11 +58,14 @@ class GhsPopComparison(BaseIndicator):
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
+        if query_results is None:
+            return False
         self.feature_count = query_results["result"][0]["value"]
         self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
+        return True
 
-    def calculate(self):
+    def calculate(self) -> bool:
         description = Template(self.metadata.result_description).substitute(
             pop_count=round(self.pop_count),
             area=round(self.area, 1),
@@ -71,19 +74,19 @@ class GhsPopComparison(BaseIndicator):
         )
 
         if self.pop_count_per_sqkm == 0:
-            label = "undefined"
-            value = None
-            description += self.metadata.label_description["undefined"]
+            return False
 
         elif self.feature_count_per_sqkm <= self.yellowThresholdFunction(
             self.pop_count_per_sqkm
         ):
-            value = (
+            self.result.value = (
                 self.feature_count_per_sqkm
                 / self.yellowThresholdFunction(self.pop_count_per_sqkm)
             ) * (0.5)
-            description += self.metadata.label_description["red"]
-            label = "red"
+            self.result.description = (
+                description + self.metadata.label_description["red"]
+            )
+            self.result.label = "red"
 
         elif self.feature_count_per_sqkm <= self.greenThresholdFunction(
             self.pop_count_per_sqkm
@@ -91,20 +94,21 @@ class GhsPopComparison(BaseIndicator):
             green = self.greenThresholdFunction(self.pop_count_per_sqkm)
             yellow = self.yellowThresholdFunction(self.pop_count_per_sqkm)
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
-            value = 0.5 + fraction
-            description += self.metadata.label_description["yellow"]
-            label = "yellow"
+            self.result.value = 0.5 + fraction
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
+            self.result.label = "yellow"
 
         else:
-            value = 1.0
-            description += self.metadata.label_description["green"]
-            label = "green"
+            self.result.value = 1.0
+            self.result.description = (
+                description + self.metadata.label_description["green"]
+            )
+            self.result.label = "green"
+        return True
 
-        self.result.label = label
-        self.result.value = value
-        self.result.description = description
-
-    def create_figure(self):
+    def create_figure(self) -> bool:
         if self.result.label == "undefined":
             logging.info("Skipping figure creation.")
             return
@@ -171,3 +175,4 @@ class GhsPopComparison(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+        return True
