@@ -8,7 +8,13 @@ from ohsome_quality_analyst.utils.definitions import configure_logging
 
 class TestLogging(unittest.TestCase):
     def setUp(self):
-        os.unsetenv("OQT_LOG_LEVEL")  # Unset variable for the use of this script
+        self.log_level = os.environ.pop("OQT_LOG_LEVEL", None)
+
+    def tearDown(self):
+        if self.log_level is not None:
+            os.environ["OQT_LOG_LEVEL"] = self.log_level
+        else:
+            os.environ.pop("OQT_LOG_LEVEL", None)
 
     def test_logging(self):
         configure_logging()
