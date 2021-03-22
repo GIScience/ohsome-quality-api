@@ -2,7 +2,6 @@ import json
 import logging
 from io import StringIO
 from string import Template
-from typing import Dict
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -44,11 +43,13 @@ class MappingSaturation(BaseIndicator):
         self.growth = None
         self.preprocessing_results = None
 
-    async def preprocess(self) -> Dict:
+    async def preprocess(self) -> bool:
         """Get data from ohsome API and db. Put timestamps + data in list"""
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
         )
+        if query_results is None:
+            return False
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
         max_value = max(results)
@@ -69,8 +70,9 @@ class MappingSaturation(BaseIndicator):
             "results": results,
             "results_normalized": results_normalized,
         }
+        return True
 
-    def calculate(self):
+    def calculate(self) -> bool:
         description = ""
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
@@ -83,7 +85,7 @@ class MappingSaturation(BaseIndicator):
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, description, self.preprocessing_results
+            return False
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
             # "Mapping has happened in this region but data were deleted."
@@ -93,7 +95,7 @@ class MappingSaturation(BaseIndicator):
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, description, self.preprocessing_results
+            return False
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
@@ -182,9 +184,10 @@ class MappingSaturation(BaseIndicator):
             self.result.label = label
             self.result.value = value
             self.result.description = description
-            return label, value, description, self.preprocessing_results
+            return False
+        return True
 
-    def create_figure(self):
+    def create_figure(self) -> bool:
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
@@ -248,3 +251,4 @@ class MappingSaturation(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+        return True

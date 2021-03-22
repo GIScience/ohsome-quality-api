@@ -31,16 +31,18 @@ class TagsRatio(BaseIndicator):
         self.count_all = None
         self.count_match = None
 
-    async def preprocess(self):
+    async def preprocess(self) -> bool:
 
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), ratio=True
         )
+        if query_results_count is None:
+            return False
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
 
-    def calculate(self):
+    def calculate(self) -> bool:
 
         if isinstance(self.ratio, str):
             description = Template(self.metadata.result_description).substitute(
@@ -53,6 +55,7 @@ class TagsRatio(BaseIndicator):
             self.result.description = (
                 description + self.metadata.label_description["undefined"]
             )
+            return False
         else:
             description = Template(self.metadata.result_description).substitute(
                 result=f"{self.ratio:.2f}",
@@ -63,6 +66,7 @@ class TagsRatio(BaseIndicator):
                 self.result.value = None
                 self.result.label = "undefined"
                 self.result.description = description + "No features in this region"
+                return False
             else:
                 if self.ratio >= self.threshold_yellow:
                     self.result.value = 1.0
@@ -82,8 +86,9 @@ class TagsRatio(BaseIndicator):
                     self.result.description = (
                         description + self.metadata.label_description["red"]
                     )
+                return True
 
-    def create_figure(self) -> None:
+    def create_figure(self) -> bool:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
@@ -167,3 +172,4 @@ class TagsRatio(BaseIndicator):
             self.result.svg = img_data.getvalue()
             logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
             plt.close("all")
+            return True

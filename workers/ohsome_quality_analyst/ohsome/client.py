@@ -1,8 +1,10 @@
 import datetime
 import json
 import logging
+from json import JSONDecodeError
 from typing import Dict, Optional
 
+import geojson
 import httpx
 
 from ohsome_quality_analyst.utils.definitions import OHSOME_API
@@ -16,7 +18,7 @@ async def query(
     time: Optional[str] = None,
     endpoint: Optional[str] = None,
     ratio: bool = False,
-) -> Dict:
+) -> Optional[Dict]:
     """Query ohsome API endpoint with filter."""
     if endpoint is not None:
         url = OHSOME_API + endpoint
@@ -39,16 +41,24 @@ async def query(
     timeout = httpx.Timeout(5, read=600)
     async with httpx.AsyncClient(timeout=timeout) as client:
         resp = await client.post(url, data=data)
-    logging.debug(
-        "Query response: " + json.dumps(resp.json(), indent=4, sort_keys=True)
-    )
 
+    logging.info("Query ohsome API.")
+    logging.debug("Query URL: " + url)
+    logging.debug("Query Filter: " + layer.filter)
     if resp.status_code == 200:
-        logging.info("Query successful!")
+        try:
+            logging.info("Ohsome query successful!")
+            logging.debug(
+                "Query response: " + json.dumps(resp.json(), indent=4, sort_keys=True)
+            )
+            return geojson.loads(resp.content)
+        except JSONDecodeError:
+            # ohsome API can return broken GeoJSON during streaming of response
+            logging.warning("Ohsome query failed!")
+            return None
     elif resp.status_code == 404:
-        logging.info("Query failed!")
-
-    return resp.json()
+        logging.warning("Query failed!")
+        return None
 
 
 async def get_latest_ohsome_timestamp():

@@ -41,18 +41,23 @@ class PoiDensity(BaseIndicator):
     def yellowThresholdFunction(self, area):
         return self.threshold_red * area
 
-    async def preprocess(self):
+    async def preprocess(self) -> bool:
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
+        if query_results_count is None:
+            return False
 
         self.area_sqkm = get_area_of_bpolys(self.bpolys)  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
         self.density = self.count / self.area_sqkm
+        return True
 
-    def calculate(self):
+    def calculate(self) -> bool:
         # TODO: we need to think about how we handle this
         #  if there are different layers
+        logging.info(f"Calculation for indicator: {self.metadata.name}")
+
         description = Template(self.metadata.result_description).substitute(
             result=f"{self.density:.2f}"
         )
@@ -75,7 +80,7 @@ class PoiDensity(BaseIndicator):
                     description + self.metadata.label_description["red"]
                 )
 
-    def create_figure(self):
+    def create_figure(self) -> bool:
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -134,3 +139,4 @@ class PoiDensity(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+        return True

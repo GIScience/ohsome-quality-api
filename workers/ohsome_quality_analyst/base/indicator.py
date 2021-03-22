@@ -82,24 +82,40 @@ class BaseIndicator(metaclass=ABCMeta):
 
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.metadata = from_dict(data_class=Metadata, data=metadata)
         layer = get_layer_definition(layer_name)
-        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
-        self.result: Result = Result(None, None, None, None)
+        self.layer = from_dict(data_class=LayerDefinition, data=layer)
+        self.result = Result(
+            label="undefined",
+            value=None,
+            description=self.metadata.label_description["undefined"],
+            svg=None,
+        )
 
     @abstractmethod
-    async def preprocess(self) -> None:
+    async def preprocess(self) -> bool:
         """Get fetch and prepocess data
 
         Fetch data from the ohsome API and/or from the geodatabase asynchronously.
-        Preprocess data for calculation in the calculate method.
+        Preprocess data for calculation and save those as attributes.
+        Returns True if preprocessing was successful otherwise False.
         """
         pass
 
     @abstractmethod
-    def calculate(self) -> None:
+    def calculate(self) -> bool:
+        """ "Calculate indicator results
+
+        Writes results to the result attribute.
+        Returns True if calculation was successful otherwise False.
+        """
         pass
 
     @abstractmethod
-    def create_figure(self) -> None:
+    def create_figure(self) -> bool:
+        """ "Create figure plotting indicator results
+
+        Writes an SVG figure to the SVG attribute of the result attribute.
+        Returns True if figure creation was successful otherwise False.
+        """
         pass
