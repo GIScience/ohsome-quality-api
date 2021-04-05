@@ -5,8 +5,10 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
+from io import StringIO
 from typing import Dict, Literal, Optional
 
+import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import FeatureCollection
 
@@ -89,7 +91,7 @@ class BaseIndicator(metaclass=ABCMeta):
             label="undefined",
             value=None,
             description=self.metadata.label_description["undefined"],
-            svg=None,
+            svg=self._get_default_figure(),
         )
 
     @abstractmethod
@@ -119,3 +121,23 @@ class BaseIndicator(metaclass=ABCMeta):
         Returns True if figure creation was successful otherwise False.
         """
         pass
+
+    def _get_default_figure(self) -> str:
+        """Return a SVG as default figure for indicators"""
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        plt.figure(figsize=figsize)
+        plt.text(
+            5.5,
+            0.5,
+            "The Creation of the Indicator was unsuccessful.",
+            bbox={"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 1},
+            ha="center",
+            va="center",
+        )
+        plt.axvline(5.5, color="w", linestyle="solid")
+        plt.axis("off")
+
+        svg_string = StringIO()
+        plt.savefig(svg_string, format="svg")
+        return svg_string.getvalue()
