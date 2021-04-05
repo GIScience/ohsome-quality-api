@@ -130,7 +130,7 @@ class BaseIndicator(metaclass=ABCMeta):
         plt.text(
             5.5,
             0.5,
-            "The Creation of the Indicator was unsuccessful.",
+            "The creation of the Indicator was unsuccessful.",
             bbox={"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 1},
             ha="center",
             va="center",
