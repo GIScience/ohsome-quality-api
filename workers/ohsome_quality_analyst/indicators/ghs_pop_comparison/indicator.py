@@ -178,9 +178,6 @@ class GhsPopComparison(BaseIndicator):
         """Derive zonal population stats for given GeoJSON geometry.
 
         This is based on the Global Human Settlement Layer Population.
-
-        Returns:
-            List: A list containing population and area in sqkm
         """
         logging.info("Get population inside polygon")
         query = """

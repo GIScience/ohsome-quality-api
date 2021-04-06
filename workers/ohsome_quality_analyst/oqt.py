@@ -4,8 +4,8 @@ Functions are triggert by the CLI and API.
 """
 import logging
 
+from asyncpg.exceptions import UndefinedTableError
 from geojson import FeatureCollection
-from psycopg2.errors import UndefinedTable
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -48,7 +48,7 @@ async def create_indicator(
             return await db_client.load_indicator_results(
                 indicator, dataset, feature_id
             )
-        except UndefinedTable:
+        except UndefinedTableError:
             return False
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
@@ -65,13 +65,13 @@ async def create_indicator(
         await from_scratch()
 
     # from database
-    elif dataset is not None and feature_id is not None:
+    elif bpolys is None and dataset is not None and feature_id is not None:
         logging.info("Indicator name:\t" + indicator_name)
         logging.info("Layer name:\t" + layer_name)
         logging.info("Dataset name:\t" + dataset)
         logging.info("Feature id:\t" + str(feature_id))
         # Support only predefined datasets.
-        # Otherwise creation of arbitrary relations are possible.
+        # Otherwise creation of arbitrary relations or SQL injections are possible.
         if dataset not in DATASET_NAMES:
             raise ValueError("Input dataset is not valid")
         else:

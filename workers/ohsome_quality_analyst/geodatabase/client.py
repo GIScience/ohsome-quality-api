@@ -1,3 +1,18 @@
+"""This module implements a asynchronous client to the geodatabase.
+
+The PostgreSQL driver used is asyncpg.
+
+On preventing SQL injections:
+    asyncpg supports native PostgreSQL syntax for SQL parameter substitution.
+    asyncpg does not support SQL identifiers (e.g. names tables/fields) substitution.
+
+    SQL identifiers can not be passed to the execute method like SQL parameters.
+    (This is unlike psycopg2 which has extensive query interpolation mechanisms.)
+
+    If the query string is build from user input check,
+    please make sure no SQL injection attack is possible.
+"""
+
 import json
 import logging
 import os
@@ -44,6 +59,7 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
     logging.info("Save indicator result to database")
     table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
     table_pkey = table_name + "_pkey"
+    # Safe against SQL injection because of predefined values
     create_query = (
         """
             CREATE TABLE IF NOT EXISTS {0} (
@@ -56,6 +72,7 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
             )
             """
     ).format(table_name, table_pkey)
+    # Safe against SQL injection because of predefined values
     upsert_query = (
         """
             INSERT INTO {0} (fid, label, value, description, svg)
@@ -68,8 +85,7 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
     data = (
         feature_id,
         indicator.result.label,
-        # TODO: Fix in indicator
-        float(indicator.result.value),
+        indicator.result.value,
         indicator.result.description,
         indicator.result.svg,
     )
@@ -94,7 +110,9 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
             FROM {0}
             WHERE fid = $1
         """
-    ).format(table_name)
+    ).format(
+        table_name
+    )  # Safe against SQL injection because of predefined values
 
     async with get_connection() as conn:
         query_result = await conn.fetchrow(query, feature_id)
@@ -108,11 +126,13 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
     return True
 
 
-async def get_fids(dataset_name) -> List[asyncpg.Record]:
+async def get_fids(dataset_name) -> List[int]:
     """Get all feature ids of a certain dataset"""
+    # Safe against SQL injection because of predefined values
     query = "SELECT fid FROM {0}".format(dataset_name)
     async with get_connection() as conn:
-        return await conn.fetch(query)
+        records = await conn.fetch(query)
+    return [record["fid"] for record in records]
 
 
 async def get_area_of_bpolys(bpolys: Dict):
@@ -139,6 +159,7 @@ async def get_bpolys_from_db(
     """Get geometry and properties from geo database as a geojson feature collection."""
     logging.info("Get bpolys geometry")
     # TODO: adjust this for other input tables
+    # Safe against SQL injection because of predefined values
     query = (
         """
         SELECT json_build_object(

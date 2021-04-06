@@ -126,4 +126,5 @@ class BaseIndicator(metaclass=ABCMeta):
 
         svg_string = StringIO()
         plt.savefig(svg_string, format="svg")
+        plt.close("all")
         return svg_string.getvalue()
