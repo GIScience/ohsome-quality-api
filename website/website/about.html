@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-
 	<head>
 	  <title>ohsome quality analyst</title>
 
@@ -16,7 +15,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="generator" content="Webflow">
-		<link href="https://fonts.googleapis.com/css?family=Hind:400,700&display=swap" rel="stylesheet">
 
 
 		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon/favicon-32x32.png">
@@ -24,15 +22,10 @@
 
 		<!-- Add custom css -->
 		<link type="text/css" rel="stylesheet" href="assets/css/style.css">
-		<link rel="stylesheet" href="assets/css/style-sectors-map.css">
-		<link type="text/css" rel="stylesheet" href="assets/css/style-add.css">
-		<link type="text/css" rel="stylesheet" href="assets/css/navbar.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/custom-spinner.css">
-
 	</head>
 
 	<body class="page-about">
-
  <!-- ### theader navbar space ######## -->
     <header>
 		<div class="wrapper">
@@ -40,16 +33,21 @@
 				<a class="oqt-logo" href="index.html">
 					<img class="logo" src="assets/img/logos/oqt_logo.png">
 				</a>
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-				<div class="topnav" id="myTopnav">
-					<a href="index.html" class="topnav">Home</a>
-					<a class="topnav active" href="about.html">About</a>
-					<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-						<i class="fa fa-bars"></i>
-					</a>
+				<nav class="nav-menu" role="navigation">
+					<a class="navlink active" href="index.html" id="index_1">Home</a>
+					<a class="navlink" href="about.html" id="terminology_1">About</a>
+				</nav>
+		  
+				<div class="drop-nav">
+					<input type="checkbox" id="anim-menu">
+					<label for="anim-menu" class="anim-icon">
+							<div class="anim-menu"></div>
+					</label>
+					<div class="anim-nav">
+						<a href="index.html" class="navlink">Home</a>
+						<a href="about.html" class="navlink">About</a>
+					</div>
 				</div>
-
 			</div>
 		</div>
 	</header>
@@ -61,7 +59,6 @@
 			</div>
 		</div>
 	</div>
-
 	
  	<!-- ### sentence on top space ######## -->
 	<div class="section" >
@@ -77,18 +74,17 @@
 			<div class="rich-text">
 				<h2>What is the ohsome quality analyst (OQT)</h2>
 				<p>OQT is a tool that end users, e.g. humanitarian organisations and public administration, can use to get information on the quality of OSM data for their specific region and use-case.</p>
-				<p>It is a web application that builds upon HeiGIT's OSM analysis infrastructure, especially the ohsome-api, the ohsome-hex website and the ohsome dashboard.</p>
+				<p>It is a web application that builds upon HeiGIT's OSM analysis infrastructure, especially the <a href="https://api.ohsome.org" target="_blank">ohsome API</a>, the <a href="https://ohsome.org/apps/osm-history-explorer/" target="_blank">ohsomeHeX</a> website and the <a href="https://ohsome.org/apps/dashboard/" target="_blank">ohsome Dashboard</a>.</p>
 				<p>Further, it functions as a data integration tool, that brings together a variety of intrinsic and extrinsic OSM data quality metrics.</p>
 			</div>
 		</div>
 	</div>
-
-
  	 	<div class="section" >
 		<div class="section-container">
 			<div class="rich-text">
 				<h2>Related Blogposts</h2>
-				<p><a href="http://giscienceblog.uni-hd.de/2021/02/08/introducing-the-ohsome-quality-analyst-oqt/" target="_blank">Introducing the ohsome quality analyst (OQT)</a></p>
+				<p><a href="https://heigit.org/de/introducing-the-ohsome-quality-analyst-oqt-2" target="_blank">Introducing the ohsome quality analyst (OQT)</a></p>
+				<p><a href="https://heigit.org/de/behind-the-scenes-of-the-ohsome-quality-analyst-oqt-2" target="_blank">Behind the scenes of the ohsome quality analyst (OQT)</a></p>
 			</div>
 		</div>
 	</div>
@@ -96,7 +92,7 @@
  	<div class="section" >
 		<div class="section-container">
 			<div class="rich-text">
-				<h2>Related Works</h2>
+				<h2>Related Work</h2>
 				<p>Klonner, Carolin; Hartmann, Maximilian; Dischl, Rebecca; Djami, Lily; Anderson, Liana; Raifer, Martin; Lima-Silva, Fernanda; Castro Degrossi, Lívia; Zipf, Alexander; Porto de Albuquerque, João (2021):  <a target="_blank" href="https://doi.org/10.3390/ijgi10030130">The Sketch Map Tool Facilitates the Assessment of OpenStreetMap Data for Participatory Mapping. </a> ISPRS Int. J. Geo-Inf., 10, 130.</p>
 				<p>Raifer, Martin; Troilo, Rafael; Kowatsch, Fabian; Auer, Michael; Loos, Lukas; Marx, Sabrina; Przybill, Katharina; Fendrich, Sascha; Mocnik, Franz-Benjamin; Zipf, Alexander (2019): <a target="_blank" href="https://doi.org/10.1186/s40965-019-0061-3">OSHDB: a framework for spatio-temporal analysis of OpenStreetMap history data.</a> Open Geospatial Data, Software and Standards.</p>
 				<p>Auer, Michael; Eckle, Melanie; Fendrich, Sascha; Kowatsch, Fabian; Marx, Sabrina; Raifer, Martin; Schott, Moritz; Troilo, Rafael; Zipf, Alexander (2018): <a target="_blank" href="https://2018.stateofthemap.org/2018/A33-Comprehensive_OpenStreetMap_History_Data_Analyses-_for_and_with_the_OSM_community/">Comprehensive OpenStreetMap History Data Analyses- for and with the OSM community.</a> Talk at the State of the Map conference 2018, Milan.</p>
@@ -109,11 +105,9 @@
  	<div class="section" >
 		<div class="section-container">
 			<div class="rich-text">
-				<h2>The Team</h2>
+			<h2>The Team</h2>
             <p>The data pre-processing and the service deployment is done by <a href="https://heigit.org/" target="_blank">HeiGIT</a>. Please <a href="https://heigit.org/contact/" target="_blank">contact us</a> if you are interested in using it for your research, need stats for your own application or if you have any questions or suggestions related to the statistics presented on this website.</p>
             <p>At HeiGIT we provide research and development to support decision making in the field of sustainable mobility and humanitarian aid. We accomplish this through open geoinformation, open methods, open software and close collaboration with our partners.</p>
-
-
 			</div>
 		</div>
 	</div>
@@ -121,27 +115,24 @@
 
 <!-- ################ footer ######## -->
 	<footer>
-        <div class="wrapper"  >
-          <div class="container">
-            <div class="footer-column">
-              <a id="language"  href="https://heigit.org/contact/" class="navlink">Contact</a>
-              <a href="https://heigit.org/legal-notice/" class="navlink">Privacy</a>
-              <a href="https://heigit.org/imprint/" class="navlink">Imprint</a>
-            </div>
-		    <div class="footer-column heigit-logo">
-		  	  <a href="https://heigit.org" target="_blank">
-		  		  <img src="assets/img/logos/heigit_logo.png" alt="HeiGIT Logo">
-		  	  </a>
-		    </div>
-            <div class="footer-column last-footer">
-              <p>Copyright © <span id="year">2021</span> HeiGIT </p>
-            </div>
-          </div>
-        </div>
+		<div class="wrapper"  >
+		<div class="container">
+			<div class="footer-column">
+				<a id="language"  href="https://heigit.org/contact/" class="navlink">Contact</a>
+				<a href="https://heigit.org/legal-notice/" class="navlink">Privacy</a>
+				<a href="https://heigit.org/imprint/" class="navlink">Imprint</a>
+			</div>
+			<div class="footer-column heigit-logo">
+				<a href="https://heigit.org" target="_blank">
+					<img src="assets/img/logos/heigit_logo.png" alt="HeiGIT Logo">
+				</a>
+			</div>
+			<div class="footer-column last-footer">
+				<p>Copyright © <span id="year">2021</span> HeiGIT </p>
+			</div>
+		</div>
+		</div>
 	</footer>
-
-	<script async defer src="assets/js/navbar.js"></script>
-
 	</body>
 
 </html>
