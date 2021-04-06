@@ -14,7 +14,7 @@ services:
       POSTGRES_HOST: oqt-database
       POSTGRES_PORT: 5432
       POSTGRES_SCHEMA: public
-    command: python scripts/start_api.py --host 0.0.0.0
+    command: poetry run python scripts/start_api.py --host 0.0.0.0
     ports:
       - "127.0.0.1:8080:8080"
     networks:
