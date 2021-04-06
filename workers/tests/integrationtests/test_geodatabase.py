@@ -23,21 +23,27 @@ class TestGeodatabase(unittest.TestCase):
     def test_save_and_load(self):
         # TODO: split tests by functionality (load and safe),
         # but load test needs a saved indicator.
+        dataset = "test_regions"
+        feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
         # save
         self.indicator = GhsPopComparison(
-            dataset="test_regions", feature_id=2, layer_name="building_count"
+            layer_name="building_count",
+            bpolys=bpolys,
         )
         asyncio.run(self.indicator.preprocess())
         self.indicator.calculate()
         self.indicator.create_figure()
-        asyncio.run(db_client.save_indicator_results(self.indicator))
+        asyncio.run(
+            db_client.save_indicator_results(self.indicator, dataset, feature_id)
+        )
 
         # load
-        self.indicator = GhsPopComparison(
-            dataset="test_regions", feature_id=2, layer_name="building_count"
+        self.indicator = GhsPopComparison(layer_name="building_count", bpolys=bpolys)
+        result = asyncio.run(
+            db_client.load_indicator_results(self.indicator, dataset, feature_id)
         )
-        result = asyncio.run(db_client.load_indicator_results(self.indicator))
         self.assertTrue(result)
         self.assertIsNotNone(self.indicator.result.label)
         self.assertIsNotNone(self.indicator.result.value)
@@ -51,6 +57,10 @@ class TestGeodatabase(unittest.TestCase):
     def test_get_area_of_bpolys(self):
         result = asyncio.run(db_client.get_area_of_bpolys(self.bpolys))
         self.assertIsInstance(result, float)
+
+    def test_get_bpolys_from_db(self):
+        result = asyncio.run(db_client.get_bpolys_from_db("test_regions", 3))
+        self.assertTrue(result.is_valid)
 
 
 if __name__ == "__main__":

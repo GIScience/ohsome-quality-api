@@ -32,7 +32,7 @@ async def create_indicator(
     to the database.
     """
 
-    async def from_scratch():
+    async def from_scratch() -> None:
         """Create indicatore from scratch."""
         logging.info("Run preprocessing")
         if await indicator.preprocess():
@@ -42,10 +42,12 @@ async def create_indicator(
                 if indicator.create_figure():
                     pass
 
-    async def from_database() -> bool:
+    async def from_database(dataset, feature_id) -> bool:
         """Create indicator by loading existing results from database"""
         try:
-            return await db_client.load_indicator_results(indicator)
+            return await db_client.load_indicator_results(
+                indicator, dataset, feature_id
+            )
         except UndefinedTable:
             return False
 
@@ -59,9 +61,7 @@ async def create_indicator(
         # TODO: decide on final max-threshold
         if await db_client.get_area_of_bpolys(bpolys) > 100 or bpolys.is_valid is False:
             raise ValueError("Input geometry is not valid")
-        indicator = indicator_class(
-            layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
-        )
+        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
 
     # from database
@@ -74,13 +74,13 @@ async def create_indicator(
         # Otherwise creation of arbitrary relations are possible.
         if dataset not in DATASET_NAMES:
             raise ValueError("Input dataset is not valid")
-        indicator = indicator_class(
-            layer_name=layer_name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
-        )
-        success = await from_database()
+        else:
+            bpolys = await db_client.get_bpolys_from_db(dataset, feature_id)
+        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
+        success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()
-            await db_client.save_indicator_results(indicator)
+            await db_client.save_indicator_results(indicator, dataset, feature_id)
     else:
         raise ValueError("Invalid set of arguments")
 

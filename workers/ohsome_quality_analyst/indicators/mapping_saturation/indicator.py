@@ -27,15 +27,11 @@ class MappingSaturation(BaseIndicator):
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(
             layer_name=layer_name,
             bpolys=bpolys,
-            dataset=dataset,
-            feature_id=feature_id,
         )
         self.time_range = time_range
         # Those attributes will be set during lifecycle of the object.

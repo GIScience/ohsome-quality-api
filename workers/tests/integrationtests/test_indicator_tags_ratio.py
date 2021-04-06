@@ -4,6 +4,7 @@ import unittest
 
 import geojson
 
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
 
@@ -31,21 +32,23 @@ class TestIndicatorRatio(unittest.TestCase):
 
     def test_all_features_match(self):
         """It can happen that edited features includes deleted features"""
-        indicator = TagsRatio(
-            layer_name="jrc_health_count",
-            dataset="test_regions",
-            feature_id=8,
-        )
+        layer_name = "jrc_health_count"
+        dataset = "test_regions"
+        feature_id = 8
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, indicator.count_match)
 
     def test_no_features(self):
         """Test area with no features"""
-        indicator = TagsRatio(
-            layer_name="jrc_health_count",
-            dataset="test_regions",
-            feature_id=2,
-        )
+        layer_name = "jrc_health_count"
+        dataset = "test_regions"
+        feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, 0)
         indicator.calculate()

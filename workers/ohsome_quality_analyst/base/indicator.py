@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import FeatureCollection
 
-import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
 
 
@@ -67,21 +66,8 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
     ) -> None:
-        self.dataset = dataset
-        self.feature_id = feature_id
-        if bpolys is not None:
-            self.bpolys = bpolys
-        elif dataset is not None and feature_id is not None:
-            self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
-        else:
-            raise ValueError(
-                "Provide either a bounding polygon "
-                + "or dataset name and feature id as parameter."
-            )
-
+        self.bpolys = bpolys
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata = from_dict(data_class=Metadata, data=metadata)

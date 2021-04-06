@@ -20,14 +20,10 @@ class PoiDensity(BaseIndicator):
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
             bpolys=bpolys,
-            dataset=dataset,
-            feature_id=feature_id,
         )
         self.threshold_yellow = 30
         self.threshold_red = 10

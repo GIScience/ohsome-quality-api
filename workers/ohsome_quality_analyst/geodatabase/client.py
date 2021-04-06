@@ -5,10 +5,22 @@ from contextlib import asynccontextmanager
 from typing import Dict, List
 
 import asyncpg
-from geojson import FeatureCollection
-from psycopg2 import sql
+import geojson
 
-from ohsome_quality_analyst.geodatabase.auth import POSTGRES_SCHEMA, PostgresDB
+
+def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
+    """Compose result table name from dataset and indicator.
+
+    The results table is composed of names for dataset and indicator
+    e.g. "subnational_boundaries_building_completeness".
+    """
+    indicator_name = indicator_name.replace(" ", "_")
+    indicator_name = indicator_name.replace("-", "_")
+    indicator_name = indicator_name.lower()
+    layer_name = layer_name.replace(" ", "_")
+    layer_name = layer_name.replace("-", "_")
+    layer_name = layer_name.lower()
+    return f"{dataset}_{indicator_name}_{layer_name}"
 
 
 @asynccontextmanager
@@ -27,27 +39,10 @@ async def get_connection():
         await conn.close()
 
 
-def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
-    """Compose result table name from dataset and indicator.
-
-    The results table is composed of names for dataset and indicator
-    e.g. "subnational_boundaries_building_completeness".
-    """
-    indicator_name = indicator_name.replace(" ", "_")
-    indicator_name = indicator_name.replace("-", "_")
-    indicator_name = indicator_name.lower()
-    layer_name = layer_name.replace(" ", "_")
-    layer_name = layer_name.replace("-", "_")
-    layer_name = layer_name.lower()
-    return f"{dataset}_{indicator_name}_{layer_name}"
-
-
-async def save_indicator_results(indicator) -> None:
+async def save_indicator_results(indicator, dataset, feature_id) -> None:
     """Save the indicator result for the given dataset and feature in the geodatabase"""
     logging.info("Save indicator result to database")
-    table_name = _get_table_name(
-        indicator.dataset, indicator.metadata.name, indicator.layer.name
-    )
+    table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
     table_pkey = table_name + "_pkey"
     create_query = (
         """
@@ -71,7 +66,7 @@ async def save_indicator_results(indicator) -> None:
             """  # noqa
     ).format(table_name)
     data = (
-        indicator.feature_id,
+        feature_id,
         indicator.result.label,
         # TODO: Fix in indicator
         float(indicator.result.value),
@@ -84,7 +79,7 @@ async def save_indicator_results(indicator) -> None:
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(indicator) -> bool:
+async def load_indicator_results(indicator, dataset, feature_id) -> bool:
     """Get the indicator result from the geodatabase.
 
     Reads given dataset and feature_id from the indicator object.
@@ -92,9 +87,7 @@ async def load_indicator_results(indicator) -> bool:
     Writes retrived results to the result attribute of the indicator object.
     """
     logging.info("Load indicator results from database")
-    table_name = _get_table_name(
-        indicator.dataset, indicator.metadata.name, indicator.layer.name
-    )
+    table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
     query = (
         """
             SELECT label, value, description, svg
@@ -104,7 +97,7 @@ async def load_indicator_results(indicator) -> bool:
     ).format(table_name)
 
     async with get_connection() as conn:
-        query_result = await conn.fetchrow(query, indicator.feature_id)
+        query_result = await conn.fetchrow(query, feature_id)
     if not query_result:
         return False
 
@@ -140,7 +133,9 @@ async def get_area_of_bpolys(bpolys: Dict):
     return result["area_sqkm"]
 
 
-async def get_bpolys_from_db_2(dataset: str, feature_id: int) -> FeatureCollection:
+async def get_bpolys_from_db(
+    dataset: str, feature_id: int
+) -> geojson.FeatureCollection:
     """Get geometry and properties from geo database as a geojson feature collection."""
     logging.info("Get bpolys geometry")
     # TODO: adjust this for other input tables
@@ -171,44 +166,5 @@ async def get_bpolys_from_db_2(dataset: str, feature_id: int) -> FeatureCollecti
     """
     ).format(dataset)
     async with get_connection() as conn:
-        return await conn.fetchrow(query, feature_id)
-
-
-def get_bpolys_from_db(dataset: str, feature_id: int) -> FeatureCollection:
-    """Get geometry and properties from geo database as a geojson feature collection."""
-
-    db = PostgresDB()
-
-    # TODO: adjust this for other input tables
-    query = sql.SQL(
-        """
-        SET SCHEMA %(schema)s;
-        SELECT json_build_object(
-            'type', 'FeatureCollection',
-            'crs',  json_build_object(
-                'type',      'name',
-                'properties', json_build_object(
-                    'name', 'EPSG:4326'
-                )
-            ),
-            'features', json_agg(
-                json_build_object(
-                    'type',       'Feature',
-                    'id',         fid,
-                    'geometry',   public.ST_AsGeoJSON(geom)::json,
-                    'properties', json_build_object(
-                        -- list of fields
-                        'fid', fid
-                    )
-                )
-            )
-        )
-        FROM {}
-        WHERE fid = %(feature_id)s
-    """
-    ).format(sql.Identifier(dataset))
-    data = {"schema": POSTGRES_SCHEMA, "feature_id": feature_id}
-    query_results = db.retr_query(query=query, data=data)
-    bpolys = query_results[0][0]
-    logging.info("Got bpolys geometry")
-    return bpolys
+        result = await conn.fetchrow(query, feature_id)
+    return geojson.loads(result[0])
