@@ -41,10 +41,20 @@ class TagsRatio(BaseIndicator):
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
+        print(
+            str(self.feature_id)
+            + "; "
+            + str(self.ratio)
+            + "; "
+            + str(self.count_all)
+            + "; "
+            + str(self.count_match)
+            + "; "
+        )
 
     def calculate(self) -> bool:
 
-        if isinstance(self.ratio, str):
+        if isinstance(self.ratio, str) or str(self.ratio) == "None":
             description = Template(self.metadata.result_description).substitute(
                 result=self.ratio,
                 all=f"{self.count_all}",

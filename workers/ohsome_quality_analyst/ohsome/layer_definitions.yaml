@@ -48,6 +48,51 @@ poi:
       police, fire_station, restaurant, townhall)
 
 # JRC themes:
+jrc_health_count1:
+  name: JRC Healthcare Facilities
+  description: |
+      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+  endpoint: elements/count
+  filter: |
+    amenity in (hospital)
+  ratio_filter: |
+      (amenity=hospital and wheelchair=*)
+
+
+jrc_health_count2:
+  name: JRC Healthcare Facilities
+  description: |
+      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+  endpoint: elements/count
+  filter: |
+    amenity in (clinic)
+  ratio_filter: |
+
+      (amenity=clinic and wheelchair=*)
+
+
+jrc_health_count3:
+  name: JRC Healthcare Facilities
+  description: |
+      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+  endpoint: elements/count
+  filter: |
+    amenity in (doctors)
+  ratio_filter: |
+
+      (amenity=doctors and wheelchair=*)
+
+
+jrc_health_count4:
+  name: JRC Healthcare Facilities
+  description: |
+      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+  endpoint: elements/count
+  filter: |
+    healthcare=*
+  ratio_filter: |
+      (healthcare=* and wheelchair=*)
+
 jrc_health_count:
   name: JRC Healthcare Facilities
   description: |
