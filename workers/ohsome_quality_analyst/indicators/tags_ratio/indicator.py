@@ -168,7 +168,6 @@ class TagsRatio(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
-        plt.savefig("test_mappingSat_jrc.png", format="png", bbox_inches="tight")
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
         return True
