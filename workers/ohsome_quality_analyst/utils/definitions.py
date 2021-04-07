@@ -48,6 +48,8 @@ INDICATOR_LAYER = (
     ("LastEdit", "amenities"),
     ("LastEdit", "jrc_health_count"),
     ("LastEdit", "jrc_education_count"),
+    ("LastEdit", "jrc_road_length"),
+    ("LastEdit", "jrc_railway_length"),
     ("LastEdit", "jrc_airport_count"),
     ("LastEdit", "jrc_water_treatment_plant_count"),
     ("LastEdit", "jrc_power_generation_plant_count"),
@@ -55,6 +57,14 @@ INDICATOR_LAYER = (
     ("LastEdit", "jrc_bridge_count"),
     ("LastEdit", "jrc_mass_gathering_sites_count"),
     ("PoiDensity", "poi"),
+    ("TagsRatio", "jrc_health_count"),
+    ("TagsRatio", "jrc_education_count"),
+    ("TagsRatio", "jrc_road_length"),
+    ("TagsRatio", "jrc_airport_count"),
+    ("TagsRatio", "jrc_power_generation_plant_count"),
+    ("TagsRatio", "jrc_cultural_heritage_site_count"),
+    ("TagsRatio", "jrc_bridge_count"),
+    ("TagsRatio", "jrc_mass_gathering_sites_count"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 
