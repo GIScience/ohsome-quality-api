@@ -4,6 +4,7 @@ import unittest
 
 import geojson
 
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
 
 
@@ -28,18 +29,22 @@ class TestIndicatorLastEdit(unittest.TestCase):
 
     def test_more_edited_features_then_features(self):
         """It can happen that edited features includes deleted features"""
-        indicator = LastEdit(
-            layer_name="amenities", dataset="test_regions", feature_id=7
-        )
+        dataset = "test_regions"
+        feature_id = 7
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertLess(indicator.total_features, indicator.edited_features)
         self.assertEqual(indicator.share_edited_features, 100)
 
     def test_no_amenities(self):
         """Test area with no amenities"""
-        indicator = LastEdit(
-            layer_name="amenities", dataset="test_regions", feature_id=2
-        )
+        dataset = "test_regions"
+        feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.total_features, 0)
         indicator.calculate()

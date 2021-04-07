@@ -3,6 +3,7 @@ import os
 import unittest
 
 import geojson
+from asyncpg import Record
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
     GhsPopComparison,
@@ -35,6 +36,12 @@ class TestIndicatorGhsPopComparison(unittest.TestCase):
 
         self.indicator.create_figure()
         self.assertIsNotNone(self.indicator.result.svg)
+
+    def test_get_zonal_stats_population(self):
+        result = asyncio.run(
+            self.indicator.get_zonal_stats_population(self.indicator.bpolys)
+        )
+        self.assertIsInstance(result, Record)
 
 
 if __name__ == "__main__":

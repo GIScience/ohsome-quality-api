@@ -5,6 +5,7 @@ from string import Template
 
 import matplotlib.pyplot as plt
 import numpy as np
+from asyncpg import Record
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -18,13 +19,9 @@ class GhsPopComparison(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        dataset: str = None,
-        feature_id: int = None,
         bpolys: FeatureCollection = None,
     ) -> None:
         super().__init__(
-            dataset=dataset,
-            feature_id=feature_id,
             layer_name=layer_name,
             bpolys=bpolys,
         )
@@ -48,7 +45,7 @@ class GhsPopComparison(BaseIndicator):
         return 0.75 * np.sqrt(pop_per_sqkm)
 
     async def preprocess(self) -> bool:
-        pop_count, area = db_client.get_zonal_stats_population(bpolys=self.bpolys)
+        pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
 
         if pop_count is None:
             pop_count = 0
@@ -176,3 +173,34 @@ class GhsPopComparison(BaseIndicator):
         logging.debug("Successful SVG figure creation")
         plt.close("all")
         return True
+
+    async def get_zonal_stats_population(self, bpolys: dict) -> Record:
+        """Derive zonal population stats for given GeoJSON geometry.
+
+        This is based on the Global Human Settlement Layer Population.
+        """
+        logging.info("Get population inside polygon")
+        query = """
+            SELECT
+            SUM(
+                (public.ST_SummaryStats(
+                    public.ST_Clip(
+                        rast,
+                        st_setsrid(public.ST_GeomFromGeoJSON($1), 4326)
+                    )
+                )
+            ).sum) population
+            ,public.ST_Area(
+                st_setsrid(public.ST_GeomFromGeoJSON($2)::public.geography, 4326)
+            ) / (1000*1000) as area_sqkm
+            FROM ghs_pop
+            WHERE
+             public.ST_Intersects(
+                rast,
+                st_setsrid(public.ST_GeomFromGeoJSON($3), 4326)
+             )
+            """
+        polygon = json.dumps(bpolys["features"][0]["geometry"])  # Geometry only
+        data = (polygon, polygon, polygon)
+        async with db_client.get_connection() as conn:
+            return await conn.fetchrow(query, *data)

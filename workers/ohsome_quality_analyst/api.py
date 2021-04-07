@@ -41,14 +41,14 @@ app.add_middleware(
 class IndicatorParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[str] = None
+    featureId: Optional[int] = None
     layerName: Optional[str] = None
 
 
 class ReportParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[str] = None
+    featureId: Optional[int] = None
 
 
 @app.get("/indicator/{name}")
@@ -58,7 +58,7 @@ async def get_indicator(
     layerName: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[str] = None,
+    featureId: Optional[int] = None,
 ):
     # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
@@ -108,7 +108,7 @@ async def get_report(
     request: Request,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[str] = None,
+    featureId: Optional[int] = None,
 ):
     # TODO: Error handling should happen in oqt.create_report
     if bpolys:
@@ -177,5 +177,5 @@ async def post_report(name: str, request: Request, item: ReportParameters):
 
 @app.get("/geometries/{dataset}")
 async def get_bpolys_from_db(dataset: str, featureId: int):
-    bpolys = db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
+    bpolys = await db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
     return bpolys

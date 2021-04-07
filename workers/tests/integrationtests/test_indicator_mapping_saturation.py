@@ -4,6 +4,7 @@ import unittest
 
 import geojson
 
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
@@ -36,10 +37,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         layer_name = "building_count"
         dataset = "test_regions"
         feature_id = 30
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
-        indicator = MappingSaturation(
-            layer_name=layer_name, dataset=dataset, feature_id=feature_id
-        )
+        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -48,10 +48,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         layer_name = "building_count"
         dataset = "test_regions"
         feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
-        indicator = MappingSaturation(
-            layer_name=layer_name, dataset=dataset, feature_id=feature_id
-        )
+        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
