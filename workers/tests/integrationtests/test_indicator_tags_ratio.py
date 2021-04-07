@@ -1,11 +1,15 @@
 import asyncio
+import os
 import unittest
 
+import geojson
+
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
 
 class TestIndicatorRatio(unittest.TestCase):
-    '''def test(self):
+    def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -28,42 +32,28 @@ class TestIndicatorRatio(unittest.TestCase):
 
     def test_all_features_match(self):
         """It can happen that edited features includes deleted features"""
-        indicator = TagsRatio(
-            layer_name="jrc_health_count",
-            dataset="test_regions",
-            feature_id=8,
-        )
+        layer_name = "jrc_health_count"
+        dataset = "test_regions"
+        feature_id = 8
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, indicator.count_match)
 
     def test_no_features(self):
         """Test area with no features"""
-        indicator = TagsRatio(
-            layer_name="jrc_health_count",
-            dataset="test_regions",
-            feature_id=2,
-        )
+        layer_name = "jrc_health_count"
+        dataset = "test_regions"
+        feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, 0)
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
-        self.assertEqual(indicator.result.value, None)'''
-
-    print("amenity in (Healthcare)")
-
-    def testAllRegions(self):
-        layer_name = "jrc_health_count4"
-        dataset = "test_regions"
-        for region in range(0, 38):
-            if region != 12:
-                feature_id = region
-
-                indicator = TagsRatio(
-                    layer_name=layer_name, dataset=dataset, feature_id=feature_id
-                )
-                asyncio.run(indicator.preprocess())
-                indicator.calculate()
-                indicator.create_figure()
+        self.assertEqual(indicator.result.value, None)
 
 
 if __name__ == "__main__":
