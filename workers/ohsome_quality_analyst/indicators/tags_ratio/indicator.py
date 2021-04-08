@@ -41,6 +41,7 @@ class TagsRatio(BaseIndicator):
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
+        return True
 
     def calculate(self) -> bool:
         if isinstance(self.ratio, str) or str(self.ratio) == "None":
@@ -92,29 +93,13 @@ class TagsRatio(BaseIndicator):
 
         Slices are ordered and plotted counter-clockwise.
         """
-
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        if self.ratio is None:
-            ax.set_title("Could not calculate indicator")
-            img_data = StringIO()
-            plt.savefig(img_data, format="svg")
-            self.result.svg = img_data.getvalue()
-            logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
-            plt.close("all")
-            return True
-        elif self.ratio == "NaN":
-            ax.set_title("No features in this region with given tags")
-            img_data = StringIO()
-            plt.savefig(img_data, format="svg")
-            self.result.svg = img_data.getvalue()
-            logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
-            plt.close("all")
-            return True
+        if isinstance(self.ratio, str) or str(self.ratio) == "None":
+            return False
         else:
-
             ax.set_title(
                 "Ratio between all features ("
                 + str(self.count_all)
