@@ -43,7 +43,6 @@ class TagsRatio(BaseIndicator):
         self.count_match = query_results_count["ratioResult"][0]["value2"]
 
     def calculate(self) -> bool:
-
         if isinstance(self.ratio, str) or str(self.ratio) == "None":
             description = Template(self.metadata.result_description).substitute(
                 result=self.ratio,
@@ -86,7 +85,7 @@ class TagsRatio(BaseIndicator):
                     self.result.description = (
                         description + self.metadata.label_description["red"]
                     )
-                return True
+        return True
 
     def create_figure(self) -> bool:
         """Create a nested pie chart.
@@ -98,13 +97,14 @@ class TagsRatio(BaseIndicator):
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        """if self.ratio is None:
+        if self.ratio is None:
             ax.set_title("Could not calculate indicator")
             img_data = StringIO()
             plt.savefig(img_data, format="svg")
             self.result.svg = img_data.getvalue()
             logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
             plt.close("all")
+            return True
         elif self.ratio == "NaN":
             ax.set_title("No features in this region with given tags")
             img_data = StringIO()
@@ -112,62 +112,63 @@ class TagsRatio(BaseIndicator):
             self.result.svg = img_data.getvalue()
             logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
             plt.close("all")
-        else:"""
-        ax.set_title(
-            "Ratio between all features ("
-            + str(self.count_all)
-            + ")"
-            + "\nand filtered ones ("
-            + str(self.count_match)
-            + ")"
-        )
-
-        size = 0.3  # Width of the pie
-        handles = []  # Handles for legend
-
-        # Plot outer Pie (Traffic Light)
-        radius = 1
-        sizes = [0.25, 0.50, 0.25]
-        colors = ["green", "yellow", "red"]
-        labels = ["Good", "Medium", "Bad"]
-        ax.pie(
-            sizes,
-            radius=radius,
-            colors=colors,
-            startangle=90,
-            wedgeprops={"width": size, "alpha": 0.5},
-        )
-
-        for c, s, l in zip(colors, sizes, labels):
-            handles.append(mpatches.Patch(color=c, label=f"{l}"))
-
-        # Plot inner Pie (Indicator Value)
-        radius = 1 - size
-        if type(self.ratio) == str:
-            sizes = (1 - 1, 1)
+            return True
         else:
-            sizes = (1 - self.ratio, self.ratio)
-        colors = ("white", "black")
-        ax.pie(
-            sizes,
-            radius=radius,
-            colors=colors,
-            startangle=90,
-            wedgeprops={"width": size},
-        )
 
-        black_patch = mpatches.Patch(
-            color="black",
-            label=f"{self.layer.name} \nRatio: " f"{round(self.ratio, 2)}",
-        )
-        handles.append(black_patch)
+            ax.set_title(
+                "Ratio between all features ("
+                + str(self.count_all)
+                + ")"
+                + "\nand filtered ones ("
+                + str(self.count_match)
+                + ")"
+            )
 
-        ax.legend(handles=handles)
-        ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
+            size = 0.3  # Width of the pie
+            handles = []  # Handles for legend
 
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
-        plt.close("all")
+            # Plot outer Pie (Traffic Light)
+            radius = 1
+            sizes = [0.25, 0.50, 0.25]
+            colors = ["green", "yellow", "red"]
+            labels = ["Good", "Medium", "Bad"]
+            ax.pie(
+                sizes,
+                radius=radius,
+                colors=colors,
+                startangle=90,
+                wedgeprops={"width": size, "alpha": 0.5},
+            )
+
+            for c, s, l in zip(colors, sizes, labels):
+                handles.append(mpatches.Patch(color=c, label=f"{l}"))
+
+            # Plot inner Pie (Indicator Value)
+            radius = 1 - size
+            if type(self.ratio) == str:
+                sizes = (1 - 1, 1)
+            else:
+                sizes = (1 - self.ratio, self.ratio)
+            colors = ("white", "black")
+            ax.pie(
+                sizes,
+                radius=radius,
+                colors=colors,
+                startangle=90,
+                wedgeprops={"width": size},
+            )
+
+            black_patch = mpatches.Patch(
+                color="black",
+                label=f"{self.layer.name} \nRatio: " f"{round(self.ratio, 2)}",
+            )
+            handles.append(black_patch)
+
+            ax.legend(handles=handles)
+            ax.axis("equal")
+            img_data = StringIO()
+            plt.savefig(img_data, format="svg", bbox_inches="tight")
+            self.result.svg = img_data.getvalue()
+            logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
+            plt.close("all")
         return True
