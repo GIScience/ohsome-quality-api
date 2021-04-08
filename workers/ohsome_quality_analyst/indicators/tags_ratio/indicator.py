@@ -25,8 +25,8 @@ class TagsRatio(BaseIndicator):
             dataset=dataset,
             feature_id=feature_id,
         )
-        self.threshold_yellow = 75
-        self.threshold_red = 25
+        self.threshold_yellow = 0.75
+        self.threshold_red = 0.25
         self.ratio = None
         self.count_all = None
         self.count_match = None
@@ -74,7 +74,7 @@ class TagsRatio(BaseIndicator):
                     self.result.description = (
                         description + self.metadata.label_description["green"]
                     )
-                elif self.threshold_yellow > self.ratio < self.threshold_red:
+                elif self.threshold_yellow > self.ratio > self.threshold_red:
                     self.result.value = 0.5
                     self.result.label = "yellow"
                     self.result.description = (
