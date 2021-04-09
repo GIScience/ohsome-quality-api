@@ -13,7 +13,7 @@ class sigmoidCurve:
     # there where the data show sth like a plateau
     def getYvaluesAtPlateaus(self, x, xdata, ydata) -> list:
         """
-        et the y values where one curve ends and the next begins,
+        Get the y values where one curve ends and the next begins,
         there where the data show sth like a plateau
         """
         yValsAtPlateaus = []
@@ -52,7 +52,7 @@ class sigmoidCurve:
                     elif 2 < xbtw <= 4:
                         yAtX = np.interp(xVal + 1, xdata, ydata)
                     else:
-                        # next xmid to near, ignore
+                        # next xmid too near, ignore
                         yAtX = np.interp(xVal, xdata, ydata)
                     yValsAtPlateaus.append(yAtX)
         return yValsAtPlateaus
@@ -92,8 +92,10 @@ class sigmoidCurve:
         else:
             return 1 - (value1 / value2)
 
-    # if NaN value still left, turn them into 0
     def nanToZero(self, value1) -> float:
+        """
+        if NaN value still left, turn them into 0
+        """
         if math.isnan(value1):
             return 0
         else:
@@ -258,7 +260,7 @@ class sigmoidCurve:
     def calculateCurve(self, params, xvalues):
         """
         depending on length of curve params, calculate
-        he sigmoid curve
+        the sigmoid curve
         """
         if len(params) == 6:
             yDataForSat = self.logistic2(
@@ -326,6 +328,10 @@ class sigmoidCurve:
     # sigmoid curve functions inspired by Sven Lautenbach
     # simple logistic curve
     def logistic1(self, xmid, ymax, slope, x) -> float:
+        """
+        sigmoid curve functions inspired by Sven Lautenbach.
+        simple logistic curve
+        """
         # ymax: max(y-value) / asymptote
         # slope: slope, growth rate
         # x: x value
@@ -379,6 +385,10 @@ class sigmoidCurve:
 
     # logistic curve with 2 jumps
     def logistic2(self, xmid, xmid2, ymax, ymax2, slope, slope2, x) -> float:
+        """
+        sigmoid curve function inspired by Sven Lautenbach.
+        double logistic curve
+        """
         # ymax, ymax2: max(y-value) / asymptote
         # slope, slope2: slope, growth rate
         # x: x value
@@ -479,10 +489,14 @@ class sigmoidCurve:
     def logistic3(
         self, xmid, xmid2, xmid3, ymax, ymax2, ymax3, slope, slope2, slope3, x
     ):
-        # ymax, ymax2, ymax3: max(y-value) / asymptote
-        # slope, slope2, slope3: slope, growth rate
-        # x: x value
-        # xmid, xmid2, xmid3: x value of midpoint of sigmoid curve
+        """
+        sigmoid curve function inspired by Sven Lautenbach.
+        logistic curve with 3 jumps.
+        ymax, ymax2, ymax3: max(y-value) / asymptote
+        slope, slope2, slope3: slope, growth rate
+        x: x value
+        xmid, xmid2, xmid3: x value of midpoint of sigmoid curve
+        """
         return (
             ymax / (1 + np.exp(slope * (xmid - x)))
             + (ymax2 - ymax) / (1 + np.exp(slope2 * (xmid2 - x)))
@@ -492,6 +506,10 @@ class sigmoidCurve:
     # find initial values for the triple curve
     # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
     def initparamsFor3JumpsCurve(self, xdata, ydata) -> list:
+        """
+        find initial values for the triple curve
+        taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
+        """
         # Find the steepest single step
         # Careful... I'm making use of Pandas properties, but
         # xdata could be just a vector, rather than a pd.Series
@@ -636,6 +654,10 @@ class sigmoidCurve:
     # find initial values for the 4jumps curve
     # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
     def initparamsFor4JumpsCurve(self, xdata, ydata) -> list:
+        """
+        find initial values for the curve with 4 jumps
+        taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
+        """
         # Find the steepest single step
         # Careful... I'm making use of Pandas properties, but
         # xdata could be just a vector, rather than a pd.Series
@@ -796,6 +818,10 @@ class sigmoidCurve:
     # find initial values for the triple curve
     # taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
     def initparamsFor5JumpsCurve(self, xdata, ydata) -> list:
+        """
+        find initial values for the curve with 5 jumps
+        taken from: https://gitlab.com/cpbl/osm-completeness -> fits.py
+        """
         # Find the steepest single step
         # Careful... I'm making use of Pandas properties, but xdata
         # could be just a vector, rather than a pd.Series
@@ -942,6 +968,10 @@ class sigmoidCurve:
 
     # don't know why, result of initparamsFor5JumpsCurve() is not sorted
     def sortInits5curves(self, xdata, ydata) -> tuple:
+        """
+        Sort values that initparamsFor5JumpsCurve() returns,
+        sort the x values with corresponding  y values
+        """
         inits = self.initparamsFor5JumpsCurve(xdata, ydata)
         lx = []
         for i, j in enumerate(inits):
@@ -957,15 +987,22 @@ class sigmoidCurve:
         ymax = inits[3]
         return x, yValsAtPlateaus, ymax, ystart
 
-    # get gradient/slope in last 3 years of the logistic curve
-    # pass as ydata the sigmoid function with init params
-    # logistic2(110, 135, 10000, 28900, 0.3, 0.3, df1.li)
     def getSaturationInLast3Years(self, earlyX, lastX, xdata, ydata) -> float:
+        """
+        get gradient/slope in last 3 years of the logistic curve.
+        pass as ydata the result of sigmoid function
+        (sigmoid_curve.getBestFittingCurve(self.preprocessing_results))
+        """
         earlyY = np.interp(earlyX, xdata, ydata)
         lastY = np.interp(lastX, xdata, ydata)
         return earlyY / lastY
 
     def getBestFittingCurve(self, preprocessing_results: Dict) -> float:
+        """
+        Find a sigmoid curve with the lowest mse error that fits in
+        the data. It is checked between single sigmoid curve and
+        sigmoid cures with 2,3,4,5 jumps.
+        """
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(preprocessing_results)
         li = []
