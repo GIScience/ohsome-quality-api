@@ -31,7 +31,7 @@ class TestIndicatorRatio(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     def test_all_features_match(self):
-        """It can happen that edited features includes deleted features"""
+        """Ratio should be 1.0 when all features match expected tags"""
         layer_name = "jrc_health_count"
         dataset = "test_regions"
         feature_id = 8
@@ -40,6 +40,8 @@ class TestIndicatorRatio(unittest.TestCase):
         indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, indicator.count_match)
+        self.assertEqual(indicator.ratio, 1.0)
+        indicator.calculate()
 
     def test_no_features(self):
         """Test area with no features"""
@@ -54,6 +56,18 @@ class TestIndicatorRatio(unittest.TestCase):
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
         self.assertEqual(indicator.result.value, None)
+
+    def test_no_filter2(self):
+        """Layer with no filter2 for ratio endpoint"""
+        layer_name = "major_roads"
+        dataset = "test_regions"
+        feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
+        asyncio.run(indicator.preprocess())
+        self.assertEqual(indicator.count_all, None)
+        indicator.calculate()
 
 
 if __name__ == "__main__":
