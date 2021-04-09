@@ -8,13 +8,17 @@
 - Rename uvicorn runner script and integrate it into Docker setup !70
 - Improve error handling of database authetication module !72
 - Add force recreate indicator/report option !75
-- Minor changes to the code structure !77 !79 !83 !90
+- Minor changes to the code structure !77 !79 !83 !90 !93
 - ohsome API requests are performed asynchronously !80
 - Use offical Python Dockerfile as base Dockerfile for OQT !81
 - Improve docs structure !91
 - Bug fixes !92
 - Improve logging messages #146
-- new indicator tag_ratio !85
+- Implement new indicator tag_ratio !85
+- Remove psycopg2-binary and auth.py in favor of asyncpg and client.py !93
+- Remove database and feature_id attributes from indicator classes !93
+- Implement async/await for geodatabase !93
+- Change API response to avoid overriding indicators !108 #203
 
 ## 0.1.0
 

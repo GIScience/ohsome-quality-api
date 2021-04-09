@@ -16,7 +16,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="generator" content="Webflow">
-		<link href="https://fonts.googleapis.com/css?family=Hind:400,700&display=swap" rel="stylesheet">
 
 
 		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon/favicon-32x32.png">
@@ -37,16 +36,11 @@
 		<!-- Add jQuery -->
 		<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script defer src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
-		<!-- Add Bootstrap -->
-		<script defer src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		
 		<!-- Add custom css -->
 		<link type="text/css" rel="stylesheet" href="assets/css/style.css">
-		<link rel="stylesheet" href="assets/css/style-sectors-map.css">
-		<link type="text/css" rel="stylesheet" href="assets/css/style-add.css">
-		<link type="text/css" rel="stylesheet" href="assets/css/navbar.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/custom-spinner.css">
+
 	</head>
 
 	<body class="page-home">
@@ -57,21 +51,25 @@
 			<div class="container">
 				<a class="oqt-logo" href="index.html">
 					<img class="logo" src="assets/img/logos/oqt_logo.png">
-				</a>
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-				<div class="topnav" id="myTopnav">
-					<a href="index.html" class="topnav active">Home</a>
-					<a class="topnav" href="about.html">About</a>
-					<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-						<i class="fa fa-bars"></i>
-					</a>
-				</div> 
-				
+				</a>			
+				<nav class="nav-menu" role="navigation">
+					<a class="navlink active" href="index.html" id="index_1">Home</a>
+					<a class="navlink" href="about.html" id="terminology_1">About</a>
+				</nav>
+				<div class="drop-nav">
+					<input type="checkbox" id="anim-menu">
+					<label for="anim-menu" class="anim-icon">
+							<div class="anim-menu"></div>
+					</label>
+					<div class="anim-nav">
+						<a href="index.html" class="navlink">Home</a>
+						<a href="about.html" class="navlink">About</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</header>
-
+	
 	<!-- ### title with blue background space ######## -->
 	<!-- <div class="blueheadline" style="background-color:#252850; width:100%; height:65px; position:relative; margin-top:56px; color:white;"> -->
 	<div class="hero-container">
@@ -96,7 +94,6 @@
 				</p>
 			</div>
 			<div class="rich-text">
-
 				<!-- ### select area  space ######## -->
 				<h3>1. Pick an area on the map.</h3><p>Click on a marker, when it turns red, it is selected.</p>
 			</div>
@@ -106,24 +103,27 @@
 			<div  id="mapCheck" style="display:none;">country</div>
 		</div>
 		<div class="section-container section-flex">
-			<div class="one-half">
+			<div class="one-half center-items">
 			<!-- ### select area  space ######## -->
 				<h3>2. Choose data quality topic.</h3>
 				<div class="select">
 					<select class="minimal" id="cardtype"  required>
 						<option value="Topic" selected>Topic ...</option>
 						<option value="SimpleReport">Simple Report</option>
-						<option value="RemoteMappingLevelOne">Remote Mapping Report (Buildings, Roads)</option>
+						<option value="RemoteMappingLevelOne">Remote Mapping Report</option>
 						<option value="SketchmapFitness">Sketch Mapping Report</option>
 						<option value="JrcRequirements">JRC Report</option>
 					</select>
 				</div>
 			</div>
-			<div class="one-half">
+			<div class="one-half center-items">
 			<!-- ### select area  space ######## -->
 				<h3>3. Run analysis.</h3>
-				<button id="gQ" type="submit" class="btn-submit2" >Get Quality Report</button>
-<!--				<button id="gP" type="submit" class="btn-report2" >Download PDF</button>-->
+				<div class="button-box">				
+					<button id="gQ" type="submit" class="btn-submit2" >Get Quality Report</button>
+				</div>
+				<!--<button id="gP" type="submit" class="btn-report2" >Download PDF</button>-->
+
 			</div>
 		</div>
 	</div>
@@ -134,7 +134,7 @@
 		<div class="section-container">
 			<div class="rich-text">
 			<!-- ### select area  space ######## -->
-				<h2>Results</h2>
+				<h2 id="result-heading">Results</h2>
 			</div>
 		</div>
 		<div class="section-container">
@@ -180,33 +180,28 @@
 
 	<!-- End  -->
 	<!-- ################ footer ######## -->
-		<footer>
-			<div class="wrapper"  >
-			  <div class="container">
-				<div class="footer-column">
-				  <a id="language"  href="https://heigit.org/contact/" class="navlink">Contact</a>
-				  <a href="https://heigit.org/legal-notice/" class="navlink">Privacy</a>
-				  <a href="https://heigit.org/imprint/" class="navlink">Imprint</a>
-				</div>
-				<div class="footer-column heigit-logo">
-                    <a href="https://heigit.org" target="_blank">
-						<img src="assets/img/logos/heigit_logo.png" alt="HeiGIT Logo">
-					</a>
-				</div>
-				<div class="footer-column last-footer">
-				  <p>Copyright © <span id="year">2021</span> HeiGIT </p>
-				</div>
-			  </div>
+	<footer>
+		<div class="wrapper"  >
+			<div class="container">
+			<div class="footer-column">
+				<a id="language"  href="https://heigit.org/contact/" class="navlink">Contact</a>
+				<a href="https://heigit.org/legal-notice/" class="navlink">Privacy</a>
+				<a href="https://heigit.org/imprint/" class="navlink">Imprint</a>
 			</div>
-		</footer>
-
+			<div class="footer-column heigit-logo">
+				<a href="https://heigit.org" target="_blank">
+					<img src="assets/img/logos/heigit_logo.png" alt="HeiGIT Logo">
+				</a>
+			</div>
+			<div class="footer-column last-footer">
+				<p>Copyright © <span id="year">2021</span> HeiGIT </p>
+			</div>
+			</div>
+		</div>
+	</footer>
 
 	<script src="assets/js/api-url.js"></script>
-	<script async src="assets/js/index.js"></script>
 	<script defer src="assets/js/map-en.js"></script>
-	<script defer src="assets/js/navbar.js"></script>
-
-
 	</body>
 
 </html>

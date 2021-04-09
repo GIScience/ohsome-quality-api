@@ -1,18 +1,21 @@
+import asyncio
 import os
 import unittest
 
-from psycopg2._psycopg import connection as psycopg_connection
-from psycopg2._psycopg import cursor as psycopg_cursor
-from psycopg2.errors import OperationalError
+import asyncpg
 
-from ohsome_quality_analyst.geodatabase.auth import PostgresDB
+from ohsome_quality_analyst.geodatabase import client as pg_client
+
+
+async def get_connection_context_manager():
+    async with pg_client.get_connection() as conn:
+        return type(conn)
 
 
 class TestPostgres(unittest.TestCase):
     def test_connection(self):
-        db_client = PostgresDB()
-        self.assertIsInstance(db_client._connection, psycopg_connection)
-        self.assertIsInstance(db_client._cursor, psycopg_cursor)
+        instance_type = asyncio.run(get_connection_context_manager())
+        self.assertEqual(instance_type, asyncpg.connection.Connection)
 
     def test_connection_fails(self):
         """Test connection failure error due to wrong credentials"""
@@ -33,8 +36,8 @@ class TestPostgres(unittest.TestCase):
             os.environ[env_name] = ""
 
         # Test connection fail
-        with self.assertRaises(OperationalError):
-            PostgresDB()
+        with self.assertRaises(OSError):
+            asyncio.run(get_connection_context_manager())
 
         # Restore env to previous state
         for env_name in env_names:

@@ -41,14 +41,14 @@ app.add_middleware(
 class IndicatorParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[str] = None
+    featureId: Optional[int] = None
     layerName: Optional[str] = None
 
 
 class ReportParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[str] = None
+    featureId: Optional[int] = None
 
 
 @app.get("/indicator/{name}")
@@ -58,42 +58,40 @@ async def get_indicator(
     layerName: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[str] = None,
+    featureId: Optional[int] = None,
 ):
-    # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
         bpolys = geojson.loads(bpolys)
-    elif dataset is None and featureId is None:
-        raise ValueError("Provide either bpolys or dataset and feature_id")
-    indicator = await oqt.create_indicator(name, layerName, bpolys, dataset, featureId)
-    response = empty_api_response()
-    response["metadata"] = vars(indicator.metadata)
-    response["metadata"]["requestUrl"] = request.url._url
-    response["metadata"].pop("result_description", None)
-    response["metadata"].pop("label_description", None)
-    response["layer"] = vars(indicator.layer)
-    response["result"] = vars(indicator.result)
-    response["result"]["label"] = indicator.result.label
-    return response
+    url = request.url._url
+    return await _fetch_indicator(name, layerName, url, bpolys, dataset, featureId)
 
 
 @app.post("/indicator/{name}")
 async def post_indicator(name: str, request: Request, item: IndicatorParameters):
+    layer_name = item.dict().get("layerName", None)
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
-    layer_name = item.dict().get("layerName", None)
-    # TODO: Error handling should happen in oqt.create_indicator
     if bpolys:
         bpolys = geojson.loads(bpolys)
-    elif dataset is None and feature_id is None:
-        raise ValueError("Provide either bpolys or dataset and feature_id")
+    url = request.url._url
+    return await _fetch_indicator(name, layer_name, url, bpolys, dataset, feature_id)
+
+
+async def _fetch_indicator(
+    name: str,
+    layer_name: str,
+    url: str,
+    bpolys: Optional[str] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[int] = None,
+):
     indicator = await oqt.create_indicator(
         name, layer_name, bpolys, dataset, feature_id
     )
     response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
-    response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"]["requestUrl"] = url
     response["metadata"].pop("result_description", None)
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
@@ -108,37 +106,12 @@ async def get_report(
     request: Request,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[str] = None,
+    featureId: Optional[int] = None,
 ):
-    # TODO: Error handling should happen in oqt.create_report
     if bpolys:
         bpolys = geojson.loads(bpolys)
-    elif dataset is None and featureId is None:
-        raise ValueError("Provide either bpolys or dataset and feature_id")
-    report = await oqt.create_report(
-        name, bpolys=bpolys, dataset=dataset, feature_id=featureId
-    )
-    response = empty_api_response()
-    response["metadata"] = vars(report.metadata)
-    response["metadata"]["requestUrl"] = request.url._url
-    response["metadata"].pop("label_description", None)
-    response["result"] = vars(report.result)
-    response["result"]["label"] = report.result.label
-    response["indicators"] = {}
-    for indicator in report.indicators:
-        metadata = vars(indicator.metadata)
-        metadata.pop("result_description", None)
-        metadata.pop("label_description", None)
-        layer = vars(indicator.layer)
-        result = vars(indicator.result)
-        result["label"] = indicator.result.label
-        indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"][indicator_name] = {
-            "metadata": metadata,
-            "layer": layer,
-            "result": result,
-        }
-    return response
+    url = request.url._url
+    return await _fetch_report(name, url, bpolys, dataset, featureId)
 
 
 @app.post("/report/{name}")
@@ -146,6 +119,17 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
+    url = request.url._url
+    return await _fetch_report(name, url, bpolys, dataset, feature_id)
+
+
+async def _fetch_report(
+    name: str,
+    url: str,
+    bpolys: Optional[str] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[int] = None,
+):
     # TODO: Error handling should happen in oqt.create_report
     if bpolys:
         bpolys = geojson.loads(bpolys)
@@ -154,7 +138,7 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     )
     response = empty_api_response()
     response["metadata"] = vars(report.metadata)
-    response["metadata"]["requestUrl"] = request.url._url
+    response["metadata"]["requestUrl"] = url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
     response["result"]["label"] = report.result.label
@@ -167,7 +151,8 @@ async def post_report(name: str, request: Request, item: ReportParameters):
         result = vars(indicator.result)
         result["label"] = indicator.result.label
         indicator_name = name_to_lower_camel(metadata["name"])
-        response["indicators"][indicator_name] = {
+        layer_name = name_to_lower_camel(layer["name"])
+        response["indicators"][indicator_name + layer_name] = {
             "metadata": metadata,
             "layer": layer,
             "result": result,
@@ -177,5 +162,5 @@ async def post_report(name: str, request: Request, item: ReportParameters):
 
 @app.get("/geometries/{dataset}")
 async def get_bpolys_from_db(dataset: str, featureId: int):
-    bpolys = db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
+    bpolys = await db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
     return bpolys

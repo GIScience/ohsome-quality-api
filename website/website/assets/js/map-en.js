@@ -186,9 +186,25 @@ function buildMap(...charts){
 		paramString = region + "," + topic + "," + dataset
 		return paramString
 	}
+
+	function toggle_results_will_be_shown_paragraph(bool){
+		var a = document.getElementById("results1");
+		var b = document.getElementById("results2");
+
+		if (bool == true) {
+			a.style.display = "block";
+			b.style.display = "block";
+			b.style.marginBottom = "500px";
+
+		} else {
+			a.style.display = "none";
+			b.style.display = "none";
+		}
+	}
 	
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
+
 		var topic = document.getElementById("cardtype");
 		var areas = document.getElementById("mapCheck").innerHTML;
 
@@ -201,6 +217,7 @@ function buildMap(...charts){
 			alert("Please select a topic");
 		}
 		else {
+			toggle_results_will_be_shown_paragraph(true)
 			// show loader spinner
 			document.querySelector("#loader1").classList.add("spinner-1");
 			document.querySelector("#loader2").classList.add("spinner-1");
@@ -209,18 +226,6 @@ function buildMap(...charts){
 			// remove selected feature from map
 			map.removeLayer(selectedFeatureLayer)
 
-			var x = document.getElementById("results1");
-			if (x.style.display === "none") {
-				x.style.display = "block";
-			} else {
-				x.style.display = "none";
-			}
-			var x = document.getElementById("results2");
-			if (x.style.display === "none") {
-				x.style.display = "block";
-			} else {
-				x.style.display = "none";
-			}
 
 			var params = {
 			    "dataset": String(getDataset(selectedDataset)),
@@ -228,20 +233,19 @@ function buildMap(...charts){
 			}
 			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
-
-		}
+		 }
 		// when params were send, get pdf button turns blue
 		changeColor() 
 	}; // getQuality Button click ends
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
+		toggle_results_will_be_shown_paragraph(false)
 		document.querySelector("#loader1").classList.remove("spinner-1");
 		document.querySelector("#loader2").classList.remove("spinner-1");
 
 		// show selected region on a map
 		addMiniMap();
-
 		// 1=green, 2=yellow, 3=red
 		switch (response.result.label) {
 		    case 'green':
@@ -270,9 +274,15 @@ function buildMap(...charts){
 		if(Object.keys(response.indicators).length > 0) {
 			addIndicators(response.indicators)
 		}
-
-		// scroll to results
-		document.getElementById('resultSection').scrollIntoView();
+		var element = document.getElementById('result-heading');
+		var headerOffset = 70;
+		var elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+		var offsetPosition = elementPosition - headerOffset;
+	
+		window.scrollTo({
+			 top: offsetPosition,
+			 behavior: "smooth"
+		});
 	}
 
 	/**
@@ -344,7 +354,7 @@ function buildMap(...charts){
 			parentDiv.appendChild(sectionDiv);
 
 			var horizontalLine = document.createElement("hr")
-			horizontalLine.className = "wrapper"
+			horizontalLine.className = "splitline"
 			parentDiv.appendChild(horizontalLine);
 		};
 	}
@@ -419,7 +429,6 @@ function buildMap(...charts){
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
-			div.style.backgroundColor = 'grey';
 		}
 	    // no selection of topic so set buttons to grey
 		if (selectedTopic == "Topic") {
@@ -428,7 +437,6 @@ function buildMap(...charts){
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
-			div.style.backgroundColor = 'grey';
 		}
 	    // selection made. set color to blue
 		else {
@@ -518,41 +526,10 @@ function buildMap(...charts){
 
 	};
 
-	/*// add a legend to the map
-	var legend = L.control({position: 'bottomright'});
-
-	legend.onAdd = function (map) {
-		// create a div for the legend with class "info legend"
-		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0,1,2,3,4,5,6,7,8],
-			labels = [];
-		// put color for exactly value 0 in legend
-		div.innerHTML +='<p>t CO<sub>2</sub> eq. per capita</p>'
-		div.innerHTML +='<p>0 <i style="background:' + getColor1(grades[0]) + '"></i> </p>'
-		// loop through our density intervals and generate a label with a colored square for each interval
-		for (var i = 0; i < grades.length; i++) {
-			div.innerHTML +=
-				'<i style="background:' + getColor1(grades[i] + 1) + '"></i> <p>' +
-				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br></p>' : '+</p>');
-		}
-		div.innerHTML +='<p>Missing values<i class="keinWert" ></i> </p>'
-		return div;
-	};*/
-
 
 	info.addTo(map);
-	//legend.addTo(map);
 	// add HeiGIT logo
-	var logo = L.control({ position: 'topleft' });
-	logo.onAdd = function (map) {
-		  var logoContainer = L.DomUtil.create('div', 'logoContainer')
-		  logoContainer.innerHTML = `<div id="support" style="background-color:white"><p>supported by </p>
-		  <a  href="https://heigit.org/" target = "_blank"><img src='assets/img/logos/heigit_logo.png'/></a><br>
-		  <p>and </p> <a href="https://www.geog.uni-heidelberg.de/gis/index.html" target = "_blank">
-		  <img src='assets/img/logos/Logo_UNI_GIScience_HD.png'/></a></div>`
-		  return logoContainer
-	}
-	//logo.addTo(map)
+
 
  }
  function topFunction() {

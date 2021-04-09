@@ -17,15 +17,11 @@ class LastEdit(BaseIndicator):
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
         time_range: str = None,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
             bpolys=bpolys,
-            dataset=dataset,
-            feature_id=feature_id,
         )
         self.time_range = time_range
         # TODO: thresholds might be better defined for each OSM layer

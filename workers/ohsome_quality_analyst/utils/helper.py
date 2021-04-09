@@ -7,10 +7,6 @@ import os
 import pkgutil
 import re
 
-from geojson import FeatureCollection
-
-from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
-
 
 def name_to_class(class_type: str, name: str):
     """Convert class name of class type (indicator or report) to the class.
@@ -53,21 +49,3 @@ def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
     module = pkgutil.get_loader(module_name)
     return os.path.dirname(module.get_filename())
-
-
-def validate_geojson(input: FeatureCollection) -> bool:
-    if input.is_valid is False:
-        raise ValueError("Input geometry is not valid. {}".format(input.errors()))
-    area_in_sqkm = get_area_of_bpolys(input)
-    # todo: decide on final max-threshold
-    max_area_in_sqkm = 100
-    if area_in_sqkm > max_area_in_sqkm:
-        raise ValueError(
-            """
-            Input Geometry is to big ({} sqkm).
-            Polys should remain under {} sqkm.
-        """.format(
-                area_in_sqkm, max_area_in_sqkm
-            )
-        )
-    return input.is_valid

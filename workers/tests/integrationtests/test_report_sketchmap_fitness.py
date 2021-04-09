@@ -9,7 +9,7 @@ class TestReportSketchmapFitness(unittest.TestCase):
     def setUp(self):
         # Test region in Heidelberg
         self.dataset_name = "test_regions"
-        self.feature_id = "14"
+        self.feature_id = 14
 
     def test(self):
         report = SketchmapFitness(dataset=self.dataset_name, feature_id=self.feature_id)

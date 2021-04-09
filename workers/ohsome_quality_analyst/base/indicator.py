@@ -5,12 +5,13 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
+from io import StringIO
 from typing import Dict, Literal, Optional
 
+import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import FeatureCollection
 
-import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
 
 
@@ -65,21 +66,8 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
     ) -> None:
-        self.dataset = dataset
-        self.feature_id = feature_id
-        if bpolys is not None:
-            self.bpolys = bpolys
-        elif dataset is not None and feature_id is not None:
-            self.bpolys = db_client.get_bpolys_from_db(self.dataset, self.feature_id)
-        else:
-            raise ValueError(
-                "Provide either a bounding polygon "
-                + "or dataset name and feature id as parameter."
-            )
-
+        self.bpolys = bpolys
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata = from_dict(data_class=Metadata, data=metadata)
@@ -89,7 +77,7 @@ class BaseIndicator(metaclass=ABCMeta):
             label="undefined",
             value=None,
             description=self.metadata.label_description["undefined"],
-            svg=None,
+            svg=self._get_default_figure(),
         )
 
     @abstractmethod
@@ -119,3 +107,24 @@ class BaseIndicator(metaclass=ABCMeta):
         Returns True if figure creation was successful otherwise False.
         """
         pass
+
+    def _get_default_figure(self) -> str:
+        """Return a SVG as default figure for indicators"""
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        plt.figure(figsize=figsize)
+        plt.text(
+            5.5,
+            0.5,
+            "The creation of the Indicator was unsuccessful.",
+            bbox={"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 1},
+            ha="center",
+            va="center",
+        )
+        plt.axvline(5.5, color="w", linestyle="solid")
+        plt.axis("off")
+
+        svg_string = StringIO()
+        plt.savefig(svg_string, format="svg")
+        plt.close("all")
+        return svg_string.getvalue()

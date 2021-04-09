@@ -4,6 +4,7 @@ import unittest
 
 import geojson
 
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
 
@@ -34,10 +35,9 @@ class TestIndicatorRatio(unittest.TestCase):
         layer_name = "jrc_health_count"
         dataset = "test_regions"
         feature_id = 8
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
-        indicator = TagsRatio(
-            layer_name=layer_name, dataset=dataset, feature_id=feature_id
-        )
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, indicator.count_match)
 
@@ -46,10 +46,9 @@ class TestIndicatorRatio(unittest.TestCase):
         layer_name = "jrc_health_count"
         dataset = "test_regions"
         feature_id = 2
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
-        indicator = TagsRatio(
-            layer_name=layer_name, dataset=dataset, feature_id=feature_id
-        )
+        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, 0)
         indicator.calculate()
