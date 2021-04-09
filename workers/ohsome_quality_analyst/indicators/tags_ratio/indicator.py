@@ -40,7 +40,9 @@ class TagsRatio(BaseIndicator):
         return True
 
     def calculate(self) -> bool:
-        if isinstance(self.ratio, str) or str(self.ratio) == "None":
+        # self.ratio can be float, NaN if no features of filter1 are in the
+        # region or None if the layer has no filter2
+        if isinstance(self.ratio, str) or self.ratio is None:
             description = Template(self.metadata.result_description).substitute(
                 result=self.ratio,
                 all=f"{self.count_all}",
@@ -52,6 +54,7 @@ class TagsRatio(BaseIndicator):
                 description + self.metadata.label_description["undefined"]
             )
             return False
+        # ratio is a float
         else:
             description = Template(self.metadata.result_description).substitute(
                 result=f"{self.ratio:.2f}",
@@ -70,7 +73,7 @@ class TagsRatio(BaseIndicator):
                     self.result.description = (
                         description + self.metadata.label_description["green"]
                     )
-                elif self.threshold_yellow > self.ratio > self.threshold_red:
+                elif self.threshold_yellow > self.ratio >= self.threshold_red:
                     self.result.value = 0.5
                     self.result.label = "yellow"
                     self.result.description = (
@@ -93,7 +96,7 @@ class TagsRatio(BaseIndicator):
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        if isinstance(self.ratio, str) or str(self.ratio) == "None":
+        if isinstance(self.ratio, str) or self.ratio is None:
             return False
         else:
             ax.set_title(
