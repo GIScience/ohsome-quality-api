@@ -66,7 +66,7 @@ class TestIndicatorRatio(unittest.TestCase):
 
         indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
-        self.assertEqual(indicator.count_all, None)
+        self.assertIsNone(indicator.count_all)
         indicator.calculate()
 
 
