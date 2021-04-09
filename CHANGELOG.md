@@ -18,6 +18,7 @@
 - Remove psycopg2-binary and auth.py in favor of asyncpg and client.py !93
 - Remove database and feature_id attributes from indicator classes !93
 - Implement async/await for geodatabase !93
+- Update dependecies #109
 
 ## 0.1.0
 
