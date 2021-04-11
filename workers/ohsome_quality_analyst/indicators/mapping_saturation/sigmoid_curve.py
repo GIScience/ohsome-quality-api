@@ -965,7 +965,7 @@ class sigmoidCurve:
         lastY = np.interp(lastX, xdata, ydata)
         return earlyY / lastY
 
-    def getBestFittingCurve(self, preprocessing_results: Dict) -> float:
+    def getBestFittingCurve(self, preprocessing_results: Dict) -> list:
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(preprocessing_results)
         li = []

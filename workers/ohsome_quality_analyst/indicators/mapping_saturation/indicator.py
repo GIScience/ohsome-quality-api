@@ -240,7 +240,8 @@ class MappingSaturation(BaseIndicator):
             )
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
-        ax.legend(loc="upper left")
+        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
+        fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
