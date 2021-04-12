@@ -14,9 +14,7 @@ class TestReportSketchmapFitness(unittest.TestCase):
     def test(self):
         report = SketchmapFitness(dataset=self.dataset_name, feature_id=self.feature_id)
         report.set_indicator_layer()
-        print(report.indicator_layer)
         for indicator_name, layer_name in report.indicator_layer:
-            print(indicator_name)
             indicator = asyncio.run(
                 create_indicator(
                     indicator_name,
@@ -26,7 +24,6 @@ class TestReportSketchmapFitness(unittest.TestCase):
                     report.feature_id,
                 )
             )
-            print(indicator)
             report.indicators.append(indicator)
         report.combine_indicators()
         self.assertIsNotNone(report.result.label)
