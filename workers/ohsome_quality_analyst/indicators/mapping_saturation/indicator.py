@@ -218,7 +218,7 @@ class MappingSaturation(BaseIndicator):
             df1.timestamps,
             df1.yValues,
             linecol[0],
-            label=f"{self.layer.name} - {nl}{self.layer.endpoint}",
+            label="OSM data",
         )
         if ydataForSat[0] != "empty":
             ax.set_title("Saturation level of the data")
