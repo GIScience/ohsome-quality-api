@@ -15,9 +15,9 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 # threshold values defining the color of the traffic light
 # derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
-# 0 < f‘(x) <= 0.03 and years with saturation > 2
+# saturation: 0 < f‘(x) <= 0.03 and years with saturation > 2
 THRESHOLD_YELLOW = 0.03
-THRESHOLD_RED = 10
+# TODO define THRESHOLD_RED (where start stadium ends) with function from MA
 
 
 class MappingSaturation(BaseIndicator):
@@ -69,6 +69,10 @@ class MappingSaturation(BaseIndicator):
         return True
 
     def calculate(self) -> bool:
+        """
+        Calculate the growth rate + saturation level within the last 3 years.
+        Depending on the result, define label and value.
+        """
         description = ""
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
@@ -106,7 +110,7 @@ class MappingSaturation(BaseIndicator):
                 "li": li,
             }
         )
-        # get y values fot best fitting sigmid curve, with these y the
+        # get y values fot best fitting sigmoid curve, with these y the
         # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
         ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
@@ -114,9 +118,8 @@ class MappingSaturation(BaseIndicator):
             # check if data are more than start stadium
             # The end of the start stage is defined with
             # the maximum of the curvature function f''(x)
-            # here: simple check <= 20
-            # TODO check for what size (of area or of data) the saturation
-            #  makes sense to be calculated
+            # here: simple check <= 2
+            # TODO implement function from MA for start stadium
             """
             For buildings-count in a small area, this could return a wrong
             interpretation, eg a little collection of farm house and buildings
@@ -125,16 +128,14 @@ class MappingSaturation(BaseIndicator):
             """
             # calculate/define traffic light value and label
             if max(df1.yValues) <= 2:
-                # for jrc-health the value 20 from building-counts
-                # and major-roads is not good
-                # start stadium
+                # start stadium, some data are there, but not much
                 label = "red"
                 value = 0.0
                 description += self.metadata.label_description["red"]
                 self.saturation = 0
             else:
                 # calculate slope/growth of last 3 years
-                # take value in -36. month and value in -1. month of data
+                # take value in -36. month and value in last month of data
                 earlyX = li[-36]
                 lastX = li[-1]
                 # get saturation level within last 3 years
@@ -142,22 +143,20 @@ class MappingSaturation(BaseIndicator):
                     earlyX, lastX, df1.li, ydataForSat
                 )
                 # if earlyX and lastX return same y value
-                # (means no growth any more),
+                # (means no growth any more), then
                 # getSaturationInLast3Years returns 1.0
-                # if saturation == 1.0:
-                #    saturation = 0.0
 
+            # if saturation == 1.0:
+            #    growth should be 0.0
             self.growth = 1 - self.saturation
 
-            # TODO: make clear what should be used here,
-            #  if saturation should be used then the threshold
-            #  needs to be adjusted
+            # growth is larger than 3% within last 3 years
             if self.growth <= THRESHOLD_YELLOW:
                 label = "green"
                 value = 1.0
                 description += self.metadata.label_description["green"]
             else:
-                # THRESHOLD_YELLOW > saturation > THRESHOLD_RED
+                # growth level is better than the red threshould
                 label = "yellow"
                 value = 0.5
                 description += self.metadata.label_description["yellow"]
@@ -184,6 +183,9 @@ class MappingSaturation(BaseIndicator):
         return True
 
     def create_figure(self) -> bool:
+        """
+        Create svg with data line in blue and sigmoid curve in red.
+        """
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
