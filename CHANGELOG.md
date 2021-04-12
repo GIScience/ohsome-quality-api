@@ -19,6 +19,8 @@
 - Remove database and feature_id attributes from indicator classes !93
 - Implement async/await for geodatabase !93
 - Update dependecies #109
+- Change API response to avoid overriding indicators !108 #203
+- Put JRC Report on website !107 #189
 
 ## 0.1.0
 
