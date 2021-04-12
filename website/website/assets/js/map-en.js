@@ -148,12 +148,12 @@ function buildMap(...charts){
 		}).addTo(map);
 
 		countryID = layer.feature.properties.fid;
-		selectedCountry = getCountry(countryID)
+		selectedCountry = countryID
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
 		dataset = "test_regions" // = Admin-0 country
-		selectedDataset = getDataset(dataset)
+		selectedDataset = dataset
 	}
 	// initialize variables for storing area and dataset id from map geojson 
 	if (html_params["countryID"] != undefined){
@@ -163,17 +163,8 @@ function buildMap(...charts){
 		countryID = null; 
 	}
 	selectedCountry = null;
-	selectedDataset = null;
-	// grap country name while clicking on map
-	function getCountry(c) {
-		// console.log("in getC")
-		// console.log(c)
-		return c
-	}
-	// grap dataset id  while clicking on map
-	function getDataset(d) {
-		return d
-	}
+	selectedDataset = "test_regions";
+
 	// create a parameter string containing selected area, topic and dataset id
 	function getParams(region, topic, dataset) {
 		paramString = region + "," + topic + "," + dataset
@@ -197,29 +188,29 @@ function buildMap(...charts){
 	
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
-
+		html_params = get_html_parameter_list(location.search)
 		var topic = document.getElementById("cardtype");
 		if(html_params["countryID"]!=undefined){
-
 			var areas = parseInt(html_params["countryID"])
 		}
 		else{
 			var areas = document.getElementById("mapCheck").innerHTML;
 		}
-		if (html_params["topic"]!=undefined){
+		if (html_params["topic"]!=undefined&topic_isValid(html_params["topic"])){
 			var selectedTopic = html_params["topic"]
-			topic_isValid(selectedTopic)
-			topic.value = selectedTopic		}
+			topic.value = selectedTopic		
+		}
 		else{
 			var selectedTopic = topic.options[topic.selectedIndex].value;
 		}
-		if (areas == "country") {			
+		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}
-		else if (selectedTopic == "Topic") {		
+		else if (selectedTopic == "Topic" | !topic_isValid(selectedTopic)) {		
 			alert("Please select a topic");
 		}
 		else {
+			markers[areas].fire("click")
 			toggle_results_will_be_shown_paragraph(true)
 			// show loader spinner
 			document.querySelector("#loader1").classList.add("spinner-1");
@@ -227,12 +218,14 @@ function buildMap(...charts){
 			// remove dynamically created Indicator divs
 			removeIndicators()
 			// remove selected feature from map
-			map.removeLayer(selectedFeatureLayer)
+			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 
+
+			
 
 			var params = {
-			    "dataset": String(getDataset(selectedDataset)),
-			    "featureId": String(getCountry(selectedCountry))
+			    "dataset": String(selectedDataset),
+			    "featureId": String(areas)
 			}
 			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
@@ -534,6 +527,8 @@ function buildMap(...charts){
 
 	info.addTo(map);
 	// add HeiGIT logo
+
+
 	if ((topic_isValid(html_params["topic"]) & country_isValid(countryID, charts[0][0].features))){
 		markers[countryID].fire("click")
 		document.getElementById("gQ").click()

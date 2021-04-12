@@ -40,5 +40,5 @@ function country_isValid(value, json){
     for (elem of json){
         valid_options.push(elem.properties.fid)
     }
-    return value in valid_options
+    return valid_options.includes(value)
 }
