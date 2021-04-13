@@ -69,22 +69,6 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
-    def testValidateBpolysSize(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "europe.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = geojson.load(f)
-
-        with self.assertRaises(ValueError):
-            asyncio.run(
-                oqt.create_indicator(
-                    "GhsPopComparison", "building_count", bpolys=bpolys
-                )
-            )
-
 
 if __name__ == "__main__":
     unittest.main()
