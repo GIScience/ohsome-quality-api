@@ -167,7 +167,7 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
 async def get_fids(dataset_name) -> List[int]:
     """Get all feature ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    query = "SELECT fid FROM {0}".format(dataset_name)
+    query = "SELECT ogc_fid FROM {0}".format(dataset_name)
     async with get_connection() as conn:
         records = await conn.fetch(query)
     return [record["fid"] for record in records]
@@ -211,17 +211,17 @@ async def get_bpolys_from_db(
             'features', json_agg(
                 json_build_object(
                     'type',       'Feature',
-                    'id',         fid,
+                    'id',         ogc_fid,
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
                         -- list of fields
-                        'fid', fid
+                        'fid', ogc_fid
                     )
                 )
             )
         )
         FROM {0}
-        WHERE fid = $1
+        WHERE ogc_fid = $1
     """
     ).format(dataset)
     async with get_connection() as conn:

@@ -52,8 +52,8 @@ function buildMap(...charts){
                 var center = bounds.getCenter();
                 // Use center to put marker on map
 				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
-				let fid = feature.properties.fid
-				markers[fid] = marker
+				let id = feature.id
+				markers[id] = marker
 				marker.on('click', function(){layer.fire('click')})
             }
             // end add marker for test regions
@@ -80,7 +80,7 @@ function buildMap(...charts){
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
-		 info.updateInfo(layer.feature.properties);
+		 info.updateInfo(layer.feature.id);
 	}
 
 	//Next we’ll define what happens on mouseout:
@@ -99,7 +99,7 @@ function buildMap(...charts){
 	// what happens whlie onclick on the map
 	function selectStyle(e) {
 		// change value of mapCheck in html to signalize intern area was selected
-		update_url("countryID", e.target.feature.properties.fid)
+		update_url("countryID", e.target.feature.id)
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
 		// TODO style selected country
@@ -119,7 +119,7 @@ function buildMap(...charts){
 			}
 		}).addTo(map);
 
-		countryID = layer.feature.properties.fid;
+		countryID = layer.feature.id;
 		selectedCountry = countryID
 		
 		// get dataset ID
@@ -195,8 +195,6 @@ function buildMap(...charts){
 			// remove selected feature from map
 			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 
-
-			
 
 			var params = {
 			    "dataset": String(selectedDataset),
@@ -356,7 +354,6 @@ function buildMap(...charts){
 		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
 		var miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
-			zoomControl: false,
 			minZoom: 2,
 			zoom: 2
 		})
@@ -474,16 +471,11 @@ function buildMap(...charts){
 	});
 
 	// method that we will use to update the info box based on feature properties passed
-	info.updateInfo = function (props) {
-		// get CO2 emission value as number from layer properties
-		var value = props.fid ;
-
-		// get corresponding year from layer properties
-
+	info.updateInfo = function (id) {
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)){
-			this._div.innerHTML = '<h5>Click to select</h5>' +  (props ?
-				'<p><b>Feature ID: ' + props.fid 	+ '</b>'
+			this._div.innerHTML = '<h5>Click to select</h5>' +  (id ?
+				'<p><b>Feature ID: ' + id + '</b>'
 				: '<p>Move the mouse over the map</p>'
 					);
 		}
