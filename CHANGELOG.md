@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- Different validation processes of input geometry for entry points (API and CLI) !119
+
+
 ## 0.2.0
 
 - Refine `pyproject.toml` !65

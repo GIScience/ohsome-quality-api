@@ -88,6 +88,13 @@ Windows user can set those environment variables with following command `setx PO
 The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
 
 
+#### Misc
+
+Additional environment variables are:
+- `OQT_LOG_LEVEL`: Control the logging level of OQT (See logging section)
+- `OQT_GEOM_SIZE_LIMIT`: Control the size limit of the input geometry passed to the API.
+
+
 ### Usage
 
 #### CLI

@@ -58,9 +58,6 @@ async def create_indicator(
     if bpolys is not None and dataset is None and feature_id is None:
         logging.info("Indicator name:\t" + indicator_name)
         logging.info("Layer name:\t" + layer_name)
-        # TODO: decide on final max-threshold
-        if await db_client.get_area_of_bpolys(bpolys) > 100 or bpolys.is_valid is False:
-            raise ValueError("Input geometry is not valid")
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
 
