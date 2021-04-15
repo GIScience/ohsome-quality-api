@@ -219,7 +219,7 @@ class MappingSaturation(BaseIndicator):
             df1.timestamps,
             df1.yValues,
             linecol[0],
-            label=f"{self.layer.name} - {self.layer.endpoint}",
+            label="OSM data",
         )
         if ydataForSat[0] != "empty":
             ax.set_title("Saturation level of the data")
@@ -241,7 +241,8 @@ class MappingSaturation(BaseIndicator):
             )
         else:
             plt.title("No Sigmoid curve could be fitted into the data")
-        ax.legend(loc="lower left", bbox_to_anchor=(0.0, -0.5))
+        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
+        fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")

@@ -997,12 +997,7 @@ class sigmoidCurve:
         lastY = np.interp(lastX, xdata, ydata)
         return earlyY / lastY
 
-    def getBestFittingCurve(self, preprocessing_results: Dict) -> float:
-        """
-        Find a sigmoid curve with the lowest mse error that fits in
-        the data. It is checked between single sigmoid curve and
-        sigmoid cures with 2,3,4,5 jumps.
-        """
+    def getBestFittingCurve(self, preprocessing_results: Dict) -> list:
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(preprocessing_results)
         li = []
