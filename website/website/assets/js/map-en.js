@@ -58,7 +58,7 @@ function buildMap(...charts){
 	let markers = {}
 	world = L.geoJson(charts[0][0], {
 		style: {
-			fillColor:"#EEF200",
+			fillColor:"#EEF200",  // yellow
 			weight: 2,
 			opacity: 1,
 			color: 'white',
@@ -190,12 +190,14 @@ function buildMap(...charts){
 	document.getElementById("gQ").onclick = function () { 
 		html_params = get_html_parameter_list(location.search)
 		var topic = document.getElementById("cardtype");
+
 		if(html_params["countryID"]!=undefined){
 			var areas = parseInt(html_params["countryID"])
 		}
 		else{
 			var areas = document.getElementById("mapCheck").innerHTML;
 		}
+
 		if (html_params["topic"]!=undefined&topic_isValid(html_params["topic"])){
 			var selectedTopic = html_params["topic"]
 			topic.value = selectedTopic		
@@ -203,6 +205,7 @@ function buildMap(...charts){
 		else{
 			var selectedTopic = topic.options[topic.selectedIndex].value;
 		}
+
 		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}

@@ -27,6 +27,7 @@ function update_url(key, value){
     window.history.replaceState(null, null, new_params);
 }
 
+// check if a report with this name is implemented
 function topic_isValid(topic){
     let valid_options = []
     for (var option of document.getElementById("cardtype").options) {
@@ -35,6 +36,7 @@ function topic_isValid(topic){
     return valid_options.includes(topic)
 }
 
+// check if test region id is in the test regions file. This functions need to be updated once we have other inputs.
 function country_isValid(value, json){
     let valid_options = []
     for (elem of json){
