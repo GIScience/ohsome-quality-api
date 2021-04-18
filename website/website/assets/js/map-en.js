@@ -9,34 +9,6 @@ Promise.all([
 var selectedFeature = null;
 var selectedFeatureLayer = null;
 
-
-// Function that defines the colors for a value range 
-function getColor1(d) {	
-	if (d == 0){return 'fff'}
-	else {
-		return d > 8.0 ? '#4d004b' :
-			
-			   d > 7.0  ? '#810f7c' :
-			   d > 6.0 ? '#88419d' :
-			
-			   d > 5.0  ? '#8c6bb1' :
-			  
-			   d > 4.0  ? '#8c96c6' :
-			
-			   d > 3.0   ? '#9ebcda' :
-			   
-			   d > 2.0   ? '#bfd3e6' :
-			 
-			   d > 1.0   ? '#e0ecf4' :
-			
-			   d > 0.0001   ? '#f7fcfd' :
-			   
-			   d > 0   ? 'green' :
-						  'yellow'
-	}
-			   
-}
-
 // Create base map, the layers, the legend and the info text
 function buildMap(...charts){
 	html_params = charts[0][1]
