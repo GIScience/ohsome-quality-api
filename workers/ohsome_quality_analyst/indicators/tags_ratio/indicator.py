@@ -45,8 +45,8 @@ class TagsRatio(BaseIndicator):
         if self.ratio == "NaN" or self.ratio is None:
             description = Template(self.metadata.result_description).substitute(
                 result=self.ratio,
-                all=f"{round(self.count_all, 1)}",
-                matched=f"{round(self.count_match, 1)}",
+                all=f"{self.count_all}",
+                matched=f"{self.count_match}",
             )
             self.result.value = None
             self.result.label = "undefined"
@@ -57,7 +57,7 @@ class TagsRatio(BaseIndicator):
         # ratio is a float
         else:
             description = Template(self.metadata.result_description).substitute(
-                result=round(self.ratio, 2),
+                result=round(self.ratio, 1),
                 all=f"{round(self.count_all, 1)}",
                 matched=f"{round(self.count_match, 1)}",
             )
