@@ -356,6 +356,7 @@ function buildMap(...charts){
 		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
 		var miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
+			zoomControl: false,
 			minZoom: 2,
 			zoom: 2
 		})
