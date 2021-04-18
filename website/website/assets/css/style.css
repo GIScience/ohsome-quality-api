@@ -548,7 +548,7 @@ footer {
 
 /*invisible block to make map unclickable*/
 #traffic_map_space::before {
-  content: " ";
+  content: "";
   z-index: 100;
   display: block;
   position: absolute;
@@ -556,7 +556,6 @@ footer {
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0);  
 }
 
 html {
