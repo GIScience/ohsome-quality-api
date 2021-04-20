@@ -35,6 +35,7 @@ docker-compose -f docker-compose.development.yml up -d --build oqt-database
 
 > To get access to a running database on a remote server please reach out.
 
+> If for development purposes additional datasets are required have a look at the [database/README.md](database/README.md). On this page informations about various scripts for data import are provided. E.g. if the GHS population dataset is needed, first delete the `ghs_pop` table (which covers only the test regions) from the development database and then use the provided script (`database/init_db.production/GHS_POP.sh`) to import the whole dataset.
 
 ## OQT Python package
 
