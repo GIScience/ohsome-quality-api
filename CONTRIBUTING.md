@@ -27,6 +27,17 @@ A merge request can be made even if the branch is not ready to yet to be merged.
 The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It should contain a short description of the performed changes, as well as (a) link(s) to issue(s) or merge request.
 
 
+#### Review Process
+
+1. Dev makes a PR/MR.
+2. Rev reviews and raises some comments.
+3. Dev addresses the comments and leaves responses explaining what has be done. In cases where Dev just implemented Rev's suggestion, a simple "Done" is sufficient.
+4. Rev reviews the changes and
+    - If Rev is happy with a change, then Rev resolves the comment.
+    - If Rev is still unsatisfied with a change, then Rev adds a further comment explaining what is still missing.
+5. Restart from 3 until all comments are resolved.
+
+
 ### Git Workflow
 
 All development work is based on the main branch (`master`). Merge requests are expected to target the main branch.
