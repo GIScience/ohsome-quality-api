@@ -63,7 +63,9 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
     create_query = (
         """
             CREATE TABLE IF NOT EXISTS {0} (
-              fid integer,
+              fid INTEGER,
+              timestamp_oqt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+              timestamp_osm TIMESTAMP WITH TIME ZONE,
               label VARCHAR(20),
               value FLOAT,
               description VARCHAR(1024),
@@ -75,15 +77,43 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
     # Safe against SQL injection because of predefined values
     upsert_query = (
         """
-            INSERT INTO {0} (fid, label, value, description, svg)
-                VALUES ($1, $2, $3, $4 ,$5)
+            INSERT INTO {0} (
+                fid,
+                timestamp_oqt,
+                timestamp_osm,
+                label,
+                value,
+                description,
+                svg)
+            VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7)
             ON CONFLICT (fid)
                 DO UPDATE SET
-                    (label, value, description, svg) = (excluded.label, excluded.value, excluded.description, excluded.svg)
-            """  # noqa
+                    (
+                        timestamp_oqt,
+                        timestamp_osm,
+                        label,
+                        value,
+                        description,
+                        svg) = (
+                        excluded.timestamp_oqt,
+                        excluded.timestamp_osm,
+                        excluded.label,
+                        excluded.value,
+                        excluded.description,
+                        excluded.svg)
+            """
     ).format(table_name)
     data = (
         feature_id,
+        indicator.result.timestamp_oqt,
+        indicator.result.timestamp_osm,
         indicator.result.label,
         indicator.result.value,
         indicator.result.description,
@@ -106,7 +136,13 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
     table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
     query = (
         """
-            SELECT label, value, description, svg
+            SELECT
+                timestamp_oqt,
+                timestamp_osm,
+                label,
+                value,
+                description,
+                svg
             FROM {0}
             WHERE fid = $1
         """
@@ -119,6 +155,8 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
     if not query_result:
         return False
 
+    indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
+    indicator.result.timestamp_osm = query_result["timestamp_osm"]
     indicator.result.label = query_result["label"]
     indicator.result.value = query_result["value"]
     indicator.result.description = query_result["description"]

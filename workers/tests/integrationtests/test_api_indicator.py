@@ -48,6 +48,8 @@ class TestApiIndicator(unittest.TestCase):
                     Optional("ratio_filter", default=None): Or(str, None),
                 },
                 "result": {
+                    "timestamp_oqt": str,
+                    "timestamp_osm": Or(str, None),
                     "value": float,
                     "label": str,
                     "description": str,
@@ -68,6 +70,7 @@ class TestApiIndicator(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         indicator = response.json()
+
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 

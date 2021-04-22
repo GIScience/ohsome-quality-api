@@ -62,6 +62,8 @@ class TestApiReport(unittest.TestCase):
                             Optional("ratio_filter", default=None): Or(str, None),
                         },
                         "result": {
+                            "timestamp_oqt": str,
+                            "timestamp_osm": Or(str, None),
                             "value": float,
                             "label": str,
                             "description": str,

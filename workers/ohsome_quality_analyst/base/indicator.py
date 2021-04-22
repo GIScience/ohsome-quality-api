@@ -5,6 +5,7 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
+from datetime import datetime
 from io import StringIO
 from typing import Dict, Literal, Optional
 
@@ -43,8 +44,10 @@ class LayerDefinition:
 class Result:
     """The result of the Indicator."""
 
+    timestamp_oqt: datetime
+    timestamp_osm: Optional[datetime]
     label: Literal["green", "yellow", "red", "undefined"]
-    value: float
+    value: Optional[float]
     description: str
     svg: str
     data: Optional[dict] = None
@@ -69,8 +72,9 @@ class BaseIndicator(metaclass=ABCMeta):
 
         layer = get_layer_definition(layer_name)
         self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
-
         self.result: Result = Result(
+            timestamp_oqt=datetime.utcnow(),
+            timestamp_osm=None,
             label="undefined",
             value=None,
             description=self.metadata.label_description["undefined"],
