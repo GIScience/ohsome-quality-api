@@ -3,65 +3,15 @@
 
 // load geojson data, then build the map and the functionalities
 Promise.all([
-	fetch('assets/data/test_regions.geojson').then(data => data.json()),
+	fetch('assets/data/test_regions.geojson').then(data => data.json()), get_html_parameter_list(location.search)
 ]).then(buildMap).catch(err => console.error(err));
 
 var selectedFeature = null;
 var selectedFeatureLayer = null;
 
-// If no value is avaiable in the data, there is a -77, return a stripe pattern as color for these ccases
-function getStripes(d) {
-	if (d == -77){		
-		return stripes
-	}			   
-}
-
-// Set the style for the layers depending on the CO2 values of each layer property
-function setStyle(feature) {
-		var colorFill = getColor1(feature.properties.geou_dif);
-
-			return {
-				fillColor: colorFill,
-				fillPattern:getStripes(feature.properties.geou_dif),
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				dashArray: '3',
-				fillOpacity: 0.7
-			};
-		
-};
-
-// Function that defines the colors for a value range 
-function getColor1(d) {	
-	if (d == 0){return 'fff'}
-	else {
-		return d > 8.0 ? '#4d004b' :
-			
-			   d > 7.0  ? '#810f7c' :
-			   d > 6.0 ? '#88419d' :
-			
-			   d > 5.0  ? '#8c6bb1' :
-			  
-			   d > 4.0  ? '#8c96c6' :
-			
-			   d > 3.0   ? '#9ebcda' :
-			   
-			   d > 2.0   ? '#bfd3e6' :
-			 
-			   d > 1.0   ? '#e0ecf4' :
-			
-			   d > 0.0001   ? '#f7fcfd' :
-			   
-			   d > 0   ? 'green' :
-						  'yellow'
-	}
-			   
-}
-
 // Create base map, the layers, the legend and the info text
 function buildMap(...charts){
-	
+	html_params = charts[0][1]
 	// create base map, location and zoom
 	map = L.map( 'map', {
 	  center: [31.4, -5],
@@ -77,14 +27,23 @@ function buildMap(...charts){
 
 	
 // add base layers
-	world = L.geoJson(charts[0], {
-		style: setStyle,
+	let markers = {}
+	world = L.geoJson(charts[0][0], {
+		style: {
+			fillColor:"#EEF200",  // yellow
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7
+			},
 		onEachFeature: function onEachFeature(feature, layer) {
 			layer.on({
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: selectStyle
 			});
+			
 			// display a marker instead of a polygon for test-regions
 			if (feature.geometry.type === 'Polygon') {
                 // Get bounds of polygon
@@ -93,6 +52,8 @@ function buildMap(...charts){
                 var center = bounds.getCenter();
                 // Use center to put marker on map
 				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+				let fid = feature.properties.fid
+				markers[fid] = marker
 				marker.on('click', function(){layer.fire('click')})
             }
             // end add marker for test regions
@@ -101,7 +62,7 @@ function buildMap(...charts){
 	}).addTo(map);
 
     function zoomToMarker(e) {
-        map.setView(e.latlng, 10);
+        map.setView(e.target._latlng, 10);
     }
 
 
@@ -138,6 +99,7 @@ function buildMap(...charts){
 	// what happens whlie onclick on the map
 	function selectStyle(e) {
 		// change value of mapCheck in html to signalize intern area was selected
+		update_url("countryID", e.target.feature.properties.fid)
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
 		// TODO style selected country
@@ -158,29 +120,23 @@ function buildMap(...charts){
 		}).addTo(map);
 
 		countryID = layer.feature.properties.fid;
-		selectedCountry = getCountry(countryID)
+		selectedCountry = countryID
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
 		dataset = "test_regions" // = Admin-0 country
-		selectedDataset = getDataset(dataset)
+		selectedDataset = dataset
 	}
 	// initialize variables for storing area and dataset id from map geojson 
-	countryID = null; 
+	if (html_params["countryID"] != undefined){
+		countryID = parseInt(html_params["countryID"])
+	}
+	else {
+		countryID = null; 
+	}
 	selectedCountry = null;
-	selectedDataset = null;
-	// grap country name while clicking on map
-	function getCountry(c) {
-		// console.log("in getC")
-		// console.log(c)
-		return c
-	}
-	// grap dataset id  while clicking on map
-	function getDataset(d) {
-		console.log("in getD")
-		console.log(d)
-		return d
-	}
+	selectedDataset = "test_regions";
+
 	// create a parameter string containing selected area, topic and dataset id
 	function getParams(region, topic, dataset) {
 		paramString = region + "," + topic + "," + dataset
@@ -204,19 +160,32 @@ function buildMap(...charts){
 	
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
-
+		html_params = get_html_parameter_list(location.search)
 		var topic = document.getElementById("cardtype");
-		var areas = document.getElementById("mapCheck").innerHTML;
 
-		var selectedTopic = topic.options[topic.selectedIndex].value;
-	
-		if (areas == "country") {			
+		if(html_params["countryID"]!=undefined){
+			var areas = parseInt(html_params["countryID"])
+		}
+		else{
+			var areas = document.getElementById("mapCheck").innerHTML;
+		}
+
+		if (html_params["topic"]!=undefined&topic_isValid(html_params["topic"])){
+			var selectedTopic = html_params["topic"]
+			topic.value = selectedTopic		
+		}
+		else{
+			var selectedTopic = topic.options[topic.selectedIndex].value;
+		}
+
+		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}
-		else if (selectedTopic == "Topic") {		
+		else if (selectedTopic == "Topic" | !topic_isValid(selectedTopic)) {		
 			alert("Please select a topic");
 		}
 		else {
+			markers[areas].fire("click")
 			toggle_results_will_be_shown_paragraph(true)
 			// show loader spinner
 			document.querySelector("#loader1").classList.add("spinner-1");
@@ -224,12 +193,14 @@ function buildMap(...charts){
 			// remove dynamically created Indicator divs
 			removeIndicators()
 			// remove selected feature from map
-			map.removeLayer(selectedFeatureLayer)
+			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 
+
+			
 
 			var params = {
-			    "dataset": String(getDataset(selectedDataset)),
-			    "featureId": String(getCountry(selectedCountry))
+			    "dataset": String(selectedDataset),
+			    "featureId": String(areas)
 			}
 			console.log(params)
 			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
@@ -385,6 +356,7 @@ function buildMap(...charts){
 		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
 		var miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
+			zoomControl: false,
 			minZoom: 2,
 			zoom: 2
 		})
@@ -422,6 +394,8 @@ function buildMap(...charts){
 		var areas = document.getElementById("mapCheck").innerHTML;
 		var div = document.getElementById('gQ');
 		var selectedTopic = topic.options[topic.selectedIndex].value;
+		update_url("topic", selectedTopic)
+
 		console.log(selectedTopic)
 		// no selection of area so set buttons to grey
 		if (areas == "country") {
@@ -530,6 +504,11 @@ function buildMap(...charts){
 	info.addTo(map);
 	// add HeiGIT logo
 
+
+	if ((topic_isValid(html_params["topic"]) & country_isValid(countryID, charts[0][0].features))){
+		markers[countryID].fire("click")
+		document.getElementById("gQ").click()
+	}
 
  }
  function topFunction() {
