@@ -244,3 +244,8 @@ async def get_available_regions() -> geojson.FeatureCollection:
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
+
+
+async def get_hex_ids(bpolys: str, zoomLevel: int) -> List[int]:
+    """Mock function"""
+    return None

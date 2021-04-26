@@ -35,6 +35,7 @@ major_roads_length:
     the road network as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/length
+  hex_endpoint: data/length_major_highways/
   filter: |
     highway in (motorway, trunk, primary, secondary,
     tertiary, unclassified, residential) and type:way
