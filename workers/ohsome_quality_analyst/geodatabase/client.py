@@ -13,19 +13,15 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
-# import binascii
 import json
 import logging
 import os
+import pathlib
 from contextlib import asynccontextmanager
 from typing import Dict, List
 
 import asyncpg
 import geojson
-import shapely
-import shapely.geometry
-import shapely.wkb
-import shapely.wkt
 
 
 def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
@@ -41,21 +37,6 @@ def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
     layer_name = layer_name.replace("-", "_")
     layer_name = layer_name.lower()
     return f"{dataset}_{indicator_name}_{layer_name}"
-
-
-def encode_geometry(geometry):
-    """Encoder of the PostGIS geometry types for asyncpg connections."""
-    if not hasattr(geometry, "__geo_interface__"):
-        raise TypeError("{g} does not conform to the geo interface".format(g=geometry))
-    shape = shapely.geometry.asShape(geometry)
-    return shapely.wkb.dumps(shape)
-
-
-def decode_geometry(wkb):
-    """Decoder of the PostGIS geometry types for asyncpg connections."""
-    # v = binascii.b2a_hex(wkb)
-    # v = v.decode("UTF-8"))
-    return shapely.wkb.loads(wkb)
 
 
 @asynccontextmanager
@@ -251,23 +232,15 @@ async def get_bpolys_from_db(
     return geojson.loads(result[0])
 
 
-async def get_available_regions():
-    query = """SELECT * FROM test_regions"""
+async def get_available_regions() -> geojson.FeatureCollection:
+    wd = pathlib.Path(__file__).parent.absolute()
+    fp = wd / "regions_as_geojson.sql"
+    with open(fp, "r") as f:
+        query = f.read()
     async with get_connection() as conn:
-        await conn.set_type_codec(
-            "geometry",
-            encoder=encode_geometry,
-            decoder=decode_geometry,
-            format="binary",
-        )
-        records = await conn.fetch(query)
-        features = []
-        for record in records:
-            feature = geojson.Feature(
-                geometry=record["geom"],
-                properties={"name": record["infile"]},
-                id=record["ogc_fid"],
-            )
-            features.append(feature)
-            break
-        return geojson.FeatureCollection(features)
+        record = await conn.fetchrow(query)
+    feature_collection = geojson.loads(record[0])
+    # To be complaint with rfc7946 "id" should be a member of Feature
+    for feature in feature_collection["features"]:
+        feature["id"] = feature["properties"].pop("id")
+    return feature_collection
