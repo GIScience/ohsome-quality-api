@@ -157,5 +157,53 @@ jrc_mass_gathering_sites_count:
     or (leisure in (stadium, sport_centre, water_park) and name=* and name!="")
     or (shop=mall and name=* and name!="")
     or (tourism in (theme_park, zoo, museum) and name=* and name!="")
+    
+    
+map_action_settlements_count:
+  name: Map Action Settlements Count
+  description: |
+    Number of settlements (cities)
+  endpoint: elements/count
+  filter: place=city and type:node
+    
+    
+map_action_capital_city_count:
+  name: Map Action Capital City Count
+  description: |
+    Number of capital cities
+  endpoint: elements/count
+  filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
+    
+    
+map_action_rail_length:
+  name: Map Action Rail Length
+  description: |
+    Length of objects identified as rails (large railways)
+  endpoint: elements/length
+  filter: railway=rail and type:way
+    
+    
+map_action_lakes_count:
+  name: Map Action Lakes Count
+  description: |
+    Number of objects identified as lakes (water bodies different from rivers and reservoirs)
+  endpoint: elements/count
+  filter: natural=water and water!=river and water!=reservoir and type:way
+    
+    
+map_action_lakes_area:
+  name: Map Action Lakes Area
+  description: |
+    Area of objects identified as lakes (water bodies different from rivers and reservoirs)
+  endpoint: elements/area
+  filter: natural=water and water!=river and water!=reservoir and type:way
+    
+    
+map_action_rivers_length:
+  name: Map Action Rivers Length
+  description: |
+    Length of objects identified as rivers
+  endpoint: elements/length
+  filter: waterway=river and type:way
 
 ...
