@@ -70,6 +70,10 @@ class TestGeodatabase(unittest.TestCase):
         result = asyncio.run(db_client.get_bpolys_from_db("test_regions", 3))
         self.assertTrue(result.is_valid)
 
+    def test_get_available_regions(self):
+        regions = asyncio.run(db_client.get_available_regions())
+        self.assertTrue(regions.is_valid)
+
 
 if __name__ == "__main__":
     unittest.main()

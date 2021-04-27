@@ -13,6 +13,7 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
+# import binascii
 import json
 import logging
 import os
@@ -21,6 +22,10 @@ from typing import Dict, List
 
 import asyncpg
 import geojson
+import shapely
+import shapely.geometry
+import shapely.wkb
+import shapely.wkt
 
 
 def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
@@ -36,6 +41,21 @@ def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
     layer_name = layer_name.replace("-", "_")
     layer_name = layer_name.lower()
     return f"{dataset}_{indicator_name}_{layer_name}"
+
+
+def encode_geometry(geometry):
+    """Encoder of the PostGIS geometry types for asyncpg connections."""
+    if not hasattr(geometry, "__geo_interface__"):
+        raise TypeError("{g} does not conform to the geo interface".format(g=geometry))
+    shape = shapely.geometry.asShape(geometry)
+    return shapely.wkb.dumps(shape)
+
+
+def decode_geometry(wkb):
+    """Decoder of the PostGIS geometry types for asyncpg connections."""
+    # v = binascii.b2a_hex(wkb)
+    # v = v.decode("UTF-8"))
+    return shapely.wkb.loads(wkb)
 
 
 @asynccontextmanager
@@ -166,11 +186,13 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
 
 async def get_fids(dataset_name) -> List[int]:
     """Get all feature ids of a certain dataset"""
+    # TODO: Does this apply for all datasets?
+    # This works for test regions but does this work for GADM or HEX Cells?
     # Safe against SQL injection because of predefined values
     query = "SELECT ogc_fid FROM {0}".format(dataset_name)
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record["fid"] for record in records]
+    return [record["ogc_fid"] for record in records]
 
 
 async def get_area_of_bpolys(bpolys: Dict):
@@ -227,3 +249,25 @@ async def get_bpolys_from_db(
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
     return geojson.loads(result[0])
+
+
+async def get_available_regions():
+    query = """SELECT * FROM test_regions"""
+    async with get_connection() as conn:
+        await conn.set_type_codec(
+            "geometry",
+            encoder=encode_geometry,
+            decoder=decode_geometry,
+            format="binary",
+        )
+        records = await conn.fetch(query)
+        features = []
+        for record in records:
+            feature = geojson.Feature(
+                geometry=record["geom"],
+                properties={"name": record["infile"]},
+                id=record["ogc_fid"],
+            )
+            features.append(feature)
+            break
+        return geojson.FeatureCollection(features)
