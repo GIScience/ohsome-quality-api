@@ -2,7 +2,7 @@
 
 ## Development
 
-A quick database setup for development is provided utilizing Docker (`Dockerfile.production`) and SQL dumps from our production database covering selected test regions. Please refer to [development setup documentation](docs/development_setup.md).
+A quick database setup for development is provided utilizing Docker (`Dockerfile.production`) and SQL dumps from our production database covering selected regions. Please refer to [development setup documentation](docs/development-setup.md).
 
 
 ## Production

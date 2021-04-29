@@ -27,8 +27,7 @@ DATASET_NAMES = (
     "gadm_level_3",
     "gadm_level_4",
     "gadm_level_5",
-    "test_data",
-    "test_regions",
+    "oqt_regions",
 )
 # Possible indicator layer combinations
 INDICATOR_LAYER = (

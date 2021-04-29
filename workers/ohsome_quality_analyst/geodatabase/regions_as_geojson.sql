@@ -15,10 +15,10 @@ FROM (
                 FROM (
                     SELECT
                         ogc_fid as id,
-                        infile AS name
+                        name
                 ) AS t
             ) AS "properties"
         FROM
-            test_regions
+            oqt_regions
     ) AS feature
 ) AS feature_collection

@@ -1,5 +1,10 @@
+#!/bin/bash
+
+# Import OQT regions for which indicators will be precomputed into the database.
+
 psql --command \
-    "DROP TABLE IF EXISTS test_regions"
+    "DROP TABLE IF EXISTS oqt_regions"
+
 # nln: Assign an alternate name to the new layer
 # nlt: Define the geometry type for the created layer
 # lco: Layer creation option (format specific)
@@ -11,7 +16,7 @@ ogr2ogr \
         user=$POSTGRES_USER
         password=$POSTGRES_PASSWORD
         "\
-    "test_regions.geojson" \
-    -nln test_regions\
+    "oqt_regions.geojson" \
+    -nln oqt_regions\
     -nlt MULTIPOLYGON\
     -lco GEOMETRY_NAME=geom

@@ -14,4 +14,4 @@ psql -f ohsome-hex-isea.sql
 ./GADM.sh
 psql -f GADM.sql
 ./GHS_POP.sh
-./test_regions.sh
+./oqt_regions.sh

@@ -1,8 +1,8 @@
 /* Add certain countries to the test regions */
-INSERT INTO test_regions (geom, infile)
+INSERT INTO oqt_regions (geom, name)
 SELECT
     geom,
-    name_0 AS infile
+    name_0 AS name
 FROM
     gadm_level_0
 WHERE

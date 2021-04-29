@@ -4,8 +4,8 @@
 
 pg_dump --schema=development --schema=admin > schema.sql
 pg_dump \
-    --table=test_regions \
-    --table=test_regions_ogc_fid_seq \
-    --table=test_regions_geom_geom_idx \
-    --table=test_regions_pkey \
+    --table=oqt_regions \
+    --table=oqt_regions_ogc_fid_seq \
+    --table=oqt_regions_geom_geom_idx \
+    --table=oqt_regions_pkey \
     > test-regions.sql

@@ -10,36 +10,32 @@ CREATE SCHEMA IF NOT EXISTS development;
 
 DROP TABLE IF EXISTS development.ghs_pop;
 
-
 /* */
 /* TODO: Does not work with pg_restore due to column defaults pointing to public table. */
-/* DROP TABLE IF EXISTS development.test_regions; */
-/* CREATE TABLE development.test_regions ( */
-/*     /1* LIKE public.test_regions INCLUDING ALL *1/ */
-/*     LIKE public.test_regions */
+/* DROP TABLE IF EXISTS development.oqt_regions; */
+/* CREATE TABLE development.oqt_regions ( */
+/*     /1* LIKE public.oqt_regions INCLUDING ALL *1/ */
+/*     LIKE public.oqt_regions */
 /* ); */
-/* INSERT INTO development.test_regions */
+/* INSERT INTO development.oqt_regions */
 /* SELECT */
 /*     * */
 /* FROM */
-/*     public.test_regions; */
+/*     public.oqt_regions; */
 /* */
 CREATE TABLE development.ghs_pop AS
 SELECT
     rid,
-    ST_UNION (ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE)) AS rast
+    ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
 FROM
     public.ghs_pop,
-    public.test_regions
+    public.oqt_regions
 WHERE
     ST_Intersects (rast, geom)
-    AND ST_BandIsNoData (rast) = FALSE
-GROUP BY
-    rid,
-    geom;
+    AND ST_BandIsNoData (rast) = FALSE;
 
-CREATE INDEX dev_ghs_pop_st_convexhull_idx ON development.ghs_pop USING gist (ST_ConvexHull (rast));
+CREATE INDEX dev_ghs_pop_st_convexhull_idx ON development.ghs_pop USING gist
+    (ST_ConvexHull (rast));
 
 SELECT
     AddRasterConstraints ('development'::name, 'ghs_pop'::name, 'rast'::name);
-
