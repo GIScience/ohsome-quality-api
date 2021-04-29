@@ -4,6 +4,7 @@
 
 - Different validation processes of input geometry for entry points (API and CLI) !119
 - Add review process description to contributing guidelines !124
+- Improve report tests by using mocks to avoid querying ohsome API !116
 
 ## 0.2.0
 
