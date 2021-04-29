@@ -1,0 +1,26 @@
+---
+GhsPopComparisonRoads:
+  name: GHS-POP Comparison Roads
+  description: |
+    Comparison between population density and road length per population.
+    This can give an estimate if mapping has been completed.
+  label_description:
+    red: |
+      The comparison of population density and road length per population, that
+      a majority of roads has not been mapped yet. This results in a bad
+      data quality in respect to completeness
+    yellow: |
+      The comparison between population density and road length per population indicate
+      that there might be still unmapped roads. This results in a medium
+      data quality in respect to completeness.
+    green: |
+      For the given population density, this is a relatively high value and 
+      indicates a good data quality in terms of completeness.
+    undefined: |
+      The quality level could not be calculated for this indicator.
+  result_description: |
+    Following the GHS POP dataset, there are 
+    $pop_count people living in an area of 
+    $area sqkm, which results in a population density 
+    $pop_count_per_sqkm of people per sqkm.
+    $feature_length_per_sqkm meters of roads per sqkm mapped.
