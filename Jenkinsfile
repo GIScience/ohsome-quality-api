@@ -77,7 +77,9 @@ pipeline {
                                 -e POSTGRES_PASSWORD=oqt""") { c ->
               WORKERS.inside("--network ${n} -e POSTGRES_HOST=${POSTGRES_HOST} -e POSTGRES_PORT=${POSTGRES_PORT}") {
                 // wait for database to be ready
-                sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
+                timeout(time: 30, unit: 'SECONDS') {
+                  sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
+                }
                 // run pytest
                 sh 'cd ${WORK_DIR} && ${POETRY_RUN} pytest tests'
               }
