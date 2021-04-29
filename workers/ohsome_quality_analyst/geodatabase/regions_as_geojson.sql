@@ -19,6 +19,6 @@ FROM (
                 ) AS t
             ) AS "properties"
         FROM
-            oqt_regions
+            regions
     ) AS feature
 ) AS feature_collection

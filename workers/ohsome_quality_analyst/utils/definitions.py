@@ -16,10 +16,7 @@ from ohsome_quality_analyst.utils.helper import get_module_dir
 
 # Dataset names which are available in the Geodatabase
 DATASET_NAMES = (
-    "nuts_rg_60m_2021",
-    "nuts_rg_01m_2021",
-    "isea3h_world_res_6_hex",
-    "isea3h_world_res_12_hex",
+    "prod_regions",
     "gadm",
     "gadm_level_0",
     "gadm_level_1",
@@ -27,7 +24,11 @@ DATASET_NAMES = (
     "gadm_level_3",
     "gadm_level_4",
     "gadm_level_5",
-    "oqt_regions",
+    "isea3h_world_res_12_hex",
+    "isea3h_world_res_6_hex",
+    "nuts_rg_01m_2021",
+    "nuts_rg_60m_2021",
+    "regions",
 )
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
