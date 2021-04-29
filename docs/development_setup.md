@@ -12,6 +12,8 @@ After all services are up they are available under:
 - API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 - Database: `host=localhost port=5445 dbname=oqt user=oqt password=oqt`
 
+Please continue reading for more information on each one of those services. If running into issues during the setup please check the [troubleshooting](docs/troubleshooting.md) document. Also feel free to reach out to us.
+
 
 ## Database
 
@@ -33,7 +35,7 @@ docker volume rm ohsome-quality-analyst_oqt-dev-pg_data
 docker-compose -f docker-compose.development.yml up -d --build oqt-database
 ```
 
-> To get access to a running database on a remote server please reach out.
+> If for development purposes additional datasets are required have a look at the [database/README.md](database/README.md). On this page informations about various scripts for data import are provided. E.g. if the GHS population dataset is needed, first delete the `ghs_pop` table (which covers only the test regions) from the development database and then use the provided script (`database/init_db.production/GHS_POP.sh`) to import the whole dataset.
 
 
 ## OQT Python package
@@ -45,7 +47,6 @@ docker-compose -f docker-compose.development.yml up -d --build oqt-database
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
 
-
 ### Installation
 
 ```bash
@@ -55,8 +56,6 @@ poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
 # Hack away
 ```
-
-> Note: If during the installation of `matplotlib` an error occurs the solution could be to install `freetype`. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
 
 ### Configuration
@@ -80,13 +79,11 @@ POSTGRES_SCHEMA
 
 > Tip: Above lines can be written to a file (E.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
 
-Windows user can set those environment variables with following command `setx POSTGRES_DB`
-
+> Note: Windows user can set those environment variables with following command `setx POSTGRES_DB`
 
 #### ohsome API
 
 The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
-
 
 #### Misc
 
@@ -144,7 +141,7 @@ curl -X POST "http://127.0.0.1:8080/report/SimpleReport" -d '{"dataset": "test_r
 Tests are written using the [unittest library](https://docs.python.org/3/library/unittest.html).
 The test runner is [pytest](https://docs.pytest.org/en/stable/).
 Tests are seperated into integration tests and unit tests.
-Unit tests should run without having access to the database or services the internet (e.g. ohsome API).
+Unit tests should run without having access to the database or services on the internet (e.g. ohsome API).
 
 ```bash
 cd workers/
