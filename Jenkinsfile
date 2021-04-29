@@ -9,7 +9,7 @@ def withDockerNetwork(Closure inner) {
 }
 
 pipeline {
-  agent { label 'master' }
+  agent {label 'main'}
 
   environment {
     REPO_NAME = sh(returnStdout: true, script: 'basename `git remote get-url origin` .git').trim()
