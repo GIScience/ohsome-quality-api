@@ -10,6 +10,9 @@ def withDockerNetwork(Closure inner) {
 
 pipeline {
   agent {label 'main'}
+  options {
+    timeout(time: 30, unit: 'MINUTES')
+  }
 
   environment {
     REPO_NAME = sh(returnStdout: true, script: 'basename `git remote get-url origin` .git').trim()
