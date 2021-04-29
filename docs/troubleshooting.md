@@ -1,26 +1,23 @@
-## Misbehaviour and Solutions for Windows
+# Troubleshooting
 
-- Make sure that you are not in any other virtual env (anaconda, ...):
+## Install of OQT Python Workers
 
-```
-(ohsome-quality-analyst) C:\Users\user\ohsome-quality-analyst> deactivate
-C:\Users\user\ohsome-quality-analyst>
-```
+### Matplotlib
 
-- Error: `ModuleNotFoundError: No module named 'ohsome_quality_analyst'`
-    - Make sure virtual environment is activated: `poetry shell`
+#### Fonts and Freetype
 
-- Connection to the database fails
-    - Make sure you are in the `VPN` of the university
-    - Check if the variables are in your environment. Try the following code:
+Sometimes `freetype` as to be installed. See the install documentation of `matplotlib`: https://github.com/matplotlib/matplotlib/blob/master/INSTALL.rst#freetype-and-qhull
 
-```python
-import os 
-print(os.getenv("POSTGRES_HOST"))
-print(os.getenv("POSTGRES_PORT"))
-print(os.getenv("POSTGRES_DB"))
-print(os.getenv("POSTGRES_USER"))
-print(os.environ["POSTGRES_PASSWORD"])
-```
+#### On import matplotlib.pyplot as plt: module 'sip' has no attribute 'setapi'
 
-If the variables are not as expected, make sure your system updated access (close command line and open a new one and enter the lines again / restart pycharm).
+Install pyqt5: https://www.riverbankcomputing.com/static/Docs/PyQt5/installation.html
+
+
+## Windows
+
+Its best to use WSL2 (https://docs.microsoft.com/en-us/windows/wsl/install-win10). Make sure to have WSL2 installed, not WSL.
+Docker on Windows WSL:
+
+### Pre commit: ImportError: DLL load failed while importing \_sqlite3: The specified module could not be found.
+
+See this Stackoverflow thread: [Unable to import sqlite3 using Anaconda Python](https://stackoverflow.com/questions/54876404/unable-to-import-sqlite3-using-anaconda-python)

@@ -49,22 +49,34 @@ All development work is based on the main branch (`master`). Merge requests are 
 
 This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies defined in the `pyproject.toml` file.
 
-The configuration of flake8 and isort is stored in `setup.cfg`.
+Black and isort will autoformat the code. Flake8 shows only what should be fixed but will not make any changes to the code base.
+
+The configuration of flake8 and isort is stored in `workers/setup.cfg`.
 
 Run black, flake8 and isort with following commands:
 
 ```bash
 cd workers/
+poetry shell
 black .
 flake8 .
 isort .
 ```
 
-Black and isort will autoformat the code. Flake8 shows only what should be fixed but will not make any changes to the code base.
-
-Changes can be checked manually with `git diff`.
+> Tip: Changes can be checked manually with `git diff`.
 
 > Tip: Mark in-line that flake8 should not raise any error: `print()  # noqa`
+
+
+#### A Note on the Configuration
+
+The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work specify the configuration file manually. You know that this has happened if pre-commit throws an error even though flake8 and isort has been executed.
+
+```bash
+poetry run black .'
+poetry run flake8 --config setup.cfg .'
+poetry run isort --interactive --settings-path setup.cfg .'
+```
 
 
 ### Pre-Commit
