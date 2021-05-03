@@ -27,7 +27,7 @@ class TestApiReport(unittest.TestCase):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
-        self.dataset = "test_regions"
+        self.dataset = "regions"
         self.feature_id = 1
         infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
         with open(infile, "r") as f:

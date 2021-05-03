@@ -34,7 +34,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
     # @oqt_vcr.use_cassette()
     # def test_more_edited_features_then_features(self):
     #     """It can happen that edited features includes deleted features"""
-    #     dataset = "test_regions"
+    #     dataset = "regions"
     #     feature_id = 7
     #     bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
     #     indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
@@ -45,7 +45,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_no_amenities(self):
         """Test area with no amenities"""
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 2
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 

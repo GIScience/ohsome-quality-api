@@ -38,7 +38,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def testFloatDivisionByZeroError(self):
         layer_name = "building_count"
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 30
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
@@ -50,7 +50,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def testCannotConvertNanError(self):
         layer_name = "building_count"
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 2
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 

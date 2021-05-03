@@ -33,7 +33,7 @@ class TestCliIntegration(unittest.TestCase):
                 "-l",
                 "building_count",
                 "-d",
-                "test_regions",
+                "regions",
                 "-f",
                 "3",
             ],
@@ -44,7 +44,7 @@ class TestCliIntegration(unittest.TestCase):
     def testCreateReport(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "SimpleReport", "-d", "test_regions", "-f", "3"],
+            ["create-report", "-r", "SimpleReport", "-d", "regions", "-f", "3"],
         )
         assert result.exit_code == 0
 

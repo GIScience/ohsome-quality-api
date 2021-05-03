@@ -24,7 +24,7 @@ class TestApiIndicator(unittest.TestCase):
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
         self.layer_name = "building_count"
-        self.dataset = "test_regions"
+        self.dataset = "regions"
         self.feature_id = 1
         infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
         with open(infile, "r") as f:

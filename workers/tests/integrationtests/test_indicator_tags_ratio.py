@@ -37,7 +37,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test_all_features_match(self):
         """Ratio should be 1.0 when all features match expected tags"""
         layer_name = "jrc_health_count"
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 8
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
@@ -51,7 +51,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test_no_features(self):
         """Test area with no features"""
         layer_name = "jrc_health_count"
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 2
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
@@ -66,7 +66,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test_no_filter2(self):
         """Layer with no filter2 for ratio endpoint"""
         layer_name = "major_roads"
-        dataset = "test_regions"
+        dataset = "regions"
         feature_id = 2
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 

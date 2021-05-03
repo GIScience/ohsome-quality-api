@@ -50,7 +50,7 @@ class TestOqt(unittest.TestCase):
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="test_regions",
+                dataset="regions",
                 feature_id=3,
             )
         )
@@ -69,7 +69,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def testCreateReportFromDatabase(self):
         report = asyncio.run(
-            oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)
+            oqt.create_report("SimpleReport", dataset="regions", feature_id=3)
         )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
