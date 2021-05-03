@@ -6,6 +6,7 @@
 - Add review process description to contributing guidelines !124
 - Improve report tests by using mocks to avoid querying ohsome API !116
 - Improve documentation !128
+- Add license: GNU AGPLv3 !134
 
 ## 0.2.0
 
