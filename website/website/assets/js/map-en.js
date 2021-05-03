@@ -44,19 +44,16 @@ function buildMap(...charts){
 				click: selectStyle
 			});
 			
-			// display a marker instead of a polygon for test-regions
-			if (feature.geometry.type === 'Polygon') {
-                // Get bounds of polygon
-                var bounds = layer.getBounds();
-                // Get center of bounds
-                var center = bounds.getCenter();
-                // Use center to put marker on map
-				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
-				let id = feature.id
-				markers[id] = marker
-				marker.on('click', function(){layer.fire('click')})
-            }
-            // end add marker for test regions
+      // Get bounds of polygon
+      var bounds = layer.getBounds();
+      // Get center of bounds
+      var center = bounds.getCenter();
+      // Use center to put marker on map
+		  var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+		  let id = feature.id
+		  markers[id] = marker
+		  marker.on('click', function(){layer.fire('click')})
+      // end add marker for test regions
 		}
 
 	}).addTo(map);
