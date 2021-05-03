@@ -21,7 +21,7 @@ async def query(
     ratio: bool = False,
 ) -> Optional[Dict]:
     """Query ohsome API or ohsomeHEX API."""
-    if "hex_endpoint" in layer.keys():
+    if layer.hex_endpoint is not None and endpoint is None:
         response = await hex_query(layer, bpolys, 12)
         if response is not None:
             return response
@@ -81,17 +81,19 @@ async def ohsome_query(
 async def hex_query(layer, bpolys: str, zoomlevel: int) -> Optional[Dict]:
     """Query ohsome API endpoint with filter."""
 
-    url = OHSOME_HEX_API + layer.endpoint + "/{}".format(zoomlevel)
+    url = OHSOME_HEX_API + layer.hex_endpoint + "{}".format(zoomlevel) + "?ids="
 
-    ids = get_hex_ids(bpolys, zoomlevel)
+    ids = await get_hex_ids(json.loads(bpolys), zoomlevel)
     logging.info("Query ohsomeHEX API.")
-    data = {"ids": ids}
-    logging.debug("Query data: " + json.dumps(data, indent=4, sort_keys=True))
-
+    len_ids = len(ids)
+    for x, id in enumerate(ids):
+        url += str(id)
+        if x != len_ids - 1:
+            url += "%2C%20"
     # set custom timeout as ohsome API takes a long time to send an answer
     timeout = httpx.Timeout(5, read=600)
     async with httpx.AsyncClient(timeout=timeout) as client:
-        resp = await client.post(url, data=data)
+        resp = await client.get(url)
 
     logging.info("Query ohsomeHEX API.")
     logging.debug("Query URL: " + url)

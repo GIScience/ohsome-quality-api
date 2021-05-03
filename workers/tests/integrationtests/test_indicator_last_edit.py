@@ -32,7 +32,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
 
     # TODO: Choose smaller test region for this test case
     # @oqt_vcr.use_cassette()
-    # def test_more_edited_features_then_features(self):
+    # def test_more_edited_features_than_features(self):
     #     """It can happen that edited features includes deleted features"""
     #     dataset = "regions"
     #     feature_id = 8  # Dar Es Salaam

@@ -74,6 +74,10 @@ class TestGeodatabase(unittest.TestCase):
         regions = asyncio.run(db_client.get_available_regions())
         self.assertTrue(regions.is_valid)
 
+    def test_get_hex_ids(self):
+        result = asyncio.run(db_client.get_hex_ids(self.bpolys, 12))
+        self.assertIsInstance(result, list)
+
 
 if __name__ == "__main__":
     unittest.main()

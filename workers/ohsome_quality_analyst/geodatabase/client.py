@@ -246,6 +246,20 @@ async def get_available_regions() -> geojson.FeatureCollection:
     return feature_collection
 
 
-async def get_hex_ids(bpolys: str, zoomLevel: int) -> List[int]:
-    """Mock function"""
-    return None
+async def get_hex_ids(bpolys: dict, zoomLevel: int = 12) -> List[int]:
+    """Get overlapping hexIDs for a bpoly from the db."""
+    logging.info("Get corresponding hexIDs")
+    query = """
+            select geohash_id from public.isea3h_world_res_{}_hex
+            where public.ST_Intersects(
+                public.ST_Transform(public.st_setsrid(
+                public.ST_GeomFromGeoJSON($1), 4326), 3857), geom) = True
+        """.format(
+        zoomLevel
+    )
+    bpolys = json.dumps(bpolys["features"][0]["geometry"])
+    logging.info(bpolys)
+    async with get_connection() as conn:
+        result = await conn.fetch(query, bpolys)
+    result = [x[0] for x in result]
+    return result

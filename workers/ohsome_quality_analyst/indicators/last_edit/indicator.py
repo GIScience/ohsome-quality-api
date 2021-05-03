@@ -57,7 +57,7 @@ class LastEdit(BaseIndicator):
             # no feature has been edited in the time range
             self.edited_features = 0
 
-        self.total_features = query_results_totals["result"][0]["value"]
+        self.total_features = query_results_totals["result"][-1]["value"]
         if self.total_features != 0 and self.total_features is not None:
             if self.edited_features > self.total_features:
                 # It can happen that features are counted which has been deleted since.
