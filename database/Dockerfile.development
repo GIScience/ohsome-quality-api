@@ -2,7 +2,7 @@
 FROM postgis/postgis:10-2.5
 
 # Initialization scripts.
-COPY init_db.production/regions.geojson /docker-entrypoint-initdb.d/regions.geojson
+COPY init_db.production/regions.geojson /docker-entrypoint-initdb.d/prod.regions.geojson
 
 COPY init_db.development/init-db.sql /docker-entrypoint-initdb.d/1-init-db.sql
 COPY init_db.development/regions.sh /docker-entrypoint-initdb.d/2-regions.sh
