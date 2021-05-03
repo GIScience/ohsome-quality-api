@@ -3,7 +3,7 @@
 
 // load geojson data, then build the map and the functionalities
 Promise.all([
-	fetch('assets/data/test_regions.geojson').then(data => data.json()), get_html_parameter_list(location.search)
+	fetch(apiUrl + '/regions').then(response => response.json()), get_html_parameter_list(location.search)
 ]).then(buildMap).catch(err => console.error(err));
 
 var selectedFeature = null;
@@ -11,7 +11,7 @@ var selectedFeatureLayer = null;
 
 // Create base map, the layers, the legend and the info text
 function buildMap(...charts){
-	html_params = charts[0][1]
+    html_params = charts[0][1]
 	// create base map, location and zoom
 	map = L.map( 'map', {
 	  center: [31.4, -5],
@@ -121,7 +121,7 @@ function buildMap(...charts){
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		dataset = "test_regions" // = Admin-0 country
+		dataset = "regions" // = Admin-0 country
 		selectedDataset = dataset
 	}
 	// initialize variables for storing area and dataset id from map geojson 
@@ -132,7 +132,7 @@ function buildMap(...charts){
 		countryID = null; 
 	}
 	selectedCountry = null;
-	selectedDataset = "test_regions";
+	selectedDataset = "regions";
 
 	// create a parameter string containing selected area, topic and dataset id
 	function getParams(region, topic, dataset) {
@@ -174,7 +174,8 @@ function buildMap(...charts){
 		else{
 			var selectedTopic = topic.options[topic.selectedIndex].value;
 		}
-
+    console.log(charts[0][0].features)
+    console.log(areas)
 		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}
