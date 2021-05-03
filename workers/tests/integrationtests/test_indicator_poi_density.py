@@ -3,8 +3,12 @@ import os
 import unittest
 
 import geojson
+import vcr
 
 from ohsome_quality_analyst.indicators.poi_density.indicator import PoiDensity
+
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
 
 
 class TestIndicatorPoiDensity(unittest.TestCase):
@@ -18,6 +22,9 @@ class TestIndicatorPoiDensity(unittest.TestCase):
             bpolys = geojson.load(f)
         self.indicator = PoiDensity(bpolys=bpolys, layer_name="poi")
 
+    @vcr.use_cassette(
+        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    )
     def test(self):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)

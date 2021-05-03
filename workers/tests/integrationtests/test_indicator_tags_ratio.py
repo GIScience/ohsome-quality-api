@@ -3,12 +3,19 @@ import os
 import unittest
 
 import geojson
+import vcr
 
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
+
 
 class TestIndicatorRatio(unittest.TestCase):
+    @vcr.use_cassette(
+        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    )
     def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -30,6 +37,10 @@ class TestIndicatorRatio(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
+    # TODO
+    # @vcr.use_cassette(
+    #     os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    # )
     def test_all_features_match(self):
         """Ratio should be 1.0 when all features match expected tags"""
         layer_name = "jrc_health_count"
@@ -43,6 +54,10 @@ class TestIndicatorRatio(unittest.TestCase):
         self.assertEqual(indicator.ratio, 1.0)
         indicator.calculate()
 
+    # TODO
+    # @vcr.use_cassette(
+    #     os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    # )
     def test_no_features(self):
         """Test area with no features"""
         layer_name = "jrc_health_count"
@@ -57,6 +72,10 @@ class TestIndicatorRatio(unittest.TestCase):
         self.assertEqual(indicator.result.label, "undefined")
         self.assertEqual(indicator.result.value, None)
 
+    # TODO
+    # @vcr.use_cassette(
+    #     os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    # )
     def test_no_filter2(self):
         """Layer with no filter2 for ratio endpoint"""
         layer_name = "major_roads"

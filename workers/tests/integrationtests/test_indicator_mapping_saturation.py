@@ -3,11 +3,15 @@ import os
 import unittest
 
 import geojson
+import vcr
 
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
+
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
 
 
 class TestIndicatorMappingSaturation(unittest.TestCase):
@@ -33,6 +37,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
+    @vcr.use_cassette(
+        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    )
     def testFloatDivisionByZeroError(self):
         layer_name = "building_count"
         dataset = "test_regions"
@@ -44,6 +51,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.calculate()
         indicator.create_figure()
 
+    @vcr.use_cassette(
+        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
+    )
     def testCannotConvertNanError(self):
         layer_name = "building_count"
         dataset = "test_regions"
