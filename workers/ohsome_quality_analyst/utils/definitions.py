@@ -32,9 +32,9 @@ DATASET_NAMES = (
 )
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
-    ("GhsPopComparison", "building_count"),
-    ("GhsPopComparison", "jrc_road_length"),
-    ("GhsPopComparison", "jrc_railway_length"),
+    ("GhsPopComparisonBuildings", "building_count"),
+    ("GhsPopComparisonBuildings", "jrc_road_length"),
+    ("GhsPopComparisonBuildings", "jrc_railway_length"),
     ("MappingSaturation", "building_count"),
     ("MappingSaturation", "major_roads"),
     ("MappingSaturation", "amenities"),

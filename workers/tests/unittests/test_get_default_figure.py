@@ -3,8 +3,8 @@ import unittest
 
 import geojson
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
-    GhsPopComparison,
+from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
+    GhsPopComparisonBuildings,
 )
 
 
@@ -17,6 +17,8 @@ class TestGetDefaultFigure(unittest.TestCase):
         )
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        indicator = GhsPopComparison(bpolys=bpolys, layer_name="building_count")
+        indicator = GhsPopComparisonBuildings(
+            bpolys=bpolys, layer_name="building_count"
+        )
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG

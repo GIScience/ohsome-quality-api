@@ -26,7 +26,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "GhsPopComparison",
+                "GhsPopComparisonBuildings",
                 "-l",
                 "building_count",
                 "-d",

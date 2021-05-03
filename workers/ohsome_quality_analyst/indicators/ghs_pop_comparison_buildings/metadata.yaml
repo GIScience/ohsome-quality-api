@@ -1,6 +1,6 @@
 ---
-GhsPopComparison:
-  name: GHS-POP Comparison
+GhsPopComparisonBuildings:
+  name: GHS-POP Comparison Buildings
   description: |
     Comparison between population density and feature density.
     This can give an estimate if mapping has been completed.
