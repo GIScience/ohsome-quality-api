@@ -9,6 +9,7 @@
 - Add license: GNU AGPLv3 !134
 - Add data input and output attributes to indicator !129
 - Update dependecies !139
+- Tidy up repository !138 !120
 
 ## 0.2.0
 
