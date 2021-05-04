@@ -4,3 +4,4 @@
 
 psql -f create_dev_schema.sql
 pg_dump --schema=development --schema=admin > schema.sql
+psql -f remove_dev_schema.sql

@@ -1,5 +1,5 @@
 /* Add certain countries to the test regions */
-INSERT INTO oqt_regions (geom, name)
+INSERT INTO regions (geom, name)
 SELECT
     geom,
     name_0 AS name

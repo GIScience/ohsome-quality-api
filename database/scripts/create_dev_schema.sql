@@ -6,14 +6,20 @@
 /* */
 SET search_path TO public, development;
 
-CREATE SCHEMA IF NOT EXISTS development;
+DROP TABLE IF EXISTS development.regions;
 
 DROP TABLE IF EXISTS development.ghs_pop;
 
-DROP TABLE IF EXISTS development.regions;
+DROP SCHEMA IF EXISTS development;
+
+CREATE SCHEMA IF NOT EXISTS development;
 
 CREATE TABLE development.regions (
     LIKE public.regions INCLUDING INDEXES
+);
+
+CREATE TABLE development.ghs_pop (
+    LIKE public.ghs_pop INCLUDING INDEXES
 );
 
 
@@ -22,15 +28,9 @@ INSERT INTO development.regions
 SELECT
     *
 FROM
-    public.regions
-WHERE
-    name != 'Bangladesh'
-    OR name != 'Dominican Republic'
-    OR name != 'Haiti'
-    OR name != 'Myanmar'
-    OR name != 'South Sudan';
+    public.regions;
 
-CREATE TABLE development.ghs_pop AS
+INSERT INTO development.ghs_pop
 SELECT
     rid,
     ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
@@ -40,9 +40,6 @@ FROM
 WHERE
     ST_Intersects (rast, geom)
     AND ST_BandIsNoData (rast) = FALSE;
-
-CREATE INDEX dev_ghs_pop_st_convexhull_idx ON development.ghs_pop USING gist
-    (ST_ConvexHull (rast));
 
 SELECT
     AddRasterConstraints ('development'::name, 'ghs_pop'::name, 'rast'::name);
