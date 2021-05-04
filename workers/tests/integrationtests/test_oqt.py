@@ -51,7 +51,7 @@ class TestOqt(unittest.TestCase):
                 "GhsPopComparisonBuildings",
                 "building_count",
                 dataset="regions",
-                feature_id=3,
+                feature_id=4,
             )
         )
         self.assertIsNotNone(indicator.result.label)

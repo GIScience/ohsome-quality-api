@@ -39,7 +39,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     def testFloatDivisionByZeroError(self):
         layer_name = "building_count"
         dataset = "regions"
-        feature_id = 30
+        feature_id = 31
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
@@ -51,7 +51,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     def testCannotConvertNanError(self):
         layer_name = "building_count"
         dataset = "regions"
-        feature_id = 2
+        feature_id = 28
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
