@@ -3,7 +3,10 @@
 
 // load geojson data, then build the map and the functionalities
 Promise.all([
-	fetch(apiUrl + '/regions').then(response => response.json()), get_html_parameter_list(location.search)
+    // Fetching regions from the API enpoints takes quite a while
+	// fetch(apiUrl + '/regions').then(response => response.json()), get_html_parameter_list(location.search)
+    // Instead read from static GeoJSON file
+	fetch('assets/data/regions.geojson').then(data => data.json()), get_html_parameter_list(location.search)
 ]).then(buildMap).catch(err => console.error(err));
 
 var selectedFeature = null;
