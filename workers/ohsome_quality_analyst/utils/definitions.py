@@ -16,7 +16,6 @@ from ohsome_quality_analyst.utils.helper import get_module_dir
 
 # Dataset names which are available in the Geodatabase
 DATASET_NAMES = (
-    "prod_regions",
     "gadm",
     "gadm_level_0",
     "gadm_level_1",

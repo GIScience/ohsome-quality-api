@@ -3,5 +3,5 @@ FROM postgis/postgis:10-2.5
 
 # Initialization scripts.
 COPY init_db.development/init-db.sql /docker-entrypoint-initdb.d/1-init-db.sql
-COPY init_db.development/schema.sql /docker-entrypoint-initdb.d/3-schema.sql
-COPY init_db.development/post-init-db.sql /docker-entrypoint-initdb.d/4-post-init-db.sql
+COPY init_db.development/schema.sql /docker-entrypoint-initdb.d/2-schema.sql
+COPY init_db.development/post-init-db.sql /docker-entrypoint-initdb.d/3-post-init-db.sql
