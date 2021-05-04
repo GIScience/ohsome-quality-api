@@ -47,33 +47,30 @@ class Result:
     value: float
     description: str
     svg: str
+    data: Optional[dict] = None
 
 
 class BaseIndicator(metaclass=ABCMeta):
-    """
-    The base class of every indicator.
-
-    An indicator can be created in two ways:
-
-    One; Calculate from scratch for an area of interest.
-    This is done by providing a bounding polygone as input parameter.
-
-    Two; Fetch the precaclulated results from the Geodatabase.
-    This is done by providing the dataset name and feature id as input parameter.
-    """
+    """The base class of every indicator."""
 
     def __init__(
         self,
         layer_name: str,
         bpolys: FeatureCollection = None,
+        data: dict = None,
     ) -> None:
-        self.bpolys = bpolys
+
+        self.bpolys: str = bpolys
+        self.data: Optional[dict] = data
+
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
-        self.metadata = from_dict(data_class=Metadata, data=metadata)
+        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+
         layer = get_layer_definition(layer_name)
-        self.layer = from_dict(data_class=LayerDefinition, data=layer)
-        self.result = Result(
+        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
+
+        self.result: Result = Result(
             label="undefined",
             value=None,
             description=self.metadata.label_description["undefined"],
@@ -103,7 +100,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def create_figure(self) -> bool:
         """ "Create figure plotting indicator results
 
-        Writes an SVG figure to the SVG attribute of the result attribute.
+        Writes an SVG figure to the svg attribute of the result attribute.
         Returns True if figure creation was successful otherwise False.
         """
         pass
