@@ -2,16 +2,7 @@
 name = "ohsome_quality_analyst"
 version = "0.2.0"
 description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
-authors = [
-  "Benjamin Herfort <Benjamin.Herfort@heigit.org>",
-  "Fabian Kowatsch <Fabian.Kowatsch@heigit.org>",
-  "Jochen Stier <Jochen.Stier@heigit.org>",
-  "Johannes Visintini <Johannes.Visintini@heigit.org>",
-  "Katharina Przybill <Katharina.Przybill@heigit.org>",
-  "Matthias Schaub <Matthias.Schaub@heigit.org>",
-  "Mohammed Rizwan Khan <rizwan@uni-heidelberg.de>",
-
-  ]
+authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://oqt.ohsome.org"
 repository = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/"
 keywords = [
