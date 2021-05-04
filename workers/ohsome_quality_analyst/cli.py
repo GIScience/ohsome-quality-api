@@ -18,6 +18,7 @@ from ohsome_quality_analyst.cli_opts import (
     outfile_opt,
     report_name_opt,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     DATASET_NAMES,
     configure_logging,
@@ -83,6 +84,12 @@ def list_layers():
 def list_datasets():
     """List in the Geodatabase available datasets."""
     click.echo(DATASET_NAMES)
+
+
+@cli.command("get-available-regions")
+def get_available_regions():
+    regions = asyncio.run(db_client.get_available_regions())
+    click.echo(regions)
 
 
 @cli.command("create-indicator")
