@@ -10,7 +10,6 @@ import os
 import unittest
 
 import geojson
-import vcr
 from fastapi.testclient import TestClient
 from schema import Optional, Or, Schema
 
@@ -19,8 +18,7 @@ from ohsome_quality_analyst.reports.remote_mapping_level_one.report import (
     RemoteMappingLevelOne,
 )
 
-TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
+from .utils import oqt_vcr
 
 
 class TestApiReport(unittest.TestCase):
@@ -79,9 +77,7 @@ class TestApiReport(unittest.TestCase):
             }
         )
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_report.json")
     def test_get_report_dataset(self):
         url = "/report/{0}?dataset={1}&featureId={2}".format(
             self.report_name, self.dataset, self.feature_id
@@ -94,9 +90,7 @@ class TestApiReport(unittest.TestCase):
         self.schema.validate(report)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(report))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_report.json")
     def test_post_report_bpolys(self):
         data = {"bpolys": geojson.dumps(self.bpolys)}
         url = f"/report/{self.report_name}"
@@ -108,9 +102,7 @@ class TestApiReport(unittest.TestCase):
         self.schema.validate(report)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(report))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_report.json")
     def test_post_report_dataset(self):
         data = {"dataset": self.dataset, "featureId": self.feature_id}
         url = f"/report/{self.report_name}"
@@ -122,9 +114,7 @@ class TestApiReport(unittest.TestCase):
         self.schema.validate(report)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(report))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_report.json")
     def test_number_of_indicator(self):
         data = {"dataset": self.dataset, "featureId": self.feature_id}
         url = "/report/RemoteMappingLevelOne"

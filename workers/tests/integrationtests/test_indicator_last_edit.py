@@ -3,19 +3,15 @@ import os
 import unittest
 
 import geojson
-import vcr
 
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
 
-TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
+from .utils import oqt_vcr
 
 
 class TestIndicatorLastEdit(unittest.TestCase):
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_indicator_last_edit.json")
     def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -35,9 +31,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     # TODO
-    # @vcr.use_cassette(
-    #     os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    # )
+    # @oqt_vcr.use_cassette("test_indicator_last_edit.json")
     def test_more_edited_features_then_features(self):
         """It can happen that edited features includes deleted features"""
         dataset = "test_regions"
@@ -50,9 +44,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         self.assertEqual(indicator.share_edited_features, 100)
 
     # TODO
-    # @vcr.use_cassette(
-    #     os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    # )
+    # @oqt_vcr.use_cassette("test_indicator_last_edit.json")
     def test_no_amenities(self):
         """Test area with no amenities"""
         dataset = "test_regions"

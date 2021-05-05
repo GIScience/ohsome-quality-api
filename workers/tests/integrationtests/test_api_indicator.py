@@ -9,14 +9,12 @@ import os
 import unittest
 
 import geojson
-import vcr
 from fastapi.testclient import TestClient
 from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
 
-TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
+from .utils import oqt_vcr
 
 
 class TestApiIndicator(unittest.TestCase):
@@ -63,9 +61,7 @@ class TestApiIndicator(unittest.TestCase):
             }
         )
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_indicator.json")
     def test_get_indicator_bpolys(self):
         url = "/indicator/{0}?layerName={1}&bpolys={2}".format(
             self.indicator_name,
@@ -81,9 +77,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_indicator.json")
     def test_get_indicator_dataset(self):
         url = "/indicator/{0}?layerName={1}&dataset={2}&featureId={3}".format(
             self.indicator_name, self.layer_name, self.dataset, self.feature_id
@@ -96,9 +90,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_indicator.json")
     def test_post_indicator_bpolys(self):
         data = {"bpolys": geojson.dumps(self.bpolys), "layerName": self.layer_name}
         url = f"/indicator/{self.indicator_name}"
@@ -110,9 +102,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_api_indicator.json")
     def test_post_indicator_dataset(self):
         data = {
             "dataset": self.dataset,

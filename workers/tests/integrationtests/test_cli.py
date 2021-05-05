@@ -6,13 +6,11 @@ https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
 import os
 import unittest
 
-import vcr
 from click.testing import CliRunner
 
 from ohsome_quality_analyst.cli import cli
 
-TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILE_BASENAME = os.path.splitext(os.path.basename(__file__))[0]
+from .utils import oqt_vcr
 
 
 class TestCliIntegration(unittest.TestCase):
@@ -24,9 +22,7 @@ class TestCliIntegration(unittest.TestCase):
             "heidelberg_altstadt.geojson",
         )
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_cli.json")
     def testCreateIndicator(self):
         result = self.runner.invoke(
             cli,
@@ -44,9 +40,7 @@ class TestCliIntegration(unittest.TestCase):
         )
         assert result.exit_code == 0
 
-    @vcr.use_cassette(
-        os.path.join(TEST_DIR, "fixtures/vcr_cassettes", TEST_FILE_BASENAME + ".yml")
-    )
+    @oqt_vcr.use_cassette("test_cli.json")
     def testCreateReport(self):
         result = self.runner.invoke(
             cli,
