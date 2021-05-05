@@ -127,6 +127,14 @@ def create_indicator(
             r = vars(indicator.result)
             bpolys["features"][i]["properties"].update(m)
             bpolys["features"][i]["properties"].update(r)
+        try:
+            outputfile = infile[:-8] + "_%s.geojson" % indicator_name
+            with open(outputfile, "w") as f:
+                geojson.dump(bpolys, f)
+        except Exception as err:
+            logging.error(
+                "could not write outputfile %s. Error: %s" % (outputfile, err)
+            )
     else:
         bpolys = None
         indicator = asyncio.run(
