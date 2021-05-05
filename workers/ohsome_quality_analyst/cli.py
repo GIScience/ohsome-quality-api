@@ -129,19 +129,19 @@ def create_indicator(
             bpolys["features"][i]["properties"].update(r)
     else:
         bpolys = None
-    indicator = asyncio.run(
-        oqt.create_indicator(
-            indicator_name=indicator_name,
-            bpolys=bpolys,
-            layer_name=layer_name,
-            feature_id=feature_id,
-            dataset=dataset_name,
-            force=force,
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                indicator_name=indicator_name,
+                bpolys=bpolys,
+                layer_name=layer_name,
+                feature_id=feature_id,
+                dataset=dataset_name,
+                force=force,
+            )
         )
-    )
-    # TODO: Print out readable format.
-    click.echo(indicator.metadata)
-    click.echo(indicator.result)
+        # TODO: Print out readable format.
+        click.echo(indicator.metadata)
+        click.echo(indicator.result)
 
 
 @cli.command("create-report")
