@@ -127,6 +127,8 @@ def create_indicator(
             r = vars(indicator.result)
             bpolys["features"][i]["properties"].update(m)
             bpolys["features"][i]["properties"].update(r)
+            click.echo(indicator.metadata)
+            click.echo(indicator.result)
         try:
             outputfile = infile[:-8] + "_%s.geojson" % indicator_name
             with open(outputfile, "w") as f:
