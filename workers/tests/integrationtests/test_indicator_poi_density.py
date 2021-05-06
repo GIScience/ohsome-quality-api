@@ -20,7 +20,7 @@ class TestIndicatorPoiDensity(unittest.TestCase):
             bpolys = geojson.load(f)
         self.indicator = PoiDensity(bpolys=bpolys, layer_name="poi")
 
-    @oqt_vcr.use_cassette("test_indicator_poi_density.json")
+    @oqt_vcr.use_cassette()
     def test(self):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)

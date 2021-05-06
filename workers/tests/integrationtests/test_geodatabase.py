@@ -22,7 +22,7 @@ class TestGeodatabase(unittest.TestCase):
         with open(infile, "r") as f:
             self.bpolys = geojson.load(f)
 
-    @oqt_vcr.use_cassette("test_geodatabase.json")
+    @oqt_vcr.use_cassette()
     def test_save_and_load(self):
         # TODO: split tests by functionality (load and safe),
         # but load test needs a saved indicator.
@@ -55,17 +55,17 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.description)
         self.assertIsNotNone(self.indicator.result.svg)
 
-    @oqt_vcr.use_cassette("test_geodatabase.json")
+    @oqt_vcr.use_cassette()
     def test_get_fids(self):
         result = asyncio.run(db_client.get_fids("test_regions"))
         self.assertIsInstance(result, list)
 
-    @oqt_vcr.use_cassette("test_geodatabase.json")
+    @oqt_vcr.use_cassette()
     def test_get_area_of_bpolys(self):
         result = asyncio.run(db_client.get_area_of_bpolys(self.bpolys))
         self.assertIsInstance(result, float)
 
-    @oqt_vcr.use_cassette("test_geodatabase.json")
+    @oqt_vcr.use_cassette()
     def test_get_bpolys_from_db(self):
         result = asyncio.run(db_client.get_bpolys_from_db("test_regions", 3))
         self.assertTrue(result.is_valid)
