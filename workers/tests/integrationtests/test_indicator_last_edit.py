@@ -42,8 +42,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
     #     self.assertLess(indicator.total_features, indicator.edited_features)
     #     self.assertEqual(indicator.share_edited_features, 100)
 
-    # TODO
-    # @oqt_vcr.use_cassette("test_indicator_last_edit.json")
+    @oqt_vcr.use_cassette("test_indicator_last_edit.json")
     def test_no_amenities(self):
         """Test area with no amenities"""
         dataset = "test_regions"

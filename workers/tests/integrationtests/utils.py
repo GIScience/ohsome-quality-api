@@ -9,4 +9,5 @@ oqt_vcr = vcr.VCR(
     serializer="json",
     cassette_library_dir=FIXTURE_DIR,
     record_mode="new_episodes",
+    match_on=["method", "scheme", "host", "port", "path", "query", "body"],
 )

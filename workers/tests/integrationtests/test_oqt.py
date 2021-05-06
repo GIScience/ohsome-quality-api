@@ -59,8 +59,7 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.description)
         self.assertIsNotNone(indicator.result.svg)
 
-    # TODO
-    # @oqt_vcr.use_cassette("test_oqt.json")
+    @oqt_vcr.use_cassette("test_oqt.json")
     def testCreateReportFromScratch(self):
         report = asyncio.run(oqt.create_report("SimpleReport", self.bpolys))
         self.assertIsNotNone(report.result.label)
