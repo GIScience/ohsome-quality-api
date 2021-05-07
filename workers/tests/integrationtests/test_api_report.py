@@ -66,6 +66,7 @@ class TestApiReport(unittest.TestCase):
                             "label": str,
                             "description": str,
                             "svg": str,
+                            Optional("data", default=None): Or(str, None),
                         },
                     }
                 },
