@@ -49,12 +49,18 @@ class GhsPopComparisonRoads(BaseIndicator):
             >  100: >2	    >  100: >1
                  >0: >0,2	     >0: >0,1
         """
-        return pop_per_sqkm / 500
+        if pop_per_sqkm < 5000:
+            return pop_per_sqkm / 500
+        else:
+            return 10
 
     def yellowThresholdFunction(self, pop_per_sqkm) -> float:
         # define yellow threshould by population density
         # could mean that there are too less roads mapped
-        return pop_per_sqkm / 1000
+        if pop_per_sqkm < 5000:
+            return pop_per_sqkm / 1000
+        else:
+            return 5
 
     async def preprocess(self) -> bool:
         pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
