@@ -33,8 +33,9 @@ DATASET_NAMES = (
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("GhsPopComparisonBuildings", "building_count"),
-    ("GhsPopComparisonBuildings", "jrc_road_length"),
-    ("GhsPopComparisonBuildings", "jrc_railway_length"),
+    ("GhsPopComparisonRoads", "jrc_road_length"),
+    ("GhsPopComparisonRoads", "jrc_railway_length"),
+    ("GhsPopComparisonRoads", "major_roads"),
     ("MappingSaturation", "building_count"),
     ("MappingSaturation", "major_roads"),
     ("MappingSaturation", "amenities"),
@@ -65,8 +66,6 @@ INDICATOR_LAYER = (
     ("TagsRatio", "jrc_cultural_heritage_site_count"),
     ("TagsRatio", "jrc_bridge_count"),
     ("TagsRatio", "jrc_mass_gathering_sites_count"),
-    ("GhsPopComparisonRoads", "major_roads"),
-    ("GhsPopComparisonRoads", "jrc_road_length"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 # Input geometry size limit in sqkm for API requests

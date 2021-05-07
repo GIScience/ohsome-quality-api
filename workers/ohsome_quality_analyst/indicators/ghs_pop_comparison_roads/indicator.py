@@ -31,38 +31,37 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.pop_count_per_sqkm = None
         self.feature_length = None
         self.feature_length_per_sqkm = None
-        self.feature_length_per_pop = None
 
     # threshould values found by checking population density for good
     # test-regions and look what values for road length per people
     # are in these areas
-    def greenThresholdFunction(self, pop_per_sqkm) -> list:
+    def greenThresholdFunction(self, pop_per_sqkm) -> float:
         """
-        Returns minimum and maximum road length meter per habitant,
+        Returns minimum road density,
         which could be a good value with regard to specific population
         density.
         """
         # define green threshould by population density differently
-        if pop_per_sqkm >= 2500:
-            return [0.0004, 0.0035]
-        elif 500 <= pop_per_sqkm < 2500:
-            return [0.0036, 0.0050]
-        elif 1 <= pop_per_sqkm < 500:
-            return [0.0051, 0.1000]
-        elif pop_per_sqkm < 1:
-            return [0.1010, 5.0000]
+        if pop_per_sqkm >= 5000:
+            return 10
+        elif 1500 <= pop_per_sqkm < 5000:
+            return 5
+        elif 100 <= pop_per_sqkm < 1500:
+            return 2
+        elif pop_per_sqkm < 100:
+            return 0.2
 
-    def yellowThresholdFunction(self, pop_per_sqkm) -> list:
+    def yellowThresholdFunction(self, pop_per_sqkm) -> float:
         # define yellow threshould by population density
         # could mean that there are too less roads mapped
-        if pop_per_sqkm >= 2500:
-            return [0.0001, 0.00039]
-        elif pop_per_sqkm >= 500 < 2500:
-            return [0.0001, 0.0035]
-        elif pop_per_sqkm < 500:
-            return [0.0001, 0.0050]
-        elif pop_per_sqkm < 1:
-            return [0.0001, 0.1000]
+        if pop_per_sqkm >= 5000:
+            return 6
+        elif 1500 <= pop_per_sqkm < 5000:
+            return 3
+        elif 100 <= pop_per_sqkm < 1500:
+            return 1
+        elif pop_per_sqkm < 100:
+            return 0.1
 
     async def preprocess(self) -> bool:
         pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
@@ -81,7 +80,6 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.feature_length = query_results["result"][0]["value"] / 1000
         self.feature_length_per_sqkm = self.feature_length / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
-        self.feature_length_per_pop = self.feature_length / self.pop_count
         return True
 
     def calculate(self) -> bool:
@@ -92,49 +90,33 @@ class GhsPopComparisonRoads(BaseIndicator):
             feature_length_per_sqkm=round(self.feature_length_per_sqkm, 1),
         )
 
-        min_pop_density_green = self.greenThresholdFunction(self.pop_count_per_sqkm)[0]
-        max_pop_density_green = self.greenThresholdFunction(self.pop_count_per_sqkm)[1]
-        min_pop_density_yellow = self.yellowThresholdFunction(self.pop_count_per_sqkm)[
-            0
-        ]
-        max_pop_density_yellow = self.yellowThresholdFunction(self.pop_count_per_sqkm)[
-            1
-        ]
+        green_road_density = self.greenThresholdFunction(self.pop_count_per_sqkm)
+        yellow_road_density = self.yellowThresholdFunction(self.pop_count_per_sqkm)
 
         if self.pop_count_per_sqkm == 0:
             return False
-        # road length per habitant is conform with green values or even higher
-        elif (
-            max_pop_density_green > self.feature_length_per_pop > min_pop_density_green
-            or self.feature_length_per_pop >= max_pop_density_green
-        ):
+        # road density is conform with green values or even higher
+        elif self.feature_length_per_sqkm >= green_road_density:
             self.result.value = 1.0
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
             self.result.label = "green"
-        # road length per habitant is conform with yellow values, we assume
-        # there could be more roads mapped
-        elif (
-            max_pop_density_yellow
-            > self.feature_length_per_pop
-            > min_pop_density_yellow
-        ):
-            self.result.value = 0.5
-            self.result.description = (
-                description + self.metadata.label_description["yellow"]
-            )
-            self.result.label = "yellow"
-        # road length per habitant is not conform, none or too less roads
-        elif (
-            self.feature_length == 0
-            or self.feature_length_per_pop <= min_pop_density_yellow
-        ):
+        # road density is too small none or too less roads
+        elif self.feature_length_per_sqkm < yellow_road_density:
             self.result.value = 0.0
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
             self.result.label = "red"
+        # road density is conform with yellow values, we assume
+        # there could be more roads mapped
+        else:
+            self.result.value = 0.5
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
+            self.result.label = "yellow"
 
         return True
 
@@ -148,9 +130,9 @@ class GhsPopComparisonRoads(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_title("Road length per people against \npeople per $km^2$")
+        ax.set_title("Road density against \npeople per $km^2$")
         ax.set_xlabel("Population Density [$1/km^2$]")
-        ax.set_ylabel("Road length per people [$km/km^2$]")
+        ax.set_ylabel("Road density [$km/km^2$]")
 
         # Set x max value based on area
         if self.pop_count_per_sqkm < 100:
@@ -158,12 +140,9 @@ class GhsPopComparisonRoads(BaseIndicator):
         else:
             max_area = round(self.pop_count_per_sqkm * 2 / 10) * 10
         x = np.linspace(0, max_area, 2)
-        # get minimum threshould value for green and yellow
-        y1a = self.greenThresholdFunction(self.pop_count_per_sqkm)[0]
-        y2a = self.yellowThresholdFunction(self.pop_count_per_sqkm)[0]
         # Plot thresholds as line.
-        y1 = [y1a, y1a]
-        y2 = [y2a, y2a]
+        y1 = [self.greenThresholdFunction(xi) for xi in x]
+        y2 = [self.yellowThresholdFunction(xi) for xi in x]
         line = ax.plot(
             x,
             y1,
@@ -186,10 +165,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         ax.fill_between(
             x,
             y1,
-            max(
-                max(self.greenThresholdFunction(self.pop_count_per_sqkm)),
-                self.feature_length_per_pop,
-            ),
+            max(max(y1), self.feature_length_per_sqkm),
             alpha=0.5,
             color="green",
         )
@@ -197,7 +173,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         # Plot pont as circle ("o").
         ax.plot(
             self.pop_count_per_sqkm,
-            self.feature_length_per_pop,
+            self.feature_length_per_sqkm,
             "o",
             color="black",
             label="location",

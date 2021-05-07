@@ -2,15 +2,15 @@
 GhsPopComparisonRoads:
   name: GHS-POP Comparison Roads
   description: |
-    Comparison between population density and road length per population.
+    Comparison between population density and road density.
     This can give an estimate if mapping has been completed.
   label_description:
     red: |
-      The comparison of population density and road length per population, that
+      The comparison of population density and road density, that
       a majority of roads has not been mapped yet. This results in a bad
       data quality in respect to completeness
     yellow: |
-      The comparison between population density and road length per population indicate
+      The comparison between population density and road density indicate
       that there might be still unmapped roads. This results in a medium
       data quality in respect to completeness.
     green: |
