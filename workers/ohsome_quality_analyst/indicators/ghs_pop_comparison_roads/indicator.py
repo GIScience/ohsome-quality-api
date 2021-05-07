@@ -42,26 +42,19 @@ class GhsPopComparisonRoads(BaseIndicator):
         density.
         """
         # define green threshould by population density differently
-        if pop_per_sqkm >= 5000:
-            return 10
-        elif 1500 <= pop_per_sqkm < 5000:
-            return 5
-        elif 100 <= pop_per_sqkm < 1500:
-            return 2
-        elif pop_per_sqkm < 100:
-            return 0.2
+        """   green	         yellow
+        pop_dens: road_dens  pop_dens: road_dens
+            > 1500: >5	    > 1500: >3
+            > 5000: >10	    > 5000: >6
+            >  100: >2	    >  100: >1
+                 >0: >0,2	     >0: >0,1
+        """
+        return pop_per_sqkm / 500
 
     def yellowThresholdFunction(self, pop_per_sqkm) -> float:
         # define yellow threshould by population density
         # could mean that there are too less roads mapped
-        if pop_per_sqkm >= 5000:
-            return 6
-        elif 1500 <= pop_per_sqkm < 5000:
-            return 3
-        elif 100 <= pop_per_sqkm < 1500:
-            return 1
-        elif pop_per_sqkm < 100:
-            return 0.1
+        return pop_per_sqkm / 1000
 
     async def preprocess(self) -> bool:
         pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
@@ -139,7 +132,7 @@ class GhsPopComparisonRoads(BaseIndicator):
             max_area = 10
         else:
             max_area = round(self.pop_count_per_sqkm * 2 / 10) * 10
-        x = np.linspace(0, max_area, 2)
+        x = np.linspace(0, max_area, 100)
         # Plot thresholds as line.
         y1 = [self.greenThresholdFunction(xi) for xi in x]
         y2 = [self.yellowThresholdFunction(xi) for xi in x]

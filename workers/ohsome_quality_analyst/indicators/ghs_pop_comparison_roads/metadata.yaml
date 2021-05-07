@@ -23,4 +23,4 @@ GhsPopComparisonRoads:
     $pop_count people living in an area of 
     $area sqkm, which results in a population density 
     $pop_count_per_sqkm of people per sqkm.
-    $feature_length_per_sqkm meters of roads per sqkm mapped.
+    $feature_length_per_sqkm km of roads per sqkm mapped.
