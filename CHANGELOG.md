@@ -17,6 +17,7 @@
 - Update dependencies !139
 - Tidy up repository !138 !120
 - Return a GeoJSON when computing an indicator from the CLI !140
+- Integrate [VCR.py](https://vcrpy.readthedocs.io) to cache data for tests !133
 
 ## 0.2.0
 
