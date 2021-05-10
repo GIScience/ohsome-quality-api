@@ -25,8 +25,8 @@ major_roads:
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/length
   filter: |
-      highway in (motorway, trunk, primary, secondary,
-      tertiary, unclassified, residential) and type:way
+    highway in (motorway, trunk, primary, secondary,
+    tertiary, unclassified, residential) and type:way
 
 amenities:
   name: Amenities
@@ -37,51 +37,51 @@ amenities:
 poi:
   name: Points-of-Interests
   description: |
-      A lot of different objects such related to natural features
-      transportation and amenities in a city.
+    A lot of different objects such related to natural features
+    transportation and amenities in a city.
   endpoint: elements/count
   filter: |
-      natural=peak or leisure=park or boundary=national_park or
-      natural=water or waterway=* or highway=bus_stop or railway=station or
-      shop=* or tourism in (hotel, attraction) or
-      amenity in (fuel, pharmacy, hospital, school, college, university,
-      police, fire_station, restaurant, townhall)
+    natural=peak or leisure=park or boundary=national_park or
+    natural=water or waterway=* or highway=bus_stop or railway=station or
+    shop=* or tourism in (hotel, attraction) or
+    amenity in (fuel, pharmacy, hospital, school, college, university,
+    police, fire_station, restaurant, townhall)
 
 # JRC themes:
 jrc_health_count:
   name: JRC Healthcare Facilities
   description: |
-      OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
+    OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
   endpoint: elements/count
   filter: |
     amenity in (hospital, clinic, doctors) or (healthcare=*)
   ratio_filter: |
-      (amenity=hospital and name=* and name!="" and wheelchair=*)
-      or (amenity=clinic and name=* and name!="" and operator=*)
-      or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
-      or (healthcare=* and name=* and name!="")
+    (amenity=hospital and name=* and name!="" and wheelchair=*)
+    or (amenity=clinic and name=* and name!="" and operator=*)
+    or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
+    or (healthcare=* and name=* and name!="")
 
 jrc_education_count:
   name: JRC Education Facilities
   description: |
-      OSM amenities that are education facilities like college, school, kindergarten, university.
+    OSM amenities that are education facilities like college, school, kindergarten, university.
   endpoint: elements/count
   filter: |
     amenity in (college, kindergarten, university, school)
   ratio_filter: |
-      (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
-      or (amenity=school and name=* and name!="" and building=*)
+    (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
+    or (amenity=school and name=* and name!="" and building=*)
 
 jrc_road_length:
   name: JRC Road Length
   description: |
-      Selection of OSM highways with maxspeed and oneway tag.
+    Selection of OSM highways with maxspeed and oneway tag.
   endpoint: elements/length
   filter: |
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
   ratio_filter: |
-      highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-      and maxspeed=* and oneway=*
+    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
+    and maxspeed=* and oneway=*
 
 jrc_railway_length:
   name: JRC Railways Length
@@ -158,4 +158,44 @@ jrc_mass_gathering_sites_count:
     or (shop=mall and name=* and name!="")
     or (tourism in (theme_park, zoo, museum) and name=* and name!="")
 
-...
+mapaction_settlements_count:
+  name: MapAction Settlements Count
+  description: |
+    Number of settlements (cities)
+  endpoint: elements/count
+  filter: place=city and type:node
+
+mapaction_capital_city_count:
+  name: MapAction Capital City Count
+  description: |
+    Number of capital cities
+  endpoint: elements/count
+  filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
+
+mapaction_rail_length:
+  name: MapAction Rail Length
+  description: |
+    Length of objects identified as rails (large railways)
+  endpoint: elements/length
+  filter: railway=rail and type:way
+
+mapaction_lakes_count:
+  name: MapAction Lakes Count
+  description: |
+    Number of objects identified as lakes (water bodies different from rivers and reservoirs)
+  endpoint: elements/count
+  filter: natural=water and water!=river and water!=reservoir and type:way
+
+mapaction_lakes_area:
+  name: MapAction Lakes Area
+  description: |
+    Area of objects identified as lakes (water bodies different from rivers and reservoirs)
+  endpoint: elements/area
+  filter: natural=water and water!=river and water!=reservoir and type:way
+
+mapaction_rivers_length:
+  name: MapAction Rivers Length
+  description: |
+    Length of objects identified as rivers
+  endpoint: elements/length
+  filter: waterway=river and type:way
