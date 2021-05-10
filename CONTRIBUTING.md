@@ -22,7 +22,7 @@ Issues should serve as the basis for creating a merge request. They should have 
 Merge requests are created to address one single issue or multiple. Either the assignee or the creator of the merge request is responsible for merging.
 Each merge request has to be approved by at least one reviewer before merging it. A person can be assigned as reviewer by either mark them as such or asking for a review by tagging the person in the description/comment of the merge request.
 
-A merge request can be made even if the branch is not ready to yet to be merged. When doing so please mark them as Work-in-Progress by writing `WIP` at the beginning of the title. This way people/reviewer know that currently someone is working to address an issue. This gives them the opportunity share their thoughts knowing that the merge request is still subject to changes and does not need a full review yet.
+A merge request can be made even if the branch is not ready to yet to be merged. When doing so please mark them as Work-in-Progress by writing `WIP` at the beginning of the title. This way people/reviewer know that currently someone is working to address an issue. This gives them the opportunity share their thoughts knowing that the merge request is still subject to change and does not need a full review yet.
 
 The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It should contain a short description of the performed changes, as well as (a) link(s) to issue(s) or merge request.
 
@@ -31,7 +31,7 @@ The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It s
 
 1. Dev makes a PR/MR.
 2. Rev reviews and raises some comments.
-3. Dev addresses the comments and leaves responses explaining what has be done. In cases where Dev just implemented Rev's suggestion, a simple "Done" is sufficient.
+3. Dev addresses the comments and leaves responses explaining what has to be done. In cases where Dev just implemented Rev's suggestion, a simple "Done" is sufficient.
 4. Rev reviews the changes and
     - If Rev is happy with a change, then Rev resolves the comment.
     - If Rev is still unsatisfied with a change, then Rev adds a further comment explaining what is still missing.
@@ -47,7 +47,7 @@ All development work is based on the main branch (`master`). Merge requests are 
 
 ### Tools
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent codestyle. Those tools should already be installed in your virtual environment since they are dependencies defined in the `pyproject.toml` file.
+This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code style. Those tools should already be installed in your virtual environment since they are dependencies defined in the `pyproject.toml` file.
 
 Black and isort will autoformat the code. Flake8 shows only what should be fixed but will not make any changes to the code base.
 
@@ -70,7 +70,7 @@ isort .
 
 #### A Note on the Configuration
 
-The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work specify the configuration file manually. You know that this has happened if pre-commit throws an error even though flake8 and isort has been executed.
+The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work, specify the configuration file manually. You know that this has happened if pre-commit throws an error even though flake8 and isort has been executed.
 
 ```bash
 poetry run black .'
@@ -81,7 +81,7 @@ poetry run isort --interactive --settings-path setup.cfg .'
 
 ### Pre-Commit
 
-In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit. In contrast to above described commands running these hooks will not apply any changes to the code base. Instead 'pre-commit' checks if there would be any changes to be made. In that case simply run above commands manually.
+In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit. In contrast to above described commands running these hooks will not apply any changes to the code base. Instead, 'pre-commit' checks if there would be any changes to be made. In that case simply run above commands manually.
 
 
 ## Tests

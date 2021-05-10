@@ -5,10 +5,10 @@
 - Different validation processes of input geometry for entry points (API and CLI) !119
 - Add review process description to contributing guidelines !124
 - Improve report tests by using mocks to avoid querying ohsome API !116
-- Improve documentation !128
+- Improve documentation !128 !144
 - Add license: GNU AGPLv3 !134
 - Add data input and output attributes to indicator !129
-- Update dependecies !139
+- Update dependencies !139
 - Tidy up repository !138 !120
 
 ## 0.2.0
@@ -17,11 +17,11 @@
 - Minor improvements of the documentation !67
 - Update pre-commit to not make changes !69
 - Rename uvicorn runner script and integrate it into Docker setup !70
-- Improve error handling of database authetication module !72
+- Improve error handling of database authentication module !72
 - Add force recreate indicator/report option !75
 - Minor changes to the code structure !77 !79 !83 !90 !93
 - ohsome API requests are performed asynchronously !80
-- Use offical Python Dockerfile as base Dockerfile for OQT !81
+- Use official Python Dockerfile as base Dockerfile for OQT !81
 - Improve docs structure !91
 - Bug fixes !92
 - Improve logging messages #146
@@ -29,7 +29,7 @@
 - Remove psycopg2-binary and auth.py in favor of asyncpg and client.py !93
 - Remove database and feature_id attributes from indicator classes !93
 - Implement async/await for geodatabase !93
-- Update dependecies #109
+- Update dependencies #109
 - Change API response to avoid overriding indicators !108 #203
 - Put JRC Report on website !107 #189
 

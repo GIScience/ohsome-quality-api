@@ -17,7 +17,7 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. To build and run a already configured image run:
+A database for development purposes is provided as Dockerfile. To build and run an already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
@@ -35,7 +35,7 @@ docker volume rm ohsome-quality-analyst_oqt-dev-pg_data
 docker-compose -f docker-compose.development.yml up -d --build oqt-database
 ```
 
-> If for development purposes additional datasets are required have a look at the [database/README.md](database/README.md). On this page informations about various scripts for data import are provided. E.g. if the GHS population dataset is needed, first delete the `ghs_pop` table (which covers only the test regions) from the development database and then use the provided script (`database/init_db.production/GHS_POP.sh`) to import the whole dataset.
+> If for development purposes additional datasets are required have a look at the [database/README.md](database/README.md). On this page information about various scripts for data import are provided. E.g. if the GHS population dataset is needed, first delete the `ghs_pop` table (which covers only the test regions) from the development database and then use the provided script (`database/init_db.production/GHS_POP.sh`) to import the whole dataset.
 
 
 ## OQT Python package
@@ -62,7 +62,7 @@ pre-commit install  # Install pre-commit hooks.
 
 #### Local database
 
-For local development no additional configuration is required. Per default OQT will connect to the database definied in `docker-compose.development.yml`.
+For local development no additional configuration is required. Per default OQT will connect to the database defined in `docker-compose.development.yml`.
 
 #### Remote database
 
@@ -77,7 +77,7 @@ POSTGRES_PORT
 POSTGRES_SCHEMA
 ```
 
-> Tip: Above lines can be written to a file (E.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
+> Tip: Above lines can be written to a file (e.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
 
 > Note: Windows user can set those environment variables with following command `setx POSTGRES_DB`
 
@@ -140,7 +140,7 @@ curl -X POST "http://127.0.0.1:8080/report/SimpleReport" -d '{"dataset": "test_r
 
 Tests are written using the [unittest library](https://docs.python.org/3/library/unittest.html).
 The test runner is [pytest](https://docs.pytest.org/en/stable/).
-Tests are seperated into integration tests and unit tests.
+Tests are separated into integration tests and unit tests.
 Unit tests should run without having access to the database or services on the internet (e.g. ohsome API).
 
 ```bash

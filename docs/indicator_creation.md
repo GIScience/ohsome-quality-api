@@ -1,6 +1,6 @@
 # Indicator Creation Guide
 
-To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to built an indicator.<br>
+To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to build an indicator.<br>
 To understand how to implement your own indicator, it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
 
 
@@ -21,7 +21,7 @@ The result object can hold 4 values.
 4. svg: unique file path which is **automatically** created upon object initialization by the `BaseIndicator`
 
 ### Layer
-In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_defintions.yaml](workers/ohsome_quality_analyst/ohsome/layer_defintions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml](workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 ### Metadata
 See metadata.yaml in part 2.
@@ -70,16 +70,16 @@ Additionally, you can define variable placeholders for important values and prel
 
 #### preprocess function
 
-This function should be used to fetch and preprocess the data needed for your indicator. Usually this involves quering the ohsome API and geodatabase. To make this as easy as possible the modules `ohsome/client.py` and `geodatabase/client.py` are provided. Both modules implement asynchronity. Please make sure to [await](https://docs.python.org/3/library/asyncio-task.html#awaitables) the response when calling functions from those modules. This can be as simple as:
+This function should be used to fetch and preprocess the data needed for your indicator. Usually this involves querying the ohsome API and geodatabase. To make this as easy as possible the modules `ohsome/client.py` and `geodatabase/client.py` are provided. Both modules implement asynchronicity. Please make sure to [await](https://docs.python.org/3/library/asyncio-task.html#awaitables) the response when calling functions from those modules. This can be as simple as:
 
 ```python
 async def preprocess(self):
     query_result = await ohsome.client()
 ```
 
-All data created during the preproccessing should be stored as attributes of the indicator object.
+All data created during the preprocessing should be stored as attributes of the indicator object.
 
-> Note: When writting tests for the new indicator class, this function has to be called with `asyncio.run(indicator.preprocess())`.
+> Note: When writing tests for the new indicator class, this function has to be called with `asyncio.run(indicator.preprocess())`.
 
 
 #### calculate function
