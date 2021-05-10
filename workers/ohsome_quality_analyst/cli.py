@@ -125,6 +125,9 @@ def create_indicator(
             )
             m = vars(indicator.metadata)
             r = vars(indicator.result)
+            if indicator.data is not None:
+                d = vars(indicator.data)
+                bpolys["features"][i]["properties"].update(d)
             bpolys["features"][i]["properties"].update(m)
             bpolys["features"][i]["properties"].update(r)
             click.echo(indicator.metadata)
