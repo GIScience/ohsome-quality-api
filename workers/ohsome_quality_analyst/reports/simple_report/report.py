@@ -18,7 +18,7 @@ class SimpleReport(BaseReport):
     def set_indicator_layer(self):
         self.indicator_layer = (
             IndicatorLayer("MappingSaturation", "building_count"),
-            IndicatorLayer("GhsPopComparison", "building_count"),
+            IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
         )
 
     def combine_indicators(self) -> None:

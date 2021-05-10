@@ -1,7 +1,7 @@
 import unittest
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
-    GhsPopComparison,
+from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
+    GhsPopComparisonBuildings,
 )
 
 # from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
@@ -15,8 +15,8 @@ class TestNameToClass(unittest.TestCase):
 
     def test(self):
         self.assertIs(
-            name_to_class(class_type="indicator", name="GhsPopComparison"),
-            GhsPopComparison,
+            name_to_class(class_type="indicator", name="GhsPopComparisonBuildings"),
+            GhsPopComparisonBuildings,
         )
         # TODO
         # self.assertIs(
@@ -27,7 +27,7 @@ class TestNameToClass(unittest.TestCase):
     def test_all_indicators(self):
         for indicator in self.indicators.keys():
             self.assertIsNotNone(
-                name_to_class(class_type="indicator", name="GhsPopComparison")
+                name_to_class(class_type="indicator", name="GhsPopComparisonBuildings")
             )
 
 
