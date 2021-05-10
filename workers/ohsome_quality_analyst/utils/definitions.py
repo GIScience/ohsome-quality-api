@@ -34,7 +34,6 @@ DATASET_NAMES = (
 INDICATOR_LAYER = (
     ("GhsPopComparisonBuildings", "building_count"),
     ("GhsPopComparisonRoads", "jrc_road_length"),
-    ("GhsPopComparisonRoads", "jrc_railway_length"),
     ("GhsPopComparisonRoads", "major_roads"),
     ("MappingSaturation", "building_count"),
     ("MappingSaturation", "major_roads"),

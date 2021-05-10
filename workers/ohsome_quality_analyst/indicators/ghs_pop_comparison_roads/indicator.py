@@ -32,31 +32,15 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.feature_length = None
         self.feature_length_per_sqkm = None
 
-    # threshould values found by checking population density for good
-    # test-regions and look what values for road length per people
-    # are in these areas
     def greenThresholdFunction(self, pop_per_sqkm) -> float:
-        """
-        Returns minimum road density,
-        which could be a good value with regard to specific population
-        density.
-        """
-        # define green threshould by population density differently
-        """   green	         yellow
-        pop_dens: road_dens  pop_dens: road_dens
-            > 1500: >5	    > 1500: >3
-            > 5000: >10	    > 5000: >6
-            >  100: >2	    >  100: >1
-                 >0: >0,2	     >0: >0,1
-        """
+        """Return road density threshold for green label."""
         if pop_per_sqkm < 5000:
             return pop_per_sqkm / 500
         else:
             return 10
 
     def yellowThresholdFunction(self, pop_per_sqkm) -> float:
-        # define yellow threshould by population density
-        # could mean that there are too less roads mapped
+        """Return road density threshold for yellow label."""
         if pop_per_sqkm < 5000:
             return pop_per_sqkm / 1000
         else:
