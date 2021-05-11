@@ -5,8 +5,8 @@ import unittest
 import geojson
 
 import ohsome_quality_analyst.geodatabase.client as db_client
-from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
-    GhsPopComparison,
+from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
+    GhsPopComparisonBuildings,
 )
 
 
@@ -28,7 +28,7 @@ class TestGeodatabase(unittest.TestCase):
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
         # save
-        self.indicator = GhsPopComparison(
+        self.indicator = GhsPopComparisonBuildings(
             layer_name="building_count",
             bpolys=bpolys,
         )
@@ -40,7 +40,9 @@ class TestGeodatabase(unittest.TestCase):
         )
 
         # load
-        self.indicator = GhsPopComparison(layer_name="building_count", bpolys=bpolys)
+        self.indicator = GhsPopComparisonBuildings(
+            layer_name="building_count", bpolys=bpolys
+        )
         result = asyncio.run(
             db_client.load_indicator_results(self.indicator, dataset, feature_id)
         )

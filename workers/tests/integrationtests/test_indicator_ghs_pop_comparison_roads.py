@@ -5,12 +5,12 @@ import unittest
 import geojson
 from asyncpg import Record
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison.indicator import (
-    GhsPopComparison,
+from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import (
+    GhsPopComparisonRoads,
 )
 
 
-class TestIndicatorGhsPopComparison(unittest.TestCase):
+class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -19,14 +19,14 @@ class TestIndicatorGhsPopComparison(unittest.TestCase):
         )
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        self.indicator = GhsPopComparison(bpolys=bpolys, layer_name="building_count")
+        self.indicator = GhsPopComparisonRoads(bpolys=bpolys, layer_name="major_roads")
 
     def test(self):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.pop_count)
         self.assertIsNotNone(self.indicator.area)
-        self.assertIsNotNone(self.indicator.feature_count)
-        self.assertIsNotNone(self.indicator.feature_count_per_sqkm)
+        self.assertIsNotNone(self.indicator.feature_length)
+        self.assertIsNotNone(self.indicator.feature_length_per_sqkm)
         self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
 
         self.indicator.calculate()

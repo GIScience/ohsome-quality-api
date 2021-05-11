@@ -13,7 +13,7 @@ from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
-class GhsPopComparison(BaseIndicator):
+class GhsPopComparisonBuildings(BaseIndicator):
     """Set number of features and population into perspective."""
 
     def __init__(
