@@ -17,13 +17,13 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. To build and run an already configured image run:
+A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and the GHS POP dataset for those regions. To build and run a already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
 ```
 
-When the database container is running for the first time it takes a couple of minutes until the database is initialized and ready to accept connections.
+During building of the database Docker image data for development purposes is downloaded. When the database container is running for the first time it takes a few seconds until the database is initialized and ready to accept connections.
 Check the progress with `docker logs oqt-database`.
 
 To reinitialize or update the database make sure to delete the volume and rebuild the image. This will delete all data in the database:
@@ -31,11 +31,13 @@ To reinitialize or update the database make sure to delete the volume and rebuil
 ```bash
 # Make sure that your git is up2date, e.g. git pull
 docker stop oqt-database && docker rm oqt-database
+# docker volume ls
 docker volume rm ohsome-quality-analyst_oqt-dev-pg_data
 docker-compose -f docker-compose.development.yml up -d --build oqt-database
 ```
 
-> If for development purposes additional datasets are required have a look at the [database/README.md](database/README.md). On this page information about various scripts for data import are provided. E.g. if the GHS population dataset is needed, first delete the `ghs_pop` table (which covers only the test regions) from the development database and then use the provided script (`database/init_db.production/GHS_POP.sh`) to import the whole dataset.
+> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory. For example to import the GHS POP dataset simply run the provided script (`database/init_db.production/GHS_POP.sh`). This will delete the existing GHS POP table (which covers only the custom regions), download the GHS POP dataset and import it into the database.
+>>>>>>> 4d64822 (Remove and download regions.geojson instead)
 
 
 ## OQT Python package

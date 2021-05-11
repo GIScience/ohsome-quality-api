@@ -1,23 +1,17 @@
 import asyncio
-import os
 import unittest
 
-import geojson
-
 from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.geodatabase import client as db_client
 
 from .utils import oqt_vcr
 
 
 class TestOqt(unittest.TestCase):
     def setUp(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
-        )
-        with open(infile, "r") as f:
-            self.bpolys = geojson.load(f)
+        dataset = "regions"
+        feature_id = 31
+        self.bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
     @oqt_vcr.use_cassette()
     def testCreateIndicatorFromScratch(self):

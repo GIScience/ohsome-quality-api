@@ -5,7 +5,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 # API request tests are seperated for indicator and report
 # because of a bug when using two schemata.
 
-import os
+import asyncio
 import unittest
 
 import geojson
@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.geodatabase import client as db_client
 
 from .utils import oqt_vcr
 
@@ -20,15 +21,14 @@ from .utils import oqt_vcr
 class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-        self.test_dir = os.path.dirname(os.path.abspath(__file__))
+        self.dataset = "regions"
+        self.feature_id = 31
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id)
+        )
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
         self.layer_name = "building_count"
-        self.dataset = "regions"
-        self.feature_id = 1
-        infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
-        with open(infile, "r") as f:
-            self.bpolys = geojson.load(f)
 
         self.schema = Schema(
             {
@@ -52,7 +52,7 @@ class TestApiIndicator(unittest.TestCase):
                 "result": {
                     "timestamp_oqt": str,
                     "timestamp_osm": Or(str, None),
-                    "value": float,
+                    "value": Or(float, None),
                     "label": str,
                     "description": str,
                     "svg": str,

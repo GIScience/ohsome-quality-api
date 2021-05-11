@@ -27,6 +27,9 @@
     - Extent regions with four countries (#196)
     - Retrive available regions through API and CLI
     - Correct geometry of following duplicated regions: id 2 and id 28
+    - Remove and download regions.geojson instead
+    - Website will use regions.geojson when present. Otherwise it will use the API endpoint.
+    - Database can be setup with available regions for development or with only regions for testing
 
 ## 0.2.0
 

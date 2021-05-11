@@ -141,3 +141,7 @@ cython_debug/
 .idea/
 
 # Custom
+semver.sh
+regions.geojson
+GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.*
+GHSL_Data_Package_2019_light.pdf

@@ -2,6 +2,8 @@
 
 # Import OQT regions for which indicators will be precomputed into the database.
 
+wget https://downloads.ohsome.org/OQT/regions.geojson
+
 psql --command \
     "DROP TABLE IF EXISTS regions"
 

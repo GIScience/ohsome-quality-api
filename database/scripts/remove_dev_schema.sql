@@ -4,10 +4,16 @@
 /* This is usefull to setup a local development database. */
 /* It is used as basis for the development database inside a Docker container. */
 /* */
-SET search_path TO public, development;
+SET search_path TO public, development, test;
 
 DROP TABLE IF EXISTS development.regions;
 
+DROP TABLE IF EXISTS test.regions;
+
 DROP TABLE IF EXISTS development.ghs_pop;
 
+DROP TABLE IF EXISTS test.ghs_pop;
+
 DROP SCHEMA IF EXISTS development;
+
+DROP SCHEMA IF EXISTS test;

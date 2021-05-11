@@ -1,13 +1,40 @@
 // all references to gP are currently outcommented.
 // they refer to the getPDF button which will be implemented later.
 
+function fetch_regions_from_server() {
+	return fetch('assets/data/regions.geojson')
+}
+
+function fetch_regions_from_api() {
+    // TODO: Add cache functionality
+    return fetch(apiUrl + '/regions')
+}
+
+function status(response) {
+    if (response.status == 404) {
+        console.log('Could not find regions.geojson on the server. Status Code: ' + response.status); 
+        console.log('Fetch regions from OQT API. This takes quite a while.');
+        return Promise.resolve(fetch_regions_from_api())
+    } else {
+        return Promise.resolve(response)
+    }
+}
+
+function json(response) {
+    return response.json();
+}
+
 // load geojson data, then build the map and the functionalities
 Promise.all([
-    // Fetching regions from the API enpoints takes quite a while
-	// fetch(apiUrl + '/regions').then(response => response.json()), get_html_parameter_list(location.search)
-    // Instead read from static GeoJSON file
-	fetch('assets/data/regions.geojson').then(data => data.json()), get_html_parameter_list(location.search)
-]).then(buildMap).catch(err => console.error(err));
+    fetch_regions_from_server()
+        .then(status)
+        .then(json),
+    get_html_parameter_list(location.search)
+])
+    .then(buildMap)
+    .catch(function(error) {
+        console.error(error)
+    });
 
 var selectedFeature = null;
 var selectedFeatureLayer = null;
@@ -177,8 +204,6 @@ function buildMap(...charts){
 		else{
 			var selectedTopic = topic.options[topic.selectedIndex].value;
 		}
-    console.log(charts[0][0].features)
-    console.log(areas)
 		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}

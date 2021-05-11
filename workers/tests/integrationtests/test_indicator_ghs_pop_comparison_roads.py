@@ -1,10 +1,9 @@
 import asyncio
-import os
 import unittest
 
-import geojson
 from asyncpg import Record
 
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import (
     GhsPopComparisonRoads,
 )
@@ -12,13 +11,9 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import
 
 class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+        dataset = "regions"
+        feature_id = 31
+        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
         self.indicator = GhsPopComparisonRoads(bpolys=bpolys, layer_name="major_roads")
 
     def test(self):

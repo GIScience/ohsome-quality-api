@@ -6,7 +6,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 # because of a bug when using two schemata.
 
 
-import os
+import asyncio
 import unittest
 
 import geojson
@@ -14,9 +14,8 @@ from fastapi.testclient import TestClient
 from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
-from ohsome_quality_analyst.reports.remote_mapping_level_one.report import (
-    RemoteMappingLevelOne,
-)
+from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
 from .utils import oqt_vcr
 
@@ -24,14 +23,12 @@ from .utils import oqt_vcr
 class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-        self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "GhsPopComparisonBuildings"
-        self.report_name = "SimpleReport"
         self.dataset = "regions"
-        self.feature_id = 1
-        infile = os.path.join(self.test_dir, "fixtures/heidelberg_altstadt.geojson")
-        with open(infile, "r") as f:
-            self.bpolys = geojson.load(f)
+        self.feature_id = 31
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id)
+        )
+        self.report_name = "SimpleReport"
 
         self.schema = Schema(
             {
@@ -66,7 +63,7 @@ class TestApiReport(unittest.TestCase):
                         "result": {
                             "timestamp_oqt": str,
                             "timestamp_osm": Or(str, None),
-                            "value": float,
+                            "value": Or(float, None),
                             "label": str,
                             "description": str,
                             "svg": str,
@@ -117,11 +114,11 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_number_of_indicator(self):
         data = {"dataset": self.dataset, "featureId": self.feature_id}
-        url = "/report/RemoteMappingLevelOne"
+        url = "/report/{0}".format(self.report_name)
         response = self.client.post(url, json=data)
         response_report = response.json()
 
-        report = RemoteMappingLevelOne()
+        report = SimpleReport()
         report.set_indicator_layer()
 
         self.assertEqual(

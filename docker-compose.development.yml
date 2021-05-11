@@ -30,7 +30,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-        - ./website/website:/usr/share/nginx/html
+      - ./website/website:/usr/share/nginx/html
     depends_on:
       - oqt-workers
 
@@ -39,6 +39,9 @@ services:
     build:
       context: database/
       dockerfile: Dockerfile.development
+      args:
+        # Setup minimal database for running tests
+        OQT_TEST_DB: False
     environment:
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
