@@ -1,7 +1,7 @@
 import ast
 import asyncio
 import logging
-import os
+import pathlib
 
 import click
 import geojson
@@ -110,7 +110,8 @@ def create_indicator(
             "The argument 'force' will update the indicator result in the database."
         )
         click.confirm("Do you want to continue?", abort=True)
-    if infile:
+    if infile is not None:
+        infile = pathlib.Path(infile)
         with open(infile, "r") as file:
             feature_collection = geojson.load(file)
         if feature_collection.is_valid is False:
@@ -132,7 +133,10 @@ def create_indicator(
             feature["properties"].update(vars(indicator.metadata))
             feature["properties"].update(vars(indicator.result))
         if outfile is None:
-            outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
+            outfile = infile.stem + "_" + indicator_name + infile.suffix
+        else:
+            outfile = pathlib.Path(outfile)
+            outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
             geojson.dump(feature_collection, f)
     else:
@@ -168,7 +172,8 @@ def create_report(
     force: bool,
 ):
     """Create a Report and print results to stdout."""
-    if infile:
+    if infile is not None:
+        infile = pathlib.Path(infile)
         with open(infile, "r") as file:
             feature_collection = geojson.load(file)
         if feature_collection.is_valid is False:
@@ -187,7 +192,10 @@ def create_report(
             feature["properties"].update(vars(report.metadata))
             feature["properties"].update(vars(report.result))
         if outfile is None:
-            outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
+            outfile = infile.stem + "_" + report_name + infile.suffix
+        else:
+            outfile = pathlib.Path(outfile)
+            outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
             geojson.dump(feature_collection, f)
     else:
