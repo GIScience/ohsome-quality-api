@@ -111,25 +111,22 @@ def create_indicator(
             feature_collection = geojson.load(file)
         if feature_collection.is_valid is False:
             raise ValueError("Input geometry is not valid")
-        for i in range(len(feature_collection.features)):
-            bpolys_subset = geojson.FeatureCollection([feature_collection.features[i]])
+        for feature in feature_collection.features:
+            sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
                 oqt.create_indicator(
                     indicator_name=indicator_name,
-                    bpolys=bpolys_subset,
+                    bpolys=sub_collection,
                     layer_name=layer_name,
                     feature_id=feature_id,
                     dataset=dataset_name,
                     force=force,
                 )
             )
-            m = vars(indicator.metadata)
-            r = vars(indicator.result)
             if indicator.data is not None:
-                d = vars(indicator.data)
-                feature_collection["features"][i]["properties"].update(d)
-            feature_collection["features"][i]["properties"].update(m)
-            feature_collection["features"][i]["properties"].update(r)
+                feature["properties"].update(vars(indicator.data))
+            feature["properties"].update(vars(indicator.metadata))
+            feature["properties"].update(vars(indicator.result))
             click.echo(indicator.metadata)
             click.echo(indicator.result)
         try:
