@@ -14,6 +14,6 @@ MapActionPoc:
       to identify potential data quality concerns.
     green: |
       All indicators show a good quality.
-      The data in this regions seems to be good for jrc requirements.
+      The data in this region seems to be good for creating a MapAction country overview product.
     undefined: |
       Could not derive quality level.
