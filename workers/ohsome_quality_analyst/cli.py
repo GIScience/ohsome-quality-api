@@ -108,11 +108,11 @@ def create_indicator(
         click.confirm("Do you want to continue?", abort=True)
     if infile:
         with open(infile, "r") as file:
-            bpolys = geojson.load(file)
-        if bpolys.is_valid is False:
+            feature_collection = geojson.load(file)
+        if feature_collection.is_valid is False:
             raise ValueError("Input geometry is not valid")
-        for i in range(len(bpolys.features)):
-            bpolys_subset = geojson.FeatureCollection([bpolys.features[i]])
+        for i in range(len(feature_collection.features)):
+            bpolys_subset = geojson.FeatureCollection([feature_collection.features[i]])
             indicator = asyncio.run(
                 oqt.create_indicator(
                     indicator_name=indicator_name,
@@ -127,15 +127,15 @@ def create_indicator(
             r = vars(indicator.result)
             if indicator.data is not None:
                 d = vars(indicator.data)
-                bpolys["features"][i]["properties"].update(d)
-            bpolys["features"][i]["properties"].update(m)
-            bpolys["features"][i]["properties"].update(r)
+                feature_collection["features"][i]["properties"].update(d)
+            feature_collection["features"][i]["properties"].update(m)
+            feature_collection["features"][i]["properties"].update(r)
             click.echo(indicator.metadata)
             click.echo(indicator.result)
         try:
             outputfile = infile[:-8] + "_%s.geojson" % indicator_name
             with open(outputfile, "w") as f:
-                geojson.dump(bpolys, f)
+                geojson.dump(feature_collection, f)
         except Exception as err:
             logging.error(
                 "could not write outputfile %s. Error: %s" % (outputfile, err)
