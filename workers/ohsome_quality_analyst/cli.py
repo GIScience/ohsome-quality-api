@@ -15,6 +15,7 @@ from ohsome_quality_analyst.cli_opts import (
     indicator_name_opt,
     infile_opt,
     layer_name_opt,
+    outfile_opt,
     report_name_opt,
 )
 from ohsome_quality_analyst.utils.definitions import (
@@ -88,12 +89,14 @@ def list_datasets():
 @add_opts(indicator_name_opt)
 @add_opts(layer_name_opt)
 @add_opts(infile_opt)
+@add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
 @add_opts(force_opt)
 def create_indicator(
     indicator_name: str,
     infile: str,
+    outfile: str,
     layer_name: str,
     feature_id: int,
     dataset_name: str,
@@ -131,9 +134,15 @@ def create_indicator(
             click.echo(indicator.metadata)
             click.echo(indicator.result)
         try:
-            outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
-            with open(outputfile, "w") as f:
-                geojson.dump(feature_collection, f)
+            if outfile is not None:
+                with open(outfile, "w") as f:
+                    geojson.dump(feature_collection, f)
+            else:
+                outputfile = (
+                    os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
+                )
+                with open(outputfile, "w") as f:
+                    geojson.dump(feature_collection, f)
         except Exception as err:
             logging.error(
                 "could not write outputfile %s. Error: %s" % (outputfile, err)
@@ -158,11 +167,17 @@ def create_indicator(
 @cli.command("create-report")
 @add_opts(report_name_opt)
 @add_opts(infile_opt)
+@add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
 @add_opts(force_opt)
 def create_report(
-    report_name: str, infile: str, dataset_name: str, feature_id: int, force: bool
+    report_name: str,
+    infile: str,
+    outfile: str,
+    dataset_name: str,
+    feature_id: int,
+    force: bool,
 ):
     """Create a Report and print results to stdout."""
     if infile:
@@ -186,9 +201,13 @@ def create_report(
             click.echo(report.metadata)
             click.echo(report.result)
         try:
-            outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
-            with open(outputfile, "w") as f:
-                geojson.dump(feature_collection, f)
+            if outfile is not None:
+                with open(outfile, "w") as f:
+                    geojson.dump(feature_collection, f)
+            else:
+                outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
+                with open(outputfile, "w") as f:
+                    geojson.dump(feature_collection, f)
         except Exception as err:
             logging.error(
                 "could not write outputfile %s. Error: %s" % (outputfile, err)
