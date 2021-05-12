@@ -2,7 +2,7 @@
 
 ## How to Contribute
 
-Please contribute to this repository through creating [issues](https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues/new) and [merge requests](https://docs.gitlab.com/ce/user/project/merge_requests/creating_merge_requests.html#new-merge-request-from-your-local-environment).
+Please contribute to this repository through creating [issues](https://github.com/GIScience/ohsome-quality-analyst/issues/new) and [merge requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests).
 
 
 ### Issues
