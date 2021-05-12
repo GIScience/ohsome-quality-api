@@ -6,7 +6,7 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
 
-class MapActionPOC(BaseReport):
+class MapActionPoc(BaseReport):
     def __init__(
         self,
         bpolys: FeatureCollection = None,

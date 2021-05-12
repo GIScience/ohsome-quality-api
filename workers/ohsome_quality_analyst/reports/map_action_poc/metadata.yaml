@@ -1,5 +1,5 @@
 ---
-MapActionPOC:
+MapActionPoc:
   name: MapAction POC Country Overview
   description: |
     This report is a proof of concept (POC) data quality report for a MapAction country overview product.
