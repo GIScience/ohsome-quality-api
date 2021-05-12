@@ -135,6 +135,8 @@ def create_indicator(
             click.echo(indicator.result)
         try:
             if outfile is not None:
+                if not os.path.exists(os.path.dirname(outfile)):
+                    os.makedirs(os.path.dirname(outfile))
                 with open(outfile, "w") as f:
                     geojson.dump(feature_collection, f)
             else:
@@ -202,6 +204,8 @@ def create_report(
             click.echo(report.result)
         try:
             if outfile is not None:
+                if not os.path.exists(os.path.dirname(outfile)):
+                    os.makedirs(os.path.dirname(outfile))
                 with open(outfile, "w") as f:
                     geojson.dump(feature_collection, f)
             else:
