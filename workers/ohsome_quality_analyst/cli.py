@@ -131,12 +131,7 @@ def create_indicator(
                 feature["properties"].update(vars(indicator.data))
             feature["properties"].update(vars(indicator.metadata))
             feature["properties"].update(vars(indicator.result))
-            click.echo(indicator.metadata)
-            click.echo(indicator.result)
-        if outfile is not None:
-            if not os.path.exists(os.path.dirname(outfile)):
-                os.makedirs(os.path.dirname(outfile))
-        else:
+        if outfile is None:
             outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
         with open(outfile, "w") as f:
             geojson.dump(feature_collection, f)
@@ -152,7 +147,7 @@ def create_indicator(
                 force=force,
             )
         )
-        # TODO: Print out readable format.
+        # TODO: Save as GeoJSON instead of printing to Stdout
         click.echo(indicator.metadata)
         click.echo(indicator.result)
 
@@ -191,12 +186,7 @@ def create_report(
             )
             feature["properties"].update(vars(report.metadata))
             feature["properties"].update(vars(report.result))
-            click.echo(report.metadata)
-            click.echo(report.result)
-        if outfile is not None:
-            if not os.path.exists(os.path.dirname(outfile)):
-                os.makedirs(os.path.dirname(outfile))
-        else:
+        if outfile is None:
             outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
         with open(outfile, "w") as f:
             geojson.dump(feature_collection, f)
@@ -211,7 +201,7 @@ def create_report(
                 force=force,
             )
         )
-        # TODO: Print out readable format.
+        # TODO: Save as GeoJSON instead of printing to Stdout
         click.echo(report.metadata)
         click.echo(report.result)
 
