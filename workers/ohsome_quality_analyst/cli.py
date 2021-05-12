@@ -133,22 +133,13 @@ def create_indicator(
             feature["properties"].update(vars(indicator.result))
             click.echo(indicator.metadata)
             click.echo(indicator.result)
-        try:
-            if outfile is not None:
-                if not os.path.exists(os.path.dirname(outfile)):
-                    os.makedirs(os.path.dirname(outfile))
-                with open(outfile, "w") as f:
-                    geojson.dump(feature_collection, f)
-            else:
-                outputfile = (
-                    os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
-                )
-                with open(outputfile, "w") as f:
-                    geojson.dump(feature_collection, f)
-        except Exception as err:
-            logging.error(
-                "could not write outputfile %s. Error: %s" % (outputfile, err)
-            )
+        if outfile is not None:
+            if not os.path.exists(os.path.dirname(outfile)):
+                os.makedirs(os.path.dirname(outfile))
+        else:
+            outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
+        with open(outfile, "w") as f:
+            geojson.dump(feature_collection, f)
     else:
         bpolys = None
         indicator = asyncio.run(
@@ -202,20 +193,13 @@ def create_report(
             feature["properties"].update(vars(report.result))
             click.echo(report.metadata)
             click.echo(report.result)
-        try:
-            if outfile is not None:
-                if not os.path.exists(os.path.dirname(outfile)):
-                    os.makedirs(os.path.dirname(outfile))
-                with open(outfile, "w") as f:
-                    geojson.dump(feature_collection, f)
-            else:
-                outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
-                with open(outputfile, "w") as f:
-                    geojson.dump(feature_collection, f)
-        except Exception as err:
-            logging.error(
-                "could not write outputfile %s. Error: %s" % (outputfile, err)
-            )
+        if outfile is not None:
+            if not os.path.exists(os.path.dirname(outfile)):
+                os.makedirs(os.path.dirname(outfile))
+        else:
+            outfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
+        with open(outfile, "w") as f:
+            geojson.dump(feature_collection, f)
     else:
         bpolys = None
         report = asyncio.run(
