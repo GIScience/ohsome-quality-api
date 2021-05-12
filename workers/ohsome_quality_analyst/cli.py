@@ -166,23 +166,46 @@ def create_report(
     """Create a Report and print results to stdout."""
     if infile:
         with open(infile, "r") as file:
-            bpolys = geojson.load(file)
-        if bpolys.is_valid is False:
+            feature_collection = geojson.load(file)
+        if feature_collection.is_valid is False:
             raise ValueError("Input geometry is not valid")
+        for feature in feature_collection.features:
+            sub_collection = geojson.FeatureCollection([feature])
+            report = asyncio.run(
+                oqt.create_report(
+                    report_name=report_name,
+                    bpolys=sub_collection,
+                    dataset=dataset_name,
+                    feature_id=feature_id,
+                    force=force,
+                )
+            )
+            feature["properties"].update(vars(report.metadata))
+            feature["properties"].update(vars(report.result))
+            click.echo(report.metadata)
+            click.echo(report.result)
+        try:
+            outputfile = infile[:-8] + "_%s.geojson" % report_name
+            with open(outputfile, "w") as f:
+                geojson.dump(feature_collection, f)
+        except Exception as err:
+            logging.error(
+                "could not write outputfile %s. Error: %s" % (outputfile, err)
+            )
     else:
         bpolys = None
-    report = asyncio.run(
-        oqt.create_report(
-            report_name=report_name,
-            bpolys=bpolys,
-            dataset=dataset_name,
-            feature_id=feature_id,
-            force=force,
+        report = asyncio.run(
+            oqt.create_report(
+                report_name=report_name,
+                bpolys=bpolys,
+                dataset=dataset_name,
+                feature_id=feature_id,
+                force=force,
+            )
         )
-    )
-    # TODO: Print out readable format.
-    click.echo(report.metadata)
-    click.echo(report.result)
+        # TODO: Print out readable format.
+        click.echo(report.metadata)
+        click.echo(report.result)
 
 
 # TODO: Dataset option is mandatory
