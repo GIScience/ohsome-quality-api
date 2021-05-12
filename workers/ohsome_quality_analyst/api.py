@@ -112,7 +112,6 @@ async def _fetch_indicator(
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
     response["result"] = vars(indicator.result)
-    response["result"]["label"] = indicator.result.label
     return response
 
 
@@ -164,7 +163,6 @@ async def _fetch_report(
         metadata.pop("label_description", None)
         layer = vars(indicator.layer)
         result = vars(indicator.result)
-        result["label"] = indicator.result.label
         indicator_name = name_to_lower_camel(metadata["name"])
         layer_name = name_to_lower_camel(layer["name"])
         response["indicators"][indicator_name + layer_name] = {

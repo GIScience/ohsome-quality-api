@@ -59,14 +59,16 @@ class TestApiReport(unittest.TestCase):
                             "description": str,
                             "endpoint": str,
                             "filter": str,
-                            Optional("ratio_filter", default=None): Or(str, None),
+                            Optional("ratio_filter"): Or(str, None),
                         },
                         "result": {
+                            "timestamp_oqt": str,
+                            "timestamp_osm": Or(str, None),
                             "value": float,
                             "label": str,
                             "description": str,
                             "svg": str,
-                            Optional("data", default=None): Or(str, None),
+                            Optional("data"): Or(dict, None),
                         },
                     }
                 },
