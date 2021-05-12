@@ -1,6 +1,7 @@
 import ast
 import asyncio
 import logging
+import os
 
 import click
 import geojson
@@ -130,7 +131,7 @@ def create_indicator(
             click.echo(indicator.metadata)
             click.echo(indicator.result)
         try:
-            outputfile = infile[:-8] + "_%s.geojson" % indicator_name
+            outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % indicator_name
             with open(outputfile, "w") as f:
                 geojson.dump(feature_collection, f)
         except Exception as err:
@@ -185,7 +186,7 @@ def create_report(
             click.echo(report.metadata)
             click.echo(report.result)
         try:
-            outputfile = infile[:-8] + "_%s.geojson" % report_name
+            outputfile = os.path.basename(infile)[:-8] + "_%s.geojson" % report_name
             with open(outputfile, "w") as f:
                 geojson.dump(feature_collection, f)
         except Exception as err:
