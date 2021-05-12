@@ -27,7 +27,7 @@ class MapActionPoc(BaseReport):
             IndicatorLayer("LastEdit", "major_roads"),
             IndicatorLayer("LastEdit", "mapaction_lakes_count"),
             IndicatorLayer("LastEdit", "mapaction_rivers_length"),
-            IndicatorLayer("LastEdit", "major_rail_length"),
+            IndicatorLayer("LastEdit", "mapaction_rail_length"),
         )
 
     def combine_indicators(self) -> None:
