@@ -59,9 +59,10 @@ available geometries has been picked manually and is defined in a
 [GeoJSON file](website/website/assets/data/test_regions.geojson).
 
 The user can select one of the following reports, which are hardcoded in the [website code](website/website/index.html):
-* Simple report
-* Remote mapping report (buildings, roads)
-* Sketch mapping report
+* Simple Report
+* Remote Mapping Report
+* Sketch Mapping Report
+* JRC Report
 
 ![Screenshot of the area picking part of the website](./img/oqt_website_step1.png)
 
