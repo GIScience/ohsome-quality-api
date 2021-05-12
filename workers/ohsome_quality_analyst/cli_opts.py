@@ -45,6 +45,15 @@ infile_opt = [
     )
 ]
 
+outfile_opt = [
+    click.option(
+        "--outfile",
+        help="GeoJSON file to be written with appended metadata and results.",
+        type=str,
+        default=None,
+    )
+]
+
 dataset_name_opt = [
     click.option(
         "--dataset-name",
