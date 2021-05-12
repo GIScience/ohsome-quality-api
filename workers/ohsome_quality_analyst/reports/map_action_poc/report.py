@@ -6,7 +6,7 @@ from geojson import FeatureCollection
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
 
-class MapActionPOC(BaseReport):
+class MapActionPoc(BaseReport):
     def __init__(
         self,
         bpolys: FeatureCollection = None,
@@ -27,7 +27,7 @@ class MapActionPOC(BaseReport):
             IndicatorLayer("LastEdit", "major_roads"),
             IndicatorLayer("LastEdit", "mapaction_lakes_count"),
             IndicatorLayer("LastEdit", "mapaction_rivers_length"),
-            IndicatorLayer("LastEdit", "major_rail_length"),
+            IndicatorLayer("LastEdit", "mapaction_rail_length"),
         )
 
     def combine_indicators(self) -> None:
