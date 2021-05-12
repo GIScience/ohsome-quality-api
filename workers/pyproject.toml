@@ -4,7 +4,7 @@ version = "0.2.0"
 description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://oqt.ohsome.org"
-repository = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/"
+repository = "https://github.com/GIScience/ohsome-quality-analyst"
 keywords = [
   "osm",
   "gis",
@@ -42,7 +42,7 @@ isort = "5.7.0"
 oqt = "ohsome_quality_analyst.cli:cli"
 
 [tool.poetry.urls]
-"Issues" = "https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/apps/ohsome-quality-analyst/-/issues"
+"Issues" = "https://github.com/GIScience/ohsome-quality-analyst/issues"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
