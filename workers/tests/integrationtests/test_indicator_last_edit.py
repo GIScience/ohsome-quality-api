@@ -7,8 +7,11 @@ import geojson
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
 
+from .utils import oqt_vcr
+
 
 class TestIndicatorLastEdit(unittest.TestCase):
+    @oqt_vcr.use_cassette()
     def test(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -27,17 +30,19 @@ class TestIndicatorLastEdit(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
-    def test_more_edited_features_then_features(self):
-        """It can happen that edited features includes deleted features"""
-        dataset = "test_regions"
-        feature_id = 7
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+    # TODO: Choose smaller test region for this test case
+    # @oqt_vcr.use_cassette()
+    # def test_more_edited_features_then_features(self):
+    #     """It can happen that edited features includes deleted features"""
+    #     dataset = "test_regions"
+    #     feature_id = 7
+    #     bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+    #     indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
+    #     asyncio.run(indicator.preprocess())
+    #     self.assertLess(indicator.total_features, indicator.edited_features)
+    #     self.assertEqual(indicator.share_edited_features, 100)
 
-        indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
-        asyncio.run(indicator.preprocess())
-        self.assertLess(indicator.total_features, indicator.edited_features)
-        self.assertEqual(indicator.share_edited_features, 100)
-
+    @oqt_vcr.use_cassette()
     def test_no_amenities(self):
         """Test area with no amenities"""
         dataset = "test_regions"

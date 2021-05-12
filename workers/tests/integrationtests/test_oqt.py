@@ -6,6 +6,8 @@ import geojson
 
 from ohsome_quality_analyst import oqt
 
+from .utils import oqt_vcr
+
 
 class TestOqt(unittest.TestCase):
     def setUp(self):
@@ -17,6 +19,7 @@ class TestOqt(unittest.TestCase):
         with open(infile, "r") as f:
             self.bpolys = geojson.load(f)
 
+    @oqt_vcr.use_cassette()
     def testCreateIndicatorFromScratch(self):
         # From scratch
         indicator = asyncio.run(
@@ -29,6 +32,7 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.description)
         self.assertIsNotNone(indicator.result.svg)
 
+    @oqt_vcr.use_cassette()
     def testCreateIndicatorFromDatabase(self):
         # Invalid dataset name
         with self.assertRaises(ValueError):
@@ -55,12 +59,14 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.description)
         self.assertIsNotNone(indicator.result.svg)
 
+    @oqt_vcr.use_cassette()
     def testCreateReportFromScratch(self):
         report = asyncio.run(oqt.create_report("SimpleReport", self.bpolys))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
+    @oqt_vcr.use_cassette()
     def testCreateReportFromDatabase(self):
         report = asyncio.run(
             oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)

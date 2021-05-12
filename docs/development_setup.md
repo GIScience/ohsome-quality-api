@@ -148,6 +148,25 @@ cd workers/
 pytest tests
 ```
 
+#### Writing Tests
+
+All relevant components should be tested. Please write tests for newly integrated functionality. All tests that are calling function that call external resources (e.g. ohsome API) have to use [VCR.py](https://vcrpy.readthedocs.io) to ensure that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository. If necessary, the cassettes can be re-recorded by deleting the contents of the cassettes directory and run all tests again. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
+
+A test with the VCR.py decorator we are using looks like this:
+
+```python
+from .utils import oqt_vcr
+
+class TestSomething(unittest.TestCase):
+
+    @oqt_vcr.use_cassette()
+    def test_something(self):
+        oqt.do_something(…)
+        self.assertSomething(something)
+```
+
+Good examples can be found in [test_oqt.py](workers/tests/integrationtests/test_oqt.py).
+
 
 ### Logging
 

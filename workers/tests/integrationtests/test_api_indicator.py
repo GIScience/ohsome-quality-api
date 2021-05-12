@@ -14,6 +14,8 @@ from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
 
+from .utils import oqt_vcr
+
 
 class TestApiIndicator(unittest.TestCase):
     def setUp(self):
@@ -59,6 +61,7 @@ class TestApiIndicator(unittest.TestCase):
             }
         )
 
+    @oqt_vcr.use_cassette()
     def test_get_indicator_bpolys(self):
         url = "/indicator/{0}?layerName={1}&bpolys={2}".format(
             self.indicator_name,
@@ -74,6 +77,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
+    @oqt_vcr.use_cassette()
     def test_get_indicator_dataset(self):
         url = "/indicator/{0}?layerName={1}&dataset={2}&featureId={3}".format(
             self.indicator_name, self.layer_name, self.dataset, self.feature_id
@@ -86,6 +90,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
+    @oqt_vcr.use_cassette()
     def test_post_indicator_bpolys(self):
         data = {"bpolys": geojson.dumps(self.bpolys), "layerName": self.layer_name}
         url = f"/indicator/{self.indicator_name}"
@@ -97,6 +102,7 @@ class TestApiIndicator(unittest.TestCase):
         self.schema.validate(indicator)  # Print information if validation fails
         self.assertTrue(self.schema.is_valid(indicator))
 
+    @oqt_vcr.use_cassette()
     def test_post_indicator_dataset(self):
         data = {
             "dataset": self.dataset,

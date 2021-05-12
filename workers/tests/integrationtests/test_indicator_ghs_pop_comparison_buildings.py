@@ -9,6 +9,8 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
     GhsPopComparisonBuildings,
 )
 
+from .utils import oqt_vcr
+
 
 class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
     def setUp(self):
@@ -23,6 +25,7 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
             bpolys=bpolys, layer_name="building_count"
         )
 
+    @oqt_vcr.use_cassette()
     def test(self):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.pop_count)
@@ -39,6 +42,7 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
         self.indicator.create_figure()
         self.assertIsNotNone(self.indicator.result.svg)
 
+    @oqt_vcr.use_cassette()
     def test_get_zonal_stats_population(self):
         result = asyncio.run(
             self.indicator.get_zonal_stats_population(self.indicator.bpolys)

@@ -10,6 +10,8 @@ from click.testing import CliRunner
 
 from ohsome_quality_analyst.cli import cli
 
+from .utils import oqt_vcr
+
 
 class TestCliIntegration(unittest.TestCase):
     def setUp(self):
@@ -20,6 +22,7 @@ class TestCliIntegration(unittest.TestCase):
             "heidelberg_altstadt.geojson",
         )
 
+    @oqt_vcr.use_cassette()
     def testCreateIndicator(self):
         result = self.runner.invoke(
             cli,
@@ -37,6 +40,7 @@ class TestCliIntegration(unittest.TestCase):
         )
         assert result.exit_code == 0
 
+    @oqt_vcr.use_cassette()
     def testCreateReport(self):
         result = self.runner.invoke(
             cli,

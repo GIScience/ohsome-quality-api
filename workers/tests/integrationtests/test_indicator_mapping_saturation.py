@@ -9,6 +9,8 @@ from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 
+from .utils import oqt_vcr
+
 
 class TestIndicatorMappingSaturation(unittest.TestCase):
     def test(self):
@@ -33,6 +35,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
+    @oqt_vcr.use_cassette()
     def testFloatDivisionByZeroError(self):
         layer_name = "building_count"
         dataset = "test_regions"
@@ -44,6 +47,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.calculate()
         indicator.create_figure()
 
+    @oqt_vcr.use_cassette()
     def testCannotConvertNanError(self):
         layer_name = "building_count"
         dataset = "test_regions"
