@@ -30,18 +30,17 @@ class TestIndicatorLastEdit(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
-    # TODO
+    # TODO: Choose smaller test region for this test case
     # @oqt_vcr.use_cassette("test_indicator_last_edit.json")
-    def test_more_edited_features_then_features(self):
-        """It can happen that edited features includes deleted features"""
-        dataset = "test_regions"
-        feature_id = 7
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
-
-        indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
-        asyncio.run(indicator.preprocess())
-        self.assertLess(indicator.total_features, indicator.edited_features)
-        self.assertEqual(indicator.share_edited_features, 100)
+    # def test_more_edited_features_then_features(self):
+    #     """It can happen that edited features includes deleted features"""
+    #     dataset = "test_regions"
+    #     feature_id = 7
+    #     bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+    #     indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
+    #     asyncio.run(indicator.preprocess())
+    #     self.assertLess(indicator.total_features, indicator.edited_features)
+    #     self.assertEqual(indicator.share_edited_features, 100)
 
     # TODO
     # @oqt_vcr.use_cassette("test_indicator_last_edit.json")
