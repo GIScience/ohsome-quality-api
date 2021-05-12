@@ -16,6 +16,7 @@
 - Add data input and output attributes to indicator !129
 - Update dependencies !139
 - Tidy up repository !138 !120
+- Return a GeoJSON when computing an indicator from the CLI !140
 
 ## 0.2.0
 
