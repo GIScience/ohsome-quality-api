@@ -40,7 +40,7 @@ infile_opt = [
     click.option(
         "--infile",
         help="GeoJSON file for your area of interest.",
-        type=str,
+        type=click.Path(resolve_path=True),
         default=None,
     )
 ]
@@ -49,7 +49,7 @@ outfile_opt = [
     click.option(
         "--outfile",
         help="GeoJSON file to be written with appended metadata and results.",
-        type=str,
+        type=click.Path(resolve_path=True),
         default=None,
     )
 ]
