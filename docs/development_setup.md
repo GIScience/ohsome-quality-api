@@ -37,7 +37,6 @@ docker-compose -f docker-compose.development.yml up -d --build oqt-database
 ```
 
 > If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory. For example to import the GHS POP dataset simply run the provided script (`database/init_db.production/GHS_POP.sh`). This will delete the existing GHS POP table (which covers only the custom regions), download the GHS POP dataset and import it into the database.
->>>>>>> 4d64822 (Remove and download regions.geojson instead)
 
 
 ## OQT Python package

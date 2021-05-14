@@ -29,7 +29,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:48:46 GMT"
+                        "Fri, 14 May 2021 17:05:23 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -108,7 +108,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:48:48 GMT"
+                        "Fri, 14 May 2021 17:05:25 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -190,7 +190,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:48:49 GMT"
+                        "Fri, 14 May 2021 17:05:26 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -239,7 +239,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/contributions/latest/centroid",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2020-05-09%2C2021-05-09",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2020-05-09%2C2021-05-09",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -257,7 +257,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "609"
+                        "622"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -269,7 +269,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:48:50 GMT"
+                        "Fri, 14 May 2021 17:05:28 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -321,7 +321,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -339,7 +339,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "580"
+                        "593"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -351,7 +351,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:48:50 GMT"
+                        "Fri, 14 May 2021 17:05:29 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
