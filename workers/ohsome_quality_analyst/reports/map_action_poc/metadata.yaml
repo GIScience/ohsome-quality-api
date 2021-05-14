@@ -1,0 +1,19 @@
+---
+MapActionPoc:
+  name: MapAction POC Country Overview
+  description: |
+    This report is a proof of concept (POC) data quality report for a MapAction country overview product.
+  label_description:
+    red: |
+      The data quality in this region is low.
+      It is very likely that this regions has not been completely
+      mapped in OSM.
+    yellow: |
+      At least one indicator shows only medium quality.
+      You should inspect the results for the individual indicators
+      to identify potential data quality concerns.
+    green: |
+      All indicators show a good quality.
+      The data in this region seems to be good for creating a MapAction country overview product.
+    undefined: |
+      Could not derive quality level.
