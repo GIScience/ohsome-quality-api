@@ -141,4 +141,3 @@ cython_debug/
 .idea/
 
 # Custom
-semver.sh

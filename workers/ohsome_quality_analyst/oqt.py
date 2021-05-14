@@ -23,9 +23,13 @@ async def create_indicator(
 ) -> BaseIndicator:
     """Create an indicator.
 
-    An indicator is created by either calculating the indicator results
-    for a geometry from scratch (bpolys) or by fetching indicator
-    results from the geodatabase (dataset, feature_id).
+    An indicator can be created in two ways:
+
+    One; Calculate from scratch for an area of interest.
+    This is done by providing a bounding polygon as input parameter.
+
+    Two; Fetch the pre-computed results from the Geodatabase.
+    This is done by providing the dataset name and feature id as input parameter.
 
     In the case that fetching indicator results from database does fail
     the indicator is created from scratch and the results are saved
@@ -58,9 +62,6 @@ async def create_indicator(
     if bpolys is not None and dataset is None and feature_id is None:
         logging.info("Indicator name:\t" + indicator_name)
         logging.info("Layer name:\t" + layer_name)
-        # TODO: decide on final max-threshold
-        if await db_client.get_area_of_bpolys(bpolys) > 100 or bpolys.is_valid is False:
-            raise ValueError("Input geometry is not valid")
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
 

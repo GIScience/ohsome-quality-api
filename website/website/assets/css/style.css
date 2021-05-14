@@ -539,6 +539,23 @@ footer {
     z-index: 1;
     min-width: 250px;
     margin: 0 auto;
+    position:relative;
+}
+
+#traffic_map_space {
+  position: relative;
+}
+
+/*invisible block to make map unclickable*/
+#traffic_map_space::before {
+  content: "";
+  z-index: 100;
+  display: block;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 html {

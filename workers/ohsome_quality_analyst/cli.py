@@ -109,6 +109,8 @@ def create_indicator(
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
+        if bpolys.is_valid is False:
+            raise ValueError("Input geometry is not valid")
     else:
         bpolys = None
     indicator = asyncio.run(
@@ -139,6 +141,8 @@ def create_report(
     if infile:
         with open(infile, "r") as file:
             bpolys = geojson.load(file)
+        if bpolys.is_valid is False:
+            raise ValueError("Input geometry is not valid")
     else:
         bpolys = None
     report = asyncio.run(

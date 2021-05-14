@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+
+- Different validation processes of input geometry for entry points (API and CLI) !119
+- Add review process description to contributing guidelines !124
+- Improve report tests by using mocks to avoid querying ohsome API !116
+- Improve documentation !128
+- Add license: GNU AGPLv3 !134
+- Add data input and output attributes to indicator !129
+- Update dependecies !139
+
 ## 0.2.0
 
 - Refine `pyproject.toml` !65
@@ -18,6 +28,7 @@
 - Remove psycopg2-binary and auth.py in favor of asyncpg and client.py !93
 - Remove database and feature_id attributes from indicator classes !93
 - Implement async/await for geodatabase !93
+- Update dependecies #109
 - Change API response to avoid overriding indicators !108 #203
 - Put JRC Report on website !107 #189
 

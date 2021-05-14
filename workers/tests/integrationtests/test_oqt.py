@@ -21,7 +21,7 @@ class TestOqt(unittest.TestCase):
         # From scratch
         indicator = asyncio.run(
             oqt.create_indicator(
-                "GhsPopComparison", "building_count", bpolys=self.bpolys
+                "GhsPopComparisonBuildings", "building_count", bpolys=self.bpolys
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -34,7 +34,7 @@ class TestOqt(unittest.TestCase):
         with self.assertRaises(ValueError):
             asyncio.run(
                 oqt.create_indicator(
-                    "GhsPopComparison",
+                    "GhsPopComparisonBuildings",
                     "building_count",
                     dataset="test_region",
                     feature_id=1,
@@ -44,7 +44,7 @@ class TestOqt(unittest.TestCase):
         # Valid parameters
         indicator = asyncio.run(
             oqt.create_indicator(
-                "GhsPopComparison",
+                "GhsPopComparisonBuildings",
                 "building_count",
                 dataset="test_regions",
                 feature_id=3,
@@ -68,22 +68,6 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
-
-    def testValidateBpolysSize(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "europe.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = geojson.load(f)
-
-        with self.assertRaises(ValueError):
-            asyncio.run(
-                oqt.create_indicator(
-                    "GhsPopComparison", "building_count", bpolys=bpolys
-                )
-            )
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import configure_logging
+from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
@@ -26,6 +26,22 @@ def empty_api_response() -> dict:
         "apiVersion": oqt_version,
     }
     return RESPONSE_TEMPLATE
+
+
+async def load_bpolys(bpolys: str) -> None:
+    """Load and check validity and size of bpolys"""
+    # TODO: Return API response with error message
+    bpolys = geojson.loads(bpolys)
+    if bpolys.is_valid is False:
+        raise ValueError("Input geometry is not valid")
+    elif await db_client.get_area_of_bpolys(bpolys) > GEOM_SIZE_LIMIT:
+        raise ValueError(
+            "Input geometry is too big. It should be less than {0}.".format(
+                GEOM_SIZE_LIMIT
+            )
+        )
+    else:
+        return bpolys
 
 
 app = FastAPI()
@@ -60,8 +76,6 @@ async def get_indicator(
     dataset: Optional[str] = None,
     featureId: Optional[int] = None,
 ):
-    if bpolys:
-        bpolys = geojson.loads(bpolys)
     url = request.url._url
     return await _fetch_indicator(name, layerName, url, bpolys, dataset, featureId)
 
@@ -72,8 +86,6 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
-    if bpolys:
-        bpolys = geojson.loads(bpolys)
     url = request.url._url
     return await _fetch_indicator(name, layer_name, url, bpolys, dataset, feature_id)
 
@@ -86,9 +98,13 @@ async def _fetch_indicator(
     dataset: Optional[str] = None,
     feature_id: Optional[int] = None,
 ):
+    if bpolys is not None:
+        bpolys = await load_bpolys(bpolys)
+
     indicator = await oqt.create_indicator(
         name, layer_name, bpolys, dataset, feature_id
     )
+
     response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
     response["metadata"]["requestUrl"] = url
@@ -108,8 +124,6 @@ async def get_report(
     dataset: Optional[str] = None,
     featureId: Optional[int] = None,
 ):
-    if bpolys:
-        bpolys = geojson.loads(bpolys)
     url = request.url._url
     return await _fetch_report(name, url, bpolys, dataset, featureId)
 
@@ -130,12 +144,13 @@ async def _fetch_report(
     dataset: Optional[str] = None,
     feature_id: Optional[int] = None,
 ):
-    # TODO: Error handling should happen in oqt.create_report
-    if bpolys:
-        bpolys = geojson.loads(bpolys)
+    if bpolys is not None:
+        bpolys = await load_bpolys(bpolys)
+
     report = await oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
     )
+
     response = empty_api_response()
     response["metadata"] = vars(report.metadata)
     response["metadata"]["requestUrl"] = url

@@ -19,7 +19,7 @@ class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.indicator_name = "GhsPopComparison"
+        self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
         self.layer_name = "building_count"
         self.dataset = "test_regions"
@@ -52,6 +52,7 @@ class TestApiIndicator(unittest.TestCase):
                     "label": str,
                     "description": str,
                     "svg": str,
+                    Optional("data", default=None): Or(str, None),
                 },
             }
         )
