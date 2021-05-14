@@ -1,23 +1,17 @@
 import asyncio
-import os
 import unittest
 
-import geojson
-
 from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.geodatabase import client as db_client
 
 from .utils import oqt_vcr
 
 
 class TestOqt(unittest.TestCase):
     def setUp(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
-        )
-        with open(infile, "r") as f:
-            self.bpolys = geojson.load(f)
+        dataset = "regions"
+        feature_id = 31
+        self.bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
     @oqt_vcr.use_cassette()
     def testCreateIndicatorFromScratch(self):
@@ -50,8 +44,8 @@ class TestOqt(unittest.TestCase):
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="test_regions",
-                feature_id=3,
+                dataset="regions",
+                feature_id=4,
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -69,7 +63,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def testCreateReportFromDatabase(self):
         report = asyncio.run(
-            oqt.create_report("SimpleReport", dataset="test_regions", feature_id=3)
+            oqt.create_report("SimpleReport", dataset="regions", feature_id=3)
         )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)

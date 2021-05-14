@@ -40,7 +40,7 @@ function topic_isValid(topic){
 function country_isValid(value, json){
     let valid_options = []
     for (elem of json){
-        valid_options.push(elem.properties.fid)
+        valid_options.push(elem.id)
     }
     return valid_options.includes(value)
 }

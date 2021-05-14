@@ -16,6 +16,7 @@ On preventing SQL injections:
 import json
 import logging
 import os
+import pathlib
 from contextlib import asynccontextmanager
 from typing import Dict, List
 
@@ -166,11 +167,13 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
 
 async def get_fids(dataset_name) -> List[int]:
     """Get all feature ids of a certain dataset"""
+    # TODO: Does this apply for all datasets?
+    # This works for test regions but does this work for GADM or HEX Cells?
     # Safe against SQL injection because of predefined values
-    query = "SELECT fid FROM {0}".format(dataset_name)
+    query = "SELECT ogc_fid FROM {0}".format(dataset_name)
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record["fid"] for record in records]
+    return [record["ogc_fid"] for record in records]
 
 
 async def get_area_of_bpolys(bpolys: Dict):
@@ -211,19 +214,33 @@ async def get_bpolys_from_db(
             'features', json_agg(
                 json_build_object(
                     'type',       'Feature',
-                    'id',         fid,
+                    'id',         ogc_fid,
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
                         -- list of fields
-                        'fid', fid
+                        'fid', ogc_fid
                     )
                 )
             )
         )
         FROM {0}
-        WHERE fid = $1
+        WHERE ogc_fid = $1
     """
     ).format(dataset)
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
     return geojson.loads(result[0])
+
+
+async def get_available_regions() -> geojson.FeatureCollection:
+    wd = pathlib.Path(__file__).parent.absolute()
+    fp = wd / "regions_as_geojson.sql"
+    with open(fp, "r") as f:
+        query = f.read()
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query)
+    feature_collection = geojson.loads(record[0])
+    # To be complaint with rfc7946 "id" should be a member of Feature
+    for feature in feature_collection["features"]:
+        feature["id"] = feature["properties"].pop("id")
+    return feature_collection

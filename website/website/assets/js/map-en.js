@@ -1,17 +1,47 @@
 // all references to gP are currently outcommented.
 // they refer to the getPDF button which will be implemented later.
 
+function fetch_regions_from_server() {
+	return fetch('assets/data/regions.geojson')
+}
+
+function fetch_regions_from_api() {
+    // TODO: Add cache functionality
+    return fetch(apiUrl + '/regions')
+}
+
+function status(response) {
+    if (response.status === 404) {
+        console.log('Could not find regions.geojson on the server. Status Code: ' + response.status); 
+        console.log('Fetch regions from OQT API. This takes quite a while.');
+        return Promise.resolve(fetch_regions_from_api())
+    } else {
+        return Promise.resolve(response)
+    }
+}
+
+function json(response) {
+    return response.json();
+}
+
 // load geojson data, then build the map and the functionalities
 Promise.all([
-	fetch('assets/data/test_regions.geojson').then(data => data.json()), get_html_parameter_list(location.search)
-]).then(buildMap).catch(err => console.error(err));
+    fetch_regions_from_server()
+        .then(status)
+        .then(json),
+    get_html_parameter_list(location.search)
+])
+    .then(buildMap)
+    .catch(function(error) {
+        console.error(error)
+    });
 
 var selectedFeature = null;
 var selectedFeatureLayer = null;
 
 // Create base map, the layers, the legend and the info text
 function buildMap(...charts){
-	html_params = charts[0][1]
+    html_params = charts[0][1]
 	// create base map, location and zoom
 	map = L.map( 'map', {
 	  center: [31.4, -5],
@@ -44,19 +74,16 @@ function buildMap(...charts){
 				click: selectStyle
 			});
 			
-			// display a marker instead of a polygon for test-regions
-			if (feature.geometry.type === 'Polygon') {
-                // Get bounds of polygon
-                var bounds = layer.getBounds();
-                // Get center of bounds
-                var center = bounds.getCenter();
-                // Use center to put marker on map
-				var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
-				let fid = feature.properties.fid
-				markers[fid] = marker
-				marker.on('click', function(){layer.fire('click')})
-            }
-            // end add marker for test regions
+      // Get bounds of polygon
+      var bounds = layer.getBounds();
+      // Get center of bounds
+      var center = bounds.getCenter();
+      // Use center to put marker on map
+		  var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
+		  let id = feature.id
+		  markers[id] = marker
+		  marker.on('click', function(){layer.fire('click')})
+      // end add marker for test regions
 		}
 
 	}).addTo(map);
@@ -80,7 +107,7 @@ function buildMap(...charts){
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
-		 info.updateInfo(layer.feature.properties);
+		 info.updateInfo(layer.feature.id);
 	}
 
 	//Next we’ll define what happens on mouseout:
@@ -99,7 +126,7 @@ function buildMap(...charts){
 	// what happens whlie onclick on the map
 	function selectStyle(e) {
 		// change value of mapCheck in html to signalize intern area was selected
-		update_url("countryID", e.target.feature.properties.fid)
+		update_url("countryID", e.target.feature.id)
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
 		// TODO style selected country
@@ -119,12 +146,12 @@ function buildMap(...charts){
 			}
 		}).addTo(map);
 
-		countryID = layer.feature.properties.fid;
+		countryID = layer.feature.id;
 		selectedCountry = countryID
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		dataset = "test_regions" // = Admin-0 country
+		dataset = "regions" // = Admin-0 country
 		selectedDataset = dataset
 	}
 	// initialize variables for storing area and dataset id from map geojson 
@@ -135,7 +162,7 @@ function buildMap(...charts){
 		countryID = null; 
 	}
 	selectedCountry = null;
-	selectedDataset = "test_regions";
+	selectedDataset = "regions";
 
 	// create a parameter string containing selected area, topic and dataset id
 	function getParams(region, topic, dataset) {
@@ -177,7 +204,6 @@ function buildMap(...charts){
 		else{
 			var selectedTopic = topic.options[topic.selectedIndex].value;
 		}
-
 		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}
@@ -195,8 +221,6 @@ function buildMap(...charts){
 			// remove selected feature from map
 			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 
-
-			
 
 			var params = {
 			    "dataset": String(selectedDataset),
@@ -474,16 +498,11 @@ function buildMap(...charts){
 	});
 
 	// method that we will use to update the info box based on feature properties passed
-	info.updateInfo = function (props) {
-		// get CO2 emission value as number from layer properties
-		var value = props.fid ;
-
-		// get corresponding year from layer properties
-
+	info.updateInfo = function (id) {
 		// depending on selected layer, show corresponding information
 		if(map.hasLayer(world)){
-			this._div.innerHTML = '<h5>Click to select</h5>' +  (props ?
-				'<p><b>Feature ID: ' + props.fid 	+ '</b>'
+			this._div.innerHTML = '<h5>Click to select</h5>' +  (id ?
+				'<p><b>Feature ID: ' + id + '</b>'
 				: '<p>Move the mouse over the map</p>'
 					);
 		}

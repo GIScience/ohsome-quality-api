@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:49:13 GMT"
+                        "Fri, 14 May 2021 17:05:51 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -84,7 +84,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+8%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B9.111958%2C+49.947575%5D%2C+%5B9.180965%2C+49.947575%5D%2C+%5B9.180965%2C+49.992402%5D%2C+%5B9.111958%2C+49.992402%5D%2C+%5B9.111958%2C+49.947575%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+8%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+9%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.111958%2C+49.947575%5D%2C+%5B9.180965%2C+49.947575%5D%2C+%5B9.180965%2C+49.992402%5D%2C+%5B9.111958%2C+49.992402%5D%2C+%5B9.111958%2C+49.947575%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+9%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "945"
+                        "956"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -114,7 +114,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:49:21 GMT"
+                        "Fri, 14 May 2021 17:05:58 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -163,7 +163,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -181,7 +181,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "945"
+                        "958"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -193,7 +193,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:49:24 GMT"
+                        "Fri, 14 May 2021 17:06:00 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -242,7 +242,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/length/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&filter2=None",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.477682%2C+24.548314%5D%2C+%5B9.490964%2C+24.548314%5D%2C+%5B9.490964%2C+24.5626%5D%2C+%5B9.477682%2C+24.5626%5D%2C+%5B9.477682%2C+24.548314%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&filter2=None",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -260,7 +260,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "665"
+                        "672"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -272,7 +272,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 12 May 2021 17:49:24 GMT"
+                        "Fri, 14 May 2021 17:06:00 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -311,7 +311,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"timestamp\" : \"2021-05-12T17:49:24.433757\",\n  \"status\" : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api. Detailed error message: line 1, column 5: whitespaces, EQUALS (=), NOT_EQUALS (!=) or in expected, EOF encountered.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/length/ratio\"\n}"
+                "content": "{\n  \"timestamp\" : \"2021-05-14T17:06:01.44304\",\n  \"status\" : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api. Detailed error message: line 1, column 5: whitespaces, EQUALS (=), NOT_EQUALS (!=) or in expected, EOF encountered.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/length/ratio\"\n}"
             }
         }
     ]

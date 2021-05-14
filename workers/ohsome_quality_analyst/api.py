@@ -177,3 +177,8 @@ async def _fetch_report(
 async def get_bpolys_from_db(dataset: str, featureId: int):
     bpolys = await db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
     return bpolys
+
+
+@app.get("/regions")
+async def get_available_regions():
+    return await db_client.get_available_regions()

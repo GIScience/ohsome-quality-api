@@ -80,7 +80,7 @@ class MappingSaturation(BaseIndicator):
             # start stadium
             # "No mapping has happened in this region. "
             label = "undefined"
-            value = -1
+            value = None
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
@@ -90,7 +90,7 @@ class MappingSaturation(BaseIndicator):
             # deletion of all data
             # "Mapping has happened in this region but data were deleted."
             label = "undefined"
-            value = -1
+            value = None
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
@@ -174,7 +174,7 @@ class MappingSaturation(BaseIndicator):
         else:
             # no data / deletion of all data
             label = "undefined"
-            value = -1
+            value = None
             description += self.metadata.label_description["undefined"]
             self.result.label = label
             self.result.value = value
