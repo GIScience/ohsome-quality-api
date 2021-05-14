@@ -22,13 +22,13 @@
 - Return a GeoJSON when computing an indicator from the CLI !140
 - Integrate [VCR.py](https://vcrpy.readthedocs.io) to cache data for tests !133
 - Changes to available regions for pre-computed results !120:
-    - Remove fid attibute from GeoJSON Feature object properties and add id attribue to GeoJSON Feature object
+    - Remove fid attribute from GeoJSON Feature object properties and add id attribute to GeoJSON Feature object
     - Rename test_regions to regions
     - Extent regions with four countries (#196)
-    - Retrive available regions through API and CLI
+    - Retrieve available regions through API and CLI
     - Correct geometry of following duplicated regions: id 2 and id 28
     - Remove and download regions.geojson instead
-    - Website will use regions.geojson when present. Otherwise it will use the API endpoint.
+    - Website will use regions.geojson when present. Otherwise, it will use the API endpoint.
     - Database can be setup with available regions for development or with only regions for testing
 
 ## 0.2.0

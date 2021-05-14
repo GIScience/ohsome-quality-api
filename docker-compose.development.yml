@@ -41,7 +41,7 @@ services:
       dockerfile: Dockerfile.development
       args:
         # Setup minimal database for running tests
-        OQT_TEST_DB: False
+        OQT_TEST_DB: "False"
     environment:
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt

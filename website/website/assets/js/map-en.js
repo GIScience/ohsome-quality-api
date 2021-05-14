@@ -11,7 +11,7 @@ function fetch_regions_from_api() {
 }
 
 function status(response) {
-    if (response.status == 404) {
+    if (response.status === 404) {
         console.log('Could not find regions.geojson on the server. Status Code: ' + response.status); 
         console.log('Fetch regions from OQT API. This takes quite a while.');
         return Promise.resolve(fetch_regions_from_api())

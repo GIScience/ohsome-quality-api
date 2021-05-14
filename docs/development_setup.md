@@ -31,7 +31,7 @@ To reinitialize or update the database make sure to delete the volume and rebuil
 ```bash
 # Make sure that your git is up2date, e.g. git pull
 docker stop oqt-database && docker rm oqt-database
-# docker volume ls
+docker volume ls
 docker volume rm ohsome-quality-analyst_oqt-dev-pg_data
 docker-compose -f docker-compose.development.yml up -d --build oqt-database
 ```
