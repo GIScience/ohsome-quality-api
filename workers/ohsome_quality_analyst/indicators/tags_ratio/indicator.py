@@ -58,8 +58,8 @@ class TagsRatio(BaseIndicator):
         else:
             description = Template(self.metadata.result_description).substitute(
                 result=round(self.ratio, 1),
-                all=f"{round(self.count_all, 1)}",
-                matched=f"{round(self.count_match, 1)}",
+                all=round(self.count_all, 1),
+                matched=round(self.count_match, 1),
             )
             if self.count_all == 0:
                 self.result.value = None
@@ -146,6 +146,5 @@ class TagsRatio(BaseIndicator):
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
-        plt.show()
         plt.close("all")
         return True
