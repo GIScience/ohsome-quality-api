@@ -57,9 +57,9 @@ class TagsRatio(BaseIndicator):
         # ratio is a float
         else:
             description = Template(self.metadata.result_description).substitute(
-                result=f"{self.ratio:.2f}",
-                all=f"{self.count_all}",
-                matched=f"{self.count_match}",
+                result=round(self.ratio, 1),
+                all=round(self.count_all, 1),
+                matched=round(self.count_match, 1),
             )
             if self.count_all == 0:
                 self.result.value = None
@@ -97,14 +97,7 @@ class TagsRatio(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_title(
-            "Ratio between all features ("
-            + str(self.count_all)
-            + ")"
-            + "\nand filtered ones ("
-            + str(self.count_match)
-            + ")"
-        )
+        ax.set_title("Ratio between all features and filtered ones")
 
         size = 0.3  # Width of the pie
         handles = []  # Handles for legend
@@ -128,7 +121,7 @@ class TagsRatio(BaseIndicator):
         # Plot inner Pie (Indicator Value)
         radius = 1 - size
         if type(self.ratio) == str:
-            sizes = (1 - 1, 1)
+            sizes = (0, 1)
         else:
             sizes = (1 - self.ratio, self.ratio)
         colors = ("white", "black")
@@ -149,7 +142,8 @@ class TagsRatio(BaseIndicator):
         ax.legend(handles=handles)
         ax.axis("equal")
         img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
+        plt.tight_layout()
+        plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
