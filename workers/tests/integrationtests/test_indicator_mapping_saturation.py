@@ -22,7 +22,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
 
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        layer_name = "major_roads"
+        layer_name = "major_roads_length"
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())

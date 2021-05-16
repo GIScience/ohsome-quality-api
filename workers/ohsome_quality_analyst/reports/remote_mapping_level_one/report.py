@@ -22,11 +22,11 @@ class RemoteMappingLevelOne(BaseReport):
             # TODO: Uncomment once implemented
             # IndicatorLayer("GufComparison"], "building_area"),
             IndicatorLayer("MappingSaturation", "building_count"),
-            IndicatorLayer("MappingSaturation", "major_roads"),
-            IndicatorLayer("GhsPopComparisonRoads", "major_roads"),
+            IndicatorLayer("MappingSaturation", "major_roads_length"),
+            IndicatorLayer("GhsPopComparisonRoads", "major_roads_length"),
             IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
             IndicatorLayer("LastEdit", "building_count"),
-            IndicatorLayer("LastEdit", "major_roads"),
+            IndicatorLayer("LastEdit", "major_roads_count"),
         )
 
     def combine_indicators(self) -> None:

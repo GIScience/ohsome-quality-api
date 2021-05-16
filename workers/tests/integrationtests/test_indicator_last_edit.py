@@ -20,7 +20,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         )
         with open(infile, "r") as f:
             bpolys = geojson.load(f)
-        indicator = LastEdit(bpolys=bpolys, layer_name="major_roads")
+        indicator = LastEdit(bpolys=bpolys, layer_name="major_roads_count")
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
