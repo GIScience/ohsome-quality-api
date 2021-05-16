@@ -65,7 +65,7 @@ class TestIndicatorRatio(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_no_filter2(self):
         """Layer with no filter2 for ratio endpoint"""
-        layer_name = "major_roads"
+        layer_name = "major_roads_length"
         dataset = "regions"
         feature_id = 2
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))

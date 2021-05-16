@@ -17,7 +17,18 @@ building_area:
   endpoint: elements/area
   filter: building=* and geometry:polygon
 
-major_roads:
+major_roads_count:
+  name: Major Roads
+  description: |
+    The road network defined by all objects which hold the principal tags for
+    the road network as defined in the OSM Wiki`:`
+    https://wiki.openstreetmap.org/wiki/Key:highway
+  endpoint: elements/count
+  filter: |
+      highway in (motorway, trunk, primary, secondary,
+      tertiary, unclassified, residential) and type:way
+
+major_roads_length:
   name: Major Roads
   description: |
     The road network defined by all objects which hold the principal tags for
@@ -83,11 +94,30 @@ jrc_road_length:
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
     and maxspeed=* and oneway=*
 
+jrc_road_count:
+  name: JRC Road Length
+  description: |
+      Selection of OSM highways with maxspeed and oneway tag.
+  endpoint: elements/count
+  filter: |
+    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
+  ratio_filter: |
+      highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
+      and maxspeed=* and oneway=*
+
 jrc_railway_length:
   name: JRC Railways Length
   description: |
     Selection of OSM railways.
   endpoint: elements/length
+  filter: |
+    railway in (rail, subway, tram, light_rail, monorail)
+
+jrc_railway_count:
+  name: JRC Railways Length
+  description: |
+    Selection of OSM railways.
+  endpoint: elements/count
   filter: |
     railway in (rail, subway, tram, light_rail, monorail)
 
