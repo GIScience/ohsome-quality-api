@@ -9,27 +9,34 @@
     - Rename attributes `infile` to `name`
     - Change geometry type from polygon to multipolygon
 
+### New Features
+
+- Add data input and output attributes to indicator !129
+- Return a GeoJSON when computing an indicator from the CLI !140
+- Retrieve available regions through API and CLI !120
+
+### Performance and Code Quality
+
+- Improve report tests by using mocks to avoid querying ohsome API !116
+- Integrate [VCR.py](https://vcrpy.readthedocs.io) to cache data for tests !133
+- Database can be setup with available regions for development or with only regions for testing !120
+
 ### Other Changes
 
 - Different validation processes of input geometry for entry points (API and CLI) !119
 - Add review process description to contributing guidelines !124
-- Improve report tests by using mocks to avoid querying ohsome API !116
 - Improve documentation !128 !144 !150
 - Add license: GNU AGPLv3 !134
-- Add data input and output attributes to indicator !129
 - Update dependencies !139
 - Tidy up repository !138 !120
-- Return a GeoJSON when computing an indicator from the CLI !140
-- Integrate [VCR.py](https://vcrpy.readthedocs.io) to cache data for tests !133
 - Changes to available regions for pre-computed results !120:
     - Remove fid attribute from GeoJSON Feature object properties and add id attribute to GeoJSON Feature object
     - Rename test_regions to regions
     - Extent regions with four countries (#196)
-    - Retrieve available regions through API and CLI
     - Correct geometry of following duplicated regions: id 2 and id 28
     - Remove and download regions.geojson instead
     - Website will use regions.geojson when present. Otherwise, it will use the API endpoint.
-    - Database can be setup with available regions for development or with only regions for testing
+
 
 ## 0.2.0
 
@@ -53,6 +60,7 @@
 - Change API response to avoid overriding indicators !108 #203
 - Put JRC Report on website !107 #189
 
+
 ## 0.1.0
 
 - Change description for Mapping Saturation indicator !63
@@ -68,6 +76,7 @@
 - Development setup of database using Docker !33 !37
 - Separate integration tests from unit tests #116
 - Add contribution information on issues, merge requests and changelog !31
+
 
 ## 0.1.0-rc1
 
