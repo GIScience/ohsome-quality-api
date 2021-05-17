@@ -30,7 +30,7 @@ Through the OQT [Website](https://oqt.ohsome.org) indicators and reports can be 
 
 ### API
 
-Head over to [https://oqt.ohsome.org/api/docs#/](https://oqt.ohsome.org/api/docs#/) to explore the OQT API interactively.
+Head over to [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs) to explore the OQT API interactively.
 
 The response schema is defined here: [docs/api.md](docs/api.md)
 
