@@ -108,16 +108,22 @@ oqt --help
 
 #### API
 
-Start the API using Docker:
+##### Start the API using Docker:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-workers
 ```
 
-Start the API using a Python script:
+##### Start the API using a Python script:
 
 ```bash
 cd workers/scripts
+python start_api.py
+```
+
+Default host is 127.0.0.1 and port is 8080. To change this provide the corresponding parameter:
+
+```bash
 python start_api.py --help
 Usage: start_api.py [OPTIONS]
 
@@ -126,6 +132,8 @@ Options:
   --port INTEGER  [default: 8080]
   --help          Show this message and exit.
 ```
+
+##### Endpoints
 
 Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
 
@@ -155,6 +163,8 @@ Run all tests:
 cd workers/
 pytest tests
 ```
+
+
 #### Writing tests
 
 ##### VCR (videocassette recorder) for tests
