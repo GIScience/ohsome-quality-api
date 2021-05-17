@@ -67,7 +67,14 @@ Commands:
 
 ## OQT Components
 
+This digram gives an overview of the OQT components:
+
 ![](docs/img/UML-Component-Diagram.png)
+
+
+## Blog
+
+Blog posts about OQT can be viewed [here](https://heigit.org/tag/oqt-en/).
 
 
 ## Contributing
