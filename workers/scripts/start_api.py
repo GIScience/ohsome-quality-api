@@ -7,8 +7,8 @@ from ohsome_quality_analyst.utils.definitions import load_logging_config
 
 
 @click.command()
-@click.option("--host", default="127.0.0.1", type=str)
-@click.option("--port", default=8080, type=int)
+@click.option("--host", default="127.0.0.1", show_default=True, type=str)
+@click.option("--port", default=8080, show_default=True, type=int)
 def run(host: str, port: int):
     uvicorn.run(
         "ohsome_quality_analyst.api:app",

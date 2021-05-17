@@ -82,12 +82,13 @@ def list_layers():
 
 @cli.command("list-datasets")
 def list_datasets():
-    """List in the Geodatabase available datasets."""
+    """List available datasets."""
     click.echo(DATASET_NAMES)
 
 
-@cli.command("get-available-regions")
+@cli.command("list-regions")
 def get_available_regions():
+    """List available regions."""
     regions = asyncio.run(db_client.get_available_regions())
     click.echo(regions)
 

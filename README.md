@@ -1,11 +1,13 @@
 ![](docs/img/oqt_logo.png)
 
+
 # ohsome quality analyst
 
 [![build status](https://jenkins.ohsome.org/buildStatus/icon?job=ohsome-quality-analyst/master)](https://jenkins.ohsome.org/blue/organizations/jenkins/ohsome-quality-analyst/activity/?branch=master)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
+
 
 ## Vision
 
@@ -16,37 +18,43 @@ What is OQT?
 * A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics.
 
 
-## Overview
+## Blog
 
-Please read following short document to get an overview of OQT: [docs/overview.md](docs/overview.md)
-
-
-## Installation
-
-End users should use the [website](https://oqt.ohsome.org). Following section is for advanced usage of ohsome quality analyst. To set the project up for development, please refer to [docs/development_setup.md](docs/development_setup.md).
-
-Python 3.8 is required.
-
-Install the ohsome_quality_analyst Python package.
-
-```bash
-cd workers
-pip install .
-```
-
-In addition to installing the Python package, access to the PostGIS database is required. Please reach out if you need one.
+The following blog posts give insight into OQT and describe how you can use it:
+ * [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
+ * [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
+ * as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
 
 
-## Usage of the API
+## Usage
 
-Head over to [https://oqt.ohsome.org/api/docs#/](https://oqt.ohsome.org/api/docs#/) to explore the API interactively.
+There are three ways to use OQT.
+
+> Note: To set the project up for development, please refer to [docs/development_setup.md](docs/development_setup.md).
+
+
+### Website
+
+Through the OQT [Website](https://oqt.ohsome.org) indicators and reports can be requested for regions definied by the OQT team. Those are pre-computed and can be retrieved very fast.
+
+
+### API
+
+Head over to [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs) to explore the OQT API interactively.
 
 The response schema is defined here: [docs/api.md](docs/api.md)
 
 
-## Usage of the CLI
+### CLI
+
+To use the OQT CLI the `ohsome_quality_analyst` Python package needs to be installed and configured. Additionally access to the OQT database is required. Please reach out if you need one.
+
+Python 3.8 is required.
 
 ```bash
+$ cd workers
+$ pip install .
+$ # Configure OQT
 $ oqt --help
 Usage: oqt [OPTIONS] COMMAND [ARGS]...
 
@@ -59,11 +67,19 @@ Commands:
   create-all-indicators  Create all indicators for a specified dataset.
   create-indicator       Create an Indicator and print results to stdout.
   create-report          Create a Report and print results to stdout.
-  list-datasets          List in the Geodatabase available datasets.
+  list-datasets          List available datasets.
   list-indicators        List available indicators and their metadata.
   list-layers            List available layers and how they are definied...
+  list-regions           List available regions.
   list-reports           List available reports and their metadata.
 ```
+
+
+## OQT Components
+
+This diagram gives an overview of the OQT components:
+
+![](docs/img/UML-Component-Diagram.png)
 
 
 ## Contributing
@@ -76,4 +92,3 @@ Looking to implement a new indicator? Then please have a look at [docs/indicator
 ## Development Setup
 
 Please refer to [docs/development_setup.md](docs/development_setup.md).
-

@@ -1,5 +1,6 @@
 # API
 
+
 ## Response Schema
 
 Indicator:
@@ -21,12 +22,16 @@ Indicator:
         "description": str,
         "endpoint": str,
         "filter": str,
+        "ratio_filter"): str,
     },
     "result": {
+        "timestamp_oqt": str,
+        "timestamp_osm": str,
         "value": float,
         "label": str,
         "description": str,
         "svg": str,
+        "data": { ... }
     },
 }
 ```
@@ -62,12 +67,16 @@ Report:
                 "description": str,
                 "endpoint": str,
                 "filter": str,
+                "ratio_filter": str,
             },
             "result": {
+                "timestamp_oqt": str,
+                "timestamp_osm": str,
                 "value": float,
                 "label": str,
                 "description": str,
                 "svg": str,
+                "data": { ... },
             },
         }
     },

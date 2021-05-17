@@ -10,12 +10,11 @@ import unittest
 
 import geojson
 from fastapi.testclient import TestClient
-from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.api import app
 from ohsome_quality_analyst.geodatabase import client as db_client
 
-from .utils import oqt_vcr
+from .utils import api_schema_indicator, oqt_vcr
 
 
 class TestApiIndicator(unittest.TestCase):
@@ -30,36 +29,7 @@ class TestApiIndicator(unittest.TestCase):
         self.report_name = "SimpleReport"
         self.layer_name = "building_count"
 
-        self.schema = Schema(
-            {
-                "attribution": {
-                    "url": str,
-                    "text": str,
-                },
-                "apiVersion": str,
-                "metadata": {
-                    "name": str,
-                    "requestUrl": str,
-                    "description": str,
-                },
-                "layer": {
-                    "name": str,
-                    "description": str,
-                    "endpoint": str,
-                    "filter": str,
-                    Optional("ratio_filter"): Or(str, None),
-                },
-                "result": {
-                    "timestamp_oqt": str,
-                    "timestamp_osm": Or(str, None),
-                    "value": Or(float, None),
-                    "label": str,
-                    "description": str,
-                    "svg": str,
-                    Optional("data"): Or(dict, None),
-                },
-            }
-        )
+        self.schema = api_schema_indicator
 
     @oqt_vcr.use_cassette()
     def test_get_indicator_bpolys(self):

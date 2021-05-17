@@ -52,7 +52,7 @@ class TestCliIntegration(unittest.TestCase):
     def testGetAvailableRegions(self):
         result = self.runner.invoke(
             cli,
-            ["-q", "get-available-regions"],
+            ["-q", "list-regions"],
         )
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(geojson.loads(result.output).is_valid)
