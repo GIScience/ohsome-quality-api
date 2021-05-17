@@ -21,32 +21,35 @@ What is OQT?
 Please read following short document to get an overview of OQT: [docs/overview.md](docs/overview.md)
 
 
-## Installation
+## Usage
 
-End users should use the [website](https://oqt.ohsome.org). Following section is for advanced usage of ohsome quality analyst. To set the project up for development, please refer to [docs/development_setup.md](docs/development_setup.md).
+There are three ways to use OQT.
 
-Python 3.8 is required.
-
-Install the ohsome_quality_analyst Python package.
-
-```bash
-cd workers
-pip install .
-```
-
-In addition to installing the Python package, access to the PostGIS database is required. Please reach out if you need one.
+> Note: To set the project up for development, please refer to [docs/development_setup.md](docs/development_setup.md).
 
 
-## Usage of the API
+### Website
 
-Head over to [https://oqt.ohsome.org/api/docs#/](https://oqt.ohsome.org/api/docs#/) to explore the API interactively.
+Through the OQT [Website](https://oqt.ohsome.org) indicators and reports can be requested for regions definied by the OQT team. Those are pre-computed and can be retrieved very fast.
+
+
+### API
+
+Head over to [https://oqt.ohsome.org/api/docs#/](https://oqt.ohsome.org/api/docs#/) to explore the OQT API interactively.
 
 The response schema is defined here: [docs/api.md](docs/api.md)
 
 
-## Usage of the CLI
+### CLI
+
+To use the OQT CLI the `ohsome_quality_analyst` Python package needs to be installed and configured. Additionally access to the OQT database is required. Please reach out if you need one.
+
+Python 3.8 is required.
 
 ```bash
+$ cd workers
+$ pip install .
+$ # Configure OQT
 $ oqt --help
 Usage: oqt [OPTIONS] COMMAND [ARGS]...
 
@@ -59,6 +62,7 @@ Commands:
   create-all-indicators  Create all indicators for a specified dataset.
   create-indicator       Create an Indicator and print results to stdout.
   create-report          Create a Report and print results to stdout.
+  get-available-regions
   list-datasets          List in the Geodatabase available datasets.
   list-indicators        List available indicators and their metadata.
   list-layers            List available layers and how they are definied...
@@ -76,4 +80,3 @@ Looking to implement a new indicator? Then please have a look at [docs/indicator
 ## Development Setup
 
 Please refer to [docs/development_setup.md](docs/development_setup.md).
-

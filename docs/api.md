@@ -21,12 +21,16 @@ Indicator:
         "description": str,
         "endpoint": str,
         "filter": str,
+        Optional("ratio_filter"): Or(str, None),
     },
     "result": {
-        "value": float,
+        "timestamp_oqt": str,
+        "timestamp_osm": Or(str, None),
+        "value": Or(float, None),
         "label": str,
         "description": str,
         "svg": str,
+        Optional("data"): Or(dict, None),
     },
 }
 ```
@@ -62,12 +66,16 @@ Report:
                 "description": str,
                 "endpoint": str,
                 "filter": str,
+                Optional("ratio_filter"): Or(str, None),
             },
             "result": {
-                "value": float,
+                "timestamp_oqt": str,
+                "timestamp_osm": Or(str, None),
+                "value": Or(float, None),
                 "label": str,
                 "description": str,
                 "svg": str,
+                Optional("data"): Or(dict, None),
             },
         }
     },
