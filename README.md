@@ -1,11 +1,13 @@
 ![](docs/img/oqt_logo.png)
 
+
 # ohsome quality analyst
 
 [![build status](https://jenkins.ohsome.org/buildStatus/icon?job=ohsome-quality-analyst/master)](https://jenkins.ohsome.org/blue/organizations/jenkins/ohsome-quality-analyst/activity/?branch=master)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
+
 
 ## Vision
 

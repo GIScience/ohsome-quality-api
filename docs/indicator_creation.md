@@ -12,7 +12,9 @@ To illustrate the structure of an indicator we created a Class Diagram showing i
 
 As you can see, the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the layer can be set during object creation, and the result saves the result of an Indicator instance. 
 
+
 ### Result
+
 The result object can hold 4 values. 
 
 1. label: This should be a member of `TrafficLightQualityLevels` found in [workers/ohsome_quality_analyst/utils/definitions.py](workers/ohsome_quality_analyst/utils/definitions.py)
@@ -20,11 +22,16 @@ The result object can hold 4 values.
 3. description: label description for `TrafficLightQualityLevel` (see metadata.yaml in part 2)
 4. svg: unique file path which is **automatically** created upon object initialization by the `BaseIndicator`
 
+
 ### Layer
+
 In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml](workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
+
 ### Metadata
+
 See metadata.yaml in part 2.
+
 
 ## 2. Your own Indicator
 
@@ -35,15 +42,18 @@ The two files are named:
 1. **metadata.yaml**
 2. **indicator.py**
 
+
 ### metadata.yaml
 
 The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works, and a standardized interpretation of its possible results.
 
 The easiest way to set the metadata.yaml up the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
 
+
 ### indicator.py
 
 In your own indicator.py you only need to implement the three functions `preprocess`, `calculate`, and `create_figure` as well as an `__init__` function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
+
 
 #### \_\_init\_\_ function
 
@@ -68,6 +78,7 @@ def __init__(
 
 Additionally, you can define variable placeholders for important values and preliminary results here.
 
+
 #### preprocess function
 
 This function should be used to fetch and preprocess the data needed for your indicator. Usually this involves querying the ohsome API and geodatabase. To make this as easy as possible the modules `ohsome/client.py` and `geodatabase/client.py` are provided. Both modules implement asynchronicity. Please make sure to [await](https://docs.python.org/3/library/asyncio-task.html#awaitables) the response when calling functions from those modules. This can be as simple as:
@@ -85,6 +96,7 @@ All data created during the preprocessing should be stored as attributes of the 
 #### calculate function
 
 Here you should execute all needed calculations and save the results in your result object (`self.result.label`, `self.result.value` and `self.result.description`). 
+
 
 #### create_figure function
 

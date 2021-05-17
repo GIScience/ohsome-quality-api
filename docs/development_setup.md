@@ -46,12 +46,14 @@ A minimal database setup for running tests is provided. If the build argument `O
 
 ## OQT Python package
 
+
 ### Requirements
 
 - Python 3.8+
 - Poetry 1.1.0+
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
+
 
 ### Installation
 
@@ -66,9 +68,11 @@ pre-commit install  # Install pre-commit hooks.
 
 ### Configuration
 
+
 #### Local database
 
 For local development no additional configuration is required. Per default OQT will connect to the database defined in `docker-compose.development.yml`.
+
 
 #### Remote database
 
@@ -87,9 +91,11 @@ POSTGRES_SCHEMA
 >
 > Note: Windows user can set those environment variables with following command `setx POSTGRES_DB`
 
+
 #### ohsome API
 
 The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
+
 
 #### Additional options
 
@@ -100,19 +106,23 @@ Additional environment variables are:
 
 ### Usage
 
+
 #### CLI
 
 ```bash
 oqt --help
 ```
 
+
 #### API
+
 
 ##### Start the API using Docker:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-workers
 ```
+
 
 ##### Start the API using a Python script:
 
@@ -132,6 +142,7 @@ Options:
   --port INTEGER  [default: 8080]
   --help          Show this message and exit.
 ```
+
 
 ##### Endpoints
 
@@ -167,6 +178,7 @@ pytest tests
 
 #### Writing tests
 
+
 ##### VCR (videocassette recorder) for tests
 
 All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
@@ -200,6 +212,7 @@ Logging is enabled by default.
 `ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
 The module is configured in `definitions.py`.  Both entry-points to `ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration function defined in `definitions.py`.
 The default log level is `INFO`. This can be overwritten by setting the environment variable `OQT_LOG_LEVEL`.
+
 
 #### Usage
 

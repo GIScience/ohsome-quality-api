@@ -1,5 +1,6 @@
 # API
 
+
 ## Response Schema
 
 Indicator:
