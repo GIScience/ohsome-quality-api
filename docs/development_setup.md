@@ -155,8 +155,9 @@ Run all tests:
 cd workers/
 pytest tests
 ```
+#### Writing tests
 
-#### VCR (Videocassette recorder) for tests
+##### VCR (videocassette recorder) for tests
 
 All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
 This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository. If necessary, the cassettes can be re-recorded by deleting the cassettes and run all tests again. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
@@ -177,7 +178,7 @@ class TestSomething(unittest.TestCase):
 Good examples can be found in [test_oqt.py](workers/tests/integrationtests/test_oqt.py).
 
 
-#### Testing asynchronous functions
+##### Asynchronous functions
 
 When writing tests for functions which are asynchronous (using the `async/await` pattern) such as the `preprocess` functions of indicator classes, those functions should be called as follows: `asyncio.run(indicator.preprocess())`.
 

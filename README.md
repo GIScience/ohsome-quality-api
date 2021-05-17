@@ -16,6 +16,11 @@ What is OQT?
 * A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics.
 
 
+## Blog
+
+Blog posts about OQT can be viewed [here](https://heigit.org/tag/oqt-en/).
+
+
 ## Usage
 
 There are three ways to use OQT.
@@ -57,10 +62,10 @@ Commands:
   create-all-indicators  Create all indicators for a specified dataset.
   create-indicator       Create an Indicator and print results to stdout.
   create-report          Create a Report and print results to stdout.
-  get-available-regions
-  list-datasets          List in the Geodatabase available datasets.
+  list-datasets          List available datasets.
   list-indicators        List available indicators and their metadata.
   list-layers            List available layers and how they are definied...
+  list-regions           List available regions.
   list-reports           List available reports and their metadata.
 ```
 
@@ -70,11 +75,6 @@ Commands:
 This digram gives an overview of the OQT components:
 
 ![](docs/img/UML-Component-Diagram.png)
-
-
-## Blog
-
-Blog posts about OQT can be viewed [here](https://heigit.org/tag/oqt-en/).
 
 
 ## Contributing
