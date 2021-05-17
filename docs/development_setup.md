@@ -147,7 +147,7 @@ All relevant components should be tested. Please write tests for newly integrate
 Tests are written using the [unittest library](https://docs.python.org/3/library/unittest.html).
 The test runner is [pytest](https://docs.pytest.org/en/stable/).
 Tests are separated into integration tests and unit tests.
-Unit tests should run without having access to the database or services on the internet (E.g. ohsome API).
+Unit tests should run without having access to the database or services on the internet (e.g. ohsome API).
 
 Run all tests:
 
