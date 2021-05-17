@@ -62,7 +62,7 @@ INDICATOR_LAYER = (
     ("LastEdit", "mapaction_capital_city_count"),
     ("LastEdit", "mapaction_lakes_count"),
     ("LastEdit", "mapaction_rivers_length"),
-    ("LastEdit", "major_rail_length"),
+    ("LastEdit", "mapaction_rail_length"),
     ("PoiDensity", "poi"),
     ("TagsRatio", "jrc_health_count"),
     ("TagsRatio", "jrc_education_count"),
