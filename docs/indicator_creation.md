@@ -93,4 +93,4 @@ Finally, you need to create a svg figure (e.g. with matplotlib) and save it to `
 
 If you have defined these three functions, your indicator is ready to go. To show how OQT uses your indicator to be displayed on the OQT Website or in your command line interface, we made a sequence diagram. 
 
-![UML flow diagram for indicator creation](./create_indicator.svg)
+![UML flow diagram for indicator creation](img/create_indicator.svg)
