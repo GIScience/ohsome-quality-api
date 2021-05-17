@@ -16,11 +16,6 @@ What is OQT?
 * A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics.
 
 
-## Overview
-
-Please read following short document to get an overview of OQT: [docs/overview.md](docs/overview.md)
-
-
 ## Usage
 
 There are three ways to use OQT.
@@ -68,6 +63,11 @@ Commands:
   list-layers            List available layers and how they are definied...
   list-reports           List available reports and their metadata.
 ```
+
+
+## OQT Components
+
+![](docs/img/UML-Component-Diagram.png)
 
 
 ## Contributing
