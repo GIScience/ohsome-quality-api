@@ -21,7 +21,7 @@ pipeline {
     LATEST_COMMIT_ID = sh(returnStdout: true, script: 'git describe --tags --long  --always').trim()
 
     PYTEST_TEST_OPTIONS = ' '
-    SNAPSHOT_BRANCH_REGEX = /(^master$)/
+    SNAPSHOT_BRANCH_REGEX = /(^main$)/
     RELEASE_REGEX = /^([0-9]+(\.[0-9]+)*)(-(RC|beta-|alpha-)[0-9]+)?$/
     RELEASE_DEPLOY = false
     SNAPSHOT_DEPLOY = false

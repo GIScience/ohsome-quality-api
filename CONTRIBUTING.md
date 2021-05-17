@@ -40,7 +40,7 @@ The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It s
 
 ### Git Workflow
 
-All development work is based on the main branch (`master`). Merge requests are expected to target the main branch.
+All development work is based on the main branch (`main`). Merge requests are expected to target the main branch.
 
 
 ## Style Guide
