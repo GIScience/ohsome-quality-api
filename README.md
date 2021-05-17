@@ -18,7 +18,10 @@ What is OQT?
 
 ## Blog
 
-Blog posts about OQT can be viewed [here](https://heigit.org/tag/oqt-en/).
+The following blog posts give insight into OQT and describe how you can use it:
+ * [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
+ * [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
+ * as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
 
 
 ## Usage
