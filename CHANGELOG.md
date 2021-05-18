@@ -1,6 +1,6 @@
 # Changelog
 
-## current main
+## Current Main
 
 
 ## 0.3.1
