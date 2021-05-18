@@ -2,7 +2,7 @@
 
 ## How to Contribute
 
-Please contribute to this repository through creating [issues](https://github.com/GIScience/ohsome-quality-analyst/issues/new) and [merge requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests).
+Please contribute to this repository through creating [issues](https://github.com/GIScience/ohsome-quality-analyst/issues/new) and [pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests).
 
 
 ### Issues
@@ -86,10 +86,10 @@ In addition [pre-commit](https://pre-commit.com/) is setup to run those tools pr
 
 ## Tests
 
-Please provide [tests](docs/development_setup.md#tests).
+Please provide [tests](/docs/development_setup.md#tests).
 
 
 ## Miscellaneous
 
-- Troubleshooting -> [docs/troubleshooting.md](docs/troubleshooting.md)
-- How to create a new indicator? -> [docs/indicator_creation.md](docs/indicator_creation.md).
+- Troubleshooting -> [docs/troubleshooting.md](/docs/troubleshooting.md)
+- How to create a new indicator? -> [docs/indicator_creation.md](/docs/indicator_creation.md).

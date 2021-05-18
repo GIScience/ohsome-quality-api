@@ -17,7 +17,7 @@ As you can see, the indicator you are trying to create should inherit from BaseI
 
 The result object can hold 4 values. 
 
-1. label: This should be a member of `TrafficLightQualityLevels` found in [workers/ohsome_quality_analyst/utils/definitions.py](workers/ohsome_quality_analyst/utils/definitions.py)
+1. label: This should be a member of `TrafficLightQualityLevels` found in [workers/ohsome_quality_analyst/utils/definitions.py](/workers/ohsome_quality_analyst/utils/definitions.py)
 2. value: TBD
 3. description: label description for `TrafficLightQualityLevel` (see metadata.yaml in part 2)
 4. svg: unique file path which is **automatically** created upon object initialization by the `BaseIndicator`
@@ -25,7 +25,7 @@ The result object can hold 4 values.
 
 ### Layer
 
-In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml](workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml](/workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 
 ### Metadata
