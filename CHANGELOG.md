@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1
+
+### Bug Fixes
+
+- Fix wrong layer name for Map Action Report ([#19])
+
+[#19]: https://github.com/GIScience/ohsome-quality-analyst/pull/19
+
+
 ## 0.3.0
 
 ### Breaking Changes
