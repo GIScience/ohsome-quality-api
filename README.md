@@ -30,7 +30,7 @@ The following blog posts give insight into OQT and describe how you can use it:
 
 There are three ways to use OQT.
 
-> Note: To set the project up for development, please refer to [docs/development_setup.md](docs/development_setup.md).
+> Note: To set the project up for development, please refer to [docs/development_setup.md](/docs/development_setup.md).
 
 
 ### Website
@@ -42,7 +42,7 @@ Through the OQT [Website](https://oqt.ohsome.org) indicators and reports can be 
 
 Head over to [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs) to explore the OQT API interactively.
 
-The response schema is defined here: [docs/api.md](docs/api.md)
+The response schema is defined here: [docs/api.md](/docs/api.md)
 
 
 ### CLI
@@ -79,16 +79,16 @@ Commands:
 
 This diagram gives an overview of the OQT components:
 
-![](docs/img/UML-Component-Diagram.png)
+![](/docs/img/UML-Component-Diagram.png)
 
 
 ## Contributing
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+Please refer to [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-Looking to implement a new indicator? Then please have a look at [docs/indicator_creation.md](docs/indicator_creation.md)
+Looking to implement a new indicator? Then please have a look at [docs/indicator_creation.md](/docs/indicator_creation.md)
 
 
 ## Development Setup
 
-Please refer to [docs/development_setup.md](docs/development_setup.md).
+Please refer to [docs/development_setup.md](/docs/development_setup.md).

@@ -12,7 +12,7 @@ After all services are up they are available under:
 - API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 - Database: `host=localhost port=5445 dbname=oqt user=oqt password=oqt`
 
-Please continue reading for more information on each one of those services. If running into issues during the setup please check the [troubleshooting](docs/troubleshooting.md) document. Also feel free to reach out to us.
+Please continue reading for more information on each one of those services. If running into issues during the setup please check the [troubleshooting](/docs/troubleshooting.md) document. Also feel free to reach out to us.
 
 
 ## Database
@@ -182,7 +182,7 @@ pytest tests
 ##### VCR (videocassette recorder) for tests
 
 All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
-This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository. If necessary, the cassettes can be re-recorded by deleting the cassettes and run all tests again. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
+This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](/workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository. If necessary, the cassettes can be re-recorded by deleting the cassettes and run all tests again. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
 
 Writing tests using VCR.py with our custom decorator is as easy as: 
 
@@ -197,7 +197,7 @@ class TestSomething(unittest.TestCase):
         self.assertSomething(something)
 ```
 
-Good examples can be found in [test_oqt.py](workers/tests/integrationtests/test_oqt.py).
+Good examples can be found in [test_oqt.py](/workers/tests/integrationtests/test_oqt.py).
 
 
 ##### Asynchronous functions
