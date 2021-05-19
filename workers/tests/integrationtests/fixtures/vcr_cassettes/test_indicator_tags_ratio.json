@@ -4,6 +4,226 @@
         {
             "request": {
                 "method": "POST",
+                "uri": "https://api.ohsome.org/v1elements/count/ratio",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "804"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 404,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Wed, 19 May 2021 13:51:13 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Content-Length": [
+                        "277"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Content-Type": [
+                        "text/html; charset=iso-8859-1"
+                    ]
+                },
+                "content": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache/2.4.29 (Ubuntu) Server at api.ohsome.org Port 443</address>\n</body></html>\n"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1elements/count/ratio",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+9%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.111958%2C+49.947575%5D%2C+%5B9.180965%2C+49.947575%5D%2C+%5B9.180965%2C+49.992402%5D%2C+%5B9.111958%2C+49.992402%5D%2C+%5B9.111958%2C+49.947575%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+9%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "956"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 404,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Wed, 19 May 2021 13:51:13 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Content-Length": [
+                        "277"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Content-Type": [
+                        "text/html; charset=iso-8859-1"
+                    ]
+                },
+                "content": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache/2.4.29 (Ubuntu) Server at api.ohsome.org Port 443</address>\n</body></html>\n"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1elements/count/ratio",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "958"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 404,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Wed, 19 May 2021 13:51:14 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Content-Length": [
+                        "277"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Content-Type": [
+                        "text/html; charset=iso-8859-1"
+                    ]
+                },
+                "content": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache/2.4.29 (Ubuntu) Server at api.ohsome.org Port 443</address>\n</body></html>\n"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1elements/length/ratio",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.477682%2C+24.548314%5D%2C+%5B9.490964%2C+24.548314%5D%2C+%5B9.490964%2C+24.5626%5D%2C+%5B9.477682%2C+24.5626%5D%2C+%5B9.477682%2C+24.548314%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+2%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&filter2=None",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "672"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 404,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Wed, 19 May 2021 13:51:14 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Content-Length": [
+                        "277"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Content-Type": [
+                        "text/html; charset=iso-8859-1"
+                    ]
+                },
+                "content": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache/2.4.29 (Ubuntu) Server at api.ohsome.org Port 443</address>\n</body></html>\n"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
                 "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
@@ -35,7 +255,11 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
+<<<<<<< HEAD
                         "Tue, 25 May 2021 09:13:44 GMT"
+=======
+                        "Wed, 19 May 2021 13:53:59 GMT"
+>>>>>>> d802dbe (Raise exceptions instead of returning None)
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -114,7 +338,11 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
+<<<<<<< HEAD
                         "Tue, 25 May 2021 09:14:18 GMT"
+=======
+                        "Wed, 19 May 2021 13:54:33 GMT"
+>>>>>>> d802dbe (Raise exceptions instead of returning None)
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -193,7 +421,11 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
+<<<<<<< HEAD
                         "Tue, 25 May 2021 09:14:22 GMT"
+=======
+                        "Wed, 19 May 2021 13:54:39 GMT"
+>>>>>>> d802dbe (Raise exceptions instead of returning None)
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"

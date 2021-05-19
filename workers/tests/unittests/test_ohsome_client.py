@@ -1,13 +1,13 @@
 import asyncio
 import os
 from dataclasses import dataclass
+from json import JSONDecodeError
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 import httpx
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import OHSOME_API
 
 
 class AsyncMock(MagicMock):
@@ -19,7 +19,7 @@ class AsyncMock(MagicMock):
 class LayerDefinitionMock:
     name: str = ""
     description: str = ""
-    endpoint: str = OHSOME_API
+    endpoint: str = "elements/length"
     filter: str = ""
     ratio_filter: str = None
 
@@ -40,7 +40,11 @@ class TestOhsomeClient(TestCase):
 
     def test_query_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
-            mock_request.return_value = httpx.Response(200, content=self.valid_geojson)
+            mock_request.return_value = httpx.Response(
+                200,
+                content=self.valid_geojson,
+                request=httpx.Request("POST", "mock.org"),
+            )
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
             self.assertTrue(response.is_valid)
 
@@ -48,7 +52,19 @@ class TestOhsomeClient(TestCase):
         """When response is streamed it can be invalid while status code equals 200"""
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
-                200, content=self.invalid_geojson
+                200,
+                content=self.invalid_geojson,
+                request=httpx.Request("POST", "mock.org"),
             )
-            response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
-            self.assertIsNone(response)
+            with self.assertRaises(JSONDecodeError):
+                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+
+    def test_query_status_code_400(self) -> None:
+        with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
+            mock_request.return_value = httpx.Response(
+                400,
+                content=self.invalid_geojson,
+                request=httpx.Request("POST", "mock.org"),
+            )
+            with self.assertRaises(httpx.HTTPStatusError):
+                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
