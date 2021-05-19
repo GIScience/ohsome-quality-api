@@ -13,7 +13,11 @@ import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import FeatureCollection
 
-from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
+from ohsome_quality_analyst.utils.definitions import (
+    INDICATOR_LAYER,
+    get_layer_definition,
+    get_metadata,
+)
 
 
 @dataclass
@@ -81,6 +85,8 @@ class BaseIndicator(metaclass=ABCMeta):
             svg=self._get_default_figure(),
         )
 
+        self._validate_indicator_layer(self.__class__.__name__, layer_name)
+
     @abstractmethod
     async def preprocess(self) -> bool:
         """Get fetch and prepocess data
@@ -108,6 +114,13 @@ class BaseIndicator(metaclass=ABCMeta):
         Returns True if figure creation was successful otherwise False.
         """
         pass
+
+    def _validate_indicator_layer(self, indicator_name, layer_name):
+        indicator_layer = (indicator_name, layer_name)
+        if indicator_layer not in INDICATOR_LAYER:
+            raise ValueError(
+                "Indicator layer combination is invalid: " + str(indicator_layer)
+            )
 
     def _get_default_figure(self) -> str:
         """Return a SVG as default figure for indicators"""

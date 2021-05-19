@@ -2,6 +2,10 @@
 
 ## Current Main
 
+- Add check and custom exception for an invalid indicator layer combination during initialization of indicator objects ([#28])
+
+[#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
+
 
 ## 0.3.1
 
