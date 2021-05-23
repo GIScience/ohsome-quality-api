@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Wed, 19 May 2021 15:14:22 GMT"
+                        "Fri, 14 May 2021 17:05:51 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -116,6 +116,7 @@
                     "Date": [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         "Tue, 25 May 2021 09:14:18 GMT"
 =======
                         "Wed, 19 May 2021 13:54:33 GMT"
@@ -123,6 +124,9 @@
 =======
                         "Wed, 19 May 2021 15:14:30 GMT"
 >>>>>>> a145c5c (Recreate VCR cassette)
+=======
+                        "Fri, 14 May 2021 17:05:58 GMT"
+>>>>>>> b165c08 (Substitute removesuffix with rstrip)
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -203,6 +207,7 @@
                     "Date": [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         "Tue, 25 May 2021 09:14:22 GMT"
 =======
                         "Wed, 19 May 2021 13:54:39 GMT"
@@ -210,6 +215,9 @@
 =======
                         "Wed, 19 May 2021 15:14:39 GMT"
 >>>>>>> a145c5c (Recreate VCR cassette)
+=======
+                        "Fri, 14 May 2021 17:06:00 GMT"
+>>>>>>> b165c08 (Substitute removesuffix with rstrip)
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"

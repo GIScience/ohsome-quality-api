@@ -70,11 +70,10 @@ def build_url(
     ratio: bool = False,
 ) -> str:
     """Build endpoint URL of ohsome API."""
-    ohsome_api = OHSOME_API.removesuffix("/")
-    if endpoint is not None:
-        url = ohsome_api + "/" + endpoint.removesuffix("/")
-    else:
-        url = ohsome_api + "/" + layer.endpoint.removesuffix("/")
+    ohsome_api = OHSOME_API.rstrip("/")
+    if endpoint is None:
+        endpoint = layer.endpoint
+    url = ohsome_api + "/" + endpoint.rstrip("/")
     if ratio:
         return url + "/" + "ratio"
     return url
