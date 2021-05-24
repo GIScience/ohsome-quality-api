@@ -10,8 +10,7 @@ import httpx
 from ohsome_quality_analyst.utils.definitions import OHSOME_API
 
 
-# TODO: Add documentation on time string format.
-# TODO: Add tests for ohsome package, including time = None leading to errors
+# TODO: Add more tests for ohsome package,
 async def query(
     layer,
     bpolys: str,
@@ -79,6 +78,7 @@ def build_url(
     return url
 
 
+# TODO: Add documentation and tests on time string format.
 def build_data_dict(
     layer,
     bpolys: str,
@@ -86,11 +86,49 @@ def build_data_dict(
     ratio: bool = False,
 ) -> dict:
     """Build data dictionary for ohsome API query."""
+    data = {"bpolys": bpolys, "filter": layer.filter}
     if ratio:
-        data = {"bpolys": bpolys, "filter": layer.filter, "filter2": layer.ratio_filter}
-    else:
-        data = {"bpolys": bpolys, "filter": layer.filter}
-
+        if layer.ratio_filter is None:
+            raise ValueError(
+                "Layer '{0}' has not 'ratio_filter' definied.".format(layer.name)
+            )
+        else:
+            data["filter2"] = layer.ratio_filter
     if time is not None:
         data["time"] = time
     return data
+
+
+def check_iso_time(time: str) -> bool:
+    """
+    Check the format of the query parameter time.
+
+    Time is one or more ISO-8601 conform timestring(s).
+
+    Supported time formats:
+    - timestamp: 2014-01-01
+    - list of timestamps: 2014-01-01,2015-07-01,2018-10-10
+    - interval: 2014-01-01/2018-01-01/P1Y
+    """
+
+    def check_timestamp(t):
+        try:
+            datetime.datetime.fromisoformat(t)
+        except ValueError:
+            logging.error("Could not parse timestring in ISO-8601 format")
+            raise
+
+    def check_list_of_timestamps(t):
+        timestrings = time.split(",")
+        for t in timestrings:
+            check_timestamp(t)
+
+    if not time:
+        logging.error("Could not parse timestring in ISO-8601 format")
+        raise ValueError
+    elif "," in time:
+        check_list_of_timestamps(time)
+    else:
+        check_timestamp(time)
+
+    return True

@@ -68,3 +68,19 @@ class TestOhsomeClient(TestCase):
             )
             with self.assertRaises(httpx.HTTPStatusError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+
+    def test_iso_time(self) -> None:
+        with self.assertRaises(ValueError):
+            ohsome_client.check_iso_time("")
+            ohsome_client.check_iso_time("20140101")
+
+        self.assertTrue(ohsome_client.check_iso_time("2014-01-01"))
+        self.assertTrue(ohsome_client.check_iso_time("2007-01-25T12:00:00"))
+
+        self.assertTrue(
+            ohsome_client.check_iso_time("2014-01-01,2015-07-01,2018-10-10")
+        )
+
+        # TODO:
+        # self.assertTrue(ohsome_client.check_iso_time("2007-01-25T12:00:00Z"))
+        # self.assertTrue(ohsome_client.check_iso_time("2014-01-01/2018-01-01/P1Y"))
