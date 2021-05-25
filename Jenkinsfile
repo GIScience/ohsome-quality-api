@@ -85,6 +85,15 @@ pipeline {
                 }
                 // run pytest
                 sh 'cd ${WORK_DIR} && ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
+                // replace absolute dir in the coverage file with actually used dir for sonar-scanner
+                sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
+                // run static analysis with sonar-scanner
+                def scannerHome = tool 'SonarScanner 4';
+                withSonarQubeEnv('sonarcloud GIScience/ohsome') {
+                  sh "${scannerHome}/bin/sonar-scanner " +
+                    "-Dsonar.branch.name=${env.BRANCH_NAME} " +
+                    "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml"
+                }
               }
             }
           }
