@@ -23,7 +23,6 @@ async def query(
     data = build_data_dict(layer, bpolys, time, ratio)
     logging.info("Query ohsome API.")
     logging.debug("Query URL: " + url)
-    logging.debug("Query filter: " + layer.filter)
     logging.debug("Query data: " + json.dumps(data))
     return await query_ohsome_api(url, data)
 
