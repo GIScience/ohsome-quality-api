@@ -9,6 +9,7 @@ import httpx
 from schema import Optional, Schema
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.utils.definitions import OHSOME_API
 
 
 class AsyncMock(MagicMock):
@@ -85,6 +86,17 @@ class TestOhsomeClient(TestCase):
         # TODO:
         # self.assertTrue(ohsome_client.check_iso_time("2007-01-25T12:00:00Z"))
         # self.assertTrue(ohsome_client.check_iso_time("2014-01-01/2018-01-01/P1Y"))
+
+    def test_build_url(self) -> None:
+        ohsome_api = OHSOME_API.rstrip("/")
+        url = ohsome_client.build_url(self.layer)
+        self.assertEqual(ohsome_api + "/elements/length", url)
+        url = ohsome_client.build_url(self.layer, ratio=True)
+        self.assertEqual(ohsome_api + "/elements/length/ratio", url)
+        url = ohsome_client.build_url(self.layer, endpoint="foo/bar")
+        self.assertEqual(ohsome_api + "/foo/bar", url)
+        url = ohsome_client.build_url(self.layer, endpoint="foo/bar", ratio=True)
+        self.assertEqual(ohsome_api + "/foo/bar/ratio", url)
 
     def test_build_data_dict_minimal(self) -> None:
         schema = Schema(
