@@ -8,6 +8,7 @@ import geojson
 import httpx
 
 from ohsome_quality_analyst.utils.definitions import OHSOME_API
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
 # TODO: Add more tests for ohsome package,
@@ -28,28 +29,25 @@ async def query(
 
 
 async def query_ohsome_api(url: str, data: dict):
-    # set custom timeout as ohsome API can take a long time (up to 10 minutes) to send an answer
+    # custom timeout as ohsome API can take a long time to send an answer
+    # (up to 10 minutes)
     timeout = httpx.Timeout(5, read=660)
     async with httpx.AsyncClient(timeout=timeout) as client:
         resp = await client.post(url, data=data)
 
-    try:
-        resp.raise_for_status()  # Raise for response status codes 4xx and 5xx
-    except httpx.HTTPStatusError:
-        logging.error("Query ohsome API failed!")
-        raise
-
     # ohsome API response status codes are either 4xx and 5xx or 200
     try:
+        resp.raise_for_status()  # Raise for response status codes 4xx and 5xx
+    except httpx.HTTPStatusError as error:
+        raise OhsomeApiError("Ouery ohsome API failed!") from error
+
+    try:
         return geojson.loads(resp.content)
-    except JSONDecodeError:
-        # ohsome API can return invalid GeoJSON after streaming of response
-        logging.error("Query ohsome API failed!")
-        logging.error(
+    except JSONDecodeError as error:
+        raise OhsomeApiError(
             "Ohsome API returned invalid GeoJSON after streaming of the response. "
             + "The reason is a timeout of the ohsome API."
-        )
-        raise
+        ) from error
 
 
 async def get_latest_ohsome_timestamp():

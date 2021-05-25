@@ -1,7 +1,6 @@
 import asyncio
 import os
 from dataclasses import dataclass
-from json import JSONDecodeError
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -10,6 +9,7 @@ from schema import Optional, Schema
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.definitions import OHSOME_API
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
 class AsyncMock(MagicMock):
@@ -58,7 +58,7 @@ class TestOhsomeClient(TestCase):
                 content=self.invalid_geojson,
                 request=httpx.Request("POST", "url"),
             )
-            with self.assertRaises(JSONDecodeError):
+            with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
     def test_query_status_code_400(self) -> None:
@@ -68,7 +68,7 @@ class TestOhsomeClient(TestCase):
                 content=self.invalid_geojson,
                 request=httpx.Request("POST", "url"),
             )
-            with self.assertRaises(httpx.HTTPStatusError):
+            with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
     def test_iso_time(self) -> None:
