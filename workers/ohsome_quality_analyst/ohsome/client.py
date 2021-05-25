@@ -29,7 +29,7 @@ async def query(
 
 
 async def query_ohsome_api(url: str, data: dict):
-    # set custom timeout as ohsome API takes a long time (10 minutes) to send an answer
+    # set custom timeout as ohsome API can take a long time (up to 10 minutes) to send an answer
     timeout = httpx.Timeout(5, read=660)
     async with httpx.AsyncClient(timeout=timeout) as client:
         resp = await client.post(url, data=data)
