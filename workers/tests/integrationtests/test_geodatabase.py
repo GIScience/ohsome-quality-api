@@ -56,15 +56,16 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.description)
         self.assertIsNotNone(self.indicator.result.svg)
 
-    def test_get_ids(self):
-        result = asyncio.run(db_client.get_ids("regions", "ogc_fid"))
+    def test_get_fids(self):
+        result = asyncio.run(db_client.get_fids("regions", "ogc_fid"))
         self.assertIsInstance(result, list)
+        self.assertTrue(result)
 
         with self.assertRaises(UndefinedColumnError):
-            asyncio.run(db_client.get_ids("regions", "foo"))
+            asyncio.run(db_client.get_fids("regions", "foo"))
 
         with self.assertRaises(UndefinedTableError):
-            asyncio.run(db_client.get_ids("foo", "ogc_fid"))
+            asyncio.run(db_client.get_fids("foo", "ogc_fid"))
 
     def test_get_area_of_bpoly(self):
         result = asyncio.run(db_client.get_area_of_bpoly(self.bpoly))

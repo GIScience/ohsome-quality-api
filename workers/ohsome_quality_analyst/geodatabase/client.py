@@ -116,15 +116,15 @@ async def load_indicator_results(indicator, dataset: str, fid: Union[str, int]) 
         return True
 
 
-async def get_ids(dataset: str, fid_field: str) -> List[int]:
+async def get_fids(dataset: str, fid_field: str) -> List[Union[int, str]]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    query = "SELECT {fid_field} as id FROM {dataset}".format(
+    query = "SELECT {fid_field} FROM {dataset}".format(
         fid_field=fid_field, dataset=dataset
     )
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record["id"] for record in records]
+    return [record[fid_field] for record in records]
 
 
 # TODO Rewrite to work with geojson.Feature as input

@@ -3,10 +3,10 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 import logging
+from typing import Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import FeatureCollection
-from Typing import Optional, Union
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -69,21 +69,18 @@ async def create_indicator(
         logging.info("Dataset name:\t" + dataset)
         logging.info("Feature id:\t" + str(fid))
 
-        if fid_field is None:
-            fid_field = DATASETS[dataset]["default"]
-
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
         if dataset not in DATASETS.keys():
-            raise ValueError("Input dataset is not valid")
-        if (
-            fid_field not in DATASETS[dataset]["others"]
-            or fid_field != DATASETS[dataset]["default"]
-        ):
-            # TODO: Raise custom exception?
-            raise ValueError
+            raise ValueError("Input dataset is not valid: " + dataset)
 
-        bpolys = await db_client.get_bpolys_from_db(dataset, fid_field, fid)
+        if fid_field is None:
+            fid_field = DATASETS[dataset]["default"]
+        else:
+            if fid_field not in DATASETS[dataset]["other"]:
+                raise ValueError("Input feature id field is not valid: " + fid_field)
+
+        bpolys = await db_client.get_bpoly_from_db(dataset, fid, fid_field)
 
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         success = await from_database(dataset, fid)
@@ -101,7 +98,7 @@ async def create_all_indicators(force: bool = False) -> None:
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_ids("regions", "fid")
+    fids = await db_client.get_fids("regions", "fid")
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:
@@ -129,10 +126,10 @@ async def create_all_indicators(force: bool = False) -> None:
 
 async def create_report(
     report_name: str,
+    force: bool = False,
     bpolys: FeatureCollection = None,
     dataset: str = None,
-    fid: int = None,
-    force: bool = False,
+    feature_id: Union[int, str] = None,
 ) -> object:
     """Create a report.
 
@@ -143,15 +140,15 @@ async def create_report(
         Report
     """
     report_class = name_to_class(class_type="report", name=report_name)
-    report = report_class(bpolys=bpolys, dataset=dataset, fid=fid)
+    report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
     report.set_indicator_layer()
     for indicator_name, layer_name in report.indicator_layer:
         indicator = await create_indicator(
             indicator_name,
             layer_name,
-            report.bpolys,
-            report.dataset,
-            report.fid,
+            bpolys=report.bpolys,
+            dataset=report.dataset,
+            fid=report.feature_id,
             force=force,
         )
         report.indicators.append(indicator)
