@@ -3,6 +3,7 @@ import os
 import unittest
 
 import geojson
+from asyncpg.exceptions import DataError, UndefinedColumnError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
@@ -66,9 +67,17 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsInstance(result, float)
 
     @oqt_vcr.use_cassette()
-    def test_get_bpolys_from_db(self):
-        result = asyncio.run(db_client.get_bpolys_from_db("regions", 3))
-        self.assertTrue(result.is_valid)
+    def test_get_bpoly_from_db(self):
+        result = asyncio.run(
+            db_client.get_bpoly_from_db("regions", 3, id_field="ogc_fid")
+        )
+        self.assertTrue(result.is_valid)  # GeoJSON object validation
+
+        with self.assertRaises(UndefinedColumnError):
+            asyncio.run(db_client.get_bpoly_from_db("regions", 3, id_field="foo"))
+
+        with self.assertRaises(DataError):
+            asyncio.run(db_client.get_bpoly_from_db("regions", "3", id_field="ogc_fid"))
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())

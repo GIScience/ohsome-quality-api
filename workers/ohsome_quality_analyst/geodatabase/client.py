@@ -18,10 +18,11 @@ import logging
 import os
 import pathlib
 from contextlib import asynccontextmanager
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import asyncpg
 import geojson
+from asyncpg.exceptions import DataError, UndefinedColumnError
 
 
 def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
@@ -194,13 +195,13 @@ async def get_area_of_bpolys(bpolys: Dict):
     return result["area_sqkm"]
 
 
-async def get_bpolys_from_db(
-    dataset: str, feature_id: int
+async def get_bpoly_from_db(
+    dataset: str, id_: Union[int, str], id_field: str
 ) -> geojson.FeatureCollection:
-    """Get geometry and properties from geo database as a geojson feature collection."""
-    logging.info("Get bpolys geometry")
-    # TODO: adjust this for other input tables
+    """Get bounding polygon from the Geodatabase as a GeoJSON Feature Collection."""
+    logging.info("(dataset, id_field, id): " + str((dataset, id_field, id_)))
     # Safe against SQL injection because of predefined values
+    # (See oqt.py and definitions.py)
     query = (
         """
         SELECT json_build_object(
@@ -214,21 +215,27 @@ async def get_bpolys_from_db(
             'features', json_agg(
                 json_build_object(
                     'type',       'Feature',
-                    'id',         ogc_fid,
+                    'id',         {id_field},
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
                         -- list of fields
-                        'fid', ogc_fid
+                        'fid', {id_field}
                     )
                 )
             )
         )
-        FROM {0}
-        WHERE ogc_fid = $1
+        FROM {dataset}
+        WHERE {id_field} = $1
     """
-    ).format(dataset)
+    ).format(id_field=id_field, dataset=dataset)
+
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, feature_id)
+        try:
+            result = await conn.fetchrow(query, id_)
+        except (UndefinedColumnError, DataError):
+            # TODO: Do we need a custom error here?
+            # DataError occurs if id is a wrong type. E.g. str not int
+            raise
     return geojson.loads(result[0])
 
 
@@ -240,7 +247,7 @@ async def get_available_regions() -> geojson.FeatureCollection:
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
     feature_collection = geojson.loads(record[0])
-    # To be complaint with rfc7946 "id" should be a member of Feature
+    # To be complaint with rfc7946 "id" should be a member of Feature not of Properties
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection

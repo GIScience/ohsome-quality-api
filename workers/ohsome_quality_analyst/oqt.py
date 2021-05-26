@@ -6,20 +6,22 @@ import logging
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import FeatureCollection
+from Typing import Optional, Union
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import DATASETS, INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
 async def create_indicator(
-    indicator_name: str = None,
-    layer_name: str = None,
-    bpolys: FeatureCollection = None,
-    dataset: str = None,
-    feature_id: int = None,
+    indicator_name: str,
+    layer_name: str,
     force: bool = False,
+    bpolys: Optional[FeatureCollection] = None,
+    dataset: Optional[str] = None,
+    id_: Optional[Union[int, str]] = None,
+    id_field: Optional[str] = None,
 ) -> BaseIndicator:
     """Create an indicator.
 
@@ -57,33 +59,41 @@ async def create_indicator(
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     logging.info("Creating indicator ...")
+    logging.info("Indicator name:\t" + indicator_name)
+    logging.info("Layer name:\t" + layer_name)
 
     # from scratch
-    if bpolys is not None and dataset is None and feature_id is None:
-        logging.info("Indicator name:\t" + indicator_name)
-        logging.info("Layer name:\t" + layer_name)
+    if bpolys is not None and dataset is None and id_ is None:
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
-
     # from database
-    elif bpolys is None and dataset is not None and feature_id is not None:
-        logging.info("Indicator name:\t" + indicator_name)
-        logging.info("Layer name:\t" + layer_name)
+    elif bpolys is None and dataset is not None and id_ is not None:
         logging.info("Dataset name:\t" + dataset)
-        logging.info("Feature id:\t" + str(feature_id))
-        # Support only predefined datasets.
+        logging.info("Feature id:\t" + str(id_))
+
+        if id_field is None:
+            id_field = DATASETS[dataset]["default"]
+
+        # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
-        if dataset not in DATASET_NAMES:
+        if dataset not in DATASETS.keys():
             raise ValueError("Input dataset is not valid")
-        else:
-            bpolys = await db_client.get_bpolys_from_db(dataset, feature_id)
+        if (
+            id_field not in DATASETS[dataset]["others"]
+            or id_field != DATASETS[dataset]["default"]
+        ):
+            # TODO: Raise custom exception?
+            raise ValueError
+
+        bpolys = await db_client.get_bpolys_from_db(dataset, id_field, id_)
+
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
-        success = await from_database(dataset, feature_id)
+        success = await from_database(dataset, id_)
         if not success or force:
             await from_scratch()
-            await db_client.save_indicator_results(indicator, dataset, feature_id)
+            await db_client.save_indicator_results(indicator, dataset, id_)
     else:
-        raise ValueError("Invalid set of arguments")
+        raise ValueError("Invalid set of arguments for the creation of an indicator")
 
     return indicator
 
