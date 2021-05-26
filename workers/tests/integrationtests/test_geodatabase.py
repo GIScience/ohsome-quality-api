@@ -57,8 +57,8 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def test_get_fids(self):
-        result = asyncio.run(db_client.get_fids("regions"))
+    def test_get_ids(self):
+        result = asyncio.run(db_client.get_ids("regions", "fid"))
         self.assertIsInstance(result, list)
 
     @oqt_vcr.use_cassette()

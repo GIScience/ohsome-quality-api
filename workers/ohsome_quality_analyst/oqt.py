@@ -98,19 +98,19 @@ async def create_indicator(
     return indicator
 
 
-async def create_all_indicators(dataset: str, force: bool = False) -> None:
-    """Create all indicator/layer combination for a dataset.
+async def create_all_indicators(force: bool = False) -> None:
+    """Create all indicator/layer combination for OQT regions.
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_fids(dataset)
+    fids = await db_client.get_ids("regions", "fid")
     for feature_id in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:
                 await create_indicator(
                     indicator_name,
                     layer_name,
-                    dataset=dataset,
+                    dataset="regions",
                     feature_id=feature_id,
                     force=force,
                 )
@@ -120,7 +120,7 @@ async def create_all_indicators(dataset: str, force: bool = False) -> None:
                     logging.error(error)
                     logging.error(
                         f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for the dataset '{dataset}' "
+                        f"'{indicator_name}' for OQT regions "
                         f"and feature_id '{feature_id}'. "
                         f"Continue creation of indicators."
                     )

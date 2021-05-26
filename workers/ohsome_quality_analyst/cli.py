@@ -212,23 +212,12 @@ def create_report(
         click.echo(report.result)
 
 
-# TODO: Dataset option is mandatory
 @cli.command("create-all-indicators")
 @add_opts(force_opt)
-@click.option(
-    "--dataset_name",
-    "-d",
-    required=True,
-    type=click.Choice(
-        DATASET_NAMES,
-        case_sensitive=True,
-    ),
-    help=("Choose a dataset containing geometries."),
-)
-def create_all_indicators(dataset_name: str, force: bool):
-    """Create all indicators for a specified dataset."""
+def create_all_indicators(force: bool):
+    """Create all indicators for OQT regions."""
     click.echo(
-        "This command will calculate all indicators for the specified dataset "
+        "This command will calculate all indicators for OQT regions "
         + "and may take a while to complete."
     )
     if force:
@@ -236,7 +225,7 @@ def create_all_indicators(dataset_name: str, force: bool):
             "The argument 'force' will update the indicator results in the database."
         )
     click.confirm("Do you want to continue?", abort=True)
-    asyncio.run(oqt.create_all_indicators(dataset=dataset_name, force=force))
+    asyncio.run(oqt.create_all_indicators(force=force))
 
 
 if __name__ == "__main__":

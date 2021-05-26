@@ -166,17 +166,18 @@ async def load_indicator_results(indicator, dataset, feature_id) -> bool:
     return True
 
 
-async def get_fids(dataset_name) -> List[int]:
-    """Get all feature ids of a certain dataset"""
-    # TODO: Does this apply for all datasets?
-    # This works for test regions but does this work for GADM or HEX Cells?
+async def get_ids(dataset: str, id_field: str) -> List[int]:
+    """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    query = "SELECT ogc_fid FROM {0}".format(dataset_name)
+    query = "SELECT {id_field} as id FROM {dataset}".format(
+        id_field=id_field, dataset=dataset
+    )
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record["ogc_fid"] for record in records]
+    return [record["id"] for record in records]
 
 
+# TODO Rewrite to work with geojson.Feature as input
 async def get_area_of_bpoly(bpoly: Dict):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
