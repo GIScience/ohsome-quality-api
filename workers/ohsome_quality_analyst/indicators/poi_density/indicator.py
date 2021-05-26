@@ -8,7 +8,7 @@ import numpy as np
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
+from ohsome_quality_analyst.geodatabase.client import get_area_of_bpoly
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 # threshold values defining the color of the traffic light
@@ -44,7 +44,7 @@ class PoiDensity(BaseIndicator):
         if query_results_count is None:
             return False
 
-        self.area_sqkm = await get_area_of_bpolys(self.bpolys)  # calc polygon area
+        self.area_sqkm = await get_area_of_bpoly(self.bpolys)  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
         self.density = self.count / self.area_sqkm
         return True

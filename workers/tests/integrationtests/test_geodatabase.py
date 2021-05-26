@@ -62,8 +62,8 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsInstance(result, list)
 
     @oqt_vcr.use_cassette()
-    def test_get_area_of_bpolys(self):
-        result = asyncio.run(db_client.get_area_of_bpolys(self.bpolys))
+    def test_get_area_of_bpoly(self):
+        result = asyncio.run(db_client.get_area_of_bpoly(self.bpolys))
         self.assertIsInstance(result, float)
 
     @oqt_vcr.use_cassette()

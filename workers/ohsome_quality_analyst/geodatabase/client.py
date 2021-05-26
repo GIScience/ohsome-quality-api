@@ -177,7 +177,7 @@ async def get_fids(dataset_name) -> List[int]:
     return [record["ogc_fid"] for record in records]
 
 
-async def get_area_of_bpolys(bpolys: Dict):
+async def get_area_of_bpoly(bpoly: Dict):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -189,9 +189,9 @@ async def get_area_of_bpolys(bpolys: Dict):
                     )
             ) / (1000*1000) as area_sqkm
         """
-    polygon = json.dumps(bpolys["features"][0]["geometry"])
+    geom = json.dumps(bpoly["features"][0]["geometry"])
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, polygon)
+        result = await conn.fetchrow(query, geom)
     return result["area_sqkm"]
 
 
