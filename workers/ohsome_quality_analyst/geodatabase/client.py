@@ -50,8 +50,6 @@ async def save_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
 
     logging.info("Save indicator result to database")
 
-    id_ = str(id_)
-
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "create_results_table.sql")
     with open(file_path, "r") as file:
@@ -68,7 +66,7 @@ async def save_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        id_,
+        str(id_),
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
         indicator.result.label,
@@ -91,8 +89,6 @@ async def load_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
     """
     logging.info("Load indicator results from database")
 
-    id_ = str(id_)
-
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "load_results.sql")
     with open(file_path, "r") as file:
@@ -102,7 +98,7 @@ async def load_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        id_,
+        str(id_),
     )
 
     async with get_connection() as conn:
