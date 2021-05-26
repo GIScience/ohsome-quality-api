@@ -19,6 +19,14 @@ class TestGeodatabase(unittest.TestCase):
             db_client.get_bpoly_from_db(self.dataset, self.id_, "ogc_fid")
         )
 
+    def test_get_connection(self):
+        async def _test_get_connection():
+            async with db_client.get_connection() as conn:
+                return await conn.fetchrow("SELECT 1")
+
+        result = asyncio.run(_test_get_connection())
+        self.assertEqual(result[0], 1)
+
     @oqt_vcr.use_cassette()
     def test_save_and_load(self):
         # TODO: split tests by functionality (load and safe),
