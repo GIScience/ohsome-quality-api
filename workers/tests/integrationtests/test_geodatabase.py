@@ -1,9 +1,7 @@
 import asyncio
-import os
 import unittest
 
-import geojson
-from asyncpg.exceptions import DataError, UndefinedColumnError
+from asyncpg.exceptions import DataError, UndefinedColumnError, UndefinedTableError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
@@ -15,40 +13,34 @@ from .utils import oqt_vcr
 
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
+        self.dataset = "regions"
+        self.id_ = 2
+        self.bpoly = asyncio.run(
+            db_client.get_bpoly_from_db(self.dataset, self.id_, "ogc_fid")
         )
-        with open(infile, "r") as f:
-            self.bpolys = geojson.load(f)
 
     @oqt_vcr.use_cassette()
     def test_save_and_load(self):
         # TODO: split tests by functionality (load and safe),
         # but load test needs a saved indicator.
-        dataset = "regions"
-        feature_id = 2
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
-
         # save
         self.indicator = GhsPopComparisonBuildings(
             layer_name="building_count",
-            bpolys=bpolys,
+            bpolys=self.bpoly,
         )
         asyncio.run(self.indicator.preprocess())
         self.indicator.calculate()
         self.indicator.create_figure()
         asyncio.run(
-            db_client.save_indicator_results(self.indicator, dataset, feature_id)
+            db_client.save_indicator_results(self.indicator, self.dataset, self.id_)
         )
 
         # load
         self.indicator = GhsPopComparisonBuildings(
-            layer_name="building_count", bpolys=bpolys
+            layer_name="building_count", bpolys=self.bpoly
         )
         result = asyncio.run(
-            db_client.load_indicator_results(self.indicator, dataset, feature_id)
+            db_client.load_indicator_results(self.indicator, self.dataset, self.id_)
         )
         self.assertTrue(result)
         self.assertIsNotNone(self.indicator.result.label)
@@ -56,28 +48,40 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.description)
         self.assertIsNotNone(self.indicator.result.svg)
 
-    @oqt_vcr.use_cassette()
     def test_get_ids(self):
-        result = asyncio.run(db_client.get_ids("regions", "fid"))
+        result = asyncio.run(db_client.get_ids("regions", "ogc_fid"))
         self.assertIsInstance(result, list)
 
-    @oqt_vcr.use_cassette()
+        with self.assertRaises(UndefinedColumnError):
+            asyncio.run(db_client.get_ids("regions", "foo"))
+
+        with self.assertRaises(UndefinedTableError):
+            asyncio.run(db_client.get_ids("foo", "ogc_fid"))
+
     def test_get_area_of_bpoly(self):
-        result = asyncio.run(db_client.get_area_of_bpoly(self.bpolys))
+        result = asyncio.run(db_client.get_area_of_bpoly(self.bpoly))
         self.assertIsInstance(result, float)
 
-    @oqt_vcr.use_cassette()
     def test_get_bpoly_from_db(self):
         result = asyncio.run(
-            db_client.get_bpoly_from_db("regions", 3, id_field="ogc_fid")
+            db_client.get_bpoly_from_db(self.dataset, self.id_, id_field="ogc_fid")
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
         with self.assertRaises(UndefinedColumnError):
-            asyncio.run(db_client.get_bpoly_from_db("regions", 3, id_field="foo"))
+            asyncio.run(
+                db_client.get_bpoly_from_db(self.dataset, self.id_, id_field="foo")
+            )
 
         with self.assertRaises(DataError):
-            asyncio.run(db_client.get_bpoly_from_db("regions", "3", id_field="ogc_fid"))
+            asyncio.run(
+                db_client.get_bpoly_from_db(self.dataset, "foo", id_field="ogc_fid")
+            )
+
+        with self.assertRaises(UndefinedTableError):
+            asyncio.run(
+                db_client.get_bpoly_from_db("foo", self.id_, id_field="ogc_fid")
+            )
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())
