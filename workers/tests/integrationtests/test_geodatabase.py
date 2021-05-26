@@ -14,9 +14,9 @@ from .utils import oqt_vcr
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.id_ = 2
+        self.fid = 2
         self.bpoly = asyncio.run(
-            db_client.get_bpoly_from_db(self.dataset, self.id_, "ogc_fid")
+            db_client.get_bpoly_from_db(self.dataset, self.fid, "ogc_fid")
         )
 
     def test_get_connection(self):
@@ -40,7 +40,7 @@ class TestGeodatabase(unittest.TestCase):
         self.indicator.calculate()
         self.indicator.create_figure()
         asyncio.run(
-            db_client.save_indicator_results(self.indicator, self.dataset, self.id_)
+            db_client.save_indicator_results(self.indicator, self.dataset, self.fid)
         )
 
         # load
@@ -48,7 +48,7 @@ class TestGeodatabase(unittest.TestCase):
             layer_name="building_count", bpolys=self.bpoly
         )
         result = asyncio.run(
-            db_client.load_indicator_results(self.indicator, self.dataset, self.id_)
+            db_client.load_indicator_results(self.indicator, self.dataset, self.fid)
         )
         self.assertTrue(result)
         self.assertIsNotNone(self.indicator.result.label)
@@ -72,23 +72,23 @@ class TestGeodatabase(unittest.TestCase):
 
     def test_get_bpoly_from_db(self):
         result = asyncio.run(
-            db_client.get_bpoly_from_db(self.dataset, self.id_, id_field="ogc_fid")
+            db_client.get_bpoly_from_db(self.dataset, self.fid, fid_field="ogc_fid")
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
         with self.assertRaises(UndefinedColumnError):
             asyncio.run(
-                db_client.get_bpoly_from_db(self.dataset, self.id_, id_field="foo")
+                db_client.get_bpoly_from_db(self.dataset, self.fid, fid_field="foo")
             )
 
         with self.assertRaises(DataError):
             asyncio.run(
-                db_client.get_bpoly_from_db(self.dataset, "foo", id_field="ogc_fid")
+                db_client.get_bpoly_from_db(self.dataset, "foo", fid_field="ogc_fid")
             )
 
         with self.assertRaises(UndefinedTableError):
             asyncio.run(
-                db_client.get_bpoly_from_db("foo", self.id_, id_field="ogc_fid")
+                db_client.get_bpoly_from_db("foo", self.fid, fid_field="ogc_fid")
             )
 
     def test_get_available_regions(self):

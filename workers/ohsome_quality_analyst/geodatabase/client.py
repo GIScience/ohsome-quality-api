@@ -41,7 +41,7 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(indicator, dataset: str, id_: Union[str, int]) -> None:
+async def save_indicator_results(indicator, dataset: str, fid: Union[str, int]) -> None:
     """Save the indicator result for a given dataset and feature in the Geodatabase.
 
     Create results table if not exists.
@@ -66,7 +66,7 @@ async def save_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(id_),
+        str(fid),
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
         indicator.result.label,
@@ -80,7 +80,7 @@ async def save_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(indicator, dataset: str, id_: Union[str, int]) -> bool:
+async def load_indicator_results(indicator, dataset: str, fid: Union[str, int]) -> bool:
     """Get the indicator result from the Geodatabase.
 
     Reads given dataset and id from the indicator object.
@@ -98,7 +98,7 @@ async def load_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(id_),
+        str(fid),
     )
 
     async with get_connection() as conn:
@@ -116,11 +116,11 @@ async def load_indicator_results(indicator, dataset: str, id_: Union[str, int]) 
         return True
 
 
-async def get_ids(dataset: str, id_field: str) -> List[int]:
+async def get_ids(dataset: str, fid_field: str) -> List[int]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    query = "SELECT {id_field} as id FROM {dataset}".format(
-        id_field=id_field, dataset=dataset
+    query = "SELECT {fid_field} as id FROM {dataset}".format(
+        fid_field=fid_field, dataset=dataset
     )
     async with get_connection() as conn:
         records = await conn.fetch(query)
@@ -147,10 +147,10 @@ async def get_area_of_bpoly(bpoly: Dict):
 
 
 async def get_bpoly_from_db(
-    dataset: str, id_: Union[int, str], id_field: str
+    dataset: str, fid: Union[int, str], fid_field: str
 ) -> geojson.FeatureCollection:
     """Get bounding polygon from the Geodatabase as a GeoJSON Feature Collection."""
-    logging.info("(dataset, id_field, id): " + str((dataset, id_field, id_)))
+    logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, fid)))
 
     # Safe against SQL injection because of predefined values
     # (See oqt.py and definitions.py)
@@ -167,23 +167,23 @@ async def get_bpoly_from_db(
             'features', json_agg(
                 json_build_object(
                     'type',       'Feature',
-                    'id',         {id_field},
+                    'id',         {fid_field},
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
                         -- list of fields
-                        'fid', {id_field}
+                        'fid', {fid_field}
                     )
                 )
             )
         )
         FROM {dataset}
-        WHERE {id_field} = $1
+        WHERE {fid_field} = $1
     """
-    ).format(id_field=id_field, dataset=dataset)
+    ).format(fid_field=fid_field, dataset=dataset)
 
     async with get_connection() as conn:
         try:
-            result = await conn.fetchrow(query, id_)
+            result = await conn.fetchrow(query, fid)
         except (UndefinedColumnError, DataError):
             # TODO: Do we need a custom error here?
             # DataError occurs if id is a wrong type. E.g. str not int

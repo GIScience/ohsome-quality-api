@@ -2,7 +2,7 @@ INSERT INTO results (
     indicator,
     layer,
     dataset,
-    id,
+    fid,
     timestamp_oqt,
     timestamp_osm,
     label,
@@ -24,7 +24,7 @@ ON CONFLICT (
     indicator,
     layer,
     dataset,
-    id)
+    fid)
     DO UPDATE SET
         (
             timestamp_oqt,

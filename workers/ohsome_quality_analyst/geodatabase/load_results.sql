@@ -2,7 +2,7 @@ SELECT
     indicator,
     layer,
     dataset,
-    id,
+    fid,
     timestamp_oqt,
     timestamp_osm,
     label,
@@ -15,4 +15,4 @@ WHERE
     indicator = $1
     AND layer = $2
     AND dataset = $3
-    AND id = $4
+    AND fid = $4
