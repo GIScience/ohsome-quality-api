@@ -59,6 +59,7 @@ pipeline {
         script {
           DATABASE = docker.build("oqt-database", "-f ${DATABASE_DIR}/Dockerfile.development ${DATABASE_DIR}")
           WORKERS = docker.build("oqt-workers", "${MODULE_DIR}")
+          WORKERS_CI = docker.build("oqt-workers-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
         }
       }
       post {
@@ -78,7 +79,7 @@ pipeline {
                                 -e POSTGRES_DB=oqt \
                                 -e POSTGRES_USER=oqt \
                                 -e POSTGRES_PASSWORD=oqt""") { c ->
-              WORKERS.inside("--network ${n} -e POSTGRES_HOST=${POSTGRES_HOST} -e POSTGRES_PORT=${POSTGRES_PORT}") {
+              WORKERS_CI.inside("--network ${n} -e POSTGRES_HOST=${POSTGRES_HOST} -e POSTGRES_PORT=${POSTGRES_PORT}") {
                 // wait for database to be ready
                 timeout(time: 30, unit: 'SECONDS') {
                   sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
@@ -109,7 +110,7 @@ pipeline {
     stage ('Static Testing') {
       steps {
         script {
-          WORKERS.inside {
+          WORKERS_CI.inside {
             sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
             sh 'cd ${WORK_DIR} && ${POETRY_RUN} flake8 --count --statistics --config setup.cfg .'
             sh 'cd ${WORK_DIR} && ${POETRY_RUN} isort --check --diff --settings-path setup.cfg .'

@@ -1,10 +1,5 @@
 FROM python:3.8
 
-# install pg_isready to be able to check if database is ready to be used
-RUN apt-get update && \
-    apt-get install --yes --no-install-recommends postgresql-client openjdk-11-jre-headless && \
-    rm -rf /var/lib/apt/lists/*
-
 # within docker container: run without root privileges
 RUN useradd -md /home/oqt oqt
 WORKDIR /opt/oqt
