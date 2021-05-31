@@ -11,7 +11,7 @@ from ohsome_quality_analyst.utils.definitions import OHSOME_API
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
-# TODO: Add more tests for ohsome package,
+# TODO: Add more tests for ohsome package.
 async def query(
     layer,
     bpolys: str,
@@ -39,7 +39,7 @@ async def query_ohsome_api(url: str, data: dict):
     try:
         resp.raise_for_status()  # Raise for response status codes 4xx and 5xx
     except httpx.HTTPStatusError as error:
-        raise OhsomeApiError("Ouery ohsome API failed!") from error
+        raise OhsomeApiError("Querying the ohsome API failed!") from error
 
     try:
         return geojson.loads(resp.content)
@@ -87,7 +87,7 @@ def build_data_dict(
     if ratio:
         if layer.ratio_filter is None:
             raise ValueError(
-                "Layer '{0}' has not 'ratio_filter' definied.".format(layer.name)
+                "Layer '{0}' has not 'ratio_filter' defined.".format(layer.name)
             )
         else:
             data["filter2"] = layer.ratio_filter
