@@ -170,8 +170,6 @@ async def get_bpoly_from_db(
                     'id',         {fid_field},
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
-                        -- list of fields
-                        'fid', {fid_field}
                     )
                 )
             )
