@@ -45,7 +45,7 @@ class TestOhsomeClient(TestCase):
             mock_request.return_value = httpx.Response(
                 200,
                 content=self.valid_geojson,
-                request=httpx.Request("POST", "url"),
+                request=httpx.Request("POST", "http://www.example.org/"),
             )
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
             self.assertTrue(response.is_valid)
@@ -56,7 +56,7 @@ class TestOhsomeClient(TestCase):
             mock_request.return_value = httpx.Response(
                 200,
                 content=self.invalid_geojson,
-                request=httpx.Request("POST", "url"),
+                request=httpx.Request("POST", "http://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
@@ -66,7 +66,7 @@ class TestOhsomeClient(TestCase):
             mock_request.return_value = httpx.Response(
                 400,
                 content=self.invalid_geojson,
-                request=httpx.Request("POST", "url"),
+                request=httpx.Request("POST", "http://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))

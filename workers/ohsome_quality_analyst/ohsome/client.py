@@ -11,6 +11,7 @@ from ohsome_quality_analyst.utils.definitions import OHSOME_API
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
+# TODO: Add documentation and tests on time string format.
 # TODO: Add more tests for ohsome package.
 async def query(
     layer,
@@ -75,7 +76,6 @@ def build_url(
     return url
 
 
-# TODO: Add documentation and tests on time string format.
 def build_data_dict(
     layer,
     bpolys: str,
@@ -101,6 +101,7 @@ def check_iso_time(time: str) -> bool:
     Check the format of the query parameter time.
 
     Time is one or more ISO-8601 conform timestring(s).
+    https://docs.ohsome.org/ohsome-api/v1/time.html
 
     Supported time formats:
     - timestamp: 2014-01-01
