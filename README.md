@@ -4,6 +4,7 @@
 # ohsome quality analyst
 
 [![build status](https://jenkins.ohsome.org/buildStatus/icon?job=ohsome-quality-analyst/main)](https://jenkins.ohsome.org/blue/organizations/jenkins/ohsome-quality-analyst/activity/?branch=main)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-analyst&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-analyst)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
