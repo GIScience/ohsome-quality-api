@@ -33,7 +33,7 @@ async def load_bpolys(bpolys: str) -> None:
     bpolys = geojson.loads(bpolys)
     if bpolys.is_valid is False:
         raise ValueError("Input geometry is not valid")
-    elif await db_client.get_area_of_bpoly(bpolys) > GEOM_SIZE_LIMIT:
+    elif await db_client.get_area_of_bpolys(bpolys) > GEOM_SIZE_LIMIT:
         raise ValueError(
             "Input geometry is too big. It should be less than {0}.".format(
                 GEOM_SIZE_LIMIT

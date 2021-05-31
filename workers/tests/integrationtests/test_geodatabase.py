@@ -14,9 +14,9 @@ from .utils import oqt_vcr
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.fid = 2
-        self.bpoly = asyncio.run(
-            db_client.get_bpoly_from_db(self.dataset, self.fid, "ogc_fid")
+        self.feature_id = 2
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
         )
 
     def test_get_connection(self):
@@ -34,21 +34,25 @@ class TestGeodatabase(unittest.TestCase):
         # save
         self.indicator = GhsPopComparisonBuildings(
             layer_name="building_count",
-            bpolys=self.bpoly,
+            bpolys=self.bpolys,
         )
         asyncio.run(self.indicator.preprocess())
         self.indicator.calculate()
         self.indicator.create_figure()
         asyncio.run(
-            db_client.save_indicator_results(self.indicator, self.dataset, self.fid)
+            db_client.save_indicator_results(
+                self.indicator, self.dataset, self.feature_id
+            )
         )
 
         # load
         self.indicator = GhsPopComparisonBuildings(
-            layer_name="building_count", bpolys=self.bpoly
+            layer_name="building_count", bpolys=self.bpolys
         )
         result = asyncio.run(
-            db_client.load_indicator_results(self.indicator, self.dataset, self.fid)
+            db_client.load_indicator_results(
+                self.indicator, self.dataset, self.feature_id
+            )
         )
         self.assertTrue(result)
         self.assertIsNotNone(self.indicator.result.label)
@@ -56,41 +60,37 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.description)
         self.assertIsNotNone(self.indicator.result.svg)
 
-    def test_get_fids(self):
-        result = asyncio.run(db_client.get_fids("regions", "ogc_fid"))
+    def test_get_feature_ids(self):
+        result = asyncio.run(db_client.get_feature_ids("regions", "ogc_fid"))
         self.assertIsInstance(result, list)
         self.assertTrue(result)
 
         with self.assertRaises(UndefinedColumnError):
-            asyncio.run(db_client.get_fids("regions", "foo"))
+            asyncio.run(db_client.get_feature_ids("regions", "foo"))
 
         with self.assertRaises(UndefinedTableError):
-            asyncio.run(db_client.get_fids("foo", "ogc_fid"))
+            asyncio.run(db_client.get_feature_ids("foo", "ogc_fid"))
 
-    def test_get_area_of_bpoly(self):
-        result = asyncio.run(db_client.get_area_of_bpoly(self.bpoly))
+    def test_get_area_of_bpolys(self):
+        result = asyncio.run(db_client.get_area_of_bpolys(self.bpolys))
         self.assertIsInstance(result, float)
 
-    def test_get_bpoly_from_db(self):
+    def test_get_bpolys_from_db(self):
         result = asyncio.run(
-            db_client.get_bpoly_from_db(self.dataset, self.fid, fid_field="ogc_fid")
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
         with self.assertRaises(UndefinedColumnError):
             asyncio.run(
-                db_client.get_bpoly_from_db(self.dataset, self.fid, fid_field="foo")
+                db_client.get_bpolys_from_db(self.dataset, self.feature_id, "foo")
             )
 
         with self.assertRaises(DataError):
-            asyncio.run(
-                db_client.get_bpoly_from_db(self.dataset, "foo", fid_field="ogc_fid")
-            )
+            asyncio.run(db_client.get_bpolys_from_db(self.dataset, "foo", "ogc_fid"))
 
         with self.assertRaises(UndefinedTableError):
-            asyncio.run(
-                db_client.get_bpoly_from_db("foo", self.fid, fid_field="ogc_fid")
-            )
+            asyncio.run(db_client.get_bpolys_from_db("foo", self.feature_id, "ogc_fid"))
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())

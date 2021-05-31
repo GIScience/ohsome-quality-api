@@ -20,7 +20,7 @@ async def create_indicator(
     force: bool = False,
     bpolys: Optional[FeatureCollection] = None,
     dataset: Optional[str] = None,
-    fid: Optional[Union[int, str]] = None,
+    feature_id: Optional[Union[int, str]] = None,
     fid_field: Optional[str] = None,
 ) -> BaseIndicator:
     """Create an indicator.
@@ -48,10 +48,12 @@ async def create_indicator(
                 if indicator.create_figure():
                     pass
 
-    async def from_database(dataset, fid) -> bool:
+    async def from_database(dataset, feature_id) -> bool:
         """Create indicator by loading existing results from database"""
         try:
-            return await db_client.load_indicator_results(indicator, dataset, fid)
+            return await db_client.load_indicator_results(
+                indicator, dataset, feature_id
+            )
         except UndefinedTableError:
             return False
 
@@ -61,13 +63,13 @@ async def create_indicator(
     logging.info("Layer name:\t" + layer_name)
 
     # from scratch
-    if bpolys is not None and dataset is None and fid is None:
+    if bpolys is not None and dataset is None and feature_id is None:
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
     # from database
-    elif bpolys is None and dataset is not None and fid is not None:
+    elif bpolys is None and dataset is not None and feature_id is not None:
         logging.info("Dataset name:\t" + dataset)
-        logging.info("Feature id:\t" + str(fid))
+        logging.info("Feature id:\t" + str(feature_id))
 
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
@@ -80,13 +82,13 @@ async def create_indicator(
             if fid_field not in DATASETS[dataset]["other"]:
                 raise ValueError("Input feature id field is not valid: " + fid_field)
 
-        bpolys = await db_client.get_bpoly_from_db(dataset, fid, fid_field)
+        bpolys = await db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
 
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
-        success = await from_database(dataset, fid)
+        success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()
-            await db_client.save_indicator_results(indicator, dataset, fid)
+            await db_client.save_indicator_results(indicator, dataset, feature_id)
     else:
         raise ValueError("Invalid set of arguments for the creation of an indicator")
 
@@ -98,7 +100,7 @@ async def create_all_indicators(force: bool = False) -> None:
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_fids("regions", "fid")
+    fids = await db_client.get_feature_ids("regions", "ogc_fid")
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:
@@ -106,7 +108,7 @@ async def create_all_indicators(force: bool = False) -> None:
                     indicator_name,
                     layer_name,
                     dataset="regions",
-                    fid=fid,
+                    feature_id=fid,
                     force=force,
                 )
             # TODO: Those errors are raised during MappingCalculation creation.
@@ -116,7 +118,7 @@ async def create_all_indicators(force: bool = False) -> None:
                     logging.error(
                         f"Error occurred during creation of indicator "
                         f"'{indicator_name}' for OQT regions "
-                        f"and fid '{fid}'. "
+                        f"and feature id '{fid}'. "
                         f"Continue creation of indicators."
                     )
                     continue
@@ -148,7 +150,7 @@ async def create_report(
             layer_name,
             bpolys=report.bpolys,
             dataset=report.dataset,
-            fid=report.feature_id,
+            feature_id=report.feature_id,
             force=force,
         )
         report.indicators.append(indicator)

@@ -25,7 +25,7 @@ class TestApiReport(unittest.TestCase):
         self.dataset = "regions"
         self.feature_id = 31
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id)
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
         )
         self.report_name = "SimpleReport"
 

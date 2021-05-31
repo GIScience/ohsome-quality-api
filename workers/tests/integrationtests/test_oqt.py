@@ -10,8 +10,10 @@ from .utils import oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
-        fid = 31
-        self.bpolys = asyncio.run(db_client.get_bpoly_from_db(dataset, fid, "ogc_fid"))
+        feature_id = 31
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_from_scratch(self):
@@ -34,7 +36,7 @@ class TestOqt(unittest.TestCase):
                     "GhsPopComparisonBuildings",
                     "building_count",
                     dataset="foo",
-                    fid=31,
+                    feature_id=31,
                 )
             )
 
@@ -46,7 +48,7 @@ class TestOqt(unittest.TestCase):
                     "building_count",
                     dataset="regions",
                     fid_field="foo",
-                    fid=31,
+                    feature_id=31,
                 )
             )
 
@@ -57,7 +59,7 @@ class TestOqt(unittest.TestCase):
                 "GhsPopComparisonBuildings",
                 "building_count",
                 dataset="regions",
-                fid=31,
+                feature_id=31,
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -88,7 +90,7 @@ class TestOqt(unittest.TestCase):
                     "GhsPopComparisonBuildings",
                     "building_count",
                     dataset="regions",
-                    fid=31,
+                    feature_id=31,
                     bpolys=self.bpolys,
                 )
             )

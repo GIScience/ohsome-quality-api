@@ -21,9 +21,9 @@ class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.dataset = "regions"
-        self.feature_id = 31
+        self.feature_id = 1
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id)
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
         )
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
