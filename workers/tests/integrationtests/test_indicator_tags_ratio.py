@@ -38,6 +38,7 @@ class TestIndicatorRatio(unittest.TestCase):
         """Ratio should be 1.0 when all features match expected tags"""
         layer_name = "jrc_health_count"
         dataset = "regions"
+        # TODO: Choose smaller region
         feature_id = 9  # DE Aschaffenburg (good)
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
@@ -67,13 +68,11 @@ class TestIndicatorRatio(unittest.TestCase):
         """Layer with no filter2 for ratio endpoint"""
         layer_name = "major_roads_length"
         dataset = "regions"
-        feature_id = 2
+        feature_id = 28
         bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
-        indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
-        asyncio.run(indicator.preprocess())
-        self.assertIsNone(indicator.count_all)
-        indicator.calculate()
+        with self.assertRaises(ValueError):
+            TagsRatio(layer_name=layer_name, bpolys=bpolys)
 
 
 if __name__ == "__main__":
