@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import pathlib
+from typing import Union
 
 import click
 import geojson
@@ -10,6 +11,7 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.cli_opts import (
     dataset_name_opt,
     feature_id_opt,
+    fid_field_opt,
     force_opt,
     indicator_name_opt,
     infile_opt,
@@ -73,7 +75,16 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(DATASETS.keys())
+    click.echo(tuple(DATASETS.keys()))
+
+
+@cli.command("list-fid-fields")
+def list_fid_fields():
+    """List available fid fields for each dataset."""
+    for name, dataset in DATASETS.items():
+        click.echo(name + ": ")
+        click.echo("  - default: " + dataset["default"])
+        click.echo("  - other: " + ", ".join(dataset.get("other", [])))
 
 
 @cli.command("list-regions")
@@ -90,14 +101,16 @@ def get_available_regions():
 @add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
+@add_opts(fid_field_opt)
 @add_opts(force_opt)
 def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
     layer_name: str,
-    feature_id: int,
+    feature_id: Union[int, str],
     dataset_name: str,
+    fid_field: str,
     force: bool,
 ):
     """Create an Indicator and print results to stdout."""
@@ -123,6 +136,7 @@ def create_indicator(
                     bpolys=sub_collection,
                     feature_id=feature_id,
                     dataset=dataset_name,
+                    fid_field=fid_field,
                     force=force,
                 )
             )

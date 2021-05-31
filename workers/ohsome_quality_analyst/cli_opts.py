@@ -93,11 +93,15 @@ feature_id_opt = [
     )
 ]
 
-feature_id_opt = [
+fid_field_opt = [
     click.option(
         "--fid-field",
-        type=int,
-        help="Provide the feature id of your area of interest.",
+        type=str,
+        help=(
+            "Provide the feature id field of the dataset. "
+            + "Use command list-fid-fields to view available "
+            + "fid fields for each dataset"
+        ),
         default=None,
     )
 ]
