@@ -127,9 +127,9 @@ async def create_all_indicators(force: bool = False) -> None:
 async def create_report(
     report_name: str,
     force: bool = False,
-    bpolys: FeatureCollection = None,
-    dataset: str = None,
-    feature_id: Union[int, str] = None,
+    bpolys: Optional[FeatureCollection] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[Union[int, str]] = None,
 ) -> object:
     """Create a report.
 

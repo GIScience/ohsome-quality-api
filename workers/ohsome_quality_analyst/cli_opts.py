@@ -5,7 +5,7 @@ Define Click command options to avoid redundancy.
 import click
 
 from ohsome_quality_analyst.utils.definitions import (
-    DATASET_NAMES,
+    DATASETS,
     load_layer_definitions,
     load_metadata,
 )
@@ -59,7 +59,7 @@ dataset_name_opt = [
         "--dataset-name",
         "-d",
         type=click.Choice(
-            DATASET_NAMES,
+            DATASETS.keys(),
             case_sensitive=True,
         ),
         help=("Choose a dataset containing geometries."),
@@ -87,6 +87,15 @@ feature_id_opt = [
     click.option(
         "--feature-id",
         "-f",
+        type=int,
+        help="Provide the feature id of your area of interest.",
+        default=None,
+    )
+]
+
+feature_id_opt = [
+    click.option(
+        "--fid-field",
         type=int,
         help="Provide the feature id of your area of interest.",
         default=None,

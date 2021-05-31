@@ -19,7 +19,7 @@ from ohsome_quality_analyst.cli_opts import (
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
-    DATASET_NAMES,
+    DATASETS,
     configure_logging,
     load_layer_definitions,
     load_metadata,
@@ -73,7 +73,7 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(DATASET_NAMES)
+    click.echo(DATASETS.keys())
 
 
 @cli.command("list-regions")
@@ -118,9 +118,9 @@ def create_indicator(
             sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
                 oqt.create_indicator(
-                    indicator_name=indicator_name,
+                    indicator_name,
+                    layer_name,
                     bpolys=sub_collection,
-                    layer_name=layer_name,
                     feature_id=feature_id,
                     dataset=dataset_name,
                     force=force,
@@ -141,9 +141,9 @@ def create_indicator(
         bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
-                indicator_name=indicator_name,
+                indicator_name,
+                layer_name,
                 bpolys=bpolys,
-                layer_name=layer_name,
                 feature_id=feature_id,
                 dataset=dataset_name,
                 force=force,
@@ -180,7 +180,7 @@ def create_report(
             sub_collection = geojson.FeatureCollection([feature])
             report = asyncio.run(
                 oqt.create_report(
-                    report_name=report_name,
+                    report_name,
                     bpolys=sub_collection,
                     dataset=dataset_name,
                     feature_id=feature_id,
@@ -200,7 +200,7 @@ def create_report(
         bpolys = None
         report = asyncio.run(
             oqt.create_report(
-                report_name=report_name,
+                report_name,
                 bpolys=bpolys,
                 dataset=dataset_name,
                 feature_id=feature_id,
