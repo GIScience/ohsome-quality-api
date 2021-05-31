@@ -95,25 +95,11 @@ pipeline {
                     "-Dsonar.branch.name=${env.BRANCH_NAME} " +
                     "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml"
                 }
+                sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
+                sh 'cd ${WORK_DIR} && ${POETRY_RUN} flake8 --count --statistics --config setup.cfg .'
+                sh 'cd ${WORK_DIR} && ${POETRY_RUN} isort --check --diff --settings-path setup.cfg .'
               }
             }
-          }
-        }
-      }
-      post {
-        failure {
-          rocketSend channel: 'jenkinsohsome', emoji: ':sob:' , message: "*${REPO_NAME}*-build nr. ${env.BUILD_NUMBER} *failed* on Branch - ${env.BRANCH_NAME}  (<${env.BUILD_URL}|Open Build in Jenkins>). Latest commit from  ${LATEST_AUTHOR}. Review the code!" , rawMessage: true
-        }
-      }
-    }
-
-    stage ('Static Testing') {
-      steps {
-        script {
-          WORKERS_CI.inside {
-            sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
-            sh 'cd ${WORK_DIR} && ${POETRY_RUN} flake8 --count --statistics --config setup.cfg .'
-            sh 'cd ${WORK_DIR} && ${POETRY_RUN} isort --check --diff --settings-path setup.cfg .'
           }
         }
       }
