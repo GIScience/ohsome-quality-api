@@ -10,7 +10,7 @@ from .utils import oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
-        feature_id = 31
+        feature_id = 3
         self.bpolys = asyncio.run(
             db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
         )
@@ -36,7 +36,7 @@ class TestOqt(unittest.TestCase):
                     "GhsPopComparisonBuildings",
                     "building_count",
                     dataset="foo",
-                    feature_id=31,
+                    feature_id=3,
                 )
             )
 
@@ -48,7 +48,7 @@ class TestOqt(unittest.TestCase):
                     "building_count",
                     dataset="regions",
                     fid_field="foo",
-                    feature_id=31,
+                    feature_id=3,
                 )
             )
 
@@ -59,7 +59,7 @@ class TestOqt(unittest.TestCase):
                 "GhsPopComparisonBuildings",
                 "building_count",
                 dataset="regions",
-                feature_id=31,
+                feature_id=3,
             )
         )
         self.assertIsNotNone(indicator.result.label)
