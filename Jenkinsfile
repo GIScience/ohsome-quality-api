@@ -84,7 +84,7 @@ pipeline {
                   sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
                 }
                 // run pytest
-                sh 'cd ${WORK_DIR} && ${POETRY_RUN} pytest tests'
+                sh 'cd ${WORK_DIR} && ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
               }
             }
           }
