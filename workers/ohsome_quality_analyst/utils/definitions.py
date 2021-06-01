@@ -14,8 +14,7 @@ import yaml
 
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
-# Dataset names which are available in the Geodatabase
-# TODO: For each dataset add default id
+# Dataset names and fid fields which are available in the Geodatabase
 DATASETS = {
     "regions": {"default": "ogc_fid", "other": ("name",)},
     "gadm": {
@@ -26,10 +25,6 @@ DATASETS = {
             *tuple(("gid_{0}".format(i) for i in range(6))),
         ),
     },
-    # "isea3h_world_res_12_hex": {"default": None},
-    # "isea3h_world_res_6_hex": {"default": None},
-    # "nuts_rg_01m_2021": {"default": None},
-    # "nuts_rg_60m_2021": {"default": None},
 }
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
