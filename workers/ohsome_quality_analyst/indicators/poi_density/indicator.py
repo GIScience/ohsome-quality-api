@@ -31,10 +31,10 @@ class PoiDensity(BaseIndicator):
         self.count = None
         self.density = None
 
-    def greenThresholdFunction(self, area):
+    def green_threshold_function(self, area):
         return self.threshold_yellow * area
 
-    def yellowThresholdFunction(self, area):
+    def yellow_threshold_function(self, area):
         return self.threshold_red * area
 
     async def preprocess(self) -> bool:
@@ -95,8 +95,8 @@ class PoiDensity(BaseIndicator):
         x = np.linspace(0, max_area, 2)
 
         # Plot thresholds as line.
-        y1 = [self.greenThresholdFunction(xi) for xi in x]
-        y2 = [self.yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.green_threshold_function(xi) for xi in x]
+        y2 = [self.yellow_threshold_function(xi) for xi in x]
 
         line = ax.plot(
             x,

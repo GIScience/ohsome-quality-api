@@ -24,7 +24,7 @@ class TestCliIntegration(unittest.TestCase):
         )
 
     @oqt_vcr.use_cassette()
-    def testCreateIndicator(self):
+    def test_create_indicator(self):
         result = self.runner.invoke(
             cli,
             [
@@ -42,14 +42,14 @@ class TestCliIntegration(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
 
     @oqt_vcr.use_cassette()
-    def testCreateReport(self):
+    def test_create_report(self):
         result = self.runner.invoke(
             cli,
             ["create-report", "-r", "SimpleReport", "-d", "regions", "-f", "3"],
         )
         self.assertEqual(result.exit_code, 0)
 
-    def testGetAvailableRegions(self):
+    def test_get_available_regions(self):
         result = self.runner.invoke(
             cli,
             ["-q", "list-regions"],

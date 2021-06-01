@@ -18,14 +18,13 @@ logging.debug("Debugging output enabled")
 
 
 def empty_api_response() -> dict:
-    RESPONSE_TEMPLATE = {
+    return {
         "attribution": {
             "url": "https://ohsome.org/copyrights",
             "text": "© OpenStreetMap contributors",
         },
         "apiVersion": oqt_version,
     }
-    return RESPONSE_TEMPLATE
 
 
 async def load_bpolys(bpolys: str) -> None:

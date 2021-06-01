@@ -131,7 +131,7 @@ class LastEdit(BaseIndicator):
             wedgeprops={"width": size, "alpha": 0.5},
         )
 
-        for c, s, l in zip(colors, sizes, labels):
+        for c, l in zip(colors, labels):
             handles.append(mpatches.Patch(color=c, label=f"{l}"))
 
         # Plot inner Pie (Indicator Value)

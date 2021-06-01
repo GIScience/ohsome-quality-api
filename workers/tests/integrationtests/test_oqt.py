@@ -14,7 +14,7 @@ class TestOqt(unittest.TestCase):
         self.bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
 
     @oqt_vcr.use_cassette()
-    def testCreateIndicatorFromScratch(self):
+    def test_create_indicator_from_scratch(self):
         # From scratch
         indicator = asyncio.run(
             oqt.create_indicator(
@@ -27,7 +27,7 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def testCreateIndicatorFromDatabase(self):
+    def test_create_indicator_from_database(self):
         # Invalid dataset name
         with self.assertRaises(ValueError):
             asyncio.run(
@@ -54,14 +54,14 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def testCreateReportFromScratch(self):
+    def test_create_report_from_scratch(self):
         report = asyncio.run(oqt.create_report("SimpleReport", self.bpolys))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
-    def testCreateReportFromDatabase(self):
+    def test_create_report_from_database(self):
         report = asyncio.run(
             oqt.create_report("SimpleReport", dataset="regions", feature_id=3)
         )

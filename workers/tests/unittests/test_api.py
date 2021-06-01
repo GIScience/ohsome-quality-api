@@ -6,7 +6,7 @@ from ohsome_quality_analyst.api import load_bpolys
 
 
 class TestApiUnit(unittest.TestCase):
-    def testValidateBpolysSize(self):
+    def test_validate_bpolys_size(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",

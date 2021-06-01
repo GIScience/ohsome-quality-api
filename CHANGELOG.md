@@ -3,9 +3,11 @@
 ## Current Main
 
 - Add check and custom exception for an invalid indicator layer combination during initialization of indicator objects ([#28])
-- Add pep8-naming package as development dependency ([#40])
+- Add pre-commit check for [PEP 8] conform names by adding the pep8-naming package as development dependency ([#40])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
+[#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
+[PEP 8]: https://www.python.org/dev/peps/pep-0008/
 
 
 ## 0.3.1

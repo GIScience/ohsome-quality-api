@@ -32,13 +32,13 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.feature_count = None
         self.feature_count_per_sqkm = None
 
-    def greenThresholdFunction(self, pop_per_sqkm) -> float:
+    def green_threshold_function(self, pop_per_sqkm) -> float:
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
         return 5.0 * np.sqrt(pop_per_sqkm)
 
-    def yellowThresholdFunction(self, pop_per_sqkm) -> float:
+    def yellow_threshold_function(self, pop_per_sqkm) -> float:
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
@@ -73,23 +73,23 @@ class GhsPopComparisonBuildings(BaseIndicator):
         if self.pop_count_per_sqkm == 0:
             return False
 
-        elif self.feature_count_per_sqkm <= self.yellowThresholdFunction(
+        elif self.feature_count_per_sqkm <= self.yellow_threshold_function(
             self.pop_count_per_sqkm
         ):
             self.result.value = (
                 self.feature_count_per_sqkm
-                / self.yellowThresholdFunction(self.pop_count_per_sqkm)
+                / self.yellow_threshold_function(self.pop_count_per_sqkm)
             ) * (0.5)
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
             self.result.label = "red"
 
-        elif self.feature_count_per_sqkm <= self.greenThresholdFunction(
+        elif self.feature_count_per_sqkm <= self.green_threshold_function(
             self.pop_count_per_sqkm
         ):
-            green = self.greenThresholdFunction(self.pop_count_per_sqkm)
-            yellow = self.yellowThresholdFunction(self.pop_count_per_sqkm)
+            green = self.green_threshold_function(self.pop_count_per_sqkm)
+            yellow = self.yellow_threshold_function(self.pop_count_per_sqkm)
             fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
             self.result.value = 0.5 + fraction
             self.result.description = (
@@ -127,8 +127,8 @@ class GhsPopComparisonBuildings(BaseIndicator):
         x = np.linspace(0, max_area, 20)
 
         # Plot thresholds as line.
-        y1 = [self.greenThresholdFunction(xi) for xi in x]
-        y2 = [self.yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.green_threshold_function(xi) for xi in x]
+        y2 = [self.yellow_threshold_function(xi) for xi in x]
         line = line = ax.plot(
             x,
             y1,
