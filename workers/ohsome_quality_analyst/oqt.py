@@ -17,11 +17,11 @@ from ohsome_quality_analyst.utils.helper import name_to_class
 async def create_indicator(
     indicator_name: str,
     layer_name: str,
-    force: bool = False,
     bpolys: Optional[FeatureCollection] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[Union[int, str]] = None,
     fid_field: Optional[str] = None,
+    force: bool = False,
 ) -> BaseIndicator:
     """Create an indicator.
 
@@ -68,9 +68,6 @@ async def create_indicator(
         await from_scratch()
     # from database
     elif bpolys is None and dataset is not None and feature_id is not None:
-        logging.info("Dataset name:\t" + dataset)
-        logging.info("Feature id:\t" + str(feature_id))
-
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
         if dataset not in DATASETS.keys():
@@ -81,6 +78,10 @@ async def create_indicator(
         else:
             if fid_field not in DATASETS[dataset]["other"]:
                 raise ValueError("Input feature id field is not valid: " + fid_field)
+
+        logging.info("Dataset name:\t" + dataset)
+        logging.info("Feature id:\t" + str(feature_id))
+        logging.info("Feature id field:\t" + str(fid_field))
 
         bpolys = await db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
 
@@ -132,6 +133,7 @@ async def create_report(
     bpolys: Optional[FeatureCollection] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[Union[int, str]] = None,
+    fid_field: Optional[str] = None,
 ) -> object:
     """Create a report.
 
@@ -142,7 +144,9 @@ async def create_report(
         Report
     """
     report_class = name_to_class(class_type="report", name=report_name)
-    report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+    report = report_class(
+        bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
+    )
     report.set_indicator_layer()
     for indicator_name, layer_name in report.indicator_layer:
         indicator = await create_indicator(
@@ -151,6 +155,7 @@ async def create_report(
             bpolys=report.bpolys,
             dataset=report.dataset,
             feature_id=report.feature_id,
+            fid_field=fid_field,
             force=force,
         )
         report.indicators.append(indicator)

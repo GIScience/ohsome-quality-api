@@ -40,9 +40,11 @@ class BaseReport(metaclass=ABCMeta):
         bpolys: FeatureCollection = None,
         dataset: str = None,
         feature_id: int = None,
+        fid_field: str = None,
     ):
         self.dataset = dataset
         self.feature_id = feature_id
+        self.fid_field = fid_field
         self.bpolys = bpolys
 
         # Definies indicator+layer combinations

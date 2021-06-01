@@ -160,6 +160,7 @@ def create_indicator(
                 bpolys=bpolys,
                 feature_id=feature_id,
                 dataset=dataset_name,
+                fid_field=fid_field,
                 force=force,
             )
         )
@@ -174,13 +175,15 @@ def create_indicator(
 @add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
+@add_opts(fid_field_opt)
 @add_opts(force_opt)
 def create_report(
     report_name: str,
     infile: str,
     outfile: str,
     dataset_name: str,
-    feature_id: int,
+    feature_id: Union[int, str],
+    fid_field: str,
     force: bool,
 ):
     """Create a Report and print results to stdout."""
@@ -198,6 +201,7 @@ def create_report(
                     bpolys=sub_collection,
                     dataset=dataset_name,
                     feature_id=feature_id,
+                    fid_field=fid_field,
                     force=force,
                 )
             )
@@ -218,6 +222,7 @@ def create_report(
                 bpolys=bpolys,
                 dataset=dataset_name,
                 feature_id=feature_id,
+                fid_field=fid_field,
                 force=force,
             )
         )
