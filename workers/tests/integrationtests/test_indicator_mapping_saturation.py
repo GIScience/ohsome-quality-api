@@ -36,7 +36,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def testFloatDivisionByZeroError(self):
+    def test_float_division_by_zero_error(self):
         layer_name = "building_count"
         dataset = "regions"
         feature_id = 31
@@ -48,7 +48,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
 
     @oqt_vcr.use_cassette()
-    def testCannotConvertNanError(self):
+    def test_cannot_convert_nan_error(self):
         layer_name = "building_count"
         dataset = "regions"
         feature_id = 28

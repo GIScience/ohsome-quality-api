@@ -32,14 +32,14 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.feature_length = None
         self.feature_length_per_sqkm = None
 
-    def greenThresholdFunction(self, pop_per_sqkm) -> float:
+    def green_threshold_function(self, pop_per_sqkm) -> float:
         """Return road density threshold for green label."""
         if pop_per_sqkm < 5000:
             return pop_per_sqkm / 500
         else:
             return 10
 
-    def yellowThresholdFunction(self, pop_per_sqkm) -> float:
+    def yellow_threshold_function(self, pop_per_sqkm) -> float:
         """Return road density threshold for yellow label."""
         if pop_per_sqkm < 5000:
             return pop_per_sqkm / 1000
@@ -73,8 +73,8 @@ class GhsPopComparisonRoads(BaseIndicator):
             feature_length_per_sqkm=round(self.feature_length_per_sqkm, 1),
         )
 
-        green_road_density = self.greenThresholdFunction(self.pop_count_per_sqkm)
-        yellow_road_density = self.yellowThresholdFunction(self.pop_count_per_sqkm)
+        green_road_density = self.green_threshold_function(self.pop_count_per_sqkm)
+        yellow_road_density = self.yellow_threshold_function(self.pop_count_per_sqkm)
 
         if self.pop_count_per_sqkm == 0:
             return False
@@ -124,8 +124,8 @@ class GhsPopComparisonRoads(BaseIndicator):
             max_area = round(self.pop_count_per_sqkm * 2 / 10) * 10
         x = np.linspace(0, max_area, 100)
         # Plot thresholds as line.
-        y1 = [self.greenThresholdFunction(xi) for xi in x]
-        y2 = [self.yellowThresholdFunction(xi) for xi in x]
+        y1 = [self.green_threshold_function(xi) for xi in x]
+        y2 = [self.yellow_threshold_function(xi) for xi in x]
         line = ax.plot(
             x,
             y1,

@@ -1031,7 +1031,7 @@ class sigmoidCurve:
                 # get possible xmids
                 xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
                 # check for the xmids the mse error
-                for i, xval in enumerate(xmidvalues):
+                for xval in xmidvalues:
                     yPredX = self.logistic1(
                         xval, initParamsSingle[3], initParamsSingle[1], df1.li
                     )
@@ -1068,7 +1068,7 @@ class sigmoidCurve:
                 # incoms = [incom for incom in xmidvalues if str(incom) != 'nan']
                 # xmidvalues = incoms
                 # check for the xmids the mse error
-                for i, xval in enumerate(xmidvalues):
+                for xval in xmidvalues:
                     yPredX = self.logistic1(
                         xval, initParamsSingleB[3], initParamsSingleB[1], df1.li
                     )

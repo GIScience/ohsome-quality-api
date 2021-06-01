@@ -20,30 +20,30 @@ class TestCliUnit(unittest.TestCase):
             "heidelberg_altstadt.geojson",
         )
 
-    def testCli(self):
+    def test_cli(self):
         result = self.runner.invoke(cli, ["--help"])
         assert result.exit_code == 0
 
         result = self.runner.invoke(cli, ["--version"])
         assert result.exit_code == 0
 
-    def testListIndicators(self):
+    def test_list_indicators(self):
         result = self.runner.invoke(cli, ["list-indicators"])
         assert result.exit_code == 0
 
-    def testListReports(self):
+    def test_list_reports(self):
         result = self.runner.invoke(cli, ["list-reports"])
         assert result.exit_code == 0
 
-    def testListLayers(self):
+    def test_list_layers(self):
         result = self.runner.invoke(cli, ["list-layers"])
         assert result.exit_code == 0
 
-    def testListDatasets(self):
+    def test_list_datasets(self):
         result = self.runner.invoke(cli, ["list-datasets"])
         assert result.exit_code == 0
 
-    def testCreateAllIndicators(self):
+    def test_create_all_indicators(self):
         result = self.runner.invoke(
             cli,
             ["create-all-indicators", "-d", "regions"],
