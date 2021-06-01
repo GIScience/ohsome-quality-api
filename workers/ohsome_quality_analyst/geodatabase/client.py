@@ -62,8 +62,6 @@ async def save_indicator_results(
     with open(file_path, "r") as file:
         upsert_query = file.read()
 
-    # TODO: Here the pretty name of indicator and layer is used
-    # TODO: Should it be the unique name as definied as top level key in YAML files?
     data = (
         indicator.metadata.name,
         indicator.layer.name,
