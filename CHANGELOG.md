@@ -2,11 +2,14 @@
 
 ## Current Main
 
+- Add option to select different datasets and fid fields as input to OQT #4 #37
 - Add check and custom exception for an invalid indicator layer combination during initialization of indicator objects ([#28])
 - Add pre-commit check for [PEP 8] conform names by adding the pep8-naming package as development dependency ([#40])
 - Raise exceptions in the ohsome client instead of returning None in case of a failed ohsome API query ([#29])
 
+[#4]: https://github.com/GIScience/ohsome-quality-analyst/issue/4
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
+[#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
 [#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
