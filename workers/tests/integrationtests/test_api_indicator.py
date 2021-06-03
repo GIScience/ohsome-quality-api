@@ -48,10 +48,46 @@ class TestApiIndicator(unittest.TestCase):
         self.assertTrue(self.schema.is_valid(indicator))
 
     @oqt_vcr.use_cassette()
-    def test_get_indicator_dataset(self):
+    def test_get_indicator_dataset_default_fid_field(self):
         url = "/indicator/{0}?layerName={1}&dataset={2}&featureId={3}".format(
             self.indicator_name, self.layer_name, self.dataset, self.feature_id
         )
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
+
+    @oqt_vcr.use_cassette()
+    def test_get_indicator_dataset_custom_fid_field(self):
+        base_url = "/indicator/{0}?".format(self.indicator_name)
+        parameter = "layerName={0}&dataset={1}&featureId={2}&fidField={3}".format(
+            self.layer_name,
+            self.dataset,
+            self.feature_id,
+            "ogc_fid",
+        )
+        url = base_url + parameter
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
+
+    @oqt_vcr.use_cassette()
+    def test_get_indicator_dataset_custom_fid_field_2(self):
+        base_url = "/indicator/{0}?".format(self.indicator_name)
+        parameter = "layerName={0}&dataset={1}&featureId={2}&fidField={3}".format(
+            self.layer_name,
+            self.dataset,
+            "Alger%20Kenadsa%20medium",
+            "name",
+        )
+        url = base_url + parameter
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -73,11 +109,45 @@ class TestApiIndicator(unittest.TestCase):
         self.assertTrue(self.schema.is_valid(indicator))
 
     @oqt_vcr.use_cassette()
-    def test_post_indicator_dataset(self):
+    def test_post_indicator_dataset_default_fid_field(self):
         data = {
             "dataset": self.dataset,
             "featureId": self.feature_id,
             "layerName": self.layer_name,
+        }
+        url = f"/indicator/{self.indicator_name}"
+        response = self.client.post(url, json=data)
+
+        self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
+
+    @oqt_vcr.use_cassette()
+    def test_post_indicator_dataset_custom_fid_field(self):
+        data = {
+            "dataset": self.dataset,
+            "featureId": self.feature_id,
+            "layerName": self.layer_name,
+            "fidField": "ogc_fid",
+        }
+        url = f"/indicator/{self.indicator_name}"
+        response = self.client.post(url, json=data)
+
+        self.assertEqual(response.status_code, 200)
+
+        indicator = response.json()
+        self.schema.validate(indicator)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(indicator))
+
+    @oqt_vcr.use_cassette()
+    def test_post_indicator_dataset_custom_fid_field_2(self):
+        data = {
+            "dataset": self.dataset,
+            "featureId": "Alger Kenadsa medium",
+            "layerName": self.layer_name,
+            "fidField": "name",
         }
         url = f"/indicator/{self.indicator_name}"
         response = self.client.post(url, json=data)
