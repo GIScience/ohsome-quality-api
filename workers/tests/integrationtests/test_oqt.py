@@ -10,13 +10,14 @@ from .utils import oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
-        feature_id = 3
+        feature_id = 31
         self.bpolys = asyncio.run(
             db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
         )
 
     @oqt_vcr.use_cassette()
-    def test_create_indicator_from_scratch(self):
+    def test_create_indicator_bpolys(self):
+        """Test creating indicator from scratch."""
         # From scratch
         indicator = asyncio.run(
             oqt.create_indicator(
@@ -29,7 +30,7 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def test_create_indicator_from_database_invalid_dataset(self):
+    def test_create_indicator_invalid_dataset(self):
         with self.assertRaises(ValueError):
             asyncio.run(
                 oqt.create_indicator(
@@ -40,7 +41,8 @@ class TestOqt(unittest.TestCase):
                 )
             )
 
-    def test_create_indicator_from_database_invalid_fid_field(self):
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_invalid_fid_field(self):
         with self.assertRaises(ValueError):
             asyncio.run(
                 oqt.create_indicator(
@@ -53,7 +55,7 @@ class TestOqt(unittest.TestCase):
             )
 
     @oqt_vcr.use_cassette()
-    def testCreateIndicatorFromDatabaseDefaultFidField(self):
+    def test_create_indicator_dataset_default_fid_field(self):
         indicator = asyncio.run(
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
@@ -67,23 +69,40 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.description)
         self.assertIsNotNone(indicator.result.svg)
 
-    # TODO:
-    # def testCreateIndicatorFromDatabaseCustomFidField(self):
-    #     indicator = asyncio.run(
-    #         oqt.create_indicator(
-    #             "GhsPopComparisonBuildings",
-    #             "building_count",
-    #             dataset="regions",
-    #             fid_field="name",
-    #             fid="Tun Borj Bourguiba",
-    #         )
-    #     )
-    #     self.assertIsNotNone(indicator.result.label)
-    #     self.assertIsNotNone(indicator.result.value)
-    #     self.assertIsNotNone(indicator.result.description)
-    #     self.assertIsNotNone(indicator.result.svg)
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_custom_fid_field_int(self):
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparisonBuildings",
+                "building_count",
+                dataset="regions",
+                feature_id=3,
+                fid_field="ogc_fid",
+            )
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
 
-    def testCreateIndicatorFromDatabaseInvalidArguments(self):
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_custom_fid_field_str(self):
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparisonBuildings",
+                "building_count",
+                dataset="regions",
+                feature_id="Alger Kenadsa medium",
+                fid_field="name",
+            )
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_from_database_invalid_arguments(self):
         with self.assertRaises(ValueError):
             asyncio.run(
                 oqt.create_indicator(
@@ -96,16 +115,41 @@ class TestOqt(unittest.TestCase):
             )
 
     @oqt_vcr.use_cassette()
-    def test_create_report_from_scratch(self):
+    def test_create_report_bpolys(self):
         report = asyncio.run(oqt.create_report("SimpleReport", bpolys=self.bpolys))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
-    def test_create_report_from_database(self):
+    def test_create_report_dataset_default_fid_field(self):
         report = asyncio.run(
             oqt.create_report("SimpleReport", dataset="regions", feature_id=31)
+        )
+        self.assertIsNotNone(report.result.label)
+        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.description)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_dataset_custom_fid_field_int(self):
+        report = asyncio.run(
+            oqt.create_report(
+                "SimpleReport", dataset="regions", feature_id=31, fid_field="ogc_fid"
+            )
+        )
+        self.assertIsNotNone(report.result.label)
+        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.description)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_dataset_custom_fid_field_str(self):
+        report = asyncio.run(
+            oqt.create_report(
+                "SimpleReport",
+                dataset="regions",
+                feature_id="Alger Kenadsa medium",  # equals ogc_fid 3
+                fid_field="name",
+            )
         )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
