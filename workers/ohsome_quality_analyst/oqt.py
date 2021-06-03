@@ -76,7 +76,10 @@ async def create_indicator(
         if fid_field is None:
             fid_field = DATASETS[dataset]["default"]
         else:
-            if fid_field not in DATASETS[dataset]["other"]:
+            if (
+                fid_field not in DATASETS[dataset]["other"]
+                and fid_field != DATASETS[dataset]["default"]
+            ):
                 raise ValueError("Input feature id field is not valid: " + fid_field)
 
         logging.info("Dataset name:\t" + dataset)
