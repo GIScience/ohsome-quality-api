@@ -24,6 +24,8 @@ import asyncpg
 import geojson
 from asyncpg.exceptions import DataError, UndefinedColumnError
 
+from ohsome_quality_analyst.utils.definitions import DATASETS
+
 
 @asynccontextmanager
 async def get_connection():
@@ -199,7 +201,27 @@ async def get_available_regions() -> geojson.FeatureCollection:
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
     feature_collection = geojson.loads(record[0])
-    # To be complaint with rfc7946 "id" should be a member of the feature and not of the properties.
+    # To be complaint with rfc7946 "id" should be a member of the feature
+    # and not of the properties.
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
+
+
+def sanity_check_dataset(dataset: str) -> bool:
+    """Compare against pre-definied values to prevent SQL injection"""
+    if dataset not in DATASETS.keys():
+        return False
+    else:
+        return True
+
+
+def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
+    """Compare against pre-definied values to prevent SQL injection"""
+    if (
+        fid_field not in DATASETS[dataset]["other"]
+        and fid_field != DATASETS[dataset]["default"]
+    ):
+        return False
+    else:
+        return True

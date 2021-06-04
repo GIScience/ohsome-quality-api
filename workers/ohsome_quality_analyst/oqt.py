@@ -70,17 +70,12 @@ async def create_indicator(
     elif bpolys is None and dataset is not None and feature_id is not None:
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
-        if dataset not in DATASETS.keys():
+        if not db_client.sanity_check_dataset(dataset):
             raise ValueError("Input dataset is not valid: " + dataset)
-
         if fid_field is None:
             fid_field = DATASETS[dataset]["default"]
-        else:
-            if (
-                fid_field not in DATASETS[dataset]["other"]
-                and fid_field != DATASETS[dataset]["default"]
-            ):
-                raise ValueError("Input feature id field is not valid: " + fid_field)
+        if not db_client.sanity_check_fid_field(dataset, fid_field):
+            raise ValueError("Input feature id field is not valid: " + fid_field)
 
         logging.info("Dataset name:\t" + dataset)
         logging.info("Feature id:\t" + str(feature_id))

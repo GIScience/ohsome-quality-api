@@ -193,8 +193,12 @@ async def _fetch_report(
 async def get_bpolys_from_db(
     dataset: str, featureId: int, fid_field: Optional[str]
 ) -> geojson.FeatureCollection:
+    if not db_client.sanity_check_dataset(dataset):
+        raise ValueError("Input dataset is not valid: " + dataset)
     if fid_field is None:
         fid_field = DATASETS[dataset]["default"]
+    if not db_client.sanity_check_fid_field(dataset, fid_field):
+        raise ValueError("Input feature id field is not valid: " + fid_field)
     return await db_client.get_bpolys_from_db(
         dataset=dataset, feature_id=featureId, fid_field=fid_field
     )
