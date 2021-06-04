@@ -11,8 +11,9 @@ class TestOqt(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
         feature_id = 31
+        fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+            db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
         )
 
     @oqt_vcr.use_cassette()
