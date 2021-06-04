@@ -234,9 +234,9 @@ def create_report(
 @cli.command("create-all-indicators")
 @add_opts(force_opt)
 def create_all_indicators(force: bool):
-    """Create all indicators for OQT regions."""
+    """Create all indicators for all OQT regions."""
     click.echo(
-        "This command will calculate all indicators for OQT regions "
+        "This command will calculate all indicators for all OQT regions "
         + "and may take a while to complete."
     )
     if force:

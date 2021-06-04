@@ -151,7 +151,7 @@ async def get_area_of_bpolys(bpolys: Dict):
 async def get_bpolys_from_db(
     dataset: str, feature_id: Union[int, str], fid_field: str
 ) -> geojson.FeatureCollection:
-    """Get bounding polygon from the Geodatabase as a GeoJSON Feature Collection."""
+    """Get bounding polygon from the geodatabase as a GeoJSON FeatureCollection."""
     logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, feature_id)))
 
     # Safe against SQL injection because of predefined values
@@ -199,7 +199,7 @@ async def get_available_regions() -> geojson.FeatureCollection:
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
     feature_collection = geojson.loads(record[0])
-    # To be complaint with rfc7946 "id" should be a member of Feature not of Properties
+    # To be complaint with rfc7946 "id" should be a member of the feature and not of the properties.
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
