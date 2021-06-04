@@ -21,9 +21,10 @@ class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.dataset = "regions"
-        self.feature_id = 1
+        self.feature_id = 31
+        self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
         )
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
@@ -67,7 +68,7 @@ class TestApiIndicator(unittest.TestCase):
             self.layer_name,
             self.dataset,
             self.feature_id,
-            "ogc_fid",
+            self.fid_field,
         )
         url = base_url + parameter
         response = self.client.get(url)
@@ -130,7 +131,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "featureId": self.feature_id,
             "layerName": self.layer_name,
-            "fidField": "ogc_fid",
+            "fidField": self.fid_field,
         }
         url = f"/indicator/{self.indicator_name}"
         response = self.client.post(url, json=data)

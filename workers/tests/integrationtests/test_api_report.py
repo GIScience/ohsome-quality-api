@@ -24,8 +24,9 @@ class TestApiReport(unittest.TestCase):
         self.client = TestClient(app)
         self.dataset = "regions"
         self.feature_id = 31
+        self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, "ogc_fid")
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
         )
         self.report_name = "SimpleReport"
 
@@ -58,7 +59,7 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_custom_fid_field(self):
         url = "/report/{0}?dataset={1}&featureId={2}&fidField={3}".format(
-            self.report_name, self.dataset, self.feature_id, "ogc_fid"
+            self.report_name, self.dataset, self.feature_id, self.fid_field
         )
         response = self.client.get(url)
 
@@ -110,7 +111,7 @@ class TestApiReport(unittest.TestCase):
         data = {
             "dataset": self.dataset,
             "featureId": self.feature_id,
-            "fidField": "ogc_fid",
+            "fidField": self.fid_field,
         }
         url = f"/report/{self.report_name}"
         response = self.client.post(url, json=data)
