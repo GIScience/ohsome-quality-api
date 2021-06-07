@@ -22,7 +22,6 @@ from typing import Dict, List, Union
 
 import asyncpg
 import geojson
-from asyncpg.exceptions import DataError, UndefinedColumnError
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
 
@@ -184,12 +183,7 @@ async def get_bpolys_from_db(
     ).format(fid_field=fid_field, dataset=dataset)
 
     async with get_connection() as conn:
-        try:
-            result = await conn.fetchrow(query, feature_id)
-        except (UndefinedColumnError, DataError):
-            # TODO: Do we need a custom error here?
-            # DataError occurs if feature id is a wrong type. E.g. str not int
-            raise
+        result = await conn.fetchrow(query, feature_id)
     return geojson.loads(result[0])
 
 
