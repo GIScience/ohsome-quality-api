@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 25 May 2021 09:13:44 GMT"
+                        "Mon, 07 Jun 2021 11:26:10 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -77,14 +77,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-16T20:00:00Z\",\n    \"value\" : 49.0,\n    \"value2\" : 48.0,\n    \"ratio\" : 0.979592\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 50.0,\n    \"value2\" : 49.0,\n    \"ratio\" : 0.98\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+9%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.111958%2C+49.947575%5D%2C+%5B9.180965%2C+49.947575%5D%2C+%5B9.180965%2C+49.992402%5D%2C+%5B9.111958%2C+49.992402%5D%2C+%5B9.111958%2C+49.947575%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+9%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+9%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B9.111958%2C+49.947575%5D%2C+%5B9.180965%2C+49.947575%5D%2C+%5B9.180965%2C+49.992402%5D%2C+%5B9.111958%2C+49.992402%5D%2C+%5B9.111958%2C+49.947575%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "956"
+                        "942"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -114,7 +114,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 25 May 2021 09:14:18 GMT"
+                        "Mon, 07 Jun 2021 11:26:21 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -156,14 +156,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-16T20:00:00Z\",\n    \"value\" : 95.0,\n    \"value2\" : 95.0,\n    \"ratio\" : 1.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 95.0,\n    \"value2\" : 95.0,\n    \"ratio\" : 1.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -181,7 +181,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "958"
+                        "943"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -193,7 +193,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 25 May 2021 09:14:22 GMT"
+                        "Mon, 07 Jun 2021 11:26:24 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -235,7 +235,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-16T20:00:00Z\",\n    \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
             }
         }
     ]
