@@ -1,4 +1,3 @@
-import ast
 import asyncio
 import logging
 import pathlib
@@ -25,15 +24,6 @@ from ohsome_quality_analyst.utils.definitions import (
     load_layer_definitions,
     load_metadata,
 )
-
-
-class PythonLiteralOption(click.Option):
-    def type_cast_value(self, ctx, value):
-        try:
-            return ast.literal_eval(value)
-        except ValueError as e:
-            logging.exception(e)
-            raise click.BadParameter(value)
 
 
 def add_opts(options):
