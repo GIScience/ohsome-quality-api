@@ -2,6 +2,7 @@
 Standalone helper functions.
 """
 
+import datetime
 import importlib
 import os
 import pkgutil
@@ -49,3 +50,9 @@ def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
     module = pkgutil.get_loader(module_name)
     return os.path.dirname(module.get_filename())
+
+
+def datetime_to_isostring_timestamp(time: datetime) -> str:
+    """Checks for datetime objects and converts them to ISO 8601 format"""
+    if isinstance(time, (datetime.date, datetime.datetime)):
+        return time.isoformat()

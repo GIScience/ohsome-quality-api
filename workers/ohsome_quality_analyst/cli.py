@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import logging
 import pathlib
 
@@ -25,6 +24,7 @@ from ohsome_quality_analyst.utils.definitions import (
     load_layer_definitions,
     load_metadata,
 )
+from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
 
 
 def add_opts(options):
@@ -36,12 +36,6 @@ def add_opts(options):
         return func
 
     return _add_opts
-
-
-def format_datetime_for_dump(o):
-    """Checks for datetime objects and converts them to ISO 8601 format"""
-    if isinstance(o, (datetime.date, datetime.datetime)):
-        return o.isoformat()
 
 
 @click.group()
@@ -143,7 +137,7 @@ def create_indicator(
             outfile = pathlib.Path(outfile)
             outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=format_datetime_for_dump)
+            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
     else:
         bpolys = None
         indicator = asyncio.run(
@@ -202,7 +196,7 @@ def create_report(
             outfile = pathlib.Path(outfile)
             outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=format_datetime_for_dump)
+            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
     else:
         bpolys = None
         report = asyncio.run(
