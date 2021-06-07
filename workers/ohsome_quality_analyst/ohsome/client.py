@@ -44,7 +44,9 @@ async def query_ohsome_api(url: str, data: dict):
     try:
         resp.raise_for_status()  # Raise for response status codes 4xx and 5xx
     except httpx.HTTPStatusError as error:
-        raise OhsomeApiError("Querying the ohsome API failed!") from error
+        raise OhsomeApiError(
+            "Querying the ohsome API failed!" + error.response.json()["message"]
+        ) from error
 
     try:
         return geojson.loads(resp.content)
