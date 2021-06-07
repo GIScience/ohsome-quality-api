@@ -39,6 +39,7 @@ def add_opts(options):
 
 
 def format_datetime_for_dump(o):
+    """Checks for datetime objects and converts them to ISO 8601 format"""
     if isinstance(o, (datetime.date, datetime.datetime)):
         return o.isoformat()
 
