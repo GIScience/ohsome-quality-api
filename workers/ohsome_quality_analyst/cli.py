@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 import pathlib
 
@@ -35,6 +36,11 @@ def add_opts(options):
         return func
 
     return _add_opts
+
+
+def format_datetime_for_dump(o):
+    if isinstance(o, (datetime.date, datetime.datetime)):
+        return o.isoformat()
 
 
 @click.group()
@@ -136,7 +142,7 @@ def create_indicator(
             outfile = pathlib.Path(outfile)
             outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f)
+            geojson.dump(feature_collection, f, default=format_datetime_for_dump)
     else:
         bpolys = None
         indicator = asyncio.run(
@@ -195,7 +201,7 @@ def create_report(
             outfile = pathlib.Path(outfile)
             outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f)
+            geojson.dump(feature_collection, f, default=format_datetime_for_dump)
     else:
         bpolys = None
         report = asyncio.run(
