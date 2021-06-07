@@ -143,9 +143,9 @@ async def get_area_of_bpolys(bpolys: Dict):
                     )
             ) / (1000*1000) as area_sqkm
         """
-    geom = json.dumps(bpolys["features"][0]["geometry"])
+    polygon = json.dumps(bpolys["features"][0]["geometry"])
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, geom)
+        result = await conn.fetchrow(query, polygon)
     return result["area_sqkm"]
 
 
