@@ -30,12 +30,17 @@ class TestOhsomeClient(TestCase):
         fixtures_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "fixtures"
         )
+
         fixture = os.path.join(fixtures_dir, "ohsome-response-200-invalid.geojson")
         with open(fixture, "r") as reader:
-            self.invalid_geojson = reader.read()
+            self.invalid_response_geojson = reader.read()
         fixture = os.path.join(fixtures_dir, "ohsome-response-200-valid.geojson")
         with open(fixture, "r") as reader:
-            self.valid_geojson = reader.read()
+            self.valid_response = reader.read()
+        fixture = os.path.join(fixtures_dir, "ohsome-response-400-time.json")
+        with open(fixture, "r") as reader:
+            self.invalid_response_time = reader.read()
+
         self.layer = LayerDefinitionMock()
         self.bpolys = ""
         self.ohsome_api = "https://api.ohsome.org/v1/"
@@ -44,7 +49,7 @@ class TestOhsomeClient(TestCase):
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 200,
-                content=self.valid_geojson,
+                content=self.valid_response,
                 request=httpx.Request("POST", "http://www.example.org/"),
             )
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
@@ -55,7 +60,7 @@ class TestOhsomeClient(TestCase):
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 200,
-                content=self.invalid_geojson,
+                content=self.invalid_response_geojson,
                 request=httpx.Request("POST", "http://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
@@ -65,7 +70,7 @@ class TestOhsomeClient(TestCase):
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 400,
-                content=self.invalid_geojson,
+                content=self.invalid_response_time,
                 request=httpx.Request("POST", "http://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
