@@ -3,6 +3,7 @@ import os
 import unittest
 
 import geojson
+
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
