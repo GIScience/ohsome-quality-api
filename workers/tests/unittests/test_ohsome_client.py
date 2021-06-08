@@ -8,7 +8,6 @@ import httpx
 from schema import Optional, Schema
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import OHSOME_API
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
@@ -39,6 +38,7 @@ class TestOhsomeClient(TestCase):
             self.valid_geojson = reader.read()
         self.layer = LayerDefinitionMock()
         self.bpolys = ""
+        self.ohsome_api = "https://api.ohsome.org/v1/"
 
     def test_query_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
@@ -72,7 +72,7 @@ class TestOhsomeClient(TestCase):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
     def test_build_url(self) -> None:
-        ohsome_api = OHSOME_API.rstrip("/")
+        ohsome_api = self.ohsome_api.rstrip("/")
         url = ohsome_client.build_url(self.layer)
         self.assertEqual(ohsome_api + "/elements/length", url)
         url = ohsome_client.build_url(self.layer, ratio=True)
