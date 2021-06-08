@@ -42,7 +42,9 @@ async def query_ohsome_api(url: str, data: dict):
 
     # ohsome API response status codes are either 4xx and 5xx or 200
     try:
-        resp.raise_for_status()  # Raise for response status codes 4xx and 5xx
+        # Raise for response status codes 4xx and 5xx.
+        # This will raise an error (400) in case of invalid time parameter.
+        resp.raise_for_status()
     except httpx.HTTPStatusError as error:
         raise OhsomeApiError(
             "Querying the ohsome API failed!" + error.response.json()["message"]
