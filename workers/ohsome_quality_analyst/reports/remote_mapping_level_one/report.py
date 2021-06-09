@@ -40,17 +40,21 @@ class RemoteMappingLevelOne(BaseReport):
             # TODO: Is it possible that a label == UNDEFINED?
             if indicator.result.label != "undefined":
                 values.append(indicator.result.value)
-        self.result.value = mean(values)
+        if len(values) != 0:
+            self.result.value = mean(values)
 
-        if self.result.value < 0.5:
-            self.result.label = "red"
-            self.result.description = self.metadata.label_description["red"]
-        elif self.result.value < 1:
-            self.result.label = "yellow"
-            self.result.description = self.metadata.label_description["yellow"]
-        elif self.result.value >= 1:
-            self.result.label = "green"
-            self.result.description = self.metadata.label_description["green"]
+            if self.result.value < 0.5:
+                self.result.label = "red"
+                self.result.description = self.metadata.label_description["red"]
+            elif self.result.value < 1:
+                self.result.label = "yellow"
+                self.result.description = self.metadata.label_description["yellow"]
+            elif self.result.value >= 1:
+                self.result.label = "green"
+                self.result.description = self.metadata.label_description["green"]
+            else:
+                self.result.label = None
+                self.result.description = "Could not derive quality level"
         else:
-            self.result.label = None
-            self.result.description = "Could not derive quality level"
+            self.result.label = "undefined"
+            self.result.description = self.metadata.label_description["undefined"]
