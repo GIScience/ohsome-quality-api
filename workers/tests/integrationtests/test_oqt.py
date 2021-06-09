@@ -9,11 +9,11 @@ from .utils import oqt_vcr
 
 class TestOqt(unittest.TestCase):
     def setUp(self):
-        dataset = "regions"
-        feature_id = 31
-        fid_field = "ogc_fid"
+        self.dataset = "regions"
+        self.feature_id = 31
+        self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
         )
 
     @oqt_vcr.use_cassette()
@@ -38,7 +38,7 @@ class TestOqt(unittest.TestCase):
                     "GhsPopComparisonBuildings",
                     "building_count",
                     dataset="foo",
-                    feature_id=3,
+                    feature_id=self.feature_id,
                 )
             )
 
@@ -49,9 +49,9 @@ class TestOqt(unittest.TestCase):
                 oqt.create_indicator(
                     "GhsPopComparisonBuildings",
                     "building_count",
-                    dataset="regions",
+                    dataset=self.dataset,
+                    feature_id=self.feature_id,
                     fid_field="foo",
-                    feature_id=3,
                 )
             )
 
@@ -61,8 +61,8 @@ class TestOqt(unittest.TestCase):
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="regions",
-                feature_id=3,
+                dataset=self.dataset,
+                feature_id=self.feature_id,
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -76,9 +76,9 @@ class TestOqt(unittest.TestCase):
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="regions",
-                feature_id=3,
-                fid_field="ogc_fid",
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                fid_field=self.fid_field,
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -92,8 +92,8 @@ class TestOqt(unittest.TestCase):
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="regions",
-                feature_id="Alger Kenadsa medium",
+                dataset=self.dataset,
+                feature_id="Tun Borj Bourguiba good",
                 fid_field="name",
             )
         )
@@ -109,8 +109,8 @@ class TestOqt(unittest.TestCase):
                 oqt.create_indicator(
                     "GhsPopComparisonBuildings",
                     "building_count",
-                    dataset="regions",
-                    feature_id=31,
+                    dataset=self.dataset,
+                    feature_id=self.feature_id,
                     bpolys=self.bpolys,
                 )
             )
@@ -125,7 +125,9 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_report_dataset_default_fid_field(self):
         report = asyncio.run(
-            oqt.create_report("SimpleReport", dataset="regions", feature_id=31)
+            oqt.create_report(
+                "SimpleReport", dataset=self.dataset, feature_id=self.feature_id
+            )
         )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
@@ -135,7 +137,10 @@ class TestOqt(unittest.TestCase):
     def test_create_report_dataset_custom_fid_field_int(self):
         report = asyncio.run(
             oqt.create_report(
-                "SimpleReport", dataset="regions", feature_id=31, fid_field="ogc_fid"
+                "SimpleReport",
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                fid_field=self.fid_field,
             )
         )
         self.assertIsNotNone(report.result.label)
@@ -147,7 +152,7 @@ class TestOqt(unittest.TestCase):
         report = asyncio.run(
             oqt.create_report(
                 "SimpleReport",
-                dataset="regions",
+                dataset=self.dataset,
                 feature_id="Alger Kenadsa medium",  # equals ogc_fid 3
                 fid_field="name",
             )
