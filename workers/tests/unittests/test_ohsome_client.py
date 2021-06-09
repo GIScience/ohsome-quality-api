@@ -5,9 +5,10 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 import httpx
+from schema import Optional, Schema
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import OHSOME_API
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
 class AsyncMock(MagicMock):
@@ -19,8 +20,8 @@ class AsyncMock(MagicMock):
 class LayerDefinitionMock:
     name: str = ""
     description: str = ""
-    endpoint: str = OHSOME_API
-    filter: str = ""
+    endpoint: str = "elements/length"
+    filter: str = "mock_filter"
     ratio_filter: str = None
 
 
@@ -29,18 +30,28 @@ class TestOhsomeClient(TestCase):
         fixtures_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "fixtures"
         )
+
         fixture = os.path.join(fixtures_dir, "ohsome-response-200-invalid.geojson")
         with open(fixture, "r") as reader:
-            self.invalid_geojson = reader.read()
+            self.invalid_response_geojson = reader.read()
         fixture = os.path.join(fixtures_dir, "ohsome-response-200-valid.geojson")
         with open(fixture, "r") as reader:
-            self.valid_geojson = reader.read()
+            self.valid_response = reader.read()
+        fixture = os.path.join(fixtures_dir, "ohsome-response-400-time.json")
+        with open(fixture, "r") as reader:
+            self.invalid_response_time = reader.read()
+
         self.layer = LayerDefinitionMock()
         self.bpolys = ""
+        self.ohsome_api = "https://api.ohsome.org/v1/"
 
     def test_query_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
-            mock_request.return_value = httpx.Response(200, content=self.valid_geojson)
+            mock_request.return_value = httpx.Response(
+                200,
+                content=self.valid_response,
+                request=httpx.Request("POST", "http://www.example.org/"),
+            )
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
             self.assertTrue(response.is_valid)
 
@@ -48,7 +59,79 @@ class TestOhsomeClient(TestCase):
         """When response is streamed it can be invalid while status code equals 200"""
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
-                200, content=self.invalid_geojson
+                200,
+                content=self.invalid_response_geojson,
+                request=httpx.Request("POST", "http://www.example.org/"),
             )
-            response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
-            self.assertIsNone(response)
+            with self.assertRaises(OhsomeApiError):
+                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+
+    def test_query_status_code_400(self) -> None:
+        with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
+            mock_request.return_value = httpx.Response(
+                400,
+                content=self.invalid_response_time,
+                request=httpx.Request("POST", "http://www.example.org/"),
+            )
+            with self.assertRaises(OhsomeApiError):
+                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+
+    def test_build_url(self) -> None:
+        ohsome_api = self.ohsome_api.rstrip("/")
+        url = ohsome_client.build_url(self.layer)
+        self.assertEqual(ohsome_api + "/elements/length", url)
+        url = ohsome_client.build_url(self.layer, ratio=True)
+        self.assertEqual(ohsome_api + "/elements/length/ratio", url)
+        url = ohsome_client.build_url(self.layer, endpoint="foo/bar")
+        self.assertEqual(ohsome_api + "/foo/bar", url)
+        url = ohsome_client.build_url(self.layer, endpoint="foo/bar", ratio=True)
+        self.assertEqual(ohsome_api + "/foo/bar/ratio", url)
+
+    def test_build_data_dict_minimal(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+            }
+        )
+        layer = LayerDefinitionMock()
+        data = ohsome_client.build_data_dict(layer, "mock_bpolys")
+        self.assertTrue(schema.is_valid(data))
+
+    def test_build_data_dict_ratio(self) -> None:
+        """Layer has no ratio filter definied"""
+        layer = LayerDefinitionMock()
+        with self.assertRaises(ValueError):
+            ohsome_client.build_data_dict(layer, "mock_bpolys", ratio=True)
+
+    def test_build_data_dict_ratio_2(self) -> None:
+        """Layer has ratio filter definied"""
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "filter2": str,
+            }
+        )
+        layer = LayerDefinitionMock()
+        layer.ratio_filter = "mock_ratio_filter"
+        data = ohsome_client.build_data_dict(layer, "mock_bpolys", ratio=True)
+        self.assertTrue(schema.is_valid(data))
+
+    def test_build_data_with_time(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                Optional("filter2"): str,
+                "time": str,
+            }
+        )
+        layer = LayerDefinitionMock()
+        data = ohsome_client.build_data_dict(layer, "mock_bpolys", time="2014-01-01")
+        self.assertTrue(schema.is_valid(data))
+
+        layer = LayerDefinitionMock()
+        layer.ratio_filter = "mock_ratio_filter"
+        data = ohsome_client.build_data_dict(layer, "mock_bpolys", time="2014-01-01")
+        self.assertTrue(schema.is_valid(data))
