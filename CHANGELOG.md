@@ -10,8 +10,8 @@
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
-[#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
+[#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
 [#4]: https://github.com/GIScience/ohsome-quality-analyst/issues/4
 [#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
 
