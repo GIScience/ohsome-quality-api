@@ -54,5 +54,7 @@ def get_module_dir(module_name: str) -> str:
 
 def datetime_to_isostring_timestamp(time: datetime) -> str:
     """Checks for datetime objects and converts them to ISO 8601 format"""
-    if isinstance(time, (datetime.date, datetime.datetime)):
+    try:
         return time.isoformat()
+    except AttributeError:
+        raise TypeError
