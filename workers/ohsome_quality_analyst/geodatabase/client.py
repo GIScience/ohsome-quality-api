@@ -209,4 +209,7 @@ def sanity_check_dataset(dataset: str) -> bool:
 
 def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
     """Compare against pre-definied values to prevent SQL injection"""
-    return fid_field in DATASETS[dataset]["other"] or fid_field == DATASETS[dataset]["default"]
+    return (
+        fid_field in DATASETS[dataset]["other"]
+        or fid_field == DATASETS[dataset]["default"]
+    )
