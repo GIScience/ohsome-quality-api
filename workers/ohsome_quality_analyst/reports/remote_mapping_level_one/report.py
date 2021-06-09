@@ -56,5 +56,6 @@ class RemoteMappingLevelOne(BaseReport):
                 self.result.label = None
                 self.result.description = "Could not derive quality level"
         else:
+            self.result.value = -1
             self.result.label = "undefined"
             self.result.description = self.metadata.label_description["undefined"]
