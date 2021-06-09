@@ -1,0 +1,6 @@
+{
+  "timestamp" : "2021-06-08T08:19:49.333591",
+  "status" : 400,
+  "message" : "The provided time parameter is not ISO-8601 conform.",
+  "requestUrl" : "https://api.ohsome.org/v1/contributions/count?bboxes=8.67%2C49.39%2C8.71%2C49.42&filter=type%3Away%20and%20natural%3D*&format=json&time=20140101%2C2015010"
+}
