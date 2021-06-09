@@ -9,8 +9,8 @@
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
-[PEP 8]: https://www.python.org/dev/peps/pep-0008/
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
+[PEP 8]: https://www.python.org/dev/peps/pep-0008/
 [#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
 [#4]: https://github.com/GIScience/ohsome-quality-analyst/issues/4
 [#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
