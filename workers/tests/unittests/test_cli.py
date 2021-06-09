@@ -46,7 +46,7 @@ class TestCliUnit(unittest.TestCase):
     def test_create_all_indicators(self):
         result = self.runner.invoke(
             cli,
-            ["create-all-indicators", "-d", "regions"],
+            ["create-all-indicators"],
             input="N\n",
         )
         assert result.exit_code == 1

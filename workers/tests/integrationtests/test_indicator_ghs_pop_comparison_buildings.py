@@ -15,7 +15,9 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
         feature_id = 31
-        self.bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
         self.layer_name = "building_count"
         self.indicator = GhsPopComparisonBuildings(
             bpolys=self.bpolys, layer_name=self.layer_name

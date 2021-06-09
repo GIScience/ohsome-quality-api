@@ -24,17 +24,55 @@ class TestApiReport(unittest.TestCase):
         self.client = TestClient(app)
         self.dataset = "regions"
         self.feature_id = 31
+        self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id)
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
         )
         self.report_name = "SimpleReport"
 
         self.schema = api_schema_report
 
     @oqt_vcr.use_cassette()
-    def test_get_report_dataset(self):
+    def test_get_report_bpolys(self):
+        url = "/report/{0}?bpolys={1}".format(self.report_name, self.bpolys)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        report = response.json()
+        self.schema.validate(report)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(report))
+
+    @oqt_vcr.use_cassette()
+    def test_get_report_dataset_default_fid_field(self):
         url = "/report/{0}?dataset={1}&featureId={2}".format(
             self.report_name, self.dataset, self.feature_id
+        )
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        report = response.json()
+        self.schema.validate(report)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(report))
+
+    @oqt_vcr.use_cassette()
+    def test_get_report_dataset_custom_fid_field(self):
+        url = "/report/{0}?dataset={1}&featureId={2}&fidField={3}".format(
+            self.report_name, self.dataset, self.feature_id, self.fid_field
+        )
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        report = response.json()
+        self.schema.validate(report)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(report))
+
+    @oqt_vcr.use_cassette()
+    def test_get_report_dataset_custom_fid_field_2(self):
+        url = "/report/{0}?dataset={1}&featureId={2}&fidField={3}".format(
+            self.report_name, self.dataset, "Alger Kenadsa medium", "name"
         )
         response = self.client.get(url)
 
@@ -57,8 +95,40 @@ class TestApiReport(unittest.TestCase):
         self.assertTrue(self.schema.is_valid(report))
 
     @oqt_vcr.use_cassette()
-    def test_post_report_dataset(self):
+    def test_post_report_dataset_default_fid_field(self):
         data = {"dataset": self.dataset, "featureId": self.feature_id}
+        url = f"/report/{self.report_name}"
+        response = self.client.post(url, json=data)
+
+        self.assertEqual(response.status_code, 200)
+
+        report = response.json()
+        self.schema.validate(report)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(report))
+
+    @oqt_vcr.use_cassette()
+    def test_post_report_dataset_custom_fid_field(self):
+        data = {
+            "dataset": self.dataset,
+            "featureId": self.feature_id,
+            "fidField": self.fid_field,
+        }
+        url = f"/report/{self.report_name}"
+        response = self.client.post(url, json=data)
+
+        self.assertEqual(response.status_code, 200)
+
+        report = response.json()
+        self.schema.validate(report)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(report))
+
+    @oqt_vcr.use_cassette()
+    def test_post_report_dataset_custom_fid_field_2(self):
+        data = {
+            "dataset": self.dataset,
+            "featureId": self.feature_id,
+            "Alger Kenadsa medium": "name",
+        }
         url = f"/report/{self.report_name}"
         response = self.client.post(url, json=data)
 

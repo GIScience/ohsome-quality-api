@@ -3,22 +3,24 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 import logging
+from typing import Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import FeatureCollection
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import DATASET_NAMES, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import DATASETS, INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
 async def create_indicator(
-    indicator_name: str = None,
-    layer_name: str = None,
-    bpolys: FeatureCollection = None,
-    dataset: str = None,
-    feature_id: int = None,
+    indicator_name: str,
+    layer_name: str,
+    bpolys: Optional[FeatureCollection] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[Union[int, str]] = None,
+    fid_field: Optional[str] = None,
     force: bool = False,
 ) -> BaseIndicator:
     """Create an indicator.
@@ -57,51 +59,55 @@ async def create_indicator(
 
     indicator_class = name_to_class(class_type="indicator", name=indicator_name)
     logging.info("Creating indicator ...")
+    logging.info("Indicator name:\t" + indicator_name)
+    logging.info("Layer name:\t" + layer_name)
 
     # from scratch
     if bpolys is not None and dataset is None and feature_id is None:
-        logging.info("Indicator name:\t" + indicator_name)
-        logging.info("Layer name:\t" + layer_name)
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         await from_scratch()
-
     # from database
     elif bpolys is None and dataset is not None and feature_id is not None:
-        logging.info("Indicator name:\t" + indicator_name)
-        logging.info("Layer name:\t" + layer_name)
+        # Support only predefined datasets and id field.
+        # Otherwise creation of arbitrary relations or SQL injections are possible.
+        if not db_client.sanity_check_dataset(dataset):
+            raise ValueError("Input dataset is not valid: " + dataset)
+        if fid_field is None:
+            fid_field = DATASETS[dataset]["default"]
+        if not db_client.sanity_check_fid_field(dataset, fid_field):
+            raise ValueError("Input feature id field is not valid: " + fid_field)
+
         logging.info("Dataset name:\t" + dataset)
         logging.info("Feature id:\t" + str(feature_id))
-        # Support only predefined datasets.
-        # Otherwise creation of arbitrary relations or SQL injections are possible.
-        if dataset not in DATASET_NAMES:
-            raise ValueError("Input dataset is not valid")
-        else:
-            bpolys = await db_client.get_bpolys_from_db(dataset, feature_id)
+        logging.info("Feature id field:\t" + str(fid_field))
+
+        bpolys = await db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
+
         indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
         success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()
             await db_client.save_indicator_results(indicator, dataset, feature_id)
     else:
-        raise ValueError("Invalid set of arguments")
+        raise ValueError("Invalid set of arguments for the creation of an indicator")
 
     return indicator
 
 
-async def create_all_indicators(dataset: str, force: bool = False) -> None:
-    """Create all indicator/layer combination for a dataset.
+async def create_all_indicators(force: bool = False) -> None:
+    """Create all indicator/layer combination for OQT regions.
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_fids(dataset)
-    for feature_id in fids:
+    fids = await db_client.get_feature_ids("regions", "ogc_fid")
+    for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:
                 await create_indicator(
                     indicator_name,
                     layer_name,
-                    dataset=dataset,
-                    feature_id=feature_id,
+                    dataset="regions",
+                    feature_id=fid,
                     force=force,
                 )
             # TODO: Those errors are raised during MappingCalculation creation.
@@ -110,8 +116,8 @@ async def create_all_indicators(dataset: str, force: bool = False) -> None:
                     logging.error(error)
                     logging.error(
                         f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for the dataset '{dataset}' "
-                        f"and feature_id '{feature_id}'. "
+                        f"'{indicator_name}' for OQT regions "
+                        f"and feature id '{fid}'. "
                         f"Continue creation of indicators."
                     )
                     continue
@@ -121,10 +127,11 @@ async def create_all_indicators(dataset: str, force: bool = False) -> None:
 
 async def create_report(
     report_name: str,
-    bpolys: FeatureCollection = None,
-    dataset: str = None,
-    feature_id: int = None,
     force: bool = False,
+    bpolys: Optional[FeatureCollection] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[Union[int, str]] = None,
+    fid_field: Optional[str] = None,
 ) -> object:
     """Create a report.
 
@@ -135,15 +142,18 @@ async def create_report(
         Report
     """
     report_class = name_to_class(class_type="report", name=report_name)
-    report = report_class(bpolys=bpolys, dataset=dataset, feature_id=feature_id)
+    report = report_class(
+        bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
+    )
     report.set_indicator_layer()
     for indicator_name, layer_name in report.indicator_layer:
         indicator = await create_indicator(
             indicator_name,
             layer_name,
-            report.bpolys,
-            report.dataset,
-            report.feature_id,
+            bpolys=report.bpolys,
+            dataset=report.dataset,
+            feature_id=report.feature_id,
+            fid_field=fid_field,
             force=force,
         )
         report.indicators.append(indicator)

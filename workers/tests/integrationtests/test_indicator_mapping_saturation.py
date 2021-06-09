@@ -40,7 +40,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         layer_name = "building_count"
         dataset = "regions"
         feature_id = 31
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
@@ -52,7 +54,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         layer_name = "building_count"
         dataset = "regions"
         feature_id = 28
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())

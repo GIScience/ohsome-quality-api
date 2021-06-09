@@ -9,12 +9,16 @@ from .utils import oqt_vcr
 
 class TestOqt(unittest.TestCase):
     def setUp(self):
-        dataset = "regions"
-        feature_id = 31
-        self.bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        self.dataset = "regions"
+        self.feature_id = 31
+        self.fid_field = "ogc_fid"
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
+        )
 
     @oqt_vcr.use_cassette()
-    def test_create_indicator_from_scratch(self):
+    def test_create_indicator_bpolys(self):
+        """Test creating indicator from scratch."""
         # From scratch
         indicator = asyncio.run(
             oqt.create_indicator(
@@ -27,25 +31,38 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def test_create_indicator_from_database(self):
-        # Invalid dataset name
+    def test_create_indicator_invalid_dataset(self):
         with self.assertRaises(ValueError):
             asyncio.run(
                 oqt.create_indicator(
                     "GhsPopComparisonBuildings",
                     "building_count",
-                    dataset="test_region",
-                    feature_id=1,
+                    dataset="foo",
+                    feature_id=self.feature_id,
                 )
             )
 
-        # Valid parameters
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_invalid_fid_field(self):
+        with self.assertRaises(ValueError):
+            asyncio.run(
+                oqt.create_indicator(
+                    "GhsPopComparisonBuildings",
+                    "building_count",
+                    dataset=self.dataset,
+                    feature_id=self.feature_id,
+                    fid_field="foo",
+                )
+            )
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_default_fid_field(self):
         indicator = asyncio.run(
             oqt.create_indicator(
                 "GhsPopComparisonBuildings",
                 "building_count",
-                dataset="regions",
-                feature_id=4,
+                dataset=self.dataset,
+                feature_id=self.feature_id,
             )
         )
         self.assertIsNotNone(indicator.result.label)
@@ -54,16 +71,91 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def test_create_report_from_scratch(self):
-        report = asyncio.run(oqt.create_report("SimpleReport", self.bpolys))
+    def test_create_indicator_dataset_custom_fid_field_int(self):
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparisonBuildings",
+                "building_count",
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                fid_field=self.fid_field,
+            )
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_dataset_custom_fid_field_str(self):
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparisonBuildings",
+                "building_count",
+                dataset=self.dataset,
+                feature_id="Tun Borj Bourguiba good",
+                fid_field="name",
+            )
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_from_database_invalid_arguments(self):
+        with self.assertRaises(ValueError):
+            asyncio.run(
+                oqt.create_indicator(
+                    "GhsPopComparisonBuildings",
+                    "building_count",
+                    dataset=self.dataset,
+                    feature_id=self.feature_id,
+                    bpolys=self.bpolys,
+                )
+            )
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_bpolys(self):
+        report = asyncio.run(oqt.create_report("SimpleReport", bpolys=self.bpolys))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
-    def test_create_report_from_database(self):
+    def test_create_report_dataset_default_fid_field(self):
         report = asyncio.run(
-            oqt.create_report("SimpleReport", dataset="regions", feature_id=3)
+            oqt.create_report(
+                "SimpleReport", dataset=self.dataset, feature_id=self.feature_id
+            )
+        )
+        self.assertIsNotNone(report.result.label)
+        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.description)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_dataset_custom_fid_field_int(self):
+        report = asyncio.run(
+            oqt.create_report(
+                "SimpleReport",
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                fid_field=self.fid_field,
+            )
+        )
+        self.assertIsNotNone(report.result.label)
+        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.description)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_dataset_custom_fid_field_str(self):
+        report = asyncio.run(
+            oqt.create_report(
+                "SimpleReport",
+                dataset=self.dataset,
+                feature_id="Alger Kenadsa medium",  # equals ogc_fid 3
+                fid_field="name",
+            )
         )
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)

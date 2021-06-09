@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 import geojson
 from fastapi import FastAPI, Request
@@ -9,7 +9,11 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
+from ohsome_quality_analyst.utils.definitions import (
+    DATASETS,
+    GEOM_SIZE_LIMIT,
+    configure_logging,
+)
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
@@ -56,14 +60,16 @@ app.add_middleware(
 class IndicatorParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[int] = None
+    featureId: Optional[Union[int, str]] = None
     layerName: Optional[str] = None
+    fidField: Optional[str] = None
 
 
 class ReportParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[int] = None
+    featureId: Optional[Union[int, str]] = None
+    fidField: Optional[str] = None
 
 
 @app.get("/indicator/{name}")
@@ -73,20 +79,27 @@ async def get_indicator(
     layerName: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[int] = None,
+    featureId: Optional[Union[str, int]] = None,
+    fidField: Optional[str] = None,
 ):
     url = request.url._url
-    return await _fetch_indicator(name, layerName, url, bpolys, dataset, featureId)
+    return await _fetch_indicator(
+        name, layerName, url, bpolys, dataset, featureId, fidField
+    )
 
 
 @app.post("/indicator/{name}")
 async def post_indicator(name: str, request: Request, item: IndicatorParameters):
+    # TODO: Check if default parameter None is necessary (item has default values)
     layer_name = item.dict().get("layerName", None)
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
+    fid_field = item.dict().get("fidField", None)
     url = request.url._url
-    return await _fetch_indicator(name, layer_name, url, bpolys, dataset, feature_id)
+    return await _fetch_indicator(
+        name, layer_name, url, bpolys, dataset, feature_id, fid_field
+    )
 
 
 async def _fetch_indicator(
@@ -95,13 +108,14 @@ async def _fetch_indicator(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[int] = None,
+    feature_id: Optional[Union[int, str]] = None,
+    fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
 
     indicator = await oqt.create_indicator(
-        name, layer_name, bpolys, dataset, feature_id
+        name, layer_name, bpolys, dataset, feature_id, fid_field
     )
 
     response = empty_api_response()
@@ -120,10 +134,11 @@ async def get_report(
     request: Request,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[int] = None,
+    featureId: Optional[Union[int, str]] = None,
+    fidField: Optional[str] = None,
 ):
     url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, featureId)
+    return await _fetch_report(name, url, bpolys, dataset, featureId, fidField)
 
 
 @app.post("/report/{name}")
@@ -131,8 +146,9 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     bpolys = item.dict().get("bpolys", None)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
+    fid_field = item.dict().get("fidField", None)
     url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, feature_id)
+    return await _fetch_report(name, url, bpolys, dataset, feature_id, fid_field)
 
 
 async def _fetch_report(
@@ -140,13 +156,14 @@ async def _fetch_report(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[int] = None,
+    feature_id: Optional[Union[int]] = None,
+    fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
 
     report = await oqt.create_report(
-        name, bpolys=bpolys, dataset=dataset, feature_id=feature_id
+        name, bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
     )
 
     response = empty_api_response()
@@ -173,9 +190,18 @@ async def _fetch_report(
 
 
 @app.get("/geometries/{dataset}")
-async def get_bpolys_from_db(dataset: str, featureId: int):
-    bpolys = await db_client.get_bpolys_from_db(dataset=dataset, feature_id=featureId)
-    return bpolys
+async def get_bpolys_from_db(
+    dataset: str, featureId: int, fid_field: Optional[str]
+) -> geojson.FeatureCollection:
+    if not db_client.sanity_check_dataset(dataset):
+        raise ValueError("Input dataset is not valid: " + dataset)
+    if fid_field is None:
+        fid_field = DATASETS[dataset]["default"]
+    if not db_client.sanity_check_fid_field(dataset, fid_field):
+        raise ValueError("Input feature id field is not valid: " + fid_field)
+    return await db_client.get_bpolys_from_db(
+        dataset=dataset, feature_id=featureId, fid_field=fid_field
+    )
 
 
 @app.get("/regions")

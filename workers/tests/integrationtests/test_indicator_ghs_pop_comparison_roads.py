@@ -13,7 +13,9 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
         feature_id = 31
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
         self.indicator = GhsPopComparisonRoads(
             bpolys=bpolys, layer_name="major_roads_length"
         )
