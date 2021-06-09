@@ -5,10 +5,27 @@ Define Click command options to avoid redundancy.
 import click
 
 from ohsome_quality_analyst.utils.definitions import (
-    DATASET_NAMES,
+    DATASETS,
     load_layer_definitions,
     load_metadata,
 )
+
+
+class IntOrStrParamType(click.ParamType):
+    """
+    Parse parameter as Interger otherwise parse as String
+
+    https://click.palletsprojects.com/en/8.0.x/parameters/#implementing-custom-types
+    """
+
+    def convert(self, value, param, ctx):
+        try:
+            return int(value)
+        except ValueError:
+            if isinstance(value, str):
+                return value
+        self.fail(f"{0} is not a valid integer or string".format(value), param, ctx)
+
 
 indicator_name_opt = [
     click.option(
@@ -59,7 +76,7 @@ dataset_name_opt = [
         "--dataset-name",
         "-d",
         type=click.Choice(
-            DATASET_NAMES,
+            DATASETS.keys(),
             case_sensitive=True,
         ),
         help=("Choose a dataset containing geometries."),
@@ -87,8 +104,21 @@ feature_id_opt = [
     click.option(
         "--feature-id",
         "-f",
-        type=int,
+        type=IntOrStrParamType(),
         help="Provide the feature id of your area of interest.",
+        default=None,
+    )
+]
+
+fid_field_opt = [
+    click.option(
+        "--fid-field",
+        type=str,
+        help=(
+            "Provide the feature id field of the dataset. "
+            + "Use command list-fid-fields to view available "
+            + "fid fields for each dataset"
+        ),
         default=None,
     )
 ]

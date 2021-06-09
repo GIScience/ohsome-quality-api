@@ -5,7 +5,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+28%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -23,7 +23,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "606"
+                        "591"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:05:33 GMT"
+                        "Mon, 07 Jun 2021 11:25:28 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -84,7 +84,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+31%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "603"
+                        "588"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -114,7 +114,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:05:37 GMT"
+                        "Mon, 07 Jun 2021 11:25:31 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"

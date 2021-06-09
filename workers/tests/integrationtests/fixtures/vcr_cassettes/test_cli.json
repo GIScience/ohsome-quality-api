@@ -5,7 +5,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+3%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B-2.440338%2C+31.548972%5D%2C+%5B-2.416456%2C+31.548972%5D%2C+%5B-2.416456%2C+31.561113%5D%2C+%5B-2.440338%2C+31.561113%5D%2C+%5B-2.440338%2C+31.548972%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+3%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+3%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B-2.440338%2C+31.548972%5D%2C+%5B-2.416456%2C+31.548972%5D%2C+%5B-2.416456%2C+31.561113%5D%2C+%5B-2.440338%2C+31.561113%5D%2C+%5B-2.440338%2C+31.548972%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -23,7 +23,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "584"
+                        "570"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:05:03 GMT"
+                        "Wed, 09 Jun 2021 08:16:09 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -77,14 +77,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-09T21:00:00Z\",\n    \"value\" : 43.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 43.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+3%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B-2.440338%2C+31.548972%5D%2C+%5B-2.416456%2C+31.548972%5D%2C+%5B-2.416456%2C+31.561113%5D%2C+%5B-2.440338%2C+31.561113%5D%2C+%5B-2.440338%2C+31.548972%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+3%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+3%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B-2.440338%2C+31.548972%5D%2C+%5B-2.416456%2C+31.548972%5D%2C+%5B-2.416456%2C+31.561113%5D%2C+%5B-2.440338%2C+31.561113%5D%2C+%5B-2.440338%2C+31.548972%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "609"
+                        "595"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -114,7 +114,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:05:06 GMT"
+                        "Wed, 09 Jun 2021 08:16:12 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"

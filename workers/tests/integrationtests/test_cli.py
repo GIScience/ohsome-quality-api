@@ -3,7 +3,6 @@ Testing Click Applications:
 https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
 """
 
-import os
 import unittest
 
 import geojson
@@ -17,11 +16,6 @@ from .utils import oqt_vcr
 class TestCliIntegration(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
-        self.infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
-        )
 
     @oqt_vcr.use_cassette()
     def test_create_indicator(self):
@@ -36,7 +30,47 @@ class TestCliIntegration(unittest.TestCase):
                 "-d",
                 "regions",
                 "-f",
-                "3",
+                3,
+            ],
+        )
+        self.assertEqual(result.exit_code, 0)
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_custom_fid_field_int(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-indicator",
+                "-i",
+                "GhsPopComparisonBuildings",
+                "-l",
+                "building_count",
+                "-d",
+                "regions",
+                "-f",
+                3,
+                "--fid-field",
+                "ogc_fid",
+            ],
+        )
+        self.assertEqual(result.exit_code, 0)
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_custom_fid_field_str(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-indicator",
+                "-i",
+                "GhsPopComparisonBuildings",
+                "-l",
+                "building_count",
+                "-d",
+                "regions",
+                "-f",
+                "Alger Kenadsa medium",  # equals ogc_fid 3
+                "--fid-field",
+                "name",
             ],
         )
         self.assertEqual(result.exit_code, 0)
@@ -45,7 +79,43 @@ class TestCliIntegration(unittest.TestCase):
     def test_create_report(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "SimpleReport", "-d", "regions", "-f", "3"],
+            ["create-report", "-r", "SimpleReport", "-d", "regions", "-f", 3],
+        )
+        self.assertEqual(result.exit_code, 0)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_custom_fid_field_int(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-report",
+                "-r",
+                "SimpleReport",
+                "-d",
+                "regions",
+                "-f",
+                3,
+                "--fid-field",
+                "ogc_fid",
+            ],
+        )
+        self.assertEqual(result.exit_code, 0)
+
+    @oqt_vcr.use_cassette()
+    def test_create_report_custom_fid_field_str(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-report",
+                "-r",
+                "SimpleReport",
+                "-d",
+                "regions",
+                "-f",
+                "Alger Kenadsa medium",  # equals ogc_fid 3
+                "--fid-field",
+                "name",
+            ],
         )
         self.assertEqual(result.exit_code, 0)
 

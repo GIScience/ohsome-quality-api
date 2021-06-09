@@ -14,21 +14,18 @@ import yaml
 
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
-# Dataset names which are available in the Geodatabase
-DATASET_NAMES = (
-    "gadm",
-    "gadm_level_0",
-    "gadm_level_1",
-    "gadm_level_2",
-    "gadm_level_3",
-    "gadm_level_4",
-    "gadm_level_5",
-    "isea3h_world_res_12_hex",
-    "isea3h_world_res_6_hex",
-    "nuts_rg_01m_2021",
-    "nuts_rg_60m_2021",
-    "regions",
-)
+# Dataset names and fid fields which are available in the Geodatabase
+DATASETS = {
+    "regions": {"default": "ogc_fid", "other": ("name",)},
+    "gadm": {
+        "default": "uid",  # ISO 3166-1 alpha-3 country code
+        "other": (
+            *tuple(("name_{0}".format(i) for i in range(6))),
+            *tuple(("id_{0}".format(i) for i in range(6))),
+            *tuple(("gid_{0}".format(i) for i in range(6))),
+        ),
+    },
+}
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("GhsPopComparisonBuildings", "building_count"),

@@ -47,7 +47,9 @@ class TestIndicatorLastEdit(unittest.TestCase):
         """Test area with no amenities"""
         dataset = "regions"
         feature_id = 28  # Niger Kanan Bakache
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
         asyncio.run(indicator.preprocess())

@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import pathlib
+from typing import Union
 
 import click
 import geojson
@@ -10,6 +11,7 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.cli_opts import (
     dataset_name_opt,
     feature_id_opt,
+    fid_field_opt,
     force_opt,
     indicator_name_opt,
     infile_opt,
@@ -19,7 +21,7 @@ from ohsome_quality_analyst.cli_opts import (
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
-    DATASET_NAMES,
+    DATASETS,
     configure_logging,
     load_layer_definitions,
     load_metadata,
@@ -74,7 +76,16 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(DATASET_NAMES)
+    click.echo(tuple(DATASETS.keys()))
+
+
+@cli.command("list-fid-fields")
+def list_fid_fields():
+    """List available fid fields for each dataset."""
+    for name, dataset in DATASETS.items():
+        click.echo(name + ": ")
+        click.echo("  - default: " + dataset["default"])
+        click.echo("  - other: " + ", ".join(dataset.get("other", [])))
 
 
 @cli.command("list-regions")
@@ -91,14 +102,16 @@ def get_available_regions():
 @add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
+@add_opts(fid_field_opt)
 @add_opts(force_opt)
 def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
     layer_name: str,
-    feature_id: int,
+    feature_id: Union[int, str],
     dataset_name: str,
+    fid_field: str,
     force: bool,
 ):
     """Create an Indicator and print results to stdout."""
@@ -119,11 +132,12 @@ def create_indicator(
             sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
                 oqt.create_indicator(
-                    indicator_name=indicator_name,
+                    indicator_name,
+                    layer_name,
                     bpolys=sub_collection,
-                    layer_name=layer_name,
                     feature_id=feature_id,
                     dataset=dataset_name,
+                    fid_field=fid_field,
                     force=force,
                 )
             )
@@ -142,11 +156,12 @@ def create_indicator(
         bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
-                indicator_name=indicator_name,
+                indicator_name,
+                layer_name,
                 bpolys=bpolys,
-                layer_name=layer_name,
                 feature_id=feature_id,
                 dataset=dataset_name,
+                fid_field=fid_field,
                 force=force,
             )
         )
@@ -161,13 +176,15 @@ def create_indicator(
 @add_opts(outfile_opt)
 @add_opts(dataset_name_opt)
 @add_opts(feature_id_opt)
+@add_opts(fid_field_opt)
 @add_opts(force_opt)
 def create_report(
     report_name: str,
     infile: str,
     outfile: str,
     dataset_name: str,
-    feature_id: int,
+    feature_id: Union[int, str],
+    fid_field: str,
     force: bool,
 ):
     """Create a Report and print results to stdout."""
@@ -181,10 +198,11 @@ def create_report(
             sub_collection = geojson.FeatureCollection([feature])
             report = asyncio.run(
                 oqt.create_report(
-                    report_name=report_name,
+                    report_name,
                     bpolys=sub_collection,
                     dataset=dataset_name,
                     feature_id=feature_id,
+                    fid_field=fid_field,
                     force=force,
                 )
             )
@@ -201,10 +219,11 @@ def create_report(
         bpolys = None
         report = asyncio.run(
             oqt.create_report(
-                report_name=report_name,
+                report_name,
                 bpolys=bpolys,
                 dataset=dataset_name,
                 feature_id=feature_id,
+                fid_field=fid_field,
                 force=force,
             )
         )
@@ -213,23 +232,12 @@ def create_report(
         click.echo(report.result)
 
 
-# TODO: Dataset option is mandatory
 @cli.command("create-all-indicators")
 @add_opts(force_opt)
-@click.option(
-    "--dataset_name",
-    "-d",
-    required=True,
-    type=click.Choice(
-        DATASET_NAMES,
-        case_sensitive=True,
-    ),
-    help=("Choose a dataset containing geometries."),
-)
-def create_all_indicators(dataset_name: str, force: bool):
-    """Create all indicators for a specified dataset."""
+def create_all_indicators(force: bool):
+    """Create all indicators for all OQT regions."""
     click.echo(
-        "This command will calculate all indicators for the specified dataset "
+        "This command will calculate all indicators for all OQT regions "
         + "and may take a while to complete."
     )
     if force:
@@ -237,7 +245,7 @@ def create_all_indicators(dataset_name: str, force: bool):
             "The argument 'force' will update the indicator results in the database."
         )
     click.confirm("Do you want to continue?", abort=True)
-    asyncio.run(oqt.create_all_indicators(dataset=dataset_name, force=force))
+    asyncio.run(oqt.create_all_indicators(force=force))
 
 
 if __name__ == "__main__":

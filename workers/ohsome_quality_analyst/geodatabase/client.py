@@ -1,42 +1,29 @@
-"""This module implements a asynchronous client to the geodatabase.
+"""This module is an asynchronous client to the geodatabase.
 
-The PostgreSQL driver used is asyncpg.
+The PostgreSQL driver used is asyncpg:
+    https://magicstack.github.io/asyncpg/current/
 
 On preventing SQL injections:
     asyncpg supports native PostgreSQL syntax for SQL parameter substitution.
-    asyncpg does not support SQL identifiers (e.g. names tables/fields) substitution.
+    asyncpg does not support SQL identifiers substitution (e.g. names of tables/fields).
 
     SQL identifiers can not be passed to the execute method like SQL parameters.
     (This is unlike psycopg2 which has extensive query interpolation mechanisms.)
 
-    If the query string is build from user input check,
+    If the query string is build from user input,
     please make sure no SQL injection attack is possible.
 """
 
 import json
 import logging
 import os
-import pathlib
 from contextlib import asynccontextmanager
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import asyncpg
 import geojson
 
-
-def _get_table_name(dataset: str, indicator_name: str, layer_name: str) -> str:
-    """Compose result table name from dataset and indicator.
-
-    The results table is composed of names for dataset and indicator
-    e.g. "subnational_boundaries_building_completeness".
-    """
-    indicator_name = indicator_name.replace(" ", "_")
-    indicator_name = indicator_name.replace("-", "_")
-    indicator_name = indicator_name.lower()
-    layer_name = layer_name.replace(" ", "_")
-    layer_name = layer_name.replace("-", "_")
-    layer_name = layer_name.lower()
-    return f"{dataset}_{indicator_name}_{layer_name}"
+from ohsome_quality_analyst.utils.definitions import DATASETS
 
 
 @asynccontextmanager
@@ -55,64 +42,32 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(indicator, dataset, feature_id) -> None:
-    """Save the indicator result for the given dataset and feature in the geodatabase"""
+async def save_indicator_results(
+    indicator, dataset: str, feature_id: Union[str, int]
+) -> None:
+    """Save the indicator result for a given dataset and feature in the Geodatabase.
+
+    Create results table if not exists.
+    Insert or on conflict update results.
+    """
+
     logging.info("Save indicator result to database")
-    table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
-    table_pkey = table_name + "_pkey"
-    # Safe against SQL injection because of predefined values
-    create_query = (
-        """
-            CREATE TABLE IF NOT EXISTS {0} (
-              fid INTEGER,
-              timestamp_oqt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-              timestamp_osm TIMESTAMP WITH TIME ZONE,
-              label VARCHAR(20),
-              value FLOAT,
-              description VARCHAR(1024),
-              svg  TEXT,
-              CONSTRAINT {1} PRIMARY KEY (fid)
-            )
-            """
-    ).format(table_name, table_pkey)
-    # Safe against SQL injection because of predefined values
-    upsert_query = (
-        """
-            INSERT INTO {0} (
-                fid,
-                timestamp_oqt,
-                timestamp_osm,
-                label,
-                value,
-                description,
-                svg)
-            VALUES (
-                $1,
-                $2,
-                $3,
-                $4,
-                $5,
-                $6,
-                $7)
-            ON CONFLICT (fid)
-                DO UPDATE SET
-                    (
-                        timestamp_oqt,
-                        timestamp_osm,
-                        label,
-                        value,
-                        description,
-                        svg) = (
-                        excluded.timestamp_oqt,
-                        excluded.timestamp_osm,
-                        excluded.label,
-                        excluded.value,
-                        excluded.description,
-                        excluded.svg)
-            """
-    ).format(table_name)
+
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(working_dir, "create_results_table.sql")
+    with open(file_path, "r") as file:
+        create_query = file.read()
+
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(working_dir, "save_results.sql")
+    with open(file_path, "r") as file:
+        upsert_query = file.read()
+
     data = (
-        feature_id,
+        indicator.metadata.name,
+        indicator.layer.name,
+        dataset,
+        str(feature_id),
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
         indicator.result.label,
@@ -126,56 +81,56 @@ async def save_indicator_results(indicator, dataset, feature_id) -> None:
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(indicator, dataset, feature_id) -> bool:
-    """Get the indicator result from the geodatabase.
+async def load_indicator_results(
+    indicator, dataset: str, feature_id: Union[str, int]
+) -> bool:
+    """Get the indicator result from the Geodatabase.
 
-    Reads given dataset and feature_id from the indicator object.
-    Load indicators results from the geodatabase.
-    Writes retrived results to the result attribute of the indicator object.
+    Reads given dataset and feature id from the indicator object.
+    Load indicators results from the Geodatabase.
+    Writes retrieved results to the result attribute of the indicator object.
     """
     logging.info("Load indicator results from database")
-    table_name = _get_table_name(dataset, indicator.metadata.name, indicator.layer.name)
-    query = (
-        """
-            SELECT
-                timestamp_oqt,
-                timestamp_osm,
-                label,
-                value,
-                description,
-                svg
-            FROM {0}
-            WHERE fid = $1
-        """
-    ).format(
-        table_name
-    )  # Safe against SQL injection because of predefined values
+
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(working_dir, "load_results.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+
+    data = (
+        indicator.metadata.name,
+        indicator.layer.name,
+        dataset,
+        str(feature_id),
+    )
 
     async with get_connection() as conn:
-        query_result = await conn.fetchrow(query, feature_id)
+        query_result = await conn.fetchrow(query, *data)
+
     if not query_result:
         return False
+    else:
+        indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
+        indicator.result.timestamp_osm = query_result["timestamp_osm"]
+        indicator.result.label = query_result["result_label"]
+        indicator.result.value = query_result["result_value"]
+        indicator.result.description = query_result["result_description"]
+        indicator.result.svg = query_result["result_svg"]
+        return True
 
-    indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
-    indicator.result.timestamp_osm = query_result["timestamp_osm"]
-    indicator.result.label = query_result["label"]
-    indicator.result.value = query_result["value"]
-    indicator.result.description = query_result["description"]
-    indicator.result.svg = query_result["svg"]
-    return True
 
-
-async def get_fids(dataset_name) -> List[int]:
-    """Get all feature ids of a certain dataset"""
-    # TODO: Does this apply for all datasets?
-    # This works for test regions but does this work for GADM or HEX Cells?
+async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]:
+    """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    query = "SELECT ogc_fid FROM {0}".format(dataset_name)
+    query = "SELECT {fid_field} FROM {dataset}".format(
+        fid_field=fid_field, dataset=dataset
+    )
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record["ogc_fid"] for record in records]
+    return [record[fid_field] for record in records]
 
 
+# TODO Rewrite to work with geojson.Feature as input
 async def get_area_of_bpolys(bpolys: Dict):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
@@ -195,12 +150,13 @@ async def get_area_of_bpolys(bpolys: Dict):
 
 
 async def get_bpolys_from_db(
-    dataset: str, feature_id: int
+    dataset: str, feature_id: Union[int, str], fid_field: str
 ) -> geojson.FeatureCollection:
-    """Get geometry and properties from geo database as a geojson feature collection."""
-    logging.info("Get bpolys geometry")
-    # TODO: adjust this for other input tables
+    """Get bounding polygon from the geodatabase as a GeoJSON FeatureCollection."""
+    logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, feature_id)))
+
     # Safe against SQL injection because of predefined values
+    # (See oqt.py and definitions.py)
     query = (
         """
         SELECT json_build_object(
@@ -214,33 +170,46 @@ async def get_bpolys_from_db(
             'features', json_agg(
                 json_build_object(
                     'type',       'Feature',
-                    'id',         ogc_fid,
+                    'id',         {fid_field},
                     'geometry',   public.ST_AsGeoJSON(geom)::json,
                     'properties', json_build_object(
-                        -- list of fields
-                        'fid', ogc_fid
                     )
                 )
             )
         )
-        FROM {0}
-        WHERE ogc_fid = $1
+        FROM {dataset}
+        WHERE {fid_field} = $1
     """
-    ).format(dataset)
+    ).format(fid_field=fid_field, dataset=dataset)
+
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
     return geojson.loads(result[0])
 
 
 async def get_available_regions() -> geojson.FeatureCollection:
-    wd = pathlib.Path(__file__).parent.absolute()
-    fp = wd / "regions_as_geojson.sql"
-    with open(fp, "r") as f:
-        query = f.read()
+    working_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(working_dir, "regions_as_geojson.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
     feature_collection = geojson.loads(record[0])
-    # To be complaint with rfc7946 "id" should be a member of Feature
+    # To be complaint with rfc7946 "id" should be a member of the feature
+    # and not of the properties.
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
+
+
+def sanity_check_dataset(dataset: str) -> bool:
+    """Compare against pre-definied values to prevent SQL injection"""
+    return dataset in DATASETS.keys()
+
+
+def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
+    """Compare against pre-definied values to prevent SQL injection"""
+    return (
+        fid_field in DATASETS[dataset]["other"]
+        or fid_field == DATASETS[dataset]["default"]
+    )

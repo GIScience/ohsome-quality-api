@@ -40,7 +40,9 @@ class TestIndicatorRatio(unittest.TestCase):
         dataset = "regions"
         # TODO: Choose smaller region
         feature_id = 9  # DE Aschaffenburg (good)
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
@@ -54,7 +56,9 @@ class TestIndicatorRatio(unittest.TestCase):
         layer_name = "jrc_health_count"
         dataset = "regions"
         feature_id = 28  # Niger Kanan Bakache (bad)
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         indicator = TagsRatio(layer_name=layer_name, bpolys=bpolys)
         asyncio.run(indicator.preprocess())
@@ -69,7 +73,9 @@ class TestIndicatorRatio(unittest.TestCase):
         layer_name = "major_roads_length"
         dataset = "regions"
         feature_id = 28
-        bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
+        bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        )
 
         with self.assertRaises(ValueError):
             TagsRatio(layer_name=layer_name, bpolys=bpolys)

@@ -5,7 +5,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+4%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B6.068916%2C+33.157098%5D%2C+%5B6.052437%2C+33.138414%5D%2C+%5B6.033382%2C+33.13482%5D%2C+%5B6.018276%2C+33.117712%5D%2C+%5B6.028919%2C+33.099595%5D%2C+%5B6.034412%2C+33.075001%5D%2C+%5B6.043854%2C+33.06378%5D%2C+%5B6.059303%2C+33.053709%5D%2C+%5B6.07235%2C+33.068672%5D%2C+%5B6.077328%2C+33.08133%5D%2C+%5B6.079044%2C+33.092404%5D%2C+%5B6.074924%2C+33.098301%5D%2C+%5B6.097755%2C+33.099739%5D%2C+%5B6.096382%2C+33.123607%5D%2C+%5B6.095867%2C+33.138557%5D%2C+%5B6.091061%2C+33.153074%5D%2C+%5B6.078358%2C+33.162128%5D%2C+%5B6.06823%2C+33.17779%5D%2C+%5B6.061192%2C+33.187272%5D%2C+%5B6.050892%2C+33.185835%5D%2C+%5B6.055012%2C+33.16845%5D%2C+%5B6.058788%2C+33.159685%5D%2C+%5B6.068916%2C+33.157098%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+4%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -23,7 +23,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "1130"
+                        "563"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:06:04 GMT"
+                        "Mon, 07 Jun 2021 11:26:27 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -77,14 +77,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-09T21:00:00Z\",\n    \"value\" : 376.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 54.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+31%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "578"
+                        "588"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -114,86 +114,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:06:08 GMT"
-                    ],
-                    "Server": [
-                        "Apache/2.4.29 (Ubuntu)"
-                    ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "POST, GET"
-                    ],
-                    "Access-Control-Max-Age": [
-                        "3600"
-                    ],
-                    "Access-Control-Allow-Credentials": [
-                        "true"
-                    ],
-                    "Access-Control-Allow-Headers": [
-                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
-                    ],
-                    "Cache-Control": [
-                        "max-age=0, no-store"
-                    ],
-                    "Content-Type": [
-                        "application/json;charset=UTF-8"
-                    ],
-                    "Content-Encoding": [
-                        "gzip"
-                    ],
-                    "Vary": [
-                        "Accept-Encoding"
-                    ],
-                    "Keep-Alive": [
-                        "timeout=5, max=100"
-                    ],
-                    "Connection": [
-                        "Keep-Alive"
-                    ],
-                    "Transfer-Encoding": [
-                        "chunked"
-                    ]
-                },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-09T21:00:00Z\",\n    \"value\" : 54.0\n  } ]\n}"
-            }
-        },
-        {
-            "request": {
-                "method": "POST",
-                "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+31%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22fid%22%3A+31%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
-                "headers": {
-                    "host": [
-                        "api.ohsome.org"
-                    ],
-                    "accept": [
-                        "*/*"
-                    ],
-                    "accept-encoding": [
-                        "gzip, deflate"
-                    ],
-                    "connection": [
-                        "keep-alive"
-                    ],
-                    "user-agent": [
-                        "python-httpx/0.17.1"
-                    ],
-                    "content-length": [
-                        "603"
-                    ],
-                    "content-type": [
-                        "application/x-www-form-urlencoded"
-                    ]
-                }
-            },
-            "response": {
-                "status_code": 200,
-                "http_version": "HTTP/1.1",
-                "headers": {
-                    "Date": [
-                        "Fri, 14 May 2021 17:06:12 GMT"
+                        "Mon, 07 Jun 2021 11:26:31 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -236,6 +157,85 @@
                     ]
                 },
                 "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2008-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2008-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2009-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2010-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2011-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2012-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2013-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2014-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2015-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2016-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-06-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-07-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-08-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-09-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-10-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-11-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2017-12-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-02-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-03-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-04-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-05-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"timestamp\" : \"2018-06-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-07-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-08-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-09-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-10-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-11-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2018-12-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-02-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-03-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-04-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-05-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-06-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-07-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-08-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-09-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-10-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-11-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2019-12-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-02-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-03-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-04-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-05-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-06-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-07-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-08-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-09-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-10-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-11-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2020-12-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2021-02-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2021-03-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2021-04-01T00:00:00Z\",\n    \"value\" : 54.0\n  }, {\n    \"timestamp\" : \"2021-05-01T00:00:00Z\",\n    \"value\" : 54.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22crs%22%3A+%7B%22type%22%3A+%22name%22%2C+%22properties%22%3A+%7B%22name%22%3A+%22EPSG%3A4326%22%7D%7D%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+%22Tun+Borj+Bourguiba+good%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B10.0282%2C+32.202343%5D%2C+%5B10.03423%2C+32.202343%5D%2C+%5B10.03423%2C+32.210386%5D%2C+%5B10.0282%2C+32.210386%5D%2C+%5B10.0282%2C+32.202343%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "590"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Wed, 09 Jun 2021 08:25:58 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, no-store"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-30T20:00:00Z\",\n    \"value\" : 54.0\n  } ]\n}"
             }
         }
     ]
