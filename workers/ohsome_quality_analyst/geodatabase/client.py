@@ -204,18 +204,9 @@ async def get_available_regions() -> geojson.FeatureCollection:
 
 def sanity_check_dataset(dataset: str) -> bool:
     """Compare against pre-definied values to prevent SQL injection"""
-    if dataset not in DATASETS.keys():
-        return False
-    else:
-        return True
+    return dataset in DATASETS.keys()
 
 
 def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
     """Compare against pre-definied values to prevent SQL injection"""
-    if (
-        fid_field not in DATASETS[dataset]["other"]
-        and fid_field != DATASETS[dataset]["default"]
-    ):
-        return False
-    else:
-        return True
+    return fid_field in DATASETS[dataset]["other"] or fid_field == DATASETS[dataset]["default"]
