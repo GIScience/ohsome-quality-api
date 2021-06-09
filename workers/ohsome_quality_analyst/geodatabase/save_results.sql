@@ -1,14 +1,14 @@
 INSERT INTO results (
-    indicator,
-    layer,
-    dataset,
+    indicator_name,
+    layer_name,
+    dataset_name,
     fid,
     timestamp_oqt,
     timestamp_osm,
-    label,
-    value,
-    description,
-    svg)
+    result_label,
+    result_value,
+    result_description,
+    result_svg)
 VALUES (
     $1,
     $2,
@@ -21,21 +21,21 @@ VALUES (
     $9,
     $10)
 ON CONFLICT (
-    indicator,
-    layer,
-    dataset,
+    indicator_name,
+    layer_name,
+    dataset_name,
     fid)
     DO UPDATE SET
         (
             timestamp_oqt,
             timestamp_osm,
-            label,
-            value,
-            description,
-            svg) = (
+            result_label,
+            result_value,
+            result_description,
+            result_svg) = (
             excluded.timestamp_oqt,
             excluded.timestamp_osm,
-            excluded.label,
-            excluded.value,
-            excluded.description,
-            excluded.svg);
+            excluded.result_label,
+            excluded.result_value,
+            excluded.result_description,
+            excluded.result_svg);

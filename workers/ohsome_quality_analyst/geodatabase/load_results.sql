@@ -1,18 +1,18 @@
 SELECT
-    indicator,
-    layer,
-    dataset,
+    indicator_name,
+    layer_name,
+    dataset_name,
     fid,
     timestamp_oqt,
     timestamp_osm,
-    label,
-    value,
-    description,
-    svg
+    result_label,
+    result_value,
+    result_description,
+    result_svg
 FROM
     results
 WHERE
-    indicator = $1
-    AND layer = $2
-    AND dataset = $3
+    indicator_name = $1
+    AND layer_name = $2
+    AND dataset_name = $3
     AND fid = $4
