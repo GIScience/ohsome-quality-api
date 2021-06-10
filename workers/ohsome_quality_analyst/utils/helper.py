@@ -2,6 +2,7 @@
 Standalone helper functions.
 """
 
+import datetime
 import importlib
 import os
 import pkgutil
@@ -49,3 +50,18 @@ def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
     module = pkgutil.get_loader(module_name)
     return os.path.dirname(module.get_filename())
+
+
+def datetime_to_isostring_timestamp(time: datetime) -> str:
+    """
+    Checks for datetime objects and converts them to ISO 8601 format.
+
+    Serves as function that gets called for objects that can’t otherwise be
+    serialized by the `json` module.
+    It should return a JSON encodable version of the object or raise a TypeError.
+    https://docs.python.org/3/library/json.html#basic-usage
+    """
+    try:
+        return time.isoformat()
+    except AttributeError:
+        raise TypeError
