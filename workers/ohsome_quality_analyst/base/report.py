@@ -1,10 +1,11 @@
+import logging
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
+from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Tuple
 
 from dacite import from_dict
 from geojson import FeatureCollection
-
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
 
@@ -64,4 +65,27 @@ class BaseReport(metaclass=ABCMeta):
     @abstractmethod
     def combine_indicators(self) -> None:
         """Combine indicators results and create the report result object."""
-        pass
+        logging.info(f"Combine indicators for report: {self.metadata.name}")
+
+        values = []
+        for indicator in self.indicators:
+            if indicator.result.label != "undefined":
+                values.append(indicator.result.value)
+
+        if not values:
+            self.result.value = None
+            self.result.label = "undefined"
+            self.result.description = "Could not derive quality level"
+            return None
+        else:
+            self.result.value = mean(values)
+
+        if self.result.value < 0.5:
+            self.result.label = "red"
+            self.result.description = self.metadata.label_description["red"]
+        elif self.result.value < 1:
+            self.result.label = "yellow"
+            self.result.description = self.metadata.label_description["yellow"]
+        elif self.result.value >= 1:
+            self.result.label = "green"
+            self.result.description = self.metadata.label_description["green"]
