@@ -207,25 +207,32 @@ mapaction_rail_length:
   description: |
     Length of objects identified as rails (large railways)
   endpoint: elements/length
-  filter: railway=rail and type:way
+  filter: railway=rail and (type:way or type:relation)
+
+mapaction_major_roads_length:
+  name: MapAction Major Roads length
+  description: |
+    Length of objects identified as major roads (primary, motorway and trunk)
+  endpoint: elements/length
+  filter: highway in (motorway, trunk, primary) and (type:way or type:relation)
 
 mapaction_lakes_count:
   name: MapAction Lakes Count
   description: |
-    Number of objects identified as lakes (water bodies different from rivers and reservoirs)
+    Number of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/count
-  filter: natural=water and water!=river and water!=reservoir and type:way
+  filter: (water in (lagoon,lake,reservoir) or landuse = reservoir) and (type:way or type:relation)
 
 mapaction_lakes_area:
   name: MapAction Lakes Area
   description: |
-    Area of objects identified as lakes (water bodies different from rivers and reservoirs)
+    Area of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/area
-  filter: natural=water and water!=river and water!=reservoir and type:way
+  filter: (water in (lagoon,lake,reservoir) or landuse = reservoir) and (type:way or type:relation)
 
 mapaction_rivers_length:
   name: MapAction Rivers Length
   description: |
-    Length of objects identified as rivers
+    Length of objects identified as rivers (or riverbanks)
   endpoint: elements/length
-  filter: waterway=river and type:way
+  filter: waterway in (riverbank,river) and (type:way or type:relation)
