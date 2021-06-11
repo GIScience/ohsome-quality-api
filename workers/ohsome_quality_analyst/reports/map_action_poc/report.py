@@ -21,8 +21,8 @@ class MapActionPoc(BaseReport):
         )
 
     def set_indicator_layer(self) -> None:
-        self.indicator_layer = (           
-        	IndicatorLayer("MappingSaturation", "mapaction_settlements_count"),
+        self.indicator_layer = (
+            IndicatorLayer("MappingSaturation", "mapaction_settlements_count"),
             IndicatorLayer("MappingSaturation", "mapaction_major_roads_length"),
             IndicatorLayer("MappingSaturation", "mapaction_rail_length"),
             IndicatorLayer("MappingSaturation", "mapaction_lakes_area"),
