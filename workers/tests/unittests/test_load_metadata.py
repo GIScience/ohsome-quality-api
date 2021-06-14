@@ -48,7 +48,9 @@ class TestReadMetadata(unittest.TestCase):
     def test_get_indicator_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")
         self.assertRaises(KeyError, get_metadata, "indicators", "ajsjdh")
-        self.assertIsInstance(get_metadata("indicators", "GufComparison"), dict)
+        self.assertIsInstance(
+            get_metadata("indicators", "GhsPopComparisonBuildings"), dict
+        )
 
     def test_get_report_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")
