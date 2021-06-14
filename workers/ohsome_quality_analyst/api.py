@@ -9,11 +9,7 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
-    DATASETS,
-    GEOM_SIZE_LIMIT,
-    configure_logging,
-)
+from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
@@ -187,21 +183,6 @@ async def _fetch_report(
             "result": result,
         }
     return response
-
-
-@app.get("/geometries/{dataset}")
-async def get_bpolys_from_db(
-    dataset: str, featureId: int, fid_field: Optional[str]
-) -> geojson.FeatureCollection:
-    if not db_client.sanity_check_dataset(dataset):
-        raise ValueError("Input dataset is not valid: " + dataset)
-    if fid_field is None:
-        fid_field = DATASETS[dataset]["default"]
-    if not db_client.sanity_check_fid_field(dataset, fid_field):
-        raise ValueError("Input feature id field is not valid: " + fid_field)
-    return await db_client.get_bpolys_from_db(
-        dataset=dataset, feature_id=featureId, fid_field=fid_field
-    )
 
 
 @app.get("/regions")
