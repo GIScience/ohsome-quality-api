@@ -47,7 +47,7 @@ async def query_ohsome_api(url: str, data: dict):
         resp.raise_for_status()
     except httpx.HTTPStatusError as error:
         raise OhsomeApiError(
-            "Querying the ohsome API failed!" + error.response.json()["message"]
+            "Querying the ohsome API failed! " + error.response.json()["message"]
         ) from error
 
     try:
