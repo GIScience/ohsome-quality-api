@@ -7,6 +7,8 @@
 - Raise exceptions in the ohsome client instead of returning None in case of a failed ohsome API query ([#29])
 - Add option to select different datasets and fid fields as input to OQT ([#4])
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
+- Remove GUF Comparison indicator ([#55])
+- Update MapAction layers and POC report ([#56])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -14,6 +16,8 @@
 [#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
 [#4]: https://github.com/GIScience/ohsome-quality-analyst/issues/4
 [#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
+[#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
+[#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
 
 
 ## 0.3.1
