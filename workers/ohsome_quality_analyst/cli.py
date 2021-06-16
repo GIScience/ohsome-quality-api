@@ -146,7 +146,7 @@ def create_indicator(
             feature = update_features_indicator(feature, indicator)
         if outfile is None:
             # the outfile will be written in the same dir as the infile. the original
-            # name will be kept, but the name of the report will be added to it
+            # name will be kept, but the name of the indicator will be added to it
             outfile = infile.stem + "_" + indicator_name + infile.suffix
         write_geojson(outfile, feature_collection)
     else:
