@@ -114,7 +114,8 @@ def create_indicator(
     fid_field: str,
     force: bool,
 ):
-    """Create an Indicator and print results to stdout."""
+    """Create an Indicator and print results to stdout. Write a GeoJSON if an outfile
+    is specified or an infile is used as input"""
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
     if force:
@@ -123,6 +124,7 @@ def create_indicator(
         )
         click.confirm("Do you want to continue?", abort=True)
     if infile is not None:
+        """When using an infile as input"""
         infile = pathlib.Path(infile)
         with open(infile, "r") as file:
             feature_collection = geojson.load(file)
@@ -148,6 +150,7 @@ def create_indicator(
         if outfile is None:
             outfile = infile.stem + "_" + indicator_name + infile.suffix
     else:
+        """When using a dataset and FID as input"""
         bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
@@ -174,6 +177,7 @@ def create_indicator(
         click.echo(indicator.metadata)
         click.echo(indicator.result)
     if outfile:
+        """Writing the output GeoJSON"""
         outfile = pathlib.Path(outfile)
         outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
@@ -197,8 +201,10 @@ def create_report(
     fid_field: str,
     force: bool,
 ):
-    """Create a Report and print results to stdout."""
+    """Create a Report and print results to stdout. Write a GeoJSON if an outfile
+    is specified or an infile is used as input"""
     if infile is not None:
+        """When using an infile as input"""
         infile = pathlib.Path(infile)
         with open(infile, "r") as file:
             feature_collection = geojson.load(file)
@@ -221,6 +227,7 @@ def create_report(
         if outfile is None:
             outfile = infile.stem + "_" + report_name + infile.suffix
     else:
+        """When using a dataset and FID as input"""
         bpolys = None
         report = asyncio.run(
             oqt.create_report(
@@ -244,6 +251,7 @@ def create_report(
         click.echo(report.metadata)
         click.echo(report.result)
     if outfile:
+        """Writing the output GeoJSON"""
         outfile = pathlib.Path(outfile)
         outfile.parent.mkdir(parents=True, exist_ok=True)
         with open(outfile, "w") as f:
