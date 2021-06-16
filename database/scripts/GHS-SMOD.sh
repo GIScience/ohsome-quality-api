@@ -12,6 +12,9 @@ geotiff=GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif
 psql --command \
     "DROP TABLE IF EXISTS ghs_smod"
 
+psql --file \
+    insert_srid_54009.sql
+
 raster2pgsql \
     -I \
     -M \
