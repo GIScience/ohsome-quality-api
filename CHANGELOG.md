@@ -8,6 +8,7 @@
 - Add option to select different datasets and fid fields as input to OQT ([#4])
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
 - Remove GUF Comparison indicator ([#55])
+- Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -16,6 +17,7 @@
 [#4]: https://github.com/GIScience/ohsome-quality-analyst/issues/4
 [#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
 [#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
+[#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
 
 
 ## 0.3.1
