@@ -147,11 +147,6 @@ def create_indicator(
             feature["properties"].update(vars(indicator.result))
         if outfile is None:
             outfile = infile.stem + "_" + indicator_name + infile.suffix
-        else:
-            outfile = pathlib.Path(outfile)
-            outfile.parent.mkdir(parents=True, exist_ok=True)
-        with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
     else:
         bpolys = None
         indicator = asyncio.run(
@@ -165,9 +160,24 @@ def create_indicator(
                 force=force,
             )
         )
-        # TODO: Save as GeoJSON instead of printing to Stdout
+        if outfile:
+            if fid_field is None:
+                fid_field = DATASETS[dataset_name]["default"]
+            feature_collection = asyncio.run(
+                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            )
+            for feature in feature_collection.features:
+                if indicator.data is not None:
+                    feature["properties"].update(vars(indicator.data))
+                feature["properties"].update(vars(indicator.metadata))
+                feature["properties"].update(vars(indicator.result))
         click.echo(indicator.metadata)
         click.echo(indicator.result)
+    if outfile:
+        outfile = pathlib.Path(outfile)
+        outfile.parent.mkdir(parents=True, exist_ok=True)
+        with open(outfile, "w") as f:
+            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
 
 
 @cli.command("create-report")
@@ -210,11 +220,6 @@ def create_report(
             feature["properties"].update(vars(report.result))
         if outfile is None:
             outfile = infile.stem + "_" + report_name + infile.suffix
-        else:
-            outfile = pathlib.Path(outfile)
-            outfile.parent.mkdir(parents=True, exist_ok=True)
-        with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
     else:
         bpolys = None
         report = asyncio.run(
@@ -227,9 +232,22 @@ def create_report(
                 force=force,
             )
         )
-        # TODO: Save as GeoJSON instead of printing to Stdout
+        if outfile:
+            if fid_field is None:
+                fid_field = DATASETS[dataset_name]["default"]
+            feature_collection = asyncio.run(
+                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            )
+            for feature in feature_collection.features:
+                feature["properties"].update(vars(report.metadata))
+                feature["properties"].update(vars(report.result))
         click.echo(report.metadata)
         click.echo(report.result)
+    if outfile:
+        outfile = pathlib.Path(outfile)
+        outfile.parent.mkdir(parents=True, exist_ok=True)
+        with open(outfile, "w") as f:
+            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
 
 
 @cli.command("create-all-indicators")
