@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import pathlib
 from typing import Union
 
 import click
@@ -147,6 +148,7 @@ def create_indicator(
         if outfile is None:
             # the outfile will be written in the same dir as the infile. the original
             # name will be kept, but the name of the indicator will be added to it
+            infile = pathlib.Path(infile)
             outfile = infile.stem + "_" + indicator_name + infile.suffix
         write_geojson(outfile, feature_collection)
     else:
@@ -215,6 +217,7 @@ def create_report(
         if outfile is None:
             # the outfile will be written in the same dir as the infile. the original
             # name will be kept, but the name of the report will be added to it
+            infile = pathlib.Path(infile)
             outfile = infile.stem + "_" + report_name + infile.suffix
         write_geojson(outfile, feature_collection)
     else:
