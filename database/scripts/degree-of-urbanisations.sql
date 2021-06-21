@@ -78,3 +78,13 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+UPDATE
+    regions
+SET
+    degree_of_urbanisation_class = ghsl_degree_of_urbanisation(geom);
+
+UPDATE
+    regions
+SET
+    degree_of_urbanisation_name= ghsl_l1_class_to_name(degree_of_urbanisation_class);
