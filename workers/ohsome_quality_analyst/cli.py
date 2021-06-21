@@ -149,7 +149,7 @@ def create_indicator(
             # the outfile will be written in the same dir as the infile. the original
             # name will be kept, but the name of the indicator will be added to it
             infile = pathlib.Path(infile)
-            outfile = infile.stem + "_" + indicator_name + infile.suffix
+            outfile = infile.with_stem(infile.stem + "_" + indicator_name)
         write_geojson(outfile, feature_collection)
     else:
         # When using a dataset and FID as input
@@ -218,7 +218,7 @@ def create_report(
             # the outfile will be written in the same dir as the infile. the original
             # name will be kept, but the name of the report will be added to it
             infile = pathlib.Path(infile)
-            outfile = infile.stem + "_" + report_name + infile.suffix
+            outfile = infile.with_stem(infile.stem + "_" + report_name)
         write_geojson(outfile, feature_collection)
     else:
         # When using a dataset and FID as input
