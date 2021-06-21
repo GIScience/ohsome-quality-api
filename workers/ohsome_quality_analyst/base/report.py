@@ -6,6 +6,7 @@ from typing import Dict, List, Literal, NamedTuple, Tuple
 
 from dacite import from_dict
 from geojson import FeatureCollection
+
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
 
