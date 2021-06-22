@@ -14,7 +14,7 @@ from .utils import oqt_vcr
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.feature_id = 2
+        self.feature_id = 11  # Algeria Touggourt
         self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
             db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)

@@ -14,7 +14,7 @@ from .utils import oqt_vcr
 class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
-        feature_id = 31
+        feature_id = 3  # Heidelberg
         self.bpolys = asyncio.run(
             db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
         )

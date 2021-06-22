@@ -10,7 +10,7 @@ from .utils import oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.feature_id = 31
+        self.feature_id = 3  # Heidelberg
         self.fid_field = "ogc_fid"
         self.bpolys = asyncio.run(
             db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
@@ -93,7 +93,7 @@ class TestOqt(unittest.TestCase):
                 "GhsPopComparisonBuildings",
                 "building_count",
                 dataset=self.dataset,
-                feature_id="Tun Borj Bourguiba good",
+                feature_id="Heidelberg",
                 fid_field="name",
             )
         )
@@ -153,7 +153,7 @@ class TestOqt(unittest.TestCase):
             oqt.create_report(
                 "SimpleReport",
                 dataset=self.dataset,
-                feature_id="Alger Kenadsa medium",  # equals ogc_fid 3
+                feature_id="Heidelberg",  # equals ogc_fid 3
                 fid_field="name",
             )
         )

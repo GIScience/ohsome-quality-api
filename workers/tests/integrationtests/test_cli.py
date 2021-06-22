@@ -68,7 +68,7 @@ class TestCliIntegration(unittest.TestCase):
                 "-d",
                 "regions",
                 "-f",
-                "Alger Kenadsa medium",  # equals ogc_fid 3
+                "Heidelberg",  # equals ogc_fid 3
                 "--fid-field",
                 "name",
             ],
@@ -112,7 +112,7 @@ class TestCliIntegration(unittest.TestCase):
                 "-d",
                 "regions",
                 "-f",
-                "Alger Kenadsa medium",  # equals ogc_fid 3
+                "Heidelberg",  # equals ogc_fid 3
                 "--fid-field",
                 "name",
             ],

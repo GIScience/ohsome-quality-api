@@ -59,7 +59,7 @@ SELECT
 FROM
     public.regions
 WHERE
-    ogc_fid IN (1, 2, 3, 4, 8, 9, 14, 28, 31);
+    ogc_fid IN (3, 11);
 
 INSERT INTO test.ghs_pop
 SELECT DISTINCT ON (rid)
