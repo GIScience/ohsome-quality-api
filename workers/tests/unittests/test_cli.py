@@ -43,6 +43,10 @@ class TestCliUnit(unittest.TestCase):
         result = self.runner.invoke(cli, ["list-datasets"])
         assert result.exit_code == 0
 
+    def test_create_indicator_help(self):
+        result = self.runner.invoke(cli, ["create-indicator", "--help"])
+        assert result.exit_code == 0
+
     def test_create_all_indicators(self):
         result = self.runner.invoke(
             cli,
