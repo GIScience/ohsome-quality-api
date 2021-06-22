@@ -45,12 +45,13 @@ WHERE
     nuts_id = 'UKI32';
 
 INSERT INTO regions (
-    'Heidelberg' AS name,
-    'Germany' AS country,
+    name,
+    country,
     geom,
     subjective_quality_expectations)
 SELECT
-    nuts_name AS name,
+    'Heidelberg' AS name,
+    'Germany' AS country,
     ST_Multi (wkb_geometry) AS geom,
     'good' AS subjective_quality_expectations
 FROM
