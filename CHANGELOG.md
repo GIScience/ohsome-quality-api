@@ -23,6 +23,7 @@
 [#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
 [#30]: https://github.com/GIScience/ohsome-quality-analyst/issues/30
 [#5]: https://github.com/GIScience/ohsome-quality-analyst/issues/5
+[#61]: https://github.com/GIScience/ohsome-quality-analyst/pull/61
 
 ## 0.3.1
 
