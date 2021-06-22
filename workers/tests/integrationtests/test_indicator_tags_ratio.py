@@ -35,17 +35,6 @@ class TestIndicatorRatio(unittest.TestCase):
         self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
-    def test_all_features_match(self):
-        """Ratio should be 1.0 when all features match expected tags"""
-        # TODO: Choose smaller region
-        indicator = TagsRatio(layer_name="jrc_health_count", bpolys=self.bpolys)
-        asyncio.run(indicator.preprocess())
-        self.assertEqual(indicator.count_all, indicator.count_match)
-        self.assertEqual(indicator.ratio, 1.0)
-
-        indicator.calculate()
-
-    @oqt_vcr.use_cassette()
     def test_no_features(self):
         """Test area with no features"""
         infile = os.path.join(
