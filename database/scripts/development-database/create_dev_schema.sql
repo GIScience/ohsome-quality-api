@@ -43,6 +43,9 @@ SELECT
 
 
 /* Testing */
+/* Currently two regions are used for testing: */
+/* Heidelberg: 3*/
+/* Algeria Touggourt: 11*/
 CREATE SCHEMA IF NOT EXISTS test;
 
 CREATE TABLE test.regions (

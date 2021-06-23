@@ -1,4 +1,13 @@
-/* Subnational HDI for regions within a country */
+/* Query Subnational HDI for regions. */
+/* Cases covered here are: */ 
+/* - Region is within or shares most of its territory with a subnational unit */
+/* - Region is a country or shares most of its territory with a country */
+/* Cases not covered (This is not an issue with currently selected OQT regions: */
+/* - Region shares substantial territory with more the one subnational unit or country */
+
+/* Subnational HDI for regions within a country. */
+/* If intersection results in multiple features (shdi), */
+/* the feature (shdi) with the biggest intersection area will be selected. */
 WITH regions_shdi AS (
     SELECT DISTINCT ON (ogc_fid)
         shdi.shdi,
@@ -22,7 +31,7 @@ WHERE
     regions.ogc_fid = regions_shdi.ogc_fid;
 
 
-/* HDI for countries*/
+/* HDI for countries */
 WITH regions_shdi AS (
     SELECT
         AVG(shdi.shdi) as shdi_avg,
