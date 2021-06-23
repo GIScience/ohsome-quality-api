@@ -18,6 +18,8 @@ class IntOrStrParamType(click.ParamType):
     https://click.palletsprojects.com/en/8.0.x/parameters/#implementing-custom-types
     """
 
+    name = "integer|string"
+
     def convert(self, value, param, ctx):
         try:
             return int(value)
