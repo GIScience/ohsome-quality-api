@@ -1,12 +1,12 @@
-import json
 import logging
 from io import StringIO
 from string import Template
+from typing import Union
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from dateutil.relativedelta import relativedelta
-from geojson import FeatureCollection
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -16,7 +16,7 @@ class LastEdit(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        bpolys: Union[Polygon, MultiPolygon] = None,
         time_range: str = None,
     ) -> None:
         super().__init__(
@@ -41,13 +41,13 @@ class LastEdit(BaseIndicator):
 
         query_results_contributions = await ohsome_client.query(
             layer=self.layer,
-            bpolys=json.dumps(self.bpolys),
+            bpolys=self.bpolys,
             time=self.time_range,
             endpoint="contributions/latest/centroid",
         )
         query_results_totals = await ohsome_client.query(
             layer=self.layer,
-            bpolys=json.dumps(self.bpolys),
+            bpolys=self.bpolys,
         )
         if query_results_contributions is None or query_results_totals is None:
             return False

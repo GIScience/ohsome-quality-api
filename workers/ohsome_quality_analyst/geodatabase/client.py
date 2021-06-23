@@ -14,14 +14,14 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
-import json
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import Dict, List, Union
+from typing import List, Union
 
 import asyncpg
 import geojson
+from geojson import FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
 
@@ -131,7 +131,7 @@ async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]
 
 
 # TODO Rewrite to work with geojson.Feature as input
-async def get_area_of_bpolys(bpolys: Dict):
+async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -143,51 +143,30 @@ async def get_area_of_bpolys(bpolys: Dict):
                     )
             ) / (1000*1000) as area_sqkm
         """
-    polygon = json.dumps(bpolys["features"][0]["geometry"])
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, polygon)
+        result = await conn.fetchrow(query, geojson.dumps(bpolys))
     return result["area_sqkm"]
 
 
+# TODO: Return GeoJSON object of type Polygon or MultiPolygon not FeatureCollection
 async def get_bpolys_from_db(
     dataset: str, feature_id: Union[int, str], fid_field: str
-) -> geojson.FeatureCollection:
+) -> Union[Polygon, MultiPolygon]:
     """Get bounding polygon from the geodatabase as a GeoJSON FeatureCollection."""
     logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, feature_id)))
 
     # Safe against SQL injection because of predefined values
     # (See oqt.py and definitions.py)
-    query = (
-        """
-        SELECT json_build_object(
-            'type', 'FeatureCollection',
-            'crs',  json_build_object(
-                'type',      'name',
-                'properties', json_build_object(
-                    'name', 'EPSG:4326'
-                )
-            ),
-            'features', json_agg(
-                json_build_object(
-                    'type',       'Feature',
-                    'id',         {fid_field},
-                    'geometry',   public.ST_AsGeoJSON(geom)::json,
-                    'properties', json_build_object(
-                    )
-                )
-            )
-        )
-        FROM {dataset}
-        WHERE {fid_field} = $1
-    """
-    ).format(fid_field=fid_field, dataset=dataset)
+    query = "SELECT ST_AsGeoJSON(geom) FROM {dataset} WHERE {fid_field} = $1".format(
+        fid_field=fid_field, dataset=dataset
+    )
 
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
     return geojson.loads(result[0])
 
 
-async def get_available_regions() -> geojson.FeatureCollection:
+async def get_available_regions() -> FeatureCollection:
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "regions_as_geojson.sql")
     with open(file_path, "r") as file:

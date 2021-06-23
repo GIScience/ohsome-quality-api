@@ -1,11 +1,11 @@
-import json
 import logging
 from io import StringIO
 from string import Template
+from typing import Union
 
 import matplotlib.pyplot as plt
 import numpy as np
-from geojson import FeatureCollection
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
@@ -19,7 +19,7 @@ class PoiDensity(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        bpolys: Union[Polygon, MultiPolygon] = None,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
@@ -39,7 +39,7 @@ class PoiDensity(BaseIndicator):
 
     async def preprocess(self) -> bool:
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=json.dumps(self.bpolys)
+            layer=self.layer, bpolys=self.bpolys
         )
         if query_results_count is None:
             return False

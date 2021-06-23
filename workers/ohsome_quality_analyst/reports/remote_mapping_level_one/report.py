@@ -1,4 +1,6 @@
-from geojson import FeatureCollection
+from typing import Union
+
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
@@ -6,7 +8,7 @@ from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 class RemoteMappingLevelOne(BaseReport):
     def __init__(
         self,
-        bpolys: FeatureCollection = None,
+        bpolys: Union[Polygon, MultiPolygon] = None,
         dataset: str = None,
         feature_id: int = None,
         fid_field: str = None,

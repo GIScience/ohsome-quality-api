@@ -395,6 +395,82 @@
                 },
                 "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-06-20T20:00:00Z\",\n    \"value\" : 230.0\n  } ]\n}"
             }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "python-httpx/0.17.1"
+                    ],
+                    "content-length": [
+                        "1531"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 400,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Mon, 28 Jun 2021 12:45:25 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, no-store"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Connection": [
+                        "close"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"timestamp\" : \"2021-06-28T12:45:25.876524\",\n  \"status\" : 400,\n  \"message\" : \"The provided GeoJSON cannot be converted. Please take a look at the documentation page for the bpolys parameter to see an example of a fitting GeoJSON input file.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/count\"\n}"
+            }
         }
     ]
 }

@@ -1,11 +1,11 @@
-import json
 import logging
 from io import StringIO
 from string import Template
+from typing import Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from geojson import FeatureCollection
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation.sigmoid_curve import (
@@ -26,7 +26,7 @@ class MappingSaturation(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        bpolys: Union[Polygon, MultiPolygon] = None,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(
@@ -42,7 +42,7 @@ class MappingSaturation(BaseIndicator):
     async def preprocess(self) -> bool:
         """Get data from ohsome API and db. Put timestamps + data in list"""
         query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
+            layer=self.layer, bpolys=self.bpolys, time=self.time_range
         )
         if query_results is None:
             return False
