@@ -42,7 +42,7 @@ class TestOhsomeClient(TestCase):
         with open(fixture, "r") as reader:
             self.invalid_response_time = reader.read()
 
-        fixture = os.path.join(fixtures_dir, "heidelberg_altstadt.geojson")
+        fixture = os.path.join(fixtures_dir, "heidelberg-altstadt-geometry.geojson")
         with open(fixture, "r") as file:
             self.bpolys = geojson.load(file)
         self.layer = LayerDefinitionMock()
