@@ -1,12 +1,12 @@
-import json
 import logging
 from io import StringIO
 from string import Template
+from typing import Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 from asyncpg import Record
-from geojson import FeatureCollection
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -19,7 +19,7 @@ class GhsPopComparisonRoads(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        bpolys: Union[Polygon, MultiPolygon],
     ) -> None:
         super().__init__(
             layer_name=layer_name,
@@ -54,9 +54,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.area = area
         self.pop_count = pop_count
 
-        query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=json.dumps(self.bpolys)
-        )
+        query_results = await ohsome_client.query(layer=self.layer, bpolys=self.bpolys)
         if query_results is None:
             return False
         # results in meter, we need km
@@ -197,7 +195,6 @@ class GhsPopComparisonRoads(BaseIndicator):
                 st_setsrid(public.ST_GeomFromGeoJSON($3), 4326)
              )
             """
-        polygon = json.dumps(bpolys["features"][0]["geometry"])  # Geometry only
-        data = (polygon, polygon, polygon)
+        data = tuple(map(str, [bpolys] * 3))
         async with db_client.get_connection() as conn:
             return await conn.fetchrow(query, *data)

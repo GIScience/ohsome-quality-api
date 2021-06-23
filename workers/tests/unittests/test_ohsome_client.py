@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
+import geojson
 import httpx
 from schema import Optional, Schema
 
@@ -41,8 +42,10 @@ class TestOhsomeClient(TestCase):
         with open(fixture, "r") as reader:
             self.invalid_response_time = reader.read()
 
+        fixture = os.path.join(fixtures_dir, "heidelberg-altstadt-geometry.geojson")
+        with open(fixture, "r") as file:
+            self.bpolys = geojson.load(file)
         self.layer = LayerDefinitionMock()
-        self.bpolys = ""
         self.ohsome_api = "https://api.ohsome.org/v1/"
 
     def test_query_valid_response(self) -> None:
@@ -95,14 +98,14 @@ class TestOhsomeClient(TestCase):
             }
         )
         layer = LayerDefinitionMock()
-        data = ohsome_client.build_data_dict(layer, "mock_bpolys")
+        data = ohsome_client.build_data_dict(layer, self.bpolys)
         self.assertTrue(schema.is_valid(data))
 
     def test_build_data_dict_ratio(self) -> None:
         """Layer has no ratio filter definied"""
         layer = LayerDefinitionMock()
         with self.assertRaises(ValueError):
-            ohsome_client.build_data_dict(layer, "mock_bpolys", ratio=True)
+            ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
 
     def test_build_data_dict_ratio_2(self) -> None:
         """Layer has ratio filter definied"""
@@ -115,7 +118,7 @@ class TestOhsomeClient(TestCase):
         )
         layer = LayerDefinitionMock()
         layer.ratio_filter = "mock_ratio_filter"
-        data = ohsome_client.build_data_dict(layer, "mock_bpolys", ratio=True)
+        data = ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
         self.assertTrue(schema.is_valid(data))
 
     def test_build_data_with_time(self) -> None:
@@ -128,10 +131,10 @@ class TestOhsomeClient(TestCase):
             }
         )
         layer = LayerDefinitionMock()
-        data = ohsome_client.build_data_dict(layer, "mock_bpolys", time="2014-01-01")
+        data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
 
         layer = LayerDefinitionMock()
         layer.ratio_filter = "mock_ratio_filter"
-        data = ohsome_client.build_data_dict(layer, "mock_bpolys", time="2014-01-01")
+        data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
