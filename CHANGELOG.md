@@ -9,6 +9,10 @@
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
 - Remove GUF Comparison indicator ([#55])
 - Implement combine_indicators() as Concrete Method of the Base Blass Report ([53])
+- Small changes to the Website ([#61])
+  - Change HTML parameters from countryID and topic to id and report ([#30])
+  - Mention API and GitHub on About page ([#5])
+  - On Click to marker now only zooms to polygon instead to fixed value 
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -18,6 +22,9 @@
 [#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
 [#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
 [#53]: https://github.com/GIScience/ohsome-quality-analyst/pull/53
+[#30]: https://github.com/GIScience/ohsome-quality-analyst/issues/30
+[#5]: https://github.com/GIScience/ohsome-quality-analyst/issues/5
+[#61]: https://github.com/GIScience/ohsome-quality-analyst/pull/61
 
 
 ## 0.3.1
