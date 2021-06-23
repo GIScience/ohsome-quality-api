@@ -74,24 +74,20 @@ function buildMap(...charts){
 				click: selectStyle
 			});
 			
-      // Get bounds of polygon
-      var bounds = layer.getBounds();
-      // Get center of bounds
-      var center = bounds.getCenter();
-      // Use center to put marker on map
-		  var marker = L.marker(center).on('click', zoomToMarker).addTo(map);
-		  let id = feature.id
-		  markers[id] = marker
-		  marker.on('click', function(){layer.fire('click')})
-      // end add marker for test regions
+			// Get bounds of polygon
+			var bounds = layer.getBounds();
+			// Get center of bounds
+			var center = bounds.getCenter();
+			// Use center to put marker on map
+			var marker = L.marker(center).on('click', ()=>{
+				map.fitBounds(bounds)
+			}).addTo(map);
+			let id = feature.id
+			markers[id] = marker
+			marker.on('click', function(){layer.fire('click')})
 		}
 
 	}).addTo(map);
-
-    function zoomToMarker(e) {
-        map.setView(e.target._latlng, 10);
-    }
-
 
 	//Next we’ll define what happens on mouseover:
 	function highlightFeature(e) {
@@ -126,13 +122,13 @@ function buildMap(...charts){
 	// what happens whlie onclick on the map
 	function selectStyle(e) {
 		// change value of mapCheck in html to signalize intern area was selected
-		update_url("countryID", e.target.feature.id)
+		update_url("id", e.target.feature.id)
 		var s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
-		// TODO style selected country
+		// TODO style selected id
 		// alert("I will be red");
 		var layer = e.target;
-		// get selected country
+		// get selected feature
 		selectedFeature = layer.feature
 		if(selectedFeatureLayer)
 			map.removeLayer(selectedFeatureLayer)
@@ -146,8 +142,8 @@ function buildMap(...charts){
 			}
 		}).addTo(map);
 
-		countryID = layer.feature.id;
-		selectedCountry = countryID
+		featureId = layer.feature.id;
+		selectedId = featureId
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
@@ -155,18 +151,18 @@ function buildMap(...charts){
 		selectedDataset = dataset
 	}
 	// initialize variables for storing area and dataset id from map geojson 
-	if (html_params["countryID"] != undefined){
-		countryID = parseInt(html_params["countryID"])
+	if (html_params["id"] != undefined){
+		featureId = parseInt(html_params["id"])
 	}
 	else {
-		countryID = null; 
+		featureId = null; 
 	}
-	selectedCountry = null;
+	selectedId = null;
 	selectedDataset = "regions";
 
-	// create a parameter string containing selected area, topic and dataset id
-	function getParams(region, topic, dataset) {
-		paramString = region + "," + topic + "," + dataset
+	// create a parameter string containing selected area, report and dataset id
+	function getParams(region, report, dataset) {
+		paramString = region + "," + report + "," + dataset
 		return paramString
 	}
 
@@ -188,27 +184,27 @@ function buildMap(...charts){
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
 		html_params = get_html_parameter_list(location.search)
-		var topic = document.getElementById("cardtype");
+		var report = document.getElementById("cardtype");
 
-		if(html_params["countryID"]!=undefined){
-			var areas = parseInt(html_params["countryID"])
+		if(html_params["id"]!=undefined){
+			var areas = parseInt(html_params["id"])
 		}
 		else{
 			var areas = document.getElementById("mapCheck").innerHTML;
 		}
 
-		if (html_params["topic"]!=undefined&topic_isValid(html_params["topic"])){
-			var selectedTopic = html_params["topic"]
-			topic.value = selectedTopic		
+		if (html_params["report"]!=undefined&report_isValid(html_params["report"])){
+			var selectedReport = html_params["report"]
+			report.value = selectedReport		
 		}
 		else{
-			var selectedTopic = topic.options[topic.selectedIndex].value;
+			var selectedReport = report.options[report.selectedIndex].value;
 		}
-		if ((areas == "country") | !country_isValid(areas, charts[0][0].features)){
+		if ((areas == "id") | !id_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
 		}
-		else if (selectedTopic == "Topic" | !topic_isValid(selectedTopic)) {		
-			alert("Please select a topic");
+		else if (selectedReport == "Report" | !report_isValid(selectedReport)) {		
+			alert("Please select a Report");
 		}
 		else {
 			markers[areas].fire("click")
@@ -227,7 +223,7 @@ function buildMap(...charts){
 			    "featureId": String(areas)
 			}
 			console.log(params)
-			httpPostAsync(selectedTopic, JSON.stringify(params), handleGetQuality);
+			httpPostAsync(selectedReport, JSON.stringify(params), handleGetQuality);
 		 }
 		// when params were send, get pdf button turns blue
 		changeColor() 
@@ -414,23 +410,20 @@ function buildMap(...charts){
 
 	// function to style the get quality button depending on selections
 	function changeColorQ() {
-		var topic = document.getElementById("cardtype");
+		var report = document.getElementById("cardtype");
 		var areas = document.getElementById("mapCheck").innerHTML;
 		var div = document.getElementById('gQ');
-		var selectedTopic = topic.options[topic.selectedIndex].value;
-		update_url("topic", selectedTopic)
-
-		console.log(selectedTopic)
+		var selectedReport = report.options[report.selectedIndex].value;
+		update_url("report", selectedReport)
 		// no selection of area so set buttons to grey
-		if (areas == "country") {
+		if (areas == "id") {
 			//var divGP = document.getElementById('gP');
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 		}
-	    // no selection of topic so set buttons to grey
-		if (selectedTopic == "Topic") {
-			console.log("imhere")
+	    // no selection of report so set buttons to grey
+		if (selectedReport == "Report") {
 			//var divGP = document.getElementById('gP');
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
@@ -524,8 +517,8 @@ function buildMap(...charts){
 	// add HeiGIT logo
 
 
-	if ((topic_isValid(html_params["topic"]) & country_isValid(countryID, charts[0][0].features))){
-		markers[countryID].fire("click")
+	if ((report_isValid(html_params["report"]) & id_isValid(featureId, charts[0][0].features))){
+		markers[featureId].fire("click")
 		document.getElementById("gQ").click()
 	}
 
