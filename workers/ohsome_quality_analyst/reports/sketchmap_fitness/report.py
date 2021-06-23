@@ -1,4 +1,6 @@
-from geojson import FeatureCollection
+from typing import Optional, Union
+
+from geojson import MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
@@ -6,10 +8,10 @@ from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 class SketchmapFitness(BaseReport):
     def __init__(
         self,
-        bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
-        fid_field: str = None,
+        bpolys: Union[Polygon, MultiPolygon, None] = None,
+        dataset: Optional[str] = None,
+        feature_id: Optional[int] = None,
+        fid_field: Optional[str] = None,
     ) -> None:
         super().__init__(
             bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field

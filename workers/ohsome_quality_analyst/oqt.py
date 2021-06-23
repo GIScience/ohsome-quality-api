@@ -6,7 +6,7 @@ import logging
 from typing import Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
-from geojson import FeatureCollection
+from geojson import MultiPolygon, Polygon
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -17,9 +17,9 @@ from ohsome_quality_analyst.utils.helper import name_to_class
 async def create_indicator(
     indicator_name: str,
     layer_name: str,
-    bpolys: Optional[FeatureCollection] = None,
+    bpolys: Union[Polygon, MultiPolygon, None] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Union[int, str, None] = None,
     fid_field: Optional[str] = None,
     force: bool = False,
 ) -> BaseIndicator:
@@ -128,9 +128,9 @@ async def create_all_indicators(force: bool = False) -> None:
 async def create_report(
     report_name: str,
     force: bool = False,
-    bpolys: Optional[FeatureCollection] = None,
+    bpolys: Union[Polygon, MultiPolygon, None] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Union[int, str, None] = None,
     fid_field: Optional[str] = None,
 ) -> object:
     """Create a report.

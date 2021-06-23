@@ -2,10 +2,11 @@ import datetime
 import json
 import logging
 from json import JSONDecodeError
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 import geojson
 import httpx
+from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import OHSOME_API
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
@@ -14,7 +15,7 @@ from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 # TODO: Add more tests for ohsome package.
 async def query(
     layer,
-    bpolys: str,
+    bpolys: Union[Polygon, MultiPolygon],
     time: Optional[str] = None,
     endpoint: Optional[str] = None,
     ratio: bool = False,
@@ -86,12 +87,15 @@ def build_url(
 
 def build_data_dict(
     layer,
-    bpolys: str,
+    bpolys: Union[Polygon, MultiPolygon],
     time: Optional[str] = None,
     ratio: bool = False,
 ) -> dict:
     """Build data dictionary for ohsome API query."""
-    data = {"bpolys": bpolys, "filter": layer.filter}
+    data = {
+        "bpolys": geojson.dumps(FeatureCollection([Feature(geometry=bpolys)])),
+        "filter": layer.filter,
+    }
     if ratio:
         if layer.ratio_filter is None:
             raise ValueError(

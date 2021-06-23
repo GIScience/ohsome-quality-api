@@ -4,6 +4,7 @@ from typing import Optional, Union
 import geojson
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from geojson import Feature, MultiPolygon, Polygon
 from pydantic import BaseModel
 
 from ohsome_quality_analyst import __version__ as oqt_version
@@ -15,33 +16,6 @@ from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
-
-
-def empty_api_response() -> dict:
-    return {
-        "attribution": {
-            "url": "https://ohsome.org/copyrights",
-            "text": "© OpenStreetMap contributors",
-        },
-        "apiVersion": oqt_version,
-    }
-
-
-async def load_bpolys(bpolys: str) -> None:
-    """Load and check validity and size of bpolys"""
-    # TODO: Return API response with error message
-    bpolys = geojson.loads(bpolys)
-    if bpolys.is_valid is False:
-        raise ValueError("Input geometry is not valid")
-    elif await db_client.get_area_of_bpolys(bpolys) > GEOM_SIZE_LIMIT:
-        raise ValueError(
-            "Input geometry is too big. It should be less than {0}.".format(
-                GEOM_SIZE_LIMIT
-            )
-        )
-    else:
-        return bpolys
-
 
 app = FastAPI()
 app.add_middleware(
@@ -56,7 +30,7 @@ app.add_middleware(
 class IndicatorParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[Union[int, str]] = None
+    featureId: Union[int, str, None] = None
     layerName: Optional[str] = None
     fidField: Optional[str] = None
 
@@ -64,8 +38,53 @@ class IndicatorParameters(BaseModel):
 class ReportParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[Union[int, str]] = None
+    featureId: Union[int, str, None] = None
     fidField: Optional[str] = None
+
+
+def empty_api_response() -> dict:
+    return {
+        "attribution": {
+            "url": "https://ohsome.org/copyrights",
+            "text": "© OpenStreetMap contributors",
+        },
+        "apiVersion": oqt_version,
+    }
+
+
+def int_or_str_param_type(value: str) -> Union[int, str]:
+    """Parse parameter as Interger otherwise parse as String"""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        if isinstance(value, str):
+            return value
+        else:
+            raise ValueError("Given parameter is not a valid integer or string")
+
+
+async def load_bpolys(bpolys: str) -> Union[Polygon, MultiPolygon]:
+    """Load as GeoJSON object, validate and check size of bpolys"""
+    # TODO: Return API response with error message
+    bpolys = geojson.loads(bpolys)
+
+    if bpolys.is_valid is False:
+        raise ValueError("Input geometry is not valid")
+
+    if isinstance(bpolys, Feature):
+        bpolys = bpolys["geometry"]
+
+    if isinstance(bpolys, (Polygon, MultiPolygon)) is False:
+        raise ValueError(
+            "Input GeoJSON Objects have to be of type Feature, Polygon or MultiPolygon"
+        )
+
+    if await db_client.get_area_of_bpolys(bpolys) > GEOM_SIZE_LIMIT:
+        raise ValueError(
+            "Input GeoJSON Object is too big. "
+            + "The area should be less than {0} sqkm.".format(GEOM_SIZE_LIMIT)
+        )
+    return bpolys
 
 
 @app.get("/indicator/{name}")
@@ -75,7 +94,7 @@ async def get_indicator(
     layerName: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[Union[str, int]] = None,
+    featureId: Union[str, int, None] = None,
     fidField: Optional[str] = None,
 ):
     url = request.url._url
@@ -104,11 +123,14 @@ async def _fetch_indicator(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Union[int, str, None] = None,
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
+
+    if feature_id:
+        feature_id = int_or_str_param_type(feature_id)
 
     indicator = await oqt.create_indicator(
         name, layer_name, bpolys, dataset, feature_id, fid_field
@@ -130,7 +152,7 @@ async def get_report(
     request: Request,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[Union[int, str]] = None,
+    featureId: Union[int, str, None] = None,
     fidField: Optional[str] = None,
 ):
     url = request.url._url
@@ -152,11 +174,14 @@ async def _fetch_report(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int]] = None,
+    feature_id: Union[int, str, None] = None,
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
+
+    if feature_id:
+        feature_id = int_or_str_param_type(feature_id)
 
     report = await oqt.create_report(
         name, bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field

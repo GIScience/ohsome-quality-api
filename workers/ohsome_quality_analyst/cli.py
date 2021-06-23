@@ -3,7 +3,6 @@ import logging
 from typing import Union
 
 import click
-import geojson
 import yaml
 
 from ohsome_quality_analyst import cli_opts, oqt
@@ -121,12 +120,11 @@ def create_indicator(
         # When using an infile as input
         feature_collection = load_infile(infile)
         for feature in feature_collection.features:
-            sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
                 oqt.create_indicator(
                     indicator_name,
                     layer_name,
-                    bpolys=sub_collection,
+                    bpolys=feature.geometry,
                     feature_id=feature_id,
                     dataset=dataset_name,
                     fid_field=fid_field,
@@ -141,12 +139,11 @@ def create_indicator(
             click.echo(indicator.result)
     else:
         # When using a dataset and FID as input
-        bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
                 indicator_name,
                 layer_name,
-                bpolys=bpolys,
+                bpolys=None,
                 feature_id=feature_id,
                 dataset=dataset_name,
                 fid_field=fid_field,
@@ -190,11 +187,10 @@ def create_report(
         # When using an infile as input
         feature_collection = load_infile(infile)
         for feature in feature_collection.features:
-            sub_collection = geojson.FeatureCollection([feature])
             report = asyncio.run(
                 oqt.create_report(
                     report_name,
-                    bpolys=sub_collection,
+                    bpolys=feature.geometry,
                     dataset=dataset_name,
                     feature_id=feature_id,
                     fid_field=fid_field,
@@ -209,11 +205,10 @@ def create_report(
             click.echo(report.result)
     else:
         # When using a dataset and FID as input
-        bpolys = None
         report = asyncio.run(
             oqt.create_report(
                 report_name,
-                bpolys=bpolys,
+                bpolys=None,
                 dataset=dataset_name,
                 feature_id=feature_id,
                 fid_field=fid_field,
