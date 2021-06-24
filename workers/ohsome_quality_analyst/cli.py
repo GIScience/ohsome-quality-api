@@ -118,8 +118,11 @@ def create_indicator(
     fid_field: str,
     force: bool,
 ):
-    """Create an Indicator and print results to stdout. Write a GeoJSON if an outfile
-    is specified or an infile is used as input"""
+    """Create an Indicator.
+    
+    Write a GeoJSON with the result to disk if an outfile is specified.
+    Otherwise print to stdout.
+    """
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
     if force:
