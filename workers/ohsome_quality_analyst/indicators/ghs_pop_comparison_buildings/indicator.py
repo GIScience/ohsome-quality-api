@@ -19,7 +19,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon] = None,
+        bpolys: Union[Polygon, MultiPolygon],
     ) -> None:
         super().__init__(
             layer_name=layer_name,

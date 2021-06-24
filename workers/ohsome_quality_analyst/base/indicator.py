@@ -63,7 +63,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon] = None,
+        bpolys: Union[Polygon, MultiPolygon],
         data: Optional[dict] = None,
     ) -> None:
 

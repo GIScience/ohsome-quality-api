@@ -26,7 +26,7 @@ class MappingSaturation(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon] = None,
+        bpolys: Union[Polygon, MultiPolygon],
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(

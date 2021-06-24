@@ -16,7 +16,7 @@ class LastEdit(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon] = None,
+        bpolys: Union[Polygon, MultiPolygon],
         time_range: str = None,
     ) -> None:
         super().__init__(
