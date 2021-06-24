@@ -54,7 +54,6 @@ class Result:
     value: Optional[float]
     description: str
     svg: str
-    data: Optional[dict] = None
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -64,10 +63,9 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         feature: Feature,
-        data: Optional[dict] = None,
     ) -> None:
+
         self.feature = feature
-        self.data = data
 
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
@@ -86,6 +84,45 @@ class BaseIndicator(metaclass=ABCMeta):
         )
 
         self._validate_indicator_layer(self.__class__.__name__, layer_name)
+
+    @property
+    def __geo_interface__(self) -> Feature:
+        """
+        An interface which supports GeoJSON Encoding/Decoding.
+
+        Returns a GeoJSON Feature object.
+        The properties of the Feature contains the attributes of the indicator.
+        The geometry (and properties) of the input GeoJSON object is preserved.
+
+        Interface Specification: https://gist.github.com/sgillies/2217756
+        GeoJSON Encoding/Decoding: https://github.com/jazzband/geojson#custom-classes
+        """
+        result = vars(self.result)
+        result.pop("svg")
+        # Prefix all keys of the dictionary
+        result = {"result." + str(key): val for key, val in result.items()}
+        data = {"data." + str(key): val for key, val in self.data.items()}
+        return Feature(
+            geometry=self.feature.geometry,
+            properties={
+                "metadata.name": self.metadata.name,
+                "metadata.description": self.metadata.description,
+                "layer.name": self.layer.name,
+                "layer.description": self.layer.description,
+                **result,
+                **data,
+                **self.feature.properties,
+            },
+        )
+
+    @property
+    def data(self) -> dict:
+        """All indicator attributes except result, metadata and layer"""
+        data = vars(self)
+        data.pop("result")
+        data.pop("metadata")
+        data.pop("layer")
+        return data
 
     @abstractmethod
     async def preprocess(self) -> bool:
