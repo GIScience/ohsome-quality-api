@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from geojson import MultiPolygon, Polygon
 
@@ -8,10 +8,10 @@ from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 class RemoteMappingLevelOne(BaseReport):
     def __init__(
         self,
-        bpolys: Union[Polygon, MultiPolygon] = None,
-        dataset: str = None,
-        feature_id: int = None,
-        fid_field: str = None,
+        bpolys: Union[Polygon, MultiPolygon, None] = None,
+        dataset: Optional[str] = None,
+        feature_id: Optional[int] = None,
+        fid_field: Optional[str] = None,
     ) -> None:
         """Create a list of indicator objects."""
 

@@ -174,7 +174,7 @@ async def _fetch_report(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Union[int] = None,
+    feature_id: Union[int, str, None] = None,
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
