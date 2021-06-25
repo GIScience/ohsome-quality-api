@@ -119,7 +119,7 @@ def create_indicator(
     force: bool,
 ):
     """Create an Indicator.
-    
+
     Write a GeoJSON with the result to disk if an outfile is specified.
     Otherwise print to stdout.
     """
