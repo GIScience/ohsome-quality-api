@@ -16,9 +16,9 @@ class TestGetDefaultFigure(unittest.TestCase):
             "heidelberg-altstadt-geometry.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+            feature = geojson.load(f)
         indicator = GhsPopComparisonBuildings(
-            bpolys=bpolys, layer_name="building_count"
+            feature=feature, layer_name="building_count"
         )
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG

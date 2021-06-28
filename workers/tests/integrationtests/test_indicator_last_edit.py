@@ -14,13 +14,11 @@ class TestIndicatorLastEdit(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test(self):
         # Heidelberg
-        bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+        feature = asyncio.run(
+            db_client.get_region_from_db(feature_id=3, fid_field="ogc_fid")
         )
 
-        indicator = LastEdit(bpolys=bpolys, layer_name="major_roads_count")
+        indicator = LastEdit(feature=feature, layer_name="major_roads_count")
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
@@ -52,9 +50,9 @@ class TestIndicatorLastEdit(unittest.TestCase):
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+            feature = geojson.load(f)
 
-        indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
+        indicator = LastEdit(layer_name="amenities", feature=feature)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.total_features, 0)
 

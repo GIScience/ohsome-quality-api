@@ -1,12 +1,11 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 from asyncpg import Record
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -19,12 +18,9 @@ class GhsPopComparisonRoads(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon],
+        feature: Feature,
     ) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            bpolys=bpolys,
-        )
+        super().__init__(layer_name=layer_name, feature=feature)
         # Those attributes will be set during lifecycle of the object.
         self.pop_count = None
         self.area = None
@@ -47,14 +43,16 @@ class GhsPopComparisonRoads(BaseIndicator):
             return 5
 
     async def preprocess(self) -> bool:
-        pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
+        pop_count, area = await self.get_zonal_stats_population()
 
         if pop_count is None:
             pop_count = 0
         self.area = area
         self.pop_count = pop_count
 
-        query_results = await ohsome_client.query(layer=self.layer, bpolys=self.bpolys)
+        query_results = await ohsome_client.query(
+            layer=self.layer, bpolys=self.feature.geometry
+        )
         if query_results is None:
             return False
         # results in meter, we need km
@@ -169,7 +167,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         plt.close("all")
         return True
 
-    async def get_zonal_stats_population(self, bpolys: dict) -> Record:
+    async def get_zonal_stats_population(self) -> Record:
         """Derive zonal population stats for given GeoJSON geometry.
 
         This is based on the Global Human Settlement Layer Population.
@@ -195,6 +193,6 @@ class GhsPopComparisonRoads(BaseIndicator):
                 st_setsrid(public.ST_GeomFromGeoJSON($3), 4326)
              )
             """
-        data = tuple(map(str, [bpolys] * 3))
+        data = tuple(map(str, [self.feature.geometry] * 3))
         async with db_client.get_connection() as conn:
             return await conn.fetchrow(query, *data)

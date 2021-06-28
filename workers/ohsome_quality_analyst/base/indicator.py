@@ -7,11 +7,11 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 from io import StringIO
-from typing import Dict, Literal, Optional, Union
+from typing import Dict, Literal, Optional
 
 import matplotlib.pyplot as plt
 from dacite import from_dict
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.utils.definitions import (
     INDICATOR_LAYER,
@@ -63,11 +63,10 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon],
+        feature: Feature,
         data: Optional[dict] = None,
     ) -> None:
-
-        self.bpolys = bpolys
+        self.feature = feature
         self.data = data
 
         # setattr(object, key, value) could be used instead of relying on from_dict.

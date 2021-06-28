@@ -14,11 +14,11 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg_altstadt.geojson",
+            "heidelberg-altstadt-feature.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
-        self.indicator = PoiDensity(bpolys=bpolys, layer_name="poi")
+            feature = geojson.load(f)
+        self.indicator = PoiDensity(feature=feature, layer_name="poi")
 
     @oqt_vcr.use_cassette()
     def test(self):

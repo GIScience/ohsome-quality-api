@@ -1,12 +1,11 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import Union
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from dateutil.relativedelta import relativedelta
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -16,12 +15,12 @@ class LastEdit(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon],
+        feature: Feature,
         time_range: str = None,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
-            bpolys=bpolys,
+            feature=feature,
         )
         self.time_range = time_range
         # TODO: thresholds might be better defined for each OSM layer
@@ -41,13 +40,13 @@ class LastEdit(BaseIndicator):
 
         query_results_contributions = await ohsome_client.query(
             layer=self.layer,
-            bpolys=self.bpolys,
+            bpolys=self.feature.geometry,
             time=self.time_range,
             endpoint="contributions/latest/centroid",
         )
         query_results_totals = await ohsome_client.query(
             layer=self.layer,
-            bpolys=self.bpolys,
+            bpolys=self.feature.geometry,
         )
         if query_results_contributions is None or query_results_totals is None:
             return False

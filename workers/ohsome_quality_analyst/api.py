@@ -63,28 +63,31 @@ def int_or_str_param_type(value: str) -> Union[int, str]:
             raise ValueError("Given parameter is not a valid integer or string")
 
 
-async def load_bpolys(bpolys: str) -> Union[Polygon, MultiPolygon]:
+async def load_bpolys(bpolys: str) -> Feature:
     """Load as GeoJSON object, validate and check size of bpolys"""
     # TODO: Return API response with error message
+
+    async def check_geom_size(geom):
+        if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
+            raise ValueError(
+                "Input GeoJSON Object is too big. "
+                + "The area should be less than {0} sqkm.".format(GEOM_SIZE_LIMIT)
+            )
+
     bpolys = geojson.loads(bpolys)
 
     if bpolys.is_valid is False:
         raise ValueError("Input geometry is not valid")
-
-    if isinstance(bpolys, Feature):
-        bpolys = bpolys["geometry"]
-
-    if isinstance(bpolys, (Polygon, MultiPolygon)) is False:
+    elif isinstance(bpolys, Feature):
+        await check_geom_size(bpolys.geometry)
+        return bpolys
+    elif isinstance(bpolys, (Polygon, MultiPolygon)):
+        await check_geom_size(bpolys)
+        return Feature(geometry=bpolys)
+    else:
         raise ValueError(
             "Input GeoJSON Objects have to be of type Feature, Polygon or MultiPolygon"
         )
-
-    if await db_client.get_area_of_bpolys(bpolys) > GEOM_SIZE_LIMIT:
-        raise ValueError(
-            "Input GeoJSON Object is too big. "
-            + "The area should be less than {0} sqkm.".format(GEOM_SIZE_LIMIT)
-        )
-    return bpolys
 
 
 @app.get("/indicator/{name}")
@@ -184,7 +187,11 @@ async def _fetch_report(
         feature_id = int_or_str_param_type(feature_id)
 
     report = await oqt.create_report(
-        name, bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
+        name,
+        feature=bpolys,
+        dataset=dataset,
+        feature_id=feature_id,
+        fid_field=fid_field,
     )
 
     response = empty_api_response()

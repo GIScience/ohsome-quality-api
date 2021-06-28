@@ -13,16 +13,14 @@ from .utils import oqt_vcr
 class TestIndicatorRatio(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+        self.feature = asyncio.run(
+            db_client.get_region_from_db(feature_id=3, fid_field="ogc_fid")
         )
 
     @oqt_vcr.use_cassette()
     def test(self):
         indicator = TagsRatio(
-            bpolys=self.bpolys,
+            feature=self.feature,
             layer_name="jrc_health_count",
         )
         asyncio.run(indicator.preprocess())
@@ -43,9 +41,9 @@ class TestIndicatorRatio(unittest.TestCase):
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+            feature = geojson.load(f)
 
-        indicator = TagsRatio(layer_name="jrc_health_count", bpolys=bpolys)
+        indicator = TagsRatio(layer_name="jrc_health_count", feature=feature)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, 0)
 
@@ -57,7 +55,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test_no_filter2(self):
         """Layer with no filter2 for ratio endpoint"""
         with self.assertRaises(ValueError):
-            TagsRatio(layer_name="major_roads_length", bpolys=self.bpolys)
+            TagsRatio(layer_name="major_roads_length", feature=self.feature)
 
 
 if __name__ == "__main__":

@@ -1,25 +1,20 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import Union
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class TagsRatio(BaseIndicator):
-    def __init__(
-        self,
-        layer_name: str,
-        bpolys: Union[Polygon, MultiPolygon],
-    ) -> None:
+    def __init__(self, layer_name: str, feature: Feature) -> None:
         super().__init__(
             layer_name=layer_name,
-            bpolys=bpolys,
+            feature=feature,
         )
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
@@ -30,7 +25,7 @@ class TagsRatio(BaseIndicator):
     async def preprocess(self) -> bool:
 
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=self.bpolys, ratio=True
+            layer=self.layer, bpolys=self.feature.geometry, ratio=True
         )
         if query_results_count is None:
             return False
