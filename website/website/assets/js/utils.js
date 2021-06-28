@@ -17,7 +17,6 @@ function get_html_parameter_list(querystring) {
 
 function update_url(key, value){
     let params = get_html_parameter_list(location.search)
-    console.log(params)
     params[key]=value
     let new_params = "?"
     for(const x of Object.keys(params)){
@@ -28,16 +27,16 @@ function update_url(key, value){
 }
 
 // check if a report with this name is implemented
-function topic_isValid(topic){
+function report_isValid(report){
     let valid_options = []
     for (var option of document.getElementById("cardtype").options) {
         valid_options.push(option.value)
       }
-    return valid_options.includes(topic)
+    return valid_options.includes(report)
 }
 
 // check if test region id is in the test regions file. This functions need to be updated once we have other inputs.
-function country_isValid(value, json){
+function id_isValid(value, json){
     let valid_options = []
     for (elem of json){
         valid_options.push(elem.id)
