@@ -30,19 +30,6 @@ class TestIndicatorLastEdit(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
-    # TODO: Choose smaller test region for this test case
-    # @oqt_vcr.use_cassette()
-    # def test_more_edited_features_then_features(self):
-    #     """It can happen that edited features includes deleted features"""
-    #     dataset = "regions"
-    #     feature_id = 8  # Dar Es Salaam
-    #     bpolys = asyncio.run(db_client.get_bpolys_from_db(dataset, feature_id))
-    #     indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
-    #     asyncio.run(indicator.preprocess())
-    #     self.assertLess(indicator.total_features, indicator.edited_features)
-    #     self.assertEqual(indicator.share_edited_features, 100)
-
-    # TODO: Add GeoJSON fixture with regions covering the requirements of this test
     @oqt_vcr.use_cassette()
     def test_no_amenities(self):
         """Test area with no amenities"""
@@ -56,7 +43,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
 
         indicator = LastEdit(layer_name="amenities", bpolys=bpolys)
         asyncio.run(indicator.preprocess())
-        self.assertEqual(indicator.total_features, 0)
+        self.assertEqual(indicator.element_count, 0)
 
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
