@@ -6,18 +6,7 @@ import click
 import geojson
 import yaml
 
-from ohsome_quality_analyst import oqt
-from ohsome_quality_analyst.cli_opts import (
-    dataset_name_opt,
-    feature_id_opt,
-    fid_field_opt,
-    force_opt,
-    indicator_name_opt,
-    infile_opt,
-    layer_name_opt,
-    outfile_opt,
-    report_name_opt,
-)
+from ohsome_quality_analyst import cli_opts, oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     DATASETS,
@@ -33,15 +22,13 @@ from ohsome_quality_analyst.utils.helper import (
 )
 
 
-def add_opts(options):
+def cli_option(option):
     """Adds options to cli."""
 
-    def _add_opts(func):
-        for option in reversed(options):
-            func = option(func)
-        return func
+    def _cli_option(func):
+        return option(func)
 
-    return _add_opts
+    return _cli_option
 
 
 @click.group()
@@ -100,14 +87,14 @@ def get_available_regions():
 
 
 @cli.command("create-indicator")
-@add_opts(indicator_name_opt)
-@add_opts(layer_name_opt)
-@add_opts(infile_opt)
-@add_opts(outfile_opt)
-@add_opts(dataset_name_opt)
-@add_opts(feature_id_opt)
-@add_opts(fid_field_opt)
-@add_opts(force_opt)
+@cli_option(cli_opts.indicator_name)
+@cli_option(cli_opts.layer_name)
+@cli_option(cli_opts.infile)
+@cli_option(cli_opts.outfile)
+@cli_option(cli_opts.dataset_name)
+@cli_option(cli_opts.feature_id)
+@cli_option(cli_opts.fid_field)
+@cli_option(cli_opts.force)
 def create_indicator(
     indicator_name: str,
     infile: str,
@@ -181,13 +168,13 @@ def create_indicator(
 
 
 @cli.command("create-report")
-@add_opts(report_name_opt)
-@add_opts(infile_opt)
-@add_opts(outfile_opt)
-@add_opts(dataset_name_opt)
-@add_opts(feature_id_opt)
-@add_opts(fid_field_opt)
-@add_opts(force_opt)
+@cli_option(cli_opts.report_name)
+@cli_option(cli_opts.infile)
+@cli_option(cli_opts.outfile)
+@cli_option(cli_opts.dataset_name)
+@cli_option(cli_opts.feature_id)
+@cli_option(cli_opts.fid_field)
+@cli_option(cli_opts.force)
 def create_report(
     report_name: str,
     infile: str,
@@ -248,7 +235,7 @@ def create_report(
 
 
 @cli.command("create-all-indicators")
-@add_opts(force_opt)
+@cli_option(cli_opts.force)
 def create_all_indicators(force: bool):
     """Create all indicators for all OQT regions."""
     click.echo(

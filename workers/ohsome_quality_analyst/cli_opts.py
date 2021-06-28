@@ -29,109 +29,91 @@ class IntOrStrParamType(click.ParamType):
         self.fail(f"{0} is not a valid integer or string".format(value), param, ctx)
 
 
-indicator_name_opt = [
-    click.option(
-        "--indicator-name",
-        "-i",
-        required=True,
-        type=click.Choice(
-            load_metadata("indicators").keys(),
-            case_sensitive=True,
-        ),
-        help="Choose an indicator,valid indicators are specified in definitions.py .",
-    )
-]
+indicator_name = click.option(
+    "--indicator-name",
+    "-i",
+    required=True,
+    type=click.Choice(
+        load_metadata("indicators").keys(),
+        case_sensitive=True,
+    ),
+    help="Choose an indicator,valid indicators are specified in definitions.py .",
+)
 
-report_name_opt = [
-    click.option(
-        "--report-name",
-        "-r",
-        required=True,
-        type=click.Choice(
-            load_metadata("reports").keys(),
-            case_sensitive=True,
-        ),
-        help="Choose a report,valid reports are specified in definitions.py .",
-    )
-]
+report_name = click.option(
+    "--report-name",
+    "-r",
+    required=True,
+    type=click.Choice(
+        load_metadata("reports").keys(),
+        case_sensitive=True,
+    ),
+    help="Choose a report,valid reports are specified in definitions.py .",
+)
 
-infile_opt = [
-    click.option(
-        "--infile",
-        help="GeoJSON file for your area of interest.",
-        type=click.Path(resolve_path=True),
-        default=None,
-    )
-]
+infile = click.option(
+    "--infile",
+    help="GeoJSON file for your area of interest.",
+    type=click.Path(resolve_path=True),
+    default=None,
+)
 
-outfile_opt = [
-    click.option(
-        "--outfile",
-        help="GeoJSON file to be written with appended metadata and results.",
-        type=click.Path(resolve_path=True),
-        default=None,
-    )
-]
+outfile = click.option(
+    "--outfile",
+    help="GeoJSON file to be written with appended metadata and results.",
+    type=click.Path(resolve_path=True),
+    default=None,
+)
 
-dataset_name_opt = [
-    click.option(
-        "--dataset-name",
-        "-d",
-        type=click.Choice(
-            DATASETS.keys(),
-            case_sensitive=True,
-        ),
-        help=("Choose a dataset containing geometries."),
-        default=None,
-    )
-]
+dataset_name = click.option(
+    "--dataset-name",
+    "-d",
+    type=click.Choice(
+        DATASETS.keys(),
+        case_sensitive=True,
+    ),
+    help=("Choose a dataset containing geometries."),
+    default=None,
+)
 
-layer_name_opt = [
-    click.option(
-        "--layer-name",
-        "-l",
-        required=True,
-        type=click.Choice(
-            list(load_layer_definitions().keys()),
-            case_sensitive=True,
-        ),
-        help=(
-            "Choose a layer. This defines which OSM features will be considered "
-            + "in the quality analysis."
-        ),
-    )
-]
+layer_name = click.option(
+    "--layer-name",
+    "-l",
+    required=True,
+    type=click.Choice(
+        list(load_layer_definitions().keys()),
+        case_sensitive=True,
+    ),
+    help=(
+        "Choose a layer. This defines which OSM features will be considered "
+        + "in the quality analysis."
+    ),
+)
 
-feature_id_opt = [
-    click.option(
-        "--feature-id",
-        "-f",
-        type=IntOrStrParamType(),
-        help="Provide the feature id of your area of interest.",
-        default=None,
-    )
-]
+feature_id = click.option(
+    "--feature-id",
+    "-f",
+    type=IntOrStrParamType(),
+    help="Provide the feature id of your area of interest.",
+    default=None,
+)
 
-fid_field_opt = [
-    click.option(
-        "--fid-field",
-        type=str,
-        help=(
-            "Provide the feature id field of the dataset. "
-            + "Use command list-fid-fields to view available "
-            + "fid fields for each dataset"
-        ),
-        default=None,
-    )
-]
+fid_field = click.option(
+    "--fid-field",
+    type=str,
+    help=(
+        "Provide the feature id field of the dataset. "
+        + "Use command list-fid-fields to view available "
+        + "fid fields for each dataset"
+    ),
+    default=None,
+)
 
-force_opt = [
-    click.option(
-        "--force",
-        is_flag=True,
-        help=(
-            "Force recreation of indicator. "
-            + "This will update the results of an indicator in the database."
-        ),
-    )
-]
+force = click.option(
+    "--force",
+    is_flag=True,
+    help=(
+        "Force recreation of indicator. "
+        + "This will update the results of an indicator in the database."
+    ),
+)
