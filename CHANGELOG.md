@@ -16,7 +16,6 @@
 - Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 - Update MapAction layers and POC report ([#56])
 
-
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
