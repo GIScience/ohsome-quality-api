@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 28 Jun 2021 12:46:28 GMT"
+                        "Mon, 28 Jun 2021 12:59:47 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -84,7 +84,7 @@
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/elements/count/ratio",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+28%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22name%22%3A+%22Niger+Kanan+Bakache+bad%22%7D%7D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity+in+%28hospital%2C+clinic%2C+doctors%29+or+%28healthcare%3D%2A%29%0A&filter2=%28amenity%3Dhospital+and+name%3D%2A+and+name%21%3D%22%22+and+wheelchair%3D%2A%29%0Aor+%28amenity%3Dclinic+and+name%3D%2A+and+name%21%3D%22%22+and+operator%3D%2A%29%0Aor+%28amenity%3Ddoctors+and+name%3D%2A+and+name%21%3D%22%22+and+healthcare%3Aspeciality%3D%2A%29%0Aor+%28healthcare%3D%2A+and+name%3D%2A+and+name%21%3D%22%22%29%0A",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -102,7 +102,7 @@
                         "python-httpx/0.17.1"
                     ],
                     "content-length": [
-                        "1034"
+                        "817"
                     ],
                     "content-type": [
                         "application/x-www-form-urlencoded"
@@ -110,11 +110,11 @@
                 }
             },
             "response": {
-                "status_code": 400,
+                "status_code": 200,
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 28 Jun 2021 12:46:28 GMT"
+                        "Mon, 28 Jun 2021 12:59:51 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -146,14 +146,17 @@
                     "Vary": [
                         "Accept-Encoding"
                     ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
                     "Connection": [
-                        "close"
+                        "Keep-Alive"
                     ],
                     "Transfer-Encoding": [
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"timestamp\" : \"2021-06-28T12:46:29.360107\",\n  \"status\" : 400,\n  \"message\" : \"The provided GeoJSON cannot be converted. Please take a look at the documentation page for the bpolys parameter to see an example of a fitting GeoJSON input file.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/count/ratio\"\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2021-06-20T20:00:00Z\",\n    \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
             }
         }
     ]
