@@ -8,7 +8,7 @@
 - Add option to select different datasets and fid fields as input to OQT ([#4])
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
 - Remove GUF Comparison indicator ([#55])
-- Implement combine_indicators() as Concrete Method of the Base Class Report ([53])
+- Implement combine_indicators() as Concrete Method of the Base Class Report ([#53])
 - Small changes to the Website ([#61])
   - Change HTML parameters from countryID and topic to id and report ([#30])
   - Mention API and GitHub on About page ([#5])
