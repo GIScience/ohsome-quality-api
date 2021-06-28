@@ -16,6 +16,7 @@
 - Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 - Update MapAction layers and POC report ([#56])
 - Redefine OQT regions ([26])
+- Change type of attribute bpolys to be of Polygon or MultyPolygon ([63])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -31,6 +32,7 @@
 [#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
 [#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
 [#26]: https://github.com/GIScience/ohsome-quality-analyst/issues/26
+[#63]: https://github.com/GIScience/ohsome-quality-analyst/pull/63
 
 
 ## 0.3.1
