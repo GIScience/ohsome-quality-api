@@ -124,7 +124,7 @@ def create_indicator(
                 oqt.create_indicator(
                     indicator_name,
                     layer_name,
-                    bpolys=feature.geometry,
+                    feature=feature,
                     feature_id=feature_id,
                     dataset=dataset_name,
                     fid_field=fid_field,
@@ -143,7 +143,7 @@ def create_indicator(
             oqt.create_indicator(
                 indicator_name,
                 layer_name,
-                bpolys=None,
+                feature=None,
                 feature_id=feature_id,
                 dataset=dataset_name,
                 fid_field=fid_field,
@@ -153,12 +153,9 @@ def create_indicator(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature_collection = asyncio.run(
-                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
-            )
-            for feature in feature_collection.features:
-                feature = update_features_indicator(feature, indicator)
-            write_geojson(outfile, feature_collection)
+            feature = asyncio.run(db_client.get_region_from_db(feature_id, fid_field))
+            feature = update_features_indicator(feature, indicator)
+            write_geojson(outfile, feature)
         else:
             click.echo(indicator.metadata)
             click.echo(indicator.result)
@@ -190,7 +187,7 @@ def create_report(
             report = asyncio.run(
                 oqt.create_report(
                     report_name,
-                    bpolys=feature.geometry,
+                    feature=feature,
                     dataset=dataset_name,
                     feature_id=feature_id,
                     fid_field=fid_field,
@@ -208,7 +205,7 @@ def create_report(
         report = asyncio.run(
             oqt.create_report(
                 report_name,
-                bpolys=None,
+                feature=None,
                 dataset=dataset_name,
                 feature_id=feature_id,
                 fid_field=fid_field,
@@ -218,12 +215,9 @@ def create_report(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature_collection = asyncio.run(
-                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
-            )
-            for feature in feature_collection.features:
-                feature = update_features_report(feature, report)
-            write_geojson(outfile, feature_collection)
+            feature = asyncio.run(db_client.get_region_from_db(feature_id, fid_field))
+            feature = update_features_report(feature, report)
+            write_geojson(outfile, feature)
         else:
             click.echo(report.metadata)
             click.echo(report.result)

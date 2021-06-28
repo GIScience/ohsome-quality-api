@@ -2,10 +2,10 @@ import logging
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from statistics import mean
-from typing import Dict, List, Literal, NamedTuple, Optional, Tuple, Union
+from typing import Dict, List, Literal, NamedTuple, Optional, Tuple
 
 from dacite import from_dict
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
@@ -39,7 +39,7 @@ class BaseReport(metaclass=ABCMeta):
 
     def __init__(
         self,
-        bpolys: Union[Polygon, MultiPolygon, None] = None,
+        feature: Feature = None,
         dataset: Optional[str] = None,
         feature_id: Optional[int] = None,
         fid_field: Optional[str] = None,
@@ -47,7 +47,7 @@ class BaseReport(metaclass=ABCMeta):
         self.dataset = dataset
         self.feature_id = feature_id
         self.fid_field = fid_field
-        self.bpolys = bpolys
+        self.feature = feature
 
         # Definies indicator+layer combinations
         self.indicator_layer: Tuple[IndicatorLayer] = []

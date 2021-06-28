@@ -2,7 +2,7 @@ import asyncio
 import os
 import unittest
 
-from geojson import MultiPolygon, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.api import int_or_str_param_type, load_bpolys
 
@@ -31,7 +31,7 @@ class TestApiUnit(unittest.TestCase):
             bpolys = file.read()
         bpolys = asyncio.run(load_bpolys(bpolys))
         self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, (Polygon, MultiPolygon))
+        self.assertIsInstance(bpolys, Feature)
 
         # Error should be raised
         infile = os.path.join(
@@ -65,7 +65,7 @@ class TestApiUnit(unittest.TestCase):
             bpolys = f.read()
         bpolys = asyncio.run(load_bpolys(bpolys))
         self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, (Polygon, MultiPolygon))
+        self.assertIsInstance(bpolys, Feature)
 
     def test_load_bpolys_geometry(self):
         infile = os.path.join(
@@ -77,7 +77,7 @@ class TestApiUnit(unittest.TestCase):
             bpolys = f.read()
         bpolys = asyncio.run(load_bpolys(bpolys))
         self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, (Polygon, MultiPolygon))
+        self.assertIsInstance(bpolys, Feature)
 
     def test_int_or_str_param_type(self):
         self.assertIsInstance(int_or_str_param_type("1"), int)

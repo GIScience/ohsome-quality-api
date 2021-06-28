@@ -18,7 +18,7 @@
 - Simplify CLI option handling by only allowing one option at a time to be added ([#54])
 - Redefine OQT regions ([#26])
 - Use ohsome API endpoint `/contributions/latest/count` for Last Edit indicator ([#68])
-- Change type of attribute bpolys to be of Polygon or MultyPolygon ([63])
+- Change type of attribute bpolys to be GeoJSON.Feature ([#69] [#9])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -36,7 +36,8 @@
 [#54]: https://github.com/GIScience/ohsome-quality-analyst/pull/54
 [#26]: https://github.com/GIScience/ohsome-quality-analyst/issues/26
 [#68]: https://github.com/GIScience/ohsome-quality-analyst/pull/68
-[#63]: https://github.com/GIScience/ohsome-quality-analyst/pull/63
+[#69]: https://github.com/GIScience/ohsome-quality-analyst/pull/69
+[#9]: https://github.com/GIScience/ohsome-quality-analyst/issues/9
 
 
 ## 0.3.1

@@ -21,7 +21,7 @@ from typing import List, Union
 
 import asyncpg
 import geojson
-from geojson import FeatureCollection, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
 
@@ -148,22 +148,21 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-# TODO: Return GeoJSON object of type Polygon or MultiPolygon not FeatureCollection
-async def get_bpolys_from_db(
-    dataset: str, feature_id: Union[int, str], fid_field: str
-) -> Union[Polygon, MultiPolygon]:
-    """Get bounding polygon from the geodatabase as a GeoJSON FeatureCollection."""
-    logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, feature_id)))
+async def get_region_from_db(feature_id: Union[int, str], fid_field: str) -> Feature:
+    """Get regions from geodatabase as a GeoJSON Feature object"""
+    logging.info("(fid_field, id): " + str((fid_field, feature_id)))
 
     # Safe against SQL injection because of predefined values
     # (See oqt.py and definitions.py)
-    query = "SELECT ST_AsGeoJSON(geom) FROM {dataset} WHERE {fid_field} = $1".format(
-        fid_field=fid_field, dataset=dataset
+    query = (
+        "SELECT ST_AsGeoJSON(geom) "
+        + "FROM regions "
+        + "WHERE {0} = $1".format(fid_field)
     )
 
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
-    return geojson.loads(result[0])
+    return Feature(geometry=geojson.loads(result[0]))
 
 
 async def get_available_regions() -> FeatureCollection:

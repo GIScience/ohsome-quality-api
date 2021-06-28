@@ -15,16 +15,14 @@ from .utils import oqt_vcr
 class TestIndicatorMappingSaturation(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+        self.feature = asyncio.run(
+            db_client.get_region_from_db(feature_id=3, fid_field="ogc_fid")
         )
 
     @oqt_vcr.use_cassette()
     def test(self):
         indicator = MappingSaturation(
-            layer_name="major_roads_length", bpolys=self.bpolys
+            layer_name="major_roads_length", feature=self.feature
         )
         asyncio.run(indicator.preprocess())
 
@@ -39,7 +37,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     # TODO: Should an error get raised here?
     @oqt_vcr.use_cassette()
     def test_float_division_by_zero_error(self):
-        indicator = MappingSaturation(layer_name="building_count", bpolys=self.bpolys)
+        indicator = MappingSaturation(layer_name="building_count", feature=self.feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -52,9 +50,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+            feature = geojson.load(f)
 
-        indicator = MappingSaturation(layer_name="building_count", bpolys=bpolys)
+        indicator = MappingSaturation(layer_name="building_count", feature=feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()

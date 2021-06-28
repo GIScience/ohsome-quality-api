@@ -16,8 +16,8 @@ class TestGeodatabase(unittest.TestCase):
         self.dataset = "regions"
         self.feature_id = 11  # Algeria Touggourt
         self.fid_field = "ogc_fid"
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
+        self.feature = asyncio.run(
+            db_client.get_region_from_db(self.feature_id, self.fid_field)
         )
 
     def test_get_connection(self):
@@ -35,7 +35,7 @@ class TestGeodatabase(unittest.TestCase):
         # save
         self.indicator = GhsPopComparisonBuildings(
             layer_name="building_count",
-            bpolys=self.bpolys,
+            feature=self.feature,
         )
         asyncio.run(self.indicator.preprocess())
         self.indicator.calculate()
@@ -48,7 +48,7 @@ class TestGeodatabase(unittest.TestCase):
 
         # load
         self.indicator = GhsPopComparisonBuildings(
-            layer_name="building_count", bpolys=self.bpolys
+            layer_name="building_count", feature=self.feature
         )
         result = asyncio.run(
             db_client.load_indicator_results(
@@ -73,29 +73,20 @@ class TestGeodatabase(unittest.TestCase):
             asyncio.run(db_client.get_feature_ids("foo", self.fid_field))
 
     def test_get_area_of_bpolys(self):
-        result = asyncio.run(db_client.get_area_of_bpolys(self.bpolys))
+        result = asyncio.run(db_client.get_area_of_bpolys(self.feature.geometry))
         self.assertIsInstance(result, float)
 
-    def test_get_bpolys_from_db(self):
+    def test_get_region_from_db(self):
         result = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
+            db_client.get_region_from_db(self.feature_id, self.fid_field)
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
         with self.assertRaises(UndefinedColumnError):
-            asyncio.run(
-                db_client.get_bpolys_from_db(self.dataset, self.feature_id, "foo")
-            )
+            asyncio.run(db_client.get_region_from_db(self.feature_id, "foo"))
 
         with self.assertRaises(DataError):
-            asyncio.run(
-                db_client.get_bpolys_from_db(self.dataset, "foo", self.fid_field)
-            )
-
-        with self.assertRaises(UndefinedTableError):
-            asyncio.run(
-                db_client.get_bpolys_from_db("foo", self.feature_id, self.fid_field)
-            )
+            asyncio.run(db_client.get_region_from_db("foo", self.fid_field))
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())
