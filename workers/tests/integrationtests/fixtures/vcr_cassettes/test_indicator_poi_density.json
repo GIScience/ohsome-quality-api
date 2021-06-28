@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 14 May 2021 17:05:44 GMT"
+                        "Tue, 22 Jun 2021 09:35:41 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
@@ -77,7 +77,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-05-09T21:00:00Z\",\n    \"value\" : 481.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.4.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-06-13T20:00:00Z\",\n    \"value\" : 479.0\n  } ]\n}"
             }
         }
     ]

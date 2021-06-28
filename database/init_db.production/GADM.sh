@@ -11,3 +11,4 @@ ogr2ogr -f PostgreSQL "PG:dbname=$PGDATABASE user=$PGUSER" gadm36.gpkg
 ogr2ogr -f PostgreSQL "PG:dbname=$PGDATABASE user=$PGUSER" gadm36_levels.gpkg
 
 rm gadm36*
+rm license.txt

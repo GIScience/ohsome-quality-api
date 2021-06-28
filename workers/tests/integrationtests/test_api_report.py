@@ -5,15 +5,13 @@ https://fastapi.tiangolo.com/tutorial/testing/
 # API request tests are seperated for indicator and report
 # because of a bug when using two schemata.
 
-
-import asyncio
+import os
 import unittest
 
 import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api import app
-from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
 from .utils import api_schema_report, oqt_vcr
@@ -22,14 +20,23 @@ from .utils import api_schema_report, oqt_vcr
 class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-        self.dataset = "regions"
-        self.feature_id = 31
-        self.fid_field = "ogc_fid"
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
-        )
-        self.report_name = "SimpleReport"
 
+        # Heidelberg
+        self.dataset = "regions"
+        self.feature_id = 3
+        self.fid_field = "ogc_fid"
+
+        # Heidelberg Altstadt
+        # Choose a small enough region to not trigger area size limit
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg_altstadt.geojson",
+        )
+        with open(infile, "r") as f:
+            self.bpolys = geojson.load(f)
+
+        self.report_name = "SimpleReport"
         self.schema = api_schema_report
 
     @oqt_vcr.use_cassette()
@@ -72,7 +79,7 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_custom_fid_field_2(self):
         url = "/report/{0}?dataset={1}&featureId={2}&fidField={3}".format(
-            self.report_name, self.dataset, "Alger Kenadsa medium", "name"
+            self.report_name, self.dataset, "Heidelberg", "name"
         )
         response = self.client.get(url)
 
@@ -127,7 +134,7 @@ class TestApiReport(unittest.TestCase):
         data = {
             "dataset": self.dataset,
             "featureId": self.feature_id,
-            "Alger Kenadsa medium": "name",
+            "name": "Heidelberg",
         }
         url = f"/report/{self.report_name}"
         response = self.client.post(url, json=data)

@@ -43,6 +43,9 @@ SELECT
 
 
 /* Testing */
+/* Currently two regions are used for testing: */
+/* Heidelberg: 3*/
+/* Algeria Touggourt: 11*/
 CREATE SCHEMA IF NOT EXISTS test;
 
 CREATE TABLE test.regions (
@@ -59,7 +62,7 @@ SELECT
 FROM
     public.regions
 WHERE
-    ogc_fid IN (1, 2, 3, 4, 8, 9, 14, 28, 31);
+    ogc_fid IN (3, 11);
 
 INSERT INTO test.ghs_pop
 SELECT DISTINCT ON (rid)

@@ -12,7 +12,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import
 class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
         dataset = "regions"
-        feature_id = 31
+        feature_id = 3  # Heidelberg
         bpolys = asyncio.run(
             db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
         )

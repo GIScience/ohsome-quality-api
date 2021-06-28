@@ -13,18 +13,19 @@ from .utils import oqt_vcr
 
 
 class TestIndicatorMappingSaturation(unittest.TestCase):
-    def test(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg_altstadt.geojson",
+    def setUp(self):
+        # Heidelberg
+        self.bpolys = asyncio.run(
+            db_client.get_bpolys_from_db(
+                dataset="regions", feature_id=3, fid_field="ogc_fid"
+            )
         )
 
-        with open(infile, "r") as f:
-            bpolys = geojson.load(f)
-        layer_name = "major_roads_length"
-
-        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
+    @oqt_vcr.use_cassette()
+    def test(self):
+        indicator = MappingSaturation(
+            layer_name="major_roads_length", bpolys=self.bpolys
+        )
         asyncio.run(indicator.preprocess())
 
         indicator.calculate()
@@ -35,30 +36,25 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
+    # TODO: Should an error get raised here?
     @oqt_vcr.use_cassette()
     def test_float_division_by_zero_error(self):
-        layer_name = "building_count"
-        dataset = "regions"
-        feature_id = 31
-        bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
-        )
-
-        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
+        indicator = MappingSaturation(layer_name="building_count", bpolys=self.bpolys)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
 
     @oqt_vcr.use_cassette()
     def test_cannot_convert_nan_error(self):
-        layer_name = "building_count"
-        dataset = "regions"
-        feature_id = 28
-        bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "niger-kanan-bakache.geojson",
         )
+        with open(infile, "r") as f:
+            bpolys = geojson.load(f)
 
-        indicator = MappingSaturation(layer_name=layer_name, bpolys=bpolys)
+        indicator = MappingSaturation(layer_name="building_count", bpolys=bpolys)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
