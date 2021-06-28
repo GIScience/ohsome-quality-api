@@ -16,6 +16,7 @@
 - Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 - Update MapAction layers and POC report ([#56])
 - Simplify CLI option handling by only allowing one option at a time to be added ([#54])
+- Redefine OQT regions ([26])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -31,6 +32,7 @@
 [#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
 [#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
 [#54]: https://github.com/GIScience/ohsome-quality-analyst/pull/54
+[#26]: https://github.com/GIScience/ohsome-quality-analyst/issues/26
 
 
 ## 0.3.1

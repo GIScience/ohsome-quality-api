@@ -5,14 +5,13 @@ https://fastapi.tiangolo.com/tutorial/testing/
 # API request tests are seperated for indicator and report
 # because of a bug when using two schemata.
 
-import asyncio
+import os
 import unittest
 
 import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api import app
-from ohsome_quality_analyst.geodatabase import client as db_client
 
 from .utils import api_schema_indicator, oqt_vcr
 
@@ -20,12 +19,22 @@ from .utils import api_schema_indicator, oqt_vcr
 class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
+
+        # Heidelberg
         self.dataset = "regions"
-        self.feature_id = 31
+        self.feature_id = 3
         self.fid_field = "ogc_fid"
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(self.dataset, self.feature_id, self.fid_field)
+
+        # Heidelberg Altstadt
+        # Choose a small enough region to not trigger area size limit
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg_altstadt.geojson",
         )
+        with open(infile, "r") as f:
+            self.bpolys = geojson.load(f)
+
         self.indicator_name = "GhsPopComparisonBuildings"
         self.report_name = "SimpleReport"
         self.layer_name = "building_count"
@@ -34,6 +43,7 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_get_indicator_bpolys(self):
+
         url = "/indicator/{0}?layerName={1}&bpolys={2}".format(
             self.indicator_name,
             self.layer_name,
@@ -85,7 +95,7 @@ class TestApiIndicator(unittest.TestCase):
         parameter = "layerName={0}&dataset={1}&featureId={2}&fidField={3}".format(
             self.layer_name,
             self.dataset,
-            "Alger%20Kenadsa%20medium",
+            "Heidelberg",
             "name",
         )
         url = base_url + parameter
@@ -146,7 +156,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_post_indicator_dataset_custom_fid_field_2(self):
         data = {
             "dataset": self.dataset,
-            "featureId": "Alger Kenadsa medium",
+            "featureId": "Heidelberg",
             "layerName": self.layer_name,
             "fidField": "name",
         }
