@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import pathlib
 from typing import Union
 
 import click
@@ -26,7 +25,12 @@ from ohsome_quality_analyst.utils.definitions import (
     load_layer_definitions,
     load_metadata,
 )
-from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
+from ohsome_quality_analyst.utils.helper import (
+    load_infile,
+    update_features_indicator,
+    update_features_report,
+    write_geojson,
+)
 
 
 def add_opts(options):
@@ -114,7 +118,11 @@ def create_indicator(
     fid_field: str,
     force: bool,
 ):
-    """Create an Indicator and print results to stdout."""
+    """Create an Indicator.
+
+    Write a GeoJSON with the result to disk if an outfile is specified.
+    Otherwise print to stdout.
+    """
     # TODO: replace this with a function that loads the file AND
     #    checks the validity of the geometries, e.g. enforce polygons etc.
     if force:
@@ -123,11 +131,8 @@ def create_indicator(
         )
         click.confirm("Do you want to continue?", abort=True)
     if infile is not None:
-        infile = pathlib.Path(infile)
-        with open(infile, "r") as file:
-            feature_collection = geojson.load(file)
-        if feature_collection.is_valid is False:
-            raise ValueError("Input geometry is not valid")
+        # When using an infile as input
+        feature_collection = load_infile(infile)
         for feature in feature_collection.features:
             sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
@@ -141,18 +146,14 @@ def create_indicator(
                     force=force,
                 )
             )
-            if indicator.data is not None:
-                feature["properties"].update(vars(indicator.data))
-            feature["properties"].update(vars(indicator.metadata))
-            feature["properties"].update(vars(indicator.result))
-        if outfile is None:
-            outfile = infile.stem + "_" + indicator_name + infile.suffix
+            feature = update_features_indicator(feature, indicator)
+        if outfile is not None:
+            write_geojson(outfile, feature_collection)
         else:
-            outfile = pathlib.Path(outfile)
-            outfile.parent.mkdir(parents=True, exist_ok=True)
-        with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
+            click.echo(indicator.metadata)
+            click.echo(indicator.result)
     else:
+        # When using a dataset and FID as input
         bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
@@ -165,9 +166,18 @@ def create_indicator(
                 force=force,
             )
         )
-        # TODO: Save as GeoJSON instead of printing to Stdout
-        click.echo(indicator.metadata)
-        click.echo(indicator.result)
+        if outfile:
+            if fid_field is None:
+                fid_field = DATASETS[dataset_name]["default"]
+            feature_collection = asyncio.run(
+                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            )
+            for feature in feature_collection.features:
+                feature = update_features_indicator(feature, indicator)
+            write_geojson(outfile, feature_collection)
+        else:
+            click.echo(indicator.metadata)
+            click.echo(indicator.result)
 
 
 @cli.command("create-report")
@@ -187,13 +197,11 @@ def create_report(
     fid_field: str,
     force: bool,
 ):
-    """Create a Report and print results to stdout."""
+    """Create a Report and print results to stdout. Write a GeoJSON if an outfile
+    is specified or an infile is used as input"""
     if infile is not None:
-        infile = pathlib.Path(infile)
-        with open(infile, "r") as file:
-            feature_collection = geojson.load(file)
-        if feature_collection.is_valid is False:
-            raise ValueError("Input geometry is not valid")
+        # When using an infile as input
+        feature_collection = load_infile(infile)
         for feature in feature_collection.features:
             sub_collection = geojson.FeatureCollection([feature])
             report = asyncio.run(
@@ -206,16 +214,14 @@ def create_report(
                     force=force,
                 )
             )
-            feature["properties"].update(vars(report.metadata))
-            feature["properties"].update(vars(report.result))
-        if outfile is None:
-            outfile = infile.stem + "_" + report_name + infile.suffix
+            feature = update_features_report(feature, report)
+        if outfile is not None:
+            write_geojson(outfile, feature_collection)
         else:
-            outfile = pathlib.Path(outfile)
-            outfile.parent.mkdir(parents=True, exist_ok=True)
-        with open(outfile, "w") as f:
-            geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
+            click.echo(report.metadata)
+            click.echo(report.result)
     else:
+        # When using a dataset and FID as input
         bpolys = None
         report = asyncio.run(
             oqt.create_report(
@@ -227,9 +233,18 @@ def create_report(
                 force=force,
             )
         )
-        # TODO: Save as GeoJSON instead of printing to Stdout
-        click.echo(report.metadata)
-        click.echo(report.result)
+        if outfile:
+            if fid_field is None:
+                fid_field = DATASETS[dataset_name]["default"]
+            feature_collection = asyncio.run(
+                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            )
+            for feature in feature_collection.features:
+                feature = update_features_report(feature, report)
+            write_geojson(outfile, feature_collection)
+        else:
+            click.echo(report.metadata)
+            click.echo(report.result)
 
 
 @cli.command("create-all-indicators")

@@ -4,9 +4,13 @@ Standalone helper functions.
 
 import datetime
 import importlib
+import logging
 import os
+import pathlib
 import pkgutil
 import re
+
+import geojson
 
 
 def name_to_class(class_type: str, name: str):
@@ -65,3 +69,41 @@ def datetime_to_isostring_timestamp(time: datetime) -> str:
         return time.isoformat()
     except AttributeError:
         raise TypeError
+
+
+def load_infile(infilepath):
+    """loads the input file as feature collection which will be used as input for
+    indicator or report calculations"""
+    infile = pathlib.Path(infilepath)
+    with open(infile, "r") as file:
+        feature_collection = geojson.load(file)
+    if feature_collection.is_valid is False:
+        raise ValueError("Input geometry is not valid")
+    return feature_collection
+
+
+def write_geojson(outfile, feature_collection):
+    """Writes the Feature Collection to the disk at the specified directory. Creates
+    the dir if it does not exist"""
+    outfile = pathlib.Path(outfile)
+    outfile.parent.mkdir(parents=True, exist_ok=True)
+    with open(outfile, "w") as f:
+        geojson.dump(feature_collection, f, default=datetime_to_isostring_timestamp)
+        logging.info("Output file written:\t" + str(outfile))
+
+
+def update_features_indicator(feature, indicator):
+    """adds the indicator metadata, result and resultdata (if available) to the
+    properties of a feature"""
+    if indicator.data is not None:
+        feature["properties"].update(vars(indicator.data))
+    feature["properties"].update(vars(indicator.metadata))
+    feature["properties"].update(vars(indicator.result))
+    return feature
+
+
+def update_features_report(feature, report):
+    """adds the report metadata and result to the properties of a feature"""
+    feature["properties"].update(vars(report.metadata))
+    feature["properties"].update(vars(report.result))
+    return feature
