@@ -15,6 +15,7 @@
   - On Click to marker now only zooms to polygon instead to fixed value 
 - Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 - Update MapAction layers and POC report ([#56])
+- Redefine OQT regions ([26])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
@@ -29,6 +30,7 @@
 [#61]: https://github.com/GIScience/ohsome-quality-analyst/pull/61
 [#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
 [#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
+[#26]: https://github.com/GIScience/ohsome-quality-analyst/issues/26
 
 
 ## 0.3.1
