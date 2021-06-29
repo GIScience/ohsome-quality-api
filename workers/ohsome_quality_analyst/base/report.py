@@ -5,7 +5,7 @@ from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Optional, Tuple
 
 from dacite import from_dict
-from geojson import Feature
+from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
@@ -57,6 +57,19 @@ class BaseReport(metaclass=ABCMeta):
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
+
+    @property
+    def __geo_interface__(self) -> FeatureCollection:
+        """
+        An interface which supports GeoJSON Encoding/Decoding.
+
+        Returns a GeoJSON FeatureCollection object.
+        Features are all indicators.
+
+        Interface Specification: https://gist.github.com/sgillies/2217756
+        GeoJSON Encoding/Decoding: https://github.com/jazzband/geojson#custom-classes
+        """
+        return FeatureCollection([Feature(indicator) for indicator in self.indicators])
 
     @abstractmethod
     def set_indicator_layer(self) -> None:
