@@ -86,11 +86,11 @@ class BaseIndicator(metaclass=ABCMeta):
         self._validate_indicator_layer(self.__class__.__name__, layer_name)
 
     @property
-    def __geo_interface__(self) -> Feature:
+    def __geo_interface__(self) -> dict:
         """
         An interface which supports GeoJSON Encoding/Decoding.
 
-        Returns a GeoJSON Feature object.
+        Returns a dictionary representing a GeoJSON Feature object.
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
 
@@ -102,9 +102,11 @@ class BaseIndicator(metaclass=ABCMeta):
         # Prefix all keys of the dictionary
         result = {"result." + str(key): val for key, val in result.items()}
         data = {"data." + str(key): val for key, val in self.data.items()}
-        return Feature(
-            geometry=self.feature.geometry,
-            properties={
+
+        return {
+            "type": "Feature",
+            "geometry": self.feature.geometry,
+            "properties": {
                 "metadata.name": self.metadata.name,
                 "metadata.description": self.metadata.description,
                 "layer.name": self.layer.name,
@@ -113,7 +115,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 **data,
                 **self.feature.properties,
             },
-        )
+        }
 
     @property
     def data(self) -> dict:
@@ -122,6 +124,7 @@ class BaseIndicator(metaclass=ABCMeta):
         data.pop("result")
         data.pop("metadata")
         data.pop("layer")
+        data.pop("feature")
         return data
 
     @abstractmethod

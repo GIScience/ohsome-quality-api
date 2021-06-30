@@ -9,25 +9,19 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
 )
 from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
 
-from .utils import oqt_vcr
-
 
 class TestGeoInterface(unittest.TestCase):
-    @oqt_vcr.use_cassette()
     def test(self):
-        bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(
-                dataset="regions", feature_id=31, fid_field="ogc_fid"
-            )
+        feature = asyncio.run(
+            db_client.get_region_from_db(feature_id=3, fid_field="ogc_fid")
         )
-        self.indicator = GhsPopComparisonBuildings(
-            bpolys=bpolys, layer_name="building_count"
+        indicator = GhsPopComparisonBuildings(
+            feature=feature, layer_name="building_count"
         )
+        print(indicator.feature)
+        print(indicator.__geo_interface__)
 
-        asyncio.run(self.indicator.preprocess())
-        self.indicator.calculate()
-
-        feature = geojson.dumps(self.indicator, default=datetime_to_isostring_timestamp)
+        feature = geojson.dumps(indicator, default=datetime_to_isostring_timestamp)
         self.assertTrue(geojson.loads(feature).is_valid)
 
 
