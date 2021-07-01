@@ -44,8 +44,6 @@ class MappingSaturation(BaseIndicator):
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), time=self.time_range
         )
-        if query_results is None:
-            return False
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
         max_value = max(results)
@@ -73,28 +71,15 @@ class MappingSaturation(BaseIndicator):
         Calculate the growth rate + saturation level within the last 3 years.
         Depending on the result, define label and value.
         """
-        description = ""
         # check if any mapping happened in this region
         # and directly return quality label if no mapping happened
         if self.preprocessing_results["results"] == -1:
             # start stadium
             # "No mapping has happened in this region. "
-            label = "undefined"
-            value = None
-            description += self.metadata.label_description["undefined"]
-            self.result.label = label
-            self.result.value = value
-            self.result.description = description
             return False
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
             # "Mapping has happened in this region but data were deleted."
-            label = "undefined"
-            value = None
-            description += self.metadata.label_description["undefined"]
-            self.result.label = label
-            self.result.value = value
-            self.result.description = description
             return False
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
@@ -129,9 +114,6 @@ class MappingSaturation(BaseIndicator):
             # calculate/define traffic light value and label
             if max(df1.yValues) <= 2:
                 # start stadium, some data are there, but not much
-                label = "red"
-                value = 0.0
-                description += self.metadata.label_description["red"]
                 self.saturation = 0
             else:
                 # calculate slope/growth of last 3 years
@@ -150,37 +132,33 @@ class MappingSaturation(BaseIndicator):
             #    growth should be 0.0
             self.growth = 1 - self.saturation
 
-            # growth is larger than 3% within last 3 years
-            if self.growth <= THRESHOLD_YELLOW:
-                label = "green"
-                value = 1.0
-                description += self.metadata.label_description["green"]
-            else:
-                # growth level is better than the red threshould
-                label = "yellow"
-                value = 0.5
-                description += self.metadata.label_description["yellow"]
-            description_template = Template(
-                self.metadata.result_description
-            ).substitute(saturation=self.saturation, growth=self.growth)
-            description = description_template + " " + description
-            self.result.label = label
-            self.result.value = value
-            self.result.description = description
-            logging.debug(
-                f"Saturation result value: {self.saturation}, label: {label},"
-                f" value: {value}, description: {description}"
+            description = Template(self.metadata.result_description).substitute(
+                saturation=self.saturation,
+                growth=self.growth,
             )
+            if self.saturation == 0:
+                self.result.label = "red"
+                self.result.value = 0.0
+                self.result.description = (
+                    description + self.metadata.label_description["red"]
+                )
+            # growth is larger than 3% within last 3 years
+            elif self.growth <= THRESHOLD_YELLOW:
+                self.result.label = "green"
+                self.result.value = 1.0
+                self.result.description = (
+                    description + self.metadata.label_description["green"]
+                )
+            # growth level is better than the red threshould
+            else:
+                self.result.label = "yellow"
+                self.result.value = 0.5
+                self.result.description = (
+                    description + self.metadata.label_description["yellow"]
+                )
+            return True
         else:
-            # no data / deletion of all data
-            label = "undefined"
-            value = None
-            description += self.metadata.label_description["undefined"]
-            self.result.label = label
-            self.result.value = value
-            self.result.description = description
             return False
-        return True
 
     def create_figure(self) -> bool:
         """
