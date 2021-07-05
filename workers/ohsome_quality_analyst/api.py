@@ -127,13 +127,15 @@ async def _fetch_indicator(
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
-        bpolys = await load_bpolys(bpolys)
+        feature = await load_bpolys(bpolys)
+    else:
+        feature = None
 
     if feature_id is not None:
         feature_id = int_or_str_param_type(feature_id)
 
     indicator = await oqt.create_indicator(
-        name, layer_name, bpolys, dataset, feature_id, fid_field
+        name, layer_name, feature, dataset, feature_id, fid_field
     )
 
     response = empty_api_response()
@@ -178,14 +180,16 @@ async def _fetch_report(
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
-        bpolys = await load_bpolys(bpolys)
+        feature = await load_bpolys(bpolys)
+    else:
+        feature = None
 
     if feature_id is not None:
         feature_id = int_or_str_param_type(feature_id)
 
     report = await oqt.create_report(
         name,
-        feature=bpolys,
+        feature=feature,
         dataset=dataset,
         feature_id=feature_id,
         fid_field=fid_field,
