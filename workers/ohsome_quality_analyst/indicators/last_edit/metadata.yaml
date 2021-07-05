@@ -25,4 +25,4 @@ LastEdit:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-    $share % of the $layer_name have been edited in OSM during the last year.
+    $ratio % of the $layer_name have been edited in OSM during the last year.

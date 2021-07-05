@@ -25,7 +25,8 @@ class LastEdit(BaseIndicator):
             layer_name=layer_name,
             bpolys=bpolys,
         )
-        self.threshold_yellow = 20  # more than 20% edited last year --> green
+        # Threshold values are in percentage
+        self.threshold_yellow = 20
         self.threshold_red = 5
 
         self.time_range = time_range
@@ -36,12 +37,9 @@ class LastEdit(BaseIndicator):
     async def preprocess(self) -> bool:
         if self.time_range is None:
             latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-            self.time_range = "{start},{end}".format(
-                start=(latest_ohsome_stamp - relativedelta(years=1)).strftime(
-                    "%Y-%m-%d"
-                ),
-                end=latest_ohsome_stamp.strftime("%Y-%m-%d"),
-            )
+            start = (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d")
+            end = (latest_ohsome_stamp.strftime("%Y-%m-%d"),)
+            self.time_range = "{0},{1}".format(start, end)
 
         response = await ohsome_client.query(
             layer=self.layer,
@@ -65,7 +63,7 @@ class LastEdit(BaseIndicator):
         if self.element_count == 0:
             self.result.label = "undefined"
             self.result.value = None
-            self.result.description = "In the AOI no features are present."
+            self.result.description = "In the area of intrest no features are present."
             return False
 
         if self.contributions_latest_count > self.element_count:
@@ -76,7 +74,7 @@ class LastEdit(BaseIndicator):
             )
 
         description = Template(self.metadata.result_description).substitute(
-            share=self.contributions_latest_count, layer_name=self.layer.name
+            ratio=self.contributions_latest_count, layer_name=self.layer.name
         )
 
         if self.ratio >= self.threshold_yellow:
@@ -97,6 +95,8 @@ class LastEdit(BaseIndicator):
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
+        else:
+            raise ValueError("Ratio has an unexpected value.")
 
         return True
 
