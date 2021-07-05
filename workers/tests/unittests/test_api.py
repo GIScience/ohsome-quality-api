@@ -82,5 +82,3 @@ class TestApiUnit(unittest.TestCase):
     def test_int_or_str_param_type(self):
         self.assertIsInstance(int_or_str_param_type("1"), int)
         self.assertIsInstance(int_or_str_param_type("a"), str)
-        with self.assertRaises(ValueError):
-            int_or_str_param_type(None)

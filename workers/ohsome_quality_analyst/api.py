@@ -56,11 +56,8 @@ def int_or_str_param_type(value: str) -> Union[int, str]:
     """Parse parameter as Interger otherwise parse as String"""
     try:
         return int(value)
-    except (ValueError, TypeError):
-        if isinstance(value, str):
-            return value
-        else:
-            raise ValueError("Given parameter is not a valid integer or string")
+    except ValueError:
+        return value
 
 
 async def load_bpolys(bpolys: str) -> Feature:
@@ -132,7 +129,7 @@ async def _fetch_indicator(
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
 
-    if feature_id:
+    if feature_id is not None:
         feature_id = int_or_str_param_type(feature_id)
 
     indicator = await oqt.create_indicator(
@@ -183,7 +180,7 @@ async def _fetch_report(
     if bpolys is not None:
         bpolys = await load_bpolys(bpolys)
 
-    if feature_id:
+    if feature_id is not None:
         feature_id = int_or_str_param_type(feature_id)
 
     report = await oqt.create_report(
