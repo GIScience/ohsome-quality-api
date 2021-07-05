@@ -33,7 +33,7 @@ To reinitialize or update the database make sure to delete the volume and rebuil
 docker stop oqt-database && docker rm oqt-database
 docker volume ls
 docker volume rm ohsome-quality-analyst_oqt-dev-pg_data
-docker-compose -f docker-compose.development.yml up -d --build oqt-database
+docker-compose -f docker-compose.development.yml up -d --no-cache --build oqt-database
 ```
 
 > If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory. For example to import the GHS POP dataset simply run the provided script (`database/init_db.production/GHS_POP.sh`). This will delete the existing GHS POP table (which covers only the custom regions), download the GHS POP dataset and import it into the database.
