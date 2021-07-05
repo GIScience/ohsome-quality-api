@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 from json import JSONDecodeError
-from typing import Dict, Optional
+from typing import Optional
 
 import geojson
 import httpx
@@ -18,7 +18,7 @@ async def query(
     time: Optional[str] = None,
     endpoint: Optional[str] = None,
     ratio: bool = False,
-) -> Optional[Dict]:
+) -> dict:
     """
     Query ohsome API endpoint with filter.
 
@@ -33,7 +33,7 @@ async def query(
     return await query_ohsome_api(url, data)
 
 
-async def query_ohsome_api(url: str, data: dict):
+async def query_ohsome_api(url: str, data: dict) -> dict:
     # custom timeout as ohsome API can take a long time to send an answer
     # (up to 10 minutes)
     timeout = httpx.Timeout(5, read=660)
@@ -59,7 +59,7 @@ async def query_ohsome_api(url: str, data: dict):
         ) from error
 
 
-async def get_latest_ohsome_timestamp():
+async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get unix timestamp of ohsome from ohsome api."""
     url = "https://api.ohsome.org/v1/metadata"
     async with httpx.AsyncClient() as client:
