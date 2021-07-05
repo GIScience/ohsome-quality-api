@@ -46,7 +46,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         else:
             return 5
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
         pop_count, area = await self.get_zonal_stats_population(bpolys=self.bpolys)
 
         if pop_count is None:
@@ -58,14 +58,13 @@ class GhsPopComparisonRoads(BaseIndicator):
             layer=self.layer, bpolys=json.dumps(self.bpolys)
         )
         if query_results is None:
-            return False
+            return None
         # results in meter, we need km
         self.feature_length = query_results["result"][0]["value"] / 1000
         self.feature_length_per_sqkm = self.feature_length / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         description = Template(self.metadata.result_description).substitute(
             pop_count=round(self.pop_count),
             area=round(self.area, 1),
@@ -77,7 +76,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         yellow_road_density = self.yellow_threshold_function(self.pop_count_per_sqkm)
 
         if self.pop_count_per_sqkm == 0:
-            return False
+            return None
         # road density is conform with green values or even higher
         elif self.feature_length_per_sqkm >= green_road_density:
             self.result.value = 1.0
@@ -101,12 +100,10 @@ class GhsPopComparisonRoads(BaseIndicator):
             )
             self.result.label = "yellow"
 
-        return True
-
-    def create_figure(self) -> bool:
+    def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Skipping figure creation.")
-            return
+            logging.info("Result is undefined. Skipping figure creation.")
+            return None
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -169,7 +166,6 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.result.svg = img_data.getvalue()
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-        return True
 
     async def get_zonal_stats_population(self, bpolys: dict) -> Record:
         """Derive zonal population stats for given GeoJSON geometry.

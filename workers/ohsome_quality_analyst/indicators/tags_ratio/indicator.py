@@ -27,19 +27,16 @@ class TagsRatio(BaseIndicator):
         self.count_all = None
         self.count_match = None
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
 
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=json.dumps(self.bpolys), ratio=True
         )
-        if query_results_count is None:
-            return False
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         # self.ratio can be float, NaN if no features of filter1 are in the
         # region or None if the layer has no filter2
         if self.ratio == "NaN" or self.ratio is None:
@@ -53,7 +50,7 @@ class TagsRatio(BaseIndicator):
             self.result.description = (
                 description + self.metadata.label_description["undefined"]
             )
-            return False
+            return None
         # ratio is a float
         else:
             description = Template(self.metadata.result_description).substitute(
@@ -65,7 +62,7 @@ class TagsRatio(BaseIndicator):
                 self.result.value = None
                 self.result.label = "undefined"
                 self.result.description = description + "No features in this region"
-                return False
+                return None
             else:
                 if self.ratio >= self.threshold_yellow:
                     self.result.value = 1.0
@@ -85,13 +82,17 @@ class TagsRatio(BaseIndicator):
                     self.result.description = (
                         description + self.metadata.label_description["red"]
                     )
-        return True
 
-    def create_figure(self) -> bool:
-        """Create a nested pie chart.
+    def create_figure(self) -> None:
+        """
+        Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return None
+
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -147,4 +148,3 @@ class TagsRatio(BaseIndicator):
         self.result.svg = img_data.getvalue()
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
-        return True

@@ -88,34 +88,34 @@ class BaseIndicator(metaclass=ABCMeta):
         self._validate_indicator_layer(self.__class__.__name__, layer_name)
 
     @abstractmethod
-    async def preprocess(self) -> bool:
-        """Get fetch and prepocess data
+    async def preprocess(self) -> None:
+        """
+        Get fetch and prepocess data.
 
         Fetch data from the ohsome API and/or from the geodatabase asynchronously.
         Preprocess data for calculation and save those as attributes.
-        Returns True if preprocessing was successful otherwise False.
         """
         pass
 
     @abstractmethod
-    def calculate(self) -> bool:
-        """ "Calculate indicator results
+    def calculate(self) -> None:
+        """
+        Calculate indicator results.
 
         Writes results to the result attribute.
-        Returns True if calculation was successful otherwise False.
         """
         pass
 
     @abstractmethod
-    def create_figure(self) -> bool:
-        """ "Create figure plotting indicator results
+    def create_figure(self) -> None:
+        """
+        Create figure plotting indicator results.
 
         Writes an SVG figure to the svg attribute of the result attribute.
-        Returns True if figure creation was successful otherwise False.
         """
         pass
 
-    def _validate_indicator_layer(self, indicator_name, layer_name):
+    def _validate_indicator_layer(self, indicator_name, layer_name) -> None:
         indicator_layer = (indicator_name, layer_name)
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(

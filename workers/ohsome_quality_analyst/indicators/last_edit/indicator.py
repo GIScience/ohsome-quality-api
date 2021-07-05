@@ -34,7 +34,7 @@ class LastEdit(BaseIndicator):
         self.contributions_latest_count = None
         self.ratio = None  # Ratio of latest contribution count to element count
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
         if self.time_range is None:
             latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
             start = (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d")
@@ -54,9 +54,7 @@ class LastEdit(BaseIndicator):
         )
         self.element_count = response["result"][0]["value"]
 
-        return True
-
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         # It can be that features are counted, but have been deleted since.
@@ -64,7 +62,7 @@ class LastEdit(BaseIndicator):
             self.result.label = "undefined"
             self.result.value = None
             self.result.description = "In the area of intrest no features are present."
-            return False
+            return None
 
         if self.contributions_latest_count > self.element_count:
             self.ratio = 100
@@ -98,13 +96,15 @@ class LastEdit(BaseIndicator):
         else:
             raise ValueError("Ratio has an unexpected value.")
 
-        return True
-
-    def create_figure(self) -> bool:
+    def create_figure(self) -> None:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return None
+
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -157,4 +157,3 @@ class LastEdit(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-        return True
