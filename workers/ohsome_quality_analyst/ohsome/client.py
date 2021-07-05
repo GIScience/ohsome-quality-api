@@ -59,7 +59,7 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
         ) from error
 
 
-async def get_latest_ohsome_timestamp():
+async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get unix timestamp of ohsome from ohsome api."""
     url = "https://api.ohsome.org/v1/metadata"
     async with httpx.AsyncClient() as client:
