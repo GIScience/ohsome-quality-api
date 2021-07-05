@@ -43,18 +43,18 @@ class LastEdit(BaseIndicator):
                 end=latest_ohsome_stamp.strftime("%Y-%m-%d"),
             )
 
-        _ = await ohsome_client.query(
+        response = await ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
             time=self.time_range,
             endpoint="contributions/latest/count",
         )
-        self.contributions_latest_count = _["result"][0]["value"]
-        _ = await ohsome_client.query(
+        self.contributions_latest_count = response["result"][0]["value"]
+        response = await ohsome_client.query(
             layer=self.layer,
             bpolys=json.dumps(self.bpolys),
         )
-        self.element_count = _["result"][0]["value"]
+        self.element_count = response["result"][0]["value"]
 
         return True
 
