@@ -74,7 +74,7 @@ class LastEdit(BaseIndicator):
             )
 
         description = Template(self.metadata.result_description).substitute(
-            ratio=self.contributions_latest_count, layer_name=self.layer.name
+            ratio=self.ratio, layer_name=self.layer.name
         )
 
         if self.ratio >= self.threshold_yellow:
