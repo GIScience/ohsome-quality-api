@@ -38,7 +38,7 @@ class LastEdit(BaseIndicator):
         if self.time_range is None:
             latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
             start = (latest_ohsome_stamp - relativedelta(years=1)).strftime("%Y-%m-%d")
-            end = (latest_ohsome_stamp.strftime("%Y-%m-%d"),)
+            end = latest_ohsome_stamp.strftime("%Y-%m-%d")
             self.time_range = "{0},{1}".format(start, end)
 
         response = await ohsome_client.query(
