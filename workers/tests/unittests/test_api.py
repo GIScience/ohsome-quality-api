@@ -44,11 +44,23 @@ class TestApiUnit(unittest.TestCase):
         with self.assertRaises(ValueError):
             asyncio.run(load_bpolys(bpolys))
 
-    def test_load_bpolys_featurecollection(self):
+    def test_load_bpolys_featurecollection_one_feature(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
             "heidelberg-altstadt-featurecollection.geojson",
+        )
+        with open(infile, "r") as f:
+            bpolys = f.read()
+        bpolys = asyncio.run(load_bpolys(bpolys))
+        self.assertTrue(bpolys.is_valid)
+        self.assertIsInstance(bpolys, Feature)
+
+    def test_load_bpolys_featurecollection_multiple_features(self):
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "featurecollection.geojson",
         )
         with open(infile, "r") as f:
             bpolys = f.read()

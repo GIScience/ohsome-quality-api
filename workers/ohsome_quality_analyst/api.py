@@ -4,7 +4,7 @@ from typing import Optional, Union
 import geojson
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from geojson import Feature, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 from pydantic import BaseModel
 
 from ohsome_quality_analyst import __version__ as oqt_version
@@ -75,6 +75,13 @@ async def load_bpolys(bpolys: str) -> Feature:
 
     if bpolys.is_valid is False:
         raise ValueError("Input geometry is not valid")
+    elif isinstance(bpolys, FeatureCollection):
+        if len(bpolys.features) == 1:
+            feature = bpolys.features[0]
+            await check_geom_size(feature.geometry)
+            return feature
+        else:
+            raise ValueError("Only one Feature is supported in a FeatureCollection")
     elif isinstance(bpolys, Feature):
         await check_geom_size(bpolys.geometry)
         return bpolys
