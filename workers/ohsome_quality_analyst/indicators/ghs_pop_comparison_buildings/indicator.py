@@ -199,6 +199,6 @@ class GhsPopComparisonBuildings(BaseIndicator):
                 st_setsrid(public.ST_GeomFromGeoJSON($3), 4326)
              )
             """
-        data = tuple(map(str, [self.feature.geometry] * 3))
+        data = tuple([str(self.feature.geometry)] * 3)
         async with db_client.get_connection() as conn:
             return await conn.fetchrow(query, *data)
