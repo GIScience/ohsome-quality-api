@@ -130,7 +130,6 @@ async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]
     return [record[fid_field] for record in records]
 
 
-# TODO Rewrite to work with geojson.Feature as input
 async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
