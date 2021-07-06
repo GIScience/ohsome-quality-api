@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Union
+from typing import Optional
 
 import geojson
 from fastapi import FastAPI, Request
@@ -30,7 +30,7 @@ app.add_middleware(
 class IndicatorParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[Union[int, str]] = None
+    featureId: Optional[str] = None
     layerName: Optional[str] = None
     fidField: Optional[str] = None
 
@@ -38,7 +38,7 @@ class IndicatorParameters(BaseModel):
 class ReportParameters(BaseModel):
     bpolys: Optional[str] = None
     dataset: Optional[str] = None
-    featureId: Optional[Union[int, str]] = None
+    featureId: Optional[str] = None
     fidField: Optional[str] = None
 
 
@@ -93,7 +93,7 @@ async def get_indicator(
     layerName: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[Union[str, int]] = None,
+    featureId: Optional[str] = None,
     fidField: Optional[str] = None,
 ):
     url = request.url._url
@@ -122,7 +122,7 @@ async def _fetch_indicator(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
@@ -150,7 +150,7 @@ async def get_report(
     request: Request,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    featureId: Optional[Union[int, str]] = None,
+    featureId: Optional[str] = None,
     fidField: Optional[str] = None,
 ):
     url = request.url._url
@@ -172,7 +172,7 @@ async def _fetch_report(
     url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
 ):
     if bpolys is not None:
