@@ -1,11 +1,10 @@
-import json
 import logging
 from io import StringIO
 from string import Template
 
 import matplotlib.pyplot as plt
 import numpy as np
-from geojson import FeatureCollection
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
@@ -19,11 +18,11 @@ class PoiDensity(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        feature: Feature,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
-            bpolys=bpolys,
+            feature=feature,
         )
         self.threshold_yellow = 30
         self.threshold_red = 10
@@ -39,12 +38,14 @@ class PoiDensity(BaseIndicator):
 
     async def preprocess(self) -> bool:
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=json.dumps(self.bpolys)
+            layer=self.layer, bpolys=self.feature.geometry
         )
         if query_results_count is None:
             return False
 
-        self.area_sqkm = await get_area_of_bpolys(self.bpolys)  # calc polygon area
+        self.area_sqkm = await get_area_of_bpolys(
+            self.feature.geometry
+        )  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
         self.density = self.count / self.area_sqkm
         return True

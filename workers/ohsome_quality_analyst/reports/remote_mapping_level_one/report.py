@@ -1,4 +1,6 @@
-from geojson import FeatureCollection
+from typing import Optional
+
+from geojson import Feature
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
@@ -6,15 +8,15 @@ from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 class RemoteMappingLevelOne(BaseReport):
     def __init__(
         self,
-        bpolys: FeatureCollection = None,
-        dataset: str = None,
-        feature_id: int = None,
-        fid_field: str = None,
+        feature: Feature = None,
+        dataset: Optional[str] = None,
+        feature_id: Optional[int] = None,
+        fid_field: Optional[str] = None,
     ) -> None:
         """Create a list of indicator objects."""
 
         super().__init__(
-            bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
+            feature=feature, dataset=dataset, feature_id=feature_id, fid_field=fid_field
         )
 
     def set_indicator_layer(self) -> None:

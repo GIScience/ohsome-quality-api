@@ -13,14 +13,15 @@ from .utils import oqt_vcr
 
 class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
     def setUp(self):
-        dataset = "regions"
-        feature_id = 3  # Heidelberg
-        self.bpolys = asyncio.run(
-            db_client.get_bpolys_from_db(dataset, feature_id, "ogc_fid")
+        # Heidelberg
+        self.feature = asyncio.run(
+            db_client.get_feature_from_db(
+                dataset="regions", feature_id=3, fid_field="ogc_fid"
+            )
         )
         self.layer_name = "building_count"
         self.indicator = GhsPopComparisonBuildings(
-            bpolys=self.bpolys, layer_name=self.layer_name
+            feature=self.feature, layer_name=self.layer_name
         )
 
     @oqt_vcr.use_cassette()
@@ -42,9 +43,7 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_get_zonal_stats_population(self):
-        result = asyncio.run(
-            self.indicator.get_zonal_stats_population(self.indicator.bpolys)
-        )
+        result = asyncio.run(self.indicator.get_zonal_stats_population())
         self.assertIsInstance(result, Record)
 
 

@@ -1,9 +1,7 @@
 import asyncio
 import logging
-from typing import Union
 
 import click
-import geojson
 import yaml
 
 from ohsome_quality_analyst import cli_opts, oqt
@@ -100,7 +98,7 @@ def create_indicator(
     infile: str,
     outfile: str,
     layer_name: str,
-    feature_id: Union[int, str],
+    feature_id: str,
     dataset_name: str,
     fid_field: str,
     force: bool,
@@ -121,12 +119,11 @@ def create_indicator(
         # When using an infile as input
         feature_collection = load_infile(infile)
         for feature in feature_collection.features:
-            sub_collection = geojson.FeatureCollection([feature])
             indicator = asyncio.run(
                 oqt.create_indicator(
                     indicator_name,
                     layer_name,
-                    bpolys=sub_collection,
+                    feature=feature,
                     feature_id=feature_id,
                     dataset=dataset_name,
                     fid_field=fid_field,
@@ -141,12 +138,11 @@ def create_indicator(
             click.echo(indicator.result)
     else:
         # When using a dataset and FID as input
-        bpolys = None
         indicator = asyncio.run(
             oqt.create_indicator(
                 indicator_name,
                 layer_name,
-                bpolys=bpolys,
+                feature=None,
                 feature_id=feature_id,
                 dataset=dataset_name,
                 fid_field=fid_field,
@@ -156,12 +152,12 @@ def create_indicator(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature_collection = asyncio.run(
-                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            # TODO: Sanity check or remove this line
+            feature = asyncio.run(
+                db_client.get_feature_from_db(dataset_name, feature_id, fid_field)
             )
-            for feature in feature_collection.features:
-                feature = update_features_indicator(feature, indicator)
-            write_geojson(outfile, feature_collection)
+            feature = update_features_indicator(feature, indicator)
+            write_geojson(outfile, feature)
         else:
             click.echo(indicator.metadata)
             click.echo(indicator.result)
@@ -180,7 +176,7 @@ def create_report(
     infile: str,
     outfile: str,
     dataset_name: str,
-    feature_id: Union[int, str],
+    feature_id: str,
     fid_field: str,
     force: bool,
 ):
@@ -190,11 +186,10 @@ def create_report(
         # When using an infile as input
         feature_collection = load_infile(infile)
         for feature in feature_collection.features:
-            sub_collection = geojson.FeatureCollection([feature])
             report = asyncio.run(
                 oqt.create_report(
                     report_name,
-                    bpolys=sub_collection,
+                    feature=feature,
                     dataset=dataset_name,
                     feature_id=feature_id,
                     fid_field=fid_field,
@@ -209,11 +204,10 @@ def create_report(
             click.echo(report.result)
     else:
         # When using a dataset and FID as input
-        bpolys = None
         report = asyncio.run(
             oqt.create_report(
                 report_name,
-                bpolys=bpolys,
+                feature=None,
                 dataset=dataset_name,
                 feature_id=feature_id,
                 fid_field=fid_field,
@@ -223,12 +217,12 @@ def create_report(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature_collection = asyncio.run(
-                db_client.get_bpolys_from_db(dataset_name, feature_id, fid_field)
+            # TODO: Sanity check or remove this line
+            feature = asyncio.run(
+                db_client.get_feature_from_db(dataset_name, feature_id, fid_field)
             )
-            for feature in feature_collection.features:
-                feature = update_features_report(feature, report)
-            write_geojson(outfile, feature_collection)
+            feature = update_features_report(feature, report)
+            write_geojson(outfile, feature)
         else:
             click.echo(report.metadata)
             click.echo(report.result)

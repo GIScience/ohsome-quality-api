@@ -3,10 +3,10 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 import logging
-from typing import Optional, Union
+from typing import Optional
 
 from asyncpg.exceptions import UndefinedTableError
-from geojson import FeatureCollection
+from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -17,9 +17,9 @@ from ohsome_quality_analyst.utils.helper import name_to_class
 async def create_indicator(
     indicator_name: str,
     layer_name: str,
-    bpolys: Optional[FeatureCollection] = None,
+    feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
     force: bool = False,
 ) -> BaseIndicator:
@@ -63,11 +63,11 @@ async def create_indicator(
     logging.info("Layer name:\t" + layer_name)
 
     # from scratch
-    if bpolys is not None and dataset is None and feature_id is None:
-        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
+    if feature is not None and dataset is None and feature_id is None:
+        indicator = indicator_class(layer_name=layer_name, feature=feature)
         await from_scratch()
     # from database
-    elif bpolys is None and dataset is not None and feature_id is not None:
+    elif feature is None and dataset is not None and feature_id is not None:
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
         if not db_client.sanity_check_dataset(dataset):
@@ -81,9 +81,9 @@ async def create_indicator(
         logging.info("Feature id:\t" + str(feature_id))
         logging.info("Feature id field:\t" + str(fid_field))
 
-        bpolys = await db_client.get_bpolys_from_db(dataset, feature_id, fid_field)
+        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
 
-        indicator = indicator_class(layer_name=layer_name, bpolys=bpolys)
+        indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()
@@ -128,9 +128,9 @@ async def create_all_indicators(force: bool = False) -> None:
 async def create_report(
     report_name: str,
     force: bool = False,
-    bpolys: Optional[FeatureCollection] = None,
+    feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
 ) -> object:
     """Create a report.
@@ -143,14 +143,14 @@ async def create_report(
     """
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(
-        bpolys=bpolys, dataset=dataset, feature_id=feature_id, fid_field=fid_field
+        feature=feature, dataset=dataset, feature_id=feature_id, fid_field=fid_field
     )
     report.set_indicator_layer()
     for indicator_name, layer_name in report.indicator_layer:
         indicator = await create_indicator(
             indicator_name,
             layer_name,
-            bpolys=report.bpolys,
+            feature=report.feature,
             dataset=report.dataset,
             feature_id=report.feature_id,
             fid_field=fid_field,

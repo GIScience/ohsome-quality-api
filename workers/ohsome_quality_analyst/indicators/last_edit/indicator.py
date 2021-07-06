@@ -1,4 +1,3 @@
-import json
 import logging
 from io import StringIO
 from string import Template
@@ -6,7 +5,7 @@ from string import Template
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from dateutil.relativedelta import relativedelta
-from geojson import FeatureCollection
+from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -18,12 +17,12 @@ class LastEdit(BaseIndicator):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
+        feature: Feature,
         time_range: str = None,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
-            bpolys=bpolys,
+            feature=feature,
         )
         # Threshold values are in percentage
         self.threshold_yellow = 20
@@ -43,14 +42,14 @@ class LastEdit(BaseIndicator):
 
         response = await ohsome_client.query(
             layer=self.layer,
-            bpolys=json.dumps(self.bpolys),
+            bpolys=self.feature.geometry,
             time=self.time_range,
             endpoint="contributions/latest/count",
         )
         self.contributions_latest_count = response["result"][0]["value"]
         response = await ohsome_client.query(
             layer=self.layer,
-            bpolys=json.dumps(self.bpolys),
+            bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
 

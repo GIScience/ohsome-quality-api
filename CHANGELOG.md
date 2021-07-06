@@ -2,6 +2,15 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- Change type of attribute bpolys to be GeoJSON.Feature ([#69])
+
+[#69]: https://github.com/GIScience/ohsome-quality-analyst/pull/69
+
+
+### Other Changes
+
 - Add check and custom exception for an invalid indicator layer combination during initialization of indicator objects ([#28])
 - Add pre-commit check for [PEP 8] conform names by adding the pep8-naming package as development dependency ([#40])
 - Raise exceptions in the ohsome client instead of returning None in case of a failed ohsome API query ([#29])

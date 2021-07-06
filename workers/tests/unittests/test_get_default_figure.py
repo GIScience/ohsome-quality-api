@@ -13,12 +13,12 @@ class TestGetDefaultFigure(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg_altstadt.geojson",
+            "heidelberg-altstadt-geometry.geojson",
         )
         with open(infile, "r") as f:
-            bpolys = geojson.load(f)
+            feature = geojson.load(f)
         indicator = GhsPopComparisonBuildings(
-            bpolys=bpolys, layer_name="building_count"
+            feature=feature, layer_name="building_count"
         )
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG

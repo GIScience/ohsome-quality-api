@@ -14,14 +14,14 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
-import json
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import Dict, List, Union
+from typing import List, Union
 
 import asyncpg
 import geojson
+from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
 
@@ -42,9 +42,7 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(
-    indicator, dataset: str, feature_id: Union[str, int]
-) -> None:
+async def save_indicator_results(indicator, dataset: str, feature_id: str) -> None:
     """Save the indicator result for a given dataset and feature in the Geodatabase.
 
     Create results table if not exists.
@@ -81,9 +79,7 @@ async def save_indicator_results(
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(
-    indicator, dataset: str, feature_id: Union[str, int]
-) -> bool:
+async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bool:
     """Get the indicator result from the Geodatabase.
 
     Reads given dataset and feature id from the indicator object.
@@ -119,7 +115,7 @@ async def load_indicator_results(
         return True
 
 
-async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]:
+async def get_feature_ids(dataset: str, fid_field: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
     query = "SELECT {fid_field} FROM {dataset}".format(
@@ -130,8 +126,7 @@ async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]
     return [record[fid_field] for record in records]
 
 
-# TODO Rewrite to work with geojson.Feature as input
-async def get_area_of_bpolys(bpolys: Dict):
+async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -143,51 +138,30 @@ async def get_area_of_bpolys(bpolys: Dict):
                     )
             ) / (1000*1000) as area_sqkm
         """
-    polygon = json.dumps(bpolys["features"][0]["geometry"])
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, polygon)
+        result = await conn.fetchrow(query, geojson.dumps(bpolys))
     return result["area_sqkm"]
 
 
-async def get_bpolys_from_db(
-    dataset: str, feature_id: Union[int, str], fid_field: str
-) -> geojson.FeatureCollection:
-    """Get bounding polygon from the geodatabase as a GeoJSON FeatureCollection."""
-    logging.info("(dataset, fid_field, id): " + str((dataset, fid_field, feature_id)))
+async def get_feature_from_db(dataset: str, feature_id: str, fid_field: str) -> Feature:
+    """Get regions from geodatabase as a GeoJSON Feature object"""
+    logging.info("(fid_field, id): " + str((fid_field, feature_id)))
 
     # Safe against SQL injection because of predefined values
     # (See oqt.py and definitions.py)
     query = (
-        """
-        SELECT json_build_object(
-            'type', 'FeatureCollection',
-            'crs',  json_build_object(
-                'type',      'name',
-                'properties', json_build_object(
-                    'name', 'EPSG:4326'
-                )
-            ),
-            'features', json_agg(
-                json_build_object(
-                    'type',       'Feature',
-                    'id',         {fid_field},
-                    'geometry',   public.ST_AsGeoJSON(geom)::json,
-                    'properties', json_build_object(
-                    )
-                )
-            )
-        )
-        FROM {dataset}
-        WHERE {fid_field} = $1
-    """
-    ).format(fid_field=fid_field, dataset=dataset)
-
+        "SELECT ST_AsGeoJSON(geom) "
+        + "FROM {0} ".format(dataset)
+        + "WHERE {0} = $1".format(fid_field)
+    )
+    if await type_of(dataset, fid_field) == "integer":
+        feature_id = int(feature_id)
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
-    return geojson.loads(result[0])
+    return Feature(geometry=geojson.loads(result[0]))
 
 
-async def get_available_regions() -> geojson.FeatureCollection:
+async def get_available_regions() -> FeatureCollection:
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "regions_as_geojson.sql")
     with open(file_path, "r") as file:
@@ -213,3 +187,15 @@ def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
         fid_field in DATASETS[dataset]["other"]
         or fid_field == DATASETS[dataset]["default"]
     )
+
+
+async def type_of(table_name: str, column_name: str) -> str:
+    """Get data type of field"""
+    query = (
+        "SELECT data_type "
+        + "FROM information_schema.columns "
+        + "WHERE table_name = $1 AND column_name = $2"
+    )
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, table_name, column_name)
+    return record[0]

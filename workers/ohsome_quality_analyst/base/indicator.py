@@ -11,7 +11,7 @@ from typing import Dict, Literal, Optional
 
 import matplotlib.pyplot as plt
 from dacite import from_dict
-from geojson import FeatureCollection
+from geojson import Feature
 
 from ohsome_quality_analyst.utils.definitions import (
     INDICATOR_LAYER,
@@ -63,19 +63,19 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         layer_name: str,
-        bpolys: FeatureCollection = None,
-        data: dict = None,
+        feature: Feature,
+        data: Optional[dict] = None,
     ) -> None:
-
-        self.bpolys: str = bpolys
-        self.data: Optional[dict] = data
+        self.feature = feature
+        self.data = data
 
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
 
-        layer = get_layer_definition(layer_name)
-        self.layer: LayerDefinition = from_dict(data_class=LayerDefinition, data=layer)
+        self.layer: LayerDefinition = from_dict(
+            data_class=LayerDefinition, data=get_layer_definition(layer_name)
+        )
         self.result: Result = Result(
             timestamp_oqt=datetime.utcnow(),
             timestamp_osm=None,
