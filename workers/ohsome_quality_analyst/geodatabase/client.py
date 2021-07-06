@@ -42,9 +42,7 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(
-    indicator, dataset: str, feature_id: Union[str, int]
-) -> None:
+async def save_indicator_results(indicator, dataset: str, feature_id: str) -> None:
     """Save the indicator result for a given dataset and feature in the Geodatabase.
 
     Create results table if not exists.
@@ -81,9 +79,7 @@ async def save_indicator_results(
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(
-    indicator, dataset: str, feature_id: Union[str, int]
-) -> bool:
+async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bool:
     """Get the indicator result from the Geodatabase.
 
     Reads given dataset and feature id from the indicator object.
@@ -147,7 +143,7 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_region_from_db(feature_id: Union[int, str], fid_field: str) -> Feature:
+async def get_feature_from_db(dataset: str, feature_id: str, fid_field: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
     logging.info("(fid_field, id): " + str((fid_field, feature_id)))
 
@@ -155,10 +151,11 @@ async def get_region_from_db(feature_id: Union[int, str], fid_field: str) -> Fea
     # (See oqt.py and definitions.py)
     query = (
         "SELECT ST_AsGeoJSON(geom) "
-        + "FROM regions "
+        + "FROM {0} ".format(dataset)
         + "WHERE {0} = $1".format(fid_field)
     )
-
+    if await type_of(dataset, fid_field) == "integer":
+        feature_id = int(feature_id)
     async with get_connection() as conn:
         result = await conn.fetchrow(query, feature_id)
     return Feature(geometry=geojson.loads(result[0]))
@@ -190,3 +187,15 @@ def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
         fid_field in DATASETS[dataset]["other"]
         or fid_field == DATASETS[dataset]["default"]
     )
+
+
+async def type_of(table_name: str, column_name: str) -> str:
+    """Get data type of field"""
+    query = (
+        "SELECT data_type "
+        + "FROM information_schema.columns "
+        + "WHERE table_name = $1 AND column_name = $2"
+    )
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, table_name, column_name)
+    return record[0]

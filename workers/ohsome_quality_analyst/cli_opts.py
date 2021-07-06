@@ -10,25 +10,6 @@ from ohsome_quality_analyst.utils.definitions import (
     load_metadata,
 )
 
-
-class IntOrStrParamType(click.ParamType):
-    """
-    Parse parameter as Interger otherwise parse as String
-
-    https://click.palletsprojects.com/en/8.0.x/parameters/#implementing-custom-types
-    """
-
-    name = "integer|string"
-
-    def convert(self, value, param, ctx):
-        try:
-            return int(value)
-        except ValueError:
-            if isinstance(value, str):
-                return value
-        self.fail(f"{0} is not a valid integer or string".format(value), param, ctx)
-
-
 indicator_name = click.option(
     "--indicator-name",
     "-i",
@@ -93,7 +74,7 @@ layer_name = click.option(
 feature_id = click.option(
     "--feature-id",
     "-f",
-    type=IntOrStrParamType(),
+    type=str,
     help="Provide the feature id of your area of interest.",
     default=None,
 )

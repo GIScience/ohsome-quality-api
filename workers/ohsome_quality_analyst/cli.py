@@ -153,7 +153,10 @@ def create_indicator(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature = asyncio.run(db_client.get_region_from_db(feature_id, fid_field))
+            # TODO: Sanity check or remove this line
+            feature = asyncio.run(
+                db_client.get_feature_from_db(dataset_name, feature_id, fid_field)
+            )
             feature = update_features_indicator(feature, indicator)
             write_geojson(outfile, feature)
         else:
@@ -215,7 +218,10 @@ def create_report(
         if outfile:
             if fid_field is None:
                 fid_field = DATASETS[dataset_name]["default"]
-            feature = asyncio.run(db_client.get_region_from_db(feature_id, fid_field))
+            # TODO: Sanity check or remove this line
+            feature = asyncio.run(
+                db_client.get_feature_from_db(dataset_name, feature_id, fid_field)
+            )
             feature = update_features_report(feature, report)
             write_geojson(outfile, feature)
         else:

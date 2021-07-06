@@ -1,7 +1,7 @@
 import asyncio
 import unittest
 
-from asyncpg.exceptions import DataError, UndefinedColumnError, UndefinedTableError
+from asyncpg.exceptions import UndefinedColumnError, UndefinedTableError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
@@ -17,7 +17,7 @@ class TestGeodatabase(unittest.TestCase):
         self.feature_id = 11  # Algeria Touggourt
         self.fid_field = "ogc_fid"
         self.feature = asyncio.run(
-            db_client.get_region_from_db(self.feature_id, self.fid_field)
+            db_client.get_feature_from_db(self.dataset, self.feature_id, self.fid_field)
         )
 
     def test_get_connection(self):
@@ -76,17 +76,17 @@ class TestGeodatabase(unittest.TestCase):
         result = asyncio.run(db_client.get_area_of_bpolys(self.feature.geometry))
         self.assertIsInstance(result, float)
 
-    def test_get_region_from_db(self):
+    # TODO: Add test for dataset which is not regions
+    def test_get_feature_from_db(self):
         result = asyncio.run(
-            db_client.get_region_from_db(self.feature_id, self.fid_field)
+            db_client.get_feature_from_db(self.dataset, self.feature_id, self.fid_field)
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
-        with self.assertRaises(UndefinedColumnError):
-            asyncio.run(db_client.get_region_from_db(self.feature_id, "foo"))
-
-        with self.assertRaises(DataError):
-            asyncio.run(db_client.get_region_from_db("foo", self.fid_field))
+        with self.assertRaises(ValueError):
+            asyncio.run(
+                db_client.get_feature_from_db(self.dataset, "foo", self.fid_field)
+            )
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())

@@ -52,14 +52,6 @@ def empty_api_response() -> dict:
     }
 
 
-def int_or_str_param_type(value: str) -> Union[int, str]:
-    """Parse parameter as Interger otherwise parse as String"""
-    try:
-        return int(value)
-    except ValueError:
-        return value
-
-
 async def load_bpolys(bpolys: str) -> Feature:
     """Load as GeoJSON object, validate and check size of bpolys"""
     # TODO: Return API response with error message
@@ -138,9 +130,6 @@ async def _fetch_indicator(
     else:
         feature = None
 
-    if feature_id is not None:
-        feature_id = int_or_str_param_type(feature_id)
-
     indicator = await oqt.create_indicator(
         name, layer_name, feature, dataset, feature_id, fid_field
     )
@@ -190,9 +179,6 @@ async def _fetch_report(
         feature = await load_bpolys(bpolys)
     else:
         feature = None
-
-    if feature_id is not None:
-        feature_id = int_or_str_param_type(feature_id)
 
     report = await oqt.create_report(
         name,

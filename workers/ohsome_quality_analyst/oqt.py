@@ -81,7 +81,7 @@ async def create_indicator(
         logging.info("Feature id:\t" + str(feature_id))
         logging.info("Feature id field:\t" + str(fid_field))
 
-        feature = await db_client.get_region_from_db(feature_id, fid_field)
+        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
 
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
