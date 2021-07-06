@@ -115,9 +115,10 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         return True
 
 
-async def get_feature_ids(dataset: str, fid_field: str) -> List[str]:
+async def get_feature_ids(dataset: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
+    fid_field = DATASETS[dataset]["default"]
     query = "SELECT {fid_field} FROM {dataset}".format(
         fid_field=fid_field, dataset=dataset
     )
@@ -143,12 +144,11 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_feature_from_db(dataset: str, feature_id: str, fid_field: str) -> Feature:
+async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
-    logging.info("(fid_field, id): " + str((fid_field, feature_id)))
-
     # Safe against SQL injection because of predefined values
     # (See oqt.py and definitions.py)
+    fid_field = DATASETS[dataset]["default"]
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)
@@ -199,3 +199,18 @@ async def type_of(table_name: str, column_name: str) -> str:
     async with get_connection() as conn:
         record = await conn.fetchrow(query, table_name, column_name)
     return record[0]
+
+
+async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
+    """Map feature id to the unique feature id of the dataset"""
+    uid = DATASETS[dataset]["default"]
+    query = (
+        "SELECT {uid} ".format(uid=uid)
+        + "FROM {dataset} ".format(dataset=dataset)
+        + "WHERE {fid_field} = $1".format(fid_field=fid_field)
+    )
+    if await type_of(dataset, fid_field) == "integer":
+        feature_id = int(feature_id)
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, feature_id)
+    return str(record[0])

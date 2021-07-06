@@ -10,7 +10,7 @@ from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import DATASETS, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
@@ -62,6 +62,11 @@ async def create_indicator(
     logging.info("Indicator name:\t" + indicator_name)
     logging.info("Layer name:\t" + layer_name)
 
+    if fid_field is not None:
+        if not db_client.sanity_check_fid_field(dataset, fid_field):
+            raise ValueError("Input feature id field is not valid: " + fid_field)
+        feature_id = db_client.map_fid_to_uid(dataset, fid_field, feature_id)
+
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
         indicator = indicator_class(layer_name=layer_name, feature=feature)
@@ -72,16 +77,11 @@ async def create_indicator(
         # Otherwise creation of arbitrary relations or SQL injections are possible.
         if not db_client.sanity_check_dataset(dataset):
             raise ValueError("Input dataset is not valid: " + dataset)
-        if fid_field is None:
-            fid_field = DATASETS[dataset]["default"]
-        if not db_client.sanity_check_fid_field(dataset, fid_field):
-            raise ValueError("Input feature id field is not valid: " + fid_field)
 
         logging.info("Dataset name:\t" + dataset)
         logging.info("Feature id:\t" + str(feature_id))
-        logging.info("Feature id field:\t" + str(fid_field))
 
-        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
+        feature = await db_client.get_feature_from_db(dataset, feature_id)
 
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
@@ -99,7 +99,7 @@ async def create_all_indicators(force: bool = False) -> None:
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_feature_ids("regions", "ogc_fid")
+    fids = await db_client.get_feature_ids("regions")
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:
