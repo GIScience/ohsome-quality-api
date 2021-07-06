@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from typing import Union
 
 import click
 import yaml
@@ -99,7 +98,7 @@ def create_indicator(
     infile: str,
     outfile: str,
     layer_name: str,
-    feature_id: Union[int, str],
+    feature_id: str,
     dataset_name: str,
     fid_field: str,
     force: bool,
@@ -177,7 +176,7 @@ def create_report(
     infile: str,
     outfile: str,
     dataset_name: str,
-    feature_id: Union[int, str],
+    feature_id: str,
     fid_field: str,
     force: bool,
 ):

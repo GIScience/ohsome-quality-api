@@ -115,7 +115,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         return True
 
 
-async def get_feature_ids(dataset: str, fid_field: str) -> List[Union[int, str]]:
+async def get_feature_ids(dataset: str, fid_field: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
     query = "SELECT {fid_field} FROM {dataset}".format(

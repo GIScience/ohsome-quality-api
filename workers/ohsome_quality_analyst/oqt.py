@@ -3,7 +3,7 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 import logging
-from typing import Optional, Union
+from typing import Optional
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature
@@ -19,7 +19,7 @@ async def create_indicator(
     layer_name: str,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
     force: bool = False,
 ) -> BaseIndicator:
@@ -130,7 +130,7 @@ async def create_report(
     force: bool = False,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
-    feature_id: Optional[Union[int, str]] = None,
+    feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
 ) -> object:
     """Create a report.
