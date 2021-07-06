@@ -65,13 +65,18 @@ async def create_indicator(
     logging.info("Indicator name:\t" + indicator_name)
     logging.info("Layer name:\t" + layer_name)
 
+    if fid_field is not None:
+        if not db_client.sanity_check_fid_field(dataset, fid_field):
+            raise ValueError("Input feature id field is not valid: " + fid_field)
+        feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
+
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         await from_scratch()
     # from database
     elif dataset is not None and feature_id is not None:
-        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
+        feature = await db_client.get_feature_from_db(dataset, feature_id)
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
         if not success or force:
@@ -91,7 +96,7 @@ async def create_all_indicators(force: bool = False) -> None:
 
     Possible indicator/layer combinations are defined in `definitions.py`.
     """
-    fids = await db_client.get_feature_ids("regions", "ogc_fid")
+    fids = await db_client.get_feature_ids("regions")
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             try:

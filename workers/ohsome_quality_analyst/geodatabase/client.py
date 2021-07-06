@@ -17,7 +17,7 @@ On preventing SQL injections:
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Optional, Union
+from typing import List, Union
 
 import asyncpg
 import geojson
@@ -65,7 +65,7 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(feature_id),
+        feature_id,
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
         indicator.result.label,
@@ -97,7 +97,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(feature_id),
+        feature_id,
     )
 
     async with get_connection() as conn:
@@ -115,9 +115,10 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         return True
 
 
-async def get_feature_ids(dataset: str, fid_field: str) -> List[str]:
+async def get_feature_ids(dataset: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
+    fid_field = DATASETS[dataset]["default"]
     query = "SELECT {fid_field} FROM {dataset}".format(
         fid_field=fid_field, dataset=dataset
     )
@@ -143,9 +144,7 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_feature_from_db(
-    dataset: str, feature_id: str, fid_field: Optional[str]
-) -> Feature:
+async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
     if not sanity_check_dataset(dataset):
         raise ValueError("Input dataset is not valid: " + dataset)
@@ -156,8 +155,8 @@ async def get_feature_from_db(
 
     logging.info("Dataset name:\t" + dataset)
     logging.info("Feature id:\t" + str(feature_id))
-    logging.info("Feature id field:\t" + fid_field)
 
+    fid_field = DATASETS[dataset]["default"]
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)
