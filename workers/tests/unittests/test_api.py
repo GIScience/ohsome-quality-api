@@ -4,7 +4,7 @@ import unittest
 
 from geojson import Feature
 
-from ohsome_quality_analyst.api import int_or_str_param_type, load_bpolys
+from ohsome_quality_analyst.api import load_bpolys
 
 
 class TestApiUnit(unittest.TestCase):
@@ -90,7 +90,3 @@ class TestApiUnit(unittest.TestCase):
         bpolys = asyncio.run(load_bpolys(bpolys))
         self.assertTrue(bpolys.is_valid)
         self.assertIsInstance(bpolys, Feature)
-
-    def test_int_or_str_param_type(self):
-        self.assertIsInstance(int_or_str_param_type("1"), int)
-        self.assertIsInstance(int_or_str_param_type("a"), str)

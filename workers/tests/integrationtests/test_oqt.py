@@ -14,8 +14,8 @@ class TestOqt(unittest.TestCase):
         self.feature_id = 3
         self.fid_field = "ogc_fid"
         self.feature = asyncio.run(
-            db_client.get_region_from_db(
-                feature_id=self.feature_id, fid_field=self.fid_field
+            db_client.get_feature_from_db(
+                self.dataset, feature_id=self.feature_id, fid_field=self.fid_field
             )
         )
 
