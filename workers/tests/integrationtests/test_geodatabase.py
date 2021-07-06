@@ -100,6 +100,12 @@ class TestGeodatabase(unittest.TestCase):
         self.assertFalse(db_client.sanity_check_fid_field(self.dataset, "foo"))
         self.assertTrue(db_client.sanity_check_fid_field(self.dataset, self.fid_field))
 
+    def test_type_of(self):
+        result = asyncio.run(db_client.type_of(self.dataset, self.fid_field))
+        self.assertEqual(result, "integer")
+        result = asyncio.run(db_client.type_of(self.dataset, "name"))
+        self.assertNotEqual(result, "integer")
+
 
 if __name__ == "__main__":
     unittest.main()
