@@ -13,8 +13,10 @@
 - Make VCR mode configurable ([#95])
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
+- Implement mapping of custom feature id to default (unique) feature id ([#83])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
+[#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
