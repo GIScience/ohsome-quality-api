@@ -96,9 +96,9 @@ def update_features_indicator(feature, indicator):
     """adds the indicator metadata, result and resultdata (if available) to the
     properties of a feature"""
     if indicator.data is not None:
-        feature["properties"].update(vars(indicator.data))
-    feature["properties"].update(vars(indicator.metadata))
-    feature["properties"].update(vars(indicator.result))
+        feature["properties"].update(indicator.data)
+    feature["properties"].update(vars(indicator.metadata).copy())
+    feature["properties"].update(vars(indicator.result).copy())
     return feature
 
 
