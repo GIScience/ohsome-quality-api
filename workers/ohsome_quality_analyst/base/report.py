@@ -4,13 +4,11 @@ from dataclasses import dataclass
 from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Optional, Tuple
 
-import geojson
 from dacite import from_dict
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
-from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
 
 
 @dataclass
@@ -60,23 +58,14 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
 
-    @property
-    def __geo_interface__(self) -> FeatureCollection:
-        """An interface which supports GeoJSON Encoding/Decoding.
+    def as_feature_collection(self) -> FeatureCollection:
+        """Returns a GeoJSON FeatureCollection object.
 
-        Returns a GeoJSON FeatureCollection object.
         Features are all indicators.
-        Interface Specification: https://gist.github.com/sgillies/2217756
-        GeoJSON Encoding/Decoding: https://github.com/jazzband/geojson#custom-classes
         """
-        features = []
-        for indicator in self.indicators:
-            features.append(
-                geojson.loads(
-                    geojson.dumps(indicator, default=datetime_to_isostring_timestamp)
-                )
-            )
-        return FeatureCollection(features=features)
+        return FeatureCollection(
+            features=[indicator.as_feature() for indicator in self.indicators]
+        )
 
     @abstractmethod
     def set_indicator_layer(self) -> None:

@@ -85,34 +85,28 @@ class BaseIndicator(metaclass=ABCMeta):
 
         self._validate_indicator_layer(self.__class__.__name__, layer_name)
 
-    @property
-    def __geo_interface__(self) -> dict:
-        """An interface which supports GeoJSON Encoding/Decoding.
+    def as_feature(self) -> Feature:
+        """Returns a GeoJSON Feature object.
 
-        Returns a dictionary representing a GeoJSON Feature object.
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
-        Interface Specification: https://gist.github.com/sgillies/2217756
-        GeoJSON Encoding/Decoding: https://github.com/jazzband/geojson#custom-classes
         """
         result = vars(self.result).copy()
         result.pop("svg")
         # Prefix all keys of the dictionary
         result = {"result." + str(key): val for key, val in result.items()}
         data = {"data." + str(key): val for key, val in self.data.items()}
-        return {
-            "type": "Feature",
-            "geometry": self.feature.geometry,
-            "properties": {
-                "metadata.name": self.metadata.name,
-                "metadata.description": self.metadata.description,
-                "layer.name": self.layer.name,
-                "layer.description": self.layer.description,
-                **result,
-                **data,
-                **self.feature.properties,
-            },
+        geometry = self.feature.geometry
+        properties = {
+            "metadata.name": self.metadata.name,
+            "metadata.description": self.metadata.description,
+            "layer.name": self.layer.name,
+            "layer.description": self.layer.description,
+            **result,
+            **data,
+            **self.feature.properties,
         }
+        return Feature(geometry=geometry, properties=properties)
 
     @property
     def data(self) -> dict:
