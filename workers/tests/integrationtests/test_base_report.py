@@ -1,18 +1,15 @@
 import asyncio
 import unittest
 
-import geojson
-
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
 )
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
-from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
 
 
 class TestBaseReport(unittest.TestCase):
-    def test_geo_interface(self):
+    def test_as_feature(self):
         feature = asyncio.run(
             db_client.get_feature_from_db(
                 dataset="regions", feature_id="3", fid_field="ogc_fid"
@@ -21,14 +18,19 @@ class TestBaseReport(unittest.TestCase):
         indicator = GhsPopComparisonBuildings(
             feature=feature, layer_name="building_count"
         )
-
-        report = SimpleReport()
+        report = SimpleReport(feature=feature)
         report.set_indicator_layer()
-
         for _ in report.indicator_layer:
             report.indicators.append(indicator)
 
-        feature_collection = geojson.dumps(
-            report, default=datetime_to_isostring_timestamp
-        )
-        self.assertTrue(geojson.loads(feature_collection).is_valid)
+        feature = report.as_feature()
+        self.assertTrue(feature.is_valid)
+
+        for i in (
+            "0.data.pop_count",
+            "0.data.area",
+            "0.data.pop_count_per_sqkm",
+            "0.data.feature_count",
+            "0.data.feature_count_per_sqkm",
+        ):
+            self.assertIn(i, feature["properties"].keys())
