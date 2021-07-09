@@ -13,9 +13,7 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
         # Heidelberg
         feature = asyncio.run(
-            db_client.get_feature_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+            db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         self.indicator = GhsPopComparisonRoads(
             feature=feature, layer_name="major_roads_length"
