@@ -17,7 +17,7 @@ On preventing SQL injections:
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Union
+from typing import List, Optional, Union
 
 import asyncpg
 import geojson
@@ -143,12 +143,21 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_feature_from_db(dataset: str, feature_id: str, fid_field: str) -> Feature:
+async def get_feature_from_db(
+    dataset: str, feature_id: str, fid_field: Optional[str]
+) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
-    logging.info("(fid_field, id): " + str((fid_field, feature_id)))
+    if not sanity_check_dataset(dataset):
+        raise ValueError("Input dataset is not valid: " + dataset)
+    if fid_field is None:
+        fid_field = DATASETS[dataset]["default"]
+    if not sanity_check_fid_field(dataset, fid_field):
+        raise ValueError("Input feature id field is not valid: " + fid_field)
 
-    # Safe against SQL injection because of predefined values
-    # (See oqt.py and definitions.py)
+    logging.info("Dataset name:\t" + dataset)
+    logging.info("Feature id:\t" + str(feature_id))
+    logging.info("Feature id field:\t" + fid_field)
+
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)
