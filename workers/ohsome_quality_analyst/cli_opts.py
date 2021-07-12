@@ -34,14 +34,20 @@ report_name = click.option(
 
 infile = click.option(
     "--infile",
-    help="GeoJSON file for your area of interest.",
+    help=(
+        "Path to a GeoJSON file. "
+        + "Geometry has to be of type Polygon or MultiPolygon."
+    ),
     type=click.Path(resolve_path=True),
     default=None,
 )
 
 outfile = click.option(
     "--outfile",
-    help="GeoJSON file to be written with appended metadata and results.",
+    help=(
+        "Path to a GeoJSON file. "
+        + "Path and file will be created if it does not exists."
+    ),
     type=click.Path(resolve_path=True),
     default=None,
 )
