@@ -106,7 +106,8 @@ def create_indicator(
 ):
     """Create an Indicator.
 
-    Write a GeoJSON with the result to disk if an outfile is specified.
+    Output is a GeoJSON Feature or FeatureCollection with the indicator results.
+    Write to disk if the `outfile` option is specified.
     Otherwise print to stdout.
     """
     if force:
@@ -173,7 +174,8 @@ def create_report(
 ):
     """Create a Report.
 
-    Write a GeoJSON with the result to disk if an outfile is specified.
+    Output is a GeoJSON Feature or FeatureCollection with the report/ indicator results.
+    Write to disk if the `outfile` option is specified.
     Otherwise print to stdout.
     """
     if force:
