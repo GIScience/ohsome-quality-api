@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 import click
+import geojson
 import yaml
 from geojson import FeatureCollection
 
@@ -13,7 +14,11 @@ from ohsome_quality_analyst.utils.definitions import (
     load_layer_definitions,
     load_metadata,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, write_geojson
+from ohsome_quality_analyst.utils.helper import (
+    datetime_to_isostring_timestamp,
+    loads_geojson,
+    write_geojson,
+)
 
 
 def cli_option(option):
@@ -125,7 +130,7 @@ def create_indicator(
                     force=force,
                 )
             )
-            features.append(indicator.as_feature)
+            features.append(indicator.as_feature())
         geojson_object = FeatureCollection(features=features)
     else:
         # When using a dataset and FID as input
@@ -140,11 +145,13 @@ def create_indicator(
                 force=force,
             )
         )
-        geojson_object = indicator.as_feature
+        geojson_object = indicator.as_feature()
     if outfile:
         write_geojson(outfile, geojson_object)
     else:
-        click.echo(geojson_object)
+        click.echo(
+            geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp)
+        )
 
 
 @cli.command("create-report")
@@ -164,13 +171,21 @@ def create_report(
     fid_field: str,
     force: bool,
 ):
-    """Create a Report and print results to stdout. Write a GeoJSON if an outfile
-    is specified or an infile is used as input"""
-    # TODO
+    """Create a Report.
+
+    Write a GeoJSON with the result to disk if an outfile is specified.
+    Otherwise print to stdout.
+    """
+    if force:
+        click.echo(
+            "The argument 'force' will update the indicator results in the database."
+        )
+        click.confirm("Do you want to continue?", abort=True)
     if infile is not None:
-        # When using an infile as input
-        feature_collection = load_infile(infile)
-        for feature in feature_collection.features:
+        with open(infile, "r") as file:
+            bpolys = file.read()
+        features = []
+        for feature in loads_geojson(bpolys):
             report = asyncio.run(
                 oqt.create_report(
                     report_name,
@@ -181,12 +196,8 @@ def create_report(
                     force=force,
                 )
             )
-            feature = update_features_report(feature, report)
-        if outfile is not None:
-            write_geojson(outfile, feature_collection)
-        else:
-            click.echo(report.metadata)
-            click.echo(report.result)
+            features.append(report.as_feature())
+        geojson_object = FeatureCollection(features=features)
     else:
         # When using a dataset and FID as input
         report = asyncio.run(
@@ -199,18 +210,13 @@ def create_report(
                 force=force,
             )
         )
-        if outfile:
-            if fid_field is None:
-                fid_field = DATASETS[dataset_name]["default"]
-            # TODO: Sanity check or remove this line
-            feature = asyncio.run(
-                db_client.get_feature_from_db(dataset_name, feature_id, fid_field)
-            )
-            feature = update_features_report(feature, report)
-            write_geojson(outfile, feature)
-        else:
-            click.echo(report.metadata)
-            click.echo(report.result)
+        geojson_object = report.as_feature()
+    if outfile:
+        write_geojson(outfile, geojson_object)
+    else:
+        click.echo(
+            geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp)
+        )
 
 
 @cli.command("create-all-indicators")
