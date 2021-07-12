@@ -10,7 +10,7 @@ from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import DATASETS, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
@@ -67,22 +67,10 @@ async def create_indicator(
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         await from_scratch()
     # from database
-    elif feature is None and dataset is not None and feature_id is not None:
+    elif dataset is not None and feature_id is not None:
         # Support only predefined datasets and id field.
         # Otherwise creation of arbitrary relations or SQL injections are possible.
-        if not db_client.sanity_check_dataset(dataset):
-            raise ValueError("Input dataset is not valid: " + dataset)
-        if fid_field is None:
-            fid_field = DATASETS[dataset]["default"]
-        if not db_client.sanity_check_fid_field(dataset, fid_field):
-            raise ValueError("Input feature id field is not valid: " + fid_field)
-
-        logging.info("Dataset name:\t" + dataset)
-        logging.info("Feature id:\t" + str(feature_id))
-        logging.info("Feature id field:\t" + str(fid_field))
-
         feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
-
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
         if not success or force:
@@ -141,6 +129,9 @@ async def create_report(
     Returns:
         Report
     """
+    if feature is None and dataset is not None and feature_id is not None:
+        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
+
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(
         feature=feature, dataset=dataset, feature_id=feature_id, fid_field=fid_field
