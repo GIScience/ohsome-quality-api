@@ -9,7 +9,8 @@ from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
-from ohsome_quality_analyst.base.indicator import BaseIndicator, BaseReport
+from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.report import BaseReport
 from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
