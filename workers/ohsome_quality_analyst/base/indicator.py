@@ -94,19 +94,16 @@ class BaseIndicator(metaclass=ABCMeta):
         result = vars(self.result).copy()
         result.pop("svg")
         # Prefix all keys of the dictionary
-        result = {"result." + str(key): val for key, val in result.items()}
-        data = {"data." + str(key): val for key, val in self.data.items()}
-        geometry = self.feature.geometry
         properties = {
             "metadata.name": self.metadata.name,
             "metadata.description": self.metadata.description,
             "layer.name": self.layer.name,
             "layer.description": self.layer.description,
-            **result,
-            **data,
+            **{"result." + str(key): val for key, val in result.items()},
+            **{"data." + str(key): val for key, val in self.data.items()},
             **self.feature.properties,
         }
-        return Feature(geometry=geometry, properties=properties)
+        return Feature(geometry=self.feature.geometry, properties=properties)
 
     @property
     def data(self) -> dict:
