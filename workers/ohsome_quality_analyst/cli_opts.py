@@ -35,7 +35,7 @@ report_name = click.option(
 infile = click.option(
     "--infile",
     help=(
-        "Path to a GeoJSON file. " "Geometry has to be of type Polygon or MultiPolygon."
+        "Path to a GeoJSON file. Geometry has to be of type Polygon or MultiPolygon."
     ),
     type=click.Path(resolve_path=True),
     default=None,
