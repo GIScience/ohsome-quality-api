@@ -29,12 +29,12 @@ async def create_indicator(
     An indicator can be created in two ways:
 
     1. From Scratch: Calculate from scratch for an area of interest.
-    This is done by providing a GeoJSON object as input parameter.
+    This is done by providing a GeoJSON Feature as input parameter.
 
     2. From Database: Fetch the pre-computed results from the Geodatabase.
     This is done by providing the dataset name and feature id as input parameter.
 
-    If both a GeoJSON object and dataset + feature id are given,
+    If both a GeoJSON Feature and dataset + feature id are given,
     the second way will be executed.
 
     In the case that fetching indicator results from database does fail
