@@ -31,24 +31,24 @@ class TestCliIntegration(unittest.TestCase):
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-indicator",
-                "-i",
-                "GhsPopComparisonBuildings",
-                "-l",
-                "building_count",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-        self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-indicator",
+                    "-i",
+                    "GhsPopComparisonBuildings",
+                    "-l",
+                    "building_count",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+            self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_fcollection(self):
@@ -83,24 +83,24 @@ class TestCliIntegration(unittest.TestCase):
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-indicator",
-                "-i",
-                "GhsPopComparisonBuildings",
-                "-l",
-                "building_count",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-            self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-indicator",
+                    "-i",
+                    "GhsPopComparisonBuildings",
+                    "-l",
+                    "building_count",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+                self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_feature(self):
@@ -135,24 +135,24 @@ class TestCliIntegration(unittest.TestCase):
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-indicator",
-                "-i",
-                "GhsPopComparisonBuildings",
-                "-l",
-                "building_count",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-            self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-indicator",
+                    "-i",
+                    "GhsPopComparisonBuildings",
+                    "-l",
+                    "building_count",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+                self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_geometry(self):
@@ -182,28 +182,27 @@ class TestCliIntegration(unittest.TestCase):
             "fixtures",
             "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
-
         with tempfile.TemporaryDirectory() as tmpdirname:
             outfile = os.path.join(
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-report",
-                "-r",
-                "SimpleReport",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-            self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-report",
+                    "-r",
+                    "SimpleReport",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+                self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_report_fcollection(self):
@@ -237,22 +236,22 @@ class TestCliIntegration(unittest.TestCase):
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-report",
-                "-r",
-                "SimpleReport",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-            self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-report",
+                    "-r",
+                    "SimpleReport",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+                self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_report_feature(self):
@@ -286,22 +285,22 @@ class TestCliIntegration(unittest.TestCase):
                 tmpdirname,
                 "result.geojson",
             )
-        result = self.runner.invoke(
-            cli,
-            [
-                "create-report",
-                "-r",
-                "SimpleReport",
-                "--infile",
-                infile,
-                "--outfile",
-                outfile,
-            ],
-        )
-        self.assertEqual(result.exit_code, 0)
-        with open(outfile, "r") as testobject:
-            testobject = geojson.load(testobject)
-            self.assertTrue(testobject.is_valid)
+            result = self.runner.invoke(
+                cli,
+                [
+                    "create-report",
+                    "-r",
+                    "SimpleReport",
+                    "--infile",
+                    infile,
+                    "--outfile",
+                    outfile,
+                ],
+            )
+            self.assertEqual(result.exit_code, 0)
+            with open(outfile, "r") as testobject:
+                testobject = geojson.load(testobject)
+                self.assertTrue(testobject.is_valid)
 
     @oqt_vcr.use_cassette()
     def test_create_report_geometry(self):
