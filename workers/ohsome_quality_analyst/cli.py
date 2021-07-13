@@ -107,8 +107,8 @@ def create_indicator(
     """Create an Indicator.
 
     Output is a GeoJSON Feature or FeatureCollection with the indicator results.
-    Write to disk if the `outfile` option is specified.
-    Otherwise print to stdout.
+    Output will be printed to stdout.
+    Only if the `outfile` option is specified the output will be written to disk.
     """
     if force:
         click.echo(
@@ -149,10 +149,7 @@ def create_indicator(
         geojson_object = indicator.as_feature()
     if outfile:
         write_geojson(outfile, geojson_object)
-    else:
-        click.echo(
-            geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp)
-        )
+    click.echo(geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp))
 
 
 @cli.command("create-report")
@@ -175,8 +172,8 @@ def create_report(
     """Create a Report.
 
     Output is a GeoJSON Feature or FeatureCollection with the report/ indicator results.
-    Write to disk if the `outfile` option is specified.
-    Otherwise print to stdout.
+    Output will be printed to stdout.
+    Only if the `outfile` option is specified the output will be written to disk.
     """
     if force:
         click.echo(
@@ -215,10 +212,7 @@ def create_report(
         geojson_object = report.as_feature()
     if outfile:
         write_geojson(outfile, geojson_object)
-    else:
-        click.echo(
-            geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp)
-        )
+    click.echo(geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp))
 
 
 @cli.command("create-all-indicators")
