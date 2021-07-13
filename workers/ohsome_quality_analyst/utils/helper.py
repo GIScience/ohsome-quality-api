@@ -9,7 +9,7 @@ import os
 import pathlib
 import pkgutil
 import re
-from typing import Generator
+from typing import Generator, Union
 
 import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -73,7 +73,9 @@ def datetime_to_isostring_timestamp(time: datetime) -> str:
         raise TypeError
 
 
-def write_geojson(outfile, geojson_object):
+def write_geojson(
+    outfile: str, geojson_object: Union[Feature, FeatureCollection]
+) -> None:
     """Writes a GeoJSON object to disk.
 
     If path does not exists it will be created.
