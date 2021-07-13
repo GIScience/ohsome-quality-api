@@ -28,7 +28,7 @@
 - Redefine OQT regions ([#26])
 - Use ohsome API endpoint `/contributions/latest/count` for Last Edit indicator ([#68])
 - Implement `as_feature` function for indicator and report classes ([#86])
-- CLI usage of new `as_feature` function of report and indicator classes ([#87])
+- Use new `as_feature` function of report and indicator classes in CLI ([#87])
 
 [#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
 [#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
