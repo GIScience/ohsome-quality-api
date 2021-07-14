@@ -5,8 +5,10 @@
 ### Other Changes
 
 - Set proper User Agent for requests to the ohsome API ([#62])
+- Set log level matplotlib fontmanager to INFO ([#90])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
+[#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 
 
 ## 0.4.0

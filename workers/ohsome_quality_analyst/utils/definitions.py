@@ -105,6 +105,8 @@ def load_logging_config():
 
 def configure_logging() -> None:
     """Configure logging level and format"""
+    # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
     logging.config.dictConfig(load_logging_config())
 
 
