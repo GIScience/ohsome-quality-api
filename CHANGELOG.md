@@ -5,18 +5,18 @@
 ### Breaking Changes
 
 - Change type of attribute bpolys to be GeoJSON.Feature ([#69])
+- Remove GUF Comparison indicator ([#55])
 
-[#69]: https://github.com/GIScience/ohsome-quality-analyst/pull/69
+### New Features
 
+- Add option to select different datasets and fid fields as input to OQT ([#4])
 
 ### Other Changes
 
 - Add check and custom exception for an invalid indicator layer combination during initialization of indicator objects ([#28])
 - Add pre-commit check for [PEP 8] conform names by adding the pep8-naming package as development dependency ([#40])
 - Raise exceptions in the ohsome client instead of returning None in case of a failed ohsome API query ([#29])
-- Add option to select different datasets and fid fields as input to OQT ([#4])
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
-- Remove GUF Comparison indicator ([#55])
 - Implement combine_indicators() as Concrete Method of the Base Class Report ([#53])
 - Small changes to the Website ([#61])
   - Change HTML parameters from countryID and topic to id and report ([#30])
@@ -29,23 +29,24 @@
 - Use ohsome API endpoint `/contributions/latest/count` for Last Edit indicator ([#68])
 - Implement `as_feature` function for indicator and report classes ([#86])
 
-[#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
-[#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
-[PEP 8]: https://www.python.org/dev/peps/pep-0008/
-[#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
 [#4]: https://github.com/GIScience/ohsome-quality-analyst/issues/4
-[#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
-[#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
-[#53]: https://github.com/GIScience/ohsome-quality-analyst/pull/53
-[#30]: https://github.com/GIScience/ohsome-quality-analyst/issues/30
 [#5]: https://github.com/GIScience/ohsome-quality-analyst/issues/5
-[#61]: https://github.com/GIScience/ohsome-quality-analyst/pull/61
-[#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
-[#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
-[#54]: https://github.com/GIScience/ohsome-quality-analyst/pull/54
 [#26]: https://github.com/GIScience/ohsome-quality-analyst/issues/26
+[#28]: https://github.com/GIScience/ohsome-quality-analyst/pull/28
+[#29]: https://github.com/GIScience/ohsome-quality-analyst/pull/29
+[#30]: https://github.com/GIScience/ohsome-quality-analyst/issues/30
+[#37]: https://github.com/GIScience/ohsome-quality-analyst/pull/37
+[#40]: https://github.com/GIScience/ohsome-quality-analyst/pull/40
+[#53]: https://github.com/GIScience/ohsome-quality-analyst/pull/53
+[#54]: https://github.com/GIScience/ohsome-quality-analyst/pull/54
+[#55]: https://github.com/GIScience/ohsome-quality-analyst/pull/55
+[#56]: https://github.com/GIScience/ohsome-quality-analyst/pull/56
+[#57]: https://github.com/GIScience/ohsome-quality-analyst/pull/57
+[#61]: https://github.com/GIScience/ohsome-quality-analyst/pull/61
 [#68]: https://github.com/GIScience/ohsome-quality-analyst/pull/68
+[#69]: https://github.com/GIScience/ohsome-quality-analyst/pull/69
 [#86]: https://github.com/GIScience/ohsome-quality-analyst/pull/86
+[PEP 8]: https://www.python.org/dev/peps/pep-0008/
 
 
 ## 0.3.1
