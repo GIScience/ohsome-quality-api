@@ -5,11 +5,11 @@
 ### Breaking Changes
 
 - Change type of attribute bpolys to be GeoJSON.Feature ([#69])
-- Remove GUF Comparison indicator ([#55])
 
 ### New Features
 
 - Add option to select different datasets and fid fields as input to OQT ([#4])
+- Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 
 ### Other Changes
 
@@ -17,12 +17,12 @@
 - Add pre-commit check for [PEP 8] conform names by adding the pep8-naming package as development dependency ([#40])
 - Raise exceptions in the ohsome client instead of returning None in case of a failed ohsome API query ([#29])
 - Rewrite save and load indicator from database logic to use one result table for all indicator results ([#37])
+- Remove GUF Comparison indicator ([#55])
 - Implement combine_indicators() as Concrete Method of the Base Class Report ([#53])
 - Small changes to the Website ([#61])
   - Change HTML parameters from countryID and topic to id and report ([#30])
   - Mention API and GitHub on About page ([#5])
   - On Click to marker now only zooms to polygon instead to fixed value 
-- Return a GeoJSON when computing an indicator from the CLI using a dataset and FID ([#57])
 - Update MapAction layers and POC report ([#56])
 - Simplify CLI option handling by only allowing one option at a time to be added ([#54])
 - Redefine OQT regions ([#26])
