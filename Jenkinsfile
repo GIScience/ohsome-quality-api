@@ -85,7 +85,7 @@ pipeline {
                   sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
                 }
                 // run pytest
-                sh 'cd ${WORK_DIR} && ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
+                sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
                 // replace absolute dir in the coverage file with actually used dir for sonar-scanner
                 sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
                 // run static analysis with sonar-scanner

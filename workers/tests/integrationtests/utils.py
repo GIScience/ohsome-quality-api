@@ -17,7 +17,8 @@ def filename_generator(function):
 oqt_vcr = vcr.VCR(
     serializer="json",
     cassette_library_dir=FIXTURE_DIR,
-    record_mode="new_episodes",
+    # details see https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
+    record_mode=os.getenv("VCR_RECORD_MODE", default="new_episodes"),
     match_on=["method", "scheme", "host", "port", "path", "query", "body"],
     func_path_generator=filename_generator,
 )
