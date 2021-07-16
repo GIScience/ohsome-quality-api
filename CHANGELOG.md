@@ -1,5 +1,14 @@
 # Changelog
 
+## Current main
+
+### Other Changes
+
+- Set proper User Agent for requests to the ohsome API ([#62])
+
+[#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
+
+
 ## 0.4.0
 
 ### Breaking Changes
