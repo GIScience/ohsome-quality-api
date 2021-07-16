@@ -12,6 +12,7 @@ from typing import Dict
 
 import yaml
 
+from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
 # Dataset names and fid fields which are available in the Geodatabase
@@ -76,6 +77,10 @@ OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 # Input geometry size limit in sqkm for API requests
 # TODO: decide on default value
 GEOM_SIZE_LIMIT = os.getenv("OQT_GEOM_SIZE_LIMIT", default=100)
+
+USER_AGENT = os.getenv(
+    "OQT_USER_AGENT", default="ohsome-quality-analyst/{}".format(oqt_version)
+)
 
 
 def get_log_level():

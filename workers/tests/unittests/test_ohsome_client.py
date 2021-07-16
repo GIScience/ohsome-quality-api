@@ -79,6 +79,19 @@ class TestOhsomeClient(TestCase):
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
+    def test_query_user_agent(self) -> None:
+        with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
+            mock_request.return_value = httpx.Response(
+                200,
+                content=self.valid_response,
+                request=httpx.Request("POST", "http://www.example.org/"),
+            )
+            asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+            self.assertEqual(
+                "ohsome-quality-analyst",
+                mock_request.call_args[1]["headers"]["user-agent"].split("/")[0],
+            )
+
     def test_build_url(self) -> None:
         ohsome_api = self.ohsome_api.rstrip("/")
         url = ohsome_client.build_url(self.layer)
