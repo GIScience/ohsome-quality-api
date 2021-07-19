@@ -10,9 +10,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
 class TestBaseIndicator(unittest.TestCase):
     def test_as_feature(self):
         feature = asyncio.run(
-            db_client.get_feature_from_db(
-                dataset="regions", feature_id="3", fid_field="ogc_fid"
-            )
+            db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         indicator = GhsPopComparisonBuildings(
             feature=feature, layer_name="building_count"
@@ -31,9 +29,7 @@ class TestBaseIndicator(unittest.TestCase):
 
     def test_data_property(self):
         feature = asyncio.run(
-            db_client.get_feature_from_db(
-                dataset="regions", feature_id="3", fid_field="ogc_fid"
-            )
+            db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         indicator = GhsPopComparisonBuildings(
             feature=feature, layer_name="building_count"

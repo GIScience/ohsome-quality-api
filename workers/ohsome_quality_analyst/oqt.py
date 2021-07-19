@@ -65,17 +65,14 @@ async def create_indicator(
     logging.info("Indicator name:\t" + indicator_name)
     logging.info("Layer name:\t" + layer_name)
 
-    if fid_field is not None:
-        if not db_client.sanity_check_fid_field(dataset, fid_field):
-            raise ValueError("Input feature id field is not valid: " + fid_field)
-        feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
-
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         await from_scratch()
     # from database
     elif dataset is not None and feature_id is not None:
+        if fid_field is not None:
+            feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
         feature = await db_client.get_feature_from_db(dataset, feature_id)
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
@@ -135,8 +132,14 @@ async def create_report(
     A Reports creates indicators from scratch or fetches them from the database.
     It then aggregates all indicators and calculates an overall quality score.
     """
+    logging.info("Creating Report...")
+    logging.info("Report name:\t" + report_name)
+
     if feature is None and dataset is not None and feature_id is not None:
-        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
+        if fid_field is not None:
+            feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
+            fid_field = None
+        feature = await db_client.get_feature_from_db(dataset, feature_id)
 
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(

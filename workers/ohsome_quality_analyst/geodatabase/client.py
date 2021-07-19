@@ -148,20 +148,18 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
     if not sanity_check_dataset(dataset):
         raise ValueError("Input dataset is not valid: " + dataset)
-    if fid_field is None:
-        fid_field = DATASETS[dataset]["default"]
-    if not sanity_check_fid_field(dataset, fid_field):
-        raise ValueError("Input feature id field is not valid: " + fid_field)
-
-    logging.info("Dataset name:\t" + dataset)
-    logging.info("Feature id:\t" + str(feature_id))
-
     fid_field = DATASETS[dataset]["default"]
+
+    logging.info("Dataset name: " + dataset)
+    logging.info("Feature id: " + feature_id)
+    logging.info("Feature id field: " + fid_field)
+
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)
         + "WHERE {0} = $1".format(fid_field)
     )
+    logging.debug("SQL Query: " + query)
     if await type_of(dataset, fid_field) == "integer":
         feature_id = int(feature_id)
     async with get_connection() as conn:
@@ -207,3 +205,22 @@ async def type_of(table_name: str, column_name: str) -> str:
     async with get_connection() as conn:
         record = await conn.fetchrow(query, table_name, column_name)
     return record[0]
+
+
+async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
+    """Map feature id to the unique feature id of the dataset"""
+    if not sanity_check_dataset(dataset):
+        raise ValueError("Input dataset is not valid: " + dataset)
+    if not sanity_check_fid_field(dataset, fid_field):
+        raise ValueError("Input feature id field is not valid: " + fid_field)
+    uid = DATASETS[dataset]["default"]
+    query = (
+        "SELECT {uid} ".format(uid=uid)
+        + "FROM {dataset} ".format(dataset=dataset)
+        + "WHERE {fid_field} = $1".format(fid_field=fid_field)
+    )
+    if await type_of(dataset, fid_field) == "integer":
+        feature_id = int(feature_id)
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, feature_id)
+    return str(record[0])
