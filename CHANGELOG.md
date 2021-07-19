@@ -12,12 +12,14 @@
 - Set log level matplotlib fontmanager to INFO ([#90])
 - Make VCR mode configurable ([#95])
 - Minor improvements to the metadata and docstrings of indicators ([#110])
+- Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
+[#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 
 
 ## 0.4.0
