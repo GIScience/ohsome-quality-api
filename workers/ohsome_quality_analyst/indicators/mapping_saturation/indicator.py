@@ -38,7 +38,7 @@ class MappingSaturation(BaseIndicator):
         self.growth = None
         self.preprocessing_results = None
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
         """Get data from ohsome API and db. Put timestamps + data in list"""
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry, time=self.time_range
@@ -63,9 +63,8 @@ class MappingSaturation(BaseIndicator):
             "results": results,
             "results_normalized": results_normalized,
         }
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         """
         Calculate the growth rate + saturation level within the last 3 years.
         Depending on the result, define label and value.
@@ -75,11 +74,11 @@ class MappingSaturation(BaseIndicator):
         if self.preprocessing_results["results"] == -1:
             # start stadium
             # "No mapping has happened in this region. "
-            return False
+            return
         if self.preprocessing_results["results"] == -2:
             # deletion of all data
             # "Mapping has happened in this region but data were deleted."
-            return False
+            return
         # prepare the data
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
@@ -155,14 +154,15 @@ class MappingSaturation(BaseIndicator):
                 self.result.description = (
                     description + self.metadata.label_description["yellow"]
                 )
-            return True
-        else:
-            return False
 
-    def create_figure(self) -> bool:
+    def create_figure(self) -> None:
         """
         Create svg with data line in blue and sigmoid curve in red.
         """
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+
         # not nice work around to avoid error ".. is not indexable"
         dfWorkarkound = pd.DataFrame(self.preprocessing_results)
         li = []
@@ -226,4 +226,3 @@ class MappingSaturation(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-        return True

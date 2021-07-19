@@ -116,30 +116,27 @@ class BaseIndicator(metaclass=ABCMeta):
         return data
 
     @abstractmethod
-    async def preprocess(self) -> bool:
-        """Get fetch and prepocess data
+    async def preprocess(self) -> None:
+        """Get fetch and prepocess data.
 
         Fetch data from the ohsome API and/or from the geodatabase asynchronously.
         Preprocess data for calculation and save those as attributes.
-        Returns True if preprocessing was successful otherwise False.
         """
         pass
 
     @abstractmethod
-    def calculate(self) -> bool:
-        """ "Calculate indicator results
+    def calculate(self) -> None:
+        """Calculate indicator results.
 
         Writes results to the result attribute.
-        Returns True if calculation was successful otherwise False.
         """
         pass
 
     @abstractmethod
-    def create_figure(self) -> bool:
-        """ "Create figure plotting indicator results
+    def create_figure(self) -> None:
+        """Create figure plotting indicator results.
 
         Writes an SVG figure to the svg attribute of the result attribute.
-        Returns True if figure creation was successful otherwise False.
         """
         pass
 
