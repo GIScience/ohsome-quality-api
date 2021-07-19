@@ -12,7 +12,7 @@ from .utils import oqt_vcr
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.feature_id = "12"  # Algeria Touggourt
+        self.feature_id = "3"  # Heidelberg
         self.feature = asyncio.run(
             db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
@@ -102,12 +102,12 @@ class TestGeodatabase(unittest.TestCase):
         result = asyncio.run(
             db_client.map_fid_to_uid(self.dataset, self.feature_id, "ogc_fid")
         )
-        self.assertEqual(result, "12")
+        self.assertEqual(result, "3")
 
         result = asyncio.run(
-            db_client.map_fid_to_uid(self.dataset, "Touggourt", "name")
+            db_client.map_fid_to_uid(self.dataset, "Heidelberg", "name")
         )
-        self.assertEqual(result, "12")
+        self.assertEqual(result, "3")
 
 
 if __name__ == "__main__":
