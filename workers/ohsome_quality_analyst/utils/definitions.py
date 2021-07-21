@@ -2,13 +2,12 @@
 Global Variables and Functions.
 """
 
-import collections
 import glob
 import logging
 import logging.config
 import os
 import sys
-from typing import Dict
+from typing import Dict, List
 
 import yaml
 
@@ -208,5 +207,26 @@ def get_report_classes() -> Dict:
     )
 
 
-ReportResult = collections.namedtuple("Result", "label value text")
-ReportMetadata = collections.namedtuple("Metadata", "name description")
+def get_indicator_names() -> List[str]:
+    return list(load_metadata("indicators").keys())
+
+
+def get_report_names() -> List[str]:
+    return list(load_metadata("reports").keys())
+
+
+def get_layer_names() -> List[str]:
+    return list(load_layer_definitions().keys())
+
+
+def get_dataset_names() -> List[str]:
+    return list(DATASETS.keys())
+
+
+def get_fid_fields() -> List[str]:
+    fid_fields = []
+    for _, dataset in DATASETS.items():
+        fid_fields.append(dataset["default"])
+        if "other" in dataset.keys():
+            fid_fields += list(dataset["other"])
+    return fid_fields

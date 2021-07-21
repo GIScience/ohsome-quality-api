@@ -33,7 +33,6 @@ api_schema_indicator = Schema(
         "apiVersion": str,
         "metadata": {
             "name": str,
-            "requestUrl": str,
             "description": str,
         },
         "layer": {
@@ -65,7 +64,6 @@ api_schema_report = Schema(
         "metadata": {
             "name": str,
             "description": str,
-            "requestUrl": str,
         },
         "result": {
             "value": float,

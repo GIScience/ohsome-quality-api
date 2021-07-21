@@ -6,6 +6,10 @@
 
 - Fix error raising while serializing JSON due NaN ([#112])
 
+### New Features
+
+- Add pydatic request models and documentation to API ([#102])
+
 ### Other Changes
 
 - Set proper User Agent for requests to the ohsome API ([#62])
@@ -20,6 +24,7 @@
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
+[#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 

@@ -2,22 +2,30 @@ import logging
 from typing import Optional
 
 import geojson
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
-from pydantic import BaseModel
 
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
+from ohsome_quality_analyst.utils.models import (
+    DatasetEnum,
+    FidFieldEnum,
+    IndicatorEnum,
+    IndicatorModel,
+    LayerEnum,
+    ReportEnum,
+    ReportModel,
+)
 
 configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
-app = FastAPI()
+app = FastAPI(title="OQT API", description="https://oqt.ohsome.org/")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -25,21 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-class IndicatorParameters(BaseModel):
-    bpolys: Optional[str] = None
-    dataset: Optional[str] = None
-    featureId: Optional[str] = None
-    layerName: Optional[str] = None
-    fidField: Optional[str] = None
-
-
-class ReportParameters(BaseModel):
-    bpolys: Optional[str] = None
-    dataset: Optional[str] = None
-    featureId: Optional[str] = None
-    fidField: Optional[str] = None
 
 
 def empty_api_response() -> dict:
@@ -54,7 +47,6 @@ def empty_api_response() -> dict:
 
 async def load_bpolys(bpolys: str) -> Feature:
     """Load as GeoJSON object, validate and check size of bpolys"""
-    # TODO: Return API response with error message
 
     async def check_geom_size(geom):
         if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
@@ -88,38 +80,65 @@ async def load_bpolys(bpolys: str) -> Feature:
 
 @app.get("/indicator/{name}")
 async def get_indicator(
-    name: str,
-    request: Request,
-    layerName: str,
+    name: IndicatorEnum,
+    layerName: LayerEnum,
     bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
+    dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
-    fidField: Optional[str] = None,
+    fidField: Optional[FidFieldEnum] = None,
 ):
-    url = request.url._url
+    """Create an Indicator.
+
+    Either the parameters `dataset` and `feature id` has to be provided
+    or the parameter `bpolys` in form of a GeoJSON.
+
+    Depending on the input, the output is a GeoJSON Feature or
+    FeatureCollection with the indicator results.
+    The Feature properties of the input GeoJSON will be preserved.
+    """
+    if dataset is not None:
+        dataset = dataset.value
+    if fidField is not None:
+        fidField = fidField.value
     return await _fetch_indicator(
-        name, layerName, url, bpolys, dataset, featureId, fidField
+        name.value, layerName.value, bpolys, dataset, featureId, fidField
     )
 
 
 @app.post("/indicator/{name}")
-async def post_indicator(name: str, request: Request, item: IndicatorParameters):
-    # TODO: Check if default parameter None is necessary (item has default values)
-    layer_name = item.dict().get("layerName", None)
-    bpolys = item.dict().get("bpolys", None)
-    dataset = item.dict().get("dataset", None)
-    feature_id = item.dict().get("featureId", None)
-    fid_field = item.dict().get("fidField", None)
-    url = request.url._url
+async def post_indicator(
+    name: IndicatorEnum,
+    parameters: IndicatorModel,
+):
+    """Create an Indicator.
+
+    Either the parameters `dataset` and `feature id` has to be provided
+    or the parameter `bpolys` in form of a GeoJSON.
+
+    Depending on the input, the output is a GeoJSON Feature or
+    FeatureCollection with the indicator results.
+    The Feature properties of the input GeoJSON will be preserved.
+    """
+    p = parameters.dict()
+    dataset = p["dataset"]
+    fidField = p["fidField"]
+    if dataset is not None:
+        dataset = dataset.value
+    if fidField is not None:
+        fidField = fidField.value
     return await _fetch_indicator(
-        name, layer_name, url, bpolys, dataset, feature_id, fid_field
+        name.value,
+        p["layerName"].value,
+        p["bpolys"],
+        dataset,
+        p["featureId"],
+        fidField,
     )
 
 
 async def _fetch_indicator(
     name: str,
     layer_name: str,
-    url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -136,7 +155,6 @@ async def _fetch_indicator(
 
     response = empty_api_response()
     response["metadata"] = vars(indicator.metadata)
-    response["metadata"]["requestUrl"] = url
     response["metadata"].pop("result_description", None)
     response["metadata"].pop("label_description", None)
     response["layer"] = vars(indicator.layer)
@@ -146,30 +164,64 @@ async def _fetch_indicator(
 
 @app.get("/report/{name}")
 async def get_report(
-    name: str,
-    request: Request,
+    name: ReportEnum,
     bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
+    dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
-    fidField: Optional[str] = None,
+    fidField: Optional[FidFieldEnum] = None,
 ):
-    url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, featureId, fidField)
+    """Create a Report.
+
+    Either the parameters `dataset` and `feature id` has to be provided
+    or the parameter `bpolys` in form of a GeoJSON.
+
+    Depending on the input, the output is a GeoJSON Feature or
+    FeatureCollection with the indicator results.
+    The Feature properties of the input GeoJSON will be preserved.
+    """
+    if dataset is not None:
+        dataset = dataset.value
+    if fidField is not None:
+        fidField = fidField.value
+    return await _fetch_report(
+        name.value,
+        bpolys,
+        dataset,
+        featureId,
+        fidField,
+    )
 
 
 @app.post("/report/{name}")
-async def post_report(name: str, request: Request, item: ReportParameters):
-    bpolys = item.dict().get("bpolys", None)
-    dataset = item.dict().get("dataset", None)
-    feature_id = item.dict().get("featureId", None)
-    fid_field = item.dict().get("fidField", None)
-    url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, feature_id, fid_field)
+async def post_report(name: ReportEnum, parameters: ReportModel):
+    """Create a Report.
+
+    Either the parameters `dataset` and `feature id` has to be provided
+    or the parameter `bpolys` in form of a GeoJSON.
+
+    Depending on the input, the output is a GeoJSON Feature or
+    FeatureCollection with the indicator results.
+    The Feature properties of the input GeoJSON will be preserved.
+    """
+    p = parameters.dict()
+    dataset = p["dataset"]
+    fidField = p["fidField"]
+    if dataset is not None:
+        dataset = dataset.value
+    if fidField is not None:
+        fidField = fidField.value
+
+    return await _fetch_report(
+        name.value,
+        p["bpolys"],
+        dataset,
+        p["featureId"],
+        fidField,
+    )
 
 
 async def _fetch_report(
     name: str,
-    url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -190,7 +242,6 @@ async def _fetch_report(
 
     response = empty_api_response()
     response["metadata"] = vars(report.metadata)
-    response["metadata"]["requestUrl"] = url
     response["metadata"].pop("label_description", None)
     response["result"] = vars(report.result)
     response["result"]["label"] = report.result.label
