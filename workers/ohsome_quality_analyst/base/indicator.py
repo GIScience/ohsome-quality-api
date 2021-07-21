@@ -64,10 +64,8 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         feature: Feature,
-        data: Optional[dict] = None,
     ) -> None:
         self.feature = feature
-        self.data = data
 
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
@@ -86,6 +84,36 @@ class BaseIndicator(metaclass=ABCMeta):
         )
 
         self._validate_indicator_layer(self.__class__.__name__, layer_name)
+
+    def as_feature(self) -> Feature:
+        """Returns a GeoJSON Feature object.
+
+        The properties of the Feature contains the attributes of the indicator.
+        The geometry (and properties) of the input GeoJSON object is preserved.
+        """
+        result = vars(self.result).copy()
+        result.pop("svg")
+        # Prefix all keys of the dictionary
+        properties = {
+            "metadata.name": self.metadata.name,
+            "metadata.description": self.metadata.description,
+            "layer.name": self.layer.name,
+            "layer.description": self.layer.description,
+            **{"result." + str(key): val for key, val in result.items()},
+            **{"data." + str(key): val for key, val in self.data.items()},
+            **self.feature.properties,
+        }
+        return Feature(geometry=self.feature.geometry, properties=properties)
+
+    @property
+    def data(self) -> dict:
+        """All indicator attributes except feature, result, metadata and layer."""
+        data = vars(self).copy()
+        data.pop("result")
+        data.pop("metadata")
+        data.pop("layer")
+        data.pop("feature")
+        return data
 
     @abstractmethod
     async def preprocess(self) -> bool:

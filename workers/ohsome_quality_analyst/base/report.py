@@ -58,6 +58,18 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None)
 
+    def as_feature(self) -> Feature:
+        """Returns a GeoJSON Feature object.
+
+        The properties of the Feature contains the attributes of all indicators.
+        The geometry (and properties) of the input GeoJSON object is preserved.
+        """
+        properties = {}
+        for i, indicator in enumerate(self.indicators):
+            p = indicator.as_feature()["properties"]
+            properties.update({str(i) + "." + str(key): val for key, val in p.items()})
+        return Feature(geometry=self.feature.geometry, properties=properties)
+
     @abstractmethod
     def set_indicator_layer(self) -> None:
         """Set the attribute indicator_layer."""

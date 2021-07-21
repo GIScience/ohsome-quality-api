@@ -12,6 +12,7 @@ from typing import Dict
 
 import yaml
 
+from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
 # Dataset names and fid fields which are available in the Geodatabase
@@ -77,6 +78,10 @@ OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 # TODO: decide on default value
 GEOM_SIZE_LIMIT = os.getenv("OQT_GEOM_SIZE_LIMIT", default=100)
 
+USER_AGENT = os.getenv(
+    "OQT_USER_AGENT", default="ohsome-quality-analyst/{}".format(oqt_version)
+)
+
 
 def get_log_level():
     if "pydevd" in sys.modules or "pdb" in sys.modules:
@@ -100,6 +105,8 @@ def load_logging_config():
 
 def configure_logging() -> None:
     """Configure logging level and format"""
+    # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
     logging.config.dictConfig(load_logging_config())
 
 

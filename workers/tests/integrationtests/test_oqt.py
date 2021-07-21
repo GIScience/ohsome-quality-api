@@ -107,16 +107,19 @@ class TestOqt(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_from_database_invalid_arguments(self):
-        with self.assertRaises(ValueError):
-            asyncio.run(
-                oqt.create_indicator(
-                    "GhsPopComparisonBuildings",
-                    "building_count",
-                    dataset=self.dataset,
-                    feature_id=self.feature_id,
-                    feature=self.feature,
-                )
+        indicator = asyncio.run(
+            oqt.create_indicator(
+                "GhsPopComparisonBuildings",
+                "building_count",
+                dataset=self.dataset,
+                feature_id=self.feature_id,
+                feature=self.feature,
             )
+        )
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
 
     @oqt_vcr.use_cassette()
     def test_create_report_feature(self):

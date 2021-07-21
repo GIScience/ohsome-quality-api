@@ -10,7 +10,8 @@ from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import DATASETS, INDICATOR_LAYER
+from ohsome_quality_analyst.base.report import BaseReport
+from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER
 from ohsome_quality_analyst.utils.helper import name_to_class
 
 
@@ -27,11 +28,14 @@ async def create_indicator(
 
     An indicator can be created in two ways:
 
-    One; Calculate from scratch for an area of interest.
-    This is done by providing a bounding polygon as input parameter.
+    1. From Scratch: Calculate from scratch for an area of interest.
+    This is done by providing a GeoJSON Feature as input parameter.
 
-    Two; Fetch the pre-computed results from the Geodatabase.
+    2. From Database: Fetch the pre-computed results from the Geodatabase.
     This is done by providing the dataset name and feature id as input parameter.
+
+    If both a GeoJSON Feature and dataset + feature id are given,
+    the second way will be executed.
 
     In the case that fetching indicator results from database does fail
     the indicator is created from scratch and the results are saved
@@ -67,22 +71,8 @@ async def create_indicator(
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         await from_scratch()
     # from database
-    elif feature is None and dataset is not None and feature_id is not None:
-        # Support only predefined datasets and id field.
-        # Otherwise creation of arbitrary relations or SQL injections are possible.
-        if not db_client.sanity_check_dataset(dataset):
-            raise ValueError("Input dataset is not valid: " + dataset)
-        if fid_field is None:
-            fid_field = DATASETS[dataset]["default"]
-        if not db_client.sanity_check_fid_field(dataset, fid_field):
-            raise ValueError("Input feature id field is not valid: " + fid_field)
-
-        logging.info("Dataset name:\t" + dataset)
-        logging.info("Feature id:\t" + str(feature_id))
-        logging.info("Feature id field:\t" + str(fid_field))
-
+    elif dataset is not None and feature_id is not None:
         feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
-
         indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
         if not success or force:
@@ -132,15 +122,15 @@ async def create_report(
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
-) -> object:
+) -> BaseReport:
     """Create a report.
 
     A Reports creates indicators from scratch or fetches them from the database.
-    It then aggregates all indicators and calculates an overall quality scrore.
-
-    Returns:
-        Report
+    It then aggregates all indicators and calculates an overall quality score.
     """
+    if feature is None and dataset is not None and feature_id is not None:
+        feature = await db_client.get_feature_from_db(dataset, feature_id, fid_field)
+
     report_class = name_to_class(class_type="report", name=report_name)
     report = report_class(
         feature=feature, dataset=dataset, feature_id=feature_id, fid_field=fid_field

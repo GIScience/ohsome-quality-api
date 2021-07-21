@@ -8,7 +8,7 @@ import geojson
 import httpx
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
-from ohsome_quality_analyst.utils.definitions import OHSOME_API
+from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
@@ -34,12 +34,13 @@ async def query(
     return await query_ohsome_api(url, data)
 
 
-async def query_ohsome_api(url: str, data: dict) -> dict:
+async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
     # custom timeout as ohsome API can take a long time to send an answer
     # (up to 10 minutes)
     timeout = httpx.Timeout(5, read=660)
+    headers["user-agent"] = USER_AGENT
     async with httpx.AsyncClient(timeout=timeout) as client:
-        resp = await client.post(url, data=data)
+        resp = await client.post(url, data=data, headers=headers)
 
     # ohsome API response status codes are either 4xx and 5xx or 200
     try:
@@ -63,8 +64,9 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
 async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get unix timestamp of ohsome from ohsome api."""
     url = "https://api.ohsome.org/v1/metadata"
+    headers = {"user-agent": USER_AGENT}
     async with httpx.AsyncClient() as client:
-        resp = await client.get(url)
+        resp = await client.get(url, headers=headers)
     timestamp_str = str(resp.json()["extractRegion"]["temporalExtent"]["toTimestamp"])
     timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%MZ")
     return timestamp
