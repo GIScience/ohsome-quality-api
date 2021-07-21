@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from io import StringIO
 from string import Template
 
@@ -57,6 +58,9 @@ class GhsPopComparisonRoads(BaseIndicator):
             return False
         # results in meter, we need km
         self.feature_length = query_results["result"][0]["value"] / 1000
+        self.result.timestamp_osm = datetime.strptime(
+            query_results["result"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
+        )
         self.feature_length_per_sqkm = self.feature_length / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
         return True

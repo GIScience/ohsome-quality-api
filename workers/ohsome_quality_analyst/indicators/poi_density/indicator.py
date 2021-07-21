@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from io import StringIO
 from string import Template
 
@@ -47,6 +48,9 @@ class PoiDensity(BaseIndicator):
             self.feature.geometry
         )  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
+        self.result.timestamp_osm = datetime.strptime(
+            query_results_count["result"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
+        )
         self.density = self.count / self.area_sqkm
         return True
 

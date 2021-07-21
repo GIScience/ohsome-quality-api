@@ -1,5 +1,6 @@
 import asyncio
 import unittest
+from datetime import datetime
 
 from asyncpg import Record
 
@@ -28,6 +29,8 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
         self.assertIsNotNone(self.indicator.feature_length)
         self.assertIsNotNone(self.indicator.feature_length_per_sqkm)
         self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
+        self.assertIsNotNone(self.indicator.result.timestamp_osm)
+        self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
 
         self.indicator.calculate()
         self.assertIsNotNone(self.indicator.result.label)

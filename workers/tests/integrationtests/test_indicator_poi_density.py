@@ -1,6 +1,7 @@
 import asyncio
 import os
 import unittest
+from datetime import datetime
 
 import geojson
 
@@ -26,6 +27,8 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         self.assertIsNotNone(self.indicator.area_sqkm)
         self.assertIsNotNone(self.indicator.count)
         self.assertIsNotNone(self.indicator.density)
+        self.assertIsNotNone(self.indicator.result.timestamp_osm)
+        self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
 
         self.indicator.calculate()
         self.assertIsNotNone(self.indicator.result.label)

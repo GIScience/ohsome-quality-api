@@ -1,6 +1,7 @@
 import asyncio
 import os
 import unittest
+from datetime import datetime
 
 import geojson
 
@@ -22,6 +23,8 @@ class TestIndicatorLastEdit(unittest.TestCase):
 
         indicator = LastEdit(feature=feature, layer_name="major_roads_count")
         asyncio.run(indicator.preprocess())
+        self.assertIsNotNone(indicator.result.timestamp_osm)
+        self.assertIsInstance(indicator.result.timestamp_osm, datetime)
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)

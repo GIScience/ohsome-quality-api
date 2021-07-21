@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from io import StringIO
 from string import Template
 
@@ -52,6 +53,9 @@ class LastEdit(BaseIndicator):
             bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
+        self.result.timestamp_osm = datetime.strptime(
+            response["result"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
+        )
 
         return True
 

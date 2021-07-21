@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from io import StringIO
 from string import Template
 
@@ -45,6 +46,12 @@ class MappingSaturation(BaseIndicator):
         )
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
+        datetimes = []
+        for timestamp in timestamps:
+            datetime_ = self.result.timestamp_osm = datetime.strptime(
+                timestamp, "%Y-%m-%dT%H:%M:%S%z"
+            )
+            datetimes.append(datetime_)
         max_value = max(results)
         y_end_value = results[-1]
         # check if data are there, in case of 0 = no data
@@ -59,7 +66,7 @@ class MappingSaturation(BaseIndicator):
             results_normalized = [result / max_value for result in results]
 
         self.preprocessing_results = {
-            "timestamps": timestamps,
+            "timestamps": datetimes,
             "results": results,
             "results_normalized": results_normalized,
         }
