@@ -7,10 +7,12 @@
 - Set proper User Agent for requests to the ohsome API ([#62])
 - Set log level matplotlib fontmanager to INFO ([#90])
 - Make VCR mode configurable ([#95])
+- Add osm-timestamps to indicators + tests for it. Add timezone to oqt-timestamp([#101])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
+[#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 
 
 ## 0.4.0
