@@ -79,7 +79,10 @@ async def create_indicator(
             await from_scratch()
             await db_client.save_indicator_results(indicator, dataset, feature_id)
     else:
-        raise ValueError("Invalid set of arguments for the creation of an indicator")
+        raise ValueError(
+            "Invalid set of arguments for the creation of an indicator. "
+            + "Either `feature` or `dataset` and `feature_id` has to be provided."
+        )
 
     return indicator
 

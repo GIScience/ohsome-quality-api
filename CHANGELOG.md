@@ -2,6 +2,10 @@
 
 ## Current main
 
+### Bug Fixes
+
+- Fix error raising while serializing JSON due NaN ([#112])
+
 ### Other Changes
 
 - Set proper User Agent for requests to the ohsome API ([#62])
@@ -9,12 +13,15 @@
 - Make VCR mode configurable ([#95])
 - Add osm-timestamps to indicators + tests for it. Add timezone to oqt-timestamp([#101])
 - Add API-endpoints for list of indicators, reports, layers, datasets and fid_field ([#106])
+- Minor improvements to the metadata and docstrings of indicators ([#110])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
+[#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
+[#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 
 
 ## 0.4.0
