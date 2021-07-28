@@ -119,7 +119,8 @@ def create_indicator(
         with open(infile, "r") as file:
             bpolys = file.read()
         features = []
-        for feature in loads_geojson(bpolys):
+        for i, feature in enumerate(loads_geojson(bpolys)):
+            logging.info("Input feature index:\t" + str(i))
             indicator = asyncio.run(
                 oqt.create_indicator(
                     indicator_name,
@@ -184,7 +185,8 @@ def create_report(
         with open(infile, "r") as file:
             bpolys = file.read()
         features = []
-        for feature in loads_geojson(bpolys):
+        for i, feature in enumerate(loads_geojson(bpolys)):
+            logging.info("Input feature index:\t" + str(i))
             report = asyncio.run(
                 oqt.create_report(
                     report_name,
