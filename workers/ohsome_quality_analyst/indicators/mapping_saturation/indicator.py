@@ -46,11 +46,16 @@ class MappingSaturation(BaseIndicator):
         )
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
+
+        # osm-timestamp is only the timestamp of the latest feature
+
         datetimes = []
         for timestamp in timestamps:
             timestamp = timestamp.replace("Z", "+00:00")
             datetime_ = datetime.fromisoformat(timestamp)
             datetimes.append(datetime_)
+        datetimes.sort()
+        self.result.timestamp_osm = datetimes[-1]
         max_value = max(results)
         y_end_value = results[-1]
         # check if data are there, in case of 0 = no data
@@ -65,7 +70,7 @@ class MappingSaturation(BaseIndicator):
             results_normalized = [result / max_value for result in results]
 
         self.preprocessing_results = {
-            "timestamps": datetimes,
+            "timestamps": timestamps,
             "results": results,
             "results_normalized": results_normalized,
         }
