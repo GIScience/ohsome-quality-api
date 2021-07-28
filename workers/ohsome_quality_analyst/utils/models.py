@@ -49,14 +49,18 @@ class RequestModel(BaseModel):
         ),
     )
     dataset: Optional[DatasetEnum] = Field(None, title="Dataset", example="regions")
-    featureId: Optional[str] = Field(None, title="Feature Id", example="2")
-    fidField: Optional[FidFieldEnum] = Field(
+    featureId: Optional[str] = Field(  # noqa: N815
+        None, title="Feature Id", example="2"
+    )
+    fidField: Optional[FidFieldEnum] = Field(  # noqa: N815
         None, title="Feature Id Field", example="ogc_fid"
     )
 
 
 class IndicatorModel(RequestModel):
-    layerName: LayerEnum = Field(..., title="Layer Name", example="building_count")
+    layerName: LayerEnum = Field(  # noqa: N815
+        ..., title="Layer Name", example="building_count"
+    )
 
 
 class ReportModel(RequestModel):
