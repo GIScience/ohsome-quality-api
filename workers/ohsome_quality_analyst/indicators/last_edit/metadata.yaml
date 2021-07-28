@@ -2,8 +2,8 @@
 LastEdit:
   name: Last Edit
   description: |
-    Check the percentage of features that have been edited in the past year.
-    This can estimate the dataquality in respect to currentness.
+    Percentage of features that have been edited over the past year. 
+    Refers to data quality in respect to currentness.
   label_description:
     red: |
       The vast majority of map features has not been updated in the last year. 
@@ -19,7 +19,7 @@ LastEdit:
       are very unlike to be outdated. This refers to good data quality in 
       respect to currentness.
     undefined: |
-      The quality level could not be calculated for this indicator.
+      The quality level could not be calculated for this indicator. 
       This is most likely due to the fact that no features have been mapped 
       for this area of interest. Refer to other indicators that rely on 
       an extrinsic comparison to identify if this means that data quality is 
