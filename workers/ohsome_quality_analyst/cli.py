@@ -150,7 +150,11 @@ def create_indicator(
         geojson_object = indicator.as_feature()
     if outfile:
         write_geojson(outfile, geojson_object)
-    click.echo(geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp))
+    click.echo(
+        geojson.dumps(
+            geojson_object, default=datetime_to_isostring_timestamp, allow_nan=True
+        )
+    )
 
 
 @cli.command("create-report")
@@ -214,7 +218,11 @@ def create_report(
         geojson_object = report.as_feature()
     if outfile:
         write_geojson(outfile, geojson_object)
-    click.echo(geojson.dumps(geojson_object, default=datetime_to_isostring_timestamp))
+    click.echo(
+        geojson.dumps(
+            geojson_object, default=datetime_to_isostring_timestamp, allow_nan=True
+        )
+    )
 
 
 @cli.command("create-all-indicators")
