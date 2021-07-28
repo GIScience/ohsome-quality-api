@@ -48,9 +48,8 @@ class PoiDensity(BaseIndicator):
             self.feature.geometry
         )  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
-        self.result.timestamp_osm = datetime.strptime(
-            query_results_count["result"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
-        )
+        timestamp = query_results_count["result"][0]["timestamp"].replace("Z", "+00:00")
+        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
         self.density = self.count / self.area_sqkm
         return True
 

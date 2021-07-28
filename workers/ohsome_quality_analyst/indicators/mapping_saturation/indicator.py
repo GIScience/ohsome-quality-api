@@ -48,9 +48,8 @@ class MappingSaturation(BaseIndicator):
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
         datetimes = []
         for timestamp in timestamps:
-            datetime_ = self.result.timestamp_osm = datetime.strptime(
-                timestamp, "%Y-%m-%dT%H:%M:%S%z"
-            )
+            timestamp = timestamp.replace("Z", "+00:00")
+            datetime_ = datetime.fromisoformat(timestamp)
             datetimes.append(datetime_)
         max_value = max(results)
         y_end_value = results[-1]

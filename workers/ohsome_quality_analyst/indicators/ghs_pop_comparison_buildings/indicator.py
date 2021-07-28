@@ -58,9 +58,8 @@ class GhsPopComparisonBuildings(BaseIndicator):
         if query_results is None:
             return False
         self.feature_count = query_results["result"][0]["value"]
-        self.result.timestamp_osm = datetime.strptime(
-            query_results["result"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
-        )
+        timestamp = query_results["result"][0]["timestamp"].replace("Z", "+00:00")
+        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
         self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
         return True

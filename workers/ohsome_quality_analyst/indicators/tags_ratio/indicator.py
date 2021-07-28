@@ -33,9 +33,10 @@ class TagsRatio(BaseIndicator):
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
-        self.result.timestamp_osm = datetime.strptime(
-            query_results_count["ratioResult"][0]["timestamp"], "%Y-%m-%dT%H:%M:%S%z"
+        timestamp = query_results_count["ratioResult"][0]["timestamp"].replace(
+            "Z", "+00:00"
         )
+        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
         return True
 
     def calculate(self) -> bool:

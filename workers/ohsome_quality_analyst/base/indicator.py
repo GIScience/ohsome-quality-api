@@ -75,6 +75,7 @@ class BaseIndicator(metaclass=ABCMeta):
             data_class=LayerDefinition, data=get_layer_definition(layer_name)
         )
         self.result: Result = Result(
+            # Aware UTC datetime object representing the current time.
             timestamp_oqt=datetime.now(timezone.utc),
             timestamp_osm=None,
             label="undefined",
