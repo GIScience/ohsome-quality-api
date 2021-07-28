@@ -7,7 +7,7 @@ function fetch_regions_from_server() {
 
 function fetch_regions_from_api() {
     // TODO: Add cache functionality
-    return fetch(apiUrl + '/regions')
+    return fetch(apiUrl + '/list_regions')
 }
 
 function status(response) {

@@ -217,33 +217,39 @@ async def _fetch_report(
     return response
 
 
-@app.get("/regions")
+@app.get("/list_regions")
 async def get_available_regions():
+    """List names of available regions."""
     return await db_client.get_available_regions()
 
 
-@app.get("/list-indicators")
+@app.get("/list_indicators")
 async def list_indicators():
+    """List names of available indicators."""
     return list(load_metadata("indicators").keys())
 
 
-@app.get("/datasets_list")
+@app.get("/list_datasets")
 async def list_datasets():
+    """List names of available datasets."""
     return list(DATASETS.keys())
 
 
-@app.get("/layers_list")
+@app.get("/list_layers")
 async def list_layers():
+    """List names of available layers."""
     return list(load_layer_definitions().keys())
 
 
-@app.get("/reports_list")
+@app.get("/list_reports")
 async def list_reports():
+    """List names of available reports."""
     return list(load_metadata("reports").keys())
 
 
-@app.get("/fid_field_list")
+@app.get("/list_fid_fields")
 async def list_fid_fields():
+    """List available fid fields for each dataset."""
     fid_fields = []
     for _, dataset in DATASETS.items():
         fid_fields.append(dataset["default"])
