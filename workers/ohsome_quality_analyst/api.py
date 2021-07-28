@@ -10,7 +10,13 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
+from ohsome_quality_analyst.utils.definitions import (
+    DATASETS,
+    GEOM_SIZE_LIMIT,
+    configure_logging,
+    load_layer_definitions,
+    load_metadata,
+)
 from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
@@ -214,3 +220,33 @@ async def _fetch_report(
 @app.get("/regions")
 async def get_available_regions():
     return await db_client.get_available_regions()
+
+
+@app.get("/list-indicators")
+async def list_indicators():
+    return list(load_metadata("indicators").keys())
+
+
+@app.get("/datasets_list")
+async def list_datasets():
+    return list(DATASETS.keys())
+
+
+@app.get("/layers_list")
+async def list_layers():
+    return list(load_layer_definitions().keys())
+
+
+@app.get("/reports_list")
+async def list_reports():
+    return list(load_metadata("reports").keys())
+
+
+@app.get("/fid_field_list")
+async def list_fid_fields():
+    fid_fields = []
+    for _, dataset in DATASETS.items():
+        fid_fields.append(dataset["default"])
+        if "other" in dataset.keys():
+            fid_fields += list(dataset["other"])
+    return fid_fields
