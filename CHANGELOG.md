@@ -2,6 +2,10 @@
 
 ## Current main
 
+### Bug Fixes
+
+- Fix error raising while serializing JSON due NaN ([#112])
+
 ### Other Changes
 
 - Set proper User Agent for requests to the ohsome API ([#62])
@@ -13,6 +17,7 @@
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
+[#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 
 
 ## 0.4.0
