@@ -2,8 +2,9 @@
 PoiDensity:
   name: POI Density
   description: |
-      Derive the density of OSM features 
-      (count divided by area in square-kilometers)
+      The density of Point of Interests (POI).
+      It is calculated by the number of features 
+      divided by the area in square-kilometers.
   label_description:
     red: |
       It is probably hard to orientate on OSM-based sketchmaps of this region. 

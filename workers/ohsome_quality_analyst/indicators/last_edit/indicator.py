@@ -12,7 +12,10 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class LastEdit(BaseIndicator):
-    """Ratio of latest contribution count to element count."""
+    """Percentage of features that have been edited over the past year.
+
+    Calculated by the ratio of latest contribution count to element count.
+    """
 
     def __init__(
         self,
