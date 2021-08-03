@@ -133,7 +133,7 @@ async def create_report(
     It then aggregates all indicators and calculates an overall quality score.
     """
     logging.info("Creating Report...")
-    logging.info("Report name:\t" + report_name)
+    logging.info("Report name: " + report_name)
 
     if feature is None and dataset is not None and feature_id is not None:
         if fid_field is not None:
