@@ -7,6 +7,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 
 import os
 import unittest
+import urllib.parse
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -65,9 +66,10 @@ class TestApiReportIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        url = "/report/{0}?bpolys={1}".format(
+        parameters = urllib.parse.urlencode({"bpolys": bpoly})
+        url = "/report/{0}?{1}".format(
             self.report_name,
-            bpoly,
+            parameters,
         )
         return self.client.get(url)
 
