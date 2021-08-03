@@ -8,10 +8,7 @@ from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
-from ohsome_quality_analyst.utils.helper import name_to_lower_camel
-from ohsome_quality_analyst.utils.models import (
+from ohsome_quality_analyst.api.request_models import (
     DatasetEnum,
     FidFieldEnum,
     IndicatorEnum,
@@ -20,6 +17,9 @@ from ohsome_quality_analyst.utils.models import (
     ReportEnum,
     ReportModel,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
+from ohsome_quality_analyst.utils.helper import name_to_lower_camel
 
 configure_logging()
 logging.info("Logging enabled")
