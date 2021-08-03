@@ -37,11 +37,11 @@ class TestApiReport(unittest.TestCase):
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
-        response = response.json()
-        self.validate(response, self.response_schema)
+        response_json = response.json()
+        self.validate(response_json, self.response_schema)
         for i in range(0, self.number_of_indicators):
             feature_schema = get_feature_schema(i)
-            self.validate(response, feature_schema)
+            self.validate(response_json, feature_schema)
 
     def validate(self, geojson: dict, schema: Schema) -> None:
         schema.validate(geojson)  # Print information if validation fails

@@ -23,7 +23,7 @@ async def create_indicator_as_geojson(
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
     force: bool = False,
-    size_restriction=False,
+    size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
     """Create an indicator or multiple indicators as GeoJSON object.
 
@@ -33,7 +33,7 @@ async def create_indicator_as_geojson(
     if bpolys is not None:
         features = []
         for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index:\t" + str(i))
+            logging.info("Input feature index: " + str(i))
             if size_restriction:
                 await check_area_size(feature.geometry)
             indicator = await create_indicator(
@@ -71,7 +71,7 @@ async def create_report_as_geojson(
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
     force: bool = False,
-    size_restriction=False,
+    size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
     """Create a report multiple reports as GeoJSON object.
 
@@ -81,7 +81,7 @@ async def create_report_as_geojson(
     if bpolys is not None:
         features = []
         for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index:\t" + str(i))
+            logging.info("Input feature index: " + str(i))
             if size_restriction:
                 await check_area_size(feature.geometry)
             report = await create_report(
@@ -157,8 +157,8 @@ async def create_indicator(
 
     indicator_class = name_to_class(class_type="indicator", name=name)
     logging.info("Creating indicator ...")
-    logging.info("Indicator name:\t" + name)
-    logging.info("Layer name:\t" + layer_name)
+    logging.info("Indicator name: " + name)
+    logging.info("Layer name:     " + layer_name)
 
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
@@ -177,7 +177,7 @@ async def create_indicator(
     else:
         raise ValueError(
             "Invalid set of arguments for the creation of an indicator. "
-            + "Either `feature` or `dataset` and `feature_id` has to be provided."
+            "Either `feature` or `dataset` and `feature_id` has to be provided."
         )
 
     return indicator
@@ -260,5 +260,5 @@ async def check_area_size(geom: Union[Polygon, MultiPolygon]):
     if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
         raise ValueError(
             "Input GeoJSON Object is too big. "
-            + "The area should be less than {0} sqkm.".format(GEOM_SIZE_LIMIT)
+            "The area should be less than {0} km².".format(GEOM_SIZE_LIMIT)
         )

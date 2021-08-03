@@ -48,12 +48,12 @@ class TestApiReportIo(unittest.TestCase):
 
     def run_tests(self, response, featurecollection=False) -> None:
         self.assertEqual(response.status_code, 200)
-        response = response.json()
-        self.validate(response, self.response_schema)
+        response_json = response.json()
+        self.validate(response_json, self.response_schema)
         if featurecollection is False:
-            features = [response]
+            features = [response_json]
         else:
-            features = response["features"]
+            features = response_json["features"]
         for feature in features:
             for i in range(0, self.number_of_indicators):
                 feature_schema = get_feature_schema(i)
