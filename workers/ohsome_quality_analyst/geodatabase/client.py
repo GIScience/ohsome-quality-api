@@ -150,8 +150,8 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
         raise ValueError("Input dataset is not valid: " + dataset)
     fid_field = DATASETS[dataset]["default"]
 
-    logging.info("Dataset name: " + dataset)
-    logging.info("Feature id: " + feature_id)
+    logging.info("Dataset name:     " + dataset)
+    logging.info("Feature id:       " + feature_id)
     logging.info("Feature id field: " + fid_field)
 
     query = (
