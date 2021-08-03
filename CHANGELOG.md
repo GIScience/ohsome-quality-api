@@ -19,9 +19,9 @@
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
+[#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
-[#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 
 
 ## 0.4.0
