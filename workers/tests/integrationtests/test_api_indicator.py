@@ -22,7 +22,7 @@ class TestApiIndicator(unittest.TestCase):
 
         # Heidelberg
         self.dataset = "regions"
-        self.feature_id = 3
+        self.feature_id = "3"
         self.fid_field = "ogc_fid"
 
         # Heidelberg Altstadt

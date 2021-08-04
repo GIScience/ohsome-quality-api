@@ -1,8 +1,6 @@
 import asyncio
 import unittest
 
-from asyncpg.exceptions import UndefinedColumnError, UndefinedTableError
-
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
@@ -14,10 +12,9 @@ from .utils import oqt_vcr
 class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         self.dataset = "regions"
-        self.feature_id = 11  # Algeria Touggourt
-        self.fid_field = "ogc_fid"
+        self.feature_id = "3"  # Heidelberg
         self.feature = asyncio.run(
-            db_client.get_feature_from_db(self.dataset, self.feature_id, self.fid_field)
+            db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
 
     def test_get_connection(self):
@@ -62,15 +59,12 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.svg)
 
     def test_get_feature_ids(self):
-        result = asyncio.run(db_client.get_feature_ids(self.dataset, self.fid_field))
+        result = asyncio.run(db_client.get_feature_ids(self.dataset))
         self.assertIsInstance(result, list)
         self.assertTrue(result)
 
-        with self.assertRaises(UndefinedColumnError):
-            asyncio.run(db_client.get_feature_ids(self.dataset, "foo"))
-
-        with self.assertRaises(UndefinedTableError):
-            asyncio.run(db_client.get_feature_ids("foo", self.fid_field))
+        with self.assertRaises(KeyError):
+            asyncio.run(db_client.get_feature_ids("foo"))
 
     def test_get_area_of_bpolys(self):
         result = asyncio.run(db_client.get_area_of_bpolys(self.feature.geometry))
@@ -79,14 +73,12 @@ class TestGeodatabase(unittest.TestCase):
     # TODO: Add test for dataset which is not regions
     def test_get_feature_from_db(self):
         result = asyncio.run(
-            db_client.get_feature_from_db(self.dataset, self.feature_id, self.fid_field)
+            db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
         self.assertTrue(result.is_valid)  # GeoJSON object validation
 
         with self.assertRaises(ValueError):
-            asyncio.run(
-                db_client.get_feature_from_db(self.dataset, "foo", self.fid_field)
-            )
+            asyncio.run(db_client.get_feature_from_db(self.dataset, "foo"))
 
     def test_get_available_regions(self):
         regions = asyncio.run(db_client.get_available_regions())
@@ -98,13 +90,24 @@ class TestGeodatabase(unittest.TestCase):
 
     def test_sanity_check_fid_field(self):
         self.assertFalse(db_client.sanity_check_fid_field(self.dataset, "foo"))
-        self.assertTrue(db_client.sanity_check_fid_field(self.dataset, self.fid_field))
+        self.assertTrue(db_client.sanity_check_fid_field(self.dataset, "name"))
 
     def test_type_of(self):
-        result = asyncio.run(db_client.type_of(self.dataset, self.fid_field))
+        result = asyncio.run(db_client.type_of(self.dataset, "ogc_fid"))
         self.assertEqual(result, "integer")
         result = asyncio.run(db_client.type_of(self.dataset, "name"))
         self.assertNotEqual(result, "integer")
+
+    def test_map_fid_to_uid(self):
+        result = asyncio.run(
+            db_client.map_fid_to_uid(self.dataset, self.feature_id, "ogc_fid")
+        )
+        self.assertEqual(result, "3")
+
+        result = asyncio.run(
+            db_client.map_fid_to_uid(self.dataset, "Heidelberg", "name")
+        )
+        self.assertEqual(result, "3")
 
 
 if __name__ == "__main__":

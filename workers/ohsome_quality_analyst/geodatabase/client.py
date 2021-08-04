@@ -17,7 +17,7 @@ On preventing SQL injections:
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Optional, Union
+from typing import List, Union
 
 import asyncpg
 import geojson
@@ -65,7 +65,7 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(feature_id),
+        feature_id,
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
         indicator.result.label,
@@ -97,7 +97,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
-        str(feature_id),
+        feature_id,
     )
 
     async with get_connection() as conn:
@@ -115,9 +115,10 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         return True
 
 
-async def get_feature_ids(dataset: str, fid_field: str) -> List[str]:
+async def get_feature_ids(dataset: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
+    fid_field = DATASETS[dataset]["default"]
     query = "SELECT {fid_field} FROM {dataset}".format(
         fid_field=fid_field, dataset=dataset
     )
@@ -143,26 +144,22 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_feature_from_db(
-    dataset: str, feature_id: str, fid_field: Optional[str]
-) -> Feature:
+async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
     if not sanity_check_dataset(dataset):
         raise ValueError("Input dataset is not valid: " + dataset)
-    if fid_field is None:
-        fid_field = DATASETS[dataset]["default"]
-    if not sanity_check_fid_field(dataset, fid_field):
-        raise ValueError("Input feature id field is not valid: " + fid_field)
+    fid_field = DATASETS[dataset]["default"]
 
-    logging.info("Dataset name:\t" + dataset)
-    logging.info("Feature id:\t" + str(feature_id))
-    logging.info("Feature id field:\t" + fid_field)
+    logging.info("Dataset name:     " + dataset)
+    logging.info("Feature id:       " + feature_id)
+    logging.info("Feature id field: " + fid_field)
 
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)
         + "WHERE {0} = $1".format(fid_field)
     )
+    logging.debug("SQL Query: " + query)
     if await type_of(dataset, fid_field) == "integer":
         feature_id = int(feature_id)
     async with get_connection() as conn:
@@ -208,3 +205,22 @@ async def type_of(table_name: str, column_name: str) -> str:
     async with get_connection() as conn:
         record = await conn.fetchrow(query, table_name, column_name)
     return record[0]
+
+
+async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
+    """Map feature id to the unique feature id of the dataset"""
+    if not sanity_check_dataset(dataset):
+        raise ValueError("Input dataset is not valid: " + dataset)
+    if not sanity_check_fid_field(dataset, fid_field):
+        raise ValueError("Input feature id field is not valid: " + fid_field)
+    uid = DATASETS[dataset]["default"]
+    query = (
+        "SELECT {uid} ".format(uid=uid)
+        + "FROM {dataset} ".format(dataset=dataset)
+        + "WHERE {fid_field} = $1".format(fid_field=fid_field)
+    )
+    if await type_of(dataset, fid_field) == "integer":
+        feature_id = int(feature_id)
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, feature_id)
+    return str(record[0])

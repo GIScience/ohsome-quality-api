@@ -14,9 +14,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def setUp(self):
         # Heidelberg
         self.feature = asyncio.run(
-            db_client.get_feature_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+            db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
 
     @oqt_vcr.use_cassette()
