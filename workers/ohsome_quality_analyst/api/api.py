@@ -12,10 +12,10 @@ from ohsome_quality_analyst.api.request_models import (
     DatasetEnum,
     FidFieldEnum,
     IndicatorEnum,
-    IndicatorModel,
+    IndicatorRequestModel,
     LayerEnum,
     ReportEnum,
-    ReportModel,
+    ReportRequestModel,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, configure_logging
@@ -108,7 +108,7 @@ async def get_indicator(
 @app.post("/indicator/{name}")
 async def post_indicator(
     name: IndicatorEnum,
-    parameters: IndicatorModel,
+    parameters: IndicatorRequestModel,
 ):
     """Create an Indicator.
 
@@ -193,7 +193,7 @@ async def get_report(
 
 
 @app.post("/report/{name}")
-async def post_report(name: ReportEnum, parameters: ReportModel):
+async def post_report(name: ReportEnum, parameters: ReportRequestModel):
     """Create a Report.
 
     Either the parameters `dataset` and `feature id` has to be provided

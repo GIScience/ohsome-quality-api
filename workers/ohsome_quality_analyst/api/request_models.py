@@ -1,5 +1,8 @@
 """
 Data models of the API request body.
+
+This modules uses the library `pydantic` for data validation and
+settings management using Python type hinting.
 """
 
 from enum import Enum
@@ -25,7 +28,7 @@ DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
-class RequestModel(pydantic.BaseModel):
+class BaseRequestModel(pydantic.BaseModel):
     bpolys: Optional[str]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
@@ -92,11 +95,11 @@ class RequestModel(pydantic.BaseModel):
         }
 
 
-class IndicatorModel(RequestModel):
+class IndicatorRequestModel(BaseRequestModel):
     layerName: LayerEnum = pydantic.Field(  # noqa: N815
         ..., title="Layer Name", example="building_count"
     )
 
 
-class ReportModel(RequestModel):
+class ReportRequestModel(BaseRequestModel):
     pass
