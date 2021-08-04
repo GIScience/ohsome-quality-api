@@ -39,14 +39,14 @@ class ReportParameters(BaseModel):
     fidField: Optional[str] = None
 
 
-def empty_api_response() -> dict:
+def empty_api_response(request_url: str) -> dict:
     return {
         "apiVersion": oqt_version,
         "attribution": {
             "text": "© OpenStreetMap contributors",
             "url": "https://ohsome.org/copyrights",
         },
-        "requestUrl": None,
+        "requestUrl": request_url,
     }
 
 
@@ -60,9 +60,8 @@ async def get_indicator(
     featureId: Optional[str] = None,
     fidField: Optional[str] = None,
 ):
-    url = request.url._url
     return await _fetch_indicator(
-        name, layerName, url, bpolys, dataset, featureId, fidField
+        name, layerName, request.url._url, bpolys, dataset, featureId, fidField
     )
 
 
@@ -74,16 +73,15 @@ async def post_indicator(name: str, request: Request, item: IndicatorParameters)
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
     fid_field = item.dict().get("fidField", None)
-    url = request.url._url
     return await _fetch_indicator(
-        name, layer_name, url, bpolys, dataset, feature_id, fid_field
+        name, layer_name, request.url._url, bpolys, dataset, feature_id, fid_field
     )
 
 
 async def _fetch_indicator(
     name: str,
     layer_name: str,
-    url: str,
+    request_url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -98,8 +96,7 @@ async def _fetch_indicator(
         fid_field,
         size_restriction=True,
     )
-    response = empty_api_response()
-    response["requestUrl"] = url
+    response = empty_api_response(request_url)
     response.update(geojson_object)
     return response
 
@@ -113,8 +110,9 @@ async def get_report(
     featureId: Optional[str] = None,
     fidField: Optional[str] = None,
 ):
-    url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, featureId, fidField)
+    return await _fetch_report(
+        name, request.url._url, bpolys, dataset, featureId, fidField
+    )
 
 
 @app.post("/report/{name}")
@@ -123,13 +121,14 @@ async def post_report(name: str, request: Request, item: ReportParameters):
     dataset = item.dict().get("dataset", None)
     feature_id = item.dict().get("featureId", None)
     fid_field = item.dict().get("fidField", None)
-    url = request.url._url
-    return await _fetch_report(name, url, bpolys, dataset, feature_id, fid_field)
+    return await _fetch_report(
+        name, request.url._url, bpolys, dataset, feature_id, fid_field
+    )
 
 
 async def _fetch_report(
     name: str,
-    url: str,
+    request_url: str,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -143,8 +142,7 @@ async def _fetch_report(
         fid_field=fid_field,
         size_restriction=True,
     )
-    response = empty_api_response()
-    response["requestUrl"] = url
+    response = empty_api_response(request_url)
     response.update(geojson_object)
     return response
 
