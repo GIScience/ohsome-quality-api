@@ -93,7 +93,8 @@ pipeline {
                 withSonarQubeEnv('sonarcloud GIScience/ohsome') {
                   sh "${scannerHome}/bin/sonar-scanner " +
                     "-Dsonar.branch.name=${env.BRANCH_NAME} " +
-                    "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml"
+                    "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml" +
+                    "-Dsonar.projectVersion=${VERSION}"
                 }
                 // run other static code analysis
                 sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
