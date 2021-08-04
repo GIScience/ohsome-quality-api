@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- Fix error raising while serializing JSON due NaN ([#112])
+- Fix error raised by the `geojson` library while serializing JSON that includes NaN values ([#112])
 
 ### Other Changes
 
