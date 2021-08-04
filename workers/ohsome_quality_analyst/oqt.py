@@ -185,11 +185,11 @@ async def create_indicator(
 
 async def create_report(
     report_name: str,
-    force: bool = False,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
+    force: bool = False,
 ) -> BaseReport:
     """Create a report.
 
