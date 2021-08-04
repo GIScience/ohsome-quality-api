@@ -8,7 +8,9 @@
 
 ### New Features
 
-- Add pydatic request models and documentation to API ([#102])
+- Add request models, data validation and documentation to the API with the `pydatnic` library ([#102])
+    - https://pydantic-docs.helpmanual.io/
+    - https://fastapi.tiangolo.com/tutorial/body/
 
 ### Other Changes
 
