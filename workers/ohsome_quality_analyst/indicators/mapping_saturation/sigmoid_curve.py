@@ -1022,25 +1022,26 @@ class sigmoidCurve:
             "logistic4",
             "logistic5",
         ]
-
-        def check_no_nan_element(element):
-            return not math.isnan(element)
-
         # initial values for the single sigmoid curve
         initParamsSingle = self.initparamsingle(df1.li, df1.yValues)
         errorsListSingle = []
         if not math.isnan(initParamsSingle[3]):
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
+            # add up the 2 lists and then check each of the 4 values,
+            # if they are not nan
             validity_result = all(
-                map(
-                    check_no_nan_element,
-                    [
-                        math.fsum(inits5curves[0]),
-                        math.fsum(inits5curves[1]),
-                        inits5curves[2],
-                        inits5curves[3],
-                    ],
-                )
+                [
+                    not x
+                    for x in map(
+                        math.isnan,
+                        [
+                            math.fsum(inits5curves[0]),
+                            math.fsum(inits5curves[1]),
+                            inits5curves[2],
+                            inits5curves[3],
+                        ],
+                    )
+                ]
             )
             if validity_result is True:
                 # get possible xmids
@@ -1078,15 +1079,18 @@ class sigmoidCurve:
             errorsListSingle = []
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
             validity_result = all(
-                map(
-                    check_no_nan_element,
-                    [
-                        math.fsum(inits5curves[0]),
-                        math.fsum(inits5curves[1]),
-                        inits5curves[2],
-                        inits5curves[3],
-                    ],
-                )
+                [
+                    not x
+                    for x in map(
+                        math.isnan,
+                        [
+                            math.fsum(inits5curves[0]),
+                            math.fsum(inits5curves[1]),
+                            inits5curves[2],
+                            inits5curves[3],
+                        ],
+                    )
+                ]
             )
             if validity_result is True:
                 # get possible xmids
