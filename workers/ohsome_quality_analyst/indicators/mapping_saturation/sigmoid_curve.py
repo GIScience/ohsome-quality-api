@@ -1022,12 +1022,27 @@ class sigmoidCurve:
             "logistic4",
             "logistic5",
         ]
+
+        def check_no_nan_element(element):
+            return not math.isnan(element)
+
         # initial values for the single sigmoid curve
         initParamsSingle = self.initparamsingle(df1.li, df1.yValues)
         errorsListSingle = []
         if not math.isnan(initParamsSingle[3]):
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
+            validity_result = all(
+                map(
+                    check_no_nan_element,
+                    [
+                        math.fsum(inits5curves[0]),
+                        math.fsum(inits5curves[1]),
+                        inits5curves[2],
+                        inits5curves[3],
+                    ],
+                )
+            )
+            if validity_result is True:
                 # get possible xmids
                 xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
                 # check for the xmids the mse error
@@ -1062,7 +1077,18 @@ class sigmoidCurve:
         if not math.isnan(initParamsSingleB[3]):
             errorsListSingle = []
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
+            validity_result = all(
+                map(
+                    check_no_nan_element,
+                    [
+                        math.fsum(inits5curves[0]),
+                        math.fsum(inits5curves[1]),
+                        inits5curves[2],
+                        inits5curves[3],
+                    ],
+                )
+            )
+            if validity_result is True:
                 # get possible xmids
                 xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
                 # incoms = [incom for incom in xmidvalues if str(incom) != 'nan']
