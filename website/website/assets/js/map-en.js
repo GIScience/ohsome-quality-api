@@ -475,21 +475,6 @@ function buildMap(...charts){
 	};
 
 
-
-	// Text showing in info box before and while selecting a layer
-	$('.leaflet-control-layers-selector').click(function(){
-
-		var inside = document.getElementsByClassName("info").item(0);
-		// set timeslider to first year (2010)
-
-
-		if(map.hasLayer(world)) {
-			inside.innerHTML = '<p>Move the mouse over the map</p>';
-		}			;
-
-
-	});
-
 	// method that we will use to update the info box based on feature properties passed
 	info.updateInfo = function (id) {
 		// depending on selected layer, show corresponding information
