@@ -3,20 +3,115 @@ Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
-from geojson import Feature
+from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.report import BaseReport
-from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER
-from ohsome_quality_analyst.utils.helper import name_to_class
+from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+
+
+async def create_indicator_as_geojson(
+    name: str,
+    layer_name: str,
+    bpolys: Optional[str] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[str] = None,
+    fid_field: Optional[str] = None,
+    force: bool = False,
+    size_restriction: bool = False,
+) -> Union[Feature, FeatureCollection]:
+    """Create an indicator or multiple indicators as GeoJSON object.
+
+    Depending on the input a single indicator as GeoJSON Feature will be returned
+    or multiple indicators as GeoJSON FeatureCollection will be returned.
+    """
+    if bpolys is not None:
+        features = []
+        for i, feature in enumerate(loads_geojson(bpolys)):
+            logging.info("Input feature index: " + str(i))
+            if size_restriction:
+                await check_area_size(feature.geometry)
+            indicator = await create_indicator(
+                name,
+                layer_name,
+                feature,
+                dataset,
+                feature_id,
+                fid_field,
+                force,
+            )
+            features.append(indicator.as_feature())
+        if len(features) == 1:
+            return features[0]
+        else:
+            return FeatureCollection(features=features)
+    else:
+        # When using a dataset and feature id as input
+        indicator = await create_indicator(
+            name,
+            layer_name,
+            bpolys,
+            dataset,
+            feature_id,
+            fid_field,
+            force,
+        )
+        return indicator.as_feature()
+
+
+async def create_report_as_geojson(
+    name: str,
+    bpolys: Optional[str] = None,
+    dataset: Optional[str] = None,
+    feature_id: Optional[str] = None,
+    fid_field: Optional[str] = None,
+    force: bool = False,
+    size_restriction: bool = False,
+) -> Union[Feature, FeatureCollection]:
+    """Create a report multiple reports as GeoJSON object.
+
+    Depending on the input a single report as GeoJSON Feature will be returned
+    or multiple reports as GeoJSON FeatureCollection will be returned.
+    """
+    if bpolys is not None:
+        features = []
+        for i, feature in enumerate(loads_geojson(bpolys)):
+            logging.info("Input feature index: " + str(i))
+            if size_restriction:
+                await check_area_size(feature.geometry)
+            report = await create_report(
+                name,
+                feature,
+                dataset,
+                feature_id,
+                fid_field,
+                force,
+            )
+            features.append(report.as_feature())
+        if len(features) == 1:
+            return features[0]
+        else:
+            return FeatureCollection(features=features)
+    else:
+        # When using a dataset and feature id as input
+        report = await create_report(
+            name,
+            bpolys,
+            dataset,
+            feature_id,
+            fid_field,
+            force,
+        )
+        return report.as_feature()
 
 
 async def create_indicator(
-    indicator_name: str,
+    name: str,
     layer_name: str,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
@@ -60,14 +155,14 @@ async def create_indicator(
         except UndefinedTableError:
             return False
 
-    indicator_class = name_to_class(class_type="indicator", name=indicator_name)
+    indicator_class = name_to_class(class_type="indicator", name=name)
     logging.info("Creating indicator ...")
-    logging.info("Indicator name:\t" + indicator_name)
-    logging.info("Layer name:\t" + layer_name)
+    logging.info("Indicator name: " + name)
+    logging.info("Layer name:     " + layer_name)
 
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
-        indicator = indicator_class(layer_name=layer_name, feature=feature)
+        indicator = indicator_class(layer_name, feature)
         await from_scratch()
     # from database
     elif dataset is not None and feature_id is not None:
@@ -82,50 +177,19 @@ async def create_indicator(
     else:
         raise ValueError(
             "Invalid set of arguments for the creation of an indicator. "
-            + "Either `feature` or `dataset` and `feature_id` has to be provided."
+            "Either `feature` or `dataset` and `feature_id` has to be provided."
         )
 
     return indicator
 
 
-async def create_all_indicators(force: bool = False) -> None:
-    """Create all indicator/layer combination for OQT regions.
-
-    Possible indicator/layer combinations are defined in `definitions.py`.
-    """
-    fids = await db_client.get_feature_ids("regions")
-    for fid in fids:
-        for indicator_name, layer_name in INDICATOR_LAYER:
-            try:
-                await create_indicator(
-                    indicator_name,
-                    layer_name,
-                    dataset="regions",
-                    feature_id=fid,
-                    force=force,
-                )
-            # TODO: Those errors are raised during MappingCalculation creation.
-            except (ValueError) as error:
-                if indicator_name == "MappingSaturation":
-                    logging.error(error)
-                    logging.error(
-                        f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for OQT regions "
-                        f"and feature id '{fid}'. "
-                        f"Continue creation of indicators."
-                    )
-                    continue
-                else:
-                    raise (error)
-
-
 async def create_report(
     report_name: str,
-    force: bool = False,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
+    force: bool = False,
 ) -> BaseReport:
     """Create a report.
 
@@ -159,3 +223,42 @@ async def create_report(
         report.indicators.append(indicator)
     report.combine_indicators()
     return report
+
+
+async def create_all_indicators(force: bool = False) -> None:
+    """Create all indicator/layer combination for OQT regions.
+
+    Possible indicator/layer combinations are defined in `definitions.py`.
+    """
+    fids = await db_client.get_feature_ids("regions")
+    for fid in fids:
+        for indicator_name, layer_name in INDICATOR_LAYER:
+            try:
+                await create_indicator(
+                    indicator_name,
+                    layer_name,
+                    dataset="regions",
+                    feature_id=fid,
+                    force=force,
+                )
+            # TODO: Those errors are raised during MappingCalculation creation.
+            except (ValueError) as error:
+                if indicator_name == "MappingSaturation":
+                    logging.error(error)
+                    logging.error(
+                        f"Error occurred during creation of indicator "
+                        f"'{indicator_name}' for OQT regions "
+                        f"and feature id '{fid}'. "
+                        f"Continue creation of indicators."
+                    )
+                    continue
+                else:
+                    raise (error)
+
+
+async def check_area_size(geom: Union[Polygon, MultiPolygon]):
+    if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
+        raise ValueError(
+            "Input GeoJSON Object is too big. "
+            "The area should be less than {0} km².".format(GEOM_SIZE_LIMIT)
+        )

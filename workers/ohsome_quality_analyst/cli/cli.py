@@ -4,7 +4,6 @@ import logging
 import click
 import geojson
 import yaml
-from geojson import FeatureCollection
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.cli import options
@@ -17,7 +16,6 @@ from ohsome_quality_analyst.utils.definitions import (
 )
 from ohsome_quality_analyst.utils.helper import (
     datetime_to_isostring_timestamp,
-    loads_geojson,
     write_geojson,
 )
 
@@ -119,36 +117,19 @@ def create_indicator(
     if infile is not None:
         with open(infile, "r") as file:
             bpolys = file.read()
-        features = []
-        for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index:\t" + str(i))
-            indicator = asyncio.run(
-                oqt.create_indicator(
-                    indicator_name,
-                    layer_name,
-                    feature=feature,
-                    feature_id=feature_id,
-                    dataset=dataset_name,
-                    fid_field=fid_field,
-                    force=force,
-                )
-            )
-            features.append(indicator.as_feature())
-        geojson_object = FeatureCollection(features=features)
     else:
-        # When using a dataset and FID as input
-        indicator = asyncio.run(
-            oqt.create_indicator(
-                indicator_name,
-                layer_name,
-                feature=None,
-                feature_id=feature_id,
-                dataset=dataset_name,
-                fid_field=fid_field,
-                force=force,
-            )
+        bpolys = None
+    geojson_object = asyncio.run(
+        oqt.create_indicator_as_geojson(
+            indicator_name,
+            layer_name,
+            bpolys,
+            dataset_name,
+            feature_id,
+            fid_field,
+            force,
         )
-        geojson_object = indicator.as_feature()
+    )
     if outfile:
         write_geojson(outfile, geojson_object)
     click.echo(
@@ -189,34 +170,18 @@ def create_report(
     if infile is not None:
         with open(infile, "r") as file:
             bpolys = file.read()
-        features = []
-        for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index:\t" + str(i))
-            report = asyncio.run(
-                oqt.create_report(
-                    report_name,
-                    feature=feature,
-                    dataset=dataset_name,
-                    feature_id=feature_id,
-                    fid_field=fid_field,
-                    force=force,
-                )
-            )
-            features.append(report.as_feature())
-        geojson_object = FeatureCollection(features=features)
     else:
-        # When using a dataset and FID as input
-        report = asyncio.run(
-            oqt.create_report(
-                report_name,
-                feature=None,
-                dataset=dataset_name,
-                feature_id=feature_id,
-                fid_field=fid_field,
-                force=force,
-            )
+        bpolys = None
+    geojson_object = asyncio.run(
+        oqt.create_report_as_geojson(
+            report_name,
+            bpolys,
+            dataset_name,
+            feature_id,
+            fid_field,
+            force,
         )
-        geojson_object = report.as_feature()
+    )
     if outfile:
         write_geojson(outfile, geojson_object)
     click.echo(

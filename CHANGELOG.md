@@ -2,9 +2,19 @@
 
 ## Current main
 
+### Breaking Changes
+
+- Change API response schema ([#100])
+    - API response is a valid GeoJSON
+    - API response equates to the file output of CLI
+
 ### Bug Fixes
 
-- Fix error raising while serializing JSON due NaN ([#112])
+- Fix error raised by the `geojson` library while serializing JSON that includes NaN values ([#112])
+
+### New Features
+
+- FeatureCollection with multiple Features allowed as input to the API ([#100])
 
 ### New Features
 
@@ -26,6 +36,7 @@
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
+[#100]: https://github.com/GIScience/ohsome-quality-analyst/pull/100
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
