@@ -1,8 +1,11 @@
 """
 Data models of the API request body.
 
-This modules uses the library `pydantic` for data validation and
+This module uses the library `pydantic` for data validation and
 settings management using Python type hinting.
+
+Besides data validation through `pydantic`, `FastAPI` will display additional
+information derived from `pydantic` models in the automatic generated API documentation.
 """
 
 from enum import Enum
