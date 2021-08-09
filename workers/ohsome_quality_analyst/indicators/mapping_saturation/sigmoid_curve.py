@@ -1029,13 +1029,15 @@ class sigmoidCurve:
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
             # add up the 2 lists and then check each of the 4 values,
             # if they are not nan
-            validity_result = all(
+            validity_result = all(  # check if all true
                 [
                     not x
-                    for x in map(
-                        math.isnan,
+                    for x in map(  # do for every element in the list
+                        math.isnan,  # check for nan-values
                         [
-                            math.fsum(inits5curves[0]),
+                            math.fsum(
+                                inits5curves[0]
+                            ),  # fsum is nan if one element is nan
                             math.fsum(inits5curves[1]),
                             inits5curves[2],
                             inits5curves[3],
@@ -1080,13 +1082,15 @@ class sigmoidCurve:
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
             # add up the 2 lists and then check each of the 4 values,
             # if they are not nan
-            validity_result = all(
+            validity_result = all(  # check if all true
                 [
                     not x
-                    for x in map(
-                        math.isnan,
+                    for x in map(  # do for every element in the list
+                        math.isnan,  # check for nan-values
                         [
-                            math.fsum(inits5curves[0]),
+                            math.fsum(
+                                inits5curves[0]
+                            ),  # fsum is nan if one element is nan
                             math.fsum(inits5curves[1]),
                             inits5curves[2],
                             inits5curves[3],
