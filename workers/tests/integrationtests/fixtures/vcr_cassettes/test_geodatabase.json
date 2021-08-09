@@ -35,10 +35,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 19 Jul 2021 15:12:53 GMT"
+                        "Wed, 04 Aug 2021 08:49:42 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -77,7 +80,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-11T21:00:00Z\",\n    \"value\" : 29801.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-25T21:00:00Z\",\n    \"value\" : 29810.0\n  } ]\n}"
             }
         }
     ]
