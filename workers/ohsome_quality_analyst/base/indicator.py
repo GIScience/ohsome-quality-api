@@ -92,7 +92,6 @@ class BaseIndicator(metaclass=ABCMeta):
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
         result = vars(self.result).copy()
-        result.pop("svg")
         # Prefix all keys of the dictionary
         properties = {
             "metadata.name": self.metadata.name,

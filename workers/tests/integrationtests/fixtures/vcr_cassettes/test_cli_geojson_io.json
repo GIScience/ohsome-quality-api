@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "1350"
@@ -35,10 +35,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:02 GMT"
+                        "Tue, 03 Aug 2021 08:54:21 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -77,7 +80,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-04T21:00:00Z\",\n    \"value\" : 933.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-25T21:00:00Z\",\n    \"value\" : 933.0\n  } ]\n}"
             }
         },
         {
@@ -99,7 +102,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "1438"
@@ -114,10 +117,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:09 GMT"
+                        "Tue, 03 Aug 2021 08:54:28 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -156,7 +162,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-04T21:00:00Z\",\n    \"value\" : 230.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-25T21:00:00Z\",\n    \"value\" : 231.0\n  } ]\n}"
             }
         },
         {
@@ -178,7 +184,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "427"
@@ -193,10 +199,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:17 GMT"
+                        "Tue, 03 Aug 2021 08:54:36 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -235,7 +244,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-04T21:00:00Z\",\n    \"value\" : 2110.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.5.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-07-25T21:00:00Z\",\n    \"value\" : 2111.0\n  } ]\n}"
             }
         },
         {
@@ -257,7 +266,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "1375"
@@ -272,10 +281,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:25 GMT"
+                        "Tue, 03 Aug 2021 08:54:44 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -336,7 +348,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "1463"
@@ -351,10 +363,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:33 GMT"
+                        "Tue, 03 Aug 2021 08:54:53 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
@@ -415,7 +430,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "python-httpx/0.17.1"
+                        "ohsome-quality-analyst/0.4.0"
                     ],
                     "content-length": [
                         "452"
@@ -430,10 +445,13 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Mon, 12 Jul 2021 13:49:43 GMT"
+                        "Tue, 03 Aug 2021 08:55:03 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.29 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"

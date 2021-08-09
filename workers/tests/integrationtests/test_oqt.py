@@ -1,5 +1,8 @@
 import asyncio
+import os
 import unittest
+
+import geojson
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -164,6 +167,15 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
+
+    def test_check_area_size(self):
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
+        )
+        with open(path, "r") as f:
+            feature = geojson.load(f)
+        with self.assertRaises(ValueError):
+            asyncio.run(oqt.check_area_size(feature.geometry))
 
 
 if __name__ == "__main__":
