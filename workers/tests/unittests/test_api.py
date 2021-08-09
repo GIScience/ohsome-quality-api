@@ -17,8 +17,8 @@ class TestApi(unittest.TestCase):
                 "text": "© OpenStreetMap contributors",
                 "url": "https://ohsome.org/copyrights",
             },
-            "requestUrl": "http://www.example.org/",
+            "requestUrl": "https://www.example.org/",
         }
         self.assertEqual(
-            response_template, empty_api_response("http://www.example.org/")
+            response_template, empty_api_response("https://www.example.org/")
         )
