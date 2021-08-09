@@ -1078,6 +1078,8 @@ class sigmoidCurve:
         if not math.isnan(initParamsSingleB[3]):
             errorsListSingle = []
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
+            # add up the 2 lists and then check each of the 4 values,
+            # if they are not nan
             validity_result = all(
                 [
                     not x
