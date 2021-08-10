@@ -36,14 +36,14 @@ Promise.all([
         console.error(error)
     });
 
-var selectedFeature = null;
-var selectedFeatureLayer = null;
+let selectedFeature = null;
+let selectedFeatureLayer = null;
 
 // Create base map, the layers, the legend and the info text
 function buildMap(...charts){
-    html_params = charts[0][1]
+    let html_params = charts[0][1]
 	// create base map, location and zoom
-	map = L.map( 'map', {
+	let map = L.map( 'map', {
 	  center: [31.4, -5],
 	  minZoom: 2,
 	  zoom: 2
@@ -56,42 +56,44 @@ function buildMap(...charts){
 	}).addTo( map )
 
 	
-// add base layers
+	// add base layers
 	let markers = {}
-	world = L.geoJson(charts[0][0], {
+	const world = L.geoJson(charts[0][0], {
 		style: {
-			fillColor:"#EEF200",  // yellow
+			fillColor: "#EEF200",  // yellow
 			weight: 2,
 			opacity: 1,
 			color: 'white',
 			dashArray: '3',
 			fillOpacity: 0.7
-			},
+		},
 		onEachFeature: function onEachFeature(feature, layer) {
 			layer.on({
 				mouseover: highlightFeature,
 				mouseout: resetHighlight,
 				click: selectStyle
 			});
-			
+
 			// Get bounds of polygon
-			var bounds = layer.getBounds();
+			const bounds = layer.getBounds();
 			// Get center of bounds
-			var center = bounds.getCenter();
+			const center = bounds.getCenter();
 			// Use center to put marker on map
-			var marker = L.marker(center).on('click', ()=>{
+			const marker = L.marker(center).on('click', () => {
 				map.fitBounds(bounds)
 			}).addTo(map);
-			let id = feature.id
+			const id = feature.id
 			markers[id] = marker
-			marker.on('click', function(){layer.fire('click')})
+			marker.on('click', function () {
+				layer.fire('click')
+			})
 		}
 
 	}).addTo(map);
 
-	//Next we’ll define what happens on mouseover:
+	// Next we’ll define what happens on mouseover:
 	function highlightFeature(e) {
-		var layer = e.target;
+		const layer = e.target;
 
 		layer.setStyle({
 			weight: 5,
@@ -106,9 +108,9 @@ function buildMap(...charts){
 		 info.updateInfo(layer.feature.id);
 	}
 
-	//Next we’ll define what happens on mouseout:
+	// Next we’ll define what happens on mouseout:
 	function resetHighlight(e) {
-		if(map.hasLayer(world)){
+		if (map.hasLayer(world)) {
 			world.resetStyle(e.target);
 		}
 		
@@ -119,19 +121,19 @@ function buildMap(...charts){
 	(defined by our style function). For this to work, make sure our GeoJSON layer is accessible 
 	through the geojson variable by defining it before our listeners and assigning the layer to it later:'*/
 
-	// what happens whlie onclick on the map
+	let selectedDataset, featureId, selectedId;
+	// what happens while onclick on the map
 	function selectStyle(e) {
 		// change value of mapCheck in html to signalize intern area was selected
 		update_url("id", e.target.feature.id)
-		var s = document.getElementById("mapCheck");
+		const s = document.getElementById("mapCheck");
 		s.innerHTML = "selected";
 		// TODO style selected id
 		// alert("I will be red");
-		var layer = e.target;
+		const layer = e.target;
 		// get selected feature
 		selectedFeature = layer.feature
-		if(selectedFeatureLayer)
-			map.removeLayer(selectedFeatureLayer)
+		if (selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 		selectedFeatureLayer = L.geoJSON(selectedFeature, {
 			style: function (feature) {
 					return {
@@ -147,30 +149,27 @@ function buildMap(...charts){
 		
 		// get dataset ID
 		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		dataset = "regions" // = Admin-0 country
-		selectedDataset = dataset
+		selectedDataset = "regions" // = Admin-0 country
 	}
 	// initialize variables for storing area and dataset id from map geojson 
-	if (html_params["id"] != undefined){
+	if (html_params["id"] !== undefined) {
 		featureId = parseInt(html_params["id"])
 	}
 	else {
 		featureId = null; 
 	}
-	selectedId = null;
 	selectedDataset = "regions";
 
 	// create a parameter string containing selected area, report and dataset id
 	function getParams(region, report, dataset) {
-		paramString = region + "," + report + "," + dataset
-		return paramString
+		return region + "," + report + "," + dataset
 	}
 
-	function toggle_results_will_be_shown_paragraph(bool){
-		var a = document.getElementById("results1");
-		var b = document.getElementById("results2");
+	function toggle_results_will_be_shown_paragraph(bool) {
+		const a = document.getElementById("results1");
+		const b = document.getElementById("results2");
 
-		if (bool == true) {
+		if (bool === true) {
 			a.style.display = "block";
 			b.style.display = "block";
 			b.style.marginBottom = "500px";
@@ -184,29 +183,27 @@ function buildMap(...charts){
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
 		html_params = get_html_parameter_list(location.search)
-		var report = document.getElementById("cardtype");
+		const report = document.getElementById("cardtype");
 
-		if(html_params["id"]!=undefined){
-			var areas = parseInt(html_params["id"])
-		}
-		else{
-			var areas = document.getElementById("mapCheck").innerHTML;
+		let areas;
+		if (html_params["id"] !== undefined) {
+			areas = parseInt(html_params["id"])
+		} else {
+			areas = document.getElementById("mapCheck").innerHTML;
 		}
 
-		if (html_params["report"]!=undefined&report_isValid(html_params["report"])){
-			var selectedReport = html_params["report"]
+		let selectedReport;
+		if (html_params["report"] !== undefined && report_isValid(html_params["report"])){
+			selectedReport = html_params["report"]
 			report.value = selectedReport		
+		} else {
+			selectedReport = report.options[report.selectedIndex].value;
 		}
-		else{
-			var selectedReport = report.options[report.selectedIndex].value;
-		}
-		if ((areas == "id") | !id_isValid(areas, charts[0][0].features)){
+		if ((areas === "id") || !id_isValid(areas, charts[0][0].features)){
 			alert("Please select a region");
-		}
-		else if (selectedReport == "Report" | !report_isValid(selectedReport)) {		
+		} else if (selectedReport === "Report" || !report_isValid(selectedReport)) {
 			alert("Please select a Report");
-		}
-		else {
+		} else {
 			markers[areas].fire("click")
 			toggle_results_will_be_shown_paragraph(true)
 			// show loader spinner
@@ -218,7 +215,7 @@ function buildMap(...charts){
 			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 
 
-			var params = {
+			const params = {
 			    "dataset": String(selectedDataset),
 			    "featureId": String(areas)
 			}
@@ -262,13 +259,13 @@ function buildMap(...charts){
 		document.getElementById("report_metadata_space").innerHTML =
 		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
 			
-		if(Object.keys(response.indicators).length > 0) {
+		if (Object.keys(response.indicators).length > 0) {
 			addIndicators(response.indicators)
 		}
-		var element = document.getElementById('result-heading');
-		var headerOffset = 70;
-		var elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-		var offsetPosition = elementPosition - headerOffset;
+		const element = document.getElementById('result-heading');
+		const headerOffset = 70;
+		const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+		const offsetPosition = elementPosition - headerOffset;
 	
 		window.scrollTo({
 			 top: offsetPosition,
@@ -283,17 +280,17 @@ function buildMap(...charts){
 	 */
 	function addIndicators(indicators) {
 		// console.log('indicators ', indicators)
-		var parentDiv = document.getElementById("indicatorSpace");
+		const parentDiv = document.getElementById("indicatorSpace");
 		// loop throw all indicators and add to DOM
-    for (var key in indicators) {
+		for (const key in indicators) {
 			// console.log('indicator = ', indicator)
-			var sectionDiv = document.createElement("div");
+			const sectionDiv = document.createElement("div");
 			sectionDiv.className = "section-container section-flex"
 
 			// left part with plot
-			var left_space = document.createElement("div");
+			const left_space = document.createElement("div");
 			left_space.classList.add("one-third")
-			if (indicators[key].result.label == 'UNDEFINED'){
+			if (indicators[key].result.label === 'UNDEFINED') {
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
 			    left_space.innerHTML = indicators[key].result.svg;
@@ -302,14 +299,15 @@ function buildMap(...charts){
 			sectionDiv.appendChild(left_space)
 
 			// right part with heading, description and traffic lights
-			var right_space = document.createElement("div");
+			const right_space = document.createElement("div");
 			right_space.className = "two-thirds";
 
-			var indicatorHeading = document.createElement("h4");
+			const indicatorHeading = document.createElement("h4");
 			indicatorHeading.innerHTML = indicators[key].metadata.name + ' for ' + indicators[key].layer.name ;
 			right_space.appendChild(indicatorHeading);
 
-			var indicatorQuality = document.createElement("p");
+			const indicatorQuality = document.createElement("p");
+			let traffic_lights_indicator;
 			switch (indicators[key].result.label) {
                 case "green":
                 case "1":
@@ -325,18 +323,20 @@ function buildMap(...charts){
                     break
                 case "undefinied":
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+					break
                 default:
                     traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+					break
 
             }
             indicatorQuality.innerHTML = traffic_lights_indicator;
             right_space.appendChild(indicatorQuality);
 
-			var indicatorText = document.createElement("p");
+			const indicatorText = document.createElement("p");
 			indicatorText.innerHTML = indicators[key].result.description;
 			right_space.appendChild(indicatorText);
 
-			var indicatorDescription = document.createElement("p");
+			const indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
 		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicators[key].metadata.description;
 			right_space.appendChild(indicatorDescription);
@@ -344,10 +344,10 @@ function buildMap(...charts){
             sectionDiv.appendChild(right_space)
 			parentDiv.appendChild(sectionDiv);
 
-			var horizontalLine = document.createElement("hr")
+			const horizontalLine = document.createElement("hr")
 			horizontalLine.className = "splitline"
 			parentDiv.appendChild(horizontalLine);
-		};
+		}
 	}
 
 	/**
@@ -362,7 +362,7 @@ function buildMap(...charts){
 		document.getElementById("report_metadata_space").innerHTML = ''
 		//document.getElementById("graphTop").innerHTML = ''
 
-		var parentDiv = document.getElementById("indicatorSpace");
+		const parentDiv = document.getElementById("indicatorSpace");
 		while (parentDiv.firstChild) {
 			//The list is LIVE so it will re-index each call
 			parentDiv.removeChild(parentDiv.firstChild);
@@ -374,7 +374,7 @@ function buildMap(...charts){
 	 */
 	function addMiniMap() {
 		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
-		var miniMap = L.map( 'miniMap', {
+		const miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
 			zoomControl: false,
 			minZoom: 2,
@@ -387,7 +387,7 @@ function buildMap(...charts){
 			subdomains: ['a', 'b', 'c']
 		}).addTo( miniMap )
 
-		var selectedFeatureLayer = L.geoJSON(selectedFeature, {
+		selectedFeatureLayer = L.geoJSON(selectedFeature, {
 			style: function (feature) {
 					return {
 						color: 'red',
@@ -410,21 +410,21 @@ function buildMap(...charts){
 
 	// function to style the get quality button depending on selections
 	function changeColorQ() {
-		var report = document.getElementById("cardtype");
-		var areas = document.getElementById("mapCheck").innerHTML;
-		var div = document.getElementById('gQ');
-		var selectedReport = report.options[report.selectedIndex].value;
+		const report = document.getElementById("cardtype");
+		const areas = document.getElementById("mapCheck").innerHTML;
+		const div = document.getElementById('gQ');
+		const selectedReport = report.options[report.selectedIndex].value;
 		update_url("report", selectedReport)
 		// no selection of area so set buttons to grey
-		if (areas == "id") {
-			//var divGP = document.getElementById('gP');
+		if (areas === "id") {
+			//const divGP = document.getElementById('gP');
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
 		}
 	    // no selection of report so set buttons to grey
-		if (selectedReport == "Report") {
-			//var divGP = document.getElementById('gP');
+		if (selectedReport === "Report") {
+			//const divGP = document.getElementById('gP');
 			//divGP.style.backgroundColor = 'grey';
 			//divGP.className = "btn-report2";
 			document.getElementById("gQ").className = "btn-submit2";
@@ -437,9 +437,9 @@ function buildMap(...charts){
 	}
 	// #################    PDF button #############
 	function changeColor() {
-		var ifQ = document.getElementById("gQ").className
-		//var divGP = document.getElementById('gP');
-		if (ifQ == "btn-submit") {
+		const ifQ = document.getElementById("gQ").className
+		//const divGP = document.getElementById('gP');
+		if (ifQ === "btn-submit") {
 			
 			//divGP.style.backgroundColor = '#535C69';
 			//divGP.className = "btn-report";
@@ -447,10 +447,10 @@ function buildMap(...charts){
 		}
 	}
 	/*function colorReport() {
-		var ifQ = document.getElementById("gQ").className
-		var divGP = document.getElementById('gP');
+		const ifQ = document.getElementById("gQ").className
+		const divGP = document.getElementById('gP');
 
-		if (divGP.className == "btn-report") {
+		if (divGP.className === "btn-report") {
 
 			alert("pdf")
 		}
@@ -466,7 +466,7 @@ function buildMap(...charts){
 	//This makes the states highlight nicely on hover and gives us the ability to add other interactions inside our listeners.
 	/*We could use the usual popups on click to show information about different states, but we’ll choose a
 	different route — showing it on state hover inside a custom control.*/
-	var info = L.control();
+	const info = L.control();
 
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -518,7 +518,7 @@ function bottomFunction() {
 
 function httpGetAsync(theUrl, callback)
 {
-	var xmlHttp = new XMLHttpRequest();
+	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(xmlHttp.responseText);
@@ -531,12 +531,12 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(endPoint, params, callback) {
-	var theUrl = apiUrl +"/report/" + endPoint;
-	var xmlHttp = new XMLHttpRequest();
+	const theUrl = apiUrl + "/report/" + endPoint;
+	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
 			callback(JSON.parse(xmlHttp.responseText));
-		if (xmlHttp.readyState == 4 && xmlHttp.status !== 200) {
+		if (xmlHttp.readyState === 4 && xmlHttp.status !== 200) {
 			httpErrorHandle(xmlHttp)
 		}
 	}
@@ -546,9 +546,9 @@ function httpPostAsync(endPoint, params, callback) {
 }
 
 function getResponseFile( params, callback) {
-	var xmlHttp = new XMLHttpRequest();
+	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
 			callback(JSON.parse(xmlHttp.responseText));
 	}
 	xmlHttp.open("GET", "assets/data/api_response.json", true);
