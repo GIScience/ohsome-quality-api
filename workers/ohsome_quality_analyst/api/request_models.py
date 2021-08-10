@@ -57,6 +57,8 @@ class BaseRequestModel(pydantic.BaseModel):
     @classmethod
     def validate_bpolys(cls, value) -> str:
         """Validate GeoJSON."""
+        # TODO: Should bpolys be loaded with `geojson` lib here
+        # and be further validated? (Geometry type Plygon and MultiPolygon)
         try:
             geojson.loads(value)
         except JSONDecodeError as error:
