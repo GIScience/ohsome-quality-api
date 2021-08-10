@@ -25,10 +25,10 @@ class TestBaseReport(unittest.TestCase):
         self.assertTrue(feature.is_valid)
 
         for i in (
-            "0.data.pop_count",
-            "0.data.area",
-            "0.data.pop_count_per_sqkm",
-            "0.data.feature_count",
-            "0.data.feature_count_per_sqkm",
+            "indicators.0.data.pop_count",
+            "indicators.0.data.area",
+            "indicators.0.data.pop_count_per_sqkm",
+            "indicators.0.data.feature_count",
+            "indicators.0.data.feature_count_per_sqkm",
         ):
             self.assertIn(i, feature["properties"].keys())

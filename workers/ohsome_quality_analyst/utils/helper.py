@@ -108,3 +108,18 @@ def loads_geojson(bpolys: str) -> Generator[Feature, None, None]:
         raise ValueError(
             "Input GeoJSON Objects have to be of type Feature, Polygon or MultiPolygon"
         )
+
+
+def flatten_dict(input: dict, *, separator: str = ".", prefix: str = "") -> dict:
+    """Returns the given dict as flattened one-level dict."""
+    if isinstance(input, dict):
+        output = {}
+        if prefix != "":
+            prefix += separator
+        for key, value in input.items():
+            output.update(
+                flatten_dict(input[key], separator=separator, prefix=prefix + key)
+            )
+        return output
+    else:
+        return {prefix: input}
