@@ -401,7 +401,7 @@ function buildMap(...charts){
 	}
 
 	// while clicking on the get quality button check for selections -> see changeColorQ()
-	document.getElementById("cardtype").onclick = function () {
+	document.getElementById("cardtype").onchange = function () {
 		changeColorQ()
 	} ;
 	document.getElementById("map").onclick = function () {
