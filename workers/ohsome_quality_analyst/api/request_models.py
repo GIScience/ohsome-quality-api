@@ -45,7 +45,9 @@ class BaseRequestModel(pydantic.BaseModel):
             "bpolys" in values
             and "dataset" not in values
             and "feature_id" not in values
-        ) or ("bpolys" not in values and "dataset" in values and "featureId" in values):
+        ) or (
+            "bpolys" not in values and "dataset" in values and "feature_id" in values
+        ):
             return values
         else:
             raise ValueError(
@@ -65,6 +67,7 @@ class BaseRequestModel(pydantic.BaseModel):
             raise ValueError(
                 "The provided parameter `bpolys` is not a valid GeoJSON."
             ) from error
+        return value
 
     class Config:
         """Pydantic config class."""
