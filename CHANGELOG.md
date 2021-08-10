@@ -11,6 +11,8 @@
 ### Bug Fixes
 
 - Fix error raised by the `geojson` library while serializing JSON that includes NaN values ([#112])
+- Fix error on slow mobiles where the dependencies would not be loaded correctly ([#122])
+- Fix error where region selection was inconsistent on mobile ([#122])
 
 ### New Features
 
@@ -33,6 +35,7 @@
 [#100]: https://github.com/GIScience/ohsome-quality-analyst/pull/100
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
+[#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 
 
 ## 0.4.0
