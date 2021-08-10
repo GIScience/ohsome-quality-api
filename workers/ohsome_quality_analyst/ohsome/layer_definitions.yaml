@@ -236,3 +236,22 @@ mapaction_rivers_length:
     Length of objects identified as rivers (or riverbanks)
   endpoint: elements/length
   filter: waterway in (riverbank,river) and type:way
+
+ideal_vgi_infrastructure:
+  name: IDEAL-VGI Infrastructure
+  description: Objects related to infrastructure
+  endpoint: elements/length
+  filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
+
+ideal_vgi_poi:
+  name: IDEAL-VGI Points-of-Interests
+  description: Features related to Points-of-Interests
+  endpoint: elements/count
+  filter: (amenity=* or craft=* or emergency=* or historic=* or leisure=* or man_made=* or office=* or place=* or shop=* or tourism=*) and geometry:point
+
+ideal_vgi_lulc:
+  name: IDEAL-VGI Land Use and Land Cover
+  description: Features related to Land Use and Land Cover
+  endpoint: elements/area
+  filter: (landuse=* or natural=* or waterway=*) and geometry:polygon
+

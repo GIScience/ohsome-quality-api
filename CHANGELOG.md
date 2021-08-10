@@ -28,6 +28,7 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
+- Add new layer definitions for the IdealVGI project ([134])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
@@ -40,6 +41,7 @@
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 [#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 
 
 ## 0.4.0
