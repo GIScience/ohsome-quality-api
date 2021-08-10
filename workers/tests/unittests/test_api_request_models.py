@@ -50,3 +50,17 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseRequestModel(
                 bpolys=self.bpolys, dataset="regions", feature_id="3"
             )
+        with self.assertRaises(ValueError):
+            request_models.BaseRequestModel(dataset="regions")
+        with self.assertRaises(ValueError):
+            request_models.BaseRequestModel(feature_id="3")
+
+    def test_dataset_valid(self):
+        request_models.BaseRequestModel(dataset="regions", feature_id="3")
+        request_models.BaseRequestModel(
+            dataset="regions", feature_id="3", fid_field="ogc_fid"
+        )
+
+    def test_dataset_invalid(self):
+        with self.assertRaises(ValueError):
+            request_models.BaseRequestModel(dataset="foo", feature_id="3")
