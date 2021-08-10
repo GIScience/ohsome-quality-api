@@ -34,9 +34,31 @@ function report_isValid(report){
 
 // check if test region id is in the test regions file. This functions need to be updated once we have other inputs.
 function id_isValid(value, json){
-    let valid_options = []
-    for (elem of json){
+    const valid_options = []
+    for (const elem of json){
         valid_options.push(elem.id)
     }
     return valid_options.includes(value)
+}
+
+// un-flatten a 1-layer dictionary in a deep dictionary
+function unflattenDict(input, separator=".") {
+    const keys = Object.keys(input);
+    const output = {};
+    for (const key of keys) {
+        const keyParts = key.split(separator);
+        let entry = output;
+
+        // go through all parts except the last one
+        const lastIdx = keyParts.length-1;
+        for (let idx = 0; idx < lastIdx; ++idx) {
+            const part = keyParts[idx]
+            if (!entry[part]) {
+                entry[part] = {};
+            }
+            entry = entry[part];
+        }
+        entry[keyParts[lastIdx]] = input[key];
+    }
+    return output
 }
