@@ -1,6 +1,12 @@
 // all references to gP are currently outcommented.
 // they refer to the getPDF button which will be implemented later.
 
+// define traffic lights
+const GOOD_QUALITY = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality';
+const MEDIUM_QUALITY = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
+const BAD_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
+const UNDEFINED_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality'
+
 function fetch_regions_from_server() {
 	return fetch('assets/data/regions.geojson')
 }
@@ -228,6 +234,9 @@ function buildMap(...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
+		const properties = unflattenDict(response["properties"]);
+		const report = properties["report"];
+		const indicators = properties["indicators"];
 		toggle_results_will_be_shown_paragraph(false)
 		document.querySelector("#loader1").classList.remove("spinner-1");
 		document.querySelector("#loader2").classList.remove("spinner-1");
@@ -235,19 +244,24 @@ function buildMap(...charts){
 		// show selected region on a map
 		addMiniMap();
 		// 1=green, 2=yellow, 3=red
-		switch (response.result.label) {
+		let traffic_lights;
+		switch (report["result"]["label"]) {
 		    case 'green':
-		        traffic_lights = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality'
-		        break
+		        traffic_lights = GOOD_QUALITY;
+		        break;
 		    case 'yellow':
-		        traffic_lights = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
-		        break
+		        traffic_lights = MEDIUM_QUALITY;
+		        break;
 		    case 'red':
-		        traffic_lights = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
+		        traffic_lights = BAD_QUALITY;
+		        break;
+		    default:
+		        traffic_lights = UNDEFINED_QUALITY;
+		        break;
 		}
 
-        document.getElementById("traffic_dots_space").innerHTML =
-		            '<h4>Report: '+ response.metadata.name + '</h4>' +
+		document.getElementById("traffic_dots_space").innerHTML =
+		            '<h4>Report: '+ report["metadata"]["name"] + '</h4>' +
 		            '<p>' + traffic_lights + '</p>'
                     // here place to display the name of the region?
 
@@ -255,12 +269,12 @@ function buildMap(...charts){
 		// ' <b>Overall value: '+ response.result.value + '</b></p>'
 
 
-		document.getElementById("traffic_text_space").innerHTML = '<p>'+ response.result.description +'</p>'
+		document.getElementById("traffic_text_space").innerHTML = '<p>'+ report["result"]["description"] +'</p>'
 		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ response.metadata.description +'</p>'
+		    '<p class="metadata-text">Report description:</br>'+ report["metadata"]["description"] +'</p>'
 			
-		if (Object.keys(response.indicators).length > 0) {
-			addIndicators(response.indicators)
+		if (Object.keys(indicators).length > 0) {
+			addIndicators(indicators)
 		}
 		const element = document.getElementById('result-heading');
 		const headerOffset = 70;
@@ -282,7 +296,8 @@ function buildMap(...charts){
 		// console.log('indicators ', indicators)
 		const parentDiv = document.getElementById("indicatorSpace");
 		// loop throw all indicators and add to DOM
-		for (const key in indicators) {
+		for (const idx in indicators) {
+			const indicator = indicators[idx];
 			// console.log('indicator = ', indicator)
 			const sectionDiv = document.createElement("div");
 			sectionDiv.className = "section-container section-flex"
@@ -290,10 +305,10 @@ function buildMap(...charts){
 			// left part with plot
 			const left_space = document.createElement("div");
 			left_space.classList.add("one-third")
-			if (indicators[key].result.label === 'UNDEFINED') {
+			if (indicator["result"]["label"] === "UNDEFINED") {
 			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
 			} else {
-			    left_space.innerHTML = indicators[key].result.svg;
+			    left_space.innerHTML = indicator["result"]["svg"];
 			    left_space.classList.add("indicator-graph");
 			}
 			sectionDiv.appendChild(left_space)
@@ -303,42 +318,42 @@ function buildMap(...charts){
 			right_space.className = "two-thirds";
 
 			const indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicators[key].metadata.name + ' for ' + indicators[key].layer.name ;
+			indicatorHeading.innerHTML = indicator["metadata"]["name"] + ' for ' + indicator["layer"]["name"];
 			right_space.appendChild(indicatorHeading);
 
 			const indicatorQuality = document.createElement("p");
 			let traffic_lights_indicator;
-			switch (indicators[key].result.label) {
+			switch (indicator["result"]["label"]) {
                 case "green":
                 case "1":
-                    traffic_lights_indicator = '<p><span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality</p>'
+                    traffic_lights_indicator = GOOD_QUALITY
                     break
                 case "yellow":
                 case "2":
-                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality</p>'
+                    traffic_lights_indicator = MEDIUM_QUALITY
                     break
                 case "red":
                 case "3":
-                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality</p>'
+                    traffic_lights_indicator = BAD_QUALITY
                     break
-                case "undefinied":
-                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+                case "undefined":
+                    traffic_lights_indicator = UNDEFINED_QUALITY
 					break
                 default:
-                    traffic_lights_indicator = '<p><span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality</p>'
+                    traffic_lights_indicator = UNDEFINED_QUALITY
 					break
 
             }
-            indicatorQuality.innerHTML = traffic_lights_indicator;
+            indicatorQuality.innerHTML = '<p>' + traffic_lights_indicator + '</p>';
             right_space.appendChild(indicatorQuality);
 
 			const indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicators[key].result.description;
+			indicatorText.innerHTML = indicator["result"]["description"];
 			right_space.appendChild(indicatorText);
 
 			const indicatorDescription = document.createElement("p");
 			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicators[key].metadata.description;
+		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator["metadata"]["description"];
 			right_space.appendChild(indicatorDescription);
 
             sectionDiv.appendChild(right_space)
