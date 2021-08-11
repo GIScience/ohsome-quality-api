@@ -110,16 +110,16 @@ def loads_geojson(bpolys: str) -> Generator[Feature, None, None]:
         )
 
 
-def flatten_dict(input: dict, *, separator: str = ".", prefix: str = "") -> dict:
+def flatten_dict(input_dict: dict, *, separator: str = ".", prefix: str = "") -> dict:
     """Returns the given dict as flattened one-level dict."""
-    if isinstance(input, dict):
+    if isinstance(input_dict, dict):
         output = {}
         if prefix != "":
             prefix += separator
-        for key, value in input.items():
+        for key, value in input_dict.items():
             output.update(
-                flatten_dict(input[key], separator=separator, prefix=prefix + key)
+                flatten_dict(input_dict[key], separator=separator, prefix=prefix + key)
             )
         return output
     else:
-        return {prefix: input}
+        return {prefix: input_dict}
