@@ -26,17 +26,16 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
-- Add osm-timestamps to indicators + tests for it. Add timezone to oqt-timestamp([#101])
+Add osm-timestamps to indicators ([#101])
+- Add timezone to oqt-timestamp ([#101])
 
-[#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
-[#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
-[#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 [#100]: https://github.com/GIScience/ohsome-quality-analyst/pull/100
+[#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122

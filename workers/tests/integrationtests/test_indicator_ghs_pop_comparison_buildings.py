@@ -33,6 +33,8 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
         self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
         self.assertIsNotNone(self.indicator.result.timestamp_osm)
         self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
+        self.assertIsNotNone(self.indicator.result.timestamp_oqt)
+        self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
 
         self.indicator.calculate()
         self.assertIsNotNone(self.indicator.result.label)

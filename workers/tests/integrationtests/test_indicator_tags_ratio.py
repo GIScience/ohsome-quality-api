@@ -27,6 +27,8 @@ class TestIndicatorRatio(unittest.TestCase):
         asyncio.run(indicator.preprocess())
         self.assertIsNotNone(indicator.result.timestamp_osm)
         self.assertIsInstance(indicator.result.timestamp_osm, datetime)
+        self.assertIsNotNone(indicator.result.timestamp_oqt)
+        self.assertIsInstance(indicator.result.timestamp_oqt, datetime)
 
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
