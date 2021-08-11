@@ -60,11 +60,14 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_avoiding_nan_in_sigmoid_curve(self):
-        """In some areas which contain mapped features, but mapping has happened in very
+        """Test for NaN values of the `saturation` attribute.
+        
+        In some areas which contain mapped features, but mapping has happened in very
         few contributions, sometimes not all curves could be calculated correctly and
         those were chosen as the best-fitting curve. As a result, the output contained
         nan-values instead of data or None values. This test checks the fix which avoids
-        choosing a curve containing nan values"""
+        choosing a curve containing nan values.
+        """
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
