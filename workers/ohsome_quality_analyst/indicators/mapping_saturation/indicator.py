@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.pyplot as plt
 import pandas as pd
 from geojson import Feature
@@ -51,8 +51,8 @@ class MappingSaturation(BaseIndicator):
 
         datetimes = []
         for timestamp in timestamps:
-            timestamp = timestamp.replace("Z", "+00:00")
-            datetime_ = datetime.fromisoformat(timestamp)
+            timestamp = timestamp
+            datetime_ = dateutil.parser.isoparse(timestamp)
             datetimes.append(datetime_)
         datetimes.sort()
         self.result.timestamp_osm = datetimes[-1]

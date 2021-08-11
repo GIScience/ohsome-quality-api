@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.pyplot as plt
 import numpy as np
 from geojson import Feature
@@ -48,8 +48,8 @@ class PoiDensity(BaseIndicator):
             self.feature.geometry
         )  # calc polygon area
         self.count = query_results_count["result"][0]["value"]
-        timestamp = query_results_count["result"][0]["timestamp"].replace("Z", "+00:00")
-        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
+        timestamp = query_results_count["result"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.density = self.count / self.area_sqkm
         return True
 

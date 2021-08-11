@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.pyplot as plt
 import numpy as np
 from asyncpg import Record
@@ -58,8 +58,8 @@ class GhsPopComparisonRoads(BaseIndicator):
             return False
         # results in meter, we need km
         self.feature_length = query_results["result"][0]["value"] / 1000
-        timestamp = query_results["result"][0]["timestamp"].replace("Z", "+00:00")
-        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
+        timestamp = query_results["result"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.feature_length_per_sqkm = self.feature_length / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
         return True

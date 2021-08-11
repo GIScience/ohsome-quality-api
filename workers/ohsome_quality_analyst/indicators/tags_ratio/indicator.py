@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from geojson import Feature
@@ -33,10 +33,8 @@ class TagsRatio(BaseIndicator):
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
-        timestamp = query_results_count["ratioResult"][0]["timestamp"].replace(
-            "Z", "+00:00"
-        )
-        self.result.timestamp_osm = datetime.fromisoformat(timestamp)
+        timestamp = query_results_count["ratioResult"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         return True
 
     def calculate(self) -> bool:
