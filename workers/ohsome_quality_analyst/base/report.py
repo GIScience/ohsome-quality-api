@@ -70,7 +70,6 @@ class BaseReport(metaclass=ABCMeta):
             "result": vars(self.result).copy(),
         }
         report_properties["metadata"].pop("label_description", None)
-        # TODO: do we need a request url?
         properties = flatten_dict(report_properties, prefix="report")
         for i, indicator in enumerate(self.indicators):
             p = indicator.as_feature()["properties"]
