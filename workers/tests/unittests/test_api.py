@@ -7,7 +7,9 @@ from ohsome_quality_analyst.api import empty_api_response
 class TestApi(unittest.TestCase):
     def test_empty_api_response(self):
         with self.assertRaises(TypeError):
-            empty_api_response()
+            # ignore python:S930: this exact behaviour is tested here and therefore
+            #                     on purpose
+            empty_api_response()  # NOSONAR
 
         response_template = {
             "apiVersion": oqt_version,
@@ -15,8 +17,8 @@ class TestApi(unittest.TestCase):
                 "text": "© OpenStreetMap contributors",
                 "url": "https://ohsome.org/copyrights",
             },
-            "requestUrl": "http://www.example.org/",
+            "requestUrl": "https://www.example.org/",
         }
         self.assertEqual(
-            response_template, empty_api_response("http://www.example.org/")
+            response_template, empty_api_response("https://www.example.org/")
         )
