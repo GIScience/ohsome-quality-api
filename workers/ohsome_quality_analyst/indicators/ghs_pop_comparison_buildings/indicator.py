@@ -44,7 +44,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         # more precise values? maybe as fraction of the threshold functions?
         return 0.75 * np.sqrt(pop_per_sqkm)
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
         pop_count, area = await self.get_zonal_stats_population()
 
         if pop_count is None:
@@ -55,16 +55,13 @@ class GhsPopComparisonBuildings(BaseIndicator):
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry
         )
-        if query_results is None:
-            return False
         self.feature_count = query_results["result"][0]["value"]
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         description = Template(self.metadata.result_description).substitute(
             pop_count=round(self.pop_count),
             area=round(self.area, 1),
@@ -73,7 +70,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         )
 
         if self.pop_count_per_sqkm == 0:
-            return False
+            return
 
         elif self.feature_count_per_sqkm <= self.yellow_threshold_function(
             self.pop_count_per_sqkm
@@ -105,11 +102,10 @@ class GhsPopComparisonBuildings(BaseIndicator):
                 description + self.metadata.label_description["green"]
             )
             self.result.label = "green"
-        return True
 
-    def create_figure(self) -> bool:
+    def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Skipping figure creation.")
+            logging.info("Result is undefined. Skipping figure creation.")
             return
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
@@ -174,7 +170,6 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-        return True
 
     async def get_zonal_stats_population(self) -> Record:
         """Derive zonal population stats for given GeoJSON geometry.

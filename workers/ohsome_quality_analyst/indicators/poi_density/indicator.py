@@ -37,13 +37,10 @@ class PoiDensity(BaseIndicator):
     def yellow_threshold_function(self, area):
         return self.threshold_red * area
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry
         )
-        if query_results_count is None:
-            return False
-
         self.area_sqkm = await get_area_of_bpolys(
             self.feature.geometry
         )  # calc polygon area
@@ -51,9 +48,8 @@ class PoiDensity(BaseIndicator):
         timestamp = query_results_count["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.density = self.count / self.area_sqkm
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         # TODO: we need to think about how we handle this
         #  if there are different layers
         logging.info(f"Calculation for indicator: {self.metadata.name}")
@@ -80,7 +76,10 @@ class PoiDensity(BaseIndicator):
                     description + self.metadata.label_description["red"]
                 )
 
-    def create_figure(self) -> bool:
+    def create_figure(self) -> None:
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
 
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
@@ -139,4 +138,3 @@ class PoiDensity(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-        return True

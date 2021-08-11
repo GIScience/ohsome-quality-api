@@ -16,9 +16,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
     def test(self):
         # Heidelberg
         feature = asyncio.run(
-            db_client.get_feature_from_db(
-                dataset="regions", feature_id=3, fid_field="ogc_fid"
-            )
+            db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
 
         indicator = LastEdit(feature=feature, layer_name="major_roads_count")

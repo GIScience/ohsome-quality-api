@@ -23,73 +23,59 @@ class TagsRatio(BaseIndicator):
         self.count_all = None
         self.count_match = None
 
-    async def preprocess(self) -> bool:
+    async def preprocess(self) -> None:
 
         query_results_count = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry, ratio=True
         )
-        if query_results_count is None:
-            return False
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
         timestamp = query_results_count["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        return True
 
-    def calculate(self) -> bool:
+    def calculate(self) -> None:
         # self.ratio can be float, NaN if no features of filter1 are in the
         # region or None if the layer has no filter2
         if self.ratio == "NaN" or self.ratio is None:
-            description = Template(self.metadata.result_description).substitute(
-                result=self.ratio,
-                all=f"{self.count_all}",
-                matched=f"{self.count_match}",
-            )
-            self.result.value = None
-            self.result.label = "undefined"
-            self.result.description = (
-                description + self.metadata.label_description["undefined"]
-            )
-            return False
-        # ratio is a float
-        else:
-            description = Template(self.metadata.result_description).substitute(
-                result=round(self.ratio, 1),
-                all=round(self.count_all, 1),
-                matched=round(self.count_match, 1),
-            )
-            if self.count_all == 0:
-                self.result.value = None
-                self.result.label = "undefined"
-                self.result.description = description + "No features in this region"
-                return False
-            else:
-                if self.ratio >= self.threshold_yellow:
-                    self.result.value = 1.0
-                    self.result.label = "green"
-                    self.result.description = (
-                        description + self.metadata.label_description["green"]
-                    )
-                elif self.threshold_yellow > self.ratio >= self.threshold_red:
-                    self.result.value = 0.5
-                    self.result.label = "yellow"
-                    self.result.description = (
-                        description + self.metadata.label_description["yellow"]
-                    )
-                else:
-                    self.result.value = 0.0
-                    self.result.label = "red"
-                    self.result.description = (
-                        description + self.metadata.label_description["red"]
-                    )
-        return True
+            return
+        description = Template(self.metadata.result_description).substitute(
+            result=round(self.ratio, 1),
+            all=round(self.count_all, 1),
+            matched=round(self.count_match, 1),
+        )
+        if self.count_all == 0:
+            self.result.description = description + "No features in this region"
+            return
 
-    def create_figure(self) -> bool:
+        if self.ratio >= self.threshold_yellow:
+            self.result.value = 1.0
+            self.result.label = "green"
+            self.result.description = (
+                description + self.metadata.label_description["green"]
+            )
+        elif self.threshold_yellow > self.ratio >= self.threshold_red:
+            self.result.value = 0.5
+            self.result.label = "yellow"
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
+        else:
+            self.result.value = 0.0
+            self.result.label = "red"
+            self.result.description = (
+                description + self.metadata.label_description["red"]
+            )
+
+    def create_figure(self) -> None:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -145,4 +131,3 @@ class TagsRatio(BaseIndicator):
         self.result.svg = img_data.getvalue()
         logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")
-        return True

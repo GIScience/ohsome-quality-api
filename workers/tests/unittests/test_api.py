@@ -1,92 +1,24 @@
-import asyncio
-import os
 import unittest
 
-from geojson import Feature
+from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_analyst.api import empty_api_response
 
-from ohsome_quality_analyst.api import load_bpolys
 
+class TestApi(unittest.TestCase):
+    def test_empty_api_response(self):
+        with self.assertRaises(TypeError):
+            # ignore python:S930: this exact behaviour is tested here and therefore
+            #                     on purpose
+            empty_api_response()  # NOSONAR
 
-class TestApiUnit(unittest.TestCase):
-    def test_load_bpolys_invalid(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "ohsome-response-200-invalid.geojson",
+        response_template = {
+            "apiVersion": oqt_version,
+            "attribution": {
+                "text": "© OpenStreetMap contributors",
+                "url": "https://ohsome.org/copyrights",
+            },
+            "requestUrl": "https://www.example.org/",
+        }
+        self.assertEqual(
+            response_template, empty_api_response("https://www.example.org/")
         )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-
-        with self.assertRaises(ValueError):
-            asyncio.run(load_bpolys(bpolys))
-
-    def test_load_bpolys_size(self):
-        # No error should be raised
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg-altstadt-geometry.geojson",
-        )
-        with open(infile, "r") as file:
-            bpolys = file.read()
-        bpolys = asyncio.run(load_bpolys(bpolys))
-        self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, Feature)
-
-        # Error should be raised
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "europe.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-        with self.assertRaises(ValueError):
-            asyncio.run(load_bpolys(bpolys))
-
-    def test_load_bpolys_featurecollection_one_feature(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg-altstadt-featurecollection.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-        bpolys = asyncio.run(load_bpolys(bpolys))
-        self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, Feature)
-
-    def test_load_bpolys_featurecollection_multiple_features(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "featurecollection.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-        with self.assertRaises(ValueError):
-            asyncio.run(load_bpolys(bpolys))
-
-    def test_load_bpolys_feature(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg-altstadt-feature.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-        bpolys = asyncio.run(load_bpolys(bpolys))
-        self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, Feature)
-
-    def test_load_bpolys_geometry(self):
-        infile = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "heidelberg-altstadt-geometry.geojson",
-        )
-        with open(infile, "r") as f:
-            bpolys = f.read()
-        bpolys = asyncio.run(load_bpolys(bpolys))
-        self.assertTrue(bpolys.is_valid)
-        self.assertIsInstance(bpolys, Feature)
