@@ -217,42 +217,55 @@ async def _fetch_report(
     return response
 
 
-@app.get("/list_regions")
+@app.get("/regions")
 async def get_available_regions():
     """List names of available regions."""
-    return await db_client.get_available_regions()
+    response = empty_api_response()
+    result = await db_client.get_available_regions()
+    response.update(result)
+    return response
 
 
-@app.get("/list_indicators")
+@app.get("/indicatorNames")
 async def list_indicators():
     """List names of available indicators."""
-    return list(load_metadata("indicators").keys())
+    response = empty_api_response()
+    response["result"] = list(load_metadata("indicators").keys())
+    return response
 
 
-@app.get("/list_datasets")
+@app.get("/datasetNames")
 async def list_datasets():
     """List names of available datasets."""
-    return list(DATASETS.keys())
+    response = empty_api_response()
+    response["result"] = list(list(DATASETS.keys()))
+    return response
 
 
-@app.get("/list_layers")
+@app.get("/layerNames")
 async def list_layers():
     """List names of available layers."""
-    return list(load_layer_definitions().keys())
+    response = empty_api_response()
+    response["result"] = list(load_layer_definitions().keys())
+    return response
 
 
-@app.get("/list_reports")
+@app.get("/reportNames")
 async def list_reports():
     """List names of available reports."""
-    return list(load_metadata("reports").keys())
+    response = empty_api_response()
+    response["result"] = list(load_metadata("reports").keys())
+    return response
 
 
-@app.get("/list_fid_fields")
+@app.get("/FidFields")
 async def list_fid_fields():
     """List available fid fields for each dataset."""
+    response = empty_api_response()
     fid_fields = []
     for _, dataset in DATASETS.items():
         fid_fields.append(dataset["default"])
         if "other" in dataset.keys():
             fid_fields += list(dataset["other"])
-    return fid_fields
+    response["result"] = fid_fields
+    return response

@@ -16,44 +16,44 @@ class TestApi(unittest.TestCase):
         self.client = TestClient(app)
 
     def test_get_available_regions(self):
-        url = "/list_regions"
+        url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(geojson.loads(response.content).is_valid)
 
     def test_get_list_indicators(self):
-        url = "/list_indicators"
+        url = "/indicatorNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), list)
+        self.assertIsInstance(geojson.loads(response.content), dict)
         self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_layers(self):
-        url = "/list_layers"
+        url = "/layerNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), list)
+        self.assertIsInstance(geojson.loads(response.content), dict)
         self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_datasets(self):
-        url = "/list_datasets"
+        url = "/datasetNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), list)
+        self.assertIsInstance(geojson.loads(response.content), dict)
         self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_fid_field(self):
-        url = "/list_fid_fields"
+        url = "/FidFields"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), list)
+        self.assertIsInstance(geojson.loads(response.content), dict)
         self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_reports(self):
-        url = "/list_reports"
+        url = "/reportNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), list)
+        self.assertIsInstance(geojson.loads(response.content), dict)
         self.assertIsNotNone(geojson.loads(response.content))
 
 
