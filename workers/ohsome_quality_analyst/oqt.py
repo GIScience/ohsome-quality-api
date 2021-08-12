@@ -140,11 +140,26 @@ async def create_indicator(
     async def from_scratch() -> None:
         """Create indicatore from scratch."""
         logging.info("Run preprocessing")
-        await indicator.preprocess()
+        try:
+            await indicator.preprocess()
+        except Exception as err:
+            logging.info("Warning: Error in preprocessing")
+            indicator.result.label = "error"
+            indicator.result.description = "Error in preprocessing: " + str(err)
         logging.info("Run calculation")
-        indicator.calculate()
+        try:
+            indicator.calculate()
+        except Exception as err:
+            logging.info("Warning: Error in preprocessing")
+            indicator.result.label = "error"
+            indicator.result.description = "Error in preprocessing: " + str(err)
         logging.info("Run figure creation")
-        indicator.create_figure()
+        try:
+            indicator.create_figure()
+        except Exception as err:
+            logging.info("Warning: Error in preprocessing")
+            indicator.result.label = "error"
+            indicator.result.description = "Error in preprocessing: " + str(err)
 
     async def from_database(dataset, feature_id) -> bool:
         """Create indicator by loading existing results from database"""
