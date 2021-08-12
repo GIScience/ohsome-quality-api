@@ -6,11 +6,6 @@ from ohsome_quality_analyst.api.api import empty_api_response
 
 class TestApi(unittest.TestCase):
     def test_empty_api_response(self):
-        with self.assertRaises(TypeError):
-            # ignore python:S930: this exact behaviour is tested here and therefore
-            #                     on purpose
-            empty_api_response()  # NOSONAR
-
         response_template = {
             "apiVersion": oqt_version,
             "attribution": {
