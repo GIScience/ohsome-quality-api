@@ -1027,7 +1027,20 @@ class sigmoidCurve:
         errorsListSingle = []
         if not math.isnan(initParamsSingle[3]):
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
+            # add up the 2 lists and then check each of the 4 values,
+            # if they are not nan
+            validity_result = all(  # check if all elements are true
+                map(
+                    math.isfinite,  # check if number is finite --> excludes nan
+                    [
+                        *inits5curves[0],  # check all list elemets
+                        *inits5curves[1],
+                        inits5curves[2],  # check element
+                        inits5curves[3],
+                    ],
+                )
+            )
+            if validity_result is True:
                 # get possible xmids
                 xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
                 # check for the xmids the mse error
@@ -1062,7 +1075,20 @@ class sigmoidCurve:
         if not math.isnan(initParamsSingleB[3]):
             errorsListSingle = []
             inits5curves = self.sortInits5curves(df1.li, df1.yValues)
-            if not math.isnan(inits5curves[3]):
+            # add up the 2 lists and then check each of the 4 values,
+            # if they are not nan
+            validity_result = all(  # check if all elements are true
+                map(
+                    math.isfinite,  # check if number is finite --> excludes nan
+                    [
+                        *inits5curves[0],  # check all list elemets
+                        *inits5curves[1],
+                        inits5curves[2],  # check element
+                        inits5curves[3],
+                    ],
+                )
+            )
+            if validity_result is True:
                 # get possible xmids
                 xmidvalues = self.sortInits5curves(df1.li, df1.yValues)[0]
                 # incoms = [incom for incom in xmidvalues if str(incom) != 'nan']
