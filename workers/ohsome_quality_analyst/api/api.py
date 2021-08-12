@@ -43,7 +43,7 @@ app.add_middleware(
 )
 
 
-def empty_api_response(request_url: str) -> dict:
+def empty_api_response() -> dict:
     return {
         "apiVersion": oqt_version,
         "attribution": {

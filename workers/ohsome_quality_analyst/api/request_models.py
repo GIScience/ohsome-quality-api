@@ -24,8 +24,8 @@ from ohsome_quality_analyst.utils.definitions import (
 )
 from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
-IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_report_names()})
-ReportEnum = Enum("ReportEnum", {name: name for name in get_indicator_names()})
+IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
+ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
 LayerEnum = Enum("LayerNames", {name: name for name in get_layer_names()})
 DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
