@@ -41,18 +41,18 @@ class BaseRequestModel(pydantic.BaseModel):
     @classmethod
     def check_bpolys_or_dataset_and_feature_id(cls, values):
         """Make sure there is either bpolys or dataset and feature_id."""
-        if (
-            "bpolys" in values
-            and "dataset" not in values
-            and "feature_id" not in values
-        ) or (
-            "bpolys" not in values and "dataset" in values and "feature_id" in values
+        if "bpolys" in values and "dataset" not in values and "featureId" not in values:
+            return values
+        elif (
+            "bpolys" not in values
+            and "dataset" in values
+            and any(v in values for v in ("featureId", "feature_id"))
         ):
             return values
         else:
             raise ValueError(
                 "Request should contain either the parameter `bpolys` "
-                "or `dataset` and `feature_id`."
+                "or `dataset` and `featureId`."
             )
 
     @pydantic.validator("bpolys")
@@ -104,7 +104,7 @@ class BaseRequestModel(pydantic.BaseModel):
 
 
 class IndicatorRequestModel(BaseRequestModel):
-    layerName: LayerEnum = pydantic.Field(  # noqa: N815
+    layer_name: LayerEnum = pydantic.Field(  # noqa: N815
         ..., title="Layer Name", example="building_count"
     )
 
