@@ -10,7 +10,7 @@ import unittest
 import geojson
 from click.testing import CliRunner
 
-from ohsome_quality_analyst.cli import cli
+from ohsome_quality_analyst.cli.cli import cli
 
 from .utils import oqt_vcr
 

@@ -12,7 +12,7 @@ import urllib.parse
 from fastapi.testclient import TestClient
 from schema import Schema
 
-from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.api.api import app
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
 from .api_response_schema import (

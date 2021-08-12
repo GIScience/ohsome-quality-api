@@ -12,7 +12,7 @@ from typing import Tuple
 from fastapi.testclient import TestClient
 from schema import Schema
 
-from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.api.api import app
 
 from .api_response_schema import (
     get_feature_schema,

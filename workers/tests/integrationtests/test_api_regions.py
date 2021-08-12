@@ -8,7 +8,7 @@ import unittest
 import geojson
 from fastapi.testclient import TestClient
 
-from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.api.api import app
 
 
 class TestApiIndicator(unittest.TestCase):
