@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Change API response schema ([#100])
+- Change API response schema ([#100], [#130])
     - API response is a valid GeoJSON
     - API response equates to the file output of CLI
 
@@ -43,6 +43,7 @@
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
+[#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
 
 
 ## 0.4.0
