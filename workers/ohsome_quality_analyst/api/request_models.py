@@ -41,7 +41,12 @@ class BaseRequestModel(pydantic.BaseModel):
     @classmethod
     def check_bpolys_or_dataset_and_feature_id(cls, values):
         """Make sure either bpolys or dataset and feature_id are given as parameters."""
-        if "bpolys" in values and "dataset" not in values and "featureId" not in values:
+        # featureId is an pydantic alias for feature_id (See config class below)
+        if (
+            "bpolys" in values
+            and "dataset" not in values
+            and not any(v in values for v in ("featureId", "feature_id"))
+        ):
             return values
         elif (
             "bpolys" not in values
