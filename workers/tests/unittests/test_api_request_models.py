@@ -31,19 +31,15 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseRequestModel(bpolys=bpolys)
 
-    # TODO
-    def test_bpolys_line_string(self):
-        """Only Geometry type Polygon or MultiPolygon are supported"""
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "line-string.geojson",
+    def test_dataset_valid(self):
+        request_models.BaseRequestModel(dataset="regions", feature_id="3")
+        request_models.BaseRequestModel(
+            dataset="regions", feature_id="3", fid_field="ogc_fid"
         )
-        with open(path, "r") as file:
-            bpolys = file.read()
 
+    def test_dataset_invalid(self):
         with self.assertRaises(ValueError):
-            request_models.BaseRequestModel(bpolys=bpolys)
+            request_models.BaseRequestModel(dataset="foo", feature_id="3")
 
     def test_invalid_set_of_arguments(self):
         with self.assertRaises(ValueError):
@@ -54,13 +50,3 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseRequestModel(dataset="regions")
         with self.assertRaises(ValueError):
             request_models.BaseRequestModel(feature_id="3")
-
-    def test_dataset_valid(self):
-        request_models.BaseRequestModel(dataset="regions", feature_id="3")
-        request_models.BaseRequestModel(
-            dataset="regions", feature_id="3", fid_field="ogc_fid"
-        )
-
-    def test_dataset_invalid(self):
-        with self.assertRaises(ValueError):
-            request_models.BaseRequestModel(dataset="foo", feature_id="3")
