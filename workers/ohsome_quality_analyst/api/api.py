@@ -22,7 +22,18 @@ configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
-app = FastAPI(title="OQT API", description="https://oqt.ohsome.org/")
+app = FastAPI(
+    title="OQT API",
+    description="Intrinsic and extrinsic data quality metrics for OpenStreetMap data.",
+    version=oqt_version,
+    contact={
+        "name": "ohsome team",
+        "url": "https://oqt.ohsome.org/",
+        "email": "ohsome@heigit.org",
+    },
+)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
