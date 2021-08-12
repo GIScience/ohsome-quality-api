@@ -44,7 +44,6 @@ def get_response_schema() -> Schema:
                 "text": str,
                 "url": str,
             },
-            "requestUrl": str,
         },
         ignore_extra_keys=True,
     )
