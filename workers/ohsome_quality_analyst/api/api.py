@@ -96,18 +96,18 @@ async def post_indicator(
     """
     p = parameters.dict()
     dataset = p["dataset"]
-    fidField = p["fidField"]
+    fid_field = p.get("fid_field", None)
     if dataset is not None:
         dataset = dataset.value
-    if fidField is not None:
-        fidField = fidField.value
+    if fid_field is not None:
+        fid_field = fid_field.value
     return await _fetch_indicator(
         name.value,
-        p["layerName"].value,
+        p["layer_name"].value,
         p["bpolys"],
         dataset,
-        p["featureId"],
-        fidField,
+        p["feature_id"],
+        fid_field,
     )
 
 
@@ -170,18 +170,18 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
     """
     p = parameters.dict()
     dataset = p["dataset"]
-    fidField = p["fidField"]
+    fid_field = p["fid_field"]
     if dataset is not None:
         dataset = dataset.value
-    if fidField is not None:
-        fidField = fidField.value
+    if fid_field is not None:
+        fid_field = fid_field.value
 
     return await _fetch_report(
         name.value,
         p["bpolys"],
         dataset,
-        p["featureId"],
-        fidField,
+        p["feature_id"],
+        fid_field,
     )
 
 
