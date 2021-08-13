@@ -4,9 +4,52 @@
 
 ### Breaking Changes
 
-- Change API response schema ([#100], [#130])
-    - API response is a valid GeoJSON
-    - API response equates to the file output of CLI
+#### Change API response schema 
+
+Now the API response is a valid GeoJSON.
+The `geometry` and `properties` of the input GeoJSON Feature are preserved.
+The data and results of an indicator or of a report and its associated indicators
+are written in a flat hierarchy to the properties field of the GeoJSON.
+
+*Example Response:*
+
+```json
+{
+  "apiVersion": "0.4.0",
+  "attribution": {
+    "text": "© OpenStreetMap contributors",
+    "url": "https://ohsome.org/copyrights"
+  },
+  "requestUrl": "..."
+  "type": "Feature",
+  "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [...]
+  },
+  "properties": {
+    "metadata.name": "GHS-POP Comparison Buildings",
+    "metadata.description": "..."
+    "layer.name": "Building Count",
+    "layer.description": "..."
+    "result.timestamp_oqt": ...
+    "result.timestamp_osm": ...
+    "result.label": "green",
+    "result.value": 1,
+    "result.description": "..."
+    "result.svg": "..."
+    "result.data": null,
+    "data.pop_count": null,
+    "data.area": null,
+    "data.pop_count_per_sqkm": null,
+    "data.feature_count": null,
+    "data.feature_count_per_sqkm": null
+  }
+}
+```
+
+API response equates to the GeoJSON file output of CLI plus further metadata about the API.
+
+Related Pull-Requests: ([#100], [#130])
 
 ### Bug Fixes
 
