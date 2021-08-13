@@ -56,7 +56,7 @@ def empty_api_response() -> dict:
 @app.get("/indicator/{name}")
 async def get_indicator(
     name: IndicatorEnum,
-    layerName: LayerEnum,
+    layerName: LayerEnum,  # noqa N803
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -74,7 +74,7 @@ async def get_indicator(
     if dataset is not None:
         dataset = dataset.value
     if fidField is not None:
-        fidField = fidField.value
+        fidField = fidField.value  # noqa N806
     return await _fetch_indicator(
         name.value, layerName.value, bpolys, dataset, featureId, fidField
     )
@@ -138,7 +138,7 @@ async def get_report(
     name: ReportEnum,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
-    featureId: Optional[str] = None,
+    featureId: Optional[str] = None,  # noqa N803
     fidField: Optional[FidFieldEnum] = None,
 ):
     """Create a Report.
@@ -153,7 +153,7 @@ async def get_report(
     if dataset is not None:
         dataset = dataset.value
     if fidField is not None:
-        fidField = fidField.value
+        fidField = fidField.value  # noqa N806
     return await _fetch_report(name.value, bpolys, dataset, featureId, fidField)
 
 
