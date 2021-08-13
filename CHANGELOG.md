@@ -11,7 +11,7 @@ The `geometry` and `properties` of the input GeoJSON Feature are preserved.
 The data and results of an indicator or of a report and its associated indicators
 are written in a flat hierarchy to the properties field of the GeoJSON.
 
-*Example Response:*
+Example Response:
 
 ```json
 {
