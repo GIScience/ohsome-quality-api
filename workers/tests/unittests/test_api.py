@@ -13,6 +13,4 @@ class TestApi(unittest.TestCase):
                 "url": "https://ohsome.org/copyrights",
             },
         }
-        self.assertEqual(
-            response_template, empty_api_response("https://www.example.org/")
-        )
+        self.assertEqual(response_template, empty_api_response())
