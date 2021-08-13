@@ -9,71 +9,15 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
-
-## Vision
-
-What is OQT?
-* A project that **formalizes the knowledge on OSM data quality** within HeiGIT and the GIScience Research Group.
-* A tool that end users, e.g. humanitarian organisations and public administration, can use to get information on the **quality of OSM data for their specific region and use-case**.
-* A **web app** that builds upon the existing infrastructure, especially [ohsomeHeX](https://ohsome.org/apps/osm-history-explorer) and the [ohsome dashboard](https://ohsome.org/apps/dashboard).
-* A **data integration tool**, that brings together the implementation of a variety of intrinsic and extrinsic data quality metrics.
+The Ohsome Quality analysT (OQT) is a software developed by [Heidelberg Institute for Geoinformation Technology (HeiGIT)](https://heigit.org/) and based on the [ohsome platform](https://heigit.org/big-spatial-data-analytics-en/ohsome/). The main purpose is to compute and provide quality estimations of OpenStreetMap (OSM) data.
 
 
 ## Blog
 
-The following blog posts give insight into OQT and describe how you can use it:
- * [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
- * [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
- * as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
-
-
-## Usage
-
-There are three ways to use OQT.
-
-> Note: To set the project up for development, please refer to [docs/development_setup.md](/docs/development_setup.md).
-
-
-### Website
-
-Through the OQT [Website](https://oqt.ohsome.org) indicators and reports can be requested for regions definied by the OQT team. Those are pre-computed and can be retrieved very fast.
-
-
-### API
-
-Head over to [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs) to explore the OQT API interactively.
-
-The response schema is defined here: [docs/api.md](/docs/api.md)
-
-
-### CLI
-
-To use the OQT CLI the `ohsome_quality_analyst` Python package needs to be installed and configured. Additionally access to the OQT database is required. Please reach out if you need one.
-
-Python 3.8 is required.
-
-```bash
-$ cd workers
-$ pip install .
-$ # Configure OQT
-$ oqt --help
-Usage: oqt [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --version    Show the version and exit.
-  -q, --quiet  Disable logging.
-  --help       Show this message and exit.
-
-Commands:
-  create-all-indicators  Create all indicators for a specified dataset.
-  create-indicator       Create an Indicator and print results to stdout.
-  create-report          Create a Report and print results to stdout.
-  list-datasets          List available datasets.
-  list-indicators        List available indicators and their metadata.
-  list-layers            List available layers and how they are definied...
-  list-regions           List available regions.
-  list-reports           List available reports and their metadata.
-```
+The following blog posts give insight into OQT:
+- [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
+- [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
+- as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
 
 
 ## OQT Components
@@ -81,6 +25,23 @@ Commands:
 This diagram gives an overview of the OQT components:
 
 ![](/docs/img/UML-Component-Diagram.png)
+
+
+## Usage
+
+OQT can be used in three ways with various degree of usability and flexibility:
+1. Interactive access through the *website* (Highest usability; Lowest flexibility)
+2. Making requests to the *REST API*
+3. Usage of the Command-Line-Interface (*CLI*) (Lowest usability; Highest flexibility)
+
+The easiest access to quality reports is through the OQT [website](https://oqt.ohsome.org). There reports with pre-computed indicators can be accessed for a selection of regions made by the OQT team. But it is not possible to upload custom areas-of-interest (AOIs) and compute report or indicators for those.
+
+Requests for individual indicators as well as reports can be made to the OQT [API](https://oqt.ohsome.org/api/docs). Retrievable are pre-computed indicators for selected regions (Parameters `dataset=regions` and `featureId`) as well as for custom AOIs (Parameter `bpolys`). The major drawbag is the limitation of the input geometry size. For more information check out the interactive API [documentation](https://oqt.ohsome.org/api/docs).
+
+The last way to use OQT is by setting up OQT on your local machine and use the provided CLI. This is the most flexible way but some technical knowledge is required to set it up. For now please refer to the development setup [documentation](/docs/development_setup.md) on how to setup OQT localy on your machine. After installation of the `ohsome_quality_analyst` Python package run `oqt --help` for documation about the CLI.
+
+
+The API as well as the CLI will return a GeoJSON Feature. This GeoJSON will preserve both the `geometry` and `property` field of the input GeoJSON Feature. The data and results of the indicator or report and its associated indicators are written to the `property` field in a flat hierarchy of the resulting GeoJSON Feature.
 
 
 ## Contributing
