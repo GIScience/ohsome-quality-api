@@ -251,7 +251,7 @@ ideal_vgi_poi:
 
 ideal_vgi_lulc:
   name: IDEAL-VGI Land Use and Land Cover
-  description: Features related to Land Use and Land Cover
+  description: Features related to land use and land cover
   endpoint: elements/area
   filter: (landuse=* or natural=* or waterway=*) and geometry:polygon
 
