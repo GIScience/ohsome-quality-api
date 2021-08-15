@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import configure_logging
+from ohsome_quality_analyst.utils.definitions import INDICATOR_LAYER, configure_logging
 
 configure_logging()
 logging.info("Logging enabled")
@@ -150,3 +150,14 @@ async def _fetch_report(
 @app.get("/regions")
 async def get_available_regions():
     return await db_client.get_available_regions()
+
+
+@app.get("/indicatorLayerCombinations")
+async def list_indicator_layer_combinations():
+    """List names of available indicator-layer-combinations."""
+    response = empty_api_response()
+    combinations = []
+    for combi in INDICATOR_LAYER:
+        combinations.append(combi)
+    response["result"] = combinations
+    return response

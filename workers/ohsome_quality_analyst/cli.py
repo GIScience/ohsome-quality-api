@@ -9,6 +9,7 @@ from ohsome_quality_analyst import cli_opts, oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     DATASETS,
+    INDICATOR_LAYER,
     configure_logging,
     load_layer_definitions,
     load_metadata,
@@ -81,6 +82,13 @@ def get_available_regions():
     """List available regions."""
     regions = asyncio.run(db_client.get_available_regions())
     click.echo(regions)
+
+
+@cli.command("list-indicator-layer-combination")
+def get_indicator_layer_combination():
+    """List all possible indicator-layer-combinations"""
+    for combination in INDICATOR_LAYER:
+        click.echo(combination)
 
 
 @cli.command("create-indicator")
