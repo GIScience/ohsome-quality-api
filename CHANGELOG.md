@@ -4,23 +4,24 @@
 
 ### Breaking Changes
 
-#### Change API response schema 
+#### Change API response schema
+
+Change API response schema ([#100], [#130]):
+- API response is a valid GeoJSON
+- API response equates to the file output of CLI
 
 Now the API response is a valid GeoJSON.
 The `geometry` and `properties` of the input GeoJSON Feature are preserved.
 The data and results of an indicator or of a report and its associated indicators
 are written in a flat hierarchy to the properties field of the GeoJSON.
 
-Example Response:
+API response equates to the GeoJSON file output of CLI plus further metadata about the API.
 
-```json
+Example response of an indicator:
+
+```text
 {
-  "apiVersion": "0.4.0",
-  "attribution": {
-    "text": "© OpenStreetMap contributors",
-    "url": "https://ohsome.org/copyrights"
-  },
-  "requestUrl": "..."
+  ...
   "type": "Feature",
   "geometry": {
     "type": "MultiPolygon",
@@ -31,25 +32,13 @@ Example Response:
     "metadata.description": "..."
     "layer.name": "Building Count",
     "layer.description": "..."
-    "result.timestamp_oqt": ...
-    "result.timestamp_osm": ...
     "result.label": "green",
     "result.value": 1,
     "result.description": "..."
-    "result.svg": "..."
-    "result.data": null,
-    "data.pop_count": null,
-    "data.area": null,
-    "data.pop_count_per_sqkm": null,
-    "data.feature_count": null,
-    "data.feature_count_per_sqkm": null
+    ...
   }
 }
 ```
-
-API response equates to the GeoJSON file output of CLI plus further metadata about the API.
-
-Related Pull-Requests: ([#100], [#130])
 
 ### Bug Fixes
 
@@ -76,6 +65,10 @@ Related Pull-Requests: ([#100], [#130])
 - Add timezone to oqt-timestamp ([#101])
 - Update UML Component Diagram ([#136])
 
+### Upgrade from v.0.4.0
+
+- Since the API response schema has changed, please update your code on the client side.
+
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
 [#90]: https://github.com/GIScience/ohsome-quality-analyst/issues/90
@@ -90,7 +83,6 @@ Related Pull-Requests: ([#100], [#130])
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
 [#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 [#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
-
 
 ## 0.4.0
 
