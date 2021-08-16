@@ -2,6 +2,7 @@ import logging
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.pyplot as plt
 import pandas as pd
 from geojson import Feature
@@ -45,6 +46,14 @@ class MappingSaturation(BaseIndicator):
         )
         results = [y_dict["value"] for y_dict in query_results["result"]]
         timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
+
+        datetimes = []
+        for timestamp in timestamps:
+            datetime_ = dateutil.parser.isoparse(timestamp)
+            datetimes.append(datetime_)
+        datetimes.sort()
+        # osm-timestamp is only the timestamp of the latest feature
+        self.result.timestamp_osm = datetimes[-1]
         max_value = max(results)
         y_end_value = results[-1]
         # check if data are there, in case of 0 = no data

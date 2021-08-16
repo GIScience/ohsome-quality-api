@@ -2,6 +2,7 @@ import logging
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from dateutil.relativedelta import relativedelta
@@ -55,6 +56,8 @@ class LastEdit(BaseIndicator):
             bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
+        timestamp = response["result"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
