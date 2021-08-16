@@ -41,8 +41,8 @@ function id_isValid(value, json){
     return valid_options.includes(value)
 }
 
-// un-flatten a 1-layer dictionary in a deep dictionary
-function unflattenDict(input, separator=".") {
+// un-flatten a 1-layer object in a deep object
+function unflattenObject(input, separator=".") {
     const keys = Object.keys(input);
     const output = {};
     for (const key of keys) {

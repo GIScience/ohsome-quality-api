@@ -234,7 +234,7 @@ function buildMap(...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
-		const properties = unflattenDict(response["properties"]);
+		const properties = unflattenObject(response["properties"]);
 		const report = properties["report"];
 		const indicators = properties["indicators"];
 		toggle_results_will_be_shown_paragraph(false)
