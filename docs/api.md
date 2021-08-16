@@ -2,7 +2,7 @@
 
 ## Response Examples
 
-Indicator:
+### Indicator
 
 ```txt
 {
@@ -38,7 +38,7 @@ Indicator:
 ```
 
 
-Report:
+### Report
 
 ```txt
 {

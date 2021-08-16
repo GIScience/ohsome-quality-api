@@ -4,20 +4,10 @@
 
 ### Breaking Changes
 
-#### Change API response schema ([#100], [#130])
-
-- API response is a valid GeoJSON
-- API response equates to the file output of CLI
-
-Now the API response is a valid GeoJSON.
-The `geometry` and `properties` of the input GeoJSON Feature are preserved.
-The data and results of an indicator or of a report and its associated indicators
-are written in a flat hierarchy to the properties field of the GeoJSON.
-
-API response equates to the GeoJSON file output of CLI plus further metadata about the API.
-
-For example responses have a look at the [API documentation](/docs/api.md).
-
+- API response is a valid GeoJSON and equates to the CLI file output ([#100], [#130])
+    - API output schema changes completely to a GeoJSON output
+    - Indicator and report data and results are written in a flat hierarchy to the properties field of the GeoJSON
+    - Example responses can be found in the [API documentation](/docs/api.md)
 
 ### Bug Fixes
 
@@ -58,6 +48,7 @@ For example responses have a look at the [API documentation](/docs/api.md).
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
 [#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 [#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
+
 
 ## 0.4.0
 
