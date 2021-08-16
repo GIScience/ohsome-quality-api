@@ -28,6 +28,7 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
+- Update UML Component Diagram ([#136])
 - Added documentation on how to add a layer definition ([#141])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
@@ -41,6 +42,7 @@
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 [#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 
 
