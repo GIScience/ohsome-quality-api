@@ -517,7 +517,7 @@ function buildMap(...charts){
 	// add HeiGIT logo
 
 
-	if ((report_isValid(html_params["report"]) & id_isValid(featureId, charts[0][0].features))){
+	if ((report_isValid(html_params["report"]) && id_isValid(featureId, charts[0][0].features))){
 		markers[featureId].fire("click")
 		document.getElementById("gQ").click()
 	}
