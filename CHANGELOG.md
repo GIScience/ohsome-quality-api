@@ -13,6 +13,8 @@
 - Fix error raised by the `geojson` library while serializing JSON that includes NaN values ([#112])
 - Fix error on slow mobiles where the dependencies would not be loaded correctly ([#122])
 - Fix error where region selection was inconsistent on mobile ([#122])
+- Fix Mapping Saturation indicator bug (#123)
+    - Added checks for NaN-values in variable inits5curves, which lead to false error-calculation.
 
 ### New Features
 
@@ -26,8 +28,9 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
-Add osm-timestamps to indicators ([#101])
+- Add osm-timestamps to indicators ([#101])
 - Add timezone to oqt-timestamp ([#101])
+- Update UML Component Diagram ([#136])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
@@ -39,7 +42,9 @@ Add osm-timestamps to indicators ([#101])
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
+[#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
 
 
 ## 0.4.0
