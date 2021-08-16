@@ -4,9 +4,8 @@
 
 ### Breaking Changes
 
-#### Change API response schema
+#### Change API response schema ([#100], [#130])
 
-Change API response schema ([#100], [#130]):
 - API response is a valid GeoJSON
 - API response equates to the file output of CLI
 
@@ -17,28 +16,8 @@ are written in a flat hierarchy to the properties field of the GeoJSON.
 
 API response equates to the GeoJSON file output of CLI plus further metadata about the API.
 
-Example response of an indicator:
+For example responses have a look at the [API documentation](/docs/api.md).
 
-```text
-{
-  ...
-  "type": "Feature",
-  "geometry": {
-    "type": "MultiPolygon",
-    "coordinates": [...]
-  },
-  "properties": {
-    "metadata.name": "GHS-POP Comparison Buildings",
-    "metadata.description": "..."
-    "layer.name": "Building Count",
-    "layer.description": "..."
-    "result.label": "green",
-    "result.value": 1,
-    "result.description": "..."
-    ...
-  }
-}
-```
 
 ### Bug Fixes
 
@@ -64,10 +43,6 @@ Example response of an indicator:
 - Add osm-timestamps to indicators ([#101])
 - Add timezone to oqt-timestamp ([#101])
 - Update UML Component Diagram ([#136])
-
-### Upgrade from v.0.4.0
-
-- Since the API response schema has changed, please update your code on the client side.
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
