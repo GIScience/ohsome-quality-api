@@ -20,13 +20,6 @@ The following blog posts give insight into OQT:
 - as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
 
 
-## OQT Components
-
-This diagram gives an overview of the OQT components:
-
-![](/docs/img/UML-Component-Diagram.png)
-
-
 ## Usage
 
 OQT can be used in three ways with various degree of usability and flexibility:
@@ -54,3 +47,10 @@ Looking to implement a new indicator? Then please have a look at [docs/indicator
 ## Development Setup
 
 Please refer to [docs/development_setup.md](/docs/development_setup.md).
+
+
+## Components
+
+This diagram gives an overview of the OQT components:
+
+![](/docs/img/UML-Component-Diagram.png)
