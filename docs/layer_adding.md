@@ -16,7 +16,7 @@ layer definition, can be found in the
 section on the different 
 [API endpoints](https://docs.ohsome.org/ohsome-api/stable/endpoints.html#elements-aggregation)
 as well as a section on how to use and combine the 
-[filter](https://docs.ohsome.org/ohsome-api/v1/filter.html).
+[filter](https://docs.ohsome.org/ohsome-api/stable/filter.html).
 
 ## How to add a custom layer
 In order to add your custom layer to the OQT and make use of it via the command line, 
