@@ -19,6 +19,7 @@
 ### New Features
 
 - FeatureCollection with multiple Features allowed as input to the API ([#100])
+- Add new layer definitions for the IdealVGI project ([#134])
 
 ### Other Changes
 
@@ -28,6 +29,8 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
+- Add osm-timestamps to indicators ([#101])
+- Add timezone to oqt-timestamp ([#101])
 - Update UML Component Diagram ([#136])
 - Added documentation on how to add a layer definition ([#141])
 
@@ -37,11 +40,13 @@
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 [#100]: https://github.com/GIScience/ohsome-quality-analyst/pull/100
+[#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 [#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 [#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 
