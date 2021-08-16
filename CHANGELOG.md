@@ -4,9 +4,10 @@
 
 ### Breaking Changes
 
-- Change API response schema ([#100], [#130])
-    - API response is a valid GeoJSON
-    - API response equates to the file output of CLI
+- API response is a valid GeoJSON and equates to the CLI file output ([#100], [#130])
+    - API output schema changes completely to a GeoJSON output
+    - Indicator and report data and results are written in a flat hierarchy to the properties field of the GeoJSON
+    - Example responses can be found in the [API documentation](/docs/api.md)
 
 ### Bug Fixes
 
