@@ -19,6 +19,7 @@
 ### New Features
 
 - FeatureCollection with multiple Features allowed as input to the API ([#100])
+- Add new layer definitions for the IdealVGI project ([#134])
 
 ### Other Changes
 
@@ -41,6 +42,7 @@
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 [#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 [#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
 
 
