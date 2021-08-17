@@ -154,8 +154,7 @@ function buildMap(...charts){
 		selectedId = featureId
 		
 		// get dataset ID
-		//dataset = layer.feature.properties.featurecla; // = Admin-0 country
-		selectedDataset = "regions" // = Admin-0 country
+		selectedDataset = "regions"
 	}
 	// initialize variables for storing area and dataset id from map geojson 
 	if (html_params["id"] !== undefined) {
