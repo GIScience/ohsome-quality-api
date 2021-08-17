@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.5.0"
+                        "ohsome-quality-analyst/0.5.1"
                     ]
                 }
             },
@@ -96,7 +96,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.5.0"
+                        "ohsome-quality-analyst/0.5.1"
                     ],
                     "content-length": [
                         "2642"
@@ -178,7 +178,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.5.0"
+                        "ohsome-quality-analyst/0.5.1"
                     ],
                     "content-length": [
                         "2613"
@@ -260,7 +260,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.5.0"
+                        "ohsome-quality-analyst/0.5.1"
                     ],
                     "content-length": [
                         "481"
@@ -342,7 +342,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.5.0"
+                        "ohsome-quality-analyst/0.5.1"
                     ],
                     "content-length": [
                         "452"

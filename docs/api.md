@@ -6,7 +6,7 @@
 
 ```txt
 {
-  "apiVersion": "0.5.0",
+  "apiVersion": "0.5.1",
   "attribution": {
     "text": "© OpenStreetMap contributors",
     "url": "https://ohsome.org/copyrights"
@@ -42,7 +42,7 @@
 
 ```txt
 {
-  "apiVersion": "0.5.0",
+  "apiVersion": "0.5.1",
   "attribution": {
     "text": "© OpenStreetMap contributors",
     "url": "https://ohsome.org/copyrights"

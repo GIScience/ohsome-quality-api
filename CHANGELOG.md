@@ -1,6 +1,6 @@
 # Changelog
 
-## Current main
+## 0.5.1
 
 - Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])
 
