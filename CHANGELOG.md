@@ -1,5 +1,12 @@
 # Changelog
 
+## Current main
+
+- Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])
+
+[#132]: https://github.com/GIScience/ohsome-quality-analyst/pull/132
+
+
 ## 0.5.0
 
 ### Breaking Changes
