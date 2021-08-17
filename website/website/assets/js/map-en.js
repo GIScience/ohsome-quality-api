@@ -556,6 +556,7 @@ function httpPostAsync(endPoint, params, callback) {
 	}
 	console.log(theUrl)
 	xmlHttp.open("POST", theUrl, true); // true for asynchronous
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
 	xmlHttp.send(params);
 }
 
