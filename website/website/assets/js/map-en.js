@@ -534,7 +534,7 @@ function httpGetAsync(theUrl, callback)
 {
 	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
 			callback(xmlHttp.responseText);
 	}
 	console.log(theUrl)
