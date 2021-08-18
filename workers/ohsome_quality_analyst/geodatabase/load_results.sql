@@ -8,7 +8,8 @@ SELECT
     result_label,
     result_value,
     result_description,
-    result_svg
+    result_svg,
+    feature
 FROM
     results
 WHERE
