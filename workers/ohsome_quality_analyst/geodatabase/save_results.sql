@@ -8,7 +8,8 @@ INSERT INTO results (
     result_label,
     result_value,
     result_description,
-    result_svg)
+    result_svg,
+    feature)
 VALUES (
     $1,
     $2,
@@ -19,7 +20,8 @@ VALUES (
     $7,
     $8,
     $9,
-    $10)
+    $10,
+    $11)
 ON CONFLICT (
     indicator_name,
     layer_name,
@@ -32,10 +34,12 @@ ON CONFLICT (
             result_label,
             result_value,
             result_description,
-            result_svg) = (
+            result_svg,
+            feature) = (
             excluded.timestamp_oqt,
             excluded.timestamp_osm,
             excluded.result_label,
             excluded.result_value,
             excluded.result_description,
-            excluded.result_svg);
+            excluded.result_svg,
+            excluded.feature);
