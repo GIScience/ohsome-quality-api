@@ -6,6 +6,7 @@ from typing import Optional, Union
 
 import geojson
 import httpx
+import requests
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
@@ -108,3 +109,10 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     return data
+
+
+def get_contributions():
+    url = "https://api.ohsome.org/v1/contributions/count"
+    data = {"bboxes": "8.699053,49.411842,8.70,49.412", "time": "2010-01-01,2010-02-01"}
+    response = requests.post(url, data=data)
+    return response

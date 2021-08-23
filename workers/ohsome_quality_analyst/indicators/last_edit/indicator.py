@@ -56,6 +56,9 @@ class LastEdit(BaseIndicator):
             bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
+        # self.feature.geometry.coordinates[0][0][0]
+        test = ohsome_client.get_contributions().text
+        print(type(test))
         timestamp = response["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
