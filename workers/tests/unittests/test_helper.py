@@ -8,7 +8,11 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
 )
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 from ohsome_quality_analyst.utils.definitions import load_metadata
-from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+from ohsome_quality_analyst.utils.helper import (
+    flatten_dict,
+    loads_geojson,
+    name_to_class,
+)
 
 
 def get_fixture(name):
@@ -69,6 +73,11 @@ class TestHelper(unittest.TestCase):
         with self.assertRaises(ValueError):
             for _ in loads_geojson(raw):
                 pass
+
+    def test_flatten_dict(self):
+        deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
+        flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
+        self.assertDictEqual(flatten_dict(deep), flat)
 
 
 if __name__ == "__main__":

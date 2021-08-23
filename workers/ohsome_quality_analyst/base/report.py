@@ -9,6 +9,7 @@ from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_metadata
+from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
 @dataclass
@@ -64,10 +65,17 @@ class BaseReport(metaclass=ABCMeta):
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        properties = {}
+        report_properties = {
+            "metadata": vars(self.metadata).copy(),
+            "result": vars(self.result).copy(),
+        }
+        report_properties["metadata"].pop("label_description", None)
+        properties = flatten_dict(report_properties, prefix="report")
         for i, indicator in enumerate(self.indicators):
             p = indicator.as_feature()["properties"]
-            properties.update({str(i) + "." + str(key): val for key, val in p.items()})
+            properties.update(
+                {"indicators." + str(i) + "." + str(key): val for key, val in p.items()}
+            )
         return Feature(geometry=self.feature.geometry, properties=properties)
 
     @abstractmethod

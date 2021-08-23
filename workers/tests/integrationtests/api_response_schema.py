@@ -21,7 +21,9 @@ def generate_properties_template(iterator: Optional[str] = None) -> dict:
     if iterator is None:
         return properties.copy()
     else:
-        return {str(iterator) + "." + k: v for k, v in properties.items()}
+        return {
+            "indicators." + str(iterator) + "." + k: v for k, v in properties.items()
+        }
 
 
 def get_report_properties_template() -> dict:

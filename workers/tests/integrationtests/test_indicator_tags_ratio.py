@@ -1,6 +1,7 @@
 import asyncio
 import os
 import unittest
+from datetime import datetime
 
 import geojson
 
@@ -24,6 +25,9 @@ class TestIndicatorRatio(unittest.TestCase):
             layer_name="jrc_health_count",
         )
         asyncio.run(indicator.preprocess())
+        self.assertIsInstance(indicator.result.timestamp_osm, datetime)
+        self.assertIsInstance(indicator.result.timestamp_oqt, datetime)
+
         indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
