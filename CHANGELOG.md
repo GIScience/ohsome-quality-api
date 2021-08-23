@@ -2,6 +2,11 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- Save indicator as GeoJSON Feature to DB ([#149])
+    - Extend database schema with one additional attribute `feature` of type JSON
+
 ### New Features
 
 - Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
@@ -10,8 +15,13 @@
 
 - Added documentation on “How to add a layer definitions” ([#141])
 
+### How to upgrade?
+
+- If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
+
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
+[#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 
 
 ## 0.5.1
