@@ -14,6 +14,7 @@
 ### Other Changes
 
 - Added documentation on “How to add a layer definitions” ([#141])
+- Use concurrency when creating all indicators ([#153])
 
 ### How to upgrade?
 
@@ -22,6 +23,7 @@
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
+[#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
 
 
 ## 0.5.1
