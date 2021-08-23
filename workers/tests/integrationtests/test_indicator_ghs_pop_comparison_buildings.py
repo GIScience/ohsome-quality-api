@@ -1,5 +1,6 @@
 import asyncio
 import unittest
+from datetime import datetime
 
 from asyncpg import Record
 
@@ -30,6 +31,8 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
         self.assertIsNotNone(self.indicator.feature_count)
         self.assertIsNotNone(self.indicator.feature_count_per_sqkm)
         self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
+        self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
+        self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
 
         self.indicator.calculate()
         self.assertIsNotNone(self.indicator.result.label)

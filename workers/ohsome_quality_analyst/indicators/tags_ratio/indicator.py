@@ -2,6 +2,7 @@ import logging
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from geojson import Feature
@@ -30,6 +31,8 @@ class TagsRatio(BaseIndicator):
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
+        timestamp = query_results_count["ratioResult"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
     def calculate(self) -> None:
         # self.ratio can be float, NaN if no features of filter1 are in the

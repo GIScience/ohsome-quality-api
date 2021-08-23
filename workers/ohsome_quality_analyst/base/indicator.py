@@ -5,7 +5,7 @@ TODO:
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from io import StringIO
 from typing import Dict, Literal, Optional
 
@@ -75,7 +75,8 @@ class BaseIndicator(metaclass=ABCMeta):
             data_class=LayerDefinition, data=get_layer_definition(layer_name)
         )
         self.result: Result = Result(
-            timestamp_oqt=datetime.utcnow(),
+            # UTC datetime object representing the current time.
+            timestamp_oqt=datetime.now(timezone.utc),
             timestamp_osm=None,
             label="undefined",
             value=None,

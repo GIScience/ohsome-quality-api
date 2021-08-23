@@ -2,6 +2,7 @@ import logging
 from io import StringIO
 from string import Template
 
+import dateutil.parser
 import matplotlib.pyplot as plt
 import numpy as np
 from asyncpg import Record
@@ -55,6 +56,8 @@ class GhsPopComparisonBuildings(BaseIndicator):
             layer=self.layer, bpolys=self.feature.geometry
         )
         self.feature_count = query_results["result"][0]["value"]
+        timestamp = query_results["result"][0]["timestamp"]
+        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
 
