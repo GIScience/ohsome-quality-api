@@ -26,35 +26,30 @@ class TestApi(unittest.TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(geojson.loads(response.content), dict)
-        self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_layers(self):
         url = "/layerNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(geojson.loads(response.content), dict)
-        self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_datasets(self):
         url = "/datasetNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(geojson.loads(response.content), dict)
-        self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_fid_field(self):
         url = "/FidFields"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(geojson.loads(response.content), dict)
-        self.assertIsNotNone(geojson.loads(response.content))
 
     def test_get_list_reports(self):
         url = "/reportNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(geojson.loads(response.content), dict)
-        self.assertIsNotNone(geojson.loads(response.content))
 
 
 if __name__ == "__main__":
