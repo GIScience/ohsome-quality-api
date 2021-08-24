@@ -1,24 +1,33 @@
 # Changelog
 
-## Current main
+## 0.5.1
+
+- Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])
+
+[#132]: https://github.com/GIScience/ohsome-quality-analyst/pull/132
+
+
+## 0.5.0
 
 ### Breaking Changes
 
-- Change API response schema ([#100], [#130])
-    - API response is a valid GeoJSON
-    - API response equates to the file output of CLI
+- API response is a valid GeoJSON and equates to the CLI file output ([#100], [#130])
+    - API output schema changes completely to a GeoJSON output
+    - Indicator and report data and results are written in a flat hierarchy to the properties field of the GeoJSON
+    - Example responses can be found in the [API documentation](/docs/api.md)
 
 ### Bug Fixes
 
 - Fix error raised by the `geojson` library while serializing JSON that includes NaN values ([#112])
 - Fix error on slow mobiles where the dependencies would not be loaded correctly ([#122])
 - Fix error where region selection was inconsistent on mobile ([#122])
-- Fix Mapping Saturation indicator bug (#123)
+- Fix Mapping Saturation indicator bug ([#123])
     - Added checks for NaN-values in variable inits5curves, which lead to false error-calculation.
 
 ### New Features
 
 - FeatureCollection with multiple Features allowed as input to the API ([#100])
+- Add new layer definitions for the IdealVGI project ([#134])
 
 ### Other Changes
 
@@ -28,6 +37,9 @@
 - Minor improvements to the metadata and docstrings of indicators ([#110])
 - Change return type from bool to None for indicator for functions: preprocess, calculate, create_figure ([#96])
 - Implement mapping of custom feature id to default (unique) feature id ([#83])
+- Add osm-timestamps to indicators ([#101])
+- Add timezone to oqt-timestamp ([#101])
+- Update UML Component Diagram ([#136])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
@@ -35,11 +47,14 @@
 [#95]: https://github.com/GIScience/ohsome-quality-analyst/pull/95
 [#96]: https://github.com/GIScience/ohsome-quality-analyst/pull/96
 [#100]: https://github.com/GIScience/ohsome-quality-analyst/pull/100
+[#101]: https://github.com/GIScience/ohsome-quality-analyst/pull/101
 [#110]: https://github.com/GIScience/ohsome-quality-analyst/pull/110
 [#112]: https://github.com/GIScience/ohsome-quality-analyst/pull/112
 [#122]: https://github.com/GIScience/ohsome-quality-analyst/pull/122
 [#123]: https://github.com/GIScience/ohsome-quality-analyst/pull/123
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
+[#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
+[#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
 
 
 ## 0.4.0
