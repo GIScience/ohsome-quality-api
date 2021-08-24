@@ -111,8 +111,22 @@ def build_data_dict(
     return data
 
 
-def get_contributions():
+def get_contributions(bpolys):
     url = "https://api.ohsome.org/v1/contributions/count"
-    data = {"bboxes": "8.699053,49.411842,8.70,49.412", "time": "2010-01-01,2010-02-01"}
-    response = requests.post(url, data=data)
-    return response
+    contributions = {}
+    currentDateTime = datetime.datetime.now()
+    date = currentDateTime.date()
+    cur_year = int(date.strftime("%Y")) - 1
+    year = 2010
+    while year <= cur_year:
+        time = "%i-01-01,%i-01-01" % (year, year + 1)
+        data = {
+            "bpolys": geojson.dumps(FeatureCollection([Feature(geometry=bpolys)])),
+            "time": time,
+            "filter": "building=* and geometry:polygon",
+        }
+        response = json.loads(requests.post(url, data=data).text)
+        result = response["result"][0]["value"]
+        contributions[year] = result
+        year = year + 1
+    return contributions
