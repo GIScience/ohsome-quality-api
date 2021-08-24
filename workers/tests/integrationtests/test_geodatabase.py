@@ -59,9 +59,10 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.svg)
 
     def test_get_feature_ids(self):
-        result = asyncio.run(db_client.get_feature_ids(self.dataset))
-        self.assertIsInstance(result, list)
-        self.assertTrue(result)
+        results = asyncio.run(db_client.get_feature_ids(self.dataset))
+        self.assertIsInstance(results, list)
+        for result in results:
+            self.assertIsInstance(result, str)
 
         with self.assertRaises(KeyError):
             asyncio.run(db_client.get_feature_ids("foo"))
