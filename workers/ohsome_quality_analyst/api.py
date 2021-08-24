@@ -153,9 +153,7 @@ async def _fetch_report(
 
 
 @app.get("/regions")
-async def get_available_regions(
-    request: Request,
-):
+async def get_available_regions(request: Request):
     """List names of available regions."""
 
     response = empty_api_response(request.url._url)
@@ -165,9 +163,7 @@ async def get_available_regions(
 
 
 @app.get("/indicatorNames")
-async def list_indicators(
-    request: Request,
-):
+async def list_indicators(request: Request):
     """List names of available indicators."""
     response = empty_api_response(request.url._url)
     response["result"] = list(load_metadata("indicators").keys())
@@ -175,9 +171,7 @@ async def list_indicators(
 
 
 @app.get("/datasetNames")
-async def list_datasets(
-    request: Request,
-):
+async def list_datasets(request: Request):
     """List names of available datasets."""
     response = empty_api_response(request.url._url)
     response["result"] = list((DATASETS.keys()))
@@ -185,9 +179,7 @@ async def list_datasets(
 
 
 @app.get("/layerNames")
-async def list_layers(
-    request: Request,
-):
+async def list_layers(request: Request):
     """List names of available layers."""
     response = empty_api_response(request.url._url)
     response["result"] = list(load_layer_definitions().keys())
@@ -195,9 +187,7 @@ async def list_layers(
 
 
 @app.get("/reportNames")
-async def list_reports(
-    request: Request,
-):
+async def list_reports(request: Request):
     """List names of available reports."""
     response = empty_api_response(request.url._url)
     response["result"] = list(load_metadata("reports").keys())
@@ -205,9 +195,7 @@ async def list_reports(
 
 
 @app.get("/FidFields")
-async def list_fid_fields(
-    request: Request,
-):
+async def list_fid_fields(request: Request):
     """List available fid fields for each dataset."""
     response = empty_api_response(request.url._url)
     fid_fields = []
