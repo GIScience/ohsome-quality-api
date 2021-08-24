@@ -3,7 +3,9 @@
 ## 0.5.1
 
 - Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])
+- Add list indicator/layer combinations for api and cli([#99])
 
+[#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
 [#132]: https://github.com/GIScience/ohsome-quality-analyst/pull/132
 
 

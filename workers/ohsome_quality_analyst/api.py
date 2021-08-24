@@ -153,11 +153,10 @@ async def get_available_regions():
 
 
 @app.get("/indicatorLayerCombinations")
-async def list_indicator_layer_combinations():
+async def list_indicator_layer_combinations(
+    request: Request,
+):
     """List names of available indicator-layer-combinations."""
-    response = empty_api_response()
-    combinations = []
-    for combi in INDICATOR_LAYER:
-        combinations.append(combi)
-    response["result"] = combinations
+    response = empty_api_response(request.url._url)
+    response["result"] = INDICATOR_LAYER
     return response
