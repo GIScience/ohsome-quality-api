@@ -16,7 +16,14 @@ from ohsome_quality_analyst.api.request_models import (
     ReportRequestModel,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import configure_logging
+from ohsome_quality_analyst.utils.definitions import (
+    configure_logging,
+    get_dataset_names,
+    get_fid_fields,
+    get_indicator_names,
+    get_layer_names,
+    get_report_names,
+)
 
 configure_logging()
 logging.info("Logging enabled")
@@ -208,3 +215,43 @@ async def _fetch_report(
 @app.get("/regions")
 async def get_available_regions():
     return await db_client.get_available_regions()
+
+
+@app.get("/indicatorNames")
+async def list_indicators():
+    """List names of available indicators."""
+    response = empty_api_response()
+    response["result"] = get_indicator_names()
+    return response
+
+
+@app.get("/datasetNames")
+async def list_datasets():
+    """List names of available datasets."""
+    response = empty_api_response()
+    response["result"] = get_dataset_names()
+    return response
+
+
+@app.get("/layerNames")
+async def list_layers():
+    """List names of available layers."""
+    response = empty_api_response()
+    response["result"] = get_layer_names()
+    return response
+
+
+@app.get("/reportNames")
+async def list_reports():
+    """List names of available reports."""
+    response = empty_api_response()
+    response["result"] = get_report_names()
+    return response
+
+
+@app.get("/FidFields")
+async def list_fid_fields():
+    """List available fid fields for each dataset."""
+    response = empty_api_response()
+    response["result"] = get_fid_fields()
+    return response
