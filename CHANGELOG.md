@@ -4,19 +4,19 @@
 
 ### New Features
 
+- Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
 - Add request models, data validation and documentation to the API with the `pydantic` library ([#102])
     - https://pydantic-docs.helpmanual.io/
     - https://fastapi.tiangolo.com/tutorial/body/
 
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
+[#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 
 
 ## 0.5.1
 
 - Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])
-- Add API-endpoints for list of indicators, reports, layers, datasets and fid_field ([#106])
 
-[#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 [#132]: https://github.com/GIScience/ohsome-quality-analyst/pull/132
 
 
