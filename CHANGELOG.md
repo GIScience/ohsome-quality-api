@@ -5,12 +5,11 @@
 ### New Features
 
 - Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
-- Add request models, data validation and documentation to the API with the `pydantic` library ([#102])
-    - https://pydantic-docs.helpmanual.io/
-    - https://fastapi.tiangolo.com/tutorial/body/
+- Add request models, data validation and documentation to the API with the [`pydantic`] library ([#102])
 
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
+[`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 
 ## 0.5.1

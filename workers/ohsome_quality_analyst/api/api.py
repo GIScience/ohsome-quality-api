@@ -30,7 +30,7 @@ logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
 app = FastAPI(
-    title="OQT API",
+    title="ohsome quality analyst API",
     description="Intrinsic and extrinsic data quality metrics for OpenStreetMap data.",
     version=oqt_version,
     contact={
@@ -71,7 +71,7 @@ async def get_indicator(
 ):
     """Create an Indicator.
 
-    Either the parameters `dataset` and `feature id` has to be provided
+    Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.
 
     Depending on the input, the output is a GeoJSON Feature or
@@ -94,7 +94,7 @@ async def post_indicator(
 ):
     """Create an Indicator.
 
-    Either the parameters `dataset` and `feature id` has to be provided
+    Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.
 
     Depending on the input, the output is a GeoJSON Feature or
