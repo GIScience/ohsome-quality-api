@@ -6,12 +6,12 @@
 
 - Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
 
-[#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 
 ### Other Changes
 
 - Added documentation on how to add a layer definition ([#141])
 
+[#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 
 
