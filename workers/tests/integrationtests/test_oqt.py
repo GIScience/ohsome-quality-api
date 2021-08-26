@@ -174,12 +174,15 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
 
-    @mock.patch("ohsome_quality_analyst.utils.definitions")
-    @oqt_vcr.use_cassette()
-    def test_create_all_indicators(self, definitions_mock):
-        definitions_mock.INDICATOR_LAYER = (
+    @mock.patch(
+        "ohsome_quality_analyst.oqt.INDICATOR_LAYER",
+        (
             ("GhsPopComparisonBuildings", "building_count"),
-        )
+            ("GhsPopComparisonRoads", "major_roads_length"),
+        ),
+    )
+    @oqt_vcr.use_cassette()
+    def test_create_all_indicators(self):
         with mock.patch(
             "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
             new_callable=AsyncMock,
