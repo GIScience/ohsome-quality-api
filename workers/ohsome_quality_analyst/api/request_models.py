@@ -46,9 +46,7 @@ class BaseRequestModel(pydantic.BaseModel):
             "bpolys" in values
             and "dataset" not in values
             and not any(v in values for v in ("featureId", "feature_id"))
-        ):
-            return values
-        elif (
+        ) or (
             "bpolys" not in values
             and "dataset" in values
             and any(v in values for v in ("featureId", "feature_id"))
