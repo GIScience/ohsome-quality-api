@@ -124,7 +124,7 @@ async def get_feature_ids(dataset: str) -> List[str]:
     )
     async with get_connection() as conn:
         records = await conn.fetch(query)
-    return [record[fid_field] for record in records]
+    return [str(record[fid_field]) for record in records]
 
 
 async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):

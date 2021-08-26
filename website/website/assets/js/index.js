@@ -1,15 +1,11 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){ 'use strict'; Object.defineProperty(exports, "__esModule", { value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Navigation = function () {
+const Navigation = function () {
     function Navigation(element) {
         _classCallCheck(this, Navigation);
 
@@ -21,8 +17,8 @@ var Navigation = function () {
     _createClass(Navigation, [{
         key: 'toggleNav',
         value: function toggleNav(e) {
-            var icon = e.currentTarget;
-            var mobileMenu = e.currentTarget.parentNode.parentNode;
+            const icon = e.currentTarget;
+            const mobileMenu = e.currentTarget.parentNode.parentNode;
 
             mobileMenu.classList.contains('active') ? this.closeNav(icon, mobileMenu) : this.openNav(icon, mobileMenu);
         }
@@ -57,23 +53,19 @@ exports.default = Navigation;
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var _navigation = require('./components/navigation.js');
+const _navigation = require('./components/navigation.js');
 
-var _navigation2 = _interopRequireDefault(_navigation);
+const _navigation2 = _interopRequireDefault(_navigation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var html = document.querySelector('html');
-var isMobile = false;
-var resizeId = void 0;
+const html = document.querySelector('html');
+let isMobile = html.classList.contains('mobile');
+let resizeId = undefined;
 // let menu = new Navigation(document.querySelector('.navigation'));
 
-if (html.classList.contains('mobile')) {
-    isMobile = true;
-}
-
 if (html.querySelector('#year')) {
-    var theDate = new Date();
+    const theDate = new Date();
     html.querySelector('#year').innerHTML = theDate.getFullYear();
 }
 
@@ -83,35 +75,35 @@ if (html.querySelector('.burger-menu')) {
 
 // Basic classes to add relevant classes to html tag
 function classRemove(element, classes) {
-    classes.forEach(function (clas) {
-        element.classList.remove(clas);
+    classes.forEach(function (class_) {
+        element.classList.remove(class_);
     });
 }
 
 function viewport() {
-    var width = document.body.clientWidth,
-        viewport = 'default';
+    const width = document.body.clientWidth;
+    let viewportClass = 'default';
 
     if (width >= 1344) {
-        viewport = 'desktop-wide';
+        viewportClass = 'desktop-wide';
     }
     if (width < 1344) {
-        viewport = 'desktop-compact';
+        viewportClass = 'desktop-compact';
     }
     if (width < 1024) {
-        viewport = 'tablet-portrait';
+        viewportClass = 'tablet-portrait';
     }
     if (width < 768) {
-        viewport = 'mobile-landscape';
+        viewportClass = 'mobile-landscape';
     }
     if (width < 481) {
-        viewport = 'mobile-portrait';
+        viewportClass = 'mobile-portrait';
     }
 
     classRemove(html, ['default', 'desktop-compact', 'tablet-portrait', 'mobile-landscape', 'mobile-portrait']);
-    html.classList.add(viewport);
+    html.classList.add(viewportClass);
 
-    return viewport;
+    return viewportClass;
 }
 
 function touchEnabled() {
@@ -124,37 +116,37 @@ function touchEnabled() {
 }
 
 function device() {
-    var device = 'desktop';
+    let deviceClass;
     switch (viewport()) {
         case 'desktop-compact':
-            device = 'desktop';
+            deviceClass = 'desktop';
             if (touchEnabled()) {
-                device = 'tablet';
+                deviceClass = 'tablet';
             }
             break;
         case 'tablet-portrait':
-            device = 'tablet';
+            deviceClass = 'tablet';
             break;
         case 'mobile-landscape':
         case 'mobile-portrait':
-            device = 'mobile';
+            deviceClass = 'mobile';
             break;
     }
     classRemove(html, ['mobile', 'tablet', 'tablet-portrait', 'desktop']);
-    html.classList.add(device);
+    html.classList.add(deviceClass);
 
-    return device;
+    return deviceClass;
 }
 
 function doneResizing() {
     device();
     viewport();
 
-    var wasMobile = isMobile;
+    const wasMobile = isMobile;
 
-    html.classList.contains('mobile') ? isMobile = true : isMobile = false;
+    isMobile = html.classList.contains('mobile');
 
-    if (wasMobile != isMobile) {
+    if (wasMobile !== isMobile) {
         // isMobile ? menu.closeDesktopSearch() : menu.closeMobileMenu();
     }
 }
