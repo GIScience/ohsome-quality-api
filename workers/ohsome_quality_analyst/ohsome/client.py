@@ -35,8 +35,8 @@ async def query(
 
 
 async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
-    # custom timeout as ohsome API can take a long time to send an answer
-    # (up to 10 minutes)
+    # custom timeout as ohsome API can take a long time to send an answer (< 10 minutes)
+    # 660s timeout for reading, and a 300s timeout elsewhere.
     timeout = httpx.Timeout(300, read=660)
     headers["user-agent"] = USER_AGENT
     async with httpx.AsyncClient(timeout=timeout) as client:
