@@ -8,6 +8,12 @@
 
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 
+### Other Changes
+
+- Added documentation on how to add a layer definition ([#141])
+
+[#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
+
 
 ## 0.5.1
 
@@ -49,7 +55,6 @@
 - Add osm-timestamps to indicators ([#101])
 - Add timezone to oqt-timestamp ([#101])
 - Update UML Component Diagram ([#136])
-- Added documentation on how to add a layer definition ([#141])
 
 [#62]: https://github.com/GIScience/ohsome-quality-analyst/issues/62
 [#83]: https://github.com/GIScience/ohsome-quality-analyst/pull/83
@@ -65,7 +70,6 @@
 [#130]: https://github.com/GIScience/ohsome-quality-analyst/pull/130
 [#134]: https://github.com/GIScience/ohsome-quality-analyst/pull/134
 [#136]: https://github.com/GIScience/ohsome-quality-analyst/pull/136
-[#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 
 
 ## 0.4.0
