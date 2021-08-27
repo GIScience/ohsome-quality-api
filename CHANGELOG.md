@@ -6,7 +6,6 @@
 
 - Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
 
-
 ### Other Changes
 
 - Added documentation on how to add a layer definition ([#141])
