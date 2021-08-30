@@ -12,7 +12,7 @@ from typing import Dict, List
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
-from ohsome_quality_analyst.utils.helper import get_module_dir, flatten_sequence
+from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 
 # Dataset names and fid fields which are available in the Geodatabase
 DATASETS = {
