@@ -80,6 +80,7 @@ class TestHelper(unittest.TestCase):
         flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
         self.assertDictEqual(flatten_dict(deep), flat)
 
+    # TODO: add tests for other input than dict
     def test_flatten_seq(self):
         input_seq = {
             "regions": {"default": "ogc_fid"},
