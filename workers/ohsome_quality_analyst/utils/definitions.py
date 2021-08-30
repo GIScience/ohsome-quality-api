@@ -12,7 +12,7 @@ from typing import Dict, List
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
-from ohsome_quality_analyst.utils.helper import get_module_dir
+from ohsome_quality_analyst.utils.helper import get_module_dir, flatten_sequence
 
 # Dataset names and fid fields which are available in the Geodatabase
 DATASETS = {
@@ -225,11 +225,5 @@ def get_layer_names() -> List[str]:
 def get_dataset_names() -> List[str]:
     return list(DATASETS.keys())
 
-
 def get_fid_fields() -> List[str]:
-    fid_fields = []
-    for _, dataset in DATASETS.items():
-        fid_fields.append(dataset["default"])
-        if "other" in dataset.keys():
-            fid_fields += list(dataset["other"])
-    return fid_fields
+    return flatten_sequence(DATASETS)

@@ -10,6 +10,7 @@ from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 from ohsome_quality_analyst.utils.definitions import load_metadata
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
+    flatten_sequence,
     loads_geojson,
     name_to_class,
 )
@@ -78,6 +79,17 @@ class TestHelper(unittest.TestCase):
         deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
         flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
         self.assertDictEqual(flatten_dict(deep), flat)
+
+    def test_flatten_seq(self):
+        input_seq = {
+            "regions": {"default": "ogc_fid"},
+            "gadm": {
+                "default": "uid",  # ISO 3166-1 alpha-3 country code
+                "other": (("name_1", "name_2"), ("id_1", "id_2")),
+            },
+        }
+        output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
+        self.assertListEqual(flatten_sequence(input_seq), output_seq)
 
 
 if __name__ == "__main__":

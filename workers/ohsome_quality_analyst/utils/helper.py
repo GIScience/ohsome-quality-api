@@ -123,3 +123,19 @@ def flatten_dict(input_dict: dict, *, separator: str = ".", prefix: str = "") ->
         return output
     else:
         return {prefix: input_dict}
+
+
+def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
+    """Returns the given input sequence as a list.
+
+    If the input is a dict, it returns all values.
+    """
+    output = []
+    if isinstance(input_seq, dict):
+        input_seq = input_seq.values()
+    for val in input_seq:
+        if isinstance(val, (dict, list, tuple, set)):
+            output += flatten_sequence(val)
+        else:
+            output.append(val)
+    return output
