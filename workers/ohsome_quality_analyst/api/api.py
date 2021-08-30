@@ -76,7 +76,8 @@ async def get_indicator(
 
     Depending on the input, the output is a GeoJSON Feature or
     FeatureCollection with the indicator results.
-    The Feature properties of the input GeoJSON will be preserved.
+    The Feature properties of the input GeoJSON will be preserved
+    if they do not collide with the properties set by OQT.
     """
     if dataset is not None:
         dataset = dataset.value
