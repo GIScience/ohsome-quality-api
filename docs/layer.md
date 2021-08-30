@@ -1,7 +1,7 @@
 # Layer
 
 A layer describes the request which should be made to the 
-[ohsome API](https://docs.ohsome.org/ohsome-api/v1/). Each layer is representative of a 
+[ohsome API](https://api.ohsome.org). Each layer is representative of a 
 specific set of features, aggregated information or user statistics derived from the 
 OpenStreetMap database. Each layer is defined by the ohsome API `endpoint` and 
 parameters for the `filter`. In addition each layer definition has a key, name and 
