@@ -23,6 +23,6 @@ First create an ohsome API query to retrieve desired information from the ohsome
 
 Second translate the query parameters into a layer definition and extent the file `workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml`.
 
-Thirdly specify for which indicator class this layer definition is a valid input. Add those indicator/layer combinations to the `INDICATOR_LAYER` tuple in the `workers/ohsome_quality_analyst/utils/defintions.py` module. The tuple consists of the indicator class name and the layer definitions key as strings (E.g. `("GhsPopComparisonBuildings", "building_count")`).
+Thirdly specify for which indicator class this layer definition is a valid input. Add those indicator/layer combinations to the `INDICATOR_LAYER` tuple in the `workers/ohsome_quality_analyst/utils/definitions.py` module. The tuple consists of the indicator class name and the layer definitions key as strings (E.g. `("GhsPopComparisonBuildings", "building_count")`).
 
 Check if everything was successful by running `oqt list-layers`.
