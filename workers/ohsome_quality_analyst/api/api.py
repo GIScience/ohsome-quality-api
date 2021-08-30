@@ -222,7 +222,10 @@ async def _fetch_report(
 
 @app.get("/regions")
 async def get_available_regions():
-    return await db_client.get_available_regions()
+    """List names of available regions."""
+    response = empty_api_response()
+    response["result"] = await db_client.get_available_regions()
+    return response
 
 
 @app.get("/indicatorNames")
