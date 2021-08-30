@@ -41,4 +41,4 @@ indicator class name and the layer definitions key as strings (E.g.
 successfully added to the tuple it is shown in the return of the command 
 `oqt list-layers`.
 
-At last run `oqt create-inidicator --layer-name new-layer [...]` to check if the new layer can be used to make requests to the ohsome API and create an indicator successfully.
+At last run `oqt create-indicator --layer-name new-layer [...]` to check if the new layer can be used to make requests to the ohsome API and create an indicator successfully.
