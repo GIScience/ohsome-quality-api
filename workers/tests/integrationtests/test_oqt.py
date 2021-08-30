@@ -1,6 +1,7 @@
 import asyncio
 import os
 import unittest
+from unittest import mock
 
 import geojson
 
@@ -8,6 +9,11 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 
 from .utils import oqt_vcr
+
+
+class AsyncMock(mock.MagicMock):
+    async def __call__(self, *args, **kwargs):
+        return super().__call__(*args, **kwargs)
 
 
 class TestOqt(unittest.TestCase):
@@ -167,6 +173,22 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
+
+    @mock.patch(
+        "ohsome_quality_analyst.oqt.INDICATOR_LAYER",
+        (
+            ("GhsPopComparisonBuildings", "building_count"),
+            ("GhsPopComparisonRoads", "major_roads_length"),
+        ),
+    )
+    @oqt_vcr.use_cassette()
+    def test_create_all_indicators(self):
+        with mock.patch(
+            "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
+            new_callable=AsyncMock,
+        ) as get_feature_ids_mock:
+            get_feature_ids_mock.return_value = ["3"]
+            asyncio.run(oqt.create_all_indicators())
 
     def test_check_area_size(self):
         path = os.path.join(

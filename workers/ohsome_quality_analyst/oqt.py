@@ -2,8 +2,9 @@
 Controller for the creation of Indicators and Reports.
 Functions are triggert by the CLI and API.
 """
+import asyncio
 import logging
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -229,31 +230,37 @@ async def create_all_indicators(force: bool = False) -> None:
     """Create all indicator/layer combination for OQT regions.
 
     Possible indicator/layer combinations are defined in `definitions.py`.
+    This functions executes `create_indicator()` function up to four times concurrently.
     """
+
+    async def _create_indicator(indicator_name, layer_name, fid, force, semaphore):
+        async with semaphore:
+            await create_indicator(
+                indicator_name,
+                layer_name,
+                dataset="regions",
+                feature_id=fid,
+                force=force,
+            )
+
+    # Semaphore limits num of concurrent executions
+    semaphore = asyncio.Semaphore(4)
+    tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids("regions")
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
-            try:
-                await create_indicator(
-                    indicator_name,
-                    layer_name,
-                    dataset="regions",
-                    feature_id=fid,
-                    force=force,
-                )
-            # TODO: Those errors are raised during MappingCalculation creation.
-            except (ValueError) as error:
-                if indicator_name == "MappingSaturation":
-                    logging.error(error)
-                    logging.error(
-                        f"Error occurred during creation of indicator "
-                        f"'{indicator_name}' for OQT regions "
-                        f"and feature id '{fid}'. "
-                        f"Continue creation of indicators."
+            tasks.append(
+                asyncio.create_task(
+                    _create_indicator(
+                        indicator_name,
+                        layer_name,
+                        fid,
+                        force,
+                        semaphore,
                     )
-                    continue
-                else:
-                    raise (error)
+                )
+            )
+    await asyncio.gather(*tasks)
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
