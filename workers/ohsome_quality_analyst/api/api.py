@@ -4,8 +4,15 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from ohsome_quality_analyst import __version__ as oqt_version
-from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst import (
+    __author__,
+    __description__,
+    __email__,
+    __homepage__,
+    __title__,
+    __version__,
+    oqt,
+)
 from ohsome_quality_analyst.api.request_models import (
     DatasetEnum,
     FidFieldEnum,
@@ -30,13 +37,13 @@ logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
 app = FastAPI(
-    title="ohsome quality analyst API",
-    description="Intrinsic and extrinsic data quality metrics for OpenStreetMap data.",
-    version=oqt_version,
+    title=__title__,
+    description=__description__,
+    version=__version__,
     contact={
-        "name": "ohsome team",
-        "url": "https://oqt.ohsome.org/",
-        "email": "ohsome@heigit.org",
+        "name": __author__,
+        "url": __homepage__,
+        "email": __email__,
     },
 )
 
@@ -52,7 +59,7 @@ app.add_middleware(
 
 def empty_api_response() -> dict:
     return {
-        "apiVersion": oqt_version,
+        "apiVersion": __version__,
         "attribution": {
             "text": "© OpenStreetMap contributors",
             "url": "https://ohsome.org/copyrights",
