@@ -5,7 +5,8 @@ import click
 import geojson
 import yaml
 
-from ohsome_quality_analyst import cli_opts, oqt
+from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     DATASETS,
@@ -84,14 +85,14 @@ def get_available_regions():
 
 
 @cli.command("create-indicator")
-@cli_option(cli_opts.indicator_name)
-@cli_option(cli_opts.layer_name)
-@cli_option(cli_opts.infile)
-@cli_option(cli_opts.outfile)
-@cli_option(cli_opts.dataset_name)
-@cli_option(cli_opts.feature_id)
-@cli_option(cli_opts.fid_field)
-@cli_option(cli_opts.force)
+@cli_option(options.indicator_name)
+@cli_option(options.layer_name)
+@cli_option(options.infile)
+@cli_option(options.outfile)
+@cli_option(options.dataset_name)
+@cli_option(options.feature_id)
+@cli_option(options.fid_field)
+@cli_option(options.force)
 def create_indicator(
     indicator_name: str,
     infile: str,
@@ -139,13 +140,13 @@ def create_indicator(
 
 
 @cli.command("create-report")
-@cli_option(cli_opts.report_name)
-@cli_option(cli_opts.infile)
-@cli_option(cli_opts.outfile)
-@cli_option(cli_opts.dataset_name)
-@cli_option(cli_opts.feature_id)
-@cli_option(cli_opts.fid_field)
-@cli_option(cli_opts.force)
+@cli_option(options.report_name)
+@cli_option(options.infile)
+@cli_option(options.outfile)
+@cli_option(options.dataset_name)
+@cli_option(options.feature_id)
+@cli_option(options.fid_field)
+@cli_option(options.force)
 def create_report(
     report_name: str,
     infile: str,
@@ -191,7 +192,7 @@ def create_report(
 
 
 @cli.command("create-all-indicators")
-@cli_option(cli_opts.force)
+@cli_option(options.force)
 def create_all_indicators(force: bool):
     """Create all indicators for all OQT regions."""
     click.echo(

@@ -3,12 +3,13 @@ Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 
+import json
 import unittest
 
 import geojson
 from fastapi.testclient import TestClient
 
-from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.api.api import app
 
 
 class TestApi(unittest.TestCase):
@@ -19,7 +20,8 @@ class TestApi(unittest.TestCase):
         url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(geojson.loads(response.content).is_valid)
+        _geojson = json.dumps(json.loads(response.content)["result"])
+        self.assertTrue(geojson.loads(_geojson).is_valid)
 
     def test_get_list_indicators(self):
         url = "/indicatorNames"

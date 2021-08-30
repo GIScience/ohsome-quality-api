@@ -2,18 +2,17 @@
 Global Variables and Functions.
 """
 
-import collections
 import glob
 import logging
 import logging.config
 import os
 import sys
-from typing import Dict
+from typing import Dict, List
 
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
-from ohsome_quality_analyst.utils.helper import get_module_dir
+from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 
 # Dataset names and fid fields which are available in the Geodatabase
 DATASETS = {
@@ -211,5 +210,21 @@ def get_report_classes() -> Dict:
     )
 
 
-ReportResult = collections.namedtuple("Result", "label value text")
-ReportMetadata = collections.namedtuple("Metadata", "name description")
+def get_indicator_names() -> List[str]:
+    return list(load_metadata("indicators").keys())
+
+
+def get_report_names() -> List[str]:
+    return list(load_metadata("reports").keys())
+
+
+def get_layer_names() -> List[str]:
+    return list(load_layer_definitions().keys())
+
+
+def get_dataset_names() -> List[str]:
+    return list(DATASETS.keys())
+
+
+def get_fid_fields() -> List[str]:
+    return flatten_sequence(DATASETS)
