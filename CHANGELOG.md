@@ -26,6 +26,7 @@
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
+[`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 
 ## 0.5.1
