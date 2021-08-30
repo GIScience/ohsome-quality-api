@@ -260,7 +260,7 @@ async def create_all_indicators(force: bool = False) -> None:
                     )
                 )
             )
-    return await asyncio.gather(*tasks)
+    await asyncio.gather(*tasks)
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
