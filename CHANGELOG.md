@@ -8,7 +8,7 @@
 
 ### Other Changes
 
-- Added documentation on "How to add a layer definitions" ([#141])
+- Added documentation on “How to add a layer definitions” ([#141])
 
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
