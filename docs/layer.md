@@ -6,7 +6,7 @@ specific set of features, aggregated information or user statistics derived from
 OpenStreetMap database. Each layer is defined by the ohsome API `endpoint` and 
 parameters for the `filter`. In addition each layer definition has a key, name and 
 description. Layer definitions are written down as YAML file at 
-`workers/ohsome_quality_analyst/ohsome/layer_defintions.yaml`
+`workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml`
 
 Example:
 
