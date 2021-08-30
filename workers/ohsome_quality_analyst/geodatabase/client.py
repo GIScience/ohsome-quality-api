@@ -14,6 +14,7 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
+import json
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -24,6 +25,7 @@ import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
+from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
 
 
 @asynccontextmanager
@@ -72,6 +74,7 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         indicator.result.value,
         indicator.result.description,
         indicator.result.svg,
+        json.dumps(indicator.as_feature(), default=datetime_to_isostring_timestamp),
     )
 
     async with get_connection() as conn:

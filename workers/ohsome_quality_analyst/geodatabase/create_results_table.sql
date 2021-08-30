@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS results (
     result_value float,  -- VALUE is an SQL keyword
     result_description text,
     result_svg text,
+    feature json,
     PRIMARY KEY (indicator_name, layer_name, dataset_name, fid)
 );
