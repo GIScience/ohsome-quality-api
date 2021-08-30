@@ -42,14 +42,13 @@ class BaseRequestModel(pydantic.BaseModel):
     def check_bpolys_or_dataset_and_feature_id(cls, values):
         """Make sure either bpolys or dataset and feature_id are given as parameters."""
         # featureId is an pydantic alias for feature_id (See config class below)
+        _values = list(map(snake_to_lower_camel, values))
         if (
-            "bpolys" in values
-            and "dataset" not in values
-            and not any(v in values for v in ("featureId", "feature_id"))
+            "bpolys" in _values
+            and not any(v in _values for v in ("dataset", "featureId"))
         ) or (
-            "bpolys" not in values
-            and "dataset" in values
-            and any(v in values for v in ("featureId", "feature_id"))
+            "bpolys" not in _values
+            and all(v in _values for v in ("dataset", "featureId"))
         ):
             return values
         else:
