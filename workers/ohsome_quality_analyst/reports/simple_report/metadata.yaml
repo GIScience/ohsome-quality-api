@@ -2,7 +2,7 @@
 SimpleReport:
   name: Simple Report
   description: |
-    This report shows the quality for two indicators':'
+    This report shows the quality for two indicators:
     mapping-saturation and ghspop-comparison.
     It's main function is to test the interactions between
     database, api and website.
