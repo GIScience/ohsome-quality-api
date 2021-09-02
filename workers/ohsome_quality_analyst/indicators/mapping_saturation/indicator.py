@@ -36,7 +36,7 @@ class MappingSaturation(BaseIndicator):
             feature=feature,
         )
         self.time_range = time_range
-        # Following attributes will be set during life-cycle of the object.
+        # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
         self.values_normalized: list = []
@@ -57,32 +57,31 @@ class MappingSaturation(BaseIndicator):
             isoparse(item["timestamp"]) for item in query_results["result"]
         ]
         # Latest timestamp of ohsome API results
-        self.result.timestamp_osm = max(self.timestamps)
+        self.result.timestamp_osm = self.timestamps[-1]
         max_value = max(self.values)
         if max_value == 0:
             self.no_data = True
-        # TODO: Are query_results/values sorted after time?
         elif self.values[-1] == 0:
             self.deleted_data = True
         else:
             self.values_normalized = [value / max_value for value in self.values]
 
     def calculate(self) -> None:
-        """Calculate the growth rate + saturation level within the last 3 years."""
+        """Calculate the growth rate and saturation level within the last 3 years."""
         if self.no_data:
-            self.result.description = "No mapping has occurred in this region."
+            self.result.description = "No features were mapped in this region."
             return
         if self.deleted_data:
             self.result.description = (
-                "Mapping has occurred in this region but has been deleted since."
+                "All mapped features in this region have been since deleted."
             )
             return
         # prepare the data
-        li = list(range(len(self.values)))
 
         # get y values fot best fitting sigmoid curve, with these y the
         # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
+        # TODO: Change the dict to three parameters
         ydata_for_sat = sigmoid_curve.getBestFittingCurve(
             {
                 "timestamps": self.timestamps,
@@ -106,13 +105,14 @@ class MappingSaturation(BaseIndicator):
                 # start stadium, some data are there, but not much
                 self.saturation = 0
             else:
+                indices = list(range(len(self.values)))
                 # calculate slope/growth of last 3 years
                 # take value in -36. month and value in last month of data
-                early_x = li[-36]
-                last_x = li[-1]
+                early_x = indices[-36]
+                last_x = indices[-1]
                 # get saturation level within last 3 years
                 self.saturation = sigmoid_curve.getSaturationInLast3Years(
-                    early_x, last_x, li, ydata_for_sat
+                    early_x, last_x, indices, ydata_for_sat
                 )
                 # if earlyX and lastX return same y value
                 # (means no growth any more), then
@@ -169,6 +169,7 @@ class MappingSaturation(BaseIndicator):
         )
 
         sigmoid_curve = sigmoidCurve()
+        # TODO: Change the dict to three parameters
         ydata_for_sat = sigmoid_curve.getBestFittingCurve(
             {
                 "timestamps": self.timestamps,
