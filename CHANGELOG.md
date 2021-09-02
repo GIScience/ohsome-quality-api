@@ -11,15 +11,18 @@
 
 - Improve API Swagger interface by adding more examples and better documentation ([#237])
 - Make `pydantic` data models more modular ([#237])
+- Use [`scipy`] to fit sigmoid curves to data for the Mapping Saturation indicator ([#170])
 
 ### How to upgrade
 
 - `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
 - For requests to the `/indicator` or `/report` endpoints of the API for a custom AOI (usage of the `bpolys` parameter): use the POST method ([#223])
 
+[#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
 [#237]: https://github.com/GIScience/ohsome-quality-analyst/pull/237
+[`scipy`]: https://scipy.org/
 
 
 ## 0.7.0

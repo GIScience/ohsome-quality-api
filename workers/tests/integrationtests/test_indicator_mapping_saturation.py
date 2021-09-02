@@ -27,10 +27,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             layer_name="major_roads_length", feature=self.feature
         )
         asyncio.run(indicator.preprocess())
+        indicator.calculate()
         self.assertIsInstance(indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(indicator.result.timestamp_oqt, datetime)
-
-        indicator.calculate()
         self.assertIsNotNone(indicator.result.label)
         self.assertIsNotNone(indicator.result.value)
         self.assertIsNotNone(indicator.result.description)
