@@ -150,10 +150,20 @@ Alternative query the API from a terminal using CURL:
 
 ```bash
 # GET request for an indicator
-curl -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerName=building_count&dataset=regions&featureId=1" | python -m json.tool > response.json
+curl \
+    -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerName=building_count&dataset=regions&featureId=1" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    | python -m json.tool > response.json
+
 
 # POST request for a report
-curl -X POST "http://127.0.0.1:8080/report/SimpleReport" -d '{"dataset": "regions", "featureId": 1}' | python -m json.tool > response.json
+curl \
+    -X POST "http://127.0.0.1:8080/report/SimpleReport" \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -d '{"dataset": "regions", "featureId": 1}' \
+    | python -m json.tool > response.json
 ```
 
 
