@@ -1,3 +1,4 @@
+import datetime
 import logging
 from io import StringIO
 from string import Template
@@ -33,8 +34,8 @@ class LastEdit(BaseIndicator):
 
         self.time_range = time_range
         self.element_count = None
-        self.contributions_latest_count = None
-        self.ratio = None  # Ratio of latest contribution count to element count
+        self.contributions = None
+        self.ratio = {}
 
     async def preprocess(self) -> None:
         if self.time_range is None:
@@ -49,16 +50,13 @@ class LastEdit(BaseIndicator):
             time=self.time_range,
             endpoint="contributions/latest/count",
         )
-        self.contributions_latest_count = response["result"][0]["value"]
+
         response = await ohsome_client.query(
             layer=self.layer,
             bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
-        bpolys = self.feature.geometry
-        contributions = ohsome_client.get_contributions(bpolys)
-        print(contributions)
-        self.result.timestamp_osm = latest_ohsome_stamp
+        self.contributions = ohsome_client.get_contributions(self.feature.geometry)
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
@@ -67,31 +65,33 @@ class LastEdit(BaseIndicator):
         if self.element_count == 0:
             self.result.description = "In the area of intrest no features are present."
             return
-
-        if self.contributions_latest_count > self.element_count:
-            self.ratio = 100
-        else:
-            self.ratio = round(
-                (self.contributions_latest_count / self.element_count) * 100
-            )
-
+        for year in self.contributions:
+            if self.contributions[year] > self.element_count:
+                self.ratio[year] = 100
+            else:
+                self.ratio[year] = round(
+                    (self.contributions[year] / self.element_count) * 100
+                )
+        current = datetime.datetime.now()
+        date = current.date()
+        cur_year = int(date.strftime("%Y")) - 1
         description = Template(self.metadata.result_description).substitute(
-            ratio=self.ratio, layer_name=self.layer.name
+            ratio=self.ratio[cur_year], layer_name=self.layer.name
         )
 
-        if self.ratio >= self.threshold_yellow:
+        if self.ratio[cur_year] >= self.threshold_yellow:
             self.result.label = "green"
             self.result.value = 1.0
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
-        elif self.ratio >= self.threshold_red:
+        elif self.ratio[cur_year] >= self.threshold_red:
             self.result.label = "yellow"
             self.result.value = 0.5
             self.result.description = (
                 description + self.metadata.label_description["yellow"]
             )
-        elif self.ratio < self.threshold_red:
+        elif self.ratio[cur_year] < self.threshold_red:
             self.result.label = "red"
             self.result.value = 0.0
             self.result.description = (
