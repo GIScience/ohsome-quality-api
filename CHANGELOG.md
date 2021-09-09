@@ -1,5 +1,34 @@
 # Changelog
 
+## Current Main
+
+### Breaking Changes
+
+- Save indicator as GeoJSON Feature to DB ([#149])
+    - Extend database schema with one additional attribute `feature` of type JSON
+
+### New Features
+
+- Add API-endpoints to list indicators, reports, layers, datasets and feature id fields ([#106])
+- Add request models, data validation and documentation to the API with the [`pydantic`] library ([#102])
+
+### Other Changes
+
+- Added documentation on “How to add a layer definitions” ([#141])
+- Use concurrency when creating all indicators ([#153])
+
+### How to upgrade?
+
+- If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
+
+[#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
+[#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
+[#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
+[#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
+[#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
+[`pydantic`]: https://pydantic-docs.helpmanual.io/
+
+
 ## 0.5.1
 
 - Apply breaking changes from 0.5.0 ([#100], [#130]) to the webclient ([#132])

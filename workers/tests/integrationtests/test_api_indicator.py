@@ -11,7 +11,7 @@ from typing import Optional
 from fastapi.testclient import TestClient
 from schema import Schema
 
-from ohsome_quality_analyst.api import app
+from ohsome_quality_analyst.api.api import app
 
 from .api_response_schema import get_feature_schema, get_response_schema
 from .utils import oqt_vcr

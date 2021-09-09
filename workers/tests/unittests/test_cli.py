@@ -8,7 +8,7 @@ import unittest
 
 from click.testing import CliRunner
 
-from ohsome_quality_analyst.cli import cli
+from ohsome_quality_analyst.cli.cli import cli
 
 
 class TestCliUnit(unittest.TestCase):

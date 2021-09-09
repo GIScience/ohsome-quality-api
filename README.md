@@ -43,6 +43,7 @@ Please refer to [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 Looking to implement a new indicator? Then please have a look at [docs/indicator_creation.md](/docs/indicator_creation.md)
 
+Looking to add a new layer to run your analysis with? Then please have a look at [docs/layer.md](/docs/layer.md)
 
 ## Development Setup
 

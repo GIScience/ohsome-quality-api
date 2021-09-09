@@ -1,6 +1,8 @@
 import asyncio
 import unittest
 
+import geojson
+
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
@@ -30,6 +32,11 @@ class TestGeodatabase(unittest.TestCase):
         # TODO: split tests by functionality (load and safe),
         # but load test needs a saved indicator.
         # save
+
+        async def _fetchval(query):
+            async with db_client.get_connection() as conn:
+                return await conn.fetchval(query)
+
         self.indicator = GhsPopComparisonBuildings(
             layer_name="building_count",
             feature=self.feature,
@@ -42,6 +49,16 @@ class TestGeodatabase(unittest.TestCase):
                 self.indicator, self.dataset, self.feature_id
             )
         )
+        query = (
+            "SELECT feature "
+            + "FROM results "
+            + "WHERE indicator_name = 'GHS-POP Comparison Buildings' "
+            + "AND layer_name = 'Building Count' "
+            + "AND dataset_name = 'regions' "
+            + "AND fid = '3';"
+        )
+        result = asyncio.run(_fetchval(query))
+        self.assertTrue(geojson.loads(result).is_valid)
 
         # load
         self.indicator = GhsPopComparisonBuildings(
@@ -59,9 +76,10 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.svg)
 
     def test_get_feature_ids(self):
-        result = asyncio.run(db_client.get_feature_ids(self.dataset))
-        self.assertIsInstance(result, list)
-        self.assertTrue(result)
+        results = asyncio.run(db_client.get_feature_ids(self.dataset))
+        self.assertIsInstance(results, list)
+        for result in results:
+            self.assertIsInstance(result, str)
 
         with self.assertRaises(KeyError):
             asyncio.run(db_client.get_feature_ids("foo"))

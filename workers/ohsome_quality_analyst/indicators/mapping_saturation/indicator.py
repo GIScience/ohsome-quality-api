@@ -2,9 +2,8 @@ import logging
 from io import StringIO
 from string import Template
 
-import dateutil.parser
 import matplotlib.pyplot as plt
-import pandas as pd
+from dateutil.parser import isoparse
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -21,7 +20,10 @@ THRESHOLD_YELLOW = 0.03
 
 
 class MappingSaturation(BaseIndicator):
-    """The Mapping Saturation Indicator."""
+    """The Mapping Saturation Indicator.
+
+    Time period is one month since 2008.
+    """
 
     def __init__(
         self,
@@ -34,102 +36,83 @@ class MappingSaturation(BaseIndicator):
             feature=feature,
         )
         self.time_range = time_range
-        # Those attributes will be set during lifecycle of the object.
+        # The following attributes will be set during the life-cycle of the object.
+        # Attributes needed for calculation
+        self.values: list = []
+        self.values_normalized: list = []
+        self.timestamps: list = []
+        self.no_data: bool = False
+        self.deleted_data: bool = False
+
+        # Attributes needed for result determination
         self.saturation = None
         self.growth = None
-        self.preprocessing_results = None
 
     async def preprocess(self) -> None:
-        """Get data from ohsome API and db. Put timestamps + data in list"""
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry, time=self.time_range
         )
-        results = [y_dict["value"] for y_dict in query_results["result"]]
-        timestamps = [y_dict["timestamp"] for y_dict in query_results["result"]]
-
-        datetimes = []
-        for timestamp in timestamps:
-            datetime_ = dateutil.parser.isoparse(timestamp)
-            datetimes.append(datetime_)
-        datetimes.sort()
-        # osm-timestamp is only the timestamp of the latest feature
-        self.result.timestamp_osm = datetimes[-1]
-        max_value = max(results)
-        y_end_value = results[-1]
-        # check if data are there, in case of 0 = no data
+        self.values = [item["value"] for item in query_results["result"]]
+        self.timestamps = [
+            isoparse(item["timestamp"]) for item in query_results["result"]
+        ]
+        # Latest timestamp of ohsome API results
+        self.result.timestamp_osm = self.timestamps[-1]
+        max_value = max(self.values)
         if max_value == 0:
-            results_normalized = -1
-            results = -1
-        # check if data at the end of time period are still there
-        elif max_value > 0 and y_end_value == 0:
-            results_normalized = -2
-            results = -2
+            self.no_data = True
+        elif self.values[-1] == 0:
+            self.deleted_data = True
         else:
-            results_normalized = [result / max_value for result in results]
-
-        self.preprocessing_results = {
-            "timestamps": timestamps,
-            "results": results,
-            "results_normalized": results_normalized,
-        }
+            self.values_normalized = [value / max_value for value in self.values]
 
     def calculate(self) -> None:
-        """
-        Calculate the growth rate + saturation level within the last 3 years.
-        Depending on the result, define label and value.
-        """
-        # check if any mapping happened in this region
-        # and directly return quality label if no mapping happened
-        if self.preprocessing_results["results"] == -1:
-            # start stadium
-            # "No mapping has happened in this region. "
+        """Calculate the growth rate and saturation level within the last 3 years."""
+        if self.no_data:
+            self.result.description = "No features were mapped in this region."
             return
-        if self.preprocessing_results["results"] == -2:
-            # deletion of all data
-            # "Mapping has happened in this region but data were deleted."
+        if self.deleted_data:
+            self.result.description = (
+                "All mapped features in this region have been since deleted."
+            )
             return
         # prepare the data
-        # not nice work around to avoid error ".. is not indexable"
-        dfWorkarkound = pd.DataFrame(self.preprocessing_results)
-        li = []
-        for i in range(len(dfWorkarkound)):
-            li.append(i)
-        # create current data frame
-        df1 = pd.DataFrame(
-            {
-                "timestamps": self.preprocessing_results["timestamps"],
-                "yValues": self.preprocessing_results["results"],
-                "li": li,
-            }
-        )
+
         # get y values fot best fitting sigmoid curve, with these y the
         # saturation will be calculated
         sigmoid_curve = sigmoidCurve()
-        ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
-        if ydataForSat[0] != "empty":
+        # TODO: Change the dict to three parameters
+        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
+            {
+                "timestamps": self.timestamps,
+                "results": self.values,
+                "results_normalized": self.values_normalized,
+            }
+        )
+        if ydata_for_sat[0] != "empty":
             # check if data are more than start stadium
             # The end of the start stage is defined with
             # the maximum of the curvature function f''(x)
             # here: simple check <= 2
             # TODO implement function from MA for start stadium
-            """
-            For buildings-count in a small area, this could return a wrong
-            interpretation, eg a little collection of farm house and buildings
-            with eg less than 8 buildings, but all buildings are mapped, the value
-            would be red, but its all mapped...
-            """
+            #
+            # For buildings-count in a small area, this could return a wrong
+            # interpretation, eg a little collection of farm house and buildings
+            # with eg less than 8 buildings, but all buildings are mapped, the value
+            # would be red, but its all mapped...
             # calculate/define traffic light value and label
-            if max(df1.yValues) <= 2:
+            if max(self.values) <= 2:
                 # start stadium, some data are there, but not much
                 self.saturation = 0
             else:
+                indices = list(range(len(self.values)))
                 # calculate slope/growth of last 3 years
                 # take value in -36. month and value in last month of data
-                earlyX = li[-36]
-                lastX = li[-1]
+                early_x = indices[-36]
+                last_x = indices[-1]
                 # get saturation level within last 3 years
                 self.saturation = sigmoid_curve.getSaturationInLast3Years(
-                    earlyX, lastX, df1.li, ydataForSat
+                    early_x, last_x, indices, ydata_for_sat
                 )
                 # if earlyX and lastX return same y value
                 # (means no growth any more), then
@@ -165,31 +148,10 @@ class MappingSaturation(BaseIndicator):
                 )
 
     def create_figure(self) -> None:
-        """
-        Create svg with data line in blue and sigmoid curve in red.
-        """
+        """Create svg with data line in blue and sigmoid curve in red."""
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-
-        # not nice work around to avoid error ".. is not indexable"
-        dfWorkarkound = pd.DataFrame(self.preprocessing_results)
-        li = []
-        for i in range(len(dfWorkarkound)):
-            li.append(i)
-        # create current dataframe
-        df1 = pd.DataFrame(
-            {
-                "timestamps": self.preprocessing_results["timestamps"],
-                "yValues": self.preprocessing_results["results"],
-                "li": li,
-            }
-        )
-        # get y values fot best fitting sigmoid curve, with these y the
-        # saturation will be calculated
-        sigmoid_curve = sigmoidCurve()
-        ydataForSat = sigmoid_curve.getBestFittingCurve(self.preprocessing_results)
-
         # prepare plot
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
@@ -198,35 +160,32 @@ class MappingSaturation(BaseIndicator):
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        # show nice dates on x axis in plot
-        df1["timestamps"] = pd.to_datetime(df1["timestamps"])
         # plot the data
         ax.plot(
-            df1.timestamps,
-            df1.yValues,
+            self.timestamps,
+            self.values,
             linecol[0],
             label="OSM data",
         )
-        if ydataForSat[0] != "empty":
+
+        sigmoid_curve = sigmoidCurve()
+        # TODO: Change the dict to three parameters
+        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
+            {
+                "timestamps": self.timestamps,
+                "results": self.values,
+                "results_normalized": self.values_normalized,
+            }
+        )
+        if ydata_for_sat[0] != "empty":
             ax.set_title("Saturation level of the data")
             # plot sigmoid curve
-            ax.plot(df1.timestamps, ydataForSat, linecol[2], label="Sigmoid curve")
-        elif self.preprocessing_results["results"] == -1:
-            # start stadium
-            # "No mapping has happened in this region. "
-            plt.title(
-                "No Sigmoid curve could be fitted into the data"
-                + "\nNo mapping has happened in this region."
+            ax.plot(
+                self.timestamps,
+                ydata_for_sat,
+                linecol[2],
+                label="Sigmoid curve",
             )
-        elif self.preprocessing_results["results"] == -2:
-            # deletion of all data
-            # "Mapping has happened in this region but data were deleted."
-            plt.title(
-                "No Sigmoid curve could be fitted into the data"
-                + "\nMapping has happened but data were deleted."
-            )
-        else:
-            plt.title("No Sigmoid curve could be fitted into the data")
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()

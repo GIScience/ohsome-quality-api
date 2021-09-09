@@ -1,5 +1,5 @@
 ---
-# A layer is a set of features.
+# A layer describes the request which should be made to the ohsome API.
 # Each layer is definied by ohsome API parameters.
 # https://docs.ohsome.org/ohsome-api/stable/
 
