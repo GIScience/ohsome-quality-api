@@ -133,7 +133,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-indicators"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertIsInstance(result.output, str)
 
     def test_list_reports(self):
         result = self.runner.invoke(
@@ -141,7 +141,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-reports"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertIsInstance(result.output, str)
 
     def test_list_layers(self):
         result = self.runner.invoke(
@@ -149,7 +149,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-layers"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertIsInstance(result.output, str)
 
     def test_list_datasets(self):
         result = self.runner.invoke(
@@ -157,7 +157,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-datasets"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertIsInstance(result.output, str)
 
     def test_list_fid_fields(self):
         result = self.runner.invoke(
@@ -165,7 +165,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-fid-fields"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertIsInstance(result.output, str)
 
 
 if __name__ == "__main__":
