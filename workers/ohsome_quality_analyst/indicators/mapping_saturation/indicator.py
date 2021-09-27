@@ -3,13 +3,12 @@ from io import StringIO
 from string import Template
 
 import matplotlib.pyplot as plt
+import numpy as np
 from dateutil.parser import isoparse
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.indicators.mapping_saturation.sigmoid_curve import (
-    sigmoidCurve,
-)
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit, get_best_fit
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 # threshold values defining the color of the traffic light
@@ -39,7 +38,6 @@ class MappingSaturation(BaseIndicator):
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
-        self.values_normalized: list = []
         self.timestamps: list = []
         self.no_data: bool = False
         self.deleted_data: bool = False
@@ -47,6 +45,7 @@ class MappingSaturation(BaseIndicator):
         # Attributes needed for result determination
         self.saturation = None
         self.growth = None
+        self.best_fit: Fit = None
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
@@ -63,8 +62,6 @@ class MappingSaturation(BaseIndicator):
             self.no_data = True
         elif self.values[-1] == 0:
             self.deleted_data = True
-        else:
-            self.values_normalized = [value / max_value for value in self.values]
 
     def calculate(self) -> None:
         """Calculate the growth rate and saturation level within the last 3 years."""
@@ -76,83 +73,47 @@ class MappingSaturation(BaseIndicator):
                 "All mapped features in this region have been since deleted."
             )
             return
-        # prepare the data
-
-        # get y values fot best fitting sigmoid curve, with these y the
-        # saturation will be calculated
-        sigmoid_curve = sigmoidCurve()
-        # TODO: Change the dict to three parameters
-        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
-            {
-                "timestamps": self.timestamps,
-                "results": self.values,
-                "results_normalized": self.values_normalized,
-            }
-        )
-        if ydata_for_sat[0] != "empty":
-            # check if data are more than start stadium
-            # The end of the start stage is defined with
-            # the maximum of the curvature function f''(x)
-            # here: simple check <= 2
-            # TODO implement function from MA for start stadium
-            #
-            # For buildings-count in a small area, this could return a wrong
-            # interpretation, eg a little collection of farm house and buildings
-            # with eg less than 8 buildings, but all buildings are mapped, the value
-            # would be red, but its all mapped...
-            # calculate/define traffic light value and label
-            if max(self.values) <= 2:
-                # start stadium, some data are there, but not much
-                self.saturation = 0
-            else:
-                indices = list(range(len(self.values)))
-                # calculate slope/growth of last 3 years
-                # take value in -36. month and value in last month of data
-                early_x = indices[-36]
-                last_x = indices[-1]
-                # get saturation level within last 3 years
-                self.saturation = sigmoid_curve.getSaturationInLast3Years(
-                    early_x, last_x, indices, ydata_for_sat
-                )
-                # if earlyX and lastX return same y value
-                # (means no growth any more), then
-                # getSaturationInLast3Years returns 1.0
-
-            # if saturation == 1.0:
-            #    growth should be 0.0
-            self.growth = 1 - self.saturation
-
-            description = Template(self.metadata.result_description).substitute(
-                saturation=self.saturation,
-                growth=self.growth,
+        xdata = list(range(len(self.timestamps)))
+        self.best_fit = get_best_fit(xdata=xdata, ydata=self.values)
+        if max(self.values) <= 2:
+            # start stadium, some data are there, but not much
+            self.saturation = 0
+        else:
+            # calculate slope of last 3 years (saturation)
+            self.saturation = (np.interp(xdata[-36], xdata, self.best_fit.ydata)) / (
+                np.interp(xdata[-1], xdata, self.best_fit.ydata)
             )
-            if self.saturation == 0:
-                self.result.label = "red"
-                self.result.value = 0.0
-                self.result.description = (
-                    description + self.metadata.label_description["red"]
-                )
-            # growth is larger than 3% within last 3 years
-            elif self.growth <= THRESHOLD_YELLOW:
-                self.result.label = "green"
-                self.result.value = 1.0
-                self.result.description = (
-                    description + self.metadata.label_description["green"]
-                )
-            # growth level is better than the red threshould
-            else:
-                self.result.label = "yellow"
-                self.result.value = 0.5
-                self.result.description = (
-                    description + self.metadata.label_description["yellow"]
-                )
+        self.growth = 1 - self.saturation
+        description = Template(self.metadata.result_description).substitute(
+            saturation=self.saturation,
+            growth=self.growth,
+        )
+        if self.saturation == 0:
+            self.result.label = "red"
+            self.result.value = 0.0
+            self.result.description = (
+                description + self.metadata.label_description["red"]
+            )
+        # growth is larger than 3% within last 3 years
+        elif self.growth <= THRESHOLD_YELLOW:
+            self.result.label = "green"
+            self.result.value = 1.0
+            self.result.description = (
+                description + self.metadata.label_description["green"]
+            )
+        else:
+            self.result.label = "yellow"
+            self.result.value = 0.5
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
 
     def create_figure(self) -> None:
         """Create svg with data line in blue and sigmoid curve in red."""
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        # prepare plot
+
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
 
@@ -160,6 +121,7 @@ class MappingSaturation(BaseIndicator):
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
+        ax.set_title("Saturation level of the data")
         # plot the data
         ax.plot(
             self.timestamps,
@@ -167,25 +129,13 @@ class MappingSaturation(BaseIndicator):
             linecol[0],
             label="OSM data",
         )
-
-        sigmoid_curve = sigmoidCurve()
-        # TODO: Change the dict to three parameters
-        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
-            {
-                "timestamps": self.timestamps,
-                "results": self.values,
-                "results_normalized": self.values_normalized,
-            }
+        # plot sigmoid curve
+        ax.plot(
+            self.timestamps,
+            self.best_fit.ydata,
+            linecol[2],
+            label="Sigmoid curve: " + self.best_fit.name,
         )
-        if ydata_for_sat[0] != "empty":
-            ax.set_title("Saturation level of the data")
-            # plot sigmoid curve
-            ax.plot(
-                self.timestamps,
-                ydata_for_sat,
-                linecol[2],
-                label="Sigmoid curve",
-            )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()

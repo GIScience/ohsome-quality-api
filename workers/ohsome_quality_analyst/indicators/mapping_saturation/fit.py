@@ -8,12 +8,13 @@ Best fitting function is chosen by the applying mean-squared error criterion.
 """
 
 import logging
-import sys
 from dataclasses import dataclass
 from typing import Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit
+
+from ohsome_quality_analyst.indicators.mapping_saturation import sigmoid_curves
 
 
 @dataclass
@@ -33,7 +34,7 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
     # For sigmoid_1 to sigmoid_4
     for i in range(1, 5):
         func_name = "sigmoid_" + str(i)
-        func = getattr(sys.modules[__name__], func_name)
+        func = getattr(sigmoid_curves, func_name)
         p0 = get_initial_guess(i, xdata, ydata)
         bounds = get_bounds(i, xdata, ydata)
         try:
@@ -103,5 +104,5 @@ def calc_mse(a: list, b: list):
 
 
 def get_slope(xdata, ydata):
-    # slope, intercept = np.polyfit(xdata, ydata, 1)
+    slope, intercept = np.polyfit(xdata, ydata, 1)
     raise NotImplementedError
