@@ -1,6 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
+from typing import Literal, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,16 +12,11 @@ from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation.fit import get_best_fit
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
-# threshold values defining the color of the traffic light
-# derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
-# saturation: 0 < f‘(x) <= 0.03 and years with saturation > 2
-THRESHOLD_YELLOW = 0.03
-# TODO define THRESHOLD_RED (where start stadium ends) with function from MA
-
 
 class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator.
 
+    Calculate the growth rate and saturation level within the last 3 years.
     Time period is one month since 2008.
     """
 
@@ -34,17 +30,22 @@ class MappingSaturation(BaseIndicator):
             layer_name=layer_name,
             feature=feature,
         )
-        self.time_range = time_range
+        self.time_range: str = time_range
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
         self.timestamps: list = []
-        self.no_data: bool = False
-        self.deleted_data: bool = False
+        self.corner_cases: Literal["", "no_data", "deleted_data"] = ""
+        # Threshold derived from MA Katha p24
+        # (mixture of Gröchenig et al. +  Barrington-Leigh)
+        # saturation: 0 < f‘(x) <= 0.03 and years with saturation > 2
+        self.threshold_yellow = 0.03
+        # TODO: THRESHOLD_RED (where start stadium ends) with function from MA Katha p24
+        # self.threshold_red = None
 
         # Attributes needed for result determination
-        self.saturation = None
-        self.growth = None
+        self.saturation: Optional[float] = None
+        self.growth: Optional[float] = None
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
@@ -54,8 +55,6 @@ class MappingSaturation(BaseIndicator):
         self.timestamps = [
             isoparse(item["timestamp"]) for item in query_results["result"]
         ]
-        # Latest timestamp of ohsome API results
-        self.result.timestamp_osm = self.timestamps[-1]
         max_value = max(self.values)
         if max_value == 0:
             self.no_data = True
@@ -63,22 +62,25 @@ class MappingSaturation(BaseIndicator):
             self.deleted_data = True
 
     def calculate(self) -> None:
-        """Calculate the growth rate and saturation level within the last 3 years."""
-        if self.no_data:
+        # Latest timestamp of ohsome API results
+        self.result.timestamp_osm = self.timestamps[-1]
+        if self.corner_cases == "no_data":
             self.result.description = "No features were mapped in this region."
             return
-        if self.deleted_data:
+        if self.corner_cases == "deleted_data":
             self.result.description = (
                 "All mapped features in this region have been since deleted."
             )
             return
         xdata = list(range(len(self.timestamps)))
+        # TODO: `best_fit` should be a class attribute.
+        # It is not to avoid cluttered indicator result output.
         best_fit = get_best_fit(xdata=xdata, ydata=self.values)
         if max(self.values) <= 2:
-            # start stadium, some data are there, but not much
+            # Some data are there, but not much -> start stadium
             self.saturation = 0
         else:
-            # calculate slope of last 3 years (saturation)
+            # Calculate slope of last 3 years (saturation)
             self.saturation = (np.interp(xdata[-36], xdata, best_fit.ydata)) / (
                 np.interp(xdata[-1], xdata, best_fit.ydata)
             )
@@ -94,7 +96,7 @@ class MappingSaturation(BaseIndicator):
                 description + self.metadata.label_description["red"]
             )
         # growth is larger than 3% within last 3 years
-        elif self.growth <= THRESHOLD_YELLOW:
+        elif self.growth <= self.threshold_yellow:
             self.result.label = "green"
             self.result.value = 1.0
             self.result.description = (
@@ -108,7 +110,6 @@ class MappingSaturation(BaseIndicator):
             )
 
     def create_figure(self) -> None:
-        """Create svg with data line in blue and sigmoid curve in red."""
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
