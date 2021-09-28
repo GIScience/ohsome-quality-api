@@ -29,7 +29,7 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
     Fit sigmoid_1 to sigmoid_4 to given data and return best fit based on Mean Squared
     Error.
     """
-    best_fit: Fit = None
+    best_fit = None
     # For sigmoid_1 to sigmoid_4
     for i in range(1, 5):
         func_name = "sigmoid_" + str(i)
@@ -49,9 +49,7 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
         ydata_fitted = func(xdata, *popt)
         mse = calc_mse(ydata, ydata_fitted)
         fit = Fit(func_name, ydata_fitted, mse)
-        if best_fit is None:
-            best_fit = fit
-        elif fit.mse < best_fit.mse:
+        if best_fit is None or best_fit.mse > fit.mse:
             best_fit = fit
     return best_fit
 
