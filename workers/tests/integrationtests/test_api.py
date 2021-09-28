@@ -20,7 +20,7 @@ class TestApi(unittest.TestCase):
         url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        _geojson = json.dumps(json.loads(response.content)["result"])
+        _geojson = json.dumps(json.loads(response.content))
         self.assertTrue(geojson.loads(_geojson).is_valid)
 
     def test_get_list_indicators(self):
