@@ -76,6 +76,7 @@ class MappingSaturation(BaseIndicator):
         # TODO: `best_fit` should be a class attribute.
         # It is not to avoid cluttered indicator result output.
         best_fit = get_best_fit(xdata=xdata, ydata=self.values)
+        logging.info("Best fitting sigmoid curve: " + best_fit.func_name)
         if max(self.values) <= 2:
             # Some data are there, but not much -> start stadium
             self.saturation = 0
