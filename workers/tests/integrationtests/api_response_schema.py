@@ -5,14 +5,23 @@ Additionally API responses need to adhere to one additional schema depending on 
 endpoint is used.
 """
 
-from typing import Optional
-
 from schema import Optional as Opt
 from schema import Or, Schema
 
 
-def generate_properties_template(iterator: Optional[str] = None) -> dict:
-    raise NotImplementedError
+def get_indicator_properties_template():
+    return {
+        "metadata.name": str,
+        "metadata.description": str,
+        "layer.name": str,
+        "layer.description": str,
+        "result.timestamp_oqt": str,
+        "result.timestamp_osm": Or(str),
+        "result.value": Or(float, None),
+        "result.label": str,
+        "result.description": str,
+        Opt("result.svg"): str,
+    }
 
 
 def get_general_schema() -> Schema:
@@ -45,46 +54,25 @@ def get_featurecollection_schema() -> Schema:
 
 
 def get_indicator_feature_schema() -> Schema:
+    properties = get_indicator_properties_template()
     return Schema(
         {
             "type": "Feature",
             "geometry": dict,
             Opt("id"): Or(str, int),
-            "properties": {
-                "metadata.name": str,
-                "metadata.description": str,
-                "layer.name": str,
-                "layer.description": str,
-                "result.timestamp_oqt": str,
-                "result.timestamp_osm": Or(str),
-                "result.value": Or(float, None),
-                "result.label": str,
-                "result.description": str,
-                Opt("result.svg"): str,
-            },
+            "properties": properties,
         },
         ignore_extra_keys=True,
     )
 
 
 def get_report_feature_schema(number_of_indicators: int) -> Schema:
-    properties_template = {
-        "metadata.name": str,
-        "metadata.description": str,
-        "layer.name": str,
-        "layer.description": str,
-        "result.timestamp_oqt": str,
-        "result.timestamp_osm": Or(str),
-        "result.value": Or(float, None),
-        "result.label": str,
-        "result.description": str,
-        "result.svg": str,
-    }
+    properties_template = get_indicator_properties_template()
     properties = {}
     for i in range(number_of_indicators):
         for k, v in properties_template.items():
-            if k == "result.svg":
-                properties.update({Opt("indicators." + str(i) + "." + k): v})
+            if k == Opt("result.svg"):
+                properties.update({Opt("indicators." + str(i) + "." + "result.svg"): v})
             else:
                 properties.update({"indicators." + str(i) + "." + k: v})
     schema = Schema(
