@@ -8,7 +8,7 @@ from dateutil.parser import isoparse
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit, get_best_fit
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import get_best_fit
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 # threshold values defining the color of the traffic light
@@ -45,7 +45,6 @@ class MappingSaturation(BaseIndicator):
         # Attributes needed for result determination
         self.saturation = None
         self.growth = None
-        self.best_fit: Fit = None
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
@@ -74,14 +73,14 @@ class MappingSaturation(BaseIndicator):
             )
             return
         xdata = list(range(len(self.timestamps)))
-        self.best_fit = get_best_fit(xdata=xdata, ydata=self.values)
+        best_fit = get_best_fit(xdata=xdata, ydata=self.values)
         if max(self.values) <= 2:
             # start stadium, some data are there, but not much
             self.saturation = 0
         else:
             # calculate slope of last 3 years (saturation)
-            self.saturation = (np.interp(xdata[-36], xdata, self.best_fit.ydata)) / (
-                np.interp(xdata[-1], xdata, self.best_fit.ydata)
+            self.saturation = (np.interp(xdata[-36], xdata, best_fit.ydata)) / (
+                np.interp(xdata[-1], xdata, best_fit.ydata)
             )
         self.growth = 1 - self.saturation
         description = Template(self.metadata.result_description).substitute(
@@ -113,10 +112,10 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-
+        xdata = list(range(len(self.timestamps)))
+        best_fit = get_best_fit(xdata=xdata, ydata=self.values)
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
-
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
@@ -132,9 +131,9 @@ class MappingSaturation(BaseIndicator):
         # plot sigmoid curve
         ax.plot(
             self.timestamps,
-            self.best_fit.ydata,
+            best_fit.ydata,
             linecol[2],
-            label="Sigmoid curve: " + self.best_fit.name,
+            label="Sigmoid curve: " + best_fit.name,
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
