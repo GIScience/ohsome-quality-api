@@ -134,7 +134,7 @@ class MappingSaturation(BaseIndicator):
             self.timestamps,
             best_fit.ydata,
             linecol[2],
-            label="Sigmoid curve: " + best_fit.name,
+            label="Sigmoid curve: " + best_fit.func_name,
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
