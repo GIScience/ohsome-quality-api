@@ -44,7 +44,7 @@ class TestApiReportIo(unittest.TestCase):
         self.feature_schema = get_report_feature_schema(number_of_indicators)
         self.featurecollection_schema = get_featurecollection_schema()
 
-    def run_tests(self, response, featurecollection=False) -> None:
+    def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
 
         response_content = geojson.loads(response.content)
