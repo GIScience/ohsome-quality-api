@@ -1,3 +1,5 @@
+"""Sigmoid functions with up to four jumps."""
+
 import numpy as np
 
 

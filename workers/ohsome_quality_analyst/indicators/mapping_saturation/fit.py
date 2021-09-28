@@ -1,15 +1,14 @@
-"""TODO:
+"""Fit sigmoid functions to data.
 
-In order to accommodate jumps in mapping activity
-nonlinear least squares optimization is used to fit functions
-which include up to four jumps superposed on a smooth sigmiond function.
+Nonlinear least squares optimization is used to fit data to sigmoid functions which
+include up to four jumps.
 
 Best fitting function is chosen by the applying mean-squared error criterion.
 """
 
 import logging
 from dataclasses import dataclass
-from typing import Tuple
+from typing import Literal, Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit
@@ -19,7 +18,7 @@ from ohsome_quality_analyst.indicators.mapping_saturation import sigmoid_curves
 
 @dataclass
 class Fit:
-    name: str
+    func_name: str
     ydata: list
     mse: float
 
@@ -57,8 +56,8 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
     return best_fit
 
 
-def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
-    """Make initial guess on parameters for sigmoid function(s)
+def get_initial_guess(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> tuple:
+    """Make initial guess on parameters for sigmoid function(s).
 
     Args:
         n: Number of sigmoid functions to combine.
@@ -75,16 +74,19 @@ def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
     return tuple(x_0 + k + L)
 
 
-def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple]:
+def get_bounds(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> Tuple[tuple]:
     """Get lower and upper bounds on parameters for sigmoid function(s).
-
-    Each element of the tuple is an list with the length equal to the number of
-    parameters.
 
     Args:
         n: Number of sigmoid functions to combine.
           Single sigmoid has n=1.
           Double sigmoid has n=2.
+
+    Returns:
+        tuple: Returns bounds on parameters.
+
+        Each element of the tuple is an list with the length equal to the number
+        of parameters.
     """
     x_0_upper_bounds = [len(xdata) * 1.5] * n
     x_0_lower_bounds = [0] * n
@@ -93,16 +95,11 @@ def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple]:
     L_upper_bounds = [(max(ydata) / n) * (i + 1) for i in range(n)]  # noqa
     L_lower_bounds = [0] * n  # noqa
     return (
-        x_0_lower_bounds + k_lower_bounds + L_lower_bounds,
-        x_0_upper_bounds + k_upper_bounds + L_upper_bounds,
+        tuple(x_0_lower_bounds + k_lower_bounds + L_lower_bounds),
+        tuple(x_0_upper_bounds + k_upper_bounds + L_upper_bounds),
     )
 
 
-def calc_mse(a: list, b: list):
+def calc_mse(a: list, b: list) -> float:
     """Calculate Mean Squared Error"""
     return np.square(np.subtract(a, b)).mean()
-
-
-def get_slope(xdata, ydata):
-    slope, intercept = np.polyfit(xdata, ydata, 1)
-    raise NotImplementedError
