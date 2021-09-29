@@ -64,7 +64,7 @@ def get_initial_guess(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> tuple
     """
     x_0 = []
     k = []
-    L = []  # noqa
+    L = []  # noqa: N806 NOSONAR
     for i in range(n):
         x_0.append((len(xdata) / (n + 1) * (i + 1)))
         k.append(0)
@@ -87,11 +87,13 @@ def get_bounds(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> Tuple[tuple]
         of parameters.
     """
     x_0_upper_bounds = [len(xdata) * 1.5] * n
-    x_0_lower_bounds = [0] * n
-    k_upper_bounds = [1] * n
-    k_lower_bounds = [-1] * n
-    L_upper_bounds = [(max(ydata) / n) * (i + 1) for i in range(n)]  # noqa
-    L_lower_bounds = [0] * n  # noqa
+    x_0_lower_bounds = [0.0] * n
+    k_upper_bounds = [1.0] * n
+    k_lower_bounds = [-1.0] * n
+    L_upper_bounds = [  # noqa: N806 NOSONAR
+        (max(ydata) / n) * (i + 1.0) for i in range(n)
+    ]
+    L_lower_bounds = [0.0] * n  # noqa: N806 NOSONAR
     return (
         tuple(x_0_lower_bounds + k_lower_bounds + L_lower_bounds),
         tuple(x_0_upper_bounds + k_upper_bounds + L_upper_bounds),

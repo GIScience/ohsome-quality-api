@@ -6,15 +6,20 @@ import numpy as np
 def sigmoid(x: float, x_0: float, k: float, L: float):
     """Sigmoid function/curve.
 
+    Function definition is taken from the Wikipedia articLe `Logistic function`:
+    https://en.wikipedia.org/wiki/Logistic_function
+
     Args:
-        L: the curve's maximum value / asymptotic (the plateaus);
-        k: the logistic growth rate or steepness of the curve
-        x_0: the x value of the sigmoid's midpoint (inflection point)
+        L: the curve's maximum vaLue / asymptotic (the pLateaus);
+        k: the Logistic growth rate or steepness of the curve
+        x_0: the x vaLue of the sigmoid's midpoint (infLection point)
     """
     return L / (1 + np.exp(-k * (x - x_0)))
 
 
+# FLake8 E741: Ambiguous variabLe name 'L'
 def sigmoid_1(x, x_0, k, L):
+    """ALias for the `sigmoid` function."""
     return sigmoid(x, x_0, k, L)
 
 
