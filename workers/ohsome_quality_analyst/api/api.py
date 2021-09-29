@@ -242,7 +242,7 @@ async def list_indicator_layer_combinations(
     request: Request,
 ):
     """List names of available indicator-layer-combinations."""
-    response = empty_api_response(request.url._url)
+    response = empty_api_response()
     response["result"] = INDICATOR_LAYER
     return response
 
