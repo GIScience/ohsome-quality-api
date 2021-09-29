@@ -25,7 +25,10 @@ import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
-from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
+from ohsome_quality_analyst.utils.helper import (
+    datetime_to_isostring_timestamp,
+    unflatten_dict,
+)
 
 
 @asynccontextmanager
@@ -96,7 +99,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     with open(file_path, "r") as file:
         query = file.read()
 
-    data = (
+    query_data = (
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
@@ -104,18 +107,25 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     )
 
     async with get_connection() as conn:
-        query_result = await conn.fetchrow(query, *data)
+        query_result = await conn.fetchrow(query, *query_data)
 
     if not query_result:
         return False
-    else:
-        indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
-        indicator.result.timestamp_osm = query_result["timestamp_osm"]
-        indicator.result.label = query_result["result_label"]
-        indicator.result.value = query_result["result_value"]
-        indicator.result.description = query_result["result_description"]
-        indicator.result.svg = query_result["result_svg"]
-        return True
+
+    indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
+    indicator.result.timestamp_osm = query_result["timestamp_osm"]
+    indicator.result.label = query_result["result_label"]
+    indicator.result.value = query_result["result_value"]
+    indicator.result.description = query_result["result_description"]
+    indicator.result.svg = query_result["result_svg"]
+
+    feature = geojson.loads(query_result["feature"])
+    properties = unflatten_dict(feature["properties"])
+    result_data = properties["data"]
+
+    for key, value in result_data.items():
+        setattr(indicator, key, value)
+    return True
 
 
 async def get_feature_ids(dataset: str) -> List[str]:
