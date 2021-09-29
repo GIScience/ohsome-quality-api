@@ -118,6 +118,7 @@ async def create_indicator(
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
+    time_range: Optional[str] = None,
     force: bool = False,
 ) -> BaseIndicator:
     """Create an indicator.
@@ -162,15 +163,42 @@ async def create_indicator(
     logging.info("Layer name:     " + layer_name)
 
     # from scratch
-    if feature is not None and dataset is None and feature_id is None:
+    if (
+        feature is not None
+        and dataset is None
+        and feature_id is None
+        and time_range is None
+    ):
         indicator = indicator_class(layer_name, feature)
         await from_scratch()
+    # from scratch with time range
+    elif (
+        feature is not None
+        and dataset is None
+        and feature_id is None
+        and time_range is not None
+    ):
+        indicator = indicator_class(layer_name, feature, time_range)
+        await from_scratch()
     # from database
-    elif dataset is not None and feature_id is not None:
+    elif dataset is not None and feature_id is not None and time_range is None:
         if fid_field is not None:
             feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
         feature = await db_client.get_feature_from_db(dataset, feature_id)
         indicator = indicator_class(layer_name=layer_name, feature=feature)
+        success = await from_database(dataset, feature_id)
+        if not success or force:
+            await from_scratch()
+            await db_client.save_indicator_results(indicator, dataset, feature_id)
+
+    # from database with time range
+    elif dataset is not None and feature_id is not None and time_range is not None:
+        if fid_field is not None:
+            feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
+        feature = await db_client.get_feature_from_db(dataset, feature_id)
+        indicator = indicator_class(
+            layer_name=layer_name, feature=feature, time_range=time_range
+        )
         success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()

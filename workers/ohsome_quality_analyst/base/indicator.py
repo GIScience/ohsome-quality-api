@@ -64,6 +64,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         feature: Feature,
+        time_range=str,
     ) -> None:
         self.feature = feature
 

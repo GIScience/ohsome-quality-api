@@ -84,6 +84,14 @@ feature_id = click.option(
     default=None,
 )
 
+time_range = click.option(
+    "--time_range",
+    "-t",
+    type=str,
+    help="Provide the time range for measurement (Currentness only).",
+    default=None,
+)
+
 fid_field = click.option(
     "--fid-field",
     type=str,

@@ -92,6 +92,7 @@ def get_available_regions():
 @cli_option(options.dataset_name)
 @cli_option(options.feature_id)
 @cli_option(options.fid_field)
+@cli_option(options.time_range)
 @cli_option(options.force)
 def create_indicator(
     indicator_name: str,
@@ -101,6 +102,7 @@ def create_indicator(
     feature_id: str,
     dataset_name: str,
     fid_field: str,
+    time_range: str,
     force: bool,
 ):
     """Create an Indicator.
@@ -127,6 +129,7 @@ def create_indicator(
             dataset_name,
             feature_id,
             fid_field,
+            time_range,
             force,
         )
     )
@@ -146,6 +149,7 @@ def create_indicator(
 @cli_option(options.dataset_name)
 @cli_option(options.feature_id)
 @cli_option(options.fid_field)
+@cli_option(options.time_range)
 @cli_option(options.force)
 def create_report(
     report_name: str,
@@ -154,6 +158,7 @@ def create_report(
     dataset_name: str,
     feature_id: str,
     fid_field: str,
+    time_range: str,
     force: bool,
 ):
     """Create a Report.
@@ -179,6 +184,7 @@ def create_report(
             dataset_name,
             feature_id,
             fid_field,
+            time_range,
             force,
         )
     )
