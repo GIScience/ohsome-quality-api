@@ -232,7 +232,8 @@ async def _fetch_report(
 async def get_available_regions():
     """List names of available regions."""
     response = empty_api_response()
-    response["result"] = await db_client.get_available_regions()
+    regions = await db_client.get_available_regions()
+    response.update(regions)
     return response
 
 

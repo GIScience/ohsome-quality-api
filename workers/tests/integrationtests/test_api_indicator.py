@@ -2,8 +2,6 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-# API request tests are seperated for indicator and report
-# because of a bug when using two schemata.
 
 import unittest
 from typing import Optional
@@ -13,7 +11,7 @@ from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
 
-from .api_response_schema import get_feature_schema, get_response_schema
+from .api_response_schema import get_general_schema, get_indicator_feature_schema
 from .utils import oqt_vcr
 
 
@@ -28,12 +26,12 @@ class TestApiIndicator(unittest.TestCase):
         self.feature_id = "3"
         self.fid_field = "ogc_fid"
 
-        self.response_schema = get_response_schema()
-        self.feature_schema = get_feature_schema()
+        self.general_schema = get_general_schema()
+        self.feature_schema = get_indicator_feature_schema()
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
-        for schema in (self.response_schema, self.feature_schema):
+        for schema in (self.general_schema, self.feature_schema):
             self.validate(response.json(), schema)
 
     def validate(self, geojson: dict, schema: Schema) -> None:
