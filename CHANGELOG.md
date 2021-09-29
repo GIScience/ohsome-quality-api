@@ -16,6 +16,7 @@
 - Improve API response when an error occurs by including information about the cause ([#186])
 - Add parameter to get API response without svg string in the result ([#137])
 - Extend time range for Currentness indicator ([#178])
+- Use [`scipy`] to fit sigmoid curves to data for the Mapping Saturation indicator ([#170])
 
 ### How to upgrade
 
@@ -27,11 +28,13 @@
     - E.g. `/indicator?name=Currentness`
 
 [#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
+[#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
 [#178]: https://github.com/GIScience/ohsome-quality-analyst/pull/178
 [#186]: https://github.com/GIScience/ohsome-quality-analyst/pull/186
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190
 [#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
 [#204]: https://github.com/GIScience/ohsome-quality-analyst/pull/204
+[`scipy`]: https://scipy.org/
 
 
 ## 0.6.0
