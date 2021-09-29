@@ -75,6 +75,12 @@ class TestGeodatabase(unittest.TestCase):
         self.assertIsNotNone(self.indicator.result.description)
         self.assertIsNotNone(self.indicator.result.svg)
 
+        # Test if data attributes were set
+        self.assertIsNotNone(self.indicator.pop_count)
+        self.assertIsNotNone(self.indicator.area)
+        self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
+        self.assertIsNotNone(self.indicator.feature_count)
+
     def test_get_feature_ids(self):
         results = asyncio.run(db_client.get_feature_ids(self.dataset))
         self.assertIsInstance(results, list)
