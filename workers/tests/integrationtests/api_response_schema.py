@@ -71,10 +71,12 @@ def get_report_feature_schema(number_of_indicators: int) -> Schema:
     properties = {}
     for i in range(number_of_indicators):
         for k, v in properties_template.items():
-            if k == Opt("result.svg"):
-                properties.update({Opt("indicators." + str(i) + "." + "result.svg"): v})
+            prefix = "indicators." + str(i) + "."
+            if isinstance(k, Schema):
+                k._prepend_schema_name(prefix)
             else:
-                properties.update({"indicators." + str(i) + "." + k: v})
+                k = prefix + k
+            properties.update({k: v})
     schema = Schema(
         {
             "type": "Feature",
