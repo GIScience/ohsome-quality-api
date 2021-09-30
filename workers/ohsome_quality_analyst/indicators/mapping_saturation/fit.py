@@ -62,6 +62,7 @@ def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
           Single sigmoid has n=1.
           Double sigmoid has n=2.
     """
+    assert n in (1, 2, 3, 4)
     x_0 = []
     k = []
     L = []  # noqa: N806 NOSONAR
@@ -86,6 +87,7 @@ def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple[float], Tuple[fl
         Each element of the tuple is an list with the length equal to the number
         of parameters.
     """
+    assert n in (1, 2, 3, 4)
     x_0_upper_bounds = [len(xdata) * 1.5] * n
     x_0_lower_bounds = [0.0] * n
     k_upper_bounds = [1.0] * n
