@@ -33,9 +33,10 @@ class TestApi(unittest.TestCase):
         url = "/indicatorLayerCombinations"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(geojson.loads(response.content), dict)
 
-    def test_get_list_indicators(self):
+        self.assertIsInstance(response.json(), dict)
+
+    def test_list_indicators(self):
         url = "/indicatorNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -44,7 +45,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.result_schema.is_valid(response_content))
 
-    def test_get_list_layers(self):
+    def test_list_layers(self):
         url = "/layerNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -53,7 +54,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.result_schema.is_valid(response_content))
 
-    def test_get_list_datasets(self):
+    def test_list_datasets(self):
         url = "/datasetNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -62,7 +63,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.result_schema.is_valid(response_content))
 
-    def test_get_list_fid_field(self):
+    def test_list_fid_field(self):
         url = "/FidFields"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -71,7 +72,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.result_schema.is_valid(response_content))
 
-    def test_get_list_reports(self):
+    def test_list_reports(self):
         url = "/reportNames"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)

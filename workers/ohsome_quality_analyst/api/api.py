@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from ohsome_quality_analyst import (
@@ -238,9 +238,7 @@ async def get_available_regions():
 
 
 @app.get("/indicatorLayerCombinations")
-async def list_indicator_layer_combinations(
-    request: Request,
-):
+async def list_indicator_layer_combinations():
     """List names of available indicator-layer-combinations."""
     response = empty_api_response()
     response["result"] = INDICATOR_LAYER

@@ -2,7 +2,7 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-
+import os
 import unittest
 from typing import Optional
 
@@ -133,6 +133,39 @@ class TestApiIndicator(unittest.TestCase):
             self.post_response(*parameters),
         ):
             self.run_tests(response)
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_dataset_invalid(self):
+        data = {
+            "dataset": "foo",
+            "featureId": "3",
+        }
+        url = "/indicator/{0}".format(self.indicator_name)
+        response = self.client.post(url, json=data)
+        self.assertEqual(response.status_code, 422)
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_invalid_set_of_arguments(self):
+
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg-altstadt-feature.geojson",
+        )
+        with open(path, "r") as f:
+            bpolys = f.read()
+        url = "/indicator/{0}".format(self.indicator_name)
+        for data in (
+            {
+                "bpolys": bpolys,
+                "dataset": "foo",
+                "featureId": "3",
+            },
+            {"dataset": "regions"},
+            {"feature_id": "3"},
+        ):
+            response = self.client.post(url, json=data)
+            self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

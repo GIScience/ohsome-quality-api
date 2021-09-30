@@ -19,8 +19,8 @@
 - Add and improve tests for API ([#168])
     - Add test cases covering the content of GeoJSON properties.
     - Improve API response schemata by using less logic to create the schemata.
-- Add list indicator/layer combinations for api and cli([#99])
-
+- Add list indicator/layer combinations for API and CLI([#99])
+- Load indicator from DB will also load its data attributes ([#179])
 
 ### How to upgrade?
 
@@ -33,6 +33,7 @@
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
 [#168]: https://github.com/GIScience/ohsome-quality-analyst/pull/168
+[#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/179
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 
