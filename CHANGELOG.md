@@ -16,6 +16,9 @@
 
 - Added documentation on “How to add a layer definitions” ([#141])
 - Use concurrency when creating all indicators ([#153])
+- Add and improve tests for API ([#168])
+    - Add test cases covering the content of GeoJSON properties.
+    - Improve API response schemata by using less logic to create the schemata.
 
 ### How to upgrade?
 
@@ -26,6 +29,7 @@
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
+[#168]: https://github.com/GIScience/ohsome-quality-analyst/pull/168
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 

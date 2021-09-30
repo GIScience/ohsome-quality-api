@@ -2,19 +2,17 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-# API request tests are seperated for indicator and report
-# because of a bug when using two schemata.
 
 import unittest
 from typing import Optional
 
+import geojson
 from fastapi.testclient import TestClient
-from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
-from .api_response_schema import get_feature_schema, get_response_schema
+from .api_response_schema import get_general_schema, get_report_feature_schema
 from .utils import oqt_vcr
 
 
@@ -28,24 +26,19 @@ class TestApiReport(unittest.TestCase):
         self.feature_id = "3"
         self.fid_field = "ogc_fid"
 
-        self.response_schema = get_response_schema()
-        self.feature_schema = get_feature_schema()
-
         report = SimpleReport()
         report.set_indicator_layer()
         self.number_of_indicators = len(report.indicator_layer)
 
+        self.general_schema = get_general_schema()
+        self.feature_schema = get_report_feature_schema(self.number_of_indicators)
+
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
-        response_json = response.json()
-        self.validate(response_json, self.response_schema)
-        for i in range(0, self.number_of_indicators):
-            feature_schema = get_feature_schema(i)
-            self.validate(response_json, feature_schema)
-
-    def validate(self, geojson: dict, schema: Schema) -> None:
-        schema.validate(geojson)  # Print information if validation fails
-        self.assertTrue(schema.is_valid(geojson))
+        response_content = geojson.loads(response.content)
+        self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
+        self.assertTrue(self.general_schema.is_valid(response_content))
+        self.assertTrue(self.feature_schema.is_valid(response_content))
 
     def get_response(
         self,
