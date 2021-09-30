@@ -96,6 +96,20 @@ class TestApiIndicatorIo(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.post_response(feature)
 
+    @oqt_vcr.use_cassette()
+    def test_bpolys_invalid(self):
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "invalid.geojson",
+        )
+        with open(path, "r") as file:
+            bpolys = file.read()
+        data = {"bpolys": bpolys, "layerName": self.layer_name}
+        url = f"/indicator/{self.indicator_name}"
+        response = self.client.post(url, json=data)
+        self.assertEqual(response.status_code, 422)
+
 
 if __name__ == "__main__":
     unittest.main()
