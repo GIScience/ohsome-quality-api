@@ -8,7 +8,7 @@ Best fitting function is chosen by the applying mean-squared error criterion.
 
 import logging
 from dataclasses import dataclass
-from typing import Literal, Tuple
+from typing import Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit
@@ -54,11 +54,11 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
     return best_fit
 
 
-def get_initial_guess(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> tuple:
+def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
     """Make initial guess on parameters for sigmoid function(s).
 
     Args:
-        n: Number of sigmoid functions to combine.
+        n: Number of sigmoid functions to combine. Should be 1, 2, 3 or 4.
           Single sigmoid has n=1.
           Double sigmoid has n=2.
     """
@@ -72,11 +72,11 @@ def get_initial_guess(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> tuple
     return tuple(x_0 + k + L)
 
 
-def get_bounds(n: Literal[1, 2, 3, 4], xdata: list, ydata: list) -> Tuple[tuple]:
+def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple[float], Tuple[float]]:
     """Get lower and upper bounds on parameters for sigmoid function(s).
 
     Args:
-        n: Number of sigmoid functions to combine.
+        n: Number of sigmoid functions to combine. Should be 1, 2, 3 or 4.
           Single sigmoid has n=1.
           Double sigmoid has n=2.
 
