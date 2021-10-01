@@ -180,9 +180,12 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     return Feature(geometry=geojson.loads(result[0]))
 
 
-async def get_available_regions() -> FeatureCollection:
+async def get_available_regions(with_geometries: bool) -> FeatureCollection:
     working_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(working_dir, "regions_as_geojson.sql")
+    if with_geometries is True:
+        file_path = os.path.join(working_dir, "regions_as_geojson.sql")
+    else:
+        file_path = os.path.join(working_dir, "region_names.sql")
     with open(file_path, "r") as file:
         query = file.read()
     async with get_connection() as conn:
