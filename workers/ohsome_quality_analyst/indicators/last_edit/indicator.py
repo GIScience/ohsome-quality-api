@@ -22,12 +22,10 @@ class LastEdit(BaseIndicator):
         self,
         layer_name: str,
         feature: Feature,
+        svg: bool,
         time_range: str = None,
     ) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            feature=feature,
-        )
+        super().__init__(layer_name=layer_name, feature=feature, svg=svg)
         # Threshold values are in percentage
         self.threshold_yellow = 20
         self.threshold_red = 5
@@ -157,6 +155,9 @@ class LastEdit(BaseIndicator):
 
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
-        self.result.svg = img_data.getvalue()  # this is svg data
+        if self.svg is True:
+            self.result.svg = img_data.getvalue()  # this is svg data
+        else:
+            self.result.svg = None
         logging.debug("Successful SVG figure creation")
         plt.close("all")

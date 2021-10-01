@@ -72,6 +72,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
+    svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -86,6 +87,8 @@ async def get_indicator(
     FeatureCollection with the indicator results.
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
+    With the svg parameter it is set whether the result should
+    contain the data of the svg.
     """
     if dataset is not None:
         dataset = dataset.value
@@ -94,7 +97,7 @@ async def get_indicator(
         # Ignore for Fast-API parameters which are definied as mixedCase
         fidField = fidField.value  # noqa N806
     return await _fetch_indicator(
-        name.value, layerName.value, bpolys, dataset, featureId, fidField
+        name.value, layerName.value, svg, bpolys, dataset, featureId, fidField
     )
 
 
@@ -133,6 +136,7 @@ async def post_indicator(
 async def _fetch_indicator(
     name: str,
     layer_name: str,
+    svg: bool,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -141,12 +145,15 @@ async def _fetch_indicator(
     geojson_object = await oqt.create_indicator_as_geojson(
         name,
         layer_name,
+        svg,
         bpolys,
         dataset,
         feature_id,
         fid_field,
         size_restriction=True,
     )
+    if svg is False:
+        del geojson_object["properties"]["result.svg"]
     response = empty_api_response()
     response.update(geojson_object)
     return response

@@ -64,9 +64,11 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         layer_name: str,
         feature: Feature,
+        svg: bool,
     ) -> None:
         self.feature = feature
 
+        self.svg = svg
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
