@@ -29,6 +29,13 @@ class TestApi(unittest.TestCase):
         result = geojson.loads(json.dumps(response_content))
         self.assertTrue(result.is_valid)
 
+    def test_list_indicator_layer_combinations(self):
+        url = "/indicatorLayerCombinations"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertIsInstance(response.json(), dict)
+
     def test_list_indicators(self):
         url = "/indicatorNames"
         response = self.client.get(url)
