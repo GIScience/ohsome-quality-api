@@ -82,7 +82,13 @@ def list_fid_fields():
 def get_available_regions():
     """List available regions."""
     regions = asyncio.run(db_client.get_available_regions())
-    click.echo(regions)
+    output = []
+    header = "ID,Name,"
+    for feature in regions["features"]:
+        string = str(feature["id"]) + "," + feature["properties"]["name"] + ","
+        header += string
+    output.append(header)
+    click.echo(output)
 
 
 @cli.command("list-indicator-layer-combination")

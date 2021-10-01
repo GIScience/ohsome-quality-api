@@ -5,7 +5,6 @@ https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
 
 import unittest
 
-import geojson
 from click.testing import CliRunner
 
 from ohsome_quality_analyst.cli.cli import cli
@@ -125,7 +124,7 @@ class TestCliIntegration(unittest.TestCase):
             ["-q", "list-regions"],
         )
         self.assertEqual(result.exit_code, 0)
-        self.assertTrue(geojson.loads(result.output).is_valid)
+        self.assertTrue(result.output, str)
 
     def test_get_indicator_layer_combination(self):
         result = self.runner.invoke(
