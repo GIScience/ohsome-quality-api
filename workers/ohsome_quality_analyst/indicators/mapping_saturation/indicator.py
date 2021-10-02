@@ -18,6 +18,10 @@ class MappingSaturation(BaseIndicator):
 
     Calculate the growth rate and saturation level within the last 3 years.
     Time period is one month since 2008.
+
+    Method is based on Barrington-Leigh C and Millard-Ball A (2017):
+    The world’s user-generated road map is more than 80% complete
+    https://doi.org/10.1371/journal.pone.0180698 pmid:28797037
     """
 
     def __init__(
