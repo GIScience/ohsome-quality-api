@@ -37,7 +37,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.exceptions import SizeRestrictionError
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -148,7 +148,7 @@ async def _fetch_indicator(
             size_restriction=True,
         )
     # TODO: Response schema for this error is different from pydatic validation errors
-    except SizeRestrictionError as error:
+    except (OhsomeApiError, SizeRestrictionError) as error:
         raise HTTPException(status_code=422, detail=error.message)
     response = empty_api_response()
     response.update(geojson_object)
@@ -221,7 +221,7 @@ async def _fetch_report(parameters: ReportRequestModel):
             fid_field=fid_field,
             size_restriction=True,
         )
-    except SizeRestrictionError as error:
+    except (OhsomeApiError, SizeRestrictionError) as error:
         raise HTTPException(status_code=422, detail=error.message)
     response = empty_api_response()
     response.update(geojson_object)

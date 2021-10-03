@@ -6,9 +6,12 @@ https://fastapi.tiangolo.com/tutorial/testing/
 import os
 import unittest
 from typing import Tuple
+from unittest import mock
+from unittest.mock import MagicMock
 from urllib.parse import urlencode
 
 import geojson
+import httpx
 from fastapi.testclient import TestClient
 from schema import Schema
 
@@ -20,6 +23,11 @@ from .api_response_schema import (
     get_indicator_feature_schema,
 )
 from .utils import oqt_vcr
+
+
+class AsyncMock(MagicMock):
+    async def __call__(self, *args, **kwargs):
+        return super().__call__(*args, **kwargs)
 
 
 def get_fixture(name):
@@ -108,6 +116,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_bpolys_invalid(self):
+        # TODO: Test for GET request
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -123,6 +132,27 @@ class TestApiIndicatorIo(unittest.TestCase):
         url = "/indicator"
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 422)
+
+    def test_ohsome_timeout(self):
+        # TODO: Test for GET request
+        invalid_response = get_fixture("ohsome-response-200-invalid.geojson")
+        featurecollection = get_fixture(
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+        )
+
+        with mock.patch(
+            "httpx.AsyncClient.post", new_callable=AsyncMock
+        ) as mock_request:
+            mock_request.return_value = httpx.Response(
+                200,
+                content=invalid_response,
+                request=httpx.Request("POST", "https://www.example.org/"),
+            )
+            data = {"bpolys": featurecollection, "layerName": self.layer_name}
+            url = f"/indicator/{self.indicator_name}"
+            response = self.client.post(url, json=data)
+            # TODO: Check status code
+            self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

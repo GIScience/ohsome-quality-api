@@ -1,14 +1,11 @@
 """Custom exception classes"""
 
 
-class Error(Exception):
-    """Base class for exceptions in this module."""
-
-
-class OhsomeApiError(Error):
+class OhsomeApiError(Exception):
     """Request to ohsome API failed"""
 
-    pass
+    def __init__(self, message):
+        self.message = message
 
 
 class SizeRestrictionError(ValueError):
@@ -16,5 +13,3 @@ class SizeRestrictionError(ValueError):
 
     def __init__(self, message):
         self.message = message
-
-    pass
