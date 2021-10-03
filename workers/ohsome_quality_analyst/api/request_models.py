@@ -62,7 +62,6 @@ class BaseRequestModel(pydantic.BaseModel):
         """Validate GeoJSON."""
         # Load and validate GeoJSON
         for _ in loads_geojson(value):
-            # Check if exceptions are raised by `loads_geojson`
             pass
         return value
 
