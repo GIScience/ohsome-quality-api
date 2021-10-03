@@ -34,7 +34,11 @@ async def create_indicator_as_geojson(
     if bpolys is not None:
         features = []
         for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index: " + str(i))
+            if "id" in feature.keys():
+                id_ = str(feature["id"])
+            else:
+                id_ = str(i)
+            logging.info("Input feature identifier: " + id_)
             if size_restriction:
                 await check_area_size(feature.geometry)
             indicator = await create_indicator(
@@ -82,7 +86,11 @@ async def create_report_as_geojson(
     if bpolys is not None:
         features = []
         for i, feature in enumerate(loads_geojson(bpolys)):
-            logging.info("Input feature index: " + str(i))
+            if "id" in feature.keys():
+                id_ = str(feature["id"])
+            else:
+                id_ = str(i)
+            logging.info("Input feature identifier: " + id_)
             if size_restriction:
                 await check_area_size(feature.geometry)
             report = await create_report(
