@@ -76,7 +76,14 @@ class BaseReport(metaclass=ABCMeta):
             properties.update(
                 {"indicators." + str(i) + "." + str(key): val for key, val in p.items()}
             )
-        return Feature(geometry=self.feature.geometry, properties=properties)
+        if "id" in self.feature.keys():
+            return Feature(
+                id=self.feature.id,
+                geometry=self.feature.geometry,
+                properties=properties,
+            )
+        else:
+            return Feature(geometry=self.feature.geometry, properties=properties)
 
     @abstractmethod
     def set_indicator_layer(self) -> None:
