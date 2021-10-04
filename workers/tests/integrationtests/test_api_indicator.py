@@ -4,6 +4,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 import os
 import unittest
+import urllib
 from typing import Optional
 
 from fastapi.testclient import TestClient
@@ -48,22 +49,16 @@ class TestApiIndicator(unittest.TestCase):
         fid_field: Optional[str] = None,
     ):
         """Return HTTP GET response"""
+        base_url = "/indicator?"
+        parameters_raw = {
+            "name": indicator_name,
+            "layerName": layer_name,
+            "dataset": dataset,
+            "featureId": feature_id,
+        }
         if fid_field is not None:
-            base_url = "/indicator/{0}?".format(self.indicator_name)
-            parameter = "layerName={0}&dataset={1}&featureId={2}&fidField={3}".format(
-                layer_name,
-                dataset,
-                feature_id,
-                fid_field,
-            )
-            url = base_url + parameter
-        else:
-            url = "/indicator/{0}?layerName={1}&dataset={2}&featureId={3}".format(
-                indicator_name,
-                layer_name,
-                dataset,
-                feature_id,
-            )
+            parameters_raw["fidField"] = fid_field
+        url = base_url + urllib.parse.urlencode(parameters_raw)
         return self.client.get(url)
 
     def post_response(
@@ -77,18 +72,20 @@ class TestApiIndicator(unittest.TestCase):
         """Return HTTP POST response"""
         if fid_field is not None:
             data = {
-                "dataset": self.dataset,
-                "featureId": self.feature_id,
-                "layerName": self.layer_name,
+                "name": indicator_name,
+                "dataset": dataset,
+                "layerName": layer_name,
+                "featureId": feature_id,
+                "fidField": fid_field,
             }
         else:
             data = {
+                "name": indicator_name,
                 "dataset": dataset,
-                "featureId": feature_id,
                 "layerName": layer_name,
-                "fidField": fid_field,
+                "featureId": feature_id,
             }
-        url = "/indicator/{0}".format(indicator_name)
+        url = "/indicator"
         return self.client.post(url, json=data)
 
     @oqt_vcr.use_cassette()
@@ -138,10 +135,11 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_dataset_invalid(self):
         data = {
+            "name": self.indicator_name,
             "dataset": "foo",
             "featureId": "3",
         }
-        url = "/indicator/{0}".format(self.indicator_name)
+        url = "/indicator"
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 422)
 
@@ -155,15 +153,19 @@ class TestApiIndicator(unittest.TestCase):
         )
         with open(path, "r") as f:
             bpolys = f.read()
-        url = "/indicator/{0}".format(self.indicator_name)
+        url = "/indicator"
         for data in (
             {
+                "name": self.indicator_name,
                 "bpolys": bpolys,
                 "dataset": "foo",
                 "featureId": "3",
             },
-            {"dataset": "regions"},
-            {"feature_id": "3"},
+            {
+                "name": self.indicator_name,
+                "dataset": "regions",
+            },
+            {"name": self.indicator_name, "feature_id": "3"},
         ):
             response = self.client.post(url, json=data)
             self.assertEqual(response.status_code, 422)

@@ -73,7 +73,7 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator/{name}")
+@app.get("/indicator")
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
@@ -93,6 +93,7 @@ async def get_indicator(
     if they do not collide with the properties set by OQT.
     """
     raw = {
+        "name": name,
         "layerName": layerName,
         "bpolys": bpolys,
         "dataset": dataset,
@@ -100,12 +101,11 @@ async def get_indicator(
         "fidField": fidField,
     }
     parameters = {k: v for k, v in raw.items() if v is not None}
-    return await _fetch_indicator(name.value, parameters)
+    return await _fetch_indicator(parameters)
 
 
-@app.post("/indicator/{name}")
+@app.post("/indicator")
 async def post_indicator(
-    name: IndicatorEnum,
     parameters: IndicatorRequestModel,
 ):
     """Create an Indicator.
@@ -118,23 +118,22 @@ async def post_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    return await _fetch_indicator(name.value, parameters)
+    return await _fetch_indicator(parameters)
 
 
 @pydantic.validate_arguments
 async def _fetch_indicator(
-    name: str,
     parameters: IndicatorRequestModel,
 ) -> dict:
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = p["dataset"].value
+        dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_indicator_as_geojson(
-        name,
+        p["name"].value,
         p["layer_name"].value,
         p["bpolys"],
         dataset,
@@ -149,7 +148,7 @@ async def _fetch_indicator(
     )
 
 
-@app.get("/report/{name}")
+@app.get("/report")
 async def get_report(
     name: ReportEnum,
     bpolys: Optional[str] = None,
@@ -168,17 +167,18 @@ async def get_report(
     if they do not collide with the properties set by OQT.
     """
     raw = {
+        "name": name,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
         "fidField": fidField,
     }
     parameters = {k: v for k, v in raw.items() if v is not None}
-    return await _fetch_report(name.value, parameters)
+    return await _fetch_report(parameters)
 
 
-@app.post("/report/{name}")
-async def post_report(name: ReportEnum, parameters: ReportRequestModel):
+@app.post("/report")
+async def post_report(parameters: ReportRequestModel):
     """Create a Report.
 
     Either the parameters `dataset` and `feature id` has to be provided
@@ -189,20 +189,20 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    return await _fetch_report(name.value, parameters)
+    return await _fetch_report(parameters)
 
 
 @pydantic.validate_arguments
-async def _fetch_report(name: str, parameters: ReportRequestModel):
+async def _fetch_report(parameters: ReportRequestModel):
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = p["dataset"].value
+        dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_report_as_geojson(
-        name,
+        p["name"].value,
         bpolys=p["bpolys"],
         dataset=dataset,
         feature_id=p["feature_id"],

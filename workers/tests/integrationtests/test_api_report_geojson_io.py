@@ -55,17 +55,15 @@ class TestApiReportIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        parameters = urllib.parse.urlencode({"bpolys": bpoly})
-        url = "/report/{0}?{1}".format(
-            self.report_name,
-            parameters,
-        )
+        parameters = urllib.parse.urlencode({"name": self.report_name, "bpolys": bpoly})
+        url = "/report?" + parameters
         return self.client.get(url)
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        url = "/report/{0}".format(self.report_name)
-        return self.client.post(url, json={"bpolys": bpoly})
+        data = {"name": self.report_name, "bpolys": bpoly}
+        url = "/report"
+        return self.client.post(url, json=data)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_geometry(self):
