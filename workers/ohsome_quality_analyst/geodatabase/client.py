@@ -166,6 +166,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     logging.info("Dataset name:     " + dataset)
     logging.info("Feature id:       " + feature_id)
     logging.info("Feature id field: " + fid_field)
+
     query = (
         "SELECT ST_AsGeoJSON(geom) "
         + "FROM {0} ".format(dataset)

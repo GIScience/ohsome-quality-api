@@ -19,7 +19,6 @@ from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
 async def create_indicator_as_geojson(
     name: str,
     layer_name: str,
-    svg: bool,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -41,7 +40,6 @@ async def create_indicator_as_geojson(
             indicator = await create_indicator(
                 name,
                 layer_name,
-                svg,
                 feature,
                 dataset,
                 feature_id,
@@ -58,7 +56,6 @@ async def create_indicator_as_geojson(
         indicator = await create_indicator(
             name,
             layer_name,
-            svg,
             bpolys,
             dataset,
             feature_id,
@@ -117,7 +114,6 @@ async def create_report_as_geojson(
 async def create_indicator(
     name: str,
     layer_name: str,
-    svg: bool,
     feature: Optional[Feature] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -167,14 +163,14 @@ async def create_indicator(
 
     # from scratch
     if feature is not None and dataset is None and feature_id is None:
-        indicator = indicator_class(layer_name, feature, svg)
+        indicator = indicator_class(layer_name, feature)
         await from_scratch()
     # from database
     elif dataset is not None and feature_id is not None:
         if fid_field is not None:
             feature_id = await db_client.map_fid_to_uid(dataset, feature_id, fid_field)
         feature = await db_client.get_feature_from_db(dataset, feature_id)
-        indicator = indicator_class(layer_name=layer_name, feature=feature, svg=svg)
+        indicator = indicator_class(layer_name=layer_name, feature=feature)
         success = await from_database(dataset, feature_id)
         if not success or force:
             await from_scratch()

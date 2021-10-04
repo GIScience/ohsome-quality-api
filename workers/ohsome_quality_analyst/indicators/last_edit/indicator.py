@@ -155,9 +155,6 @@ class LastEdit(BaseIndicator):
 
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
-        if self.svg is True:
-            self.result.svg = img_data.getvalue()  # this is svg data
-        else:
-            self.result.svg = None
+        self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
