@@ -72,6 +72,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
+    svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -94,7 +95,7 @@ async def get_indicator(
         # Ignore for Fast-API parameters which are definied as mixedCase
         fidField = fidField.value  # noqa N806
     return await _fetch_indicator(
-        name.value, layerName.value, bpolys, dataset, featureId, fidField
+        name.value, layerName.value, svg, bpolys, dataset, featureId, fidField
     )
 
 
