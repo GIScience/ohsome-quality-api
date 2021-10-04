@@ -232,7 +232,10 @@ async def get_available_regions(geometry: bool = False):
     """List names of available regions as geoJSON. With parameter
     geometry = True it contains the geometry."""
     response = empty_api_response()
-    regions = await db_client.get_available_regions(with_geometries=geometry)
+    if geometry is True:
+        regions = await db_client.get_regions_as_geojson()
+    else:
+        regions = await db_client.get_regions()
     response.update(regions)
     return response
 

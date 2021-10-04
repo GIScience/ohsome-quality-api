@@ -21,13 +21,18 @@ class TestApi(unittest.TestCase):
         self.result_schema = get_result_schema()
 
     def test_get_available_regions(self):
-        url = "/regions"
+        url = "/regions?geometry=true"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
         result = geojson.loads(json.dumps(response_content))
         self.assertTrue(result.is_valid)
+        url = "/regions?geometry=false"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response_content = json.loads(response.content)
+        self.assertTrue(self.general_schema.is_valid(response_content))
 
     def test_list_indicators(self):
         url = "/indicatorNames"
