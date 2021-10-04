@@ -32,6 +32,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()
 
 
 class BaseRequestModel(pydantic.BaseModel):
+    name: str
     bpolys: Optional[str]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
@@ -104,10 +105,13 @@ class BaseRequestModel(pydantic.BaseModel):
 
 
 class IndicatorRequestModel(BaseRequestModel):
+    name: IndicatorEnum = pydantic.Field(
+        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
+    )
     layer_name: LayerEnum = pydantic.Field(  # noqa: N815
         ..., title="Layer Name", example="building_count"
     )
 
 
 class ReportRequestModel(BaseRequestModel):
-    pass
+    name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")

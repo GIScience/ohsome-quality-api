@@ -5,6 +5,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 
 import os
 import unittest
+import urllib
 from typing import Tuple
 
 from fastapi.testclient import TestClient
@@ -49,17 +50,20 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        url = "/indicator/{0}?layerName={1}&bpolys={2}".format(
-            self.indicator_name,
-            self.layer_name,
-            bpoly,
+        parameters = urllib.parse.urlencode(
+            {"name": self.indicator_name, "layerName": self.layer_name, "bpolys": bpoly}
         )
+        url = "/indicator?" + parameters
         return self.client.get(url)
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        data = {"bpolys": bpoly, "layerName": self.layer_name}
-        url = f"/indicator/{self.indicator_name}"
+        data = {
+            "name": self.indicator_name,
+            "bpolys": bpoly,
+            "layerName": self.layer_name,
+        }
+        url = "/indicator"
         return self.client.post(url, json=data)
 
     @oqt_vcr.use_cassette()
@@ -107,8 +111,12 @@ class TestApiIndicatorIo(unittest.TestCase):
         )
         with open(path, "r") as file:
             bpolys = file.read()
-        data = {"bpolys": bpolys, "layerName": self.layer_name}
-        url = f"/indicator/{self.indicator_name}"
+        data = {
+            "name": self.indicator_name,
+            "bpolys": bpolys,
+            "layerName": self.layer_name,
+        }
+        url = "/indicator"
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 422)
 
