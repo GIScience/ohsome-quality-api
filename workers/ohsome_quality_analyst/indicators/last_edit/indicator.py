@@ -22,10 +22,12 @@ class LastEdit(BaseIndicator):
         self,
         layer_name: str,
         feature: Feature,
-        svg: bool,
         time_range: str = None,
     ) -> None:
-        super().__init__(layer_name=layer_name, feature=feature, svg=svg)
+        super().__init__(
+            layer_name=layer_name,
+            feature=feature,
+        )
         # Threshold values are in percentage
         self.threshold_yellow = 20
         self.threshold_red = 5
