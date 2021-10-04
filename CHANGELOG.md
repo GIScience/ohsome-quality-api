@@ -14,6 +14,7 @@
 
 ### Other Changes
 
+- Added parameter to regions endpoint to only respond with a geojson if requested. ([#171])
 - Added documentation on “How to add a layer definitions” ([#141])
 - Use concurrency when creating all indicators ([#153])
 - Add and improve tests for API ([#168])
@@ -31,6 +32,7 @@
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
 [#168]: https://github.com/GIScience/ohsome-quality-analyst/pull/168
+[#171]: https://github.com/GIScience/ohsome-quality-analyst/issues/171
 [#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/179
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 

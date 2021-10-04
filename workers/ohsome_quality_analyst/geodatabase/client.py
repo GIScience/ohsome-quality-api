@@ -196,15 +196,10 @@ async def get_regions_as_geojson() -> FeatureCollection:
 
 
 async def get_regions():
-    ids = await get_feature_ids("regions")
-    result = []
-    for id in ids:
-        query = "SELECT  name, ogc_fid FROM regions WHERE ogc_fid = {}".format(id)
-        async with get_connection() as conn:
-            record = await conn.fetchrow(query)
-        tupel = (record[0], record[1])
-        result.append(tupel)
-    return result
+    query = "SELECT  name, ogc_fid FROM regions"
+    async with get_connection() as conn:
+        record = await conn.fetch(query)
+    return record
 
 
 def sanity_check_dataset(dataset: str) -> bool:
