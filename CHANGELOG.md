@@ -14,6 +14,7 @@
 
 ### Other Changes
 
+- Added parameter to get API response without svg string in the result. ([#137])
 - Added documentation on “How to add a layer definitions” ([#141])
 - Use concurrency when creating all indicators ([#153])
 - Add and improve tests for API ([#168])
@@ -29,6 +30,7 @@
 [#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
+[#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
