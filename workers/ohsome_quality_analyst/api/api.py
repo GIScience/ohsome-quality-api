@@ -228,11 +228,11 @@ async def _fetch_report(
 
 
 @app.get("/regions")
-async def get_available_regions(geometry: bool = False):
-    """List names of available regions as geoJSON. With parameter
-    geometry = True it contains the geometry."""
+async def get_available_regions(asGeoJSON: bool = False):
+    """List names and ids of available regions as list of tuples. With parameter
+    asGeoJSON = True it returns as GeoJSON and contains the geometry."""
     response = empty_api_response()
-    if geometry is True:
+    if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
     else:
         regions = await db_client.get_regions()
