@@ -86,6 +86,7 @@ class TestApiIndicatorIo(unittest.TestCase):
                 response, (self.general_schema, self.featurecollection_schema)
             )
             for feature in response.json()["features"]:
+                self.assertIn("id", feature.keys())
                 self.validate(feature, self.feature_schema)
 
     @oqt_vcr.use_cassette()
