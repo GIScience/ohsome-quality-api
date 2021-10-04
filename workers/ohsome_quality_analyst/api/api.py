@@ -26,8 +26,8 @@ from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     INDICATOR_LAYER,
     configure_logging,
-    get_dataset_names,
-    get_fid_fields,
+    get_dataset_names_api,
+    get_fid_fields_api,
     get_indicator_names,
     get_layer_names,
     get_report_names,
@@ -265,7 +265,7 @@ async def list_indicators():
 async def list_datasets():
     """List names of available datasets."""
     response = empty_api_response()
-    response["result"] = get_dataset_names()
+    response["result"] = get_dataset_names_api()
     return response
 
 
@@ -289,5 +289,5 @@ async def list_reports():
 async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()
-    response["result"] = get_fid_fields()
+    response["result"] = get_fid_fields_api()
     return response
