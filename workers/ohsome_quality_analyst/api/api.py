@@ -72,7 +72,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
-    svg: bool = False,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -95,7 +95,7 @@ async def get_indicator(
         # Ignore for Fast-API parameters which are definied as mixedCase
         fidField = fidField.value  # noqa N806
     return await _fetch_indicator(
-        name.value, layerName.value, svg, bpolys, dataset, featureId, fidField
+        name.value, layerName.value, includeSvg, bpolys, dataset, featureId, fidField
     )
 
 
@@ -117,6 +117,7 @@ async def post_indicator(
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p.get("fid_field", None)
+    includeSvg = p["includeSvg"]
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
@@ -124,6 +125,7 @@ async def post_indicator(
     return await _fetch_indicator(
         name.value,
         p["layer_name"].value,
+        includeSvg,
         p["bpolys"],
         dataset,
         p["feature_id"],
@@ -134,7 +136,7 @@ async def post_indicator(
 async def _fetch_indicator(
     name: str,
     layer_name: str,
-    svg: bool,
+    include_svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -149,7 +151,7 @@ async def _fetch_indicator(
         fid_field,
         size_restriction=True,
     )
-    if svg is False:
+    if include_svg is False:
         del geojson_object["properties"]["result.svg"]
     response = empty_api_response()
     response.update(geojson_object)
@@ -159,6 +161,7 @@ async def _fetch_indicator(
 @app.get("/report/{name}")
 async def get_report(
     name: ReportEnum,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -180,11 +183,16 @@ async def get_report(
         # flake8 warning N806: variable 'fidField' in function should be lowercase
         # Ignore for Fast-API parameters which are definied as mixedCase
         fidField = fidField.value  # noqa N806
-    return await _fetch_report(name.value, bpolys, dataset, featureId, fidField)
+    return await _fetch_report(
+        name.value, includeSvg, bpolys, dataset, featureId, fidField
+    )
 
 
 @app.post("/report/{name}")
-async def post_report(name: ReportEnum, parameters: ReportRequestModel):
+async def post_report(
+    name: ReportEnum,
+    parameters: ReportRequestModel,
+):
     """Create a Report.
 
     Either the parameters `dataset` and `feature id` has to be provided
@@ -198,6 +206,7 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
+    includeSvg = p["includeSvg"]
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
@@ -205,6 +214,7 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
 
     return await _fetch_report(
         name.value,
+        includeSvg,
         p["bpolys"],
         dataset,
         p["feature_id"],
@@ -214,6 +224,7 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
 
 async def _fetch_report(
     name: str,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -227,7 +238,17 @@ async def _fetch_report(
         fid_field=fid_field,
         size_restriction=True,
     )
+
     response = empty_api_response()
+    if includeSvg is False:
+        cnt = 0
+        while True:
+            string = "indicators.{}.result.svg".format(str(cnt))
+            if string in geojson_object["properties"]:
+                del geojson_object["properties"][string]
+                cnt += 1
+            else:
+                break
     response.update(geojson_object)
     return response
 
