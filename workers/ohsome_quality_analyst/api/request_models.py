@@ -16,6 +16,7 @@ import geojson
 import pydantic
 
 from ohsome_quality_analyst.utils.definitions import (
+    INDICATOR_LAYER,
     get_dataset_names_api,
     get_fid_fields_api,
     get_indicator_names,
@@ -32,7 +33,6 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()
 
 
 class BaseRequestModel(pydantic.BaseModel):
-    name: str
     bpolys: Optional[str]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
@@ -111,6 +111,17 @@ class IndicatorRequestModel(BaseRequestModel):
     layer_name: LayerEnum = pydantic.Field(  # noqa: N815
         ..., title="Layer Name", example="building_count"
     )
+
+    @pydantic.root_validator
+    @classmethod
+    def validate_indicator_layer(cls, values):
+        indicator_layer = (values["name"].value, values["layer_name"].value)
+        if indicator_layer not in INDICATOR_LAYER:
+            raise ValueError(
+                "Indicator layer combination is invalid: " + str(indicator_layer)
+            )
+        else:
+            return values
 
 
 class ReportRequestModel(BaseRequestModel):
