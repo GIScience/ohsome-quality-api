@@ -14,13 +14,13 @@
 
 ### Other Changes
 
-- Added parameter to regions endpoint to only respond with a geojson if requested. ([#171])
 - Added documentation on “How to add a layer definitions” ([#141])
 - Use concurrency when creating all indicators ([#153])
 - Add and improve tests for API ([#168])
     - Add test cases covering the content of GeoJSON properties.
     - Improve API response schemata by using less logic to create the schemata.
 - Load indicator from DB will also load its data attributes ([#179])
+- Added parameter to regions endpoint to only respond with a geojson if requested. ([#171])
 
 ### How to upgrade?
 
