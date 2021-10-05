@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 
+import pydantic
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -87,15 +88,15 @@ async def get_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    if dataset is not None:
-        dataset = dataset.value
-    if fidField is not None:
-        # flake8 warning N806: variable 'fidField' in function should be lowercase
-        # Ignore for Fast-API parameters which are definied as mixedCase
-        fidField = fidField.value  # noqa N806
-    return await _fetch_indicator(
-        name.value, layerName.value, bpolys, dataset, featureId, fidField
-    )
+    raw = {
+        "layerName": layerName,
+        "bpolys": bpolys,
+        "dataset": dataset,
+        "featureId": featureId,
+        "fidField": fidField,
+    }
+    parameters = {k: v for k, v in raw.items() if v is not None}
+    return await _fetch_indicator(name.value, parameters)
 
 
 @app.post("/indicator/{name}")
@@ -113,37 +114,27 @@ async def post_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    return await _fetch_indicator(name.value, parameters)
+
+
+@pydantic.validate_arguments
+async def _fetch_indicator(
+    name: str,
+    parameters: IndicatorRequestModel,
+) -> dict:
     p = parameters.dict()
-    dataset = p["dataset"]
+    dataset = p.get("dataset", None)
     fid_field = p.get("fid_field", None)
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-    return await _fetch_indicator(
-        name.value,
+    geojson_object = await oqt.create_indicator_as_geojson(
+        name,
         p["layer_name"].value,
         p["bpolys"],
         dataset,
         p["feature_id"],
-        fid_field,
-    )
-
-
-async def _fetch_indicator(
-    name: str,
-    layer_name: str,
-    bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
-    feature_id: Optional[str] = None,
-    fid_field: Optional[str] = None,
-) -> dict:
-    geojson_object = await oqt.create_indicator_as_geojson(
-        name,
-        layer_name,
-        bpolys,
-        dataset,
-        feature_id,
         fid_field,
         size_restriction=True,
     )
@@ -170,13 +161,14 @@ async def get_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    if dataset is not None:
-        dataset = dataset.value
-    if fidField is not None:
-        # flake8 warning N806: variable 'fidField' in function should be lowercase
-        # Ignore for Fast-API parameters which are definied as mixedCase
-        fidField = fidField.value  # noqa N806
-    return await _fetch_report(name.value, bpolys, dataset, featureId, fidField)
+    raw = {
+        "bpolys": bpolys,
+        "dataset": dataset,
+        "featureId": featureId,
+        "fidField": fidField,
+    }
+    parameters = {k: v for k, v in raw.items() if v is not None}
+    return await _fetch_report(name.value, parameters)
 
 
 @app.post("/report/{name}")
@@ -191,35 +183,23 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    return await _fetch_report(name.value, parameters)
+
+
+@pydantic.validate_arguments
+async def _fetch_report(name: str, parameters: ReportRequestModel):
     p = parameters.dict()
-    dataset = p["dataset"]
-    fid_field = p["fid_field"]
+    dataset = p.get("dataset")
+    fid_field = p.get("fid_field")
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-
-    return await _fetch_report(
-        name.value,
-        p["bpolys"],
-        dataset,
-        p["feature_id"],
-        fid_field,
-    )
-
-
-async def _fetch_report(
-    name: str,
-    bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
-    feature_id: Optional[str] = None,
-    fid_field: Optional[str] = None,
-):
     geojson_object = await oqt.create_report_as_geojson(
         name,
-        bpolys=bpolys,
+        bpolys=p["bpolys"],
         dataset=dataset,
-        feature_id=feature_id,
+        feature_id=p["feature_id"],
         fid_field=fid_field,
         size_restriction=True,
     )
