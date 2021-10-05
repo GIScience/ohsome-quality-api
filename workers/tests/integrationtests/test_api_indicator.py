@@ -136,6 +136,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_invalid(self):
         data = {
             "name": self.indicator_name,
+            "layerName": self.layer_name,
             "dataset": "foo",
             "featureId": "3",
         }
@@ -169,6 +170,18 @@ class TestApiIndicator(unittest.TestCase):
         ):
             response = self.client.post(url, json=data)
             self.assertEqual(response.status_code, 422)
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_invalid_layer(self):
+        data = {
+            "name": self.indicator_name,
+            "layerName": "amenities",
+            "dataset": "foo",
+            "featureId": "3",
+        }
+        url = "/indicator"
+        response = self.client.post(url, json=data)
+        self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

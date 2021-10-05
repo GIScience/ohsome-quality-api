@@ -50,3 +50,12 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseRequestModel(dataset="regions")
         with self.assertRaises(ValueError):
             request_models.BaseRequestModel(feature_id="3")
+
+    def test_invalid_indicator_layer_combination(self):
+        with self.assertRaises(ValueError):
+            request_models.IndicatorRequestModel(
+                name="GhsPopComparisonBuildings",
+                layerName="amenities",
+                dataset="regions",
+                featureId="3",
+            )
