@@ -22,11 +22,12 @@
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
 - Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
+- Add csv output to list-region cli ([#65])
 
 ### How to upgrade?
 
 - If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
-
+[#65]: https://github.com/GIScience/ohsome-quality-analyst/issues/65
 [#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
