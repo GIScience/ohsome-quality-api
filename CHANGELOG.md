@@ -21,7 +21,7 @@
     - Improve API response schemata by using less logic to create the schemata.
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
-- Added parameter to regions endpoint to only respond with a geojson if requested. ([#171])
+- Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
 
 ### How to upgrade?
 
