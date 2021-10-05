@@ -195,7 +195,7 @@ async def get_regions_as_geojson() -> FeatureCollection:
     return feature_collection
 
 
-async def get_regions() -> list[tuple]:
+async def get_regions() -> List[tuple]:
     query = "SELECT  name, ogc_fid FROM regions"
     async with get_connection() as conn:
         record = await conn.fetch(query)
