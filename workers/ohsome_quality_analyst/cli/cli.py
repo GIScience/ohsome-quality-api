@@ -81,7 +81,7 @@ def list_fid_fields():
 @cli.command("list-regions")
 def get_available_regions():
     """List available regions."""
-    regions = asyncio.run(db_client.get_available_regions())
+    regions = asyncio.run(db_client.get_regions_as_geojson())
     click.echo(regions)
 
 
