@@ -33,11 +33,13 @@ class TestApi(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
+        self.assertIsInstance(response_content["result"], list)
         url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
+        self.assertIsInstance(response_content["result"], list)
 
     def test_list_indicators(self):
         url = "/indicatorNames"
