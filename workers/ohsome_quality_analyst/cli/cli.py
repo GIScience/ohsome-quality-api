@@ -1,6 +1,7 @@
 import asyncio
 import csv
 import logging
+import sys
 
 import click
 import geojson
@@ -82,16 +83,10 @@ def list_fid_fields():
 @cli.command("list-regions")
 def get_available_regions():
     """List available regions."""
-    regions = asyncio.run(db_client.get_available_regions())
-    with open("available_regions.csv", "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        for feature in regions["features"]:
-            writer.writerow([feature["id"]] + [feature["properties"]["name"]])
-        csvfile.close()
-    with open("available_regions.csv", newline="") as read_file:
-        reader = csv.reader(read_file)
-        for row in reader:
-            click.echo(", ".join(row))
+    regions = asyncio.run(db_client.get_regions_as_geojson())
+    writer = csv.writer(sys.stdout)
+    for feature in regions["features"]:
+        writer.writerow([feature["id"]] + [feature["properties"]["name"]])
 
 
 @cli.command("list-indicator-layer-combination")

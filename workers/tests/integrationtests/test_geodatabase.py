@@ -104,9 +104,13 @@ class TestGeodatabase(unittest.TestCase):
         with self.assertRaises(ValueError):
             asyncio.run(db_client.get_feature_from_db(self.dataset, "foo"))
 
-    def test_get_available_regions(self):
-        regions = asyncio.run(db_client.get_available_regions())
+    def test_get_regions_as_geojson(self):
+        regions = asyncio.run(db_client.get_regions_as_geojson())
         self.assertTrue(regions.is_valid)
+
+    def test_get_regions(self):
+        regions = asyncio.run(db_client.get_regions())
+        self.assertIsInstance(regions, list)
 
     def test_sanity_check_dataset(self):
         self.assertFalse(db_client.sanity_check_dataset("foo"))
