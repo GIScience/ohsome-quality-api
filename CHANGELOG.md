@@ -14,6 +14,7 @@
 
 ### Other Changes
 
+- Add csv output to list-region cli ([#65])
 - Added documentation on “How to add a layer definitions” ([#141])
 - Use concurrency when creating all indicators ([#153])
 - Add and improve tests for API ([#168])
@@ -25,7 +26,7 @@
 ### How to upgrade?
 
 - If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
-
+[#65]: https://github.com/GIScience/ohsome-quality-analyst/issues/65
 [#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106

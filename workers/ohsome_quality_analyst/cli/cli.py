@@ -1,4 +1,5 @@
 import asyncio
+import csv
 import logging
 
 import click
@@ -82,13 +83,15 @@ def list_fid_fields():
 def get_available_regions():
     """List available regions."""
     regions = asyncio.run(db_client.get_available_regions())
-    output = []
-    header = "ID,Name,"
-    for feature in regions["features"]:
-        string = str(feature["id"]) + "," + feature["properties"]["name"] + ","
-        header += string
-    output.append(header)
-    click.echo(output)
+    with open("available_regions.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        for feature in regions["features"]:
+            writer.writerow([feature["id"]] + [feature["properties"]["name"]])
+        csvfile.close()
+    with open("available_regions.csv", newline="") as read_file:
+        reader = csv.reader(read_file)
+        for row in reader:
+            click.echo(", ".join(row))
 
 
 @cli.command("list-indicator-layer-combination")
