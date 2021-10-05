@@ -21,7 +21,8 @@
     - Improve API response schemata by using less logic to create the schemata.
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
-- Added parameter to get API response without svg string in the result. ([#137])
+- Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
+- Add parameter to get API response without svg string in the result. ([#137])
 
 ### How to upgrade?
 
@@ -35,6 +36,7 @@
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
 [#168]: https://github.com/GIScience/ohsome-quality-analyst/pull/168
+[#171]: https://github.com/GIScience/ohsome-quality-analyst/issues/171
 [#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/179
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 

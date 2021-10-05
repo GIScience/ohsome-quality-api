@@ -241,24 +241,28 @@ async def _fetch_report(
     response = empty_api_response()
 
     if include_svg is False:
-        svg_elements = []
-        pattern = "*.result.svg"
-        for element in geojson_object["properties"]:
-            if fnmatch.fnmatch(str(element), pattern) is True:
-                svg_elements.append(element)
-        for key in svg_elements:
-            del geojson_object["properties"][key]
+        for key in geojson_object["properties"].keys():
+            if fnmatch.fnmatch(key, "*.result.svg"):
+                geojson_object["properties"].pop(key)
 
     response.update(geojson_object)
     return response
 
 
 @app.get("/regions")
-async def get_available_regions():
-    """List names of available regions."""
+async def get_available_regions(asGeoJSON: bool = False):
+    """Get regions as list of names and identifiers or as GeoJSON.
+
+    Args:
+        asGeoJSON: If `True` regions will be returned as GeoJSON
+    """
     response = empty_api_response()
-    regions = await db_client.get_available_regions()
-    response.update(regions)
+    if asGeoJSON is True:
+        regions = await db_client.get_regions_as_geojson()
+        response.update(regions)
+    else:
+        regions = await db_client.get_regions()
+        response["result"] = regions
     return response
 
 
