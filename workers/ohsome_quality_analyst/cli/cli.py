@@ -83,10 +83,9 @@ def list_fid_fields():
 @cli.command("list-regions")
 def get_available_regions():
     """List available regions."""
-    regions = asyncio.run(db_client.get_regions_as_geojson())
+    regions = asyncio.run(db_client.get_regions())
     writer = csv.writer(sys.stdout)
-    for feature in regions["features"]:
-        writer.writerow([feature["id"]] + [feature["properties"]["name"]])
+    writer.writerows(regions)
 
 
 @cli.command("list-indicator-layer-combination")
