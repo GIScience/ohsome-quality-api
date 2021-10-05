@@ -1,3 +1,4 @@
+import fnmatch
 import logging
 from typing import Optional
 
@@ -117,7 +118,6 @@ async def post_indicator(
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p.get("fid_field", None)
-    includeSvg = p["includeSvg"]
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
@@ -125,7 +125,7 @@ async def post_indicator(
     return await _fetch_indicator(
         name.value,
         p["layer_name"].value,
-        includeSvg,
+        p["includeSvg"],
         p["bpolys"],
         dataset,
         p["feature_id"],
@@ -206,7 +206,6 @@ async def post_report(
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
-    includeSvg = p["includeSvg"]
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
@@ -214,7 +213,7 @@ async def post_report(
 
     return await _fetch_report(
         name.value,
-        includeSvg,
+        p["includeSvg"],
         p["bpolys"],
         dataset,
         p["feature_id"],
@@ -224,7 +223,7 @@ async def post_report(
 
 async def _fetch_report(
     name: str,
-    includeSvg: bool = False,
+    include_svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
@@ -240,15 +239,16 @@ async def _fetch_report(
     )
 
     response = empty_api_response()
-    if includeSvg is False:
-        cnt = 0
-        while True:
-            string = "indicators.{}.result.svg".format(str(cnt))
-            if string in geojson_object["properties"]:
-                del geojson_object["properties"][string]
-                cnt += 1
-            else:
-                break
+
+    if include_svg is False:
+        svg_elements = []
+        pattern = "*.result.svg"
+        for element in geojson_object["properties"]:
+            if fnmatch.fnmatch(str(element), pattern) is True:
+                svg_elements.append(element)
+        for key in svg_elements:
+            del geojson_object["properties"][key]
+
     response.update(geojson_object)
     return response
 
