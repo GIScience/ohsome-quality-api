@@ -146,7 +146,6 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_invalid_set_of_arguments(self):
-
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -166,6 +165,38 @@ class TestApiIndicator(unittest.TestCase):
         ):
             response = self.client.post(url, json=data)
             self.assertEqual(response.status_code, 422)
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_svg(self):
+        url = (
+            "/indicator/{0}?layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("result.svg", list(result["properties"].keys()))
+
+        url = (
+            "/indicator/{0}?layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.svg", list(result["properties"].keys()))
 
 
 if __name__ == "__main__":

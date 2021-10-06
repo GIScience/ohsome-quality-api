@@ -107,6 +107,23 @@ class TestApiReportIo(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.post_response(feature)
 
+    @oqt_vcr.use_cassette()
+    def test_report_include_svg(self):
+        feature = get_fixture("heidelberg-altstadt-feature.geojson")
+        url = "/report/{0}?bpolys={1}&includeSvg={2}".format(
+            self.report_name, feature, True
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
+
+        url = "/report/{0}?bpolys={1}&includeSvg={2}".format(
+            self.report_name, feature, False
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

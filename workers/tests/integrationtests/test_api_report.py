@@ -113,6 +113,34 @@ class TestApiReport(unittest.TestCase):
         ):
             self.run_tests(response)
 
+    @oqt_vcr.use_cassette()
+    def test_report_include_svg(self):
+        url = (
+            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&includeSvg={4}".format(
+                self.report_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
+
+        url = (
+            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&includeSvg={4}".format(
+                self.report_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()
