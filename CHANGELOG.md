@@ -28,7 +28,7 @@
 ### How to upgrade?
 
 - If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
-- If you used the API endpoint `/regions` be aware of the changed output format ([#171], [#195]). If you want to retrive a GeoJSON use the parameter `asGeoJSON=True`.
+- If you used the API endpoint `/regions` be aware of the changed output format ([#171], [#195]). If you want to retrieve a GeoJSON use the parameter `asGeoJSON=True`.
 
 [#65]: https://github.com/GIScience/ohsome-quality-analyst/issues/65
 [#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
