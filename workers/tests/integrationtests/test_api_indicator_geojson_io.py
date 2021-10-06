@@ -110,6 +110,29 @@ class TestApiIndicatorIo(unittest.TestCase):
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 422)
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_svg(self):
+        feature = get_fixture("heidelberg-altstadt-feature.geojson")
+        url = "/indicator/{0}?layerName={1}&bpolys={2}&includeSvg={3}".format(
+            self.indicator_name,
+            self.layer_name,
+            feature,
+            True,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("result.svg", list(result["properties"].keys()))
+
+        url = "/indicator/{0}?layerName={1}&bpolys={2}&includeSvg={3}".format(
+            self.indicator_name,
+            self.layer_name,
+            feature,
+            False,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

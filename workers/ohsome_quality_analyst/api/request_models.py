@@ -32,7 +32,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseRequestModel(pydantic.BaseModel):
-    includeSvg: bool
+    includeSvg: bool = False
     bpolys: Optional[str]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
