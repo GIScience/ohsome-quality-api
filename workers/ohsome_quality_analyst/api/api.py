@@ -24,6 +24,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
+    INDICATOR_LAYER,
     configure_logging,
     get_dataset_names,
     get_fid_fields,
@@ -228,10 +229,27 @@ async def _fetch_report(
 
 
 @app.get("/regions")
-async def get_available_regions():
-    """List names of available regions."""
+async def get_available_regions(asGeoJSON: bool = False):
+    """Get regions as list of names and identifiers or as GeoJSON.
+
+    Args:
+        asGeoJSON: If `True` regions will be returned as GeoJSON
+    """
     response = empty_api_response()
-    response["result"] = await db_client.get_available_regions()
+    if asGeoJSON is True:
+        regions = await db_client.get_regions_as_geojson()
+        response.update(regions)
+    else:
+        regions = await db_client.get_regions()
+        response["result"] = regions
+    return response
+
+
+@app.get("/indicatorLayerCombinations")
+async def list_indicator_layer_combinations():
+    """List names of available indicator-layer-combinations."""
+    response = empty_api_response()
+    response["result"] = INDICATOR_LAYER
     return response
 
 

@@ -12,7 +12,9 @@ from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
     loads_geojson,
+    merge_dicts,
     name_to_class,
+    unflatten_dict,
 )
 
 
@@ -79,6 +81,17 @@ class TestHelper(unittest.TestCase):
         deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
         flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
         self.assertDictEqual(flatten_dict(deep), flat)
+
+    def test_unflatten_dict(self):
+        flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
+        deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
+        self.assertDictEqual(unflatten_dict(flat), deep)
+
+    def test_merge_dicts(self):
+        dict1 = {"foo": {"bar": "baz"}}
+        dict2 = {"foo": {"lang": {"нет": "tak"}}, "something": 5}
+        merged_dict = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
+        self.assertDictEqual(merge_dicts(dict1, dict2), merged_dict)
 
     # TODO: add tests for other input than dict
     def test_flatten_seq(self):

@@ -54,7 +54,6 @@ class Result:
     value: Optional[float]
     description: str
     svg: str
-    data: Optional[dict] = None
 
 
 class BaseIndicator(metaclass=ABCMeta):

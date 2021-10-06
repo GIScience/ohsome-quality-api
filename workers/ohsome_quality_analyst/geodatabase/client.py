@@ -25,7 +25,10 @@ import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
-from ohsome_quality_analyst.utils.helper import datetime_to_isostring_timestamp
+from ohsome_quality_analyst.utils.helper import (
+    datetime_to_isostring_timestamp,
+    unflatten_dict,
+)
 
 
 @asynccontextmanager
@@ -96,7 +99,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     with open(file_path, "r") as file:
         query = file.read()
 
-    data = (
+    query_data = (
         indicator.metadata.name,
         indicator.layer.name,
         dataset,
@@ -104,18 +107,25 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     )
 
     async with get_connection() as conn:
-        query_result = await conn.fetchrow(query, *data)
+        query_result = await conn.fetchrow(query, *query_data)
 
     if not query_result:
         return False
-    else:
-        indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
-        indicator.result.timestamp_osm = query_result["timestamp_osm"]
-        indicator.result.label = query_result["result_label"]
-        indicator.result.value = query_result["result_value"]
-        indicator.result.description = query_result["result_description"]
-        indicator.result.svg = query_result["result_svg"]
-        return True
+
+    indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
+    indicator.result.timestamp_osm = query_result["timestamp_osm"]
+    indicator.result.label = query_result["result_label"]
+    indicator.result.value = query_result["result_value"]
+    indicator.result.description = query_result["result_description"]
+    indicator.result.svg = query_result["result_svg"]
+
+    feature = geojson.loads(query_result["feature"])
+    properties = unflatten_dict(feature["properties"])
+    result_data = properties["data"]
+
+    for key, value in result_data.items():
+        setattr(indicator, key, value)
+    return True
 
 
 async def get_feature_ids(dataset: str) -> List[str]:
@@ -170,7 +180,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     return Feature(geometry=geojson.loads(result[0]))
 
 
-async def get_available_regions() -> FeatureCollection:
+async def get_regions_as_geojson() -> FeatureCollection:
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "regions_as_geojson.sql")
     with open(file_path, "r") as file:
@@ -183,6 +193,16 @@ async def get_available_regions() -> FeatureCollection:
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
+
+
+async def get_regions() -> List[tuple]:
+    query = "SELECT  name, ogc_fid FROM regions"
+    async with get_connection() as conn:
+        record = await conn.fetch(query)
+    regions = []
+    for tuple_record in record:
+        regions.append(tuple(tuple_record))
+    return regions
 
 
 def sanity_check_dataset(dataset: str) -> bool:

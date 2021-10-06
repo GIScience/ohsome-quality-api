@@ -1,5 +1,7 @@
 import asyncio
+import csv
 import logging
+import sys
 
 import click
 import geojson
@@ -10,6 +12,7 @@ from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     DATASETS,
+    INDICATOR_LAYER,
     configure_logging,
     load_layer_definitions,
     load_metadata,
@@ -80,8 +83,16 @@ def list_fid_fields():
 @cli.command("list-regions")
 def get_available_regions():
     """List available regions."""
-    regions = asyncio.run(db_client.get_available_regions())
-    click.echo(regions)
+    regions = asyncio.run(db_client.get_regions())
+    writer = csv.writer(sys.stdout)
+    writer.writerows(regions)
+
+
+@cli.command("list-indicator-layer-combination")
+def get_indicator_layer_combination():
+    """List all possible indicator-layer-combinations."""
+    for combination in INDICATOR_LAYER:
+        click.echo(combination)
 
 
 @cli.command("create-indicator")
