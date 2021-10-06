@@ -6,7 +6,7 @@
 
 - Save indicator as GeoJSON Feature to DB ([#149])
     - Extend database schema with one additional attribute `feature` of type JSON
-- API endpoint `/regions` responds with array of names and ids (default) or a GeoJSON if parameter `asGeoJSON=True` is set ([#171], [#195])
+- API endpoint `/regions` responds with an array of names and ids (default) or a GeoJSON if parameter `asGeoJSON=True` is set ([#171], [#195])
 
 ### New Features
 
@@ -22,7 +22,6 @@
     - Improve API response schemata by using less logic to create the schemata.
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
-- Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
 - Change output of CLI command `list-regions` to a pretty printed table of names and identifies ([#65], [#196])
 
 ### How to upgrade?
