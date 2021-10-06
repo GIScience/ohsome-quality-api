@@ -111,6 +111,7 @@ class TestGeodatabase(unittest.TestCase):
     def test_get_regions(self):
         regions = asyncio.run(db_client.get_regions())
         self.assertIsInstance(regions, list)
+        self.assertIsInstance(regions[0], dict)
 
     def test_sanity_check_dataset(self):
         self.assertFalse(db_client.sanity_check_dataset("foo"))
