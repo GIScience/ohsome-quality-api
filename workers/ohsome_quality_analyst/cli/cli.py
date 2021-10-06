@@ -84,7 +84,7 @@ def get_available_regions():
     regions = asyncio.run(db_client.get_regions())
     format_row = "{:>4}{:>20}"
     click.echo(format_row.format("fid", "name"))
-    click.echo(format_row.format("---", "----"))
+    click.echo(format_row.format("---", "-" * 19))
     for region in sorted(regions, key=lambda k: k["ogc_fid"]):
         click.echo(format_row.format(region["ogc_fid"], region["name"]))
 
