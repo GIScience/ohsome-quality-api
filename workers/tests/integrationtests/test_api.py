@@ -35,14 +35,16 @@ class TestApi(unittest.TestCase):
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertIsInstance(response_content["result"], list)
-        self.assertIsInstance(response_content["result"][0], dict)
+        for region in response_content["result"]:
+            self.assertIsInstance(region, dict)
 
         url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertIsInstance(response_content["result"][0], dict)
+        for region in response_content["result"]:
+            self.assertIsInstance(region, dict)
 
     def test_list_indicator_layer_combinations(self):
         url = "/indicatorLayerCombinations"
