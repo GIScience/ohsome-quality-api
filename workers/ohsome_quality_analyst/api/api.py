@@ -1,9 +1,10 @@
 import fnmatch
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst import (
     __author__,
@@ -152,7 +153,7 @@ async def _fetch_indicator(
         size_restriction=True,
     )
     if include_svg is False:
-        del geojson_object["properties"]["result.svg"]
+        remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
     return response
@@ -237,14 +238,9 @@ async def _fetch_report(
         fid_field=fid_field,
         size_restriction=True,
     )
-
     response = empty_api_response()
-
     if include_svg is False:
-        for key in geojson_object["properties"].keys():
-            if fnmatch.fnmatch(key, "*.result.svg"):
-                geojson_object["properties"].pop(key)
-
+        remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
     return response
 
@@ -312,3 +308,18 @@ async def list_fid_fields():
     response = empty_api_response()
     response["result"] = get_fid_fields()
     return response
+
+
+def remove_svg_from_properties(
+    geojson_object: Union[Feature, FeatureCollection]
+) -> None:
+    def _remove_svg_from_properties(properties: dict) -> None:
+        for key in list(properties.keys()):
+            if fnmatch.fnmatch(key, "*result.svg"):
+                del properties[key]
+
+    if isinstance(geojson_object, Feature):
+        _remove_svg_from_properties(geojson_object["properties"])
+    elif isinstance(geojson_object, FeatureCollection):
+        for feature in geojson_object["features"]:
+            _remove_svg_from_properties(feature["properties"])
