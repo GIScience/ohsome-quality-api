@@ -22,7 +22,8 @@
     - Improve API response schemata by using less logic to create the schemata.
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
-- Add csv output to list-region cli ([#65])
+- Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
+- Change output of CLI command `list-regions` to a pretty printed table of names and identifies ([#65] [#196]).
 
 ### How to upgrade?
 
@@ -40,6 +41,7 @@
 [#171]: https://github.com/GIScience/ohsome-quality-analyst/issues/171
 [#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/179
 [#195]: https://github.com/GIScience/ohsome-quality-analyst/pull/195
+[#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/196
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 
