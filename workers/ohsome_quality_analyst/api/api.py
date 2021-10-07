@@ -240,8 +240,7 @@ async def get_available_regions(asGeoJSON: bool = False):
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
     else:
-        regions = await db_client.get_regions()
-        response["result"] = regions
+        response["result"] = await db_client.get_regions()
     return response
 
 

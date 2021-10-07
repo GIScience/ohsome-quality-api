@@ -28,18 +28,23 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         result = geojson.loads(json.dumps(response_content))
         self.assertTrue(result.is_valid)
+
         url = "/regions?asGeoJSON=false"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertIsInstance(response_content["result"], list)
+        for region in response_content["result"]:
+            self.assertIsInstance(region, dict)
+
         url = "/regions"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertIsInstance(response_content["result"], list)
+        for region in response_content["result"]:
+            self.assertIsInstance(region, dict)
 
     def test_list_indicator_layer_combinations(self):
         url = "/indicatorLayerCombinations"
