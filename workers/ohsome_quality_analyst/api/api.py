@@ -123,10 +123,10 @@ async def _fetch_indicator(
     parameters: IndicatorRequestModel,
 ) -> dict:
     p = parameters.dict()
-    dataset = p.get("dataset", None)
-    fid_field = p.get("fid_field", None)
+    dataset = p["dataset"]
+    fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = dataset.value
+        dataset = p["dataset"].value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_indicator_as_geojson(
@@ -189,10 +189,10 @@ async def post_report(name: ReportEnum, parameters: ReportRequestModel):
 @pydantic.validate_arguments
 async def _fetch_report(name: str, parameters: ReportRequestModel):
     p = parameters.dict()
-    dataset = p.get("dataset")
-    fid_field = p.get("fid_field")
+    dataset = p["dataset"]
+    fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = dataset.value
+        dataset = p["dataset"].value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_report_as_geojson(
