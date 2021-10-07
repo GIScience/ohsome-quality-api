@@ -6,7 +6,6 @@ const GOOD_QUALITY = '<span class="dot-green"></span> <span class="dot"></span> 
 const MEDIUM_QUALITY = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
 const BAD_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
 const UNDEFINED_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality'
-
 function fetch_regions_from_server() {
 	return fetch('assets/data/regions.geojson')
 }
@@ -221,11 +220,12 @@ function buildMap(...charts){
 
 
 			const params = {
-			    "dataset": String(selectedDataset),
-			    "featureId": String(areas)
+				"name": String(selectedReport),
+				"dataset": String(selectedDataset),
+				"featureId": String(areas)
 			}
 			console.log(params)
-			httpPostAsync(selectedReport, JSON.stringify(params), handleGetQuality);
+			httpPostAsync(JSON.stringify(params), handleGetQuality);
 		 }
 		// when params were send, get pdf button turns blue
 		changeColor() 
@@ -544,8 +544,8 @@ function httpGetAsync(theUrl, callback)
 	// return xmlHttp.responseText;
 }
 
-function httpPostAsync(endPoint, params, callback) {
-	const theUrl = apiUrl + "/report/" + endPoint;
+function httpPostAsync(params, callback) {
+	const theUrl = apiUrl + "/report/";
 	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
