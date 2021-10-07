@@ -2,10 +2,21 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
+
 ### Other Changes
 
 - API: Change media type of GeoJSON response ([#199])
+- Validate indicator-layer combination with `pydantic` ([#190])
 
+### How to upgrade
+
+- Update requests for `/indicator` and `/report` endpoints. `name` is now a *Query* parameter ([#190])
+    - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
+
+[#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190
 [#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
 
 
