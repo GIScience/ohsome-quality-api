@@ -180,7 +180,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     return Feature(geometry=geojson.loads(result[0]))
 
 
-async def get_available_regions() -> FeatureCollection:
+async def get_regions_as_geojson() -> FeatureCollection:
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "regions_as_geojson.sql")
     with open(file_path, "r") as file:
@@ -193,6 +193,13 @@ async def get_available_regions() -> FeatureCollection:
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")
     return feature_collection
+
+
+async def get_regions() -> List[dict]:
+    query = "SELECT  name, ogc_fid FROM regions"
+    async with get_connection() as conn:
+        records = await conn.fetch(query)
+    return [dict(r) for r in records]
 
 
 def sanity_check_dataset(dataset: str) -> bool:

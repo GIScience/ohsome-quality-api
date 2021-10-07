@@ -229,11 +229,18 @@ async def _fetch_report(
 
 
 @app.get("/regions")
-async def get_available_regions():
-    """List names of available regions."""
+async def get_available_regions(asGeoJSON: bool = False):
+    """Get regions as list of names and identifiers or as GeoJSON.
+
+    Args:
+        asGeoJSON: If `True` regions will be returned as GeoJSON
+    """
     response = empty_api_response()
-    regions = await db_client.get_available_regions()
-    response.update(regions)
+    if asGeoJSON is True:
+        regions = await db_client.get_regions_as_geojson()
+        response.update(regions)
+    else:
+        response["result"] = await db_client.get_regions()
     return response
 
 

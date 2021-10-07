@@ -81,8 +81,12 @@ def list_fid_fields():
 @cli.command("list-regions")
 def get_available_regions():
     """List available regions."""
-    regions = asyncio.run(db_client.get_available_regions())
-    click.echo(regions)
+    regions = asyncio.run(db_client.get_regions())
+    format_row = "{:>4}{:>20}"
+    click.echo(format_row.format("fid", "name"))
+    click.echo(format_row.format("---", "-" * 19))
+    for region in sorted(regions, key=lambda k: k["ogc_fid"]):
+        click.echo(format_row.format(region["ogc_fid"], region["name"]))
 
 
 @cli.command("list-indicator-layer-combination")
