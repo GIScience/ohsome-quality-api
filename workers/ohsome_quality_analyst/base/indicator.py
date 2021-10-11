@@ -54,7 +54,6 @@ class Result:
     value: Optional[float]
     description: str
     svg: str
-    data: Optional[dict] = None
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -103,7 +102,14 @@ class BaseIndicator(metaclass=ABCMeta):
             **{"data." + str(key): val for key, val in self.data.items()},
             **self.feature.properties,
         }
-        return Feature(geometry=self.feature.geometry, properties=properties)
+        if "id" in self.feature.keys():
+            return Feature(
+                id=self.feature.id,
+                geometry=self.feature.geometry,
+                properties=properties,
+            )
+        else:
+            return Feature(geometry=self.feature.geometry, properties=properties)
 
     @property
     def data(self) -> dict:

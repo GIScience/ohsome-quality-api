@@ -2,6 +2,7 @@ import fnmatch
 import logging
 from typing import Optional, Union
 
+import pydantic
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from geojson import Feature, FeatureCollection
@@ -28,8 +29,8 @@ from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
     INDICATOR_LAYER,
     configure_logging,
-    get_dataset_names,
-    get_fid_fields,
+    get_dataset_names_api,
+    get_fid_fields_api,
     get_indicator_names,
     get_layer_names,
     get_report_names,
@@ -90,15 +91,16 @@ async def get_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    if dataset is not None:
-        dataset = dataset.value
-    if fidField is not None:
-        # flake8 warning N806: variable 'fidField' in function should be lowercase
-        # Ignore for Fast-API parameters which are definied as mixedCase
-        fidField = fidField.value  # noqa N806
-    return await _fetch_indicator(
-        name.value, layerName.value, includeSvg, bpolys, dataset, featureId, fidField
-    )
+    raw = {
+        "layerName": layerName,
+        "includeSvg": includeSvg,
+        "bpolys": bpolys,
+        "dataset": dataset,
+        "featureId": featureId,
+        "fidField": fidField,
+    }
+    parameters = {k: v for k, v in raw.items() if v is not None}
+    return await _fetch_indicator(name.value, parameters)
 
 
 @app.post("/indicator/{name}")
@@ -116,43 +118,31 @@ async def post_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    return await _fetch_indicator(name.value, parameters)
+
+
+@pydantic.validate_arguments
+async def _fetch_indicator(
+    name: str,
+    parameters: IndicatorRequestModel,
+) -> dict:
     p = parameters.dict()
     dataset = p["dataset"]
-    fid_field = p.get("fid_field", None)
+    fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = dataset.value
+        dataset = p["dataset"].value
     if fid_field is not None:
         fid_field = fid_field.value
-    return await _fetch_indicator(
-        name.value,
+    geojson_object = await oqt.create_indicator_as_geojson(
+        name,
         p["layer_name"].value,
-        p["includeSvg"],
         p["bpolys"],
         dataset,
         p["feature_id"],
         fid_field,
-    )
-
-
-async def _fetch_indicator(
-    name: str,
-    layer_name: str,
-    include_svg: bool = False,
-    bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
-    feature_id: Optional[str] = None,
-    fid_field: Optional[str] = None,
-) -> dict:
-    geojson_object = await oqt.create_indicator_as_geojson(
-        name,
-        layer_name,
-        bpolys,
-        dataset,
-        feature_id,
-        fid_field,
         size_restriction=True,
     )
-    if include_svg is False:
+    if p["includeSvg"] is False:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
@@ -178,15 +168,15 @@ async def get_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    if dataset is not None:
-        dataset = dataset.value
-    if fidField is not None:
-        # flake8 warning N806: variable 'fidField' in function should be lowercase
-        # Ignore for Fast-API parameters which are definied as mixedCase
-        fidField = fidField.value  # noqa N806
-    return await _fetch_report(
-        name.value, includeSvg, bpolys, dataset, featureId, fidField
-    )
+    raw = {
+        "includeSvg": includeSvg,
+        "bpolys": bpolys,
+        "dataset": dataset,
+        "featureId": featureId,
+        "fidField": fidField,
+    }
+    parameters = {k: v for k, v in raw.items() if v is not None}
+    return await _fetch_report(name.value, parameters)
 
 
 @app.post("/report/{name}")
@@ -204,42 +194,28 @@ async def post_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    return await _fetch_report(name.value, parameters)
+
+
+@pydantic.validate_arguments
+async def _fetch_report(name: str, parameters: ReportRequestModel):
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = dataset.value
+        dataset = p["dataset"].value
     if fid_field is not None:
         fid_field = fid_field.value
-
-    return await _fetch_report(
-        name.value,
-        p["includeSvg"],
-        p["bpolys"],
-        dataset,
-        p["feature_id"],
-        fid_field,
-    )
-
-
-async def _fetch_report(
-    name: str,
-    include_svg: bool = False,
-    bpolys: Optional[str] = None,
-    dataset: Optional[str] = None,
-    feature_id: Optional[str] = None,
-    fid_field: Optional[str] = None,
-):
     geojson_object = await oqt.create_report_as_geojson(
         name,
-        bpolys=bpolys,
+        bpolys=p["bpolys"],
         dataset=dataset,
-        feature_id=feature_id,
+        feature_id=p["feature_id"],
         fid_field=fid_field,
         size_restriction=True,
     )
     response = empty_api_response()
-    if include_svg is False:
+    if p["includeSvg"] is False:
         remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
     return response
@@ -257,8 +233,7 @@ async def get_available_regions(asGeoJSON: bool = False):
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
     else:
-        regions = await db_client.get_regions()
-        response["result"] = regions
+        response["result"] = await db_client.get_regions()
     return response
 
 
@@ -282,7 +257,7 @@ async def list_indicators():
 async def list_datasets():
     """List names of available datasets."""
     response = empty_api_response()
-    response["result"] = get_dataset_names()
+    response["result"] = get_dataset_names_api()
     return response
 
 
@@ -306,7 +281,7 @@ async def list_reports():
 async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()
-    response["result"] = get_fid_fields()
+    response["result"] = get_fid_fields_api()
     return response
 
 

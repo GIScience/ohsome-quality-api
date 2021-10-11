@@ -1,11 +1,19 @@
 # Changelog
 
-## Current Main
+## 0.7.0
+
+- Add parameter to get API response without svg string in the result. ([#137])
+
+[#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
+
+
+## 0.6.0
 
 ### Breaking Changes
 
 - Save indicator as GeoJSON Feature to DB ([#149])
     - Extend database schema with one additional attribute `feature` of type JSON
+- API endpoint `/regions` responds with an array of names and ids (default) or a GeoJSON if parameter `asGeoJSON=True` is set ([#171], [#195])
 
 ### New Features
 
@@ -22,22 +30,25 @@
 - Add list indicator/layer combinations for API and CLI([#99])
 - Load indicator from DB will also load its data attributes ([#179])
 - Add parameter to 'regions' endpoint to only respond with a GeoJSON if requested ([#171])
-- Add parameter to get API response without svg string in the result. ([#137])
+- Change output of CLI command `list-regions` to a pretty printed table of names and identifies ([#65], [#196])
 
 ### How to upgrade?
 
 - If you set up your own database you will need to rebuild the database or delete the results table (`DROP TABLE results;`).
+- If you used the API endpoint `/regions` be aware of the changed output format ([#171], [#195]). If you want to retrieve a GeoJSON use the parameter `asGeoJSON=True`.
 
+[#65]: https://github.com/GIScience/ohsome-quality-analyst/issues/65
 [#99]: https://github.com/GIScience/ohsome-quality-analyst/issues/99
 [#102]: https://github.com/GIScience/ohsome-quality-analyst/pull/102
 [#106]: https://github.com/GIScience/ohsome-quality-analyst/issues/106
-[#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
 [#141]: https://github.com/GIScience/ohsome-quality-analyst/pull/141
 [#149]: https://github.com/GIScience/ohsome-quality-analyst/pull/149
 [#153]: https://github.com/GIScience/ohsome-quality-analyst/pull/153
 [#168]: https://github.com/GIScience/ohsome-quality-analyst/pull/168
 [#171]: https://github.com/GIScience/ohsome-quality-analyst/issues/171
 [#179]: https://github.com/GIScience/ohsome-quality-analyst/pull/179
+[#195]: https://github.com/GIScience/ohsome-quality-analyst/pull/195
+[#196]: https://github.com/GIScience/ohsome-quality-analyst/pull/196
 [`pydantic`]: https://pydantic-docs.helpmanual.io/
 
 
