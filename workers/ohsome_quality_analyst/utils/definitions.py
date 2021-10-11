@@ -26,6 +26,10 @@ DATASETS = {
         ),
     },
 }
+# Dataset names and fid fields which are through the API
+DATASETS_API = DATASETS.copy()
+DATASETS_API.pop("gadm")
+
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("GhsPopComparisonBuildings", "building_count"),
@@ -228,3 +232,11 @@ def get_dataset_names() -> List[str]:
 
 def get_fid_fields() -> List[str]:
     return flatten_sequence(DATASETS)
+
+
+def get_dataset_names_api() -> List[str]:
+    return list(DATASETS_API.keys())
+
+
+def get_fid_fields_api() -> List[str]:
+    return flatten_sequence(DATASETS_API)
