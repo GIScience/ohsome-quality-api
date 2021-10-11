@@ -170,7 +170,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg(self):
         url = (
             "/indicator/{0}?layerName={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+            "&featureId={3}&fidField={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_name,
                 self.dataset,
@@ -185,7 +185,7 @@ class TestApiIndicator(unittest.TestCase):
 
         url = (
             "/indicator/{0}?layerName={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+            "&featureId={3}&fidField={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_name,
                 self.dataset,
