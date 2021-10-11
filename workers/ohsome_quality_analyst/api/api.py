@@ -75,7 +75,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
-    includeSvg: bool = False,
+    include_svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -93,7 +93,7 @@ async def get_indicator(
     """
     raw = {
         "layerName": layerName,
-        "includeSvg": includeSvg,
+        "include_svg": include_svg,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
@@ -142,7 +142,7 @@ async def _fetch_indicator(
         fid_field,
         size_restriction=True,
     )
-    if p["includeSvg"] is False:
+    if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
@@ -152,7 +152,7 @@ async def _fetch_indicator(
 @app.get("/report/{name}")
 async def get_report(
     name: ReportEnum,
-    includeSvg: bool = False,
+    include_svg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -169,7 +169,7 @@ async def get_report(
     if they do not collide with the properties set by OQT.
     """
     raw = {
-        "includeSvg": includeSvg,
+        "include_svg": include_svg,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
@@ -215,7 +215,7 @@ async def _fetch_report(name: str, parameters: ReportRequestModel):
         size_restriction=True,
     )
     response = empty_api_response()
-    if p["includeSvg"] is False:
+    if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
     return response
