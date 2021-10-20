@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.7.0
+## Current Main
 
-- Extend time range for Last Edit indicator and rename to Currentness
+- Extend time range for Last Edit indicator and rename it to Currentness ([#178])
+
+[#178]: https://github.com/GIScience/ohsome-quality-analyst/pull/178
 
 ## 0.6.0
 

@@ -11,7 +11,7 @@ from ohsome_quality_analyst.indicators.currentness.indicator import Currentness
 from .utils import oqt_vcr
 
 
-class TestIndicatorLastEdit(unittest.TestCase):
+class TestIndicatorCurrentness(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test(self):
         # Heidelberg

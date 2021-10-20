@@ -4,7 +4,6 @@ import logging
 from json import JSONDecodeError
 from typing import Optional, Union
 
-import dateutil.parser
 import geojson
 import httpx
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -109,19 +108,3 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     return data
-
-
-async def get_contributions(bpolys, time_range, filter):
-    url = "https://api.ohsome.org/v1/contributions/latest/count"
-    contributions = {}
-    data = {
-        "bpolys": geojson.dumps(FeatureCollection([Feature(geometry=bpolys)])),
-        "time": time_range,
-        "filter": filter,
-    }
-    response = await query_ohsome_api(url, data)
-    for year in response["result"]:
-        time = dateutil.parser.isoparse(year["fromTimestamp"])
-        count = year["value"]
-        contributions[time.strftime("%Y")] = count
-    return contributions

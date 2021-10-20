@@ -2,114 +2,114 @@ import logging
 from io import StringIO
 from string import Template
 
+import dateutil.parser
+import geojson
 import matplotlib.pyplot as plt
-import numpy as np
 from dateutil.relativedelta import relativedelta
-from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Currentness(BaseIndicator):
-    """Percentage of features that have been edited over the past year.
-
-    Calculated by the ratio of latest contribution count to element count.
-    """
+    """Percentage of features that have been edited over the given time range."""
 
     def __init__(
         self,
         layer_name: str,
-        feature: Feature,
-        # datetime format: start_date/end_date/P1Y
-        time_range: str = None,
+        feature: geojson.Feature,
     ) -> None:
         super().__init__(
             layer_name=layer_name,
             feature=feature,
         )
-        # Threshold values are in percentage
         self.threshold_yellow = 0.6
         self.threshold_red = 0.2
-        self.time_range = time_range
         self.element_count = None
-        self.contribution_count = 0
-        self.contributions = None
+        self.contribution_sum = 0
+        self.contributions = {}
         self.ratio = {}
 
     async def preprocess(self) -> None:
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        if self.time_range is None:
-            start = (latest_ohsome_stamp - relativedelta(years=10)).strftime("%Y-%m-%d")
-            end = latest_ohsome_stamp.strftime("%Y-%m-%d")
-            self.time_range = "{0}/{1}/{2}".format(start, end, "P1Y")
+        start = (latest_ohsome_stamp - relativedelta(years=13)).strftime("%Y-%m-%d")
+        end = latest_ohsome_stamp.strftime("%Y-%m-%d")
+        self.time_range = "{0}/{1}/{2}".format(start, end, "P1Y")
 
         response = await ohsome_client.query(
             layer=self.layer,
             bpolys=self.feature.geometry,
         )
         self.element_count = response["result"][0]["value"]
-        self.contributions = await ohsome_client.get_contributions(
-            self.feature.geometry, self.time_range, self.layer.filter
+        self.result.timestamp_osm = dateutil.parser.isoparse(
+            response["result"][0]["timestamp"]
         )
-        self.result.timestamp_osm = latest_ohsome_stamp
+        url = "https://api.ohsome.org/v1/contributions/latest/count"
+        data = {
+            "bpolys": geojson.dumps(
+                geojson.FeatureCollection(
+                    [geojson.Feature(geometry=self.feature.geometry)]
+                )
+            ),
+            "time": self.time_range,
+            "filter": self.layer.filter,
+        }
+        response_contributions = await ohsome_client.query_ohsome_api(url, data)
+        for year in response_contributions["result"]:
+            time = dateutil.parser.isoparse(year["fromTimestamp"])
+            count = year["value"]
+            self.contributions[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
-        for year in self.contributions:
-            self.contribution_count += self.contributions[year]
+        self.contribution_sum = sum(self.contributions.values())
         # It can be that features are counted, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
                 "In the area of intrest no features matching the filter are present."
             )
             return
-        years_without_contributions = []
-        contributions_rel = self.contribution_count
-        first = True
+        contributions_rel = self.contribution_sum
+        contributions_list = []
+        last_edited_year = ""
         for year in self.contributions:
-            if self.contributions[year] == 0:
-                years_without_contributions.append(int(year))
-            if first is True:
-                first = False
-                contributions_rel -= self.contributions[year]
-                self.ratio[year] = 100
-                self.contributions[year] = (
-                    self.contributions[year] / self.contribution_count
-                ) * 100
-            else:
-                self.ratio[year] = (contributions_rel / self.contribution_count) * 100
-                contributions_rel -= self.contributions[year]
-                self.contributions[year] = (
-                    self.contributions[year] / self.contribution_count
-                ) * 100
-        arr = []
-        last_edit = False
+            self.ratio[year] = (contributions_rel / self.contribution_sum) * 100
+            contributions_rel -= self.contributions[year]
+            self.contributions[year] = (
+                self.contributions[year] / self.contribution_sum
+            ) * 100
+            contributions_list.append(self.contributions[year])
+            if self.contributions[year] != 0:
+                last_edited_year = year
+        years_since_last_edit = (
+            int(self.result.timestamp_oqt.year) - 1 - int(last_edited_year)
+        )
+        percentage_contributions = 0
+        median_year = ""
         for year in self.contributions:
-            if last_edit is False:
-                if int(year) in years_without_contributions:
-                    continue
-                else:
-                    last_edit = True
-                    arr.append(self.contributions[year])
+            percentage_contributions += self.contributions[year]
+            if percentage_contributions < 50:
+                continue
             else:
-                arr.append(self.contributions[year])
-        median = np.median(arr)
-        for year in arr:
-            if year == 0.0:
-                arr.remove(0.0)
-        if median > 10:
-            label_1 = 1.0
+                median_year = year
+                break
+        median_diff = int(self.result.timestamp_oqt.year) - 1 - int(median_year)
+        param_1 = 0
+        if median_diff <= 1:
+            param_1 = 1
+        elif median_diff <= 4:
+            param_1 = 0.6
         else:
-            label_1 = median / 10
-        if len(arr) >= 9:
-            label_2 = 1.0
-        elif len(arr) >= 6:
-            label_2 = 0.5
+            param_1 = 0.2
+        param_2 = 0
+        if years_since_last_edit <= 1:
+            param_2 = 1
+        elif years_since_last_edit <= 4:
+            param_2 = 0.6
         else:
-            label_2 = 0.0
-        self.result.value = (label_1 + label_2) / 2
+            param_2 = 0.2
+        self.result.value = (param_1 + param_2) / 2
 
         description = Template(self.metadata.result_description).substitute(
             ratio=self.ratio, layer_name=self.layer.name
@@ -156,7 +156,7 @@ class Currentness(BaseIndicator):
         )
         plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
-        plt.title("Total Contributions: %i" % self.contribution_count)
+        plt.title("Total Contributions: %i" % self.contribution_sum)
         plt.legend()
         fig.tight_layout()
         plt.show()
