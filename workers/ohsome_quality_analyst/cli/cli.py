@@ -158,7 +158,6 @@ def create_indicator(
 @cli_option(options.dataset_name)
 @cli_option(options.feature_id)
 @cli_option(options.fid_field)
-@cli_option(options.time_range)
 @cli_option(options.force)
 def create_report(
     report_name: str,
