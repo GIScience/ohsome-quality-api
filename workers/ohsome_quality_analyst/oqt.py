@@ -13,6 +13,7 @@ import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.report import BaseReport
 from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.exceptions import SizeRestrictionError
 from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
 
 
@@ -273,7 +274,7 @@ async def create_all_indicators(force: bool = False) -> None:
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
     if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
-        raise ValueError(
+        raise SizeRestrictionError(
             "Input GeoJSON Object is too big. "
             "The area should be less than {0} km².".format(GEOM_SIZE_LIMIT)
         )

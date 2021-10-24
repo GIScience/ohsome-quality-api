@@ -101,10 +101,8 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_bpolys_size_limit(self):
         feature = get_fixture("europe.geojson")
-        with self.assertRaises(ValueError):
-            self.get_response(feature)
-        with self.assertRaises(ValueError):
-            self.post_response(feature)
+        response = self.post_response(feature)
+        self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

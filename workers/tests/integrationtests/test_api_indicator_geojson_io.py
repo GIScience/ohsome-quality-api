@@ -101,11 +101,10 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_size_limit(self):
+        # TODO: Test for GET request
         feature = get_fixture("europe.geojson")
-        with self.assertRaises(ValueError):
-            self.get_response(feature)
-        with self.assertRaises(ValueError):
-            self.post_response(feature)
+        response = self.post_response(feature)
+        self.assertEqual(response.status_code, 422)
 
     @oqt_vcr.use_cassette()
     def test_bpolys_invalid(self):

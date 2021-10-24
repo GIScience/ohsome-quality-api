@@ -5,6 +5,7 @@ from typing import Optional
 import pydantic
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -36,6 +37,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
+from ohsome_quality_analyst.utils.exceptions import SizeRestrictionError
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -135,15 +137,19 @@ async def _fetch_indicator(
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-    geojson_object = await oqt.create_indicator_as_geojson(
-        p["name"].value,
-        p["layer_name"].value,
-        p["bpolys"],
-        dataset,
-        p["feature_id"],
-        fid_field,
-        size_restriction=True,
-    )
+    try:
+        geojson_object = await oqt.create_indicator_as_geojson(
+            p["name"].value,
+            p["layer_name"].value,
+            p["bpolys"],
+            dataset,
+            p["feature_id"],
+            fid_field,
+            size_restriction=True,
+        )
+    # TODO: Response schema for this error is different from pydatic validation errors
+    except SizeRestrictionError as error:
+        raise HTTPException(status_code=422, detail=error.message)
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
@@ -206,14 +212,17 @@ async def _fetch_report(parameters: ReportRequestModel):
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-    geojson_object = await oqt.create_report_as_geojson(
-        p["name"].value,
-        bpolys=p["bpolys"],
-        dataset=dataset,
-        feature_id=p["feature_id"],
-        fid_field=fid_field,
-        size_restriction=True,
-    )
+    try:
+        geojson_object = await oqt.create_report_as_geojson(
+            p["name"].value,
+            bpolys=p["bpolys"],
+            dataset=dataset,
+            feature_id=p["feature_id"],
+            fid_field=fid_field,
+            size_restriction=True,
+        )
+    except SizeRestrictionError as error:
+        raise HTTPException(status_code=422, detail=error.message)
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
