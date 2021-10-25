@@ -1,11 +1,11 @@
 import json
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 import pydantic
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -64,6 +64,43 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request, exception: RequestValidationError
+):
+    """Override request validation exceptions.
+
+    `pydantic` raises on exception regardless of the number of errors found.
+    The `ValidationError` will contain information about all the errors.
+    """
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder(
+            {
+                "apiVersion": __version__,
+                "detail": exception.errors(),
+                "type": "RequestValidationError",
+            },
+        ),
+    )
+
+
+@app.exception_handler(OhsomeApiError)
+@app.exception_handler(SizeRestrictionError)
+async def oqt_exception_handler(
+    request: Request, exception: Union[OhsomeApiError, SizeRestrictionError]
+):
+    """Exception handler for custom OQT exceptions."""
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "apiVersion": __version__,
+            "detail": exception.message,
+            "type": exception.name,
+        },
+    )
 
 
 def empty_api_response() -> dict:
@@ -137,19 +174,15 @@ async def _fetch_indicator(
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-    try:
-        geojson_object = await oqt.create_indicator_as_geojson(
-            p["name"].value,
-            p["layer_name"].value,
-            p["bpolys"],
-            dataset,
-            p["feature_id"],
-            fid_field,
-            size_restriction=True,
-        )
-    # TODO: Response schema for this error is different from pydatic validation errors
-    except (OhsomeApiError, SizeRestrictionError) as error:
-        raise HTTPException(status_code=422, detail=error.message)
+    geojson_object = await oqt.create_indicator_as_geojson(
+        p["name"].value,
+        p["layer_name"].value,
+        p["bpolys"],
+        dataset,
+        p["feature_id"],
+        fid_field,
+        size_restriction=True,
+    )
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
@@ -212,17 +245,14 @@ async def _fetch_report(parameters: ReportRequestModel):
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
-    try:
-        geojson_object = await oqt.create_report_as_geojson(
-            p["name"].value,
-            bpolys=p["bpolys"],
-            dataset=dataset,
-            feature_id=p["feature_id"],
-            fid_field=fid_field,
-            size_restriction=True,
-        )
-    except (OhsomeApiError, SizeRestrictionError) as error:
-        raise HTTPException(status_code=422, detail=error.message)
+    geojson_object = await oqt.create_report_as_geojson(
+        p["name"].value,
+        bpolys=p["bpolys"],
+        dataset=dataset,
+        feature_id=p["feature_id"],
+        fid_field=fid_field,
+        size_restriction=True,
+    )
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(

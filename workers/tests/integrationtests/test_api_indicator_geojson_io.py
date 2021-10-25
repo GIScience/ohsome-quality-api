@@ -113,6 +113,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_fixture("europe.geojson")
         response = self.post_response(feature)
         self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "SizeRestrictionError")
 
     @oqt_vcr.use_cassette()
     def test_bpolys_invalid(self):
@@ -132,6 +134,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         url = "/indicator"
         response = self.client.post(url, json=data)
         self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
     def test_ohsome_timeout(self):
         # TODO: Test for GET request
@@ -151,8 +155,9 @@ class TestApiIndicatorIo(unittest.TestCase):
             data = {"bpolys": featurecollection, "layerName": self.layer_name}
             url = f"/indicator/{self.indicator_name}"
             response = self.client.post(url, json=data)
-            # TODO: Check status code
             self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "OhsomeApiError")
 
 
 if __name__ == "__main__":

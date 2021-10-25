@@ -141,6 +141,8 @@ class TestApiIndicator(unittest.TestCase):
         }
         response = self.client.post(ENDPOINT, json=data)
         self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
     def test_indicator_invalid_set_of_arguments(self):
@@ -167,6 +169,8 @@ class TestApiIndicator(unittest.TestCase):
         ):
             response = self.client.post(ENDPOINT, json=data)
             self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
     def test_indicator_invalid_layer(self):
