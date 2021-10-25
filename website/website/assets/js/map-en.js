@@ -217,12 +217,10 @@ function buildMap(...charts){
 			removeIndicators()
 			// remove selected feature from map
 			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
-
-
 			const params = {
-				"name": String(selectedReport),
-				"dataset": String(selectedDataset),
-				"featureId": String(areas)
+			  "name": String(selectedReport),
+			  "dataset": String(selectedDataset),
+			  "featureId": String(areas)
 			}
 			console.log(params)
 			httpPostAsync(JSON.stringify(params), handleGetQuality);
@@ -545,7 +543,7 @@ function httpGetAsync(theUrl, callback)
 }
 
 function httpPostAsync(params, callback) {
-	const theUrl = apiUrl + "/report/";
+	const theUrl = apiUrl + "/report";
 	const xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState === 4 && xmlHttp.status === 200)

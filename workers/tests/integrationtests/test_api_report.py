@@ -4,8 +4,8 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 
 import unittest
-import urllib
 from typing import Optional
+from urllib.parse import urlencode
 
 import geojson
 from fastapi.testclient import TestClient
@@ -58,7 +58,7 @@ class TestApiReport(unittest.TestCase):
         base_url = "/report?"
         if fid_field is not None:
             parameters_raw["fidField"] = fid_field
-        url = base_url + urllib.parse.urlencode(parameters_raw)
+        url = base_url + urlencode(parameters_raw)
         return self.client.get(url)
 
     def post_response(
