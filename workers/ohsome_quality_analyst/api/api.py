@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from ohsome_quality_analyst import (
     __author__,
@@ -66,14 +67,19 @@ app.add_middleware(
 )
 
 
+@app.exception_handler(ValidationError)
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
-    request: Request, exception: RequestValidationError
+    request: Request, exception: Union[RequestValidationError, ValidationError]
 ):
     """Override request validation exceptions.
 
     `pydantic` raises on exception regardless of the number of errors found.
     The `ValidationError` will contain information about all the errors.
+
+    FastAPIs `RequestValidationError` is a subclass of pydantics `ValidationError`.
+    Because of the usage of `@pydantic.validate_arguments` decorator
+    `ValidationError` needs to be specified in this handler as well.
     """
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
