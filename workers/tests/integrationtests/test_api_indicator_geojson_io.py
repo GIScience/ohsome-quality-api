@@ -39,6 +39,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     def run_tests(self, response, schemata: Tuple[Schema]) -> None:
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["content-type"], "application/geo+json")
         for schema in schemata:
             self.validate(response.json(), schema)
 

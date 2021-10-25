@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- API: Change media type of GeoJSON response ([#199])
+
+[#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
+
+
 ## 0.6.0
 
 ### Breaking Changes

@@ -3,7 +3,9 @@ from typing import Optional
 
 import pydantic
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from ohsome_quality_analyst import (
     __author__,
@@ -140,7 +142,9 @@ async def _fetch_indicator(
     )
     response = empty_api_response()
     response.update(geojson_object)
-    return response
+    return JSONResponse(
+        content=jsonable_encoder(response), media_type="application/geo+json"
+    )
 
 
 @app.get("/report/{name}")
@@ -205,7 +209,9 @@ async def _fetch_report(name: str, parameters: ReportRequestModel):
     )
     response = empty_api_response()
     response.update(geojson_object)
-    return response
+    return JSONResponse(
+        content=jsonable_encoder(response), media_type="application/geo+json"
+    )
 
 
 @app.get("/regions")
@@ -219,9 +225,12 @@ async def get_available_regions(asGeoJSON: bool = False):
     if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
+        return JSONResponse(
+            content=jsonable_encoder(response), media_type="application/geo+json"
+        )
     else:
         response["result"] = await db_client.get_regions()
-    return response
+        return response
 
 
 @app.get("/indicatorLayerCombinations")
