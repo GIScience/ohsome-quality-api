@@ -66,18 +66,16 @@ class TestApiIndicatorIo(unittest.TestCase):
                 "bpolys": bpoly,
             }
         )
-        url = "/indicator?" + parameters
-        return self.client.get(url)
+        return self.client.get("/indicator?" + parameters)
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        data = {
+        parameters = {
             "name": self.indicator_name,
             "bpolys": bpoly,
             "layerName": self.layer_name,
         }
-        url = "/indicator"
-        return self.client.post(url, json=data)
+        return self.client.post("/indicator", json=parameters)
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_geometry(self):
@@ -109,16 +107,17 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_size_limit(self):
-        # TODO: Test for GET request
         feature = get_fixture("europe.geojson")
-        response = self.post_response(feature)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "SizeRestrictionError")
+        for response in (
+            self.get_response(feature),
+            self.post_response(feature),
+        ):
+            self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "SizeRestrictionError")
 
     @oqt_vcr.use_cassette()
     def test_bpolys_invalid(self):
-        # TODO: Test for GET request
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -126,24 +125,19 @@ class TestApiIndicatorIo(unittest.TestCase):
         )
         with open(path, "r") as file:
             bpolys = file.read()
-        data = {
-            "name": self.indicator_name,
-            "bpolys": bpolys,
-            "layerName": self.layer_name,
-        }
-        url = "/indicator"
-        response = self.client.post(url, json=data)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
+        for response in (
+            self.get_response(bpolys),
+            self.post_response(bpolys),
+        ):
+            self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "RequestValidationError")
 
     def test_ohsome_timeout(self):
-        # TODO: Test for GET request
         invalid_response = get_fixture("ohsome-response-200-invalid.geojson")
         featurecollection = get_fixture(
             "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
-
         with mock.patch(
             "httpx.AsyncClient.post", new_callable=AsyncMock
         ) as mock_request:
@@ -152,12 +146,39 @@ class TestApiIndicatorIo(unittest.TestCase):
                 content=invalid_response,
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
-            data = {"bpolys": featurecollection, "layerName": self.layer_name}
-            url = f"/indicator/{self.indicator_name}"
-            response = self.client.post(url, json=data)
-            self.assertEqual(response.status_code, 422)
-            content = response.json()
-            self.assertEqual(content["type"], "OhsomeApiError")
+
+            for response in (
+                self.get_response(featurecollection),
+                self.post_response(featurecollection),
+            ):
+                self.assertEqual(response.status_code, 422)
+                content = response.json()
+                self.assertEqual(content["type"], "OhsomeApiError")
+
+    def test_invalid_set_of_arguments(self):
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg-altstadt-feature.geojson",
+        )
+        with open(path, "r") as f:
+            bpolys = f.read()
+        parameters = {
+            "name": self.indicator_name,
+            "bpolys": bpolys,
+            "dataset": "foo",
+            "featureId": "3",
+        }
+
+        response = self.client.get("/indicator?" + urlencode(parameters))
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
+
+        response = self.client.post("/indicator", json=parameters)
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
 
 if __name__ == "__main__":
