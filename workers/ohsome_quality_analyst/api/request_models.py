@@ -115,7 +115,10 @@ class IndicatorRequestModel(BaseRequestModel):
     @pydantic.root_validator
     @classmethod
     def validate_indicator_layer(cls, values):
-        indicator_layer = (values["name"].value, values["layer_name"].value)
+        try:
+            indicator_layer = (values["name"].value, values["layer_name"].value)
+        except KeyError:
+            raise ValueError("An issue with the layer or indicator name occurred.")
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(
                 "Indicator layer combination is invalid: " + str(indicator_layer)
