@@ -5,8 +5,8 @@ https://fastapi.tiangolo.com/tutorial/testing/
 
 import os
 import unittest
-import urllib
 from typing import Tuple
+from urllib.parse import urlencode
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -50,7 +50,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        parameters = urllib.parse.urlencode(
+        parameters = urlencode(
             {"name": self.indicator_name, "layerName": self.layer_name, "bpolys": bpoly}
         )
         url = "/indicator?" + parameters

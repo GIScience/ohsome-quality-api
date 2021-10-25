@@ -4,7 +4,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 import os
 import unittest
-import urllib.parse
+from urllib.parse import urlencode
 
 import geojson
 from fastapi.testclient import TestClient
@@ -55,7 +55,7 @@ class TestApiReportIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        parameters = urllib.parse.urlencode({"name": self.report_name, "bpolys": bpoly})
+        parameters = urlencode({"name": self.report_name, "bpolys": bpoly})
         url = "/report?" + parameters
         return self.client.get(url)
 

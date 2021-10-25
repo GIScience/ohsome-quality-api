@@ -4,8 +4,8 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 import os
 import unittest
-import urllib
 from typing import Optional
+from urllib.parse import urlencode
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -14,6 +14,8 @@ from ohsome_quality_analyst.api.api import app
 
 from .api_response_schema import get_general_schema, get_indicator_feature_schema
 from .utils import oqt_vcr
+
+ENDPOINT = "/indicator"
 
 
 class TestApiIndicator(unittest.TestCase):
@@ -49,7 +51,6 @@ class TestApiIndicator(unittest.TestCase):
         fid_field: Optional[str] = None,
     ):
         """Return HTTP GET response"""
-        base_url = "/indicator?"
         parameters_raw = {
             "name": indicator_name,
             "layerName": layer_name,
@@ -58,8 +59,7 @@ class TestApiIndicator(unittest.TestCase):
         }
         if fid_field is not None:
             parameters_raw["fidField"] = fid_field
-        url = base_url + urllib.parse.urlencode(parameters_raw)
-        return self.client.get(url)
+        return self.client.get(ENDPOINT + "?" + urlencode(parameters_raw))
 
     def post_response(
         self,
@@ -85,8 +85,7 @@ class TestApiIndicator(unittest.TestCase):
                 "layerName": layer_name,
                 "featureId": feature_id,
             }
-        url = "/indicator"
-        return self.client.post(url, json=data)
+        return self.client.post(ENDPOINT, json=data)
 
     @oqt_vcr.use_cassette()
     def test_indicator_dataset_default_fid_field(self):
@@ -140,8 +139,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "foo",
             "featureId": "3",
         }
-        url = "/indicator"
-        response = self.client.post(url, json=data)
+        response = self.client.post(ENDPOINT, json=data)
         self.assertEqual(response.status_code, 422)
 
     @oqt_vcr.use_cassette()
@@ -154,7 +152,6 @@ class TestApiIndicator(unittest.TestCase):
         )
         with open(path, "r") as f:
             bpolys = f.read()
-        url = "/indicator"
         for data in (
             {
                 "name": self.indicator_name,
@@ -168,7 +165,7 @@ class TestApiIndicator(unittest.TestCase):
             },
             {"name": self.indicator_name, "feature_id": "3"},
         ):
-            response = self.client.post(url, json=data)
+            response = self.client.post(ENDPOINT, json=data)
             self.assertEqual(response.status_code, 422)
 
     @oqt_vcr.use_cassette()
@@ -179,8 +176,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "foo",
             "featureId": "3",
         }
-        url = "/indicator"
-        response = self.client.post(url, json=data)
+        response = self.client.post(ENDPOINT, json=data)
         self.assertEqual(response.status_code, 422)
 
 
