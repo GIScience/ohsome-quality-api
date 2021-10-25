@@ -7,6 +7,10 @@
 - Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
 - Change type of API parameter `bpolys` for POST requests to JSON (`dict`) instead of string ([#204])
 
+### New Features
+
+- Improve API response when an error occurs by including informations about the cause ([#186])
+
 ### Other Changes
 
 - API: Change media type of GeoJSON response ([#199])
@@ -18,6 +22,7 @@
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
 - Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
 
+[#186]: https://github.com/GIScience/ohsome-quality-analyst/pull/186
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190
 [#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
 [#204]: https://github.com/GIScience/ohsome-quality-analyst/pull/204
