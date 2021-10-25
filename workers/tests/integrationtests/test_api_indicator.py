@@ -31,6 +31,7 @@ class TestApiIndicator(unittest.TestCase):
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["content-type"], "application/geo+json")
         for schema in (self.general_schema, self.feature_schema):
             self.validate(response.json(), schema)
 

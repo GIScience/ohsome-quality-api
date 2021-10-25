@@ -35,6 +35,7 @@ class TestApiReport(unittest.TestCase):
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["content-type"], "application/geo+json")
         response_content = geojson.loads(response.content)
         self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(response_content))
