@@ -36,6 +36,8 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 
+MEDIA_TYPE_GEOJSON = "application/geo+json"
+
 configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
@@ -143,7 +145,7 @@ async def _fetch_indicator(
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
-        content=jsonable_encoder(response), media_type="application/geo+json"
+        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
     )
 
 
@@ -210,7 +212,7 @@ async def _fetch_report(name: str, parameters: ReportRequestModel):
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
-        content=jsonable_encoder(response), media_type="application/geo+json"
+        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
     )
 
 
@@ -226,7 +228,7 @@ async def get_available_regions(asGeoJSON: bool = False):
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
         return JSONResponse(
-            content=jsonable_encoder(response), media_type="application/geo+json"
+            content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
         )
     else:
         response["result"] = await db_client.get_regions()
