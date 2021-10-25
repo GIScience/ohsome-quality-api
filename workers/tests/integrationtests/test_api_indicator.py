@@ -173,7 +173,7 @@ class TestApiIndicator(unittest.TestCase):
         data = {
             "name": self.indicator_name,
             "layerName": "amenities",
-            "dataset": "foo",
+            "dataset": "regions",
             "featureId": "3",
         }
         response = self.client.post(ENDPOINT, json=data)
