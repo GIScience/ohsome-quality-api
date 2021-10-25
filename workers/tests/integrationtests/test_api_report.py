@@ -116,7 +116,7 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg(self):
         url = (
-            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&include_svg={4}".format(
+            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&includeSvg={4}".format(
                 self.report_name,
                 self.dataset,
                 self.feature_id,
@@ -129,7 +129,7 @@ class TestApiReport(unittest.TestCase):
         self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
 
         url = (
-            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&include_svg={4}".format(
+            "/report/{0}?dataset={1}&featureId={2}&fidField={3}&includeSvg={4}".format(
                 self.report_name,
                 self.dataset,
                 self.feature_id,

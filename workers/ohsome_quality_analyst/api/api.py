@@ -75,7 +75,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
-    include_svg: bool = True,
+    includeSvg: bool = True,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -93,7 +93,7 @@ async def get_indicator(
     """
     raw = {
         "layerName": layerName,
-        "include_svg": include_svg,
+        "includeSvg": includeSvg,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
@@ -152,7 +152,7 @@ async def _fetch_indicator(
 @app.get("/report/{name}")
 async def get_report(
     name: ReportEnum,
-    include_svg: bool = False,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -169,7 +169,7 @@ async def get_report(
     if they do not collide with the properties set by OQT.
     """
     raw = {
-        "include_svg": include_svg,
+        "includeSvg": includeSvg,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
