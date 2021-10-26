@@ -3,6 +3,7 @@ Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 
+import json
 import os
 import unittest
 from typing import Tuple
@@ -60,7 +61,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         """Return HTTP POST response"""
         data = {
             "name": self.indicator_name,
-            "bpolys": bpoly,
+            "bpolys": json.loads(bpoly),
             "layerName": self.layer_name,
         }
         url = "/indicator"

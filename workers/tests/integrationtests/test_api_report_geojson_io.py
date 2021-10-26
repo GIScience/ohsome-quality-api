@@ -2,6 +2,7 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
+import json
 import os
 import unittest
 from urllib.parse import urlencode
@@ -61,7 +62,7 @@ class TestApiReportIo(unittest.TestCase):
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        data = {"name": self.report_name, "bpolys": bpoly}
+        data = {"name": self.report_name, "bpolys": json.loads(bpoly)}
         url = "/report"
         return self.client.post(url, json=data)
 

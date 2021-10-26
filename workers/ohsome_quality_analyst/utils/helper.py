@@ -1,9 +1,9 @@
 """
 Standalone helper functions.
 """
-
 import datetime
 import importlib
+import json
 import logging
 import os
 import pathlib
@@ -92,9 +92,9 @@ def write_geojson(
         logging.info("Output file written:\t" + str(outfile))
 
 
-def loads_geojson(bpolys: str) -> Generator[Feature, None, None]:
+def loads_geojson(bpolys: dict) -> Generator[Feature, None, None]:
     """Load and validate GeoJSON object."""
-    bpolys = geojson.loads(bpolys)
+    bpolys = geojson.loads(json.dumps(bpolys))
     if bpolys.is_valid is False:
         raise ValueError("Input geometry is not valid")
     elif isinstance(bpolys, FeatureCollection):

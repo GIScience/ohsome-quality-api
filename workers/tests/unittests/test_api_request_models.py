@@ -1,5 +1,5 @@
 """Test module for the `pydantic` data models for API requests"""
-
+import json
 import os
 import unittest
 
@@ -14,7 +14,7 @@ class TestApiRequestModels(unittest.TestCase):
             "heidelberg-altstadt-feature.geojson",
         )
         with open(path, "r") as file:
-            self.bpolys = file.read()
+            self.bpolys = json.load(file)
 
     def test_bpolys_valid(self):
         request_models.BaseRequestModel(bpolys=self.bpolys)
