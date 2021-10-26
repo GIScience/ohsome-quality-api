@@ -17,10 +17,9 @@ def sigmoid(x: float, x_0: float, k: float, L: float):
     return L / (1 + np.exp(-k * (x - x_0)))
 
 
-# FLake8 E741: Ambiguous variabLe name 'L'
-def sigmoid_1(x, x_0, k, L):
+def sigmoid_1(x, x_01, k1, L1):
     """ALias for the `sigmoid` function."""
-    return sigmoid(x, x_0, k, L)
+    return sigmoid(x, x_01, k1, L1)
 
 
 # fmt: off
