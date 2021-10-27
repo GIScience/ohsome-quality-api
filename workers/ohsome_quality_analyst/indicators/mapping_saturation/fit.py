@@ -13,7 +13,10 @@ from typing import Tuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from ohsome_quality_analyst.indicators.mapping_saturation import metrics, sigmoid_curves
+from ohsome_quality_analyst.indicators.mapping_saturation import (
+    metrics,
+    model_functions,
+)
 
 
 @dataclass
@@ -21,6 +24,7 @@ class Fit:
     func_name: str
     ydata: np.ndarray
     mse: np.float64
+    asymptote: np.float64
 
 
 def get_best_fit(xdata: np.ndarray, ydata: np.ndarray) -> Fit:
@@ -33,7 +37,7 @@ def get_best_fit(xdata: np.ndarray, ydata: np.ndarray) -> Fit:
     # For sigmoid_1 to sigmoid_4
     for i in range(1, 5):
         func_name = "sigmoid_" + str(i)
-        func = getattr(sigmoid_curves, func_name)
+        func = getattr(model_functions, func_name)
         p0 = get_initial_guess(i, xdata, ydata)
         bounds = get_bounds(i, xdata, ydata)
         try:
@@ -48,7 +52,7 @@ def get_best_fit(xdata: np.ndarray, ydata: np.ndarray) -> Fit:
             continue
         ydata_fitted = func(xdata, *popt)
         mse = metrics.mse(ydata, ydata_fitted)
-        fit = Fit(func_name, ydata_fitted, mse)
+        fit = Fit(func_name, ydata_fitted, mse, ydata_fitted.max())
         if best_fit is None or best_fit.mse > fit.mse:
             best_fit = fit
     return best_fit
