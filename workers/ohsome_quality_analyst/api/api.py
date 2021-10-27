@@ -93,8 +93,6 @@ async def get_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    # TODO: Avoid parsing JSON string here.
-    # Validation and parsing errors should be handled by `pydantic`.
     if bpolys is not None:
         bpolys = json.loads(bpolys)
     raw = {
@@ -171,8 +169,6 @@ async def get_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    # TODO: Avoid parsing JSON string here.
-    # Validation and parsing errors should be handled by `pydantic`.
     if bpolys is not None:
         bpolys = json.loads(bpolys)
     raw = {
