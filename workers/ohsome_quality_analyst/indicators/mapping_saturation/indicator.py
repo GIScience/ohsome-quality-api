@@ -80,7 +80,7 @@ class MappingSaturation(BaseIndicator):
         xdata = list(range(len(self.timestamps)))
         # TODO: `best_fit` should be a class attribute.
         # It is not to avoid cluttered indicator result output.
-        best_fit = get_best_fit(xdata=xdata, ydata=self.values)
+        best_fit = get_best_fit(xdata=np.asarray(xdata), ydata=np.asarray(self.values))
         self.best_fit_func_name = best_fit.func_name
         logging.info("Best fitting sigmoid curve: " + best_fit.func_name)
         if max(self.values) <= 2:
@@ -121,7 +121,7 @@ class MappingSaturation(BaseIndicator):
             logging.info("Result is undefined. Skipping figure creation.")
             return
         xdata = list(range(len(self.timestamps)))
-        best_fit = get_best_fit(xdata=xdata, ydata=self.values)
+        best_fit = get_best_fit(xdata=np.asarray(xdata), ydata=np.asarray(self.values))
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches

@@ -13,17 +13,17 @@ from typing import Tuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from ohsome_quality_analyst.indicators.mapping_saturation import sigmoid_curves
+from ohsome_quality_analyst.indicators.mapping_saturation import metrics, sigmoid_curves
 
 
 @dataclass
 class Fit:
     func_name: str
-    ydata: list
-    mse: float
+    ydata: np.ndarray
+    mse: np.float64
 
 
-def get_best_fit(xdata: list, ydata: list) -> Fit:
+def get_best_fit(xdata: np.ndarray, ydata: np.ndarray) -> Fit:
     """Get best fit function based on Mean Squared Error.
 
     Fit sigmoid_1 to sigmoid_4 to given data and return best fit based on Mean Squared
@@ -47,14 +47,14 @@ def get_best_fit(xdata: list, ydata: list) -> Fit:
             logging.warning(err)
             continue
         ydata_fitted = func(xdata, *popt)
-        mse = calc_mse(ydata, ydata_fitted)
+        mse = metrics.mse(ydata, ydata_fitted)
         fit = Fit(func_name, ydata_fitted, mse)
         if best_fit is None or best_fit.mse > fit.mse:
             best_fit = fit
     return best_fit
 
 
-def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
+def get_initial_guess(n: int, xdata: np.ndarray, ydata: np.ndarray) -> tuple:
     """Make initial guess on parameters for sigmoid function(s).
 
     Args:
@@ -67,13 +67,15 @@ def get_initial_guess(n: int, xdata: list, ydata: list) -> tuple:
     k = []
     L = []  # noqa: N806 NOSONAR
     for i in range(n):
-        x_0.append((len(xdata) / (n + 1) * (i + 1)))
+        x_0.append((xdata.size / (n + 1) * (i + 1)))
         k.append(0)
-        L.append((max(ydata) / n) * (i + 1))
+        L.append((ydata.max() / n) * (i + 1))
     return tuple(x_0 + k + L)
 
 
-def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple[float], Tuple[float]]:
+def get_bounds(
+    n: int, xdata: np.ndarray, ydata: np.ndarray
+) -> Tuple[Tuple[float], Tuple[float]]:
     """Get lower and upper bounds on parameters for sigmoid function(s).
 
     Args:
@@ -88,20 +90,15 @@ def get_bounds(n: int, xdata: list, ydata: list) -> Tuple[Tuple[float], Tuple[fl
         of parameters.
     """
     assert n in (1, 2, 3, 4)
-    x_0_upper_bounds = [len(xdata) * 1.5] * n
+    x_0_upper_bounds = [xdata.size * 1.5] * n
     x_0_lower_bounds = [0.0] * n
     k_upper_bounds = [1.0] * n
     k_lower_bounds = [-1.0] * n
     L_upper_bounds = [  # noqa: N806 NOSONAR
-        (max(ydata) / n) * (i + 1.0) for i in range(n)
+        (ydata.max() / n) * (i + 1.0) for i in range(n)
     ]
     L_lower_bounds = [0.0] * n  # noqa: N806 NOSONAR
     return (
         tuple(x_0_lower_bounds + k_lower_bounds + L_lower_bounds),
         tuple(x_0_upper_bounds + k_upper_bounds + L_upper_bounds),
     )
-
-
-def calc_mse(a: list, b: list) -> float:
-    """Calculate Mean Squared Error"""
-    return np.square(np.subtract(a, b)).mean()
