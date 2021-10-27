@@ -81,8 +81,8 @@ class MappingSaturation(BaseIndicator):
         # TODO: `best_fit` should be a class attribute.
         # It is not to avoid cluttered indicator result output.
         best_fit = get_best_fit(xdata=np.asarray(xdata), ydata=np.asarray(self.values))
-        self.best_fit_func_name = best_fit.func_name
-        logging.info("Best fitting sigmoid curve: " + best_fit.func_name)
+        self.best_fit_func_name = best_fit.model_func_name
+        logging.info("Best fitting sigmoid curve: " + best_fit.model_func_name)
         if max(self.values) <= 2:
             # Some data are there, but not much -> start stadium
             self.saturation = 0
@@ -141,7 +141,7 @@ class MappingSaturation(BaseIndicator):
             self.timestamps,
             best_fit.ydata,
             linecol[2],
-            label="Sigmoid curve: " + best_fit.func_name,
+            label="Sigmoid curve: " + best_fit.model_func_name,
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
