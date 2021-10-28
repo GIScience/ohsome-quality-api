@@ -8,11 +8,9 @@ Besides data validation through `pydantic`, `FastAPI` will display additional
 information derived from `pydantic` models in the automatic generated API documentation.
 """
 
-import json
 from enum import Enum
 from typing import Optional
 
-import geojson
 import pydantic
 
 from ohsome_quality_analyst.utils.definitions import (
@@ -23,7 +21,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
+from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -62,12 +60,10 @@ class BaseRequestModel(pydantic.BaseModel):
     @classmethod
     def validate_bpolys(cls, value) -> dict:
         """Validate GeoJSON."""
-        try:
-            geojson.loads(json.dumps(value))
-        except json.JSONDecodeError as error:
-            raise ValueError(
-                "The provided parameter `bpolys` is not a valid GeoJSON."
-            ) from error
+        # Load and validate GeoJSON
+        for _ in loads_geojson(value):
+            # Check if exceptions are raised by `loads_geojson`
+            pass
         return value
 
     class Config:
