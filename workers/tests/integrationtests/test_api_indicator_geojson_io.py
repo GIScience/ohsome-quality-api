@@ -55,7 +55,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             {
                 "name": self.indicator_name,
                 "layerName": self.layer_name,
-                "bpolys": geojson.dumps(bpoly),
+                "bpolys": bpoly,
             }
         )
         url = "/indicator?" + parameters

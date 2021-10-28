@@ -2,7 +2,7 @@ import json
 import os
 import unittest
 
-from geojson import Feature
+from geojson import Feature, Polygon
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
@@ -70,6 +70,14 @@ class TestHelper(unittest.TestCase):
         raw = get_fixture("line-string.geojson")
         with self.assertRaises(ValueError):
             for _ in loads_geojson(raw):
+                pass
+
+    def test_loads_geojson_invalid_geojson(self):
+        polygon = Polygon(
+            [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
+        )
+        with self.assertRaises(ValueError):
+            for _ in loads_geojson(polygon):
                 pass
 
     def test_flatten_dict(self):

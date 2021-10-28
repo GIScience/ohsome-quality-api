@@ -55,9 +55,7 @@ class TestApiReportIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        parameters = urlencode(
-            {"name": self.report_name, "bpolys": geojson.dumps(bpoly)}
-        )
+        parameters = urlencode({"name": self.report_name, "bpolys": bpoly})
         url = "/report?" + parameters
         return self.client.get(url)
 
