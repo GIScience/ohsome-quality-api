@@ -16,7 +16,7 @@
 
 - Update requests for `/indicator` and `/report` endpoints. `name` is now a *Query* parameter ([#190])
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
-- Update `bpolys` parameter of POST requests to be a JSON object instead of a string ([#204])
+- Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
 
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190
 [#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
