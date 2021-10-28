@@ -134,7 +134,13 @@ class TestApiIndicatorIo(unittest.TestCase):
             self.assertEqual(content["type"], "RequestValidationError")
 
     def test_ohsome_timeout(self):
-        invalid_response = get_fixture("ohsome-response-200-invalid.geojson")
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "ohsome-response-200-invalid.geojson",
+        )
+        with open(path, "r") as f:
+            invalid_response = f.read()
         featurecollection = get_fixture(
             "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
