@@ -13,15 +13,12 @@ from typing import Tuple
 import numpy as np
 from scipy.optimize import curve_fit
 
-from ohsome_quality_analyst.indicators.mapping_saturation import (
-    metrics,
-    model_functions,
-)
+from ohsome_quality_analyst.indicators.mapping_saturation import metrics, models
 
 
 @dataclass
 class Fit:
-    model_func_name: str
+    model_name: str
     ydata: np.ndarray
     metric_name: str
     metric: np.float64
@@ -35,33 +32,32 @@ def get_best_fit(xdata: np.ndarray, ydata: np.ndarray) -> Fit:
     Error.
     """
     best_fit = None
-    # For sigmoid_1 to sigmoid_4
-    for i in range(1, 5):
-        model_func_name = "sigmoid_" + str(i)
-        func = getattr(model_functions, model_func_name)
-        p0 = get_initial_guess(i, xdata, ydata)
-        bounds = get_bounds(i, xdata, ydata)
-        try:
-            # curve_fit: Use non-linear least squares to fit a function, f, to data.
-            # popt: Optimal values for the parameters as array
-            # pcov: The estimated covariance of popt as 2-D array
-            popt, pcov = curve_fit(func, xdata=xdata, ydata=ydata, p0=p0, bounds=bounds)
-        except RuntimeError as err:
-            # Optimal parameters not found:
-            #   The maximum number of function evaluations is exceeded.
-            logging.warning(err)
-            continue
-        ydata_fitted = func(xdata, *popt)
-        metric = metrics.mae(ydata, ydata_fitted)
-        fit = Fit(
-            model_func_name,
-            ydata_fitted,
-            "Mean Absolute Error",
-            metric,
-            ydata_fitted.max(),
+    # TODO: Run for every model
+    model = models.Sigmoid()
+    p0 = model.get_initial_guess(xdata, ydata)
+    bounds = model.get_bounds(xdata, ydata)
+    try:
+        # curve_fit: Use non-linear least squares to fit a function, f, to data.
+        # popt: Optimal values for the parameters as array
+        # pcov: The estimated covariance of popt as 2-D array
+        popt, pcov = curve_fit(
+            model.function, xdata=xdata, ydata=ydata, p0=p0, bounds=bounds
         )
-        if best_fit is None or best_fit.metric > fit.metric:
-            best_fit = fit
+    except RuntimeError as err:
+        # Optimal parameters not found:
+        #   The maximum number of function evaluations is exceeded.
+        logging.warning(err)
+    ydata_fitted = model.function(xdata, *popt)
+    metric = metrics.mae(ydata, ydata_fitted)
+    fit = Fit(
+        model.name,
+        ydata_fitted,
+        "Mean Absolute Error",
+        metric,
+        ydata_fitted.max(),
+    )
+    if best_fit is None or best_fit.metric > fit.metric:
+        best_fit = fit
     return best_fit
 
 
