@@ -2,7 +2,6 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-import json
 import os
 import unittest
 from urllib.parse import urlencode
@@ -24,7 +23,7 @@ from .utils import oqt_vcr
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as f:
-        return f.read()
+        return geojson.load(f)
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -62,7 +61,7 @@ class TestApiReportIo(unittest.TestCase):
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        data = {"name": self.report_name, "bpolys": json.loads(bpoly)}
+        data = {"name": self.report_name, "bpolys": bpoly}
         url = "/report"
         return self.client.post(url, json=data)
 

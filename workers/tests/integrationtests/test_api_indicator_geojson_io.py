@@ -3,12 +3,12 @@ Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 
-import json
 import os
 import unittest
 from typing import Tuple
 from urllib.parse import urlencode
 
+import geojson
 from fastapi.testclient import TestClient
 from schema import Schema
 
@@ -25,7 +25,7 @@ from .utils import oqt_vcr
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as f:
-        return f.read()
+        return geojson.load(f)
 
 
 class TestApiIndicatorIo(unittest.TestCase):
@@ -52,7 +52,11 @@ class TestApiIndicatorIo(unittest.TestCase):
     def get_response(self, bpoly):
         """Return HTTP GET response"""
         parameters = urlencode(
-            {"name": self.indicator_name, "layerName": self.layer_name, "bpolys": bpoly}
+            {
+                "name": self.indicator_name,
+                "layerName": self.layer_name,
+                "bpolys": geojson.dumps(bpoly),
+            }
         )
         url = "/indicator?" + parameters
         return self.client.get(url)
@@ -61,7 +65,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         """Return HTTP POST response"""
         data = {
             "name": self.indicator_name,
-            "bpolys": json.loads(bpoly),
+            "bpolys": bpoly,
             "layerName": self.layer_name,
         }
         url = "/indicator"
