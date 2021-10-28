@@ -9,10 +9,8 @@ information derived from `pydantic` models in the automatic generated API docume
 """
 
 from enum import Enum
-from json import JSONDecodeError
 from typing import Optional
 
-import geojson
 import pydantic
 
 from ohsome_quality_analyst.utils.definitions import (
@@ -23,7 +21,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
+from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -33,7 +31,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()
 
 
 class BaseRequestModel(pydantic.BaseModel):
-    bpolys: Optional[str]
+    bpolys: Optional[dict]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
     fid_field: Optional[FidFieldEnum]
@@ -60,14 +58,12 @@ class BaseRequestModel(pydantic.BaseModel):
 
     @pydantic.validator("bpolys")
     @classmethod
-    def validate_bpolys(cls, value) -> str:
+    def validate_bpolys(cls, value) -> dict:
         """Validate GeoJSON."""
-        try:
-            geojson.loads(value)
-        except JSONDecodeError as error:
-            raise ValueError(
-                "The provided parameter `bpolys` is not a valid GeoJSON."
-            ) from error
+        # Load and validate GeoJSON
+        for _ in loads_geojson(value):
+            # Check if exceptions are raised by `loads_geojson`
+            pass
         return value
 
     class Config:
@@ -82,25 +78,23 @@ class BaseRequestModel(pydantic.BaseModel):
                     "A GeoJSON Geometry, Feature or FeatureCollection. "
                     + "Geometry type must be Ploygon or MultiPolygon."
                 ),
-                "example": str(
-                    {
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
-                                    [8.674092292785645, 49.40427147224242],
-                                    [8.695850372314453, 49.40427147224242],
-                                    [8.695850372314453, 49.415552187316095],
-                                    [8.674092292785645, 49.415552187316095],
-                                    [8.674092292785645, 49.40427147224242],
-                                ]
-                            ],
-                        },
-                    }
-                ),
-            },
-            "feature_id": {"example": "3"},
+                "example": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [8.674092292785645, 49.40427147224242],
+                                [8.695850372314453, 49.40427147224242],
+                                [8.695850372314453, 49.415552187316095],
+                                [8.674092292785645, 49.415552187316095],
+                                [8.674092292785645, 49.40427147224242],
+                            ]
+                        ],
+                    },
+                },
+                "feature_id": {"example": "3"},
+            }
         }
 
 

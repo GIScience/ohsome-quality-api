@@ -8,6 +8,7 @@ import unittest
 from typing import Tuple
 from urllib.parse import urlencode
 
+import geojson
 from fastapi.testclient import TestClient
 from schema import Schema
 
@@ -24,7 +25,7 @@ from .utils import oqt_vcr
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as f:
-        return f.read()
+        return geojson.load(f)
 
 
 class TestApiIndicatorIo(unittest.TestCase):
@@ -51,7 +52,11 @@ class TestApiIndicatorIo(unittest.TestCase):
     def get_response(self, bpoly):
         """Return HTTP GET response"""
         parameters = urlencode(
-            {"name": self.indicator_name, "layerName": self.layer_name, "bpolys": bpoly}
+            {
+                "name": self.indicator_name,
+                "layerName": self.layer_name,
+                "bpolys": bpoly,
+            }
         )
         url = "/indicator?" + parameters
         return self.client.get(url)

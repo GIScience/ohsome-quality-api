@@ -1,7 +1,8 @@
+import json
 import os
 import unittest
 
-from geojson import Feature
+from geojson import Feature, Polygon
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
@@ -20,12 +21,12 @@ from ohsome_quality_analyst.utils.helper import (
 
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
-    with open(path, "r") as f:
-        return f.read()
+    with open(path, "r") as file:
+        return json.load(file)
 
 
 class TestHelper(unittest.TestCase):
-    def run_tests(self, raw: str, number_of_features: int = 1) -> None:
+    def run_tests(self, raw: dict, number_of_features: int = 1) -> None:
         i = 0
         for feature in loads_geojson(raw):
             i += 1
@@ -65,16 +66,18 @@ class TestHelper(unittest.TestCase):
         raw = get_fixture("heidelberg-altstadt-featurecollection.geojson")
         self.run_tests(raw)
 
-    def test_loads_geojson_invalid_geojson(self):
-        raw = get_fixture("ohsome-response-200-invalid.geojson")
-        with self.assertRaises(ValueError):
-            for _ in loads_geojson(raw):
-                pass
-
     def test_loads_geojson_invalid_geometry_type(self):
         raw = get_fixture("line-string.geojson")
         with self.assertRaises(ValueError):
             for _ in loads_geojson(raw):
+                pass
+
+    def test_loads_geojson_invalid_geojson(self):
+        polygon = Polygon(
+            [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
+        )
+        with self.assertRaises(ValueError):
+            for _ in loads_geojson(polygon):
                 pass
 
     def test_flatten_dict(self):

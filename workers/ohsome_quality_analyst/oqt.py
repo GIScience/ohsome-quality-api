@@ -19,7 +19,7 @@ from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
 async def create_indicator_as_geojson(
     name: str,
     layer_name: str,
-    bpolys: Optional[str] = None,
+    bpolys: Optional[dict] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
@@ -67,7 +67,7 @@ async def create_indicator_as_geojson(
 
 async def create_report_as_geojson(
     name: str,
-    bpolys: Optional[str] = None,
+    bpolys: Optional[dict] = None,
     dataset: Optional[str] = None,
     feature_id: Optional[str] = None,
     fid_field: Optional[str] = None,
