@@ -170,7 +170,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg(self):
         url = (
-            "/indicator/{0}?layerName={1}&dataset={2}"
+            "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&fidField={4}&includeSvg={5}".format(
                 self.indicator_name,
                 self.layer_name,
@@ -185,7 +185,7 @@ class TestApiIndicator(unittest.TestCase):
         self.assertIn("result.svg", list(result["properties"].keys()))
 
         url = (
-            "/indicator/{0}?layerName={1}&dataset={2}"
+            "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&fidField={4}&includeSvg={5}".format(
                 self.indicator_name,
                 self.layer_name,

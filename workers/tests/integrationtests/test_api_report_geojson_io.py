@@ -109,14 +109,14 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg(self):
         feature = get_fixture("heidelberg-altstadt-feature.geojson")
-        url = "/report/{0}?bpolys={1}&includeSvg={2}".format(
+        url = "/report?name={0}&bpolys={1}&includeSvg={2}".format(
             self.report_name, feature, True
         )
         response = self.client.get(url)
         result = response.json()
         self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
 
-        url = "/report/{0}?bpolys={1}&includeSvg={2}".format(
+        url = "/report?name={0}&bpolys={1}&includeSvg={2}".format(
             self.report_name, feature, False
         )
         response = self.client.get(url)
