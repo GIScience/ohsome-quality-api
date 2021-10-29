@@ -152,15 +152,13 @@ class TestApiIndicatorIo(unittest.TestCase):
             "featureId": "3",
         }
 
-        response = self.client.get("/indicator?" + urlencode(parameters))
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
-
-        response = self.client.post("/indicator", json=parameters)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
+        for response in (
+            self.client.get("/indicator?" + urlencode(parameters)),
+            self.client.post("/indicator", json=parameters),
+        ):
+            self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "RequestValidationError")
 
 
 if __name__ == "__main__":
