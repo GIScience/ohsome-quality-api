@@ -105,6 +105,8 @@ class TestApiIndicatorIo(unittest.TestCase):
     def test_ohsome_timeout(self):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
+            "..",
+            "unittests",
             "fixtures",
             "ohsome-response-200-invalid.geojson",
         )
