@@ -8,12 +8,7 @@ import geojson
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.geodatabase import client as db_client
 
-from .utils import oqt_vcr
-
-
-class AsyncMock(mock.MagicMock):
-    async def __call__(self, *args, **kwargs):
-        return super().__call__(*args, **kwargs)
+from .utils import AsyncMock, oqt_vcr
 
 
 class TestOqt(unittest.TestCase):

@@ -1,12 +1,14 @@
 import json
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 import pydantic
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from ohsome_quality_analyst import (
     __author__,
@@ -36,6 +38,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -62,6 +65,48 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(ValidationError)
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request, exception: Union[RequestValidationError, ValidationError]
+):
+    """Override request validation exceptions.
+
+    `pydantic` raises on exception regardless of the number of errors found.
+    The `ValidationError` will contain information about all the errors.
+
+    FastAPIs `RequestValidationError` is a subclass of pydantics `ValidationError`.
+    Because of the usage of `@pydantic.validate_arguments` decorator
+    `ValidationError` needs to be specified in this handler as well.
+    """
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder(
+            {
+                "apiVersion": __version__,
+                "detail": exception.errors(),
+                "type": "RequestValidationError",
+            },
+        ),
+    )
+
+
+@app.exception_handler(OhsomeApiError)
+@app.exception_handler(SizeRestrictionError)
+async def oqt_exception_handler(
+    request: Request, exception: Union[OhsomeApiError, SizeRestrictionError]
+):
+    """Exception handler for custom OQT exceptions."""
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "apiVersion": __version__,
+            "detail": exception.message,
+            "type": exception.name,
+        },
+    )
 
 
 def empty_api_response() -> dict:
