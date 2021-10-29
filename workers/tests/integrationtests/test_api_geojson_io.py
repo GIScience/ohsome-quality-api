@@ -32,7 +32,6 @@ class TestApiReportIo(unittest.TestCase):
 
     def post_response(self, endpoint, parameters):
         """Return HTTP POST response"""
-        # data = {"name": self.report_name, "bpolys": bpoly}
         return self.client.post(endpoint, json=parameters)
 
     def test_ohsome_timeout(self):
