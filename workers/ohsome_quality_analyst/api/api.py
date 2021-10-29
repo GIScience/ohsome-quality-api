@@ -80,7 +80,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
-    includeSvg: bool = True,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
