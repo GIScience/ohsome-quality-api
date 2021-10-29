@@ -2,13 +2,10 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-import os
 import unittest
-from unittest import mock
 from urllib.parse import urlencode
 
 import geojson
-import httpx
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
@@ -19,7 +16,7 @@ from .api_response_schema import (
     get_general_schema,
     get_report_feature_schema,
 )
-from .utils import AsyncMock, get_geojson_fixture, oqt_vcr
+from .utils import get_geojson_fixture, oqt_vcr
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -99,36 +96,6 @@ class TestApiReportIo(unittest.TestCase):
         feature = get_geojson_fixture("europe.geojson")
         response = self.post_response(feature)
         self.assertEqual(response.status_code, 422)
-
-    def test_ohsome_timeout(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "unittests",
-            "fixtures",
-            "ohsome-response-200-invalid.geojson",
-        )
-        with open(path, "r") as f:
-            invalid_response = f.read()
-        featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
-        )
-        with mock.patch(
-            "httpx.AsyncClient.post", new_callable=AsyncMock
-        ) as mock_request:
-            mock_request.return_value = httpx.Response(
-                200,
-                content=invalid_response,
-                request=httpx.Request("POST", "https://www.example.org/"),
-            )
-
-            for response in (
-                self.get_response(featurecollection),
-                self.post_response(featurecollection),
-            ):
-                self.assertEqual(response.status_code, 422)
-                content = response.json()
-                self.assertEqual(content["type"], "OhsomeApiError")
 
     @oqt_vcr.use_cassette()
     def test_invalid_set_of_arguments(self):
