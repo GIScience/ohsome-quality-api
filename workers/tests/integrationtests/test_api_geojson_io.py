@@ -56,22 +56,9 @@ class TestApiReportIo(unittest.TestCase):
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
 
-            for response in (
-                self.get_response(
-                    "/report", {"name": "SimpleReport", "bpolys": featurecollection}
-                ),
-                self.post_response(
-                    "/report", {"name": "SimpleReport", "bpolys": featurecollection}
-                ),
-                self.get_response(
-                    "/indicator",
-                    {
-                        "name": "GhsPopComparisonBuildings",
-                        "bpolys": featurecollection,
-                        "layerName": "building_count",
-                    },
-                ),
-                self.post_response(
+            for url, parameters in (
+                ("/report", {"name": "SimpleReport", "bpolys": featurecollection}),
+                (
                     "/indicator",
                     {
                         "name": "GhsPopComparisonBuildings",
@@ -80,6 +67,10 @@ class TestApiReportIo(unittest.TestCase):
                     },
                 ),
             ):
-                self.assertEqual(response.status_code, 422)
-                content = response.json()
-                self.assertEqual(content["type"], "OhsomeApiError")
+                for response in (
+                    self.get_response(url, parameters=parameters),
+                    self.post_response(url, parameters=parameters),
+                ):
+                    self.assertEqual(response.status_code, 422)
+                    content = response.json()
+                    self.assertEqual(content["type"], "OhsomeApiError")
