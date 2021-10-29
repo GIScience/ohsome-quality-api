@@ -1,4 +1,12 @@
+# based on Debian
 FROM python:3.8
+
+# install R
+# to avoid caching issues combine apt-get update and install in one RUN statement.
+# to reduce image size, clean up the apt cache by removing /var/lib/apt/lists.
+RUN apt-get update && \
+    apt-get install -y r-base && \
+    rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
 RUN useradd -md /home/oqt oqt

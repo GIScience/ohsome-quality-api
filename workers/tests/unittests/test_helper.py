@@ -1,22 +1,28 @@
+import datetime
 import json
 import os
 import unittest
 
+import numpy as np
 from geojson import Feature, Polygon
 from sklearn.svm import SVC
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
 )
+from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 from ohsome_quality_analyst.utils.definitions import load_metadata
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
+    json_serialize,
     load_sklearn_model,
     loads_geojson,
     name_to_class,
 )
+
+from .mapping_saturation import fixtures
 
 
 def get_fixture(name):
@@ -173,6 +179,29 @@ class TestHelper(unittest.TestCase):
         )
         with self.assertRaises(UserWarning):
             load_sklearn_model(path)
+
+    def test_json_serialize_valid_input_datetime(self):
+        self.assertIsInstance(json_serialize(datetime.datetime.now()), str)
+
+    def test_json_serialize_valid_input_date(self):
+        self.assertIsInstance(json_serialize(datetime.date.today()), str)
+
+    def test_json_serialize_valid_input_np_float(self):
+        np_float = np.array([1.1])[0]
+        self.assertIsInstance(json_serialize(np_float), float)
+
+    def test_json_serialize_valid_input_np_int(self):
+        np_int = np.array([1])[0]
+        self.assertIsInstance(json_serialize(np_int), int)
+
+    def test_json_serialize_valid_input_fit(self):
+        ydata = fixtures.VALUES_1
+        xdata = np.array(range(len(ydata)))
+        self.assertIsInstance(json_serialize(models.SSlogis(xdata, ydata)), dict)
+
+    def test_json_serialize_invalid_input(self):
+        with self.assertRaises(TypeError):
+            json_serialize("foo")
 
 
 if __name__ == "__main__":
