@@ -2,6 +2,7 @@ import inspect
 import os
 from unittest.mock import MagicMock
 
+import geojson
 import vcr
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,6 +18,12 @@ def filename_generator(function):
     """Return filename of function source file with the appropriate file-ending."""
     filename = os.path.basename(inspect.getsourcefile(function))
     return os.path.splitext(filename)[0] + "." + oqt_vcr.serializer
+
+
+def get_geojson_fixture(name):
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
+    with open(path, "r") as f:
+        return geojson.load(f)
 
 
 oqt_vcr = vcr.VCR(
