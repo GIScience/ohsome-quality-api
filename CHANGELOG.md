@@ -6,6 +6,7 @@
 
 - Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
 - Disable support of the parameter `bpolys` for GET requests to the API ([#223])
+- Rewrite of the Mapping Saturation indicator to use statistical models from the R language ([#170])
 
 ### Other Changes
 
@@ -13,10 +14,13 @@
 - Make `pydantic` data models more modular ([#237])
 - Use [`scipy`] to fit sigmoid curves to data for the Mapping Saturation indicator ([#170])
 
+### Other Changes
+
 ### How to upgrade
 
 - `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
 - For requests to the `/indicator` or `/report` endpoints of the API for a custom AOI (usage of the `bpolys` parameter): use the POST method ([#223])
+- `R` (≥ 4.0) needs to be available on the system on which OQT runs ([#170])
 
 [#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221

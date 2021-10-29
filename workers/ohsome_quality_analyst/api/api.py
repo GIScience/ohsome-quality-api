@@ -1,4 +1,5 @@
 import fnmatch
+import json
 import logging
 from typing import Union
 
@@ -38,6 +39,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
+from ohsome_quality_analyst.utils.helper import json_serialize
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -55,6 +57,11 @@ app = FastAPI(
         "email": __email__,
     },
 )
+
+
+class CustomJSONResponse(JSONResponse):
+    def render(self, content):
+        return json.dumps(content, default=json_serialize).encode()
 
 
 app.add_middleware(
@@ -147,7 +154,7 @@ async def post_indicator(
     return await _fetch_indicator(parameters)
 
 
-async def _fetch_indicator(parameters) -> dict:
+async def _fetch_indicator(parameters) -> CustomJSONResponse:
     p = parameters.dict()
     dataset = p.get("dataset", None)
     fid_field = p.get("fid_field", None)
@@ -168,9 +175,7 @@ async def _fetch_indicator(parameters) -> dict:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
-    return JSONResponse(
-        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-    )
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
 @app.get("/report")
@@ -202,7 +207,12 @@ async def post_report(
     return await _fetch_report(parameters)
 
 
-async def _fetch_report(parameters: dict):
+async def _fetch_report(
+    parameters: Union[
+        ReportBpolys,
+        ReportDatabase,
+    ],
+):
     p = parameters.dict()
     dataset = p.get("dataset", None)
     fid_field = p.get("fid_field", None)
@@ -222,9 +232,7 @@ async def _fetch_report(parameters: dict):
     if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
-    return JSONResponse(
-        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-    )
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
 @app.get("/regions")

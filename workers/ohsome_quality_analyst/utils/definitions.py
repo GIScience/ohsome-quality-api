@@ -9,6 +9,7 @@ import os
 import sys
 from typing import Dict, List
 
+import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
@@ -110,6 +111,14 @@ def load_logging_config():
 
 def configure_logging() -> None:
     """Configure logging level and format"""
+
+    class RPY2LoggingFilter(logging.Filter):  # Sensitive
+        def filter(self, record):
+            return " library ‘/usr/share/R/library’ contains no packages" in record.msg
+
+    # Avoid R library contains no packages WARNING logs.
+    # OQT has no dependencies on additional R libraries.
+    rpy2.rinterface_lib.callbacks.logger.addFilter(RPY2LoggingFilter())
     # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
     logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
     logging.config.dictConfig(load_logging_config())
