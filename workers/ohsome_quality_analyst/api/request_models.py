@@ -61,6 +61,7 @@ class BaseRequestModel(pydantic.BaseModel):
     def validate_bpolys(cls, value) -> dict:
         """Validate GeoJSON."""
         # Load and validate GeoJSON
+        # Check if exceptions are raised by `loads_geojson`
         for _ in loads_geojson(value):
             pass
         return value
