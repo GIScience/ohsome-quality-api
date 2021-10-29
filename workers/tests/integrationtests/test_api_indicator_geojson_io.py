@@ -2,12 +2,10 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-
 import os
 import unittest
 from typing import Tuple
 from unittest import mock
-from unittest.mock import MagicMock
 from urllib.parse import urlencode
 
 import geojson
@@ -22,12 +20,7 @@ from .api_response_schema import (
     get_general_schema,
     get_indicator_feature_schema,
 )
-from .utils import oqt_vcr
-
-
-class AsyncMock(MagicMock):
-    async def __call__(self, *args, **kwargs):
-        return super().__call__(*args, **kwargs)
+from .utils import AsyncMock, oqt_vcr
 
 
 def get_fixture(name):
@@ -115,23 +108,6 @@ class TestApiIndicatorIo(unittest.TestCase):
             self.assertEqual(response.status_code, 422)
             content = response.json()
             self.assertEqual(content["type"], "SizeRestrictionError")
-
-    @oqt_vcr.use_cassette()
-    def test_bpolys_invalid(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "invalid.geojson",
-        )
-        with open(path, "r") as file:
-            bpolys = file.read()
-        for response in (
-            self.get_response(bpolys),
-            self.post_response(bpolys),
-        ):
-            self.assertEqual(response.status_code, 422)
-            content = response.json()
-            self.assertEqual(content["type"], "RequestValidationError")
 
     def test_ohsome_timeout(self):
         path = os.path.join(

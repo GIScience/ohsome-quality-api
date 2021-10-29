@@ -1,10 +1,16 @@
 import inspect
 import os
+from unittest.mock import MagicMock
 
 import vcr
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures", "vcr_cassettes")
+
+
+class AsyncMock(MagicMock):
+    async def __call__(self, *args, **kwargs):
+        return super().__call__(*args, **kwargs)
 
 
 def filename_generator(function):
