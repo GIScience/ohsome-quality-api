@@ -7,14 +7,11 @@
 - Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
 - Change type of API parameter `bpolys` for POST requests to JSON (`dict`) instead of string ([#204])
 
-### New Features
-
-- Improve API response when an error occurs by including informations about the cause ([#186])
-
 ### Other Changes
 
 - API: Change media type of GeoJSON response ([#199])
 - Validate indicator-layer combination with `pydantic` ([#190])
+- Improve API response when an error occurs by including informations about the cause ([#186])
 
 ### How to upgrade
 
