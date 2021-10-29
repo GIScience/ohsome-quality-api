@@ -180,11 +180,16 @@ class TestStringMethods(unittest.TestCase):
         self.xdata = np.asarray(range(len(self.values)))
 
     def test_sigmoid(self):
-        model = models.Sigmoid()
+        model = models.Sigmoid(self.xdata, self.values)
         guess = model.get_initial_guess(self.xdata, self.values)
         self.assertIsNotNone(guess)
         bounds = model.get_bounds(self.xdata, self.values)
         self.assertIsNotNone(bounds)
+        self.assertIsNotNone(model.coefficients)
+
+    def test_sslogis(self):
+        model = models.SSlogis(self.xdata, self.values)
+        self.assertIsNotNone(model.coefficients)
 
 
 if __name__ == "__main__":
