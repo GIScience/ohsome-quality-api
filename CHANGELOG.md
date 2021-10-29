@@ -6,6 +6,7 @@
 
 - Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
 - Change type of API parameter `bpolys` for POST requests to JSON (`dict`) instead of string ([#204])
+- Add parameter to retrieve API response without the figure as `svg` string in the result. Default to not exclude the figure. ([#137])
 
 ### Other Changes
 
@@ -18,6 +19,7 @@
 - Update requests for `/indicator` and `/report` endpoints. `name` is now a *Query* parameter ([#190])
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
 - Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
+- To retrieving the SVG data from `/indicator` and `/report` endpoints, parameter 'includeSvg' must be set to True ([#137])
 
 [#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190

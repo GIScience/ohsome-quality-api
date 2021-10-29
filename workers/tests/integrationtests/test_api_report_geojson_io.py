@@ -123,6 +123,11 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+        url = "/report?name={0}&bpolys={1}".format(self.report_name, feature)
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -148,6 +148,15 @@ class TestApiIndicatorIo(unittest.TestCase):
         result = response.json()
         self.assertNotIn("result.svg", list(result["properties"].keys()))
 
+        url = "/indicator?name={0}&layerName={1}&bpolys={2}".format(
+            self.indicator_name,
+            self.layer_name,
+            feature,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -142,6 +142,16 @@ class TestApiReport(unittest.TestCase):
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+        url = "/report?name={0}&dataset={1}&featureId={2}&fidField={3}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+            self.fid_field,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

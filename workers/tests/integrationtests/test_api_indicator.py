@@ -199,6 +199,20 @@ class TestApiIndicator(unittest.TestCase):
         result = response.json()
         self.assertNotIn("result.svg", list(result["properties"].keys()))
 
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.svg", list(result["properties"].keys()))
+
     @oqt_vcr.use_cassette()
     def test_indicator_invalid_layer(self):
         data = {

@@ -220,7 +220,7 @@ function buildMap(...charts){
 			const params = {
 			  "name": String(selectedReport),
 			  "dataset": String(selectedDataset),
-			  "featureId": String(areas)
+			  "featureId": String(areas),
 			  "includeSvg": true
 			}
 			console.log(params)
