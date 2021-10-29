@@ -4,7 +4,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 import os
 import unittest
-import urllib.parse
+from urllib.parse import urlencode
 
 import geojson
 from fastapi.testclient import TestClient
@@ -23,7 +23,7 @@ from .utils import oqt_vcr
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as f:
-        return f.read()
+        return geojson.load(f)
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -46,6 +46,7 @@ class TestApiReportIo(unittest.TestCase):
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["content-type"], "application/geo+json")
 
         response_content = geojson.loads(response.content)
         self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
@@ -54,17 +55,15 @@ class TestApiReportIo(unittest.TestCase):
 
     def get_response(self, bpoly):
         """Return HTTP GET response"""
-        parameters = urllib.parse.urlencode({"bpolys": bpoly})
-        url = "/report/{0}?{1}".format(
-            self.report_name,
-            parameters,
-        )
+        parameters = urlencode({"name": self.report_name, "bpolys": bpoly})
+        url = "/report?" + parameters
         return self.client.get(url)
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        url = "/report/{0}".format(self.report_name)
-        return self.client.post(url, json={"bpolys": bpoly})
+        data = {"name": self.report_name, "bpolys": bpoly}
+        url = "/report"
+        return self.client.post(url, json=data)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_geometry(self):

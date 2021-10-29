@@ -55,12 +55,6 @@ class TestIndicatorRatio(unittest.TestCase):
         self.assertEqual(indicator.result.label, "undefined")
         self.assertEqual(indicator.result.value, None)
 
-    @oqt_vcr.use_cassette()
-    def test_no_filter2(self):
-        """Layer with no filter2 for ratio endpoint"""
-        with self.assertRaises(ValueError):
-            TagsRatio(layer_name="major_roads_length", feature=self.feature)
-
 
 if __name__ == "__main__":
     unittest.main()

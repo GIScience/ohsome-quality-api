@@ -91,10 +91,19 @@ pipeline {
                 // run static analysis with sonar-scanner
                 def scannerHome = tool 'SonarScanner 4';
                 withSonarQubeEnv('sonarcloud GIScience/ohsome') {
-                  sh "${scannerHome}/bin/sonar-scanner " +
-                    "-Dsonar.branch.name=${env.BRANCH_NAME} " +
+                  SONAR_CLI_PARAMETER =
                     "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml " +
                     "-Dsonar.projectVersion=${VERSION}"
+                  if (env.CHANGE_ID) {
+                    SONAR_CLI_PARAMETER += " " +
+                      "-Dsonar.pullrequest.key=${env.CHANGE_ID} " +
+                      "-Dsonar.pullrequest.branch=${env.CHANGE_BRANCH} " +
+                      "-Dsonar.pullrequest.base=${env.CHANGE_TARGET}"
+                  } else {
+                    SONAR_CLI_PARAMETER += " " +
+                      "-Dsonar.branch.name=${env.BRANCH_NAME}"
+                  }
+                  sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
                 }
                 // run other static code analysis
                 sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'

@@ -5,6 +5,7 @@ https://fastapi.tiangolo.com/tutorial/testing/
 
 import unittest
 from typing import Optional
+from urllib.parse import urlencode
 
 import geojson
 from fastapi.testclient import TestClient
@@ -35,6 +36,7 @@ class TestApiReport(unittest.TestCase):
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["content-type"], "application/geo+json")
         response_content = geojson.loads(response.content)
         self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(response_content))
@@ -48,20 +50,15 @@ class TestApiReport(unittest.TestCase):
         fid_field: Optional[str] = None,
     ):
         """Return HTTP GET response"""
+        parameters_raw = {
+            "name": report_name,
+            "dataset": dataset,
+            "featureId": feature_id,
+        }
+        base_url = "/report?"
         if fid_field is not None:
-            base_url = "/report/{0}?".format(self.report_name)
-            parameter = "dataset={0}&featureId={1}&fidField={2}".format(
-                dataset,
-                feature_id,
-                fid_field,
-            )
-            url = base_url + parameter
-        else:
-            url = "/report/{0}?dataset={1}&featureId={2}".format(
-                report_name,
-                dataset,
-                feature_id,
-            )
+            parameters_raw["fidField"] = fid_field
+        url = base_url + urlencode(parameters_raw)
         return self.client.get(url)
 
     def post_response(
@@ -74,16 +71,18 @@ class TestApiReport(unittest.TestCase):
         """Return HTTP POST response"""
         if fid_field is not None:
             data = {
-                "dataset": self.dataset,
-                "featureId": self.feature_id,
-            }
-        else:
-            data = {
+                "name": report_name,
                 "dataset": dataset,
                 "featureId": feature_id,
                 "fidField": fid_field,
             }
-        url = "/report/{0}".format(report_name)
+        else:
+            data = {
+                "name": report_name,
+                "dataset": dataset,
+                "featureId": feature_id,
+            }
+        url = "/report"
         return self.client.post(url, json=data)
 
     @oqt_vcr.use_cassette()

@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 
 import click
@@ -128,7 +129,7 @@ def create_indicator(
         click.confirm("Do you want to continue?", abort=True)
     if infile is not None:
         with open(infile, "r") as file:
-            bpolys = file.read()
+            bpolys = json.load(file)
     else:
         bpolys = None
     geojson_object = asyncio.run(
@@ -181,7 +182,7 @@ def create_report(
         click.confirm("Do you want to continue?", abort=True)
     if infile is not None:
         with open(infile, "r") as file:
-            bpolys = file.read()
+            bpolys = json.load(file)
     else:
         bpolys = None
     geojson_object = asyncio.run(

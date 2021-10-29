@@ -1,10 +1,13 @@
 import fnmatch
+import json
 import logging
 from typing import Optional, Union
 
 import pydantic
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst import (
@@ -35,6 +38,8 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
+
+MEDIA_TYPE_GEOJSON = "application/geo+json"
 
 configure_logging()
 logging.info("Logging enabled")
@@ -71,7 +76,7 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator/{name}")
+@app.get("/indicator")
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
@@ -91,7 +96,10 @@ async def get_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    if bpolys is not None:
+        bpolys = json.loads(bpolys)
     raw = {
+        "name": name,
         "layerName": layerName,
         "includeSvg": includeSvg,
         "bpolys": bpolys,
@@ -100,12 +108,11 @@ async def get_indicator(
         "fidField": fidField,
     }
     parameters = {k: v for k, v in raw.items() if v is not None}
-    return await _fetch_indicator(name.value, parameters)
+    return await _fetch_indicator(parameters)
 
 
-@app.post("/indicator/{name}")
+@app.post("/indicator")
 async def post_indicator(
-    name: IndicatorEnum,
     parameters: IndicatorRequestModel,
 ):
     """Create an Indicator.
@@ -118,23 +125,22 @@ async def post_indicator(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    return await _fetch_indicator(name.value, parameters)
+    return await _fetch_indicator(parameters)
 
 
 @pydantic.validate_arguments
 async def _fetch_indicator(
-    name: str,
     parameters: IndicatorRequestModel,
 ) -> dict:
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = p["dataset"].value
+        dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_indicator_as_geojson(
-        name,
+        p["name"].value,
         p["layer_name"].value,
         p["bpolys"],
         dataset,
@@ -146,10 +152,12 @@ async def _fetch_indicator(
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
-    return response
+    return JSONResponse(
+        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
+    )
 
 
-@app.get("/report/{name}")
+@app.get("/report")
 async def get_report(
     name: ReportEnum,
     includeSvg: bool = False,
@@ -168,22 +176,22 @@ async def get_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
+    if bpolys is not None:
+        bpolys = json.loads(bpolys)
     raw = {
         "includeSvg": includeSvg,
+        "name": name,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
         "fidField": fidField,
     }
     parameters = {k: v for k, v in raw.items() if v is not None}
-    return await _fetch_report(name.value, parameters)
+    return await _fetch_report(parameters)
 
 
-@app.post("/report/{name}")
-async def post_report(
-    name: ReportEnum,
-    parameters: ReportRequestModel,
-):
+@app.post("/report")
+async def post_report(parameters: ReportRequestModel):
     """Create a Report.
 
     Either the parameters `dataset` and `feature id` has to be provided
@@ -194,20 +202,20 @@ async def post_report(
     The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
-    return await _fetch_report(name.value, parameters)
+    return await _fetch_report(parameters)
 
 
 @pydantic.validate_arguments
-async def _fetch_report(name: str, parameters: ReportRequestModel):
+async def _fetch_report(parameters: ReportRequestModel):
     p = parameters.dict()
     dataset = p["dataset"]
     fid_field = p["fid_field"]
     if dataset is not None:
-        dataset = p["dataset"].value
+        dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_report_as_geojson(
-        name,
+        p["name"].value,
         bpolys=p["bpolys"],
         dataset=dataset,
         feature_id=p["feature_id"],
@@ -218,7 +226,9 @@ async def _fetch_report(name: str, parameters: ReportRequestModel):
     if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
-    return response
+    return JSONResponse(
+        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
+    )
 
 
 @app.get("/regions")
@@ -232,9 +242,12 @@ async def get_available_regions(asGeoJSON: bool = False):
     if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
+        return JSONResponse(
+            content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
+        )
     else:
         response["result"] = await db_client.get_regions()
-    return response
+        return response
 
 
 @app.get("/indicatorLayerCombinations")

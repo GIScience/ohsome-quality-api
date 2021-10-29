@@ -9,20 +9,19 @@ information derived from `pydantic` models in the automatic generated API docume
 """
 
 from enum import Enum
-from json import JSONDecodeError
 from typing import Optional
 
-import geojson
 import pydantic
 
 from ohsome_quality_analyst.utils.definitions import (
+    INDICATOR_LAYER,
     get_dataset_names_api,
     get_fid_fields_api,
     get_indicator_names,
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
+from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -33,7 +32,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()
 
 class BaseRequestModel(pydantic.BaseModel):
     include_svg: Optional[bool]
-    bpolys: Optional[str]
+    bpolys: Optional[dict]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
     fid_field: Optional[FidFieldEnum]
@@ -60,14 +59,12 @@ class BaseRequestModel(pydantic.BaseModel):
 
     @pydantic.validator("bpolys")
     @classmethod
-    def validate_bpolys(cls, value) -> str:
+    def validate_bpolys(cls, value) -> dict:
         """Validate GeoJSON."""
-        try:
-            geojson.loads(value)
-        except JSONDecodeError as error:
-            raise ValueError(
-                "The provided parameter `bpolys` is not a valid GeoJSON."
-            ) from error
+        # Load and validate GeoJSON
+        for _ in loads_geojson(value):
+            # Check if exceptions are raised by `loads_geojson`
+            pass
         return value
 
     class Config:
@@ -82,34 +79,49 @@ class BaseRequestModel(pydantic.BaseModel):
                     "A GeoJSON Geometry, Feature or FeatureCollection. "
                     + "Geometry type must be Ploygon or MultiPolygon."
                 ),
-                "example": str(
-                    {
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
-                                    [8.674092292785645, 49.40427147224242],
-                                    [8.695850372314453, 49.40427147224242],
-                                    [8.695850372314453, 49.415552187316095],
-                                    [8.674092292785645, 49.415552187316095],
-                                    [8.674092292785645, 49.40427147224242],
-                                ]
-                            ],
-                        },
-                    }
-                ),
-            },
-            "feature_id": {"example": "3"},
-            "include_svg": {"example": False},
+                "example": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [8.674092292785645, 49.40427147224242],
+                                [8.695850372314453, 49.40427147224242],
+                                [8.695850372314453, 49.415552187316095],
+                                [8.674092292785645, 49.415552187316095],
+                                [8.674092292785645, 49.40427147224242],
+                            ]
+                        ],
+                    },
+                },
+                "feature_id": {"example": "3"},
+                "include_svg": {"example": False},
+            }
         }
 
 
 class IndicatorRequestModel(BaseRequestModel):
+    name: IndicatorEnum = pydantic.Field(
+        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
+    )
     layer_name: LayerEnum = pydantic.Field(  # noqa: N815
         ..., title="Layer Name", example="building_count"
     )
 
+    @pydantic.root_validator
+    @classmethod
+    def validate_indicator_layer(cls, values):
+        try:
+            indicator_layer = (values["name"].value, values["layer_name"].value)
+        except KeyError:
+            raise ValueError("An issue with the layer or indicator name occurred.")
+        if indicator_layer not in INDICATOR_LAYER:
+            raise ValueError(
+                "Indicator layer combination is invalid: " + str(indicator_layer)
+            )
+        else:
+            return values
+
 
 class ReportRequestModel(BaseRequestModel):
-    pass
+    name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
