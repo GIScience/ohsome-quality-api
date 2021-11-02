@@ -1,10 +1,10 @@
 """
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
-"""
 
+For tests regarding the `bpolys` parameter see `test_api_report_geojson_io.py`.
+"""
 import unittest
-from typing import Optional
 from urllib.parse import urlencode
 
 import geojson
@@ -15,6 +15,8 @@ from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
 from .api_response_schema import get_general_schema, get_report_feature_schema
 from .utils import oqt_vcr
+
+ENDPOINT = "/report"
 
 
 class TestApiReport(unittest.TestCase):
@@ -42,73 +44,44 @@ class TestApiReport(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.feature_schema.is_valid(response_content))
 
-    def get_response(
-        self,
-        report_name: str,
-        dataset: str,
-        feature_id: str,
-        fid_field: Optional[str] = None,
-    ):
-        """Return HTTP GET response"""
-        parameters_raw = {
-            "name": report_name,
-            "dataset": dataset,
-            "featureId": feature_id,
-        }
-        base_url = "/report?"
-        if fid_field is not None:
-            parameters_raw["fidField"] = fid_field
-        url = base_url + urlencode(parameters_raw)
-        return self.client.get(url)
-
-    def post_response(
-        self,
-        report_name: str,
-        dataset: str,
-        feature_id: str,
-        fid_field: Optional[str] = None,
-    ):
-        """Return HTTP POST response"""
-        if fid_field is not None:
-            data = {
-                "name": report_name,
-                "dataset": dataset,
-                "featureId": feature_id,
-                "fidField": fid_field,
-            }
-        else:
-            data = {
-                "name": report_name,
-                "dataset": dataset,
-                "featureId": feature_id,
-            }
-        url = "/report"
-        return self.client.post(url, json=data)
-
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_default_fid_field(self):
-        parameters = (self.report_name, self.dataset, self.feature_id)
+        parameters = {
+            "name": self.report_name,
+            "dataset": self.dataset,
+            "featureId": self.feature_id,
+        }
         for response in (
-            self.get_response(*parameters),
-            self.post_response(*parameters),
+            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
+            self.client.post(ENDPOINT, json=parameters),
         ):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_custom_fid_field(self):
-        parameters = (self.report_name, self.dataset, self.feature_id, self.fid_field)
+        parameters = {
+            "name": self.report_name,
+            "dataset": self.dataset,
+            "featureId": self.feature_id,
+            "fidField": self.fid_field,
+        }
         for response in (
-            self.get_response(*parameters),
-            self.post_response(*parameters),
+            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
+            self.client.post(ENDPOINT, json=parameters),
         ):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_custom_fid_field_2(self):
-        parameters = (self.report_name, self.dataset, "Heidelberg", "name")
+        parameters = {
+            "name": self.report_name,
+            "dataset": self.dataset,
+            "featureId": "Heidelberg",
+            "fidField": "name",
+        }
         for response in (
-            self.get_response(*parameters),
-            self.post_response(*parameters),
+            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
+            self.client.post(ENDPOINT, json=parameters),
         ):
             self.run_tests(response)
 
@@ -151,6 +124,40 @@ class TestApiReport(unittest.TestCase):
         response = self.client.get(url)
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
+    def test_indicator_dataset_invalid(self):
+        parameters = {
+            "name": self.report_name,
+            "dataset": "foo",
+            "featureId": self.feature_id,
+        }
+        for response in (
+            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
+            self.client.post(ENDPOINT, json=parameters),
+        ):
+            self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "RequestValidationError")
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_invalid_set_of_arguments(self):
+        for parameters in (
+            {
+                "name": self.report_name,
+                "dataset": "regions",
+            },
+            {
+                "name": self.report_name,
+                "feature_id": "3",
+            },
+        ):
+            for response in (
+                self.client.get(ENDPOINT + "?" + urlencode(parameters)),
+                self.client.post(ENDPOINT, json=parameters),
+            ):
+                self.assertEqual(response.status_code, 422)
+                content = response.json()
+                self.assertEqual(content["type"], "RequestValidationError")
 
 
 if __name__ == "__main__":

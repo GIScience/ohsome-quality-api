@@ -12,6 +12,7 @@
 
 - API: Change media type of GeoJSON response ([#199])
 - Validate indicator-layer combination with `pydantic` ([#190])
+- Improve API response when an error occurs by including informations about the cause ([#186])
 - Add parameter to get API response without svg string in the result. ([#137])
 
 ### How to upgrade
@@ -22,6 +23,7 @@
 - To retrieving the SVG data from `/indicator` and `/report` endpoints, parameter 'includeSvg' must be set to True ([#137])
 
 [#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
+[#186]: https://github.com/GIScience/ohsome-quality-analyst/pull/186
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190
 [#199]: https://github.com/GIScience/ohsome-quality-analyst/pull/199
 [#204]: https://github.com/GIScience/ohsome-quality-analyst/pull/204

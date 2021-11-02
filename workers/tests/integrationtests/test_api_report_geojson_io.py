@@ -2,7 +2,6 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-import os
 import unittest
 from urllib.parse import urlencode
 
@@ -17,13 +16,7 @@ from .api_response_schema import (
     get_general_schema,
     get_report_feature_schema,
 )
-from .utils import oqt_vcr
-
-
-def get_fixture(name):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
-    with open(path, "r") as f:
-        return geojson.load(f)
+from .utils import get_geojson_fixture, oqt_vcr
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -67,19 +60,19 @@ class TestApiReportIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_geometry(self):
-        geometry = get_fixture("heidelberg-altstadt-geometry.geojson")
+        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         for response in (self.get_response(geometry), self.post_response(geometry)):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_feature(self):
-        feature = get_fixture("heidelberg-altstadt-feature.geojson")
+        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         for response in (self.get_response(feature), self.post_response(feature)):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
-        featurecollection = get_fixture(
+        featurecollection = get_geojson_fixture(
             "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
         for response in (
@@ -100,15 +93,33 @@ class TestApiReportIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_size_limit(self):
-        feature = get_fixture("europe.geojson")
-        with self.assertRaises(ValueError):
-            self.get_response(feature)
-        with self.assertRaises(ValueError):
-            self.post_response(feature)
+        feature = get_geojson_fixture("europe.geojson")
+        response = self.post_response(feature)
+        self.assertEqual(response.status_code, 422)
+
+    @oqt_vcr.use_cassette()
+    def test_invalid_set_of_arguments(self):
+        bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        parameters = {
+            "name": self.report_name,
+            "bpolys": bpolys,
+            "dataset": "foo",
+            "featureId": "3",
+        }
+
+        response = self.client.get("/report?" + urlencode(parameters))
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
+
+        response = self.client.post("/report", json=parameters)
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
     def test_report_include_svg(self):
-        feature = get_fixture("heidelberg-altstadt-feature.geojson")
+        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         url = "/report?name={0}&bpolys={1}&includeSvg={2}".format(
             self.report_name, feature, True
         )
