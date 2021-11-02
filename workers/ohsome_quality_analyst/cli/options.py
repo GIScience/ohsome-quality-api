@@ -84,7 +84,6 @@ feature_id = click.option(
     default=None,
 )
 
-
 fid_field = click.option(
     "--fid-field",
     type=str,

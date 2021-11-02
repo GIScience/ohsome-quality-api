@@ -1,18 +1,18 @@
 import logging
+from datetime import datetime
 from io import StringIO
 from string import Template
 
 import dateutil.parser
 import geojson
 import matplotlib.pyplot as plt
-from dateutil.relativedelta import relativedelta
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Currentness(BaseIndicator):
-    """Percentage of features that have been edited over the given time range."""
+    """Percentage of features that have been edited over the whole time range."""
 
     def __init__(
         self,
@@ -32,7 +32,7 @@ class Currentness(BaseIndicator):
 
     async def preprocess(self) -> None:
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        start = (latest_ohsome_stamp - relativedelta(years=13)).strftime("%Y-%m-%d")
+        start = datetime.strptime("2008-01-01", "%Y-%m-%d").strftime("%Y-%m-%d")
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         self.time_range = "{0}/{1}/{2}".format(start, end, "P1Y")
 
@@ -44,17 +44,12 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = dateutil.parser.isoparse(
             response["result"][0]["timestamp"]
         )
-        url = "https://api.ohsome.org/v1/contributions/latest/count"
-        data = {
-            "bpolys": geojson.dumps(
-                geojson.FeatureCollection(
-                    [geojson.Feature(geometry=self.feature.geometry)]
-                )
-            ),
-            "time": self.time_range,
-            "filter": self.layer.filter,
-        }
-        response_contributions = await ohsome_client.query_ohsome_api(url, data)
+        response_contributions = await ohsome_client.query(
+            layer=self.layer,
+            bpolys=self.feature.geometry,
+            time=self.time_range,
+            endpoint="contributions/latest/count",
+        )
         for year in response_contributions["result"]:
             time = dateutil.parser.isoparse(year["fromTimestamp"])
             count = year["value"]
@@ -67,11 +62,11 @@ class Currentness(BaseIndicator):
         # It can be that features are counted, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
-                "In the area of intrest no features matching the filter are present."
+                "In the area of intrest no features "
+                "matching the filter are present today."
             )
             return
         contributions_rel = self.contribution_sum
-        contributions_list = []
         last_edited_year = ""
         for year in self.contributions:
             self.ratio[year] = (contributions_rel / self.contribution_sum) * 100
@@ -79,11 +74,10 @@ class Currentness(BaseIndicator):
             self.contributions[year] = (
                 self.contributions[year] / self.contribution_sum
             ) * 100
-            contributions_list.append(self.contributions[year])
             if self.contributions[year] != 0:
                 last_edited_year = year
-        years_since_last_edit = (
-            int(self.result.timestamp_oqt.year) - 1 - int(last_edited_year)
+        years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
+            last_edited_year
         )
         percentage_contributions = 0
         median_year = ""
@@ -94,15 +88,13 @@ class Currentness(BaseIndicator):
             else:
                 median_year = year
                 break
-        median_diff = int(self.result.timestamp_oqt.year) - 1 - int(median_year)
-        param_1 = 0
+        median_diff = int(self.result.timestamp_oqt.year) - int(median_year)
         if median_diff <= 1:
             param_1 = 1
         elif median_diff <= 4:
             param_1 = 0.6
         else:
             param_1 = 0.2
-        param_2 = 0
         if years_since_last_edit <= 1:
             param_2 = 1
         elif years_since_last_edit <= 4:
@@ -111,24 +103,24 @@ class Currentness(BaseIndicator):
             param_2 = 0.2
         self.result.value = (param_1 + param_2) / 2
 
-        description = Template(self.metadata.result_description).substitute(
-            ratio=self.ratio, layer_name=self.layer.name
+        self.result.description = Template(self.metadata.result_description).substitute(
+            years=median_diff, layer_name=self.layer.name
         )
 
         if self.result.value >= self.threshold_yellow:
             self.result.label = "green"
             self.result.description = (
-                description + self.metadata.label_description["green"]
+                self.result.description + self.metadata.label_description["green"]
             )
         elif self.result.value >= self.threshold_red:
             self.result.label = "yellow"
             self.result.description = (
-                description + self.metadata.label_description["yellow"]
+                self.result.description + self.metadata.label_description["yellow"]
             )
         elif self.result.value < self.threshold_red:
             self.result.label = "red"
             self.result.description = (
-                description + self.metadata.label_description["red"]
+                self.result.description + self.metadata.label_description["red"]
             )
         else:
             raise ValueError("Ratio has an unexpected value.")
