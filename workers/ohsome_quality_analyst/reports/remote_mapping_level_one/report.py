@@ -27,8 +27,8 @@ class RemoteMappingLevelOne(BaseReport):
             IndicatorLayer("MappingSaturation", "major_roads_length"),
             IndicatorLayer("GhsPopComparisonRoads", "major_roads_length"),
             IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
-            IndicatorLayer("LastEdit", "building_count"),
-            IndicatorLayer("LastEdit", "major_roads_count"),
+            IndicatorLayer("Currentness", "building_count"),
+            IndicatorLayer("Currentness", "major_roads_count"),
         )
 
     def combine_indicators(self) -> None:

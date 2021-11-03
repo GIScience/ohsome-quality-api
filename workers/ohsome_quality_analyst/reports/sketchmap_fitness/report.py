@@ -20,8 +20,8 @@ class SketchmapFitness(BaseReport):
     def set_indicator_layer(self):
         self.indicator_layer = (
             IndicatorLayer("MappingSaturation", "major_roads_length"),
-            IndicatorLayer("LastEdit", "major_roads_count"),
-            IndicatorLayer("LastEdit", "amenities"),
+            IndicatorLayer("Currentness", "major_roads_count"),
+            IndicatorLayer("Currentness", "amenities"),
             IndicatorLayer("PoiDensity", "poi"),
         )
 
