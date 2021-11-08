@@ -20,7 +20,7 @@
 - Update requests for `/indicator` and `/report` endpoints. `name` is now a *Query* parameter ([#190])
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
 - Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
-- To retrieving the SVG data from `/indicator` and `/report` endpoints, parameter 'includeSvg' must be set to True ([#137])
+- To retrive a figure for the result as `SVG` string from the `/indicator` and `/report` endpoints set the request parameter 'includeSvg'  to True ([#137])
 
 [#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
 [#186]: https://github.com/GIScience/ohsome-quality-analyst/pull/186
