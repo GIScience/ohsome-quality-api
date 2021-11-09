@@ -1,3 +1,4 @@
+import fnmatch
 import json
 import logging
 from typing import Optional, Union
@@ -8,6 +9,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from geojson import Feature, FeatureCollection
 from pydantic import ValidationError
 
 from ohsome_quality_analyst import (
@@ -123,6 +125,7 @@ def empty_api_response() -> dict:
 async def get_indicator(
     name: IndicatorEnum,
     layerName: LayerEnum,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -143,6 +146,7 @@ async def get_indicator(
     raw = {
         "name": name,
         "layerName": layerName,
+        "includeSvg": includeSvg,
         "bpolys": bpolys,
         "dataset": dataset,
         "featureId": featureId,
@@ -189,6 +193,8 @@ async def _fetch_indicator(
         fid_field,
         size_restriction=True,
     )
+    if p["include_svg"] is False:
+        remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
     return JSONResponse(
@@ -199,6 +205,7 @@ async def _fetch_indicator(
 @app.get("/report")
 async def get_report(
     name: ReportEnum,
+    includeSvg: bool = False,
     bpolys: Optional[str] = None,
     dataset: Optional[DatasetEnum] = None,
     featureId: Optional[str] = None,
@@ -217,6 +224,7 @@ async def get_report(
     if bpolys is not None:
         bpolys = json.loads(bpolys)
     raw = {
+        "includeSvg": includeSvg,
         "name": name,
         "bpolys": bpolys,
         "dataset": dataset,
@@ -260,6 +268,8 @@ async def _fetch_report(parameters: ReportRequestModel):
         size_restriction=True,
     )
     response = empty_api_response()
+    if p["include_svg"] is False:
+        remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
     return JSONResponse(
         content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
@@ -331,3 +341,18 @@ async def list_fid_fields():
     response = empty_api_response()
     response["result"] = get_fid_fields_api()
     return response
+
+
+def remove_svg_from_properties(
+    geojson_object: Union[Feature, FeatureCollection]
+) -> None:
+    def _remove_svg_from_properties(properties: dict) -> None:
+        for key in list(properties.keys()):
+            if fnmatch.fnmatch(key, "*result.svg"):
+                del properties[key]
+
+    if isinstance(geojson_object, Feature):
+        _remove_svg_from_properties(geojson_object["properties"])
+    elif isinstance(geojson_object, FeatureCollection):
+        for feature in geojson_object["features"]:
+            _remove_svg_from_properties(feature["properties"])

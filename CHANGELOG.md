@@ -6,6 +6,7 @@
 
 - Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
 - Change type of API parameter `bpolys` for POST requests to JSON (`dict`) instead of string ([#204])
+- Add parameter to retrieve API response without the figure as `svg` string in the result. Default to not exclude the figure. ([#137])
 - Extend time range for Last Edit indicator and rename it to Currentness ([#178])
 
 ### Other Changes
@@ -13,13 +14,16 @@
 - API: Change media type of GeoJSON response ([#199])
 - Validate indicator-layer combination with `pydantic` ([#190])
 - Improve API response when an error occurs by including informations about the cause ([#186])
+- Add parameter to get API response without svg string in the result. ([#137])
 
 ### How to upgrade
 
 - Update requests for `/indicator` and `/report` endpoints. `name` is now a *Query* parameter ([#190])
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
 - Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
+- To retrieve a figure for the result as `SVG` string from the `/indicator` and `/report` endpoints set the request parameter 'includeSvg'  to True ([#137])
 
+[#137]: https://github.com/GIScience/ohsome-quality-analyst/issues/137
 [#178]: https://github.com/GIScience/ohsome-quality-analyst/pull/178
 [#186]: https://github.com/GIScience/ohsome-quality-analyst/pull/186
 [#190]: https://github.com/GIScience/ohsome-quality-analyst/pull/190

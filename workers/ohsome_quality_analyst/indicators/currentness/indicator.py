@@ -12,7 +12,7 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Currentness(BaseIndicator):
-    """Percentage of features that have been edited over the whole time range."""
+    """Time distribution of the last changes to elements over the entire time range."""
 
     def __init__(
         self,
@@ -33,8 +33,10 @@ class Currentness(BaseIndicator):
     async def preprocess(self) -> None:
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         start = datetime.strptime("2008-01-01", "%Y-%m-%d").strftime("%Y-%m-%d")
-        end = latest_ohsome_stamp.strftime("%Y-%m-%d")
-        self.time_range = "{0}/{1}/{2}".format(start, end, "P1Y")
+        self.end = latest_ohsome_stamp.strftime("%Y-%m-%d")
+        time_range = "{0}/{1}/{2}".format(start, self.end, "P1Y")
+        curr_year_start = "{0}-01-01".format(latest_ohsome_stamp.year)
+        curr_year_range = "{0}/{1}".format(curr_year_start, self.end)
 
         response = await ohsome_client.query(
             layer=self.layer,
@@ -47,13 +49,25 @@ class Currentness(BaseIndicator):
         response_contributions = await ohsome_client.query(
             layer=self.layer,
             bpolys=self.feature.geometry,
-            time=self.time_range,
+            time=time_range,
             endpoint="contributions/latest/count",
         )
         for year in response_contributions["result"]:
             time = dateutil.parser.isoparse(year["fromTimestamp"])
             count = year["value"]
             self.contributions[time.strftime("%Y")] = count
+
+        curr_year_response_contributions = await ohsome_client.query(
+            layer=self.layer,
+            bpolys=self.feature.geometry,
+            time=curr_year_range,
+            endpoint="contributions/latest/count",
+        )
+        time = dateutil.parser.isoparse(
+            curr_year_response_contributions["result"][0]["fromTimestamp"]
+        )
+        count = curr_year_response_contributions["result"][0]["value"]
+        self.contributions[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
@@ -102,9 +116,12 @@ class Currentness(BaseIndicator):
         else:
             param_2 = 0.2
         self.result.value = (param_1 + param_2) / 2
-
+        self.result.value = param_1
         self.result.description = Template(self.metadata.result_description).substitute(
-            years=median_diff, layer_name=self.layer.name
+            years=median_diff,
+            layer_name=self.layer.name,
+            end=self.end,
+            elements=self.contribution_sum,
         )
 
         if self.result.value >= self.threshold_yellow:
@@ -126,9 +143,9 @@ class Currentness(BaseIndicator):
             raise ValueError("Ratio has an unexpected value.")
 
     def create_figure(self) -> None:
-        """Create a nested pie chart.
+        """Create a plot.
 
-        Slices are ordered and plotted counter-clockwise.
+        Shows the percentage of contributions for each year.
         """
         if self.element_count == 0:
             return
