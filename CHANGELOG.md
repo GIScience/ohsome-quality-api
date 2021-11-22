@@ -7,7 +7,7 @@
 - Change API Path parameter `name` to be a Query parameter instead of a Path parameter ([#190])
 - Change type of API parameter `bpolys` for POST requests to JSON (`dict`) instead of string ([#204])
 - Add parameter to retrieve API response without the figure as `svg` string in the result. Default to not exclude the figure. ([#137])
-- Extend time range for Last Edit indicator and rename it to Currentness ([#178])
+- Rename `LastEdit` indicator to `Currentness` ([#178])
 
 ### Other Changes
 
@@ -15,6 +15,7 @@
 - Validate indicator-layer combination with `pydantic` ([#190])
 - Improve API response when an error occurs by including informations about the cause ([#186])
 - Add parameter to get API response without svg string in the result. ([#137])
+- Extend time range for Currentness indicator ([#178])
 
 ### How to upgrade
 

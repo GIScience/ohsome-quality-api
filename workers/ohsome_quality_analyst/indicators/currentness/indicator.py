@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 from io import StringIO
 from string import Template
 
@@ -32,7 +31,7 @@ class Currentness(BaseIndicator):
 
     async def preprocess(self) -> None:
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        start = datetime.strptime("2008-01-01", "%Y-%m-%d").strftime("%Y-%m-%d")
+        start = "2008-01-01"
         self.end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         time_range = "{0}/{1}/{2}".format(start, self.end, "P1Y")
         curr_year_start = "{0}-01-01".format(latest_ohsome_stamp.year)
@@ -116,7 +115,6 @@ class Currentness(BaseIndicator):
         else:
             param_2 = 0.2
         self.result.value = (param_1 + param_2) / 2
-        self.result.value = param_1
         self.result.description = Template(self.metadata.result_description).substitute(
             years=median_diff,
             layer_name=self.layer.name,
@@ -149,6 +147,11 @@ class Currentness(BaseIndicator):
         """
         if self.element_count == 0:
             return
+        plt.rc("axes", titlesize=26)
+        plt.rc("xtick", labelsize=8)
+        plt.rc("ytick", labelsize=8)
+        plt.rc("axes", labelsize=18)
+        plt.rc("legend", fontsize=14)
         fig, ax = plt.subplots()
         x = list(self.ratio.keys())
         ax.plot(
@@ -166,9 +169,8 @@ class Currentness(BaseIndicator):
         plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
         plt.title("Total Contributions: %i" % self.contribution_sum)
-        plt.legend()
+        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.5))
         fig.tight_layout()
-        plt.show()
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
