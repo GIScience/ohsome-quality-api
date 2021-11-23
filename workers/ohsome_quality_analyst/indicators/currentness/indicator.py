@@ -115,6 +115,12 @@ class Currentness(BaseIndicator):
         else:
             param_2 = 0.2
         self.result.value = (param_1 + param_2) / 2
+        if median_diff == 0:
+            median_diff = "this year"
+        elif median_diff == 1:
+            median_diff = "in the last year"
+        else:
+            median_diff = "in the last {0} years".format(median_diff)
         self.result.description = Template(self.metadata.result_description).substitute(
             years=median_diff,
             layer_name=self.layer.name,
@@ -147,12 +153,10 @@ class Currentness(BaseIndicator):
         """
         if self.element_count == 0:
             return
-        plt.rc("axes", titlesize=26)
-        plt.rc("xtick", labelsize=8)
-        plt.rc("ytick", labelsize=8)
-        plt.rc("axes", labelsize=18)
-        plt.rc("legend", fontsize=14)
-        fig, ax = plt.subplots()
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
         x = list(self.ratio.keys())
         ax.plot(
             x,
@@ -166,10 +170,11 @@ class Currentness(BaseIndicator):
             color=self.result.label,
             label="Percentage of contributions (year) ",
         )
-        plt.xlabel("Year")
+        ax.set_xticks(x[::2])
         plt.ylabel("Percentage of contributions")
         plt.title("Total Contributions: %i" % self.contribution_sum)
-        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.5))
+        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
+        fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
