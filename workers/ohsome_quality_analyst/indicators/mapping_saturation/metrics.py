@@ -1,3 +1,5 @@
+"""Collection of common error metrics as functions."""
+
 import numpy as np
 from numpy import float64, ndarray
 

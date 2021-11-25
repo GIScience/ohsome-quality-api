@@ -9,7 +9,7 @@ from dateutil.parser import isoparse
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.indicators.mapping_saturation.fit import get_best_fit
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit, get_best_fit
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
@@ -48,7 +48,7 @@ class MappingSaturation(BaseIndicator):
         # self.threshold_red = None
 
         # Attributes needed for result determination
-        self.best_fit_func_name: Optional[str] = None
+        self.best_fit: Optional[Fit] = None
         self.saturation: Optional[float] = None
         self.growth: Optional[float] = None
 
@@ -77,19 +77,18 @@ class MappingSaturation(BaseIndicator):
                 "All mapped features in this region have been since deleted."
             )
             return
-        xdata = list(range(len(self.timestamps)))
+        xdata = np.asarray(list(range(len(self.timestamps))))
         # TODO: `best_fit` should be a class attribute.
         # It is not to avoid cluttered indicator result output.
-        best_fit = get_best_fit(xdata=np.asarray(xdata), ydata=np.asarray(self.values))
-        self.best_fit_func_name = best_fit.model_name
-        logging.info("Best fitting sigmoid curve: " + best_fit.model_name)
+        self.best_fit = get_best_fit(xdata=xdata, ydata=np.asarray(self.values))
+        logging.info("Best fitting sigmoid curve: " + self.best_fit.model_name)
         if max(self.values) <= 2:
             # Some data are there, but not much -> start stadium
             self.saturation = 0
         else:
             # Calculate slope of last 3 years (saturation)
-            self.saturation = (np.interp(xdata[-36], xdata, best_fit.ydata)) / (
-                np.interp(xdata[-1], xdata, best_fit.ydata)
+            self.saturation = (np.interp(xdata[-36], xdata, self.best_fit.ydata)) / (
+                np.interp(xdata[-1], xdata, self.best_fit.ydata)
             )
         self.growth = 1 - self.saturation
         description = Template(self.metadata.result_description).substitute(
@@ -120,8 +119,6 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        xdata = list(range(len(self.timestamps)))
-        best_fit = get_best_fit(xdata=np.asarray(xdata), ydata=np.asarray(self.values))
         # color the lines with different colors
         linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
@@ -139,9 +136,9 @@ class MappingSaturation(BaseIndicator):
         # plot sigmoid curve
         ax.plot(
             self.timestamps,
-            best_fit.ydata,
+            self.best_fit.ydata,
             linecol[2],
-            label="Sigmoid curve: " + best_fit.model_name,
+            label="Sigmoid curve: " + self.best_fit.model_name,
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)

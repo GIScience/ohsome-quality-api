@@ -8,7 +8,6 @@ from numpy import float64, ndarray
 from ohsome_quality_analyst.indicators.mapping_saturation import metrics, models
 
 
-# TODO: What should the attributes be?
 @dataclass
 class Fit:
     asymptote: float64

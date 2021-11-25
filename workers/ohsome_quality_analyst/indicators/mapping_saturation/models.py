@@ -1,7 +1,8 @@
 """Model Classes.
 
-The classes includes methods with the function formular, for making an initial guess
-of the parameters and getting boundaries of the parameters."""
+These classes include methods with the function formula and for fitting data to this
+function formula.
+"""
 
 from abc import ABC, abstractmethod
 
@@ -70,20 +71,20 @@ class Sigmoid(Model):
         )
         return {"x_0": popt[0], "k": popt[1], "L": popt[2]}
 
-    def get_initial_guess(self, x, y) -> tuple:
+    def get_initial_guess(self, xdata, ydata) -> tuple:
         """Get an initial guess on parameters for single Sigmoid function."""
-        x_0 = x.size / 2
+        x_0 = xdata.size / 2
         k = 0
-        L = y.max()
+        L = ydata.max()
         return (x_0, k, L)
 
-    def get_bounds(self, x, y) -> tuple:
+    def get_bounds(self, xdata, ydata) -> tuple:
         """Get lower and upper bounds of the parameters for single Sigmoid function."""
-        x_0_upper_bound = x.size * 1.5
+        x_0_upper_bound = xdata.size * 1.5
         x_0_lower_bound = 0.0
         k_upper_bound = 1.0
         k_lower_bound = -1.0
-        L_upper_bound = y.max()
+        L_upper_bound = ydata.max()
         L_lower_bound = 0.0
         return (
             (x_0_lower_bound, k_lower_bound, L_lower_bound),
@@ -114,12 +115,15 @@ class SSlogis(Model):
     name = "Self-Starting Nls Logistic Model"
     function_formula = "asym / (1 + e^((xmid - x) / scal))"
 
-    def fit(self, x, y):
+    def function(self, x, asym, xmid, scal):
+        return asym / (1 + np.exp((xmid - x) / scal))
+
+    def fit(self, xdata, ydata):
         # TODO: Should this function return coef and fitted data?
         # In this case `fitted.values(object, …)` in R can be used.
         # TODO: Add comments on what is going on
-        globalenv["x"] = FloatVector(x)
-        globalenv["y"] = FloatVector(y)
+        globalenv["x"] = FloatVector(xdata)
+        globalenv["y"] = FloatVector(ydata)
         raw_coef = r(
             """
         df <- data.frame(x, y)
@@ -132,9 +136,6 @@ class SSlogis(Model):
             "xmid": raw_coef[1],
             "scal": raw_coef[2],
         }
-
-    def function(self, x, asym, xmid, scal):
-        return asym / (1 + np.exp((xmid - x) / scal))
 
 
 class SSfpl:
@@ -167,9 +168,9 @@ class SSfpl:
     def function(self, x, A, B, xmid, scal):
         return A + (B - A) / (1 + np.exp((xmid - x) / scal))
 
-    def fit(self, x, y):
-        globalenv["x"] = FloatVector(x)
-        globalenv["y"] = FloatVector(y)
+    def fit(self, xdata, ydata):
+        globalenv["x"] = FloatVector(xdata)
+        globalenv["y"] = FloatVector(ydata)
         raw_coef = r(
             """
         df <- data.frame(x, y)
@@ -213,9 +214,9 @@ class SSasymp:
     def function(self, x, asym, R0, lrc):
         return asym + (R0 - asym) * np.exp(-np.exp(lrc) * x)
 
-    def fit(self, x, y):
-        globalenv["x"] = FloatVector(x)
-        globalenv["y"] = FloatVector(y)
+    def fit(self, xdata, ydata):
+        globalenv["x"] = FloatVector(xdata)
+        globalenv["y"] = FloatVector(ydata)
         raw_coef = r(
             """
         df <- data.frame(x, y)
@@ -263,44 +264,3 @@ class MichaelisMenton:
     def get_bounds(self):
         """Get lower and upper bounds of the parameters."""
         raise NotImplementedError
-
-
-# TODO: Remove
-# def sigmoid_1(x, x_01, k1, L1):
-#     """Alias for the `sigmoid` function."""
-#     return sigmoid(x, x_01, k1, L1)
-
-
-# # fmt: off
-# def sigmoid_2(x, x_01, x_02, k1, k2, L1, L2):
-#     """Sigmoid with 2 jumps."""
-#     _L2 = L2 - L1
-#     return (
-#         sigmoid(x, x_01, k1, L1)
-#         + sigmoid(x, x_02, k2, _L2)
-#     )
-
-
-# def sigmoid_3(x, x_01, x_02, x_03, k1, k2, k3, L1, L2, L3):
-#     """Sigmoid with 3 jumps."""
-#     _L3 = L3 - L2
-#     _L2 = L2 - L1
-#     return (
-#         sigmoid(x, x_01, k1, L1)
-#         + sigmoid(x, x_02, k2, _L2)
-#         + sigmoid(x, x_03, k3, _L3)
-#     )
-
-
-# def sigmoid_4(x, x_01, x_02, x_03, x_04, k1, k2, k3, k4, L1, L2, L3, L4):
-#     """Sigmoid with 3 jumps."""
-#     _L4 = L4 - L3
-#     _L3 = L3 - L2
-#     _L2 = L2 - L1
-#     return (
-#         sigmoid(x, x_01, k1, L1)
-#         + sigmoid(x, x_02, k2, _L2)
-#         + sigmoid(x, x_03, k3, _L3)
-#         + sigmoid(x, x_04, k4, _L4)
-#     )
-# # fmt: on
