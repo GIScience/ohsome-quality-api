@@ -5,7 +5,7 @@ import numpy as np
 from ohsome_quality_analyst.indicators.mapping_saturation import metrics
 
 
-class TestErrors(unittest.TestCase):
+class TestMetrics(unittest.TestCase):
     def setUp(self):
         self.actual = np.array([2, 4])
         self.predicted = np.array([4, 4])
