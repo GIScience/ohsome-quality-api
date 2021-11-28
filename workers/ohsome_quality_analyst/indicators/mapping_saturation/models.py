@@ -66,19 +66,19 @@ class Sigmoid(Model):
             self.function,
             xdata=xdata,
             ydata=ydata,
-            p0=self.get_initial_guess(xdata, ydata),
-            bounds=self.get_bounds(xdata, ydata),
+            p0=self.initial_guess(xdata, ydata),
+            bounds=self.bounds(xdata, ydata),
         )
         return {"x_0": popt[0], "k": popt[1], "L": popt[2]}
 
-    def get_initial_guess(self, xdata, ydata) -> tuple:
+    def initial_guess(self, xdata, ydata) -> tuple:
         """Get an initial guess on parameters for single Sigmoid function."""
         x_0 = xdata.size / 2
         k = 0
         L = ydata.max()
         return (x_0, k, L)
 
-    def get_bounds(self, xdata, ydata) -> tuple:
+    def bounds(self, xdata, ydata) -> tuple:
         """Get lower and upper bounds of the parameters for single Sigmoid function."""
         x_0_upper_bound = xdata.size * 1.5
         x_0_lower_bound = 0.0
@@ -136,6 +136,36 @@ class SSlogis(Model):
             "xmid": raw_coef[1],
             "scal": raw_coef[2],
         }
+
+
+class SSdoubleS:
+    name = "Two-Steps-Sigmoidal / Tangens Hyperbolicus"
+    function_formula = ""
+
+    def function(self, x, e, f, k, b, Z, c):
+        return (
+            e
+            + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)
+            + (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)
+        )
+        pass
+
+    def fit(self, xdata, ydata):
+        pass
+
+    def initial_guess(self, xdata, ydata):
+        e = ydata.min()
+        f = ydata.max() / 2
+        k = 10
+        # TODO
+        # b <- x[which.min(y)]
+        b = None
+        Z = ydata.max()
+        c = xdata.max() * 0.5
+        return (e, f, k, b, Z, c)
+
+    def bounds():
+        pass
 
 
 class SSfpl:
@@ -236,31 +266,38 @@ class MichaelisMenton:
 
     Function Formula
 
-        Vmax * x / (Km + x)
+        Vm * x / (K + x)
 
     Parameters
 
-        Vmax, the curve's maximum value/asymptotic;
-        Km, Michaelis constant;
+        Vm, numeric parameter representing the maximum value of the response
+            (the curve's maximum value/asymptotic);
 
-    Function formula is taken from the Wikipedia article
-    "Michaelis–Menten kinetics":
-    https://en.wikipedia.org/wiki/Michaelis%E2%80%93Menten_kinetics
+        K, numeric parameter representing the input value at which half the maximum
+            response is attained (Michaelis constant);
+
+    Function formula and parameter description is taken from the R documentation
+    "SSmicmen: Self-Starting Nls Michaelis-Menten Model":
+    https://rdrr.io/r/stats/SSmicmen.html
     """
 
     name = "Michaelis-Menten model"
-    function_formula = "Vmax * x / (Km + x)"
+    function_formula = "Vm * x / (K + x)"
 
-    def function(self, x, Vmax, Km):
-        return Vmax * x / (Km + x)
+    def function(self, x, Vm, K):
+        return Vm * x / (K + x)
 
-    def fit(self):
-        raise NotImplementedError
-
-    def get_initial_guess(self):
-        """Get an initial fuess on the parameters."""
-        raise NotImplementedError
-
-    def get_bounds(self):
-        """Get lower and upper bounds of the parameters."""
-        raise NotImplementedError
+    def fit(self, xdata, ydata):
+        globalenv["x"] = FloatVector(xdata)
+        globalenv["y"] = FloatVector(ydata)
+        raw_coef = r(
+            """
+        df <- data.frame(x, y)
+        fm <- nls(y ~ SSmicmen(x, Vm, K), data = df)
+        coef(fm)
+        """
+        )
+        return {
+            "Vm": raw_coef[0],
+            "K": raw_coef[1],
+        }
