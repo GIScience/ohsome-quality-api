@@ -12,7 +12,7 @@ class TestFit(unittest.TestCase):
         self.ydata = np.asarray(range(len(fixtures.VALUES)))
 
     def test_get_best_fit(self):
-        best_fit = fit.get_best_fit(self.xdata, self.xdata)
+        best_fit = fit.get_best_fit(self.xdata, self.ydata)
         self.assertIsNotNone(best_fit)
         self.assertIsInstance(best_fit, fit.Fit)
 
