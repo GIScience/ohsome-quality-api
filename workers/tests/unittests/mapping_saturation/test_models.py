@@ -14,10 +14,10 @@ class TestModels(unittest.TestCase):
     def test_sigmoid(self):
         model = models.Sigmoid()
 
-        guess = model.get_initial_guess(self.xdata, self.ydata)
+        guess = model.initial_guess(self.xdata, self.ydata)
         self.assertIsNotNone(guess)
 
-        bounds = model.get_bounds(self.xdata, self.ydata)
+        bounds = model.bounds(self.xdata, self.ydata)
         self.assertIsNotNone(bounds)
 
         coef = model.fit(self.xdata, self.ydata)
