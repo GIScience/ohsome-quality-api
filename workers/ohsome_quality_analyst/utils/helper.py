@@ -1,7 +1,6 @@
 """
-Standalone helper functions.
+sStandalone helper functions.
 """
-import datetime
 import importlib
 import json
 import logging
@@ -9,10 +8,14 @@ import os
 import pathlib
 import pkgutil
 import re
+from datetime import date, datetime
 from typing import Generator, Union
 
 import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from numpy import ndarray
+
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit
 
 
 def name_to_class(class_type: str, name: str):
@@ -58,18 +61,21 @@ def get_module_dir(module_name: str) -> str:
     return os.path.dirname(module.get_filename())
 
 
-def datetime_to_isostring_timestamp(time: datetime) -> str:
-    """
-    Checks for datetime objects and converts them to ISO 8601 format.
+def json_serialize(obj) -> str:
+    """JSON serializer for objects.
 
     Serves as function that gets called for objects that can’t otherwise be
     serialized by the `json` module.
     It should return a JSON encodable version of the object or raise a TypeError.
     https://docs.python.org/3/library/json.html#basic-usage
     """
-    try:
-        return time.isoformat()
-    except AttributeError:
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, Fit):
+        return obj.__dict__
+    elif isinstance(obj, ndarray):
+        return obj.tolist()
+    else:
         raise TypeError
 
 
@@ -86,7 +92,7 @@ def write_geojson(
         geojson.dump(
             geojson_object,
             file,
-            default=datetime_to_isostring_timestamp,
+            default=json_serialize,
             allow_nan=True,
         )
         logging.info("Output file written:\t" + str(outfile))

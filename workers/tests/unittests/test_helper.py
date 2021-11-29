@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import unittest
@@ -7,11 +8,13 @@ from geojson import Feature, Polygon
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
 )
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 from ohsome_quality_analyst.utils.definitions import load_metadata
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
+    json_serialize,
     loads_geojson,
     merge_dicts,
     name_to_class,
@@ -107,6 +110,19 @@ class TestHelper(unittest.TestCase):
         }
         output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
         self.assertListEqual(flatten_sequence(input_seq), output_seq)
+
+    def test_json_serialize_valid_input_datetime(self):
+        self.assertIsInstance(json_serialize(datetime.datetime.now()), str)
+
+    def test_json_serialize_valid_input_date(self):
+        self.assertIsInstance(json_serialize(datetime.date.today()), str)
+
+    def test_json_serialize_valid_input_fit(self):
+        self.assertIsInstance(json_serialize(Fit(0.0, {}, "", 0.0, "", "", [])), dict)
+
+    def test_json_serialize_invalid_input(self):
+        with self.assertRaises(TypeError):
+            json_serialize("foo")
 
 
 if __name__ == "__main__":

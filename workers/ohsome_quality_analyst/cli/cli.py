@@ -16,10 +16,7 @@ from ohsome_quality_analyst.utils.definitions import (
     load_layer_definitions,
     load_metadata,
 )
-from ohsome_quality_analyst.utils.helper import (
-    datetime_to_isostring_timestamp,
-    write_geojson,
-)
+from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
 
 
 def cli_option(option):
@@ -145,11 +142,7 @@ def create_indicator(
     )
     if outfile:
         write_geojson(outfile, geojson_object)
-    click.echo(
-        geojson.dumps(
-            geojson_object, default=datetime_to_isostring_timestamp, allow_nan=True
-        )
-    )
+    click.echo(geojson.dumps(geojson_object, default=json_serialize, allow_nan=True))
 
 
 @cli.command("create-report")
@@ -197,11 +190,7 @@ def create_report(
     )
     if outfile:
         write_geojson(outfile, geojson_object)
-    click.echo(
-        geojson.dumps(
-            geojson_object, default=datetime_to_isostring_timestamp, allow_nan=True
-        )
-    )
+    click.echo(geojson.dumps(geojson_object, default=json_serialize, allow_nan=True))
 
 
 @cli.command("create-all-indicators")

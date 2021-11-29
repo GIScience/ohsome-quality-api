@@ -41,6 +41,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
+from ohsome_quality_analyst.utils.helper import json_serialize
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -58,6 +59,13 @@ app = FastAPI(
         "email": __email__,
     },
 )
+
+
+# TODO: Which solution is better?
+# pydantic.json.ENCODERS_BY_TYPE[datetime] = lambda dt: dt.isoformat()
+class CustomJSONResponse(JSONResponse):
+    def render(self, content):
+        return json.dumps(content, default=json_serialize).encode()
 
 
 app.add_middleware(
@@ -197,9 +205,7 @@ async def _fetch_indicator(
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
     response.update(geojson_object)
-    return JSONResponse(
-        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-    )
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
 @app.get("/report")
@@ -271,9 +277,7 @@ async def _fetch_report(parameters: ReportRequestModel):
     if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response.update(geojson_object)
-    return JSONResponse(
-        content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-    )
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
 @app.get("/regions")
