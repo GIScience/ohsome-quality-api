@@ -24,7 +24,13 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
     """Fit models to data"""
     # TODO: Run for every model
     fits = []
-    for model in (models.Sigmoid(), models.SSlogis(), models.SSfpl(), models.SSasymp()):
+    for model in (
+        models.Sigmoid(),
+        models.SSdoubleS(),
+        models.SSlogis(),
+        models.SSfpl(),
+        models.SSasymp(),
+    ):
         coef = model.fit(xdata, ydata)
         ydata_fitted = model.function(xdata, **coef)
         metric = metrics.mae(ydata, ydata_fitted)

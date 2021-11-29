@@ -26,6 +26,17 @@ class TestModels(unittest.TestCase):
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)
 
+    def test_ssdoubles(self):
+        model = models.SSdoubleS()
+        guess = model.initial_guess(self.xdata, self.ydata)
+        self.assertIsNotNone(guess)
+
+        coef = model.fit(self.xdata, self.ydata)
+        self.assertIsNotNone(coef)
+
+        ydata = model.function(self.xdata, **coef)
+        self.assertIsNotNone(ydata)
+
     def test_sslogis(self):
         model = models.SSlogis()
         coef = model.fit(self.xdata, self.ydata)

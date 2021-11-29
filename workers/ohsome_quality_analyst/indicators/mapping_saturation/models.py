@@ -32,6 +32,11 @@ class Model(ABC):
         """
         pass
 
+    # TODO: Should there be checks for input data?
+    # Where should they be called? During __init__()?
+    def check_xy_data(self, xdata, ydata):
+        assert np.shape(xdata) == np.shape(ydata)
+
 
 # TODO: Is this Model obsolete because of SSlogis
 class Sigmoid(Model):
@@ -151,21 +156,40 @@ class SSdoubleS:
         pass
 
     def fit(self, xdata, ydata):
-        pass
+        # TODO: Add comments on curve_fit
+        popt, pcov = curve_fit(
+            self.function,
+            xdata=xdata,
+            ydata=ydata,
+            p0=self.initial_guess(xdata, ydata),
+            # TODO: Do we need to define the bounds here?`Will they improve the fit?
+            # bounds=self.bounds()
+        )
+        return {
+            "e": popt[0],
+            "f": popt[1],
+            "k": popt[2],
+            "b": popt[3],
+            "Z": popt[4],
+            "c": popt[5],
+        }
 
     def initial_guess(self, xdata, ydata):
         e = ydata.min()
-        f = ydata.max() / 2
-        k = 10
-        # TODO
-        # b <- x[which.min(y)]
-        b = None
+        f = ydata.max() / 2.0
+        k = 10.0
+        # TODO: Here multiple indicies matching the condition exists.
+        # Which one should be chosen?
+        # In R following code has been used: b <- x[which.min(y)]
+        (indicies,) = np.where(np.isclose(ydata, np.min(ydata)))
+        b = xdata[indicies[0]]
         Z = ydata.max()
         c = xdata.max() * 0.5
         return (e, f, k, b, Z, c)
 
-    def bounds():
-        pass
+    def bounds(self, xdata, ydata):
+        # TODO: Remove if not needed
+        raise NotImplementedError
 
 
 class SSfpl:
