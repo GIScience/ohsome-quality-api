@@ -19,6 +19,8 @@ class Model(ABC):
     def function() -> np.float64:
         pass
 
+    # TODO: Should this function return coef and fitted data?
+    # In this case `fitted.values(object, …)` in R can be used.
     @abstractmethod
     def fit() -> dict:
         """Fit data to function.
@@ -66,8 +68,9 @@ class Sigmoid(Model):
         return L / (1 + np.exp(-k * (x - x_0)))
 
     def fit(self, xdata, ydata):
-        # TODO: Add comments on curve_fit
-        popt, pcov = curve_fit(
+        # curve_fit: Use non-linear least squares to fit a function, f, to data.
+        # popt: Optimal values for the parameters as array
+        popt, _ = curve_fit(
             self.function,
             xdata=xdata,
             ydata=ydata,
@@ -97,6 +100,14 @@ class Sigmoid(Model):
         )
 
 
+class DoubleSigmoid(Model):
+    # TODO: Should this model based on previous model (Sigmoid) be implemented?
+    # function_formula:
+    # (L / (1 + np.exp(-k * (x - x_0))))
+    # + (L2 / 1 + np.exp(-k2 * (x - x_02)))
+    pass
+
+
 class SSlogis(Model):
     """Self-Starting Nls Logistic Model.
 
@@ -124,8 +135,6 @@ class SSlogis(Model):
         return asym / (1 + np.exp((xmid - x) / scal))
 
     def fit(self, xdata, ydata):
-        # TODO: Should this function return coef and fitted data?
-        # In this case `fitted.values(object, …)` in R can be used.
         # TODO: Add comments on what is going on
         globalenv["x"] = FloatVector(xdata)
         globalenv["y"] = FloatVector(ydata)
@@ -156,8 +165,9 @@ class SSdoubleS:
         pass
 
     def fit(self, xdata, ydata):
-        # TODO: Add comments on curve_fit
-        popt, pcov = curve_fit(
+        # curve_fit: Use non-linear least squares to fit a function, f, to data.
+        # popt: Optimal values for the parameters as array
+        popt, _ = curve_fit(
             self.function,
             xdata=xdata,
             ydata=ydata,
