@@ -26,6 +26,13 @@ class TestModels(unittest.TestCase):
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)
 
+    def test_sslogis(self):
+        model = models.SSlogis()
+        coef = model.fit(self.xdata, self.ydata)
+        self.assertIsNotNone(coef)
+        ydata = model.function(self.xdata, **coef)
+        self.assertIsNotNone(ydata)
+
     def test_ssdoubles(self):
         model = models.SSdoubleS()
         guess = model.initial_guess(self.xdata, self.ydata)
@@ -34,13 +41,6 @@ class TestModels(unittest.TestCase):
         coef = model.fit(self.xdata, self.ydata)
         self.assertIsNotNone(coef)
 
-        ydata = model.function(self.xdata, **coef)
-        self.assertIsNotNone(ydata)
-
-    def test_sslogis(self):
-        model = models.SSlogis()
-        coef = model.fit(self.xdata, self.ydata)
-        self.assertIsNotNone(coef)
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)
 
@@ -53,6 +53,13 @@ class TestModels(unittest.TestCase):
 
     def test_ssasymp(self):
         model = models.SSasymp()
+        coef = model.fit(self.xdata, self.ydata)
+        self.assertIsNotNone(coef)
+        ydata = model.function(self.xdata, **coef)
+        self.assertIsNotNone(ydata)
+
+    def test_ssmicmen(self):
+        model = models.SSmicmen()
         coef = model.fit(self.xdata, self.ydata)
         self.assertIsNotNone(coef)
         ydata = model.function(self.xdata, **coef)

@@ -26,10 +26,11 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
     fits = []
     for model in (
         models.Sigmoid(),
-        models.SSdoubleS(),
         models.SSlogis(),
+        models.SSdoubleS(),
         models.SSfpl(),
         models.SSasymp(),
+        # models.SSmicemen(),
     ):
         coef = model.fit(xdata, ydata)
         ydata_fitted = model.function(xdata, **coef)
