@@ -7,7 +7,7 @@ function formula.
 from abc import ABC, abstractmethod
 
 import numpy as np
-from rpy2.robjects import FloatVector, globalenv, r
+from rpy2 import robjects
 from scipy.optimize import curve_fit
 
 
@@ -135,10 +135,11 @@ class SSlogis(Model):
         return asym / (1 + np.exp((xmid - x) / scal))
 
     def fit(self, xdata, ydata):
-        # TODO: Add comments on what is going on
-        globalenv["x"] = FloatVector(xdata)
-        globalenv["y"] = FloatVector(ydata)
-        raw_coef = r(
+        # R environments can be described as an hybrid of a dictionary and a scope.
+        robjects.globalenv["x"] = robjects.FloatVector(xdata)
+        robjects.globalenv["y"] = robjects.FloatVector(ydata)
+        # The string passed to the call of the robject `r` is evaluated as R code.
+        raw_coef = robjects.r(
             """
         df <- data.frame(x, y)
         fm <- nls(y ~ SSlogis(x, Asym, xmid, scal), data = df)
@@ -233,9 +234,9 @@ class SSfpl:
         return A + (B - A) / (1 + np.exp((xmid - x) / scal))
 
     def fit(self, xdata, ydata):
-        globalenv["x"] = FloatVector(xdata)
-        globalenv["y"] = FloatVector(ydata)
-        raw_coef = r(
+        robjects.globalenv["x"] = robjects.FloatVector(xdata)
+        robjects.globalenv["y"] = robjects.FloatVector(ydata)
+        raw_coef = robjects.r(
             """
         df <- data.frame(x, y)
         fm <- nls(y ~ SSfpl(x, A, B, xmid, scal), data = df)
@@ -279,9 +280,9 @@ class SSasymp:
         return asym + (R0 - asym) * np.exp(-np.exp(lrc) * x)
 
     def fit(self, xdata, ydata):
-        globalenv["x"] = FloatVector(xdata)
-        globalenv["y"] = FloatVector(ydata)
-        raw_coef = r(
+        robjects.globalenv["x"] = robjects.FloatVector(xdata)
+        robjects.globalenv["y"] = robjects.FloatVector(ydata)
+        raw_coef = robjects.r(
             """
         df <- data.frame(x, y)
         fm <- nls(y ~ SSasymp(x, asym, R0, lrc), data = df)
@@ -295,8 +296,8 @@ class SSasymp:
         }
 
 
-class MichaelisMenton:
-    """Michaelis-Menten model.
+class SSmicmen:
+    """Self-Starting Nls Michaelis-Menten Model
 
     Function Formula
 
@@ -315,16 +316,16 @@ class MichaelisMenton:
     https://rdrr.io/r/stats/SSmicmen.html
     """
 
-    name = "Michaelis-Menten model"
+    name = "Self-Starting Nls Michaelis-Menten Model"
     function_formula = "Vm * x / (K + x)"
 
     def function(self, x, Vm, K):
         return Vm * x / (K + x)
 
     def fit(self, xdata, ydata):
-        globalenv["x"] = FloatVector(xdata)
-        globalenv["y"] = FloatVector(ydata)
-        raw_coef = r(
+        robjects.globalenv["x"] = robjects.FloatVector(xdata)
+        robjects.globalenv["y"] = robjects.FloatVector(ydata)
+        raw_coef = robjects.r(
             """
         df <- data.frame(x, y)
         fm <- nls(y ~ SSmicmen(x, Vm, K), data = df)
