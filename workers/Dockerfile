@@ -1,5 +1,9 @@
-# TODO: Install R lang
+# based on Debian 11 Bullseye
 FROM python:3.8
+
+# install R
+RUN apt-get update
+RUN apt-get -y install r-base
 
 # within docker container: run without root privileges
 RUN useradd -md /home/oqt oqt
