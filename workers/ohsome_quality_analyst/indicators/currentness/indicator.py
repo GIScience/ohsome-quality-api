@@ -11,7 +11,11 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Currentness(BaseIndicator):
-    """Time distribution of the last changes to elements over the entire time range."""
+    """
+    Ratio of all contributions that have been edited since 2008 until the
+    current day in relation with years without mapping activities in the same
+    time range
+    """
 
     def __init__(
         self,
@@ -27,10 +31,12 @@ class Currentness(BaseIndicator):
         self.element_count = None
         self.contribution_sum = 0
         self.contributions = {}
+        self.contributions_abs = {}
         self.ratio = {}
 
     async def preprocess(self) -> None:
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
+        # time_range for all years since 2008 and curr_year_range for the ongoing year
         start = "2008-01-01"
         self.end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         time_range = "{0}/{1}/{2}".format(start, self.end, "P1Y")
@@ -81,21 +87,22 @@ class Currentness(BaseIndicator):
             return
         contributions_rel = self.contribution_sum
         last_edited_year = ""
+        # determine the percentage of elements that were last edited in that year
         for year in self.contributions:
             self.ratio[year] = (contributions_rel / self.contribution_sum) * 100
             contributions_rel -= self.contributions[year]
-            self.contributions[year] = (
+            self.contributions_abs[year] = (
                 self.contributions[year] / self.contribution_sum
             ) * 100
-            if self.contributions[year] != 0:
+            if self.contributions_abs[year] != 0:
                 last_edited_year = year
         years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
             last_edited_year
         )
         percentage_contributions = 0
         median_year = ""
-        for year in self.contributions:
-            percentage_contributions += self.contributions[year]
+        for year in self.contributions_abs:
+            percentage_contributions += self.contributions_abs[year]
             if percentage_contributions < 50:
                 continue
             else:
@@ -165,8 +172,8 @@ class Currentness(BaseIndicator):
             label="Percentage of contributions (cumulative)",
         )
         ax.bar(
-            list(self.contributions.keys()),
-            self.contributions.values(),
+            list(self.contributions_abs.keys()),
+            self.contributions_abs.values(),
             color=self.result.label,
             label="Percentage of contributions (year) ",
         )
