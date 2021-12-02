@@ -16,7 +16,7 @@
 - Improve API response when an error occurs by including information about the cause ([#186])
 - Add parameter to get API response without svg string in the result ([#137])
 - Extend time range for Currentness indicator ([#178])
-- Use [`scipy`] to fit sigmoid curves to data for the Mapping Saturation indicator ([#170])
+- Rewrite the Mapping Saturation indicator to use statistical models from the R language ([#209] [#170])
 
 ### How to upgrade
 
