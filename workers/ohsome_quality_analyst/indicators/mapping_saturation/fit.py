@@ -1,4 +1,4 @@
-"""Fit models to data and choose best fit based on Mean Absolute Error."""
+"""Run all models and choose best fit based on Mean Absolute Error."""
 
 
 from dataclasses import dataclass
@@ -21,7 +21,6 @@ class Fit:
 
 
 def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
-    """Fit models to data"""
     # TODO: Run for every model
     fits = []
     for model in (
