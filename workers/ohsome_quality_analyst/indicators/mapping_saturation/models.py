@@ -154,8 +154,19 @@ class SSlogis(Model):
 
 
 class SSdoubleS:
-    name = "Two-Steps-Sigmoidal / Tangens Hyperbolicus"
-    function_formula = ""
+    """Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)
+
+    Function Formula:
+
+        e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)
+        + (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)
+    """
+
+    name = "Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)"
+    function_formula = (
+        +"e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)"
+        + "+ (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)"
+    )
 
     def function(self, x, e, f, k, b, Z, c):
         return (
