@@ -6,12 +6,12 @@ from datetime import datetime
 import geojson
 
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.indicators.last_edit.indicator import LastEdit
+from ohsome_quality_analyst.indicators.currentness.indicator import Currentness
 
 from .utils import oqt_vcr
 
 
-class TestIndicatorLastEdit(unittest.TestCase):
+class TestIndicatorCurrentness(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test(self):
         # Heidelberg
@@ -19,7 +19,10 @@ class TestIndicatorLastEdit(unittest.TestCase):
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
 
-        indicator = LastEdit(feature=feature, layer_name="major_roads_count")
+        indicator = Currentness(
+            feature=feature,
+            layer_name="major_roads_count",
+        )
         asyncio.run(indicator.preprocess())
         self.assertIsInstance(indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(indicator.result.timestamp_oqt, datetime)
@@ -42,7 +45,7 @@ class TestIndicatorLastEdit(unittest.TestCase):
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = LastEdit(layer_name="amenities", feature=feature)
+        indicator = Currentness(layer_name="amenities", feature=feature)
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.element_count, 0)
 

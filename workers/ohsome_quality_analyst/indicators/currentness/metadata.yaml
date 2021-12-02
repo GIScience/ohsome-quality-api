@@ -1,18 +1,18 @@
 ---
-LastEdit:
-  name: Last Edit
+Currentness:
+  name: Currentness
   description: |
-    Percentage of features that have been edited over the past year. 
+    Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
+    time range.
     Refers to data quality in respect to currentness.
   label_description:
     red: |
-      The vast majority of map features has not been updated in the last year. 
+      More than half of the $elements edited elements were last edited over 4 years ago.
       Be aware that there it is very likely that many map features are outdated. 
       You should carefully check this before using the data as it indicates bad 
       data quality in respect to currentness.
     yellow: |
-      Some map features could be outdated in this regions, since only a smaller 
-      fraction has been updated in the past year. 
+      More than half of the edited elements were last edited between 1 and 4 years ago.
       This refers to medium data quality in respect to currentness.
     green: |
       This is a rather high value and indicates that the map features 
@@ -25,4 +25,4 @@ LastEdit:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-    $ratio % of the $layer_name have been edited in OSM during the last year.
+    On the $layer_name over 50% of the $elements edited elements were last edited $years.
