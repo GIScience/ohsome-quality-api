@@ -47,8 +47,9 @@ A minimal database setup for running tests is provided. If the build argument `O
 
 ### Requirements
 
-- Python 3.8+
-- Poetry 1.1.0+
+- Python: ~3.8
+- R: ~4.0
+- Poetry: ~1.0
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
 
