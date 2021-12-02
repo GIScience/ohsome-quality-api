@@ -26,11 +26,11 @@ class MapActionPoc(BaseReport):
             IndicatorLayer("MappingSaturation", "mapaction_rail_length"),
             IndicatorLayer("MappingSaturation", "mapaction_lakes_area"),
             IndicatorLayer("MappingSaturation", "mapaction_rivers_length"),
-            IndicatorLayer("LastEdit", "mapaction_settlements_count"),
-            IndicatorLayer("LastEdit", "mapaction_major_roads_length"),
-            IndicatorLayer("LastEdit", "mapaction_rail_length"),
-            IndicatorLayer("LastEdit", "mapaction_lakes_count"),
-            IndicatorLayer("LastEdit", "mapaction_rivers_length"),
+            IndicatorLayer("Currentness", "mapaction_settlements_count"),
+            IndicatorLayer("Currentness", "mapaction_major_roads_length"),
+            IndicatorLayer("Currentness", "mapaction_rail_length"),
+            IndicatorLayer("Currentness", "mapaction_lakes_count"),
+            IndicatorLayer("Currentness", "mapaction_rivers_length"),
         )
 
     def combine_indicators(self) -> None:
