@@ -44,7 +44,7 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
             ydata=ydata_fitted,
         )
         fits.append(fit)
-        return fits
+    return fits
 
 
 def get_best_fit(fits: List[Fit]) -> Fit:

@@ -164,7 +164,7 @@ class SSdoubleS:
 
     name = "Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)"
     function_formula = (
-        +"e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)"
+        "e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)"
         + "+ (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)"
     )
 
