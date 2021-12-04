@@ -60,7 +60,8 @@ class TestModels(unittest.TestCase):
 
     def test_ssmicmen(self):
         model = models.SSmicmen()
-        coef = model.fit(self.xdata, self.ydata)
+        # To avoid zero in input data add 1 to each element
+        coef = model.fit(self.xdata + 1, self.ydata)
         self.assertIsNotNone(coef)
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)

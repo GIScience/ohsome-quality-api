@@ -8,8 +8,8 @@ from ohsome_quality_analyst.indicators.mapping_saturation import fit
 
 class TestFit(unittest.TestCase):
     def setUp(self):
-        self.xdata = fixtures.VALUES
-        self.ydata = np.asarray(range(len(fixtures.VALUES)))
+        self.xdata = np.asarray(range(len(fixtures.VALUES)))
+        self.ydata = fixtures.VALUES
 
     def test_run_all_models(self):
         fits = fit.run_all_models(self.xdata, self.ydata)
