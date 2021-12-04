@@ -12,16 +12,16 @@ class TestFit(unittest.TestCase):
         self.ydata = fixtures.VALUES
 
     def test_run_all_models(self):
-        fits = fit.run_all_models(self.xdata, self.ydata)
-        self.assertIsNotNone(fits)
-        self.assertIsInstance(fits, list)
-        self.assertIsInstance(fits[0], fit.Fit)
+        fitted_models = fit.run_all_models(self.xdata, self.ydata)
+        self.assertIsNotNone(fitted_models)
+        self.assertIsInstance(fitted_models, list)
+        self.assertIsInstance(fitted_models[0], fit.FittedModel)
 
     def test_get_best_fit(self):
-        fits = fit.run_all_models(self.xdata, self.ydata)
-        f = fit.get_best_fit(fits)
+        fitted_models = fit.run_all_models(self.xdata, self.ydata)
+        f = fit.get_best_fit(fitted_models)
         self.assertIsNotNone(f)
-        self.assertIsInstance(f, fit.Fit)
+        self.assertIsInstance(f, fit.FittedModel)
 
 
 if __name__ == "__main__":

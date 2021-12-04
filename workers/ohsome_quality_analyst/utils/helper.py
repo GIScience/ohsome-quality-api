@@ -15,7 +15,7 @@ import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 from numpy import ndarray
 
-from ohsome_quality_analyst.indicators.mapping_saturation.fit import Fit
+from ohsome_quality_analyst.indicators.mapping_saturation.fit import FittedModel
 
 
 def name_to_class(class_type: str, name: str):
@@ -71,7 +71,7 @@ def json_serialize(obj) -> str:
     """
     if isinstance(obj, (date, datetime)):
         return obj.isoformat()
-    elif isinstance(obj, Fit):
+    elif isinstance(obj, FittedModel):
         return obj.__dict__
     elif isinstance(obj, ndarray):
         return obj.tolist()

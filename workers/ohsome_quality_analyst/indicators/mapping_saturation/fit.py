@@ -10,7 +10,7 @@ from ohsome_quality_analyst.indicators.mapping_saturation import metrics, models
 
 
 @dataclass
-class Fit:
+class FittedModel:
     asymptote: float64
     coefficients: dict
     function_formula: str
@@ -20,9 +20,9 @@ class Fit:
     ydata: ndarray
 
 
-def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
+def run_all_models(xdata: ndarray, ydata: ndarray) -> List[FittedModel]:
     # TODO: Run for every model
-    fits = []
+    fitted_models = []
     for model in (
         models.Sigmoid(),
         models.SSlogis(),
@@ -34,22 +34,23 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[Fit]:
         coef = model.fit(xdata, ydata)
         ydata_fitted = model.function(xdata, **coef)
         metric = metrics.mae(ydata, ydata_fitted)
-        fit = Fit(
-            asymptote=ydata_fitted.max(),
-            coefficients=coef,
-            function_formula=model.function_formula,
-            metric=metric,
-            metric_name="Mean Absolute Error",
-            model_name=model.name,
-            ydata=ydata_fitted,
+        fitted_models.append(
+            FittedModel(
+                asymptote=ydata_fitted.max(),
+                coefficients=coef,
+                function_formula=model.function_formula,
+                metric=metric,
+                metric_name="Mean Absolute Error",
+                model_name=model.name,
+                ydata=ydata_fitted,
+            )
         )
-        fits.append(fit)
-    return fits
+    return fitted_models
 
 
-def get_best_fit(fits: List[Fit]) -> Fit:
-    best_fit: Fit = None
-    for fit in fits:
+def get_best_fit(fitted_models: List[FittedModel]) -> FittedModel:
+    best_fit: FittedModel = None
+    for fit in fitted_models:
         if best_fit is None:
             best_fit = fit
         elif fit.metric < best_fit.metric:

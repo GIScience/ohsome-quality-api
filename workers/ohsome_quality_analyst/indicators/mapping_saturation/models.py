@@ -12,8 +12,15 @@ from scipy.optimize import curve_fit
 
 
 class Model(ABC):
-    name: str = ""
-    function_formula: str = ""
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def function_formula(self) -> str:
+        pass
 
     @abstractmethod
     def function() -> np.float64:

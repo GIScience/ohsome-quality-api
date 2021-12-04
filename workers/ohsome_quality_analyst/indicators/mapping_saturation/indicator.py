@@ -10,7 +10,7 @@ from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation.fit import (
-    Fit,
+    FittedModel,
     get_best_fit,
     run_all_models,
 )
@@ -52,7 +52,7 @@ class MappingSaturation(BaseIndicator):
         # self.threshold_red = None
 
         # Attributes needed for result determination
-        self.best_fit: Optional[Fit] = None
+        self.best_fit: Optional[FittedModel] = None
         self.saturation: Optional[float] = None
         self.growth: Optional[float] = None
 
@@ -82,8 +82,8 @@ class MappingSaturation(BaseIndicator):
             )
             return
         xdata = np.asarray(list(range(len(self.timestamps))))
-        fits = run_all_models(xdata=xdata, ydata=np.asarray(self.values))
-        self.best_fit = get_best_fit(fits)
+        fitted_models = run_all_models(xdata=xdata, ydata=np.asarray(self.values))
+        self.best_fit = get_best_fit(fitted_models)
         logging.info("Best fitting sigmoid curve: " + self.best_fit.model_name)
         # TODO: Following condition is a corner case and
         # should be handled before running models.
