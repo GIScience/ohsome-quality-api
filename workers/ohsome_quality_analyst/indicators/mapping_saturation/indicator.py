@@ -92,9 +92,9 @@ class MappingSaturation(BaseIndicator):
             self.saturation = 0
         else:
             # Calculate slope of last 3 years (saturation)
-            self.saturation = (np.interp(xdata[-36], xdata, self.best_fit.ydata)) / (
-                np.interp(xdata[-1], xdata, self.best_fit.ydata)
-            )
+            self.saturation = (
+                np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
+            ) / (np.interp(xdata[-1], xdata, self.best_fit.fitted_values))
         self.growth = 1 - self.saturation
         description = Template(self.metadata.result_description).substitute(
             saturation=self.saturation,
@@ -141,7 +141,7 @@ class MappingSaturation(BaseIndicator):
         # plot sigmoid curve
         ax.plot(
             self.timestamps,
-            self.best_fit.ydata,
+            self.best_fit.fitted_values,
             linecol[2],
             label="Sigmoid curve: " + self.best_fit.model_name,
         )

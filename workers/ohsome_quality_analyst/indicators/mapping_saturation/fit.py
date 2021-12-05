@@ -17,7 +17,7 @@ class FittedModel:
     metric: float64
     metric_name: str
     model_name: str
-    ydata: ndarray
+    fitted_values: ndarray
 
 
 def run_all_models(xdata: ndarray, ydata: ndarray) -> List[FittedModel]:
@@ -32,17 +32,17 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[FittedModel]:
         # models.SSmicemen(),
     ):
         coef = model.fit(xdata, ydata)
-        ydata_fitted = model.function(xdata, **coef)
-        metric = metrics.mae(ydata, ydata_fitted)
+        fitted_values = model.function(xdata, **coef)
+        metric = metrics.mae(ydata, fitted_values)
         fitted_models.append(
             FittedModel(
-                asymptote=ydata_fitted.max(),
+                asymptote=fitted_values.max(),
                 coefficients=coef,
                 function_formula=model.function_formula,
                 metric=metric,
                 metric_name="Mean Absolute Error",
                 model_name=model.name,
-                ydata=ydata_fitted,
+                fitted_values=fitted_values,
             )
         )
     return fitted_models
