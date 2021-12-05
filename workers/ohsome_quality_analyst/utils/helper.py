@@ -1,6 +1,5 @@
-"""
-sStandalone helper functions.
-"""
+"""Standalone helper functions."""
+
 import importlib
 import json
 import logging
