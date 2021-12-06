@@ -14,12 +14,12 @@
 - API: Change media type of GeoJSON response ([#199])
 - Validate indicator-layer combination with `pydantic` ([#190])
 - Improve API response when an error occurs by including information about the cause ([#186])
-- Add parameter to get API response without svg string in the result. ([#137])
+- Add parameter to get API response without svg string in the result ([#137])
 - Extend time range for Currentness indicator ([#178])
 
 ### How to upgrade
 
-- Update requests for `/indicator` and `/report` endpoints. `name` is now a Query parameter ([#190])
+- Update requests for `/indicator` and `/report` endpoints. `name` is now a Query parameter. ([#190])
     - E.g. `/indicator/GhsPopComparisonBuilding` -> `indicator?name=GhsPopComparisonBuilding`
 - Update `bpolys` parameter of POST requests to be a GeoJSON object instead of a string ([#204])
 - To retrieve a figure for the result as `SVG` string from the `/indicator` and `/report` endpoints set the request parameter 'includeSvg' to True ([#137])
