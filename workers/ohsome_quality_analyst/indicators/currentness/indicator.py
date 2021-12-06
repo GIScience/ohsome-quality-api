@@ -30,7 +30,7 @@ class Currentness(BaseIndicator):
         self.threshold_red = 0.2
         self.element_count = None
         self.contribution_sum = 0
-        self.contributions = {}
+        self.contributions_rel = {}
         self.contributions_abs = {}
         self.ratio = {}
 
@@ -60,7 +60,7 @@ class Currentness(BaseIndicator):
         for year in response_contributions["result"]:
             time = dateutil.parser.isoparse(year["fromTimestamp"])
             count = year["value"]
-            self.contributions[time.strftime("%Y")] = count
+            self.contributions_abs[time.strftime("%Y")] = count
 
         curr_year_response_contributions = await ohsome_client.query(
             layer=self.layer,
@@ -72,12 +72,12 @@ class Currentness(BaseIndicator):
             curr_year_response_contributions["result"][0]["fromTimestamp"]
         )
         count = curr_year_response_contributions["result"][0]["value"]
-        self.contributions[time.strftime("%Y")] = count
+        self.contributions_abs[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
-        self.contribution_sum = sum(self.contributions.values())
+        self.contribution_sum = sum(self.contributions_abs.values())
         # It can be that features are counted, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
@@ -85,24 +85,24 @@ class Currentness(BaseIndicator):
                 "matching the filter are present today."
             )
             return
-        contributions_rel = self.contribution_sum
+        contributions_share = self.contribution_sum
         last_edited_year = ""
         # determine the percentage of elements that were last edited in that year
-        for year in self.contributions:
-            self.ratio[year] = (contributions_rel / self.contribution_sum) * 100
-            contributions_rel -= self.contributions[year]
-            self.contributions_abs[year] = (
-                self.contributions[year] / self.contribution_sum
+        for year in self.contributions_abs:
+            self.ratio[year] = (contributions_share / self.contribution_sum) * 100
+            contributions_share -= self.contributions_abs[year]
+            self.contributions_rel[year] = (
+                self.contributions_abs[year] / self.contribution_sum
             ) * 100
-            if self.contributions_abs[year] != 0:
+            if self.contributions_rel[year] != 0:
                 last_edited_year = year
         years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
             last_edited_year
         )
         percentage_contributions = 0
         median_year = ""
-        for year in self.contributions_abs:
-            percentage_contributions += self.contributions_abs[year]
+        for year in self.contributions_rel:
+            percentage_contributions += self.contributions_rel[year]
             if percentage_contributions < 50:
                 continue
             else:
@@ -172,8 +172,8 @@ class Currentness(BaseIndicator):
             label="Percentage of contributions (cumulative)",
         )
         ax.bar(
-            list(self.contributions_abs.keys()),
-            self.contributions_abs.values(),
+            list(self.contributions_rel.keys()),
+            self.contributions_rel.values(),
             color=self.result.label,
             label="Percentage of contributions (year) ",
         )
