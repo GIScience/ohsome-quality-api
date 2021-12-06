@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_analyst"
-version = "0.6.0"
+version = "0.7.0"
 description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://oqt.ohsome.org"
