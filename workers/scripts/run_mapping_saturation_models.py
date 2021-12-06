@@ -18,7 +18,7 @@ def main():
             ax = plt.subplot(2, 3, i + 1)
         else:
             ax = plt.subplot(2, 3, i + 1, sharex=prev_ax, sharey=prev_ax)
-        ax.plot(xdata, ydata)
+        ax.plot(xdata, ydata, label="OSM Data")
         ax.plot(
             xdata,
             model.fitted_values,
@@ -27,7 +27,7 @@ def main():
         ax.axhline(y=model.asymptote, color="pink", linestyle="--", label="Asymptote")
         ax.set_title(model.model_name)
         ax.legend()
-        ax.set(xlabel="x-label", ylabel="y-label")
+        ax.set(xlabel="time", ylabel="features")
         ax.label_outer()
         prev_ax = ax
     plt.show()
