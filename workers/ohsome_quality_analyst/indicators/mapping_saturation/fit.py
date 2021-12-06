@@ -29,7 +29,7 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[FittedModel]:
         models.SSdoubleS(),
         models.SSfpl(),
         models.SSasymp(),
-        # models.SSmicemen(),
+        models.SSmicmen(),
     ):
         coef = model.fit(xdata, ydata)
         fitted_values = model.function(xdata, **coef)

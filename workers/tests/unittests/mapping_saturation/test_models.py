@@ -58,19 +58,9 @@ class TestModels(unittest.TestCase):
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)
 
-    def test_ssmicmen_inlcude_zero(self):
-        """Test model with zero in input data."""
+    def test_ssmicmen(self):
         model = models.SSmicmen()
-        # xdata starts with first element = 0
         coef = model.fit(self.xdata, self.ydata)
-        self.assertIsNotNone(coef)
-        ydata = model.function(self.xdata, **coef)
-        self.assertIsNotNone(ydata)
-
-    def test_ssmicmen_without_zero(self):
-        model = models.SSmicmen()
-        # To avoid zero in input data add 1 to each element
-        coef = model.fit(self.xdata + 1, self.ydata)
         self.assertIsNotNone(coef)
         ydata = model.function(self.xdata, **coef)
         self.assertIsNotNone(ydata)
