@@ -341,6 +341,14 @@ class SSmicmen:
         return Vm * x / (K + x)
 
     def fit(self, xdata, ydata):
+        # TODO: Model fails when input values includes zero:
+        # rpy2.rinterface_lib.embedded.RRuntimeError:
+        #   Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+        #   NA/NaN/Inf in 'x'
+        # How to deal with that?
+        # Test for zero
+        assert np.all(xdata)
+        assert np.all(ydata)
         robjects.globalenv["x"] = robjects.FloatVector(xdata)
         robjects.globalenv["y"] = robjects.FloatVector(ydata)
         raw_coef = robjects.r(
