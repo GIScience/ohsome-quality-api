@@ -1,7 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -53,6 +53,7 @@ class MappingSaturation(BaseIndicator):
 
         # Attributes needed for result determination
         self.best_fit: Optional[FittedModel] = None
+        self.fitted_models: List[FittedModel] = []
         self.saturation: Optional[float] = None
         self.growth: Optional[float] = None
 
@@ -81,9 +82,9 @@ class MappingSaturation(BaseIndicator):
                 "All mapped features in this region have been since deleted."
             )
             return
-        xdata = np.asarray(list(range(len(self.timestamps))))
-        fitted_models = run_all_models(xdata=xdata, ydata=np.asarray(self.values))
-        self.best_fit = get_best_fit(fitted_models)
+        xdata = np.asarray(range(len(self.timestamps)))
+        self.fitted_models = run_all_models(xdata=xdata, ydata=np.asarray(self.values))
+        self.best_fit = get_best_fit(self.fitted_models)
         logging.info("Best fitting sigmoid curve: " + self.best_fit.model_name)
         # TODO: Following condition is a corner case and
         # should be handled before running models.
