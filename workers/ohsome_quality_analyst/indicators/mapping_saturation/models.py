@@ -341,12 +341,12 @@ class SSmicmen:
         return Vm * x / (K + x)
 
     def fit(self, xdata, ydata):
-        # Model fails when input values include zero.
+        # Model fails when xdata starts with zero
         if xdata[0] == 0:
             xdata = xdata + 1
-        # Test for zero.
-        assert np.all(xdata)
-        assert np.all(ydata)
+        # Model fails when ydata contains zero
+        if not np.all(ydata):
+            ydata = ydata + 1
         robjects.globalenv["x"] = robjects.FloatVector(xdata)
         robjects.globalenv["y"] = robjects.FloatVector(ydata)
         raw_coef = robjects.r(
