@@ -1,10 +1,12 @@
 """Run all models and choose best fit based on Mean Absolute Error."""
 
 
+import logging
 from dataclasses import dataclass
 from typing import List
 
 from numpy import float64, ndarray
+from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.indicators.mapping_saturation import metrics, models
 
@@ -31,7 +33,16 @@ def run_all_models(xdata: ndarray, ydata: ndarray) -> List[FittedModel]:
         models.SSasymp(),
         models.SSmicmen(),
     ):
-        coef = model.fit(xdata, ydata)
+        logging.info("Run {}".format(model.name))
+        try:
+            coef = model.fit(xdata, ydata)
+        except RRuntimeError as error:
+            logging.warning(
+                "Could not run model {0} due to RRuntimeError: {1}".format(
+                    model.name, error
+                )
+            )
+            continue
         fitted_values = model.function(xdata, **coef)
         metric = metrics.mae(ydata, fitted_values)
         fitted_models.append(
