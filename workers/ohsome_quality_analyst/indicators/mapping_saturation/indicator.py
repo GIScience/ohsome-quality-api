@@ -1,19 +1,16 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import List, Literal, Optional
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 from dateutil.parser import isoparse
 from geojson import Feature
+from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.indicators.mapping_saturation.fit import (
-    FittedModel,
-    get_best_fit,
-    run_all_models,
-)
+from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
@@ -43,7 +40,6 @@ class MappingSaturation(BaseIndicator):
         # Attributes needed for calculation
         self.values: list = []
         self.timestamps: list = []
-        self.corner_cases: Literal["", "no_data", "deleted_data"] = ""
         # Threshold derived from MA Katha p24
         # (mixture of Gröchenig et al. +  Barrington-Leigh)
         # saturation: 0 < f‘(x) <= 0.03 and years with saturation > 2
@@ -52,50 +48,52 @@ class MappingSaturation(BaseIndicator):
         # self.threshold_red = None
 
         # Attributes needed for result determination
-        self.best_fit: Optional[FittedModel] = None
-        self.fitted_models: List[FittedModel] = []
+        self.best_fit: Optional[models.BaseStatModel] = None
+        self.fitted_models: List[models.BaseStatModel] = []
         self.saturation: Optional[float] = None
         self.growth: Optional[float] = None
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry, time=self.time_range
+            layer=self.layer,
+            bpolys=self.feature.geometry,
+            time=self.time_range,
         )
-        self.values = [item["value"] for item in query_results["result"]]
-        self.timestamps = [
-            isoparse(item["timestamp"]) for item in query_results["result"]
-        ]
-        max_value = max(self.values)
-        if max_value == 0:
-            self.no_data = True
-        elif self.values[-1] == 0:
-            self.deleted_data = True
+        for item in query_results["result"]:
+            self.values.append(item["value"])
+            self.timestamps.append(isoparse(item["timestamp"]))
 
     def calculate(self) -> None:
         # Latest timestamp of ohsome API results
         self.result.timestamp_osm = self.timestamps[-1]
-        if self.corner_cases == "no_data":
-            self.result.description = "No features were mapped in this region."
-            return
-        if self.corner_cases == "deleted_data":
-            self.result.description = (
-                "All mapped features in this region have been since deleted."
-            )
+        if not self.check_corner_cases():
             return
         xdata = np.asarray(range(len(self.timestamps)))
-        self.fitted_models = run_all_models(xdata=xdata, ydata=np.asarray(self.values))
-        self.best_fit = get_best_fit(self.fitted_models)
-        logging.info("Best fitting sigmoid curve: " + self.best_fit.model_name)
-        # TODO: Following condition is a corner case and
-        # should be handled before running models.
-        if max(self.values) <= 2:
-            # Some data are there, but not much -> start stadium
-            self.saturation = 0
-        else:
-            # Calculate slope of last 3 years (saturation)
-            self.saturation = (
-                np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
-            ) / (np.interp(xdata[-1], xdata, self.best_fit.fitted_values))
+        for model in (
+            models.Sigmoid,
+            models.SSlogis,
+            models.SSdoubleS,
+            models.SSfpl,
+            models.SSasymp,
+            models.SSmicmen,
+        ):
+            logging.info("Run {}".format(model.name))
+            try:
+                self.fitted_models.append(
+                    model(xdata=xdata, ydata=np.asarray(self.values))
+                )
+            except RRuntimeError as error:
+                logging.warning(
+                    "Could not run model {0} due to RRuntimeError: {1}".format(
+                        model.name, error
+                    )
+                )
+                continue
+        self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
+        logging.info("Best fitting model: " + self.best_fit.name)
+        self.saturation = (
+            np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
+        ) / (np.interp(xdata[-1], xdata, self.best_fit.fitted_values))
         self.growth = 1 - self.saturation
         description = Template(self.metadata.result_description).substitute(
             saturation=self.saturation,
@@ -144,7 +142,7 @@ class MappingSaturation(BaseIndicator):
             self.timestamps,
             self.best_fit.fitted_values,
             linecol[2],
-            label="Sigmoid curve: " + self.best_fit.model_name,
+            label="Sigmoid curve: " + self.best_fit.name,
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
@@ -154,3 +152,29 @@ class MappingSaturation(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+
+    def check_corner_cases(self) -> bool:
+        """Check corner cases
+
+        If corner case is present set result description.
+
+        Returns
+            bool: Return True if no corner case present. False otherwise.
+        """
+        # TODO: Add logs
+        # no data
+        if max(self.values) == 0:
+            self.result.description = "No features were mapped in this region."
+            return False
+        # TODO: Decide on how many features have to be present to run models.
+        # not enough data
+        elif np.sum(self.values) < 10:
+            self.corner_case = "not_enough_data"
+            return False
+        # deleted data
+        elif self.values[-1] == 0:
+            self.result.description = (
+                "All mapped features in this region have been deleted."
+            )
+            return False
+        return True

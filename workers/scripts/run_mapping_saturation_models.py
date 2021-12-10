@@ -1,17 +1,19 @@
 """Run all statistical models of the Mapping Saturation indicator and plot them."""
 
 import asyncio
+import logging
 import pickle
 from os.path import exists
 
 import matplotlib.pyplot as plt
 import numpy as np
 from dacite import from_dict
+from rpy2.rinterface_lib.embedded import RRuntimeError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 import ohsome_quality_analyst.ohsome.client as ohsome_client
 from ohsome_quality_analyst.base.indicator import LayerDefinition
-from ohsome_quality_analyst.indicators.mapping_saturation.fit import run_all_models
+from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.utils.definitions import get_layer_definition
 
 
@@ -27,10 +29,10 @@ def plot(xdata, ydata, fitted_models):
         ax.plot(
             xdata,
             model.fitted_values,
-            label="{0}: {1}".format(model.metric_name, model.metric),
+            label="Mean Absolute Error: {0}".format(model.mae),
         )
         ax.axhline(y=model.asymptote, color="pink", linestyle="--", label="Asymptote")
-        ax.set_title(model.model_name)
+        ax.set_title(model.name)
         ax.legend()
         ax.set(xlabel="time", ylabel="features")
         ax.label_outer()
@@ -82,7 +84,25 @@ if __name__ == "__main__":
     for values in list_of_values:
         xdata = np.asarray(range(len(values)))
         ydata = np.asarray(values)
-        fitted_models = run_all_models(xdata, ydata)
+        fitted_models = []
+        for model in (
+            models.Sigmoid,
+            models.SSlogis,
+            models.SSdoubleS,
+            models.SSfpl,
+            models.SSasymp,
+            models.SSmicmen,
+        ):
+            logging.info("Run {}".format(model.name))
+            try:
+                fitted_models.append(model(xdata=xdata, ydata=ydata))
+            except RRuntimeError as error:
+                logging.warning(
+                    "Could not run model {0} due to RRuntimeError: {1}".format(
+                        model.name, error
+                    )
+                )
+                continue
         plot(xdata, ydata, fitted_models)
         total_num_of_models += len(fitted_models)
     print("Expected number of models: " + str(len(list_of_values) * 6))

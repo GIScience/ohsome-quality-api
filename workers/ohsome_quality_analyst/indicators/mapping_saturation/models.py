@@ -1,54 +1,61 @@
-"""Model Classes.
+"""Statistical Model Classes"""
 
-These classes include methods with the function formula and for fitting data to this
-function formula.
-"""
-
+import os
 from abc import ABC, abstractmethod
 
 import numpy as np
+import rpy2.robjects.packages as rpackages
 from rpy2 import robjects
 from scipy.optimize import curve_fit
 
+from ohsome_quality_analyst.indicators.mapping_saturation import metrics
 
-class Model(ABC):
+
+class BaseStatModel(ABC):
+    """Base Statistical Model"""
+
+    def __init__(self, xdata: np.ndarray, ydata: np.ndarray):
+        assert np.shape(xdata) == np.shape(ydata)
+        self.xdata = xdata
+        self.ydata = ydata
+        self.coefficients = {}
+        self.fitted_values = None
+
     @property
     @abstractmethod
     def name(self) -> str:
+        """Name of the statistical model"""
         pass
 
     @property
     @abstractmethod
     def function_formula(self) -> str:
+        """Function formular of the statistical model"""
         pass
 
+    @property
     @abstractmethod
-    def function() -> np.float64:
+    def asymptote(self) -> str:
         pass
 
-    # TODO: Should this function return coef and fitted data?
-    # In this case `fitted.values(object, …)` in R can be used.
-    @abstractmethod
-    def fit() -> dict:
-        """Fit data to function.
-
-        Args:
-            xdata (numpy.ndarray)
-            ydata (numpy.ndarray)
-
-        Returns:
-            dict: A dictionary of the coefficients with the parameter names as keys
-        """
-        pass
-
-    # TODO: Should there be checks for input data?
-    # Where should they be called? During __init__()?
-    def check_xy_data(self, xdata, ydata):
-        assert np.shape(xdata) == np.shape(ydata)
+    @property
+    def mae(self) -> str:
+        """Mean absolute error"""
+        return metrics.mae(self.ydata, self.fitted_values)
 
 
-# TODO: Is this Model obsolete because of SSlogis
-class Sigmoid(Model):
+class BaseStatModelR(BaseStatModel):
+    """Base Statistical Model using R"""
+
+    rstats = rpackages.importr("stats")
+
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
+        robjects.globalenv["x"] = robjects.FloatVector(self.xdata)
+        robjects.globalenv["y"] = robjects.FloatVector(self.ydata)
+
+
+class Sigmoid(BaseStatModel):
     """Sigmoid model.
 
     Function formula:
@@ -68,54 +75,94 @@ class Sigmoid(Model):
     name = "Sigmoid model"
     function_formula = "f(x) = L / (1 + e^(-k * (x - x_0)))"
 
-    def function(
-        self, x: np.float64, x_0: np.float64, k: np.float64, L: np.float64
-    ) -> np.float64:
-        """Sigmoid function."""
-        return L / (1 + np.exp(-k * (x - x_0)))
-
-    def fit(self, xdata, ydata):
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
         # curve_fit: Use non-linear least squares to fit a function, f, to data.
         # popt: Optimal values for the parameters as array
         popt, _ = curve_fit(
             self.function,
             xdata=xdata,
             ydata=ydata,
-            p0=self.initial_guess(xdata, ydata),
-            bounds=self.bounds(xdata, ydata),
+            p0=self.initial_guess(),
+            bounds=self.bounds(),
         )
-        return {"x_0": popt[0], "k": popt[1], "L": popt[2]}
+        self.coefficients = {"x_0": popt[0], "k": popt[1], "L": popt[2]}
+        self.fitted_values = self.function(xdata, **self.coefficients)
 
-    def initial_guess(self, xdata, ydata) -> tuple:
+    def function(
+        self, x: np.float64, x_0: np.float64, k: np.float64, L: np.float64
+    ) -> np.float64:
+        """Sigmoid function."""
+        return L / (1 + np.exp(-k * (x - x_0)))
+
+    def initial_guess(self) -> tuple:
         """Get an initial guess on parameters for single Sigmoid function."""
-        x_0 = xdata.size / 2
+        x_0 = self.xdata.size / 2
         k = 0
-        L = ydata.max()
+        L = self.ydata.max()
         return (x_0, k, L)
 
-    def bounds(self, xdata, ydata) -> tuple:
+    def bounds(self) -> tuple:
         """Get lower and upper bounds of the parameters for single Sigmoid function."""
-        x_0_upper_bound = xdata.size * 1.5
+        x_0_upper_bound = self.xdata.size * 1.5
         x_0_lower_bound = 0.0
         k_upper_bound = 1.0
         k_lower_bound = -1.0
-        L_upper_bound = ydata.max()
+        L_upper_bound = self.ydata.max()
         L_lower_bound = 0.0
         return (
             (x_0_lower_bound, k_lower_bound, L_lower_bound),
             (x_0_upper_bound, k_upper_bound, L_upper_bound),
         )
 
-
-class DoubleSigmoid(Model):
-    # TODO: Should this model based on previous model (Sigmoid) be implemented?
-    # function_formula:
-    # (L / (1 + np.exp(-k * (x - x_0))))
-    # + (L2 / 1 + np.exp(-k2 * (x - x_02)))
-    pass
+    @property
+    def asymptote(self):
+        return self.coefficients["L"]
 
 
-class SSlogis(Model):
+class SSdoubleS(BaseStatModelR):
+    """Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)
+
+    Function Formula:
+
+        e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)
+        + (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)
+
+    Function parameters:
+        Z, numeric parameter representing the asymptote;
+    """
+
+    name = "Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)"
+    function_formula = (
+        "e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)"
+        + "+ (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)"
+    )
+
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
+        with open(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "ssdoubles.R"),
+            "r",
+        ) as file:
+            robjects.r(file.read())
+        fitted_model = self.rstats.nls("y ~ SSdoubleS(x, e, f, k, b, Z, c)")
+        coef = np.asarray(self.rstats.coef(fitted_model))
+        self.coefficients = {
+            "e": coef[0],
+            "f": coef[1],
+            "k": coef[2],
+            "b": coef[3],
+            "Z": coef[4],
+            "c": coef[5],
+        }
+        self.fitted_values = np.asarray(self.rstats.fitted(fitted_model))
+
+    @property
+    def asymptote(self):
+        return self.coefficients["Z"]
+
+
+class SSlogis(BaseStatModelR):
     """Self-Starting Nls Logistic Model.
 
     Function Formula:
@@ -138,90 +185,23 @@ class SSlogis(Model):
     name = "Self-Starting Nls Logistic Model"
     function_formula = "asym / (1 + e^((xmid - x) / scal))"
 
-    def function(self, x, asym, xmid, scal):
-        return asym / (1 + np.exp((xmid - x) / scal))
-
-    def fit(self, xdata, ydata):
-        # R environments can be described as an hybrid of a dictionary and a scope.
-        robjects.globalenv["x"] = robjects.FloatVector(xdata)
-        robjects.globalenv["y"] = robjects.FloatVector(ydata)
-        # The string passed to the call of the robject `r` is evaluated as R code.
-        raw_coef = robjects.r(
-            """
-        df <- data.frame(x, y)
-        fm <- nls(y ~ SSlogis(x, Asym, xmid, scal), data = df)
-        coef(fm)
-        """
-        )
-        return {
-            "asym": raw_coef[0],
-            "xmid": raw_coef[1],
-            "scal": raw_coef[2],
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
+        fitted_model = self.rstats.nls("y ~ SSlogis(x, Asym, xmid, scal)")
+        coef = np.asarray(self.rstats.coef(fitted_model))
+        self.coefficients = {
+            "Asym": coef[0],
+            "xmid": coef[1],
+            "scal": coef[2],
         }
+        self.fitted_values = np.asarray(self.rstats.fitted(fitted_model))
+
+    @property
+    def asymptote(self):
+        return self.coefficients["Asym"]
 
 
-class SSdoubleS:
-    """Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)
-
-    Function Formula:
-
-        e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)
-        + (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)
-    """
-
-    name = "Two-Steps-Sigmoidal Model (Tangens Hyperbolicus)"
-    function_formula = (
-        "e + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)"
-        + "+ (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)"
-    )
-
-    def function(self, x, e, f, k, b, Z, c):
-        return (
-            e
-            + (f - e) * 1 / 2 * (np.tanh(k * (x - b)) + 1)
-            + (Z - f) * 1 / 2 * (np.tanh(k * (x - c)) + 1)
-        )
-        pass
-
-    def fit(self, xdata, ydata):
-        # curve_fit: Use non-linear least squares to fit a function, f, to data.
-        # popt: Optimal values for the parameters as array
-        popt, _ = curve_fit(
-            self.function,
-            xdata=xdata,
-            ydata=ydata,
-            p0=self.initial_guess(xdata, ydata),
-            # TODO: Do we need to define the bounds here?`Will they improve the fit?
-            # bounds=self.bounds()
-        )
-        return {
-            "e": popt[0],
-            "f": popt[1],
-            "k": popt[2],
-            "b": popt[3],
-            "Z": popt[4],
-            "c": popt[5],
-        }
-
-    def initial_guess(self, xdata, ydata):
-        e = ydata.min()
-        f = ydata.max() / 2.0
-        k = 10.0
-        # TODO: Here multiple indicies matching the condition exists.
-        # Which one should be chosen?
-        # In R following code has been used: b <- x[which.min(y)]
-        (indicies,) = np.where(np.isclose(ydata, np.min(ydata)))
-        b = xdata[indicies[0]]
-        Z = ydata.max()
-        c = xdata.max() * 0.5
-        return (e, f, k, b, Z, c)
-
-    def bounds(self, xdata, ydata):
-        # TODO: Remove if not needed
-        raise NotImplementedError
-
-
-class SSfpl:
+class SSfpl(BaseStatModelR):
     """Self-Starting Nls Four-Parameter Logistic Model.
 
     Function Formula:
@@ -248,29 +228,24 @@ class SSfpl:
     name = "Self-Starting Nls Four-Parameter Logistic Model"
     function_formula = "A + (B - A) / (1 + e^((xmid - x) / scal))"
 
-    def function(self, x, A, B, xmid, scal):
-        return A + (B - A) / (1 + np.exp((xmid - x) / scal))
-
-    def fit(self, xdata, ydata):
-        robjects.globalenv["x"] = robjects.FloatVector(xdata)
-        robjects.globalenv["y"] = robjects.FloatVector(ydata)
-        raw_coef = robjects.r(
-            """
-        df <- data.frame(x, y)
-        fm <- nls(y ~ SSfpl(x, A, B, xmid, scal), data = df)
-        coef(fm)
-        """
-        )
-        # TODO: Check if order is right
-        return {
-            "A": raw_coef[0],
-            "B": raw_coef[1],
-            "xmid": raw_coef[2],
-            "scal": raw_coef[3],
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
+        fitted_model = self.rstats.nls("y ~ SSfpl(x, A, B, xmid, scal)")
+        coef = np.asarray(self.rstats.coef(fitted_model))
+        self.coefficients = {
+            "A": coef[0],
+            "B": coef[1],
+            "xmid": coef[2],
+            "scal": coef[3],
         }
+        self.fitted_values = np.asarray(self.rstats.fitted(fitted_model))
+
+    @property
+    def asymptote(self):
+        return self.coefficients["B"]
 
 
-class SSasymp:
+class SSasymp(BaseStatModelR):
     """Self-Starting Nls Asymptotic Regression Model.
 
     Function Formula:
@@ -294,27 +269,23 @@ class SSasymp:
     name = "Self-Starting Nls Asymptotic Regression Model"
     function_formula = "asym + (R0 - asym) * e^(-e^(lrc) * x)"
 
-    def function(self, x, asym, R0, lrc):
-        return asym + (R0 - asym) * np.exp(-np.exp(lrc) * x)
-
-    def fit(self, xdata, ydata):
-        robjects.globalenv["x"] = robjects.FloatVector(xdata)
-        robjects.globalenv["y"] = robjects.FloatVector(ydata)
-        raw_coef = robjects.r(
-            """
-        df <- data.frame(x, y)
-        fm <- nls(y ~ SSasymp(x, asym, R0, lrc), data = df)
-        coef(fm)
-        """
-        )
-        return {
-            "asym": raw_coef[0],
-            "R0": raw_coef[1],
-            "lrc": raw_coef[2],
+    def __init__(self, xdata, ydata):
+        super().__init__(xdata, ydata)
+        fitted_model = self.rstats.nls("y ~ SSasymp(x, asym, R0, lrc)")
+        coef = np.asarray(self.rstats.coef(fitted_model))
+        self.coefficients = {
+            "asym": coef[0],
+            "R0": coef[1],
+            "lrc": coef[2],
         }
+        self.fitted_values = np.asarray(self.rstats.fitted(fitted_model))
+
+    @property
+    def asymptote(self):
+        return self.coefficients["asym"]
 
 
-class SSmicmen:
+class SSmicmen(BaseStatModelR):
     """Self-Starting Nls Michaelis-Menten Model
 
     Function Formula
@@ -337,26 +308,20 @@ class SSmicmen:
     name = "Self-Starting Nls Michaelis-Menten Model"
     function_formula = "Vm * x / (K + x)"
 
-    def function(self, x, Vm, K):
-        return Vm * x / (K + x)
-
-    def fit(self, xdata, ydata):
+    def __init__(self, xdata, ydata):
         # Model fails when xdata starts with zero
         if xdata[0] == 0:
             xdata = xdata + 1
-        # Model fails when ydata contains zero
-        if not np.all(ydata):
-            ydata = ydata + 1
-        robjects.globalenv["x"] = robjects.FloatVector(xdata)
-        robjects.globalenv["y"] = robjects.FloatVector(ydata)
-        raw_coef = robjects.r(
-            """
-        df <- data.frame(x, y)
-        fm <- nls(y ~ SSmicmen(x, Vm, K), data = df)
-        coef(fm)
-        """
-        )
-        return {
-            "Vm": raw_coef[0],
-            "K": raw_coef[1],
+        super().__init__(xdata, ydata)
+        fitted_model = self.rstats.nls("y ~ SSmicmen(x, Vm, K)")
+        coef = np.asarray(self.rstats.coef(fitted_model))
+        self.coefficients = {
+            "Vm": coef[0],
+            "K": coef[1],
         }
+        # Substract 1 from fitted values to adjust manipulated xdata (xdata + 1)
+        self.fitted_values = np.asarray(self.rstats.fitted(fitted_model)) - 1
+
+    @property
+    def asymptote(self):
+        return self.coefficients["Vm"]
