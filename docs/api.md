@@ -15,8 +15,7 @@ In the following sections examples for a GET and POST request for an Indicator o
 
 ```bash
 curl --request GET \
-"https://oqt.ohsome.org/api/indicator?\
-name=GhsPopComparisonBuildings&layerName=building_count&dataset=regions&featureId=3"
+    "https://oqt.ohsome.org/api/indicator?name=GhsPopComparisonBuildings&layerName=building_count&dataset=regions&featureId=3"
 ```
 
 #### POST request
