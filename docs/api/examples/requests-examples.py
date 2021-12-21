@@ -1,22 +1,17 @@
-from urllib.parse import urlencode
-
 import requests
 
 # Example 1
-# Note the question mark (`?`) marking the start of a query string.
-url = "https://oqt.ohsome.org/api/indicator?"
+url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "GhsPopComparisonBuildings",
     "layerName": "building_count",
     "dataset": "regions",
     "featureId": "3",
 }
-# Use `urllib.parse.urlencode` to ensure proper URL encoding:
-response = requests.get(url + urlencode(parameters))
+response = requests.get(url, params=parameters)
 assert response.status_code == 200
 
 # Example 2
-# Note the *missing* question mark (`?`).
 url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "GhsPopComparisonBuildings",
@@ -28,8 +23,6 @@ response = requests.post(url, json=parameters)
 assert response.status_code == 200
 
 # Example 3
-# Note the using of the `json` library to dump the GeoJSON as string to the parameters.
-# URL encoding will be done by the requests library.
 url = "https://oqt.ohsome.org/api/indicator"
 bpolys = {
     "type": "Polygon",

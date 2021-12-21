@@ -1,11 +1,11 @@
 # API
 
-Please have a look at the documentation and examples of the interactive Swagger interface: [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs)
+Please have a look at the documentation and examples of the interactive Swagger UI: [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs)
 
 
-## Request examples using Bash and CURL
+## Request examples using Bash and `curl` command
 
-Using the above mentioned Swagger interface one can create valid `curl` requests using an interactive interface.
+Using the above mentioned Swagger UI one can create valid `curl` requests using an interactive interface.
 
 In the following sections examples for a GET and POST request for an Indicator of a region pre-definied by OQT are given.
 
@@ -14,7 +14,9 @@ In the following sections examples for a GET and POST request for an Indicator o
 #### GET request
 
 ```bash
-curl --request GET "https://oqt.ohsome.org/api/indicator?name=GhsPopComparisonBuildings&layerName=building_count&dataset=regions&featureId=3"
+curl --request GET \
+"https://oqt.ohsome.org/api/indicator?\
+name=GhsPopComparisonBuildings&layerName=building_count&dataset=regions&featureId=3"
 ```
 
 #### POST request
@@ -22,21 +24,26 @@ curl --request GET "https://oqt.ohsome.org/api/indicator?name=GhsPopComparisonBu
 ```bash
 curl --request POST \
     --header "Content-Type: application/json" \
-    --data '{"name": "GhsPopComparisonBuildings", "layerName": "building_count", "dataset": "regions", "featureId": 3}' \
+    --data '{
+        "name": "GhsPopComparisonBuildings",
+        "layerName": "building_count",
+        "dataset": "regions",
+        "featureId": 3
+    }' \
     "https://oqt.ohsome.org/api/indicator"
 ```
 
-> Tip: Use Python to pretty-print the response JSON -> `curl [...] | python -m json.tool`
+> Tip: Use Python to pretty-print the response JSON -> `curl [...] | python3 -m json.tool`
 
 
 ### Request an Indicator for custom bounding polygon(s)
 
-Since GeoJSON strings are quite big it is recommended that POST requests are used.
+Since GeoJSON strings are quite big it is recommended to use POST requests.
 
 #### POST request
 
 Let's write down the request parameters in a `JSON` file.
-Note that the bpolys parameters needs to be a valid GeoJSON object.
+Note that the bpolys parameter needs to be a valid GeoJSON object.
 
 ```bash
 {
@@ -82,7 +89,7 @@ curl --request POST \
     "https://oqt.ohsome.org/api/indicator"
 ```
 
-In reality one wants to use a tool to URL encode a valid GeoJSON file for requests. In the next section Python is used to archive this.
+Most advanced users use a tool to include a valid GeoJSON file into their requests. The next section shows an example that uses Python to achieve this.
 
 
 ## Request Examples using Python and `requests` library
@@ -92,19 +99,16 @@ In reality one wants to use a tool to URL encode a valid GeoJSON file for reques
 #### GET request
 
 ```python
-from urllib.parse import urlencode
 import requests
 
-# Note the question mark (`?`) marking the start of a query string.
-url = "https://oqt.ohsome.org/api/indicator?"
+url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "GhsPopComparisonBuildings",
     "layerName": "building_count",
     "dataset": "regions",
     "featureId": "3",
 }
-# Use `urllib.parse.urlencode` to ensure proper URL encoding:
-response = requests.get(url + urlencode(parameters))
+response = requests.get(url, params=parameters)
 assert response.status_code == 200
 ```
 
@@ -113,7 +117,6 @@ assert response.status_code == 200
 ```python
 import requests
 
-# Note the *missing* question mark (`?`).
 url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "GhsPopComparisonBuildings",
@@ -126,11 +129,11 @@ assert response.status_code == 200
 ```
 
 
-### Request an Indicator for a pre-definied region
+### Request an Indicator for a custom region
 
 #### POST request
 
-Note the using of the `json` library to dump the GeoJSON as string to the parameters.
+Note the usage of the `json` library to dump the GeoJSON as string to the parameters.
 URL encoding will be done by the requests library.
 
 ```python
