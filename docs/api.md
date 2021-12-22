@@ -132,9 +132,6 @@ assert response.status_code == 200
 
 #### POST request
 
-Note the usage of the `json` library to dump the GeoJSON as string to the parameters.
-URL encoding will be done by the `requests` library.
-
 ```python
 import requests
 
