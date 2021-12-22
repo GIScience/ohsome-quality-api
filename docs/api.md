@@ -5,11 +5,11 @@ Please have a look at the documentation and examples of the interactive Swagger 
 
 ## Request examples using Bash and `curl` command
 
-Using the above mentioned Swagger UI one can create valid `curl` requests using an interactive interface.
+Using the above-mentioned Swagger UI one can create valid `curl` requests using an interactive interface.
 
-In the following sections examples for a GET and POST request for an Indicator of a region pre-definied by OQT are given.
+In the following sections examples for a GET and POST request for an Indicator of a region pre-defined by OQT are given.
 
-### Request an Indicator for a pre-definied region
+### Request an Indicator for a pre-defined region
 
 #### GET request
 
@@ -93,7 +93,7 @@ Most advanced users use a tool to include a valid GeoJSON file into their reques
 
 ## Request Examples using Python and `requests` library
 
-### Request an Indicator for a pre-definied region
+### Request an Indicator for a pre-defined region
 
 #### GET request
 
@@ -133,7 +133,7 @@ assert response.status_code == 200
 #### POST request
 
 Note the usage of the `json` library to dump the GeoJSON as string to the parameters.
-URL encoding will be done by the requests library.
+URL encoding will be done by the `requests` library.
 
 ```python
 import requests
