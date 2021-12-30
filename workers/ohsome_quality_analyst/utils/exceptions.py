@@ -1,5 +1,7 @@
 """Custom exception classes"""
 
+from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT
+
 
 class OhsomeApiError(Exception):
     """Request to ohsome API failed"""
@@ -12,6 +14,9 @@ class OhsomeApiError(Exception):
 class SizeRestrictionError(ValueError):
     """Exception raised if size of input GeoJSON Geometry is too big."""
 
-    def __init__(self, message):
+    def __init__(self):
         self.name = "SizeRestrictionError"
-        self.message = message
+        self.message = (
+            "Input GeoJSON Geometry is too big. "
+            "The area should be less than {0} km².".format(GEOM_SIZE_LIMIT)
+        )
