@@ -274,7 +274,4 @@ async def create_all_indicators(force: bool = False) -> None:
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
     if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
-        raise SizeRestrictionError(
-            "Input GeoJSON Object is too big. "
-            "The area should be less than {0} km².".format(GEOM_SIZE_LIMIT)
-        )
+        raise SizeRestrictionError()
