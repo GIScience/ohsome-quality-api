@@ -2,6 +2,14 @@
 
 Please have a look at the documentation and examples of the interactive Swagger UI: [https://oqt.ohsome.org/api/docs](https://oqt.ohsome.org/api/docs)
 
+## A note on the difference of `GET` and `POST` requests to the `indicator` or `report` endpoints
+
+To the endpoints `/indicator` and `/report` a request can be made using either the `GET` or `POST` method.
+For `GET` requests to either of those endpoints only the parameters `dataset` and `feature_id` are supported, not the `bpolys` parameter.
+That means that it is not possible to create an indicator or a report for a custom AOI using the `bpolys` parameter by making a `GET` request to the API.
+
+Using the `POST` method all parameters are supported.
+
 
 ## Request examples using Bash and `curl` command
 
@@ -37,12 +45,12 @@ curl --request POST \
 
 ### Request an Indicator for custom bounding polygon(s)
 
-Since GeoJSON strings are quite big it is recommended to use POST requests.
+Since GeoJSON strings are quite big the `bpolys` parameter is not supported for `GET` requests.
 
 #### POST request
 
 Let's write down the request parameters in a `JSON` file.
-Note that the bpolys parameter needs to be a valid GeoJSON object.
+Note that the `bpolys` parameter needs to be a valid GeoJSON object.
 
 ```bash
 {

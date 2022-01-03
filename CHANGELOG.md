@@ -1,14 +1,19 @@
 # Changelog
 
+## Current Main
+
 ### Breaking Changes
 
 - Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
+- Disable support of the parameter `bpolys` for GET requests to the API ([#223])
 
 ### How to upgrade
 
 - `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
+- For requests to the `/indicator` or `/report` endpoints of the API for a custom AOI (usage of the `bpolys` parameter): use the POST method ([#223])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
+[#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
 
 
 ## 0.7.0

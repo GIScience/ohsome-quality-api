@@ -1,5 +1,4 @@
-"""
-Data models of the API request body.
+"""Data models of the API request body.
 
 This module uses the library `pydantic` for data validation and
 settings management using Python type hinting.
@@ -30,8 +29,54 @@ DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names_api
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()})
 
 
-class BaseRequestModel(pydantic.BaseModel):
+class BaseIndicatorModel(pydantic.BaseModel):
+    name: IndicatorEnum = pydantic.Field(
+        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
+    )
+    layer_name: LayerEnum = pydantic.Field(
+        ..., title="Layer Name", example="building_count"
+    )
     include_svg: bool = False
+
+    @pydantic.root_validator
+    @classmethod
+    def validate_indicator_layer(cls, values):
+        try:
+            indicator_layer = (values["name"].value, values["layer_name"].value)
+        except KeyError:
+            raise ValueError("An issue with the layer or indicator name occurred.")
+        if indicator_layer not in INDICATOR_LAYER:
+            raise ValueError(
+                "Indicator layer combination is invalid: " + str(indicator_layer)
+            )
+        else:
+            return values
+
+    class Config:
+        """Pydantic config class."""
+
+        alias_generator = snake_to_lower_camel
+        allow_mutation = False
+
+
+class BaseReportModel(pydantic.BaseModel):
+    name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
+    include_svg: bool = False
+
+    class Config:
+        """Pydantic config class."""
+
+        alias_generator = snake_to_lower_camel
+        allow_mutation = False
+
+
+class BaseGETModel(pydantic.BaseModel):
+    dataset: DatasetEnum = pydantic.Field(..., title="Dataset Name", example="regions")
+    feature_id: str = pydantic.Field(..., title="Feature Id", example="3")
+    fid_field: Optional[FidFieldEnum]
+
+
+class BasePOSTModel(pydantic.BaseModel):
     bpolys: Optional[dict]
     dataset: Optional[DatasetEnum]
     feature_id: Optional[str]
@@ -94,34 +139,24 @@ class BaseRequestModel(pydantic.BaseModel):
                         ],
                     },
                 },
-                "feature_id": {"example": "3"},
-                "include_svg": {"example": False},
-            }
+            },
+            "dataset": {"title": "Dataset Name", "example": "regions"},
+            "feature_id": {"title": "Feature Id", "example": "3"},
+            "fid_field": {"title": "Feature Id Field", "example": "ogc_fid"},
         }
 
 
-class IndicatorRequestModel(BaseRequestModel):
-    name: IndicatorEnum = pydantic.Field(
-        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
-    )
-    layer_name: LayerEnum = pydantic.Field(  # noqa: N815
-        ..., title="Layer Name", example="building_count"
-    )
-
-    @pydantic.root_validator
-    @classmethod
-    def validate_indicator_layer(cls, values):
-        try:
-            indicator_layer = (values["name"].value, values["layer_name"].value)
-        except KeyError:
-            raise ValueError("An issue with the layer or indicator name occurred.")
-        if indicator_layer not in INDICATOR_LAYER:
-            raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
-            )
-        else:
-            return values
+class IndicatorGETRequestModel(BaseGETModel, BaseIndicatorModel):
+    pass
 
 
-class ReportRequestModel(BaseRequestModel):
-    name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
+class IndicatorPOSTRequestModel(BasePOSTModel, BaseIndicatorModel):
+    pass
+
+
+class ReportGETRequestModel(BaseGETModel, BaseReportModel):
+    pass
+
+
+class ReportPOSTRequestModel(BasePOSTModel, BaseReportModel):
+    pass
