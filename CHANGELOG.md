@@ -1,5 +1,16 @@
 # Changelog
 
+### Breaking Changes
+
+- Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
+
+### How to upgrade
+
+- `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
+
+[#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
+
+
 ## 0.7.0
 
 ### Breaking Changes
