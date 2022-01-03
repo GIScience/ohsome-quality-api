@@ -1,10 +1,8 @@
 import fnmatch
-import json
 import logging
-from typing import Optional, Union
+from typing import Union
 
-import pydantic
-from fastapi import FastAPI, Request, status
+from fastapi import Depends, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,13 +20,10 @@ from ohsome_quality_analyst import (
     oqt,
 )
 from ohsome_quality_analyst.api.request_models import (
-    DatasetEnum,
-    FidFieldEnum,
-    IndicatorEnum,
-    IndicatorRequestModel,
-    LayerEnum,
-    ReportEnum,
-    ReportRequestModel,
+    IndicatorGETRequestModel,
+    IndicatorPOSTRequestModel,
+    ReportGETRequestModel,
+    ReportPOSTRequestModel,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
@@ -122,64 +117,33 @@ def empty_api_response() -> dict:
 
 
 @app.get("/indicator")
-async def get_indicator(
-    name: IndicatorEnum,
-    layerName: LayerEnum,
-    includeSvg: bool = False,
-    bpolys: Optional[str] = None,
-    dataset: Optional[DatasetEnum] = None,
-    featureId: Optional[str] = None,
-    fidField: Optional[FidFieldEnum] = None,
-):
-    """Create an Indicator.
+async def get_indicator(parameters=Depends(IndicatorGETRequestModel)):
+    """Get an already calculated Indicator for region defined by OQT.
 
-    Either the parameters `dataset` and `featureId` have to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or
-    FeatureCollection with the indicator results.
-    The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
+    The response is a GeoJSON Feature with the indicator results as properties.
+    To request an Indicator for a custom AOI please use the POST method.
     """
-    if bpolys is not None:
-        bpolys = json.loads(bpolys)
-    raw = {
-        "name": name,
-        "layerName": layerName,
-        "includeSvg": includeSvg,
-        "bpolys": bpolys,
-        "dataset": dataset,
-        "featureId": featureId,
-        "fidField": fidField,
-    }
-    parameters = {k: v for k, v in raw.items() if v is not None}
     return await _fetch_indicator(parameters)
 
 
 @app.post("/indicator")
-async def post_indicator(
-    parameters: IndicatorRequestModel,
-):
+async def post_indicator(parameters: IndicatorPOSTRequestModel):
     """Create an Indicator.
 
     Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.
 
-    Depending on the input, the output is a GeoJSON Feature or
-    FeatureCollection with the indicator results.
-    The Feature properties of the input GeoJSON will be preserved
+    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
+    the indicator results. The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
     return await _fetch_indicator(parameters)
 
 
-@pydantic.validate_arguments
-async def _fetch_indicator(
-    parameters: IndicatorRequestModel,
-) -> dict:
+async def _fetch_indicator(parameters) -> dict:
     p = parameters.dict()
-    dataset = p["dataset"]
-    fid_field = p["fid_field"]
+    dataset = p.get("dataset", None)
+    fid_field = p.get("fid_field", None)
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
@@ -187,9 +151,9 @@ async def _fetch_indicator(
     geojson_object = await oqt.create_indicator_as_geojson(
         p["name"].value,
         p["layer_name"].value,
-        p["bpolys"],
+        p.get("bpolys", None),
         dataset,
-        p["feature_id"],
+        p.get("feature_id", None),
         fid_field,
         size_restriction=True,
     )
@@ -203,68 +167,43 @@ async def _fetch_indicator(
 
 
 @app.get("/report")
-async def get_report(
-    name: ReportEnum,
-    includeSvg: bool = False,
-    bpolys: Optional[str] = None,
-    dataset: Optional[DatasetEnum] = None,
-    featureId: Optional[str] = None,
-    fidField: Optional[FidFieldEnum] = None,
-):
-    """Create a Report.
+async def get_report(parameters=Depends(ReportGETRequestModel)):
+    """Get an already calculated Report for region defined by OQT.
 
-    Either the parameters `dataset` and `feature id` has to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or
-    FeatureCollection with the indicator results.
-    The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
+    The response is a GeoJSON Feature with the Report results as properties.
+    To request an Report for a custom AOI pease use the POST method.
     """
-    if bpolys is not None:
-        bpolys = json.loads(bpolys)
-    raw = {
-        "includeSvg": includeSvg,
-        "name": name,
-        "bpolys": bpolys,
-        "dataset": dataset,
-        "featureId": featureId,
-        "fidField": fidField,
-    }
-    parameters = {k: v for k, v in raw.items() if v is not None}
     return await _fetch_report(parameters)
 
 
 @app.post("/report")
-async def post_report(parameters: ReportRequestModel):
+async def post_report(parameters: ReportPOSTRequestModel):
     """Create a Report.
 
-    Either the parameters `dataset` and `feature id` has to be provided
+    Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.
 
-    Depending on the input, the output is a GeoJSON Feature or
-    FeatureCollection with the indicator results.
-    The Feature properties of the input GeoJSON will be preserved
+    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
+    the indicator results. The Feature properties of the input GeoJSON will be preserved
     if they do not collide with the properties set by OQT.
     """
     return await _fetch_report(parameters)
 
 
-@pydantic.validate_arguments
-async def _fetch_report(parameters: ReportRequestModel):
+async def _fetch_report(parameters: dict):
     p = parameters.dict()
-    dataset = p["dataset"]
-    fid_field = p["fid_field"]
+    dataset = p.get("dataset", None)
+    fid_field = p.get("fid_field", None)
     if dataset is not None:
         dataset = dataset.value
     if fid_field is not None:
         fid_field = fid_field.value
     geojson_object = await oqt.create_report_as_geojson(
         p["name"].value,
-        bpolys=p["bpolys"],
-        dataset=dataset,
-        feature_id=p["feature_id"],
-        fid_field=fid_field,
+        p.get("bpolys", None),
+        dataset,
+        p.get("feature_id", None),
+        fid_field,
         size_restriction=True,
     )
     response = empty_api_response()

@@ -3,7 +3,6 @@ Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 import unittest
-from urllib.parse import urlencode
 
 import geojson
 from fastapi.testclient import TestClient
@@ -22,6 +21,7 @@ from .utils import get_geojson_fixture, oqt_vcr
 class TestApiReportIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
+        self.endpoint = "/report"
 
         self.report_name = "SimpleReport"
         # Heidelberg
@@ -46,50 +46,39 @@ class TestApiReportIo(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.feature_schema.is_valid(response_content))
 
-    def get_response(self, bpoly):
-        """Return HTTP GET response"""
-        parameters = urlencode({"name": self.report_name, "bpolys": bpoly})
-        url = "/report?" + parameters
-        return self.client.get(url)
-
     def post_response(self, bpoly):
         """Return HTTP POST response"""
         data = {"name": self.report_name, "bpolys": bpoly}
-        url = "/report"
-        return self.client.post(url, json=data)
+        return self.client.post(self.endpoint, json=data)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_geometry(self):
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        for response in (self.get_response(geometry), self.post_response(geometry)):
-            self.run_tests(response)
+        response = self.post_response(geometry)
+        self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_feature(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        for response in (self.get_response(feature), self.post_response(feature)):
-            self.run_tests(response)
+        response = self.post_response(feature)
+        self.run_tests(response)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
         featurecollection = get_geojson_fixture(
             "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
-        for response in (
-            self.get_response(featurecollection),
-            self.post_response(featurecollection),
-        ):
+        response = self.post_response(featurecollection)
+        self.assertEqual(response.status_code, 200)
 
-            self.assertEqual(response.status_code, 200)
+        response_geojson = geojson.loads(response.content)
+        self.assertTrue(response_geojson.is_valid)  # Valid GeoJSON?
 
-            response_geojson = geojson.loads(response.content)
-            self.assertTrue(response_geojson.is_valid)  # Valid GeoJSON?
-
-            response_content = response.json()
-            self.assertTrue(self.general_schema.is_valid(response_content))
-            self.assertTrue(self.featurecollection_schema.is_valid(response_content))
-            for feature in response_content["features"]:
-                self.assertTrue(self.feature_schema.is_valid(feature))
+        response_content = response.json()
+        self.assertTrue(self.general_schema.is_valid(response_content))
+        self.assertTrue(self.featurecollection_schema.is_valid(response_content))
+        for feature in response_content["features"]:
+            self.assertTrue(self.feature_schema.is_valid(feature))
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_size_limit(self):
@@ -106,13 +95,7 @@ class TestApiReportIo(unittest.TestCase):
             "dataset": "foo",
             "featureId": "3",
         }
-
-        response = self.client.get("/report?" + urlencode(parameters))
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
-
-        response = self.client.post("/report", json=parameters)
+        response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "RequestValidationError")
@@ -120,22 +103,29 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        url = "/report?name={0}&bpolys={1}&includeSvg={2}".format(
-            self.report_name, feature, True
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.report_name,
+            "bpolys": feature,
+            "includeSvg": True,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
 
-        url = "/report?name={0}&bpolys={1}&includeSvg={2}".format(
-            self.report_name, feature, False
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.report_name,
+            "bpolys": feature,
+            "includeSvg": False,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
-        url = "/report?name={0}&bpolys={1}".format(self.report_name, feature)
-        response = self.client.get(url)
+        parameters = {
+            "name": self.report_name,
+            "bpolys": feature,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
