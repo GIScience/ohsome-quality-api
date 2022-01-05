@@ -119,7 +119,7 @@ class TagsRatio(BaseIndicator):
 
         black_patch = mpatches.Patch(
             color="black",
-            label=f"{self.layer.name} \nRatio: " f"{round(self.ratio, 2)}",
+            label=f"{self.layer.name} \nRatio: {round(self.ratio, 2)}",
         )
         handles.append(black_patch)
 
