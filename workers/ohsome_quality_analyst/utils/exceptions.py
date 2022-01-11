@@ -18,3 +18,19 @@ class SizeRestrictionError(ValueError):
             "Input GeoJSON Geometry is too big. "
             + "The area should be less than {0} km².".format(geom_size_limit)
         )
+
+
+class RasterDatasetNotFoundError(FileNotFoundError):
+    """Raster file not found."""
+
+    def __init__(self, raster):
+        self.name = "RasterDatasetNotFoundError"
+        self.message = "Raster dataset {0} has not been found.".format(raster.name)
+
+
+class RasterDatasetUndefinedError(ValueError):
+    """Raster is not defined."""
+
+    def __init__(self, name):
+        self.name = "RasterDatasetUndefinedError"
+        self.message = "Raster dataset {0} is not defined".format(name)
