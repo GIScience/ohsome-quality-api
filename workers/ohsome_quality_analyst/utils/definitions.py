@@ -1,7 +1,5 @@
-"""
-Global Variables and Functions.
-"""
-
+"""Global Variables and Functions."""
+import errno
 import glob
 import logging
 import logging.config
@@ -313,3 +311,24 @@ def get_dataset_names_api() -> List[str]:
 
 def get_fid_fields_api() -> List[str]:
     return flatten_sequence(DATASETS_API)
+
+
+def get_data_dir() -> str:
+    """Get the OQT data directory path."""
+    default_dir = os.path.join(
+        os.path.dirname(
+            os.path.abspath(__file__),
+        ),
+        "..",
+        "..",
+        "..",
+        "data",
+    )
+    data_dir = os.getenv("OQT_DATA_DIR", default=default_dir)
+    if not os.path.exists(data_dir):
+        raise FileNotFoundError(
+            errno.ENOENT,
+            "OQT data directory does not exists.",
+            data_dir,
+        )
+    return data_dir
