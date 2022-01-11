@@ -38,7 +38,12 @@ from ohsome_quality_analyst.utils.definitions import (
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
+from ohsome_quality_analyst.utils.exceptions import (
+    OhsomeApiError,
+    RasterDatasetNotFoundError,
+    RasterDatasetUndefinedError,
+    SizeRestrictionError,
+)
 from ohsome_quality_analyst.utils.helper import json_serialize
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
@@ -102,7 +107,13 @@ async def validation_exception_handler(
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
 async def oqt_exception_handler(
-    request: Request, exception: Union[OhsomeApiError, SizeRestrictionError]
+    request: Request,
+    exception: Union[
+        OhsomeApiError,
+        SizeRestrictionError,
+        RasterDatasetNotFoundError,
+        RasterDatasetUndefinedError,
+    ],
 ):
     """Exception handler for custom OQT exceptions."""
     return JSONResponse(
