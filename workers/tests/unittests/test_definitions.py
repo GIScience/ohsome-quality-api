@@ -1,6 +1,7 @@
 import unittest
 
 from ohsome_quality_analyst.utils import definitions
+from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):
@@ -40,6 +41,11 @@ class TestDefinitions(unittest.TestCase):
         names = definitions.get_dataset_names()
         self.assertIsInstance(names, list)
 
+    def test_get_raster_dataset_names(self):
+        names = definitions.get_raster_dataset_names()
+        self.assertIsInstance(names, list)
+        self.assertTrue(names)
+
     def test_get_fid_fields(self):
         fields = definitions.get_fid_fields()
         self.assertIsInstance(fields, list)
@@ -55,3 +61,11 @@ class TestDefinitions(unittest.TestCase):
         self.assertIsInstance(fields, list)
         self.assertIn("name", fields)
         self.assertIn("ogc_fid", fields)
+
+    def test_get_raster_dataset(self):
+        raster = definitions.get_raster_dataset("GHS_BUILT_R2018A")
+        self.assertIsInstance(raster, definitions.RasterDataset)
+
+    def test_get_raster_dataset_undefined(self):
+        with self.assertRaises(RasterDatasetUndefinedError):
+            definitions.get_raster_dataset("foo")
