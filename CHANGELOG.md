@@ -102,7 +102,7 @@
 
 - API response is a valid GeoJSON and equates to the CLI file output ([#100], [#130])
     - API output schema changes completely to a GeoJSON output
-    - Indicator and report data and results are written in a flat hierarchy to the properties field of the GeoJSON
+    - Indicator and report data and results are written in a flat hierarchy to the properties' field of the GeoJSON
     - Example responses can be found in the [API documentation](/docs/api.md)
 
 ### Bug Fixes
@@ -276,7 +276,7 @@
 - Fix handling of NaN value errors in mapping saturation indicator !48
 - Fix response to be initialized for every request !47
 - Improve docs on development setup and testing !45
-- Force recreate all indicator through CLI !38
+- Force the recreation of all indicator through CLI !38
 - Development setup of database using Docker !33 !37
 - Separate integration tests from unit tests #116
 - Add contribution information on issues, merge requests and changelog !31
@@ -286,7 +286,7 @@
 
 - Review docs on all parts of OQT - if they are existent/complete/understandable #71
 - GhsPopComparison: Raster and geometry do not have the same SRID #86
-- Short and precise documentation on how to setup and how to contribute #46
+- Short and precise documentation on how to set up and how to contribute #46
 - Define API response format #16
 - Unresolved merge conflict lines on the about page #82
 - Wrong filename for figures #78

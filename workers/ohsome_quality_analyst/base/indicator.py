@@ -128,7 +128,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def calculate(self) -> None:
         """Calculate indicator results.
 
-        Writes results to the result attribute.
+        Writes the results to the result attribute.
         """
         pass
 

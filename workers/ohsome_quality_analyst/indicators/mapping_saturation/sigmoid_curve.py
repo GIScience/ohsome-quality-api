@@ -10,11 +10,11 @@ class sigmoidCurve:
     find the best fitting one."""
 
     # get the y values where one curve ends and the next begins,
-    # there where the data show sth like a plateau
+    # there were the data show sth like a plateau
     def getYvaluesAtPlateaus(self, x, xdata, ydata) -> list:
         """
         Get the y values where one curve ends and the next begins,
-        there where the data show sth like a plateau
+        there were the data show sth like a plateau
         """
         yValsAtPlateaus = []
         # x = list of xmid values
@@ -63,10 +63,10 @@ class sigmoidCurve:
         get the y value at the beginning of the curve, but not 0
         """
         # check the distance between first xmid and x=0
-        # and define a x value in between to get a
+        # and define an x value in between to get a
         # start y value!=0
         # assumption: between first xmid and x=0 data have
-        # been mapped, if not, there wuld not be a xmid
+        # been mapped, if not, there would not be a xmid
         # so y will be > 0
         if 10 < xmids[0] < 15:
             ystart = np.interp(xmids[0] - 8, xdata, ydata)
@@ -76,7 +76,7 @@ class sigmoidCurve:
         elif xmids[0] >= 15:
             ystart = np.interp(xmids[0] - 15, xdata, ydata)
         else:
-            # first xmid is very close to x=0, eg import
+            # first xmid is very close to x=0, e.g. import
             ystart = np.interp(xmids[0] - 0.5, xdata, ydata)
         return ystart
 
@@ -351,7 +351,7 @@ class sigmoidCurve:
             return [np.nan] * 6
         xjump1 = xdata.shift(1)[dydata == dydata.max()]
         dy1 = (ydata - ydata.shift(1))[dydata == dydata.max()]
-        # to have an other x0 than min(x) and max(x)
+        # to have another x0 than min(x) and max(x)
         minx = min(xdata) + (xjump1.values[0] / 2)
         maxx = xjump1.values[0] + ((max(xdata) - xjump1.values[0]) / 2)
         return [
@@ -419,7 +419,7 @@ class sigmoidCurve:
         # hstack is because boundaries needs to be the same
         # length as flatter
         # np.diff will be one short
-        # These seems to work on every case except non-changing ydata
+        # These seem to work on every case except non-changing ydata
         # (with one change only)
         try:
             iBoundaries = flatter[
@@ -474,7 +474,7 @@ class sigmoidCurve:
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
                 lx.append(j)
-        # list of x values of mid points of the curves
+        # list of x values of mid-points of the curves
         xmids = sorted(lx)
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(xmids, xdata, ydata)
@@ -524,7 +524,7 @@ class sigmoidCurve:
             [np.array(False), np.diff(flatter.astype(int)).astype(bool)]
         )  # hstack is because boundaries needs to be the same length
         # as flatter; np.diff will be one short
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -556,7 +556,7 @@ class sigmoidCurve:
             xjump2 = xjump1
             dy2 = dy1
 
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -613,7 +613,7 @@ class sigmoidCurve:
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
                 lx.append(j)
-        # list of x values of mid points of the curves
+        # list of x values of mid-points of the curves
         x = sorted(lx)
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)
@@ -672,7 +672,7 @@ class sigmoidCurve:
             [np.array(False), np.diff(flatter.astype(int)).astype(bool)]
         )  # hstack is because boundaries needs to be the same length
         # as flatter; np.diff will be one short
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -704,7 +704,7 @@ class sigmoidCurve:
             xjump2 = xjump1
             dy2 = dy1
 
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -735,7 +735,7 @@ class sigmoidCurve:
             # really pathalogical.
             xjump3 = xjump2
             dy3 = dy2
-        try:  # These seems to work on every case except non-changing ydata
+        try:  # These seem to work on every case except non-changing ydata
             # (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -836,7 +836,7 @@ class sigmoidCurve:
             [np.array(False), np.diff(flatter.astype(int)).astype(bool)]
         )  # hstack is because boundaries needs to be the same length as
         # flatter; np.diff will be one short
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -868,7 +868,7 @@ class sigmoidCurve:
             xjump2 = xjump1
             dy2 = dy1
 
-        try:  # These seems to work on every case except
+        try:  # These seem to work on every case except
             # non-changing ydata
             # (with one change only)
             iBoundaries = flatter[
@@ -901,7 +901,7 @@ class sigmoidCurve:
             # really pathalogical.
             xjump3 = xjump2
             dy3 = dy2
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -925,7 +925,7 @@ class sigmoidCurve:
             # really pathalogical.
             xjump4 = xjump3
             dy4 = dy3
-        try:  # These seems to work on every case except non-changing
+        try:  # These seem to work on every case except non-changing
             # ydata (with one change only)
             iBoundaries = flatter[
                 boundaries
@@ -977,7 +977,7 @@ class sigmoidCurve:
         for i, j in enumerate(inits):
             if i > 3 and not i % 2:
                 lx.append(j)
-        # list of x values of mid points of the curves
+        # list of x values of mid-points of the curves
         x = sorted(lx)
         # y values at start/end of curves
         yValsAtPlateaus = self.getYvaluesAtPlateaus(x, xdata, ydata)

@@ -17,7 +17,7 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and the GHS POP dataset for those regions. To build and run a already configured image run:
+A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and the GHS POP dataset for those regions. To build and run an already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
@@ -136,7 +136,7 @@ cd workers/scripts
 python start_api.py
 ```
 
-Default host is 127.0.0.1 and port is 8080. To change this provide the corresponding parameter:
+Default host is 127.0.0.1 and port is 8080. To change this, provide the corresponding parameter:
 
 ```bash
 python start_api.py --help

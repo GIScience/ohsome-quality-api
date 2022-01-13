@@ -14,7 +14,7 @@ from ohsome_quality_analyst.utils.helper import flatten_dict
 
 @dataclass
 class Metadata:
-    """Metadata of an report as defined in the metadata.yaml file"""
+    """Metadata of a report as defined in the metadata.yaml file"""
 
     name: str
     description: str

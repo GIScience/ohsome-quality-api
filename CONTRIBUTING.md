@@ -34,7 +34,7 @@ The [CHANGELOG.md](CHANGELOG.md) describes changes made in a merge request. It s
 3. Dev addresses the comments and leaves responses explaining what has to be done. In cases where Dev just implemented Rev's suggestion, a simple "Done" is sufficient.
 4. Rev reviews the changes and
     - If Rev is happy with a change, then Rev resolves the comment.
-    - If Rev is still unsatisfied with a change, then Rev adds a further comment explaining what is still missing.
+    - If Rev is still unsatisfied with a change, then Rev adds another comment explaining what is still missing.
 5. Restart from 3 until all comments are resolved.
 
 
@@ -81,7 +81,7 @@ poetry run isort --interactive --settings-path setup.cfg .'
 
 ### Pre-Commit
 
-In addition [pre-commit](https://pre-commit.com/) is setup to run those tools prior to any git commit. In contrast to above described commands running these hooks will not apply any changes to the code base. Instead, 'pre-commit' checks if there would be any changes to be made. In that case simply run above commands manually.
+In addition, [pre-commit](https://pre-commit.com/) is set up to run those tools prior to any git commit. In contrast to above described commands running these hooks will not apply any changes to the code base. Instead, 'pre-commit' checks if there would be any changes to be made. In that case simply run above commands manually.
 
 
 ## Tests

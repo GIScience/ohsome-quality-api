@@ -188,7 +188,7 @@ async def get_regions_as_geojson() -> FeatureCollection:
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
     feature_collection = geojson.loads(record[0])
-    # To be complaint with rfc7946 "id" should be a member of the feature
+    # To be compliant with rfc7946 "id" should be a member of the feature
     # and not of the properties.
     for feature in feature_collection["features"]:
         feature["id"] = feature["properties"].pop("id")

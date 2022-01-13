@@ -74,22 +74,22 @@ class GhsPopComparisonRoads(BaseIndicator):
 
         if self.pop_count_per_sqkm == 0:
             return
-        # road density is conform with green values or even higher
+        # road density is compliant to the green values or even higher
         elif self.feature_length_per_sqkm >= green_road_density:
             self.result.value = 1.0
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
             self.result.label = "green"
-        # road density is too small none or too less roads
+        # road density is too small, none, or too short roads
         elif self.feature_length_per_sqkm < yellow_road_density:
             self.result.value = 0.0
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
             self.result.label = "red"
-        # road density is conform with yellow values, we assume
-        # there could be more roads mapped
+        # road density is compliant to the yellow values
+        # we assume there could be more roads mapped
         else:
             self.result.value = 0.5
             self.result.description = (

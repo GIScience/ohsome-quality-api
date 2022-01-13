@@ -1,7 +1,7 @@
 """This module defines schemata for API responses.
 
 Every API response must adhere to the general schema.
-Additionally API responses need to adhere to one additional schema depending on which
+Additionally, API responses need to adhere to one additional schema depending on which
 endpoint is used.
 """
 
