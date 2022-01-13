@@ -115,7 +115,7 @@ class MappingSaturation(BaseIndicator):
                     early_x, last_x, indices, ydata_for_sat
                 )
                 # if earlyX and lastX return same y value
-                # (means no growth any more), then
+                # (means no growth anymore), then
                 # getSaturationInLast3Years returns 1.0
 
             # if saturation == 1.0:

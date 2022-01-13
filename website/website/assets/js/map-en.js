@@ -226,7 +226,7 @@ function buildMap(...charts){
 			console.log(params)
 			httpPostAsync(JSON.stringify(params), handleGetQuality);
 		 }
-		// when params were send, get pdf button turns blue
+		// when params were sent, get pdf button turns blue
 		changeColor() 
 	}; // getQuality Button click ends
 	

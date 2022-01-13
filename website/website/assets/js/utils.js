@@ -32,7 +32,7 @@ function report_isValid(report){
     return valid_options.includes(report)
 }
 
-// check if test region id is in the test regions file. This functions need to be updated once we have other inputs.
+// check if test region id is in the test regions file. These functions need to be updated once we have other inputs.
 function id_isValid(value, json){
     const valid_options = []
     for (const elem of json){

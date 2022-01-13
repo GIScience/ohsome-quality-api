@@ -35,7 +35,7 @@ class TagsRatio(BaseIndicator):
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
     def calculate(self) -> None:
-        # self.ratio can be float, NaN if no features of filter1 are in the
+        # self.ratio can be of type float, NaN if no features of filter1 are in the
         # region or None if the layer has no filter2
         if self.ratio == "NaN" or self.ratio is None:
             return

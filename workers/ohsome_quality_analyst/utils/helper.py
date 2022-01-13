@@ -78,7 +78,7 @@ def write_geojson(
 ) -> None:
     """Writes a GeoJSON object to disk.
 
-    If path does not exists it will be created.
+    If path does not exist it will be created.
     """
     outfile = pathlib.Path(outfile)
     outfile.parent.mkdir(parents=True, exist_ok=True)
