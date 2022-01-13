@@ -38,6 +38,7 @@ def cli(quiet: bool):
     if not quiet:
         configure_logging()
         logging.info("Logging enabled")
+        logging.debug("Debugging output enabled")
 
 
 @cli.command("list-indicators")
