@@ -59,7 +59,7 @@ def list_reports():
 
 @cli.command("list-layers")
 def list_layers():
-    """List available layers and how they are definied (ohsome API parameters)."""
+    """List available layers and how they are defined (ohsome API parameters)."""
     layers = load_layer_definitions()
     layers = yaml.dump(layers, default_style="|")
     click.echo(layers)

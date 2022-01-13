@@ -23,7 +23,7 @@ class TestLogging(unittest.TestCase):
             logging.debug("Test debug logging message")
         # Test that there is only one log message
         self.assertEqual(len(captured.records), 1)
-        # Test unformatted logging output message
+        # Test not-formatted logging output message
         self.assertEqual(captured.records[0].getMessage(), "Test info logging message")
 
     def test_level(self):

@@ -115,13 +115,13 @@ class TestOhsomeClient(TestCase):
         self.assertTrue(schema.is_valid(data))
 
     def test_build_data_dict_ratio(self) -> None:
-        """Layer has no ratio filter definied"""
+        """Layer has no ratio filter defined"""
         layer = LayerDefinitionMock()
         with self.assertRaises(ValueError):
             ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
 
     def test_build_data_dict_ratio_2(self) -> None:
-        """Layer has ratio filter definied"""
+        """Layer has ratio filter defined"""
         schema = Schema(
             {
                 "bpolys": str,

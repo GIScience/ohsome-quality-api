@@ -447,7 +447,7 @@ class sigmoidCurve:
             dy2 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump2 = xjump1
             dy2 = dy1
         return [
@@ -468,7 +468,7 @@ class sigmoidCurve:
         sort the x values with corresponding  y values
         """
         inits = self.initparamsFor2JumpsCurve(xdata, ydata)
-        # ToDo currrently sorted by size, what if curve
+        # ToDo currently sorted by size, what if curve
         #  decreases and so the max x is not the last x?
         lx = []
         for i, j in enumerate(inits):
@@ -552,7 +552,7 @@ class sigmoidCurve:
             dy2 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump2 = xjump1
             dy2 = dy1
 
@@ -584,7 +584,7 @@ class sigmoidCurve:
             dy3 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump3 = xjump2
             dy3 = dy2
         return [
@@ -700,7 +700,7 @@ class sigmoidCurve:
             dy2 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump2 = xjump1
             dy2 = dy1
 
@@ -732,7 +732,7 @@ class sigmoidCurve:
             dy3 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump3 = xjump2
             dy3 = dy2
         try:  # These seem to work on every case except non-changing ydata
@@ -755,7 +755,7 @@ class sigmoidCurve:
             dy4 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1, 2]  # This is
-            # actually really pathalogical.
+            # actually really pathological.
             xjump4 = xjump3
             dy4 = dy3
         return [
@@ -864,7 +864,7 @@ class sigmoidCurve:
             dy2 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump2 = xjump1
             dy2 = dy1
 
@@ -898,7 +898,7 @@ class sigmoidCurve:
             dy3 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump3 = xjump2
             dy3 = dy2
         try:  # These seem to work on every case except non-changing
@@ -922,7 +922,7 @@ class sigmoidCurve:
             dy4 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1, 2]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump4 = xjump3
             dy4 = dy3
         try:  # These seem to work on every case except non-changing
@@ -946,7 +946,7 @@ class sigmoidCurve:
             dy5 = (ydata - ydata.shift(1))[dydata == dydata.max()]
         except AttributeError:
             assert sum(boundaries) in [1, 2]  # This is actually
-            # really pathalogical.
+            # really pathological.
             xjump5 = xjump4
             dy5 = dy4
         return [

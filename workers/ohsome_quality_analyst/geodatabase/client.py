@@ -203,12 +203,12 @@ async def get_regions() -> List[dict]:
 
 
 def sanity_check_dataset(dataset: str) -> bool:
-    """Compare against pre-definied values to prevent SQL injection"""
+    """Compare against pre-defined values to prevent SQL injection"""
     return dataset in DATASETS.keys()
 
 
 def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
-    """Compare against pre-definied values to prevent SQL injection"""
+    """Compare against pre-defined values to prevent SQL injection"""
     return (
         fid_field in DATASETS[dataset]["other"]
         or fid_field == DATASETS[dataset]["default"]

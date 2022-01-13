@@ -26,7 +26,7 @@
 - Validate indicator-layer combination with `pydantic` ([#190])
 - Improve API response when an error occurs by including information about the cause ([#186])
 - Add parameter to get API response without svg string in the result ([#137])
-- Extend time range for Currentness indicator ([#178])
+- Extend time range for the `Currentness` indicator ([#178])
 
 ### How to upgrade
 

@@ -79,7 +79,7 @@ async def validation_exception_handler(
     `pydantic` raises on exception regardless of the number of errors found.
     The `ValidationError` will contain information about all the errors.
 
-    FastAPIs `RequestValidationError` is a subclass of pydantics `ValidationError`.
+    FastAPIs `RequestValidationError` is a subclass of pydantic's `ValidationError`.
     Because of the usage of `@pydantic.validate_arguments` decorator
     `ValidationError` needs to be specified in this handler as well.
     """

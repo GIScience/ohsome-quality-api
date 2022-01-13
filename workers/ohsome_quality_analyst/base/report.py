@@ -50,7 +50,7 @@ class BaseReport(metaclass=ABCMeta):
         self.fid_field = fid_field
         self.feature = feature
 
-        # Definies indicator+layer combinations
+        # Defines indicator+layer combinations
         self.indicator_layer: Tuple[IndicatorLayer] = []
         self.indicators: List[BaseIndicator] = []
 

@@ -81,7 +81,7 @@ class Currentness(BaseIndicator):
         # It can be that features are counted, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
-                "In the area of intrest no features "
+                "In the area of interest no features "
                 "matching the filter are present today."
             )
             return

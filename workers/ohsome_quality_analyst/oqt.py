@@ -148,7 +148,7 @@ async def create_indicator(
     """
 
     async def from_scratch() -> None:
-        """Create indicatore from scratch."""
+        """Create indicator from scratch."""
         logging.info("Run preprocessing")
         await indicator.preprocess()
         logging.info("Run calculation")
