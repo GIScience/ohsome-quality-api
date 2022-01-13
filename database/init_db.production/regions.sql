@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS regions (
 
 
 /* Select custom OQT regions from NUTS and GADM datasets */
-/* European regiongs (NUTS) */
+/* European regions (NUTS) */
 INSERT INTO regions (
     name,
     country,

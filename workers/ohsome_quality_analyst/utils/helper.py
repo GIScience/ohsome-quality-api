@@ -40,7 +40,7 @@ def camel_to_snake(camel: str) -> str:
 
 
 def snake_to_lower_camel(snake: str) -> str:
-    """Convertes Snake Case to Lower Camel Case"""
+    """Converts Snake Case to Lower Camel Case"""
     parts = snake.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
 

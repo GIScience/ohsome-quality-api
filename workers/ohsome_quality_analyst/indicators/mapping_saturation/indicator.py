@@ -139,7 +139,7 @@ class MappingSaturation(BaseIndicator):
                 self.result.description = (
                     description + self.metadata.label_description["green"]
                 )
-            # growth level is better than the red threshould
+            # growth level is better than the red threshold
             else:
                 self.result.label = "yellow"
                 self.result.value = 0.5

@@ -1,7 +1,7 @@
 /* */
 /* The purpose of this SQL script is to create a schema with datasets for development.*/
 /* The schema including its data can be dumped using pg_dump. */
-/* This is usefull to setup a local development database. */
+/* This is useful to setup a local development database. */
 /* It is used as basis for the development database inside a Docker container. */
 /* */
 SET search_path TO public, development, test;

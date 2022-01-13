@@ -36,7 +36,7 @@ class JrcRequirements(BaseReport):
             IndicatorLayer("Currentness", "jrc_cultural_heritage_site_count"),
             IndicatorLayer("Currentness", "jrc_bridge_count"),
             IndicatorLayer("Currentness", "jrc_mass_gathering_sites_count"),
-            # TODO define threshoulds for GhsPopComparison with jrc
+            # TODO define thresholds for GhsPopComparison with jrc
             #  layer topics
             # IndicatorLayer("GhsPopComparison", "jrc_road_length"),
             # IndicatorLayer("GhsPopComparison", "jrc_railway_length"),

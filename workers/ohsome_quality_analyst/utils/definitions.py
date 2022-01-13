@@ -142,7 +142,7 @@ def load_metadata(module_name: str) -> Dict:
 def get_metadata(module_name: str, class_name: str) -> Dict:
     """Get metadata of an indicator or report based on its class name.
 
-    This is implemented outsite of the metadata class to be able to
+    This is implemented outside the metadata class to be able to
     access metadata of all indicators/reports without instantiation of those.
 
     Args:
@@ -183,7 +183,7 @@ def get_layer_definition(layer_name: str) -> Dict:
     """
     Get ohsome API parameters of a single layer based on layer name.
 
-    This is implemented outsite of the layer class to
+    This is implemented outside the layer class to
     be able to access layer definitions of all indicators without
     instantiation of those.
     """

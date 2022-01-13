@@ -5,7 +5,7 @@ from ohsome_quality_analyst.reports.jrc_requirements.report import JrcRequiremen
 
 
 class TestReportJrcRequirements(unittest.TestCase):
-    # TODO: Test case for indicator.result undefinied
+    # TODO: Test case for indicator.result undefined
     def test_combine_indicators_mean(self):
         report = JrcRequirements()
         report.set_indicator_layer()

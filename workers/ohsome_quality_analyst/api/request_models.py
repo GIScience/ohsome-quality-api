@@ -77,7 +77,7 @@ class BaseRequestModel(pydantic.BaseModel):
                 "title": "Bounding Polygons",
                 "description": (
                     "A GeoJSON Geometry, Feature or FeatureCollection. "
-                    + "Geometry type must be Ploygon or MultiPolygon."
+                    + "Geometry type must be Polygon or MultiPolygon."
                 ),
                 "example": {
                     "type": "Feature",
