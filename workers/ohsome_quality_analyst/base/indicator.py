@@ -37,6 +37,7 @@ class LayerDefinition:
     description: str
     endpoint: str
     filter: str
+    hex_endpoint: Optional[str] = None
     ratio_filter: Optional[str] = None
 
 

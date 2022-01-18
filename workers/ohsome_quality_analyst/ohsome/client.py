@@ -8,8 +8,8 @@ import geojson
 import httpx
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
-from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
+from ohsome_quality_analyst.utils.definitions import OHSOME_API, OHSOME_HEX_API, USER_AGENT
 
 
 # TODO: Add more tests for ohsome package.
@@ -59,6 +59,40 @@ async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
             "Ohsome API returned invalid GeoJSON after streaming of the response. "
             + "The reason is a timeout of the ohsome API."
         ) from error
+
+
+async def hex_query(layer, ids, zoomlevel: int) -> Optional[Dict]:
+    """Query ohsome API endpoint with filter."""
+
+    url = OHSOME_HEX_API + layer.hex_endpoint + "{}".format(zoomlevel) + "?ids="
+
+    logging.info("Query ohsomeHEX API.")
+    len_ids = len(ids)
+    for x, id in enumerate(ids):
+        url += str(id)
+        if x != len_ids - 1:
+            url += "%2C%20"
+    # set custom timeout as ohsome API takes a long time to send an answer
+    timeout = httpx.Timeout(5, read=600)
+    async with httpx.AsyncClient(timeout=timeout) as client:
+        resp = await client.get(url)
+
+    logging.info("Query ohsomeHEX API.")
+    logging.debug("Query URL: " + url)
+    logging.debug("Query Filter: " + layer.filter)
+    if resp.status_code == 200:
+        try:
+            logging.info("OhsomeHEX query successful!")
+            logging.debug(
+                "Query response: " + json.dumps(resp.json(), indent=4, sort_keys=True)
+            )
+            return geojson.loads(resp.content)
+        except JSONDecodeError:
+            logging.warning("OhsomeHEX query failed!")
+            return None
+    elif resp.status_code == 404:
+        logging.warning("Query failed!")
+        return None
 
 
 async def get_latest_ohsome_timestamp() -> datetime.datetime:
