@@ -9,6 +9,8 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import
     GhsPopComparisonRoads,
 )
 
+from .utils import oqt_vcr
+
 
 class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
     def setUp(self):
@@ -20,6 +22,7 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
             feature=feature, layer_name="major_roads_length"
         )
 
+    @oqt_vcr.use_cassette()
     def test(self):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.pop_count)
