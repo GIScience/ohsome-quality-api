@@ -8,7 +8,6 @@ import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
-from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
 from .api_response_schema import (
     get_featurecollection_schema,
@@ -29,9 +28,7 @@ class TestApiReportIo(unittest.TestCase):
         self.feature_id = 3
         self.fid_field = "ogc_fid"
 
-        report = SimpleReport()
-        report.set_indicator_layer()
-        number_of_indicators = len(report.indicator_layer)
+        number_of_indicators = 2
 
         self.general_schema = get_general_schema()
         self.feature_schema = get_report_feature_schema(number_of_indicators)

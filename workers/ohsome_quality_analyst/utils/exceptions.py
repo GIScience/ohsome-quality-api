@@ -20,17 +20,23 @@ class SizeRestrictionError(ValueError):
         )
 
 
-class RasterDatasetNotFoundError(FileNotFoundError):
-    """Raster file not found."""
+class DatabaseError(Exception):
+    pass
 
+
+class EmptyRecordError(DatabaseError):
+    def __init__(self):
+        self.name = "EmptyRecordError"
+        self.message = "Query returned no record."
+
+
+class RasterDatasetNotFoundError(FileNotFoundError):
     def __init__(self, raster):
         self.name = "RasterDatasetNotFoundError"
         self.message = "Raster dataset {0} has not been found.".format(raster.name)
 
 
 class RasterDatasetUndefinedError(ValueError):
-    """Raster is not defined."""
-
     def __init__(self, name):
         self.name = "RasterDatasetUndefinedError"
         self.message = "Raster dataset {0} is not defined".format(name)
