@@ -113,7 +113,7 @@ class BaseDatabase(BaseModel):
 
     dataset: DatasetEnum = pydantic.Field(..., title="Dataset Name", example="regions")
     feature_id: str = pydantic.Field(..., title="Feature Id", example="3")
-    fid_field: Optional[FidFieldEnum]
+    fid_field: Optional[FidFieldEnum] = None
 
 
 class IndicatorBpolys(BaseIndicator, BaseBpolys):

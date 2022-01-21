@@ -7,6 +7,12 @@ import geojson
 import yaml
 
 from ohsome_quality_analyst import oqt
+from ohsome_quality_analyst.api.request_models import (
+    IndicatorBpolys,
+    IndicatorDatabase,
+    ReportBpolys,
+    ReportDatabase,
+)
 from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
@@ -128,19 +134,20 @@ def create_indicator(
     if infile is not None:
         with open(infile, "r") as file:
             bpolys = json.load(file)
-    else:
-        bpolys = None
-    geojson_object = asyncio.run(
-        oqt.create_indicator_as_geojson(
-            indicator_name,
-            layer_name,
-            bpolys,
-            dataset_name,
-            feature_id,
-            fid_field,
-            force,
+        parameters = IndicatorBpolys(
+            name=indicator_name,
+            layerName=layer_name,
+            bpolys=bpolys,
         )
-    )
+    else:
+        parameters = IndicatorDatabase(
+            name=indicator_name,
+            layerName=layer_name,
+            dataset=dataset_name,
+            featureId=feature_id,
+            fidField=fid_field,
+        )
+    geojson_object = asyncio.run(oqt.create_indicator_as_geojson(parameters, force))
     if outfile:
         write_geojson(outfile, geojson_object)
     click.echo(geojson.dumps(geojson_object, default=json_serialize, allow_nan=True))
@@ -177,18 +184,15 @@ def create_report(
     if infile is not None:
         with open(infile, "r") as file:
             bpolys = json.load(file)
+        parameters = ReportBpolys(name=report_name, bpolys=bpolys)
     else:
-        bpolys = None
-    geojson_object = asyncio.run(
-        oqt.create_report_as_geojson(
-            report_name,
-            bpolys,
-            dataset_name,
-            feature_id,
-            fid_field,
-            force,
+        parameters = ReportDatabase(
+            name=report_name,
+            dataset=dataset_name,
+            featureId=feature_id,
+            fidField=fid_field,
         )
-    )
+    geojson_object = asyncio.run(oqt.create_report_as_geojson(parameters, force))
     if outfile:
         write_geojson(outfile, geojson_object)
     click.echo(geojson.dumps(geojson_object, default=json_serialize, allow_nan=True))
