@@ -167,7 +167,7 @@ INDICATOR_EXAMPLES = {
         ),
         "description": (
             "Specify `dataset` and `feature_id` to request an already calculated "
-            "indicator for an AOI defined by OQT."
+            "Indicator for an AOI defined by OQT."
         ),
         "value": {
             "name": "GhsPopComparisonBuildings",
