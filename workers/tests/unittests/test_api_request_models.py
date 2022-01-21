@@ -1,4 +1,5 @@
 """Test module for the `pydantic` data models for API requests"""
+import itertools
 import json
 import os
 import unittest
@@ -88,36 +89,57 @@ class TestApiRequestModels(unittest.TestCase):
         )
 
     def test_invalid_set_of_arguments(self):
-        # TODO: Write logic to test any combination of invalid parameters
-        # Write down valid combination and derive invalid from those.
-        models = (request_models.IndicatorBpolys, request_models.IndicatorDatabase)
-        for model in models:
-            with self.assertRaises(ValueError):
-                model(name="GhsPopComparisonBuildings")
-            with self.assertRaises(ValueError):
-                model(layerName="building_count")
-            with self.assertRaises(ValueError):
-                model(dataset="regions")
-            with self.assertRaises(ValueError):
-                model(featureId="3")
-            with self.assertRaises(ValueError):
-                model(
-                    name="GhsPopComparisonBuildings",
-                    layerName="building_count",
-                    dataset="regions",
+        param_keys = (
+            "name",
+            "layerName",
+            "dataset",
+            "featureId",
+            "fidField",
+            "bpolys",
+        )
+        param_values = (
+            "GhsPopComparisonBuildings",
+            "building_count",
+            "regions",
+            "3",
+            "ogc_fid",
+            "bpolys",
+        )
+        all_combinations = []
+        for i, _ in enumerate(param_keys):
+            for key_comb, val_comb in zip(
+                itertools.combinations(param_keys, i),
+                itertools.combinations(param_values, i),
+            ):
+                all_combinations.append(
+                    {key: value for key, value in zip(key_comb, val_comb)}
                 )
-            with self.assertRaises(ValueError):
-                model(
-                    name="GhsPopComparisonBuildings",
-                    layerName="building_count",
-                    bpolys=self.bpolys,
-                    dataset="regions",
-                )
-            with self.assertRaises(ValueError):
-                model(
-                    name="GhsPopComparisonBuildings",
-                    layerName="building_count",
-                    bpolys=self.bpolys,
-                    dataset="regions",
-                    featureId="3",
-                )
+        valid_combinations = (
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "dataset": "regions",
+                "featureId": "3",
+            },
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "dataset": "regions",
+                "featureId": "3",
+                "fidField": "ogc_fid",
+            },
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "bpolys": self.bpolys,
+            },
+        )
+        for combination in all_combinations:
+            if combination in valid_combinations:
+                continue
+            for model in (
+                request_models.IndicatorBpolys,
+                request_models.IndicatorDatabase,
+            ):
+                with self.assertRaises(ValueError):
+                    model(**combination)
