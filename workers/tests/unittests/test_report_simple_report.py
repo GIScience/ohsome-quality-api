@@ -3,10 +3,13 @@ from unittest.mock import Mock
 
 from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
 
+from .utils import get_geojson_fixture
+
 
 class TestReportSimpleReport(unittest.TestCase):
     def test_combine_indicators_mean(self):
-        report = SimpleReport()
+        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
+        report = SimpleReport(geometry)
         report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
