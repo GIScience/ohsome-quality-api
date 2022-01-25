@@ -49,6 +49,11 @@ docker-compose -f docker-compose.development.yml up -d
 A minimal database setup for running tests is provided. If the build argument `OQT_TEST_DB` is set to `True` a database is initialized with data only for the regions used by the tests. No (additional) data is downloaded as is the case with the database setup for development.
 
 
+## Raster Datasets
+
+Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
+
+
 ## OQT Python package
 
 
