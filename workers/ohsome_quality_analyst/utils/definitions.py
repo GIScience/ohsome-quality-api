@@ -6,6 +6,7 @@ import logging.config
 import os
 import sys
 from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Dict, List
 
 import rpy2.rinterface_lib.callbacks
@@ -16,18 +17,19 @@ from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 
 # Dataset names and fid fields which are available in the Geodatabase
-DATASETS = {
-    "regions": {"default": "ogc_fid", "other": ("name",)},
-    "gadm": {
-        "default": "uid",  # ISO 3166-1 alpha-3 country code
-        "other": (
-            *tuple(("name_{0}".format(i) for i in range(6))),
-            *tuple(("id_{0}".format(i) for i in range(6))),
-            *tuple(("gid_{0}".format(i) for i in range(6))),
-        ),
-    },
-}
-
+DATASETS = MappingProxyType(  # Immutable dict
+    {
+        "regions": {"default": "ogc_fid", "other": ("name",)},
+        "gadm": {
+            "default": "uid",  # ISO 3166-1 alpha-3 country code
+            "other": (
+                *tuple(("name_{0}".format(i) for i in range(6))),
+                *tuple(("id_{0}".format(i) for i in range(6))),
+                *tuple(("gid_{0}".format(i) for i in range(6))),
+            ),
+        },
+    }
+)
 # Dataset names and fid fields which are through the API
 DATASETS_API = DATASETS.copy()
 DATASETS_API.pop("gadm")
@@ -126,7 +128,8 @@ OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
 GEOM_SIZE_LIMIT = os.getenv("OQT_GEOM_SIZE_LIMIT", default=100)
 
 USER_AGENT = os.getenv(
-    "OQT_USER_AGENT", default="ohsome-quality-analyst/{}".format(oqt_version)
+    "OQT_USER_AGENT",
+    default="ohsome-quality-analyst/{0}".format(oqt_version),
 )
 
 
@@ -139,7 +142,7 @@ def get_log_level():
 
 
 def load_logging_config():
-    """Read logging config from configuration file"""
+    """Read logging config from configuration file."""
     level = get_log_level()
     logging_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
@@ -151,7 +154,7 @@ def load_logging_config():
 
 
 def configure_logging() -> None:
-    """Configure logging level and format"""
+    """Configure logging level and format."""
 
     class RPY2LoggingFilter(logging.Filter):  # Sensitive
         def filter(self, record):
@@ -166,8 +169,7 @@ def configure_logging() -> None:
 
 
 def load_metadata(module_name: str) -> Dict:
-    """
-    Read metadata of all indicators or reports from YAML files.
+    """Read metadata of all indicators or reports from YAML files.
 
     Those text files are located in the directory of each indicator/report.
 
@@ -200,7 +202,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
         class_name: Any class name in Camel Case which is implemented
                     as report or indicator
     """
-    if module_name != "indicators" and module_name != "reports":
+    if module_name not in ("indicators", "reports"):
         raise ValueError("module name value can only be 'indicators' or 'reports'.")
 
     metadata = load_metadata(module_name)
@@ -217,8 +219,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
 
 
 def load_layer_definitions() -> Dict:
-    """
-    Read ohsome API parameters of all layer from YAML file.
+    """Read ohsome API parameters of all layer from YAML file.
 
     Returns:
         A Dict with the layer names of the layers as keys.
@@ -230,8 +231,7 @@ def load_layer_definitions() -> Dict:
 
 
 def get_layer_definition(layer_name: str) -> Dict:
-    """
-    Get ohsome API parameters of a single layer based on layer name.
+    """Get ohsome API parameters of a single layer based on layer name.
 
     This is implemented outside the layer class to
     be able to access layer definitions of all indicators without
@@ -248,7 +248,7 @@ def get_layer_definition(layer_name: str) -> Dict:
 
 
 def get_indicator_classes() -> Dict:
-    """Map indicator name to corresponding class"""
+    """Map indicator name to corresponding class."""
     raise NotImplementedError(
         "Use utils.definitions.load_indicator_metadata() and"
         + "utils.helper.name_to_class() instead"

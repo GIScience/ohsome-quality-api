@@ -88,7 +88,6 @@ class TestRaster(unittest.TestCase):
         self.assertNotEqual(self.feature, result)
 
     def test_transform_same_crs(self):
-        self.maxDiff = None
         raster_dataset = get_raster_dataset("VNL")
         result = raster_client.transform(self.feature, raster_dataset)
         self.assertDictEqual(self.feature, result)
