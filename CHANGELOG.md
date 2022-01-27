@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
+
+[`rasterstats`]: https://github.com/perrygeo/python-rasterstats
+
+
 ## 0.8.0
 
 ### Breaking Changes
@@ -14,8 +23,6 @@
 - Make `pydantic` data models more modular ([#237])
 - Use [`scipy`] to fit sigmoid curves to data for the Mapping Saturation indicator ([#170])
 
-### Other Changes
-
 ### How to upgrade
 
 - `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
@@ -25,6 +32,7 @@
 [#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
+[#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#237]: https://github.com/GIScience/ohsome-quality-analyst/pull/237
 [`scipy`]: https://scipy.org/
 
