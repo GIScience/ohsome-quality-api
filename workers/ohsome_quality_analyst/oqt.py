@@ -274,4 +274,4 @@ async def create_all_indicators(force: bool = False) -> None:
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
     if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
-        raise SizeRestrictionError()
+        raise SizeRestrictionError(GEOM_SIZE_LIMIT)
