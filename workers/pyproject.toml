@@ -34,6 +34,7 @@ scipy = "^1.7.3"  # `scipy` requires Python >=3.7,<3.11
 rpy2 = "^3.4.5"
 scikit-learn = "^1.0.2"  # Only works on Python below 3.11 (Depends on `scipy`)
 rasterstats = "^0.16.0"  # Only works on Python below 3.10 (Depends on `rasterio`)
+pyproj = "^3.3.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "0.930"
