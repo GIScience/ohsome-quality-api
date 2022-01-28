@@ -3,9 +3,10 @@ services:
   oqt-workers:
     container_name: oqt-workers
     build:
-      context: workers/
+      context: ./workers
       dockerfile: Dockerfile
     environment:
+      OQT_DATA_DIR: /data
       OQT_LOG_LEVEL: INFO
       OHSOME_API: https://api.ohsome.org/v1/
       POSTGRES_DB: oqt
@@ -15,6 +16,8 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_SCHEMA: public
     command: poetry run python scripts/start_api.py --host 0.0.0.0
+    volumes:
+      - ./data:/data
     ports:
       - "127.0.0.1:8080:8080"
     networks:
