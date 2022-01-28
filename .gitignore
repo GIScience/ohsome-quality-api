@@ -147,3 +147,4 @@ database/init_db.production/GHS_POP_E2015_GLOBE_R2019A_4326_9ss_V1_0.*
 database/init_db.production/GHSL_Data_Package_2019_light.pdf
 database/scripts/schema.test.sql
 database/scripts/schema.dev.sql.gz
+data/
