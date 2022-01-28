@@ -2,7 +2,7 @@ import fnmatch
 import logging
 from typing import Union
 
-from fastapi import Depends, FastAPI, Request, status
+from fastapi import Body, Depends, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,10 +20,12 @@ from ohsome_quality_analyst import (
     oqt,
 )
 from ohsome_quality_analyst.api.request_models import (
-    IndicatorGETRequestModel,
-    IndicatorPOSTRequestModel,
-    ReportGETRequestModel,
-    ReportPOSTRequestModel,
+    INDICATOR_EXAMPLES,
+    REPORT_EXAMPLES,
+    IndicatorBpolys,
+    IndicatorDatabase,
+    ReportBpolys,
+    ReportDatabase,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
@@ -117,8 +119,8 @@ def empty_api_response() -> dict:
 
 
 @app.get("/indicator")
-async def get_indicator(parameters=Depends(IndicatorGETRequestModel)):
-    """Get an already calculated Indicator for region defined by OQT.
+async def get_indicator(parameters=Depends(IndicatorDatabase)):
+    """Request an already calculated Indicator for an AOI defined by OQT.
 
     The response is a GeoJSON Feature with the indicator results as properties.
     To request an Indicator for a custom AOI please use the POST method.
@@ -127,8 +129,13 @@ async def get_indicator(parameters=Depends(IndicatorGETRequestModel)):
 
 
 @app.post("/indicator")
-async def post_indicator(parameters: IndicatorPOSTRequestModel):
-    """Create an Indicator.
+async def post_indicator(
+    parameters: Union[IndicatorBpolys, IndicatorDatabase] = Body(
+        ...,
+        examples=INDICATOR_EXAMPLES,
+    )
+):
+    """Request an Indicator for an AOI defined by OQT or a custom AOI.
 
     Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.
@@ -167,8 +174,8 @@ async def _fetch_indicator(parameters) -> dict:
 
 
 @app.get("/report")
-async def get_report(parameters=Depends(ReportGETRequestModel)):
-    """Get an already calculated Report for region defined by OQT.
+async def get_report(parameters=Depends(ReportDatabase)):
+    """Request an already calculated Report for an AOI defined by OQT.
 
     The response is a GeoJSON Feature with the Report results as properties.
     To request an Report for a custom AOI pease use the POST method.
@@ -177,8 +184,13 @@ async def get_report(parameters=Depends(ReportGETRequestModel)):
 
 
 @app.post("/report")
-async def post_report(parameters: ReportPOSTRequestModel):
-    """Create a Report.
+async def post_report(
+    parameters: Union[ReportBpolys, ReportDatabase] = Body(
+        ...,
+        examples=REPORT_EXAMPLES,
+    )
+):
+    """Request a Report for an AOI defined by OQT or a custom AOI.
 
     Either the parameters `dataset` and `featureId` have to be provided
     or the parameter `bpolys` in form of a GeoJSON.

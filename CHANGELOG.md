@@ -7,6 +7,11 @@
 - Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
 - Disable support of the parameter `bpolys` for GET requests to the API ([#223])
 
+### Other Changes
+
+- Improve API Swagger interface by adding more examples and better documentation ([#237])
+- Make `pydantic` data models more modular ([#237])
+
 ### How to upgrade
 
 - `ideal_vgi_lulc` is not a valid layer for the Mapping Saturation indicator anymore ([#221])
@@ -14,6 +19,7 @@
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
+[#237]: https://github.com/GIScience/ohsome-quality-analyst/pull/237
 
 
 ## 0.7.0
