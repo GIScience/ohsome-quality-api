@@ -174,9 +174,9 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
 def load_sklearn_model(path: str):
     """Load sklearn model from disk
 
-    Raise an error if during load back of a pickled model a UserWarning is produced.
-    The UserWarning is most likely due to use of different versions of sklearn for
-    creating a pickle of the model and for loading the model.
+    Raise an error if a `UserWarning` is thrown during loading of a model from disk.
+    The `UserWarning` is most likely due to use of different versions of `scikit-learn`
+    for dumping and for loading the model with `joblib`.
     https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
     """
     warnings.simplefilter("error", UserWarning)  # Raise exception if warning occurs
