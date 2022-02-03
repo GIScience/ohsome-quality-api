@@ -76,6 +76,7 @@ RASTER_DATASETS = (
 
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
+    ("BuildingArea", "building_area"),
     ("GhsPopComparisonBuildings", "building_count"),
     ("GhsPopComparisonRoads", "jrc_road_length"),
     ("GhsPopComparisonRoads", "major_roads_length"),
