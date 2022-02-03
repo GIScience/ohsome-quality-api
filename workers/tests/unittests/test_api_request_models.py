@@ -1,4 +1,5 @@
 """Test module for the `pydantic` data models for API requests"""
+import itertools
 import json
 import os
 import unittest
@@ -19,7 +20,7 @@ class TestApiRequestModels(unittest.TestCase):
             self.bpolys = json.load(file)
 
     def test_bpolys_valid(self):
-        request_models.BasePOSTModel(bpolys=self.bpolys)
+        request_models.BaseBpolys(bpolys=self.bpolys)
 
     def test_bpolys_invalid(self):
         bpolys = Polygon(
@@ -27,51 +28,118 @@ class TestApiRequestModels(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError):
-            request_models.BasePOSTModel(bpolys=bpolys)
+            request_models.BaseBpolys(bpolys=bpolys)
 
     def test_dataset_valid(self):
-        request_models.BasePOSTModel(dataset="regions", feature_id="3")
-        request_models.BasePOSTModel(
+        request_models.BaseDatabase(dataset="regions", feature_id="3")
+        request_models.BaseDatabase(
             dataset="regions", feature_id="3", fid_field="ogc_fid"
         )
-        request_models.BaseGETModel(dataset="regions", feature_id="3")
-        request_models.BaseGETModel(
+        request_models.BaseDatabase(dataset="regions", feature_id="3")
+        request_models.BaseDatabase(
             dataset="regions", feature_id="3", fid_field="ogc_fid"
         )
 
     def test_dataset_invalid(self):
         with self.assertRaises(ValueError):
-            request_models.BasePOSTModel(dataset="foo", feature_id="3")
+            request_models.BaseDatabase(dataset="foo", feature_id="3")
         with self.assertRaises(ValueError):
-            request_models.BaseGETModel(dataset="foo", feature_id="3")
+            request_models.BaseDatabase(dataset="foo", feature_id="3")
 
-    def test_invalid_set_of_arguments(self):
-        with self.assertRaises(ValueError):
-            request_models.BasePOSTModel(
-                bpolys=self.bpolys, dataset="regions", feature_id="3"
-            )
-        with self.assertRaises(ValueError):
-            request_models.BasePOSTModel(dataset="regions")
-        with self.assertRaises(ValueError):
-            request_models.BaseGETModel(dataset="regions")
-        with self.assertRaises(ValueError):
-            request_models.BasePOSTModel(feature_id="3")
-        with self.assertRaises(ValueError):
-            request_models.BaseGETModel(feature_id="3")
-        with self.assertRaises(ValueError):
-            request_models.BaseIndicatorModel(name="GhsPopComparisonBuildings")
-        with self.assertRaises(ValueError):
-            request_models.BaseIndicatorModel(layer_name="building_count")
-
-    def test_valid_indicator_layer_combination(self):
-        request_models.BaseIndicatorModel(
+    def test_valid_layer(self):
+        request_models.BaseIndicator(
             name="GhsPopComparisonBuildings",
             layerName="building_count",
         )
 
+    def test_invalid_layer(self):
+        with self.assertRaises(ValueError):
+            request_models.BaseIndicator(
+                name="GhsPopComparisonBuildings",
+                layerName="foo",
+            )
+
     def test_invalid_indicator_layer_combination(self):
         with self.assertRaises(ValueError):
-            request_models.BaseIndicatorModel(
+            request_models.BaseIndicator(
                 name="GhsPopComparisonBuildings",
                 layerName="amenities",
             )
+
+    def test_indicator_database(self):
+        request_models.IndicatorDatabase(
+            name="GhsPopComparisonBuildings",
+            layerName="building_count",
+            dataset="regions",
+            featureId="3",
+        )
+        request_models.IndicatorDatabase(
+            name="GhsPopComparisonBuildings",
+            layerName="building_count",
+            dataset="regions",
+            featureId="Heidelberg",
+            fidField="name",
+        )
+
+    def test_indicator_bpolys(self):
+        request_models.IndicatorBpolys(
+            name="GhsPopComparisonBuildings",
+            layerName="building_count",
+            bpolys=self.bpolys,
+        )
+
+    def test_invalid_set_of_arguments(self):
+        param_keys = (
+            "name",
+            "layerName",
+            "dataset",
+            "featureId",
+            "fidField",
+            "bpolys",
+        )
+        param_values = (
+            "GhsPopComparisonBuildings",
+            "building_count",
+            "regions",
+            "3",
+            "ogc_fid",
+            "bpolys",
+        )
+        all_combinations = []
+        for i, _ in enumerate(param_keys):
+            for key_comb, val_comb in zip(
+                itertools.combinations(param_keys, i),
+                itertools.combinations(param_values, i),
+            ):
+                all_combinations.append(
+                    {key: value for key, value in zip(key_comb, val_comb)}
+                )
+        valid_combinations = (
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "dataset": "regions",
+                "featureId": "3",
+            },
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "dataset": "regions",
+                "featureId": "3",
+                "fidField": "ogc_fid",
+            },
+            {
+                "name": "GhsPopComparisonBuildings",
+                "layerName": "building_count",
+                "bpolys": self.bpolys,
+            },
+        )
+        for combination in all_combinations:
+            if combination in valid_combinations:
+                continue
+            for model in (
+                request_models.IndicatorBpolys,
+                request_models.IndicatorDatabase,
+            ):
+                with self.assertRaises(ValueError):
+                    model(**combination)
