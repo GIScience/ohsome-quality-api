@@ -1,0 +1,12 @@
+---
+BuildingAreaIndicator:
+  name: Building Area Indicator
+  description: |
+    tab tab
+  label_description:
+    red: |
+    yellow: |
+    green: |
+    undefined: |
+      The quality level could not be calculated for this indicator.
+  result_description: |
