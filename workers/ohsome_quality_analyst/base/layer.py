@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseLayer:
     name: str
     description: str
 
 
-@dataclass(frozen=True)
+@dataclass
 class LayerDefinition(BaseLayer):
     """Layer class including the ohsome API parameters needed to retrieve the data.
 
@@ -23,7 +23,7 @@ class LayerDefinition(BaseLayer):
     ratio_filter: Optional[str] = None
 
 
-@dataclass(frozen=True)
+@dataclass
 class LayerData(BaseLayer):
     """Layer class including the data associated with the layer."""
 
