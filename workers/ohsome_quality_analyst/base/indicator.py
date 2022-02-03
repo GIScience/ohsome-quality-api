@@ -16,6 +16,7 @@ from dacite import from_dict
 from geojson import Feature
 from jinja2 import Environment, FileSystemLoader
 
+from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.utils.definitions import (
     get_attribution,
     get_layer_definition,
@@ -32,21 +33,6 @@ class Metadata:
     description: str
     label_description: Dict
     result_description: str
-
-
-@dataclass
-class LayerDefinition:
-    """Definitions of a layer as defined in the layer_definition.yaml file.
-
-    The definition consist of the ohsome API Parameter needed to create the layer.
-    """
-
-    name: str
-    description: str
-    endpoint: str
-    filter: str
-    ratio_filter: Optional[str] = None
-    source: Optional[str] = None
 
 
 @dataclass

@@ -253,12 +253,15 @@ def get_layer_definition(layer_name: str) -> Dict:
     """
     layers = load_layer_definitions()
     try:
-        return layers[layer_name]
+        layer = layers[layer_name]
     except KeyError:
         logging.error(
             "Invalid layer name. Valid layer names are: " + str(layers.keys())
         )
         raise
+    # Avoid built-in function name `filter`
+    layer["filter_"] = layer.pop("filter")
+    return layer
 
 
 def get_indicator_classes() -> Dict:
