@@ -24,6 +24,7 @@ from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
     REPORT_EXAMPLES,
     IndicatorBpolys,
+    IndicatorData,
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
@@ -149,7 +150,7 @@ async def get_indicator(parameters=Depends(IndicatorDatabase)):
 
 @app.post("/indicator")
 async def post_indicator(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase] = Body(
+    parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     )
