@@ -101,7 +101,7 @@ def build_data_dict(
     """Build data dictionary for ohsome API query."""
     data = {
         "bpolys": geojson.dumps(FeatureCollection([Feature(geometry=bpolys)])),
-        "filter": layer.filter,
+        "filter": layer.filter_,
     }
     if ratio:
         if layer.ratio_filter is None:
