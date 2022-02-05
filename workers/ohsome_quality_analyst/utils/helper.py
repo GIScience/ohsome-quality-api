@@ -125,10 +125,10 @@ def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dic
     if isinstance(input_, dict):
         if prefix != "":
             prefix += separator
-        for key, _ in input_.items():
+        for key, val in input_.items():
             output.update(
                 flatten_dict(
-                    input_[key],
+                    val,
                     separator=separator,
                     prefix=prefix + key,
                 ),

@@ -14,6 +14,7 @@ from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
+from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
 @dataclass
@@ -79,23 +80,30 @@ class BaseIndicator(metaclass=ABCMeta):
             svg=self._get_default_figure(),
         )
 
-    def as_feature(self) -> Feature:
+    def as_feature(self, flatten: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
+
+        Args:
+            flatten (bool): If true flatten the properties.
         """
-        result = vars(self.result).copy()
-        # Prefix all keys of the dictionary
         properties = {
-            "metadata.name": self.metadata.name,
-            "metadata.description": self.metadata.description,
-            "layer.name": self.layer.name,
-            "layer.description": self.layer.description,
-            **{"result." + str(key): val for key, val in result.items()},
-            **{"data." + str(key): val for key, val in self.data.items()},
+            "metadata": {
+                "name": self.metadata.name,
+                "description": self.metadata.name,
+            },
+            "layer": {
+                "name": self.layer.name,
+                "description": self.layer.description,
+            },
+            "result": vars(self.result).copy(),
+            "data": self.data,
             **self.feature.properties,
         }
+        if flatten:
+            properties = flatten_dict(properties)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,
@@ -103,7 +111,10 @@ class BaseIndicator(metaclass=ABCMeta):
                 properties=properties,
             )
         else:
-            return Feature(geometry=self.feature.geometry, properties=properties)
+            return Feature(
+                geometry=self.feature.geometry,
+                properties=properties,
+            )
 
     @property
     def data(self) -> dict:

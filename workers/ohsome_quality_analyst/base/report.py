@@ -72,7 +72,7 @@ class BaseReport(metaclass=ABCMeta):
         report_properties["metadata"].pop("label_description", None)
         properties = flatten_dict(report_properties, prefix="report")
         for i, indicator in enumerate(self.indicators):
-            p = indicator.as_feature()["properties"]
+            p = indicator.as_feature(flatten=True)["properties"]
             properties.update(
                 {"indicators." + str(i) + "." + str(key): val for key, val in p.items()}
             )
