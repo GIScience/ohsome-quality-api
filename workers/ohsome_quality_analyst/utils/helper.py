@@ -115,19 +115,33 @@ def loads_geojson(bpolys: dict) -> Generator[Feature, None, None]:
         )
 
 
-def flatten_dict(input_dict: dict, *, separator: str = ".", prefix: str = "") -> dict:
-    """Returns the given dict as flattened one-level dict."""
-    if isinstance(input_dict, dict):
-        output = {}
+def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dict:
+    """Return the given dictionary as flattened one-level dict.
+
+    If the given dictionary contains a list it will be flattened as well.
+    For each element of the list the index of this element will be part of the key.
+    """
+    output = {}
+    if isinstance(input_, dict):
         if prefix != "":
             prefix += separator
-        for key, value in input_dict.items():
+        for key, _ in input_.items():
             output.update(
-                flatten_dict(input_dict[key], separator=separator, prefix=prefix + key)
+                flatten_dict(
+                    input_[key],
+                    separator=separator,
+                    prefix=prefix + key,
+                ),
+            )
+        return output
+    elif isinstance(input_, list):
+        for i, item in enumerate(input_):
+            output.update(
+                flatten_dict({str(i): item}, separator=separator, prefix=prefix),
             )
         return output
     else:
-        return {prefix: input_dict}
+        return {prefix: input_}
 
 
 def unflatten_dict(input_dict: dict, *, separator: str = "."):

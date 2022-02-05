@@ -87,6 +87,66 @@ class TestHelper(unittest.TestCase):
         flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
         self.assertDictEqual(flatten_dict(deep), flat)
 
+    def test_flatten_dict_list(self):
+        deep = {"foo": {"bar": "baz", "lang": {"нет": ["tak", "tak2"]}}, "something": 5}
+        flat = {
+            "foo.bar": "baz",
+            "foo.lang.нет.0": "tak",
+            "foo.lang.нет.1": "tak2",
+            "something": 5,
+        }
+        self.assertDictEqual(flatten_dict(deep), flat)
+
+    def test_flatten_dict_list_nested(self):
+        deep = {
+            "foo": {
+                "bar": "baz",
+                "lang": {
+                    "нет": [
+                        {"tak": {"taktak": "taktaktak"}},
+                        {"tok": {"toktok": "toktoktok"}},
+                    ]
+                },
+            },
+            "something": 5,
+        }
+        flat = {
+            "foo.bar": "baz",
+            "foo.lang.нет.0.tak.taktak": "taktaktak",
+            "foo.lang.нет.1.tok.toktok": "toktoktok",
+            "something": 5,
+        }
+        self.assertDictEqual(flatten_dict(deep), flat)
+
+    def test_flatten_dict_list_nested_2(self):
+        deep = {
+            "foo": {
+                "bar": "baz",
+                "lang": {
+                    "нет": [
+                        [
+                            {"tak": "taktak"},
+                            {"tok": "toktok"},
+                        ],
+                        [
+                            {"tak2": "taktak2"},
+                            {"tok2": "toktok2"},
+                        ],
+                    ]
+                },
+            },
+            "something": 5,
+        }
+        flat = {
+            "foo.bar": "baz",
+            "foo.lang.нет.0.0.tak": "taktak",
+            "foo.lang.нет.0.1.tok": "toktok",
+            "foo.lang.нет.1.0.tak2": "taktak2",
+            "foo.lang.нет.1.1.tok2": "toktok2",
+            "something": 5,
+        }
+        self.assertDictEqual(flatten_dict(deep), flat)
+
     def test_unflatten_dict(self):
         flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
         deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
