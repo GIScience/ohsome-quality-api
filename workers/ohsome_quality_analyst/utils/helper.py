@@ -144,31 +144,6 @@ def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dic
         return {prefix: input_}
 
 
-def unflatten_dict(input_dict: dict, *, separator: str = "."):
-    """Returns the given one-level dict as unflatten dict."""
-    output_dict = {}
-    for k, v in input_dict.items():
-        keys = k.split(separator)
-        temp_dict = {}
-        for i, key in enumerate(reversed(keys)):
-            if i == 0:
-                temp_dict = {key: v}
-            else:
-                temp_dict = {key: temp_dict}
-        output_dict = merge_dicts(output_dict, temp_dict)
-    return output_dict
-
-
-def merge_dicts(dict1, dict2):
-    """Merges two nested dictionaries."""
-    for key in dict2:
-        if key in dict1:
-            merge_dicts(dict1[key], dict2[key])
-        else:
-            dict1[key] = dict2[key]
-    return dict1
-
-
 def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
     """Returns the given input sequence as a list.
 
