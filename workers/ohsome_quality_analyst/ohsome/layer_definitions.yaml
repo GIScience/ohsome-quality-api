@@ -50,7 +50,7 @@ poi:
   description: All features with the amenities key.
   endpoint: elements/count
   filter: |
-    ((aeroway in (aerodrome, helipad, heliport))
+    (aeroway in (aerodrome, helipad, heliport))
     or (amenity in (animal_boarding, animal_shelter, arts_centre, atm, baby_hatch, bank, bar, bbq, bench,
     bicycle_parking, bicycle_rental, bicycle_repair_station, biergarten, boat_sharing, brothel, bureau_de_change,
     bus_station, bus_stop, cafe, car_sharing, car_wash, casino, charging_station, cinema, clinic, clock, college,
@@ -96,8 +96,7 @@ poi:
     or (tourism in (alpine_hut, apartment, aquarium, artwork, attraction, camp_site, caravan_site,
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
     wilderness_hut, zoo))
-    or (vaccination = covid19))
-    and type=*
+    or (vaccination = covid19)
 
 landmarks:
   name: POIs for landmarks
