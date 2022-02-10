@@ -1,7 +1,5 @@
-"""
-Standalone helper functions.
-"""
-import datetime
+"""Standalone helper functions."""
+
 import importlib
 import json
 import logging
@@ -10,11 +8,15 @@ import pathlib
 import pkgutil
 import re
 import warnings
+from datetime import date, datetime
 from typing import Generator, Union
 
 import geojson
 import joblib
+import numpy as np
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+
+from ohsome_quality_analyst.indicators.mapping_saturation.models import BaseStatModel
 
 
 def name_to_class(class_type: str, name: str):
@@ -60,18 +62,25 @@ def get_module_dir(module_name: str) -> str:
     return os.path.dirname(module.get_filename())
 
 
-def datetime_to_isostring_timestamp(time: datetime) -> str:
-    """
-    Checks for datetime objects and converts them to ISO 8601 format.
+def json_serialize(obj):
+    """JSON serializer for objects.
 
     Serves as function that gets called for objects that can’t otherwise be
     serialized by the `json` module.
     It should return a JSON encodable version of the object or raise a TypeError.
     https://docs.python.org/3/library/json.html#basic-usage
     """
-    try:
-        return time.isoformat()
-    except AttributeError:
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, BaseStatModel):
+        return obj.as_dict()
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    else:
         raise TypeError
 
 
@@ -88,7 +97,7 @@ def write_geojson(
         geojson.dump(
             geojson_object,
             file,
-            default=datetime_to_isostring_timestamp,
+            default=json_serialize,
             allow_nan=True,
         )
         logging.info("Output file written:\t" + str(outfile))
@@ -115,44 +124,33 @@ def loads_geojson(bpolys: dict) -> Generator[Feature, None, None]:
         )
 
 
-def flatten_dict(input_dict: dict, *, separator: str = ".", prefix: str = "") -> dict:
-    """Returns the given dict as flattened one-level dict."""
-    if isinstance(input_dict, dict):
-        output = {}
+def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dict:
+    """Return the given dictionary as flattened one-level dict.
+
+    If the given dictionary contains a list it will be flattened as well.
+    For each element of the list the index of this element will be part of the key.
+    """
+    output = {}
+    if isinstance(input_, dict):
         if prefix != "":
             prefix += separator
-        for key, value in input_dict.items():
+        for key, val in input_.items():
             output.update(
-                flatten_dict(input_dict[key], separator=separator, prefix=prefix + key)
+                flatten_dict(
+                    val,
+                    separator=separator,
+                    prefix=prefix + key,
+                ),
+            )
+        return output
+    elif isinstance(input_, list):
+        for i, item in enumerate(input_):
+            output.update(
+                flatten_dict({str(i): item}, separator=separator, prefix=prefix),
             )
         return output
     else:
-        return {prefix: input_dict}
-
-
-def unflatten_dict(input_dict: dict, *, separator: str = "."):
-    """Returns the given one-level dict as unflatten dict."""
-    output_dict = {}
-    for k, v in input_dict.items():
-        keys = k.split(separator)
-        temp_dict = {}
-        for i, key in enumerate(reversed(keys)):
-            if i == 0:
-                temp_dict = {key: v}
-            else:
-                temp_dict = {key: temp_dict}
-        output_dict = merge_dicts(output_dict, temp_dict)
-    return output_dict
-
-
-def merge_dicts(dict1, dict2):
-    """Merges two nested dictionaries."""
-    for key in dict2:
-        if key in dict1:
-            merge_dicts(dict1[key], dict2[key])
-        else:
-            dict1[key] = dict2[key]
-    return dict1
+        return {prefix: input_}
 
 
 def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:

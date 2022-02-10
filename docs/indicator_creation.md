@@ -108,7 +108,7 @@ If you have defined these three functions, your indicator is ready to go. To sho
 ![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
 
 
-#### A note on using `scikit-learn` models
+## Notes on the usage of `scikit-learn` models
 
 Indicators can load pre-trained `scikit-learn` models from disk. Please refer to the `scikit-learn` documentation about [Model Persistence](https://scikit-learn.org/stable/modules/model_persistence.html?highlight=export) to learn what needs to be taken into account when exporting models.
 
@@ -119,3 +119,13 @@ OQT has following minimal requirements on an `scikit-learn` model:
 
 OQT provides a function to load a model from disk (`ohsome_quality_analyst.utils.helpers.load_sklearn_model`).
 This function will raise an Exception if a `scitkit-learn` version mismatch occurs.
+
+
+## Notes on the integration of R
+
+OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
+
+> `rpy2` is an interface to R running embedded in a Python process.
+
+For an example how OQT is using `rpy2` have a look the module [`models.py`](/workers/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
+Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.

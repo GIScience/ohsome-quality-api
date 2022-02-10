@@ -1,28 +1,38 @@
 import logging
 from io import StringIO
 from string import Template
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
+import numpy as np
 from dateutil.parser import isoparse
 from geojson import Feature
+from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.indicators.mapping_saturation.sigmoid_curve import (
-    sigmoidCurve,
-)
+from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-
-# threshold values defining the color of the traffic light
-# derived directly from MA Katha p24 (mixture of Gröchenig et al. +  Barrington-Leigh)
-# saturation: 0 < f‘(x) <= 0.03 and years with saturation > 2
-THRESHOLD_YELLOW = 0.03
-# TODO define THRESHOLD_RED (where start stadium ends) with function from MA
 
 
 class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator.
 
+    Calculate the saturation within the last 3 years.
     Time period is one month since 2008.
+
+    Premise: Each aggregation of features (e.g. length of roads or count of building)
+    has a maximum. After increased mapping activity saturation is reached near this
+    maximum.
+
+    Different statistical models are used to find out if saturation is reached.
+
+    Reference Papers:
+    - Gröchenig S et al. (2014): Digging into the history of VGI data-sets: results from
+        a worldwide study on OpenStreetMap mapping activity
+        (https://doi.org/10.1080/17489725.2014.978403)
+    - Barrington-Leigh C and Millard-Ball A (2017): The world’s user-generated road map
+        is more than 80% complete
+        (https://doi.org/10.1371/journal.pone.0180698 pmid:28797037)
     """
 
     def __init__(
@@ -35,162 +45,180 @@ class MappingSaturation(BaseIndicator):
             layer_name=layer_name,
             feature=feature,
         )
-        self.time_range = time_range
+        self.time_range: str = time_range
+
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
-        self.values_normalized: list = []
+        self.latest_value: Union[None, int, float] = None
         self.timestamps: list = []
-        self.no_data: bool = False
-        self.deleted_data: bool = False
+
+        self.upper_threshold = 0.97  # Threshold derived from Gröchenig et al.
+        # TODO: What is a good lower threshold?
+        self.lower_threshold = 0.30
 
         # Attributes needed for result determination
-        self.saturation = None
-        self.growth = None
+        self.best_fit: Optional[models.BaseStatModel] = None
+        self.fitted_models: List[models.BaseStatModel] = []
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry, time=self.time_range
+            layer=self.layer,
+            bpolys=self.feature.geometry,
+            time=self.time_range,
         )
-        self.values = [item["value"] for item in query_results["result"]]
-        self.timestamps = [
-            isoparse(item["timestamp"]) for item in query_results["result"]
-        ]
-        # Latest timestamp of ohsome API results
-        self.result.timestamp_osm = self.timestamps[-1]
-        max_value = max(self.values)
-        if max_value == 0:
-            self.no_data = True
-        elif self.values[-1] == 0:
-            self.deleted_data = True
-        else:
-            self.values_normalized = [value / max_value for value in self.values]
+        for item in query_results["result"]:
+            self.values.append(item["value"])
+            self.timestamps.append(isoparse(item["timestamp"]))
+        self.latest_value = self.values[-1]
 
     def calculate(self) -> None:
-        """Calculate the growth rate and saturation level within the last 3 years."""
-        if self.no_data:
-            self.result.description = "No features were mapped in this region."
+        # Latest timestamp of ohsome API results
+        self.result.timestamp_osm = self.timestamps[-1]
+        edge_case_description = self.check_edge_cases()
+        if edge_case_description:
+            logging.info("Edge case is present. Skipping indicator calculation.")
+            self.result.description = edge_case_description
             return
-        if self.deleted_data:
-            self.result.description = (
-                "All mapped features in this region have been since deleted."
-            )
+        xdata = np.array(range(len(self.timestamps)))
+        fitted_models = []
+        for model in (
+            models.Sigmoid,
+            models.SSlogis,
+            models.SSdoubleS,
+            models.SSfpl,
+            models.SSasymp,
+            models.SSmicmen,
+        ):
+            logging.info("Run {}".format(model.name))
+            try:
+                fitted_models.append(model(xdata=xdata, ydata=np.array(self.values)))
+            # RRuntimeError can occur if data can not be modeled by the R model
+            except RRuntimeError as error:
+                logging.info(
+                    'Skipping model "{0}" due to RRuntimeError: {1}'.format(
+                        model.name, str(error).strip()
+                    )
+                )
+                continue
+            # RuntimeError can occur if data could not be modeled by `curve_fit` (scipy)
+            except RuntimeError as error:
+                logging.info(
+                    'Skipping model "{0}" due to RuntimeError: {1}'.format(
+                        model.name, str(error).strip()
+                    )
+                )
+                continue
+        self.fitted_models = self.select_models(fitted_models)
+        if not self.fitted_models:
+            logging.info("No model has been run successfully.")
             return
-        # prepare the data
-
-        # get y values fot best fitting sigmoid curve, with these y the
-        # saturation will be calculated
-        sigmoid_curve = sigmoidCurve()
-        # TODO: Change the dict to three parameters
-        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
-            {
-                "timestamps": self.timestamps,
-                "results": self.values,
-                "results_normalized": self.values_normalized,
-            }
+        self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
+        logging.info("Best fitting model: " + self.best_fit.name)
+        # Saturation of the last 3 years of the fitted curve
+        y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
+        y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
+        self.result.value = y1 / y2  # Saturation
+        description = Template(self.metadata.result_description).substitute(
+            saturation=round(self.result.value * 100, 2)
         )
-        if ydata_for_sat[0] != "empty":
-            # check if data are more than start stadium
-            # The end of the start stage is defined with
-            # the maximum of the curvature function f''(x)
-            # here: simple check <= 2
-            # TODO implement function from MA for start stadium
-            #
-            # For buildings-count in a small area, this could return a wrong
-            # interpretation, eg a little collection of farm house and buildings
-            # with eg less than 8 buildings, but all buildings are mapped, the value
-            # would be red, but its all mapped...
-            # calculate/define traffic light value and label
-            if max(self.values) <= 2:
-                # start stadium, some data are there, but not much
-                self.saturation = 0
-            else:
-                indices = list(range(len(self.values)))
-                # calculate slope/growth of last 3 years
-                # take value in -36. month and value in last month of data
-                early_x = indices[-36]
-                last_x = indices[-1]
-                # get saturation level within last 3 years
-                self.saturation = sigmoid_curve.getSaturationInLast3Years(
-                    early_x, last_x, indices, ydata_for_sat
-                )
-                # if earlyX and lastX return same y value
-                # (means no growth anymore), then
-                # getSaturationInLast3Years returns 1.0
-
-            # if saturation == 1.0:
-            #    growth should be 0.0
-            self.growth = 1 - self.saturation
-
-            description = Template(self.metadata.result_description).substitute(
-                saturation=self.saturation,
-                growth=self.growth,
+        if 1.0 >= self.result.value > self.upper_threshold:
+            self.result.label = "green"
+            self.result.description = (
+                description + self.metadata.label_description["green"]
             )
-            if self.saturation == 0:
-                self.result.label = "red"
-                self.result.value = 0.0
-                self.result.description = (
-                    description + self.metadata.label_description["red"]
+        elif self.upper_threshold >= self.result.value > self.lower_threshold:
+            self.result.label = "yellow"
+            self.result.description = (
+                description + self.metadata.label_description["yellow"]
+            )
+        elif self.lower_threshold >= self.result.value > 0:
+            self.result.label = "red"
+            self.result.description = (
+                description + self.metadata.label_description["red"]
+            )
+        else:
+            raise ValueError(
+                "Result value (gradient) is an unexpected value: {}".format(
+                    self.result.value
                 )
-            # growth is larger than 3% within last 3 years
-            elif self.growth <= THRESHOLD_YELLOW:
-                self.result.label = "green"
-                self.result.value = 1.0
-                self.result.description = (
-                    description + self.metadata.label_description["green"]
-                )
-            # growth level is better than the red threshold
-            else:
-                self.result.label = "yellow"
-                self.result.value = 0.5
-                self.result.description = (
-                    description + self.metadata.label_description["yellow"]
-                )
+            )
 
     def create_figure(self) -> None:
-        """Create svg with data line in blue and sigmoid curve in red."""
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        # prepare plot
-        # color the lines with different colors
-        linecol = ["b-", "g-", "r-", "y-", "black", "gray", "m-", "c-"]
-
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-        # plot the data
+        ax.set_title("Mapping Saturation")
         ax.plot(
             self.timestamps,
             self.values,
-            linecol[0],
             label="OSM data",
         )
-
-        sigmoid_curve = sigmoidCurve()
-        # TODO: Change the dict to three parameters
-        ydata_for_sat = sigmoid_curve.getBestFittingCurve(
-            {
-                "timestamps": self.timestamps,
-                "results": self.values,
-                "results_normalized": self.values_normalized,
-            }
+        ax.plot(
+            self.timestamps,
+            self.best_fit.fitted_values,
+            label=self.best_fit.name,
         )
-        if ydata_for_sat[0] != "empty":
-            ax.set_title("Saturation level of the data")
-            # plot sigmoid curve
-            ax.plot(
-                self.timestamps,
-                ydata_for_sat,
-                linecol[2],
-                label="Sigmoid curve",
-            )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()  # this is svg data
-        logging.debug("Successful SVG figure creation")
+        self.result.svg = img_data.getvalue()
+        logging.info("Successful creation of the SVG figure.")
         plt.close("all")
+
+    def check_edge_cases(self) -> str:
+        """Check edge cases
+
+        Returns
+            str: Returns description of edge case. Empty string if no edge is present.
+        """
+        # TODO: Add check for the case where the history is to short
+        # no data
+        if max(self.values) == 0:
+            return "No features were mapped in this region."
+        # TODO: Decide on how many features have to be present to run models.
+        # Values can be a count of features (building )or length of features (streets)
+        # not enough data
+        elif np.sum(self.values) < 10:
+            return "Not enough data in this regions available."
+        # deleted data
+        elif self.latest_value == 0:
+            return "All mapped features in this region have been deleted."
+        return ""
+
+    def select_models(self, fitted_models) -> list:
+        """Select suitable models
+
+        Selection criteria:
+            1. Decrease in curve growth
+                - The last data point should be after the inflection point of the curve
+                - If no inflection point exists other measures are used which
+                    approximates 50% of asymptote.
+            2. Data is below 95% confidence interval of the asymptote
+                - Check if the latest data (average last two years) is lower than the
+                    upper limit of the 95% confidence interval of the estimated
+                    asymptote
+        """
+        for fm in list(fitted_models):
+            if fm.name == "Nls Michaelis-Menten Model":
+                param = fm.coefficients["K"]
+            elif fm.name == "Nls Asymptotic Regression Model":
+                param = (fm.coefficients["asym"] + fm.coefficients["R0"]) / 2
+            else:
+                param = fm.inflection_point
+            xdata_max = len(self.timestamps)
+            if xdata_max <= param:
+                fitted_models.remove(fm)
+
+        avg_last_2_years = np.sum(self.values[-24]) / 24
+        for fm in list(fitted_models):
+            if avg_last_2_years >= fm.asym_conf_int[1]:
+                fitted_models.remove(fm)
+
+        return fitted_models

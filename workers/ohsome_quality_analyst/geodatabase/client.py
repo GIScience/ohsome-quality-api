@@ -25,10 +25,7 @@ import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.utils.definitions import DATASETS
-from ohsome_quality_analyst.utils.helper import (
-    datetime_to_isostring_timestamp,
-    unflatten_dict,
-)
+from ohsome_quality_analyst.utils.helper import json_serialize
 
 
 @asynccontextmanager
@@ -77,7 +74,7 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         indicator.result.value,
         indicator.result.description,
         indicator.result.svg,
-        json.dumps(indicator.as_feature(), default=datetime_to_isostring_timestamp),
+        json.dumps(indicator.as_feature(), default=json_serialize),
     )
 
     async with get_connection() as conn:
@@ -119,11 +116,9 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     indicator.result.description = query_result["result_description"]
     indicator.result.svg = query_result["result_svg"]
 
+    # Write data back to the attributes of the indicator object
     feature = geojson.loads(query_result["feature"])
-    properties = unflatten_dict(feature["properties"])
-    result_data = properties["data"]
-
-    for key, value in result_data.items():
+    for key, value in feature["properties"]["data"].items():
         setattr(indicator, key, value)
     return True
 

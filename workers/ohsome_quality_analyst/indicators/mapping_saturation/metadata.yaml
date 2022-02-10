@@ -3,29 +3,15 @@ MappingSaturation:
   name: Mapping Saturation
   description: |
     Calculate if mapping has saturated.
+    High saturation has been reached if the growth of the fitted curve is minimal.
   label_description:
     red: |
-      Saturation has not been reached at all.
-      The mapping in this region are in just starting.
-      With regard to completeness this means bad quality.
+      No saturation identified (Saturation ≤ 30%).
     yellow: |
-      Saturation not yet reached. The data in this region still seem to be in
-      a growth stadium with a growth of data more than 3 % within the last 3 years.
-      This indicates a difficult to specify quality in respect to completeness,
-      because it depends on the growth rate over time. The growth could be
-       near to saturated or still be in an high growth stadium.
+      Saturation is in progress (30% < Saturation ≤ 97%).
     green: |
-      Saturation has been reached. The data in this region seem quite saturated
-      with a growth of data less than 3 % within the last 3 years.
-      This indicates good quality in respect to completeness.
+      High saturation has been reached (97% < Saturation ≤ 100%).
     undefined: |
-      The quality level could not be calculated for this indicator.
-      This is most likely due to the fact that no features have been mapped
-      for this area of interest. Refer to other indicators that rely on
-      an extrinsic comparison to identify if this means that data quality is
-      bad or if there is just nothing to map here.
+      Saturation could not be calculated.
   result_description: |
-    Saturation is reached if growth is minimal,
-    the value to describe completed saturation is ~1.0.
-    The saturation level for the last 3 years is $saturation
-    with a growth rate of $growth."
+    The saturation of the last 3 years is $saturation%.

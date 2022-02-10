@@ -51,7 +51,7 @@ async def create_indicator_as_geojson(
                 fid_field,
                 force,
             )
-            features.append(indicator.as_feature())
+            features.append(indicator.as_feature(flatten=True))
         if len(features) == 1:
             return features[0]
         else:
@@ -67,7 +67,7 @@ async def create_indicator_as_geojson(
             fid_field,
             force,
         )
-        return indicator.as_feature()
+        return indicator.as_feature(flatten=True)
 
 
 async def create_report_as_geojson(
