@@ -49,6 +49,7 @@ poi:
   name: Points of interest
   description: All features with the amenities key.
   endpoint: elements/count
+  source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
   filter: |
     (aeroway in (aerodrome, helipad, heliport))
     or (amenity in (animal_boarding, animal_shelter, arts_centre, atm, baby_hatch, bank, bar, bbq, bench,
@@ -58,10 +59,11 @@ poi:
     dojo, drinking_water, driving_school, embassy, emergency_phone, ev_charging, fast_food, ferry_terminal,
     fire_station, food_court, fountain, fuel, gambling, grave_yard, hospital, hunting_stand, ice_cream, internet_cafe,
     kindergarten, language_school, library, kneipp_water_cure, marketplace, motorcycle_parking, music_school, nightclub,
-    nursing_home, parking, parking_entrance, parking_space, pharmacy, photo_booth, planetarium, place_of_worship, police,
-    post_box, post_office, pub, public_bath, prison, ranger_station, recycling, rescue_station, restaurant, retirement_home,
-    sanitary_dump_station, school, shelter, shower, social_centre, social_facility, spa, stripclub, studio, table, taxi,
-    telephone, toilets, townhall, university, vending_machine,    veterinary, waste_basket, waste_disposal, water_point))
+    nursing_home, parking, parking_entrance, parking_space, pharmacy, photo_booth, planetarium, place_of_worship,
+    police, post_box, post_office, pub, public_bath, prison, ranger_station, recycling, rescue_station, restaurant,
+    retirement_home, sanitary_dump_station, school, shelter, shower, social_centre, social_facility, spa, stripclub,
+    studio, table, taxi, telephone, toilets, townhall, university, vending_machine, veterinary, waste_basket,
+    waste_disposal, water_point))
     or (emergency in (access_point, defibrillator, fire_hydrant))
     or (healthcare = blood_donation)
     or (healthcare:speciality = vacciniation)

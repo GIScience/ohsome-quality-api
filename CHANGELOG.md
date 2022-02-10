@@ -4,6 +4,7 @@
 
 ### Breaking Changes
 
+- Renamed old "poi" layer to "landmarks" and created new one based on openpoiservice. Removed "idel_vgi_poi" layer ([#246])
 - Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
 - Disable support of the parameter `bpolys` for GET requests to the API ([#223])
 - Rewrite of the Mapping Saturation indicator to use statistical models from the R language ([#170])
@@ -22,6 +23,7 @@
 - For requests to the `/indicator` or `/report` endpoints of the API for a custom AOI (usage of the `bpolys` parameter): use the POST method ([#223])
 - `R` (≥ 4.0) needs to be available on the system on which OQT runs ([#170])
 
+[#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
 [#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
