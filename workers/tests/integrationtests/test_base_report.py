@@ -32,3 +32,7 @@ class TestBaseReport(unittest.TestCase):
             "indicators.0.data.feature_count_per_sqkm",
         ):
             self.assertIn(i, feature["properties"].keys())
+
+    def test_attribution_class_property(self):
+        self.assertIsNotNone(SimpleReport.attribution())
+        self.assertIsInstance(SimpleReport.attribution(), str)

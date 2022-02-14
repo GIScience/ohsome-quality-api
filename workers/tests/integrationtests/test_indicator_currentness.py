@@ -23,6 +23,8 @@ class TestIndicatorCurrentness(unittest.TestCase):
             feature=feature,
             layer_name="major_roads_count",
         )
+        self.assertIsNotNone(indicator.attribution())
+
         asyncio.run(indicator.preprocess())
         self.assertIsInstance(indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(indicator.result.timestamp_oqt, datetime)

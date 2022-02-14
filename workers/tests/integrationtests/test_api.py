@@ -26,6 +26,10 @@ class TestApi(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertTrue(self.general_schema.is_valid(response_content))
+        self.assertEqual(
+            response_content["attribution"]["text"],
+            "© OpenStreetMap contributors",
+        )
         result = geojson.loads(json.dumps(response_content))
         self.assertTrue(result.is_valid)
 

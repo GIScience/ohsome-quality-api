@@ -11,6 +11,7 @@ from geojson import Feature
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.utils.definitions import get_attribution
 
 
 class GhsPopComparisonBuildings(BaseIndicator):
@@ -31,6 +32,10 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.pop_count_per_sqkm = None
         self.feature_count = None
         self.feature_count_per_sqkm = None
+
+    @classmethod
+    def attribution(cls) -> str:
+        return get_attribution(["OSM", "GHSL"])
 
     def green_threshold_function(self, pop_per_sqkm) -> float:
         # TODO: Add docstring

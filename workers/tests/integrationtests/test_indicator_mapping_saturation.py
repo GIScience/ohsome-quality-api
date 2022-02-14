@@ -20,6 +20,8 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     def test(self):
         # Heidelberg
         indicator = MappingSaturation(layer_name=self.layer_name, feature=self.feature)
+        self.assertIsNotNone(indicator.attribution())
+
         asyncio.run(indicator.preprocess())
         self.assertTrue(indicator.values)  # No empty list
         self.assertIsNotNone(indicator.latest_value)
