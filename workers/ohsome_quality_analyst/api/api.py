@@ -130,8 +130,15 @@ def empty_api_response() -> dict:
     return {
         "apiVersion": __version__,
         "attribution": {
-            "text": "© OpenStreetMap contributors",
-            "url": "https://ohsome.org/copyrights",
+            "text": (
+                "© OpenStreetMap contributors;"
+                "Global Human Settlement Layer Data;"
+                "Earth Observation Group Nighttime Light Data."
+            ),
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/"
+                "LICENSES.md"
+            ),
         },
     }
 
