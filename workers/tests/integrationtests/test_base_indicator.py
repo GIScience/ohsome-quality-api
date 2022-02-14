@@ -52,3 +52,7 @@ class TestBaseIndicator(unittest.TestCase):
         self.assertIsNotNone(indicator.data)
         for key in indicator.data.keys():
             self.assertNotIn(key, ("result", "metadata", "layer", "feature"))
+
+    def test_attribution_class_property(self):
+        self.assertIsNotNone(GhsPopComparisonBuildings.attribution())
+        self.assertIsInstance(GhsPopComparisonBuildings.attribution(), str)

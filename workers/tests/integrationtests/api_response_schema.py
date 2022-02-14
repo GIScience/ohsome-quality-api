@@ -33,8 +33,8 @@ def get_general_schema() -> Schema:
         {
             "apiVersion": str,
             "attribution": {
-                "text": str,
                 "url": str,
+                Opt("text"): str,
             },
         },
         ignore_extra_keys=True,
