@@ -146,7 +146,7 @@ class TestOqt(unittest.TestCase):
             new_callable=AsyncMock,
         ) as get_feature_ids_mock:
             get_feature_ids_mock.return_value = ["3"]
-            asyncio.run(oqt.create_all_indicators(dataset="regions"))
+            asyncio.run(oqt.create_all_indicators("regions"))
 
     def test_check_area_size(self):
         path = os.path.join(

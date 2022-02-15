@@ -286,36 +286,27 @@ async def create_all_indicators(dataset: str, force: bool = False) -> None:
 
     """
 
-    async def _create_indicator(indicator_name, layer_name, fid, force, semaphore):
+    async def sem_task(task, semaphore=asyncio.Semaphore(4)):
+        """Run task with semaphore. Semaphore limits num of concurrent executions."""
         async with semaphore:
-            await create_indicator(
-                IndicatorDatabase(
-                    name=indicator_name,
-                    layerName=layer_name,
-                    dataset="regions",
-                    featureId=fid,
-                ),
-                force=force,
-            )
+            return await task
 
-    # Semaphore limits num of concurrent executions
-    semaphore = asyncio.Semaphore(4)
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             tasks.append(
-                asyncio.create_task(
-                    _create_indicator(
-                        indicator_name,
-                        layer_name,
-                        fid,
-                        force,
-                        semaphore,
-                    )
+                create_indicator(
+                    IndicatorDatabase(
+                        name=indicator_name,
+                        layerName=layer_name,
+                        dataset=dataset,
+                        featureId=fid,
+                    ),
+                    force=force,
                 )
             )
-    await asyncio.gather(*tasks)
+    await asyncio.gather(*(sem_task(task) for task in tasks))
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
