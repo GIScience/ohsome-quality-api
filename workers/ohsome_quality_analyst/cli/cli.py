@@ -199,19 +199,21 @@ def create_report(
 
 
 @cli.command("create-all-indicators")
+@cli_option(options.dataset_name)
 @cli_option(options.force)
-def create_all_indicators(force: bool):
-    """Create all indicators for all OQT regions."""
+def create_all_indicators(dataset_name: str, force: bool):
+    """Create all indicators for all features of the given dataset."""
     click.echo(
-        "This command will calculate all indicators for all OQT regions "
-        + "and may take a while to complete."
+        "This command will calculate all indicators for all features of the given "
+        + "dataset. This may take a while to complete."
     )
     if force:
         click.echo(
-            "The argument 'force' will update the indicator results in the database."
+            "The argument 'force' will overwrite existing indicator results in the "
+            + "database."
         )
     click.confirm("Do you want to continue?", abort=True)
-    asyncio.run(oqt.create_all_indicators(force=force))
+    asyncio.run(oqt.create_all_indicators(dataset_name, force=force))
 
 
 if __name__ == "__main__":

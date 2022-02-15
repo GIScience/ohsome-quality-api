@@ -251,7 +251,6 @@ async def _create_report(  # noqa
 ) -> Report:
     """Create a Report.
 
-    Create indicators from scratch.
     Aggregates all indicator results and calculates an overall quality score.
     """
     name, feature = (
@@ -279,11 +278,12 @@ async def _create_report(  # noqa
     return report
 
 
-async def create_all_indicators(force: bool = False) -> None:
-    """Create all Indicator/Layer combinations for OQT regions.
+async def create_all_indicators(dataset: str, force: bool = False) -> None:
+    """Create all indicator/layer combination for the given dataset.
 
     Possible Indicator/Layer combinations are defined in `definitions.py`.
     This functions executes `create_indicator()` function up to four times concurrently.
+
     """
 
     async def _create_indicator(indicator_name, layer_name, fid, force, semaphore):
@@ -301,7 +301,7 @@ async def create_all_indicators(force: bool = False) -> None:
     # Semaphore limits num of concurrent executions
     semaphore = asyncio.Semaphore(4)
     tasks: List[asyncio.Task] = []
-    fids = await db_client.get_feature_ids("regions")
+    fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
         for indicator_name, layer_name in INDICATOR_LAYER:
             tasks.append(
