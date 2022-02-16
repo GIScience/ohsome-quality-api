@@ -123,3 +123,24 @@ class TestDefinitions(unittest.TestCase):
         )
 
         self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
+
+    def test_get_valid_indicators(self):
+        indicators = definitions.get_valid_indicators("building_count")
+        self.assertEqual(
+            indicators,
+            (
+                "GhsPopComparisonBuildings",
+                "MappingSaturation",
+                "Currentness",
+            ),
+        )
+
+    def test_get_valid_layers(self):
+        layers = definitions.get_valid_layers("GhsPopComparisonRoads")
+        self.assertEqual(
+            layers,
+            (
+                "jrc_road_length",
+                "major_roads_length",
+            ),
+        )

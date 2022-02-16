@@ -19,7 +19,12 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.base.report import BaseReport as Report
-from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import (
+    GEOM_SIZE_LIMIT,
+    INDICATOR_LAYER,
+    get_valid_indicators,
+    get_valid_layers,
+)
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
@@ -278,7 +283,12 @@ async def _create_report(  # noqa
     return report
 
 
-async def create_all_indicators(dataset: str, force: bool = False) -> None:
+async def create_all_indicators(
+    dataset: str,
+    indicator_name: str = None,
+    layer_name: str = None,
+    force: bool = False,
+) -> None:
     """Create all indicator/layer combination for the given dataset.
 
     Possible Indicator/Layer combinations are defined in `definitions.py`.
@@ -291,10 +301,21 @@ async def create_all_indicators(dataset: str, force: bool = False) -> None:
         async with semaphore:
             return await task
 
+    if indicator_name is not None and layer_name is None:
+        layers = get_valid_layers(indicator_name)
+        indicator_layer = tuple([(indicator_name, lay) for lay in layers])
+    elif indicator_name is None and layer_name is not None:
+        indicators = get_valid_indicators(layer_name)
+        indicator_layer = tuple([(ind, layer_name) for ind in indicators])
+    elif indicator_name is not None and layer_name is not None:
+        indicator_layer = ((indicator_name, layer_name),)
+    else:
+        indicator_layer = INDICATOR_LAYER
+
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name, layer_name in INDICATOR_LAYER:
+        for indicator_name, layer_name in indicator_layer:
             tasks.append(
                 create_indicator(
                     IndicatorDatabase(
