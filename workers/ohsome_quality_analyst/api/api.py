@@ -132,6 +132,7 @@ def empty_api_response() -> dict:
         "attribution": {
             "text": (
                 "© OpenStreetMap contributors;"
+                "© European Union, 1995-2022"
                 "Global Human Settlement Layer Data;"
                 "Earth Observation Group Nighttime Light Data."
             ),
