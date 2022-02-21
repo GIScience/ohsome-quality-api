@@ -1,8 +1,10 @@
 ## Copyrights and Attribution
 
-### Ohsome Copyrights and Attribution - OpenStreetMap
+### Aggregated OpenStreetMap Data: ohsome API
 
-https://ohsome.org/copyrights
+- Source: https://api.ohsome.org
+- Attribution and use conditions: https://ohsome.org/copyrights
+- Citation: https://github.com/GIScience/ohsome-api#how-to-cite
 
 
 ### GHSL - GHS-BUILT R2018A
