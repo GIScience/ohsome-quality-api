@@ -132,6 +132,14 @@ USER_AGENT = os.getenv(
     default="ohsome-quality-analyst/{0}".format(oqt_version),
 )
 
+ATTRIBUTIONS = MappingProxyType(
+    {
+        "OSM": "© OpenStreetMap contributors",
+        "GHSL": "© European Union, 1995-2022, Global Human Settlement Layer Data",
+        "VNL": "Earth Observation Group Nighttime Light Data",
+    }
+)
+
 
 def get_log_level():
     if "pydevd" in sys.modules or "pdb" in sys.modules:
@@ -332,3 +340,22 @@ def get_data_dir() -> str:
             data_dir,
         )
     return data_dir
+
+
+def get_attribution_text(data_keys: list) -> dict:
+    """Return attribution text. Individual attributions are separated by semicolons."""
+    assert set(data_keys) <= set(("OSM", "GHSL", "VNL"))
+
+    filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTIONS.items()))
+    return "; ".join([str(v) for v in filtered.values()]) + "."
+
+
+def get_attribution(data_keys: list) -> dict:
+    """Return dict with attribution text and url."""
+    return {
+        "text": get_attribution_text(data_keys),
+        "url": (
+            "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/"
+            + "COPYRIGHTS.md"
+        ),
+    }

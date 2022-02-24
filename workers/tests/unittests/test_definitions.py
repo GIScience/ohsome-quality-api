@@ -107,3 +107,46 @@ class TestDefinitions(unittest.TestCase):
     def test_get_data_dir_error(self):
         with self.assertRaises(FileNotFoundError):
             definitions.get_data_dir()
+
+    def test_get_attributions_text(self):
+        attributions = definitions.get_attribution_text(["OSM"])
+        self.assertEqual(attributions, "© OpenStreetMap contributors.")
+
+        attributions = definitions.get_attribution_text(["OSM", "GHSL", "VNL"])
+        self.assertEqual(
+            attributions,
+            (
+                "© OpenStreetMap contributors; © European Union, 1995-2022, "
+                "Global Human Settlement Layer Data; "
+                "Earth Observation Group Nighttime Light Data."
+            ),
+        )
+
+        self.assertRaises(AssertionError, definitions.get_attribution_text, ["MSO"])
+
+    def test_get_attribution(self):
+
+        url = (
+            "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/"
+            + "COPYRIGHTS.md"
+        )
+        attributions = definitions.get_attribution(["OSM"])
+        self.assertEqual(
+            attributions,
+            {"text": "© OpenStreetMap contributors.", "url": url},
+        )
+
+        attributions = definitions.get_attribution(["OSM", "GHSL", "VNL"])
+        self.assertEqual(
+            attributions,
+            {
+                "text": (
+                    "© OpenStreetMap contributors; © European Union, 1995-2022, "
+                    "Global Human Settlement Layer Data; "
+                    "Earth Observation Group Nighttime Light Data."
+                ),
+                "url": url,
+            },
+        )
+
+        self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
