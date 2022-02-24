@@ -13,7 +13,11 @@ import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import Feature
 
-from ohsome_quality_analyst.utils.definitions import get_layer_definition, get_metadata
+from ohsome_quality_analyst.utils.definitions import (
+    get_attribution,
+    get_layer_definition,
+    get_metadata,
+)
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
 
@@ -110,6 +114,7 @@ class BaseIndicator(metaclass=ABCMeta):
             },
             "result": vars(self.result).copy(),
             "data": self.data,
+            "attribution": self.attribution,
             **self.feature.properties,
         }
         if flatten:
@@ -128,21 +133,35 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @property
     def data(self) -> dict:
-        """All Indicator object attributes except feature, result, metadata and layer.
+        """All Indicator object attributes except the base attributes.
 
-        Attributes will be dumped and immediately loaded again by the `json` library.
-        In this process a custom function for serializing data types which are not
-        supported by the `json` library (E.g. numpy datatypes or objects of the
-        `BaseModelStats` class used by the Mapping Saturation Indicator). This will make
-        sure that objects which can be represented as dictionary will be converted to
-        a dictionary.
+        All Indicator object attributes except feature, result, metadata, layer and
+        attribution.
+
+        Note:
+            Attributes will be dumped and immediately loaded again by the `json`
+            library. In this process a custom function for serializing data types which
+            are not supported by the `json` library (E.g. numpy datatypes or objects of
+            the `BaseModelStats` class) will be executed.
         """
         data = vars(self).copy()
         data.pop("result")
         data.pop("metadata")
         data.pop("layer")
         data.pop("feature")
+        data.pop("attribution")
         return json.loads(json.dumps(data, default=json_serialize).encode())
+
+    @property
+    def attribution(self) -> dict:
+        """Data attribution text and URL.
+
+        Defaults to OpenStreetMap attribution.
+
+        This property should be overwritten by the Sub Class if additional data
+        attribution is necessary.
+        """
+        return get_attribution(["OSM"])
 
     @abstractmethod
     async def preprocess(self) -> None:
