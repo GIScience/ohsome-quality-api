@@ -33,8 +33,9 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.feature_count = None
         self.feature_count_per_sqkm = None
 
+    @classmethod
     @property
-    def attribution(self) -> dict:
+    def attribution(self) -> str:
         return get_attribution(["OSM", "GHSL"])
 
     def green_threshold_function(self, pop_per_sqkm) -> float:

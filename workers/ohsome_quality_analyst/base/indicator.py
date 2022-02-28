@@ -114,7 +114,6 @@ class BaseIndicator(metaclass=ABCMeta):
             },
             "result": vars(self.result).copy(),
             "data": self.data,
-            "attribution": self.attribution,
             **self.feature.properties,
         }
         if flatten:
@@ -149,12 +148,12 @@ class BaseIndicator(metaclass=ABCMeta):
         data.pop("metadata")
         data.pop("layer")
         data.pop("feature")
-        data.pop("attribution")
         return json.loads(json.dumps(data, default=json_serialize).encode())
 
+    @classmethod
     @property
-    def attribution(self) -> dict:
-        """Data attribution text and URL.
+    def attribution(self) -> str:
+        """Data attribution as text.
 
         Defaults to OpenStreetMap attribution.
 

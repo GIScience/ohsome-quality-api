@@ -58,5 +58,4 @@ class TestBaseIndicator(unittest.TestCase):
             feature=self.feature, layer_name=self.layer_name
         )
         self.assertIsNotNone(indicator.attribution)
-        self.assertTrue(indicator.attribution)
-        self.assertIsInstance(indicator.attribution, dict)
+        self.assertIsInstance(indicator.attribution, str)
