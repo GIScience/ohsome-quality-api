@@ -1,5 +1,9 @@
 # Copyrights and Attribution
 
+> Not all attributions and use conditions apply to an API response.
+> Please have a look at the API response field `attribution` to figure out which of the following data needs attribution.
+
+
 ## Aggregated OpenStreetMap Data - ohsome API
 
 - Source: https://api.ohsome.org
