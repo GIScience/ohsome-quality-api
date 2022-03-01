@@ -30,6 +30,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
+    ATTRIBUTION_URL,
     INDICATOR_LAYER,
     configure_logging,
     get_dataset_names_api,
@@ -44,7 +45,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     RasterDatasetUndefinedError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import json_serialize
+from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -129,6 +130,9 @@ async def oqt_exception_handler(
 def empty_api_response() -> dict:
     return {
         "apiVersion": __version__,
+        "attribution": {
+            "url": ATTRIBUTION_URL,
+        },
     }
 
 
@@ -181,6 +185,10 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
+    response["attribution"]["text"] = name_to_class(
+        class_type="indicator",
+        name=p["name"].value,
+    ).attribution
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
@@ -235,9 +243,12 @@ async def _fetch_report(
         fid_field,
         size_restriction=True,
     )
-    response = empty_api_response()
     if p["include_svg"] is False:
         remove_svg_from_properties(geojson_object)
+    response = empty_api_response()
+    response["attribution"]["text"] = name_to_class(
+        class_type="report", name=p["name"].value
+    ).attribution
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 

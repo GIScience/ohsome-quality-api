@@ -14,14 +14,14 @@ class TestApi(unittest.TestCase):
         response_template = {
             "apiVersion": oqt_version,
             "attribution": {
-                "text": "© OpenStreetMap contributors",
-                "url": "https://ohsome.org/copyrights",
+                "url": (
+                    "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
+                    + "data/COPYRIGHTS.md"
+                ),
             },
         }
-        self.assertEqual(response_template, empty_api_response())
+        self.assertDictEqual(response_template, empty_api_response())
 
-
-class TestRemoveSvgFromProperties(unittest.TestCase):
     def test_remove_svg_from_properties(self):
         feature = geojson.utils.generate_random("Polygon")
         properties_dict = {"test": "test", "result.svg": "123", "result.label": "green"}
