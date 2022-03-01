@@ -211,12 +211,7 @@ async def post_report(
     return await _fetch_report(parameters)
 
 
-async def _fetch_report(
-    parameters: Union[
-        ReportBpolys,
-        ReportDatabase,
-    ],
-):
+async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
     geojson_object = await oqt.create_report_as_geojson(
         parameters,
         size_restriction=True,

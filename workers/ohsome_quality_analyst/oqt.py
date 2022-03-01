@@ -17,8 +17,8 @@ from ohsome_quality_analyst.api.request_models import (
     ReportBpolys,
     ReportDatabase,
 )
-from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.report import BaseReport
+from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
+from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, INDICATOR_LAYER
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
@@ -28,7 +28,7 @@ from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
 
 
 async def create_indicator_as_geojson(
-    parameters,
+    parameters: Union[IndicatorBpolys, IndicatorDatabase],
     force: bool = False,
     size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
@@ -65,7 +65,7 @@ async def create_indicator_as_geojson(
 
 
 async def create_report_as_geojson(
-    parameters,
+    parameters: Union[ReportBpolys, ReportDatabase],
     force: bool = False,
     size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
@@ -102,18 +102,18 @@ async def create_report_as_geojson(
 
 
 @singledispatch
-async def create_indicator(param, force: bool = False):
+async def create_indicator(parameters, force: bool = False) -> Indicator:
     """Create an Indicator."""
     raise NotImplementedError(
-        "Cannot create Indicator for parameters of type: " + str(type(param))
+        "Cannot create Indicator for parameters of type: " + str(type(parameters))
     )
 
 
 @create_indicator.register
 async def _create_indicator(
-    param: IndicatorDatabase,
+    parameters: IndicatorDatabase,
     force: bool = False,
-) -> BaseIndicator:
+) -> Indicator:
     """Create an Indicator by fetching the results from the database.
 
     Fetch the pre-computed Indicator results from the Geodatabase.
@@ -121,22 +121,23 @@ async def _create_indicator(
     In case fetching the Indicator results from the database fails, the Indicator is
     created from scratch and then those results are saved to the database.
     """
-    name, layer_name, dataset, feature_id = (
-        param.name.value,
-        param.layer_name.value,
-        param.dataset.value,
-        param.feature_id,
-    )
-    if param.fid_field is not None:
-        feature_id = await db_client.map_fid_to_uid(
-            dataset, feature_id, param.fid_field.value
-        )
-    else:
-        feature_id = param.feature_id
+    name = parameters.name.value
+    layer_name = parameters.layer_name.value
 
     logging.info("Creating indicator ...")
     logging.info("Indicator name: " + name)
     logging.info("Layer name:     " + layer_name)
+
+    dataset = parameters.dataset.value
+    fid_field = parameters.fid_field
+    if fid_field is not None:
+        feature_id = await db_client.map_fid_to_uid(
+            dataset,
+            parameters.feature_id,
+            fid_field.value,
+        )
+    else:
+        feature_id = parameters.feature_id
 
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
@@ -144,7 +145,9 @@ async def _create_indicator(
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
-            indicator_raw, dataset, feature_id
+            indicator_raw,
+            dataset,
+            feature_id,
         )
     except (UndefinedTableError, EmptyRecordError):
         failure = True
@@ -162,11 +165,14 @@ async def _create_indicator(
 
 @create_indicator.register
 async def _create_indicator(  # noqa
-    param: IndicatorBpolys,
+    parameters: IndicatorBpolys,
     force: bool = False,
-) -> BaseIndicator:
+) -> Indicator:
     """Create an indicator from scratch."""
-    name, layer_name, feature = param.name.value, param.layer_name.value, param.bpolys
+    name = parameters.name.value
+    layer_name = parameters.layer_name.value
+    feature = parameters.bpolys
+
     logging.info("Creating indicator ...")
     logging.info("Indicator name: " + name)
     logging.info("Layer name:     " + layer_name)
@@ -185,39 +191,40 @@ async def _create_indicator(  # noqa
 
 
 @singledispatch
-async def create_report(param, force: bool = False):
+async def create_report(parameters, force: bool = False) -> Report:
     """Create a Report."""
     raise NotImplementedError(
-        "Cannot create Report for parameters of type: " + str(type(param))
+        "Cannot create Report for parameters of type: " + str(type(parameters))
     )
 
 
 @create_report.register
 async def _create_report(
-    param: ReportDatabase,
+    parameters: ReportDatabase,
     force: bool = False,
-) -> BaseReport:
+) -> Report:
     """Create a Report.
 
     Fetches indicator results form the database.
     Aggregates all indicator results and calculates an overall quality score.
     """
-    name, dataset, feature_id, fid_field = (
-        param.name.value,
-        param.dataset.value,
-        param.feature_id,
-        param.fid_field,
-    )
+    name = parameters.name.value
 
     logging.info("Creating Report...")
     logging.info("Report name: " + name)
 
+    dataset = parameters.dataset.value
+    fid_field = parameters.fid_field
     if fid_field is not None:
         feature_id = await db_client.map_fid_to_uid(
-            dataset, feature_id, fid_field.value
+            dataset,
+            parameters.feature_id,
+            fid_field.value,
         )
-    feature = await db_client.get_feature_from_db(dataset, feature_id)
+    else:
+        feature_id = parameters.feature_id
 
+    feature = await db_client.get_feature_from_db(dataset, feature_id)
     report_class = name_to_class(class_type="report", name=name)
     report = report_class(feature=feature)
     report.set_indicator_layer()
@@ -239,17 +246,17 @@ async def _create_report(
 
 @create_report.register
 async def _create_report(  # noqa
-    param: ReportBpolys,
+    parameters: ReportBpolys,
     force: bool = False,
-) -> BaseReport:
+) -> Report:
     """Create a Report.
 
     Create indicators from scratch.
     Aggregates all indicator results and calculates an overall quality score.
     """
     name, feature = (
-        param.name.value,
-        param.bpolys,
+        parameters.name.value,
+        parameters.bpolys,
     )
 
     logging.info("Creating Report...")
