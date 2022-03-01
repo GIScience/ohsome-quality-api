@@ -23,23 +23,23 @@ class TestOqtGeoJsonIO(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_bpolys(self):
-        param = IndicatorBpolys(
+        patameters = IndicatorBpolys(
             name=self.name,
             layerName=self.layer_name,
             bpolys=self.feature,
         )
-        feature = asyncio.run(oqt.create_indicator_as_geojson(param))
+        feature = asyncio.run(oqt.create_indicator_as_geojson(patameters))
         self.assertIsInstance(feature, Feature)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_database(self):
-        param = IndicatorDatabase(
+        parameters = IndicatorDatabase(
             name=self.name,
             layerName=self.layer_name,
             dataset=self.dataset,
             featureId=self.feature_id,
         )
-        feature = asyncio.run(oqt.create_indicator_as_geojson(param))
+        feature = asyncio.run(oqt.create_indicator_as_geojson(parameters))
         self.assertIsInstance(feature, Feature)
 
 

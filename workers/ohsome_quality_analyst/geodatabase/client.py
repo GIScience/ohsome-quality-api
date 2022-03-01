@@ -24,6 +24,7 @@ import asyncpg
 import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
+from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.utils.definitions import DATASETS
 from ohsome_quality_analyst.utils.exceptions import EmptyRecordError
 from ohsome_quality_analyst.utils.helper import json_serialize
@@ -45,7 +46,11 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(indicator, dataset: str, feature_id: str) -> None:
+async def save_indicator_results(
+    indicator: Indicator,
+    dataset: str,
+    feature_id: str,
+) -> None:
     """Save the indicator result for a given dataset and feature in the Geodatabase.
 
     Create results table if not exists.
@@ -83,7 +88,11 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(indicator, dataset: str, feature_id: str):
+async def load_indicator_results(
+    indicator: Indicator,
+    dataset: str,
+    feature_id: str,
+) -> Indicator:
     """Get the indicator result from the Geodatabase.
 
     Reads given dataset and feature id from the indicator object.
