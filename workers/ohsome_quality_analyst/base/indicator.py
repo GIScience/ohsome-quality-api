@@ -149,7 +149,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @classmethod
     @property
-    def attribution(self) -> str:
+    def attribution(cls) -> str:
         """Data attribution as text.
 
         Defaults to OpenStreetMap attribution.

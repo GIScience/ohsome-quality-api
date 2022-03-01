@@ -189,6 +189,7 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
         class_type="indicator",
         name=p["name"].value,
     ).attribution
+    breakpoint()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 

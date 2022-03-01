@@ -32,7 +32,7 @@ class GhsPopComparisonRoads(BaseIndicator):
 
     @classmethod
     @property
-    def attribution(self) -> str:
+    def attribution(cls) -> str:
         return get_attribution(["OSM", "GHSL"])
 
     def green_threshold_function(self, pop_per_sqkm) -> float:
