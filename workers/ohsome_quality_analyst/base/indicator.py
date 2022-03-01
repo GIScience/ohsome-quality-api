@@ -132,10 +132,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @property
     def data(self) -> dict:
-        """All Indicator object attributes except the base attributes.
-
-        All Indicator object attributes except feature, result, metadata, layer and
-        attribution.
+        """All Indicator object attributes except feature, result, metadata and layer.
 
         Note:
             Attributes will be dumped and immediately loaded again by the `json`

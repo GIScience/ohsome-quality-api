@@ -348,11 +348,7 @@ def get_data_dir() -> str:
 
 
 def get_attribution(data_keys: list) -> str:
-    """Return attribution text
-
-    Individual attributions are separated by semicolons.
-    Defaults to: ohsome quality analyst
-    """
+    """Return attribution text. Individual attributions are separated by semicolons."""
     assert set(data_keys) <= set(("OSM", "GHSL", "VNL"))
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()]) + "."
