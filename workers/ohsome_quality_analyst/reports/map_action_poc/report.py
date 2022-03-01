@@ -1,14 +1,7 @@
-from geojson import Feature
-
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
 
 class MapActionPoc(BaseReport):
-    def __init__(self, feature: Feature = None) -> None:
-        """Create a list of indicator objects."""
-
-        super().__init__(feature=feature)
-
     def set_indicator_layer(self) -> None:
         self.indicator_layer = (
             IndicatorLayer("MappingSaturation", "mapaction_settlements_count"),
