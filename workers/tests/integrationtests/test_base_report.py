@@ -34,5 +34,5 @@ class TestBaseReport(unittest.TestCase):
             self.assertIn(i, feature["properties"].keys())
 
     def test_attribution_class_property(self):
-        self.assertIsNotNone(SimpleReport.attribution)
-        self.assertIsInstance(SimpleReport.attribution, str)
+        self.assertIsNotNone(SimpleReport.attribution())
+        self.assertIsInstance(SimpleReport.attribution(), str)

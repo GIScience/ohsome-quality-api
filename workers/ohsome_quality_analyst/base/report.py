@@ -119,7 +119,6 @@ class BaseReport(metaclass=ABCMeta):
         pass
 
     @classmethod
-    @property
     def attribution(cls) -> str:
         """Data attribution as text.
 

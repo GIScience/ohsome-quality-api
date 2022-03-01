@@ -24,6 +24,8 @@ class TestIndicatorRatio(unittest.TestCase):
             feature=self.feature,
             layer_name="jrc_health_count",
         )
+        self.assertIsNotNone(indicator.attribution())
+
         asyncio.run(indicator.preprocess())
         self.assertIsInstance(indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(indicator.result.timestamp_oqt, datetime)

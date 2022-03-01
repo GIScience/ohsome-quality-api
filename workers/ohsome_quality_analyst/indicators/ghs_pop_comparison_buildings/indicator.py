@@ -34,7 +34,6 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.feature_count_per_sqkm = None
 
     @classmethod
-    @property
     def attribution(cls) -> str:
         return get_attribution(["OSM", "GHSL"])
 

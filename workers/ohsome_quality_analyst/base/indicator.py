@@ -148,7 +148,6 @@ class BaseIndicator(metaclass=ABCMeta):
         return json.loads(json.dumps(data, default=json_serialize).encode())
 
     @classmethod
-    @property
     def attribution(cls) -> str:
         """Data attribution as text.
 

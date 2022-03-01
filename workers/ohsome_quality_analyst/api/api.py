@@ -188,8 +188,7 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
         name=p["name"].value,
-    ).attribution
-    breakpoint()
+    ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
@@ -249,7 +248,7 @@ async def _fetch_report(
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="report", name=p["name"].value
-    ).attribution
+    ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
