@@ -35,7 +35,7 @@ class RemoteMappingLevelOne(BaseReport):
     def combine_indicators(self) -> None:
         super().combine_indicators()
 
-    @staticmethod
+    @classmethod
     @property
-    def attribution() -> str:
+    def attribution(cls) -> str:
         return get_attribution(["OSM", "GHSL"])
