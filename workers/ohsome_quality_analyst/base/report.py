@@ -8,7 +8,7 @@ from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.utils.definitions import get_metadata
+from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
@@ -86,11 +86,6 @@ class BaseReport(metaclass=ABCMeta):
             return Feature(geometry=self.feature.geometry, properties=properties)
 
     @abstractmethod
-    def set_indicator_layer(self) -> None:
-        """Set the attribute indicator_layer."""
-        pass
-
-    @abstractmethod
     def combine_indicators(self) -> None:
         """Combine indicators results and create the report result object."""
         logging.info(f"Combine indicators for report: {self.metadata.name}")
@@ -117,3 +112,20 @@ class BaseReport(metaclass=ABCMeta):
         elif self.result.value >= 1:
             self.result.label = "green"
             self.result.description = self.metadata.label_description["green"]
+
+    @abstractmethod
+    def set_indicator_layer(self) -> None:
+        """Set the attribute indicator_layer."""
+        pass
+
+    @classmethod
+    @property
+    def attribution(cls) -> str:
+        """Data attribution as text.
+
+        Defaults to OpenStreetMap attribution.
+
+        This property should be overwritten by the Sub Class if additional data
+        attribution is necessary.
+        """
+        return get_attribution(["OSM"])

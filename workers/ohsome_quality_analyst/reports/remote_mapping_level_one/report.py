@@ -3,6 +3,7 @@ from typing import Optional
 from geojson import Feature
 
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.utils.definitions import get_attribution
 
 
 class RemoteMappingLevelOne(BaseReport):
@@ -33,3 +34,8 @@ class RemoteMappingLevelOne(BaseReport):
 
     def combine_indicators(self) -> None:
         super().combine_indicators()
+
+    @staticmethod
+    @property
+    def attribution() -> str:
+        return get_attribution(["OSM", "GHSL"])
