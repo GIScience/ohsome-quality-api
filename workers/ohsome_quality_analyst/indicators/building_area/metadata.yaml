@@ -1,6 +1,6 @@
 ---
-BuildingAreaIndicator:
-  name: Building Area Indicator
+BuildingArea:
+  name: Building Area
   description: |
     tab tab
   label_description:
