@@ -25,8 +25,8 @@ major_roads_count:
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/count
   filter: |
-      highway in (motorway, trunk, primary, secondary,
-      tertiary, unclassified, residential) and type:way
+    highway in (motorway, trunk, primary, secondary,
+    tertiary, unclassified, residential) and type:way
 
 major_roads_length:
   name: Major Roads
@@ -97,13 +97,13 @@ jrc_road_length:
 jrc_road_count:
   name: JRC Road Length
   description: |
-      Selection of OSM highways with maxspeed and oneway tag.
+    Selection of OSM highways with maxspeed and oneway tag.
   endpoint: elements/count
   filter: |
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
   ratio_filter: |
-      highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-      and maxspeed=* and oneway=*
+    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
+    and maxspeed=* and oneway=*
 
 jrc_railway_length:
   name: JRC Railways Length
@@ -249,9 +249,19 @@ ideal_vgi_poi:
   endpoint: elements/count
   filter: (amenity=* or craft=* or emergency=* or historic=* or leisure=* or man_made=* or office=* or place=* or shop=* or tourism=*) and geometry:point
 
-ideal_vgi_lulc:
-  name: IDEAL-VGI Land Use and Land Cover
-  description: Features related to land use and land cover
+lulc:
+  name: Land Use and Land Cover
+  description: |
+    Features related to land use and land cover.
+    This definition includes well established tags for coherent areas at the most atomic level available.
+    This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
+    For further details please contact us.
   endpoint: elements/area
-  filter: (landuse=* or natural=* or waterway=*) and geometry:polygon
-
+  filter: |
+    (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
+  source: |
+    https://osmlanduse.org;
+    Fonte et al 2016 https://cartography-gis.com/docsbca/iccgis2016/ICCGIS2016-47.pdf;
+    https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
+    Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
+    https://www.geog.uni-heidelberg.de/gis/ideal_en.html
