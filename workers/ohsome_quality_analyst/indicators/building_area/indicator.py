@@ -1,19 +1,23 @@
-import logging
-import os
-
-from string import Template
+# import logging
+# import os
+# from string import Template
 
 import dateutil.parser
-import matplotlib.pyplot as plt
-import numpy as np
+
+# import matplotlib.pyplot as plt
+# import numpy as np
 from geojson import Feature
 
+import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.helper import load_sklearn_model
+from ohsome_quality_analyst.raster import client as raster_client
+from ohsome_quality_analyst.utils.definitions import get_raster_dataset
 
+# from ohsome_quality_analyst.utils.helper import load_sklearn_model
 
-#TODO: write metadata.yaml
+# TODO: write metadata.yaml
+
 
 class BuildingArea(BaseIndicator):
     """Building Area Indicator
@@ -37,25 +41,71 @@ class BuildingArea(BaseIndicator):
             feature=feature,
         )
         self.model_name = ""
+        self.area = None
         self.building_area = None
         self.predicted_building_area = None
         self.percentage_mapped = None
+        self.attrdict = None
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
             layer=self.layer, bpolys=self.feature.geometry
         )
+        self.area = await db_client.get_area_of_bpolys(self.feature.geometry)
         self.building_area = query_results["result"][0]["value"]
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        # TODO: Use rasterstats to retrive data from raster files (Waiting for PR 227)
 
-    def calculate(self) -> None:
+        # TODO: Use rasterstats to retrive data from raster files (Waiting for PR 227)
+        smod = raster_client.get_zonal_stats(
+            self.feature, get_raster_dataset("GHS_SMOD_R2019A"), categorical=True
+        )
+        smod_pixelno = raster_client.get_zonal_stats(
+            self.feature, get_raster_dataset("GHS_SMOD_R2019A"), stats="count"
+        )[0].get("count")
+
+        self.attrdict = {
+            "ghspop": raster_client.get_zonal_stats(
+                self.feature, get_raster_dataset("GHS_POP_R2019A"), stats="sum"
+            )[0].get("sum")
+        }
+        self.attrdict["ghspop_density_per_sqkm"] = self.attrdict["ghspop"] / self.area
+        self.attrdict["water"] = smod[0].get(10, 0) / smod_pixelno
+        self.attrdict["very_low_rural"] = smod[0].get(11, 0) / smod_pixelno
+        self.attrdict["low_rural"] = smod[0].get(12, 0) / smod_pixelno
+        self.attrdict["rural_cluster"] = smod[0].get(13, 0) / smod_pixelno
+        self.attrdict["suburban"] = smod[0].get(21, 0) / smod_pixelno
+        self.attrdict["semi_dense_urban_cluster"] = smod[0].get(22, 0) / smod_pixelno
+        self.attrdict["dense_urban_cluster"] = smod[0].get(23, 0) / smod_pixelno
+        self.attrdict["urban_centre"] = smod[0].get(30, 0) / smod_pixelno
+        self.attrdict["shdi_mean"] = 0  # TODO: implement shdi mean
+        self.attrdict["vnl_sum"] = raster_client.get_zonal_stats(
+            self.feature, get_raster_dataset("VNL"), stats="sum"
+        )[0].get("sum")
+
+    """def calculate(self) -> None:
         directory = os.path.dirname(os.path.abspath(__file__))
         scaler = load_sklearn_model(os.path.join(directory, "scaler.joblib"))
         model = load_sklearn_model(os.path.join(directory, "model.joblib"))
         # TODO: per data: drop na, normalize, bring in correct form
-        """data.dropna(
+
+        create df
+
+        x = (df_normalised[["ghspop",
+            "ghspop_density_per_sqkm",
+            "water",
+            "very_low_rural",
+            "low_rural",
+            "rural_cluster",
+            "suburban",
+            "semi_dense_urban_cluster",
+            "dense_urban_cluster",
+            "urban_centre",
+            "shdi_mean",
+            "vnl_sum",]])
+
+
+        data.dropna(
         subset=[
             "ghspop",
             "ghspop_density_per_sqkm",
@@ -71,8 +121,8 @@ class BuildingArea(BaseIndicator):
             "vnl_sum",
         ],
         inplace=True,
-        
-        
+
+
         # define which values must be normalised
         columns_to_normalize = [
             "ghspop",
@@ -87,28 +137,19 @@ class BuildingArea(BaseIndicator):
         # insert normalized values in original df
         df[columns_to_normalize] = values_scaled
         return (df, min_max_scaler)
-        
-        
-        x = (df_normalised[["ghspop",
-            "ghspop_density_per_sqkm",
-            "water",
-            "very_low_rural",
-            "low_rural",
-            "rural_cluster",
-            "suburban",
-            "semi_dense_urban_cluster",
-            "dense_urban_cluster",
-            "urban_centre",
-            "shdi_mean",
-            "vnl_sum",]])
-        
-    )"""
+
+
+
+
+    )
 
         y = model.predict(x)
 
         self.predicted_building_area = y
 
-        self.percentage_mapped = (self.predicted_building_area / self.building_area) * 100
+        self.percentage_mapped = (
+            self.predicted_building_area / self.building_area
+        ) * 100
 
         description = Template(self.metadata.result_description).substitute(
             percentage=self.percentage_mapped,
@@ -118,23 +159,22 @@ class BuildingArea(BaseIndicator):
             self.result.label = "green"
             self.result.value = 1.0
             self.result.description = (
-                    description + self.metadata.label_description["green"]
+                description + self.metadata.label_description["green"]
             )
         # growth is larger than 3% within last 3 years
         elif 95 > self.percentage_mapped >= 75:
             self.result.label = "yellow"
             self.result.value = 0.5
             self.result.description = (
-                    description + self.metadata.label_description["yellow"]
+                description + self.metadata.label_description["yellow"]
             )
         # growth level is better than the red threshold
         else:
             self.result.label = "red"
             self.result.value = 0.0
             self.result.description = (
-                    description + self.metadata.label_description["red"]
+                description + self.metadata.label_description["red"]
             )
-
 
     def create_figure(self) -> None:
         raise NotImplementedError
@@ -205,3 +245,7 @@ class BuildingArea(BaseIndicator):
         self.result.svg = img_data.getvalue()  # this is svg data
         logging.debug("Successful SVG figure creation")
         plt.close("all")
+        y = model.predict(self.building_area)
+
+    def create_figure(self) -> None:
+        raise NotImplementedError"""
