@@ -138,10 +138,8 @@ class MappingSaturation(BaseIndicator):
                 description + self.metadata.label_description["red"]
             )
         else:
-            raise ValueError(
-                "Result value (gradient) is an unexpected value: {}".format(
-                    self.result.value
-                )
+            self.result.description = (
+                "The result value (saturation) is an unexpected value."
             )
 
     def create_figure(self) -> None:
