@@ -1,8 +1,9 @@
 # import logging
-# import os
-# from string import Template
+import os
+from string import Template
 
 import dateutil.parser
+import pandas as pd
 
 # import matplotlib.pyplot as plt
 # import numpy as np
@@ -13,10 +14,10 @@ from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
 from ohsome_quality_analyst.utils.definitions import get_raster_dataset
-
-# from ohsome_quality_analyst.utils.helper import load_sklearn_model
+from ohsome_quality_analyst.utils.helper import load_sklearn_model
 
 # TODO: write metadata.yaml
+# TODO: commenting
 
 
 class BuildingArea(BaseIndicator):
@@ -83,45 +84,12 @@ class BuildingArea(BaseIndicator):
             self.feature, get_raster_dataset("VNL"), stats="sum"
         )[0].get("sum")
 
-    """def calculate(self) -> None:
+    def calculate(self) -> None:
         directory = os.path.dirname(os.path.abspath(__file__))
         scaler = load_sklearn_model(os.path.join(directory, "scaler.joblib"))
         model = load_sklearn_model(os.path.join(directory, "model.joblib"))
-        # TODO: per data: drop na, normalize, bring in correct form
 
-        create df
-
-        x = (df_normalised[["ghspop",
-            "ghspop_density_per_sqkm",
-            "water",
-            "very_low_rural",
-            "low_rural",
-            "rural_cluster",
-            "suburban",
-            "semi_dense_urban_cluster",
-            "dense_urban_cluster",
-            "urban_centre",
-            "shdi_mean",
-            "vnl_sum",]])
-
-
-        data.dropna(
-        subset=[
-            "ghspop",
-            "ghspop_density_per_sqkm",
-            "water",
-            "very_low_rural",
-            "low_rural",
-            "rural_cluster",
-            "suburban",
-            "semi_dense_urban_cluster",
-            "dense_urban_cluster",
-            "urban_centre",
-            "shdi_mean",
-            "vnl_sum",
-        ],
-        inplace=True,
-
+        x = pd.DataFrame.from_dict([self.attrdict])
 
         # define which values must be normalised
         columns_to_normalize = [
@@ -129,40 +97,34 @@ class BuildingArea(BaseIndicator):
             "ghspop_density_per_sqkm",
             "vnl_sum",
         ]
+
         # get the values to be normalized
-        values_unnormalized = df[columns_to_normalize].values  # returns a numpy array
+        values_unnormalized = x[columns_to_normalize].values  # returns a numpy array
         # get normalized values
         values_scaled = scaler.transform(values_unnormalized)
-        #hier nur methode transform statt fit_transform
         # insert normalized values in original df
-        df[columns_to_normalize] = values_scaled
-        return (df, min_max_scaler)
-
-
-
-
-    )
+        x[columns_to_normalize] = values_scaled
 
         y = model.predict(x)
 
-        self.predicted_building_area = y
+        self.predicted_building_area = y[0]
 
         self.percentage_mapped = (
-            self.predicted_building_area / self.building_area
+            self.building_area / self.predicted_building_area
         ) * 100
 
         description = Template(self.metadata.result_description).substitute(
             percentage=self.percentage_mapped,
         )
         # TODO set percentage boundaries for green/yellow/red
-        if self.percentage_mapped >= 95:
+        if self.percentage_mapped >= 95.0:
             self.result.label = "green"
             self.result.value = 1.0
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
         # growth is larger than 3% within last 3 years
-        elif 95 > self.percentage_mapped >= 75:
+        elif 95.0 > self.percentage_mapped >= 75.0:
             self.result.label = "yellow"
             self.result.value = 0.5
             self.result.description = (
@@ -179,7 +141,7 @@ class BuildingArea(BaseIndicator):
     def create_figure(self) -> None:
         raise NotImplementedError
 
-        if self.result.label == "undefined":
+        """if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
 
