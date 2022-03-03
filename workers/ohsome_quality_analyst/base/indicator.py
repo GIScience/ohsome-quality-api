@@ -16,18 +16,14 @@ from dacite import from_dict
 from geojson import Feature
 from jinja2 import Environment, FileSystemLoader
 
-from ohsome_quality_analyst.base.layer import LayerDefinition
-from ohsome_quality_analyst.utils.definitions import (
-    get_attribution,
-    get_layer_definition,
-    get_metadata,
-)
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
 
 @dataclass
 class Metadata:
-    """Metadata of an indicator as defined in the metadata.yaml file"""
+    """Metadata of an indicator as defined in the metadata.yaml file."""
 
     name: str
     description: str
@@ -63,18 +59,14 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def __init__(
         self,
-        layer_name: str,
+        layer: Layer,
         feature: Feature,
     ) -> None:
-        self.feature = feature
-
+        self.layer: Layer = layer
+        self.feature: Feature = feature
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-
-        self.layer: LayerDefinition = from_dict(
-            data_class=LayerDefinition, data=get_layer_definition(layer_name)
-        )
         self.result: Result = Result(
             # UTC datetime object representing the current time.
             timestamp_oqt=datetime.now(timezone.utc),
@@ -87,7 +79,7 @@ class BaseIndicator(metaclass=ABCMeta):
         )
 
     def as_feature(self, flatten: bool = False) -> Feature:
-        """Returns a GeoJSON Feature object.
+        """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
@@ -141,7 +133,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @classmethod
     def attribution(cls) -> str:
-        """Data attribution as text.
+        """Return data attribution as text.
 
         Defaults to OpenStreetMap attribution.
 
@@ -176,7 +168,7 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     def _get_default_figure(self) -> str:
-        """Return a SVG as default figure for indicators"""
+        """Return a SVG as default figure for indicators."""
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         plt.figure(figsize=figsize)

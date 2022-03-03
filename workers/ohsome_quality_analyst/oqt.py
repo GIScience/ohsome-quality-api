@@ -127,11 +127,14 @@ async def _create_indicator(
     created from scratch and then those results are saved to the database.
     """
     name = parameters.name.value
-    layer_name = parameters.layer_name.value
+    layer = from_dict(
+        data_class=LayerDefinition,
+        data=get_layer_definition(layer_name=parameters.layer_name.value),
+    )
 
     logging.info("Creating indicator ...")
     logging.info("Indicator name: " + name)
-    logging.info("Layer name:     " + layer_name)
+    logging.info("Layer name:     " + layer.name)
 
     dataset = parameters.dataset.value
     fid_field = parameters.fid_field
@@ -146,7 +149,7 @@ async def _create_indicator(
 
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator_raw = indicator_class(layer_name=layer_name, feature=feature)
+    indicator_raw = indicator_class(layer=layer, feature=feature)
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
@@ -160,7 +163,7 @@ async def _create_indicator(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                layerName=layer_name,
+                layerName=parameters.layer_name.value,
                 bpolys=feature,
             )
         )

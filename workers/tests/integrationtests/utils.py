@@ -4,6 +4,10 @@ from unittest.mock import MagicMock
 
 import geojson
 import vcr
+from dacite import from_dict
+
+from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.utils.definitions import get_layer_definition
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures", "vcr_cassettes")
@@ -24,6 +28,10 @@ def get_geojson_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as f:
         return geojson.load(f)
+
+
+def get_layer_fixture(name: str) -> LayerDefinition:
+    return from_dict(data_class=LayerDefinition, data=get_layer_definition(name))
 
 
 # usage example:
@@ -47,6 +55,7 @@ dummy_png = (
     b"\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc```\x00\x00\x00\x04\x00\x01\xf6\x178U"
     b"\x00\x00\x00\x00IEND\xaeB`\x82"
 )
+
 oqt_vcr = vcr.VCR(
     cassette_library_dir=FIXTURE_DIR,
     # details see https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes

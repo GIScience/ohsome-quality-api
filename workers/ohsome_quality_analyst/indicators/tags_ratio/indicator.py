@@ -8,13 +8,18 @@ import matplotlib.pyplot as plt
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class TagsRatio(BaseIndicator):
-    def __init__(self, layer_name: str, feature: Feature) -> None:
+    def __init__(
+        self,
+        layer: Layer,
+        feature: Feature,
+    ) -> None:
         super().__init__(
-            layer_name=layer_name,
+            layer=layer,
             feature=feature,
         )
         self.threshold_yellow = 0.75

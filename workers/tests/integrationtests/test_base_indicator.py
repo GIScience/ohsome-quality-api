@@ -1,5 +1,6 @@
 import asyncio
 import unittest
+from unittest import mock
 
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
@@ -15,9 +16,7 @@ class TestBaseIndicator(unittest.TestCase):
         self.layer_name = "building_count"
 
     def test_as_feature(self):
-        indicator = GhsPopComparisonBuildings(
-            feature=self.feature, layer_name=self.layer_name
-        )
+        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
 
         feature = indicator.as_feature()
         self.assertTrue(feature.is_valid)
@@ -31,9 +30,7 @@ class TestBaseIndicator(unittest.TestCase):
             self.assertIn(i, feature["properties"]["data"].keys())
 
     def test_as_feature_flatten(self):
-        indicator = GhsPopComparisonBuildings(
-            feature=self.feature, layer_name=self.layer_name
-        )
+        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
         feature = indicator.as_feature(flatten=True)
         self.assertTrue(feature.is_valid)
         for i in (
@@ -46,9 +43,7 @@ class TestBaseIndicator(unittest.TestCase):
             self.assertIn(i, feature["properties"].keys())
 
     def test_data_property(self):
-        indicator = GhsPopComparisonBuildings(
-            feature=self.feature, layer_name=self.layer_name
-        )
+        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
         self.assertIsNotNone(indicator.data)
         for key in indicator.data.keys():
             self.assertNotIn(key, ("result", "metadata", "layer", "feature"))

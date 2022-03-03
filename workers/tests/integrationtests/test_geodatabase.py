@@ -8,7 +8,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
     GhsPopComparisonBuildings,
 )
 
-from .utils import oqt_vcr
+from .utils import get_layer_fixture, oqt_vcr
 
 
 class TestGeodatabase(unittest.TestCase):
@@ -18,6 +18,7 @@ class TestGeodatabase(unittest.TestCase):
         self.feature = asyncio.run(
             db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
+        self.layer = get_layer_fixture("building_count")
 
     def test_get_connection(self):
         async def _test_get_connection():
@@ -38,7 +39,7 @@ class TestGeodatabase(unittest.TestCase):
                 return await conn.fetchval(query)
 
         self.indicator = GhsPopComparisonBuildings(
-            layer_name="building_count",
+            layer=self.layer,
             feature=self.feature,
         )
         asyncio.run(self.indicator.preprocess())
@@ -62,7 +63,7 @@ class TestGeodatabase(unittest.TestCase):
 
         # load
         self.indicator = GhsPopComparisonBuildings(
-            layer_name="building_count", feature=self.feature
+            layer=self.layer, feature=self.feature
         )
         result = asyncio.run(
             db_client.load_indicator_results(
