@@ -1,4 +1,3 @@
-# import logging
 import os
 from string import Template
 
@@ -6,7 +5,6 @@ import dateutil.parser
 import pandas as pd
 
 # import matplotlib.pyplot as plt
-# import numpy as np
 from geojson import Feature
 
 import ohsome_quality_analyst.geodatabase.client as db_client
@@ -16,14 +14,17 @@ from ohsome_quality_analyst.raster import client as raster_client
 from ohsome_quality_analyst.utils.definitions import get_raster_dataset
 from ohsome_quality_analyst.utils.helper import load_sklearn_model
 
-# TODO: write metadata.yaml
-# TODO: commenting
-
 
 class BuildingArea(BaseIndicator):
     """Building Area Indicator
 
-    TODO: Describe model
+    Predict the expected building area covering the feature based on population,
+    nighttime light, subnational HDI value, and GHS Settlement Model grid using a
+    trained random forest regressor. The expected building area is compared to the
+    building area mapped in OSM.
+
+    The result depends on the percentage the OSM mapping reaches compared of the
+    expected area.
 
     Args:
         layer_name (str): Layer name has to reference a building area Layer.
@@ -41,7 +42,7 @@ class BuildingArea(BaseIndicator):
             layer_name=layer_name,
             feature=feature,
         )
-        self.model_name = ""
+        self.model_name = ""  # TODO
         self.area = None
         self.building_area = None
         self.predicted_building_area = None
@@ -57,20 +58,24 @@ class BuildingArea(BaseIndicator):
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
-        # TODO: Use rasterstats to retrive data from raster files (Waiting for PR 227)
+        # get all categorical count values from the SMOD raster
         smod = raster_client.get_zonal_stats(
             self.feature, get_raster_dataset("GHS_SMOD_R2019A"), categorical=True
         )
+        # get total pixel count of SMOD raster in order to be able to calculate
+        #  percentages per class
         smod_pixelno = raster_client.get_zonal_stats(
             self.feature, get_raster_dataset("GHS_SMOD_R2019A"), stats="count"
         )[0].get("count")
 
+        # write all data required by the regressor into a dict
         self.attrdict = {
             "ghspop": raster_client.get_zonal_stats(
                 self.feature, get_raster_dataset("GHS_POP_R2019A"), stats="sum"
             )[0].get("sum")
         }
         self.attrdict["ghspop_density_per_sqkm"] = self.attrdict["ghspop"] / self.area
+        # get count per class-value. If unavailable, use '0'
         self.attrdict["water"] = smod[0].get(10, 0) / smod_pixelno
         self.attrdict["very_low_rural"] = smod[0].get(11, 0) / smod_pixelno
         self.attrdict["low_rural"] = smod[0].get(12, 0) / smod_pixelno
@@ -79,7 +84,7 @@ class BuildingArea(BaseIndicator):
         self.attrdict["semi_dense_urban_cluster"] = smod[0].get(22, 0) / smod_pixelno
         self.attrdict["dense_urban_cluster"] = smod[0].get(23, 0) / smod_pixelno
         self.attrdict["urban_centre"] = smod[0].get(30, 0) / smod_pixelno
-        self.attrdict["shdi_mean"] = 0  # TODO: implement shdi mean
+        self.attrdict["shdi_mean"] = 0.5  # TODO: implement shdi mean
         self.attrdict["vnl_sum"] = raster_client.get_zonal_stats(
             self.feature, get_raster_dataset("VNL"), stats="sum"
         )[0].get("sum")
@@ -89,9 +94,10 @@ class BuildingArea(BaseIndicator):
         scaler = load_sklearn_model(os.path.join(directory, "scaler.joblib"))
         model = load_sklearn_model(os.path.join(directory, "model.joblib"))
 
+        # create a DataFrame from dict, as the regressor was trained with one
         x = pd.DataFrame.from_dict([self.attrdict])
 
-        # define which values must be normalised
+        # define which values in the df must be normalised
         columns_to_normalize = [
             "ghspop",
             "ghspop_density_per_sqkm",
@@ -105,18 +111,22 @@ class BuildingArea(BaseIndicator):
         # insert normalized values in original df
         x[columns_to_normalize] = values_scaled
 
+        # use model to predict building area
         y = model.predict(x)
-
         self.predicted_building_area = y[0]
 
+        # calculate percentage OSm reached compared to expected value
         self.percentage_mapped = (
             self.building_area / self.predicted_building_area
         ) * 100
 
         description = Template(self.metadata.result_description).substitute(
-            percentage=self.percentage_mapped,
+            building_area=self.building_area,
+            predicted_building_area=self.predicted_building_area,
+            percentage_mapped=self.percentage_mapped,
         )
-        # TODO set percentage boundaries for green/yellow/red
+        # TODO: adjust percentage boundaries for green/yellow/red. Adjust in medata.yaml
+        #       as well
         if self.percentage_mapped >= 95.0:
             self.result.label = "green"
             self.result.value = 1.0
@@ -141,73 +151,12 @@ class BuildingArea(BaseIndicator):
     def create_figure(self) -> None:
         raise NotImplementedError
 
-        """if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
-            return
 
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-
-        ax.set_title("Buildings per person against people per $km^2$")
-        ax.set_xlabel("Population Density [$1/km^2$]")
-        ax.set_ylabel("Building Density [$1/km^2$]")
-
-        # Set x max value based on area
-        if self.pop_count_per_sqkm < 100:
-            max_area = 10
-        else:
-            max_area = round(self.pop_count_per_sqkm * 2 / 10) * 10
-        x = np.linspace(0, max_area, 20)
-
-        # Plot thresholds as line.
-        y1 = [self.green_threshold_function(xi) for xi in x]
-        y2 = [self.yellow_threshold_function(xi) for xi in x]
-        line = line = ax.plot(
-            x,
-            y1,
-            color="black",
-            label="Threshold A",
-        )
-        plt.setp(line, linestyle="--")
-
-        line = ax.plot(
-            x,
-            y2,
-            color="black",
-            label="Threshold B",
-        )
-        plt.setp(line, linestyle=":")
-
-        # Fill in space between thresholds
-        ax.fill_between(x, y2, 0, alpha=0.5, color="red")
-        ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
-        ax.fill_between(
-            x,
-            y1,
-            max(max(y1), self.feature_count_per_sqkm),
-            alpha=0.5,
-            color="green",
-        )
-
-        # Plot pont as circle ("o").
-        ax.plot(
-            self.pop_count_per_sqkm,
-            self.feature_count_per_sqkm,
-            "o",
-            color="black",
-            label="location",
-        )
-
-        ax.legend()
-
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg")
-        self.result.svg = img_data.getvalue()  # this is svg data
-        logging.debug("Successful SVG figure creation")
-        plt.close("all")
-        y = model.predict(self.building_area)
-
-    def create_figure(self) -> None:
-        raise NotImplementedError"""
+# TOOO: define self.model_name (see TODO above)
+# TODO: check, whether raster containing no value and therefore indicator should be
+#           undefined
+# TODO: implement shdi mean querry (see TODO above)
+# TODO: discuss & adjust percentage boundaries for green/yellow/red. Adjust values in
+#           metadata.yaml as well(see TODO above)
+# TODO: discuss: as the regressor is only trained with samples from africa, make it
+#           usable for features in africa only?
