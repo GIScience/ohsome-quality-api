@@ -1,5 +1,6 @@
 import asyncio
 import unittest
+from unittest import mock
 
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
@@ -13,9 +14,7 @@ class TestBaseReport(unittest.TestCase):
         feature = asyncio.run(
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
-        indicator = GhsPopComparisonBuildings(
-            feature=feature, layer_name="building_count"
-        )
+        indicator = GhsPopComparisonBuildings(feature=feature, layer=mock.Mock())
         report = SimpleReport(feature=feature)
         report.set_indicator_layer()
         for _ in report.indicator_layer:

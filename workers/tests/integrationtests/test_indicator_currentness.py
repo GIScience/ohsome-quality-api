@@ -8,7 +8,7 @@ import geojson
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.currentness.indicator import Currentness
 
-from .utils import oqt_vcr
+from .utils import get_layer_fixture, oqt_vcr
 
 
 class TestIndicatorCurrentness(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestIndicatorCurrentness(unittest.TestCase):
 
         indicator = Currentness(
             feature=feature,
-            layer_name="major_roads_count",
+            layer=get_layer_fixture("major_roads_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -47,7 +47,7 @@ class TestIndicatorCurrentness(unittest.TestCase):
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = Currentness(layer_name="amenities", feature=feature)
+        indicator = Currentness(feature=feature, layer=get_layer_fixture("amenities"))
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.element_count, 0)
 

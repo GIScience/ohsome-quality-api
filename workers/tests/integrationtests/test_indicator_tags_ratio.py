@@ -8,7 +8,7 @@ import geojson
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
 
-from .utils import oqt_vcr
+from .utils import get_layer_fixture, oqt_vcr
 
 
 class TestIndicatorRatio(unittest.TestCase):
@@ -22,7 +22,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test(self):
         indicator = TagsRatio(
             feature=self.feature,
-            layer_name="jrc_health_count",
+            layer=get_layer_fixture("jrc_health_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -49,7 +49,10 @@ class TestIndicatorRatio(unittest.TestCase):
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = TagsRatio(layer_name="jrc_health_count", feature=feature)
+        indicator = TagsRatio(
+            layer=get_layer_fixture("jrc_health_count"),
+            feature=feature,
+        )
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.count_all, 0)
 
