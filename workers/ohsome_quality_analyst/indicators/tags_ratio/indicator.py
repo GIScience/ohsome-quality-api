@@ -31,7 +31,9 @@ class TagsRatio(BaseIndicator):
     async def preprocess(self) -> None:
 
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry, ratio=True
+            self.layer,
+            self.feature.geometry,
+            ratio=True,
         )
         self.ratio = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]

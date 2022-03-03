@@ -60,9 +60,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.area = area
         self.pop_count = pop_count
 
-        query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry
-        )
+        query_results = await ohsome_client.query(self.layer, self.feature.geometry)
         self.feature_count = query_results["result"][0]["value"]
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)

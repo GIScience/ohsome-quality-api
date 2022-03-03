@@ -1,11 +1,16 @@
+# TODO: Add more tests for ohsome package.
+
 import datetime
 import json
 import logging
+from functools import singledispatch
 from typing import Optional, Union
 
 import geojson
 import httpx
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+
+from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
 
 # `geojson` uses `simplejson` if it is installed
 try:
@@ -17,16 +22,26 @@ from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
-# TODO: Add more tests for ohsome package.
+@singledispatch
 async def query(
     layer,
+    *args,
+    **kargs,
+) -> dict:
+    raise NotImplementedError(
+        "Cannot query ohsome API for Layer of type: " + str(type(layer))
+    )
+
+
+@query.register
+async def _query(
+    layer: LayerDefinition,
     bpolys: Union[Polygon, MultiPolygon],
     time: Optional[str] = None,
     endpoint: Optional[str] = None,
     ratio: bool = False,
 ) -> dict:
-    """
-    Query ohsome API endpoint with filter.
+    """Query ohsome API endpoint with filter.
 
     Time is one or more ISO-8601 conform timestring(s).
     https://docs.ohsome.org/ohsome-api/v1/time.html
@@ -37,6 +52,10 @@ async def query(
     logging.debug("Query URL: " + url)
     logging.debug("Query data: " + json.dumps(data))
     return await query_ohsome_api(url, data)
+
+
+async def _query(layer: LayerData, *_args, **_kargs) -> dict:  # noqa
+    return layer.data
 
 
 async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
