@@ -23,7 +23,7 @@ class TestIndicatorBuildingArea(unittest.TestCase):
         self.assertIsNotNone(self.indicator.area)
         self.assertIsNotNone(self.indicator.building_area)
         self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
-
+        self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
         self.assertIsNotNone(self.indicator.attrdict["ghspop"])
         self.assertIsNotNone(self.indicator.attrdict["ghspop_density_per_sqkm"])
         self.assertIsNotNone(self.indicator.attrdict["water"])
@@ -38,30 +38,19 @@ class TestIndicatorBuildingArea(unittest.TestCase):
         self.assertIsNotNone(self.indicator.attrdict["vnl_sum"])
         self.assertLessEqual(self.indicator.attrdict["urban_centre"], 1)
         self.assertGreaterEqual(self.indicator.attrdict["urban_centre"], 0)
-
         self.assertRaises(KeyError, lambda: self.indicator.attrdict["some_random_key"])
-
-        """self.assertIsNotNone(self.indicator.feature_count)
-        self.assertIsNotNone(self.indicator.feature_count_per_sqkm)
-        self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
-        self.assertIsNotNone(self.indicator.attribution())
-
-        self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
 
         self.indicator.calculate()
         self.assertIsNotNone(self.indicator.result.label)
         self.assertIsNotNone(self.indicator.result.value)
         self.assertIsNotNone(self.indicator.result.description)
+        self.assertLessEqual(self.indicator.result.value, 1.0)
+        self.assertGreaterEqual(self.indicator.result.value, 0.0)
+        self.assertIsNotNone(self.indicator.result.label)
+        self.assertIsNotNone(self.indicator.result.description)
 
         self.indicator.create_figure()
         self.assertIsNotNone(self.indicator.result.svg)
-
-    @oqt_vcr.use_cassette()
-    def test_get_zonal_stats_population(self):
-        result = asyncio.run(self.indicator.get_zonal_stats_population())
-        self.assertIsInstance(result, Record)"""
-
-    # TODO test other functions
 
 
 if __name__ == "__main__":
