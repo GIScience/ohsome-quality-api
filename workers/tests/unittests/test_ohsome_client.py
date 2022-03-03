@@ -1,6 +1,5 @@
 import asyncio
 import os
-from dataclasses import dataclass
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -8,7 +7,7 @@ import geojson
 import httpx
 from schema import Optional, Schema
 
-from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
@@ -16,15 +15,6 @@ from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 class AsyncMock(MagicMock):
     async def __call__(self, *args, **kwargs):
         return super().__call__(*args, **kwargs)
-
-
-@dataclass
-class LayerDefinitionMock:
-    name: str = ""
-    description: str = ""
-    endpoint: str = "elements/length"
-    filter_: str = "mock_filter"
-    ratio_filter: str = None
 
 
 class TestOhsomeClient(TestCase):
@@ -116,15 +106,13 @@ class TestOhsomeClient(TestCase):
                 "filter": str,
             }
         )
-        layer = LayerDefinitionMock()
-        data = ohsome_client.build_data_dict(layer, self.bpolys)
+        data = ohsome_client.build_data_dict(self.layer, self.bpolys)
         self.assertTrue(schema.is_valid(data))
 
     def test_build_data_dict_ratio(self) -> None:
         """Layer has no ratio filter defined"""
-        layer = LayerDefinitionMock()
         with self.assertRaises(ValueError):
-            ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
+            ohsome_client.build_data_dict(self.layer, self.bpolys, ratio=True)
 
     def test_build_data_dict_ratio_2(self) -> None:
         """Layer has ratio filter defined"""
@@ -154,8 +142,7 @@ class TestOhsomeClient(TestCase):
                 "time": str,
             }
         )
-        layer = LayerDefinitionMock()
-        data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
+        data = ohsome_client.build_data_dict(self.layer, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
         layer = LayerDefinition(
             name="",
@@ -166,3 +153,9 @@ class TestOhsomeClient(TestCase):
         )
         data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
+
+    def test_query_layer_data(self):
+        data = asyncio.run(
+            ohsome_client.query(LayerData("name", "description", {"result": []}))
+        )
+        self.assertDictEqual({"result": []}, data)

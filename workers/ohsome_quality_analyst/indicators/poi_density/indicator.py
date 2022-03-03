@@ -40,7 +40,7 @@ class PoiDensity(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry
+            self.layer, self.feature.geometry
         )
         self.area_sqkm = await get_area_of_bpolys(
             self.feature.geometry

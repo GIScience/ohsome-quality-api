@@ -58,9 +58,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.area = area
         self.pop_count = pop_count
 
-        query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry
-        )
+        query_results = await ohsome_client.query(self.layer, self.feature.geometry)
         # results in meter, we need km
         self.feature_length = query_results["result"][0]["value"] / 1000
         timestamp = query_results["result"][0]["timestamp"]

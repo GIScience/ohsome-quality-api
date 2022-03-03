@@ -44,17 +44,14 @@ class Currentness(BaseIndicator):
         curr_year_start = "{0}-01-01".format(latest_ohsome_stamp.year)
         curr_year_range = "{0}/{1}".format(curr_year_start, self.end)
 
-        response = await ohsome_client.query(
-            layer=self.layer,
-            bpolys=self.feature.geometry,
-        )
+        response = await ohsome_client.query(self.layer, self.feature.geometry)
         self.element_count = response["result"][0]["value"]
         self.result.timestamp_osm = dateutil.parser.isoparse(
             response["result"][0]["timestamp"]
         )
         response_contributions = await ohsome_client.query(
-            layer=self.layer,
-            bpolys=self.feature.geometry,
+            self.layer,
+            self.feature.geometry,
             time=time_range,
             endpoint="contributions/latest/count",
         )
@@ -64,8 +61,8 @@ class Currentness(BaseIndicator):
             self.contributions_abs[time.strftime("%Y")] = count
 
         curr_year_response_contributions = await ohsome_client.query(
-            layer=self.layer,
-            bpolys=self.feature.geometry,
+            self.layer,
+            self.feature.geometry,
             time=curr_year_range,
             endpoint="contributions/latest/count",
         )
