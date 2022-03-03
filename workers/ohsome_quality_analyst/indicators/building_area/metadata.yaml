@@ -2,11 +2,25 @@
 BuildingArea:
   name: Building Area
   description: |
-    tab tab
+    Comparison between the expected building area and the building area mapped in OSM.
+    This can give an estimate if mapping has been completed.
   label_description:
     red: |
+      The building area mapped in OSM is significantly less than expected, which 
+      indicates that many buildings have not mapped yet (OSM building area ≤ 75% of 
+      expected building area).
     yellow: |
+      The building area mapped in OSM is less than expected, which indicates that 
+      buildings in this area are not mapped in their entirety. However, a good amount of
+      buildings is already mapped (75% ≤ OSM building area < 95% of expected building 
+      area).
     green: |
+      The building area mapped in OSM matches or exceeds the expected building area, 
+      which indicates a good data quality in terms of completeness (95% ≤ OSM building 
+      area of expected building area).
     undefined: |
       The quality level could not be calculated for this indicator.
   result_description: |
+    The building area mapped in OSM is $building_area sqkm and the expected building 
+    area for this feature is $predicted_building_area sqkm. Accordingly, the area mapped
+    in OSM is $percentage_mapped of the expected area
