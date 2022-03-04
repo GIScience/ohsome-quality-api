@@ -24,7 +24,9 @@ import asyncpg
 import geojson
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
+from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.utils.definitions import DATASETS
+from ohsome_quality_analyst.utils.exceptions import EmptyRecordError
 from ohsome_quality_analyst.utils.helper import json_serialize
 
 
@@ -44,7 +46,11 @@ async def get_connection():
         await conn.close()
 
 
-async def save_indicator_results(indicator, dataset: str, feature_id: str) -> None:
+async def save_indicator_results(
+    indicator: Indicator,
+    dataset: str,
+    feature_id: str,
+) -> None:
     """Save the indicator result for a given dataset and feature in the Geodatabase.
 
     Create results table if not exists.
@@ -82,14 +88,24 @@ async def save_indicator_results(indicator, dataset: str, feature_id: str) -> No
         await conn.execute(upsert_query, *data)
 
 
-async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bool:
+async def load_indicator_results(
+    indicator: Indicator,
+    dataset: str,
+    feature_id: str,
+) -> Indicator:
     """Get the indicator result from the Geodatabase.
 
     Reads given dataset and feature id from the indicator object.
     Load indicators results from the Geodatabase.
     Writes retrieved results to the result attribute of the indicator object.
+
+    Returns:
+        Indicator object
+
+    Raises:
+        EmptyRecordError: If database query returns an empty record.
     """
-    logging.info("Load indicator results from database")
+    logging.info("Load Indicator results from database")
 
     working_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(working_dir, "load_results.sql")
@@ -107,7 +123,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
         query_result = await conn.fetchrow(query, *query_data)
 
     if not query_result:
-        return False
+        raise EmptyRecordError()
 
     indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
     indicator.result.timestamp_osm = query_result["timestamp_osm"]
@@ -120,7 +136,7 @@ async def load_indicator_results(indicator, dataset: str, feature_id: str) -> bo
     feature = geojson.loads(query_result["feature"])
     for key, value in feature["properties"]["data"].items():
         setattr(indicator, key, value)
-    return True
+    return indicator
 
 
 async def get_feature_ids(dataset: str) -> List[str]:

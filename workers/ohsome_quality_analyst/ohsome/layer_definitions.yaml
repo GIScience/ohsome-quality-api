@@ -101,12 +101,13 @@ poi:
     or (vaccination = covid19)
 
 landmarks:
-  name: POIs for landmarks
+  name: landmarks for orientation
   description: |
-    A lot of different objects such related to natural features
+    A lot of different objects related to natural features,
     transportation and amenities in a city. Definition taken from
     Waterproofing data project.
   endpoint: elements/count
+  source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
   filter: |
     natural=peak or leisure=park or boundary=national_park or
     natural=water or waterway=* or highway=bus_stop or railway=station or

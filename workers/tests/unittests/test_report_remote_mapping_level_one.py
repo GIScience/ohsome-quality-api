@@ -5,10 +5,13 @@ from ohsome_quality_analyst.reports.remote_mapping_level_one.report import (
     RemoteMappingLevelOne,
 )
 
+from .utils import get_geojson_fixture
+
 
 class TestReportRemoteMappingLevelOne(unittest.TestCase):
     def test_combine_indicators_mean(self):
-        report = RemoteMappingLevelOne()
+        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
+        report = RemoteMappingLevelOne(geometry)
         report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value

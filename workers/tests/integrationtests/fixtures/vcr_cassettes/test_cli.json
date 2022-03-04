@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 10 Sep 2021 18:46:24 GMT"
+                        "Mon, 31 Jan 2022 08:34:55 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -59,7 +59,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -80,7 +80,89 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-09-05T20:00:00Z\",\n    \"value\" : 29831.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 30100.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ],
+                    "content-length": [
+                        "2554"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Mon, 31 Jan 2022 08:35:05 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2008-01-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-02-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-03-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-04-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-05-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-06-01T00:00:00Z\",\n    \"value\" : 4.0\n  }, {\n    \"timestamp\" : \"2008-07-01T00:00:00Z\",\n    \"value\" : 44.0\n  }, {\n    \"timestamp\" : \"2008-08-01T00:00:00Z\",\n    \"value\" : 114.0\n  }, {\n    \"timestamp\" : \"2008-09-01T00:00:00Z\",\n    \"value\" : 226.0\n  }, {\n    \"timestamp\" : \"2008-10-01T00:00:00Z\",\n    \"value\" : 241.0\n  }, {\n    \"timestamp\" : \"2008-11-01T00:00:00Z\",\n    \"value\" : 252.0\n  }, {\n    \"timestamp\" : \"2008-12-01T00:00:00Z\",\n    \"value\" : 266.0\n  }, {\n    \"timestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 272.0\n  }, {\n    \"timestamp\" : \"2009-02-01T00:00:00Z\",\n    \"value\" : 275.0\n  }, {\n    \"timestamp\" : \"2009-03-01T00:00:00Z\",\n    \"value\" : 279.0\n  }, {\n    \"timestamp\" : \"2009-04-01T00:00:00Z\",\n    \"value\" : 298.0\n  }, {\n    \"timestamp\" : \"2009-05-01T00:00:00Z\",\n    \"value\" : 306.0\n  }, {\n    \"timestamp\" : \"2009-06-01T00:00:00Z\",\n    \"value\" : 307.0\n  }, {\n    \"timestamp\" : \"2009-07-01T00:00:00Z\",\n    \"value\" : 426.0\n  }, {\n    \"timestamp\" : \"2009-08-01T00:00:00Z\",\n    \"value\" : 430.0\n  }, {\n    \"timestamp\" : \"2009-09-01T00:00:00Z\",\n    \"value\" : 472.0\n  }, {\n    \"timestamp\" : \"2009-10-01T00:00:00Z\",\n    \"value\" : 482.0\n  }, {\n    \"timestamp\" : \"2009-11-01T00:00:00Z\",\n    \"value\" : 498.0\n  }, {\n    \"timestamp\" : \"2009-12-01T00:00:00Z\",\n    \"value\" : 502.0\n  }, {\n    \"timestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 543.0\n  }, {\n    \"timestamp\" : \"2010-02-01T00:00:00Z\",\n    \"value\" : 555.0\n  }, {\n    \"timestamp\" : \"2010-03-01T00:00:00Z\",\n    \"value\" : 557.0\n  }, {\n    \"timestamp\" : \"2010-04-01T00:00:00Z\",\n    \"value\" : 607.0\n  }, {\n    \"timestamp\" : \"2010-05-01T00:00:00Z\",\n    \"value\" : 610.0\n  }, {\n    \"timestamp\" : \"2010-06-01T00:00:00Z\",\n    \"value\" : 631.0\n  }, {\n    \"timestamp\" : \"2010-07-01T00:00:00Z\",\n    \"value\" : 637.0\n  }, {\n    \"timestamp\" : \"2010-08-01T00:00:00Z\",\n    \"value\" : 655.0\n  }, {\n    \"timestamp\" : \"2010-09-01T00:00:00Z\",\n    \"value\" : 660.0\n  }, {\n    \"timestamp\" : \"2010-10-01T00:00:00Z\",\n    \"value\" : 695.0\n  }, {\n    \"timestamp\" : \"2010-11-01T00:00:00Z\",\n    \"value\" : 695.0\n  }, {\n    \"timestamp\" : \"2010-12-01T00:00:00Z\",\n    \"value\" : 1011.0\n  }, {\n    \"timestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 5669.0\n  }, {\n    \"timestamp\" : \"2011-02-01T00:00:00Z\",\n    \"value\" : 7217.0\n  }, {\n    \"timestamp\" : \"2011-03-01T00:00:00Z\",\n    \"value\" : 8579.0\n  }, {\n    \"timestamp\" : \"2011-04-01T00:00:00Z\",\n    \"value\" : 8755.0\n  }, {\n    \"timestamp\" : \"2011-05-01T00:00:00Z\",\n    \"value\" : 8990.0\n  }, {\n    \"timestamp\" : \"2011-06-01T00:00:00Z\",\n    \"value\" : 9043.0\n  }, {\n    \"timestamp\" : \"2011-07-01T00:00:00Z\",\n    \"value\" : 9288.0\n  }, {\n    \"timestamp\" : \"2011-08-01T00:00:00Z\",\n    \"value\" : 9412.0\n  }, {\n    \"timestamp\" : \"2011-09-01T00:00:00Z\",\n    \"value\" : 9670.0\n  }, {\n    \"timestamp\" : \"2011-10-01T00:00:00Z\",\n    \"value\" : 9721.0\n  }, {\n    \"timestamp\" : \"2011-11-01T00:00:00Z\",\n    \"value\" : 9734.0\n  }, {\n    \"timestamp\" : \"2011-12-01T00:00:00Z\",\n    \"value\" : 9773.0\n  }, {\n    \"timestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 10068.0\n  }, {\n    \"timestamp\" : \"2012-02-01T00:00:00Z\",\n    \"value\" : 10416.0\n  }, {\n    \"timestamp\" : \"2012-03-01T00:00:00Z\",\n    \"value\" : 10521.0\n  }, {\n    \"timestamp\" : \"2012-04-01T00:00:00Z\",\n    \"value\" : 10537.0\n  }, {\n    \"timestamp\" : \"2012-05-01T00:00:00Z\",\n    \"value\" : 10754.0\n  }, {\n    \"timestamp\" : \"2012-06-01T00:00:00Z\",\n    \"value\" : 10840.0\n  }, {\n    \"timestamp\" : \"2012-07-01T00:00:00Z\",\n    \"value\" : 10957.0\n  }, {\n    \"timestamp\" : \"2012-08-01T00:00:00Z\",\n    \"value\" : 11477.0\n  }, {\n    \"timestamp\" : \"2012-09-01T00:00:00Z\",\n    \"value\" : 11530.0\n  }, {\n    \"timestamp\" : \"2012-10-01T00:00:00Z\",\n    \"value\" : 11718.0\n  }, {\n    \"timestamp\" : \"2012-11-01T00:00:00Z\",\n    \"value\" : 11767.0\n  }, {\n    \"timestamp\" : \"2012-12-01T00:00:00Z\",\n    \"value\" : 11981.0\n  }, {\n    \"timestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 12067.0\n  }, {\n    \"timestamp\" : \"2013-02-01T00:00:00Z\",\n    \"value\" : 12646.0\n  }, {\n    \"timestamp\" : \"2013-03-01T00:00:00Z\",\n    \"value\" : 12925.0\n  }, {\n    \"timestamp\" : \"2013-04-01T00:00:00Z\",\n    \"value\" : 13698.0\n  }, {\n    \"timestamp\" : \"2013-05-01T00:00:00Z\",\n    \"value\" : 14369.0\n  }, {\n    \"timestamp\" : \"2013-06-01T00:00:00Z\",\n    \"value\" : 15360.0\n  }, {\n    \"timestamp\" : \"2013-07-01T00:00:00Z\",\n    \"value\" : 15449.0\n  }, {\n    \"timestamp\" : \"2013-08-01T00:00:00Z\",\n    \"value\" : 15564.0\n  }, {\n    \"timestamp\" : \"2013-09-01T00:00:00Z\",\n    \"value\" : 15743.0\n  }, {\n    \"timestamp\" : \"2013-10-01T00:00:00Z\",\n    \"value\" : 16052.0\n  }, {\n    \"timestamp\" : \"2013-11-01T00:00:00Z\",\n    \"value\" : 16459.0\n  }, {\n    \"timestamp\" : \"2013-12-01T00:00:00Z\",\n    \"value\" : 17613.0\n  }, {\n    \"timestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 18721.0\n  }, {\n    \"timestamp\" : \"2014-02-01T00:00:00Z\",\n    \"value\" : 19786.0\n  }, {\n    \"timestamp\" : \"2014-03-01T00:00:00Z\",\n    \"value\" : 20600.0\n  }, {\n    \"timestamp\" : \"2014-04-01T00:00:00Z\",\n    \"value\" : 21283.0\n  }, {\n    \"timestamp\" : \"2014-05-01T00:00:00Z\",\n    \"value\" : 21587.0\n  }, {\n    \"timestamp\" : \"2014-06-01T00:00:00Z\",\n    \"value\" : 21712.0\n  }, {\n    \"timestamp\" : \"2014-07-01T00:00:00Z\",\n    \"value\" : 21903.0\n  }, {\n    \"timestamp\" : \"2014-08-01T00:00:00Z\",\n    \"value\" : 22655.0\n  }, {\n    \"timestamp\" : \"2014-09-01T00:00:00Z\",\n    \"value\" : 22860.0\n  }, {\n    \"timestamp\" : \"2014-10-01T00:00:00Z\",\n    \"value\" : 23022.0\n  }, {\n    \"timestamp\" : \"2014-11-01T00:00:00Z\",\n    \"value\" : 23200.0\n  }, {\n    \"timestamp\" : \"2014-12-01T00:00:00Z\",\n    \"value\" : 23253.0\n  }, {\n    \"timestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 23491.0\n  }, {\n    \"timestamp\" : \"2015-02-01T00:00:00Z\",\n    \"value\" : 23541.0\n  }, {\n    \"timestamp\" : \"2015-03-01T00:00:00Z\",\n    \"value\" : 23608.0\n  }, {\n    \"timestamp\" : \"2015-04-01T00:00:00Z\",\n    \"value\" : 23652.0\n  }, {\n    \"timestamp\" : \"2015-05-01T00:00:00Z\",\n    \"value\" : 23701.0\n  }, {\n    \"timestamp\" : \"2015-06-01T00:00:00Z\",\n    \"value\" : 23721.0\n  }, {\n    \"timestamp\" : \"2015-07-01T00:00:00Z\",\n    \"value\" : 23792.0\n  }, {\n    \"timestamp\" : \"2015-08-01T00:00:00Z\",\n    \"value\" : 23814.0\n  }, {\n    \"timestamp\" : \"2015-09-01T00:00:00Z\",\n    \"value\" : 23955.0\n  }, {\n    \"timestamp\" : \"2015-10-01T00:00:00Z\",\n    \"value\" : 23982.0\n  }, {\n    \"timestamp\" : \"2015-11-01T00:00:00Z\",\n    \"value\" : 24037.0\n  }, {\n    \"timestamp\" : \"2015-12-01T00:00:00Z\",\n    \"value\" : 24124.0\n  }, {\n    \"timestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 24203.0\n  }, {\n    \"timestamp\" : \"2016-02-01T00:00:00Z\",\n    \"value\" : 24805.0\n  }, {\n    \"timestamp\" : \"2016-03-01T00:00:00Z\",\n    \"value\" : 24809.0\n  }, {\n    \"timestamp\" : \"2016-04-01T00:00:00Z\",\n    \"value\" : 24960.0\n  }, {\n    \"timestamp\" : \"2016-05-01T00:00:00Z\",\n    \"value\" : 25138.0\n  }, {\n    \"timestamp\" : \"2016-06-01T00:00:00Z\",\n    \"value\" : 25650.0\n  }, {\n    \"timestamp\" : \"2016-07-01T00:00:00Z\",\n    \"value\" : 25692.0\n  }, {\n    \"timestamp\" : \"2016-08-01T00:00:00Z\",\n    \"value\" : 25869.0\n  }, {\n    \"timestamp\" : \"2016-09-01T00:00:00Z\",\n    \"value\" : 26255.0\n  }, {\n    \"timestamp\" : \"2016-10-01T00:00:00Z\",\n    \"value\" : 26265.0\n  }, {\n    \"timestamp\" : \"2016-11-01T00:00:00Z\",\n    \"value\" : 26313.0\n  }, {\n    \"timestamp\" : \"2016-12-01T00:00:00Z\",\n    \"value\" : 26330.0\n  }, {\n    \"timestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 26456.0\n  }, {\n    \"timestamp\" : \"2017-02-01T00:00:00Z\",\n    \"value\" : 26549.0\n  }, {\n    \"timestamp\" : \"2017-03-01T00:00:00Z\",\n    \"value\" : 26553.0\n  }, {\n    \"timestamp\" : \"2017-04-01T00:00:00Z\",\n    \"value\" : 26592.0\n  }, {\n    \"timestamp\" : \"2017-05-01T00:00:00Z\",\n    \"value\" : 26690.0\n  }, {\n    \"timestamp\" : \"2017-06-01T00:00:00Z\",\n    \"value\" : 26760.0\n  }, {\n    \"timestamp\" : \"2017-07-01T00:00:00Z\",\n    \"value\" : 26931.0\n  }, {\n    \"timestamp\" : \"2017-08-01T00:00:00Z\",\n    \"value\" : 26920.0\n  }, {\n    \"timestamp\" : \"2017-09-01T00:00:00Z\",\n    \"value\" : 27074.0\n  }, {\n    \"timestamp\" : \"2017-10-01T00:00:00Z\",\n    \"value\" : 27113.0\n  }, {\n    \"timestamp\" : \"2017-11-01T00:00:00Z\",\n    \"value\" : 27139.0\n  }, {\n    \"timestamp\" : \"2017-12-01T00:00:00Z\",\n    \"value\" : 27369.0\n  }, {\n    \"timestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 27456.0\n  }, {\n    \"timestamp\" : \"2018-02-01T00:00:00Z\",\n    \"value\" : 28372.0\n  }, {\n    \"timestamp\" : \"2018-03-01T00:00:00Z\",\n    \"value\" : 28837.0\n  }, {\n    \"timestamp\" : \"2018-04-01T00:00:00Z\",\n    \"value\" : 28900.0\n  }, {\n    \"timestamp\" : \"2018-05-01T00:00:00Z\",\n    \"value\" : 28945.0\n  }, {\n    \"timestamp\" : \"2018-06-01T00:00:00Z\",\n    \"value\" : 28948.0\n  }, {\n    \"timestamp\" : \"2018-07-01T00:00:00Z\",\n    \"value\" : 28953.0\n  }, {\n    \"timestamp\" : \"2018-08-01T00:00:00Z\",\n    \"value\" : 28954.0\n  }, {\n    \"timestamp\" : \"2018-09-01T00:00:00Z\",\n    \"value\" : 28954.0\n  }, {\n    \"timestamp\" : \"2018-10-01T00:00:00Z\",\n    \"value\" : 28957.0\n  }, {\n    \"timestamp\" : \"2018-11-01T00:00:00Z\",\n    \"value\" : 29003.0\n  }, {\n    \"timestamp\" : \"2018-12-01T00:00:00Z\",\n    \"value\" : 29047.0\n  }, {\n    \"timestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 29091.0\n  }, {\n    \"timestamp\" : \"2019-02-01T00:00:00Z\",\n    \"value\" : 29109.0\n  }, {\n    \"timestamp\" : \"2019-03-01T00:00:00Z\",\n    \"value\" : 29137.0\n  }, {\n    \"timestamp\" : \"2019-04-01T00:00:00Z\",\n    \"value\" : 29179.0\n  }, {\n    \"timestamp\" : \"2019-05-01T00:00:00Z\",\n    \"value\" : 29202.0\n  }, {\n    \"timestamp\" : \"2019-06-01T00:00:00Z\",\n    \"value\" : 29271.0\n  }, {\n    \"timestamp\" : \"2019-07-01T00:00:00Z\",\n    \"value\" : 29270.0\n  }, {\n    \"timestamp\" : \"2019-08-01T00:00:00Z\",\n    \"value\" : 29267.0\n  }, {\n    \"timestamp\" : \"2019-09-01T00:00:00Z\",\n    \"value\" : 29287.0\n  }, {\n    \"timestamp\" : \"2019-10-01T00:00:00Z\",\n    \"value\" : 29297.0\n  }, {\n    \"timestamp\" : \"2019-11-01T00:00:00Z\",\n    \"value\" : 29301.0\n  }, {\n    \"timestamp\" : \"2019-12-01T00:00:00Z\",\n    \"value\" : 29321.0\n  }, {\n    \"timestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 29330.0\n  }, {\n    \"timestamp\" : \"2020-02-01T00:00:00Z\",\n    \"value\" : 29334.0\n  }, {\n    \"timestamp\" : \"2020-03-01T00:00:00Z\",\n    \"value\" : 29348.0\n  }, {\n    \"timestamp\" : \"2020-04-01T00:00:00Z\",\n    \"value\" : 29378.0\n  }, {\n    \"timestamp\" : \"2020-05-01T00:00:00Z\",\n    \"value\" : 29406.0\n  }, {\n    \"timestamp\" : \"2020-06-01T00:00:00Z\",\n    \"value\" : 29501.0\n  }, {\n    \"timestamp\" : \"2020-07-01T00:00:00Z\",\n    \"value\" : 29523.0\n  }, {\n    \"timestamp\" : \"2020-08-01T00:00:00Z\",\n    \"value\" : 29548.0\n  }, {\n    \"timestamp\" : \"2020-09-01T00:00:00Z\",\n    \"value\" : 29551.0\n  }, {\n    \"timestamp\" : \"2020-10-01T00:00:00Z\",\n    \"value\" : 29606.0\n  }, {\n    \"timestamp\" : \"2020-11-01T00:00:00Z\",\n    \"value\" : 29624.0\n  }, {\n    \"timestamp\" : \"2020-12-01T00:00:00Z\",\n    \"value\" : 29634.0\n  }, {\n    \"timestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 29631.0\n  }, {\n    \"timestamp\" : \"2021-02-01T00:00:00Z\",\n    \"value\" : 29642.0\n  }, {\n    \"timestamp\" : \"2021-03-01T00:00:00Z\",\n    \"value\" : 29702.0\n  }, {\n    \"timestamp\" : \"2021-04-01T00:00:00Z\",\n    \"value\" : 29697.0\n  }, {\n    \"timestamp\" : \"2021-05-01T00:00:00Z\",\n    \"value\" : 29696.0\n  }, {\n    \"timestamp\" : \"2021-06-01T00:00:00Z\",\n    \"value\" : 29792.0\n  }, {\n    \"timestamp\" : \"2021-07-01T00:00:00Z\",\n    \"value\" : 29800.0\n  }, {\n    \"timestamp\" : \"2021-08-01T00:00:00Z\",\n    \"value\" : 29806.0\n  }, {\n    \"timestamp\" : \"2021-09-01T00:00:00Z\",\n    \"value\" : 29831.0\n  }, {\n    \"timestamp\" : \"2021-10-01T00:00:00Z\",\n    \"value\" : 29834.0\n  }, {\n    \"timestamp\" : \"2021-11-01T00:00:00Z\",\n    \"value\" : 29826.0\n  }, {\n    \"timestamp\" : \"2021-12-01T00:00:00Z\",\n    \"value\" : 29950.0\n  }, {\n    \"timestamp\" : \"2022-01-01T00:00:00Z\",\n    \"value\" : 30032.0\n  } ]\n}"
             }
         }
     ]

@@ -1,24 +1,7 @@
-from typing import Optional
-
-from geojson import Feature
-
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
 
 class JrcRequirements(BaseReport):
-    def __init__(
-        self,
-        feature: Feature = None,
-        dataset: Optional[str] = None,
-        feature_id: Optional[int] = None,
-        fid_field: Optional[str] = None,
-    ) -> None:
-        """Create a list of indicator objects."""
-
-        super().__init__(
-            feature=feature, dataset=dataset, feature_id=feature_id, fid_field=fid_field
-        )
-
     def set_indicator_layer(self) -> None:
         self.indicator_layer = (
             IndicatorLayer("MappingSaturation", "jrc_health_count"),

@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.7.0"
+                        "ohsome-quality-analyst/0.8.0"
                     ],
                     "content-length": [
                         "427"
@@ -35,7 +35,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 29 Oct 2021 14:55:34 GMT"
+                        "Fri, 11 Feb 2022 10:09:54 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -59,7 +59,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -80,7 +80,253 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 2108.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "1350"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:10:02 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 930.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "1438"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:10:11 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 235.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "427"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:10:21 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
             }
         },
         {
@@ -117,7 +363,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 29 Oct 2021 14:55:44 GMT"
+                        "Fri, 28 Jan 2022 15:25:07 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -141,7 +387,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -162,171 +408,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 2108.0\n  } ]\n}"
-            }
-        },
-        {
-            "request": {
-                "method": "POST",
-                "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
-                "headers": {
-                    "host": [
-                        "api.ohsome.org"
-                    ],
-                    "accept": [
-                        "*/*"
-                    ],
-                    "accept-encoding": [
-                        "gzip, deflate"
-                    ],
-                    "connection": [
-                        "keep-alive"
-                    ],
-                    "user-agent": [
-                        "ohsome-quality-analyst/0.7.0"
-                    ],
-                    "content-length": [
-                        "1350"
-                    ],
-                    "content-type": [
-                        "application/x-www-form-urlencoded"
-                    ]
-                }
-            },
-            "response": {
-                "status_code": 200,
-                "http_version": "HTTP/1.1",
-                "headers": {
-                    "Date": [
-                        "Fri, 29 Oct 2021 14:55:54 GMT"
-                    ],
-                    "Server": [
-                        "Apache/2.4.41 (Ubuntu)"
-                    ],
-                    "Strict-Transport-Security": [
-                        "max-age=63072000; includeSubdomains;"
-                    ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "POST, GET"
-                    ],
-                    "Access-Control-Max-Age": [
-                        "3600"
-                    ],
-                    "Access-Control-Allow-Credentials": [
-                        "true"
-                    ],
-                    "Access-Control-Allow-Headers": [
-                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
-                    ],
-                    "Cache-Control": [
-                        "max-age=0, no-store"
-                    ],
-                    "Content-Type": [
-                        "application/json;charset=UTF-8"
-                    ],
-                    "Content-Encoding": [
-                        "gzip"
-                    ],
-                    "Vary": [
-                        "Accept-Encoding"
-                    ],
-                    "Keep-Alive": [
-                        "timeout=5, max=100"
-                    ],
-                    "Connection": [
-                        "Keep-Alive"
-                    ],
-                    "Transfer-Encoding": [
-                        "chunked"
-                    ]
-                },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 933.0\n  } ]\n}"
-            }
-        },
-        {
-            "request": {
-                "method": "POST",
-                "uri": "https://api.ohsome.org/v1/elements/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
-                "headers": {
-                    "host": [
-                        "api.ohsome.org"
-                    ],
-                    "accept": [
-                        "*/*"
-                    ],
-                    "accept-encoding": [
-                        "gzip, deflate"
-                    ],
-                    "connection": [
-                        "keep-alive"
-                    ],
-                    "user-agent": [
-                        "ohsome-quality-analyst/0.7.0"
-                    ],
-                    "content-length": [
-                        "1438"
-                    ],
-                    "content-type": [
-                        "application/x-www-form-urlencoded"
-                    ]
-                }
-            },
-            "response": {
-                "status_code": 200,
-                "http_version": "HTTP/1.1",
-                "headers": {
-                    "Date": [
-                        "Fri, 29 Oct 2021 14:56:04 GMT"
-                    ],
-                    "Server": [
-                        "Apache/2.4.41 (Ubuntu)"
-                    ],
-                    "Strict-Transport-Security": [
-                        "max-age=63072000; includeSubdomains;"
-                    ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "POST, GET"
-                    ],
-                    "Access-Control-Max-Age": [
-                        "3600"
-                    ],
-                    "Access-Control-Allow-Credentials": [
-                        "true"
-                    ],
-                    "Access-Control-Allow-Headers": [
-                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
-                    ],
-                    "Cache-Control": [
-                        "max-age=0, no-store"
-                    ],
-                    "Content-Type": [
-                        "application/json;charset=UTF-8"
-                    ],
-                    "Content-Encoding": [
-                        "gzip"
-                    ],
-                    "Vary": [
-                        "Accept-Encoding"
-                    ],
-                    "Keep-Alive": [
-                        "timeout=5, max=100"
-                    ],
-                    "Connection": [
-                        "Keep-Alive"
-                    ],
-                    "Transfer-Encoding": [
-                        "chunked"
-                    ]
-                },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 232.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
             }
         },
         {
@@ -363,7 +445,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Fri, 29 Oct 2021 14:56:18 GMT"
+                        "Fri, 28 Jan 2022 15:36:13 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -387,7 +469,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -408,7 +490,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 2108.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
             }
         },
         {
@@ -445,7 +527,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 02 Nov 2021 12:37:57 GMT"
+                        "Fri, 28 Jan 2022 15:36:20 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -469,7 +551,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -490,7 +572,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 933.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 930.0\n  } ]\n}"
             }
         },
         {
@@ -527,7 +609,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 02 Nov 2021 12:38:06 GMT"
+                        "Fri, 28 Jan 2022 15:36:28 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -551,7 +633,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -572,7 +654,335 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-10-24T20:00:00Z\",\n    \"value\" : 232.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 235.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ],
+                    "content-length": [
+                        "427"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:36:35 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ],
+                    "content-length": [
+                        "427"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:36:43 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ],
+                    "content-length": [
+                        "427"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:36:52 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ],
+                    "content-length": [
+                        "427"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:37:00 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 2112.0\n  } ]\n}"
             }
         }
     ]

@@ -1,12 +1,17 @@
 import datetime
 import json
 import logging
-from json import JSONDecodeError
 from typing import Optional, Union
 
 import geojson
 import httpx
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+
+# `geojson` uses `simplejson` if it is installed
+try:
+    from simplejson import JSONDecodeError
+except ImportError:
+    from json import JSONDecodeError
 
 from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError

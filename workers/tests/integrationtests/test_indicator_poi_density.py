@@ -23,6 +23,8 @@ class TestIndicatorPoiDensity(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test(self):
+        self.assertIsNotNone(self.indicator.attribution())
+
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)
         self.assertIsNotNone(self.indicator.count)

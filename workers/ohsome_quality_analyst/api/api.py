@@ -30,16 +30,23 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.definitions import (
+    ATTRIBUTION_URL,
     INDICATOR_LAYER,
     configure_logging,
+    get_attribution,
     get_dataset_names_api,
     get_fid_fields_api,
     get_indicator_names,
     get_layer_names,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, SizeRestrictionError
-from ohsome_quality_analyst.utils.helper import json_serialize
+from ohsome_quality_analyst.utils.exceptions import (
+    OhsomeApiError,
+    RasterDatasetNotFoundError,
+    RasterDatasetUndefinedError,
+    SizeRestrictionError,
+)
+from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -102,7 +109,13 @@ async def validation_exception_handler(
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
 async def oqt_exception_handler(
-    request: Request, exception: Union[OhsomeApiError, SizeRestrictionError]
+    request: Request,
+    exception: Union[
+        OhsomeApiError,
+        SizeRestrictionError,
+        RasterDatasetNotFoundError,
+        RasterDatasetUndefinedError,
+    ],
 ):
     """Exception handler for custom OQT exceptions."""
     return JSONResponse(
@@ -119,8 +132,7 @@ def empty_api_response() -> dict:
     return {
         "apiVersion": __version__,
         "attribution": {
-            "text": "© OpenStreetMap contributors",
-            "url": "https://ohsome.org/copyrights",
+            "url": ATTRIBUTION_URL,
         },
     }
 
@@ -155,25 +167,17 @@ async def post_indicator(
 
 
 async def _fetch_indicator(parameters) -> CustomJSONResponse:
-    p = parameters.dict()
-    dataset = p.get("dataset", None)
-    fid_field = p.get("fid_field", None)
-    if dataset is not None:
-        dataset = dataset.value
-    if fid_field is not None:
-        fid_field = fid_field.value
     geojson_object = await oqt.create_indicator_as_geojson(
-        p["name"].value,
-        p["layer_name"].value,
-        p.get("bpolys", None),
-        dataset,
-        p.get("feature_id", None),
-        fid_field,
+        parameters,
         size_restriction=True,
     )
-    if p["include_svg"] is False:
+    if parameters.include_svg is False:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
+    response["attribution"]["text"] = name_to_class(
+        class_type="indicator",
+        name=parameters.name.value,
+    ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
@@ -183,7 +187,7 @@ async def get_report(parameters=Depends(ReportDatabase)):
     """Request an already calculated Report for an AOI defined by OQT.
 
     The response is a GeoJSON Feature with the Report results as properties.
-    To request an Report for a custom AOI pease use the POST method.
+    To request an Report for a custom AOI please use the POST method.
     """
     return await _fetch_report(parameters)
 
@@ -207,30 +211,18 @@ async def post_report(
     return await _fetch_report(parameters)
 
 
-async def _fetch_report(
-    parameters: Union[
-        ReportBpolys,
-        ReportDatabase,
-    ],
-):
-    p = parameters.dict()
-    dataset = p.get("dataset", None)
-    fid_field = p.get("fid_field", None)
-    if dataset is not None:
-        dataset = dataset.value
-    if fid_field is not None:
-        fid_field = fid_field.value
+async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
     geojson_object = await oqt.create_report_as_geojson(
-        p["name"].value,
-        p.get("bpolys", None),
-        dataset,
-        p.get("feature_id", None),
-        fid_field,
+        parameters,
         size_restriction=True,
     )
     response = empty_api_response()
-    if p["include_svg"] is False:
+    if parameters.include_svg is False:
         remove_svg_from_properties(geojson_object)
+    response = empty_api_response()
+    response["attribution"]["text"] = name_to_class(
+        class_type="report", name=parameters.name.value
+    ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
@@ -246,6 +238,7 @@ async def get_available_regions(asGeoJSON: bool = False):
     if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
         response.update(regions)
+        response["attribution"]["text"] = get_attribution(["OSM"])
         return JSONResponse(
             content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
         )

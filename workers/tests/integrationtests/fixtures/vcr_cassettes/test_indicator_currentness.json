@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "ohsome-quality-analyst/0.7.0"
+                        "ohsome-quality-analyst/0.8.0"
                     ]
                 }
             },
@@ -29,7 +29,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:23:59 GMT"
+                        "Fri, 11 Feb 2022 10:13:34 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -53,7 +53,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -74,7 +74,575 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\" : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0 ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ] ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n      \"toTimestamp\" : \"2021-11-14T21:00Z\"\n    },\n    \"replicationSequenceNumber\" : 80414\n  }\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\" : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0 ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ] ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n      \"toTimestamp\" : \"2022-02-07T15:00Z\"\n    },\n    \"replicationSequenceNumber\" : 82448\n  }\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "2613"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:36 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 3839.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/contributions/latest/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2008-01-01%2F2022-02-07%2FP1Y",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "2648"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:38 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-transform, public, max-age=31556926"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 329.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 169.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 98.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 63.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 310.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 168.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 127.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 173.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 155.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 197.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 353.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 188.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 332.0\n  }, {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"value\" : 2564.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/contributions/latest/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2022-01-01%2F2022-02-07",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "2642"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:41 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-transform, public, max-age=31556926"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-02-07T00:00:00Z\",\n    \"value\" : 1992.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/elements/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "452"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:43 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-02-07T15:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/contributions/latest/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2008-01-01%2F2022-02-07%2FP1Y",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "487"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:44 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-transform, public, max-age=31556926"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://api.ohsome.org/v1/contributions/latest/count",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2022-01-01%2F2022-02-07",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.8.0"
+                    ],
+                    "content-length": [
+                        "481"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 11 Feb 2022 10:13:46 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-transform, public, max-age=31556926"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-02-07T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://api.ohsome.org/v1/metadata",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:42:22 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\" : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0 ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ] ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n      \"toTimestamp\" : \"2022-01-23T22:00Z\"\n    },\n    \"replicationSequenceNumber\" : 82095\n  }\n}"
             }
         },
         {
@@ -111,7 +679,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:00 GMT"
+                        "Fri, 28 Jan 2022 15:42:23 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -135,7 +703,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -156,14 +724,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-11-14T21:00:00Z\",\n    \"value\" : 3761.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 3814.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/contributions/latest/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2008-01-01%2F2021-11-14%2FP1Y",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2008-01-01%2F2022-01-23%2FP1Y",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -193,7 +761,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:03 GMT"
+                        "Fri, 28 Jan 2022 15:42:25 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -217,7 +785,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-transform, public, max-age=31556926"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -238,14 +806,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 329.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 171.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 98.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 64.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 323.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 193.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 173.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 259.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 413.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 453.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 737.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 580.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 1250.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 329.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 169.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 98.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 63.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 310.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 168.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 127.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 173.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 155.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 197.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 353.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 188.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 332.0\n  }, {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"value\" : 2564.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/contributions/latest/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2021-01-01%2F2021-11-14",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=highway+in+%28motorway%2C+trunk%2C+primary%2C+secondary%2C%0Atertiary%2C+unclassified%2C+residential%29+and+type%3Away%0A&time=2022-01-01%2F2022-01-23",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -275,7 +843,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:05 GMT"
+                        "Fri, 28 Jan 2022 15:42:27 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -299,7 +867,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-transform, public, max-age=31556926"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -320,7 +888,83 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-11-14T00:00:00Z\",\n    \"value\" : 2462.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-23T00:00:00Z\",\n    \"value\" : 1111.0\n  } ]\n}"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://api.ohsome.org/v1/metadata",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "api.ohsome.org"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "ohsome-quality-analyst/0.7.0"
+                    ]
+                }
+            },
+            "response": {
+                "status_code": 200,
+                "http_version": "HTTP/1.1",
+                "headers": {
+                    "Date": [
+                        "Fri, 28 Jan 2022 15:42:27 GMT"
+                    ],
+                    "Server": [
+                        "Apache/2.4.41 (Ubuntu)"
+                    ],
+                    "Strict-Transport-Security": [
+                        "max-age=63072000; includeSubdomains;"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST, GET"
+                    ],
+                    "Access-Control-Max-Age": [
+                        "3600"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "application/json;charset=UTF-8"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Vary": [
+                        "Accept-Encoding"
+                    ],
+                    "Keep-Alive": [
+                        "timeout=5, max=100"
+                    ],
+                    "Connection": [
+                        "Keep-Alive"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ]
+                },
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\" : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0 ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ] ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n      \"toTimestamp\" : \"2022-01-23T22:00Z\"\n    },\n    \"replicationSequenceNumber\" : 82095\n  }\n}"
             }
         },
         {
@@ -357,7 +1001,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:08 GMT"
+                        "Fri, 28 Jan 2022 15:42:29 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -381,7 +1025,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-cache, no-store, must-revalidate"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -402,14 +1046,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2021-11-14T21:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-01-23T22:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/contributions/latest/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2008-01-01%2F2021-11-14%2FP1Y",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2008-01-01%2F2022-01-23%2FP1Y",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -439,7 +1083,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:10 GMT"
+                        "Fri, 28 Jan 2022 15:42:31 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -463,7 +1107,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-transform, public, max-age=31556926"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -484,14 +1128,14 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
             }
         },
         {
             "request": {
                 "method": "POST",
                 "uri": "https://api.ohsome.org/v1/contributions/latest/count",
-                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2021-01-01%2F2021-11-14",
+                "body": "bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=amenity%3D%2A+and+%28type%3Away+or+type%3Anode%29&time=2022-01-01%2F2022-01-23",
                 "headers": {
                     "host": [
                         "api.ohsome.org"
@@ -521,7 +1165,7 @@
                 "http_version": "HTTP/1.1",
                 "headers": {
                     "Date": [
-                        "Tue, 23 Nov 2021 14:24:11 GMT"
+                        "Fri, 28 Jan 2022 15:42:32 GMT"
                     ],
                     "Server": [
                         "Apache/2.4.41 (Ubuntu)"
@@ -545,7 +1189,7 @@
                         "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"
                     ],
                     "Cache-Control": [
-                        "max-age=0, no-store"
+                        "no-transform, public, max-age=31556926"
                     ],
                     "Content-Type": [
                         "application/json;charset=UTF-8"
@@ -566,7 +1210,7 @@
                         "chunked"
                     ]
                 },
-                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.1\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2021-11-14T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
+                "content": "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n    \"text\" : \"\u00a9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" : \"1.6.2\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-23T00:00:00Z\",\n    \"value\" : 0.0\n  } ]\n}"
             }
         }
     ]
