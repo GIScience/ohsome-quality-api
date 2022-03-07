@@ -43,6 +43,7 @@ class LayerDefinition:
     endpoint: str
     filter: str
     ratio_filter: Optional[str] = None
+    source: Optional[str] = None
 
 
 @dataclass
