@@ -29,6 +29,8 @@ from ohsome_quality_analyst.utils.definitions import DATASETS
 from ohsome_quality_analyst.utils.exceptions import EmptyRecordError
 from ohsome_quality_analyst.utils.helper import json_serialize
 
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 @asynccontextmanager
 async def get_connection():
@@ -59,13 +61,11 @@ async def save_indicator_results(
 
     logging.info("Save indicator result to database")
 
-    working_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(working_dir, "create_results_table.sql")
+    file_path = os.path.join(WORKING_DIR, "create_results_table.sql")
     with open(file_path, "r") as file:
         create_query = file.read()
 
-    working_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(working_dir, "save_results.sql")
+    file_path = os.path.join(WORKING_DIR, "save_results.sql")
     with open(file_path, "r") as file:
         upsert_query = file.read()
 
@@ -107,8 +107,7 @@ async def load_indicator_results(
     """
     logging.info("Load Indicator results from database")
 
-    working_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(working_dir, "load_results.sql")
+    file_path = os.path.join(WORKING_DIR, "load_results.sql")
     with open(file_path, "r") as file:
         query = file.read()
 
@@ -192,8 +191,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
 
 
 async def get_regions_as_geojson() -> FeatureCollection:
-    working_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(working_dir, "regions_as_geojson.sql")
+    file_path = os.path.join(WORKING_DIR, "regions_as_geojson.sql")
     with open(file_path, "r") as file:
         query = file.read()
     async with get_connection() as conn:
@@ -255,3 +253,20 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     async with get_connection() as conn:
         record = await conn.fetchrow(query, feature_id)
     return str(record[0])
+
+
+async def get_shdi(bpoly: Union[Polygon, MultiPolygon]) -> float:
+    """Get Subnational Human Development Index (SHDI) for a bounding polygon.
+
+    Get SHDI by intersecting the bounding polygon with sub-national regions provided by
+    the GlobalDataLab (GDL).
+
+    If intersection with multiple GDL regions occurs, return the weighted average using
+    the intersection area as the weight.
+    """
+    file_path = os.path.join(WORKING_DIR, "select_shdi.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    async with get_connection() as conn:
+        record = await conn.fetchrow(query, str(bpoly))
+    return record["shdi"]
