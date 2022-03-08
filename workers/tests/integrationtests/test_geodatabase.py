@@ -139,6 +139,30 @@ class TestGeodatabase(unittest.TestCase):
         )
         self.assertEqual(result, "3")
 
+    def test_get_shdi_single_intersection(self):
+        """Input geometry intersects only with one SHDI region."""
+        shdi = asyncio.run(db_client.get_shdi(self.feature.geometry))
+        self.assertIsInstance(shdi, float)
+        self.assertLessEqual(shdi, 1.0)
+
+    # Note: This test can only be executed if the whole SHDI is in the database.
+    # def test_get_shdi_multiple_intersections(self):
+    #     """Input geometry intersects with multiple SHDI-regions."""
+    #     geom = geojson.Polygon(
+    #         [
+    #             [
+    #                 [13.610687255859375, 48.671919512374565],
+    #                 [14.0350341796875, 48.671919512374565],
+    #                 [14.0350341796875, 48.865618158309374],
+    #                 [13.610687255859375, 48.865618158309374],
+    #                 [13.610687255859375, 48.671919512374565],
+    #             ]
+    #         ],
+    #     )
+    #     shdi = asyncio.run(db_client.get_shdi(geom))
+    #     self.assertIsInstance(shdi, float)
+    #     self.assertLessEqual(shdi, 1.0)
+
 
 if __name__ == "__main__":
     unittest.main()
