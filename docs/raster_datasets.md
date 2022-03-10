@@ -1,4 +1,4 @@
-# Raster datasets
+# Raster datasets (Stored as file on Disk)
 
 OQT operates on raster datasets stored on disk.
 

@@ -17,7 +17,7 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and the GHS POP dataset for those regions. To build and run an already configured image run:
+A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (SHDI and GHS-POP) for those regions. To build and run an already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
