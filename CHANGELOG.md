@@ -2,11 +2,16 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- Renamed old "poi" layer to "landmarks" and created new one based on openpoiservice. Removed "ideal_vgi_poi" layer ([#246])
+
 ### Other Changes
 
 - Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 
+[#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
@@ -16,7 +21,6 @@
 
 ### Breaking Changes
 
-- Renamed old "poi" layer to "landmarks" and created new one based on openpoiservice. Removed "idel_vgi_poi" layer ([#246])
 - Remove "IDEAL-VGI Land Use and Land Cover" as valid layer for the Mapping Saturation indicator ([#221])
 - Disable support of the parameter `bpolys` for GET requests to the API ([#223])
 - Rewrite of the Mapping Saturation indicator to use statistical models from the R language ([#170])
@@ -35,7 +39,6 @@
 
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
 [#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
-[#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#237]: https://github.com/GIScience/ohsome-quality-analyst/pull/237
