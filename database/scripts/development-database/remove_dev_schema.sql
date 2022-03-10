@@ -14,6 +14,10 @@ DROP TABLE IF EXISTS development.ghs_pop;
 
 DROP TABLE IF EXISTS test.ghs_pop;
 
+DROP TABLE IF EXISTS development.shdi;
+
+DROP TABLE IF EXISTS test.shdi;
+
 DROP SCHEMA IF EXISTS development;
 
 DROP SCHEMA IF EXISTS test;
