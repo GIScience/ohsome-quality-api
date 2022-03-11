@@ -12,11 +12,13 @@
 - Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 - Add `landmarks` layer [#246])
+- Add SHDI to database and add functionality to get SHDI for an AOI by intersection using SQL ([#266])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
+[#266]: https://github.com/GIScience/ohsome-quality-analyst/pull/266
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
 [`openpoiservice`]: https://github.com/GIScience/openpoiservice
 
