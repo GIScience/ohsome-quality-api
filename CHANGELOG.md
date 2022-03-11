@@ -2,14 +2,23 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- Update `poi` layer based on ([`openpoiservice`]) [#246])
+- Remove `ideal_vgi_poi` layer in favor of new `poi` layer ([#246])
+
 ### Other Changes
 
 - Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
+- Add `landmarks` layer [#246])
 
+[#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
+[#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
+[`openpoiservice`]: https://github.com/GIScience/openpoiservice
 
 
 ## 0.8.0
@@ -33,7 +42,6 @@
 - `R` (≥ 4.0) needs to be available on the system on which OQT runs ([#170])
 
 [#170]: https://github.com/GIScience/ohsome-quality-analyst/pull/170
-[#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#223]: https://github.com/GIScience/ohsome-quality-analyst/pull/223
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#237]: https://github.com/GIScience/ohsome-quality-analyst/pull/237

@@ -46,11 +46,68 @@ amenities:
   filter: amenity=* and (type:way or type:node)
 
 poi:
-  name: Points-of-Interests
-  description: |
-    A lot of different objects such related to natural features
-    transportation and amenities in a city.
+  name: Points of interest
+  description: All features with the amenities key.
   endpoint: elements/count
+  source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
+  filter: |
+    (aeroway in (aerodrome, helipad, heliport))
+    or (amenity in (animal_boarding, animal_shelter, arts_centre, atm, baby_hatch, bank, bar, bbq, bench,
+    bicycle_parking, bicycle_rental, bicycle_repair_station, biergarten, boat_sharing, brothel, bureau_de_change,
+    bus_station, bus_stop, cafe, car_sharing, car_wash, casino, charging_station, cinema, clinic, clock, college,
+    community_centre, compressed_air, courthouse, coworking_space, crematorium, crypt, dentist, doctors, dive_centre,
+    dojo, drinking_water, driving_school, embassy, emergency_phone, ev_charging, fast_food, ferry_terminal,
+    fire_station, food_court, fountain, fuel, gambling, grave_yard, hospital, hunting_stand, ice_cream, internet_cafe,
+    kindergarten, language_school, library, kneipp_water_cure, marketplace, motorcycle_parking, music_school, nightclub,
+    nursing_home, parking, parking_entrance, parking_space, pharmacy, photo_booth, planetarium, place_of_worship,
+    police, post_box, post_office, pub, public_bath, prison, ranger_station, recycling, rescue_station, restaurant,
+    retirement_home, sanitary_dump_station, school, shelter, shower, social_centre, social_facility, spa, stripclub,
+    studio, table, taxi, telephone, toilets, townhall, university, vending_machine, veterinary, waste_basket,
+    waste_disposal, water_point))
+    or (emergency in (access_point, defibrillator, fire_hydrant))
+    or (healthcare = blood_donation)
+    or (healthcare:speciality = vacciniation)
+    or (highway = raceway)
+    or (historic in (aircraft, aqueduct, archaeological_site, battlefield, boundary_stone, building,
+    castle, cannon, city_gate, citywalls, farm, fort, gallows, highwater_mark, locomotive, manor,
+    memorial, milestone, monastery, monument, optical_telegraph, pillory, ruins, rune_stone, ship,
+    tomb, wayside_cross, wayside_shrine, wreck))
+    or (leisure in (adult_gaming_centre, amusement_arcade, beach_resort, bandstand, bird_hide, common,
+    dance, dog_park, firepit, fishing, fitness_centre, garden, golf_course, hackerspace,
+    horse_riding, ice_rink, marina, miniature_golf, nature_reserve, park, picnic_table, pitch, playground,
+    sauna, slipway, sports_centre, stadium, summer_camp, swimming_area, swimming_pool, track, turkish_bad,
+    water_park, wildlife_hide))
+    or (natural in (beach, cave_entrance, geyser, peak, rock, saddle, spring, volcano,
+    water))
+    or (public_transport in (platform, stop_position, station, stop_area))
+    or (railway in (halt, station, tram_station))
+    or (shop in (agrarian, alcohol, antiques, art, bag, bakery, beauty, bed, beverages,
+    bicycle, books, boutique, brewing_supplies, business_machines, butcher, cafe,camera,
+    candles, car, car_parts, carpet, curtain, cheese, chemist, chocolate,
+    clothes, coffee, computer, confectionery, convenience, copyshop, cosmetics,
+    dairy, deli, department_store, doityourself, dry_cleaning, electrical, electronics,
+    erotic, estate_agent, e-cigarette, farm, fashion, fishing, florist, funeral_directors,
+    furniture, games, garden_centre, garden_furniture, gas, general, gift, glaziery, greengrocer, grocery,
+    hairdresser, hairdresser_supply, hardware, hearing_aids, herbalist, hifi, houseware, hunting, insurance,
+    interior_decoration, jewelry, laundry, leather, locksmith, kiosk, kitchen, lamps, lottery, mall,
+    massage, medical_supply, mobile_phone, model, motorcycle, music, musical_instrument,
+    nutrition_supplements, newsagent, optician, organic, outdoor, paint, pastry, perfumery, photo,
+    pyrotechnics, rediotechnics, seafood, second_hand,secruity, shoes, spices, sports, stationery,
+    supermarket, swimming_pool, tailor, tattoo, tea, ticket, tiles, tobacco, toys, travel_agency, trophy,
+    tyres, variety_store, video, video_games, watches, weapons, wine, pet))
+    or (tourism in (alpine_hut, apartment, aquarium, artwork, attraction, camp_site, caravan_site,
+    chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
+    wilderness_hut, zoo))
+    or (vaccination = covid19)
+
+landmarks:
+  name: landmarks for orientation
+  description: |
+    A lot of different objects related to natural features,
+    transportation and amenities in a city. Definition taken from
+    Waterproofing data project.
+  endpoint: elements/count
+  source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
   filter: |
     natural=peak or leisure=park or boundary=national_park or
     natural=water or waterway=* or highway=bus_stop or railway=station or
@@ -242,12 +299,6 @@ ideal_vgi_infrastructure:
   description: Objects related to infrastructure
   endpoint: elements/length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
-
-ideal_vgi_poi:
-  name: IDEAL-VGI Points-of-Interests
-  description: Features related to Points-of-Interests
-  endpoint: elements/count
-  filter: (amenity=* or craft=* or emergency=* or historic=* or leisure=* or man_made=* or office=* or place=* or shop=* or tourism=*) and geometry:point
 
 lulc:
   name: Land Use and Land Cover
