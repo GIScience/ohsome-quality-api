@@ -1,19 +1,23 @@
 import asyncio
 import os
+from datetime import datetime
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 import geojson
 import httpx
-from schema import Optional, Schema
+from geojson import FeatureCollection
+from schema import Schema
 
-from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
+from ohsome_quality_analyst.base.layer import LayerData
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.exceptions import (
     LayerDataSchemaError,
     OhsomeApiError,
     SchemaError,
 )
+
+from .utils import get_geojson_fixture, get_layer_fixture
 
 
 class AsyncMock(MagicMock):
@@ -22,11 +26,16 @@ class AsyncMock(MagicMock):
 
 
 class TestOhsomeClient(TestCase):
+    def test_get_latest_ohsome_timestamp(self):
+        time = asyncio.run(ohsome_client.get_latest_ohsome_timestamp())
+        self.assertIsInstance(time, datetime)
+
+
+class TestOhsomeClientQuery(TestCase):
     def setUp(self) -> None:
         fixtures_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "fixtures"
         )
-
         fixture = os.path.join(fixtures_dir, "ohsome-response-200-invalid.geojson")
         with open(fixture, "r") as reader:
             self.invalid_response_geojson = reader.read()
@@ -37,18 +46,11 @@ class TestOhsomeClient(TestCase):
         with open(fixture, "r") as reader:
             self.invalid_response_time = reader.read()
 
-        fixture = os.path.join(fixtures_dir, "heidelberg-altstadt-geometry.geojson")
-        with open(fixture, "r") as file:
-            self.bpolys = geojson.load(file)
-        self.layer = LayerDefinition(
-            name="",
-            description="",
-            endpoint="elements/length",
-            filter_="mock_filter",
-        )
         self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        self.layer = get_layer_fixture("building_count")
 
-    def test_query_valid_response(self) -> None:
+    def test_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 200,
@@ -58,7 +60,7 @@ class TestOhsomeClient(TestCase):
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
             self.assertDictEqual(response, geojson.loads(self.valid_response))
 
-    def test_query_invalid_response_with_status_code_200(self) -> None:
+    def test_invalid_response_with_status_code_200(self) -> None:
         """When response is streamed it can be invalid while status code equals 200"""
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
@@ -69,7 +71,7 @@ class TestOhsomeClient(TestCase):
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
-    def test_query_status_code_400(self) -> None:
+    def test_status_code_400(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 400,
@@ -79,12 +81,12 @@ class TestOhsomeClient(TestCase):
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
-    def test_query_not_implemeted(self) -> None:
+    def test_not_implemeted(self) -> None:
         """Query for layer type is not implemeted."""
         with self.assertRaises(NotImplementedError):
             asyncio.run(ohsome_client.query(""))
 
-    def test_query_user_agent(self) -> None:
+    def test_user_agent(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
                 200,
@@ -97,73 +99,7 @@ class TestOhsomeClient(TestCase):
                 mock_request.call_args[1]["headers"]["user-agent"].split("/")[0],
             )
 
-    def test_build_url(self) -> None:
-        ohsome_api = self.ohsome_api.rstrip("/")
-        url = ohsome_client.build_url(self.layer)
-        self.assertEqual(ohsome_api + "/elements/length", url)
-        url = ohsome_client.build_url(self.layer, ratio=True)
-        self.assertEqual(ohsome_api + "/elements/length/ratio", url)
-        url = ohsome_client.build_url(self.layer, endpoint="foo/bar")
-        self.assertEqual(ohsome_api + "/foo/bar", url)
-        url = ohsome_client.build_url(self.layer, endpoint="foo/bar", ratio=True)
-        self.assertEqual(ohsome_api + "/foo/bar/ratio", url)
-
-    def test_build_data_dict_minimal(self) -> None:
-        schema = Schema(
-            {
-                "bpolys": str,
-                "filter": str,
-            }
-        )
-        data = ohsome_client.build_data_dict(self.layer, self.bpolys)
-        self.assertTrue(schema.is_valid(data))
-
-    def test_build_data_dict_ratio(self) -> None:
-        """Layer has no ratio filter defined"""
-        with self.assertRaises(ValueError):
-            ohsome_client.build_data_dict(self.layer, self.bpolys, ratio=True)
-
-    def test_build_data_dict_ratio_2(self) -> None:
-        """Layer has ratio filter defined"""
-        schema = Schema(
-            {
-                "bpolys": str,
-                "filter": str,
-                "filter2": str,
-            }
-        )
-        layer = LayerDefinition(
-            name="",
-            description="",
-            endpoint="elements/length",
-            filter_="mock_filter",
-            ratio_filter="mock_ratio_filter",
-        )
-        data = ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
-        self.assertTrue(schema.is_valid(data))
-
-    def test_build_data_with_time(self) -> None:
-        schema = Schema(
-            {
-                "bpolys": str,
-                "filter": str,
-                Optional("filter2"): str,
-                "time": str,
-            }
-        )
-        data = ohsome_client.build_data_dict(self.layer, self.bpolys, time="2014-01-01")
-        self.assertTrue(schema.is_valid(data))
-        layer = LayerDefinition(
-            name="",
-            description="",
-            endpoint="elements/length",
-            filter_="mock_filter",
-            ratio_filter="mock_ratio_filter",
-        )
-        data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
-        self.assertTrue(schema.is_valid(data))
-
-    def test_query_layer_data_valid_1(self):
+    def test_layer_data_valid_1(self):
         data = asyncio.run(
             ohsome_client.query(
                 LayerData(
@@ -174,7 +110,8 @@ class TestOhsomeClient(TestCase):
                             {"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}
                         ]
                     },
-                )
+                ),
+                self.bpolys,
             )
         )
         self.assertDictEqual(
@@ -182,7 +119,7 @@ class TestOhsomeClient(TestCase):
             data,
         )
 
-    def test_query_layer_data_valid_2(self):
+    def test_layer_data_valid_2(self):
         data = asyncio.run(
             ohsome_client.query(
                 LayerData(
@@ -197,7 +134,8 @@ class TestOhsomeClient(TestCase):
                             }
                         ]
                     },
-                )
+                ),
+                self.bpolys,
             )
         )
         self.assertDictEqual(
@@ -213,96 +151,323 @@ class TestOhsomeClient(TestCase):
             data,
         )
 
-    def test_query_layer_data_invalid_empty(self):
-        with self.assertRaises(LayerDataSchemaError):
-            asyncio.run(ohsome_client.query(LayerData("name", "description", {})))
-
-    def test_query_layer_data_invalid_empty_list(self):
-        with self.assertRaises(LayerDataSchemaError):
-            asyncio.run(
-                ohsome_client.query(LayerData("name", "description", {"result": []}))
-            )
-
-    def test_query_layer_data_invalid_missing_key(self):
+    def test_layer_data_invalid_empty(self):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData("name", "description", {"result": [{"value": 1.0}]})
+                    LayerData("name", "description", {}),
+                    self.bpolys,
                 )
             )
 
-    def test_validate_query_results_valid_1(self):
-        ohsome_client.validate_query_results(
-            {"result": [{"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}]}
+    def test_layer_data_invalid_empty_list(self):
+        with self.assertRaises(LayerDataSchemaError):
+            asyncio.run(
+                ohsome_client.query(
+                    LayerData("name", "description", {"result": []}),
+                    self.bpolys,
+                )
+            )
+
+    def test_layer_data_invalid_missing_key(self):
+        with self.assertRaises(LayerDataSchemaError):
+            asyncio.run(
+                ohsome_client.query(
+                    LayerData(
+                        "name",
+                        "description",
+                        {"result": [{"value": 1.0}]},
+                    ),
+                    self.bpolys,
+                )
+            )
+
+
+class TestOhsomeClientBuildUrl(TestCase):
+    def setUp(self) -> None:
+        self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.layer = get_layer_fixture("building_count")
+        self.ratio_layer = get_layer_fixture("jrc_health_count")
+
+    def test(self) -> None:
+        ohsome_api = self.ohsome_api.rstrip("/")
+        url = ohsome_client.build_url(self.layer)
+        self.assertEqual(ohsome_api + "/elements/count", url)
+
+    def test_group_by(self) -> None:
+        url = ohsome_client.build_url(self.layer, group_by=True)
+        self.assertEqual(
+            self.ohsome_api.rstrip("/") + "/elements/count/groupBy/boundary", url
         )
 
-    def test_validate_query_results_valid_2(self):
-        ohsome_client.validate_query_results(
+    def test_ratio_false(self) -> None:
+        ohsome_api = self.ohsome_api.rstrip("/")
+        url = ohsome_client.build_url(self.ratio_layer)
+        self.assertEqual(ohsome_api + "/elements/count", url)
+
+    def test_ratio_true(self) -> None:
+        ohsome_api = self.ohsome_api.rstrip("/")
+        url = ohsome_client.build_url(self.ratio_layer, ratio=True)
+        self.assertEqual(ohsome_api + "/elements/count/ratio", url)
+
+    def test_ratio_group_by(self) -> None:
+        url = ohsome_client.build_url(self.ratio_layer, ratio=True, group_by=True)
+        self.assertEqual(
+            self.ohsome_api.rstrip("/") + "/elements/count/ratio/groupBy/boundary", url
+        )
+
+
+class TestOhsomeClientBuildData(TestCase):
+    def setUp(self) -> None:
+        self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        self.layer = get_layer_fixture("building_count")
+
+    def test_feature(self) -> None:
+        schema = Schema(
             {
-                "result": [
-                    {
-                        "value": 1.0,
-                        "fromTimestamp": "2020-03-20T01:30:08.180856",
-                        "toTimestamp": "2020-04-20T01:30:08.180856",
-                    }
-                ]
+                "bpolys": str,
+                "filter": str,
             }
         )
+        data = ohsome_client.build_data_dict(self.layer, self.bpolys)
+        self.assertTrue(schema.is_valid(data))
 
-    def test_validate_query_results_invalid_empyt(self):
+    def test_feature_collection(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+            }
+        )
+        bpolys = FeatureCollection([self.bpolys])
+        data = ohsome_client.build_data_dict(self.layer, bpolys)
+        self.assertTrue(schema.is_valid(data))
+
+    def test_geometry(self) -> None:
+        bpolys = self.bpolys.geometry
+        with self.assertRaises(TypeError):
+            ohsome_client.build_data_dict(self.layer, bpolys)
+
+    def test_time(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "time": str,
+            }
+        )
+        data = ohsome_client.build_data_dict(self.layer, self.bpolys, time="2014-01-01")
+        self.assertTrue(schema.is_valid(data))
+
+    def test_ratio(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "filter2": str,
+            }
+        )
+        layer = get_layer_fixture("jrc_health_count")
+        data = ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
+        self.assertTrue(schema.is_valid(data))
+
+    def test_ratio_time(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "filter2": str,
+                "time": str,
+            }
+        )
+        layer = get_layer_fixture("jrc_health_count")
+        data = ohsome_client.build_data_dict(
+            layer, self.bpolys, time="2014-01-01", ratio=True
+        )
+        self.assertTrue(schema.is_valid(data))
+
+
+class TestOhsomeClientValidateQuery(TestCase):
+    def setUp(self) -> None:
+        self.ohsome_api = "https://api.ohsome.org/v1/"
+
+    def test_valid_1(self):
+        data = {"result": [{"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}]}
+        self.assertDictEqual(data, ohsome_client.validate_query_results(data))
+
+    def test_valid_2(self):
+        data = {
+            "result": [
+                {
+                    "value": 1.0,
+                    "fromTimestamp": "2020-03-20T01:30:08.180856",
+                    "toTimestamp": "2020-04-20T01:30:08.180856",
+                }
+            ]
+        }
+        self.assertDictEqual(data, ohsome_client.validate_query_results(data))
+
+    def test_invalid_empyt(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({})
 
-    def test_validate_query_results_invalid_empyt_list(self):
+    def test_invalid_empyt_list(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({"result": []})
 
-    def test_validate_query_results_invalid_missing_key(self):
+    def test_invalid_missing_key_timestamp(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({"result": [{"value": 1.0}]})
+
+    def test_invalid_missing_key_value(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results(
-                {"result": [{"value": 1.0}]}  # Missing timestamp item
+                {"result": [{"timestamp": "2020-03-20T01:30:08.180856"}]}
             )
 
-    def test_validate_query_results_valid_ratio(self):
-        ohsome_client.validate_query_results(
-            {
-                "ratioResult": [
-                    {
-                        "ratio": 1.0,
-                        "value": 1.0,
-                        "value2": 1.0,
-                        "timestamp": "2020-03-20T01:30:08.180856",
-                    }
-                ]
-            },
-            ratio=True,
+    def test_valid_group_by(self):
+        data = {
+            "groupByResult": [
+                {
+                    "result": [{"timestamp": "2018-01-01T00:00:00Z", "value": 23225.0}],
+                    "groupByObject": "remainder",
+                },
+                {
+                    "result": [{"timestamp": "2018-01-01T00:00:00Z", "value": 1418.0}],
+                    "groupByObject": "building:roof",
+                },
+                {
+                    "result": [{"timestamp": "2018-01-01T00:00:00Z", "value": 1178.0}],
+                    "groupByObject": "building:roof:colour",
+                },
+            ]
+        }
+        self.assertDictEqual(
+            data, ohsome_client.validate_query_results(data, group_by=True)
         )
 
-    def test_validate_query_results_valid_ratio_2(self):
-        ohsome_client.validate_query_results(
-            {
-                "ratioResult": [
-                    {
-                        "ratio": "NaN",
-                        "value": 1.0,
-                        "value2": 1.0,
-                        "timestamp": "2020-03-20T01:30:08.180856",
-                    }
-                ]
-            },
-            ratio=True,
+    def test_invalid_empyt_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({}, group_by=True)
+
+    def test_invalid_empyt_list_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({"groupByResult": []}, group_by=True)
+
+    def test_invalid_missing_key_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {
+                    "groupByResult": [
+                        {
+                            "result": [
+                                {
+                                    "value": 1.0,
+                                    "timestamp": "2020-03-20T01:30:08.180856",
+                                }
+                            ]
+                        }
+                    ]
+                },
+                group_by=True,
+            )
+
+    def test_valid_ratio(self):
+        data = {
+            "ratioResult": [
+                {
+                    "ratio": 1.0,
+                    "value": 1.0,
+                    "value2": 1.0,
+                    "timestamp": "2020-03-20T01:30:08.180856",
+                }
+            ]
+        }
+        self.assertDictEqual(
+            data, ohsome_client.validate_query_results(data, ratio=True)
         )
 
-    def test_validate_query_results_invalid_empyt_ratio(self):
+    def test_valid_ratio_nan(self):
+        data = {
+            "ratioResult": [
+                {
+                    "ratio": "NaN",
+                    "value": 1.0,
+                    "value2": 1.0,
+                    "timestamp": "2020-03-20T01:30:08.180856",
+                }
+            ]
+        }
+        self.assertDictEqual(
+            data, ohsome_client.validate_query_results(data, ratio=True)
+        )
+
+    def test_invalid_empyt_ratio(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({}, ratio=True)
 
-    def test_validate_query_results_invalid_empyt_list_ratio(self):
+    def test_invalid_empyt_list_ratio(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({"ratioResult": []}, ratio=True)
 
-    def test_validate_query_results_invalid_missing_key_ratio(self):
+    def test_invalid_missing_key_timestamp_ratio(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results(
-                {"ratioResult": [{"value": 1.0}]}, ratio=True  # Missing timestamp item
+                {"ratioResult": [{"value": 1.0}]}, ratio=True
+            )
+
+    def test_invalid_missing_key_value_ratio(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"result": [{"timestamp": "2020-03-20T01:30:08.180856"}]}, ratio=True
+            )
+
+    def test_valid_ratio_group_by(self):
+        data = {
+            "groupByResult": [
+                {
+                    "ratioResult": [
+                        {
+                            "ratio": 1.0,
+                            "value": 1.0,
+                            "value2": 1.0,
+                            "timestamp": "2020-03-20T01:30:08.180856",
+                        }
+                    ],
+                    "groupByObject": "foo",
+                }
+            ]
+        }
+        self.assertDictEqual(
+            data, ohsome_client.validate_query_results(data, ratio=True, group_by=True)
+        )
+
+    def test_invalid_empyt_ratio_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({}, ratio=True, group_by=True)
+
+    def test_invalid_empyt_list_ratio_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"groupByResult": []}, ratio=True, group_by=True
+            )
+
+    def test_invalid_missing_key_ratio_group_by(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {
+                    "groupByResult": [
+                        {
+                            "ratioResult": [
+                                {
+                                    "value": 1.0,
+                                    "timestamp": "2020-03-20T01:30:08.180856",
+                                }
+                            ]
+                        }
+                    ]
+                },
+                ratio=True,
+                group_by=True,
             )
