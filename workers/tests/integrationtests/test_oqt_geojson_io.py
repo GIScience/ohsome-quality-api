@@ -42,6 +42,11 @@ class TestOqtGeoJsonIO(unittest.TestCase):
         feature = asyncio.run(oqt.create_indicator_as_geojson(parameters))
         self.assertIsInstance(feature, Feature)
 
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_not_implemented(self):
+        with self.assertRaises(NotImplementedError):
+            asyncio.run(oqt.create_indicator_as_geojson(""))
+
 
 if __name__ == "__main__":
     unittest.main()

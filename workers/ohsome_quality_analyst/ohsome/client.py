@@ -26,18 +26,14 @@ from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
 @singledispatch
-async def query(
-    layer,
-    *args,
-    **kargs,
-) -> dict:
+async def query(layer) -> dict:
     raise NotImplementedError(
         "Cannot query ohsome API for Layer of type: " + str(type(layer))
     )
 
 
 @query.register
-async def _query(
+async def _(
     layer: LayerDefinition,
     bpolys: Union[Polygon, MultiPolygon],
     time: Optional[str] = None,
@@ -58,7 +54,12 @@ async def _query(
     return validate_query_results(response, ratio)
 
 
-async def _query(layer: LayerData, *_args, **_kargs) -> dict:  # noqa
+@query.register
+async def _(
+    layer: LayerData,
+    *_args,
+    **_kwargs,
+) -> dict:
     try:
         return validate_query_results(layer.data)
     except SchemaError as error:

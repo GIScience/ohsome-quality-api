@@ -79,6 +79,11 @@ class TestOhsomeClient(TestCase):
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
+    def test_query_not_implemeted(self) -> None:
+        """Query for layer type is not implemeted."""
+        with self.assertRaises(NotImplementedError):
+            asyncio.run(ohsome_client.query(""))
+
     def test_query_user_agent(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
             mock_request.return_value = httpx.Response(
