@@ -47,10 +47,10 @@ async def create_indicator_as_geojson(parameters):
 
 @create_indicator_as_geojson.register(IndicatorBpolys)
 @create_indicator_as_geojson.register(IndicatorData)
-async def _create_indicator_as_geojson(  # noqa
+async def _(
     parameters: Union[IndicatorBpolys, IndicatorData],
     size_restriction: bool = False,
-    **_kargs,
+    **_kwargs,
 ) -> Union[Feature, FeatureCollection]:
     """Create an indicator or multiple indicators as GeoJSON object.
 
@@ -75,11 +75,11 @@ async def _create_indicator_as_geojson(  # noqa
         return FeatureCollection(features=features)
 
 
-@create_indicator_as_geojson.register
-async def _create_indicator_as_geojson(  # noqa
+@create_indicator_as_geojson.register(IndicatorDatabase)
+async def _(
     parameters: IndicatorDatabase,
     force: bool = False,
-    **_kargs,
+    **_kwargs,
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, force)
@@ -124,15 +124,14 @@ async def create_report_as_geojson(
 
 
 @singledispatch
-async def create_indicator(parameters, force: bool = False) -> Indicator:
-    """Create an Indicator."""
+async def create_indicator(parameters) -> Indicator:
     raise NotImplementedError(
         "Cannot create Indicator for parameters of type: " + str(type(parameters))
     )
 
 
 @create_indicator.register
-async def _create_indicator(
+async def _(
     parameters: IndicatorDatabase,
     force: bool = False,
 ) -> Indicator:
@@ -188,9 +187,9 @@ async def _create_indicator(
 
 
 @create_indicator.register
-async def _create_indicator(  # noqa
+async def _(
     parameters: IndicatorBpolys,
-    force: bool = False,
+    *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
@@ -218,9 +217,9 @@ async def _create_indicator(  # noqa
 
 
 @create_indicator.register
-async def _create_indicator(  # noqa
+async def _(
     parameters: IndicatorData,
-    force: bool = False,
+    *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
@@ -246,7 +245,7 @@ async def _create_indicator(  # noqa
 
 
 @singledispatch
-async def create_report(parameters, force: bool = False) -> Report:
+async def create_report(parameters) -> Report:
     """Create a Report."""
     raise NotImplementedError(
         "Cannot create Report for parameters of type: " + str(type(parameters))
@@ -254,10 +253,7 @@ async def create_report(parameters, force: bool = False) -> Report:
 
 
 @create_report.register
-async def _create_report(
-    parameters: ReportDatabase,
-    force: bool = False,
-) -> Report:
+async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     """Create a Report.
 
     Fetches indicator results form the database.
@@ -300,10 +296,7 @@ async def _create_report(
 
 
 @create_report.register
-async def _create_report(  # noqa
-    parameters: ReportBpolys,
-    force: bool = False,
-) -> Report:
+async def _(parameters: ReportBpolys, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
