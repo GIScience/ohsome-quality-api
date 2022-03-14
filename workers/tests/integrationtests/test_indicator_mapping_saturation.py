@@ -46,6 +46,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             self.assertFalse(np.isnan(np.sum(fm.fitted_values)))
             self.assertTrue(np.isfinite(np.sum(fm.fitted_values)))
 
+    @oqt_vcr.use_cassette()
     def test_as_feature(self):
         indicator = MappingSaturation(layer_name=self.layer_name, feature=self.feature)
         asyncio.run(indicator.preprocess())
