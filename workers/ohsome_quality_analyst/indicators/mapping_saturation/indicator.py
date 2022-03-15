@@ -42,10 +42,8 @@ class MappingSaturation(BaseIndicator):
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
-        super().__init__(
-            layer=layer,
-            feature=feature,
-        )
+        super().__init__(layer=layer, feature=feature)
+
         self.time_range: str = time_range
 
         # The following attributes will be set during the life-cycle of the object.

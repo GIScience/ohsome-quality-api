@@ -71,7 +71,7 @@ class BaseLayerName(BaseModel):
 class BaseLayerData(BaseModel):
     """Model for the parameter `layer`.
 
-    The parameter contains layer name, description and data.
+    The Layer consists of name, description and data.
     """
 
     layer: LayerData
