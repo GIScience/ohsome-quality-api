@@ -46,8 +46,8 @@ amenities:
   filter: amenity=* and (type:way or type:node)
 
 poi:
-  name: Points of interest
-  description: All features with the amenities key.
+  name: POI
+  description: Points of interest
   endpoint: elements/count
   source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
   filter: |
@@ -101,11 +101,9 @@ poi:
     or (vaccination = covid19)
 
 landmarks:
-  name: landmarks for orientation
+  name: Landmarks for Orientation
   description: |
-    A lot of different objects related to natural features,
-    transportation and amenities in a city. Definition taken from
-    Waterproofing data project.
+    Landmarks for orientation in a city such as natural features, public transport stations and amenities in a city.
   endpoint: elements/count
   source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
   filter: |
