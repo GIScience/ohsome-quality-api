@@ -17,15 +17,8 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class PoiDensity(BaseIndicator):
-    def __init__(
-        self,
-        layer: Layer,
-        feature: Feature,
-    ) -> None:
-        super().__init__(
-            layer=layer,
-            feature=feature,
-        )
+    def __init__(self, layer: Layer, feature: Feature) -> None:
+        super().__init__(layer=layer, feature=feature)
         self.threshold_yellow = 30
         self.threshold_red = 10
         self.area_sqkm = None

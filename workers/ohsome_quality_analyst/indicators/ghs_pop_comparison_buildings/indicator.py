@@ -18,15 +18,8 @@ from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster
 class GhsPopComparisonBuildings(BaseIndicator):
     """Set number of features and population into perspective."""
 
-    def __init__(
-        self,
-        layer: Layer,
-        feature: Feature,
-    ) -> None:
-        super().__init__(
-            layer=layer,
-            feature=feature,
-        )
+    def __init__(self, layer: Layer, feature: Feature) -> None:
+        super().__init__(layer=layer, feature=feature)
         # Those attributes will be set during lifecycle of the object.
         self.pop_count = None
         self.area = None

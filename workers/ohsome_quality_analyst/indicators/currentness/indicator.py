@@ -23,10 +23,7 @@ class Currentness(BaseIndicator):
         layer: Layer,
         feature: geojson.Feature,
     ) -> None:
-        super().__init__(
-            layer=layer,
-            feature=feature,
-        )
+        super().__init__(layer=layer, feature=feature)
         self.threshold_yellow = 0.6
         self.threshold_red = 0.2
         self.element_count = None
