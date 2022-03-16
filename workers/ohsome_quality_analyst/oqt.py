@@ -5,7 +5,7 @@ Functions are triggered by the CLI and API.
 import asyncio
 import logging
 from functools import singledispatch
-from typing import List, Union
+from typing import List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -285,15 +285,14 @@ async def _create_report(  # noqa
 
 async def create_all_indicators(
     dataset: str,
-    indicator_name: str = None,
-    layer_name: str = None,
+    indicator_name: Optional[str] = None,
+    layer_name: Optional[str] = None,
     force: bool = False,
 ) -> None:
     """Create all indicator/layer combination for the given dataset.
 
     Possible Indicator/Layer combinations are defined in `definitions.py`.
     This functions executes `create_indicator()` function up to four times concurrently.
-
     """
 
     async def sem_task(task, semaphore=asyncio.Semaphore(4)):
@@ -303,24 +302,24 @@ async def create_all_indicators(
 
     if indicator_name is not None and layer_name is None:
         layers = get_valid_layers(indicator_name)
-        indicator_layer = tuple([(indicator_name, lay) for lay in layers])
+        indicator_layer = [(indicator_name, lay) for lay in layers]
     elif indicator_name is None and layer_name is not None:
         indicators = get_valid_indicators(layer_name)
-        indicator_layer = tuple([(ind, layer_name) for ind in indicators])
+        indicator_layer = [(ind, layer_name) for ind in indicators]
     elif indicator_name is not None and layer_name is not None:
-        indicator_layer = ((indicator_name, layer_name),)
+        indicator_layer = [(indicator_name, layer_name)]
     else:
         indicator_layer = INDICATOR_LAYER
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name, layer_name in indicator_layer:
+        for indicator_name_, layer_name_ in indicator_layer:
             tasks.append(
                 create_indicator(
                     IndicatorDatabase(
-                        name=indicator_name,
-                        layerName=layer_name,
+                        name=indicator_name_,
+                        layerName=layer_name_,
                         dataset=dataset,
                         featureId=fid,
                     ),
