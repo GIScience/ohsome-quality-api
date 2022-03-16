@@ -93,7 +93,7 @@ INDICATOR_LAYER = (
     ("MappingSaturation", "mapaction_lakes_area"),
     ("MappingSaturation", "mapaction_rivers_length"),
     ("MappingSaturation", "ideal_vgi_infrastructure"),
-    ("MappingSaturation", "ideal_vgi_poi"),
+    ("MappingSaturation", "poi"),
     ("MappingSaturation", "lulc"),
     ("Currentness", "major_roads_count"),
     ("Currentness", "building_count"),
