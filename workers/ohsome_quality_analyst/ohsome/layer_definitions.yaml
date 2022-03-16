@@ -103,7 +103,7 @@ poi:
 landmarks:
   name: Landmarks for Orientation
   description: |
-    Landmarks for orientation in a city such as natural features, public transport stations and amenities in a city.
+    Landmarks for orientation in a city such as natural features, public transport stations and amenities.
   endpoint: elements/count
   source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
   filter: |
