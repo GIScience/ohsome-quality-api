@@ -258,8 +258,8 @@ def create_all_indicators(
     asyncio.run(
         oqt.create_all_indicators(
             dataset_name,
-            indicator_name,
-            layer_name,
+            indicator_name=indicator_name,
+            layer_name=layer_name,
             force=force,
         )
     )
