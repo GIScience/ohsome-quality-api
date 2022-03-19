@@ -92,7 +92,10 @@ class BaseReport(metaclass=ABCMeta):
         for indicator in self.indicators:
             if indicator.result.label != "undefined":
                 values.append(indicator.result.value)
-        if not values:
+            else:
+                values.append(0.0)
+
+        if all(val == 0.0 for val in values):
             self.result.value = None
             self.result.label = "undefined"
             self.result.description = "Could not derive quality level"
@@ -100,15 +103,18 @@ class BaseReport(metaclass=ABCMeta):
         else:
             self.result.value = mean(values)
 
-        if self.result.value < 0.5:
-            self.result.label = "red"
-            self.result.description = self.metadata.label_description["red"]
-        elif self.result.value < 1:
-            self.result.label = "yellow"
-            self.result.description = self.metadata.label_description["yellow"]
-        elif self.result.value >= 1:
+        if (
+            all(indicator.result.label == "green" for indicator in self.indicators)
+            or self.result.value >= 1
+        ):
             self.result.label = "green"
             self.result.description = self.metadata.label_description["green"]
+        elif self.result.value >= 0.5:
+            self.result.label = "yellow"
+            self.result.description = self.metadata.label_description["yellow"]
+        elif self.result.value < 0.5:
+            self.result.label = "red"
+            self.result.description = self.metadata.label_description["red"]
 
     @abstractmethod
     def set_indicator_layer(self) -> None:
