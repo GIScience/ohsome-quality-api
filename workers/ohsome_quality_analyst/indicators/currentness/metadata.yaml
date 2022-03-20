@@ -7,12 +7,10 @@ Currentness:
     Refers to data quality in respect to currentness.
   label_description:
     red: |
-      More than half of the $elements edited elements were last edited over 4 years ago.
       Be aware that there it is very likely that many map features are outdated. 
       You should carefully check this before using the data as it indicates bad 
       data quality in respect to currentness.
     yellow: |
-      More than half of the edited elements were last edited between 1 and 4 years ago.
       This refers to medium data quality in respect to currentness.
     green: |
       This is a rather high value and indicates that the map features 

@@ -110,18 +110,12 @@ class Currentness(BaseIndicator):
                 break
         median_diff = int(self.result.timestamp_oqt.year) - int(median_year)
         if median_diff <= 1:
-            param_1 = 1
-        elif median_diff <= 4:
-            param_1 = 0.6
+            self.result.value = 1
         else:
-            param_1 = 0.2
-        if years_since_last_edit <= 1:
-            param_2 = 1
-        elif years_since_last_edit <= 4:
-            param_2 = 0.6
-        else:
-            param_2 = 0.2
-        self.result.value = (param_1 + param_2) / 2
+            self.result.value = 1.0 - (median_diff / 10)
+        self.result.value -= years_since_last_edit / 10
+        if self.result.value < 0.0:
+            self.result.value = 0.0
         if median_diff == 0:
             median_diff = "this year"
         elif median_diff == 1:
