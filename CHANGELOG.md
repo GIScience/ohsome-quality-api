@@ -9,6 +9,7 @@
 
 ### Other Changes
 
+- Indicators based on GHS-POP use now raster file stored on disk instead of raster in the database
 - Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 - Add `landmarks` layer [#246])
