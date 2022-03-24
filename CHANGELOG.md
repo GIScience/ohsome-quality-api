@@ -9,7 +9,6 @@
 
 ### Other Changes
 
-- Indicators based on GHS-POP use now raster file stored on disk instead of raster in the database
 - Use ([`rasterstats`]) to provide access to third-party raster datasets stored on disk ([#227])
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 - Add `landmarks` layer [#246])
@@ -17,6 +16,7 @@
 - Support any dataset, not just "regions" for CLI function `create_all_indicators` ([#254])
 - Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
 - Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
+- Indicators based on GHS-POP use now raster file stored on disk instead of raster in the database ([#276])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
@@ -24,6 +24,7 @@
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
 [#254]: https://github.com/GIScience/ohsome-quality-analyst/pull/254
 [#266]: https://github.com/GIScience/ohsome-quality-analyst/pull/266
+[#276]: https://github.com/GIScience/ohsome-quality-analyst/pull/276
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
 [`openpoiservice`]: https://github.com/GIScience/openpoiservice
 

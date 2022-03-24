@@ -1,18 +1,17 @@
 import logging
-import os
 from io import StringIO
 from string import Template
 
 import dateutil.parser
 import matplotlib.pyplot as plt
 import numpy as np
-import rasterstats
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import get_attribution
+from ohsome_quality_analyst.raster.client import get_zonal_stats
+from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster_dataset
 
 
 class GhsPopComparisonBuildings(BaseIndicator):
@@ -51,18 +50,8 @@ class GhsPopComparisonBuildings(BaseIndicator):
         return 0.75 * np.sqrt(pop_per_sqkm)
 
     async def preprocess(self) -> None:
-        raster = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__),
-                "..",
-                "..",
-                "..",
-                "..",
-                "data",
-                "GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif",
-            )
-        )
-        stats = rasterstats.zonal_stats(self.feature, raster, stats="sum")
+        raster = get_raster_dataset("GHS_POP_R2019A")
+        stats = get_zonal_stats(self.feature, raster, stats="sum")
         pop_count = stats[0]["sum"]
         area = await get_area_of_bpolys(self.feature.geometry)
 
