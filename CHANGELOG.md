@@ -14,11 +14,15 @@
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 - Add `landmarks` layer [#246])
 - Add SHDI to database and add functionality to get SHDI for an AOI by intersection using SQL ([#266])
+- Support any dataset, not just "regions" for CLI function `create_all_indicators` ([#254])
+- Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
+- Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
+[#254]: https://github.com/GIScience/ohsome-quality-analyst/pull/254
 [#266]: https://github.com/GIScience/ohsome-quality-analyst/pull/266
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
 [`openpoiservice`]: https://github.com/GIScience/openpoiservice

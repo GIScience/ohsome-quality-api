@@ -353,3 +353,13 @@ def get_attribution(data_keys: list) -> str:
     assert set(data_keys) <= set(("OSM", "GHSL", "VNL"))
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])
+
+
+def get_valid_layers(indcator_name: str) -> tuple:
+    """Get valid Indicator/Layer combination of an Indicator."""
+    return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
+
+
+def get_valid_indicators(layer_name: str) -> tuple:
+    """Get valid Indicator/Layer combination of a Layer."""
+    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_name])

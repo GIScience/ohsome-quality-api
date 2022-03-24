@@ -5,7 +5,7 @@ Functions are triggered by the CLI and API.
 import asyncio
 import logging
 from functools import singledispatch
-from typing import List, Union
+from typing import List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -19,7 +19,12 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.base.report import BaseReport as Report
-from ohsome_quality_analyst.utils.definitions import GEOM_SIZE_LIMIT, INDICATOR_LAYER
+from ohsome_quality_analyst.utils.definitions import (
+    GEOM_SIZE_LIMIT,
+    INDICATOR_LAYER,
+    get_valid_indicators,
+    get_valid_layers,
+)
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
@@ -251,7 +256,6 @@ async def _create_report(  # noqa
 ) -> Report:
     """Create a Report.
 
-    Create indicators from scratch.
     Aggregates all indicator results and calculates an overall quality score.
     """
     name, feature = (
@@ -279,43 +283,50 @@ async def _create_report(  # noqa
     return report
 
 
-async def create_all_indicators(force: bool = False) -> None:
-    """Create all Indicator/Layer combinations for OQT regions.
+async def create_all_indicators(
+    dataset: str,
+    indicator_name: Optional[str] = None,
+    layer_name: Optional[str] = None,
+    force: bool = False,
+) -> None:
+    """Create all indicator/layer combination for the given dataset.
 
     Possible Indicator/Layer combinations are defined in `definitions.py`.
     This functions executes `create_indicator()` function up to four times concurrently.
     """
 
-    async def _create_indicator(indicator_name, layer_name, fid, force, semaphore):
+    async def sem_task(task, semaphore=asyncio.Semaphore(4)):
+        """Run task with semaphore. Semaphore limits num of concurrent executions."""
         async with semaphore:
-            await create_indicator(
-                IndicatorDatabase(
-                    name=indicator_name,
-                    layerName=layer_name,
-                    dataset="regions",
-                    featureId=fid,
-                ),
-                force=force,
-            )
+            return await task
 
-    # Semaphore limits num of concurrent executions
-    semaphore = asyncio.Semaphore(4)
+    if indicator_name is not None and layer_name is None:
+        layers = get_valid_layers(indicator_name)
+        indicator_layer = [(indicator_name, lay) for lay in layers]
+    elif indicator_name is None and layer_name is not None:
+        indicators = get_valid_indicators(layer_name)
+        indicator_layer = [(ind, layer_name) for ind in indicators]
+    elif indicator_name is not None and layer_name is not None:
+        indicator_layer = [(indicator_name, layer_name)]
+    else:
+        indicator_layer = INDICATOR_LAYER
+
     tasks: List[asyncio.Task] = []
-    fids = await db_client.get_feature_ids("regions")
+    fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name, layer_name in INDICATOR_LAYER:
+        for indicator_name_, layer_name_ in indicator_layer:
             tasks.append(
-                asyncio.create_task(
-                    _create_indicator(
-                        indicator_name,
-                        layer_name,
-                        fid,
-                        force,
-                        semaphore,
-                    )
+                create_indicator(
+                    IndicatorDatabase(
+                        name=indicator_name_,
+                        layerName=layer_name_,
+                        dataset=dataset,
+                        featureId=fid,
+                    ),
+                    force=force,
                 )
             )
-    await asyncio.gather(*tasks)
+    await asyncio.gather(*(sem_task(task) for task in tasks))
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
