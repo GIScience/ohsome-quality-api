@@ -27,7 +27,6 @@ def get_geojson_fixture(name):
 
 
 oqt_vcr = vcr.VCR(
-    serializer="json",
     cassette_library_dir=FIXTURE_DIR,
     # details see https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
     record_mode=os.getenv("VCR_RECORD_MODE", default="new_episodes"),
