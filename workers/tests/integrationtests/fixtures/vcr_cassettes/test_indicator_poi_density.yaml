@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=%28aeroway+in+%28aerodrome%2C+helipad%2C+heliport%29%29%0Aor+%28amenity+in+%28animal_boarding%2C+animal_shelter%2C+arts_centre%2C+atm%2C+baby_hatch%2C+bank%2C+bar%2C+bbq%2C+bench%2C%0Abicycle_parking%2C+bicycle_rental%2C+bicycle_repair_station%2C+biergarten%2C+boat_sharing%2C+brothel%2C+bureau_de_change%2C%0Abus_station%2C+bus_stop%2C+cafe%2C+car_sharing%2C+car_wash%2C+casino%2C+charging_station%2C+cinema%2C+clinic%2C+clock%2C+college%2C%0Acommunity_centre%2C+compressed_air%2C+courthouse%2C+coworking_space%2C+crematorium%2C+crypt%2C+dentist%2C+doctors%2C+dive_centre%2C%0Adojo%2C+drinking_water%2C+driving_school%2C+embassy%2C+emergency_phone%2C+ev_charging%2C+fast_food%2C+ferry_terminal%2C%0Afire_station%2C+food_court%2C+fountain%2C+fuel%2C+gambling%2C+grave_yard%2C+hospital%2C+hunting_stand%2C+ice_cream%2C+internet_cafe%2C%0Akindergarten%2C+language_school%2C+library%2C+kneipp_water_cure%2C+marketplace%2C+motorcycle_parking%2C+music_school%2C+nightclub%2C%0Anursing_home%2C+parking%2C+parking_entrance%2C+parking_space%2C+pharmacy%2C+photo_booth%2C+planetarium%2C+place_of_worship%2C%0Apolice%2C+post_box%2C+post_office%2C+pub%2C+public_bath%2C+prison%2C+ranger_station%2C+recycling%2C+rescue_station%2C+restaurant%2C%0Aretirement_home%2C+sanitary_dump_station%2C+school%2C+shelter%2C+shower%2C+social_centre%2C+social_facility%2C+spa%2C+stripclub%2C%0Astudio%2C+table%2C+taxi%2C+telephone%2C+toilets%2C+townhall%2C+university%2C+vending_machine%2C+veterinary%2C+waste_basket%2C%0Awaste_disposal%2C+water_point%29%29%0Aor+%28emergency+in+%28access_point%2C+defibrillator%2C+fire_hydrant%29%29%0Aor+%28healthcare+%3D+blood_donation%29%0Aor+%28healthcare%3Aspeciality+%3D+vacciniation%29%0Aor+%28highway+%3D+raceway%29%0Aor+%28historic+in+%28aircraft%2C+aqueduct%2C+archaeological_site%2C+battlefield%2C+boundary_stone%2C+building%2C%0Acastle%2C+cannon%2C+city_gate%2C+citywalls%2C+farm%2C+fort%2C+gallows%2C+highwater_mark%2C+locomotive%2C+manor%2C%0Amemorial%2C+milestone%2C+monastery%2C+monument%2C+optical_telegraph%2C+pillory%2C+ruins%2C+rune_stone%2C+ship%2C%0Atomb%2C+wayside_cross%2C+wayside_shrine%2C+wreck%29%29%0Aor+%28leisure+in+%28adult_gaming_centre%2C+amusement_arcade%2C+beach_resort%2C+bandstand%2C+bird_hide%2C+common%2C%0Adance%2C+dog_park%2C+firepit%2C+fishing%2C+fitness_centre%2C+garden%2C+golf_course%2C+hackerspace%2C%0Ahorse_riding%2C+ice_rink%2C+marina%2C+miniature_golf%2C+nature_reserve%2C+park%2C+picnic_table%2C+pitch%2C+playground%2C%0Asauna%2C+slipway%2C+sports_centre%2C+stadium%2C+summer_camp%2C+swimming_area%2C+swimming_pool%2C+track%2C+turkish_bad%2C%0Awater_park%2C+wildlife_hide%29%29%0Aor+%28natural+in+%28beach%2C+cave_entrance%2C+geyser%2C+peak%2C+rock%2C+saddle%2C+spring%2C+volcano%2C%0Awater%29%29%0Aor+%28public_transport+in+%28platform%2C+stop_position%2C+station%2C+stop_area%29%29%0Aor+%28railway+in+%28halt%2C+station%2C+tram_station%29%29%0Aor+%28shop+in+%28agrarian%2C+alcohol%2C+antiques%2C+art%2C+bag%2C+bakery%2C+beauty%2C+bed%2C+beverages%2C%0Abicycle%2C+books%2C+boutique%2C+brewing_supplies%2C+business_machines%2C+butcher%2C+cafe%2Ccamera%2C%0Acandles%2C+car%2C+car_parts%2C+carpet%2C+curtain%2C+cheese%2C+chemist%2C+chocolate%2C%0Aclothes%2C+coffee%2C+computer%2C+confectionery%2C+convenience%2C+copyshop%2C+cosmetics%2C%0Adairy%2C+deli%2C+department_store%2C+doityourself%2C+dry_cleaning%2C+electrical%2C+electronics%2C%0Aerotic%2C+estate_agent%2C+e-cigarette%2C+farm%2C+fashion%2C+fishing%2C+florist%2C+funeral_directors%2C%0Afurniture%2C+games%2C+garden_centre%2C+garden_furniture%2C+gas%2C+general%2C+gift%2C+glaziery%2C+greengrocer%2C+grocery%2C%0Ahairdresser%2C+hairdresser_supply%2C+hardware%2C+hearing_aids%2C+herbalist%2C+hifi%2C+houseware%2C+hunting%2C+insurance%2C%0Ainterior_decoration%2C+jewelry%2C+laundry%2C+leather%2C+locksmith%2C+kiosk%2C+kitchen%2C+lamps%2C+lottery%2C+mall%2C%0Amassage%2C+medical_supply%2C+mobile_phone%2C+model%2C+motorcycle%2C+music%2C+musical_instrument%2C%0Anutrition_supplements%2C+newsagent%2C+optician%2C+organic%2C+outdoor%2C+paint%2C+pastry%2C+perfumery%2C+photo%2C%0Apyrotechnics%2C+rediotechnics%2C+seafood%2C+second_hand%2Csecruity%2C+shoes%2C+spices%2C+sports%2C+stationery%2C%0Asupermarket%2C+swimming_pool%2C+tailor%2C+tattoo%2C+tea%2C+ticket%2C+tiles%2C+tobacco%2C+toys%2C+travel_agency%2C+trophy%2C%0Atyres%2C+variety_store%2C+video%2C+video_games%2C+watches%2C+weapons%2C+wine%2C+pet%29%29%0Aor+%28tourism+in+%28alpine_hut%2C+apartment%2C+aquarium%2C+artwork%2C+attraction%2C+camp_site%2C+caravan_site%2C%0Achalet%2C+gallery%2C+museum%2C+guest_house%2C+hostel%2C+hotel%2C+motel%2C+picnic_site%2C+theme_park%2C+viewpoint%2C%0Awilderness_hut%2C+zoo%29%29%0Aor+%28vaccination+%3D+covid19%29%0A
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '5106'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.8.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-20T21:00:00Z\",\n
+      \   \"value\" : 1972.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Mon, 28 Mar 2022 14:20:25 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
