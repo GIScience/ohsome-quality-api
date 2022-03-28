@@ -5,13 +5,13 @@ from string import Template
 import dateutil.parser
 import matplotlib.pyplot as plt
 import numpy as np
-from asyncpg import Record
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.definitions import get_attribution
+from ohsome_quality_analyst.raster.client import get_zonal_stats
+from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster_dataset
 
 
 class GhsPopComparisonRoads(BaseIndicator):
@@ -49,8 +49,9 @@ class GhsPopComparisonRoads(BaseIndicator):
             return 5
 
     async def preprocess(self) -> None:
-        pop_count, area = await self.get_zonal_stats_population()
-
+        raster = get_raster_dataset("GHS_POP_R2019A")
+        pop_count = get_zonal_stats(self.feature, raster, stats="sum")[0]["sum"]
+        area = await get_area_of_bpolys(self.feature.geometry)
         if pop_count is None:
             pop_count = 0
         self.area = area
@@ -168,33 +169,3 @@ class GhsPopComparisonRoads(BaseIndicator):
         self.result.svg = img_data.getvalue()
         logging.debug("Successful SVG figure creation")
         plt.close("all")
-
-    async def get_zonal_stats_population(self) -> Record:
-        """Derive zonal population stats for given GeoJSON geometry.
-
-        This is based on the Global Human Settlement Layer Population.
-        """
-        logging.info("Get population inside polygon")
-        query = """
-            SELECT
-            SUM(
-                (public.ST_SummaryStats(
-                    public.ST_Clip(
-                        rast,
-                        st_setsrid(public.ST_GeomFromGeoJSON($1), 4326)
-                    )
-                )
-            ).sum) population
-            ,public.ST_Area(
-                st_setsrid(public.ST_GeomFromGeoJSON($2)::public.geography, 4326)
-            ) / (1000*1000) as area_sqkm
-            FROM ghs_pop
-            WHERE
-             public.ST_Intersects(
-                rast,
-                st_setsrid(public.ST_GeomFromGeoJSON($3), 4326)
-             )
-            """
-        data = tuple([str(self.feature.geometry)] * 3)
-        async with db_client.get_connection() as conn:
-            return await conn.fetchrow(query, *data)
