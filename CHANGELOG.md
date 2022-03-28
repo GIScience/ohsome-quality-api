@@ -16,7 +16,7 @@
 - Support any dataset, not just "regions" for CLI function `create_all_indicators` ([#254])
 - Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
 - Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
-- Indicators based on GHS-POP use now raster file stored on disk instead of raster in the database ([#276])
+- Indicators based on GHS-POP use raster file stored on disk instead of raster in the database ([#276])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
