@@ -17,9 +17,7 @@ keywords = [
 [tool.poetry.dependencies]
 python = ">=3.8,<3.10"  # `rasterstats` restricts Python version to below 3.10
 geojson = "^2.5.0"
-click = "^7.1.2"
 fastapi = "^0.68.0"
-uvicorn = "^0.12.2"
 requests = "^2.25.0"
 matplotlib = "^3.2.2"
 dacite = "^1.6.0"
@@ -34,6 +32,8 @@ rpy2 = "^3.4.5"
 scikit-learn = "^1.0.2"  # Only works on Python below 3.11 (Depends on `scipy`)
 rasterstats = "^0.16.0"  # Only works on Python below 3.10 (Depends on `rasterio`)
 pyproj = "^3.3.0"
+click = "^8.1.2"
+uvicorn = "^0.17.6"
 
 [tool.poetry.dev-dependencies]
 mypy = "0.930"
