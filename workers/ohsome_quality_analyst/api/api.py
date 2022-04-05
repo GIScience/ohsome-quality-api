@@ -173,6 +173,8 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     )
     if parameters.include_svg is False:
         remove_svg_from_properties(geojson_object)
+    if parameters.include_html is False:
+        remove_html_from_properties(geojson_object)
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
@@ -217,6 +219,8 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
         size_restriction=True,
     )
     response = empty_api_response()
+    if parameters.include_html is False:
+        remove_html_from_properties(geojson_object)
     if parameters.include_svg is False:
         remove_svg_from_properties(geojson_object)
     response = empty_api_response()
@@ -308,3 +312,18 @@ def remove_svg_from_properties(
     elif isinstance(geojson_object, FeatureCollection):
         for feature in geojson_object["features"]:
             _remove_svg_from_properties(feature["properties"])
+
+
+def remove_html_from_properties(
+    geojson_object: Union[Feature, FeatureCollection]
+) -> None:
+    def _remove_html_from_properties(properties: dict) -> None:
+        for key in list(properties.keys()):
+            if fnmatch.fnmatch(key, "*result.html"):
+                del properties[key]
+
+    if isinstance(geojson_object, Feature):
+        _remove_html_from_properties(geojson_object["properties"])
+    elif isinstance(geojson_object, FeatureCollection):
+        for feature in geojson_object["features"]:
+            _remove_html_from_properties(feature["properties"])

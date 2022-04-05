@@ -19,6 +19,7 @@ class TestReportJrcRequirements(unittest.TestCase):
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.value = 0.5
+            indicator.result.html = "foo"
             report.indicators.append(indicator)
 
         report.combine_indicators()

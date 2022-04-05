@@ -1,0 +1,45 @@
+<div id="reportResultSection" class="section light-blue">
+
+		<div class="oqt-section-container">
+			<div class="rich-text">
+				<h2 id="result-heading">Results</h2>
+			</div>
+		</div>
+		<div class="oqt-section-container">
+			<h3>Overall Data Quality Report</h3>
+			<div id="results1" class="middle">
+			</div>
+			<div id="loader1"></div>
+		</div>
+		<div class="oqt-section-container section-flex">
+		  <div class="one-third indicator-graph">
+			{{map}}
+		  </div>
+		  <div class="two-thirds indicator-text">
+			<h4>{{report_name}}</h4>
+			<p>
+			  <p>
+				{{traffic_light}}
+			  </p>
+			</p>
+			<p>
+				{{result_description}}
+			</p>
+			<p class="indicator-metadata-text">
+			  Report description:</br>{{metadata}}
+			</p>
+		  </div>
+		  <hr class="indicator-splitline" style="  display: block;
+		  height: 1px;
+		  border: 0;
+		  border-top: 1px solid #e0e0e0;
+		  margin: 10px auto;">
+		</div>
+		<div class="oqt-section-container">
+			<h3>Data Quality Indicators</h3>
+			<div id="results2" class="middle">
+			</div>
+			<div id="loader2"></div>
+			{{indicators}}
+		</div>
+</div>

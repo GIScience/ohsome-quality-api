@@ -165,6 +165,7 @@ async def _create_indicator(
             )
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
+    indicator.create_html()
     return indicator
 
 
@@ -191,6 +192,7 @@ async def _create_indicator(  # noqa
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
+    indicator.create_html()
 
     return indicator
 

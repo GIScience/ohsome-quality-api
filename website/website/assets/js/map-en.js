@@ -221,7 +221,8 @@ function buildMap(...charts){
 			  "name": String(selectedReport),
 			  "dataset": String(selectedDataset),
 			  "featureId": String(areas),
-			  "includeSvg": true
+			  "includeSvg": true,
+			  "includeHtml": true
 			}
 			console.log(params)
 			httpPostAsync(JSON.stringify(params), handleGetQuality);
@@ -239,50 +240,9 @@ function buildMap(...charts){
 		document.querySelector("#loader1").classList.remove("spinner-1");
 		document.querySelector("#loader2").classList.remove("spinner-1");
 
-		// show selected region on a map
-		addMiniMap();
-		// 1=green, 2=yellow, 3=red
-		let traffic_lights;
-		switch (report["result"]["label"]) {
-		    case 'green':
-		        traffic_lights = GOOD_QUALITY;
-		        break;
-		    case 'yellow':
-		        traffic_lights = MEDIUM_QUALITY;
-		        break;
-		    case 'red':
-		        traffic_lights = BAD_QUALITY;
-		        break;
-		    default:
-		        traffic_lights = UNDEFINED_QUALITY;
-		        break;
+		if (report["result"]["html"]){
+			document.getElementById('resultSection').insertAdjacentHTML('afterbegin', report["result"]["html"]);
 		}
-
-		document.getElementById("traffic_dots_space").innerHTML =
-		            '<h4>Report: '+ report["metadata"]["name"] + '</h4>' +
-		            '<p>' + traffic_lights + '</p>'
-                    // here place to display the name of the region?
-
-
-		// ' <b>Overall value: '+ response.result.value + '</b></p>'
-
-
-		document.getElementById("traffic_text_space").innerHTML = '<p>'+ report["result"]["description"] +'</p>'
-		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ report["metadata"]["description"] +'</p>'
-			
-		if (Object.keys(indicators).length > 0) {
-			addIndicators(indicators)
-		}
-		const element = document.getElementById('result-heading');
-		const headerOffset = 70;
-		const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-		const offsetPosition = elementPosition - headerOffset;
-	
-		window.scrollTo({
-			 top: offsetPosition,
-			 behavior: "smooth"
-		});
 	}
 
 	/**

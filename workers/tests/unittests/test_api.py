@@ -39,3 +39,25 @@ class TestApi(unittest.TestCase):
         self.assertNotIn("result.svg", list(feature["properties"].keys()))
         for element in feature_collection["features"]:
             self.assertNotIn("result.svg", list(element["properties"].keys()))
+
+    def test_remove_html_from_properties(self):
+        feature = geojson.utils.generate_random("Polygon")
+        properties_dict = {
+            "test": "test",
+            "result.html": "123",
+            "result.label": "green",
+        }
+        feature["properties"] = properties_dict
+        feature = geojson.Feature(feature)
+        feature_1 = geojson.utils.generate_random("Polygon")
+        feature_2 = geojson.utils.generate_random("Polygon")
+        properties_dict_1 = {"0.result.html": "123", "result.label": "green"}
+        properties_dict_2 = {"1.result.html": "abc", "result.label": "green"}
+        feature_1["properties"] = properties_dict_1
+        feature_2["properties"] = properties_dict_2
+        feature_collection = geojson.FeatureCollection([feature_1, feature_2])
+        remove_svg_from_properties(feature)
+        remove_svg_from_properties(feature_collection)
+        self.assertNotIn("html.svg", list(feature["properties"].keys()))
+        for element in feature_collection["features"]:
+            self.assertNotIn("html.svg", list(element["properties"].keys()))

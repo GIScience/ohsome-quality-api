@@ -2,13 +2,16 @@
 TODO:
     Describe this module and how to implement child classes
 """
+
 import json
+import os
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from io import StringIO
 from typing import Dict, Literal, Optional
 
+import jinja2
 import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import Feature
@@ -66,6 +69,7 @@ class Result:
     value: Optional[float]
     description: str
     svg: str
+    html: str
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -93,6 +97,7 @@ class BaseIndicator(metaclass=ABCMeta):
             value=None,
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
+            html=None,
         )
 
     def as_feature(self, flatten: bool = False) -> Feature:
@@ -204,3 +209,65 @@ class BaseIndicator(metaclass=ABCMeta):
         plt.savefig(svg_string, format="svg")
         plt.close("all")
         return svg_string.getvalue()
+
+    def create_html(self):
+        template_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "templates",
+        )
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(template_dir),
+        )
+        template = env.get_template("indicator_template.html")
+
+        traffic_light = self.get_traffic_light_element()
+        self.result.html = template.render(
+            indicator_name=self.metadata.name,
+            layer_name=self.layer.name,
+            svg=self.result.svg,
+            result_description=self.result.description,
+            indicator_description=self.metadata.description,
+            traffic_light=traffic_light,
+        )
+
+    def get_traffic_light_element(self):
+        dot_css = (
+            "style='height: 25px; width: 25px; background-color: {0};"
+            "border-radius: 50%; display: inline-block;'"
+        )
+        traffic_light = (
+            "<span {0} class='dot'></span>\n<span {1} class='dot'>"
+            "</span>\n<span {2} class='dot'></span>\n Undefined Quality".format(
+                dot_css.format("#bbb"),
+                dot_css.format("#bbb"),
+                dot_css.format("#bbb"),
+            )
+        )
+        if self.result.label == "red":
+            traffic_light = (
+                "<span {0} class='dot'></span>\n<span {1} class='dot'>"
+                "</span>\n<span {2} class='dot-red'></span>\n Bad Quality".format(
+                    dot_css.format("#FF0000"),
+                    dot_css.format("#bbb"),
+                    dot_css.format("#bbb"),
+                )
+            )
+        elif self.result.label == "yellow":
+            traffic_light = (
+                "<span {0} class='dot'></span>\n<span {1} class='dot-yellow'>"
+                "</span>\n<span {2} class='dot'></span>\n Medium Quality".format(
+                    dot_css.format("#bbb"),
+                    dot_css.format("#FFFF00"),
+                    dot_css.format("#bbb"),
+                )
+            )
+        elif self.result.label == "green":
+            traffic_light = (
+                "<span {0} class='dot-green'></span>\n<span {1} class='dot'>"
+                "</span>\n<span {2} class='dot'></span>\n Good Quality".format(
+                    dot_css.format("#008000"),
+                    dot_css.format("#bbb"),
+                    dot_css.format("#bbb"),
+                )
+            )
+        return traffic_light

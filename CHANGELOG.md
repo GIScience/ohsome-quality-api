@@ -17,10 +17,12 @@
 - Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
 - Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
 - Indicators based on GHS-POP use raster file stored on disk instead of raster in the database ([#276])
+- Add new parameter `includeHtml` to the API endpoints to allow the request of a HTML snippet of the report result ([#242])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
+[#242]: https://github.com/GIScience/ohsome-quality-analyst/pull/242
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
 [#254]: https://github.com/GIScience/ohsome-quality-analyst/pull/254
 [#266]: https://github.com/GIScience/ohsome-quality-analyst/pull/266
