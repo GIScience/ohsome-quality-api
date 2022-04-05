@@ -21,7 +21,7 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-20T21:00:00Z\",\n
+      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-27T19:00:00Z\",\n
       \   \"value\" : 932.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:17:38 GMT
+      - Tue, 05 Apr 2022 17:11:47 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -78,7 +78,7 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-20T21:00:00Z\",\n
+      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-27T19:00:00Z\",\n
       \   \"value\" : 235.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -100,7 +100,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:17:46 GMT
+      - Tue, 05 Apr 2022 17:11:57 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -135,7 +135,7 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-20T21:00:00Z\",\n
+      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-27T19:00:00Z\",\n
       \   \"value\" : 2112.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -157,7 +157,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:17:54 GMT
+      - Tue, 05 Apr 2022 17:12:08 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -384,7 +384,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:18:04 GMT
+      - Tue, 05 Apr 2022 17:12:19 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -611,7 +611,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:18:17 GMT
+      - Tue, 05 Apr 2022 17:12:33 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -838,7 +838,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Mon, 28 Mar 2022 14:18:43 GMT
+      - Tue, 05 Apr 2022 17:12:54 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
