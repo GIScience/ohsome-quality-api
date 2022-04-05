@@ -26,6 +26,9 @@ def get_geojson_fixture(name):
         return geojson.load(f)
 
 
+# usage example:
+# add this as parameter to vcr.VCR:
+#   before_record_response=replace_body(["image/png"], dummy_png),
 def replace_body(content_types, replacement):
     def before_record_response(response):
         if any(ct in content_types for ct in response["headers"]["Content-Type"]):
@@ -50,5 +53,4 @@ oqt_vcr = vcr.VCR(
     record_mode=os.getenv("VCR_RECORD_MODE", default="new_episodes"),
     match_on=["method", "scheme", "host", "port", "path", "query", "body"],
     func_path_generator=filename_generator,
-    before_record_response=replace_body(["image/png"], dummy_png),
 )
