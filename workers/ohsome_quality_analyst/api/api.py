@@ -172,9 +172,9 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
         size_restriction=True,
     )
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.svg")
     if parameters.include_html is False:
-        remove_html_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.html")
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
@@ -220,9 +220,9 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
     )
     response = empty_api_response()
     if parameters.include_html is False:
-        remove_html_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.html")
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.svg")
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="report", name=parameters.name.value
@@ -299,31 +299,23 @@ async def list_fid_fields():
     return response
 
 
-def remove_svg_from_properties(
-    geojson_object: Union[Feature, FeatureCollection]
+def remove_item_from_properties(
+    geojson_object: Union[Feature, FeatureCollection],
+    pattern: str,
 ) -> None:
-    def _remove_svg_from_properties(properties: dict) -> None:
+    """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
+
+    Items matching the given pattern (See 'fnmatch.fnmatch') will be deleted from the
+    properties.
+    """
+
+    def _remove_item_from_properties(properties: dict, pattern: str) -> None:
         for key in list(properties.keys()):
-            if fnmatch.fnmatch(key, "*result.svg"):
+            if fnmatch.fnmatch(key, pattern):
                 del properties[key]
 
     if isinstance(geojson_object, Feature):
-        _remove_svg_from_properties(geojson_object["properties"])
+        _remove_item_from_properties(geojson_object["properties"], pattern)
     elif isinstance(geojson_object, FeatureCollection):
         for feature in geojson_object["features"]:
-            _remove_svg_from_properties(feature["properties"])
-
-
-def remove_html_from_properties(
-    geojson_object: Union[Feature, FeatureCollection]
-) -> None:
-    def _remove_html_from_properties(properties: dict) -> None:
-        for key in list(properties.keys()):
-            if fnmatch.fnmatch(key, "*result.html"):
-                del properties[key]
-
-    if isinstance(geojson_object, Feature):
-        _remove_html_from_properties(geojson_object["properties"])
-    elif isinstance(geojson_object, FeatureCollection):
-        for feature in geojson_object["features"]:
-            _remove_html_from_properties(feature["properties"])
+            _remove_item_from_properties(feature["properties"], pattern)
