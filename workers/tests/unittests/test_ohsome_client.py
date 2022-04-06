@@ -193,7 +193,7 @@ class TestOhsomeClient(TestCase):
                             {
                                 "value": 1.0,
                                 "fromTimestamp": "2020-03-20T01:30:08.180856",
-                                "toTimestamp": "2020-03-20T01:30:08.180856",
+                                "toTimestamp": "2020-04-20T01:30:08.180856",
                             }
                         ]
                     },
@@ -206,7 +206,7 @@ class TestOhsomeClient(TestCase):
                     {
                         "value": 1.0,
                         "fromTimestamp": "2020-03-20T01:30:08.180856",
-                        "toTimestamp": "2020-03-20T01:30:08.180856",
+                        "toTimestamp": "2020-04-20T01:30:08.180856",
                     }
                 ]
             },
@@ -243,7 +243,7 @@ class TestOhsomeClient(TestCase):
                     {
                         "value": 1.0,
                         "fromTimestamp": "2020-03-20T01:30:08.180856",
-                        "toTimestamp": "2020-03-20T01:30:08.180856",
+                        "toTimestamp": "2020-04-20T01:30:08.180856",
                     }
                 ]
             }
