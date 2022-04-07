@@ -1,4 +1,5 @@
 """Custom exception classes."""
+from schema import SchemaError
 
 
 class OhsomeApiError(Exception):
@@ -37,6 +38,12 @@ class RasterDatasetNotFoundError(FileNotFoundError):
 
 
 class RasterDatasetUndefinedError(ValueError):
-    def __init__(self, name):
+    def __init__(self, raster_name: str):
         self.name = "RasterDatasetUndefinedError"
-        self.message = "Raster dataset {0} is not defined".format(name)
+        self.message = "Raster dataset {0} is not defined".format(raster_name)
+
+
+class LayerDataSchemaError(Exception):
+    def __init__(self, message, schema_error: SchemaError):
+        self.name = "LayerDataSchemaError"
+        self.message = "{0}\n{1}".format(message, schema_error)

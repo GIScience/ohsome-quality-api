@@ -42,6 +42,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import (
+    LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
     RasterDatasetUndefinedError,
@@ -109,6 +110,7 @@ async def validation_exception_handler(
 
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
+@app.exception_handler(LayerDataSchemaError)
 async def oqt_exception_handler(
     request: Request,
     exception: Union[
@@ -116,6 +118,7 @@ async def oqt_exception_handler(
         SizeRestrictionError,
         RasterDatasetNotFoundError,
         RasterDatasetUndefinedError,
+        LayerDataSchemaError,
     ],
 ):
     """Exception handler for custom OQT exceptions."""
