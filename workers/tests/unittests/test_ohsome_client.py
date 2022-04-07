@@ -9,7 +9,11 @@ from schema import Optional, Schema
 
 from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
+from ohsome_quality_analyst.utils.exceptions import (
+    LayerDataSchemaError,
+    OhsomeApiError,
+    SchemaError,
+)
 
 
 class AsyncMock(MagicMock):
@@ -52,7 +56,7 @@ class TestOhsomeClient(TestCase):
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
             response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
-            self.assertTrue(response.is_valid)
+            self.assertDictEqual(response, geojson.loads(self.valid_response))
 
     def test_query_invalid_response_with_status_code_200(self) -> None:
         """When response is streamed it can be invalid while status code equals 200"""
@@ -154,8 +158,146 @@ class TestOhsomeClient(TestCase):
         data = ohsome_client.build_data_dict(layer, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
 
-    def test_query_layer_data(self):
+    def test_query_layer_data_valid_1(self):
         data = asyncio.run(
-            ohsome_client.query(LayerData("name", "description", {"result": []}))
+            ohsome_client.query(
+                LayerData(
+                    "name",
+                    "description",
+                    {
+                        "result": [
+                            {"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}
+                        ]
+                    },
+                )
+            )
         )
-        self.assertDictEqual({"result": []}, data)
+        self.assertDictEqual(
+            {"result": [{"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}]},
+            data,
+        )
+
+    def test_query_layer_data_valid_2(self):
+        data = asyncio.run(
+            ohsome_client.query(
+                LayerData(
+                    "name",
+                    "description",
+                    {
+                        "result": [
+                            {
+                                "value": 1.0,
+                                "fromTimestamp": "2020-03-20T01:30:08.180856",
+                                "toTimestamp": "2020-03-20T01:30:08.180856",
+                            }
+                        ]
+                    },
+                )
+            )
+        )
+        self.assertDictEqual(
+            {
+                "result": [
+                    {
+                        "value": 1.0,
+                        "fromTimestamp": "2020-03-20T01:30:08.180856",
+                        "toTimestamp": "2020-03-20T01:30:08.180856",
+                    }
+                ]
+            },
+            data,
+        )
+
+    def test_query_layer_data_invalid_empty(self):
+        with self.assertRaises(LayerDataSchemaError):
+            asyncio.run(ohsome_client.query(LayerData("name", "description", {})))
+
+    def test_query_layer_data_invalid_empty_list(self):
+        with self.assertRaises(LayerDataSchemaError):
+            asyncio.run(
+                ohsome_client.query(LayerData("name", "description", {"result": []}))
+            )
+
+    def test_query_layer_data_invalid_missing_key(self):
+        with self.assertRaises(LayerDataSchemaError):
+            asyncio.run(
+                ohsome_client.query(
+                    LayerData("name", "description", {"result": [{"value": 1.0}]})
+                )
+            )
+
+    def test_validate_query_results_valid_1(self):
+        ohsome_client.validate_query_results(
+            {"result": [{"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}]}
+        )
+
+    def test_validate_query_results_valid_2(self):
+        ohsome_client.validate_query_results(
+            {
+                "result": [
+                    {
+                        "value": 1.0,
+                        "fromTimestamp": "2020-03-20T01:30:08.180856",
+                        "toTimestamp": "2020-03-20T01:30:08.180856",
+                    }
+                ]
+            }
+        )
+
+    def test_validate_query_results_invalid_empyt(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({})
+
+    def test_validate_query_results_invalid_empyt_list(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({"result": []})
+
+    def test_validate_query_results_invalid_missing_key(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"result": [{"value": 1.0}]}  # Missing timestamp item
+            )
+
+    def test_validate_query_results_valid_ratio(self):
+        ohsome_client.validate_query_results(
+            {
+                "ratioResult": [
+                    {
+                        "ratio": 1.0,
+                        "value": 1.0,
+                        "value2": 1.0,
+                        "timestamp": "2020-03-20T01:30:08.180856",
+                    }
+                ]
+            },
+            ratio=True,
+        )
+
+    def test_validate_query_results_valid_ratio_2(self):
+        ohsome_client.validate_query_results(
+            {
+                "ratioResult": [
+                    {
+                        "ratio": "NaN",
+                        "value": 1.0,
+                        "value2": 1.0,
+                        "timestamp": "2020-03-20T01:30:08.180856",
+                    }
+                ]
+            },
+            ratio=True,
+        )
+
+    def test_validate_query_results_invalid_empyt_ratio(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({}, ratio=True)
+
+    def test_validate_query_results_invalid_empyt_list_ratio(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results({"ratioResult": []}, ratio=True)
+
+    def test_validate_query_results_invalid_missing_key_ratio(self):
+        with self.assertRaises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"ratioResult": [{"value": 1.0}]}, ratio=True  # Missing timestamp item
+            )

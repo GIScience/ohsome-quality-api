@@ -8,9 +8,12 @@ from typing import Optional, Union
 
 import geojson
 import httpx
+from dateutil.parser import isoparse
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from schema import Or, Schema, SchemaError, Use
 
 from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
+from ohsome_quality_analyst.utils.exceptions import LayerDataSchemaError
 
 # `geojson` uses `simplejson` if it is installed
 try:
@@ -51,11 +54,18 @@ async def _query(
     logging.info("Query ohsome API.")
     logging.debug("Query URL: " + url)
     logging.debug("Query data: " + json.dumps(data))
-    return await query_ohsome_api(url, data)
+    response = await query_ohsome_api(url, data)
+    return validate_query_results(response, ratio)
 
 
 async def _query(layer: LayerData, *_args, **_kargs) -> dict:  # noqa
-    return layer.data
+    try:
+        return validate_query_results(layer.data)
+    except SchemaError as error:
+        raise LayerDataSchemaError(
+            "Invalid Layer data input to the Mapping Saturation Indicator.",
+            error,
+        )
 
 
 async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
@@ -132,3 +142,44 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     return data
+
+
+def validate_query_results(response: dict, ratio: bool = False) -> dict:
+    """Validate query results.
+
+    Raises:
+        SchemaError: Error during Schema validation.
+    """
+    if ratio:
+        Schema(
+            {
+                "ratioResult": [
+                    {
+                        "ratio": Or(float, int, "NaN"),
+                        "value": Or(float, int),
+                        "value2": Or(float, int),
+                        "timestamp": Use(lambda t: isoparse(t)),
+                    }
+                ]
+            },
+            ignore_extra_keys=True,
+        ).validate(response)
+        if not response["ratioResult"]:
+            raise SchemaError("Empty result field")
+    else:
+        Schema(
+            {
+                "result": [
+                    {
+                        "value": Or(float, int),
+                        Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
+                            lambda t: isoparse(t)
+                        ),
+                    }
+                ]
+            },
+            ignore_extra_keys=True,
+        ).validate(response)
+        if not response["result"]:
+            raise SchemaError("Empty result field")
+    return response

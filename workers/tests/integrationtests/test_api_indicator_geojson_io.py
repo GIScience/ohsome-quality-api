@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
+from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 
 from .api_response_schema import (
     get_featurecollection_schema,
@@ -164,6 +165,46 @@ class TestApiIndicatorIo(unittest.TestCase):
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertNotIn("result.html", list(result["properties"].keys()))
+
+    def test_indicator_layer_data(self):
+        """Test parameter Layer with data attached.
+
+        Data are the ohsome API response result values for Heidelberg and the layer
+        `building_count`.
+        """
+        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        parameters = {
+            "name": "MappingSaturation",
+            "bpolys": feature,
+            "layer": {
+                "name": "",
+                "description": "",
+                "data": {
+                    "result": [
+                        {"value": v, "timestamp": "2020-03-20T01:30:08.180856"}
+                        for v in DATA
+                    ]
+                },
+            },
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        self.run_tests(response, (self.general_schema, self.feature_schema))
+
+    def test_indicator_layer_data_invalid(self):
+        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        parameters = {
+            "name": "MappingSaturation",
+            "bpolys": feature,
+            "layer": {
+                "name": "",
+                "description": "",
+                "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
+            },
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "LayerDataSchemaError")
 
 
 if __name__ == "__main__":
