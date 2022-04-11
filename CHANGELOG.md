@@ -17,7 +17,8 @@
 - Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
 - Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
 - Indicators based on GHS-POP use raster file stored on disk instead of raster in the database ([#276])
-- Reverse [#221], rename `ideal_vgi_lulc` layer and return result description in the case that the Mapping Saturation Indicator could not been calculated ([#260])
+- Re-add layer `ideal_vgi_lulc` with new name `lulc` (reverts PR [#221]) [#260]
+- Add result description instead of raising an error in the case that the Mapping Saturation Indicator could not been calculated [#260]
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#260]: https://github.com/GIScience/ohsome-quality-analyst/pull/260
