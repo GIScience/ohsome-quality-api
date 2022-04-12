@@ -73,18 +73,18 @@ a img {
 
 body {
   font-family: "Roboto Condensed", "Arial Narrow", Arial, Helvetica, sans-serif;
-  line-height: 24px; 
+  line-height: 24px;
   font-size: 1.5em;
   font-size: 100%;
   font-weight: 400;
   letter-spacing: 0;
-  text-align: left; 
+  text-align: left;
 
 }
   body.menu-active {
     max-height: 100vh;max-width: 980px;
     margin: 0 auto;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .splitline {
@@ -139,7 +139,7 @@ h5 {
   font-size: 22px;
   line-height: 28px;
   color: #666666;
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 h6 {
@@ -194,7 +194,7 @@ img {
   text-decoration: none; }
   @media screen and (max-width: 479px) {
     .navlink {
-      font-size: 18px; } 
+      font-size: 18px; }
   }
 
   .navlink:hover {
@@ -215,25 +215,25 @@ img {
   .one-half h3 {
     margin-top: 0; }
 
-.one-third {
+.graphSection {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 33.3333%;
           flex: 1 1 33.3333%;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center; }
-  .one-third img {
+  .graphSection img {
     max-width: 90%; }
 
-.two-thirds {
+.descriptionSection {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 66.6667%;
           flex: 1 1 66.6667%; }
 
 @media screen and (max-width: 479px) {
   .one-half,
-  .one-third,
-  .two-thirds {
+  .graphSection,
+  .descriptionSection {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%; } }
@@ -245,32 +245,32 @@ img {
 .page-home .hero-container {
   background-image: url("/assets/img/hero/osm_grey.jpg"); }
 
-.section {
+.oqtSection {
   padding: 25px 40px; }
   @media screen and (max-width: 767px) {
-    .section {
+    .oqtSection {
       padding: 40px; } }
   @media screen and (max-width: 479px) {
-    .section {
+    .oqtSection {
       padding: 40px 20px; } }
-  .section.section-wide {
+  .oqtSection.oqtSection-wide {
     padding: 0; }
-    .section.section-wide .section-container {
+    .oqtSection.oqtSection-wide .oqtSection-container {
       max-width: none; }
-  .section.section-no-margin {
+  .oqtSection.oqtSection-no-margin {
     padding-bottom: 0; }
-  .section .section-container {
+  .oqtSection .oqtSection-container {
     max-width: 980px;
     margin: 0 auto; }
-    .section .section-container .rich-text {
+    .oqtSection .oqtSection-container .rich-text {
       max-width: 700px;
       margin-bottom: 40px; }
-      .section .section-container .rich-text:last-child {
+      .oqtSection .oqtSection-container .rich-text:last-child {
         margin-bottom: 0; }
     @media screen and (max-width: 767px) {
-      .section .section-container h2 {
+      .oqtSection .oqtSection-container h2 {
         margin-bottom: 25px; } }
-  .section .section-flex {
+  .oqtSection .oqtSection-flex {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -278,42 +278,42 @@ img {
         -ms-flex-pack: justify;
             justify-content: space-between; }
     @media screen and (max-width: 679px) {
-      .section .section-flex {
+      .oqtSection .oqtSection-flex {
         -ms-flex-wrap: wrap;
             flex-wrap: wrap; } }
-    .section .section-flex.image-left .two-thirds {
+    .oqtSection .oqtSection-flex.image-left .descriptionSection {
       margin-left: 40px; }
       @media screen and (max-width: 679px) {
-        .section .section-flex.image-left .two-thirds {
+        .oqtSection .oqtSection-flex.image-left .descriptionSection {
           margin-left: 0; } }
     @media screen and (max-width: 679px) {
-      .section .section-flex.image-left .one-third {
+      .oqtSection .oqtSection-flex.image-left .graphSection {
         display: none; } }
-    .section .section-flex.image-right .two-thirds {
+    .oqtSection .oqtSection-flex.image-right .descriptionSection {
       margin-right: 40px; }
       @media screen and (max-width: 679px) {
-        .section .section-flex.image-right .two-thirds {
+        .oqtSection .oqtSection-flex.image-right .descriptionSection {
           margin-right: 0; } }
-    .section .section-flex.image-right .one-third {
+    .oqtSection .oqtSection-flex.image-right .graphSection {
       text-align: right; }
       @media screen and (max-width: 679px) {
-        .section .section-flex.image-right .one-third {
+        .oqtSection .oqtSection-flex.image-right .graphSection {
           display: none; }
-          .section .section-flex.image-right .one-third.keep-image {
+          .oqtSection .oqtSection-flex.image-right .graphSection.keep-image {
             display: block;
             -webkit-box-flex: 1;
                 -ms-flex: 1 1 100%;
                     flex: 1 1 100%;
             text-align: center; }
-            .section .section-flex.image-right .one-third.keep-image img {
+            .oqtSection .oqtSection-flex.image-right .graphSection.keep-image img {
               max-width: 180px;
               margin-top: 20px; } }
-      .section .section-flex.image-right .one-third img {
+      .oqtSection .oqtSection-flex.image-right .graphSection img {
         margin: 0 auto; }
-  .section h2 {
+  .oqtSection h2 {
     margin-top: 0;
     margin-bottom: 30px; }
-  .section.light-blue {
+  .oqtSection.light-blue {
       background-color: #eef2fb;
   }
 
@@ -355,7 +355,7 @@ header {
           padding: 10px 0; } }
 
   @media screen and (max-width: 720px) {
-    .section-flex{
+    .oqtSection-flex{
       flex-direction: column;
     }
     .one-half:last-child{
@@ -387,24 +387,24 @@ footer {
             justify-content: space-between;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap; }
-  
+
   @media screen and (max-width: 767px) {
     footer .container {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
       -ms-flex-direction: column;
-      flex-direction: column; } 
+      flex-direction: column; }
   }
   @media screen and (max-width: 767px) {
     footer .container .footer-column {
       margin-bottom: 20px; }
     footer .container .footer-column.last-footer {
-        margin-bottom: 0; } 
+        margin-bottom: 0; }
   }
   @media screen and (max-width: 479px) {
     footer .container .footer-column {
       margin-bottom: 10px; } }
-  
+
   footer .heigit-logo a img {
     height: 40px;
     bottom: 5px;
@@ -801,41 +801,8 @@ label.anim-icon {
 }
 #topButton {
 	float:right;
-	
-}
 
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
 }
-
-.dot-yellow {
-  height: 25px;
-  width: 25px;
-  background-color: #FFFF00;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dot-red {
-  height: 25px;
-  width: 25px;
-  background-color: #FF0000;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dot-green {
-  height: 25px;
-  width: 25px;
-  background-color: #008000;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.metadata-text {
+.indicator-metadata-text {
     color: #666666;
 }
