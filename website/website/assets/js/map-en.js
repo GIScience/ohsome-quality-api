@@ -1,11 +1,6 @@
 // all references to gP are currently outcommented.
 // they refer to the getPDF button which will be implemented later.
 
-// define traffic lights
-const GOOD_QUALITY = '<span class="dot-green"></span> <span class="dot"></span> <span class="dot"></span> Good Quality';
-const MEDIUM_QUALITY = '<span class="dot"></span> <span class="dot-yellow"></span> <span class="dot"></span> Medium Quality'
-const BAD_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot-red"></span> Bad Quality'
-const UNDEFINED_QUALITY = '<span class="dot"></span> <span class="dot"></span> <span class="dot"></span> Undefined Quality'
 function fetch_regions_from_server() {
 	return fetch('assets/data/regions.geojson')
 }
@@ -169,21 +164,6 @@ function buildMap(...charts){
 		return region + "," + report + "," + dataset
 	}
 
-	function toggle_results_will_be_shown_paragraph(bool) {
-		const a = document.getElementById("results1");
-		const b = document.getElementById("results2");
-
-		if (bool === true) {
-			a.style.display = "block";
-			b.style.display = "block";
-			b.style.marginBottom = "500px";
-
-		} else {
-			a.style.display = "none";
-			b.style.display = "none";
-		}
-	}
-	
 	// ###############   get quality button ###########
 	document.getElementById("gQ").onclick = function () { 
 		html_params = get_html_parameter_list(location.search)
@@ -209,19 +189,16 @@ function buildMap(...charts){
 			alert("Please select a Report");
 		} else {
 			markers[areas].fire("click")
-			toggle_results_will_be_shown_paragraph(true)
 			// show loader spinner
 			document.querySelector("#loader1").classList.add("spinner-1");
-			document.querySelector("#loader2").classList.add("spinner-1");
-			// remove dynamically created Indicator divs
-			removeIndicators()
 			// remove selected feature from map
 			if(selectedFeatureLayer) map.removeLayer(selectedFeatureLayer)
 			const params = {
 			  "name": String(selectedReport),
 			  "dataset": String(selectedDataset),
 			  "featureId": String(areas),
-			  "includeSvg": true
+			  "includeSvg": true,
+			  "includeHtml": true
 			}
 			console.log(params)
 			httpPostAsync(JSON.stringify(params), handleGetQuality);
@@ -234,151 +211,14 @@ function buildMap(...charts){
 		console.log("response",response)
 		const properties = unflattenObject(response["properties"]);
 		const report = properties["report"];
-		const indicators = properties["indicators"];
-		toggle_results_will_be_shown_paragraph(false)
+		document.getElementById("resultSection").innerHTML = ''
 		document.querySelector("#loader1").classList.remove("spinner-1");
-		document.querySelector("#loader2").classList.remove("spinner-1");
-
-		// show selected region on a map
-		addMiniMap();
-		// 1=green, 2=yellow, 3=red
-		let traffic_lights;
-		switch (report["result"]["label"]) {
-		    case 'green':
-		        traffic_lights = GOOD_QUALITY;
-		        break;
-		    case 'yellow':
-		        traffic_lights = MEDIUM_QUALITY;
-		        break;
-		    case 'red':
-		        traffic_lights = BAD_QUALITY;
-		        break;
-		    default:
-		        traffic_lights = UNDEFINED_QUALITY;
-		        break;
+		if (report["result"]["html"]){
+			document.getElementById('resultSection').insertAdjacentHTML('afterbegin', report["result"]["html"]);
+			addMiniMap()
 		}
-
-		document.getElementById("traffic_dots_space").innerHTML =
-		            '<h4>Report: '+ report["metadata"]["name"] + '</h4>' +
-		            '<p>' + traffic_lights + '</p>'
-                    // here place to display the name of the region?
-
-
-		// ' <b>Overall value: '+ response.result.value + '</b></p>'
-
-
-		document.getElementById("traffic_text_space").innerHTML = '<p>'+ report["result"]["description"] +'</p>'
-		document.getElementById("report_metadata_space").innerHTML =
-		    '<p class="metadata-text">Report description:</br>'+ report["metadata"]["description"] +'</p>'
-			
-		if (Object.keys(indicators).length > 0) {
-			addIndicators(indicators)
-		}
-		const element = document.getElementById('result-heading');
-		const headerOffset = 70;
-		const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-		const offsetPosition = elementPosition - headerOffset;
-	
-		window.scrollTo({
-			 top: offsetPosition,
-			 behavior: "smooth"
-		});
-	}
-
-	/**
-	 * Adds indicator by creating div on DOM dynamically based on number of Indicators present
-	 * 
-	 * @param indicators is an array of indicator
-	 */
-	function addIndicators(indicators) {
-		// console.log('indicators ', indicators)
-		const parentDiv = document.getElementById("indicatorSpace");
-		// loop throw all indicators and add to DOM
-		for (const idx in indicators) {
-			const indicator = indicators[idx];
-			// console.log('indicator = ', indicator)
-			const sectionDiv = document.createElement("div");
-			sectionDiv.className = "section-container section-flex"
-
-			// left part with plot
-			const left_space = document.createElement("div");
-			left_space.classList.add("one-third")
-			if (indicator["result"]["label"] === "UNDEFINED") {
-			    left_space.innerHTML = "<p>Plot can't be calculated for this indicator.</p>";
-			} else {
-			    left_space.innerHTML = indicator["result"]["svg"];
-			    left_space.classList.add("indicator-graph");
-			}
-			sectionDiv.appendChild(left_space)
-
-			// right part with heading, description and traffic lights
-			const right_space = document.createElement("div");
-			right_space.className = "two-thirds";
-
-			const indicatorHeading = document.createElement("h4");
-			indicatorHeading.innerHTML = indicator["metadata"]["name"] + ' for ' + indicator["layer"]["name"];
-			right_space.appendChild(indicatorHeading);
-
-			const indicatorQuality = document.createElement("p");
-			let traffic_lights_indicator;
-			switch (indicator["result"]["label"]) {
-                case "green":
-                case "1":
-                    traffic_lights_indicator = GOOD_QUALITY
-                    break
-                case "yellow":
-                case "2":
-                    traffic_lights_indicator = MEDIUM_QUALITY
-                    break
-                case "red":
-                case "3":
-                    traffic_lights_indicator = BAD_QUALITY
-                    break
-                case "undefined":
-                    traffic_lights_indicator = UNDEFINED_QUALITY
-					break
-                default:
-                    traffic_lights_indicator = UNDEFINED_QUALITY
-					break
-
-            }
-            indicatorQuality.innerHTML = '<p>' + traffic_lights_indicator + '</p>';
-            right_space.appendChild(indicatorQuality);
-
-			const indicatorText = document.createElement("p");
-			indicatorText.innerHTML = indicator["result"]["description"];
-			right_space.appendChild(indicatorText);
-
-			const indicatorDescription = document.createElement("p");
-			indicatorDescription.className = "metadata-text"
-		    indicatorDescription.innerHTML = 'Indicator description:</br>' + indicator["metadata"]["description"];
-			right_space.appendChild(indicatorDescription);
-
-            sectionDiv.appendChild(right_space)
-			parentDiv.appendChild(sectionDiv);
-
-			const horizontalLine = document.createElement("hr")
-			horizontalLine.className = "splitline"
-			parentDiv.appendChild(horizontalLine);
-		}
-	}
-
-	/**
-	 * Removes the dynamically created Indicator divs
-	 */
-	function removeIndicators() {
-		// clear overall results
-		//document.getElementById("trafficTop").innerHTML = '';
-		document.getElementById("traffic_map_space").innerHTML = ''
-		document.getElementById("traffic_dots_space").innerHTML = ''
-		document.getElementById("traffic_text_space").innerHTML = ''
-		document.getElementById("report_metadata_space").innerHTML = ''
-		//document.getElementById("graphTop").innerHTML = ''
-
-		const parentDiv = document.getElementById("indicatorSpace");
-		while (parentDiv.firstChild) {
-			//The list is LIVE so it will re-index each call
-			parentDiv.removeChild(parentDiv.firstChild);
+		else{
+			alert("Couldn't create report.")
 		}
 	}
 
@@ -386,7 +226,8 @@ function buildMap(...charts){
 	 * Adds a small map to show the selected region
 	 */
 	function addMiniMap() {
-		document.getElementById('traffic_map_space').innerHTML = "<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>";
+		document.getElementById("report_space").insertAdjacentHTML("afterbegin","<div id='traffic_map_space' style='height: 250px; width: 250px; padding: 10px;'>");
+		document.getElementById('traffic_map_space').insertAdjacentHTML("afterbegin","<div id='miniMap' class='miniMap' style='width: 90%; height: 100%;'></div>");
 		const miniMap = L.map( 'miniMap', {
 			center: [31.4, -5],
 			zoomControl: false,
@@ -572,6 +413,5 @@ function getResponseFile( params, callback) {
 function httpErrorHandle(xmlHttp) {
 	console.log('xmlHttp = ', xmlHttp)
 	document.querySelector("#loader1").classList.remove("spinner-1");
-	document.querySelector("#loader2").classList.remove("spinner-1");
 	alert("Error: \n\n"+ xmlHttp.statusText)
 }
