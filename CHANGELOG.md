@@ -7,11 +7,10 @@
 - Update `poi` layer based on ([`openpoiservice`]) [#246])
 - Remove `ideal_vgi_poi` layer in favor of new `poi` layer ([#246])
 
-
 ### New Features
 
+- Add new parameter `includeHtml` to the API endpoints `/indicator` and `/report` to include a HTML snippets with the results in the response ([#242])
 - Add new parameter `layer` containing `name`, `description` and `data` fields to the API endpoint `indicator`. Only available for POST requests. This enables to compute indicators for given data. ([#245])
-
 
 ### Other Changes
 
@@ -23,7 +22,6 @@
 - Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
 - Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
 - Indicators based on GHS-POP use raster file stored on disk instead of raster in the database ([#276])
-- Add new parameter `includeHtml` to the API endpoints `/indicator` and `/report` to include a HTML snippets with the results in the response ([#242])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
