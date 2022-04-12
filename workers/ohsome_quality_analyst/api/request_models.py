@@ -243,8 +243,8 @@ INDICATOR_EXAMPLES = {
                 },
             },
             "layer": {
-                "name": "",
-                "description": "",
+                "name": "My layer name",
+                "description": "My layer description",
                 "data": {
                     "result": [
                         {"value": v, "timestamp": "2020-03-20T01:30:08.180856"}
