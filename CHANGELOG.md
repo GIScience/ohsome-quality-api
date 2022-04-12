@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 0.9.0
 
 ### Breaking Changes
 
