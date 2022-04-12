@@ -1,4 +1,5 @@
 import logging
+import os
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from statistics import mean
@@ -6,6 +7,7 @@ from typing import Dict, List, Literal, NamedTuple, Tuple
 
 from dacite import from_dict
 from geojson import Feature
+from jinja2 import Environment, FileSystemLoader
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
@@ -28,6 +30,7 @@ class Result:
     label: Literal["green", "yellow", "red", "undefined"]
     value: float
     description: str
+    html: str
 
 
 class IndicatorLayer(NamedTuple):
@@ -48,7 +51,7 @@ class BaseReport(metaclass=ABCMeta):
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         # Results will be written during the lifecycle of the report object (combine())
-        self.result = Result(None, None, None)
+        self.result = Result(None, None, None, None)
 
     def as_feature(self) -> Feature:
         """Returns a GeoJSON Feature object.
@@ -85,7 +88,6 @@ class BaseReport(metaclass=ABCMeta):
         for indicator in self.indicators:
             if indicator.result.label != "undefined":
                 values.append(indicator.result.value)
-
         if not values:
             self.result.value = None
             self.result.label = "undefined"
@@ -119,3 +121,44 @@ class BaseReport(metaclass=ABCMeta):
         attribution is necessary.
         """
         return get_attribution(["OSM"])
+
+    def create_html(self):
+        template_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "templates",
+        )
+        env = Environment(loader=FileSystemLoader(template_dir))
+
+        template = env.get_template("report_template.html")
+
+        def traffic_light(label, red="#bbb", yellow="#bbb", green="#bbb"):
+            dot_css = (
+                "style='height: 25px; width: 25px; background-color: {0};"
+                "border-radius: 50%; display: inline-block;'"
+            )
+            return (
+                "<span {0} class='dot'></span>\n<span {1} class='dot'>"
+                "</span>\n<span {2} class='dot'></span>\n {3}".format(
+                    dot_css.format(red),
+                    dot_css.format(yellow),
+                    dot_css.format(green),
+                    label,
+                )
+            )
+
+        if self.result.label == "red":
+            traffic_light = traffic_light("Bad Quality", red="#FF0000")
+        elif self.result.label == "yellow":
+            traffic_light = traffic_light("Medium Quality", yellow="#FFFF00")
+        elif self.result.label == "green":
+            traffic_light = traffic_light("Good Quality", green="#008000")
+        else:
+            traffic_light = traffic_light("Undefined Quality")
+
+        self.result.html = template.render(
+            report_name=self.metadata.name,
+            indicators="".join([i.result.html for i in self.indicators]),
+            result_description=self.result.description,
+            metadata=self.metadata.description,
+            traffic_light=traffic_light,
+        )
