@@ -125,7 +125,7 @@ class TestApiIndicator(unittest.TestCase):
                 self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
-    def test_indicator_include_svg(self):
+    def test_indicator_include_svg_true(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&fidField={4}&includeSvg={5}".format(
@@ -141,6 +141,8 @@ class TestApiIndicator(unittest.TestCase):
         result = response.json()
         self.assertIn("result.svg", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_svg_false(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&fidField={4}&includeSvg={5}".format(
@@ -156,6 +158,8 @@ class TestApiIndicator(unittest.TestCase):
         result = response.json()
         self.assertNotIn("result.svg", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_svg_default(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&fidField={4}".format(
@@ -185,6 +189,56 @@ class TestApiIndicator(unittest.TestCase):
             self.assertEqual(response.status_code, 422)
             content = response.json()
             self.assertEqual(content["type"], "RequestValidationError")
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_html_true(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}&includeHtml={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("result.html", list(result["properties"].keys()))
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_html_false(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}&includeHtml={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.html", list(result["properties"].keys()))
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_html_default(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&fidField={4}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertNotIn("result.html", list(result["properties"].keys()))
 
 
 if __name__ == "__main__":
