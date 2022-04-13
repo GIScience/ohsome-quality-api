@@ -23,9 +23,9 @@ class TestApiReportIo(unittest.TestCase):
         self.endpoint = "/report"
 
         self.report_name = "SimpleReport"
-        # Heidelberg
+        self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.dataset = "regions"
-        self.feature_id = 3
+        self.feature_id = 3  # Heidelberg
         self.fid_field = "ogc_fid"
 
         number_of_indicators = 2
@@ -56,8 +56,7 @@ class TestApiReportIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_feature(self):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        response = self.post_response(feature)
+        response = self.post_response(self.feature)
         self.run_tests(response)
 
     @oqt_vcr.use_cassette()
@@ -85,10 +84,9 @@ class TestApiReportIo(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_invalid_set_of_arguments(self):
-        bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.report_name,
-            "bpolys": bpolys,
+            "bpolys": self.feature,
             "dataset": "foo",
             "featureId": "3",
         }
@@ -98,33 +96,66 @@ class TestApiReportIo(unittest.TestCase):
         self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
-    def test_report_include_svg(self):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+    def test_report_include_svg_true(self):
         parameters = {
             "name": self.report_name,
-            "bpolys": feature,
+            "bpolys": self.feature,
             "includeSvg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+    def test_report_include_svg_false(self):
         parameters = {
             "name": self.report_name,
-            "bpolys": feature,
+            "bpolys": self.feature,
             "includeSvg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+    def test_report_include_svg_default(self):
         parameters = {
             "name": self.report_name,
-            "bpolys": feature,
+            "bpolys": self.feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+
+    @oqt_vcr.use_cassette()
+    def test_report_include_html_true(self):
+        parameters = {
+            "name": self.report_name,
+            "bpolys": self.feature,
+            "includeSvg": False,
+            "includeHtml": True,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        result = response.json()
+        self.assertIn("report.result.html", list(result["properties"].keys()))
+
+    def test_report_include_html_false(self):
+        parameters = {
+            "name": self.report_name,
+            "bpolys": self.feature,
+            "includeSvg": False,
+            "includeHtml": False,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        result = response.json()
+        self.assertNotIn("report.result.html", list(result["properties"].keys()))
+
+    def test_report_include_html_default(self):
+        parameters = {
+            "name": self.report_name,
+            "bpolys": self.feature,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        result = response.json()
+        self.assertNotIn("report.result.html", list(result["properties"].keys()))
 
 
 if __name__ == "__main__":

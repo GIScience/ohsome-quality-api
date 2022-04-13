@@ -8,20 +8,25 @@ from functools import singledispatch
 from typing import List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
+from dacite import from_dict
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
+    IndicatorData,
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
 )
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.utils.definitions import (
     GEOM_SIZE_LIMIT,
     INDICATOR_LAYER,
+    get_layer_definition,
     get_valid_indicators,
     get_valid_layers,
 )
@@ -32,10 +37,20 @@ from ohsome_quality_analyst.utils.exceptions import (
 from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
 
 
-async def create_indicator_as_geojson(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase],
-    force: bool = False,
+@singledispatch
+async def create_indicator_as_geojson(parameters):
+    raise NotImplementedError(
+        "Cannot create Indicator as GeoJSON for parameters of type: "
+        + str(type(parameters))
+    )
+
+
+@create_indicator_as_geojson.register(IndicatorBpolys)
+@create_indicator_as_geojson.register(IndicatorData)
+async def _(
+    parameters: Union[IndicatorBpolys, IndicatorData],
     size_restriction: bool = False,
+    **_kwargs,
 ) -> Union[Feature, FeatureCollection]:
     """Create an indicator or multiple indicators as GeoJSON object.
 
@@ -43,30 +58,32 @@ async def create_indicator_as_geojson(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    if isinstance(parameters, IndicatorBpolys):
-        features = []
-        for i, feature in enumerate(loads_geojson(parameters.bpolys)):
-            if "id" in feature.keys():
-                id_ = str(feature["id"])
-            else:
-                id_ = str(i)
-            logging.info("Input feature identifier: " + id_)
-            if size_restriction:
-                await check_area_size(feature.geometry)
-            indicator = await create_indicator(
-                parameters.copy(update={"bpolys": feature}),
-                force,
-            )
-            features.append(indicator.as_feature(flatten=True))
-        if len(features) == 1:
-            return features[0]
+    features = []
+    for i, feature in enumerate(loads_geojson(parameters.bpolys)):
+        if "id" in feature.keys():
+            id_ = str(feature["id"])
         else:
-            return FeatureCollection(features=features)
-    elif isinstance(parameters, IndicatorDatabase):
-        indicator = await create_indicator(parameters, force)
-        return indicator.as_feature(flatten=True)
+            id_ = str(i)
+        logging.info("Input feature identifier: " + id_)
+        if size_restriction:
+            await check_area_size(feature.geometry)
+        indicator = await create_indicator(parameters.copy(update={"bpolys": feature}))
+        features.append(indicator.as_feature(flatten=True))
+    if len(features) == 1:
+        return features[0]
     else:
-        raise ValueError("Unexpected parameters: " + str(parameters))
+        return FeatureCollection(features=features)
+
+
+@create_indicator_as_geojson.register(IndicatorDatabase)
+async def _(
+    parameters: IndicatorDatabase,
+    force: bool = False,
+    **_kwargs,
+) -> Feature:
+    """Create an indicator as GeoJSON object."""
+    indicator = await create_indicator(parameters, force)
+    return indicator.as_feature(flatten=True)
 
 
 async def create_report_as_geojson(
@@ -107,15 +124,14 @@ async def create_report_as_geojson(
 
 
 @singledispatch
-async def create_indicator(parameters, force: bool = False) -> Indicator:
-    """Create an Indicator."""
+async def create_indicator(parameters) -> Indicator:
     raise NotImplementedError(
         "Cannot create Indicator for parameters of type: " + str(type(parameters))
     )
 
 
 @create_indicator.register
-async def _create_indicator(
+async def _(
     parameters: IndicatorDatabase,
     force: bool = False,
 ) -> Indicator:
@@ -127,26 +143,27 @@ async def _create_indicator(
     created from scratch and then those results are saved to the database.
     """
     name = parameters.name.value
-    layer_name = parameters.layer_name.value
+    layer: Layer = from_dict(
+        data_class=LayerDefinition,
+        data=get_layer_definition(parameters.layer_name.value),
+    )
 
-    logging.info("Creating indicator ...")
+    logging.info("Fetching Indicator from database ...")
     logging.info("Indicator name: " + name)
-    logging.info("Layer name:     " + layer_name)
+    logging.info("Layer name:     " + layer.name)
 
     dataset = parameters.dataset.value
-    fid_field = parameters.fid_field
-    if fid_field is not None:
+    if parameters.fid_field is not None:
         feature_id = await db_client.map_fid_to_uid(
             dataset,
             parameters.feature_id,
-            fid_field.value,
+            parameters.fid_field.value,
         )
     else:
         feature_id = parameters.feature_id
-
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator_raw = indicator_class(layer_name=layer_name, feature=feature)
+    indicator_raw = indicator_class(layer=layer, feature=feature)
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
@@ -160,30 +177,34 @@ async def _create_indicator(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                layerName=layer_name,
+                layerName=parameters.layer_name.value,
                 bpolys=feature,
             )
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
+    indicator.create_html()
     return indicator
 
 
 @create_indicator.register
-async def _create_indicator(  # noqa
+async def _(
     parameters: IndicatorBpolys,
-    force: bool = False,
+    *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
-    layer_name = parameters.layer_name.value
+    layer: Layer = from_dict(
+        data_class=LayerDefinition,
+        data=get_layer_definition(parameters.layer_name.value),
+    )
     feature = parameters.bpolys
 
-    logging.info("Creating indicator ...")
+    logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Indicator name: " + name)
-    logging.info("Layer name:     " + layer_name)
+    logging.info("Layer name:     " + layer.name)
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer_name, feature)
+    indicator = indicator_class(layer, feature)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
@@ -195,8 +216,36 @@ async def _create_indicator(  # noqa
     return indicator
 
 
+@create_indicator.register
+async def _(
+    parameters: IndicatorData,
+    *_args,
+) -> Indicator:
+    """Create an indicator from scratch."""
+    name = parameters.name.value
+    layer = parameters.layer
+    feature = parameters.bpolys
+
+    logging.info("Calculating Indicator with custom Layer ...")
+    logging.info("Indicator name: " + name)
+    logging.info("Layer name:     " + layer.name)
+
+    indicator_class = name_to_class(class_type="indicator", name=name)
+    indicator = indicator_class(layer, feature)
+
+    logging.info("Run preprocessing")
+    await indicator.preprocess()
+    logging.info("Run calculation")
+    indicator.calculate()
+    logging.info("Run figure creation")
+    indicator.create_figure()
+    indicator.create_html()
+
+    return indicator
+
+
 @singledispatch
-async def create_report(parameters, force: bool = False) -> Report:
+async def create_report(parameters) -> Report:
     """Create a Report."""
     raise NotImplementedError(
         "Cannot create Report for parameters of type: " + str(type(parameters))
@@ -204,10 +253,7 @@ async def create_report(parameters, force: bool = False) -> Report:
 
 
 @create_report.register
-async def _create_report(
-    parameters: ReportDatabase,
-    force: bool = False,
-) -> Report:
+async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     """Create a Report.
 
     Fetches indicator results form the database.
@@ -219,12 +265,11 @@ async def _create_report(
     logging.info("Report name: " + name)
 
     dataset = parameters.dataset.value
-    fid_field = parameters.fid_field
-    if fid_field is not None:
+    if parameters.fid_field is not None:
         feature_id = await db_client.map_fid_to_uid(
             dataset,
             parameters.feature_id,
-            fid_field.value,
+            parameters.fid_field.value,
         )
     else:
         feature_id = parameters.feature_id
@@ -246,14 +291,12 @@ async def _create_report(
         )
         report.indicators.append(indicator)
     report.combine_indicators()
+    report.create_html()
     return report
 
 
 @create_report.register
-async def _create_report(  # noqa
-    parameters: ReportBpolys,
-    force: bool = False,
-) -> Report:
+async def _(parameters: ReportBpolys, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
@@ -280,6 +323,7 @@ async def _create_report(  # noqa
         )
         report.indicators.append(indicator)
     report.combine_indicators()
+    report.create_html()
     return report
 
 

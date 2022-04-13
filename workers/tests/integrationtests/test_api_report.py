@@ -156,6 +156,22 @@ class TestApiReport(unittest.TestCase):
                 content = response.json()
                 self.assertEqual(content["type"], "RequestValidationError")
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_html(self):
+        url = (
+            "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
+            "&includeHtml={4}".format(
+                self.report_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("report.result.html", list(result["properties"].keys()))
+
 
 if __name__ == "__main__":
     unittest.main()

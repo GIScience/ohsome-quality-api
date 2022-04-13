@@ -17,13 +17,15 @@ class TestReportSimpleReport(unittest.TestCase):
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.value = 0.5
+            indicator.result.html = "foo"
             report.indicators.append(indicator)
 
         report.combine_indicators()
+        report.create_html()
 
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
-        # Should be the mean of all indicator result values
+        self.assertIsNotNone(report.result.html)
         self.assertEqual(report.result.value, 0.5)
 
 

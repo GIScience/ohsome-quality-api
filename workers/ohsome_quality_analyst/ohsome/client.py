@@ -1,11 +1,19 @@
+# TODO: Add more tests for ohsome package.
+
 import datetime
 import json
 import logging
+from functools import singledispatch
 from typing import Optional, Union
 
 import geojson
 import httpx
+from dateutil.parser import isoparse
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from schema import Or, Schema, SchemaError, Use
+
+from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
+from ohsome_quality_analyst.utils.exceptions import LayerDataSchemaError
 
 # `geojson` uses `simplejson` if it is installed
 try:
@@ -17,16 +25,22 @@ from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
 
 
-# TODO: Add more tests for ohsome package.
-async def query(
-    layer,
+@singledispatch
+async def query(layer) -> dict:
+    raise NotImplementedError(
+        "Cannot query ohsome API for Layer of type: " + str(type(layer))
+    )
+
+
+@query.register
+async def _(
+    layer: LayerDefinition,
     bpolys: Union[Polygon, MultiPolygon],
     time: Optional[str] = None,
     endpoint: Optional[str] = None,
     ratio: bool = False,
 ) -> dict:
-    """
-    Query ohsome API endpoint with filter.
+    """Query ohsome API endpoint with filter.
 
     Time is one or more ISO-8601 conform timestring(s).
     https://docs.ohsome.org/ohsome-api/v1/time.html
@@ -36,7 +50,23 @@ async def query(
     logging.info("Query ohsome API.")
     logging.debug("Query URL: " + url)
     logging.debug("Query data: " + json.dumps(data))
-    return await query_ohsome_api(url, data)
+    response = await query_ohsome_api(url, data)
+    return validate_query_results(response, ratio)
+
+
+@query.register
+async def _(
+    layer: LayerData,
+    *_args,
+    **_kwargs,
+) -> dict:
+    try:
+        return validate_query_results(layer.data)
+    except SchemaError as error:
+        raise LayerDataSchemaError(
+            "Invalid Layer data input to the Mapping Saturation Indicator.",
+            error,
+        )
 
 
 async def query_ohsome_api(url: str, data: dict, headers: dict = {}) -> dict:
@@ -101,7 +131,7 @@ def build_data_dict(
     """Build data dictionary for ohsome API query."""
     data = {
         "bpolys": geojson.dumps(FeatureCollection([Feature(geometry=bpolys)])),
-        "filter": layer.filter,
+        "filter": layer.filter_,
     }
     if ratio:
         if layer.ratio_filter is None:
@@ -113,3 +143,44 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     return data
+
+
+def validate_query_results(response: dict, ratio: bool = False) -> dict:
+    """Validate query results.
+
+    Raises:
+        SchemaError: Error during Schema validation.
+    """
+    if ratio:
+        Schema(
+            {
+                "ratioResult": [
+                    {
+                        "ratio": Or(float, int, "NaN"),
+                        "value": Or(float, int),
+                        "value2": Or(float, int),
+                        "timestamp": Use(lambda t: isoparse(t)),
+                    }
+                ]
+            },
+            ignore_extra_keys=True,
+        ).validate(response)
+        if not response["ratioResult"]:
+            raise SchemaError("Empty result field")
+    else:
+        Schema(
+            {
+                "result": [
+                    {
+                        "value": Or(float, int),
+                        Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
+                            lambda t: isoparse(t)
+                        ),
+                    }
+                ]
+            },
+            ignore_extra_keys=True,
+        ).validate(response)
+        if not response["result"]:
+            raise SchemaError("Empty result field")
+    return response

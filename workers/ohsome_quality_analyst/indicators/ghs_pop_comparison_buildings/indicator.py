@@ -8,6 +8,7 @@ import numpy as np
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster.client import get_zonal_stats
@@ -17,15 +18,8 @@ from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster
 class GhsPopComparisonBuildings(BaseIndicator):
     """Set number of features and population into perspective."""
 
-    def __init__(
-        self,
-        layer_name: str,
-        feature: Feature,
-    ) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            feature=feature,
-        )
+    def __init__(self, layer: Layer, feature: Feature) -> None:
+        super().__init__(layer=layer, feature=feature)
         # Those attributes will be set during lifecycle of the object.
         self.pop_count = None
         self.area = None
@@ -59,9 +53,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.area = area
         self.pop_count = pop_count
 
-        query_results = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry
-        )
+        query_results = await ohsome_client.query(self.layer, self.feature.geometry)
         self.feature_count = query_results["result"][0]["value"]
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)

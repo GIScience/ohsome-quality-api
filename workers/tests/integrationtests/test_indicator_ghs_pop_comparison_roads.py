@@ -7,7 +7,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import
     GhsPopComparisonRoads,
 )
 
-from .utils import oqt_vcr
+from .utils import get_layer_fixture, oqt_vcr
 
 
 class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
@@ -17,7 +17,8 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         self.indicator = GhsPopComparisonRoads(
-            feature=feature, layer_name="major_roads_length"
+            feature=feature,
+            layer=get_layer_fixture("major_roads_length"),
         )
 
     @oqt_vcr.use_cassette()

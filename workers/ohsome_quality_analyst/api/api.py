@@ -24,6 +24,7 @@ from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
     REPORT_EXAMPLES,
     IndicatorBpolys,
+    IndicatorData,
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
@@ -41,6 +42,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import (
+    LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
     RasterDatasetUndefinedError,
@@ -108,6 +110,7 @@ async def validation_exception_handler(
 
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
+@app.exception_handler(LayerDataSchemaError)
 async def oqt_exception_handler(
     request: Request,
     exception: Union[
@@ -115,6 +118,7 @@ async def oqt_exception_handler(
         SizeRestrictionError,
         RasterDatasetNotFoundError,
         RasterDatasetUndefinedError,
+        LayerDataSchemaError,
     ],
 ):
     """Exception handler for custom OQT exceptions."""
@@ -149,7 +153,7 @@ async def get_indicator(parameters=Depends(IndicatorDatabase)):
 
 @app.post("/indicator")
 async def post_indicator(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase] = Body(
+    parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     )
@@ -172,7 +176,9 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
         size_restriction=True,
     )
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.svg")
+    if parameters.include_html is False:
+        remove_item_from_properties(geojson_object, "*result.html")
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
@@ -217,8 +223,10 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
         size_restriction=True,
     )
     response = empty_api_response()
+    if parameters.include_html is False:
+        remove_item_from_properties(geojson_object, "*result.html")
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_item_from_properties(geojson_object, "*result.svg")
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="report", name=parameters.name.value
@@ -295,16 +303,23 @@ async def list_fid_fields():
     return response
 
 
-def remove_svg_from_properties(
-    geojson_object: Union[Feature, FeatureCollection]
+def remove_item_from_properties(
+    geojson_object: Union[Feature, FeatureCollection],
+    pattern: str,
 ) -> None:
-    def _remove_svg_from_properties(properties: dict) -> None:
+    """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
+
+    Items matching the given pattern (See 'fnmatch.fnmatch') will be deleted from the
+    properties.
+    """
+
+    def _remove_item_from_properties(properties: dict, pattern: str) -> None:
         for key in list(properties.keys()):
-            if fnmatch.fnmatch(key, "*result.svg"):
+            if fnmatch.fnmatch(key, pattern):
                 del properties[key]
 
     if isinstance(geojson_object, Feature):
-        _remove_svg_from_properties(geojson_object["properties"])
+        _remove_item_from_properties(geojson_object["properties"], pattern)
     elif isinstance(geojson_object, FeatureCollection):
         for feature in geojson_object["features"]:
-            _remove_svg_from_properties(feature["properties"])
+            _remove_item_from_properties(feature["properties"], pattern)

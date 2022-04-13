@@ -1,98 +1,25 @@
 {
-  "attribution" : {
-    "url" : "https://ohsome.org/copyrights",
-    "text" : "© OpenStreetMap contributors"
+  "attribution": {
+    "url": "https://ohsome.org/copyrights",
+    "text": "© OpenStreetMap contributors"
   },
-  "apiVersion" : "1.3.2",
-  "type" : "FeatureCollection",
-  "features" : [{
-    "type" : "Feature",
-    "geometry" : {
-      "type" : "Polygon",
-      "coordinates" : [
-        [
-          [
-            8.6731679,
-            49.417125399999996
-          ],
-          [
-            8.6736948,
-            49.417125399999996
-          ],
-          [
-            8.6736948,
-            49.417893
-          ],
-          [
-            8.6731679,
-            49.417893
-          ],
-          [
-            8.6731679,
-            49.417125399999996
-          ]
-        ]
-      ]
+  "apiVersion": "1.6.2",
+  "result": [
+    {
+      "timestamp": "2014-01-01T00:00:00Z",
+      "value": 42
     },
-    "properties" : {
-      "@osmId" : "relation/19154",
-      "@snapshotTimestamp" : "2016-01-01T00:00:00Z",
-      "addr:city" : "Heidelberg",
-      "addr:housenumber" : "267",
-      "addr:postcode" : "69120",
-      "addr:street" : "Im Neuenheimer Feld",
-      "building" : "yes",
-      "building:obm" : "154",
-      "description" : "behindertengerecht",
-      "elevator" : "yes",
-      "foot" : "designated",
-      "height" : "25",
-      "name" : "BIOQUANT",
-      "note" : "höhe geschätzt",
-      "type" : "multipolygon",
-      "wheelchair" : "yes",
-      "wheelchair:toilets" : "yes"
-    }
-  }, {
-    "type" : "Feature",
-    "geometry" : {
-      "type" : "Polygon",
-      "coordinates" : [
-        [
-          [
-            8.675047,
-            49.418242199999995
-          ],
-          [
-            8.675877999999999,
-            49.418242199999995
-          ],
-          [
-            8.675877999999999,
-            49.419451699999996
-          ],
-          [
-            8.675047,
-            49.419451699999996
-          ],
-          [
-            8.675047,
-            49.418242199999995
-          ]
-        ]
-      ]
+    {
+      "timestamp": "2015-01-01T00:00:00Z",
+      "value": 42
     },
-    "properties" : {
-      "@osmId" : "way/456112468",
-      "@snapshotTimestamp" : "2017-01-01T00:00:00Z",
-      "addr:city" : "Heidelberg",
-      "addr:country" : "DE",
-      "addr:housenumber" : "41-49",
-      "addr:postcode" : "69120",
-      "addr:street" : "Berliner Straße",
-      "alt_name" : "Mathematikon shops",
-      "building" : "commercial",
-      "name" : "Bauteil B"
+    {
+      "timestamp": "2016-01-01T00:00:00Z",
+      "value": 43
+    },
+    {
+      "timestamp": "2017-01-01T00:00:00Z",
+      "value": 43
     }
-  }]
+  ]
 }

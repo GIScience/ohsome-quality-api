@@ -82,6 +82,10 @@ class TestOqt(unittest.TestCase):
         indicator = asyncio.run(oqt.create_indicator(parameters))
         self.run_tests(indicator)
 
+    def test_create_indicator_not_implemented(self):
+        with self.assertRaises(NotImplementedError):
+            asyncio.run(oqt.create_indicator(""))
+
     @oqt_vcr.use_cassette()
     def test_create_report_bpolys(self):
         """Test creating indicator from scratch using the 'bpolys'parameters ."""
@@ -131,6 +135,10 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.value)
         self.assertIsNotNone(report.result.description)
+
+    def test_create_report_not_implemented(self):
+        with self.assertRaises(NotImplementedError):
+            asyncio.run(oqt.create_report(""))
 
     @mock.patch(
         "ohsome_quality_analyst.oqt.INDICATOR_LAYER",

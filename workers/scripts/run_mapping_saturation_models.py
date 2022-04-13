@@ -46,7 +46,9 @@ async def query_ohsome_api(features, layers) -> list:
     for feature in features:
         for layer in layers:
             query_results = await ohsome_client.query(
-                layer=layer, bpolys=feature.geometry, time=time_range
+                layer,
+                feature.geometry,
+                time=time_range,
             )
             results.append([item["value"] for item in query_results["result"]])
     return results

@@ -1,5 +1,6 @@
 import os
 import unittest
+from unittest import mock
 
 import geojson
 
@@ -17,8 +18,6 @@ class TestGetDefaultFigure(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        indicator = GhsPopComparisonBuildings(
-            feature=feature, layer_name="building_count"
-        )
+        indicator = GhsPopComparisonBuildings(feature=feature, layer=mock.Mock())
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG
