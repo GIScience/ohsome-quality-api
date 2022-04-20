@@ -6,10 +6,15 @@
 
 - Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
 
+### New Features
+
+-  Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
+
 ### Other Changes
 
 - Improve documentation and examples of the API ([#299])
 
+[#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
 
