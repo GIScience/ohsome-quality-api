@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- Improve documentation and examples of the API ([#299])
+
+[#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
+
+
 ## 0.9.0
 
 ### Breaking Changes

@@ -52,6 +52,33 @@ from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
+TAGS_METADATA = [
+    {
+        "name": "indicator",
+        "description": "Request an Indicator",
+        "externalDocs": {
+            "description": "External docs",
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
+                + __version__
+                + "/docs/api.md"
+            ),
+        },
+    },
+    {
+        "name": "report",
+        "description": "Request a Report",
+        "externalDocs": {
+            "description": "External docs",
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
+                + __version__
+                + "/docs/api.md"
+            ),
+        },
+    },
+]
+
 configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
@@ -65,13 +92,8 @@ app = FastAPI(
         "url": __homepage__,
         "email": __email__,
     },
+    openapi_tags=TAGS_METADATA,
 )
-
-
-class CustomJSONResponse(JSONResponse):
-    def render(self, content):
-        return json.dumps(content, default=json_serialize).encode()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -80,6 +102,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class CustomJSONResponse(JSONResponse):
+    def render(self, content):
+        return json.dumps(content, default=json_serialize).encode()
 
 
 @app.exception_handler(ValidationError)
@@ -141,32 +168,23 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator")
+@app.get("/indicator", tags=["indicator"])
 async def get_indicator(parameters=Depends(IndicatorDatabase)):
-    """Request an already calculated Indicator for an AOI defined by OQT.
+    """Request an Indicator for an AOI defined by OQT.
 
-    The response is a GeoJSON Feature with the indicator results as properties.
     To request an Indicator for a custom AOI please use the POST method.
     """
     return await _fetch_indicator(parameters)
 
 
-@app.post("/indicator")
+@app.post("/indicator", tags=["indicator"])
 async def post_indicator(
     parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
-    )
+    ),
 ):
-    """Request an Indicator for an AOI defined by OQT or a custom AOI.
-
-    Either the parameters `dataset` and `featureId` have to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
-    the indicator results. The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
-    """
+    """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     return await _fetch_indicator(parameters)
 
 
@@ -188,32 +206,23 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get("/report")
+@app.get("/report", tags=["report"])
 async def get_report(parameters=Depends(ReportDatabase)):
     """Request an already calculated Report for an AOI defined by OQT.
 
-    The response is a GeoJSON Feature with the Report results as properties.
     To request an Report for a custom AOI please use the POST method.
     """
     return await _fetch_report(parameters)
 
 
-@app.post("/report")
+@app.post("/report", tags=["report"])
 async def post_report(
     parameters: Union[ReportBpolys, ReportDatabase] = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
 ):
-    """Request a Report for an AOI defined by OQT or a custom AOI.
-
-    Either the parameters `dataset` and `featureId` have to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
-    the indicator results. The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
-    """
+    """Request a Report for an AOI defined by OQT or a custom AOI."""
     return await _fetch_report(parameters)
 
 
@@ -222,7 +231,6 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
         parameters,
         size_restriction=True,
     )
-    response = empty_api_response()
     if parameters.include_html is False:
         remove_item_from_properties(geojson_object, "*result.html")
     if parameters.include_svg is False:
@@ -237,11 +245,7 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
 
 @app.get("/regions")
 async def get_available_regions(asGeoJSON: bool = False):
-    """Get regions as list of names and identifiers or as GeoJSON.
-
-    Args:
-        asGeoJSON: If `True` regions will be returned as GeoJSON
-    """
+    """Get regions as list of names and identifiers or as a GeoJSON."""
     response = empty_api_response()
     if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
@@ -295,7 +299,7 @@ async def list_reports():
     return response
 
 
-@app.get("/FidFields")
+@app.get("/fidFields")
 async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()

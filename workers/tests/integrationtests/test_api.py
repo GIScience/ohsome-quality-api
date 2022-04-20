@@ -1,5 +1,5 @@
-"""
-Testing FastAPI Applications:
+"""Testing FastAPI Applications
+
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 
@@ -85,7 +85,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_fid_field(self):
-        url = "/FidFields"
+        url = "/fidFields"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

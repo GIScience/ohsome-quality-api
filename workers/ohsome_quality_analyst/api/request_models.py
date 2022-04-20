@@ -173,13 +173,23 @@ class ReportDatabase(BaseReport, BaseDatabase):
 
 
 INDICATOR_EXAMPLES = {
+    "OQT AOI": {
+        "summary": (
+            "Request an Indicator for an AOI defined by OQT (`dataset` and "
+            "`featureId`)."
+        ),
+        "value": {
+            "name": "GhsPopComparisonBuildings",
+            "layerName": "building_count",
+            "dataset": "regions",
+            "featureId": 3,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
+        },
+    },
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
-        "description": (
-            "The parameter `bpolys` has to be a valid GeoJSON Feature or "
-            "FeatureCollection object. The Geometry of those objects has to be Polygon "
-            "or MultiPolygon. "
-        ),
         "value": {
             "name": "GhsPopComparisonBuildings",
             "layerName": "building_count",
@@ -200,30 +210,10 @@ INDICATOR_EXAMPLES = {
             },
         },
     },
-    "OQT AOI": {
-        "summary": (
-            "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`featureId`)."
-        ),
-        "description": (
-            "Specify `dataset` and `featureId` to request an already calculated "
-            "Indicator for an AOI defined by OQT."
-        ),
-        "value": {
-            "name": "GhsPopComparisonBuildings",
-            "layerName": "building_count",
-            "dataset": "regions",
-            "featureId": 3,
-        },
-    },
     "Custom AOI and custom Layer": {
         "summary": (
             "Request an Indicator for a custom AOI (`bpolys`) and a custom Layer "
             "(`layer`)."
-        ),
-        "description": (
-            "The Layer must have a name and description. The data associated with this "
-            "Layer must be provided as well. "
         ),
         "value": {
             "name": "MappingSaturation",
@@ -241,43 +231,76 @@ INDICATOR_EXAMPLES = {
                         ]
                     ],
                 },
+                "includeSvg": False,
+                "includeHtml": False,
             },
             "layer": {
                 "name": "My layer name",
                 "description": "My layer description",
                 "data": {
                     "result": [
-                        {"value": v, "timestamp": "2020-03-20T01:30:08.180856"}
-                        # fmt: off
-                        for v in [
-                            1.0, 1.0, 4.0, 44.0, 114.0, 226.0, 241.0, 252.0, 272.0,
-                            275.0, 279.0, 298.0, 306.0, 307.0, 426.0, 472.0, 482.0,
-                            498.0, 502.0, 555.0, 557.0, 607.0, 610.0, 631.0, 637.0,
-                            655.0, 695.0, 1011.0, 5669.0, 7217.0, 8579.0, 8755.0,
-                            8990.0, 9043.0, 9288.0, 9412.0, 9670.0, 10416.0, 10840.0,
-                            12925.0, 13698.0, 14369.0, 15360.0, 15743.0, 16052.0,
-                            16459.0, 21903.0, 22655.0, 22860.0, 23022.0, 24809.0,
-                            24960.0, 26690.0, 26760.0, 26931.0, 26920.0, 28372.0,
-                            28837.0, 28900.0, 28945.0, 29003.0, 29047.0, 29091.0,
-                            29270.0, 29267.0, 29287.0, 29348.0, 29378.0, 29406.0,
-                            29624.0, 29634.0, 29631.0, 29806.0,
-                        ]
-                        # fmt: on
+                        {"timestamp": "2014-01-01T00:00:00Z", "value": 4708},
+                        {"timestamp": "2014-02-01T00:00:00Z", "value": 4842},
+                        {"timestamp": "2014-03-01T00:00:00Z", "value": 4840},
+                        {"timestamp": "2014-04-01T00:00:00Z", "value": 4941},
+                        {"timestamp": "2014-05-01T00:00:00Z", "value": 4987},
+                        {"timestamp": "2014-06-01T00:00:00Z", "value": 5007},
+                        {"timestamp": "2014-07-01T00:00:00Z", "value": 5020},
+                        {"timestamp": "2014-08-01T00:00:00Z", "value": 5168},
+                        {"timestamp": "2014-09-01T00:00:00Z", "value": 5355},
+                        {"timestamp": "2014-10-01T00:00:00Z", "value": 5394},
+                        {"timestamp": "2014-11-01T00:00:00Z", "value": 5449},
+                        {"timestamp": "2014-12-01T00:00:00Z", "value": 5470},
+                        {"timestamp": "2015-01-01T00:00:00Z", "value": 5475},
+                        {"timestamp": "2015-02-01T00:00:00Z", "value": 5477},
+                        {"timestamp": "2015-03-01T00:00:00Z", "value": 5481},
+                        {"timestamp": "2015-04-01T00:00:00Z", "value": 5495},
+                        {"timestamp": "2015-05-01T00:00:00Z", "value": 5516},
+                        {"timestamp": "2015-06-01T00:00:00Z", "value": 5517},
+                        {"timestamp": "2015-07-01T00:00:00Z", "value": 5519},
+                        {"timestamp": "2015-08-01T00:00:00Z", "value": 5525},
+                        {"timestamp": "2015-09-01T00:00:00Z", "value": 5560},
+                        {"timestamp": "2015-10-01T00:00:00Z", "value": 5564},
+                        {"timestamp": "2015-11-01T00:00:00Z", "value": 5568},
+                        {"timestamp": "2015-12-01T00:00:00Z", "value": 5627},
+                        {"timestamp": "2016-01-01T00:00:00Z", "value": 5643},
+                        {"timestamp": "2016-02-01T00:00:00Z", "value": 5680},
+                        {"timestamp": "2016-03-01T00:00:00Z", "value": 5681},
+                        {"timestamp": "2016-04-01T00:00:00Z", "value": 5828},
+                        {"timestamp": "2016-05-01T00:00:00Z", "value": 5974},
+                        {"timestamp": "2016-06-01T00:00:00Z", "value": 5990},
+                        {"timestamp": "2016-07-01T00:00:00Z", "value": 5991},
+                        {"timestamp": "2016-08-01T00:00:00Z", "value": 5997},
+                        {"timestamp": "2016-09-01T00:00:00Z", "value": 6002},
+                        {"timestamp": "2016-10-01T00:00:00Z", "value": 6010},
+                        {"timestamp": "2016-11-01T00:00:00Z", "value": 6010},
+                        {"timestamp": "2016-12-01T00:00:00Z", "value": 6016},
+                        {"timestamp": "2017-01-01T00:00:00Z", "value": 6015},
                     ]
                 },
             },
+            "includeSvg": False,
+            "includeHtml": False,
         },
     },
 }
 
 REPORT_EXAMPLES = {
+    "OQT AOI": {
+        "summary": (
+            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
+        ),
+        "value": {
+            "name": "SimpleReport",
+            "dataset": "regions",
+            "featureId": 3,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
+        },
+    },
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
-        "description": (
-            "The parameter `bpolys` has to be a valid GeoJSON Feature or "
-            "FeatureCollection object. The Geometry of those objects has to be Polygon "
-            "or MultiPolygon. "
-        ),
         "value": {
             "name": "SimpleReport",
             "bpolys": {
@@ -295,20 +318,8 @@ REPORT_EXAMPLES = {
                     ],
                 },
             },
-        },
-    },
-    "OQT AOI": {
-        "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
-        ),
-        "description": (
-            "Specify `dataset` and `featureId` to request an already calculated "
-            "Report for an AOI defined by OQT."
-        ),
-        "value": {
-            "name": "SimpleReport",
-            "dataset": "regions",
-            "featureId": 3,
+            "includeSvg": False,
+            "includeHtml": False,
         },
     },
 }
