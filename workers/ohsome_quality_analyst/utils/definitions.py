@@ -123,7 +123,7 @@ INDICATOR_LAYER = (
     ("TagsRatio", "jrc_bridge_count"),
     ("TagsRatio", "jrc_mass_gathering_sites_count"),
 )
-OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/")
+OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/").rstrip("/")
 # Input geometry size limit in sqkm for API requests
 # TODO: decide on default value
 GEOM_SIZE_LIMIT = os.getenv("OQT_GEOM_SIZE_LIMIT", default=100)

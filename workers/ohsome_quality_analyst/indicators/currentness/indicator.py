@@ -50,7 +50,7 @@ class Currentness(BaseIndicator):
             self.layer,
             self.feature,
             time=time_range,
-            contributions=True,
+            count_latest_contributions=True,
         )
         for year in response_contributions["result"]:
             time = dateutil.parser.isoparse(year["fromTimestamp"])
@@ -61,7 +61,7 @@ class Currentness(BaseIndicator):
             self.layer,
             self.feature,
             time=curr_year_range,
-            contributions=True,
+            count_latest_contributions=True,
         )
         time = dateutil.parser.isoparse(
             curr_year_response_contributions["result"][0]["fromTimestamp"]

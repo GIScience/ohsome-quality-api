@@ -35,27 +35,28 @@ async def _(
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
     ratio: Optional[bool] = False,
-    group_by: Optional[bool] = False,
-    contributions: Optional[bool] = False,
+    group_by_boundary: Optional[bool] = False,
+    count_latest_contributions: Optional[bool] = False,
 ) -> dict:
     """Query ohsome API with given Layer definition and arguments.
 
     Args:
         layer: Layer definition with ohsome API endpoint and parameters.
-        bpolys: Feature for a single bounding (multi)polygon.
-            FeatureCollection for "group by boundaries" queries. In this case the
-            argument 'group_by' needs to be set to 'True'.
+        bpolys: GeoJSON `Feature` for a single bounding (multi)polygon.
+            `FeatureCollection` for "group by boundaries" queries. In this case the
+            argument `group_by` needs to be set to `True`.
         time: One or more ISO-8601 conform timestring(s) as accepted by the ohsome API.
-        ratio: Ratio of OSM elements. The Layer definition needs to have a second
-            filter defined.
-        group_by: Group by boundary.
-        contributions:  Count of the latest contributions provided to the OSM data.
+        ratio: Ratio of OSM elements. The Layer definition needs to have
+            a second filter defined.
+        group_by_boundary: Group by boundary.
+        count_latest_contributions:  Count of the latest contributions provided to the
+            OSM data.
     """
 
-    url = build_url(layer, ratio, group_by, contributions)
+    url = build_url(layer, ratio, group_by_boundary, count_latest_contributions)
     data = build_data_dict(layer, bpolys, time, ratio)
     response = await query_ohsome_api(url, data)
-    return validate_query_results(response, ratio, group_by)
+    return validate_query_results(response, ratio, group_by_boundary)
 
 
 @query.register
@@ -63,7 +64,7 @@ async def _(
     layer: LayerData,
     bpolys: Union[Feature, FeatureCollection],
     ratio: Optional[bool] = False,
-    group_by: Optional[bool] = False,
+    group_by_boundary: Optional[bool] = False,
     **_kargs,
 ) -> dict:
     """Validate data attached to the Layer object and return data.
@@ -81,7 +82,7 @@ async def _(
         group_by: Group by boundary.
     """
     try:
-        return validate_query_results(layer.data, ratio, group_by)
+        return validate_query_results(layer.data, ratio, group_by_boundary)
     except SchemaError as error:
         raise LayerDataSchemaError(
             "Invalid Layer data input to the Mapping Saturation Indicator.",
@@ -100,12 +101,10 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
             response due to timeout during streaming.
 
     """
+    headers = {"user-agent": USER_AGENT}
+    # 660s timeout for reading, and a 300s timeout elsewhere.
     async with httpx.AsyncClient(timeout=httpx.Timeout(300, read=660)) as client:
-        resp = await client.post(
-            url,
-            data=data,
-            headers={"user-agent": USER_AGENT},
-        )
+        resp = await client.post(url, data=data, headers=headers)
     try:
         resp.raise_for_status()
     except httpx.HTTPStatusError as error:
@@ -123,11 +122,10 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
 
 async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get latest unix timestamp from the ohsome API."""
+    url = OHSOME_API + "/metadata"
+    headers = {"user-agent": USER_AGENT}
     async with httpx.AsyncClient() as client:
-        resp = await client.get(
-            url=OHSOME_API.rstrip("/") + "/metadata",
-            headers={"user-agent": USER_AGENT},
-        )
+        resp = await client.get(url=url, headers=headers)
     strtime = resp.json()["extractRegion"]["temporalExtent"]["toTimestamp"]
     return datetime.datetime.strptime(strtime, "%Y-%m-%dT%H:%MZ")
 
@@ -135,15 +133,15 @@ async def get_latest_ohsome_timestamp() -> datetime.datetime:
 def build_url(
     layer: Layer,
     ratio: bool = False,
-    group_by: bool = False,
-    contributions: bool = False,
+    group_by_boundary: bool = False,
+    count_latest_contributions: bool = False,
 ):
-    if contributions:
-        return OHSOME_API.rstrip("/") + "/contributions/latest/count"
-    url = OHSOME_API.rstrip("/") + "/" + layer.endpoint.rstrip("/")
+    if count_latest_contributions:
+        return OHSOME_API + "/contributions/latest/count"
+    url = OHSOME_API + "/" + layer.endpoint.rstrip("/")
     if ratio:
         url += "/ratio"
-    if group_by:
+    if group_by_boundary:
         url += "/groupBy/boundary"
     return url
 
@@ -176,14 +174,14 @@ def build_data_dict(
 def validate_query_results(
     response: dict,
     ratio: bool = False,
-    group_by: bool = False,
+    group_by_boundary: bool = False,
 ) -> dict:
     """Validate query results.
 
     Raises:
         SchemaError: Error during Schema validation.
     """
-    if ratio and group_by:
+    if ratio and group_by_boundary:
         Schema(
             {
                 "groupByResult": [
@@ -220,7 +218,7 @@ def validate_query_results(
         ).validate(response)
         if not response["ratioResult"]:
             raise SchemaError("Empty result field")
-    elif group_by:
+    elif group_by_boundary:
         Schema(
             {
                 "groupByResult": [

@@ -46,7 +46,7 @@ class TestOhsomeClientQuery(TestCase):
         with open(fixture, "r") as reader:
             self.invalid_response_time = reader.read()
 
-        self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.layer = get_layer_fixture("building_count")
 
@@ -185,41 +185,41 @@ class TestOhsomeClientQuery(TestCase):
 
 class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
-        self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.ohsome_api = "https://api.ohsome.org/v1"
         self.layer = get_layer_fixture("building_count")
         self.ratio_layer = get_layer_fixture("jrc_health_count")
 
     def test(self) -> None:
-        ohsome_api = self.ohsome_api.rstrip("/")
+        ohsome_api = self.ohsome_api
         url = ohsome_client.build_url(self.layer)
         self.assertEqual(ohsome_api + "/elements/count", url)
 
     def test_group_by(self) -> None:
-        url = ohsome_client.build_url(self.layer, group_by=True)
-        self.assertEqual(
-            self.ohsome_api.rstrip("/") + "/elements/count/groupBy/boundary", url
-        )
+        url = ohsome_client.build_url(self.layer, group_by_boundary=True)
+        self.assertEqual(self.ohsome_api + "/elements/count/groupBy/boundary", url)
 
     def test_ratio_false(self) -> None:
-        ohsome_api = self.ohsome_api.rstrip("/")
+        ohsome_api = self.ohsome_api
         url = ohsome_client.build_url(self.ratio_layer)
         self.assertEqual(ohsome_api + "/elements/count", url)
 
     def test_ratio_true(self) -> None:
-        ohsome_api = self.ohsome_api.rstrip("/")
+        ohsome_api = self.ohsome_api
         url = ohsome_client.build_url(self.ratio_layer, ratio=True)
         self.assertEqual(ohsome_api + "/elements/count/ratio", url)
 
     def test_ratio_group_by(self) -> None:
-        url = ohsome_client.build_url(self.ratio_layer, ratio=True, group_by=True)
+        url = ohsome_client.build_url(
+            self.ratio_layer, ratio=True, group_by_boundary=True
+        )
         self.assertEqual(
-            self.ohsome_api.rstrip("/") + "/elements/count/ratio/groupBy/boundary", url
+            self.ohsome_api + "/elements/count/ratio/groupBy/boundary", url
         )
 
 
 class TestOhsomeClientBuildData(TestCase):
     def setUp(self) -> None:
-        self.ohsome_api = "https://api.ohsome.org/v1/"
+        self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.layer = get_layer_fixture("building_count")
 
@@ -308,11 +308,11 @@ class TestOhsomeClientValidateQuery(TestCase):
         }
         self.assertDictEqual(data, ohsome_client.validate_query_results(data))
 
-    def test_invalid_empyt(self):
+    def test_invalid_empty(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({})
 
-    def test_invalid_empyt_list(self):
+    def test_invalid_empty_list(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({"result": []})
 
@@ -344,16 +344,18 @@ class TestOhsomeClientValidateQuery(TestCase):
             ]
         }
         self.assertDictEqual(
-            data, ohsome_client.validate_query_results(data, group_by=True)
+            data, ohsome_client.validate_query_results(data, group_by_boundary=True)
         )
 
-    def test_invalid_empyt_group_by(self):
+    def test_invalid_empty_group_by(self):
         with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({}, group_by=True)
+            ohsome_client.validate_query_results({}, group_by_boundary=True)
 
-    def test_invalid_empyt_list_group_by(self):
+    def test_invalid_empty_list_group_by(self):
         with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({"groupByResult": []}, group_by=True)
+            ohsome_client.validate_query_results(
+                {"groupByResult": []}, group_by_boundary=True
+            )
 
     def test_invalid_missing_key_group_by(self):
         with self.assertRaises(SchemaError):
@@ -370,7 +372,7 @@ class TestOhsomeClientValidateQuery(TestCase):
                         }
                     ]
                 },
-                group_by=True,
+                group_by_boundary=True,
             )
 
     def test_valid_ratio(self):
@@ -403,11 +405,11 @@ class TestOhsomeClientValidateQuery(TestCase):
             data, ohsome_client.validate_query_results(data, ratio=True)
         )
 
-    def test_invalid_empyt_ratio(self):
+    def test_invalid_empty_ratio(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({}, ratio=True)
 
-    def test_invalid_empyt_list_ratio(self):
+    def test_invalid_empty_list_ratio(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results({"ratioResult": []}, ratio=True)
 
@@ -440,17 +442,20 @@ class TestOhsomeClientValidateQuery(TestCase):
             ]
         }
         self.assertDictEqual(
-            data, ohsome_client.validate_query_results(data, ratio=True, group_by=True)
+            data,
+            ohsome_client.validate_query_results(
+                data, ratio=True, group_by_boundary=True
+            ),
         )
 
-    def test_invalid_empyt_ratio_group_by(self):
+    def test_invalid_empty_ratio_group_by(self):
         with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({}, ratio=True, group_by=True)
+            ohsome_client.validate_query_results({}, ratio=True, group_by_boundary=True)
 
-    def test_invalid_empyt_list_ratio_group_by(self):
+    def test_invalid_empty_list_ratio_group_by(self):
         with self.assertRaises(SchemaError):
             ohsome_client.validate_query_results(
-                {"groupByResult": []}, ratio=True, group_by=True
+                {"groupByResult": []}, ratio=True, group_by_boundary=True
             )
 
     def test_invalid_missing_key_ratio_group_by(self):
@@ -469,5 +474,5 @@ class TestOhsomeClientValidateQuery(TestCase):
                     ]
                 },
                 ratio=True,
-                group_by=True,
+                group_by_boundary=True,
             )
