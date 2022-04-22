@@ -6,7 +6,12 @@
 
 - Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
 
+### Other Changes
+
+- Improve documentation and examples of the API ([#299])
+
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
+[#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
 
 
 ## 0.9.0
