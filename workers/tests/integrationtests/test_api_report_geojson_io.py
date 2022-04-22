@@ -106,6 +106,7 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
     def test_report_include_svg_false(self):
         parameters = {
             "name": self.report_name,
@@ -116,6 +117,7 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
     def test_report_include_svg_default(self):
         parameters = {
             "name": self.report_name,
@@ -137,6 +139,7 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         self.assertIn("report.result.html", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
     def test_report_include_html_false(self):
         parameters = {
             "name": self.report_name,
@@ -148,6 +151,7 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         self.assertNotIn("report.result.html", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
     def test_report_include_html_default(self):
         parameters = {
             "name": self.report_name,
