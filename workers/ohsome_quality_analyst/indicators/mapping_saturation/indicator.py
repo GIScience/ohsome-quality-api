@@ -63,7 +63,7 @@ class MappingSaturation(BaseIndicator):
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
             self.layer,
-            self.feature.geometry,
+            self.feature,
             time=self.time_range,
         )
         for item in query_results["result"]:

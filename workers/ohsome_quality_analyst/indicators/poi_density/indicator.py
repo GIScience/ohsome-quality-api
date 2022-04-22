@@ -32,12 +32,8 @@ class PoiDensity(BaseIndicator):
         return self.threshold_red * area
 
     async def preprocess(self) -> None:
-        query_results_count = await ohsome_client.query(
-            self.layer, self.feature.geometry
-        )
-        self.area_sqkm = await get_area_of_bpolys(
-            self.feature.geometry
-        )  # calc polygon area
+        query_results_count = await ohsome_client.query(self.layer, self.feature)
+        self.area_sqkm = await get_area_of_bpolys(self.feature.geometry)
         self.count = query_results_count["result"][0]["value"]
         timestamp = query_results_count["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
