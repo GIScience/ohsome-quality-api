@@ -181,78 +181,43 @@ def validate_query_results(
     Raises:
         SchemaError: Error during Schema validation.
     """
-    if ratio and group_by_boundary:
-        Schema(
+    response_key = "result"
+    schema = {
+        "result": [
             {
-                "groupByResult": [
-                    {
-                        "ratioResult": [
-                            {
-                                "ratio": Or(float, int, "NaN"),
-                                "value": Or(float, int),
-                                "value2": Or(float, int),
-                                "timestamp": Use(lambda t: isoparse(t)),
-                            }
-                        ],
-                        "groupByObject": str,
-                    },
-                ],
-            },
-            ignore_extra_keys=True,
-        ).validate(response)
-        if not response["groupByResult"]:
-            raise SchemaError("Empty result field")
-    elif ratio:
-        Schema(
-            {
-                "ratioResult": [
-                    {
-                        "ratio": Or(float, int, "NaN"),
-                        "value": Or(float, int),
-                        "value2": Or(float, int),
-                        "timestamp": Use(lambda t: isoparse(t)),
-                    }
-                ]
-            },
-            ignore_extra_keys=True,
-        ).validate(response)
-        if not response["ratioResult"]:
-            raise SchemaError("Empty result field")
-    elif group_by_boundary:
-        Schema(
-            {
-                "groupByResult": [
-                    {
-                        "result": [
-                            {
-                                "value": Or(float, int),
-                                Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
-                                    lambda t: isoparse(t)
-                                ),
-                            }
-                        ],
-                        "groupByObject": str,
-                    },
-                ],
-            },
-            ignore_extra_keys=True,
-        ).validate(response)
-        if not response["groupByResult"]:
-            raise SchemaError("Empty result field")
-    else:
-        Schema(
-            {
-                "result": [
-                    {
-                        "value": Or(float, int),
-                        Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
-                            lambda t: isoparse(t)
-                        ),
-                    }
-                ]
-            },
-            ignore_extra_keys=True,
-        ).validate(response)
-        if not response["result"]:
-            raise SchemaError("Empty result field")
+                "value": Or(float, int),
+                Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
+                    lambda t: isoparse(t)
+                ),
+            }
+        ]
+    }
+    if ratio:
+        schema = {
+            "ratioResult": [
+                {
+                    "value": Or(float, int),
+                    "value2": Or(float, int),
+                    "ratio": Or(float, int, "NaN"),
+                    Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
+                        lambda t: isoparse(t)
+                    ),
+                }
+            ]
+        }
+        response_key = "ratioResult"
+    if group_by_boundary:
+        schema = {
+            "groupByResult": [
+                schema,
+            ],
+        }
+        schema["groupByResult"][0]["groupByObject"] = str
+        response_key = "groupByResult"
+    Schema(
+        schema,
+        ignore_extra_keys=True,
+    ).validate(response)
+    if not response[response_key]:
+        raise SchemaError("Empty result field")
     return response
