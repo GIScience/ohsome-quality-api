@@ -62,7 +62,6 @@ Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
 - Python: ≥ 3.8 and < 3.10
 - Poetry: ≥ 1.1
 - R: ≥ 4.0
-- GDAL ≥ 3
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
 
