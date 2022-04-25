@@ -68,7 +68,7 @@ async def _(
         if size_restriction:
             await check_area_size(feature.geometry)
         indicator = await create_indicator(parameters.copy(update={"bpolys": feature}))
-        features.append(indicator.as_feature(flatten=True))
+        features.append(indicator.as_feature(flatten=parameters.flatten))
     if len(features) == 1:
         return features[0]
     else:
@@ -83,7 +83,7 @@ async def _(
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, force)
-    return indicator.as_feature(flatten=True)
+    return indicator.as_feature(flatten=parameters.flatten)
 
 
 async def create_report_as_geojson(
@@ -111,14 +111,14 @@ async def create_report_as_geojson(
                 parameters.copy(update={"bpolys": feature}),
                 force,
             )
-            features.append(report.as_feature())
+            features.append(report.as_feature(flatten=parameters.flatten))
         if len(features) == 1:
             return features[0]
         else:
             return FeatureCollection(features=features)
     elif isinstance(parameters, ReportDatabase):
         report = await create_report(parameters, force)
-        return report.as_feature()
+        return report.as_feature(flatten=parameters.flatten)
     else:
         raise ValueError("Unexpected parameters: " + str(parameters))
 

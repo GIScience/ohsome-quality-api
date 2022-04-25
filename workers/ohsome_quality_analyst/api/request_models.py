@@ -38,6 +38,7 @@ class BaseIndicator(BaseModel):
     )
     include_svg: bool = False
     include_html: bool = False
+    flatten: bool = True
 
     class Config:
         """Pydantic config class."""
@@ -51,6 +52,7 @@ class BaseReport(BaseModel):
     name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
     include_svg: bool = False
     include_html: bool = False
+    flatten: bool = True
 
     class Config:
         """Pydantic config class."""
@@ -186,6 +188,7 @@ INDICATOR_EXAMPLES = {
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
+            "flatten": True,
         },
     },
     "Custom AOI": {
@@ -233,6 +236,7 @@ INDICATOR_EXAMPLES = {
                 },
                 "includeSvg": False,
                 "includeHtml": False,
+                "flatten": True,
             },
             "layer": {
                 "name": "My layer name",
@@ -281,6 +285,7 @@ INDICATOR_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
+            "flatten": True,
         },
     },
 }
@@ -297,6 +302,7 @@ REPORT_EXAMPLES = {
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
+            "flatten": True,
         },
     },
     "Custom AOI": {
@@ -320,6 +326,7 @@ REPORT_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
+            "flatten": True,
         },
     },
 }

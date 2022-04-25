@@ -37,6 +37,8 @@ class TestApiReport(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
         response_content = geojson.loads(response.content)
+        self.general_schema.validate(response_content)
+        self.feature_schema.validate(response_content)
         self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.feature_schema.is_valid(response_content))
@@ -171,6 +173,32 @@ class TestApiReport(unittest.TestCase):
         response = self.client.get(url)
         result = response.json()
         self.assertIn("report.result.html", list(result["properties"].keys()))
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_default(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        # Check flat result value
+        self.assertIn("report.result.value", result["properties"].keys())
+        self.assertIn("indicators.0.result.value", result["properties"].keys())
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_true(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}&flatten={3}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+            False,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("value", result["properties"]["report"]["result"])
+        self.assertIn("value", result["properties"]["indicators"][0]["result"])
 
 
 if __name__ == "__main__":

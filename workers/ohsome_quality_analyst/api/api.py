@@ -196,9 +196,17 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
         size_restriction=True,
     )
     if parameters.include_svg is False:
-        remove_item_from_properties(geojson_object, "*result.svg")
+        remove_result_item_from_properties(
+            geojson_object,
+            "svg",
+            parameters.flatten,
+        )
     if parameters.include_html is False:
-        remove_item_from_properties(geojson_object, "*result.html")
+        remove_result_item_from_properties(
+            geojson_object,
+            "html",
+            parameters.flatten,
+        )
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
@@ -234,9 +242,17 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
         size_restriction=True,
     )
     if parameters.include_html is False:
-        remove_item_from_properties(geojson_object, "*result.html")
+        remove_result_item_from_properties(
+            geojson_object,
+            "html",
+            parameters.flatten,
+        )
     if parameters.include_svg is False:
-        remove_item_from_properties(geojson_object, "*result.svg")
+        remove_result_item_from_properties(
+            geojson_object,
+            "svg",
+            parameters.flatten,
+        )
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="report", name=parameters.name.value
@@ -309,23 +325,40 @@ async def list_fid_fields():
     return response
 
 
-def remove_item_from_properties(
-    geojson_object: Union[Feature, FeatureCollection],
-    pattern: str,
+def remove_result_item_from_properties(
+    geojson_object: Union[Feature, FeatureCollection], key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
 
-    Items matching the given pattern (See 'fnmatch.fnmatch') will be deleted from the
-    properties.
+    If properties are flattened pattern matching (See 'fnmatch.fnmatch') is used to
+    delete the item with given key from the properties, else item with given key will
+    be removed.
     """
 
-    def _remove_item_from_properties(properties: dict, pattern: str) -> None:
+    def _remove_item_from_properties_pattern(properties: dict, pattern: str) -> None:
         for key in list(properties.keys()):
             if fnmatch.fnmatch(key, pattern):
                 del properties[key]
 
+    def _remove_item_from_properties_key(properties: dict, key: str) -> None:
+        if "result" in properties.keys():
+            properties["result"].pop(key, None)
+        if "report" in properties.keys():
+            properties["report"]["result"].pop(key, None)
+        if "indicators" in properties.keys():
+            for indicator in properties["indicators"]:
+                indicator["result"].pop(key, None)
+
     if isinstance(geojson_object, Feature):
-        _remove_item_from_properties(geojson_object["properties"], pattern)
+        if flatten:
+            pattern = "*result." + key
+            _remove_item_from_properties_pattern(geojson_object["properties"], pattern)
+        else:
+            _remove_item_from_properties_key(geojson_object["properties"], key)
     elif isinstance(geojson_object, FeatureCollection):
         for feature in geojson_object["features"]:
-            _remove_item_from_properties(feature["properties"], pattern)
+            if flatten:
+                pattern = "*result." + key
+                _remove_item_from_properties_pattern(feature["properties"], pattern)
+            else:
+                _remove_item_from_properties_key(feature["properties"], key)
