@@ -5,7 +5,7 @@ Functions are triggered by the CLI and API.
 import asyncio
 import logging
 from functools import singledispatch
-from typing import List, Optional, Union
+from typing import Coroutine, List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from dacite import from_dict
@@ -34,7 +34,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class, sem_task
 
 
 @singledispatch
@@ -54,11 +54,13 @@ async def _(
 ) -> Union[Feature, FeatureCollection]:
     """Create an indicator or multiple indicators as GeoJSON object.
 
+    Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
+
     Returns:
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    features = []
+    tasks: List[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" in feature.keys():
             id_ = str(feature["id"])
@@ -67,8 +69,11 @@ async def _(
         logging.info("Input feature identifier: " + id_)
         if size_restriction:
             await check_area_size(feature.geometry)
-        indicator = await create_indicator(parameters.copy(update={"bpolys": feature}))
-        features.append(indicator.as_feature(flatten=parameters.flatten))
+        tasks.append(
+            sem_task(create_indicator(parameters.copy(update={"bpolys": feature})))
+        )
+    indicators = await asyncio.gather(*tasks)
+    features = [i.as_feature(flatten=parameters.flatten) for i in indicators]
     if len(features) == 1:
         return features[0]
     else:
@@ -107,6 +112,9 @@ async def create_report_as_geojson(
             logging.info("Input feature identifier: " + id_)
             if size_restriction:
                 await check_area_size(feature.geometry)
+            # Reports for a FeatureCollection are not created asynchronously (as it is
+            # the case with indicators), because indicators of a report are created
+            # asynchronously
             report = await create_report(
                 parameters.copy(update={"bpolys": feature}),
                 force,
@@ -258,6 +266,8 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
 
     Fetches indicator results form the database.
     Aggregates all indicator results and calculates an overall quality score.
+
+    Indicators for a Report are created asynchronously utilizing semaphores.
     """
     name = parameters.name.value
 
@@ -279,17 +289,22 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     report = report_class(feature=feature)
     report.set_indicator_layer()
 
+    tasks: List[Coroutine] = []
     for indicator_name, layer_name in report.indicator_layer:
-        indicator = await create_indicator(
-            IndicatorDatabase(
-                name=indicator_name,
-                layerName=layer_name,
-                dataset=dataset,
-                featureId=feature_id,
-            ),
-            force=force,
+        tasks.append(
+            sem_task(
+                create_indicator(
+                    IndicatorDatabase(
+                        name=indicator_name,
+                        layerName=layer_name,
+                        dataset=dataset,
+                        featureId=feature_id,
+                    ),
+                    force=force,
+                )
+            )
         )
-        report.indicators.append(indicator)
+    report.indicators = await asyncio.gather(*tasks)
     report.combine_indicators()
     report.create_html()
     return report
@@ -300,6 +315,8 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
+
+    Indicators for a Report are created asynchronously utilizing semaphores.
     """
     name, feature = (
         parameters.name.value,
@@ -313,15 +330,20 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
     report = report_class(feature=feature)
     report.set_indicator_layer()
 
+    tasks: List[Coroutine] = []
     for indicator_name, layer_name in report.indicator_layer:
-        indicator = await create_indicator(
-            IndicatorBpolys(
-                name=indicator_name,
-                layerName=layer_name,
-                bpolys=feature,
+        tasks.append(
+            sem_task(
+                create_indicator(
+                    IndicatorBpolys(
+                        name=indicator_name,
+                        layerName=layer_name,
+                        bpolys=feature,
+                    )
+                )
             )
         )
-        report.indicators.append(indicator)
+    report.indicators = await asyncio.gather(*tasks)
     report.combine_indicators()
     report.create_html()
     return report
@@ -339,11 +361,6 @@ async def create_all_indicators(
     This functions executes `create_indicator()` function up to four times concurrently.
     """
 
-    async def sem_task(task, semaphore=asyncio.Semaphore(4)):
-        """Run task with semaphore. Semaphore limits num of concurrent executions."""
-        async with semaphore:
-            return await task
-
     if indicator_name is not None and layer_name is None:
         layers = get_valid_layers(indicator_name)
         indicator_layer = [(indicator_name, lay) for lay in layers]
@@ -360,17 +377,19 @@ async def create_all_indicators(
     for fid in fids:
         for indicator_name_, layer_name_ in indicator_layer:
             tasks.append(
-                create_indicator(
-                    IndicatorDatabase(
-                        name=indicator_name_,
-                        layerName=layer_name_,
-                        dataset=dataset,
-                        featureId=fid,
-                    ),
-                    force=force,
+                sem_task(
+                    create_indicator(
+                        IndicatorDatabase(
+                            name=indicator_name_,
+                            layerName=layer_name_,
+                            dataset=dataset,
+                            featureId=fid,
+                        ),
+                        force=force,
+                    )
                 )
             )
-    await asyncio.gather(*(sem_task(task) for task in tasks))
+    await asyncio.gather(*tasks)
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):

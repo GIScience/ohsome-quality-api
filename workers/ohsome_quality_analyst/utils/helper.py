@@ -1,5 +1,6 @@
 """Standalone helper functions."""
 
+import asyncio
 import importlib
 import json
 import logging
@@ -9,7 +10,7 @@ import pkgutil
 import re
 import warnings
 from datetime import date, datetime
-from typing import Generator, Union
+from typing import Coroutine, Generator, Union
 
 import geojson
 import joblib
@@ -181,3 +182,9 @@ def load_sklearn_model(path: str):
     model = joblib.load(path)
     warnings.resetwarnings()
     return model
+
+
+async def sem_task(task: Coroutine, semaphore=asyncio.Semaphore(4)) -> Coroutine:
+    """Run task with semaphore. Semaphore limits num of concurrent executions."""
+    async with semaphore:
+        return await task

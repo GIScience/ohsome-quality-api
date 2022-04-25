@@ -10,6 +10,7 @@
 
 - Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
 - Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional. ([#303])
+- Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
 
 ### Other Changes
 
@@ -23,6 +24,7 @@
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
 [#302]: https://github.com/GIScience/ohsome-quality-analyst/pull/302
 [#303]: https://github.com/GIScience/ohsome-quality-analyst/pull/303
+[#307]: https://github.com/GIScience/ohsome-quality-analyst/pull/307
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 
