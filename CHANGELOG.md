@@ -13,11 +13,12 @@
 ### Other Changes
 
 - Improve documentation and examples of the API ([#299])
+- Factor out template logic to own module ([#302])
 
 [#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
-
+[#302]: https://github.com/GIScience/ohsome-quality-analyst/pull/302
 
 ## 0.9.0
 

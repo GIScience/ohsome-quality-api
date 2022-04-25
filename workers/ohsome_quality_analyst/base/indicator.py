@@ -4,7 +4,6 @@ TODO:
 """
 
 import json
-import os
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -14,9 +13,12 @@ from typing import Dict, Literal, Optional
 import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import Feature
-from jinja2 import Environment, FileSystemLoader
 
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.html_templates.template import (
+    get_template,
+    get_traffic_light,
+)
 from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
@@ -189,36 +191,15 @@ class BaseIndicator(metaclass=ABCMeta):
         return svg_string.getvalue()
 
     def create_html(self):
-        template_dir = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "templates",
-        )
-        env = Environment(loader=FileSystemLoader(template_dir))
-        template = env.get_template("indicator_template.html")
-
-        def traffic_light(label, red="#bbb", yellow="#bbb", green="#bbb"):
-            dot_css = (
-                "style='height: 25px; width: 25px; background-color: {0};"
-                "border-radius: 50%; display: inline-block;'"
-            )
-            return (
-                "<span {0} class='dot'></span>\n<span {1} class='dot'>"
-                "</span>\n<span {2} class='dot'></span>\n {3}".format(
-                    dot_css.format(red),
-                    dot_css.format(yellow),
-                    dot_css.format(green),
-                    label,
-                )
-            )
-
         if self.result.label == "red":
-            traffic_light = traffic_light("Bad Quality", red="#FF0000")
+            traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
         elif self.result.label == "yellow":
-            traffic_light = traffic_light("Medium Quality", yellow="#FFFF00")
+            traffic_light = get_traffic_light("Medium Quality", yellow="#FFFF00")
         elif self.result.label == "green":
-            traffic_light = traffic_light("Good Quality", green="#008000")
+            traffic_light = get_traffic_light("Good Quality", green="#008000")
         else:
-            traffic_light = traffic_light("Undefined Quality")
+            traffic_light = get_traffic_light("Undefined Quality")
+        template = get_template("indicator")
         self.result.html = template.render(
             indicator_name=self.metadata.name,
             layer_name=self.layer.name,
