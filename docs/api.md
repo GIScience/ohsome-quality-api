@@ -26,6 +26,7 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 | `layer`       | Name, description and data of a custom layer. Data has to be provided in the same format as the response of the ohsome API would look like        |
 | `includeSvg`  | Include a SVG string of a figure displaying the Indicator results                                                                                 |
 | `includeHtml` | Include a HTML string with the Indicator results                                                                                                  |
+| `flatten`     | Flattening of the GeoJSON properties                                                                                                              |
 
 Parameters are in part mutual exclusive (e.g. either `dataset` and `featureId` or `bpolys`). If the response contains multiple errors probably not all required parameters and/or mutual exclusive parameters have been provided.
 
@@ -49,6 +50,7 @@ parameters = {
     "fidField": "ogc_fid",  # Optional
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
+    "flatten": True,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -80,6 +82,7 @@ parameters = {
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
+    "flatten": True,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -157,6 +160,7 @@ parameters = {
     "layer": layer,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
+    "flatten": True,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -215,6 +219,7 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 | `bpolys`      | Bounding polygon(s) as GeoJSON Feature, FeatureCollection, Polygon or MultiPolygon object. The Geometry has to be of type Polygon or MultiPolygon |
 | `includeSvg`  | Include a SVG string of a figure displaying the Indicator results                                                                                 |
 | `includeHtml` | Include a HTML string with the Indicator results                                                                                                  |
+| `flatten`     | Flattening of the GeoJSON properties                                                                                                              |
 
 Some parameters are mutually exclusive (E.g. either `dataset` and `featureId` or `bpolys`). If the response contains multiple errors, it is likely that not all required parameters and/or mutually exclusive parameters have been provided.
 
@@ -236,6 +241,7 @@ parameters = {
     "featureId": 3,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
+    "flatten": True,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -266,6 +272,7 @@ parameters = {
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
+    "flatten": True,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```

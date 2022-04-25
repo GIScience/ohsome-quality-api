@@ -55,23 +55,25 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None, None)
 
-    def as_feature(self) -> Feature:
+    def as_feature(self, flatten: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        report_properties = {
-            "metadata": vars(self.metadata).copy(),
-            "result": vars(self.result).copy(),
+        properties = {
+            "report": {
+                "metadata": vars(self.metadata).copy(),
+                "result": vars(self.result).copy(),
+            },
+            "indicators": [],
         }
-        report_properties["metadata"].pop("label_description", None)
-        properties = flatten_dict(report_properties, prefix="report")
+        properties["report"]["metadata"].pop("label_description", None)
+
         for i, indicator in enumerate(self.indicators):
-            p = indicator.as_feature(flatten=True)["properties"]
-            properties.update(
-                {"indicators." + str(i) + "." + str(key): val for key, val in p.items()}
-            )
+            properties["indicators"].append(indicator.as_feature()["properties"])
+        if flatten:
+            properties = flatten_dict(properties)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,

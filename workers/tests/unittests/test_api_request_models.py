@@ -21,7 +21,12 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_base_indicator_valid(self):
         request_models.BaseIndicator(name="GhsPopComparisonBuildings")
-        request_models.BaseIndicator(name="GhsPopComparisonBuildings", includeSvg=True)
+        request_models.BaseIndicator(
+            name="GhsPopComparisonBuildings",
+            includeSvg=True,
+            includeHtml=True,
+            flatten=False,
+        )
 
     def test_base_indicator_invalid(self):
         with self.assertRaises(ValueError):
@@ -31,10 +36,21 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseIndicator(
                 name="GhsPopComparisonBuildings", include_svg="foo"
             )
+            request_models.BaseIndicator(
+                name="GhsPopComparisonBuildings", include_html="foo"
+            )
+            request_models.BaseIndicator(
+                name="GhsPopComparisonBuildings", flatten="foo"
+            )
 
     def test_base_report_valid(self):
         request_models.BaseReport(name="SimpleReport")
-        request_models.BaseReport(name="SimpleReport", includeSvg=True)
+        request_models.BaseReport(
+            name="SimpleReport",
+            includeSvg=True,
+            includeHtml=True,
+            flatten=False,
+        )
 
     def test_base_report_invalid(self):
         with self.assertRaises(ValueError):
@@ -42,6 +58,8 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseReport(name="foo")
             request_models.BaseReport(include_svg=True)
             request_models.BaseReport(name="SimpleReport", includeSvg="foo")
+            request_models.BaseReport(name="SimpleReport", includeHtml="foo")
+            request_models.BaseReport(name="SimpleReport", flatten="foo")
 
     def test_layer_name_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name

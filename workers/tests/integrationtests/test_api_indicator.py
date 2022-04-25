@@ -240,6 +240,35 @@ class TestApiIndicator(unittest.TestCase):
         result = response.json()
         self.assertNotIn("result.html", list(result["properties"].keys()))
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_flatten_default(self):
+        url = "/indicator?name={0}&layerName={1}&dataset={2}" "&featureId={3}".format(
+            self.indicator_name,
+            self.layer_name,
+            self.dataset,
+            self.feature_id,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        # Check flat result value
+        self.assertIn("result.value", result["properties"].keys())
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_flatten_true(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&flatten={4}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        self.assertIn("value", result["properties"]["result"])
+
 
 if __name__ == "__main__":
     unittest.main()
