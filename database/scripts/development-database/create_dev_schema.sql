@@ -15,10 +15,6 @@ CREATE TABLE development.regions (
     LIKE public.regions INCLUDING INDEXES
 );
 
-CREATE TABLE development.ghs_pop (
-    LIKE public.ghs_pop INCLUDING INDEXES
-);
-
 CREATE TABLE development.shdi (
     LIKE public.shdi INCLUDING INDEXES
 );
@@ -28,19 +24,6 @@ SELECT
     *
 FROM
     public.regions;
-
-INSERT INTO development.ghs_pop SELECT DISTINCT ON (rid)
-    rid,
-    ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
-FROM
-    public.ghs_pop,
-    development.regions
-WHERE
-    ST_Intersects (rast, geom)
-    AND ST_BandIsNoData (rast) = FALSE;
-
-SELECT
-    AddRasterConstraints ('development'::name, 'ghs_pop'::name, 'rast'::name);
 
 INSERT INTO development.shdi SELECT DISTINCT ON (gid)
     public.shdi.*
@@ -61,10 +44,6 @@ CREATE TABLE test.regions (
     LIKE public.regions INCLUDING INDEXES
 );
 
-CREATE TABLE test.ghs_pop (
-    LIKE public.ghs_pop INCLUDING INDEXES
-);
-
 CREATE TABLE test.shdi (
     LIKE public.shdi INCLUDING INDEXES
 );
@@ -76,19 +55,6 @@ FROM
     public.regions
 WHERE
     ogc_fid IN (3, 11);
-
-INSERT INTO test.ghs_pop SELECT DISTINCT ON (rid)
-    rid,
-    ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
-FROM
-    public.ghs_pop,
-    test.regions
-WHERE
-    ST_Intersects (rast, geom)
-    AND ST_BandIsNoData (rast) = FALSE;
-
-SELECT
-    AddRasterConstraints ('test'::name, 'ghs_pop'::name, 'rast'::name);
 
 INSERT INTO test.shdi SELECT DISTINCT ON (gid)
     public.shdi.*

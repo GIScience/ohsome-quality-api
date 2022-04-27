@@ -10,10 +10,6 @@ DROP TABLE IF EXISTS development.regions;
 
 DROP TABLE IF EXISTS test.regions;
 
-DROP TABLE IF EXISTS development.ghs_pop;
-
-DROP TABLE IF EXISTS test.ghs_pop;
-
 DROP TABLE IF EXISTS development.shdi;
 
 DROP TABLE IF EXISTS test.shdi;
