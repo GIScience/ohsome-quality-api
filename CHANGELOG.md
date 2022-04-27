@@ -20,6 +20,7 @@
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
 [#302]: https://github.com/GIScience/ohsome-quality-analyst/pull/302
 
+
 ## 0.9.0
 
 ### Breaking Changes
