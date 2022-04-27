@@ -17,7 +17,7 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (SHDI and GHS-POP) for those regions. To build and run an already configured image run:
+A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (E.g. SHDI) for those regions. To build and run an already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
@@ -41,7 +41,7 @@ docker-compose -f docker-compose.development.yml build --no-cache
 docker-compose -f docker-compose.development.yml up -d
 ```
 
-> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory. For example to import the GHS POP dataset simply run the provided script (`database/init_db.production/GHS_POP.sh`). This will delete the existing GHS POP table (which covers only the custom regions), download the GHS POP dataset and import it into the database.
+> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory.
 
 
 ### Database for running tests

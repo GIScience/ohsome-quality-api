@@ -13,6 +13,5 @@ psql -f ohsome-hex-isea.sql
 ./NUTS_2021.sh
 ./GADM.sh
 psql -f GADM.sql
-./GHS_POP.sh
 ./SHDI.sh
 psql -f regions.sql
