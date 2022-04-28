@@ -31,14 +31,19 @@ class TestApiRequestModels(unittest.TestCase):
     def test_base_indicator_invalid(self):
         with self.assertRaises(ValueError):
             request_models.BaseIndicator()
+        with self.assertRaises(ValueError):
             request_models.BaseIndicator(name="foo")
+        with self.assertRaises(ValueError):
             request_models.BaseIndicator(includeSvg=True)
+        with self.assertRaises(ValueError):
             request_models.BaseIndicator(
                 name="GhsPopComparisonBuildings", include_svg="foo"
             )
+        with self.assertRaises(ValueError):
             request_models.BaseIndicator(
                 name="GhsPopComparisonBuildings", include_html="foo"
             )
+        with self.assertRaises(ValueError):
             request_models.BaseIndicator(
                 name="GhsPopComparisonBuildings", flatten="foo"
             )
@@ -55,10 +60,15 @@ class TestApiRequestModels(unittest.TestCase):
     def test_base_report_invalid(self):
         with self.assertRaises(ValueError):
             request_models.BaseReport()
+        with self.assertRaises(ValueError):
             request_models.BaseReport(name="foo")
+        with self.assertRaises(ValueError):
             request_models.BaseReport(include_svg=True)
+        with self.assertRaises(ValueError):
             request_models.BaseReport(name="SimpleReport", includeSvg="foo")
+        with self.assertRaises(ValueError):
             request_models.BaseReport(name="SimpleReport", includeHtml="foo")
+        with self.assertRaises(ValueError):
             request_models.BaseReport(name="SimpleReport", flatten="foo")
 
     def test_layer_name_valid(self):
@@ -146,6 +156,7 @@ class TestApiRequestModels(unittest.TestCase):
         }
         with self.assertRaises(ValueError):
             request_models.IndicatorDatabase(**kwargs)
+        with self.assertRaises(ValueError):
             request_models.IndicatorBpolys(**kwargs)
 
     def test_indicator_data(self):
