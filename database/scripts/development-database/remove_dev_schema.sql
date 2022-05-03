@@ -14,6 +14,10 @@ DROP TABLE IF EXISTS development.shdi;
 
 DROP TABLE IF EXISTS test.shdi;
 
+DROP TABLE IF EXISTS development.hexcells;
+
+DROP TABLE IF EXISTS test.hexcells;
+
 DROP SCHEMA IF EXISTS development;
 
 DROP SCHEMA IF EXISTS test;
