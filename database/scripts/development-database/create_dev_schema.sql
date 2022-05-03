@@ -49,7 +49,7 @@ WHERE
 /* Testing */
 /* Currently two regions are used for testing: */
 /* Heidelberg: 3*/
-/* Algeria Touggourt: 11*/
+/* Algeria Touggourt: 12*/
 CREATE SCHEMA IF NOT EXISTS test;
 
 CREATE TABLE test.regions (
@@ -70,7 +70,7 @@ SELECT
 FROM
     public.regions
 WHERE
-    ogc_fid IN (3, 11);
+    ogc_fid IN (3, 12);
 
 INSERT INTO test.shdi SELECT DISTINCT ON (gid)
     public.shdi.*
