@@ -19,6 +19,10 @@ CREATE TABLE development.shdi (
     LIKE public.shdi INCLUDING INDEXES
 );
 
+CREATE TABLE development.hexcells (
+    LIKE public.hexcells INCLUDING INDEXES
+);
+
 INSERT INTO development.regions
 SELECT
     *
@@ -33,6 +37,14 @@ FROM
 WHERE
     ST_Intersects (public.shdi.geom, development.regions.geom);
 
+INSERT INTO development.hexcells SELECT DISTINCT ON (gid)
+    public.hexcells.*
+FROM
+    public.hexcells,
+    development.regions
+WHERE
+    ST_Intersects (public.hexcells.geom, development.regions.geom);
+
 
 /* Testing */
 /* Currently two regions are used for testing: */
@@ -46,6 +58,10 @@ CREATE TABLE test.regions (
 
 CREATE TABLE test.shdi (
     LIKE public.shdi INCLUDING INDEXES
+);
+
+CREATE TABLE test.hexcells (
+    LIKE public.hexcells INCLUDING INDEXES
 );
 
 INSERT INTO test.regions
@@ -63,3 +79,11 @@ FROM
     test.regions
 WHERE
     ST_Intersects (public.shdi.geom, test.regions.geom);
+
+INSERT INTO test.hexcells SELECT DISTINCT ON (gid)
+    public.hexcells.*
+FROM
+    public.hexcells,
+    test.regions
+WHERE
+    ST_Intersects (public.hexcells.geom, test.regions.geom);
