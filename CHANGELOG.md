@@ -16,7 +16,7 @@
 
 - Improve documentation and examples of the API ([#299])
 - Factor out template logic to own module ([#302])
-- Remove artifacts of database setup for GHSL raster datasets [(#310)]
+- Remove artifacts of database setup for GHSL raster datasets ([#310])
 - Add hex-cells at zoom level 12 for Africa to the database ([#314])
 
 [#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
