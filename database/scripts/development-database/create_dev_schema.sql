@@ -37,13 +37,13 @@ FROM
 WHERE
     ST_Intersects (public.shdi.geom, development.regions.geom);
 
-INSERT INTO development.hexcells SELECT DISTINCT ON (gid)
+INSERT INTO development.hexcells SELECT DISTINCT ON (public.hexcells.ogc_fid)
     public.hexcells.*
 FROM
     public.hexcells,
     development.regions
 WHERE
-    ST_Intersects (public.hexcells.geom, development.regions.geom);
+    ST_Intersects (public.hexcells.wkb_geometry, development.regions.geom);
 
 
 /* Testing */
@@ -80,10 +80,10 @@ FROM
 WHERE
     ST_Intersects (public.shdi.geom, test.regions.geom);
 
-INSERT INTO test.hexcells SELECT DISTINCT ON (gid)
+INSERT INTO test.hexcells SELECT DISTINCT ON (public.hexcells.ogc_fid)
     public.hexcells.*
 FROM
     public.hexcells,
     test.regions
 WHERE
-    ST_Intersects (public.hexcells.geom, test.regions.geom);
+    ST_Intersects (public.hexcells.wkb_geometry, test.regions.geom);
