@@ -18,6 +18,7 @@
 - Factor out template logic to own module ([#302])
 - Remove artifacts of database setup for GHSL raster datasets ([#310])
 - Add hex-cells at zoom level 12 for Africa to the database ([#314])
+- Disable size limit on input AOI if OSM data is provided through a request with a custom Layer object ([#330])
 
 [#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
@@ -27,6 +28,7 @@
 [#307]: https://github.com/GIScience/ohsome-quality-analyst/pull/307
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
+[#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
 
 
 ## 0.9.0

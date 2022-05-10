@@ -67,7 +67,8 @@ async def _(
         else:
             id_ = str(i)
         logging.info("Input feature identifier: " + id_)
-        if size_restriction:
+        # Only enforce size limit if ohsome API data is not provided
+        if size_restriction and isinstance(parameters, IndicatorBpolys):
             await check_area_size(feature.geometry)
         tasks.append(
             sem_task(create_indicator(parameters.copy(update={"bpolys": feature})))
