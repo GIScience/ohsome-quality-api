@@ -8,6 +8,7 @@ import geojson
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
+    IndicatorData,
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
@@ -170,6 +171,48 @@ class TestOqt(unittest.TestCase):
             feature = geojson.load(f)
         with self.assertRaises(ValueError):
             asyncio.run(oqt.check_area_size(feature.geometry))
+
+    def test_create_indicator_as_geojson_size_limit_bpolys(self):
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
+        )
+        with open(path, "r") as f:
+            feature = geojson.load(f)
+        parameters = IndicatorBpolys(
+            name="MappingSaturation",
+            layerName=self.layer_name,
+            bpolys=feature,
+        )
+        with self.assertRaises(ValueError):
+            asyncio.run(
+                oqt.create_indicator_as_geojson(parameters, size_restriction=True)
+            )
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_as_geojson_size_limit_layer_data(self):
+        """No error should be raised."""
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
+        )
+        with open(path, "r") as f:
+            feature = geojson.load(f)
+        parameters = IndicatorData(
+            name="MappingSaturation",
+            bpolys=feature,
+            layer={
+                "name": "foo",
+                "description": "bar",
+                "data": {
+                    "result": [
+                        {
+                            "value": 1.0,
+                            "timestamp": "2020-03-20T01:30:08.180856",
+                        }
+                    ]
+                },
+            },
+        )
+        asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
 
 
 if __name__ == "__main__":
