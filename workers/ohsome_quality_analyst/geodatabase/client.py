@@ -22,6 +22,7 @@ from typing import List, Union
 
 import asyncpg
 import geojson
+from asyncpg import Record
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
@@ -255,7 +256,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     return str(record[0])
 
 
-async def get_shdi(bpoly: Union[Polygon, MultiPolygon]) -> float:
+async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by
@@ -267,6 +268,15 @@ async def get_shdi(bpoly: Union[Polygon, MultiPolygon]) -> float:
     file_path = os.path.join(WORKING_DIR, "select_shdi.sql")
     with open(file_path, "r") as file:
         query = file.read()
+    if isinstance(bpoly, Feature):
+        geom = [str(bpoly.geometry)]
+    elif isinstance(bpoly, FeatureCollection):
+        geom = [str(feature.geometry) for feature in bpoly.features]
+    else:
+        raise TypeError(
+            "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead.".format(
+                type(bpoly)
+            )
+        )
     async with get_connection() as conn:
-        record = await conn.fetchrow(query, str(bpoly))
-    return record["shdi"]
+        return await conn.fetch(query, geom)
