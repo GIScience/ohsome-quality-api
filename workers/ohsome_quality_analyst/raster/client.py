@@ -38,17 +38,25 @@ def get_zonal_stats(
         RasterNoData: If count of pixel is 0 raise exception. NoData values are not
         counted. Pixel count is 0 also if the AOI is outside of the Raster extend.
     """
+    # Add 'count' to stats to test for no pixel in raster (no data or outside of extent)
+    if stats is not None:
+        stats_copy = stats
+        stats = ["count", *stats]
     results = zonal_stats(
         transform(feature, raster),
         get_raster_path(raster),
-        stats=["count", *stats],
+        stats=stats,
         nodata=raster.nodata,
         *args,
         **kwargs,
     )
+    if stats is None:
+        return results
     # Filter out "count" if not in input stats list
-    if all([result["count"] for result in results]):  # Truth value of `0` is `False`
-        return [{k: v for k, v in result.items() if k in stats} for result in results]
+    elif all([result["count"] for result in results]):  # Truth value of `0` is `False`
+        return [
+            {k: v for k, v in result.items() if k in stats_copy} for result in results
+        ]
     else:
         raise RasterNoData(raster.name)
 
