@@ -11,8 +11,9 @@
 ### New Features
 
 - Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
-- Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional. ([#303])
+- Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional ([#303])
 - Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
+- Add new Indicator which predicts the building area of the AOI using a trained Random Forest Regressor ([#265])
 
 ### Other Changes
 
@@ -22,6 +23,7 @@
 - Add hex-cells at zoom level 12 for Africa to the database ([#314])
 - Disable size limit on input AOI if OSM data is provided through a request with a custom Layer object ([#330])
 
+[#265]: https://github.com/GIScience/ohsome-quality-analyst/pull/265
 [#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
