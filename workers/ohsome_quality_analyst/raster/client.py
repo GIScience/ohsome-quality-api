@@ -1,6 +1,7 @@
 """A client to raster datasets existing as files on disk."""
 
 import os
+from copy import deepcopy
 
 import geojson
 from pyproj import Transformer
@@ -42,7 +43,7 @@ def transform(feature: geojson.Feature, raster: RasterDataset):
     transformer = Transformer.from_crs("EPSG:4326", raster.crs, always_xy=True)
     return geojson.utils.map_tuples(
         lambda coordinates: transformer.transform(coordinates[0], coordinates[1]),
-        feature.copy(),
+        deepcopy(feature),
     )
 
 
