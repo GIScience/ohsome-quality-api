@@ -8,7 +8,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
     GhsPopComparisonBuildings,
 )
 
-from .utils import get_layer_fixture, oqt_vcr
+from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
 
 
 class TestGeodatabase(unittest.TestCase):
@@ -140,11 +140,27 @@ class TestGeodatabase(unittest.TestCase):
         )
         self.assertEqual(result, "3")
 
-    def test_get_shdi_single_intersection(self):
+    def test_get_shdi_single_intersection_feature(self):
         """Input geometry intersects only with one SHDI region."""
-        shdi = asyncio.run(db_client.get_shdi(self.feature.geometry))
-        self.assertIsInstance(shdi, float)
-        self.assertLessEqual(shdi, 1.0)
+        result = asyncio.run(db_client.get_shdi(self.feature))
+        self.assertIsInstance(result[0]["shdi"], float)
+        self.assertLessEqual(result[0]["shdi"], 1.0)
+        self.assertEqual(len(result), 1)
+
+    def test_get_shdi_single_intersection_featurecollection(self):
+        featurecollection = get_geojson_fixture(
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
+        )
+        result = asyncio.run(db_client.get_shdi(featurecollection))
+        self.assertIsInstance(result[0]["shdi"], float)
+        self.assertLessEqual(result[0]["shdi"], 1.0)
+        self.assertIsInstance(result[1]["shdi"], float)
+        self.assertLessEqual(result[1]["shdi"], 1.0)
+        self.assertEqual(len(result), 2)
+
+    def test_get_shdi_type_error(self):
+        with self.assertRaises(TypeError):
+            asyncio.run(db_client.get_shdi(self.feature.geometry))
 
     # Note: This test can only be executed if the whole SHDI is in the database.
     # def test_get_shdi_multiple_intersections(self):
@@ -160,9 +176,9 @@ class TestGeodatabase(unittest.TestCase):
     #             ]
     #         ],
     #     )
-    #     shdi = asyncio.run(db_client.get_shdi(geom))
-    #     self.assertIsInstance(shdi, float)
-    #     self.assertLessEqual(shdi, 1.0)
+    #     result = asyncio.run(db_client.get_shdi(geom))
+    #     self.assertIsInstance(result[0]["shdi"], float)
+    #     self.assertLessEqual(result[0]["shdi"], 1.0)
 
 
 if __name__ == "__main__":
