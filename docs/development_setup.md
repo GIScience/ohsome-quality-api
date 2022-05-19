@@ -178,13 +178,3 @@ curl \
     -d '{"dataset": "regions", "featureId": 1}' \
     | python -m json.tool > response.json
 ```
-
-
-### Tests
-
-To run all tests:
-
-```bash
-cd workers/
-pytest tests
-```
