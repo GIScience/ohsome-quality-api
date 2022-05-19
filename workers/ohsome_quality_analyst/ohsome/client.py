@@ -52,7 +52,6 @@ async def _(
         count_latest_contributions:  Count of the latest contributions provided to the
             OSM data.
     """
-
     url = build_url(layer, ratio, group_by_boundary, count_latest_contributions)
     data = build_data_dict(layer, bpolys, time, ratio)
     response = await query_ohsome_api(url, data)
@@ -212,7 +211,7 @@ def validate_query_results(
                 schema,
             ],
         }
-        schema["groupByResult"][0]["groupByObject"] = str
+        schema["groupByResult"][0]["groupByObject"] = Or(int, str)
         response_key = "groupByResult"
     Schema(
         schema,
