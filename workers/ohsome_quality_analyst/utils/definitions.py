@@ -20,19 +20,18 @@ from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 DATASETS = MappingProxyType(  # Immutable dict
     {
         "regions": {"default": "ogc_fid", "other": ("name",)},
-        "gadm": {
-            "default": "uid",  # ISO 3166-1 alpha-3 country code
+        "admin_world_water": {
+            "default": "id",
             "other": (
-                *tuple(("name_{0}".format(i) for i in range(6))),
-                *tuple(("id_{0}".format(i) for i in range(6))),
-                *tuple(("gid_{0}".format(i) for i in range(6))),
+                "country",  # ISO 3166-1 alpha-3
+                "enname",  # English name
             ),
         },
     }
 )
 # Dataset names and fid fields which are through the API
 DATASETS_API = DATASETS.copy()
-DATASETS_API.pop("gadm")
+DATASETS_API.pop("admin_world_water")
 
 
 @dataclass(frozen=True)
