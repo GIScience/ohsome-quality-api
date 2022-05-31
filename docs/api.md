@@ -236,7 +236,7 @@ import requests
 
 url = "https://oqt.ohsome.org/api/report"
 parameters = {
-    "name": "SimpleReport",
+    "name": "TestReport",
     "dataset": "regions",
     "featureId": 3,
     "includeSvg": False,  # Optional
@@ -268,7 +268,7 @@ bpolys = {
     ],
 }
 parameters = {
-    "name": "SimpleReport",
+    "name": "TestReport",
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional

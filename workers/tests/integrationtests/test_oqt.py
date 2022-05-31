@@ -22,7 +22,7 @@ class TestOqt(unittest.TestCase):
     def setUp(self):
         # Heidelberg
         self.name = "GhsPopComparisonBuildings"
-        self.report_name = "SimpleReport"
+        self.report_name = "TestReport"
         self.layer_name = "building_count"
         self.dataset = "regions"
         self.feature_id = "3"

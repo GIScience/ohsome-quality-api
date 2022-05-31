@@ -48,7 +48,7 @@ class TestApiReportIo(unittest.TestCase):
             for endpoint, parameters in (
                 (
                     "/report",
-                    {"name": "SimpleReport", "bpolys": featurecollection},
+                    {"name": "TestReport", "bpolys": featurecollection},
                 ),
                 (
                     "/indicator",

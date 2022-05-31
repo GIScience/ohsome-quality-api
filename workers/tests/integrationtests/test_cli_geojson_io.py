@@ -192,7 +192,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "SimpleReport",
+                    "TestReport",
                     "--infile",
                     infile,
                     "--outfile",
@@ -216,7 +216,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "SimpleReport",
+                "TestReport",
                 "--infile",
                 infile,
             ],
@@ -241,7 +241,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "SimpleReport",
+                    "TestReport",
                     "--infile",
                     infile,
                     "--outfile",
@@ -265,7 +265,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "SimpleReport",
+                "TestReport",
                 "--infile",
                 infile,
             ],
@@ -290,7 +290,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "SimpleReport",
+                    "TestReport",
                     "--infile",
                     infile,
                     "--outfile",
@@ -314,7 +314,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "SimpleReport",
+                "TestReport",
                 "--infile",
                 infile,
             ],

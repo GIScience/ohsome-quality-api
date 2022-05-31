@@ -14,6 +14,7 @@
 
 ### Other Changes
 
+- Add report `TestReport` used for testing ([#])
 - Improve documentation and examples of the API ([#299])
 - Factor out template logic to own module ([#302])
 - Remove artifacts of database setup for GHSL raster datasets ([#310])
@@ -29,6 +30,7 @@
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
+[#]: 
 
 
 ## 0.9.0

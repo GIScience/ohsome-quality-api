@@ -6,7 +6,7 @@ from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
 )
-from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
+from ohsome_quality_analyst.reports.test_report.report import TestReport
 
 
 class TestBaseReport(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestBaseReport(unittest.TestCase):
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         indicator = GhsPopComparisonBuildings(feature=feature, layer=mock.Mock())
-        report = SimpleReport(feature=feature)
+        report = TestReport(feature=feature)
         report.set_indicator_layer()
         for _ in report.indicator_layer:
             report.indicators.append(indicator)
@@ -33,5 +33,5 @@ class TestBaseReport(unittest.TestCase):
             self.assertIn(i, feature["properties"].keys())
 
     def test_attribution_class_property(self):
-        self.assertIsNotNone(SimpleReport.attribution())
-        self.assertIsInstance(SimpleReport.attribution(), str)
+        self.assertIsNotNone(TestReport.attribution())
+        self.assertIsInstance(TestReport.attribution(), str)
