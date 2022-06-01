@@ -221,6 +221,7 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
+    indicator.create_html()
 
     return indicator
 

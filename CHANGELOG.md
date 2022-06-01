@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 - Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
+- Fix missing HTML generation for Indicators calculated from scratch (`bpolys` parameter) ([#345])
 
 ### New Features
 
@@ -29,6 +30,7 @@
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
+[#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
 
 
 ## 0.9.0
