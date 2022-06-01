@@ -7,7 +7,7 @@ import os
 import sys
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import rpy2.rinterface_lib.callbacks
 import yaml
@@ -48,6 +48,7 @@ class RasterDataset:
     name: str
     filename: str
     crs: str
+    nodata: Optional[int]
 
 
 RASTER_DATASETS = (
@@ -55,21 +56,25 @@ RASTER_DATASETS = (
         "GHS_BUILT_R2018A",
         "GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "GHS_POP_R2019A",
         "GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "GHS_SMOD_R2019A",
         "GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "VNL",
         "VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif",
         "EPSG:4326",
+        None,
     ),
 )
 
