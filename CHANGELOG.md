@@ -6,6 +6,7 @@
 
 - Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
 - Fix missing HTML generation for Indicators calculated from scratch (`bpolys` parameter) ([#345])
+- Fix semaphore instantiation outside of event-loop ([#346])
 
 ### New Features
 
@@ -31,6 +32,7 @@
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
 [#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
+[#346]: https://github.com/GIScience/ohsome-quality-analyst/pull/346
 
 
 ## 0.9.0
