@@ -1,0 +1,18 @@
+---
+BuildingReport:
+  name: Building Report
+  description: |
+      This report gives a general overview of the quality for buildings.
+  label_description:
+    red: |
+      The data quality in this region is low.
+      Here, many buildings are probably not yet mapped.
+    yellow: |
+      At least one indicator shows only medium quality.
+      You should inspect the results for the individual indicators
+      to identify potential data quality concerns.
+    green: |
+      It is likely that the buildings in this region are already well mapped.
+    undefined: |
+      Could not derive quality level.
+...
