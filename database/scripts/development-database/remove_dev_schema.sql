@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS development.hexcells;
 
 DROP TABLE IF EXISTS test.hexcells;
 
+DROP TABLE IF EXISTS development.admin_world_water;
+
 DROP SCHEMA IF EXISTS development;
 
 DROP SCHEMA IF EXISTS test;

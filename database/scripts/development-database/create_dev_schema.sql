@@ -23,6 +23,10 @@ CREATE TABLE development.hexcells (
     LIKE public.hexcells INCLUDING INDEXES
 );
 
+CREATE TABLE development.admin_world_water (
+    LIKE public.admin_world_water INCLUDING INDEXES
+);
+
 INSERT INTO development.regions
 SELECT
     *
@@ -44,6 +48,12 @@ FROM
     development.regions
 WHERE
     ST_Intersects (public.hexcells.wkb_geometry, development.regions.geom);
+
+INSERT INTO development.admin_world_water
+SELECT
+    *
+FROM
+    public.admin_world_water;
 
 
 /* Testing */
