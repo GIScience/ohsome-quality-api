@@ -184,7 +184,13 @@ def load_sklearn_model(path: str):
     return model
 
 
-async def sem_task(task: Coroutine, semaphore=asyncio.Semaphore(4)) -> Coroutine:
-    """Run task with semaphore. Semaphore limits num of concurrent executions."""
-    async with semaphore:
-        return await task
+async def gather_with_semaphore(tasks: list) -> Coroutine:
+    """Limit the number of tasks executed at a time."""
+    # Semaphore needs to initiated inside of the event loop
+    semaphore = asyncio.Semaphore(4)
+
+    async def sem_task(task):
+        async with semaphore:
+            return await task
+
+    return await asyncio.gather(*(sem_task(task) for task in tasks))

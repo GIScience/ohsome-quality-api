@@ -15,6 +15,7 @@ BEGIN
         ALTER TABLE development.regions SET SCHEMA public;
         ALTER TABLE development.shdi SET SCHEMA public;
         ALTER TABLE development.hexcells SET SCHEMA public;
+        ALTER TABLE development.admin_world_water SET SCHEMA public;
     ELSE
         ALTER TABLE test.regions SET SCHEMA public;
         ALTER TABLE test.shdi SET SCHEMA public;
@@ -29,6 +30,8 @@ DROP TABLE IF EXISTS development.regions;
 DROP TABLE IF EXISTS development.shdi;
 
 DROP TABLE IF EXISTS development.hexcells;
+
+DROP TABLE IF EXISTS development.admin_world_water;
 
 DROP TABLE IF EXISTS test.regions;
 

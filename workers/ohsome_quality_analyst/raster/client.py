@@ -29,6 +29,7 @@ def get_zonal_stats(
         transform(feature, raster),
         get_raster_path(raster),
         *args,
+        nodata=raster.nodata,
         **kwargs,
     )
 
