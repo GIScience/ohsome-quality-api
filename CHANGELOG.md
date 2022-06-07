@@ -8,6 +8,8 @@
 
 ### New Features
 
+- Add new representative report `BuildingReport` ([#356])
+- Add ratio_filter to `building_count` layer ([#356])
 - Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
 - Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional. ([#303])
 - Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
@@ -29,6 +31,7 @@
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
+[#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 
 
 ## 0.9.0
