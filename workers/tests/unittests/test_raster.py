@@ -6,7 +6,10 @@ import geojson
 
 import ohsome_quality_analyst.raster.client as raster_client
 from ohsome_quality_analyst.utils.definitions import get_raster_dataset
-from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
+from ohsome_quality_analyst.utils.exceptions import (
+    RasterDatasetNotFoundError,
+    RasterNoData,
+)
 
 
 class TestRaster(unittest.TestCase):
@@ -53,18 +56,90 @@ class TestRaster(unittest.TestCase):
             "GHS_BUILT_R2018A-Heidelberg.tif",
         ),
     )
-    def test_get_zonal_stats(self, *args):
+    def test_get_zonal_stats_default(self, *args):
         expected = {
             "count": 2,
             "max": 73.3844985961914,
             "mean": 70.12319946289062,
             "min": 66.86190032958984,
         }
+        result = raster_client.get_zonal_stats(self.feature, self.raster_dataset)
+        self.assertEqual(expected, result[0])
+        self.assertEqual(len(result), 1)
+
+    @mock.patch(
+        "ohsome_quality_analyst.raster.client.get_raster_path",
+        return_value=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "GHS_BUILT_R2018A-Heidelberg.tif",
+        ),
+    )
+    def test_get_zonal_stats(self, *args):
+        expected = {
+            "max": 73.3844985961914,
+        }
         result = raster_client.get_zonal_stats(
-            self.feature,
-            self.raster_dataset,
+            self.feature, self.raster_dataset, stats=["max"]
         )
         self.assertEqual(expected, result[0])
+        self.assertEqual(len(result), 1)
+
+    @mock.patch(
+        "ohsome_quality_analyst.raster.client.get_raster_path",
+        return_value=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "GHS_BUILT_R2018A-Heidelberg.tif",
+        ),
+    )
+    def test_get_zonal_stats_count(self, *args):
+        expected = {
+            "count": 2,
+        }
+        result = raster_client.get_zonal_stats(
+            self.feature, self.raster_dataset, stats=["count"]
+        )
+        self.assertEqual(expected, result[0])
+        self.assertEqual(len(result), 1)
+
+    @mock.patch(
+        "ohsome_quality_analyst.raster.client.get_raster_path",
+        return_value=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "nodata.tif",
+        ),
+    )
+    def test_get_zonal_stats_nodata(self, *args):
+        """Test on a raster file with only pixel values of -222 (nodata)"""
+        with self.assertRaises(RasterNoData):
+            raster_client.get_zonal_stats(self.feature, self.raster_dataset)
+
+    @mock.patch(
+        "ohsome_quality_analyst.raster.client.get_raster_path",
+        return_value=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "GHS_BUILT_R2018A-Heidelberg.tif",
+        ),
+    )
+    def test_get_zonal_stats_outside_of_extend(self, *args):
+        feature = geojson.Feature(
+            geometry=geojson.Polygon(
+                [
+                    [
+                        (53.62152099609375, 44.66474608911831),
+                        (53.70666503906249, 44.66474608911831),
+                        (53.70666503906249, 44.727223022457416),
+                        (53.62152099609375, 44.727223022457416),
+                        (53.62152099609375, 44.66474608911831),
+                    ]
+                ]
+            )
+        )
+        with self.assertRaises(RasterNoData):
+            raster_client.get_zonal_stats(feature, self.raster_dataset)
 
     def test_transform_different_crs(self):
         expected = {
