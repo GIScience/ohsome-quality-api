@@ -34,7 +34,7 @@ class TestApiReportIo(unittest.TestCase):
         with open(path, "r") as f:
             invalid_response = f.read()
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         with mock.patch(
             "httpx.AsyncClient.post", new_callable=AsyncMock

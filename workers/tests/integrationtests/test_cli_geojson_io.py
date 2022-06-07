@@ -24,7 +24,7 @@ class TestCliIntegration(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         with tempfile.TemporaryDirectory() as tmpdirname:
             outfile = os.path.join(
@@ -55,7 +55,7 @@ class TestCliIntegration(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         result = self.runner.invoke(
             cli,
@@ -180,7 +180,7 @@ class TestCliIntegration(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         with tempfile.TemporaryDirectory() as tmpdirname:
             outfile = os.path.join(
@@ -209,7 +209,7 @@ class TestCliIntegration(unittest.TestCase):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         result = self.runner.invoke(
             cli,
