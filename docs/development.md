@@ -1,7 +1,6 @@
 # Development
 
-How-to informations for developers working on the `ohsome-quality-analyst` Python
-project.
+Information for developers working on the `ohsome-quality-analyst` project.
 
 ## Logging
 
@@ -77,8 +76,8 @@ Good examples can be found in
 
 #### Asynchronous functions
 
-When writing tests for functions which are asynchronous (using the `async/await`
-pattern) such as the `preprocess` functions of indicator classes, those functions should
+When writing tests for functions which are asynchronous (using the `async`/`await`
+pattern), such as the `preprocess` functions of indicator classes, these functions should
 be called as follows: `asyncio.run(indicator.preprocess())`.
 
 
@@ -92,7 +91,7 @@ library.
 In Psycopg one can execute a query for each element of a list with
 `executemany(insert_query, vars_list)`.
 
-To archive similar result in `asyncpg` one would write a SQL query which takes an array
+To achieve similar results in `asyncpg`, one would write an SQL query which takes an array
 as input:
 
 ```python

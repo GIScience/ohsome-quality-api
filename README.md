@@ -45,7 +45,7 @@ Looking to implement a new indicator? Then please have a look at [docs/indicator
 
 Looking to add a new layer to run your analysis with? Then please have a look at [docs/layer.md](/docs/layer.md)
 
-For general informations about development on the OQT Python project please read [docs/development.md](/docs/development.md)
+For general information about the development of the OQT project, please read [docs/development.md](/docs/development.md).
 
 
 ## Development Setup
