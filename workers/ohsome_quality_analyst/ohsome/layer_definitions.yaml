@@ -37,7 +37,7 @@ major_roads_length:
   name: Major Roads
   description: |
     The road network defined by all objects which hold the principal tags for
-    the road network as defined in the OSM Wiki`:`
+    the road network and their link roads as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/length
   filter: |
