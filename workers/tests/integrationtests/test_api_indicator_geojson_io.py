@@ -66,7 +66,7 @@ class TestApiIndicatorIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_featurecollection(self):
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-altstadt-featurecollection.geojson",
         )
         response = self.post_response(featurecollection)
         self.run_tests(response, (self.general_schema, self.featurecollection_schema))

@@ -43,6 +43,16 @@ class RasterDatasetUndefinedError(ValueError):
         self.message = "Raster dataset {0} is not defined".format(raster_name)
 
 
+class RasterNoData(ValueError):
+    def __init__(self, raster_name: str):
+        self.name = "RasterNoData"
+        self.message = (
+            "All raster pixel values in the AOI of {0} are NoData values".format(
+                raster_name
+            )
+        )
+
+
 class LayerDataSchemaError(Exception):
     def __init__(self, message, schema_error: SchemaError):
         self.name = "LayerDataSchemaError"

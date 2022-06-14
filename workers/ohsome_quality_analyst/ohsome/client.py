@@ -96,9 +96,8 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
     send an answer (< 10 minutes).
 
     Raises:
-        OhsomeApiError: In case of 4xx and 5xx response status codes or invalid
+        OhsomeApiError: In case of any response except 2xx status codes or invalid
             response due to timeout during streaming.
-
     """
     headers = {"user-agent": USER_AGENT}
     # 660s timeout for reading, and a 300s timeout elsewhere.

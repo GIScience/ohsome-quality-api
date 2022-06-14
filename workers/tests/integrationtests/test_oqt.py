@@ -157,7 +157,7 @@ class TestOqt(unittest.TestCase):
             # Trigger concurrent calculation of more then 4 indicators.
             # The default semaphore is 4. Make sure no error is raised due to
             # initialization of semaphore outside the event-loop.
-            get_feature_ids_mock.return_value = ["3", "12", "3", "12", "3", "12"]
+            get_feature_ids_mock.return_value = ["3", "3", "3", "3", "3", "3"]
             asyncio.run(
                 oqt.create_all_indicators(
                     dataset="regions",
