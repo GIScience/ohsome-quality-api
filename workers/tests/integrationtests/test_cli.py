@@ -78,7 +78,7 @@ class TestCliIntegration(unittest.TestCase):
     def test_create_report(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "TestReport", "-d", "regions", "-f", "3"],
+            ["create-report", "-r", "TestingReport", "-d", "regions", "-f", "3"],
         )
         self.assertEqual(result.exit_code, 0)
 
@@ -89,7 +89,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "TestReport",
+                "TestingReport",
                 "-d",
                 "regions",
                 "-f",
@@ -107,7 +107,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "TestReport",
+                "TestingReport",
                 "-d",
                 "regions",
                 "-f",

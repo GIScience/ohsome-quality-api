@@ -49,9 +49,9 @@ class TestApiRequestModels(unittest.TestCase):
             )
 
     def test_base_report_valid(self):
-        request_models.BaseReport(name="TestReport")
+        request_models.BaseReport(name="TestingReport")
         request_models.BaseReport(
-            name="TestReport",
+            name="TestingReport",
             includeSvg=True,
             includeHtml=True,
             flatten=False,
@@ -65,11 +65,11 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseReport(include_svg=True)
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="TestReport", includeSvg="foo")
+            request_models.BaseReport(name="TestingReport", includeSvg="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="TestReport", includeHtml="foo")
+            request_models.BaseReport(name="TestongReport", includeHtml="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="TestReport", flatten="foo")
+            request_models.BaseReport(name="TestingReport", flatten="foo")
 
     def test_layer_name_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name

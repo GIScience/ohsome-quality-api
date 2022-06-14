@@ -1,6 +1,6 @@
 ---
-TestReport:
-  name: Test Report
+TestingReport:
+  name: Testing Report
   description: |
     This report shows the quality for two indicators:
     Mapping-Saturation and Currentness.

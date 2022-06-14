@@ -22,7 +22,7 @@ class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.report_name = "TestReport"
+        self.report_name = "TestingReport"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
