@@ -83,7 +83,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         `np.array()` instead.
         """
         featurecollection = get_geojson_fixture(
-            "heidelberg-altstadt-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         indicators = []
         fitted_values = []
