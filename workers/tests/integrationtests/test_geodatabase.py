@@ -149,7 +149,7 @@ class TestGeodatabase(unittest.TestCase):
 
     def test_get_shdi_single_intersection_featurecollection(self):
         featurecollection = get_geojson_fixture(
-            "heidelberg-altstadt-featurecollection.geojson"
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         result = asyncio.run(db_client.get_shdi(featurecollection))
         self.assertIsInstance(result[0]["shdi"], float)
