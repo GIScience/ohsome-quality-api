@@ -21,19 +21,16 @@ class TestHelper(unittest.TestCase):
         ]
 
     def test_gather_with_semaphore(self):
-        """Tests length of results equals 6 with semaphore equals 4."""
         results = asyncio.run(helper_asyncio.gather_with_semaphore(self.tasks))
         assert results == ["OK", "OK", "OK", "OK", "OK"]
 
     def test_gather_with_semaphore_return_exceptions(self):
-        """Tests length of results equals 6 with semaphore equals 4."""
         results = asyncio.run(
             helper_asyncio.gather_with_semaphore(self.tasks, return_exceptions=True)
         )
         assert results == ["OK", "OK", "OK", "OK", "OK"]
 
     def test_gather_with_semaphore_return_exceptions_error(self):
-        """Tests length of results equals 6 with semaphore equals 4."""
         tasks = self.tasks + [self.bar()]
         results = asyncio.run(
             helper_asyncio.gather_with_semaphore(tasks, return_exceptions=True)

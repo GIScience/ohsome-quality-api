@@ -35,7 +35,10 @@ from ohsome_quality_analyst.utils.exceptions import (
     SizeRestrictionError,
 )
 from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
-from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
+from ohsome_quality_analyst.utils.helper_asyncio import (
+    filter_exceptions,
+    gather_with_semaphore,
+)
 
 
 @singledispatch
@@ -384,7 +387,11 @@ async def create_all_indicators(
                     force=force,
                 )
             )
-    await gather_with_semaphore(tasks)
+    # Do no raise exceptions. Filter out exceptions from result list and log them.
+    results = await gather_with_semaphore(tasks, return_exceptions=True)
+    exceptions = filter_exceptions(results)
+    for exception in exceptions:
+        logging.warning("Ignoring error: {0}".format(exception.message))
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
