@@ -98,25 +98,25 @@ class BuildingCompleteness(BaseIndicator):
             item["result"][0]["value"] for item in query_results["groupByResult"]
         ]
         # Get covariates (input parameters or X)
+        shdi = await db_client.get_shdi(hex_cells)
         ghs_pop = raster_client.get_zonal_stats(
             hex_cells,
             get_raster_dataset("GHS_POP_R2019A"),
             stats=["sum"],
         )
-        self.covariates["ghs_pop"] = [i["sum"] for i in ghs_pop]
         vnl = raster_client.get_zonal_stats(
             hex_cells,
             get_raster_dataset("VNL"),
             stats=["sum"],
         )
-        self.covariates["vnl"] = [i["sum"] for i in vnl]
-        self.covariates.update(get_smod_class_share(hex_cells))
-        shdi = await db_client.get_shdi(hex_cells)
         self.covariates["shdi"] = [i["shdi"] for i in shdi]
+        self.covariates["vnl"] = [i["sum"] for i in vnl]
+        self.covariates["ghs_pop"] = [i["sum"] or 0 for i in ghs_pop]
         self.covariates["ghs_pop_density"] = [
             pop / cell.properties["area"]
             for pop, cell in zip(self.covariates["ghs_pop"], hex_cells["features"])
         ]
+        self.covariates.update(get_smod_class_share(hex_cells))
 
     def calculate(self) -> None:
         if len(self.covariates.keys()) != 12:
@@ -234,7 +234,6 @@ def get_smod_class_share(featurecollection: FeatureCollection) -> dict:
     class_count = raster_client.get_zonal_stats(
         featurecollection,
         get_raster_dataset("GHS_SMOD_R2019A"),
-        stats=None,
         categorical=True,
         category_map=category_map,
     )
