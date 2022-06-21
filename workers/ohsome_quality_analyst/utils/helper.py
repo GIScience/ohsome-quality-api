@@ -1,6 +1,5 @@
 """Standalone helper functions."""
 
-import asyncio
 import importlib
 import json
 import logging
@@ -9,7 +8,7 @@ import pathlib
 import pkgutil
 import re
 from datetime import date, datetime
-from typing import Coroutine, Generator, Union
+from typing import Generator, Union
 
 import geojson
 import numpy as np
@@ -166,15 +165,3 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
         else:
             output.append(val)
     return output
-
-
-async def gather_with_semaphore(tasks: list) -> Coroutine:
-    """Limit the number of tasks executed at a time."""
-    # Semaphore needs to initiated inside of the event loop
-    semaphore = asyncio.Semaphore(4)
-
-    async def sem_task(task):
-        async with semaphore:
-            return await task
-
-    return await asyncio.gather(*(sem_task(task) for task in tasks))

@@ -34,11 +34,8 @@ from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import (
-    gather_with_semaphore,
-    loads_geojson,
-    name_to_class,
-)
+from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 
 
 @singledispatch
