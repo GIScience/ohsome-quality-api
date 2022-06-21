@@ -17,7 +17,7 @@ from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
 from ohsome_quality_analyst.utils.definitions import get_raster_dataset
-from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError, RasterNoData
+from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 
 
 class BuildingCompleteness(BaseIndicator):
@@ -98,28 +98,19 @@ class BuildingCompleteness(BaseIndicator):
             item["result"][0]["value"] for item in query_results["groupByResult"]
         ]
         # Get covariates (input parameters or X)
-        try:
-            ghs_pop = raster_client.get_zonal_stats(
-                hex_cells,
-                get_raster_dataset("GHS_POP_R2019A"),
-                stats=["sum"],
-            )
-            self.covariates["ghs_pop"] = [i["sum"] for i in ghs_pop]
-            vnl = raster_client.get_zonal_stats(
-                hex_cells,
-                get_raster_dataset("VNL"),
-                stats=["sum"],
-            )
-            self.covariates["vnl"] = [i["sum"] for i in vnl]
-            self.covariates.update(get_smod_class_share(hex_cells))
-        except RasterNoData:
-            description = (
-                "AOI is outside the extent of or only NoData pixel values are "
-                + "present in one of the rasters."
-            )
-            logging.warning(description, exc_info=True)
-            self.result.description = description
-            return
+        ghs_pop = raster_client.get_zonal_stats(
+            hex_cells,
+            get_raster_dataset("GHS_POP_R2019A"),
+            stats=["sum"],
+        )
+        self.covariates["ghs_pop"] = [i["sum"] for i in ghs_pop]
+        vnl = raster_client.get_zonal_stats(
+            hex_cells,
+            get_raster_dataset("VNL"),
+            stats=["sum"],
+        )
+        self.covariates["vnl"] = [i["sum"] for i in vnl]
+        self.covariates.update(get_smod_class_share(hex_cells))
         shdi = await db_client.get_shdi(hex_cells)
         self.covariates["shdi"] = [i["shdi"] for i in shdi]
         self.covariates["ghs_pop_density"] = [
