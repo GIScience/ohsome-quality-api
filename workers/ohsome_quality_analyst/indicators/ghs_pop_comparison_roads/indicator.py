@@ -47,7 +47,7 @@ class GhsPopComparisonRoads(BaseIndicator):
 
     async def preprocess(self) -> None:
         raster = get_raster_dataset("GHS_POP_R2019A")
-        pop_count = get_zonal_stats(self.feature, raster, stats=["sum"])[0]["sum"]
+        pop_count = get_zonal_stats(self.feature, raster, stats="sum")[0]["sum"]
         area = await get_area_of_bpolys(self.feature.geometry)
         if pop_count is None:
             pop_count = 0
