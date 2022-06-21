@@ -1,6 +1,6 @@
 """Helper functions for `asyncio`."""
 import asyncio
-from typing import Coroutine
+from typing import Coroutine, List
 
 
 async def gather_with_semaphore(tasks: list, *args, **kwargs) -> Coroutine:
@@ -13,3 +13,8 @@ async def gather_with_semaphore(tasks: list, *args, **kwargs) -> Coroutine:
             return await task
 
     return await asyncio.gather(*(sem_task(task) for task in tasks), *args, **kwargs)
+
+
+def filter_exceptions(results: list) -> List[Exception]:
+    """Return all exceptions"""
+    return [i for i in results if isinstance(i, Exception)]
