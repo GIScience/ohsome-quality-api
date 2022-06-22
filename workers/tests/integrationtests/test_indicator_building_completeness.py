@@ -10,6 +10,7 @@ from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.building_completeness.indicator import (
     BuildingCompleteness,
     get_hex_cells,
+    get_shdi,
     get_smod_class_share,
 )
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
@@ -100,6 +101,11 @@ class TestIndicatorBuildingCompleteness(unittest.TestCase):
         )
         with self.assertRaises(HexCellsNotFoundError):
             asyncio.run(get_hex_cells(feature))
+
+    def test_get_shdi(self):
+        result = asyncio.run(get_shdi(FeatureCollection(features=[self.feature])))
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 1)
 
 
 if __name__ == "__main__":

@@ -9,7 +9,8 @@ WITH bpoly AS (
 )
 SELECT
     SUM(ST_Area (ST_Intersection (shdi.geom, bpoly.geom)::geography) / ST_Area
-	(bpoly.geom::geography) * shdi.shdi) AS shdi
+	(bpoly.geom::geography) * shdi.shdi) AS shdi,
+    rownumber as rownumber
 FROM
     shdi,
     bpoly
