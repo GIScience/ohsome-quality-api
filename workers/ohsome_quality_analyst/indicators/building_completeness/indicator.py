@@ -51,7 +51,7 @@ class BuildingCompleteness(BaseIndicator):
     restricted to input AOI within the bounding box of Africa.
 
     The training data and code of the model training are accessible at:
-    https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/ml-models/building-area-model
+    https://gitlab.gistools.geog.uni-heidelberg.de/giscience/big-data/ohsome/ml-models/building-completeness-model
     """
 
     def __init__(
