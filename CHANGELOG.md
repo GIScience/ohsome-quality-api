@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 0.10.0
 
 ### Bug Fixes
 
