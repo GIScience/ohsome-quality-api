@@ -279,8 +279,12 @@ async def get_shdi(featurecollection: FeatureCollection) -> list:
     SHDI values.
     """
     records = await db_client.get_shdi(featurecollection)
-    mean = np.mean([r["shdi"] for r in records])
-    shdi = [mean for feature in featurecollection.features]  # Set default
-    for r in records:
-        shdi[r["rownumber"] - 1] = r["shdi"]  # Overwrite default
-    return shdi
+    if len(records) == len(featurecollection):
+        return [r["shdi"] for r in records]
+    else:
+        # Not every feature has a SHDI value
+        default = np.mean([r["shdi"] for r in records])  # Default value
+        shdi = [default for _ in featurecollection.features]  # List of default values
+        for r in records:
+            shdi[r["rownumber"] - 1] = r["shdi"]  # Overwrite default values
+        return shdi
