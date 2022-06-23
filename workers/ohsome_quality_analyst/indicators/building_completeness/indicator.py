@@ -98,7 +98,6 @@ class BuildingCompleteness(BaseIndicator):
             item["result"][0]["value"] for item in query_results["groupByResult"]
         ]
         # Get covariates (input parameters or X)
-        shdi = await db_client.get_shdi(hex_cells)
         ghs_pop = raster_client.get_zonal_stats(
             hex_cells,
             get_raster_dataset("GHS_POP_R2019A"),
@@ -109,7 +108,7 @@ class BuildingCompleteness(BaseIndicator):
             get_raster_dataset("VNL"),
             stats=["sum"],
         )
-        self.covariates["shdi"] = [i["shdi"] for i in shdi]
+        self.covariates["shdi"] = await get_shdi(hex_cells)
         self.covariates["vnl"] = [i["sum"] for i in vnl]
         self.covariates["ghs_pop"] = [i["sum"] or 0 for i in ghs_pop]
         self.covariates["ghs_pop_density"] = [
@@ -203,7 +202,7 @@ class BuildingCompleteness(BaseIndicator):
             label="Weighted Average: {0}%".format(int(self.result.value * 100)),
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
-        # has to be excuted after "major formatter setting"
+        # has to be executed after "major formatter setting"
         plt.xlim(0, 1)
         plt.ylim(0, 10)
         img_data = StringIO()
@@ -271,3 +270,21 @@ async def get_hex_cells(feature: Feature) -> FeatureCollection:
     if feature_collection["features"] is None:
         raise HexCellsNotFoundError
     return feature_collection
+
+
+async def get_shdi(featurecollection: FeatureCollection) -> list:
+    """Get SHDI values for each feature.
+
+    If feature does not intersect with the SHDI geometry take the mean of all present
+    SHDI values.
+    """
+    records = await db_client.get_shdi(featurecollection)
+    if len(records) == len(featurecollection):
+        return [r["shdi"] for r in records]
+    else:
+        # Not every feature has a SHDI value
+        default = np.mean([r["shdi"] for r in records])  # Default value
+        shdi = [default for _ in featurecollection.features]  # List of default values
+        for r in records:
+            shdi[r["rownumber"] - 1] = r["shdi"]  # Overwrite default values
+        return shdi
