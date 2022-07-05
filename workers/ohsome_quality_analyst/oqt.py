@@ -391,7 +391,8 @@ async def create_all_indicators(
     results = await gather_with_semaphore(tasks, return_exceptions=True)
     exceptions = filter_exceptions(results)
     for exception in exceptions:
-        logging.warning("Ignoring error: {0}".format(exception.message))
+        message = getattr(exception, "message", repr(exception))
+        logging.warning("Ignoring error: {0}".format(message))
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
