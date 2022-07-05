@@ -78,7 +78,7 @@ async def save_indicator_results(
         feature_id,
         indicator.result.timestamp_oqt,
         indicator.result.timestamp_osm,
-        indicator.result.label,
+        indicator.result.class_,
         indicator.result.value,
         indicator.result.description,
         indicator.result.svg,
@@ -128,7 +128,7 @@ async def load_indicator_results(
 
     indicator.result.timestamp_oqt = query_result["timestamp_oqt"]
     indicator.result.timestamp_osm = query_result["timestamp_osm"]
-    indicator.result.label = query_result["result_label"]
+    indicator.result.class_ = query_result["result_class"]
     indicator.result.value = query_result["result_value"]
     indicator.result.description = query_result["result_description"]
     indicator.result.svg = query_result["result_svg"]

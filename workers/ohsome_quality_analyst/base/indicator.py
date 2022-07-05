@@ -1,7 +1,4 @@
-"""
-TODO:
-    Describe this module and how to implement child classes
-"""
+"""The base classes on which every indicator class is based on."""
 
 import json
 from abc import ABCMeta, abstractmethod
@@ -41,19 +38,28 @@ class Result:
         timestamp_oqt (datetime): Timestamp of the creation of the indicator
         timestamp_osm (datetime): Timestamp of the used OSM data
             (e.g. Latest timestamp of the ohsome API results)
-        label (str): Traffic lights like quality label
-        value (float): The result value as float ([0, 1])
-        description (str): Description of the result
+        label (str): Traffic lights like quality label: `green`, `yellow` or `red`. The
+            value is determined by the result classes
+        value (float): The result value
+        class_ (int): The result class. An integer between 1 and 5. It maps to the
+            result labels. This value is used by the reports to determine an overall
+            result.
+        description (str): The result description.
         svg (str): Figure of the result as SVG
     """
 
-    timestamp_oqt: datetime
-    timestamp_osm: Optional[datetime]
-    label: Literal["green", "yellow", "red", "undefined"]
-    value: Optional[float]
     description: str
     svg: str
     html: str
+    timestamp_oqt: datetime = datetime.now(timezone.utc)  # UTC datetime object
+    timestamp_osm: Optional[datetime] = None
+    value: Optional[float] = None
+    class_: Optional[Literal[1, 2, 3, 4, 5]] = None
+
+    @property
+    def label(self) -> Literal["green", "yellow", "red", "undefined"]:
+        labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}
+        return labels.get(self.class_, "undefined")
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -70,11 +76,6 @@ class BaseIndicator(metaclass=ABCMeta):
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         self.result: Result = Result(
-            # UTC datetime object representing the current time.
-            timestamp_oqt=datetime.now(timezone.utc),
-            timestamp_osm=None,
-            label="undefined",
-            value=None,
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
             html="",
@@ -90,6 +91,9 @@ class BaseIndicator(metaclass=ABCMeta):
             flatten (bool): If true flatten the properties.
             include_data (bool): If true include additional data in the properties.
         """
+        result = asdict(self.result)  # only attributes, no properties
+        result["label"] = self.result.label  # label is a property
+        result["class"] = result.pop("class_")
         properties = {
             "metadata": {
                 "name": self.metadata.name,
@@ -100,7 +104,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 "name": self.layer.name,
                 "description": self.layer.description,
             },
-            "result": asdict(self.result),
+            "result": result,
             **self.feature.properties,
         }
         if include_data:

@@ -2,6 +2,7 @@ import asyncio
 import unittest
 from unittest import mock
 
+from ohsome_quality_analyst.base.indicator import Result
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
@@ -15,7 +16,6 @@ class TestBaseIndicator(unittest.TestCase):
 
     def test_as_feature(self):
         indicator = Minimal(feature=self.feature, layer=mock.Mock())
-
         feature = indicator.as_feature()
         assert feature.is_valid
         assert feature.geometry == feature.geometry
@@ -25,7 +25,6 @@ class TestBaseIndicator(unittest.TestCase):
 
     def test_as_feature_include_data(self):
         indicator = Minimal(feature=self.feature, layer=mock.Mock())
-
         feature = indicator.as_feature(include_data=True)
         assert feature.is_valid
         for key in ("result", "metadata", "layer", "data"):
@@ -52,3 +51,11 @@ class TestBaseIndicator(unittest.TestCase):
     def test_attribution_class_property(self):
         self.assertIsNotNone(Minimal.attribution())
         self.assertIsInstance(Minimal.attribution(), str)
+
+
+class TestBaseResult(unittest.TestCase):
+    def test_label(self):
+        result = Result("", "", "")
+        assert result.label == "undefined"
+        result.class_ = 4
+        assert result.label == "green"

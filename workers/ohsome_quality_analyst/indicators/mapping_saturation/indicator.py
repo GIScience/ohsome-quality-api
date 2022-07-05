@@ -118,28 +118,24 @@ class MappingSaturation(BaseIndicator):
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
         self.result.value = y1 / y2  # Saturation
+        if 1.0 >= self.result.value > self.upper_threshold:
+            self.result.class_ = 5
+        elif self.upper_threshold >= self.result.value > self.lower_threshold:
+            self.result.class_ = 3
+        elif self.lower_threshold >= self.result.value > 0:
+            self.result.class_ = 1
+        else:
+            raise ValueError(
+                "Result value (saturation) is an unexpected value: {}".format(
+                    self.result.value
+                )
+            )
         description = Template(self.metadata.result_description).substitute(
             saturation=round(self.result.value * 100, 2)
         )
-        if 1.0 >= self.result.value > self.upper_threshold:
-            self.result.label = "green"
-            self.result.description = (
-                description + self.metadata.label_description["green"]
-            )
-        elif self.upper_threshold >= self.result.value > self.lower_threshold:
-            self.result.label = "yellow"
-            self.result.description = (
-                description + self.metadata.label_description["yellow"]
-            )
-        elif self.lower_threshold >= self.result.value > 0:
-            self.result.label = "red"
-            self.result.description = (
-                description + self.metadata.label_description["red"]
-            )
-        else:
-            self.result.description = (
-                "The result value (saturation) is an unexpected value."
-            )
+        self.result.description = (
+            description + self.metadata.label_description[self.result.label]
+        )
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":

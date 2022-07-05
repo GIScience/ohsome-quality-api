@@ -15,13 +15,15 @@ As you can see, the indicator you are trying to create should inherit from BaseI
 
 ### Result
 
-The result object can hold 4 values. 
+The result object consists of following attributes:
 
-1. label: This should be a member of `TrafficLightQualityLevels` found in [workers/ohsome_quality_analyst/utils/definitions.py](/workers/ohsome_quality_analyst/utils/definitions.py)
-2. value: TBD
-3. description: label description for `TrafficLightQualityLevel` (see metadata.yaml in part 2)
-4. svg: unique file path which is **automatically** created upon object initialization by the `BaseIndicator`
-
+- `timestamp_oqt (datetime)`: Timestamp of the creation of the indicator
+- `timestamp_osm (datetime)`: Timestamp of the used OSM data (e.g. the latest timestamp of the ohsome API results)
+- `label (str)`: Traffic lights like quality label: `green`, `yellow` or `red`. The value is determined by the result classes
+- `value (float)`: The result value
+- `class (int)`: The result class. An integer between 1 and 5. It maps to the result labels: `1` maps to `red`, `2`/`3` map to `yellow` and `4`/`5` map to `green`.  This value is used by the reports to determine an overall result.
+- `description (str)`: The result description.
+- `svg (str)`: Figure of the result as SVG
 
 ### Layer
 

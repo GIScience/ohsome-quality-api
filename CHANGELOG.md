@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### New Features
+
+- Generalize result values of all Indicators by introducing a result class value ([#369])
+
 ### Breaking Changes
 
 - Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
@@ -40,7 +44,9 @@
 - Rename environment variable `OHSOME_API`  `OQT_OHSOME_API` ([#255])
 - Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- If you run your own database, please delete the result table before upgrading ([#369])
 - Rename endpoints ([#397]):
+
 | old                          | new                            |
 | ---                          | ---                            |
 | `indicatorLayerCombinations` | `indicator-layer-combinations` |
@@ -54,6 +60,7 @@
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
+[#369]: https://github.com/GIScience/ohsome-quality-analyst/pull/369
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
 [#376]: https://github.com/GIScience/ohsome-quality-analyst/pull/376
@@ -72,6 +79,7 @@
 - Add new report `MulilevelMappingSaturation` ([#379])
 
 [#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
+
 
 
 ## 0.10.0

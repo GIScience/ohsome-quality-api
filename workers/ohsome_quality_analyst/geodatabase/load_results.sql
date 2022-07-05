@@ -5,7 +5,7 @@ SELECT
     fid,
     timestamp_oqt,
     timestamp_osm,
-    result_label,
+    result_class,
     result_value,
     result_description,
     result_svg,

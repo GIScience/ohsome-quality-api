@@ -131,17 +131,17 @@ class Currentness(BaseIndicator):
         )
 
         if self.result.value >= self.threshold_yellow:
-            self.result.label = "green"
+            self.result.class_ = 5
             self.result.description = (
                 self.result.description + self.metadata.label_description["green"]
             )
         elif self.result.value >= self.threshold_red:
-            self.result.label = "yellow"
+            self.result.class_ = 3
             self.result.description = (
                 self.result.description + self.metadata.label_description["yellow"]
             )
         elif self.result.value < self.threshold_red:
-            self.result.label = "red"
+            self.result.class_ = 1
             self.result.description = (
                 self.result.description + self.metadata.label_description["red"]
             )
