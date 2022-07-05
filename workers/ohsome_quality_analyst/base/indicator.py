@@ -5,7 +5,7 @@ TODO:
 
 import json
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from io import StringIO
 from typing import Dict, Literal, Optional
@@ -98,7 +98,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 "name": self.layer.name,
                 "description": self.layer.description,
             },
-            "result": vars(self.result).copy(),
+            "result": asdict(self.result),
             "data": self.data,
             **self.feature.properties,
         }

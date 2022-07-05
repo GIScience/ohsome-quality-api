@@ -1,6 +1,6 @@
 import logging
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Tuple
 
@@ -63,8 +63,8 @@ class BaseReport(metaclass=ABCMeta):
         """
         properties = {
             "report": {
-                "metadata": vars(self.metadata).copy(),
-                "result": vars(self.result).copy(),
+                "metadata": asdict(self.metadata),
+                "result": asdict(self.result),
             },
             "indicators": [],
         }
