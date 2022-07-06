@@ -1,9 +1,11 @@
+from __future__ import annotations  # superfluous in Python 3.10
+
 import logging
 from abc import ABCMeta, abstractmethod
 from dataclasses import asdict, dataclass
-from statistics import mean
 from typing import List, Literal, NamedTuple, Tuple
 
+import numpy as np
 from dacite import from_dict
 from geojson import Feature
 
@@ -29,10 +31,14 @@ class Metadata:
 class Result:
     """The result of the Report."""
 
-    label: Literal["green", "yellow", "red", "undefined"]
-    value: float
-    description: str
-    html: str
+    class_: Literal[1, 2, 3, 4, 5] | None = None
+    description: str = ""
+    html: str = ""
+
+    @property
+    def label(self) -> Literal["green", "yellow", "red", "undefined"]:
+        labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}
+        return labels.get(self.class_, "undefined")
 
 
 class IndicatorLayer(NamedTuple):
@@ -55,7 +61,7 @@ class BaseReport(metaclass=ABCMeta):
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         # Results will be written during the lifecycle of the report object (combine())
-        self.result = Result(None, None, None, None)
+        self.result = Result()
 
     def as_feature(self, flatten: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
@@ -63,6 +69,8 @@ class BaseReport(metaclass=ABCMeta):
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
+        result = asdict(self.result)  # only attributes, no properties
+        result["label"] = self.result.label  # label is a property
         properties = {
             "report": {
                 "metadata": asdict(self.metadata),
@@ -90,32 +98,26 @@ class BaseReport(metaclass=ABCMeta):
         """Combine indicators results and create the report result object."""
         logging.info(f"Combine indicators for report: {self.metadata.name}")
 
-        values = []
-        for indicator in self.indicators:
-            if indicator.result.label != "undefined":
-                values.append(indicator.result.value)
-            else:
-                values.append(0.0)
+        if self.blocking_undefined:
+            if any(i.result.class_ is None for i in self.indicators):
+                self.result.description = self.metadata.label_description["undefined"]
+                return
 
-        if all(val == 0.0 for val in values):
-            self.result.value = None
-            self.result.label = "undefined"
-            self.result.description = "Could not derive quality level"
-            return None
-        else:
-            self.result.value = mean(values)
+        if self.blocking_red:
+            if any(i.result.class_ == 1 for i in self.indicators):
+                self.result.class_ = 1
+                self.result.description = self.metadata.label_description["red"]
+                return
 
-        if (
-            all(indicator.result.label == "green" for indicator in self.indicators)
-            or self.result.value >= 1
-        ):
-            self.result.label = "green"
+        self.result.class_ = np.mean(
+            [i.result.class_ for i in self.indicators if i.result.class_ is not None]
+        )
+
+        if self.result.class_ in (4, 5):
             self.result.description = self.metadata.label_description["green"]
-        elif self.result.value >= 0.5:
-            self.result.label = "yellow"
+        elif self.result.class_ in (2, 3):
             self.result.description = self.metadata.label_description["yellow"]
-        elif self.result.value < 0.5:
-            self.result.label = "red"
+        elif self.result.class_ == 1:
             self.result.description = self.metadata.label_description["red"]
 
     @abstractmethod
