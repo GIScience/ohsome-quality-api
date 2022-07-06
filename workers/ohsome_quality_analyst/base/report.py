@@ -41,13 +41,15 @@ class IndicatorLayer(NamedTuple):
 
 
 class BaseReport(metaclass=ABCMeta):
-    """Subclass has to create and append indicator objects to indicators list."""
+    def __init__(
+        self,
+        feature: Feature,
+        indicator_layer: Tuple[IndicatorLayer],
+    ):
 
-    def __init__(self, feature: Feature):
         self.feature = feature
+        self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
 
-        # Defines indicator+layer combinations
-        self.indicator_layer: Tuple[IndicatorLayer] = []
         self.indicators: List[BaseIndicator] = []
 
         metadata = get_metadata("reports", type(self).__name__)
