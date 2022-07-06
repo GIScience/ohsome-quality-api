@@ -80,7 +80,7 @@ class BaseIndicator(metaclass=ABCMeta):
             html="",
         )
 
-    def as_feature(self, flatten: bool = False) -> Feature:
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -88,6 +88,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
         Args:
             flatten (bool): If true flatten the properties.
+            include_data (bool): If true include additional data in the properties.
         """
         properties = {
             "metadata": {
@@ -99,9 +100,10 @@ class BaseIndicator(metaclass=ABCMeta):
                 "description": self.layer.description,
             },
             "result": asdict(self.result),
-            "data": self.data,
             **self.feature.properties,
         }
+        if include_data:
+            properties["data"] = self.data
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():

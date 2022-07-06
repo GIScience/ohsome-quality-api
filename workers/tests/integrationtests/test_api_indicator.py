@@ -269,6 +269,56 @@ class TestApiIndicator(unittest.TestCase):
         result = response.json()
         self.assertIn("value", result["properties"]["result"])
 
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_data_default(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&flatten={4}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "data" not in result["properties"].keys()
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_data_true(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&flatten={4}&includeData={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                False,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "data" in result["properties"].keys()
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_data_false(self):
+        url = (
+            "/indicator?name={0}&layerName={1}&dataset={2}"
+            "&featureId={3}&flatten={4}&includeData={5}".format(
+                self.indicator_name,
+                self.layer_name,
+                self.dataset,
+                self.feature_id,
+                False,
+                False,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "data" not in result["properties"].keys()
+
 
 if __name__ == "__main__":
     unittest.main()

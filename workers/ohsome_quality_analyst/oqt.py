@@ -76,7 +76,9 @@ async def _(
             await check_area_size(feature.geometry)
         tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
     indicators = await gather_with_semaphore(tasks)
-    features = [i.as_feature(flatten=parameters.flatten) for i in indicators]
+    features = [
+        i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
+    ]
     if len(features) == 1:
         return features[0]
     else:
@@ -91,7 +93,7 @@ async def _(
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, force)
-    return indicator.as_feature(flatten=parameters.flatten)
+    return indicator.as_feature(parameters.flatten, parameters.include_data)
 
 
 async def create_report_as_geojson(
@@ -122,14 +124,16 @@ async def create_report_as_geojson(
                 parameters.copy(update={"bpolys": feature}),
                 force,
             )
-            features.append(report.as_feature(flatten=parameters.flatten))
+            features.append(
+                report.as_feature(parameters.flatten, parameters.include_data)
+            )
         if len(features) == 1:
             return features[0]
         else:
             return FeatureCollection(features=features)
     elif isinstance(parameters, ReportDatabase):
         report = await create_report(parameters, force)
-        return report.as_feature(flatten=parameters.flatten)
+        return report.as_feature(parameters.flatten, parameters.include_data)
     else:
         raise ValueError("Unexpected parameters: " + str(parameters))
 

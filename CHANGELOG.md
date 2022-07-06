@@ -1,5 +1,17 @@
 # Changelog
 
+## Current Main
+
+### Breaking Changes
+
+- Make inclusion of indicator data in response optional ([#370])
+
+### How to Upgrade
+
+- To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the parameter `include_data` to `True` when making requests to the API ([#370])
+
+[#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
+
 ## 0.10.0
 
 ### Bug Fixes

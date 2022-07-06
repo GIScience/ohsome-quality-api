@@ -52,7 +52,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         asyncio.run(indicator.preprocess())
         indicator.calculate()
 
-        indicator_feature = indicator.as_feature()
+        indicator_feature = indicator.as_feature(include_data=True)
         properties = indicator_feature.properties
         self.assertIsNotNone(properties["data"]["best_fit"]["name"])
 
@@ -60,7 +60,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             self.assertFalse(np.isnan(np.sum(fm["fitted_values"])))
             self.assertTrue(np.isfinite(np.sum(fm["fitted_values"])))
 
-        indicator_feature = indicator.as_feature(flatten=True)
+        indicator_feature = indicator.as_feature(flatten=True, include_data=True)
         properties = indicator_feature.properties
         self.assertIsNotNone(properties["data.best_fit.name"])
 
