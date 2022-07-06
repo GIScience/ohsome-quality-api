@@ -2,7 +2,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from dataclasses import asdict, dataclass
 from statistics import mean
-from typing import Dict, List, Literal, NamedTuple, Tuple
+from typing import List, Literal, NamedTuple, Tuple
 
 from dacite import from_dict
 from geojson import Feature
@@ -22,7 +22,7 @@ class Metadata:
 
     name: str
     description: str
-    label_description: Dict
+    label_description: dict
 
 
 @dataclass
@@ -43,7 +43,7 @@ class IndicatorLayer(NamedTuple):
 class BaseReport(metaclass=ABCMeta):
     """Subclass has to create and append indicator objects to indicators list."""
 
-    def __init__(self, feature: Feature = None):
+    def __init__(self, feature: Feature):
         self.feature = feature
 
         # Defines indicator+layer combinations
