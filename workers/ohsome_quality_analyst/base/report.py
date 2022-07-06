@@ -52,12 +52,10 @@ class BaseReport(metaclass=ABCMeta):
         feature: Feature,
         indicator_layer: Tuple[IndicatorLayer],
     ):
-
         self.feature = feature
         self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
 
         self.indicators: List[BaseIndicator] = []
-
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         # Results will be written during the lifecycle of the report object (combine())
