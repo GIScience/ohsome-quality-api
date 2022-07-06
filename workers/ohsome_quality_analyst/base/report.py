@@ -55,7 +55,7 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None, None)
 
-    def as_feature(self, flatten: bool = False) -> Feature:
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
@@ -71,7 +71,9 @@ class BaseReport(metaclass=ABCMeta):
         properties["report"]["metadata"].pop("label_description", None)
 
         for i, indicator in enumerate(self.indicators):
-            properties["indicators"].append(indicator.as_feature()["properties"])
+            properties["indicators"].append(
+                indicator.as_feature(include_data=include_data)["properties"]
+            )
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():

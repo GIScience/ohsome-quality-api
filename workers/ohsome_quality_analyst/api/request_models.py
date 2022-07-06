@@ -38,6 +38,7 @@ class BaseIndicator(BaseModel):
     )
     include_svg: bool = False
     include_html: bool = False
+    include_data: bool = False
     flatten: bool = True
 
     class Config:
@@ -52,6 +53,7 @@ class BaseReport(BaseModel):
     name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
     include_svg: bool = False
     include_html: bool = False
+    include_data: bool = False
     flatten: bool = True
 
     class Config:
