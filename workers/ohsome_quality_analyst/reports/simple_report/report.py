@@ -4,9 +4,11 @@ from ohsome_quality_analyst.utils.definitions import get_attribution
 
 class SimpleReport(BaseReport):
     def set_indicator_layer(self):
-        self.indicator_layer = (
-            IndicatorLayer("MappingSaturation", "building_count"),
-            IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
+        super().__init__(
+            indicator_layer=(
+                IndicatorLayer("MappingSaturation", "building_count"),
+                IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
+            )
         )
 
     def combine_indicators(self) -> None:
