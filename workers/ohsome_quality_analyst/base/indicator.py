@@ -5,7 +5,7 @@ TODO:
 
 import json
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from io import StringIO
 from typing import Dict, Literal, Optional
@@ -80,7 +80,7 @@ class BaseIndicator(metaclass=ABCMeta):
             html="",
         )
 
-    def as_feature(self, flatten: bool = False) -> Feature:
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -88,6 +88,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
         Args:
             flatten (bool): If true flatten the properties.
+            include_data (bool): If true include additional data in the properties.
         """
         properties = {
             "metadata": {
@@ -98,10 +99,11 @@ class BaseIndicator(metaclass=ABCMeta):
                 "name": self.layer.name,
                 "description": self.layer.description,
             },
-            "result": vars(self.result).copy(),
-            "data": self.data,
+            "result": asdict(self.result),
             **self.feature.properties,
         }
+        if include_data:
+            properties["data"] = self.data
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():

@@ -34,7 +34,11 @@ from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class, sem_task
+from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+from ohsome_quality_analyst.utils.helper_asyncio import (
+    filter_exceptions,
+    gather_with_semaphore,
+)
 
 
 @singledispatch
@@ -70,11 +74,11 @@ async def _(
         # Only enforce size limit if ohsome API data is not provided
         if size_restriction and isinstance(parameters, IndicatorBpolys):
             await check_area_size(feature.geometry)
-        tasks.append(
-            sem_task(create_indicator(parameters.copy(update={"bpolys": feature})))
-        )
-    indicators = await asyncio.gather(*tasks)
-    features = [i.as_feature(flatten=parameters.flatten) for i in indicators]
+        tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
+    indicators = await gather_with_semaphore(tasks)
+    features = [
+        i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
+    ]
     if len(features) == 1:
         return features[0]
     else:
@@ -89,7 +93,7 @@ async def _(
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, force)
-    return indicator.as_feature(flatten=parameters.flatten)
+    return indicator.as_feature(parameters.flatten, parameters.include_data)
 
 
 async def create_report_as_geojson(
@@ -120,14 +124,16 @@ async def create_report_as_geojson(
                 parameters.copy(update={"bpolys": feature}),
                 force,
             )
-            features.append(report.as_feature(flatten=parameters.flatten))
+            features.append(
+                report.as_feature(parameters.flatten, parameters.include_data)
+            )
         if len(features) == 1:
             return features[0]
         else:
             return FeatureCollection(features=features)
     elif isinstance(parameters, ReportDatabase):
         report = await create_report(parameters, force)
-        return report.as_feature(flatten=parameters.flatten)
+        return report.as_feature(parameters.flatten, parameters.include_data)
     else:
         raise ValueError("Unexpected parameters: " + str(parameters))
 
@@ -221,6 +227,7 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
+    indicator.create_html()
 
     return indicator
 
@@ -293,19 +300,17 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     tasks: List[Coroutine] = []
     for indicator_name, layer_name in report.indicator_layer:
         tasks.append(
-            sem_task(
-                create_indicator(
-                    IndicatorDatabase(
-                        name=indicator_name,
-                        layerName=layer_name,
-                        dataset=dataset,
-                        featureId=feature_id,
-                    ),
-                    force=force,
-                )
+            create_indicator(
+                IndicatorDatabase(
+                    name=indicator_name,
+                    layerName=layer_name,
+                    dataset=dataset,
+                    featureId=feature_id,
+                ),
+                force=force,
             )
         )
-    report.indicators = await asyncio.gather(*tasks)
+    report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
     report.create_html()
     return report
@@ -334,17 +339,15 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
     tasks: List[Coroutine] = []
     for indicator_name, layer_name in report.indicator_layer:
         tasks.append(
-            sem_task(
-                create_indicator(
-                    IndicatorBpolys(
-                        name=indicator_name,
-                        layerName=layer_name,
-                        bpolys=feature,
-                    )
+            create_indicator(
+                IndicatorBpolys(
+                    name=indicator_name,
+                    layerName=layer_name,
+                    bpolys=feature,
                 )
             )
         )
-    report.indicators = await asyncio.gather(*tasks)
+    report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
     report.create_html()
     return report
@@ -378,19 +381,22 @@ async def create_all_indicators(
     for fid in fids:
         for indicator_name_, layer_name_ in indicator_layer:
             tasks.append(
-                sem_task(
-                    create_indicator(
-                        IndicatorDatabase(
-                            name=indicator_name_,
-                            layerName=layer_name_,
-                            dataset=dataset,
-                            featureId=fid,
-                        ),
-                        force=force,
-                    )
+                create_indicator(
+                    IndicatorDatabase(
+                        name=indicator_name_,
+                        layerName=layer_name_,
+                        dataset=dataset,
+                        featureId=fid,
+                    ),
+                    force=force,
                 )
             )
-    await asyncio.gather(*tasks)
+    # Do no raise exceptions. Filter out exceptions from result list and log them.
+    results = await gather_with_semaphore(tasks, return_exceptions=True)
+    exceptions = filter_exceptions(results)
+    for exception in exceptions:
+        message = getattr(exception, "message", repr(exception))
+        logging.warning("Ignoring error: {0}".format(message))
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):

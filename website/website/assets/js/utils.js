@@ -40,25 +40,3 @@ function id_isValid(value, json){
     }
     return valid_options.includes(value)
 }
-
-// un-flatten a 1-layer object in a deep object
-function unflattenObject(input, separator=".") {
-    const keys = Object.keys(input);
-    const output = {};
-    for (const key of keys) {
-        const keyParts = key.split(separator);
-        let entry = output;
-
-        // go through all parts except the last one
-        const lastIdx = keyParts.length-1;
-        for (let idx = 0; idx < lastIdx; ++idx) {
-            const part = keyParts[idx]
-            if (!entry[part]) {
-                entry[part] = {};
-            }
-            entry = entry[part];
-        }
-        entry[keyParts[lastIdx]] = input[key];
-    }
-    return output
-}

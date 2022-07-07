@@ -66,7 +66,7 @@ class TestApiIndicatorIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_featurecollection(self):
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         response = self.post_response(featurecollection)
         self.run_tests(response, (self.general_schema, self.featurecollection_schema))
@@ -113,7 +113,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -123,7 +123,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -146,7 +146,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["result"]
+
         parameters = {
             "name": self.indicator_name,
             "layerName": self.layer_name,
@@ -156,7 +157,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -165,7 +166,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
     def test_indicator_layer_data(self):
         """Test parameter Layer with data attached.

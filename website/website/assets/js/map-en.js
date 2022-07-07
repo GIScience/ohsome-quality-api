@@ -209,7 +209,7 @@ function buildMap(...charts){
 	
 	function handleGetQuality(response) {
 		console.log("response",response)
-		const properties = unflattenObject(response["properties"]);
+		const properties = response["properties"];
 		const report = properties["report"];
 		document.getElementById("resultSection").innerHTML = ''
 		document.querySelector("#loader1").classList.remove("spinner-1");

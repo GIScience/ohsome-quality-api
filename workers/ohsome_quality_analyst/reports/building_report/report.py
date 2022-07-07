@@ -7,6 +7,7 @@ class BuildingReport(BaseReport):
             IndicatorLayer("MappingSaturation", "building_count"),
             IndicatorLayer("Currentness", "building_count"),
             IndicatorLayer("TagsRatio", "building_count"),
+            IndicatorLayer("BuildingCompleteness", "building_count"),
         )
 
     def combine_indicators(self) -> None:

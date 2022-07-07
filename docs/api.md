@@ -50,7 +50,7 @@ parameters = {
     "fidField": "ogc_fid",  # Optional
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
+    "flatten": False,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -82,7 +82,7 @@ parameters = {
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
+    "flatten": False,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -160,7 +160,7 @@ parameters = {
     "layer": layer,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
+    "flatten": False,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -241,7 +241,7 @@ parameters = {
     "featureId": 3,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
+    "flatten": False,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -272,7 +272,7 @@ parameters = {
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
+    "flatten": False,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```

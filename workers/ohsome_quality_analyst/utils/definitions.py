@@ -7,7 +7,7 @@ import os
 import sys
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import rpy2.rinterface_lib.callbacks
 import yaml
@@ -20,19 +20,18 @@ from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 DATASETS = MappingProxyType(  # Immutable dict
     {
         "regions": {"default": "ogc_fid", "other": ("name",)},
-        "gadm": {
-            "default": "uid",  # ISO 3166-1 alpha-3 country code
+        "admin_world_water": {
+            "default": "id",
             "other": (
-                *tuple(("name_{0}".format(i) for i in range(6))),
-                *tuple(("id_{0}".format(i) for i in range(6))),
-                *tuple(("gid_{0}".format(i) for i in range(6))),
+                "country",  # ISO 3166-1 alpha-3
+                "enname",  # English name
             ),
         },
     }
 )
 # Dataset names and fid fields which are through the API
 DATASETS_API = DATASETS.copy()
-DATASETS_API.pop("gadm")
+DATASETS_API.pop("admin_world_water")
 
 
 @dataclass(frozen=True)
@@ -48,6 +47,7 @@ class RasterDataset:
     name: str
     filename: str
     crs: str
+    nodata: Optional[int]
 
 
 RASTER_DATASETS = (
@@ -55,27 +55,32 @@ RASTER_DATASETS = (
         "GHS_BUILT_R2018A",
         "GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "GHS_POP_R2019A",
         "GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "GHS_SMOD_R2019A",
         "GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif",
         "ESRI:54009",
+        -200,
     ),
     RasterDataset(
         "VNL",
         "VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif",
         "EPSG:4326",
+        -999,
     ),
 )
 
 
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
+    ("BuildingCompleteness", "building_area"),
     ("GhsPopComparisonBuildings", "building_count"),
     ("GhsPopComparisonRoads", "jrc_road_length"),
     ("GhsPopComparisonRoads", "major_roads_length"),

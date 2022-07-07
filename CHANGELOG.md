@@ -2,17 +2,40 @@
 
 ## Current Main
 
-### Bug Fixes
+### Breaking Changes
 
-- Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
+- Make inclusion of indicator data in response optional ([#370])
+- Per default properties of the GeoJSON response are not flat ([#375])
 
-### New Features
+## Breaking Changes
 
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
+
+
+### How to Upgrade
+
+- To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+
+[#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
+[#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
+[#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
+
+## 0.10.0
+
+### Bug Fixes
+
+- Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
+- Fix missing HTML generation for Indicators calculated from scratch (`bpolys` parameter) ([#345])
+- Fix semaphore instantiation outside of event-loop ([#346])
+
+### New Features
+
 - Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
-- Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional. ([#303])
+- Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional ([#303])
 - Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
+- Add new Indicator which predicts the building area of the AOI using a trained Random Forest Regressor ([#265])
 
 ### Other Changes
 
@@ -22,6 +45,7 @@
 - Add hex-cells at zoom level 12 for Africa to the database ([#314])
 - Disable size limit on input AOI if OSM data is provided through a request with a custom Layer object ([#330])
 
+[#265]: https://github.com/GIScience/ohsome-quality-analyst/pull/265
 [#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
 [#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
 [#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
@@ -31,7 +55,8 @@
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
-[#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
+[#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
+[#346]: https://github.com/GIScience/ohsome-quality-analyst/pull/346
 
 
 ## 0.9.0

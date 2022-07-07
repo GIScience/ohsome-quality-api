@@ -42,6 +42,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import (
+    HexCellsNotFoundError,
     LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
@@ -135,6 +136,7 @@ async def validation_exception_handler(
     )
 
 
+@app.exception_handler(HexCellsNotFoundError)
 @app.exception_handler(LayerDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(RasterDatasetNotFoundError)
@@ -143,6 +145,7 @@ async def validation_exception_handler(
 async def oqt_exception_handler(
     request: Request,
     exception: Union[
+        HexCellsNotFoundError,
         LayerDataSchemaError,
         OhsomeApiError,
         RasterDatasetNotFoundError,
