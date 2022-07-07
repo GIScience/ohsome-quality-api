@@ -11,16 +11,22 @@ from schema import Or, Schema
 
 def get_indicator_properties_template():
     return {
-        "metadata.name": str,
-        "metadata.description": str,
-        "layer.name": str,
-        "layer.description": str,
-        "result.timestamp_oqt": str,
-        "result.timestamp_osm": Or(str),
-        "result.value": Or(float, None),
-        "result.label": str,
-        "result.description": str,
-        Opt("result.svg"): str,
+        "metadata": {
+            "name": str,
+            "description": str,
+        },
+        "layer": {
+            "name": str,
+            "description": str,
+        },
+        "result": {
+            "timestamp_oqt": str,
+            "timestamp_osm": Or(str),
+            "value": Or(float, None),
+            "label": str,
+            "description": str,
+            Opt("svg"): str,
+        },
     }
 
 
@@ -70,28 +76,24 @@ def get_indicator_feature_schema() -> Schema:
 
 
 def get_report_feature_schema(number_of_indicators: int) -> Schema:
-    properties_template = get_indicator_properties_template()
-    properties = {}
-    for i in range(number_of_indicators):
-        for k, v in properties_template.items():
-            prefix = "indicators." + str(i) + "."
-            if isinstance(k, Schema):
-                k._prepend_schema_name(prefix)
-            else:
-                k = prefix + k
-            properties.update({k: v})
     schema = Schema(
         {
             "type": "Feature",
             "geometry": dict,
             Opt("id"): Or(str, int),
             "properties": {
-                "report.metadata.name": str,
-                "report.metadata.description": str,
-                "report.result.value": float,
-                "report.result.label": str,
-                "report.result.description": str,
-                **properties,
+                "report": {
+                    "metadata": {
+                        "name": str,
+                        "description": str,
+                    },
+                    "result": {
+                        "value": float,
+                        "label": str,
+                        "description": str,
+                    },
+                },
+                "indicators": [get_indicator_properties_template()],
             },
         },
         ignore_extra_keys=True,

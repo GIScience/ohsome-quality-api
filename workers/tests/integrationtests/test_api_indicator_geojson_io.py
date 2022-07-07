@@ -113,7 +113,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -123,7 +123,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -146,7 +146,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["result"]
+
         parameters = {
             "name": self.indicator_name,
             "layerName": self.layer_name,
@@ -156,7 +157,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
@@ -165,7 +166,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
     def test_indicator_layer_data(self):
         """Test parameter Layer with data attached.
