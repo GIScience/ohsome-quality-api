@@ -236,9 +236,6 @@ INDICATOR_EXAMPLES = {
                         ]
                     ],
                 },
-                "includeSvg": False,
-                "includeHtml": False,
-                "flatten": True,
             },
             "layer": {
                 "name": "My layer name",
