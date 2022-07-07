@@ -49,7 +49,9 @@ class BaseIndicator(BaseModel):
 
 
 class BaseReport(BaseModel):
-    name: ReportEnum = pydantic.Field(..., title="Report Name", example="TestingReport")
+    name: ReportEnum = pydantic.Field(
+        ..., title="Report Name", example="MinimalTestReport"
+    )
     include_svg: bool = False
     include_html: bool = False
     flatten: bool = True
@@ -296,7 +298,7 @@ REPORT_EXAMPLES = {
             "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
         ),
         "value": {
-            "name": "TestingReport",
+            "name": "MinimalTestReport",
             "dataset": "regions",
             "featureId": 3,
             "fidField": "ogc_fid",
@@ -308,7 +310,7 @@ REPORT_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "TestingReport",
+            "name": "MinimalTestReport",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {

@@ -11,7 +11,7 @@ from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator im
     GhsPopComparisonBuildings,
 )
 from ohsome_quality_analyst.indicators.mapping_saturation import models
-from ohsome_quality_analyst.reports.testing_report.report import TestingReport
+from ohsome_quality_analyst.reports.minimal_test_report.report import MinimalTestReport
 from ohsome_quality_analyst.utils.definitions import load_metadata
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
@@ -46,8 +46,8 @@ class TestHelper(unittest.TestCase):
         )
 
         self.assertIs(
-            name_to_class(class_type="report", name="TestingReport"),
-            TestingReport,
+            name_to_class(class_type="report", name="MinimalTestReport"),
+            MinimalTestReport,
         )
 
         self.indicators = load_metadata("indicators")

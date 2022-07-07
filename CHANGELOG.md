@@ -16,7 +16,7 @@
 
 ### Other Changes
 
-- Add report `TestingReport` used for testing and remove `SimpleReport`([#342])
+- Add report `MinimalTestReport` used for testing and remove `SimpleReport`([#342])
 - Improve documentation and examples of the API ([#299])
 - Factor out template logic to own module ([#302])
 - Remove artifacts of database setup for GHSL raster datasets ([#310])

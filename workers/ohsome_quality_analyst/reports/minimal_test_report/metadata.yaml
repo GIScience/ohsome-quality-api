@@ -1,9 +1,9 @@
 ---
-TestingReport:
-  name: Testing Report
+MinimalTestReport:
+  name: Minimal Test Report
   description: |
     This report shows the quality for two indicators:
-    Mapping-Saturation and Currentness.
+    Mapping Saturation and Currentness.
     It's main function is to test the interactions between
     database, api and website.
   label_description:

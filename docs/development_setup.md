@@ -172,7 +172,7 @@ curl \
 
 # POST request for a report
 curl \
-    -X POST "http://127.0.0.1:8080/report/TestingReport" \
+    -X POST "http://127.0.0.1:8080/report/MinimalTestReport" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -d '{"dataset": "regions", "featureId": 1}' \
