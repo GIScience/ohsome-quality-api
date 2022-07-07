@@ -190,7 +190,7 @@ INDICATOR_EXAMPLES = {
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
     "Custom AOI": {
@@ -284,7 +284,7 @@ INDICATOR_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
 }
@@ -301,7 +301,7 @@ REPORT_EXAMPLES = {
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
     "Custom AOI": {
@@ -325,7 +325,7 @@ REPORT_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
 }
