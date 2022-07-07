@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%2C+%22id%22%3A+0%7D%5D%7D
     headers:
       accept:
       - '*/*'
@@ -9,7 +9,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '427'
+      - '444'
       content-type:
       - application/x-www-form-urlencoded
       host:
@@ -21,8 +21,8 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
-      \   \"value\" : 2112.0\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
+      \   \"value\" : 2110.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:54:47 GMT
+      - Thu, 07 Jul 2022 13:47:21 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -57,7 +57,7 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F%2FP1M
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%2C+%22id%22%3A+0%7D%5D%7D&time=2008-01-01%2F%2FP1M
     headers:
       accept:
       - '*/*'
@@ -66,7 +66,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '452'
+      - '469'
       content-type:
       - application/x-www-form-urlencoded
       host:
@@ -252,7 +252,8 @@ interactions:
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
-      \   \"value\" : 2112.0\n  } ]\n}"
+      \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
+      \   \"value\" : 2110.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -273,7 +274,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:54:47 GMT
+      - Thu, 07 Jul 2022 13:47:23 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -308,8 +309,8 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
-      \   \"value\" : 932.0\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -330,7 +331,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:55:03 GMT
+      - Thu, 07 Jul 2022 13:47:35 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -539,7 +540,8 @@ interactions:
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
-      \   \"value\" : 932.0\n  } ]\n}"
+      \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -560,7 +562,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:55:03 GMT
+      - Thu, 07 Jul 2022 13:47:35 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -595,7 +597,7 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -617,7 +619,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:55:19 GMT
+      - Thu, 07 Jul 2022 13:47:49 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -826,6 +828,7 @@ interactions:
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
+      \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -847,7 +850,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:55:21 GMT
+      - Thu, 07 Jul 2022 13:47:50 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

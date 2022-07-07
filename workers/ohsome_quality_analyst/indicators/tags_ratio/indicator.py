@@ -128,5 +128,4 @@ class TagsRatio(BaseIndicator):
         plt.tight_layout()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

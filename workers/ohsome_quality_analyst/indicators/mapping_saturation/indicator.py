@@ -166,7 +166,6 @@ class MappingSaturation(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
-        logging.info("Successful creation of the SVG figure.")
         plt.close("all")
 
     def check_edge_cases(self) -> str:
