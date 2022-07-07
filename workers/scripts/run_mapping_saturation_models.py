@@ -7,12 +7,10 @@ from os.path import exists
 
 import matplotlib.pyplot as plt
 import numpy as np
-from dacite import from_dict
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 import ohsome_quality_analyst.ohsome.client as ohsome_client
-from ohsome_quality_analyst.base.indicator import LayerDefinition
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.utils.definitions import get_layer_definition
 
@@ -57,9 +55,7 @@ async def query_ohsome_api(features, layers) -> list:
 def get_layers(layer_names) -> list:
     layers = []
     for layer_name in layer_names:
-        layers.append(
-            from_dict(data_class=LayerDefinition, data=get_layer_definition(layer_name))
-        )
+        layers.append(get_layer_definition(layer_name))
     return layers
 
 

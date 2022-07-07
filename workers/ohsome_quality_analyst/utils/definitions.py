@@ -13,6 +13,7 @@ import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 
@@ -252,7 +253,7 @@ def load_layer_definitions() -> Dict:
         return yaml.safe_load(f)
 
 
-def get_layer_definition(layer_name: str) -> Dict:
+def get_layer_definition(layer_key: str) -> LayerDefinition:
     """Get ohsome API parameters of a single layer based on layer name.
 
     This is implemented outside the layer class to
@@ -261,15 +262,14 @@ def get_layer_definition(layer_name: str) -> Dict:
     """
     layers = load_layer_definitions()
     try:
-        layer = layers[layer_name]
-    except KeyError:
-        logging.error(
-            "Invalid layer name. Valid layer names are: " + str(layers.keys())
-        )
-        raise
+        layer = layers[layer_key]
+    except KeyError as error:
+        raise KeyError(
+            "Invalid layer key. Valid layer keys are: " + str(layers.keys())
+        ) from error
     # Avoid built-in function name `filter`
     layer["filter_"] = layer.pop("filter")
-    return layer
+    return LayerDefinition(**layer)
 
 
 def get_indicator_classes() -> Dict:

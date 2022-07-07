@@ -8,7 +8,6 @@ from functools import singledispatch
 from typing import Coroutine, List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
-from dacite import from_dict
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 import ohsome_quality_analyst.geodatabase.client as db_client
@@ -21,7 +20,6 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
-from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.utils.definitions import (
     GEOM_SIZE_LIMIT,
@@ -152,10 +150,7 @@ async def _(
     created from scratch and then those results are saved to the database.
     """
     name = parameters.name.value
-    layer: Layer = from_dict(
-        data_class=LayerDefinition,
-        data=get_layer_definition(parameters.layer_name.value),
-    )
+    layer: Layer = get_layer_definition(parameters.layer_name.value)
 
     logging.info("Fetching Indicator from database ...")
     logging.info("Feature id:     {0:4}".format(parameters.feature_id))
@@ -203,10 +198,7 @@ async def _(
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
-    layer: Layer = from_dict(
-        data_class=LayerDefinition,
-        data=get_layer_definition(parameters.layer_name.value),
-    )
+    layer: Layer = get_layer_definition(parameters.layer_name.value)
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
