@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS results (
     indicator_name text,  -- INDICATOR is a SQL keyword
-    layer_name text,
+    layer_key text,
     dataset_name text,
     fid text,
     timestamp_oqt timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS results (
     result_description text,
     result_svg text,
     feature json,
-    PRIMARY KEY (indicator_name, layer_name, dataset_name, fid)
+    PRIMARY KEY (indicator_name, layer_key, dataset_name, fid)
 );

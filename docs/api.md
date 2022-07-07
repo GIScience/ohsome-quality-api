@@ -8,8 +8,8 @@ Using the Swagger UI one can create valid `cURL` requests with using an interact
 
 Three types of requests can be made:
 
-- To request an Indicator for an AOI defined by OQT provide the following parameters: `name`, `layerName`, `dataset` and `featureId`
-- To request an Indicator for a custom AOI provide the following parameters: parameters: `name`, `layerName` and `bpolys`
+- To request an Indicator for an AOI defined by OQT provide the following parameters: `name`, `layerKey`, `dataset` and `featureId`
+- To request an Indicator for a custom AOI provide the following parameters: parameters: `name`, `layerKey` and `bpolys`
 - To request an Indicator for a custom AOI and custom data provide the following parameters: `name`, `bpolys` and `layer`
 
 Depending on the input, the output will be a GeoJSON Feature or FeatureCollection with the results of the Indicator as properties. The Feature properties of the input GeoJSON will be preserved if they do not collide with the properties set by OQT.
@@ -19,7 +19,7 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 | Parameter     | Description                                                                                                                                       |
 | ---           | ---                                                                                                                                               |
 | `name`        | Name of the Indicator                                                                                                                             |
-| `layerName`   | Name of the layer definition                                                                                                                      |
+| `layerKey`    | Name of the layer definition                                                                                                                      |
 | `dataset`     | Name of the dataset containing bounding polygons                                                                                                  |
 | `featureId`   | Identifier of the feature in the dataset                                                                                                          |
 | `bpolys`      | Bounding polygon(s) as GeoJSON Feature, FeatureCollection, Polygon or MultiPolygon object. The Geometry has to be of type Polygon or MultiPolygon |
@@ -44,7 +44,7 @@ import requests
 url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "GhsPopComparisonBuildings",
-    "layerName": "building_count",
+    "layerKey": "building_count",
     "dataset": "regions",
     "featureId": 3,
     "fidField": "ogc_fid",  # Optional
@@ -78,7 +78,7 @@ bpolys = {
 }
 parameters = {
     "name": "GhsPopComparisonBuildings",
-    "layerName": "building_count",
+    "layerKey": "building_count",
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional

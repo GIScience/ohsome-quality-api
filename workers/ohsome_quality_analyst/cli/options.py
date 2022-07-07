@@ -62,8 +62,8 @@ dataset_name = click.option(
     default=None,
 )
 
-layer_name = click.option(
-    "--layer-name",
+layer_key = click.option(
+    "--layer-key",
     "-l",
     required=True,
     type=click.Choice(

@@ -23,7 +23,7 @@ class TestOqt(unittest.TestCase):
         # Heidelberg
         self.indicator_name = "Minimal"
         self.report_name = "Minimal"
-        self.layer_name = "minimal"
+        self.layer_key = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
         self.fid_field = "ogc_fid"
@@ -42,7 +42,7 @@ class TestOqt(unittest.TestCase):
         """Test creating indicator from scratch."""
         parameters = IndicatorBpolys(
             name=self.indicator_name,
-            layerName=self.layer_name,
+            layerKey=self.layer_key,
             bpolys=self.feature,
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
@@ -52,7 +52,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_default_fid_field(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerName=self.layer_name,
+            layerKey=self.layer_key,
             dataset=self.dataset,
             featureId=self.feature_id,
         )
@@ -63,7 +63,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_int(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerName=self.layer_name,
+            layerKey=self.layer_key,
             dataset=self.dataset,
             featureId=self.feature_id,
             fidField=self.fid_field,
@@ -75,7 +75,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_str(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerName=self.layer_name,
+            layerKey=self.layer_key,
             dataset=self.dataset,
             featureId="Heidelberg",
             fidField="name",
@@ -141,13 +141,6 @@ class TestOqt(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_report(""))
 
-    @mock.patch(
-        "ohsome_quality_analyst.oqt.INDICATOR_LAYER",
-        (
-            ("Minimal", "minimal"),
-            ("Minimal", "building_count"),
-        ),
-    )
     @oqt_vcr.use_cassette()
     def test_create_all_indicators(self):
         with mock.patch(
@@ -162,6 +155,7 @@ class TestOqt(unittest.TestCase):
                 oqt.create_all_indicators(
                     dataset="regions",
                     indicator_name="Minimal",
+                    layer_key="minimal",
                 )
             )
 
@@ -181,8 +175,8 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
-            name="MappingSaturation",
-            layerName="building_count",
+            name=self.indicator_name,
+            layerKey=self.layer_key,
             bpolys=feature,
         )
         with self.assertRaises(ValueError):

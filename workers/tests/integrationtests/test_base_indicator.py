@@ -11,7 +11,7 @@ class TestBaseIndicator(unittest.TestCase):
         self.feature = asyncio.run(
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
-        self.layer_name = "minimal"
+        self.layer_key = "minimal"
 
     def test_as_feature(self):
         indicator = Minimal(feature=self.feature, layer=mock.Mock())

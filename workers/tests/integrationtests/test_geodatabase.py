@@ -50,7 +50,7 @@ class TestGeodatabase(unittest.TestCase):
             "SELECT feature "
             + "FROM results "
             + "WHERE indicator_name = 'Minimal' "
-            + "AND layer_name = 'Minimal' "
+            + "AND layer_key = 'Minimal' "
             + "AND dataset_name = 'regions' "
             + "AND fid = '3';"
         )

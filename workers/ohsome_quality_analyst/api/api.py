@@ -38,7 +38,7 @@ from ohsome_quality_analyst.utils.definitions import (
     get_dataset_names_api,
     get_fid_fields_api,
     get_indicator_names,
-    get_layer_names,
+    get_layer_keys,
     get_report_names,
 )
 from ohsome_quality_analyst.utils.exceptions import (
@@ -304,11 +304,11 @@ async def list_datasets():
     return response
 
 
-@app.get("/layerNames")
+@app.get("/layerKeys")
 async def list_layers():
     """List names of available layers."""
     response = empty_api_response()
-    response["result"] = get_layer_names()
+    response["result"] = get_layer_keys()
     return response
 
 

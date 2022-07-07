@@ -103,7 +103,7 @@ def get_indicator_layer_combination():
 
 @cli.command("create-indicator")
 @cli_option(options.indicator_name)
-@cli_option(options.layer_name)
+@cli_option(options.layer_key)
 @cli_option(options.infile)
 @cli_option(options.outfile)
 @cli_option(options.dataset_name)
@@ -114,7 +114,7 @@ def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
-    layer_name: str,
+    layer_key: str,
     feature_id: str,
     dataset_name: str,
     fid_field: str,
@@ -136,13 +136,13 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             dataset=dataset_name,
             featureId=feature_id,
             fidField=fid_field,
@@ -220,7 +220,7 @@ def create_report(
     default=None,
 )
 @click.option(
-    "--layer-name",
+    "--layer-key",
     "-l",
     type=click.Choice(
         list(load_layer_definitions().keys()),
@@ -236,7 +236,7 @@ def create_report(
 def create_all_indicators(
     dataset_name: str,
     indicator_name: str,
-    layer_name: str,
+    layer_key: str,
     force: bool,
 ):
     """Create all Indicators for all features of the given dataset.
@@ -259,7 +259,7 @@ def create_all_indicators(
         oqt.create_all_indicators(
             dataset_name,
             indicator_name=indicator_name,
-            layer_name=layer_name,
+            layer_key=layer_key,
             force=force,
         )
     )
