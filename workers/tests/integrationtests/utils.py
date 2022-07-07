@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 
 import geojson
 import vcr
-from dacite import from_dict
 
 from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.utils.definitions import get_layer_definition
@@ -31,7 +30,7 @@ def get_geojson_fixture(name):
 
 
 def get_layer_fixture(name: str) -> LayerDefinition:
-    return from_dict(data_class=LayerDefinition, data=get_layer_definition(name))
+    return get_layer_definition(name)
 
 
 # usage example:
