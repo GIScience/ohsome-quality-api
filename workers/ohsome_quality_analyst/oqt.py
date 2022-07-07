@@ -67,7 +67,7 @@ async def _(
     tasks: List[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" not in feature.keys():
-            feature["id"] = i + 1
+            feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         if size_restriction and isinstance(parameters, IndicatorBpolys):
             await check_area_size(feature.geometry)
