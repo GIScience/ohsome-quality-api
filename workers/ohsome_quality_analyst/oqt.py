@@ -108,7 +108,7 @@ async def create_report_as_geojson(
         features = []
         for i, feature in enumerate(loads_geojson(parameters.bpolys)):
             if "id" not in feature.keys():
-                feature["id"] = i + 1
+                feature["id"] = i
             if size_restriction:
                 await check_area_size(feature.geometry)
             # Reports for a FeatureCollection are not created asynchronously (as it is
