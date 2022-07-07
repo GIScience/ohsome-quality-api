@@ -39,7 +39,7 @@ class BaseIndicator(BaseModel):
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
-    flatten: bool = True
+    flatten: bool = False
 
     class Config:
         """Pydantic config class."""
@@ -54,7 +54,7 @@ class BaseReport(BaseModel):
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
-    flatten: bool = True
+    flatten: bool = False
 
     class Config:
         """Pydantic config class."""
