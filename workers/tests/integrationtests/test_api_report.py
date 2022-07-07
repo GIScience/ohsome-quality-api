@@ -85,7 +85,7 @@ class TestApiReport(unittest.TestCase):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
-    def test_report_include_svg(self):
+    def test_report_include_svg_true(self):
         url = (
             "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
             "&includeSvg={4}".format(
@@ -98,8 +98,9 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["indicators"][0]["result"]
 
+    def test_report_include_svg_false(self):
         url = (
             "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
             "&includeSvg={4}".format(
@@ -112,8 +113,9 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
+    def test_report_include_svg_default(self):
         url = "/report?name={0}&dataset={1}&featureId={2}&fidField={3}".format(
             self.report_name,
             self.dataset,
@@ -122,7 +124,7 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
     def test_indicator_dataset_invalid(self):
         parameters = {
@@ -172,7 +174,7 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("report.result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["report"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_flatten_default(self):
@@ -184,11 +186,26 @@ class TestApiReport(unittest.TestCase):
         response = self.client.get(url)
         result = response.json()
         # Check flat result value
-        self.assertIn("report.result.value", result["properties"].keys())
-        self.assertIn("indicators.0.result.value", result["properties"].keys())
+        assert "report.result.value" not in result["properties"]
+        assert "value" in result["properties"]["report"]["result"]
+        assert "indicators.0.result.value" not in result["properties"]
+        assert "value" in result["properties"]["indicators"][0]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_flatten_true(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}&flatten={3}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+            True,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "report.result.value" in result["properties"]
+        assert "indicators.0.result.value" in result["properties"]
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_false(self):
         url = "/report?name={0}&dataset={1}&featureId={2}&flatten={3}".format(
             self.report_name,
             self.dataset,
@@ -197,8 +214,10 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("value", result["properties"]["report"]["result"])
-        self.assertIn("value", result["properties"]["indicators"][0]["result"])
+        assert "report.result.value" not in result["properties"]
+        assert "value" in result["properties"]["report"]["result"]
+        assert "indicators.0.result.value" not in result["properties"]
+        assert "value" in result["properties"]["indicators"][0]["result"]
 
 
 if __name__ == "__main__":

@@ -139,7 +139,7 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg_false(self):
@@ -156,7 +156,7 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg_default(self):
@@ -172,7 +172,7 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_invalid_layer(self):
@@ -205,7 +205,7 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_html_false(self):
@@ -222,7 +222,7 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_html_default(self):
@@ -238,11 +238,11 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_default(self):
-        url = "/indicator?name={0}&layerName={1}&dataset={2}" "&featureId={3}".format(
+        url = "/indicator?name={0}&layerName={1}&dataset={2}&featureId={3}".format(
             self.indicator_name,
             self.layer_name,
             self.dataset,
@@ -251,7 +251,8 @@ class TestApiIndicator(unittest.TestCase):
         response = self.client.get(url)
         result = response.json()
         # Check flat result value
-        self.assertIn("result.value", result["properties"].keys())
+        assert "result.value" not in result["properties"]
+        assert "value" in result["properties"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_true(self):
@@ -262,15 +263,15 @@ class TestApiIndicator(unittest.TestCase):
                 self.layer_name,
                 self.dataset,
                 self.feature_id,
-                False,
+                True,
             )
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("value", result["properties"]["result"])
+        assert "result.value" in result["properties"]
 
     @oqt_vcr.use_cassette()
-    def test_indicator_include_data_default(self):
+    def test_indicator_flatten_false(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
             "&featureId={3}&flatten={4}".format(
@@ -283,41 +284,52 @@ class TestApiIndicator(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        assert "data" not in result["properties"].keys()
+        assert "result.value" not in result["properties"]
+        assert "value" in result["properties"]["result"]
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_data_default(self):
+        url = "/indicator?name={0}&layerName={1}&dataset={2}" "&featureId={3}".format(
+            self.indicator_name,
+            self.layer_name,
+            self.dataset,
+            self.feature_id,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "data" not in result["properties"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_true(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
-            "&featureId={3}&flatten={4}&includeData={5}".format(
+            "&featureId={3}&includeData={4}".format(
                 self.indicator_name,
                 self.layer_name,
                 self.dataset,
                 self.feature_id,
-                False,
                 True,
             )
         )
         response = self.client.get(url)
         result = response.json()
-        assert "data" in result["properties"].keys()
+        assert "data" in result["properties"]
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_false(self):
         url = (
             "/indicator?name={0}&layerName={1}&dataset={2}"
-            "&featureId={3}&flatten={4}&includeData={5}".format(
+            "&featureId={3}&includeData={4}".format(
                 self.indicator_name,
                 self.layer_name,
                 self.dataset,
                 self.feature_id,
                 False,
-                False,
             )
         )
         response = self.client.get(url)
         result = response.json()
-        assert "data" not in result["properties"].keys()
+        assert "data" not in result["properties"]
 
 
 if __name__ == "__main__":
