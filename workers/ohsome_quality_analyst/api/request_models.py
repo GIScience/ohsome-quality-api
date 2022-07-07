@@ -38,6 +38,7 @@ class BaseIndicator(BaseModel):
     )
     include_svg: bool = False
     include_html: bool = False
+    include_data: bool = False
     flatten: bool = True
 
     class Config:
@@ -54,6 +55,7 @@ class BaseReport(BaseModel):
     )
     include_svg: bool = False
     include_html: bool = False
+    include_data: bool = False
     flatten: bool = True
 
     class Config:
@@ -236,9 +238,6 @@ INDICATOR_EXAMPLES = {
                         ]
                     ],
                 },
-                "includeSvg": False,
-                "includeHtml": False,
-                "flatten": True,
             },
             "layer": {
                 "name": "My layer name",

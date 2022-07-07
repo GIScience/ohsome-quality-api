@@ -25,6 +25,7 @@ class TestApiRequestModels(unittest.TestCase):
             name="GhsPopComparisonBuildings",
             includeSvg=True,
             includeHtml=True,
+            includeData=False,
             flatten=False,
         )
 
@@ -54,6 +55,7 @@ class TestApiRequestModels(unittest.TestCase):
             name="MinimalTestReport",
             includeSvg=True,
             includeHtml=True,
+            includeData=False,
             flatten=False,
         )
 

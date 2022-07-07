@@ -11,7 +11,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -43,64 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:58:51 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '427'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.9.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
-      \   \"value\" : 2110.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 07 Jul 2022 11:58:59 GMT
+      - Thu, 07 Jul 2022 13:29:36 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -129,7 +72,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -331,7 +274,64 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:58:59 GMT
+      - Thu, 07 Jul 2022 13:29:45 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.674092%2C+49.404271%5D%2C+%5B8.69585%2C+49.404271%5D%2C+%5B8.69585%2C+49.415552%5D%2C+%5B8.674092%2C+49.415552%5D%2C+%5B8.674092%2C+49.404271%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '427'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.10.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
+      \   \"value\" : 2110.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Jul 2022 13:29:46 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -360,7 +360,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -410,7 +410,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:07 GMT
+      - Thu, 07 Jul 2022 13:29:57 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -439,7 +439,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -468,64 +468,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:15 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1367'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.9.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
-      \   \"value\" : 930.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 07 Jul 2022 11:59:25 GMT
+      - Thu, 07 Jul 2022 13:30:04 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -554,7 +497,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -756,7 +699,64 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:28 GMT
+      - Thu, 07 Jul 2022 13:30:13 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1367'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.10.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 07 Jul 2022 13:30:14 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -785,7 +785,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -835,7 +835,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:34 GMT
+      - Thu, 07 Jul 2022 13:30:25 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -864,7 +864,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -893,7 +893,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:41 GMT
+      - Thu, 07 Jul 2022 13:30:32 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -918,7 +918,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -950,7 +950,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:41 GMT
+      - Thu, 07 Jul 2022 13:30:32 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -979,7 +979,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -1181,7 +1181,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:49 GMT
+      - Thu, 07 Jul 2022 13:30:40 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -1210,7 +1210,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -1238,7 +1238,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 11:59:51 GMT
+      - Thu, 07 Jul 2022 13:30:42 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -1267,7 +1267,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -1316,7 +1316,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 12:00:04 GMT
+      - Thu, 07 Jul 2022 13:30:52 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -1345,7 +1345,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -1373,7 +1373,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Jul 2022 12:00:12 GMT
+      - Thu, 07 Jul 2022 13:30:59 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

@@ -62,7 +62,7 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         response = self.post_response(featurecollection)
         self.assertEqual(response.status_code, 200)

@@ -73,13 +73,14 @@ RASTER_DATASETS = (
         "VNL",
         "VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif",
         "EPSG:4326",
-        None,
+        -999,
     ),
 )
 
 
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
+    ("BuildingCompleteness", "building_area"),
     ("GhsPopComparisonBuildings", "building_count"),
     ("GhsPopComparisonRoads", "jrc_road_length"),
     ("GhsPopComparisonRoads", "major_roads_length"),

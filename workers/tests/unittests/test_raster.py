@@ -54,17 +54,35 @@ class TestRaster(unittest.TestCase):
         ),
     )
     def test_get_zonal_stats(self, *args):
-        expected = {
-            "count": 2,
-            "max": 73.3844985961914,
-            "mean": 70.12319946289062,
-            "min": 66.86190032958984,
-        }
+        expected = [
+            {
+                "count": 2,
+                "max": 73.3844985961914,
+                "mean": 70.12319946289062,
+                "min": 66.86190032958984,
+            }
+        ]
         result = raster_client.get_zonal_stats(
             self.feature,
             self.raster_dataset,
         )
-        self.assertEqual(expected, result[0])
+        self.assertEqual(expected, result)
+
+    @mock.patch(
+        "ohsome_quality_analyst.raster.client.get_raster_path",
+        return_value=os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "nodata.tif",
+        ),
+    )
+    def test_get_zonal_stats_nodata(self, *args):
+        """Test on a raster file with only pixel values of -222 (nodata)"""
+        expected = [{"count": 0, "sum": None}]
+        result = raster_client.get_zonal_stats(
+            self.feature, self.raster_dataset, stats=["count", "sum"]
+        )
+        self.assertEqual(expected, result)
 
     def test_transform_different_crs(self):
         expected = {

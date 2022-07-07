@@ -1,6 +1,5 @@
 import asyncio
 import os
-from datetime import datetime
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -23,12 +22,6 @@ from .utils import get_geojson_fixture, get_layer_fixture
 class AsyncMock(MagicMock):
     async def __call__(self, *args, **kwargs):
         return super().__call__(*args, **kwargs)
-
-
-class TestOhsomeClient(TestCase):
-    def test_get_latest_ohsome_timestamp(self):
-        time = asyncio.run(ohsome_client.get_latest_ohsome_timestamp())
-        self.assertIsInstance(time, datetime)
 
 
 class TestOhsomeClientQuery(TestCase):

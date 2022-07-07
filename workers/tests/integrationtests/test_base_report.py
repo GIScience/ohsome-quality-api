@@ -20,7 +20,7 @@ class TestBaseReport(unittest.TestCase):
         for _ in report.indicator_layer:
             report.indicators.append(indicator)
 
-        feature = report.as_feature(flatten=True)
+        feature = report.as_feature(flatten=True, include_data=True)
         self.assertTrue(feature.is_valid)
 
         for i in (

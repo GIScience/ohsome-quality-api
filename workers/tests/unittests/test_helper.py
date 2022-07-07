@@ -5,7 +5,6 @@ import unittest
 
 import numpy as np
 from geojson import Feature, Polygon
-from sklearn.svm import SVC
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
@@ -17,7 +16,6 @@ from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
     json_serialize,
-    load_sklearn_model,
     loads_geojson,
     name_to_class,
 )
@@ -162,23 +160,6 @@ class TestHelper(unittest.TestCase):
         }
         output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
         self.assertListEqual(flatten_sequence(input_seq), output_seq)
-
-    def test_load_sklearn_model(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "sklearn-model-2.joblib",
-        )
-        self.assertIsInstance(load_sklearn_model(path), SVC)
-
-    def test_load_sklearn_model_version_mismatch(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "sklearn-model-1.joblib",
-        )
-        with self.assertRaises(UserWarning):
-            load_sklearn_model(path)
 
     def test_json_serialize_valid_input_datetime(self):
         self.assertIsInstance(json_serialize(datetime.datetime.now()), str)

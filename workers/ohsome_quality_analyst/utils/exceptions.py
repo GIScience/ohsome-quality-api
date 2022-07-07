@@ -31,6 +31,15 @@ class EmptyRecordError(DatabaseError):
         self.message = "Query returned no record."
 
 
+class HexCellsNotFoundError(DatabaseError):
+    def __init__(self):
+        self.name = "HexCellsNotFoundError"
+        self.message = (
+            "No hex-cells found for the given AOI. "
+            + "The AOI is probably outside Africa."
+        )
+
+
 class RasterDatasetNotFoundError(FileNotFoundError):
     def __init__(self, raster):
         self.name = "RasterDatasetNotFoundError"
