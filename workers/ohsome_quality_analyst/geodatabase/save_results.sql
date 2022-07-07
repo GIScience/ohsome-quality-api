@@ -1,6 +1,6 @@
 INSERT INTO results (
     indicator_name,
-    layer_name,
+    layer_key,
     dataset_name,
     fid,
     timestamp_oqt,
@@ -24,7 +24,7 @@ VALUES (
     $11)
 ON CONFLICT (
     indicator_name,
-    layer_name,
+    layer_key,
     dataset_name,
     fid)
     DO UPDATE SET

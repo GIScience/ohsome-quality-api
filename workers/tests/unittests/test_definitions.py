@@ -37,8 +37,8 @@ class TestDefinitions(unittest.TestCase):
         names = definitions.get_report_names()
         self.assertIsInstance(names, list)
 
-    def test_get_layer_names(self):
-        names = definitions.get_layer_names()
+    def test_get_layer_keys(self):
+        names = definitions.get_layer_keys()
         self.assertIsInstance(names, list)
 
     def test_get_dataset_names(self):

@@ -7,6 +7,7 @@
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
+- Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 
 ### New Features
 
@@ -24,14 +25,16 @@
 ### How to Upgrade
 
 - Reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` are not accessibly via the website anymore. If you want to access those reports please use the API.
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
-- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
+[#376]: https://github.com/GIScience/ohsome-quality-analyst/pull/376
 [#380]: https://github.com/GIScience/ohsome-quality-analyst/pull/380
 [#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
 [#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383

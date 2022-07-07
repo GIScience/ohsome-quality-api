@@ -67,7 +67,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_layers(self):
-        url = "/layerNames"
+        url = "/layerKeys"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

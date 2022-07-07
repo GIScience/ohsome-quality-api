@@ -62,7 +62,7 @@ Your init should call the BaseIndicator init and thus should start like this:
 def __init__(
       self,
       dynamic: bool,
-      layer_name: str,
+      layer_key: str,
       dataset: str = None,
       feature_id: int = None,
       bpolys: FeatureCollection = None,
@@ -71,7 +71,7 @@ def __init__(
           dataset=dataset,
           feature_id=feature_id,
           dynamic=dynamic,
-          layer_name=layer_name,
+          layer_key=layer_key,
           bpolys=bpolys,
       )
 ```

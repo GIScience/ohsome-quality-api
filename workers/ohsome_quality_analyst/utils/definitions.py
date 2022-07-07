@@ -245,7 +245,7 @@ def load_layer_definitions() -> Dict:
     """Read ohsome API parameters of all layer from YAML file.
 
     Returns:
-        A Dict with the layer names of the layers as keys.
+        A dict with all layers included.
     """
     directory = get_module_dir("ohsome_quality_analyst.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
@@ -296,7 +296,7 @@ def get_report_names() -> List[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_layer_names() -> List[str]:
+def get_layer_keys() -> List[str]:
     return list(load_layer_definitions().keys())
 
 
@@ -371,6 +371,6 @@ def get_valid_layers(indcator_name: str) -> tuple:
     return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
 
 
-def get_valid_indicators(layer_name: str) -> tuple:
+def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_name])
+    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])

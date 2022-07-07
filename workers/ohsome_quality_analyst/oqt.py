@@ -150,7 +150,7 @@ async def _(
     created from scratch and then those results are saved to the database.
     """
     name = parameters.name.value
-    layer: Layer = get_layer_definition(parameters.layer_name.value)
+    layer: Layer = get_layer_definition(parameters.layer_key.value)
 
     logging.info("Fetching Indicator from database ...")
     logging.info("Feature id:     {0:4}".format(parameters.feature_id))
@@ -182,7 +182,7 @@ async def _(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                layerName=parameters.layer_name.value,
+                layerKey=parameters.layer_key.value,
                 bpolys=feature,
             )
         )
@@ -198,7 +198,7 @@ async def _(
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
-    layer: Layer = get_layer_definition(parameters.layer_name.value)
+    layer: Layer = get_layer_definition(parameters.layer_key.value)
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
@@ -288,12 +288,12 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     report.set_indicator_layer()
 
     tasks: List[Coroutine] = []
-    for indicator_name, layer_name in report.indicator_layer:
+    for indicator_name, layer_key in report.indicator_layer:
         tasks.append(
             create_indicator(
                 IndicatorDatabase(
                     name=indicator_name,
-                    layerName=layer_name,
+                    layerKey=layer_key,
                     dataset=dataset,
                     featureId=feature_id,
                 ),
@@ -328,12 +328,12 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
     report.set_indicator_layer()
 
     tasks: List[Coroutine] = []
-    for indicator_name, layer_name in report.indicator_layer:
+    for indicator_name, layer_key in report.indicator_layer:
         tasks.append(
             create_indicator(
                 IndicatorBpolys(
                     name=indicator_name,
-                    layerName=layer_name,
+                    layerKey=layer_key,
                     bpolys=feature,
                 )
             )
@@ -347,7 +347,7 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
 async def create_all_indicators(
     dataset: str,
     indicator_name: Optional[str] = None,
-    layer_name: Optional[str] = None,
+    layer_key: Optional[str] = None,
     force: bool = False,
 ) -> None:
     """Create all indicator/layer combination for the given dataset.
@@ -356,26 +356,26 @@ async def create_all_indicators(
     This functions executes `create_indicator()` function up to four times concurrently.
     """
 
-    if indicator_name is not None and layer_name is None:
+    if indicator_name is not None and layer_key is None:
         layers = get_valid_layers(indicator_name)
         indicator_layer = [(indicator_name, lay) for lay in layers]
-    elif indicator_name is None and layer_name is not None:
-        indicators = get_valid_indicators(layer_name)
-        indicator_layer = [(ind, layer_name) for ind in indicators]
-    elif indicator_name is not None and layer_name is not None:
-        indicator_layer = [(indicator_name, layer_name)]
+    elif indicator_name is None and layer_key is not None:
+        indicators = get_valid_indicators(layer_key)
+        indicator_layer = [(ind, layer_key) for ind in indicators]
+    elif indicator_name is not None and layer_key is not None:
+        indicator_layer = [(indicator_name, layer_key)]
     else:
         indicator_layer = INDICATOR_LAYER
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name_, layer_name_ in indicator_layer:
+        for indicator_name_, layer_key_ in indicator_layer:
             tasks.append(
                 create_indicator(
                     IndicatorDatabase(
                         name=indicator_name_,
-                        layerName=layer_name_,
+                        layerKey=layer_key_,
                         dataset=dataset,
                         featureId=fid,
                     ),

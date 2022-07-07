@@ -1,6 +1,6 @@
 SELECT
     indicator_name,
-    layer_name,
+    layer_key,
     dataset_name,
     fid,
     timestamp_oqt,
@@ -14,6 +14,6 @@ FROM
     results
 WHERE
     indicator_name = $1
-    AND layer_name = $2
+    AND layer_key = $2
     AND dataset_name = $3
     AND fid = $4

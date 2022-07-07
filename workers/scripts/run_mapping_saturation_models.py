@@ -52,10 +52,10 @@ async def query_ohsome_api(features, layers) -> list:
     return results
 
 
-def get_layers(layer_names) -> list:
+def get_layers(layer_keys) -> list:
     layers = []
-    for layer_name in layer_names:
-        layers.append(get_layer_definition(layer_name))
+    for layer_key in layer_keys:
+        layers.append(get_layer_definition(layer_key))
     return layers
 
 
