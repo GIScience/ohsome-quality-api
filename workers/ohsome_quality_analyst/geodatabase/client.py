@@ -81,7 +81,7 @@ async def save_indicator_results(
         indicator.result.value,
         indicator.result.description,
         indicator.result.svg,
-        json.dumps(indicator.as_feature(), default=json_serialize),
+        json.dumps(indicator.as_feature(include_data=True), default=json_serialize),
     )
 
     async with get_connection() as conn:
@@ -134,8 +134,9 @@ async def load_indicator_results(
 
     # Write data back to the attributes of the indicator object
     feature = geojson.loads(query_result["feature"])
-    for key, value in feature["properties"]["data"].items():
-        setattr(indicator, key, value)
+    if "data" in feature["properties"]:
+        for key, value in feature["properties"]["data"].items():
+            setattr(indicator, key, value)
     return indicator
 
 

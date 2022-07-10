@@ -62,7 +62,7 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
         featurecollection = get_geojson_fixture(
-            "heidelberg-altstadt-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         response = self.post_response(featurecollection)
         self.assertEqual(response.status_code, 200)
@@ -104,7 +104,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["indicators"][0]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_include_svg_false(self):
@@ -115,7 +115,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_include_svg_default(self):
@@ -125,7 +125,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_include_html_true(self):
@@ -137,7 +137,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("report.result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["report"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_include_html_false(self):
@@ -149,7 +149,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("report.result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["report"]["result"]
 
     @oqt_vcr.use_cassette()
     def test_report_include_html_default(self):
@@ -159,7 +159,7 @@ class TestApiReportIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("report.result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["report"]["result"]
 
 
 if __name__ == "__main__":

@@ -19,28 +19,38 @@ class TestBaseIndicator(unittest.TestCase):
         indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
 
         feature = indicator.as_feature()
-        self.assertTrue(feature.is_valid)
-        for i in (
+        assert feature.is_valid
+        assert feature.geometry == feature.geometry
+        for prop in ("result", "metadata", "layer"):
+            assert prop in feature["properties"]
+        assert "data" not in feature["properties"]
+
+    def test_as_feature_include_data(self):
+        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
+
+        feature = indicator.as_feature(include_data=True)
+        assert feature.is_valid
+        for key in ("result", "metadata", "layer", "data"):
+            assert key in feature["properties"]
+        for key in (
             "pop_count",
             "area",
             "pop_count_per_sqkm",
             "feature_count",
             "feature_count_per_sqkm",
         ):
-            self.assertIn(i, feature["properties"]["data"].keys())
+            assert key in feature["properties"]["data"]
 
     def test_as_feature_flatten(self):
         indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
         feature = indicator.as_feature(flatten=True)
-        self.assertTrue(feature.is_valid)
-        for i in (
-            "data.pop_count",
-            "data.area",
-            "data.pop_count_per_sqkm",
-            "data.feature_count",
-            "data.feature_count_per_sqkm",
+        assert feature.is_valid
+        for key in (
+            "result.value",
+            "metadata.name",
+            "layer.name",
         ):
-            self.assertIn(i, feature["properties"].keys())
+            assert key in feature["properties"]
 
     def test_data_property(self):
         indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())

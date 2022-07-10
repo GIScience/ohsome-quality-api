@@ -31,6 +31,15 @@ class EmptyRecordError(DatabaseError):
         self.message = "Query returned no record."
 
 
+class HexCellsNotFoundError(DatabaseError):
+    def __init__(self):
+        self.name = "HexCellsNotFoundError"
+        self.message = (
+            "No hex-cells found for the given AOI. "
+            + "The AOI is probably outside Africa."
+        )
+
+
 class RasterDatasetNotFoundError(FileNotFoundError):
     def __init__(self, raster):
         self.name = "RasterDatasetNotFoundError"
@@ -41,16 +50,6 @@ class RasterDatasetUndefinedError(ValueError):
     def __init__(self, raster_name: str):
         self.name = "RasterDatasetUndefinedError"
         self.message = "Raster dataset {0} is not defined".format(raster_name)
-
-
-class RasterNoData(ValueError):
-    def __init__(self, raster_name: str):
-        self.name = "RasterNoData"
-        self.message = (
-            "All raster pixel values in the AOI of {0} are NoData values".format(
-                raster_name
-            )
-        )
 
 
 class LayerDataSchemaError(Exception):

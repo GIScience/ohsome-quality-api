@@ -181,5 +181,4 @@ class Currentness(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.debug("Successful SVG figure creation")
         plt.close("all")

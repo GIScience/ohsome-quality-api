@@ -1,6 +1,6 @@
 import logging
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Tuple
 
@@ -55,7 +55,7 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None, None)
 
-    def as_feature(self, flatten: bool = False) -> Feature:
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
@@ -63,15 +63,17 @@ class BaseReport(metaclass=ABCMeta):
         """
         properties = {
             "report": {
-                "metadata": vars(self.metadata).copy(),
-                "result": vars(self.result).copy(),
+                "metadata": asdict(self.metadata),
+                "result": asdict(self.result),
             },
             "indicators": [],
         }
         properties["report"]["metadata"].pop("label_description", None)
 
         for i, indicator in enumerate(self.indicators):
-            properties["indicators"].append(indicator.as_feature()["properties"])
+            properties["indicators"].append(
+                indicator.as_feature(include_data=include_data)["properties"]
+            )
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():
@@ -92,7 +94,10 @@ class BaseReport(metaclass=ABCMeta):
         for indicator in self.indicators:
             if indicator.result.label != "undefined":
                 values.append(indicator.result.value)
-        if not values:
+            else:
+                values.append(0.0)
+
+        if all(val == 0.0 for val in values):
             self.result.value = None
             self.result.label = "undefined"
             self.result.description = "Could not derive quality level"
@@ -100,15 +105,18 @@ class BaseReport(metaclass=ABCMeta):
         else:
             self.result.value = mean(values)
 
-        if self.result.value < 0.5:
-            self.result.label = "red"
-            self.result.description = self.metadata.label_description["red"]
-        elif self.result.value < 1:
-            self.result.label = "yellow"
-            self.result.description = self.metadata.label_description["yellow"]
-        elif self.result.value >= 1:
+        if (
+            all(indicator.result.label == "green" for indicator in self.indicators)
+            or self.result.value >= 1
+        ):
             self.result.label = "green"
             self.result.description = self.metadata.label_description["green"]
+        elif self.result.value >= 0.5:
+            self.result.label = "yellow"
+            self.result.description = self.metadata.label_description["yellow"]
+        elif self.result.value < 0.5:
+            self.result.label = "red"
+            self.result.description = self.metadata.label_description["red"]
 
     @abstractmethod
     def set_indicator_layer(self) -> None:

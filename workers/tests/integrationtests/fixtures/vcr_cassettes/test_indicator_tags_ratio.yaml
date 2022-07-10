@@ -15,14 +15,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2022-06-06T07:00:00Z\",\n
-      \   \"value\" : 301.0,\n    \"value2\" : 284.0,\n    \"ratio\" : 0.943522\n
+      \"1.6.3\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
+      \   \"value\" : 301.0,\n    \"value2\" : 285.0,\n    \"ratio\" : 0.946844\n
       \ } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -44,7 +44,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 14 Jun 2022 10:39:07 GMT
+      - Sun, 10 Jul 2022 15:23:12 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -73,13 +73,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.9.0
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2022-06-06T07:00:00Z\",\n
+      \"1.6.3\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
       \   \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -101,7 +101,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 14 Jun 2022 10:39:12 GMT
+      - Sun, 10 Jul 2022 15:23:16 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
