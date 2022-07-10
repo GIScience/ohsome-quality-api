@@ -297,7 +297,7 @@ REPORT_EXAMPLES = {
             "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
         ),
         "value": {
-            "name": "SimpleReport",
+            "name": "BuildingReport",
             "dataset": "regions",
             "featureId": 3,
             "fidField": "ogc_fid",
@@ -309,7 +309,7 @@ REPORT_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "SimpleReport",
+            "name": "BuildingReport",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
