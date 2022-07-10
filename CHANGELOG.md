@@ -7,11 +7,16 @@
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 
+### Other Changes
+
+- Add report `MinimalTestReport` used for testing and remove `SimpleReport`([#342])
+
 ### How to Upgrade
 
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
 
+[#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
 
@@ -32,7 +37,6 @@
 
 ### Other Changes
 
-- Add report `MinimalTestReport` used for testing and remove `SimpleReport`([#342])
 - Improve documentation and examples of the API ([#299])
 - Factor out template logic to own module ([#302])
 - Remove artifacts of database setup for GHSL raster datasets ([#310])
@@ -49,7 +53,6 @@
 [#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
-[#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
 [#346]: https://github.com/GIScience/ohsome-quality-analyst/pull/346
 
