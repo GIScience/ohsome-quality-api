@@ -2,11 +2,11 @@ from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 from ohsome_quality_analyst.utils.definitions import get_attribution
 
 
-class SimpleReport(BaseReport):
+class MinimalTestReport(BaseReport):
     def set_indicator_layer(self):
         self.indicator_layer = (
             IndicatorLayer("MappingSaturation", "building_count"),
-            IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
+            IndicatorLayer("Currentness", "building_count"),
         )
 
     def combine_indicators(self) -> None:
@@ -14,4 +14,4 @@ class SimpleReport(BaseReport):
 
     @classmethod
     def attribution(cls) -> str:
-        return get_attribution(["OSM", "GHSL"])
+        return get_attribution(["OSM"])
