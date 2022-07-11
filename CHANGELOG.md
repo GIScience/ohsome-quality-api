@@ -9,7 +9,7 @@
 
 ### Other Changes
 
-- Add report `MinimalTestReport` used for testing and remove `SimpleReport`([#342])
+- Substitute Simple Report with Minimal Test Report ([#342])
 
 ### How to Upgrade
 
