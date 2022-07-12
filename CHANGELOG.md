@@ -7,11 +7,21 @@
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 
+### New Features
+
+- Add new representative report `RoadReport` ([#357])
+
+### Other Changes
+
+- Substitute Simple Report with Minimal Test Report ([#342])
+
 ### How to Upgrade
 
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
 
+[#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
+[#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
 
