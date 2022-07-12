@@ -1,9 +1,9 @@
 ---
-SimpleReport:
-  name: Simple Report
+MinimalTestReport:
+  name: Minimal Test Report
   description: |
     This report shows the quality for two indicators:
-    mapping-saturation and ghspop-comparison.
+    Mapping Saturation and Currentness.
     It's main function is to test the interactions between
     database, api and website.
   label_description:

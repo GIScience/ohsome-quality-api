@@ -120,6 +120,7 @@ INDICATOR_LAYER = (
     ("Currentness", "mapaction_rivers_length"),
     ("PoiDensity", "poi"),
     ("TagsRatio", "building_count"),
+    ("TagsRatio", "major_roads_length"),
     ("TagsRatio", "jrc_health_count"),
     ("TagsRatio", "jrc_education_count"),
     ("TagsRatio", "jrc_road_length"),
