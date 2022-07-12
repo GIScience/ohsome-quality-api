@@ -9,6 +9,7 @@
 
 ### New Features
 
+- Add new report `MulitlevelMappingSaturation` ([#379])
 - Add new representative report `RoadReport` ([#357])
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
@@ -27,6 +28,7 @@
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
+[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
 
 ## 0.10.0
 
