@@ -16,7 +16,7 @@
 
 ### Other Changes
 
-- remove unused report `RemoteMappingLevelOne` ([#380])
+- Remove unused report `RemoteMappingLevelOne` ([#380])
 - Substitute Simple Report with Minimal Test Report ([#342])
 
 ### How to Upgrade
