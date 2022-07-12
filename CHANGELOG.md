@@ -10,6 +10,8 @@
 ### New Features
 
 - Add new representative report `RoadReport` ([#357])
+- Add new representative report `BuildingReport` ([#356])
+- Add ratio_filter to `building_count` layer ([#356])
 
 ### Other Changes
 
@@ -21,6 +23,7 @@
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
 
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
+[#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
