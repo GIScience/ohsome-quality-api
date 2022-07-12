@@ -24,3 +24,5 @@ GhsPopComparisonRoads:
     $area sqkm, which results in a population density 
     $pop_count_per_sqkm of people per sqkm.
     $feature_length_per_sqkm km of roads per sqkm mapped.
+  layer-thresholds:
+    - { layer: major_roads_length, thresholds: [{ a: 1000 }, null, { a: 500 }, null] }

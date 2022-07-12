@@ -15,3 +15,10 @@ MappingSaturation:
       Saturation could not be calculated.
   result_description: |
     The saturation of the last 3 years is $saturation%.
+  layer-thresholds:
+    - { layer: amenities, thresholds: [0.3, null, 0.97, null] }
+    - { layer: building_count, thresholds: [0.3, null, 0.97, null] }
+    - { layer: infrastructure_lines, thresholds: [0.3, null, 0.97, null] }
+    - { layer: lulc, thresholds: [0.3, null, 0.97, null] }
+    - { layer: major_roads_length, thresholds: [0.3, null, 0.97, null] }
+    - { layer: poi, thresholds: [0.3, null, 0.97, null] }

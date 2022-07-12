@@ -2,6 +2,7 @@ import logging
 import os
 from io import StringIO
 from string import Template
+from typing import Optional, Tuple
 
 import dateutil.parser
 import geojson
@@ -58,10 +59,14 @@ class BuildingCompleteness(BaseIndicator):
         self,
         layer: Layer,
         feature: Feature,
+        thresholds: Optional[Tuple[float, float, float, float]],
     ) -> None:
+        if thresholds is None:
+            thresholds = (0.2, 0.5, 0.8, 0.9)
         super().__init__(
             layer=layer,
             feature=feature,
+            thresholds=thresholds,
         )
         self.model_name: str = "Random Forest Regressor"
         # Lists of elements per hexagonal cell

@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from io import StringIO
-from typing import Dict, Literal, Optional
+from typing import Dict, Literal, Optional, Tuple
 
 import matplotlib.pyplot as plt
 from dacite import from_dict
@@ -42,8 +42,8 @@ class Result:
             value is determined by the result classes
         value (float): The result value
         class_ (int): The result class. An integer between 1 and 5. It maps to the
-            result labels. This value is used by the reports to determine an overall
-            result.
+            result labels (1 -> red; 5 -> green). This value is used by the reports to
+            determine an overall result.
         description (str): The result description.
         svg (str): Figure of the result as SVG
     """
@@ -63,17 +63,32 @@ class Result:
 
 
 class BaseIndicator(metaclass=ABCMeta):
-    """The base class of every indicator."""
+    """The base class of every indicator.
+
+    Attributes:
+        thresholds (tuple): A tuple with four float values representing the thresholds
+            between the result classes. The first element is the threshold between the
+            result class 1 and 2, the second element is the threshold between the result
+            class 2 and 3 and so on.
+    """
 
     def __init__(
         self,
         layer: Layer,
         feature: Feature,
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
     ) -> None:
         self.layer: Layer = layer
         self.feature: Feature = feature
+
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
+        layer_thresholds = metadata.pop("layer-thresholds")
+        if thresholds is None:
+            # TODO: filter layer_thresholds
+            self.thresholds = layer_thresholds[layer.key]
+        else:
+            self.thresholds = thresholds
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],

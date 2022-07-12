@@ -32,7 +32,6 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    INDICATOR_LAYER,
     get_attribution,
     get_dataset_names,
     get_fid_fields,
@@ -278,14 +277,6 @@ async def get_available_regions(asGeoJSON: bool = False):
     else:
         response["result"] = await db_client.get_regions()
         return response
-
-
-@app.get("/indicator-layer-combinations")
-async def get_indicator_layer_combinations():
-    """Get names of available indicator-layer combinations."""
-    response = empty_api_response()
-    response["result"] = INDICATOR_LAYER
-    return response
 
 
 @app.get("/indicators")

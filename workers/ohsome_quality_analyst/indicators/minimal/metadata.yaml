@@ -14,3 +14,11 @@ Minimal:
       The quality level could not be calculated for this indicator.
   result_description: |
     Some description of the result.
+  layer-thresholds:
+    # List of associative lists of valid layers and thresholds.
+    # A threshold is a list of four float values.
+    # The first element is the threshold between the result class 1
+    # (maps to the label 'red').
+    - { layer: minimal, thresholds: [0.2, 0.4, 0.6, 0.8] }
+    # Thresholds can also be functins parameters
+    # thresholds: [ {a: 0.2, b: 0.4,} { a: 0.6, b: 0.8 } ... ]

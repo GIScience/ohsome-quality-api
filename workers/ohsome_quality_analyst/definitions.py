@@ -1,10 +1,12 @@
 """Global Variables and Functions."""
+from __future__ import annotations
+
 import glob
 import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional, Tuple
 
 import yaml
 
@@ -57,63 +59,6 @@ RASTER_DATASETS = (
     ),
 )
 
-# Possible indicator layer combinations
-INDICATOR_LAYER = (
-    ("BuildingCompleteness", "building_area"),
-    ("GhsPopComparisonBuildings", "building_count"),
-    ("GhsPopComparisonRoads", "jrc_road_length"),
-    ("GhsPopComparisonRoads", "major_roads_length"),
-    ("MappingSaturation", "building_count"),
-    ("MappingSaturation", "major_roads_length"),
-    ("MappingSaturation", "amenities"),
-    ("MappingSaturation", "jrc_health_count"),
-    ("MappingSaturation", "jrc_mass_gathering_sites_count"),
-    ("MappingSaturation", "jrc_railway_length"),
-    ("MappingSaturation", "jrc_road_length"),
-    ("MappingSaturation", "jrc_education_count"),
-    ("MappingSaturation", "mapaction_settlements_count"),
-    ("MappingSaturation", "mapaction_major_roads_length"),
-    ("MappingSaturation", "mapaction_rail_length"),
-    ("MappingSaturation", "mapaction_lakes_area"),
-    ("MappingSaturation", "mapaction_rivers_length"),
-    ("MappingSaturation", "infrastructure_lines"),
-    ("MappingSaturation", "poi"),
-    ("MappingSaturation", "lulc"),
-    ("Currentness", "major_roads_count"),
-    ("Currentness", "building_count"),
-    ("Currentness", "amenities"),
-    ("Currentness", "jrc_health_count"),
-    ("Currentness", "jrc_education_count"),
-    ("Currentness", "jrc_road_count"),
-    ("Currentness", "jrc_railway_count"),
-    ("Currentness", "jrc_airport_count"),
-    ("Currentness", "jrc_water_treatment_plant_count"),
-    ("Currentness", "jrc_power_generation_plant_count"),
-    ("Currentness", "jrc_cultural_heritage_site_count"),
-    ("Currentness", "jrc_bridge_count"),
-    ("Currentness", "jrc_mass_gathering_sites_count"),
-    ("Currentness", "mapaction_settlements_count"),
-    ("Currentness", "mapaction_major_roads_length"),
-    ("Currentness", "mapaction_rail_length"),
-    ("Currentness", "mapaction_lakes_count"),
-    ("Currentness", "mapaction_rivers_length"),
-    ("Currentness", "infrastructure_lines"),
-    ("Currentness", "poi"),
-    ("Currentness", "lulc"),
-    ("PoiDensity", "poi"),
-    ("TagsRatio", "building_count"),
-    ("TagsRatio", "major_roads_length"),
-    ("TagsRatio", "jrc_health_count"),
-    ("TagsRatio", "jrc_education_count"),
-    ("TagsRatio", "jrc_road_length"),
-    ("TagsRatio", "jrc_airport_count"),
-    ("TagsRatio", "jrc_power_generation_plant_count"),
-    ("TagsRatio", "jrc_cultural_heritage_site_count"),
-    ("TagsRatio", "jrc_bridge_count"),
-    ("TagsRatio", "jrc_mass_gathering_sites_count"),
-    ("Minimal", "minimal"),
-)
-
 ATTRIBUTION_TEXTS = MappingProxyType(
     {
         "OSM": "© OpenStreetMap contributors",
@@ -128,17 +73,16 @@ ATTRIBUTION_URL = (
 )
 
 
-def load_metadata(module_name: str) -> Dict:
-    """Read metadata of all indicators or reports from YAML files.
+def load_metadata(module_name: Literal["indicators", "reports"]) -> Dict:
+    """Load metadata of all indicators or reports from YAML files.
 
-    Those text files are located in the directory of each indicator/report.
+    The YAML files are located in the directory of each individual indicator or report.
 
-    Args:
-        module_name: Either indicators or reports.
     Returns:
-        A Dict with the class names of the indicators/reports
-        as keys and metadata as values.
+        A dictionary with the indicator or report keys as directory keys and the content
+        of the YAML file (metadata) as values.
     """
+    # TODO: Is this check needed if Literal is used in func declaration?
     if module_name != "indicators" and module_name != "reports":
         raise ValueError("module name value can only be 'indicators' or 'reports'.")
 
@@ -275,11 +219,15 @@ def get_attribution(data_keys: list) -> str:
     return "; ".join([str(v) for v in filtered.values()])
 
 
+# TODO
 def get_valid_layers(indcator_name: str) -> tuple:
     """Get valid Indicator/Layer combination of an Indicator."""
-    return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
+    return tuple(
+        [tup[1] for tup in INDICATOR_LAYER_THRESHOLDS if tup[0] == indcator_name]
+    )
 
 
+# TODO
 def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])
+    return tuple([tup[0] for tup in INDICATOR_LAYER_THRESHOLDS if tup[1] == layer_key])

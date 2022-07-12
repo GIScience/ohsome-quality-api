@@ -17,3 +17,6 @@ TagsRatio:
   result_description: |
     The ratio of the features (all: $all) compared to features with
     expected tags (matched: $matched) is $result.
+  layer-thresholds:
+    - { layer: building_count, thresholds: [ 0.25, null, 0.75, null] }
+    - { layer: major_roads_length, thresholds: [ 0.25, null, 0.75, null] }

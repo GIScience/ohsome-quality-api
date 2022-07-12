@@ -183,6 +183,7 @@ async def _(
             IndicatorBpolys(
                 name=name,
                 layerKey=parameters.layer_key.value,
+                threshholds=parameters.threshholds,
                 bpolys=feature,
             )
         )
@@ -200,6 +201,7 @@ async def _(
     name = parameters.name.value
     layer: Layer = get_layer_definition(parameters.layer_key.value)
     feature = parameters.bpolys
+    threshholds = parameters.threshholds
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
@@ -207,7 +209,7 @@ async def _(
     logging.info("Layer name:     {0:4}".format(layer.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature)
+    indicator = indicator_class(layer, feature, threshholds)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
@@ -364,6 +366,7 @@ async def create_all_indicators(
     elif indicator_name is not None and layer_key is not None:
         indicator_layer = [(indicator_name, layer_key)]
     else:
+        # TODO
         indicator_layer = INDICATOR_LAYER
 
     tasks: List[asyncio.Task] = []
