@@ -15,6 +15,7 @@
 
 ### Other Changes
 
+- remove unused report `RemoteMappingLevelOne` ([#380])
 - Substitute Simple Report with Minimal Test Report ([#342])
 
 ### How to Upgrade
@@ -27,6 +28,7 @@
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
+[#380]: https://github.com/GIScience/ohsome-quality-analyst/pull/380
 ## 0.10.0
 
 ### Bug Fixes
