@@ -25,19 +25,29 @@ major_roads_count:
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/count
   filter: |
-    highway in (motorway, trunk, primary, secondary,
-    tertiary, unclassified, residential) and type:way
+    highway in (motorway, trunk, motorway_link, trunk_link, primary,
+    primary_link, secondary, secondary_link, tertiary, tertiary_link,
+    unclassified, residential) and type:way
+  ratio_filter: |
+    highway in (motorway, trunk, motorway_link, trunk_link, primary,
+    primary_link, secondary, secondary_link, tertiary, tertiary_link,
+    unclassified, residential) and type:way and name=* and name!=""
 
 major_roads_length:
   name: Major Roads
   description: |
     The road network defined by all objects which hold the principal tags for
-    the road network as defined in the OSM Wiki`:`
+    the road network and their link roads as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/length
   filter: |
-    highway in (motorway, trunk, primary, secondary,
-    tertiary, unclassified, residential) and type:way
+    highway in (motorway, trunk, motorway_link, trunk_link, primary,
+    primary_link, secondary, secondary_link, tertiary, tertiary_link,
+    unclassified, residential) and type:way
+  ratio_filter: |
+    highway in (motorway, trunk, motorway_link, trunk_link, primary,
+    primary_link, secondary, secondary_link, tertiary, tertiary_link,
+    unclassified, residential) and type:way and name=* and name!=""
 
 amenities:
   name: Amenities
