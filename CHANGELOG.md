@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.1
+
+### New Features
+
+- Add new report `MulitlevelMappingSaturation` ([#379])
+
+[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
+
+
 ## 0.10.0
 
 ### Bug Fixes
