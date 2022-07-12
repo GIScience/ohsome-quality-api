@@ -5,8 +5,8 @@ BuildingReport:
       This report gives a general overview of the quality for buildings.
   label_description:
     red: |
-      The data quality in this region is low.
-      Here, many buildings are probably not yet mapped.
+      The report indicates low quality of the underlying OSM data.
+      Probably many buildings are not yet mapped.
     yellow: |
       The report indicates medium quality of the underlying OSM data.
       Please inspect the results for the individual indicators
