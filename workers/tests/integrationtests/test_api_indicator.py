@@ -22,8 +22,8 @@ class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.indicator_name = "GhsPopComparisonBuildings"
-        self.layer_name = "building_count"
+        self.indicator_name = "Minimal"
+        self.layer_name = "minimal"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
