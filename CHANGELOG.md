@@ -8,6 +8,7 @@
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
+- Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
 
 ### New Features
 
@@ -28,6 +29,16 @@
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
 - Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- Rename endpoints ([#397]):
+| old                          | new                            |
+| ---                          | ---                            |
+| `indicatorLayerCombinations` | `indicator-layer-combinations` |
+| `indicatorNames`             | `indicators`                   |
+| `datasetNames`               | `datasets`                     |
+| `layerNames`                 | `layers`                       |
+| `reportNames`                | `reports`                      |
+| `fidFields`                  | `fid-fields`                   |
 
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
@@ -40,6 +51,7 @@
 [#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
+[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
 
 
 ## 0.10.1
