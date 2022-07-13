@@ -6,7 +6,7 @@ from ohsome_quality_analyst.reports.road_report.report import RoadReport
 from .utils import get_geojson_fixture
 
 
-class TestReportBuildingReport(unittest.TestCase):
+class TestReportRoadReport(unittest.TestCase):
     # TODO: Test case for indicator.result undefined
     def test_combine_indicators_mean(self):
 
