@@ -1,6 +1,6 @@
 ---
-MinimalTestReport:
-  name: Minimal Test Report
+Minimal:
+  name: Minimal
   description: |
     This report shows the quality for two indicators:
     Mapping Saturation and Currentness.

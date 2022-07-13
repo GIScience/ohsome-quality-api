@@ -22,7 +22,7 @@ class TestApiReportIo(unittest.TestCase):
         self.client = TestClient(app)
         self.endpoint = "/report"
 
-        self.report_name = "MinimalTestReport"
+        self.report_name = "Minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.dataset = "regions"
         self.feature_id = 3  # Heidelberg
