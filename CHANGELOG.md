@@ -9,12 +9,14 @@
 
 ### New Features
 
+- Add new report `MulitlevelMappingSaturation` ([#379])
 - Add new representative report `RoadReport` ([#357])
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 
 ### Other Changes
 
+- Remove unused report `RemoteMappingLevelOne` ([#380])
 - Substitute Simple Report with Minimal Test Report ([#342])
 
 ### How to Upgrade
@@ -27,7 +29,8 @@
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
-
+[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
+[#380]: https://github.com/GIScience/ohsome-quality-analyst/pull/380
 ## 0.10.0
 
 ### Bug Fixes
