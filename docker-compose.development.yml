@@ -36,8 +36,7 @@ services:
   oqt-database:
     container_name: oqt-database
     build:
-      context: database/
-      dockerfile: Dockerfile.development
+      context: database/development
       args:
         # Setup minimal database for running tests
         OQT_TEST_DB: "False"
