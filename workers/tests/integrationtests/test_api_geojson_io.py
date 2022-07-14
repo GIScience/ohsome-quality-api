@@ -53,9 +53,9 @@ class TestApiReportIo(unittest.TestCase):
                 (
                     "/indicator",
                     {
-                        "name": "GhsPopComparisonBuildings",
+                        "name": "Minimal",
                         "bpolys": featurecollection,
-                        "layerName": "building_count",
+                        "layerName": "minimal",
                     },
                 ),
             ):
