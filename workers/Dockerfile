@@ -21,8 +21,8 @@ ENV PATH=$PATH:/home/oqt/.local/bin
 COPY --chown=oqt:oqt pyproject.toml pyproject.toml
 COPY --chown=oqt:oqt poetry.lock poetry.lock
 RUN pip install --no-cache-dir poetry
-RUN python -m poetry install --no-ansi --no-interaction --no-root
+RUN python -m poetry install --no-ansi --no-interaction --no-root --no-dev
 
 # copy all the other files and install the project
 COPY --chown=oqt:oqt . .
-RUN python -m poetry install --no-ansi --no-interaction
+RUN python -m poetry install --no-ansi --no-interaction --no-dev
