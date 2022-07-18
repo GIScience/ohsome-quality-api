@@ -10,7 +10,6 @@
 
 ### New Features
 
-- Add new report `MulitlevelMappingSaturation` ([#379])
 - Add new representative report `RoadReport` ([#357])
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
@@ -31,12 +30,19 @@
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
 [#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
 [#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
-[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
 [#380]: https://github.com/GIScience/ohsome-quality-analyst/pull/380
 [#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
 
->>>>>>> 96b7a465 (test: rename Minimal Test Report to Minimal)
+
+## 0.10.1
+
+### New Features
+
+- Add new report `MulilevelMappingSaturation` ([#379])
+
+[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
+
 
 ## 0.10.0
 
