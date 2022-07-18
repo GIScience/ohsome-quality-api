@@ -87,7 +87,7 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
             ],
             input="Y\n",
         )
@@ -99,9 +99,9 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
                 "-l",
-                "building_count",
+                "minimal",
             ],
             input="Y\n",
         )

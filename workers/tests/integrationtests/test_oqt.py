@@ -21,9 +21,9 @@ from .utils import AsyncMock, oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.name = "GhsPopComparisonBuildings"
+        self.indicator_name = "Minimal"
         self.report_name = "Minimal"
-        self.layer_name = "building_count"
+        self.layer_name = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
         self.fid_field = "ogc_fid"
@@ -41,7 +41,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_bpolys(self):
         """Test creating indicator from scratch."""
         parameters = IndicatorBpolys(
-            name=self.name,
+            name=self.indicator_name,
             layerName=self.layer_name,
             bpolys=self.feature,
         )
@@ -51,7 +51,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_default_fid_field(self):
         parameters = IndicatorDatabase(
-            name=self.name,
+            name=self.indicator_name,
             layerName=self.layer_name,
             dataset=self.dataset,
             featureId=self.feature_id,
@@ -62,7 +62,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_custom_fid_field_int(self):
         parameters = IndicatorDatabase(
-            name=self.name,
+            name=self.indicator_name,
             layerName=self.layer_name,
             dataset=self.dataset,
             featureId=self.feature_id,
@@ -74,7 +74,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_custom_fid_field_str(self):
         parameters = IndicatorDatabase(
-            name=self.name,
+            name=self.indicator_name,
             layerName=self.layer_name,
             dataset=self.dataset,
             featureId="Heidelberg",
@@ -144,8 +144,8 @@ class TestOqt(unittest.TestCase):
     @mock.patch(
         "ohsome_quality_analyst.oqt.INDICATOR_LAYER",
         (
-            ("GhsPopComparisonBuildings", "building_count"),
-            ("GhsPopComparisonRoads", "major_roads_length"),
+            ("Minimal", "minimal"),
+            ("Minimal", "building_count"),
         ),
     )
     @oqt_vcr.use_cassette()
@@ -161,8 +161,7 @@ class TestOqt(unittest.TestCase):
             asyncio.run(
                 oqt.create_all_indicators(
                     dataset="regions",
-                    indicator_name="GhsPopComparisonBuildings",
-                    layer_name="building_count",
+                    indicator_name="Minimal",
                 )
             )
 
@@ -183,7 +182,7 @@ class TestOqt(unittest.TestCase):
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
             name="MappingSaturation",
-            layerName=self.layer_name,
+            layerName="building_count",
             bpolys=feature,
         )
         with self.assertRaises(ValueError):

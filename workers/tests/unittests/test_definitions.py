@@ -17,7 +17,7 @@ class TestDefinitions(unittest.TestCase):
         self.assertIsInstance(metadata, dict)
 
     def test_get_metadata(self):
-        metadata = definitions.get_metadata("indicators", "GhsPopComparisonBuildings")
+        metadata = definitions.get_metadata("indicators", "Minimal")
         self.assertIsInstance(metadata, dict)
 
     def test_load_layer_definitions(self):
@@ -25,7 +25,7 @@ class TestDefinitions(unittest.TestCase):
         self.assertIsInstance(layer_definitions, dict)
 
     def test_get_layer_definitions(self):
-        layer_definitions = definitions.get_layer_definition("building_count")
+        layer_definitions = definitions.get_layer_definition("minimal")
         self.assertIsInstance(layer_definitions, dict)
 
     def test_get_indicator_names(self):
@@ -137,11 +137,8 @@ class TestDefinitions(unittest.TestCase):
         )
 
     def test_get_valid_layers(self):
-        layers = definitions.get_valid_layers("GhsPopComparisonRoads")
+        layers = definitions.get_valid_layers("Minimal")
         self.assertEqual(
             layers,
-            (
-                "jrc_road_length",
-                "major_roads_length",
-            ),
+            ("minimal",),
         )

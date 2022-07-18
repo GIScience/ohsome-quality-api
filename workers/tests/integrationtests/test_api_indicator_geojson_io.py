@@ -25,8 +25,8 @@ class TestApiIndicatorIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.endpoint = "/indicator"
-        self.indicator_name = "GhsPopComparisonBuildings"
-        self.layer_name = "building_count"
+        self.indicator_name = "Minimal"
+        self.layer_name = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
         self.general_schema = get_general_schema()

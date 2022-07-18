@@ -129,6 +129,7 @@ INDICATOR_LAYER = (
     ("TagsRatio", "jrc_cultural_heritage_site_count"),
     ("TagsRatio", "jrc_bridge_count"),
     ("TagsRatio", "jrc_mass_gathering_sites_count"),
+    ("Minimal", "minimal"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/").rstrip("/")
 # Input geometry size limit in sqkm for API requests
