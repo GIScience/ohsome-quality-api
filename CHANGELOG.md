@@ -19,6 +19,7 @@
 - Remove unused report `RemoteMappingLevelOne` ([#380])
 - Substitute Simple Report with a Report named Minimal for testing purposes ([#342] [#385])
 - Add a minimal Indicator for testing purposes ([#383])
+- Remove database scripts ([#392])
 
 ### How to Upgrade
 
@@ -35,6 +36,7 @@
 [#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
 [#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
+[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
 
 
 ## 0.10.1
