@@ -6,11 +6,11 @@
 
 - fix pre-commit hooks ([#482])
 - update asyncpg from 0.25 to 0.27 ([#481])
-- remove artifacts of database setup with ohsomeHeX Isea hex-cells ([#310])
+- refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
 
-[482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
-[481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
-[#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
+[#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
+[#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
+[#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 
 ## 0.14.0
 
@@ -130,7 +130,6 @@
 - If you run your own database, please delete the result table before upgrading ([#369])
 - Rename endpoints ([#397]):
 
-<<<<<<< HEAD
 | old                          | new                            |
 | ---                          | ---                            |
 | `indicatorLayerCombinations` | `indicator-layer-combinations` |
@@ -188,6 +187,7 @@
 
 - Improve documentation and examples of the API ([#299])
 - Factor out template logic to own module ([#302])
+- Remove artifacts of database setup for GHSL raster datasets ([#310])
 - Add hex-cells at zoom level 12 for Africa to the database ([#314])
 - Disable size limit on input AOI if OSM data is provided through a request with a custom Layer object ([#330])
 
@@ -198,6 +198,7 @@
 [#302]: https://github.com/GIScience/ohsome-quality-analyst/pull/302
 [#303]: https://github.com/GIScience/ohsome-quality-analyst/pull/303
 [#307]: https://github.com/GIScience/ohsome-quality-analyst/pull/307
+[#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
 [#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
 [#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
 [#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
