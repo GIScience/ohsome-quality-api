@@ -296,7 +296,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:

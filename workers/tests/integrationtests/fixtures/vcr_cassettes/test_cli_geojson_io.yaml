@@ -15,14 +15,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
-      \   \"value\" : 932.0\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:56:10 GMT
+      - Mon, 18 Jul 2022 10:58:15 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -72,13 +72,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -100,7 +100,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:56:13 GMT
+      - Mon, 18 Jul 2022 10:58:15 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -129,14 +129,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-12T20:00:00Z\",\n
-      \   \"value\" : 2112.0\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 2110.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -157,7 +157,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:56:25 GMT
+      - Mon, 18 Jul 2022 10:58:27 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -186,7 +186,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -366,7 +366,8 @@ interactions:
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
-      \   \"value\" : 932.0\n  } ]\n}"
+      \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -387,7 +388,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:56:37 GMT
+      - Mon, 18 Jul 2022 10:58:38 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -416,7 +417,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -596,6 +597,7 @@ interactions:
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
+      \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -617,7 +619,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:56:51 GMT
+      - Mon, 18 Jul 2022 10:58:53 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -646,7 +648,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -826,7 +828,8 @@ interactions:
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
       \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
-      \   \"value\" : 2112.0\n  } ]\n}"
+      \   \"value\" : 2112.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
+      \   \"value\" : 2110.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -847,7 +850,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Jun 2022 11:57:15 GMT
+      - Mon, 18 Jul 2022 10:59:15 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
     headers:
       accept:
       - '*/*'
@@ -9,20 +9,20 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2529'
+      - '1798'
       content-type:
       - application/x-www-form-urlencoded
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-03-20T21:00:00Z\",\n
-      \   \"value\" : 30346.0\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 269.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -41,9 +41,9 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json;charset=UTF-8
+      - application/json
       Date:
-      - Mon, 28 Mar 2022 14:20:47 GMT
+      - Mon, 18 Jul 2022 11:00:06 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -52,12 +52,183 @@ interactions:
       - max-age=63072000; includeSubdomains;
       Transfer-Encoding:
       - chunked
-      Vary:
-      - Accept-Encoding
+      vary:
+      - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter=building%3D%2A+and+geometry%3Apolygon&time=2008-01-01%2F%2FP1M
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1798'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.10.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 269.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Jul 2022 11:00:06 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1798'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.10.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 269.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Jul 2022 11:00:12 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '2529'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.10.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-10T20:00:00Z\",\n
+      \   \"value\" : 30446.0\n  } ]\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      Access-Control-Allow-Methods:
+      - POST, GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Jul 2022 11:00:23 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.41 (Ubuntu)
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      Transfer-Encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F%2FP1M
     headers:
       accept:
       - '*/*'
@@ -72,13 +243,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.0
+      - ohsome-quality-analyst/0.10.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2008-01-01T00:00:00Z\",\n
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2008-01-01T00:00:00Z\",\n
       \   \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-02-01T00:00:00Z\",\n
       \   \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-03-01T00:00:00Z\",\n
       \   \"value\" : 1.0\n  }, {\n    \"timestamp\" : \"2008-04-01T00:00:00Z\",\n
@@ -249,64 +420,11 @@ interactions:
       \   \"value\" : 29950.0\n  }, {\n    \"timestamp\" : \"2022-01-01T00:00:00Z\",\n
       \   \"value\" : 30032.0\n  }, {\n    \"timestamp\" : \"2022-02-01T00:00:00Z\",\n
       \   \"value\" : 30116.0\n  }, {\n    \"timestamp\" : \"2022-03-01T00:00:00Z\",\n
-      \   \"value\" : 30193.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json;charset=UTF-8
-      Date:
-      - Mon, 28 Mar 2022 14:20:56 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1798'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.10.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-05-29T20:00:00Z\",\n
-      \   \"value\" : 269.0\n  } ]\n}"
+      \   \"value\" : 30193.0\n  }, {\n    \"timestamp\" : \"2022-04-01T00:00:00Z\",\n
+      \   \"value\" : 30361.0\n  }, {\n    \"timestamp\" : \"2022-05-01T00:00:00Z\",\n
+      \   \"value\" : 30395.0\n  }, {\n    \"timestamp\" : \"2022-06-01T00:00:00Z\",\n
+      \   \"value\" : 30419.0\n  }, {\n    \"timestamp\" : \"2022-07-01T00:00:00Z\",\n
+      \   \"value\" : 30445.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -327,121 +445,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Jun 2022 15:14:48 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1798'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.10.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-05-29T20:00:00Z\",\n
-      \   \"value\" : 269.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Jun 2022 15:14:50 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B5.779109%2C+33.164272%5D%2C+%5B5.779597%2C+33.165833%5D%2C+%5B5.873785%2C+33.161541%5D%2C+%5B5.953008%2C+33.158386%5D%2C+%5B5.994273%2C+33.156437%5D%2C+%5B6.00104%2C+33.156494%5D%2C+%5B6.003383%2C+33.156322%5D%2C+%5B6.010534%2C+33.159302%5D%2C+%5B6.032845%2C+33.167492%5D%2C+%5B6.050291%2C+33.174145%5D%2C+%5B6.064626%2C+33.179127%5D%2C+%5B6.065389%2C+33.176319%5D%2C+%5B6.065595%2C+33.173397%5D%2C+%5B6.06603%2C+33.169556%5D%2C+%5B6.06764%2C+33.166409%5D%2C+%5B6.069221%2C+33.163601%5D%2C+%5B6.070499%2C+33.160736%5D%2C+%5B6.071112%2C+33.159073%5D%2C+%5B6.071789%2C+33.155117%5D%2C+%5B6.07125%2C+33.152485%5D%2C+%5B6.07192%2C+33.150482%5D%2C+%5B6.075404%2C+33.150593%5D%2C+%5B6.076807%2C+33.147846%5D%2C+%5B6.076922%2C+33.145035%5D%2C+%5B6.07785%2C+33.143661%5D%2C+%5B6.078469%2C+33.138214%5D%2C+%5B6.079002%2C+33.135067%5D%2C+%5B6.079151%2C+33.133175%5D%2C+%5B6.079191%2C+33.130653%5D%2C+%5B6.077878%2C+33.128132%5D%2C+%5B6.077868%2C+33.126587%5D%2C+%5B6.077988%2C+33.124237%5D%2C+%5B6.077168%2C+33.117935%5D%2C+%5B6.080079%2C+33.117073%5D%2C+%5B6.075289%2C+33.109226%5D%2C+%5B6.072396%2C+33.108307%5D%2C+%5B6.063847%2C+33.101608%5D%2C+%5B6.062587%2C+33.094959%5D%2C+%5B6.057929%2C+33.095989%5D%2C+%5B6.049627%2C+33.095417%5D%2C+%5B6.046957%2C+33.091751%5D%2C+%5B6.045289%2C+33.081322%5D%2C+%5B6.044991%2C+33.079891%5D%2C+%5B6.019088%2C+33.086136%5D%2C+%5B6.001361%2C+33.092896%5D%2C+%5B5.900273%2C+33.090488%5D%2C+%5B5.778012%2C+33.084068%5D%2C+%5B5.758799%2C+33.099312%5D%2C+%5B5.779109%2C+33.164272%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1798'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.10.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-05-29T20:00:00Z\",\n
-      \   \"value\" : 269.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Jun 2022 15:14:50 GMT
+      - Mon, 18 Jul 2022 11:00:33 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
