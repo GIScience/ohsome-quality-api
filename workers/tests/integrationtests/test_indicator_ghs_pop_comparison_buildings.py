@@ -1,43 +1,41 @@
 import asyncio
-import unittest
+import os
 from datetime import datetime
 
-from ohsome_quality_analyst.geodatabase import client as db_client
+import pytest
+
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
     GhsPopComparisonBuildings,
 )
 
-from .utils import get_layer_fixture, oqt_vcr
+from .utils import get_fixture_dir, get_geojson_fixture, get_layer_fixture, oqt_vcr
 
 
-class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
-    def setUp(self):
-        # Heidelberg
-        feature = asyncio.run(
-            db_client.get_feature_from_db(dataset="regions", feature_id="3")
-        )
-        layer = get_layer_fixture("building_count")
-        self.indicator = GhsPopComparisonBuildings(feature=feature, layer=layer)
-
-    @oqt_vcr.use_cassette()
-    def test(self):
-        asyncio.run(self.indicator.preprocess())
-        self.assertIsNotNone(self.indicator.pop_count)
-        self.assertIsNotNone(self.indicator.area)
-        self.assertIsNotNone(self.indicator.feature_count)
-        self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
-        self.assertIsNotNone(self.indicator.attribution())
-        self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
-        self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
-
-        self.indicator.calculate()
-        self.assertIsNotNone(self.indicator.result.label)
-        self.assertIsNotNone(self.indicator.result.value)
-        self.assertIsNotNone(self.indicator.result.description)
-
-        self.indicator.create_figure()
-        self.assertIsNotNone(self.indicator.result.svg)
+@pytest.fixture
+def mock_env_oqt_data_dir(monkeypatch):
+    directory = os.path.join(get_fixture_dir(), "rasters")
+    monkeypatch.setenv("OQT_DATA_DIR", directory)
 
 
-if __name__ == "__main__":
-    unittest.main()
+@oqt_vcr.use_cassette()
+def test(mock_env_oqt_data_dir):
+    feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+    layer = get_layer_fixture("building_count")
+    indicator = GhsPopComparisonBuildings(feature=feature, layer=layer)
+
+    asyncio.run(indicator.preprocess())
+    assert indicator.pop_count is not None
+    assert indicator.area is not None
+    assert indicator.feature_count is not None
+    assert indicator.attribution() is not None
+    assert isinstance(indicator.result.timestamp_osm, datetime)
+    assert isinstance(indicator.result.timestamp_oqt, datetime)
+
+    indicator.calculate()
+    assert indicator.result.label is not None
+    assert indicator.result.value is not None
+    assert indicator.result.description is not None
+    assert indicator.pop_count_per_sqkm is not None
+
+    indicator.create_figure()
+    assert indicator.result.svg is not None
