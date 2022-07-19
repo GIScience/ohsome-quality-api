@@ -1,5 +1,5 @@
 ---
-JrcRequirements:
+jrc-requirements:
   name: JRC Requirements
   description: |
       This report shows the quality for features that are potentially vulnerable
@@ -7,7 +7,7 @@ JrcRequirements:
       This includes healthcare facilities, education facilities, bridges, roads and
       railways, airports, water treatment and power generation plants, cultural
       heritage and mass gathering sites.
-  label_description:
+  label-description:
     red: |
       The data quality in this region is low.
       It is very likely that this regions has not been completely

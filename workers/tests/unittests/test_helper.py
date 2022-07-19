@@ -7,19 +7,21 @@ from pathlib import Path
 import numpy as np
 from geojson import Feature, Polygon
 
-from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
 )
 from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_analyst.utils.helper import (
+    camel_to_hyphen,
+    camel_to_snake,
     flatten_dict,
     flatten_sequence,
     get_project_root,
     json_serialize,
     loads_geojson,
     name_to_class,
+    snake_to_lower_camel,
 )
 
 from .mapping_saturation import fixtures
@@ -49,12 +51,6 @@ class TestHelper(unittest.TestCase):
             name_to_class(class_type="report", name="Minimal"),
             MinimalReport,
         )
-
-        self.indicators = load_metadata("indicators")
-        for indicator_name in self.indicators.keys():
-            self.assertIsNotNone(
-                name_to_class(class_type="indicator", name=indicator_name)
-            )
 
     def test_loads_geojson_geometry(self):
         raw = get_fixture("heidelberg-altstadt-geometry.geojson")
@@ -190,6 +186,15 @@ class TestHelper(unittest.TestCase):
         expected = Path(__file__).resolve().parent.parent.parent.resolve()
         result = get_project_root()
         self.assertEqual(expected, result)
+
+    def test_camel_to_snake(self):
+        assert camel_to_snake("CamelCase") == "camel_case"
+
+    def test_camel_to_lower_hyphen(self):
+        assert camel_to_hyphen("CamelCase") == "camel-case"
+
+    def test_snake_to_lower_camel(self):
+        assert snake_to_lower_camel("snake_case") == "snakeCase"
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
-MultilevelMappingSaturation:
+multilevel-mapping-saturation:
   name: Multilevel Mapping Saturation
   description: |
     This report shows the mapping saturation of four major Map Features (https://wiki.openstreetmap.org/wiki/Map_features): buildings, land-use/land-cover, points of interest and infrastructure.
     It evolved from the OSM Element Vectorisation tool (https://gitlab.gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-vectorisation).
-  label_description:
+  label-description:
     red: |
       The general mapping saturation for central elements in this region is low indicating a very early stage of the data.
     yellow: |
