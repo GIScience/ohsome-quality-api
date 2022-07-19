@@ -14,6 +14,10 @@
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
 
+### Bug Fixes
+
+- Fix indicator description field of GeoJSON properties ([#396])
+
 ### New Features
 
 - Add new representative report `RoadReport` ([#357])
