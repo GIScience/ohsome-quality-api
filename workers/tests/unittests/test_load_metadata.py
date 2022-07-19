@@ -12,13 +12,13 @@ class TestReadMetadata(unittest.TestCase):
                 str: {
                     "name": str,
                     "description": str,
-                    "label_description": {
+                    "label-description": {
                         "red": str,
                         "yellow": str,
                         "green": str,
                         "undefined": str,
                     },
-                    "result_description": str,
+                    "result-description": str,
                 }
             }
         )
@@ -32,7 +32,7 @@ class TestReadMetadata(unittest.TestCase):
                 str: {
                     "name": str,
                     "description": str,
-                    "label_description": {
+                    "label-description": {
                         "red": str,
                         "yellow": str,
                         "green": str,
@@ -48,9 +48,7 @@ class TestReadMetadata(unittest.TestCase):
     def test_get_indicator_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")
         self.assertRaises(KeyError, get_metadata, "indicators", "ajsjdh")
-        self.assertIsInstance(
-            get_metadata("indicators", "GhsPopComparisonBuildings"), dict
-        )
+        self.assertIsInstance(get_metadata("indicators", "Minimal"), dict)
 
     def test_get_report_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")

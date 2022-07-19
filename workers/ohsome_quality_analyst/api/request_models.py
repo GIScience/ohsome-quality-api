@@ -161,7 +161,7 @@ class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
     @pydantic.validator("name")
     @classmethod
     def validate_indicator_name(cls, name):
-        if name.value != "MappingSaturation":
+        if name.value != "mapping-saturation":
             raise ValueError(
                 "Computing an Indicator for a Layer with data attached is only "
                 + "supported for the Mapping Saturation Indicator."

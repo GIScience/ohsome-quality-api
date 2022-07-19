@@ -1,12 +1,12 @@
 ---
-SketchmapFitness:
+sketchmap-fitness:
   name: Sketchmap Fitness
   description: |
       The sketchmap fitness report consists of four data quality indicators
       (mapping saturation of major roads, currentness for major-roads and
       amenities, density of points-of-interest). The report tells you whether
       you will be able to use the Sketch Map Tool for the selected regions.
-  label_description:
+  label-description:
     red: |
       The data quality in this region is low.
       It is very likely that it is not possible to use

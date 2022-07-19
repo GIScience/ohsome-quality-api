@@ -1,10 +1,10 @@
 ---
-GhsPopComparisonBuildings:
+ghs-pop-comparison-buildings:
   name: GHS-POP Comparison Buildings
   description: |
     Comparison between population density and feature density.
     This can give an estimate if mapping has been completed.
-  label_description:
+  label-description:
     red: |
       The comparison of population density and building density shows, that 
       a majority of buildings has not been mapped yet. This results in a bad 
@@ -18,7 +18,7 @@ GhsPopComparisonBuildings:
       indicates a good data quality in terms of completeness.
     undefined: |
       The quality level could not be calculated for this indicator.
-  result_description: |
+  result-description: |
     Following the GHS POP dataset, there are 
     $pop_count people living in an area of 
     $area sqkm, which results in a population density 

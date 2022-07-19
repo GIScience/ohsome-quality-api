@@ -1,10 +1,10 @@
 ---
-MappingSaturation:
+mapping-saturation:
   name: Mapping Saturation
   description: |
     Calculate if mapping has saturated.
     High saturation has been reached if the growth of the fitted curve is minimal.
-  label_description:
+  label-description:
     red: |
       No saturation identified (Saturation ≤ 30%).
     yellow: |
@@ -13,5 +13,5 @@ MappingSaturation:
       High saturation has been reached (97% < Saturation ≤ 100%).
     undefined: |
       Saturation could not be calculated.
-  result_description: |
+  result-description: |
     The saturation of the last 3 years is $saturation%.

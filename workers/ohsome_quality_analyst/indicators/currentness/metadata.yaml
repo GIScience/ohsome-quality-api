@@ -1,11 +1,11 @@
 ---
-Currentness:
+currentness:
   name: Currentness
   description: |
     Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
     time range.
     Refers to data quality in respect to currentness.
-  label_description:
+  label-description:
     red: |
       More than half of the $elements edited elements were last edited over 4 years ago.
       Be aware that there it is very likely that many map features are outdated. 
@@ -24,5 +24,5 @@ Currentness:
       for this area of interest. Refer to other indicators that rely on 
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
-  result_description: |
+  result-description: |
       Over 50% of the $elements features ($layer_name) were edited $years.

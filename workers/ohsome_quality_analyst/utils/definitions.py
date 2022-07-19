@@ -7,14 +7,18 @@ import os
 import sys
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 
 import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
-from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
+from ohsome_quality_analyst.utils.helper import (
+    camel_to_hyphen,
+    flatten_sequence,
+    get_module_dir,
+)
 
 # Dataset names and fid fields which are available in the Geodatabase
 DATASETS = MappingProxyType(  # Immutable dict
@@ -80,56 +84,56 @@ RASTER_DATASETS = (
 
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
-    ("BuildingCompleteness", "building_area"),
-    ("GhsPopComparisonBuildings", "building_count"),
-    ("GhsPopComparisonRoads", "jrc_road_length"),
-    ("GhsPopComparisonRoads", "major_roads_length"),
-    ("MappingSaturation", "building_count"),
-    ("MappingSaturation", "major_roads_length"),
-    ("MappingSaturation", "amenities"),
-    ("MappingSaturation", "jrc_health_count"),
-    ("MappingSaturation", "jrc_mass_gathering_sites_count"),
-    ("MappingSaturation", "jrc_railway_length"),
-    ("MappingSaturation", "jrc_road_length"),
-    ("MappingSaturation", "jrc_education_count"),
-    ("MappingSaturation", "mapaction_settlements_count"),
-    ("MappingSaturation", "mapaction_major_roads_length"),
-    ("MappingSaturation", "mapaction_rail_length"),
-    ("MappingSaturation", "mapaction_lakes_area"),
-    ("MappingSaturation", "mapaction_rivers_length"),
-    ("MappingSaturation", "ideal_vgi_infrastructure"),
-    ("MappingSaturation", "poi"),
-    ("MappingSaturation", "lulc"),
-    ("Currentness", "major_roads_count"),
-    ("Currentness", "building_count"),
-    ("Currentness", "amenities"),
-    ("Currentness", "jrc_health_count"),
-    ("Currentness", "jrc_education_count"),
-    ("Currentness", "jrc_road_count"),
-    ("Currentness", "jrc_railway_count"),
-    ("Currentness", "jrc_airport_count"),
-    ("Currentness", "jrc_water_treatment_plant_count"),
-    ("Currentness", "jrc_power_generation_plant_count"),
-    ("Currentness", "jrc_cultural_heritage_site_count"),
-    ("Currentness", "jrc_bridge_count"),
-    ("Currentness", "jrc_mass_gathering_sites_count"),
-    ("Currentness", "mapaction_settlements_count"),
-    ("Currentness", "mapaction_major_roads_length"),
-    ("Currentness", "mapaction_rail_length"),
-    ("Currentness", "mapaction_lakes_count"),
-    ("Currentness", "mapaction_rivers_length"),
-    ("PoiDensity", "poi"),
-    ("TagsRatio", "building_count"),
-    ("TagsRatio", "major_roads_length"),
-    ("TagsRatio", "jrc_health_count"),
-    ("TagsRatio", "jrc_education_count"),
-    ("TagsRatio", "jrc_road_length"),
-    ("TagsRatio", "jrc_airport_count"),
-    ("TagsRatio", "jrc_power_generation_plant_count"),
-    ("TagsRatio", "jrc_cultural_heritage_site_count"),
-    ("TagsRatio", "jrc_bridge_count"),
-    ("TagsRatio", "jrc_mass_gathering_sites_count"),
-    ("Minimal", "minimal"),
+    ("building-completeness", "building_area"),
+    ("ghs-pop-comparison-buildings", "building_count"),
+    ("ghs-pop-comparison-roads", "jrc_road_length"),
+    ("ghs-pop-comparison-roads", "major_roads_length"),
+    ("mapping-saturation", "building_count"),
+    ("mapping-Saturation", "major_roads_length"),
+    ("mapping-Saturation", "amenities"),
+    ("mapping-Saturation", "jrc_health_count"),
+    ("mapping-Saturation", "jrc_mass_gathering_sites_count"),
+    ("mapping-Saturation", "jrc_railway_length"),
+    ("mapping-Saturation", "jrc_road_length"),
+    ("mapping-Saturation", "jrc_education_count"),
+    ("mapping-Saturation", "mapaction_settlements_count"),
+    ("mapping-Saturation", "mapaction_major_roads_length"),
+    ("mapping-Saturation", "mapaction_rail_length"),
+    ("mapping-Saturation", "mapaction_lakes_area"),
+    ("mapping-Saturation", "mapaction_rivers_length"),
+    ("mapping-Saturation", "ideal_vgi_infrastructure"),
+    ("mapping-Saturation", "poi"),
+    ("mapping-Saturation", "lulc"),
+    ("currentness", "major_roads_count"),
+    ("currentness", "building_count"),
+    ("currentness", "amenities"),
+    ("currentness", "jrc_health_count"),
+    ("currentness", "jrc_education_count"),
+    ("currentness", "jrc_road_count"),
+    ("currentness", "jrc_railway_count"),
+    ("currentness", "jrc_airport_count"),
+    ("currentness", "jrc_water_treatment_plant_count"),
+    ("currentness", "jrc_power_generation_plant_count"),
+    ("currentness", "jrc_cultural_heritage_site_count"),
+    ("currentness", "jrc_bridge_count"),
+    ("currentness", "jrc_mass_gathering_sites_count"),
+    ("currentness", "mapaction_settlements_count"),
+    ("currentness", "mapaction_major_roads_length"),
+    ("currentness", "mapaction_rail_length"),
+    ("currentness", "mapaction_lakes_count"),
+    ("currentness", "mapaction_rivers_length"),
+    ("poi-density", "poi"),
+    ("tags-ratio", "building_count"),
+    ("tags-ratio", "major_roads_length"),
+    ("tags-ratio", "jrc_health_count"),
+    ("tags-ratio", "jrc_education_count"),
+    ("tags-ratio", "jrc_road_length"),
+    ("tags-ratio", "jrc_airport_count"),
+    ("tags-ratio", "jrc_power_generation_plant_count"),
+    ("tags-ratio", "jrc_cultural_heritage_site_count"),
+    ("tags-ratio", "jrc_bridge_count"),
+    ("tags-ratio", "jrc_mass_gathering_sites_count"),
+    ("minimal", "minimal"),
 )
 OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/").rstrip("/")
 # Input geometry size limit in sqkm for API requests
@@ -213,7 +217,9 @@ def load_metadata(module_name: str) -> Dict:
     return metadata
 
 
-def get_metadata(module_name: str, class_name: str) -> Dict:
+def get_metadata(
+    module_name: Literal["indicators", "reports"], class_name: str
+) -> Dict:
     """Get metadata of an indicator or report based on its class name.
 
     This is implemented outside the metadata class to be able to
@@ -229,7 +235,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
 
     metadata = load_metadata(module_name)
     try:
-        return metadata[class_name]
+        return metadata[camel_to_hyphen(class_name)]
     except KeyError:
         logging.error(
             "Invalid {0} class name. Valid {0} class names are: ".format(
