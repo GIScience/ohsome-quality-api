@@ -160,7 +160,7 @@ parameters = {
     "layer": layer,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
-    "flatten": False,  # Optional
+    "flatten": True,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
