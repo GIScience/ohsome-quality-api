@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.10.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 10 Jul 2022 15:21:23 GMT
+      - Wed, 13 Jul 2022 13:06:16 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

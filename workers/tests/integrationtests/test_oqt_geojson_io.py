@@ -13,8 +13,8 @@ from .utils import oqt_vcr
 class TestOqtGeoJsonIO(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.name = "GhsPopComparisonBuildings"
-        self.layer_name = "building_count"
+        self.name = "Minimal"
+        self.layer_name = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
         self.feature = asyncio.run(
