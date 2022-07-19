@@ -37,7 +37,7 @@ class Result:
 
 class IndicatorLayer(NamedTuple):
     indicator_name: str
-    layer_name: str
+    layer_key: str
 
 
 class BaseReport(metaclass=ABCMeta):

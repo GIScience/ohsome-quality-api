@@ -67,14 +67,14 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseReport(name="Minimal", flatten="foo")
 
-    def test_layer_name_valid(self):
+    def test_layer_key_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
-        request_models.BaseLayerName(layer_name="building_count")
+        request_models.BaseLayerName(layer_key="building_count")
 
-    def test_layer_name_invalid(self):
+    def test_layer_key_invalid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
         with self.assertRaises(ValueError):
-            request_models.BaseLayerName(layer_name="foo")
+            request_models.BaseLayerName(layer_key="foo")
 
     def test_layer_data_valid(self):
         layer = {
@@ -124,13 +124,13 @@ class TestApiRequestModels(unittest.TestCase):
     def test_indicator_database(self):
         request_models.IndicatorDatabase(
             name="Minimal",
-            layerName="minimal",
+            layerKey="minimal",
             dataset="regions",
             featureId="3",
         )
         request_models.IndicatorDatabase(
             name="Minimal",
-            layerName="minimal",
+            layerKey="minimal",
             dataset="regions",
             featureId="Heidelberg",
             fidField="name",
@@ -139,14 +139,14 @@ class TestApiRequestModels(unittest.TestCase):
     def test_indicator_bpolys(self):
         request_models.IndicatorBpolys(
             name="Minimal",
-            layerName="minimal",
+            layerKey="minimal",
             bpolys=self.bpolys,
         )
 
     def test_indicator_invalid_layer_combination(self):
         kwargs = {
             "name": "Minimal",
-            "layerName": "amenities",
+            "layerKey": "amenities",
             "dataset": "regions",
             "featureId": 3,
         }
@@ -173,7 +173,7 @@ class TestApiRequestModels(unittest.TestCase):
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "name",
-            "layerName",
+            "layerKey",
             "dataset",
             "featureId",
             "fidField",
@@ -199,20 +199,20 @@ class TestApiRequestModels(unittest.TestCase):
         valid_combinations = (
             {
                 "name": "Minimal",
-                "layerName": "minimal",
+                "layerKey": "minimal",
                 "dataset": "regions",
                 "featureId": "3",
             },
             {
                 "name": "Minimal",
-                "layerName": "minimal",
+                "layerKey": "minimal",
                 "dataset": "regions",
                 "featureId": "3",
                 "fidField": "ogc_fid",
             },
             {
                 "name": "Minimal",
-                "layerName": "minimal",
+                "layerKey": "minimal",
                 "bpolys": self.bpolys,
             },
         )

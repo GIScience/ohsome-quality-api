@@ -96,6 +96,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 "description": self.metadata.name,
             },
             "layer": {
+                "key": self.layer.key,
                 "name": self.layer.name,
                 "description": self.layer.description,
             },

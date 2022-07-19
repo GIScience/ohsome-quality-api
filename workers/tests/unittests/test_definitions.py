@@ -3,6 +3,7 @@ import tempfile
 import unittest
 from unittest import mock
 
+from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.utils import definitions
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
@@ -26,7 +27,7 @@ class TestDefinitions(unittest.TestCase):
 
     def test_get_layer_definitions(self):
         layer_definitions = definitions.get_layer_definition("minimal")
-        self.assertIsInstance(layer_definitions, dict)
+        self.assertIsInstance(layer_definitions, LayerDefinition)
 
     def test_get_indicator_names(self):
         names = definitions.get_indicator_names()
@@ -36,8 +37,8 @@ class TestDefinitions(unittest.TestCase):
         names = definitions.get_report_names()
         self.assertIsInstance(names, list)
 
-    def test_get_layer_names(self):
-        names = definitions.get_layer_names()
+    def test_get_layer_keys(self):
+        names = definitions.get_layer_keys()
         self.assertIsInstance(names, list)
 
     def test_get_dataset_names(self):

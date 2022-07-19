@@ -13,6 +13,7 @@ import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
 
@@ -244,7 +245,7 @@ def load_layer_definitions() -> Dict:
     """Read ohsome API parameters of all layer from YAML file.
 
     Returns:
-        A Dict with the layer names of the layers as keys.
+        A dict with all layers included.
     """
     directory = get_module_dir("ohsome_quality_analyst.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
@@ -252,8 +253,8 @@ def load_layer_definitions() -> Dict:
         return yaml.safe_load(f)
 
 
-def get_layer_definition(layer_name: str) -> Dict:
-    """Get ohsome API parameters of a single layer based on layer name.
+def get_layer_definition(layer_key: str) -> LayerDefinition:
+    """Get ohsome API parameters of a single layer based on layer key.
 
     This is implemented outside the layer class to
     be able to access layer definitions of all indicators without
@@ -261,15 +262,15 @@ def get_layer_definition(layer_name: str) -> Dict:
     """
     layers = load_layer_definitions()
     try:
-        layer = layers[layer_name]
-    except KeyError:
-        logging.error(
-            "Invalid layer name. Valid layer names are: " + str(layers.keys())
-        )
-        raise
+        layer = layers[layer_key]
+    except KeyError as error:
+        raise KeyError(
+            "Invalid layer key. Valid layer keys are: " + str(layers.keys())
+        ) from error
     # Avoid built-in function name `filter`
     layer["filter_"] = layer.pop("filter")
-    return layer
+    layer["key"] = layer_key
+    return LayerDefinition(**layer)
 
 
 def get_indicator_classes() -> Dict:
@@ -296,7 +297,7 @@ def get_report_names() -> List[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_layer_names() -> List[str]:
+def get_layer_keys() -> List[str]:
     return list(load_layer_definitions().keys())
 
 
@@ -371,6 +372,6 @@ def get_valid_layers(indcator_name: str) -> tuple:
     return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
 
 
-def get_valid_indicators(layer_name: str) -> tuple:
+def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_name])
+    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])
