@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional
 
@@ -17,6 +19,7 @@ class LayerDefinition(BaseLayer):
         `layer_definitions.yaml` file.
     """
 
+    key: str
     endpoint: str
     filter_: str
     source: Optional[str] = None
@@ -28,3 +31,8 @@ class LayerData(BaseLayer):
     """Layer class including the data associated with the layer."""
 
     data: dict
+    key: Optional[str] = None
+
+    def __post_init__(self):
+        if self.key is None:
+            self.key = self.name.replace(" ", "_").lower()

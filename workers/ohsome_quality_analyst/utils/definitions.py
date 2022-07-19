@@ -254,7 +254,7 @@ def load_layer_definitions() -> Dict:
 
 
 def get_layer_definition(layer_key: str) -> LayerDefinition:
-    """Get ohsome API parameters of a single layer based on layer name.
+    """Get ohsome API parameters of a single layer based on layer key.
 
     This is implemented outside the layer class to
     be able to access layer definitions of all indicators without
@@ -269,6 +269,7 @@ def get_layer_definition(layer_key: str) -> LayerDefinition:
         ) from error
     # Avoid built-in function name `filter`
     layer["filter_"] = layer.pop("filter")
+    layer["key"] = layer_key
     return LayerDefinition(**layer)
 
 
