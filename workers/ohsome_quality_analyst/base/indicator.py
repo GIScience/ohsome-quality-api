@@ -93,7 +93,7 @@ class BaseIndicator(metaclass=ABCMeta):
         properties = {
             "metadata": {
                 "name": self.metadata.name,
-                "description": self.metadata.name,
+                "description": self.metadata.description,
             },
             "layer": {
                 "key": self.layer.key,
