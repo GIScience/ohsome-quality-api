@@ -4,7 +4,6 @@ from dataclasses import asdict, dataclass
 from statistics import mean
 from typing import Dict, List, Literal, NamedTuple, Tuple
 
-from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -51,7 +50,11 @@ class BaseReport(metaclass=ABCMeta):
         self.indicators: List[BaseIndicator] = []
 
         metadata = get_metadata("reports", type(self).__name__)
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.metadata: Metadata = Metadata(
+            name=metadata["name"],
+            description=metadata["description"],
+            label_description=metadata["label-description"],
+        )
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None, None)
 
