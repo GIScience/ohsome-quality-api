@@ -106,12 +106,14 @@ def get_default_data_dir() -> str:
 
     Default data directory is a directory named 'data' at the root of the repository.
     """
-    return os.path.join(
-        os.path.dirname(
-            os.path.abspath(__file__),
-        ),
-        "..",
-        "data",
+    return os.path.abspath(
+        os.path.join(
+            os.path.dirname(
+                os.path.abspath(__file__),
+            ),
+            "..",
+            "data",
+        )
     )
 
 
