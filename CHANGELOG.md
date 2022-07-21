@@ -8,15 +8,12 @@
 
 ### Breaking Changes
 
-- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
-
-### Bug Fixes
-
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
+- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
 
 ### Bug Fixes
 
@@ -68,8 +65,9 @@
 [#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
 [#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
-[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
-[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+[#392]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
+[#396]: https://github.com/GIScience/ohsome-quality-analyst/pull/396
+[#397]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
 
 
 ## 0.10.1
