@@ -15,10 +15,10 @@ from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
 
 from ohsome_quality_analyst.base.layer import LayerData
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    get_dataset_names_api,
-    get_fid_fields_api,
+    get_dataset_names,
+    get_fid_fields,
     get_indicator_names,
     get_layer_keys,
     get_report_names,
@@ -28,8 +28,8 @@ from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_ca
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
 LayerEnum = Enum("LayerEnum", {name: name for name in get_layer_keys()})
-DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names_api()})
-FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()})
+DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
+FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseIndicator(BaseModel):

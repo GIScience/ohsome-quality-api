@@ -1,0 +1,26 @@
+---
+# Database connection parameters;
+postgres_host: localhost
+postgres_port: 5445
+postgres_db: oqt
+postgres_user: oqt
+postgres_password: oqt
+# Data directory for raster files
+# Default: repo-root/data
+data_dir: /some/absolute/path
+# Restrict size of input geometry to the OQT API (sqkm)
+geom_size_limit: 100
+# Python logging level
+log_level: INFO
+# ohsome API URL
+ohsome_api: https://api.ohsome.org/v1/
+# Limit number of concurrent Indicator computations
+concurrent_computations: 4
+# User-Agent header for request to the ohsome API
+# Default: 'ohsome-quality-analyst/{version}'
+user_agent: ohsome-quality-analyst
+# Datasets and Feature IDs available in the database
+datasets:
+  regions:  # Name of relation with GEOM
+    default: ogc_fid  # Default unique id field
+    other: [name] # More unique id fields (optional)

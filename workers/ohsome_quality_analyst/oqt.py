@@ -21,8 +21,8 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.base.report import BaseReport as Report
-from ohsome_quality_analyst.utils.definitions import (
-    GEOM_SIZE_LIMIT,
+from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
     get_layer_definition,
     get_valid_indicators,
@@ -356,6 +356,13 @@ async def create_all_indicators(
     This functions executes `create_indicator()` function up to four times concurrently.
     """
 
+    async def sem_task(
+        task, semaphore=asyncio.Semaphore(get_config_value("concurrent_computations"))
+    ):
+        """Run task with semaphore. Semaphore limits num of concurrent executions."""
+        async with semaphore:
+            return await task
+
     if indicator_name is not None and layer_key is None:
         layers = get_valid_layers(indicator_name)
         indicator_layer = [(indicator_name, lay) for lay in layers]
@@ -391,5 +398,5 @@ async def create_all_indicators(
 
 
 async def check_area_size(geom: Union[Polygon, MultiPolygon]):
-    if await db_client.get_area_of_bpolys(geom) > GEOM_SIZE_LIMIT:
-        raise SizeRestrictionError(GEOM_SIZE_LIMIT)
+    if await db_client.get_area_of_bpolys(geom) > get_config_value("geom_size_limit"):
+        raise SizeRestrictionError(get_config_value("geom_size_limit"))

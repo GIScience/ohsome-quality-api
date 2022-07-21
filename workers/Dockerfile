@@ -24,5 +24,9 @@ RUN pip install --no-cache-dir poetry
 RUN python -m poetry install --no-ansi --no-interaction --no-root
 
 # copy all the other files and install the project
-COPY --chown=oqt:oqt . .
+COPY --chown=oqt:oqt ohsome_quality_analyst ohsome_quality_analyst
+COPY --chown=oqt:oqt tests tests
+COPY --chown=oqt:oqt scripts/start_api.py scripts/start_api.py
+COPY --chown=oqt:oqt config/logging.yaml config/logging.yaml
 RUN python -m poetry install --no-ansi --no-interaction
+

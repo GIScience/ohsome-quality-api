@@ -3,7 +3,7 @@ import unittest
 from schema import Optional, Or, Schema
 
 from ohsome_quality_analyst.base.layer import LayerDefinition
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.definitions import (
     get_layer_definition,
     load_layer_definitions,
 )

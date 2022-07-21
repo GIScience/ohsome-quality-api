@@ -6,7 +6,7 @@ import geojson
 import vcr
 
 from ohsome_quality_analyst.base.layer import LayerDefinition
-from ohsome_quality_analyst.utils.definitions import get_layer_definition
+from ohsome_quality_analyst.definitions import get_layer_definition
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures", "vcr_cassettes")

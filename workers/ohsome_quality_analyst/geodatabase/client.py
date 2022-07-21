@@ -26,7 +26,7 @@ from asyncpg import Record
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
-from ohsome_quality_analyst.utils.definitions import DATASETS
+from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import EmptyRecordError
 from ohsome_quality_analyst.utils.helper import json_serialize
 
@@ -35,13 +35,14 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @asynccontextmanager
 async def get_connection():
-    host = os.getenv("POSTGRES_HOST", default="localhost")
-    port = os.getenv("POSTGRES_PORT", default=5445)
-    database = os.getenv("POSTGRES_DB", default="oqt")
-    user = os.getenv("POSTGRES_USER", default="oqt")
-    password = os.getenv("POSTGRES_PASSWORD", default="oqt")
     # DNS in libpq connection URI format
-    dns = f"postgres://{user}:{password}@{host}:{port}/{database}"
+    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
     conn = await asyncpg.connect(dns)
     try:
         yield conn
@@ -143,7 +144,7 @@ async def load_indicator_results(
 async def get_feature_ids(dataset: str) -> List[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
-    fid_field = DATASETS[dataset]["default"]
+    fid_field = get_config_value("datasets")[dataset]["default"]
     query = "SELECT {fid_field} FROM {dataset}".format(
         fid_field=fid_field, dataset=dataset
     )
@@ -173,7 +174,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     """Get regions from geodatabase as a GeoJSON Feature object"""
     if not sanity_check_dataset(dataset):
         raise ValueError("Input dataset is not valid: " + dataset)
-    fid_field = DATASETS[dataset]["default"]
+    fid_field = get_config_value("datasets")[dataset]["default"]
 
     logging.info("Dataset name:     " + dataset)
     logging.info("Feature id:       " + feature_id)
@@ -215,14 +216,14 @@ async def get_regions() -> List[dict]:
 
 def sanity_check_dataset(dataset: str) -> bool:
     """Compare against pre-defined values to prevent SQL injection"""
-    return dataset in DATASETS.keys()
+    return dataset in get_config_value("datasets").keys()
 
 
 def sanity_check_fid_field(dataset: str, fid_field: str) -> bool:
     """Compare against pre-defined values to prevent SQL injection"""
     return (
-        fid_field in DATASETS[dataset]["other"]
-        or fid_field == DATASETS[dataset]["default"]
+        fid_field in get_config_value("datasets")[dataset]["other"]
+        or fid_field == get_config_value("datasets")[dataset]["default"]
     )
 
 
@@ -244,7 +245,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
         raise ValueError("Input dataset is not valid: " + dataset)
     if not sanity_check_fid_field(dataset, fid_field):
         raise ValueError("Input feature id field is not valid: " + fid_field)
-    uid = DATASETS[dataset]["default"]
+    uid = get_config_value("datasets")[dataset]["default"]
     query = (
         "SELECT {uid} ".format(uid=uid)
         + "FROM {dataset} ".format(dataset=dataset)

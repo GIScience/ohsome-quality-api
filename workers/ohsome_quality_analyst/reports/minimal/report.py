@@ -1,5 +1,5 @@
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
-from ohsome_quality_analyst.utils.definitions import get_attribution
+from ohsome_quality_analyst.definitions import get_attribution
 
 
 class Minimal(BaseReport):

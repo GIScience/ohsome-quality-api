@@ -9,10 +9,10 @@ from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_attribution, get_raster_dataset
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster.client import get_zonal_stats
-from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster_dataset
 
 
 class GhsPopComparisonRoads(BaseIndicator):

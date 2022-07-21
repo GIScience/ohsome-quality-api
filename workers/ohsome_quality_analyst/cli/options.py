@@ -4,11 +4,8 @@ Define Click command options to avoid redundancy.
 
 import click
 
-from ohsome_quality_analyst.utils.definitions import (
-    DATASETS,
-    load_layer_definitions,
-    load_metadata,
-)
+from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.definitions import load_layer_definitions, load_metadata
 
 indicator_name = click.option(
     "--indicator-name",
@@ -55,7 +52,7 @@ dataset_name = click.option(
     "--dataset-name",
     "-d",
     type=click.Choice(
-        DATASETS.keys(),
+        get_config_value("datasets").keys(),
         case_sensitive=True,
     ),
     help=("Choose a dataset containing geometries."),
