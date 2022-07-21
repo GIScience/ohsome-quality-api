@@ -4,6 +4,10 @@
 
 ### Breaking Changes
 
+- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
+
+### Bug Fixes
+
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
@@ -15,6 +19,7 @@
 - Add new representative report `RoadReport` ([#357])
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
+- Configure OQT using files or environment variables ([#255])
 
 ### Other Changes
 
@@ -28,6 +33,7 @@
 - Reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` are not accessibly via the website anymore. If you want to access those reports please use the API.
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
+- Rename environment variable `OHSOME_API`  `OQT_OHSOME_API` ([#255])
 - Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
 - Rename endpoints ([#397]):
@@ -40,6 +46,7 @@
 | `reportNames`                | `reports`                      |
 | `fidFields`                  | `fid-fields`                   |
 
+[#255]: https://github.com/GIScience/ohsome-quality-analyst/pull/255
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
@@ -77,6 +84,7 @@
 - Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional ([#303])
 - Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
 - Add new Indicator which predicts the building area of the AOI using a trained Random Forest Regressor ([#265])
+- Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
 
 ### Other Changes
 

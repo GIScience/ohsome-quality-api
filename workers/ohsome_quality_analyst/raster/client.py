@@ -7,7 +7,8 @@ import geojson
 from pyproj import Transformer
 from rasterstats import zonal_stats
 
-from ohsome_quality_analyst.utils.definitions import RasterDataset, get_data_dir
+from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.definitions import RasterDataset
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
 
 
@@ -50,7 +51,7 @@ def transform(feature: geojson.Feature, raster: RasterDataset):
 
 def get_raster_path(raster: RasterDataset) -> str:
     """Get the path of the raster file on disk."""
-    path = os.path.join(get_data_dir(), raster.filename)
+    path = os.path.join(get_config_value("data_dir"), raster.filename)
     if not os.path.exists(path):
         raise RasterDatasetNotFoundError(raster)
     return path

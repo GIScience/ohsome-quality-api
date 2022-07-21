@@ -14,14 +14,13 @@ from ohsome_quality_analyst.api.request_models import (
     ReportDatabase,
 )
 from ohsome_quality_analyst.cli import options
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
-    DATASETS,
+from ohsome_quality_analyst.config import configure_logging, get_config_value
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    configure_logging,
     load_layer_definitions,
     load_metadata,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
 
 
@@ -71,13 +70,13 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(tuple(DATASETS.keys()))
+    click.echo(tuple(get_config_value("datasets").keys()))
 
 
 @cli.command("list-fid-fields")
 def list_fid_fields():
     """List available fid fields for each dataset."""
-    for name, dataset in DATASETS.items():
+    for name, dataset in get_config_value("datasets").items():
         click.echo(name + ": ")
         click.echo("  - default: " + dataset["default"])
         click.echo("  - other: " + ", ".join(dataset.get("other", [])))
@@ -204,7 +203,7 @@ def create_report(
     "-d",
     required=True,
     type=click.Choice(
-        DATASETS.keys(),
+        get_config_value("datasets").keys(),
         case_sensitive=True,
     ),
     help=("Choose a dataset containing geometries."),

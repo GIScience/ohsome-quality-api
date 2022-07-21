@@ -1,6 +1,7 @@
 import asyncio
-import os
 import unittest
+from types import MappingProxyType
+from unittest import mock
 
 import asyncpg
 
@@ -17,34 +18,22 @@ class TestPostgres(unittest.TestCase):
         instance_type = asyncio.run(get_connection_context_manager())
         self.assertEqual(instance_type, asyncpg.connection.Connection)
 
-    def test_connection_fails(self):
+    @mock.patch(
+        "ohsome_quality_analyst.config.get_config",
+    )
+    def test_connection_fails(self, mock_get_config):
         """Test connection failure error due to wrong credentials"""
-        env_backup = {}
-        env_names = [
-            "POSTGRES_HOST",
-            "POSTGRES_PORT",
-            "POSTGRES_DB",
-            "POSTGRES_USER",
-            "POSTGRES_PASSWORD",
-        ]
-        # Backup and set env to empty string
-        for env_name in env_names:
-            try:
-                env_backup[env_name] = os.environ.pop(env_name)
-            except KeyError:
-                pass
-            os.environ[env_name] = ""
-
-        # Test connection fail
+        mock_get_config.return_value = MappingProxyType(
+            {
+                "postgres_host": "foo",
+                "postgres_port": "9999",
+                "postgres_db": "bar",
+                "postgres_user": "tis",
+                "postgres_password": "fas",
+            }
+        )
         with self.assertRaises(OSError):
             asyncio.run(get_connection_context_manager())
-
-        # Restore env to previous state
-        for env_name in env_names:
-            if env_name in env_backup:
-                os.environ[env_name] = env_backup[env_name]
-            else:
-                os.environ.pop(env_name)
 
 
 if __name__ == "__main__":

@@ -6,12 +6,12 @@ import unittest
 import numpy as np
 from geojson import Feature, Polygon
 
+from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
 )
 from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
-from ohsome_quality_analyst.utils.definitions import load_metadata
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,

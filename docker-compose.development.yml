@@ -8,7 +8,7 @@ services:
     environment:
       OQT_DATA_DIR: /data
       OQT_LOG_LEVEL: INFO
-      OHSOME_API: https://api.ohsome.org/v1/
+      OQT_OHSOME_API: https://api.ohsome.org/v1/
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
       POSTGRES_PASSWORD: oqt

@@ -14,9 +14,9 @@ from geojson import Feature, FeatureCollection
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_raster_dataset
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
-from ohsome_quality_analyst.utils.definitions import get_raster_dataset
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 
 

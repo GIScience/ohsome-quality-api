@@ -4,7 +4,7 @@ import unittest
 import geojson
 
 import ohsome_quality_analyst.raster.client as raster_client
-from ohsome_quality_analyst.utils.definitions import get_raster_dataset
+from ohsome_quality_analyst.definitions import get_raster_dataset
 
 
 class TestRaster(unittest.TestCase):

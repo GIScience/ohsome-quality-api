@@ -2,7 +2,7 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_analyst.utils.definitions import get_metadata, load_metadata
+from ohsome_quality_analyst.definitions import get_metadata, load_metadata
 
 
 class TestReadMetadata(unittest.TestCase):

@@ -15,11 +15,11 @@ from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.html_templates.template import (
     get_template,
     get_traffic_light,
 )
-from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
 

@@ -3,7 +3,7 @@ import os
 import geojson
 
 from ohsome_quality_analyst.base.layer import LayerDefinition
-from ohsome_quality_analyst.utils.definitions import get_layer_definition
+from ohsome_quality_analyst.definitions import get_layer_definition
 
 
 def get_geojson_fixture(name):
