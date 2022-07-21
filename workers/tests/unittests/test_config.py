@@ -93,8 +93,8 @@ class TestConfig(unittest.TestCase):
 
     @mock.patch.dict("os.environ", {}, clear=True)
     def test_get_config_value(self):
-        for _ in self.keys:
-            val = config.get_config_value("geom_size_limit")
+        for key in self.keys:
+            val = config.get_config_value(key)
             assert isinstance(val, int) or isinstance(val, str) or isinstance(val, dict)
 
     @mock.patch.dict(
