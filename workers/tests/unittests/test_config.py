@@ -116,7 +116,6 @@ class TestConfig(unittest.TestCase):
             ),
             "..",
             "..",
-            "..",
             "data",
         )
         self.assertTrue(os.path.samefile(data_dir, expected))

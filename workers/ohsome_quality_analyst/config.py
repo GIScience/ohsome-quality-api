@@ -111,7 +111,6 @@ def get_default_data_dir() -> str:
             os.path.abspath(__file__),
         ),
         "..",
-        "..",
         "data",
     )
 

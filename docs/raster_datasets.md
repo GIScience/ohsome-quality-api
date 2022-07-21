@@ -1,22 +1,19 @@
 # Raster datasets (Stored as file on Disk)
 
-OQT operates on raster datasets stored on disk.
-
+OQT operates on raster datasets stored on disk. Those raster datasets need to be
+downloaded and saved to the OQT data directory.
 
 ## Location (Data directory)
 
-The raster files are located in the `data` directory at the root of git repository.
+The default data directory is `workers/data`. The location can be changed by setting the
+environment variable `$OQT_DATA_DIR`.
 
-The location can be changed by setting the environment variable `$OQT_DATA_DIR`.
-
-For testing purposes the `data` directory at the root of the git repository contains raster files *clipped* to the extent of Heidelberg.
-The `data` directory is listed in `.gitignore`. This way the original raster files in full size can be stored in this directory for development.
+The `data` directory is listed in `.gitignore`. This way the original raster files in
+full size can be stored in this directory for development.
 
 The following section will describe how to set up the individual raster datasets.
 
-
 ## Setup
-
 
 ### GHS-BUILT R2018A
 
@@ -29,7 +26,6 @@ Setup steps:
 2. Extract archive
 3. Move `GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.tif` to the OQT data directory
 
-
 ### GHS-POP R2019A
 
 Information:
@@ -41,7 +37,6 @@ Setup steps:
 2. Extract archive
 3. Move `GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif` to the OQT data directory
 
-
 ### GHS-SMOD R2019A
 
 Information:
@@ -52,7 +47,6 @@ Setup steps:
 1. Download the global raster as single file at [https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_SMOD_POP_GLOBE_R2019A/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K/V2-0/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.zip](https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_SMOD_POP_GLOBE_R2019A/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K/V2-0/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.zip)
 2. Extract archive
 3. Move `GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif` to the OQT data directory
-
 
 ### Nighttime Lights VIIRS - Annual VNL V2
 
