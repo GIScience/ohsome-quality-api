@@ -57,7 +57,6 @@ def load_config_default() -> dict:
 
 def load_config_from_file(path: str) -> dict:
     """Load configuration from file on disk."""
-    # TODO: Raise error if OQT_CONFIG has been set
     if os.path.isfile(path):
         with open(path, "r") as f:
             return yaml.safe_load(f)

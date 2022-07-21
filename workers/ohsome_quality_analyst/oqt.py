@@ -355,14 +355,6 @@ async def create_all_indicators(
     Possible Indicator/Layer combinations are defined in `definitions.py`.
     This functions executes `create_indicator()` function up to four times concurrently.
     """
-
-    async def sem_task(
-        task, semaphore=asyncio.Semaphore(get_config_value("concurrent_computations"))
-    ):
-        """Run task with semaphore. Semaphore limits num of concurrent executions."""
-        async with semaphore:
-            return await task
-
     if indicator_name is not None and layer_key is None:
         layers = get_valid_layers(indicator_name)
         indicator_layer = [(indicator_name, lay) for lay in layers]
