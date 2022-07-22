@@ -42,7 +42,7 @@ def camel_to_snake(camel: str) -> str:
 
 
 def camel_to_hyphen(camel: str) -> str:
-    """Converts Camel Case to Lower Hyphen"""
+    """Converts Camel Case to Lower Hyphen Case"""
     return re.sub(r"(?<!^)(?=[A-Z])", "-", camel).lower()
 
 
@@ -50,6 +50,12 @@ def snake_to_lower_camel(snake: str) -> str:
     """Converts Snake Case to Lower Camel Case"""
     parts = snake.split("_")
     return parts[0] + "".join(part.title() for part in parts[1:])
+
+
+def snake_to_hyphen(snake: str) -> str:
+    """Converts Snake Case to Lower Hyphen Case"""
+    parts = snake.split("_")
+    return "-".join(parts)
 
 
 def name_to_lower_camel(name: str) -> str:

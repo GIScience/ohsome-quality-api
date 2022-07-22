@@ -21,6 +21,7 @@ from ohsome_quality_analyst.utils.helper import (
     json_serialize,
     loads_geojson,
     name_to_class,
+    snake_to_hyphen,
     snake_to_lower_camel,
 )
 
@@ -190,11 +191,14 @@ class TestHelper(unittest.TestCase):
     def test_camel_to_snake(self):
         assert camel_to_snake("CamelCase") == "camel_case"
 
-    def test_camel_to_lower_hyphen(self):
+    def test_camel_to_hyphen(self):
         assert camel_to_hyphen("CamelCase") == "camel-case"
 
     def test_snake_to_lower_camel(self):
         assert snake_to_lower_camel("snake_case") == "snakeCase"
+
+    def test_snake_to_hyphen(self):
+        assert snake_to_hyphen("snake_case") == "snake-case"
 
 
 if __name__ == "__main__":
