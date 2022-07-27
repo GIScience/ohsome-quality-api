@@ -54,7 +54,7 @@ class TestBaseIndicator:
 
 
 class TestBaseResult:
-    def test_base_result_label(self):
+    def test_label(self):
         result = Result("", "", "")
         assert result.label == "undefined"
         result.class_ = 4
