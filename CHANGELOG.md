@@ -2,10 +2,6 @@
 
 ## Current Main
 
-### New Features
-
-- Generalize result values of all Indicators by introducing a result class value ([#369])
-
 ### Breaking Changes
 
 - Make inclusion of indicator data in response optional ([#370])
@@ -25,6 +21,7 @@
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
+- Generalize result values of all Indicators by introducing a result class value ([#369])
 
 ### Other Changes
 
@@ -40,7 +37,7 @@
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
 - Rename environment variable `OHSOME_API`  `OQT_OHSOME_API` ([#255])
 - Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
-- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
 - If you run your own database, please delete the result table before upgrading ([#369])
 - Rename endpoints ([#397]):
 
