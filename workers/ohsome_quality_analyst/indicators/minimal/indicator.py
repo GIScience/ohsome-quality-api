@@ -24,7 +24,6 @@ class Minimal(BaseIndicator):
     def calculate(self) -> None:
         description = Template(self.metadata.result_description).substitute()
         self.result.value = 1.0
-        self.result.label = "green"
         self.result.description = description + self.metadata.label_description["green"]
 
     def create_figure(self) -> None:

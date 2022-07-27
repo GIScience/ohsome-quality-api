@@ -23,7 +23,6 @@ class PoiDensity(BaseIndicator):
         self.threshold_red = 10
         self.area_sqkm = None
         self.count = None
-        self.density = None
 
     def green_threshold_function(self, area):
         return self.threshold_yellow * area
@@ -37,31 +36,27 @@ class PoiDensity(BaseIndicator):
         self.count = query_results_count["result"][0]["value"]
         timestamp = query_results_count["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.density = self.count / self.area_sqkm
 
     def calculate(self) -> None:
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
-
+        self.result.value = self.count / self.area_sqkm  # density
         description = Template(self.metadata.result_description).substitute(
-            result=f"{self.density:.2f}"
+            result=f"{self.result.value:.2f}"
         )
-        if self.density >= self.threshold_yellow:
-            self.result.value = 1.0
-            self.result.label = "green"
+        if self.result.value >= self.threshold_yellow:
+            self.result.class_ = 5
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
         else:
-            self.result.value = self.density / self.threshold_red
-            if self.density > self.threshold_red:
-                self.result.label = "yellow"
+            if self.result.value > self.threshold_red:
+                self.result.class_ = 3
                 self.result.description = (
                     description + self.metadata.label_description["yellow"]
                 )
             else:
-                self.result.label = "red"
+                self.result.class_ = 1
                 self.result.description = (
                     description + self.metadata.label_description["red"]
                 )
