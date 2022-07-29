@@ -5,6 +5,7 @@
 ### New Features
 
 - Generalize result values of all Indicators by introducing a result class value ([#369])
+- Add new API endpoint `\indicator-description` that returns the description for a specific indicator ([#400])
 
 ### Breaking Changes
 
@@ -70,6 +71,7 @@
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+[#400]: https://github.com/GIScience/ohsome-quality-analyst/pull/400
 
 
 ## 0.10.1

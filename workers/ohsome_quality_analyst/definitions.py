@@ -280,3 +280,7 @@ def get_valid_layers(indcator_name: str) -> tuple:
 def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a Layer."""
     return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])
+
+
+def get_indicator_descriptions(indicator_class) -> List[str]:
+    return get_metadata("indicators", indicator_class).get("description")
