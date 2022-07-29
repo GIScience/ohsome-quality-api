@@ -78,8 +78,8 @@
 	</div>
 
 	<!-- Start -->
-	<div class="section">
-		<div class="section-container">
+	<div class="oqtSection">
+		<div class="oqtSection-container">
 			<div class="poc" style="width:100%;">
 				<p style="color:#CD5C5C; font-size:13px">
 					Please note, this is a proof of concept implementation of the OQT,
@@ -93,22 +93,20 @@
 				<h3>1. Pick an area on the map.</h3><p>Click on a marker, when it turns red, it is selected.</p>
 			</div>
 		</div>
-		<div class="section-container">
+		<div class="oqtSection-container">
 			<div  class="map" id="map" style="width: 100%; height:300px; border: 1px solid #AAA;"></div>
 			<div  id="mapCheck" style="display:none;">id</div>
 		</div>
-		<div class="section-container section-flex">
+		<div class="oqtSection-container oqtSection-flex">
 			<div class="one-half center-items">
 			<!-- ### select area  space ######## -->
 				<h3>2. Choose data quality report.</h3>
 				<div class="select">
 					<select class="minimal" id="cardtype"  required>
 						<option value="Report" selected>Report ...</option>
-						<option value="SimpleReport">Simple Report</option>
-						<option value="RemoteMappingLevelOne">Remote Mapping Report</option>
-						<option value="SketchmapFitness">Sketch Mapping Report</option>
-						<option value="JrcRequirements">JRC Report</option>
-						<option value="MapActionPoc">MapAction Country Overview Report</option>
+						<option value="BuildingReport">Building Report</option>
+						<option value="RoadReport">Road Report</option>
+						<option value="MultilevelMappingSaturation">Multilevel Mapping Saturation</option>
 					</select>
 				</div>
 			</div>
@@ -123,48 +121,13 @@
 		</div>
 	</div>
 
+    <div id="loader1"></div>
 	<!-- Section for Results -->
-	<div id="resultSection" class="section light-blue">
-
-		<div class="section-container">
-			<div class="rich-text">
-			<!-- ### select area  space ######## -->
-				<h2 id="result-heading">Results</h2>
-			</div>
-		</div>
-		<div class="section-container">
-			<h3>Overall Data Quality Report</h3>
-			<div id="results1" class="middle">
-				<p>Results will be shown here</p>
-			</div>
-			<div id="loader1"></div>
-		</div>
-		<div class="section-container section-flex">
-			<div class="one-third">
-				<div id="traffic_map_space" style="height: 250px; padding:10px;"></div>
-			</div>
-			<div class="two-thirds">
-				<div id="traffic_dots_space"></div>
-				<div id="traffic_text_space"></div>
-				<div id="report_metadata_space"></div>
-			</div>
-		</div>
-
-		<div class="section-container">
-			<h3>Data Quality Indicators</h3>
-			<div id="results2" class="middle">
-				<p>Results will be shown here</p>
-			</div>
-			<div id="loader2"></div>
-		</div>
-		<div id="indicatorSpace">
-		</div>
-
-		<div class="section-container">
-			<div class="buttons2">
-				<button class="btn-submit" onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
-			</div>
-		</div>
+	<div id="resultSection" class="oqtSection light-blue"></div>
+	<div class="oqtSection-container">
+		<div class="buttons2">
+			<button class="btn-submit" onclick="topFunction()" id="topButton" title="Go to top">Back to top</button>
+		<div id="loader1"></div>
 	</div>
 
 	<!-- End  -->
@@ -183,7 +146,7 @@
 				</a>
 			</div>
 			<div class="footer-column last-footer">
-				<p>Copyright © <span id="year">2021</span> HeiGIT </p>
+				<p>Copyright © <span id="year">2022</span> HeiGIT </p>
 			</div>
 			</div>
 		</div>

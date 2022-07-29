@@ -1,0 +1,22 @@
+---
+Minimal:
+  name: Minimal
+  description: |
+    This report shows the quality for two indicators:
+    Mapping Saturation and Currentness.
+    It's main function is to test the interactions between
+    database, api and website.
+  label_description:
+    red: |
+      The data quality in this region is low.
+      It is very likely that this regions has not been completely
+      mapped in OSM.
+    yellow: |
+      At least one indicator shows only medium quality.
+      You should inspect the results for the individual indicators
+      to identify potential data quality concerns.
+    green: |
+      All indicators show a good quality.
+      The data in this regions seems to be completely mapped.
+    undefined: |
+      Could not derive quality level.

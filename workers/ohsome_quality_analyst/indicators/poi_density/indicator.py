@@ -8,6 +8,7 @@ import numpy as np
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
@@ -16,20 +17,12 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class PoiDensity(BaseIndicator):
-    def __init__(
-        self,
-        layer_name: str,
-        feature: Feature,
-    ) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            feature=feature,
-        )
+    def __init__(self, layer: Layer, feature: Feature) -> None:
+        super().__init__(layer=layer, feature=feature)
         self.threshold_yellow = 30
         self.threshold_red = 10
         self.area_sqkm = None
         self.count = None
-        self.density = None
 
     def green_threshold_function(self, area):
         return self.threshold_yellow * area
@@ -38,40 +31,32 @@ class PoiDensity(BaseIndicator):
         return self.threshold_red * area
 
     async def preprocess(self) -> None:
-        query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry
-        )
-        self.area_sqkm = await get_area_of_bpolys(
-            self.feature.geometry
-        )  # calc polygon area
+        query_results_count = await ohsome_client.query(self.layer, self.feature)
+        self.area_sqkm = await get_area_of_bpolys(self.feature.geometry)
         self.count = query_results_count["result"][0]["value"]
         timestamp = query_results_count["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.density = self.count / self.area_sqkm
 
     def calculate(self) -> None:
         # TODO: we need to think about how we handle this
         #  if there are different layers
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
-
+        self.result.value = self.count / self.area_sqkm  # density
         description = Template(self.metadata.result_description).substitute(
-            result=f"{self.density:.2f}"
+            result=f"{self.result.value:.2f}"
         )
-        if self.density >= self.threshold_yellow:
-            self.result.value = 1.0
-            self.result.label = "green"
+        if self.result.value >= self.threshold_yellow:
+            self.result.class_ = 5
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
         else:
-            self.result.value = self.density / self.threshold_red
-            if self.density > self.threshold_red:
-                self.result.label = "yellow"
+            if self.result.value > self.threshold_red:
+                self.result.class_ = 3
                 self.result.description = (
                     description + self.metadata.label_description["yellow"]
                 )
             else:
-                self.result.label = "red"
+                self.result.class_ = 1
                 self.result.description = (
                     description + self.metadata.label_description["red"]
                 )
@@ -136,5 +121,4 @@ class PoiDensity(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.debug("Successful SVG figure creation")
         plt.close("all")

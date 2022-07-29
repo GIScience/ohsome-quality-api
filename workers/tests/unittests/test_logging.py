@@ -3,7 +3,7 @@ import os
 import sys
 import unittest
 
-from ohsome_quality_analyst.utils.definitions import configure_logging
+from ohsome_quality_analyst.config import configure_logging
 
 
 class TestLogging(unittest.TestCase):

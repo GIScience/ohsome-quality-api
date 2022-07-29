@@ -7,12 +7,10 @@ import os
 import pathlib
 import pkgutil
 import re
-import warnings
 from datetime import date, datetime
 from typing import Generator, Union
 
 import geojson
-import joblib
 import numpy as np
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
@@ -167,17 +165,3 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
         else:
             output.append(val)
     return output
-
-
-def load_sklearn_model(path: str):
-    """Load sklearn model from disk
-
-    Raise an error if a `UserWarning` is thrown during loading of a model from disk.
-    The `UserWarning` is most likely due to use of different versions of `scikit-learn`
-    for dumping and for loading the model with `joblib`.
-    https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
-    """
-    warnings.simplefilter("error", UserWarning)  # Raise exception if warning occurs
-    model = joblib.load(path)
-    warnings.resetwarnings()
-    return model

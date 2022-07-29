@@ -3,7 +3,7 @@
 import click
 import uvicorn
 
-from ohsome_quality_analyst.utils.definitions import load_logging_config
+from ohsome_quality_analyst.config import load_logging_config
 
 
 @click.command()

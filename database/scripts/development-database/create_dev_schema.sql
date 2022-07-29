@@ -15,12 +15,16 @@ CREATE TABLE development.regions (
     LIKE public.regions INCLUDING INDEXES
 );
 
-CREATE TABLE development.ghs_pop (
-    LIKE public.ghs_pop INCLUDING INDEXES
-);
-
 CREATE TABLE development.shdi (
     LIKE public.shdi INCLUDING INDEXES
+);
+
+CREATE TABLE development.hexcells (
+    LIKE public.hexcells INCLUDING INDEXES
+);
+
+CREATE TABLE development.admin_world_water (
+    LIKE public.admin_world_water INCLUDING INDEXES
 );
 
 INSERT INTO development.regions
@@ -28,19 +32,6 @@ SELECT
     *
 FROM
     public.regions;
-
-INSERT INTO development.ghs_pop SELECT DISTINCT ON (rid)
-    rid,
-    ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
-FROM
-    public.ghs_pop,
-    development.regions
-WHERE
-    ST_Intersects (rast, geom)
-    AND ST_BandIsNoData (rast) = FALSE;
-
-SELECT
-    AddRasterConstraints ('development'::name, 'ghs_pop'::name, 'rast'::name);
 
 INSERT INTO development.shdi SELECT DISTINCT ON (gid)
     public.shdi.*
@@ -50,23 +41,37 @@ FROM
 WHERE
     ST_Intersects (public.shdi.geom, development.regions.geom);
 
+INSERT INTO development.hexcells SELECT DISTINCT ON (public.hexcells.ogc_fid)
+    public.hexcells.*
+FROM
+    public.hexcells,
+    development.regions
+WHERE
+    ST_Intersects (public.hexcells.wkb_geometry, development.regions.geom);
+
+INSERT INTO development.admin_world_water
+SELECT
+    *
+FROM
+    public.admin_world_water;
+
 
 /* Testing */
 /* Currently two regions are used for testing: */
 /* Heidelberg: 3*/
-/* Algeria Touggourt: 11*/
+/* Algeria Touggourt: 12*/
 CREATE SCHEMA IF NOT EXISTS test;
 
 CREATE TABLE test.regions (
     LIKE public.regions INCLUDING INDEXES
 );
 
-CREATE TABLE test.ghs_pop (
-    LIKE public.ghs_pop INCLUDING INDEXES
-);
-
 CREATE TABLE test.shdi (
     LIKE public.shdi INCLUDING INDEXES
+);
+
+CREATE TABLE test.hexcells (
+    LIKE public.hexcells INCLUDING INDEXES
 );
 
 INSERT INTO test.regions
@@ -75,20 +80,7 @@ SELECT
 FROM
     public.regions
 WHERE
-    ogc_fid IN (3, 11);
-
-INSERT INTO test.ghs_pop SELECT DISTINCT ON (rid)
-    rid,
-    ST_Clip (rast, ST_Buffer (geom, 0.01), TRUE) AS rast
-FROM
-    public.ghs_pop,
-    test.regions
-WHERE
-    ST_Intersects (rast, geom)
-    AND ST_BandIsNoData (rast) = FALSE;
-
-SELECT
-    AddRasterConstraints ('test'::name, 'ghs_pop'::name, 'rast'::name);
+    ogc_fid IN (3, 12);
 
 INSERT INTO test.shdi SELECT DISTINCT ON (gid)
     public.shdi.*
@@ -97,3 +89,11 @@ FROM
     test.regions
 WHERE
     ST_Intersects (public.shdi.geom, test.regions.geom);
+
+INSERT INTO test.hexcells SELECT DISTINCT ON (public.hexcells.ogc_fid)
+    public.hexcells.*
+FROM
+    public.hexcells,
+    test.regions
+WHERE
+    ST_Intersects (public.hexcells.wkb_geometry, test.regions.geom);

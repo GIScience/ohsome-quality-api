@@ -10,6 +10,7 @@ from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
@@ -37,14 +38,12 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        layer_name: str,
+        layer: Layer,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            feature=feature,
-        )
+        super().__init__(layer=layer, feature=feature)
+
         self.time_range: str = time_range
 
         # The following attributes will be set during the life-cycle of the object.
@@ -63,8 +62,8 @@ class MappingSaturation(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
-            layer=self.layer,
-            bpolys=self.feature.geometry,
+            self.layer,
+            self.feature,
             time=self.time_range,
         )
         for item in query_results["result"]:
@@ -119,28 +118,24 @@ class MappingSaturation(BaseIndicator):
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
         self.result.value = y1 / y2  # Saturation
+        if 1.0 >= self.result.value > self.upper_threshold:
+            self.result.class_ = 5
+        elif self.upper_threshold >= self.result.value > self.lower_threshold:
+            self.result.class_ = 3
+        elif self.lower_threshold >= self.result.value > 0:
+            self.result.class_ = 1
+        else:
+            raise ValueError(
+                "Result value (saturation) is an unexpected value: {}".format(
+                    self.result.value
+                )
+            )
         description = Template(self.metadata.result_description).substitute(
             saturation=round(self.result.value * 100, 2)
         )
-        if 1.0 >= self.result.value > self.upper_threshold:
-            self.result.label = "green"
-            self.result.description = (
-                description + self.metadata.label_description["green"]
-            )
-        elif self.upper_threshold >= self.result.value > self.lower_threshold:
-            self.result.label = "yellow"
-            self.result.description = (
-                description + self.metadata.label_description["yellow"]
-            )
-        elif self.lower_threshold >= self.result.value > 0:
-            self.result.label = "red"
-            self.result.description = (
-                description + self.metadata.label_description["red"]
-            )
-        else:
-            self.result.description = (
-                "The result value (saturation) is an unexpected value."
-            )
+        self.result.description = (
+            description + self.metadata.label_description[self.result.label]
+        )
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
@@ -167,7 +162,6 @@ class MappingSaturation(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
-        logging.info("Successful creation of the SVG figure.")
         plt.close("all")
 
     def check_edge_cases(self) -> str:

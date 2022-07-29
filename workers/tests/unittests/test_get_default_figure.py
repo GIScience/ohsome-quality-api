@@ -1,11 +1,10 @@
 import os
 import unittest
+from unittest import mock
 
 import geojson
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
-    GhsPopComparisonBuildings,
-)
+from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
 
 class TestGetDefaultFigure(unittest.TestCase):
@@ -17,8 +16,6 @@ class TestGetDefaultFigure(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        indicator = GhsPopComparisonBuildings(
-            feature=feature, layer_name="building_count"
-        )
+        indicator = Minimal(feature=feature, layer=mock.Mock())
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG

@@ -2,10 +2,135 @@
 
 ## Current Main
 
+### New Features
+
+- Generalize result values of all Indicators by introducing a result class value ([#369])
+
+### Breaking Changes
+
+- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
+
+### Bug Fixes
+
+- Make inclusion of indicator data in response optional ([#370])
+- Per default properties of the GeoJSON response are not flat ([#375])
+- Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
+- Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
+- Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
+
+### Bug Fixes
+
+- Fix indicator description field of GeoJSON properties ([#396])
+
+### New Features
+
+- Add new representative report `RoadReport` ([#357])
+- Add new representative report `BuildingReport` ([#356])
+- Add ratio_filter to `building_count` layer ([#356])
+- Configure OQT using files or environment variables ([#255])
+
+### Other Changes
+
+- Remove unused report `RemoteMappingLevelOne` ([#380])
+- Substitute Simple Report with a Report named Minimal for testing purposes ([#342] [#385])
+- Add a minimal Indicator for testing purposes ([#383])
+- Remove database scripts ([#392])
+
+### How to Upgrade
+
+- Reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` are not accessibly via the website anymore. If you want to access those reports please use the API.
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
+- To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
+- Rename environment variable `OHSOME_API`  `OQT_OHSOME_API` ([#255])
+- Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- If you run your own database, please delete the result table before upgrading ([#369])
+- Rename endpoints ([#397]):
+
+| old                          | new                            |
+| ---                          | ---                            |
+| `indicatorLayerCombinations` | `indicator-layer-combinations` |
+| `indicatorNames`             | `indicators`                   |
+| `datasetNames`               | `datasets`                     |
+| `layerNames`                 | `layers`                       |
+| `reportNames`                | `reports`                      |
+| `fidFields`                  | `fid-fields`                   |
+
+[#255]: https://github.com/GIScience/ohsome-quality-analyst/pull/255
+[#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
+[#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
+[#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
+[#369]: https://github.com/GIScience/ohsome-quality-analyst/pull/369
+[#370]: https://github.com/GIScience/ohsome-quality-analyst/pull/370
+[#375]: https://github.com/GIScience/ohsome-quality-analyst/pull/375
+[#376]: https://github.com/GIScience/ohsome-quality-analyst/pull/376
+[#380]: https://github.com/GIScience/ohsome-quality-analyst/pull/380
+[#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
+[#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383
+[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
+[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
+[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+
+
+## 0.10.1
+
+### New Features
+
+- Add new report `MulilevelMappingSaturation` ([#379])
+
+[#379]: https://github.com/GIScience/ohsome-quality-analyst/pull/379
+
+
+
+## 0.10.0
+
+### Bug Fixes
+
+- Add missing error handling of `RasterDatasetUndefinedError` and `RasterDatasetNotFoundError` to the API ([#298])
+- Fix missing HTML generation for Indicators calculated from scratch (`bpolys` parameter) ([#345])
+- Fix semaphore instantiation outside of event-loop ([#346])
+
+### New Features
+
+- Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
+- Add `flatten` parameter to API request. Make flatten of GeoJSON properties of Indicators and Reports optional ([#303])
+- Make calculation of an Indicator for a FeatureCollection or for a Report asynchronous ([#307])
+- Add new Indicator which predicts the building area of the AOI using a trained Random Forest Regressor ([#265])
+- Add support for `groupBy/boundary` queries to the ohsome API client ([#272])
+
+### Other Changes
+
+- Improve documentation and examples of the API ([#299])
+- Factor out template logic to own module ([#302])
+- Remove artifacts of database setup for GHSL raster datasets ([#310])
+- Add hex-cells at zoom level 12 for Africa to the database ([#314])
+- Disable size limit on input AOI if OSM data is provided through a request with a custom Layer object ([#330])
+
+[#265]: https://github.com/GIScience/ohsome-quality-analyst/pull/265
+[#272]: https://github.com/GIScience/ohsome-quality-analyst/pull/272
+[#298]: https://github.com/GIScience/ohsome-quality-analyst/pull/298
+[#299]: https://github.com/GIScience/ohsome-quality-analyst/pull/299
+[#302]: https://github.com/GIScience/ohsome-quality-analyst/pull/302
+[#303]: https://github.com/GIScience/ohsome-quality-analyst/pull/303
+[#307]: https://github.com/GIScience/ohsome-quality-analyst/pull/307
+[#310]: https://github.com/GIScience/ohsome-quality-analyst/pull/310
+[#314]: https://github.com/GIScience/ohsome-quality-analyst/pull/314
+[#330]: https://github.com/GIScience/ohsome-quality-analyst/pull/330
+[#345]: https://github.com/GIScience/ohsome-quality-analyst/pull/345
+[#346]: https://github.com/GIScience/ohsome-quality-analyst/pull/346
+
+
+## 0.9.0
+
 ### Breaking Changes
 
 - Update `poi` layer based on ([`openpoiservice`]) [#246])
 - Remove `ideal_vgi_poi` layer in favor of new `poi` layer ([#246])
+
+### New Features
+
+- Add new parameter `includeHtml` to the API endpoints `/indicator` and `/report` to include a HTML snippets with the results in the response ([#242])
+- Add new parameter `layer` containing `name`, `description` and `data` fields to the API endpoint `indicator`. Only available for POST requests. This enables to compute indicators for given data. ([#245])
 
 ### Other Changes
 
@@ -13,12 +138,20 @@
 - Utilize `singledispatch` for `create_indicator` function of the `oqt` module ([#239])
 - Add `landmarks` layer [#246])
 - Add SHDI to database and add functionality to get SHDI for an AOI by intersection using SQL ([#266])
+- Support any dataset, not just "regions" for CLI function `create_all_indicators` ([#254])
+- Fix concurrent execution of CLI function `create_all_indicators` using async and semaphores ([#254])
+- Support choosing a single indicator and/or single layer for CLI command `create_all_indicators` ([#254])
+- Indicators based on GHS-POP use raster file stored on disk instead of raster in the database ([#276])
 
 [#221]: https://github.com/GIScience/ohsome-quality-analyst/pull/221
 [#227]: https://github.com/GIScience/ohsome-quality-analyst/pull/227
 [#239]: https://github.com/GIScience/ohsome-quality-analyst/pull/239
+[#242]: https://github.com/GIScience/ohsome-quality-analyst/pull/242
+[#245]: https://github.com/GIScience/ohsome-quality-analyst/pull/245
 [#246]: https://github.com/GIScience/ohsome-quality-analyst/pull/246
+[#254]: https://github.com/GIScience/ohsome-quality-analyst/pull/254
 [#266]: https://github.com/GIScience/ohsome-quality-analyst/pull/266
+[#276]: https://github.com/GIScience/ohsome-quality-analyst/pull/276
 [`rasterstats`]: https://github.com/perrygeo/python-rasterstats
 [`openpoiservice`]: https://github.com/GIScience/openpoiservice
 

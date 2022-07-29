@@ -1,5 +1,5 @@
-"""
-Testing FastAPI Applications:
+"""Testing FastAPI Applications
+
 https://fastapi.tiangolo.com/tutorial/testing/
 """
 
@@ -51,14 +51,14 @@ class TestApi(unittest.TestCase):
             self.assertIsInstance(region, dict)
 
     def test_list_indicator_layer_combinations(self):
-        url = "/indicatorLayerCombinations"
+        url = "/indicator-layer-combinations"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         self.assertIsInstance(response.json(), dict)
 
     def test_list_indicators(self):
-        url = "/indicatorNames"
+        url = "/indicators"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -67,7 +67,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_layers(self):
-        url = "/layerNames"
+        url = "/layers"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -76,7 +76,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_datasets(self):
-        url = "/datasetNames"
+        url = "/datasets"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -85,7 +85,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_fid_field(self):
-        url = "/FidFields"
+        url = "/fid-fields"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -94,7 +94,7 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.result_schema.is_valid(response_content))
 
     def test_list_reports(self):
-        url = "/reportNames"
+        url = "/reports"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

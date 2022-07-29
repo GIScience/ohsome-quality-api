@@ -14,14 +14,13 @@ from ohsome_quality_analyst.api.request_models import (
     ReportDatabase,
 )
 from ohsome_quality_analyst.cli import options
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
-    DATASETS,
+from ohsome_quality_analyst.config import configure_logging, get_config_value
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    configure_logging,
     load_layer_definitions,
     load_metadata,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
 
 
@@ -71,13 +70,13 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(tuple(DATASETS.keys()))
+    click.echo(tuple(get_config_value("datasets").keys()))
 
 
 @cli.command("list-fid-fields")
 def list_fid_fields():
     """List available fid fields for each dataset."""
-    for name, dataset in DATASETS.items():
+    for name, dataset in get_config_value("datasets").items():
         click.echo(name + ": ")
         click.echo("  - default: " + dataset["default"])
         click.echo("  - other: " + ", ".join(dataset.get("other", [])))
@@ -103,7 +102,7 @@ def get_indicator_layer_combination():
 
 @cli.command("create-indicator")
 @cli_option(options.indicator_name)
-@cli_option(options.layer_name)
+@cli_option(options.layer_key)
 @cli_option(options.infile)
 @cli_option(options.outfile)
 @cli_option(options.dataset_name)
@@ -114,7 +113,7 @@ def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
-    layer_name: str,
+    layer_key: str,
     feature_id: str,
     dataset_name: str,
     fid_field: str,
@@ -136,13 +135,13 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             dataset=dataset_name,
             featureId=feature_id,
             fidField=fid_field,
@@ -199,19 +198,70 @@ def create_report(
 
 
 @cli.command("create-all-indicators")
+@click.option(
+    "--dataset-name",
+    "-d",
+    required=True,
+    type=click.Choice(
+        get_config_value("datasets").keys(),
+        case_sensitive=True,
+    ),
+    help=("Choose a dataset containing geometries."),
+)
+@click.option(
+    "--indicator-name",
+    "-i",
+    type=click.Choice(
+        load_metadata("indicators").keys(),
+        case_sensitive=True,
+    ),
+    help="Choose an indicator,valid indicators are specified in definitions.py .",
+    default=None,
+)
+@click.option(
+    "--layer-key",
+    "-l",
+    type=click.Choice(
+        list(load_layer_definitions().keys()),
+        case_sensitive=True,
+    ),
+    help=(
+        "Choose a layer. This defines which OSM features will be considered "
+        "in the quality analysis."
+    ),
+    default=None,
+)
 @cli_option(options.force)
-def create_all_indicators(force: bool):
-    """Create all indicators for all OQT regions."""
+def create_all_indicators(
+    dataset_name: str,
+    indicator_name: str,
+    layer_key: str,
+    force: bool,
+):
+    """Create all Indicators for all features of the given dataset.
+
+    The default is to create all Indicator/Layer combinations for all features of the
+    given dataset. This can be restricted to one Indicator type and/or one Layer
+    definition by providing the corresponding options.
+    """
     click.echo(
-        "This command will calculate all indicators for all OQT regions "
-        + "and may take a while to complete."
+        "This command will calculate all indicators for all features of the given "
+        + "dataset. This may take a while to complete."
     )
     if force:
         click.echo(
-            "The argument 'force' will update the indicator results in the database."
+            "The argument 'force' will overwrite existing indicator results in the "
+            + "database."
         )
     click.confirm("Do you want to continue?", abort=True)
-    asyncio.run(oqt.create_all_indicators(force=force))
+    asyncio.run(
+        oqt.create_all_indicators(
+            dataset_name,
+            indicator_name=indicator_name,
+            layer_key=layer_key,
+            force=force,
+        )
+    )
 
 
 if __name__ == "__main__":

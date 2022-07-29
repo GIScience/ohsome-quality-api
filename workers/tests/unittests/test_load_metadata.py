@@ -2,7 +2,7 @@ import unittest
 
 from schema import Schema
 
-from ohsome_quality_analyst.utils.definitions import get_metadata, load_metadata
+from ohsome_quality_analyst.definitions import get_metadata, load_metadata
 
 
 class TestReadMetadata(unittest.TestCase):
@@ -55,7 +55,7 @@ class TestReadMetadata(unittest.TestCase):
     def test_get_report_metadata(self):
         self.assertRaises(ValueError, get_metadata, "", "")
         self.assertRaises(KeyError, get_metadata, "reports", "ajsjdh")
-        self.assertIsInstance(get_metadata("reports", "RemoteMappingLevelOne"), dict)
+        self.assertIsInstance(get_metadata("reports", "Minimal"), dict)
 
 
 if __name__ == "__main__":

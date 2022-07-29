@@ -10,13 +10,15 @@ DROP TABLE IF EXISTS development.regions;
 
 DROP TABLE IF EXISTS test.regions;
 
-DROP TABLE IF EXISTS development.ghs_pop;
-
-DROP TABLE IF EXISTS test.ghs_pop;
-
 DROP TABLE IF EXISTS development.shdi;
 
 DROP TABLE IF EXISTS test.shdi;
+
+DROP TABLE IF EXISTS development.hexcells;
+
+DROP TABLE IF EXISTS test.hexcells;
+
+DROP TABLE IF EXISTS development.admin_world_water;
 
 DROP SCHEMA IF EXISTS development;
 

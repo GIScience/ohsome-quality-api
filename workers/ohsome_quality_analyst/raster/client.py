@@ -1,12 +1,14 @@
 """A client to raster datasets existing as files on disk."""
 
 import os
+from copy import deepcopy
 
 import geojson
 from pyproj import Transformer
 from rasterstats import zonal_stats
 
-from ohsome_quality_analyst.utils.definitions import RasterDataset, get_data_dir
+from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.definitions import RasterDataset
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
 
 
@@ -28,6 +30,7 @@ def get_zonal_stats(
         transform(feature, raster),
         get_raster_path(raster),
         *args,
+        nodata=raster.nodata,
         **kwargs,
     )
 
@@ -42,13 +45,13 @@ def transform(feature: geojson.Feature, raster: RasterDataset):
     transformer = Transformer.from_crs("EPSG:4326", raster.crs, always_xy=True)
     return geojson.utils.map_tuples(
         lambda coordinates: transformer.transform(coordinates[0], coordinates[1]),
-        feature.copy(),
+        deepcopy(feature),
     )
 
 
 def get_raster_path(raster: RasterDataset) -> str:
     """Get the path of the raster file on disk."""
-    path = os.path.join(get_data_dir(), raster.filename)
+    path = os.path.join(get_config_value("data_dir"), raster.filename)
     if not os.path.exists(path):
         raise RasterDatasetNotFoundError(raster)
     return path

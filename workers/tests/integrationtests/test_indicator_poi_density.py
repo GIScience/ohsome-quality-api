@@ -7,7 +7,7 @@ import geojson
 
 from ohsome_quality_analyst.indicators.poi_density.indicator import PoiDensity
 
-from .utils import oqt_vcr
+from .utils import get_layer_fixture, oqt_vcr
 
 
 class TestIndicatorPoiDensity(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        self.indicator = PoiDensity(feature=feature, layer_name="poi")
+        self.indicator = PoiDensity(feature=feature, layer=get_layer_fixture("poi"))
 
     @oqt_vcr.use_cassette()
     def test(self):
@@ -28,7 +28,6 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)
         self.assertIsNotNone(self.indicator.count)
-        self.assertIsNotNone(self.indicator.density)
         self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
 

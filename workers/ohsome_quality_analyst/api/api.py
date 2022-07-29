@@ -24,23 +24,26 @@ from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
     REPORT_EXAMPLES,
     IndicatorBpolys,
+    IndicatorData,
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.config import configure_logging
+from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
     INDICATOR_LAYER,
-    configure_logging,
     get_attribution,
-    get_dataset_names_api,
-    get_fid_fields_api,
+    get_dataset_names,
+    get_fid_fields,
     get_indicator_names,
-    get_layer_names,
+    get_layer_keys,
     get_report_names,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
+    HexCellsNotFoundError,
+    LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
     RasterDatasetUndefinedError,
@@ -49,6 +52,33 @@ from ohsome_quality_analyst.utils.exceptions import (
 from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
+
+TAGS_METADATA = [
+    {
+        "name": "indicator",
+        "description": "Request an Indicator",
+        "externalDocs": {
+            "description": "External docs",
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
+                + __version__
+                + "/docs/api.md"
+            ),
+        },
+    },
+    {
+        "name": "report",
+        "description": "Request a Report",
+        "externalDocs": {
+            "description": "External docs",
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
+                + __version__
+                + "/docs/api.md"
+            ),
+        },
+    },
+]
 
 configure_logging()
 logging.info("Logging enabled")
@@ -63,13 +93,8 @@ app = FastAPI(
         "url": __homepage__,
         "email": __email__,
     },
+    openapi_tags=TAGS_METADATA,
 )
-
-
-class CustomJSONResponse(JSONResponse):
-    def render(self, content):
-        return json.dumps(content, default=json_serialize).encode()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -78,6 +103,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class CustomJSONResponse(JSONResponse):
+    def render(self, content):
+        return json.dumps(content, default=json_serialize).encode()
 
 
 @app.exception_handler(ValidationError)
@@ -106,15 +136,21 @@ async def validation_exception_handler(
     )
 
 
+@app.exception_handler(HexCellsNotFoundError)
+@app.exception_handler(LayerDataSchemaError)
 @app.exception_handler(OhsomeApiError)
+@app.exception_handler(RasterDatasetNotFoundError)
+@app.exception_handler(RasterDatasetUndefinedError)
 @app.exception_handler(SizeRestrictionError)
 async def oqt_exception_handler(
     request: Request,
     exception: Union[
+        HexCellsNotFoundError,
+        LayerDataSchemaError,
         OhsomeApiError,
-        SizeRestrictionError,
         RasterDatasetNotFoundError,
         RasterDatasetUndefinedError,
+        SizeRestrictionError,
     ],
 ):
     """Exception handler for custom OQT exceptions."""
@@ -137,32 +173,23 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator")
+@app.get("/indicator", tags=["indicator"])
 async def get_indicator(parameters=Depends(IndicatorDatabase)):
-    """Request an already calculated Indicator for an AOI defined by OQT.
+    """Request an Indicator for an AOI defined by OQT.
 
-    The response is a GeoJSON Feature with the indicator results as properties.
     To request an Indicator for a custom AOI please use the POST method.
     """
     return await _fetch_indicator(parameters)
 
 
-@app.post("/indicator")
+@app.post("/indicator", tags=["indicator"])
 async def post_indicator(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase] = Body(
+    parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
-    )
+    ),
 ):
-    """Request an Indicator for an AOI defined by OQT or a custom AOI.
-
-    Either the parameters `dataset` and `featureId` have to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
-    the indicator results. The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
-    """
+    """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     return await _fetch_indicator(parameters)
 
 
@@ -172,7 +199,17 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
         size_restriction=True,
     )
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_result_item_from_properties(
+            geojson_object,
+            "svg",
+            parameters.flatten,
+        )
+    if parameters.include_html is False:
+        remove_result_item_from_properties(
+            geojson_object,
+            "html",
+            parameters.flatten,
+        )
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
@@ -182,32 +219,23 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get("/report")
+@app.get("/report", tags=["report"])
 async def get_report(parameters=Depends(ReportDatabase)):
     """Request an already calculated Report for an AOI defined by OQT.
 
-    The response is a GeoJSON Feature with the Report results as properties.
     To request an Report for a custom AOI please use the POST method.
     """
     return await _fetch_report(parameters)
 
 
-@app.post("/report")
+@app.post("/report", tags=["report"])
 async def post_report(
     parameters: Union[ReportBpolys, ReportDatabase] = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
 ):
-    """Request a Report for an AOI defined by OQT or a custom AOI.
-
-    Either the parameters `dataset` and `featureId` have to be provided
-    or the parameter `bpolys` in form of a GeoJSON.
-
-    Depending on the input, the output is a GeoJSON Feature or FeatureCollection with
-    the indicator results. The Feature properties of the input GeoJSON will be preserved
-    if they do not collide with the properties set by OQT.
-    """
+    """Request a Report for an AOI defined by OQT or a custom AOI."""
     return await _fetch_report(parameters)
 
 
@@ -216,9 +244,18 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
         parameters,
         size_restriction=True,
     )
-    response = empty_api_response()
+    if parameters.include_html is False:
+        remove_result_item_from_properties(
+            geojson_object,
+            "html",
+            parameters.flatten,
+        )
     if parameters.include_svg is False:
-        remove_svg_from_properties(geojson_object)
+        remove_result_item_from_properties(
+            geojson_object,
+            "svg",
+            parameters.flatten,
+        )
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="report", name=parameters.name.value
@@ -229,11 +266,7 @@ async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
 
 @app.get("/regions")
 async def get_available_regions(asGeoJSON: bool = False):
-    """Get regions as list of names and identifiers or as GeoJSON.
-
-    Args:
-        asGeoJSON: If `True` regions will be returned as GeoJSON
-    """
+    """Get regions as list of names and identifiers or as a GeoJSON."""
     response = empty_api_response()
     if asGeoJSON is True:
         regions = await db_client.get_regions_as_geojson()
@@ -247,64 +280,88 @@ async def get_available_regions(asGeoJSON: bool = False):
         return response
 
 
-@app.get("/indicatorLayerCombinations")
-async def list_indicator_layer_combinations():
-    """List names of available indicator-layer-combinations."""
+@app.get("/indicator-layer-combinations")
+async def get_indicator_layer_combinations():
+    """Get names of available indicator-layer combinations."""
     response = empty_api_response()
     response["result"] = INDICATOR_LAYER
     return response
 
 
-@app.get("/indicatorNames")
-async def list_indicators():
-    """List names of available indicators."""
+@app.get("/indicators")
+async def indicator_names():
+    """Get names of available indicators."""
     response = empty_api_response()
     response["result"] = get_indicator_names()
     return response
 
 
-@app.get("/datasetNames")
-async def list_datasets():
-    """List names of available datasets."""
+@app.get("/datasets")
+async def dataset_names():
+    """Get names of available datasets."""
     response = empty_api_response()
-    response["result"] = get_dataset_names_api()
+    response["result"] = get_dataset_names()
     return response
 
 
-@app.get("/layerNames")
-async def list_layers():
-    """List names of available layers."""
+@app.get("/layers")
+async def layer_names():
+    """Get names of available layers."""
     response = empty_api_response()
-    response["result"] = get_layer_names()
+    response["result"] = get_layer_keys()
     return response
 
 
-@app.get("/reportNames")
-async def list_reports():
-    """List names of available reports."""
+@app.get("/reports")
+async def report_names():
+    """Get names of available reports."""
     response = empty_api_response()
     response["result"] = get_report_names()
     return response
 
 
-@app.get("/FidFields")
+@app.get("/fid-fields")
 async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()
-    response["result"] = get_fid_fields_api()
+    response["result"] = get_fid_fields()
     return response
 
 
-def remove_svg_from_properties(
-    geojson_object: Union[Feature, FeatureCollection]
+def remove_result_item_from_properties(
+    geojson_object: Union[Feature, FeatureCollection], key: str, flatten: bool
 ) -> None:
-    def _remove_svg_from_properties(properties: dict) -> None:
+    """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
+
+    If properties are flattened pattern matching (See 'fnmatch.fnmatch') is used to
+    delete the item with given key from the properties, else item with given key will
+    be removed.
+    """
+
+    def _remove_item_from_properties_pattern(properties: dict, pattern: str) -> None:
         for key in list(properties.keys()):
-            if fnmatch.fnmatch(key, "*result.svg"):
+            if fnmatch.fnmatch(key, pattern):
                 del properties[key]
 
+    def _remove_item_from_properties_key(properties: dict, key: str) -> None:
+        if "result" in properties.keys():
+            properties["result"].pop(key, None)
+        if "report" in properties.keys():
+            properties["report"]["result"].pop(key, None)
+        if "indicators" in properties.keys():
+            for indicator in properties["indicators"]:
+                indicator["result"].pop(key, None)
+
     if isinstance(geojson_object, Feature):
-        _remove_svg_from_properties(geojson_object["properties"])
+        if flatten:
+            pattern = "*result." + key
+            _remove_item_from_properties_pattern(geojson_object["properties"], pattern)
+        else:
+            _remove_item_from_properties_key(geojson_object["properties"], key)
     elif isinstance(geojson_object, FeatureCollection):
         for feature in geojson_object["features"]:
-            _remove_svg_from_properties(feature["properties"])
+            if flatten:
+                pattern = "*result." + key
+                _remove_item_from_properties_pattern(feature["properties"], pattern)
+            else:
+                _remove_item_from_properties_key(feature["properties"], key)

@@ -2,7 +2,8 @@ import unittest
 
 from schema import Optional, Or, Schema
 
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.definitions import (
     get_layer_definition,
     load_layer_definitions,
 )
@@ -32,7 +33,7 @@ class TestLoadLayers(unittest.TestCase):
         self.assertRaises(KeyError, get_layer_definition, "")
         self.assertRaises(KeyError, get_layer_definition, "ajsjdh")
         self.assertRaises(KeyError, get_layer_definition, None)
-        self.assertIsInstance(get_layer_definition("building_area"), dict)
+        self.assertIsInstance(get_layer_definition("building_area"), LayerDefinition)
 
 
 if __name__ == "__main__":

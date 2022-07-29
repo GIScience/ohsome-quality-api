@@ -22,7 +22,7 @@ class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.report_name = "SimpleReport"
+        self.report_name = "Minimal"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
@@ -37,6 +37,8 @@ class TestApiReport(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
         response_content = geojson.loads(response.content)
+        self.general_schema.validate(response_content)
+        self.feature_schema.validate(response_content)
         self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.feature_schema.is_valid(response_content))
@@ -83,7 +85,7 @@ class TestApiReport(unittest.TestCase):
             self.run_tests(response)
 
     @oqt_vcr.use_cassette()
-    def test_report_include_svg(self):
+    def test_report_include_svg_true(self):
         url = (
             "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
             "&includeSvg={4}".format(
@@ -96,8 +98,9 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["indicators"][0]["result"]
 
+    def test_report_include_svg_false(self):
         url = (
             "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
             "&includeSvg={4}".format(
@@ -110,8 +113,9 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
+    def test_report_include_svg_default(self):
         url = "/report?name={0}&dataset={1}&featureId={2}&fidField={3}".format(
             self.report_name,
             self.dataset,
@@ -120,7 +124,7 @@ class TestApiReport(unittest.TestCase):
         )
         response = self.client.get(url)
         result = response.json()
-        self.assertNotIn("indicators.0.result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["indicators"][0]["result"]
 
     def test_indicator_dataset_invalid(self):
         parameters = {
@@ -155,6 +159,65 @@ class TestApiReport(unittest.TestCase):
                 self.assertEqual(response.status_code, 422)
                 content = response.json()
                 self.assertEqual(content["type"], "RequestValidationError")
+
+    @oqt_vcr.use_cassette()
+    def test_indicator_include_html(self):
+        url = (
+            "/report?name={0}&dataset={1}&featureId={2}&fidField={3}"
+            "&includeHtml={4}".format(
+                self.report_name,
+                self.dataset,
+                self.feature_id,
+                self.fid_field,
+                True,
+            )
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "html" in result["properties"]["report"]["result"]
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_default(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        # Check flat result value
+        assert "report.result.value" not in result["properties"]
+        assert "value" in result["properties"]["report"]["result"]
+        assert "indicators.0.result.value" not in result["properties"]
+        assert "value" in result["properties"]["indicators"][0]["result"]
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_true(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}&flatten={3}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+            True,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "report.result.value" in result["properties"]
+        assert "indicators.0.result.value" in result["properties"]
+
+    @oqt_vcr.use_cassette()
+    def test_report_flatten_false(self):
+        url = "/report?name={0}&dataset={1}&featureId={2}&flatten={3}".format(
+            self.report_name,
+            self.dataset,
+            self.feature_id,
+            False,
+        )
+        response = self.client.get(url)
+        result = response.json()
+        assert "report.result.value" not in result["properties"]
+        assert "value" in result["properties"]["report"]["result"]
+        assert "indicators.0.result.value" not in result["properties"]
+        assert "value" in result["properties"]["indicators"][0]["result"]
 
 
 if __name__ == "__main__":

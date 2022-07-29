@@ -8,39 +8,37 @@ import matplotlib.pyplot as plt
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class TagsRatio(BaseIndicator):
-    def __init__(self, layer_name: str, feature: Feature) -> None:
-        super().__init__(
-            layer_name=layer_name,
-            feature=feature,
-        )
+    def __init__(self, layer: Layer, feature: Feature) -> None:
+        super().__init__(layer=layer, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.ratio = None
         self.count_all = None
         self.count_match = None
 
     async def preprocess(self) -> None:
-
         query_results_count = await ohsome_client.query(
-            layer=self.layer, bpolys=self.feature.geometry, ratio=True
+            self.layer,
+            self.feature,
+            ratio=True,
         )
-        self.ratio = query_results_count["ratioResult"][0]["ratio"]
+        self.result.value = query_results_count["ratioResult"][0]["ratio"]
         self.count_all = query_results_count["ratioResult"][0]["value"]
         self.count_match = query_results_count["ratioResult"][0]["value2"]
         timestamp = query_results_count["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
 
     def calculate(self) -> None:
-        # self.ratio can be of type float, NaN if no features of filter1 are in the
-        # region or None if the layer has no filter2
-        if self.ratio == "NaN" or self.ratio is None:
+        # self.result.value (ratio) can be of type float, NaN if no features of filter1
+        # are in the region or None if the layer has no filter2
+        if self.result.value == "NaN" or self.result.value is None:
             return
         description = Template(self.metadata.result_description).substitute(
-            result=round(self.ratio, 1),
+            result=round(self.result.value, 1),
             all=round(self.count_all, 1),
             matched=round(self.count_match, 1),
         )
@@ -48,21 +46,18 @@ class TagsRatio(BaseIndicator):
             self.result.description = description + "No features in this region"
             return
 
-        if self.ratio >= self.threshold_yellow:
-            self.result.value = 1.0
-            self.result.label = "green"
+        if self.result.value >= self.threshold_yellow:
+            self.result.class_ = 5
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
-        elif self.threshold_yellow > self.ratio >= self.threshold_red:
-            self.result.value = 0.5
-            self.result.label = "yellow"
+        elif self.threshold_yellow > self.result.value >= self.threshold_red:
+            self.result.class_ = 3
             self.result.description = (
                 description + self.metadata.label_description["yellow"]
             )
         else:
-            self.result.value = 0.0
-            self.result.label = "red"
+            self.result.class_ = 1
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
@@ -104,10 +99,10 @@ class TagsRatio(BaseIndicator):
 
         # Plot inner Pie (Indicator Value)
         radius = 1 - size
-        if type(self.ratio) == str:
+        if type(self.result.value) == str:
             sizes = (0, 1)
         else:
-            sizes = (1 - self.ratio, self.ratio)
+            sizes = (1 - self.result.value, self.result.value)
         colors = ("white", "black")
         ax.pie(
             sizes,
@@ -119,7 +114,7 @@ class TagsRatio(BaseIndicator):
 
         black_patch = mpatches.Patch(
             color="black",
-            label=f"{self.layer.name} \nRatio: {round(self.ratio, 2)}",
+            label=f"{self.layer.name} \nRatio: {round(self.result.value , 2)}",
         )
         handles.append(black_patch)
 
@@ -129,5 +124,4 @@ class TagsRatio(BaseIndicator):
         plt.tight_layout()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()
-        logging.info(f"Got svg-figure string for indicator {self.metadata.name}")
         plt.close("all")

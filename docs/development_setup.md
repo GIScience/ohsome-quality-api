@@ -17,7 +17,7 @@ Please continue reading for more information on each one of those services. If r
 
 ## Database
 
-A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (SHDI and GHS-POP) for those regions. To build and run an already configured image run:
+A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (E.g. SHDI) for those regions. To build and run an already configured image run:
 
 ```bash
 docker-compose -f docker-compose.development.yml up -d oqt-database
@@ -41,7 +41,7 @@ docker-compose -f docker-compose.development.yml build --no-cache
 docker-compose -f docker-compose.development.yml up -d
 ```
 
-> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory. For example to import the GHS POP dataset simply run the provided script (`database/init_db.production/GHS_POP.sh`). This will delete the existing GHS POP table (which covers only the custom regions), download the GHS POP dataset and import it into the database.
+> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory.
 
 
 ### Database for running tests
@@ -62,7 +62,6 @@ Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
 - Python: ≥ 3.8 and < 3.10
 - Poetry: ≥ 1.1
 - R: ≥ 4.0
-- GDAL ≥ 3
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
 
@@ -80,40 +79,9 @@ pre-commit install  # Install pre-commit hooks.
 
 ### Configuration
 
-
-#### Local database
+For all possible configuration parameter please refer to the [configuration documentation](/docs/configuration.md).
 
 For local development no additional configuration is required. Per default OQT will connect to the database defined in `docker-compose.development.yml`.
-
-
-#### Remote database
-
-If access to a remote database is required following environment variables need to be set:
-
-```bash
-POSTGRES_DB
-POSTGRES_USER
-POSTGRES_PASSWORD
-POSTGRES_HOST
-POSTGRES_PORT
-POSTGRES_SCHEMA
-```
-
-> Tip: Above lines can be written to a file (e.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
->
-> Note: Windows user can set those environment variables with following command `setx POSTGRES_DB`
-
-
-#### ohsome API
-
-The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
-
-
-#### Additional options
-
-Additional environment variables are:
-- `OQT_LOG_LEVEL`: Control the logging level of OQT (See logging section)
-- `OQT_GEOM_SIZE_LIMIT`: Control the size limit of the input geometry passed to the API.
 
 
 ### Usage
@@ -165,7 +133,7 @@ Alternative query the API from a terminal using CURL:
 ```bash
 # GET request for an indicator
 curl \
-    -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerName=building_count&dataset=regions&featureId=1" \
+    -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerKey=building_count&dataset=regions&featureId=1" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     | python -m json.tool > response.json
@@ -173,7 +141,7 @@ curl \
 
 # POST request for a report
 curl \
-    -X POST "http://127.0.0.1:8080/report/SimpleReport" \
+    -X POST "http://127.0.0.1:8080/report/MinimalTestReport" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -d '{"dataset": "regions", "featureId": 1}' \
@@ -234,9 +202,14 @@ When writing tests for functions which are asynchronous (using the `async/await`
 Logging is enabled by default.
 
 `ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
-The module is configured in `definitions.py`.  Both entry-points to `ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration function defined in `definitions.py`.
-The default log level is `INFO`. This can be overwritten by setting the environment variable `OQT_LOG_LEVEL`.
 
+#### Configuration
+
+The logging module is configured in `config.py`. Both entry-points to
+`ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration
+function defined in `definitions.py`. The default log level is `INFO`. This can be
+overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
+[configuration documentation](docs/configuration.md)).
 
 #### Usage
 
@@ -245,3 +218,4 @@ import logging
 
 logging.info("Logging message")
 ```
+>>>>>>> 8008b974 (Configure OQT using files or environment variables)

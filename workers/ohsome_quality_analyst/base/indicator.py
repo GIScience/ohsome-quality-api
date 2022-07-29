@@ -1,10 +1,8 @@
-"""
-TODO:
-    Describe this module and how to implement child classes
-"""
+"""The base classes on which every indicator class is based on."""
+
 import json
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from io import StringIO
 from typing import Dict, Literal, Optional
@@ -13,37 +11,23 @@ import matplotlib.pyplot as plt
 from dacite import from_dict
 from geojson import Feature
 
-from ohsome_quality_analyst.utils.definitions import (
-    get_attribution,
-    get_layer_definition,
-    get_metadata,
+from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_attribution, get_metadata
+from ohsome_quality_analyst.html_templates.template import (
+    get_template,
+    get_traffic_light,
 )
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
 
 @dataclass
 class Metadata:
-    """Metadata of an indicator as defined in the metadata.yaml file"""
+    """Metadata of an indicator as defined in the metadata.yaml file."""
 
     name: str
     description: str
     label_description: Dict
     result_description: str
-
-
-@dataclass
-class LayerDefinition:
-    """Definitions of a layer as defined in the layer_definition.yaml file.
-
-    The definition consist of the ohsome API Parameter needed to create the layer.
-    """
-
-    name: str
-    description: str
-    endpoint: str
-    filter: str
-    ratio_filter: Optional[str] = None
-    source: Optional[str] = None
 
 
 @dataclass
@@ -54,18 +38,28 @@ class Result:
         timestamp_oqt (datetime): Timestamp of the creation of the indicator
         timestamp_osm (datetime): Timestamp of the used OSM data
             (e.g. Latest timestamp of the ohsome API results)
-        label (str): Traffic lights like quality label
-        value (float): The result value as float ([0, 1])
-        description (str): Description of the result
+        label (str): Traffic lights like quality label: `green`, `yellow` or `red`. The
+            value is determined by the result classes
+        value (float): The result value
+        class_ (int): The result class. An integer between 1 and 5. It maps to the
+            result labels. This value is used by the reports to determine an overall
+            result.
+        description (str): The result description.
         svg (str): Figure of the result as SVG
     """
 
-    timestamp_oqt: datetime
-    timestamp_osm: Optional[datetime]
-    label: Literal["green", "yellow", "red", "undefined"]
-    value: Optional[float]
     description: str
     svg: str
+    html: str
+    timestamp_oqt: datetime = datetime.now(timezone.utc)  # UTC datetime object
+    timestamp_osm: Optional[datetime] = None
+    value: Optional[float] = None
+    class_: Optional[Literal[1, 2, 3, 4, 5]] = None
+
+    @property
+    def label(self) -> Literal["green", "yellow", "red", "undefined"]:
+        labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}
+        return labels.get(self.class_, "undefined")
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -73,50 +67,48 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def __init__(
         self,
-        layer_name: str,
+        layer: Layer,
         feature: Feature,
     ) -> None:
-        self.feature = feature
-
+        self.layer: Layer = layer
+        self.feature: Feature = feature
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-
-        self.layer: LayerDefinition = from_dict(
-            data_class=LayerDefinition, data=get_layer_definition(layer_name)
-        )
         self.result: Result = Result(
-            # UTC datetime object representing the current time.
-            timestamp_oqt=datetime.now(timezone.utc),
-            timestamp_osm=None,
-            label="undefined",
-            value=None,
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
+            html="",
         )
 
-    def as_feature(self, flatten: bool = False) -> Feature:
-        """Returns a GeoJSON Feature object.
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
+        """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
 
         Args:
             flatten (bool): If true flatten the properties.
+            include_data (bool): If true include additional data in the properties.
         """
+        result = asdict(self.result)  # only attributes, no properties
+        result["label"] = self.result.label  # label is a property
+        result["class"] = result.pop("class_")
         properties = {
             "metadata": {
                 "name": self.metadata.name,
-                "description": self.metadata.name,
+                "description": self.metadata.description,
             },
             "layer": {
+                "key": self.layer.key,
                 "name": self.layer.name,
                 "description": self.layer.description,
             },
-            "result": vars(self.result).copy(),
-            "data": self.data,
+            "result": result,
             **self.feature.properties,
         }
+        if include_data:
+            properties["data"] = self.data
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():
@@ -150,7 +142,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @classmethod
     def attribution(cls) -> str:
-        """Data attribution as text.
+        """Return data attribution as text.
 
         Defaults to OpenStreetMap attribution.
 
@@ -185,7 +177,7 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     def _get_default_figure(self) -> str:
-        """Return a SVG as default figure for indicators"""
+        """Return a SVG as default figure for indicators."""
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
         plt.figure(figsize=figsize)
@@ -204,3 +196,22 @@ class BaseIndicator(metaclass=ABCMeta):
         plt.savefig(svg_string, format="svg")
         plt.close("all")
         return svg_string.getvalue()
+
+    def create_html(self):
+        if self.result.label == "red":
+            traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
+        elif self.result.label == "yellow":
+            traffic_light = get_traffic_light("Medium Quality", yellow="#FFFF00")
+        elif self.result.label == "green":
+            traffic_light = get_traffic_light("Good Quality", green="#008000")
+        else:
+            traffic_light = get_traffic_light("Undefined Quality")
+        template = get_template("indicator")
+        self.result.html = template.render(
+            indicator_name=self.metadata.name,
+            layer_name=self.layer.name,
+            svg=self.result.svg,
+            result_description=self.result.description,
+            indicator_description=self.metadata.description,
+            traffic_light=traffic_light,
+        )

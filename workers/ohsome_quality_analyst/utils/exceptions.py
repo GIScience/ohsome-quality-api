@@ -1,4 +1,5 @@
 """Custom exception classes."""
+from schema import SchemaError
 
 
 class OhsomeApiError(Exception):
@@ -30,6 +31,15 @@ class EmptyRecordError(DatabaseError):
         self.message = "Query returned no record."
 
 
+class HexCellsNotFoundError(DatabaseError):
+    def __init__(self):
+        self.name = "HexCellsNotFoundError"
+        self.message = (
+            "No hex-cells found for the given AOI. "
+            + "The AOI is probably outside Africa."
+        )
+
+
 class RasterDatasetNotFoundError(FileNotFoundError):
     def __init__(self, raster):
         self.name = "RasterDatasetNotFoundError"
@@ -37,6 +47,12 @@ class RasterDatasetNotFoundError(FileNotFoundError):
 
 
 class RasterDatasetUndefinedError(ValueError):
-    def __init__(self, name):
+    def __init__(self, raster_name: str):
         self.name = "RasterDatasetUndefinedError"
-        self.message = "Raster dataset {0} is not defined".format(name)
+        self.message = "Raster dataset {0} is not defined".format(raster_name)
+
+
+class LayerDataSchemaError(Exception):
+    def __init__(self, message, schema_error: SchemaError):
+        self.name = "LayerDataSchemaError"
+        self.message = "{0}\n{1}".format(message, schema_error)

@@ -8,18 +8,18 @@ from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 
-from .utils import get_geojson_fixture, oqt_vcr
+from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
 
 
 class TestIndicatorMappingSaturation(unittest.TestCase):
     def setUp(self):
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.layer_name = "major_roads_length"
+        self.layer = get_layer_fixture("major_roads_length")
 
     @oqt_vcr.use_cassette()
     def test(self):
         # Heidelberg
-        indicator = MappingSaturation(layer_name=self.layer_name, feature=self.feature)
+        indicator = MappingSaturation(layer=self.layer, feature=self.feature)
         self.assertIsNotNone(indicator.attribution())
 
         asyncio.run(indicator.preprocess())
@@ -48,11 +48,11 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_as_feature(self):
-        indicator = MappingSaturation(layer_name=self.layer_name, feature=self.feature)
+        indicator = MappingSaturation(layer=self.layer, feature=self.feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
 
-        indicator_feature = indicator.as_feature()
+        indicator_feature = indicator.as_feature(include_data=True)
         properties = indicator_feature.properties
         self.assertIsNotNone(properties["data"]["best_fit"]["name"])
 
@@ -60,7 +60,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             self.assertFalse(np.isnan(np.sum(fm["fitted_values"])))
             self.assertTrue(np.isfinite(np.sum(fm["fitted_values"])))
 
-        indicator_feature = indicator.as_feature(flatten=True)
+        indicator_feature = indicator.as_feature(flatten=True, include_data=True)
         properties = indicator_feature.properties
         self.assertIsNotNone(properties["data.best_fit.name"])
 
@@ -83,12 +83,15 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         `np.array()` instead.
         """
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         indicators = []
         fitted_values = []
         for feature in featurecollection["features"]:
-            indicator = MappingSaturation(layer_name="building_count", feature=feature)
+            indicator = MappingSaturation(
+                layer=get_layer_fixture("building_count"),
+                feature=feature,
+            )
             asyncio.run(indicator.preprocess())
             indicator.calculate()
             for fm in indicator.fitted_models:

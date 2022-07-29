@@ -34,7 +34,7 @@ class TestApiReportIo(unittest.TestCase):
         with open(path, "r") as f:
             invalid_response = f.read()
         featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
         )
         with mock.patch(
             "httpx.AsyncClient.post", new_callable=AsyncMock
@@ -48,14 +48,14 @@ class TestApiReportIo(unittest.TestCase):
             for endpoint, parameters in (
                 (
                     "/report",
-                    {"name": "SimpleReport", "bpolys": featurecollection},
+                    {"name": "Minimal", "bpolys": featurecollection},
                 ),
                 (
                     "/indicator",
                     {
-                        "name": "GhsPopComparisonBuildings",
+                        "name": "Minimal",
                         "bpolys": featurecollection,
-                        "layerName": "building_count",
+                        "layerKey": "minimal",
                     },
                 ),
             ):

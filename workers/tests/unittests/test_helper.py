@@ -5,19 +5,17 @@ import unittest
 
 import numpy as np
 from geojson import Feature, Polygon
-from sklearn.svm import SVC
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
-    GhsPopComparisonBuildings,
-)
+from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
-from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
-from ohsome_quality_analyst.utils.definitions import load_metadata
+from ohsome_quality_analyst.indicators.minimal.indicator import (
+    Minimal as MinimalIndicator,
+)
+from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
     json_serialize,
-    load_sklearn_model,
     loads_geojson,
     name_to_class,
 )
@@ -41,13 +39,13 @@ class TestHelper(unittest.TestCase):
 
     def test_name_to_class(self):
         self.assertIs(
-            name_to_class(class_type="indicator", name="GhsPopComparisonBuildings"),
-            GhsPopComparisonBuildings,
+            name_to_class(class_type="indicator", name="Minimal"),
+            MinimalIndicator,
         )
 
         self.assertIs(
-            name_to_class(class_type="report", name="SimpleReport"),
-            SimpleReport,
+            name_to_class(class_type="report", name="Minimal"),
+            MinimalReport,
         )
 
         self.indicators = load_metadata("indicators")
@@ -162,23 +160,6 @@ class TestHelper(unittest.TestCase):
         }
         output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
         self.assertListEqual(flatten_sequence(input_seq), output_seq)
-
-    def test_load_sklearn_model(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "sklearn-model-2.joblib",
-        )
-        self.assertIsInstance(load_sklearn_model(path), SVC)
-
-    def test_load_sklearn_model_version_mismatch(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "sklearn-model-1.joblib",
-        )
-        with self.assertRaises(UserWarning):
-            load_sklearn_model(path)
 
     def test_json_serialize_valid_input_datetime(self):
         self.assertIsInstance(json_serialize(datetime.datetime.now()), str)

@@ -5,6 +5,7 @@ https://click.palletsprojects.com/en/7.x/testing/?highlight=testing
 
 import os
 import unittest
+from unittest import mock
 
 from click.testing import CliRunner
 
@@ -47,13 +48,68 @@ class TestCliUnit(unittest.TestCase):
         result = self.runner.invoke(cli, ["create-indicator", "--help"])
         assert result.exit_code == 0
 
-    def test_create_all_indicators(self):
+    @mock.patch("ohsome_quality_analyst.oqt.create_indicator")
+    def test_create_all_indicators_invlid_opts(self, mo):
         result = self.runner.invoke(
             cli,
             ["create-all-indicators"],
-            input="N\n",
         )
-        assert result.exit_code == 1
+        assert result.exit_code == 2
+
+    @mock.patch("ohsome_quality_analyst.oqt.create_indicator", mock.AsyncMock())
+    # Do not depend on database
+    @mock.patch(
+        "ohsome_quality_analyst.geodatabase.client.get_feature_ids", mock.AsyncMock()
+    )
+    def test_create_all_indicators_valid_opts(self):
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-all-indicators",
+                "-d",
+                "regions",
+            ],
+            input="Y\n",
+        )
+        assert result.exit_code == 0
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-all-indicators",
+                "-d",
+                "regions",
+                "-l",
+                "building_count",
+            ],
+            input="Y\n",
+        )
+        assert result.exit_code == 0
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-all-indicators",
+                "-d",
+                "regions",
+                "-i",
+                "Minimal",
+            ],
+            input="Y\n",
+        )
+        assert result.exit_code == 0
+        result = self.runner.invoke(
+            cli,
+            [
+                "create-all-indicators",
+                "-d",
+                "regions",
+                "-i",
+                "Minimal",
+                "-l",
+                "minimal",
+            ],
+            input="Y\n",
+        )
+        assert result.exit_code == 0
 
 
 if __name__ == "__main__":
