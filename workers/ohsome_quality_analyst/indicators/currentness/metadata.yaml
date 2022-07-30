@@ -3,7 +3,7 @@ Currentness:
   name: Currentness
   description: |
     Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
-    time range.
+    time range. 
     Refers to data quality in respect to currentness.
   label_description:
     red: |

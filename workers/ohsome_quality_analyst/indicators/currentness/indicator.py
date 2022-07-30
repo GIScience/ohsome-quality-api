@@ -24,8 +24,10 @@ class Currentness(BaseIndicator):
         feature: geojson.Feature,
     ) -> None:
         super().__init__(layer=layer, feature=feature)
-        self.threshold_yellow = 0.6
-        self.threshold_red = 0.2
+        self.threshold_class_5 = 1.0
+        self.threshold_class_4 = 0.8
+        self.threshold_class_3 = 0.6
+        self.threshold_class_2 = 0.4
         self.element_count = None
         self.contribution_sum = 0
         self.contributions_rel = {}
@@ -124,17 +126,27 @@ class Currentness(BaseIndicator):
             elements=self.contribution_sum,
         )
 
-        if self.result.value >= self.threshold_yellow:
+        if self.result.value >= self.threshold_class_5:
             self.result.class_ = 5
             self.result.description = (
                 self.result.description + self.metadata.label_description["green"]
             )
-        elif self.result.value >= self.threshold_red:
+        elif self.result.value >= self.threshold_class_4:
+            self.result.class_ = 4
+            self.result.description = (
+                self.result.description + self.metadata.label_description["green"]
+            )
+        elif self.result.value >= self.threshold_class_3:
             self.result.class_ = 3
             self.result.description = (
                 self.result.description + self.metadata.label_description["yellow"]
             )
-        elif self.result.value < self.threshold_red:
+        elif self.result.value >= self.threshold_class_2:
+            self.result.class_ = 2
+            self.result.description = (
+                self.result.description + self.metadata.label_description["yellow"]
+            )
+        elif self.result.value < self.threshold_class_2:
             self.result.class_ = 1
             self.result.description = (
                 self.result.description + self.metadata.label_description["red"]

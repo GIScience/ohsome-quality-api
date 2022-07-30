@@ -28,6 +28,7 @@
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
+- Redefined Currentness  indicator result value calculation ([#274])
 
 ### Other Changes
 
@@ -57,6 +58,7 @@
 | `fidFields`                  | `fid-fields`                   |
 
 [#255]: https://github.com/GIScience/ohsome-quality-analyst/pull/255
+[#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
