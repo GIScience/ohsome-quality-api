@@ -28,6 +28,7 @@
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
+- Add new report 'MultilevelCurrentness' ([#403])
 
 ### Other Changes
 
@@ -70,6 +71,7 @@
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+[#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
 
 
 ## 0.10.1
