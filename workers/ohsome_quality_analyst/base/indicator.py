@@ -81,7 +81,13 @@ class BaseIndicator(metaclass=ABCMeta):
             html="",
         )
 
-    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
+    def as_feature(
+        self,
+        flatten: bool = False,
+        include_data: bool = False,
+        include_svg: bool = False,
+        include_html: bool = False,
+    ) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -107,6 +113,10 @@ class BaseIndicator(metaclass=ABCMeta):
             "result": result,
             **self.feature.properties,
         }
+        if not include_svg:
+            del properties["result"]["svg"]
+        if not include_html:
+            del properties["result"]["html"]
         if include_data:
             properties["data"] = self.data
         if flatten:
@@ -169,7 +179,7 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def create_figure(self) -> None:
+    def create_figure(self, include_svg: bool = True) -> None:
         """Create figure plotting indicator results.
 
         Writes an SVG figure to the svg attribute of the result attribute.
@@ -197,7 +207,10 @@ class BaseIndicator(metaclass=ABCMeta):
         plt.close("all")
         return svg_string.getvalue()
 
-    def create_html(self):
+    def create_html(self, include_html: bool):
+        if not include_html:
+            self.result.html = None
+            return
         if self.result.label == "red":
             traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
         elif self.result.label == "yellow":

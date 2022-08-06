@@ -42,7 +42,7 @@ class TestGeodatabase(unittest.TestCase):
         )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        indicator.create_figure()
+        indicator.create_figure(include_svg=True)
         asyncio.run(
             db_client.save_indicator_results(indicator, self.dataset, self.feature_id)
         )

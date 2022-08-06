@@ -55,7 +55,13 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result(None, None, None, None)
 
-    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
+    def as_feature(
+        self,
+        flatten: bool = False,
+        include_data: bool = False,
+        include_svg: bool = False,
+        include_html: bool = False,
+    ) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
@@ -72,8 +78,14 @@ class BaseReport(metaclass=ABCMeta):
 
         for i, indicator in enumerate(self.indicators):
             properties["indicators"].append(
-                indicator.as_feature(include_data=include_data)["properties"]
+                indicator.as_feature(
+                    include_data=include_data,
+                    include_html=include_html,
+                    include_svg=include_svg,
+                )["properties"]
             )
+        if not include_html:
+            del properties["report"]["result"]["html"]
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():
@@ -134,7 +146,10 @@ class BaseReport(metaclass=ABCMeta):
         """
         return get_attribution(["OSM"])
 
-    def create_html(self):
+    def create_html(self, include_html: bool):
+        if not include_html:
+            self.result.html = ""
+            return
         if self.result.label == "red":
             traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
         elif self.result.label == "yellow":

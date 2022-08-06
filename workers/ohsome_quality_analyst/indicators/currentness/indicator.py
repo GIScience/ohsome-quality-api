@@ -148,11 +148,14 @@ class Currentness(BaseIndicator):
         else:
             raise ValueError("Ratio has an unexpected value.")
 
-    def create_figure(self) -> None:
+    def create_figure(self, include_svg: bool = True) -> None:
         """Create a plot.
 
         Shows the percentage of contributions for each year.
         """
+        if not include_svg:
+            self.result.svg = None
+            return
         if self.element_count == 0:
             return
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches

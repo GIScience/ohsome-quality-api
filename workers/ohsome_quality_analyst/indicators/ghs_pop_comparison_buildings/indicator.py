@@ -92,7 +92,10 @@ class GhsPopComparisonBuildings(BaseIndicator):
                 description + self.metadata.label_description["green"]
             )
 
-    def create_figure(self) -> None:
+    def create_figure(self, include_svg: bool = True) -> None:
+        if not include_svg:
+            self.result.svg = None
+            return
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return

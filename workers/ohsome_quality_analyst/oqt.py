@@ -88,7 +88,12 @@ async def _(
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, force)
-    return indicator.as_feature(parameters.flatten, parameters.include_data)
+    return indicator.as_feature(
+        parameters.flatten,
+        parameters.include_data,
+        parameters.include_svg,
+        parameters.include_html,
+    )
 
 
 async def create_report_as_geojson(
@@ -117,7 +122,12 @@ async def create_report_as_geojson(
                 force,
             )
             features.append(
-                report.as_feature(parameters.flatten, parameters.include_data)
+                report.as_feature(
+                    parameters.flatten,
+                    parameters.include_data,
+                    parameters.include_svg,
+                    parameters.include_html,
+                )
             )
         if len(features) == 1:
             return features[0]
@@ -187,13 +197,15 @@ async def _(
             )
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
-    indicator.create_html()
+    indicator.create_html(include_html=parameters.include_html)
     return indicator
 
 
 @create_indicator.register
 async def _(
     parameters: IndicatorBpolys,
+    include_html: bool = False,
+    include_svg: bool = False,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -214,8 +226,8 @@ async def _(
     logging.info("Run calculation")
     indicator.calculate()
     logging.info("Run figure creation")
-    indicator.create_figure()
-    indicator.create_html()
+    indicator.create_figure(include_svg=include_svg)
+    indicator.create_html(include_html=include_html)
 
     return indicator
 
@@ -243,8 +255,8 @@ async def _(
     logging.info("Run calculation")
     indicator.calculate()
     logging.info("Run figure creation")
-    indicator.create_figure()
-    indicator.create_html()
+    indicator.create_figure(include_svg=parameters.include_svg)
+    indicator.create_html(include_html=parameters.include_html)
 
     return indicator
 
@@ -296,13 +308,15 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
                     layerKey=layer_key,
                     dataset=dataset,
                     featureId=feature_id,
+                    include_html=parameters.include_html,
+                    include_svg=parameters.include_svg,
                 ),
                 force=force,
             )
         )
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
-    report.create_html()
+    report.create_html(include_html=parameters.include_html)
     return report
 
 
@@ -335,12 +349,14 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
                     name=indicator_name,
                     layerKey=layer_key,
                     bpolys=feature,
-                )
+                ),
+                include_html=parameters.include_html,
+                include_svg=parameters.include_svg,
             )
         )
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
-    report.create_html()
+    report.create_html(include_html=parameters.include_html)
     return report
 
 

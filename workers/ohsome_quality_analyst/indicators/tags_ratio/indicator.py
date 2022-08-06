@@ -62,11 +62,14 @@ class TagsRatio(BaseIndicator):
                 description + self.metadata.label_description["red"]
             )
 
-    def create_figure(self) -> None:
+    def create_figure(self, include_svg: bool = True) -> None:
         """Create a nested pie chart.
 
         Slices are ordered and plotted counter-clockwise.
         """
+        if not include_svg:
+            self.result.svg = None
+            return
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return

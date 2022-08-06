@@ -21,8 +21,8 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-06-06T07:00:00Z\",\n
-      \   \"value\" : 503822.31\n  } ]\n}"
+      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-17T13:00:00Z\",\n
+      \   \"value\" : 504931.18\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 14 Jun 2022 10:38:11 GMT
+      - Sun, 31 Jul 2022 20:39:31 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
