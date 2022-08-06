@@ -308,8 +308,6 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
                     layerKey=layer_key,
                     dataset=dataset,
                     featureId=feature_id,
-                    include_html=parameters.include_html,
-                    include_svg=parameters.include_svg,
                 ),
                 force=force,
             )
