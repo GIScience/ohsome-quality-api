@@ -227,7 +227,8 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure(include_svg=include_svg)
-    indicator.create_html(include_html=include_html)
+    if parameters.include_html:
+        indicator.create_html()
 
     return indicator
 
@@ -256,7 +257,8 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure(include_svg=parameters.include_svg)
-    indicator.create_html(include_html=parameters.include_html)
+    if parameters.include_html:
+        indicator.create_html()
 
     return indicator
 
@@ -314,7 +316,8 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
         )
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
-    report.create_html(include_html=parameters.include_html)
+    if parameters.include_html:
+        report.create_html()
     return report
 
 
