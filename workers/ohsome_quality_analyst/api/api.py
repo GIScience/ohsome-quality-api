@@ -37,7 +37,6 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_descriptions,
-    get_indicator_names,
     get_layer_keys,
     get_report_names,
 )
@@ -290,10 +289,10 @@ async def get_indicator_layer_combinations():
 
 
 @app.get("/indicators")
-async def indicator_names():
+async def indicator_names(IndicatorName: str):
     """Get names of available indicators."""
     response = empty_api_response()
-    response["result"] = get_indicator_names()
+    response["result"] = get_indicator_descriptions(IndicatorName)
     return response
 
 
@@ -326,14 +325,6 @@ async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()
     response["result"] = get_fid_fields()
-    return response
-
-
-@app.get("/indicator-description")
-async def get_indicator_description(IndicatorName: str):
-    """Get description of a specific indicator."""
-    response = empty_api_response()
-    response["result"] = get_indicator_descriptions(IndicatorName)
     return response
 
 

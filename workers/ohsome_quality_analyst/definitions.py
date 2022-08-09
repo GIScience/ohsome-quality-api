@@ -283,4 +283,4 @@ def get_valid_indicators(layer_key: str) -> tuple:
 
 
 def get_indicator_descriptions(indicator_class) -> List[str]:
-    return get_metadata("indicators", indicator_class).get("description")
+    return get_metadata("indicators", indicator_class)

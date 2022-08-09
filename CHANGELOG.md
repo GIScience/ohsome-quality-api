@@ -5,7 +5,7 @@
 ### New Features
 
 - Generalize result values of all Indicators by introducing a result class value ([#369])
-- Add new API endpoint `\indicator-description` that returns the description for a specific indicator ([#400])
+- Change functionality of API endpoint `\indicators` to return the description for a specific indicator ([#400])
 
 ### Breaking Changes
 
