@@ -6,11 +6,11 @@ MultilevelCurrentness:
     buildings, land-use/land-cover, points of interest and infrastructure.
   label_description:
     red: |
-    The general currentness for central elements in this region is low indicating a very early stage of the data.
+      The general currentness for central elements in this region is low indicating a very early stage of the data.
     yellow: |
-    The currentness of the elements in this region is mediocre. The results for each indicator should be reviewed
-    to determine the suitability of this region.
+      The currentness of the elements in this region is mediocre. The results for each indicator should be reviewed
+      to determine the suitability of this region.
     green: |
-    Most of the central elements were edited in recent years. This indicates a high currentness in this region.
+      Most of the central elements were edited in recent years. This indicates a high currentness in this region.
     undefined: |
-    The quality level could not be calculated.
+      The quality level could not be calculated.
