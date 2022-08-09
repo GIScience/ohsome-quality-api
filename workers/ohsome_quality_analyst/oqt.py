@@ -203,7 +203,8 @@ async def _(
             )
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
-    indicator.create_html(include_html=parameters.include_html)
+    if parameters.include_html:
+        indicator.create_html()
     return indicator
 
 
