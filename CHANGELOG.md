@@ -28,7 +28,7 @@
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
-- Redefined Currentness  indicator result value calculation ([#274])
+- Redefined Currentness indicator result value calculation ([#274])
 
 ### Other Changes
 
