@@ -2,21 +2,14 @@
 
 ## Current Main
 
-### New Features
-
-- Generalize result values of all Indicators by introducing a result class value ([#369])
-
 ### Breaking Changes
-
-- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
-
-### Bug Fixes
 
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
+- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
 
 ### Bug Fixes
 
@@ -28,6 +21,7 @@
 - Add new representative report `BuildingReport` ([#356])
 - Add ratio_filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
+- Generalize result values of all Indicators by introducing a result class value ([#369])
 - Redefined Currentness indicator result value calculation ([#274])
 
 ### Other Changes
@@ -44,7 +38,7 @@
 - To continue to retrieve additional data of an Indicator or Report provided in an API response, you need to set the API request parameter `include_data` to `True` ([#370])
 - Rename environment variable `OHSOME_API`  `OQT_OHSOME_API` ([#255])
 - Make sure to rename the API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
-- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flattem` to `True` ([#375])
+- To continue to retrieve the properties of the GeoJSON API response as flat list, you need to set the API request parameter `flatten` to `True` ([#375])
 - If you run your own database, please delete the result table before upgrading ([#369])
 - Rename endpoints ([#397]):
 
@@ -70,8 +64,9 @@
 [#382]: https://github.com/GIScience/ohsome-quality-analyst/pull/382
 [#383]: https://github.com/GIScience/ohsome-quality-analyst/pull/383
 [#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/385
-[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
-[#385]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+[#392]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
+[#396]: https://github.com/GIScience/ohsome-quality-analyst/pull/396
+[#397]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
 
 
 ## 0.10.1
