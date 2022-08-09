@@ -1,53 +1,61 @@
-import asyncio
-import unittest
-from unittest import mock
+import pytest
 
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
-    GhsPopComparisonBuildings,
-)
+from ohsome_quality_analyst.base.indicator import Result
+from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
+
+from .utils import get_geojson_fixture, get_layer_fixture
 
 
-class TestBaseIndicator(unittest.TestCase):
-    def setUp(self):
-        self.feature = asyncio.run(
-            db_client.get_feature_from_db(dataset="regions", feature_id="3")
-        )
-        self.layer_name = "building_count"
+class TestBaseIndicator:
+    @pytest.fixture
+    def feature(self):
+        return get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
-    def test_as_feature(self):
-        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
+    @pytest.fixture
+    def layer(self):
+        return get_layer_fixture("minimal")
 
+    def test_as_feature(self, feature, layer):
+        indicator = Minimal(feature=feature, layer=layer)
         feature = indicator.as_feature()
-        self.assertTrue(feature.is_valid)
-        for i in (
-            "pop_count",
-            "area",
-            "pop_count_per_sqkm",
-            "feature_count",
-            "feature_count_per_sqkm",
-        ):
-            self.assertIn(i, feature["properties"]["data"].keys())
+        assert feature.is_valid
+        assert feature.geometry == feature.geometry
+        for prop in ("result", "metadata", "layer"):
+            assert prop in feature["properties"]
+        assert "data" not in feature["properties"]
 
-    def test_as_feature_flatten(self):
-        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
+    def test_as_feature_include_data(self, feature, layer):
+        indicator = Minimal(feature=feature, layer=layer)
+        feature = indicator.as_feature(include_data=True)
+        assert feature.is_valid
+        for key in ("result", "metadata", "layer", "data"):
+            assert key in feature["properties"]
+        assert "count" in feature["properties"]["data"]
+
+    def test_as_feature_flatten(self, feature, layer):
+        indicator = Minimal(feature=feature, layer=layer)
         feature = indicator.as_feature(flatten=True)
-        self.assertTrue(feature.is_valid)
-        for i in (
-            "data.pop_count",
-            "data.area",
-            "data.pop_count_per_sqkm",
-            "data.feature_count",
-            "data.feature_count_per_sqkm",
+        assert feature.is_valid
+        for key in (
+            "result.value",
+            "metadata.name",
+            "layer.name",
         ):
-            self.assertIn(i, feature["properties"].keys())
+            assert key in feature["properties"]
 
-    def test_data_property(self):
-        indicator = GhsPopComparisonBuildings(feature=self.feature, layer=mock.Mock())
-        self.assertIsNotNone(indicator.data)
-        for key in indicator.data.keys():
-            self.assertNotIn(key, ("result", "metadata", "layer", "feature"))
+    def test_data_property(self, feature, layer):
+        indicator = Minimal(feature=feature, layer=layer)
+        assert indicator.data is not None
+        for key in ("result", "metadata", "layer", "feature"):
+            assert key not in feature["properties"]
 
     def test_attribution_class_property(self):
-        self.assertIsNotNone(GhsPopComparisonBuildings.attribution())
-        self.assertIsInstance(GhsPopComparisonBuildings.attribution(), str)
+        assert isinstance(Minimal.attribution(), str)
+
+
+class TestBaseResult:
+    def test_label(self):
+        result = Result("", "", "")
+        assert result.label == "undefined"
+        result.class_ = 4
+        assert result.label == "green"

@@ -1,37 +1,17 @@
 """Global Variables and Functions."""
-import errno
 import glob
 import logging
-import logging.config
 import os
-import sys
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Dict, List, Optional
 
-import rpy2.rinterface_lib.callbacks
 import yaml
 
-from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
-
-# Dataset names and fid fields which are available in the Geodatabase
-DATASETS = MappingProxyType(  # Immutable dict
-    {
-        "regions": {"default": "ogc_fid", "other": ("name",)},
-        "admin_world_water": {
-            "default": "id",
-            "other": (
-                "country",  # ISO 3166-1 alpha-3
-                "enname",  # English name
-            ),
-        },
-    }
-)
-# Dataset names and fid fields which are through the API
-DATASETS_API = DATASETS.copy()
-DATASETS_API.pop("admin_world_water")
 
 
 @dataclass(frozen=True)
@@ -77,7 +57,6 @@ RASTER_DATASETS = (
     ),
 )
 
-
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("BuildingCompleteness", "building_area"),
@@ -119,6 +98,8 @@ INDICATOR_LAYER = (
     ("Currentness", "mapaction_lakes_count"),
     ("Currentness", "mapaction_rivers_length"),
     ("PoiDensity", "poi"),
+    ("TagsRatio", "building_count"),
+    ("TagsRatio", "major_roads_length"),
     ("TagsRatio", "jrc_health_count"),
     ("TagsRatio", "jrc_education_count"),
     ("TagsRatio", "jrc_road_length"),
@@ -127,15 +108,7 @@ INDICATOR_LAYER = (
     ("TagsRatio", "jrc_cultural_heritage_site_count"),
     ("TagsRatio", "jrc_bridge_count"),
     ("TagsRatio", "jrc_mass_gathering_sites_count"),
-)
-OHSOME_API = os.getenv("OHSOME_API", default="https://api.ohsome.org/v1/").rstrip("/")
-# Input geometry size limit in sqkm for API requests
-# TODO: decide on default value
-GEOM_SIZE_LIMIT = os.getenv("OQT_GEOM_SIZE_LIMIT", default=100)
-
-USER_AGENT = os.getenv(
-    "OQT_USER_AGENT",
-    default="ohsome-quality-analyst/{0}".format(oqt_version),
+    ("Minimal", "minimal"),
 )
 
 ATTRIBUTION_TEXTS = MappingProxyType(
@@ -150,41 +123,6 @@ ATTRIBUTION_URL = (
     "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/"
     + "COPYRIGHTS.md"
 )
-
-
-def get_log_level():
-    if "pydevd" in sys.modules or "pdb" in sys.modules:
-        default_level = "DEBUG"
-    else:
-        default_level = "INFO"
-    return os.getenv("OQT_LOG_LEVEL", default=default_level)
-
-
-def load_logging_config():
-    """Read logging config from configuration file."""
-    level = get_log_level()
-    logging_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "logging.yaml"
-    )
-    with open(logging_path, "r") as f:
-        logging_config = yaml.safe_load(f)
-    logging_config["root"]["level"] = getattr(logging, level.upper())
-    return logging_config
-
-
-def configure_logging() -> None:
-    """Configure logging level and format."""
-
-    class RPY2LoggingFilter(logging.Filter):  # Sensitive
-        def filter(self, record):
-            return " library ‘/usr/share/R/library’ contains no packages" in record.msg
-
-    # Avoid R library contains no packages WARNING logs.
-    # OQT has no dependencies on additional R libraries.
-    rpy2.rinterface_lib.callbacks.logger.addFilter(RPY2LoggingFilter())
-    # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
-    logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
-    logging.config.dictConfig(load_logging_config())
 
 
 def load_metadata(module_name: str) -> Dict:
@@ -241,7 +179,7 @@ def load_layer_definitions() -> Dict:
     """Read ohsome API parameters of all layer from YAML file.
 
     Returns:
-        A Dict with the layer names of the layers as keys.
+        A dict with all layers included.
     """
     directory = get_module_dir("ohsome_quality_analyst.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")
@@ -249,8 +187,8 @@ def load_layer_definitions() -> Dict:
         return yaml.safe_load(f)
 
 
-def get_layer_definition(layer_name: str) -> Dict:
-    """Get ohsome API parameters of a single layer based on layer name.
+def get_layer_definition(layer_key: str) -> LayerDefinition:
+    """Get ohsome API parameters of a single layer based on layer key.
 
     This is implemented outside the layer class to
     be able to access layer definitions of all indicators without
@@ -258,15 +196,15 @@ def get_layer_definition(layer_name: str) -> Dict:
     """
     layers = load_layer_definitions()
     try:
-        layer = layers[layer_name]
-    except KeyError:
-        logging.error(
-            "Invalid layer name. Valid layer names are: " + str(layers.keys())
-        )
-        raise
+        layer = layers[layer_key]
+    except KeyError as error:
+        raise KeyError(
+            "Invalid layer key. Valid layer keys are: " + str(layers.keys())
+        ) from error
     # Avoid built-in function name `filter`
     layer["filter_"] = layer.pop("filter")
-    return layer
+    layer["key"] = layer_key
+    return LayerDefinition(**layer)
 
 
 def get_indicator_classes() -> Dict:
@@ -293,12 +231,12 @@ def get_report_names() -> List[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_layer_names() -> List[str]:
+def get_layer_keys() -> List[str]:
     return list(load_layer_definitions().keys())
 
 
 def get_dataset_names() -> List[str]:
-    return list(DATASETS.keys())
+    return list(get_config_value("datasets").keys())
 
 
 def get_raster_dataset_names() -> List[str]:
@@ -324,36 +262,7 @@ def get_raster_dataset(name: str) -> RasterDataset:
 
 
 def get_fid_fields() -> List[str]:
-    return flatten_sequence(DATASETS)
-
-
-def get_dataset_names_api() -> List[str]:
-    return list(DATASETS_API.keys())
-
-
-def get_fid_fields_api() -> List[str]:
-    return flatten_sequence(DATASETS_API)
-
-
-def get_data_dir() -> str:
-    """Get the OQT data directory path."""
-    default_dir = os.path.join(
-        os.path.dirname(
-            os.path.abspath(__file__),
-        ),
-        "..",
-        "..",
-        "..",
-        "data",
-    )
-    data_dir = os.getenv("OQT_DATA_DIR", default=default_dir)
-    if not os.path.exists(data_dir):
-        raise FileNotFoundError(
-            errno.ENOENT,
-            "OQT data directory does not exists.",
-            data_dir,
-        )
-    return data_dir
+    return flatten_sequence(get_config_value("datasets").values())
 
 
 def get_attribution(data_keys: list) -> str:
@@ -368,6 +277,6 @@ def get_valid_layers(indcator_name: str) -> tuple:
     return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
 
 
-def get_valid_indicators(layer_name: str) -> tuple:
+def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_name])
+    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])

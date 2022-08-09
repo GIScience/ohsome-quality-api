@@ -14,9 +14,9 @@ from geojson import Feature, FeatureCollection
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_raster_dataset
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
-from ohsome_quality_analyst.utils.definitions import get_raster_dataset
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 
 
@@ -137,32 +137,26 @@ class BuildingCompleteness(BaseIndicator):
             self.completeness_ratio,
             weights=self.building_area_prediction,
         )
-        description = Template(self.metadata.result_description).substitute(
-            building_area_osm=round(sum(self.building_area_osm), 2),
-            building_area_prediction=round(sum(self.building_area_prediction), 2),
-            completeness_ratio=round(self.result.value * 100, 2),
-        )
         if self.result.value >= self.threshhold_green():
-            self.result.label = "green"
-            self.result.description = (
-                description + self.metadata.label_description["green"]
-            )
+            self.result.class_ = 5
         elif self.result.value >= self.threshhold_yellow():
-            self.result.label = "yellow"
-            self.result.description = (
-                description + self.metadata.label_description["yellow"]
-            )
+            self.result.class_ = 3
         elif 0.0 <= self.result.value < self.threshhold_yellow():
-            self.result.label = "red"
-            self.result.description = (
-                description + self.metadata.label_description["red"]
-            )
+            self.result.class_ = 1
         else:
             raise ValueError(
                 "Result value (percentage mapped) is an unexpected value: {}".format(
                     self.result.value
                 )
             )
+        description = Template(self.metadata.result_description).substitute(
+            building_area_osm=round(sum(self.building_area_osm), 2),
+            building_area_prediction=round(sum(self.building_area_prediction), 2),
+            completeness_ratio=round(self.result.value * 100, 2),
+        )
+        self.result.description = (
+            description + self.metadata.label_description[self.result.label]
+        )
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
@@ -208,7 +202,6 @@ class BuildingCompleteness(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
-        logging.info("Successful creation of the SVG figure.")
         plt.close("all")
 
 

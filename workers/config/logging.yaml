@@ -1,8 +1,9 @@
+---
 version: 1
 disable_existing_loggers: False
 formatters:
   default:
-    format: '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s'
+    format: "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"
 handlers:
   default:
     formatter: default

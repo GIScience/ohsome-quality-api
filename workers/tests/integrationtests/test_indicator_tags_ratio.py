@@ -58,7 +58,7 @@ class TestIndicatorRatio(unittest.TestCase):
 
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
-        self.assertEqual(indicator.result.value, None)
+        self.assertEqual(indicator.result.value, "NaN")
 
 
 if __name__ == "__main__":

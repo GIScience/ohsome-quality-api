@@ -14,14 +14,13 @@ from ohsome_quality_analyst.api.request_models import (
     ReportDatabase,
 )
 from ohsome_quality_analyst.cli import options
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
-    DATASETS,
+from ohsome_quality_analyst.config import configure_logging, get_config_value
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    configure_logging,
     load_layer_definitions,
     load_metadata,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
 
 
@@ -71,13 +70,13 @@ def list_layers():
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
-    click.echo(tuple(DATASETS.keys()))
+    click.echo(tuple(get_config_value("datasets").keys()))
 
 
 @cli.command("list-fid-fields")
 def list_fid_fields():
     """List available fid fields for each dataset."""
-    for name, dataset in DATASETS.items():
+    for name, dataset in get_config_value("datasets").items():
         click.echo(name + ": ")
         click.echo("  - default: " + dataset["default"])
         click.echo("  - other: " + ", ".join(dataset.get("other", [])))
@@ -103,7 +102,7 @@ def get_indicator_layer_combination():
 
 @cli.command("create-indicator")
 @cli_option(options.indicator_name)
-@cli_option(options.layer_name)
+@cli_option(options.layer_key)
 @cli_option(options.infile)
 @cli_option(options.outfile)
 @cli_option(options.dataset_name)
@@ -114,7 +113,7 @@ def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
-    layer_name: str,
+    layer_key: str,
     feature_id: str,
     dataset_name: str,
     fid_field: str,
@@ -136,13 +135,13 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            layerName=layer_name,
+            layerKey=layer_key,
             dataset=dataset_name,
             featureId=feature_id,
             fidField=fid_field,
@@ -204,7 +203,7 @@ def create_report(
     "-d",
     required=True,
     type=click.Choice(
-        DATASETS.keys(),
+        get_config_value("datasets").keys(),
         case_sensitive=True,
     ),
     help=("Choose a dataset containing geometries."),
@@ -220,7 +219,7 @@ def create_report(
     default=None,
 )
 @click.option(
-    "--layer-name",
+    "--layer-key",
     "-l",
     type=click.Choice(
         list(load_layer_definitions().keys()),
@@ -236,7 +235,7 @@ def create_report(
 def create_all_indicators(
     dataset_name: str,
     indicator_name: str,
-    layer_name: str,
+    layer_key: str,
     force: bool,
 ):
     """Create all Indicators for all features of the given dataset.
@@ -259,7 +258,7 @@ def create_all_indicators(
         oqt.create_all_indicators(
             dataset_name,
             indicator_name=indicator_name,
-            layer_name=layer_name,
+            layer_key=layer_key,
             force=force,
         )
     )

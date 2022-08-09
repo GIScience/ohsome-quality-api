@@ -4,9 +4,7 @@ import unittest
 import geojson
 
 import ohsome_quality_analyst.geodatabase.client as db_client
-from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
-    GhsPopComparisonBuildings,
-)
+from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
 from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
 
@@ -18,7 +16,7 @@ class TestGeodatabase(unittest.TestCase):
         self.feature = asyncio.run(
             db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
-        self.layer = get_layer_fixture("building_count")
+        self.layer = get_layer_fixture("minimal")
 
     def test_get_connection(self):
         async def _test_get_connection():
@@ -38,23 +36,21 @@ class TestGeodatabase(unittest.TestCase):
             async with db_client.get_connection() as conn:
                 return await conn.fetchval(query)
 
-        self.indicator = GhsPopComparisonBuildings(
+        indicator = Minimal(
             layer=self.layer,
             feature=self.feature,
         )
-        asyncio.run(self.indicator.preprocess())
-        self.indicator.calculate()
-        self.indicator.create_figure()
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+        indicator.create_figure()
         asyncio.run(
-            db_client.save_indicator_results(
-                self.indicator, self.dataset, self.feature_id
-            )
+            db_client.save_indicator_results(indicator, self.dataset, self.feature_id)
         )
         query = (
             "SELECT feature "
             + "FROM results "
-            + "WHERE indicator_name = 'GHS-POP Comparison Buildings' "
-            + "AND layer_name = 'Building Count' "
+            + "WHERE indicator_name = 'Minimal' "
+            + "AND layer_key = 'Minimal' "
             + "AND dataset_name = 'regions' "
             + "AND fid = '3';"
         )
@@ -62,25 +58,18 @@ class TestGeodatabase(unittest.TestCase):
         self.assertTrue(geojson.loads(result).is_valid)
 
         # load
-        self.indicator = GhsPopComparisonBuildings(
-            layer=self.layer, feature=self.feature
-        )
+        indicator = Minimal(layer=self.layer, feature=self.feature)
         result = asyncio.run(
-            db_client.load_indicator_results(
-                self.indicator, self.dataset, self.feature_id
-            )
+            db_client.load_indicator_results(indicator, self.dataset, self.feature_id)
         )
         self.assertTrue(result)
-        self.assertIsNotNone(self.indicator.result.label)
-        self.assertIsNotNone(self.indicator.result.value)
-        self.assertIsNotNone(self.indicator.result.description)
-        self.assertIsNotNone(self.indicator.result.svg)
+        self.assertIsNotNone(indicator.result.label)
+        self.assertIsNotNone(indicator.result.value)
+        self.assertIsNotNone(indicator.result.description)
+        self.assertIsNotNone(indicator.result.svg)
 
         # Test if data attributes were set
-        self.assertIsNotNone(self.indicator.pop_count)
-        self.assertIsNotNone(self.indicator.area)
-        self.assertIsNotNone(self.indicator.pop_count_per_sqkm)
-        self.assertIsNotNone(self.indicator.feature_count)
+        self.assertIsNotNone(indicator.count)
 
     def test_get_feature_ids(self):
         results = asyncio.run(db_client.get_feature_ids(self.dataset))

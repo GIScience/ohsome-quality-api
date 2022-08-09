@@ -20,11 +20,12 @@ class TestApiRequestModels(unittest.TestCase):
             self.bpolys = json.load(file)
 
     def test_base_indicator_valid(self):
-        request_models.BaseIndicator(name="GhsPopComparisonBuildings")
+        request_models.BaseIndicator(name="Minimal")
         request_models.BaseIndicator(
-            name="GhsPopComparisonBuildings",
+            name="Minimal",
             includeSvg=True,
             includeHtml=True,
+            includeData=False,
             flatten=False,
         )
 
@@ -36,24 +37,19 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseIndicator(includeSvg=True)
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(
-                name="GhsPopComparisonBuildings", include_svg="foo"
-            )
+            request_models.BaseIndicator(name="Minimal", include_svg="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(
-                name="GhsPopComparisonBuildings", include_html="foo"
-            )
+            request_models.BaseIndicator(name="Minimal", include_html="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(
-                name="GhsPopComparisonBuildings", flatten="foo"
-            )
+            request_models.BaseIndicator(name="Minimal", flatten="foo")
 
     def test_base_report_valid(self):
-        request_models.BaseReport(name="SimpleReport")
+        request_models.BaseReport(name="Minimal")
         request_models.BaseReport(
-            name="SimpleReport",
+            name="Minimal",
             includeSvg=True,
             includeHtml=True,
+            includeData=False,
             flatten=False,
         )
 
@@ -65,20 +61,20 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseReport(include_svg=True)
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="SimpleReport", includeSvg="foo")
+            request_models.BaseReport(name="Minimal", includeSvg="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="SimpleReport", includeHtml="foo")
+            request_models.BaseReport(name="Minimal", includeHtml="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="SimpleReport", flatten="foo")
+            request_models.BaseReport(name="Minimal", flatten="foo")
 
-    def test_layer_name_valid(self):
+    def test_layer_key_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
-        request_models.BaseLayerName(layer_name="building_count")
+        request_models.BaseLayerName(layer_key="building_count")
 
-    def test_layer_name_invalid(self):
+    def test_layer_key_invalid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
         with self.assertRaises(ValueError):
-            request_models.BaseLayerName(layer_name="foo")
+            request_models.BaseLayerName(layer_key="foo")
 
     def test_layer_data_valid(self):
         layer = {
@@ -127,14 +123,14 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_indicator_database(self):
         request_models.IndicatorDatabase(
-            name="GhsPopComparisonBuildings",
-            layerName="building_count",
+            name="Minimal",
+            layerKey="minimal",
             dataset="regions",
             featureId="3",
         )
         request_models.IndicatorDatabase(
-            name="GhsPopComparisonBuildings",
-            layerName="building_count",
+            name="Minimal",
+            layerKey="minimal",
             dataset="regions",
             featureId="Heidelberg",
             fidField="name",
@@ -142,15 +138,15 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_indicator_bpolys(self):
         request_models.IndicatorBpolys(
-            name="GhsPopComparisonBuildings",
-            layerName="building_count",
+            name="Minimal",
+            layerKey="minimal",
             bpolys=self.bpolys,
         )
 
     def test_indicator_invalid_layer_combination(self):
         kwargs = {
-            "name": "GhsPopComparisonBuildings",
-            "layerName": "amenities",
+            "name": "Minimal",
+            "layerKey": "amenities",
             "dataset": "regions",
             "featureId": 3,
         }
@@ -177,15 +173,15 @@ class TestApiRequestModels(unittest.TestCase):
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "name",
-            "layerName",
+            "layerKey",
             "dataset",
             "featureId",
             "fidField",
             "bpolys",
         )
         param_values = (
-            "GhsPopComparisonBuildings",
-            "building_count",
+            "Minimal",
+            "minimal",
             "regions",
             "3",
             "ogc_fid",
@@ -202,21 +198,21 @@ class TestApiRequestModels(unittest.TestCase):
                 )
         valid_combinations = (
             {
-                "name": "GhsPopComparisonBuildings",
-                "layerName": "building_count",
+                "name": "Minimal",
+                "layerKey": "minimal",
                 "dataset": "regions",
                 "featureId": "3",
             },
             {
-                "name": "GhsPopComparisonBuildings",
-                "layerName": "building_count",
+                "name": "Minimal",
+                "layerKey": "minimal",
                 "dataset": "regions",
                 "featureId": "3",
                 "fidField": "ogc_fid",
             },
             {
-                "name": "GhsPopComparisonBuildings",
-                "layerName": "building_count",
+                "name": "Minimal",
+                "layerKey": "minimal",
                 "bpolys": self.bpolys,
             },
         )

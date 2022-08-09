@@ -15,21 +15,21 @@ from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
 
 from ohsome_quality_analyst.base.layer import LayerData
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    get_dataset_names_api,
-    get_fid_fields_api,
+    get_dataset_names,
+    get_fid_fields,
     get_indicator_names,
-    get_layer_names,
+    get_layer_keys,
     get_report_names,
 )
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
-LayerEnum = Enum("LayerNames", {name: name for name in get_layer_names()})
-DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names_api()})
-FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields_api()})
+LayerEnum = Enum("LayerEnum", {name: name for name in get_layer_keys()})
+DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
+FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseIndicator(BaseModel):
@@ -38,7 +38,8 @@ class BaseIndicator(BaseModel):
     )
     include_svg: bool = False
     include_html: bool = False
-    flatten: bool = True
+    include_data: bool = False
+    flatten: bool = False
 
     class Config:
         """Pydantic config class."""
@@ -49,10 +50,13 @@ class BaseIndicator(BaseModel):
 
 
 class BaseReport(BaseModel):
-    name: ReportEnum = pydantic.Field(..., title="Report Name", example="SimpleReport")
+    name: ReportEnum = pydantic.Field(
+        ..., title="Report Name", example="BuildingReport"
+    )
     include_svg: bool = False
     include_html: bool = False
-    flatten: bool = True
+    include_data: bool = False
+    flatten: bool = False
 
     class Config:
         """Pydantic config class."""
@@ -63,10 +67,12 @@ class BaseReport(BaseModel):
 
 
 class BaseLayerName(BaseModel):
-    """Model for the `layer_name` parameter."""
+    """Model for the `layer_key` parameter."""
 
-    layer_name: LayerEnum = pydantic.Field(
-        ..., title="Layer Name", example="building_count"
+    layer_key: LayerEnum = pydantic.Field(
+        ...,
+        title="Layer Key",
+        example="building_count",
     )
 
 
@@ -126,7 +132,7 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_name"].value)
+            indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
             raise ValueError("An issue with the layer or indicator name occurred.")
         if indicator_layer not in INDICATOR_LAYER:
@@ -142,7 +148,7 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_name"].value)
+            indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
             raise ValueError("An issue with the layer or indicator name occurred.")
         if indicator_layer not in INDICATOR_LAYER:
@@ -182,20 +188,20 @@ INDICATOR_EXAMPLES = {
         ),
         "value": {
             "name": "GhsPopComparisonBuildings",
-            "layerName": "building_count",
+            "layerKey": "building_count",
             "dataset": "regions",
             "featureId": 3,
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
             "name": "GhsPopComparisonBuildings",
-            "layerName": "building_count",
+            "layerKey": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -234,9 +240,6 @@ INDICATOR_EXAMPLES = {
                         ]
                     ],
                 },
-                "includeSvg": False,
-                "includeHtml": False,
-                "flatten": True,
             },
             "layer": {
                 "name": "My layer name",
@@ -285,7 +288,7 @@ INDICATOR_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
 }
@@ -296,19 +299,19 @@ REPORT_EXAMPLES = {
             "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
         ),
         "value": {
-            "name": "SimpleReport",
+            "name": "BuildingReport",
             "dataset": "regions",
             "featureId": 3,
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "SimpleReport",
+            "name": "BuildingReport",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -326,7 +329,7 @@ REPORT_EXAMPLES = {
             },
             "includeSvg": False,
             "includeHtml": False,
-            "flatten": True,
+            "flatten": False,
         },
     },
 }

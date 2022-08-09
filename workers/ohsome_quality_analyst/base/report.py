@@ -10,11 +10,11 @@ from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
+from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.html_templates.template import (
     get_template,
     get_traffic_light,
 )
-from ohsome_quality_analyst.utils.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
@@ -43,7 +43,7 @@ class Result:
 
 class IndicatorLayer(NamedTuple):
     indicator_name: str
-    layer_name: str
+    layer_key: str
 
 
 class BaseReport(metaclass=ABCMeta):
@@ -61,7 +61,7 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 
-    def as_feature(self, flatten: bool = False) -> Feature:
+    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
@@ -79,7 +79,9 @@ class BaseReport(metaclass=ABCMeta):
         properties["report"]["metadata"].pop("label_description", None)
 
         for i, indicator in enumerate(self.indicators):
-            properties["indicators"].append(indicator.as_feature()["properties"])
+            properties["indicators"].append(
+                indicator.as_feature(include_data=include_data)["properties"]
+            )
         if flatten:
             properties = flatten_dict(properties)
         if "id" in self.feature.keys():
@@ -117,6 +119,8 @@ class BaseReport(metaclass=ABCMeta):
             self.result.description = self.metadata.label_description["yellow"]
         elif self.result.class_ == 1:
             self.result.description = self.metadata.label_description["red"]
+        else:
+            self.result.description = self.metadata.label_description["undefined"]
 
     @abstractmethod
     def set_indicator_layer(self) -> None:

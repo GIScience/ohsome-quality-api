@@ -26,7 +26,7 @@ class TestIndicatorBuildingCompleteness(unittest.TestCase):
         self.layer = get_layer_fixture("building_area")
         self.indicator = BuildingCompleteness(feature=self.feature, layer=self.layer)
 
-    @mock.patch("ohsome_quality_analyst.raster.client.get_data_dir")
+    @mock.patch("ohsome_quality_analyst.raster.client.get_config_value")
     @oqt_vcr.use_cassette()
     def test_indicator(self, mock_get_data_dir):
         mock_get_data_dir.return_value = os.path.join(
@@ -70,7 +70,7 @@ class TestIndicatorBuildingCompleteness(unittest.TestCase):
         self.indicator.create_figure()
         self.assertIsNotNone(self.indicator.result.svg)
 
-    @mock.patch("ohsome_quality_analyst.raster.client.get_data_dir")
+    @mock.patch("ohsome_quality_analyst.raster.client.get_config_value")
     def test_get_smod_class_share(self, mock_get_data_dir):
         mock_get_data_dir.return_value = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "fixtures", "raster"

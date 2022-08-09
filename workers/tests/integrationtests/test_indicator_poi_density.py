@@ -28,7 +28,6 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         asyncio.run(self.indicator.preprocess())
         self.assertIsNotNone(self.indicator.area_sqkm)
         self.assertIsNotNone(self.indicator.count)
-        self.assertIsNotNone(self.indicator.density)
         self.assertIsInstance(self.indicator.result.timestamp_osm, datetime)
         self.assertIsInstance(self.indicator.result.timestamp_oqt, datetime)
 

@@ -23,9 +23,9 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
                 "-l",
-                "building_count",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -41,9 +41,9 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
                 "-l",
-                "building_count",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -61,9 +61,9 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
                 "-l",
-                "building_count",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -78,7 +78,7 @@ class TestCliIntegration(unittest.TestCase):
     def test_create_report(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "SimpleReport", "-d", "regions", "-f", "3"],
+            ["create-report", "-r", "Minimal", "-d", "regions", "-f", "3"],
         )
         self.assertEqual(result.exit_code, 0)
 
@@ -89,7 +89,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "SimpleReport",
+                "Minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -107,7 +107,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "SimpleReport",
+                "Minimal",
                 "-d",
                 "regions",
                 "-f",

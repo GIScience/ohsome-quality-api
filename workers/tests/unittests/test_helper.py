@@ -6,12 +6,12 @@ import unittest
 import numpy as np
 from geojson import Feature, Polygon
 
-from ohsome_quality_analyst.indicators.ghs_pop_comparison_buildings.indicator import (
-    GhsPopComparisonBuildings,
-)
+from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
-from ohsome_quality_analyst.reports.simple_report.report import SimpleReport
-from ohsome_quality_analyst.utils.definitions import load_metadata
+from ohsome_quality_analyst.indicators.minimal.indicator import (
+    Minimal as MinimalIndicator,
+)
+from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
@@ -39,13 +39,13 @@ class TestHelper(unittest.TestCase):
 
     def test_name_to_class(self):
         self.assertIs(
-            name_to_class(class_type="indicator", name="GhsPopComparisonBuildings"),
-            GhsPopComparisonBuildings,
+            name_to_class(class_type="indicator", name="Minimal"),
+            MinimalIndicator,
         )
 
         self.assertIs(
-            name_to_class(class_type="report", name="SimpleReport"),
-            SimpleReport,
+            name_to_class(class_type="report", name="Minimal"),
+            MinimalReport,
         )
 
         self.indicators = load_metadata("indicators")

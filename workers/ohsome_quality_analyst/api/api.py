@@ -29,18 +29,18 @@ from ohsome_quality_analyst.api.request_models import (
     ReportBpolys,
     ReportDatabase,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.utils.definitions import (
+from ohsome_quality_analyst.config import configure_logging
+from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
     INDICATOR_LAYER,
-    configure_logging,
     get_attribution,
-    get_dataset_names_api,
-    get_fid_fields_api,
+    get_dataset_names,
+    get_fid_fields,
     get_indicator_names,
-    get_layer_names,
+    get_layer_keys,
     get_report_names,
 )
+from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
     LayerDataSchemaError,
@@ -280,51 +280,51 @@ async def get_available_regions(asGeoJSON: bool = False):
         return response
 
 
-@app.get("/indicatorLayerCombinations")
-async def list_indicator_layer_combinations():
-    """List names of available indicator-layer-combinations."""
+@app.get("/indicator-layer-combinations")
+async def get_indicator_layer_combinations():
+    """Get names of available indicator-layer combinations."""
     response = empty_api_response()
     response["result"] = INDICATOR_LAYER
     return response
 
 
-@app.get("/indicatorNames")
-async def list_indicators():
-    """List names of available indicators."""
+@app.get("/indicators")
+async def indicator_names():
+    """Get names of available indicators."""
     response = empty_api_response()
     response["result"] = get_indicator_names()
     return response
 
 
-@app.get("/datasetNames")
-async def list_datasets():
-    """List names of available datasets."""
+@app.get("/datasets")
+async def dataset_names():
+    """Get names of available datasets."""
     response = empty_api_response()
-    response["result"] = get_dataset_names_api()
+    response["result"] = get_dataset_names()
     return response
 
 
-@app.get("/layerNames")
-async def list_layers():
-    """List names of available layers."""
+@app.get("/layers")
+async def layer_names():
+    """Get names of available layers."""
     response = empty_api_response()
-    response["result"] = get_layer_names()
+    response["result"] = get_layer_keys()
     return response
 
 
-@app.get("/reportNames")
-async def list_reports():
-    """List names of available reports."""
+@app.get("/reports")
+async def report_names():
+    """Get names of available reports."""
     response = empty_api_response()
     response["result"] = get_report_names()
     return response
 
 
-@app.get("/fidFields")
+@app.get("/fid-fields")
 async def list_fid_fields():
     """List available fid fields for each dataset."""
     response = empty_api_response()
-    response["result"] = get_fid_fields_api()
+    response["result"] = get_fid_fields()
     return response
 
 

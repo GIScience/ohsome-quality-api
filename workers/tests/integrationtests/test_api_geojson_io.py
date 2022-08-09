@@ -48,14 +48,14 @@ class TestApiReportIo(unittest.TestCase):
             for endpoint, parameters in (
                 (
                     "/report",
-                    {"name": "SimpleReport", "bpolys": featurecollection},
+                    {"name": "Minimal", "bpolys": featurecollection},
                 ),
                 (
                     "/indicator",
                     {
-                        "name": "GhsPopComparisonBuildings",
+                        "name": "Minimal",
                         "bpolys": featurecollection,
-                        "layerName": "building_count",
+                        "layerKey": "minimal",
                     },
                 ),
             ):

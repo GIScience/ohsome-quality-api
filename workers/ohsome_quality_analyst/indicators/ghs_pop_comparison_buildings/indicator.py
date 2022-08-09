@@ -9,10 +9,10 @@ from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.definitions import get_attribution, get_raster_dataset
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster.client import get_zonal_stats
-from ohsome_quality_analyst.utils.definitions import get_attribution, get_raster_dataset
 
 
 class GhsPopComparisonBuildings(BaseIndicator):
@@ -25,7 +25,6 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.area = None
         self.pop_count_per_sqkm = None
         self.feature_count = None
-        self.feature_count_per_sqkm = None
 
     @classmethod
     def attribution(cls) -> str:
@@ -57,50 +56,41 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self.feature_count = query_results["result"][0]["value"]
         timestamp = query_results["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.feature_count_per_sqkm = self.feature_count / self.area
         self.pop_count_per_sqkm = self.pop_count / self.area
 
     def calculate(self) -> None:
+        self.result.value = self.feature_count / self.area  # feature_count_per_sqkm
         description = Template(self.metadata.result_description).substitute(
             pop_count=round(self.pop_count),
             area=round(self.area, 1),
             pop_count_per_sqkm=round(self.pop_count_per_sqkm, 1),
-            feature_count_per_sqkm=round(self.feature_count_per_sqkm, 1),
+            feature_count_per_sqkm=round(self.result.value, 1),
         )
 
         if self.pop_count_per_sqkm == 0:
             return
 
-        elif self.feature_count_per_sqkm <= self.yellow_threshold_function(
+        elif self.result.value <= self.yellow_threshold_function(
             self.pop_count_per_sqkm
         ):
-            self.result.value = (
-                self.feature_count_per_sqkm
-                / self.yellow_threshold_function(self.pop_count_per_sqkm)
-            ) * (0.5)
+            self.result.class_ = 1
             self.result.description = (
                 description + self.metadata.label_description["red"]
             )
-            self.result.label = "red"
 
-        elif self.feature_count_per_sqkm <= self.green_threshold_function(
+        elif self.result.value <= self.green_threshold_function(
             self.pop_count_per_sqkm
         ):
-            green = self.green_threshold_function(self.pop_count_per_sqkm)
-            yellow = self.yellow_threshold_function(self.pop_count_per_sqkm)
-            fraction = (self.feature_count_per_sqkm - yellow) / (green - yellow) * 0.5
-            self.result.value = 0.5 + fraction
+            self.result.class_ = 3
             self.result.description = (
                 description + self.metadata.label_description["yellow"]
             )
-            self.result.label = "yellow"
 
         else:
-            self.result.value = 1.0
+            self.result.class_ = 5
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
-            self.result.label = "green"
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
@@ -148,7 +138,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         ax.fill_between(
             x,
             y1,
-            max(max(y1), self.feature_count_per_sqkm),
+            max(max(y1), self.result.value),
             alpha=0.5,
             color="green",
         )
@@ -156,7 +146,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         # Plot pont as circle ("o").
         ax.plot(
             self.pop_count_per_sqkm,
-            self.feature_count_per_sqkm,
+            self.result.value,
             "o",
             color="black",
             label="location",
@@ -167,5 +157,4 @@ class GhsPopComparisonBuildings(BaseIndicator):
         img_data = StringIO()
         plt.savefig(img_data, format="svg")
         self.result.svg = img_data.getvalue()  # this is svg data
-        logging.debug("Successful SVG figure creation")
         plt.close("all")

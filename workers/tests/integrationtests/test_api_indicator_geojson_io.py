@@ -25,8 +25,8 @@ class TestApiIndicatorIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.endpoint = "/indicator"
-        self.indicator_name = "GhsPopComparisonBuildings"
-        self.layer_name = "building_count"
+        self.indicator_name = "Minimal"
+        self.layer_key = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
         self.general_schema = get_general_schema()
@@ -48,7 +48,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "name": self.indicator_name,
             "bpolys": bpoly,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
         }
         return self.client.post(self.endpoint, json=parameters)
 
@@ -107,27 +107,27 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
             "includeSvg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.svg", list(result["properties"].keys()))
+        assert "svg" in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
             "includeSvg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        assert "svg" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
@@ -139,33 +139,34 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
             "includeSvg": True,
             "includeHtml": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertIn("result.html", list(result["properties"].keys()))
+        assert "html" in result["properties"]["result"]
+
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
             "includeSvg": False,
             "includeHtml": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
         parameters = {
             "name": self.indicator_name,
-            "layerName": self.layer_name,
+            "layerKey": self.layer_key,
             "bpolys": feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.html", list(result["properties"].keys()))
+        assert "html" not in result["properties"]["result"]
 
     def test_indicator_layer_data(self):
         """Test parameter Layer with data attached.

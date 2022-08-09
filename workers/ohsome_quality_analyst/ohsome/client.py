@@ -17,7 +17,7 @@ except ImportError:
 
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
-from ohsome_quality_analyst.utils.definitions import OHSOME_API, USER_AGENT
+from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import LayerDataSchemaError, OhsomeApiError
 
 
@@ -99,7 +99,7 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
         OhsomeApiError: In case of any response except 2xx status codes or invalid
             response due to timeout during streaming.
     """
-    headers = {"user-agent": USER_AGENT}
+    headers = {"user-agent": get_config_value("user_agent")}
     # 660s timeout for reading, and a 300s timeout elsewhere.
     async with httpx.AsyncClient(timeout=httpx.Timeout(300, read=660)) as client:
         resp = await client.post(url, data=data, headers=headers)
@@ -120,8 +120,8 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
 
 async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get latest unix timestamp from the ohsome API."""
-    url = OHSOME_API + "/metadata"
-    headers = {"user-agent": USER_AGENT}
+    url = get_config_value("ohsome_api").rstrip("/") + "/metadata"
+    headers = {"user-agent": get_config_value("user_agent")}
     async with httpx.AsyncClient() as client:
         resp = await client.get(url=url, headers=headers)
     strtime = resp.json()["extractRegion"]["temporalExtent"]["toTimestamp"]
@@ -135,8 +135,10 @@ def build_url(
     count_latest_contributions: bool = False,
 ):
     if count_latest_contributions:
-        return OHSOME_API + "/contributions/latest/count"
-    url = OHSOME_API + "/" + layer.endpoint.rstrip("/")
+        return (
+            get_config_value("ohsome_api").rstrip("/") + "/contributions/latest/count"
+        )
+    url = get_config_value("ohsome_api").rstrip("/") + "/" + layer.endpoint.rstrip("/")
     if ratio:
         url += "/ratio"
     if group_by_boundary:

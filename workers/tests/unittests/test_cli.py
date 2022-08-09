@@ -57,6 +57,10 @@ class TestCliUnit(unittest.TestCase):
         assert result.exit_code == 2
 
     @mock.patch("ohsome_quality_analyst.oqt.create_indicator", mock.AsyncMock())
+    # Do not depend on database
+    @mock.patch(
+        "ohsome_quality_analyst.geodatabase.client.get_feature_ids", mock.AsyncMock()
+    )
     def test_create_all_indicators_valid_opts(self):
         result = self.runner.invoke(
             cli,
@@ -87,7 +91,7 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
             ],
             input="Y\n",
         )
@@ -99,9 +103,9 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "GhsPopComparisonBuildings",
+                "Minimal",
                 "-l",
-                "building_count",
+                "minimal",
             ],
             input="Y\n",
         )

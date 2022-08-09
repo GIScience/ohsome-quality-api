@@ -1,10 +1,11 @@
 ---
-RemoteMappingLevelOne:
-  name: Remote Mapping Level One
+Minimal:
+  name: Minimal
   description: |
-      This report shows the quality for map features that are usually
-      added on the basis of satellite imagery. It combines five indicators
-      to inspect the quality in regard to buildings and major roads.
+    This report shows the quality for two indicators:
+    Mapping Saturation and Currentness.
+    It's main function is to test the interactions between
+    database, api and website.
   label_description:
     red: |
       The data quality in this region is low.

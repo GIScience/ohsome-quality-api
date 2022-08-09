@@ -79,40 +79,9 @@ pre-commit install  # Install pre-commit hooks.
 
 ### Configuration
 
-
-#### Local database
+For all possible configuration parameter please refer to the [configuration documentation](/docs/configuration.md).
 
 For local development no additional configuration is required. Per default OQT will connect to the database defined in `docker-compose.development.yml`.
-
-
-#### Remote database
-
-If access to a remote database is required following environment variables need to be set:
-
-```bash
-POSTGRES_DB
-POSTGRES_USER
-POSTGRES_PASSWORD
-POSTGRES_HOST
-POSTGRES_PORT
-POSTGRES_SCHEMA
-```
-
-> Tip: Above lines can be written to a file (e.g. `.env`), prefixed with `export` and sourced (`source .env`) to make them available to current environment.
->
-> Note: Windows user can set those environment variables with following command `setx POSTGRES_DB`
-
-
-#### ohsome API
-
-The URL to a specific ohsome API can be set with the environment variable `OHSOME_API`. It defaults to [https://api.ohsome.org/v1/](https://api.ohsome.org/v1/)
-
-
-#### Additional options
-
-Additional environment variables are:
-- `OQT_LOG_LEVEL`: Control the logging level of OQT (See logging section)
-- `OQT_GEOM_SIZE_LIMIT`: Control the size limit of the input geometry passed to the API.
 
 
 ### Usage
@@ -164,7 +133,7 @@ Alternative query the API from a terminal using CURL:
 ```bash
 # GET request for an indicator
 curl \
-    -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerName=building_count&dataset=regions&featureId=1" \
+    -X GET "http://127.0.0.1:8080/indicator/GhsPopComparisonBuildings?layerKey=building_count&dataset=regions&featureId=1" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     | python -m json.tool > response.json
@@ -172,9 +141,81 @@ curl \
 
 # POST request for a report
 curl \
-    -X POST "http://127.0.0.1:8080/report/SimpleReport" \
+    -X POST "http://127.0.0.1:8080/report/MinimalTestReport" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -d '{"dataset": "regions", "featureId": 1}' \
     | python -m json.tool > response.json
 ```
+
+
+### Tests
+
+All relevant components should be tested. Please write tests for newly integrated functionality. 
+
+Tests are written using the [unittest library](https://docs.python.org/3/library/unittest.html).
+The test runner is [pytest](https://docs.pytest.org/en/stable/).
+Tests are separated into integration tests and unit tests.
+Unit tests should run without having access to the database or services on the internet (e.g. ohsome API).
+
+Run all tests:
+
+```bash
+cd workers/
+pytest tests
+```
+
+
+#### Writing tests
+
+
+##### VCR (videocassette recorder) for tests
+
+All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
+This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](/workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository.
+
+The VCR [record mode](https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes) is configurable through the environment variable `VCR_RECORD_MODE`. To ensure that every request is covered by cassettes, run the tests with the record mode `none`. If necessary, the cassettes can be re-recorded by deleting the cassettes and run all tests again, or using the record mode `all`. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
+
+Writing tests using VCR.py with our custom decorator is as easy as: 
+
+```python
+from .utils import oqt_vcr
+
+class TestSomething(unittest.TestCase):
+
+    @oqt_vcr.use_cassette()
+    def test_something(self):
+        oqt.do_something(…)
+        self.assertSomething(something)
+```
+
+Good examples can be found in [test_oqt.py](/workers/tests/integrationtests/test_oqt.py).
+
+
+##### Asynchronous functions
+
+When writing tests for functions which are asynchronous (using the `async/await` pattern) such as the `preprocess` functions of indicator classes, those functions should be called as follows: `asyncio.run(indicator.preprocess())`.
+
+
+### Logging
+
+Logging is enabled by default.
+
+`ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
+
+#### Configuration
+
+The logging module is configured in `config.py`. Both entry-points to
+`ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration
+function defined in `definitions.py`. The default log level is `INFO`. This can be
+overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
+[configuration documentation](docs/configuration.md)).
+
+#### Usage
+
+```python
+import logging
+
+logging.info("Logging message")
+```
+>>>>>>> 8008b974 (Configure OQT using files or environment variables)
