@@ -72,7 +72,13 @@ async def _(
         tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
     indicators = await gather_with_semaphore(tasks)
     features = [
-        i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
+        i.as_feature(
+            parameters.flatten,
+            parameters.include_data,
+            parameters.include_svg,
+            parameters.include_html,
+        )
+        for i in indicators
     ]
     if len(features) == 1:
         return features[0]
@@ -197,15 +203,14 @@ async def _(
             )
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
-    indicator.create_html(include_html=parameters.include_html)
+    if parameters.include_html:
+        indicator.create_html()
     return indicator
 
 
 @create_indicator.register
 async def _(
     parameters: IndicatorBpolys,
-    include_html: bool = False,
-    include_svg: bool = False,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -226,7 +231,7 @@ async def _(
     logging.info("Run calculation")
     indicator.calculate()
     logging.info("Run figure creation")
-    indicator.create_figure(include_svg=include_svg)
+    indicator.create_figure(include_svg=parameters.include_svg)
     if parameters.include_html:
         indicator.create_html()
 
