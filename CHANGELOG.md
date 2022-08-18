@@ -29,6 +29,7 @@
 - Substitute Simple Report with a Report named Minimal for testing purposes ([#342] [#385])
 - Add a minimal Indicator for testing purposes ([#383])
 - Remove database scripts ([#392])
+- fix: building completeness figure  ([#410])
 
 ### How to Upgrade
 
@@ -65,6 +66,7 @@
 [#392]: https://github.com/GIScience/ohsome-quality-analyst/pull/392
 [#396]: https://github.com/GIScience/ohsome-quality-analyst/pull/396
 [#397]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
+[#410]: https://github.com/GIScience/ohsome-quality-analyst/pull/410
 
 
 ## 0.10.1
