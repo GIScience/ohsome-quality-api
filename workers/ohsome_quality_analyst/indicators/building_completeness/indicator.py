@@ -173,8 +173,8 @@ class BuildingCompleteness(BaseIndicator):
         ax.yaxis.set_major_formatter(mtick.PercentFormatter(10))
         _, _, patches = ax.hist(
             [i for i in self.completeness_ratio],
-            bins=10,
-            range=(0, 1),
+            bins=15,  # to account for overprediction (>100% completeness)
+            range=(0, 1.5),
             density=True,
             weights=self.building_area_prediction,
             edgecolor="black",
@@ -197,7 +197,7 @@ class BuildingCompleteness(BaseIndicator):
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         # has to be executed after "major formatter setting"
-        plt.xlim(0, 1)
+        plt.xlim(0, 1.5)
         plt.ylim(0, 10)
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
