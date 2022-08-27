@@ -10,7 +10,7 @@
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
 - Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
-- Rename layer ideal_vgi_infrastructure to basic_infrastructure ([#259])
+- Rename layer `ideal_vgi_infrastructure` to `basic_infrastructure` ([#259])
 
 ### Bug Fixes
 
