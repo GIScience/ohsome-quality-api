@@ -2,8 +2,8 @@
 MultilevelCurrentness:
   name: Multilevel Currentness
   description: |
-    This report shows the currentness of four major Map Features (https://wiki.openstreetmap.org/wiki/Map_features):
-    buildings, land-use/land-cover, points of interest and infrastructure.
+    This report shows the currentness of four major map features (https://wiki.openstreetmap.org/wiki/Map_features):
+    buildings, land-use and land-cover, points of interest and infrastructure.
   label_description:
     red: |
       The general currentness for central elements in this region is low indicating a very early stage of the data.
