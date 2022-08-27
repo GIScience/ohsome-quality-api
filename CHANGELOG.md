@@ -10,6 +10,7 @@
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
 - Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
+- Rename layer ideal_vgi_infrastructure to basic_infrastructure ([#259])
 
 ### Bug Fixes
 
@@ -51,6 +52,7 @@
 | `fidFields`                  | `fid-fields`                   |
 
 [#255]: https://github.com/GIScience/ohsome-quality-analyst/pull/255
+[#259]: https://github.com/GIScience/ohsome-quality-analyst/pull/259
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
