@@ -92,4 +92,7 @@ class TestDefinitions(unittest.TestCase):
 
     def test_get_indicator_descriptions(self):
         description = definitions.get_indicator_descriptions("Minimal")
-        self.assertEqual(description, "An minimal Indicator for testing purposes.\n")
+        self.assertEqual(
+            description["description"],
+            "An minimal Indicator for testing purposes.\n",
+        )
