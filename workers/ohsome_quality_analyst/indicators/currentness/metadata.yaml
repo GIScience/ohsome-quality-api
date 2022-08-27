@@ -23,4 +23,4 @@ Currentness:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-      Over 50% of the $elements features ($layer_name) were edited $years.
+      Over 50% of the $elements features ($layer_name) were edited $years. 

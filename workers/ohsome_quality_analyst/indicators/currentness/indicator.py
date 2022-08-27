@@ -72,6 +72,12 @@ class Currentness(BaseIndicator):
         self.contributions_abs[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
+        """
+        Calculate the years since over 50% of the elements were last edited.
+        For each year 0.1 is subtracted from the result value.
+        Additional 0.1 is subtracted for each year since the last time an element
+        was edited.
+        """
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
         self.contribution_sum = sum(self.contributions_abs.values())
