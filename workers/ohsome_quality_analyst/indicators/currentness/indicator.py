@@ -27,7 +27,7 @@ class Currentness(BaseIndicator):
         self.threshold_class_5 = 1.0
         self.threshold_class_4 = 0.8
         self.threshold_class_3 = 0.6
-        self.threshold_class_2 = 0.4
+        self.threshold_class_2 = 0.2
         self.element_count = None
         self.contribution_sum = 0
         self.contributions_rel = {}
@@ -75,8 +75,6 @@ class Currentness(BaseIndicator):
         """
         Calculate the years since over 50% of the elements were last edited.
         For each year 0.1 is subtracted from the result value.
-        Additional 0.1 is subtracted for each year since the last time an element
-        was edited.
         """
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
@@ -99,24 +97,23 @@ class Currentness(BaseIndicator):
             ) * 100
             if self.contributions_rel[year] != 0:
                 last_edited_year = year
-        years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
+        self.years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
             last_edited_year
         )
         percentage_contributions = 0
-        median_year = ""
+        self.median_year = ""
         for year in self.contributions_rel:
             percentage_contributions += self.contributions_rel[year]
             if percentage_contributions < 50:
                 continue
             else:
-                median_year = year
+                self.median_year = year
                 break
-        median_diff = int(self.result.timestamp_oqt.year) - int(median_year)
+        median_diff = int(self.result.timestamp_oqt.year) - int(self.median_year)
         if median_diff <= 1:
             self.result.value = 1
         else:
             self.result.value = 1.0 - (median_diff / 10)
-        self.result.value -= years_since_last_edit / 10
         if self.result.value < 0.0:
             self.result.value = 0.0
         if median_diff == 0:
@@ -165,32 +162,51 @@ class Currentness(BaseIndicator):
 
         Shows the percentage of contributions for each year.
         """
-        if self.element_count == 0:
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
             return
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
+        fig = plt.figure(figsize=figsize, tight_layout=True)
         ax = fig.add_subplot()
-        x = list(self.ratio.keys())
-        ax.plot(
-            x,
-            self.ratio.values(),
-            color="b",
-            label="Percentage of contributions (cumulative)",
+        year_range = len(self.contributions_rel)
+        patches = ax.bar(
+            self.contributions_rel.keys(),
+            height=self.contributions_rel.values(),
+            edgecolor="black",
         )
-        ax.bar(
-            list(self.contributions_rel.keys()),
-            self.contributions_rel.values(),
-            color=self.result.label,
-            label="Percentage of contributions (year) ",
+        cnt = year_range
+        for patch in patches:
+            if cnt <= self.years_since_last_edit:
+                ax.text(
+                    patch.get_x(),
+                    max(self.contributions_rel.values()) / 2,
+                    "!",
+                    fontdict={"fontsize": 26},
+                )
+            if cnt >= 8:
+                patch.set_facecolor("red")
+                cnt -= 1
+            elif cnt >= 4:
+                patch.set_facecolor("yellow")
+                cnt -= 1
+            else:
+                patch.set_facecolor("green")
+                cnt -= 1
+        plt.axvline(
+            x=self.median_year,
+            linestyle=":",
+            color="black",
+            label="Median Year: {0}".format(self.median_year),
         )
-        ax.set_xticks(x[::2])
+        plt.xticks(list(self.contributions_rel.keys())[::2])
+        plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
         plt.title("Total Contributions: %i" % self.contribution_sum)
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
         img_data = StringIO()
-        plt.savefig(img_data, format="svg")
-        self.result.svg = img_data.getvalue()  # this is svg data
+        plt.savefig(img_data, format="svg", bbox_inches="tight")
+        self.result.svg = img_data.getvalue()
         plt.close("all")
