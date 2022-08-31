@@ -18,7 +18,8 @@ class Currentness(BaseIndicator):
     time range
 
     Attributes:
-        threshold (int): TODO
+        threshold (int): Number of years it should be since more than
+        50% of the elements were last edited
     """
 
     def __init__(
@@ -27,10 +28,10 @@ class Currentness(BaseIndicator):
         feature: geojson.Feature,
     ) -> None:
         super().__init__(layer=layer, feature=feature)
-        self.threshold_class_5 = 1.0
-        self.threshold_class_4 = 0.8
-        self.threshold_class_3 = 0.6
-        self.threshold_class_2 = 0.2
+        self.threshold_class_5 = 1
+        self.threshold_class_4 = 2
+        self.threshold_class_3 = 4
+        self.threshold_class_2 = 8
         self.element_count = None
         self.contribution_sum = 0
         self.contributions_rel = {}  # yearly interval
@@ -76,9 +77,9 @@ class Currentness(BaseIndicator):
         self.contributions_abs[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
-        """Calculate the years since over 50% of the elements were last edited
-
-        For each year 0.1 is subtracted from the result value.
+        """
+        The result value corresponds to the years since over 50 %
+        of the elements were last edited
         """
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
@@ -104,9 +105,9 @@ class Currentness(BaseIndicator):
             ) * 100
             if self.contributions_rel[year] != 0:
                 last_edited_year = year
-            if years_since_start <= 3:
+            if years_since_start <= self.threshold_class_3 - 1:
                 green_contributions_rel += self.contributions_rel[year]
-            elif years_since_start <= 7:
+            elif years_since_start <= self.threshold_class_2 - 1:
                 yellow_contributions_rel += self.contributions_rel[year]
             else:
                 red_contributions_rel += self.contributions_rel[year]
@@ -123,12 +124,7 @@ class Currentness(BaseIndicator):
             else:
                 self.median_year = year
                 break
-        # TODO: rename median diff to result.value and add comment
-        median_diff = int(self.result.timestamp_oqt.year) - int(self.median_year)
-        if median_diff <= 1:
-            self.result.value = 1
-        else:
-            self.result.value = 1.0 - (median_diff / 10)
+        self.result.value = int(self.result.timestamp_oqt.year) - int(self.median_year)
         if self.result.value < 0.0:
             self.result.value = 0.0
 
@@ -140,14 +136,14 @@ class Currentness(BaseIndicator):
         else:
             years_without_mapping = ""
         self.result.description = Template(self.metadata.result_description).substitute(
-            years=median_diff,
+            years=self.result.value,
             layer_name=self.layer.name,
             end=self.end,
             elements=int(self.contribution_sum),
             green=round(green_contributions_rel, 3),
             yellow=round(yellow_contributions_rel, 3),
             red=round(red_contributions_rel, 3),
-            median_years=median_diff,
+            median_years=self.result.value,
         )
 
         if self.result.value >= self.threshold_class_5:
@@ -205,10 +201,10 @@ class Currentness(BaseIndicator):
                     "!",
                     fontdict={"fontsize": 26},
                 )
-            if year_range >= 8:
+            if year_range >= self.threshold_class_2:
                 patch.set_facecolor("red")
                 year_range -= 1
-            elif year_range >= 4:
+            elif year_range >= self.threshold_class_3:
                 patch.set_facecolor("yellow")
                 year_range -= 1
             else:
