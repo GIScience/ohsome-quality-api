@@ -22,7 +22,7 @@
 - Add ratio filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
 - Generalize result values of all Indicators by introducing a result class value ([#369])
-- Redefined Currentness indicator result value calculation ([#274])
+- Redefined Currentness indicator result_value calculation, result_description and result_svg ([#274])
 
 ### Other Changes
 
