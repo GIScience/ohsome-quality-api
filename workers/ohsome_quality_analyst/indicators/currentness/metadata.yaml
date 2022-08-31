@@ -23,4 +23,7 @@ Currentness:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-      Over 50% of the $elements features ($layer_name) were edited $years. 
+      In the last 3 years $green % of the elements were edited the last time.
+      In the period from 4 to 7 years ago $yellow % of the elements were edited the last time.
+      The remaining $red % were last edited more than 8 years ago.
+      The median currentness of the $elements features ($layer_name) is $median_years years.

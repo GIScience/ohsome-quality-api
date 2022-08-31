@@ -88,6 +88,10 @@ class Currentness(BaseIndicator):
             return
         contributions_share = self.contribution_sum
         last_edited_year = ""
+        years_since_start = len(self.contributions_abs)
+        green_contributions_rel = 0
+        yellow_contributions_rel = 0
+        red_contributions_rel = 0
         # determine the percentage of elements that were last edited in that year
         for year in self.contributions_abs:
             self.ratio[year] = (contributions_share / self.contribution_sum) * 100
@@ -97,6 +101,13 @@ class Currentness(BaseIndicator):
             ) * 100
             if self.contributions_rel[year] != 0:
                 last_edited_year = year
+            if years_since_start <= 3:
+                green_contributions_rel += self.contributions_rel[year]
+            elif years_since_start <= 7:
+                yellow_contributions_rel += self.contributions_rel[year]
+            else:
+                red_contributions_rel += self.contributions_rel[year]
+            years_since_start -= 1
         self.years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
             last_edited_year
         )
@@ -116,17 +127,23 @@ class Currentness(BaseIndicator):
             self.result.value = 1.0 - (median_diff / 10)
         if self.result.value < 0.0:
             self.result.value = 0.0
-        if median_diff == 0:
-            median_diff = "this year"
-        elif median_diff == 1:
-            median_diff = "in the last year"
+
+        if last_edited_year != str(self.result.timestamp_oqt.year):
+            years_without_mapping = (
+                "Attention: There was no mapping"
+                " activity after {0} in this region.".format(last_edited_year)
+            )
         else:
-            median_diff = "in the last {0} years".format(median_diff)
+            years_without_mapping = ""
         self.result.description = Template(self.metadata.result_description).substitute(
             years=median_diff,
             layer_name=self.layer.name,
             end=self.end,
             elements=self.contribution_sum,
+            green=round(green_contributions_rel, 3),
+            yellow=round(yellow_contributions_rel, 3),
+            red=round(red_contributions_rel, 3),
+            median_years=median_diff,
         )
 
         if self.result.value >= self.threshold_class_5:
@@ -156,6 +173,7 @@ class Currentness(BaseIndicator):
             )
         else:
             raise ValueError("Ratio has an unexpected value.")
+        self.result.description += years_without_mapping
 
     def create_figure(self) -> None:
         """Create a plot.
