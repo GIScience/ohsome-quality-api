@@ -11,7 +11,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -72,7 +72,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -129,7 +129,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -360,7 +360,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -439,7 +439,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -497,7 +497,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -728,7 +728,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -785,7 +785,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -864,7 +864,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -918,7 +918,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -979,7 +979,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -1036,7 +1036,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -1267,7 +1267,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -1345,7 +1345,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.10.1
+      - ohsome-quality-analyst/0.11.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
