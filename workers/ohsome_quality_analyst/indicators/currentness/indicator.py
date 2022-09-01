@@ -18,8 +18,15 @@ class Currentness(BaseIndicator):
     time range
 
     Attributes:
-        threshold (int): Number of years it should be since more than
-        50% of the elements were last edited
+        threshold_class_5 (int): Number of years it should have been since 50%
+            of the items were last edited to be in the best class
+        threshold_class_4 (int): Number of years it should have been since 50%
+            of the items were last edited to be in the second best class
+        threshold_class_3 (int): Number of years it should have been since 50%
+            of the items were last edited to be in the third best class
+        threshold_class_2 (int): Number of years it should have been since 50%
+            of the items were last edited to be in the second worst class. If
+            the result is lower than this threshold, it is assigned to the worst class
     """
 
     def __init__(
