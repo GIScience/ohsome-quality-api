@@ -40,113 +40,93 @@ class Currentness(BaseIndicator):
         self.threshold_class_3 = 4
         self.threshold_class_2 = 8
         self.element_count = None
-        self.contribution_sum = 0
+        self.contributions_sum = None
         self.contributions_rel = {}  # yearly interval
         self.contributions_abs = {}  # yearly interval
+        self.start = "2008-01-01"
+        self.end = None
 
     async def preprocess(self) -> None:
-        """Get contributions for each year since 2008"""
+        """Get absolute number of contributions for each year since given start date"""
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        # time_range for all years since 2008 and curr_year_range for the ongoing year
-        start = "2008-01-01"
         self.end = latest_ohsome_stamp.strftime("%Y-%m-%d")
-        time_range = "{0}/{1}/{2}".format(start, self.end, "P1Y")
-        curr_year_start = "{0}-01-01".format(latest_ohsome_stamp.year)
-        curr_year_range = "{0}/{1}".format(curr_year_start, self.end)
-
+        past_years_interval = "{0}/{1}/{2}".format(self.start, self.end, "P1Y")
+        current_year_interval = "{0}/{1}".format(
+            "{0}-01-01".format(latest_ohsome_stamp.year),
+            self.end,
+        )
+        # Fetch number of features
         response = await ohsome_client.query(self.layer, self.feature)
         self.element_count = response["result"][0]["value"]
         self.result.timestamp_osm = dateutil.parser.isoparse(
             response["result"][0]["timestamp"]
         )
-        response_contributions_yearly = await ohsome_client.query(
+        # Fetch all contributions of past years
+        contributions_yearly = await ohsome_client.query(
             self.layer,
             self.feature,
-            time=time_range,
+            time=past_years_interval,
             count_latest_contributions=True,
         )
-        for year in response_contributions_yearly["result"]:
-            time = dateutil.parser.isoparse(year["fromTimestamp"])
-            count = year["value"]
+        # Fetch contributions of current year
+        contributions_current_year = await ohsome_client.query(
+            self.layer,
+            self.feature,
+            time=current_year_interval,
+            count_latest_contributions=True,
+        )
+        # Merge contributions
+        contributions = (
+            contributions_yearly["result"] + contributions_current_year["result"]
+        )
+        for contrib in contributions:
+            time = dateutil.parser.isoparse(contrib["fromTimestamp"])
+            count = contrib["value"]
             self.contributions_abs[time.strftime("%Y")] = count
-
-        # Add contributions of current year to contributions_abs
-        response_contributions_curr_year = await ohsome_client.query(
-            self.layer,
-            self.feature,
-            time=curr_year_range,
-            count_latest_contributions=True,
-        )
-        time = dateutil.parser.isoparse(
-            response_contributions_curr_year["result"][0]["fromTimestamp"]
-        )
-        count = response_contributions_curr_year["result"][0]["value"]
-        self.contributions_abs[time.strftime("%Y")] = count
 
     def calculate(self) -> None:
         """Calculate the years since over 50% of the elements were last edited"""
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
-        self.contribution_sum = sum(self.contributions_abs.values())
-        # It can be that features are counted, but have been deleted since.
+        # It can be that features have been edited, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
                 "In the area of interest no features "
                 "matching the filter are present today."
             )
             return
-        contributions_share = self.contribution_sum
-        last_edited_year = ""
-        years_since_start = len(self.contributions_abs)
-        green_contributions_rel = 0
-        yellow_contributions_rel = 0
-        red_contributions_rel = 0
-        # determine the percentage of elements that were last edited in that year
-        for year in self.contributions_abs:
-            contributions_share -= self.contributions_abs[year]
-            self.contributions_rel[year] = (
-                self.contributions_abs[year] / self.contribution_sum
-            ) * 100
-            if self.contributions_rel[year] != 0:
-                last_edited_year = year
-            if years_since_start <= self.threshold_class_3 - 1:
-                green_contributions_rel += self.contributions_rel[year]
-            elif years_since_start <= self.threshold_class_2 - 1:
-                yellow_contributions_rel += self.contributions_rel[year]
-            else:
-                red_contributions_rel += self.contributions_rel[year]
-            years_since_start -= 1
-        self.years_since_last_edit = int(self.result.timestamp_oqt.year) - int(
-            last_edited_year
-        )
-        percentage_contributions = 0
-        self.median_year = ""
-        for year in self.contributions_rel:
-            percentage_contributions += self.contributions_rel[year]
-            if percentage_contributions < 50:
-                continue
-            else:
-                self.median_year = year
-                break
-        self.result.value = int(self.result.timestamp_oqt.year) - int(self.median_year)
-        if self.result.value < 0.0:
-            self.result.value = 0.0
 
-        if last_edited_year != str(self.result.timestamp_oqt.year):
-            years_without_mapping = (
-                "Attention: There was no mapping"
-                " activity after {0} in this region.".format(last_edited_year)
-            )
-        else:
-            years_without_mapping = ""
+        # calculate relative number of contributions for each year
+        self.contributions_sum = sum(self.contributions_abs.values())
+        contrib_rel_cum_green = 0
+        contrib_rel_cum_yellow = 0
+        contrib_rel_cum_red = 0
+        for num_of_years, (year, contrib_abs) in enumerate(
+            reversed(self.contributions_abs.items()),
+            start=1,
+        ):
+            contrib_rel = contrib_abs / self.contributions_sum
+            self.contributions_rel[year] = contrib_rel
+            if num_of_years <= self.threshold_class_4:
+                contrib_rel_cum_green += contrib_rel
+            elif num_of_years <= self.threshold_class_2:
+                contrib_rel_cum_yellow += contrib_rel
+            else:
+                contrib_rel_cum_red += contrib_rel
+
+        # calculate the year in which 50% of the total edits have been made
+        self.median_year = get_median_year(self.contributions_rel)
+        # years since last edit has been made
+        self.result.value = int(self.result.timestamp_oqt.year) - self.median_year
+
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             layer_name=self.layer.name,
             end=self.end,
-            elements=int(self.contribution_sum),
-            green=round(green_contributions_rel, 3),
-            yellow=round(yellow_contributions_rel, 3),
-            red=round(red_contributions_rel, 3),
+            elements=int(self.contributions_sum),
+            green=round(contrib_rel_cum_green, 3),
+            yellow=round(contrib_rel_cum_yellow, 3),
+            red=round(contrib_rel_cum_red, 3),
             median_years=self.result.value,
         )
 
@@ -177,7 +157,16 @@ class Currentness(BaseIndicator):
             )
         else:
             raise ValueError("Ratio has an unexpected value.")
-        self.result.description += years_without_mapping
+
+        last_edited_year = get_last_edited_year(self.contributions_abs)
+        self.years_since_last_edit = (
+            int(self.result.timestamp_oqt.year) - last_edited_year
+        )
+        if last_edited_year != str(self.result.timestamp_oqt.year):
+            self.result.description += (
+                "Attention: There was no mapping activity after "
+                + "{0} in this region.".format(last_edited_year)
+            )
 
     def create_figure(self) -> None:
         """Create a plot.
@@ -193,15 +182,18 @@ class Currentness(BaseIndicator):
         ax = fig.add_subplot()
         patches = ax.bar(
             self.contributions_rel.keys(),
-            height=self.contributions_rel.values(),
+            height=[v * 100 for v in self.contributions_rel.values()],
             edgecolor="black",
         )
         year_range = len(self.contributions_rel)
+
+        last_edited_year = get_last_edited_year(self.contributions_abs)
+        years_since_last_edit = int(self.result.timestamp_oqt.year) - last_edited_year
         for patch in patches:
-            if year_range <= self.years_since_last_edit:
+            if year_range <= years_since_last_edit:
                 ax.text(
                     patch.get_x(),
-                    max(self.contributions_rel.values()) / 2,
+                    max(self.contributions_rel.values()) * 100 / 2,
                     "!",
                     fontdict={"fontsize": 26},
                 )
@@ -223,7 +215,7 @@ class Currentness(BaseIndicator):
         plt.xticks(list(self.contributions_rel.keys())[::2])
         plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
-        plt.title("Total Contributions: %i" % self.contribution_sum)
+        plt.title("Total Contributions: %i" % self.contributions_sum)
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
@@ -231,3 +223,19 @@ class Currentness(BaseIndicator):
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
         plt.close("all")
+
+
+def get_last_edited_year(contributions: dict) -> int:
+    """Get the year in which the last edit has been made"""
+    for year, contrib in dict(reversed(sorted(contributions.items()))).items():
+        if contrib != 0:
+            return int(year)
+
+
+def get_median_year(contributions: dict) -> int:
+    """Get the year in which 50% of the total edits have been made since first edit"""
+    contrib_rel_cum = 0
+    for year, contrib in dict(sorted(contributions.items())).items():
+        contrib_rel_cum += contrib
+        if contrib_rel_cum >= 0.5:
+            return int(year)
