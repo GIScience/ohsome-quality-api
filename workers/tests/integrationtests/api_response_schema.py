@@ -52,7 +52,7 @@ def get_result_schema() -> Schema:
 
     Excluded are the endpoints `/indicator` and `/report`.
     """
-    return Schema({"result": list}, ignore_extra_keys=True)
+    return Schema({"result": Or(list, dict)}, ignore_extra_keys=True)
 
 
 def get_featurecollection_schema() -> Schema:

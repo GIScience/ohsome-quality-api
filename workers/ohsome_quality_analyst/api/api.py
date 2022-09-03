@@ -36,9 +36,9 @@ from ohsome_quality_analyst.definitions import (
     get_attribution,
     get_dataset_names,
     get_fid_fields,
-    get_indicator_descriptions,
     get_layer_keys,
     get_report_names,
+    load_metadata,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
@@ -289,10 +289,10 @@ async def get_indicator_layer_combinations():
 
 
 @app.get("/indicators")
-async def indicator_names(IndicatorName: str):
+async def indicator_names():
     """Get names of available indicators."""
     response = empty_api_response()
-    response["result"] = get_indicator_descriptions(IndicatorName)
+    response["result"] = load_metadata("indicators")
     return response
 
 
