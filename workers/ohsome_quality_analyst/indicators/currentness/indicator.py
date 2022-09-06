@@ -45,6 +45,7 @@ class Currentness(BaseIndicator):
         self.contributions_abs = {}  # yearly interval
         self.start = "2008-01-01"
         self.end = None
+        self.low_contributions_threshold = 0
 
     async def preprocess(self) -> None:
         """Get absolute number of contributions for each year since given start date"""
@@ -165,6 +166,11 @@ class Currentness(BaseIndicator):
             self.result.description += (
                 "Attention: There was no mapping activity after "
                 + "{0} in this region.".format(last_edited_year)
+            )
+        if self.contributions_sum < self.low_contributions_threshold:
+            self.result.description += (
+                "Attention: In this region there are very few contributions "
+                + "({0}) with the given tags ".format(self.contributions_sum)
             )
 
     def create_figure(self) -> None:
