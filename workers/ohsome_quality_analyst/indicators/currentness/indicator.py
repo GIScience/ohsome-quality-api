@@ -109,9 +109,9 @@ class Currentness(BaseIndicator):
         ):
             contrib_rel = contrib_abs / self.contributions_sum
             contributions_rel[year] = contrib_rel
-            if num_of_years <= self.threshold_4:
+            if num_of_years < self.threshold_2:
                 contrib_rel_cum_green += contrib_rel
-            elif num_of_years <= self.threshold_2:
+            elif num_of_years < self.threshold_1:
                 contrib_rel_cum_yellow += contrib_rel
             else:
                 contrib_rel_cum_red += contrib_rel
