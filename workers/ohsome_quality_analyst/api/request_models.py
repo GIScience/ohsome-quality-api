@@ -301,7 +301,7 @@ REPORT_EXAMPLES = {
         "value": {
             "name": "BuildingReport",
             "dataset": "regions",
-            "featureId": 3,
+            "featureId": 12,
             "fidField": "ogc_fid",
             "includeSvg": False,
             "includeHtml": False,
@@ -311,7 +311,7 @@ REPORT_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "BuildingReport",
+            "name": "MultilevelMappingSaturation",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
