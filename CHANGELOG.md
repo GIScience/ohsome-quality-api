@@ -1,5 +1,15 @@
 # Changelog
 
+
+## Current Main
+
+## New Features
+
+- Improve Currentness indicator ([#274])
+
+[#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
+
+
 ## 0.11.0
 
 ### Breaking Changes
@@ -22,7 +32,7 @@
 - Add ratio filter to `building_count` layer ([#356])
 - Configure OQT using files or environment variables ([#255])
 - Generalize result values of all Indicators by introducing a result class value ([#369])
-- Improve Currentness indicator ([#274])
+
 ### Other Changes
 
 - Remove unused report `RemoteMappingLevelOne` ([#380])
@@ -51,7 +61,6 @@
 | `fidFields`                  | `fid-fields`                   |
 
 [#255]: https://github.com/GIScience/ohsome-quality-analyst/pull/255
-[#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#342]: https://github.com/GIScience/ohsome-quality-analyst/pull/342
 [#356]: https://github.com/GIScience/ohsome-quality-analyst/pull/356
 [#357]: https://github.com/GIScience/ohsome-quality-analyst/pull/357
