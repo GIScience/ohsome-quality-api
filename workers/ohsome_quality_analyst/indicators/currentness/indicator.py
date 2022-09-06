@@ -18,13 +18,13 @@ class Currentness(BaseIndicator):
     time range
 
     Attributes:
-        threshold_class_5 (int): Number of years it should have been since 50%
-            of the items were last edited to be in the best class
-        threshold_class_4 (int): Number of years it should have been since 50%
+        threshold_4 (int): Number of years it should have been since 50%
             of the items were last edited to be in the second best class
-        threshold_class_3 (int): Number of years it should have been since 50%
+        threshold_3 (int): Number of years it should have been since 50%
+            of the items were last edited to be in the second best class
+        threshold_2 (int): Number of years it should have been since 50%
             of the items were last edited to be in the third best class
-        threshold_class_2 (int): Number of years it should have been since 50%
+        threshold_1 (int): Number of years it should have been since 50%
             of the items were last edited to be in the second worst class. If
             the result is lower than this threshold, it is assigned to the worst class
     """
@@ -35,10 +35,10 @@ class Currentness(BaseIndicator):
         feature: geojson.Feature,
     ) -> None:
         super().__init__(layer=layer, feature=feature)
-        self.threshold_class_5 = 1
-        self.threshold_class_4 = 2
-        self.threshold_class_3 = 4
-        self.threshold_class_2 = 8
+        self.threshold_4 = 1
+        self.threshold_3 = 2
+        self.threshold_2 = 4
+        self.threshold_1 = 8
         self.element_count = None
         self.contributions_sum = None
         self.contributions_rel = {}  # yearly interval
@@ -108,9 +108,9 @@ class Currentness(BaseIndicator):
         ):
             contrib_rel = contrib_abs / self.contributions_sum
             contributions_rel[year] = contrib_rel
-            if num_of_years <= self.threshold_class_4:
+            if num_of_years <= self.threshold_4:
                 contrib_rel_cum_green += contrib_rel
-            elif num_of_years <= self.threshold_class_2:
+            elif num_of_years <= self.threshold_2:
                 contrib_rel_cum_yellow += contrib_rel
             else:
                 contrib_rel_cum_red += contrib_rel
@@ -125,40 +125,38 @@ class Currentness(BaseIndicator):
             layer_name=self.layer.name,
             end=self.end,
             elements=int(self.contributions_sum),
-            green=round(contrib_rel_cum_green, 3),
-            yellow=round(contrib_rel_cum_yellow, 3),
-            red=round(contrib_rel_cum_red, 3),
+            green=round(contrib_rel_cum_green * 100, 3),
+            yellow=round(contrib_rel_cum_yellow * 100, 3),
+            red=round(contrib_rel_cum_red * 100, 3),
             median_years=self.result.value,
         )
-
-        if self.result.value >= self.threshold_class_5:
-            self.result.class_ = 5
-            self.result.description = (
-                self.result.description + self.metadata.label_description["green"]
-            )
-        elif self.result.value >= self.threshold_class_4:
-            self.result.class_ = 4
-            self.result.description = (
-                self.result.description + self.metadata.label_description["green"]
-            )
-        elif self.result.value >= self.threshold_class_3:
-            self.result.class_ = 3
-            self.result.description = (
-                self.result.description + self.metadata.label_description["yellow"]
-            )
-        elif self.result.value >= self.threshold_class_2:
-            self.result.class_ = 2
-            self.result.description = (
-                self.result.description + self.metadata.label_description["yellow"]
-            )
-        elif self.result.value < self.threshold_class_2:
+        if self.result.value >= self.threshold_1:
             self.result.class_ = 1
             self.result.description = (
                 self.result.description + self.metadata.label_description["red"]
             )
+        elif self.threshold_1 > self.result.value >= self.threshold_2:
+            self.result.class_ = 2
+            self.result.description = (
+                self.result.description + self.metadata.label_description["yellow"]
+            )
+        elif self.threshold_2 > self.result.value >= self.threshold_3:
+            self.result.class_ = 3
+            self.result.description = (
+                self.result.description + self.metadata.label_description["yellow"]
+            )
+        elif self.threshold_3 > self.result.value >= self.threshold_4:
+            self.result.class_ = 4
+            self.result.description = (
+                self.result.description + self.metadata.label_description["green"]
+            )
+        elif self.threshold_4 > self.result.value:
+            self.result.class_ = 5
+            self.result.description = (
+                self.result.description + self.metadata.label_description["green"]
+            )
         else:
             raise ValueError("Ratio has an unexpected value.")
-
         last_edited_year = get_last_edited_year(self.contributions_abs)
         self.years_since_last_edit = (
             int(self.result.timestamp_oqt.year) - last_edited_year
@@ -198,10 +196,10 @@ class Currentness(BaseIndicator):
                     "!",
                     fontdict={"fontsize": 26},
                 )
-            if year_range >= self.threshold_class_2:
+            if year_range >= self.threshold_2:
                 patch.set_facecolor("red")
                 year_range -= 1
-            elif year_range >= self.threshold_class_3:
+            elif year_range >= self.threshold_3:
                 patch.set_facecolor("yellow")
                 year_range -= 1
             else:
