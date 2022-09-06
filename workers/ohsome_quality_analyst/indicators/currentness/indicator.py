@@ -98,6 +98,7 @@ class Currentness(BaseIndicator):
 
         # calculate relative number of contributions for each year
         self.contributions_sum = sum(self.contributions_abs.values())
+        contributions_rel = {}
         contrib_rel_cum_green = 0
         contrib_rel_cum_yellow = 0
         contrib_rel_cum_red = 0
@@ -106,14 +107,14 @@ class Currentness(BaseIndicator):
             start=1,
         ):
             contrib_rel = contrib_abs / self.contributions_sum
-            self.contributions_rel[year] = contrib_rel
+            contributions_rel[year] = contrib_rel
             if num_of_years <= self.threshold_class_4:
                 contrib_rel_cum_green += contrib_rel
             elif num_of_years <= self.threshold_class_2:
                 contrib_rel_cum_yellow += contrib_rel
             else:
                 contrib_rel_cum_red += contrib_rel
-
+        self.contributions_rel = dict(sorted(contributions_rel.items()))
         # calculate the year in which 50% of the total edits have been made
         self.median_year = get_median_year(self.contributions_rel)
         # years since last edit has been made
@@ -162,7 +163,7 @@ class Currentness(BaseIndicator):
         self.years_since_last_edit = (
             int(self.result.timestamp_oqt.year) - last_edited_year
         )
-        if last_edited_year != str(self.result.timestamp_oqt.year):
+        if last_edited_year != self.result.timestamp_oqt.year:
             self.result.description += (
                 "Attention: There was no mapping activity after "
                 + "{0} in this region.".format(last_edited_year)
@@ -207,7 +208,7 @@ class Currentness(BaseIndicator):
                 patch.set_facecolor("green")
                 year_range -= 1
         plt.axvline(
-            x=self.median_year,
+            x=str(self.median_year),
             linestyle=":",
             color="black",
             label="Median Year: {0}".format(self.median_year),
