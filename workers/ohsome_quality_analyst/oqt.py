@@ -156,6 +156,7 @@ async def create_indicator(parameters) -> Indicator:
 @create_indicator.register
 async def _(
     parameters: IndicatorDatabase,
+    *_args,
     force: bool = False,
 ) -> Indicator:
     """Create an Indicator by fetching the results from the database.
@@ -322,7 +323,7 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
     if parameters.include_html:
-        report.create_html()
+        report.create_html(include_html=parameters.include_html)
     return report
 
 
@@ -356,8 +357,6 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
                     layerKey=layer_key,
                     bpolys=feature,
                 ),
-                include_html=parameters.include_html,
-                include_svg=parameters.include_svg,
             )
         )
     report.indicators = await gather_with_semaphore(tasks)

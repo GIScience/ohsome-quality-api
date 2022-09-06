@@ -110,8 +110,8 @@ bpolys = {
     ],
 }
 layer = {
-    "name": "My layer name"
-    "description": "My layer description"
+    "name": "My layer name",
+    "description": "My layer description",
     "data": {
         "result": [
             {"timestamp": "2014-01-01T00:00:00Z", "value": 4708},
@@ -155,7 +155,7 @@ layer = {
     }
 }
 parameters = {
-    "name": "GhsPopComparisonBuildings",
+    "name": "MappingSaturation",
     "bpolys": bpolys,
     "layer": layer,
     "includeSvg": False,  # Optional
