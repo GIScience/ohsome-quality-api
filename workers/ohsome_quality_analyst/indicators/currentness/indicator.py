@@ -185,7 +185,6 @@ class Currentness(BaseIndicator):
             edgecolor="black",
         )
         year_range = len(self.contributions_rel)
-
         last_edited_year = get_last_edited_year(self.contributions_abs)
         years_since_last_edit = int(self.result.timestamp_oqt.year) - last_edited_year
         for patch in patches:
@@ -196,7 +195,7 @@ class Currentness(BaseIndicator):
                     "!",
                     fontdict={"fontsize": 26},
                 )
-            if year_range >= self.threshold_2:
+            if year_range >= self.threshold_1:
                 patch.set_facecolor("red")
                 year_range -= 1
             elif year_range >= self.threshold_3:
