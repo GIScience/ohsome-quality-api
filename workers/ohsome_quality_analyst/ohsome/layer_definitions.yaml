@@ -303,9 +303,9 @@ mapaction_rivers_length:
   endpoint: elements/length
   filter: waterway in (riverbank,river) and type:way
 
-basic_infrastructure:
-  name: Basic Infrastructure
-  description: Objects related to infrastructure
+infrastructure_lines:
+  name: Infrastructure Lines
+  description: Line objects related to infrastructure
   endpoint: elements/length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
 

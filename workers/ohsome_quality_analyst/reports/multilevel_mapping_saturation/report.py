@@ -5,7 +5,7 @@ from ohsome_quality_analyst.definitions import get_attribution
 class MultilevelMappingSaturation(BaseReport):
     def set_indicator_layer(self):
         self.indicator_layer = (
-            IndicatorLayer("MappingSaturation", "basic_infrastructure"),
+            IndicatorLayer("MappingSaturation", "infrastructure_lines"),
             IndicatorLayer("MappingSaturation", "poi"),
             IndicatorLayer("MappingSaturation", "lulc"),
             IndicatorLayer("MappingSaturation", "building_count"),
