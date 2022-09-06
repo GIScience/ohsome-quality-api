@@ -198,7 +198,7 @@ class Currentness(BaseIndicator):
             if year_range >= self.threshold_1:
                 patch.set_facecolor("red")
                 year_range -= 1
-            elif year_range >= self.threshold_3:
+            elif year_range >= self.threshold_2:
                 patch.set_facecolor("yellow")
                 year_range -= 1
             else:
