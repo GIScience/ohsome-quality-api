@@ -1,5 +1,14 @@
 # Changelog
 
+# Current Main
+
+## Breaking Changes
+
+- Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416])
+
+[#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
+
+
 ## 0.11.0
 
 ### Breaking Changes
