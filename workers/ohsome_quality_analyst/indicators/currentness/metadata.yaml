@@ -7,9 +7,7 @@ Currentness:
     Refers to data quality in respect to currentness.
   label_description:
     red: |
-      Be aware that there it is very likely that many map features are outdated. 
-      You should carefully check this before using the data as it indicates bad 
-      data quality in respect to currentness.
+      It is likely that many features are outdated.
     yellow: |
       This refers to medium data quality in respect to currentness.
     green: |
