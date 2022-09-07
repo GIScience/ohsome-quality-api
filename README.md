@@ -29,6 +29,10 @@ Our [API](https://oqt.ohsome.org/api/docs) offers the most flexible way to reque
 
  For more information check out the interactive [API documentation](https://oqt.ohsome.org/api/docs), our static [documentation](docs/api.md) and our interactive [examples](https://github.com/GIScience/oqt-examples) using Python and Jupyter Notebooks.
 
+## CLI
+
+It is also possible to set up OQT on your local machine and use the provided CLI. This is the most flexible way but some technical knowledge is required to set it up. For now please refer to the [development setup documentation](docs/development_setup.md) on how to set up OQT locally on your machine. After installation of the `ohsome_quality_analyst` Python package run `oqt --help` for documentation about the CLI.
+
 ## Contributing
 
 Contributions of any form are more than welcome! Please take a look at our [contributing
