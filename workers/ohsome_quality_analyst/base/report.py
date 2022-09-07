@@ -49,8 +49,8 @@ class IndicatorLayer(NamedTuple):
 class BaseReport(metaclass=ABCMeta):
     def __init__(
         self,
-        feature: Feature,
-        indicator_layer: Tuple[IndicatorLayer],
+        feature: Feature = None,
+        indicator_layer: Tuple[IndicatorLayer] = None,
     ):
         self.feature = feature
         self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
@@ -58,6 +58,8 @@ class BaseReport(metaclass=ABCMeta):
         self.indicators: List[BaseIndicator] = []
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.blocking_undefined = False
+        self.blocking_red = False
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 

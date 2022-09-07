@@ -16,8 +16,8 @@ class TestReportMapActionPoc(unittest.TestCase):
         for _ in report.indicator_layer:
             indicator = Mock()
             indicator.result = Mock()
-            indicator.result.value = 0.5
             indicator.result.html = "foo"
+            indicator.result.class_ = 1
             report.indicators.append(indicator)
 
         report.combine_indicators()
@@ -26,7 +26,7 @@ class TestReportMapActionPoc(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
         self.assertIsNotNone(report.result.html)
-        self.assertEqual(report.result.value, 0.5)
+        self.assertEqual(report.result.class_, 1)
 
 
 if __name__ == "__main__":

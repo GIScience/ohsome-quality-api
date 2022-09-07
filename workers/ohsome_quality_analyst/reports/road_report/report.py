@@ -4,10 +4,12 @@ from ohsome_quality_analyst.definitions import get_attribution
 
 class RoadReport(BaseReport):
     def set_indicator_layer(self):
-        self.indicator_layer = (
-            IndicatorLayer("MappingSaturation", "major_roads_length"),
-            IndicatorLayer("Currentness", "major_roads_count"),
-            IndicatorLayer("TagsRatio", "major_roads_length"),
+        super().__init__(
+            indicator_layer=(
+                IndicatorLayer("MappingSaturation", "major_roads_length"),
+                IndicatorLayer("Currentness", "major_roads_count"),
+                IndicatorLayer("TagsRatio", "major_roads_length"),
+            )
         )
 
     def combine_indicators(self) -> None:
