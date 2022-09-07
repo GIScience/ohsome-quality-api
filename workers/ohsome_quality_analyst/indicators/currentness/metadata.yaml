@@ -9,7 +9,7 @@ Currentness:
     red: |
       It is likely that many features are outdated.
     yellow: |
-      This refers to medium data quality in respect to currentness.
+      It is likely that some features are up-to-date and some features are outdated.
     green: |
       It is likely that most features are up-to-date.
     undefined: |
