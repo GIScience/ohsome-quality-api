@@ -3,7 +3,7 @@
 
 ## Current Main
 
-## New Features
+### New Features
 
 - Improve Currentness indicator ([#274])
 
