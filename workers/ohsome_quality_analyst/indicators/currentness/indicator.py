@@ -126,32 +126,26 @@ class Currentness(BaseIndicator):
             layer_name=self.layer.name,
             end=self.end,
             elements=int(self.contributions_sum),
-            green=round(contrib_rel_cum_green * 100, 3),
-            yellow=round(contrib_rel_cum_yellow * 100, 3),
-            red=round(contrib_rel_cum_red * 100, 3),
+            green=round(contrib_rel_cum_green * 100, 2),
+            yellow=round(contrib_rel_cum_yellow * 100, 2),
+            red=round(contrib_rel_cum_red * 100, 2),
             median_years=self.result.value,
+            threshold_green=self.threshold_2 - 1,
+            threshold_yellow_start=self.threshold_2,
+            threshold_yellow_end=self.threshold_1 - 1,
+            threshold_red=self.threshold_1,
         )
-        if self.result.value >= self.threshold_1:
+        if self.result.value > self.threshold_1:
             self.result.class_ = 1
             self.result.description = (
                 self.result.description + self.metadata.label_description["red"]
             )
-        elif self.threshold_1 > self.result.value >= self.threshold_2:
+        elif self.threshold_1 >= self.result.value > self.threshold_3:
             self.result.class_ = 2
             self.result.description = (
                 self.result.description + self.metadata.label_description["yellow"]
             )
-        elif self.threshold_2 > self.result.value >= self.threshold_3:
-            self.result.class_ = 3
-            self.result.description = (
-                self.result.description + self.metadata.label_description["yellow"]
-            )
-        elif self.threshold_3 > self.result.value >= self.threshold_4:
-            self.result.class_ = 4
-            self.result.description = (
-                self.result.description + self.metadata.label_description["green"]
-            )
-        elif self.threshold_4 > self.result.value:
+        elif self.threshold_3 >= self.result.value:
             self.result.class_ = 5
             self.result.description = (
                 self.result.description + self.metadata.label_description["green"]

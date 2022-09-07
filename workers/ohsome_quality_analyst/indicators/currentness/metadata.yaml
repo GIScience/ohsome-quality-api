@@ -11,9 +11,7 @@ Currentness:
     yellow: |
       This refers to medium data quality in respect to currentness.
     green: |
-      This is a rather high value and indicates that the map features 
-      are very unlike to be outdated. This refers to good data quality in 
-      respect to currentness.
+      It is likely that most features are up-to-date.
     undefined: |
       The quality level could not be calculated for this indicator. 
       This is most likely due to the fact that no features have been mapped 
@@ -21,7 +19,7 @@ Currentness:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-      In the last 3 years $green % of the elements were edited the last time.
-      In the period from 4 to 7 years ago $yellow % of the elements were edited the last time.
-      The remaining $red % were last edited more than 8 years ago.
-      The median currentness of the $elements features ($layer_name) is $median_years years.
+      In the last $threshold_green years $green % of the elements were edited the last time.
+      In the period from $threshold_yellow_start to $threshold_yellow_end years ago $yellow % of the elements were edited the last time.
+      The remaining $red % were last edited more than $threshold_red years ago.
+      The median currentness of the $elements features ($layer_name) is $median_years year(s).
