@@ -9,7 +9,8 @@ class SketchmapFitness(BaseReport):
                 IndicatorLayer("Currentness", "major_roads_count"),
                 IndicatorLayer("Currentness", "amenities"),
                 IndicatorLayer("PoiDensity", "poi"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

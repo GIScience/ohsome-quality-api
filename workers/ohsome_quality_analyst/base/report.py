@@ -49,7 +49,7 @@ class IndicatorLayer(NamedTuple):
 class BaseReport(metaclass=ABCMeta):
     def __init__(
         self,
-        feature: Feature = None,
+        feature: Feature,
         indicator_layer: Tuple[IndicatorLayer] = None,
     ):
         self.feature = feature

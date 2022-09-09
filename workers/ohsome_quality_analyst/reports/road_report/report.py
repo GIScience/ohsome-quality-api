@@ -9,7 +9,8 @@ class RoadReport(BaseReport):
                 IndicatorLayer("MappingSaturation", "major_roads_length"),
                 IndicatorLayer("Currentness", "major_roads_count"),
                 IndicatorLayer("TagsRatio", "major_roads_length"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

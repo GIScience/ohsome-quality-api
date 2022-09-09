@@ -10,7 +10,8 @@ class MultilevelMappingSaturation(BaseReport):
                 IndicatorLayer("MappingSaturation", "poi"),
                 IndicatorLayer("MappingSaturation", "lulc"),
                 IndicatorLayer("MappingSaturation", "building_count"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

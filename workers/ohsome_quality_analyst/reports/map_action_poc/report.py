@@ -15,7 +15,8 @@ class MapActionPoc(BaseReport):
                 IndicatorLayer("Currentness", "mapaction_rail_length"),
                 IndicatorLayer("Currentness", "mapaction_lakes_count"),
                 IndicatorLayer("Currentness", "mapaction_rivers_length"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

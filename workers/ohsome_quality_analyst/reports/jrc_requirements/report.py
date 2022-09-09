@@ -32,7 +32,8 @@ class JrcRequirements(BaseReport):
                 IndicatorLayer("TagsRatio", "jrc_cultural_heritage_site_count"),
                 IndicatorLayer("TagsRatio", "jrc_bridge_count"),
                 IndicatorLayer("TagsRatio", "jrc_mass_gathering_sites_count"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

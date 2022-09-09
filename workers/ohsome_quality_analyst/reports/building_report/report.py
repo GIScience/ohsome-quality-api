@@ -9,7 +9,8 @@ class BuildingReport(BaseReport):
                 IndicatorLayer("Currentness", "building_count"),
                 IndicatorLayer("TagsRatio", "building_count"),
                 IndicatorLayer("BuildingCompleteness", "building_area"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:

@@ -8,7 +8,8 @@ class Minimal(BaseReport):
             indicator_layer=(
                 IndicatorLayer("MappingSaturation", "building_count"),
                 IndicatorLayer("Currentness", "building_count"),
-            )
+            ),
+            feature=self.feature,
         )
 
     def combine_indicators(self) -> None:
