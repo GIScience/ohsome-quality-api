@@ -88,7 +88,7 @@ def get_report_feature_schema(number_of_indicators: int) -> Schema:
                         "description": str,
                     },
                     "result": {
-                        "class_": Or(int, float, None),
+                        "class_": Or(int, None),
                         "label": str,
                         "description": str,
                     },
