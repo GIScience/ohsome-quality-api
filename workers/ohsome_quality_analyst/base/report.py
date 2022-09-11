@@ -74,7 +74,7 @@ class BaseReport(metaclass=ABCMeta):
         properties = {
             "report": {
                 "metadata": asdict(self.metadata),
-                "result": asdict(self.result),
+                "result": result,
             },
             "indicators": [],
         }
