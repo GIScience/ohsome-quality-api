@@ -3,21 +3,15 @@ Currentness:
   name: Currentness
   description: |
     Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
-    time range.
+    time range. 
     Refers to data quality in respect to currentness.
   label_description:
     red: |
-      More than half of the $elements edited elements were last edited over 4 years ago.
-      Be aware that there it is very likely that many map features are outdated. 
-      You should carefully check this before using the data as it indicates bad 
-      data quality in respect to currentness.
+      It is likely that many features are outdated.
     yellow: |
-      More than half of the edited elements were last edited between 1 and 4 years ago.
-      This refers to medium data quality in respect to currentness.
+      It is likely that some features are up-to-date and some features are outdated.
     green: |
-      This is a rather high value and indicates that the map features 
-      are very unlike to be outdated. This refers to good data quality in 
-      respect to currentness.
+      It is likely that most features are up-to-date.
     undefined: |
       The quality level could not be calculated for this indicator. 
       This is most likely due to the fact that no features have been mapped 
@@ -25,4 +19,7 @@ Currentness:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: |
-      Over 50% of the $elements features ($layer_name) were edited $years.
+      In the last $threshold_green years $green % of the elements were edited the last time.
+      In the period from $threshold_yellow_start to $threshold_yellow_end years ago $yellow % of the elements were edited the last time.
+      The remaining $red % were last edited more than $threshold_red years ago.
+      The median currentness of the $elements features ($layer_name) is $median_years year(s).

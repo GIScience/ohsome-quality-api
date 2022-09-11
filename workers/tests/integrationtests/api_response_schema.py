@@ -22,7 +22,7 @@ def get_indicator_properties_template():
         "result": {
             "timestamp_oqt": str,
             "timestamp_osm": Or(str),
-            "value": Or(float, None),
+            "value": Or(float, str, int, None),
             "label": str,
             "description": str,
             Opt("svg"): str,
