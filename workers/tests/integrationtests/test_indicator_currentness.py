@@ -6,7 +6,11 @@ from datetime import datetime
 import geojson
 
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.indicators.currentness.indicator import Currentness
+from ohsome_quality_analyst.indicators.currentness.indicator import (
+    Currentness,
+    get_last_edited_year,
+    get_median_year,
+)
 
 from .utils import get_layer_fixture, oqt_vcr
 
@@ -54,6 +58,29 @@ class TestIndicatorCurrentness(unittest.TestCase):
         indicator.calculate()
         self.assertEqual(indicator.result.label, "undefined")
         self.assertEqual(indicator.result.value, None)
+
+    def test_get_last_edited_year(self):
+        given = {"2008": 3, "2009": 0, "2010": 5, "2011": 0}
+        expected = 2010
+        result = get_last_edited_year(given)
+        assert result == expected
+
+    def test_get_last_edited_year_unsorted(self):
+        given = {"2008": 3, "2010": 5, "2009": 0, "2011": 0}
+        expected = 2010
+        result = get_last_edited_year(given)
+        assert result == expected
+
+    def test_get_median_year(self):
+        given = {"2008": 0.2, "2009": 0, "2010": 0.6, "2011": 0.2}
+        expected = 2010
+        result = get_median_year(given)
+        assert result == expected
+
+        given = {"2008": 0.6, "2009": 0, "2010": 0.2, "2011": 0.2}
+        expected = 2008
+        result = get_median_year(given)
+        assert result == expected
 
 
 if __name__ == "__main__":

@@ -1,11 +1,17 @@
 # Changelog
 
-# Current Main
+
+## Current Main
 
 ## Breaking Changes
 
 - Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416])
 
+### New Features
+
+- Improve Currentness indicator ([#274])
+
+[#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
 
 
