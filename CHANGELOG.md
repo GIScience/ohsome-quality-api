@@ -6,6 +6,11 @@
 
 - Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416])
 
+## New Features
+
+- Reports now also have generalized result classes like the indicators ([#372])
+
+[#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
 
 
