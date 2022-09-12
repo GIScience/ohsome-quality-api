@@ -27,6 +27,10 @@ CREATE TABLE development.admin_world_water (
     LIKE public.admin_world_water INCLUDING INDEXES
 );
 
+CREATE TABLE development.mapaction_cesdrr_countries (
+    LIKE public.mapaction_cesdrr_countries INCLUDING INDEXES
+);
+
 INSERT INTO development.regions
 SELECT
     *
@@ -54,6 +58,12 @@ SELECT
     *
 FROM
     public.admin_world_water;
+
+INSERT INTO development.mapaction_cesdrr_countries
+SELECT
+    *
+FROM
+    public.mapaction_cesdrr_countries;
 
 
 /* Testing */
