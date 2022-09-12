@@ -97,7 +97,7 @@ INDICATOR_LAYER = (
     ("Currentness", "mapaction_rail_length"),
     ("Currentness", "mapaction_lakes_count"),
     ("Currentness", "mapaction_rivers_length"),
-    ("Currentness", "ideal_vgi_infrastructure"),
+    ("Currentness", "infrastructure_lines"),
     ("Currentness", "poi"),
     ("Currentness", "lulc"),
     ("PoiDensity", "poi"),

@@ -5,7 +5,7 @@ from ohsome_quality_analyst.definitions import get_attribution
 class MultilevelCurrentness(BaseReport):
     def set_indicator_layer(self):
         self.indicator_layer = (
-            IndicatorLayer("Currentness", "ideal_vgi_infrastructure"),
+            IndicatorLayer("Currentness", "infrastructure_lines"),
             IndicatorLayer("Currentness", "poi"),
             IndicatorLayer("Currentness", "lulc"),
             IndicatorLayer("Currentness", "building_count"),
