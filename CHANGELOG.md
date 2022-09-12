@@ -5,7 +5,7 @@
 
 ## Breaking Changes
 
-- Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416])
+- Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416] [#426])
 
 ### New Features
 
@@ -16,6 +16,7 @@
 [#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
+[#426]: https://github.com/GIScience/ohsome-quality-analyst/pull/426
 [#427]: https://github.com/GIScience/ohsome-quality-analyst/pull/427
 
 
