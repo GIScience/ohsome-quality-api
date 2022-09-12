@@ -10,8 +10,10 @@
 ### New Features
 
 - Improve Currentness indicator ([#274])
+- Add new report `MultilevelCurrentness` ([#403])
 
 [#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
+[#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
 
 
@@ -81,7 +83,6 @@
 [#396]: https://github.com/GIScience/ohsome-quality-analyst/pull/396
 [#397]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
 [#410]: https://github.com/GIScience/ohsome-quality-analyst/pull/410
-
 
 ## 0.10.1
 
