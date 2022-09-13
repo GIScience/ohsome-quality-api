@@ -1,9 +1,8 @@
 # Changelog
 
-
 ## Current Main
 
-## Breaking Changes
+### Breaking Changes
 
 - Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416] [#426])
 
@@ -12,6 +11,8 @@
 - Improve Currentness indicator ([#274])
 - Add new report `MultilevelCurrentness` ([#403])
 - Add MapAction priority countries to database ([#427])
+
+### Other Changes
 
 [#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
@@ -86,6 +87,7 @@
 [#396]: https://github.com/GIScience/ohsome-quality-analyst/pull/396
 [#397]: https://github.com/GIScience/ohsome-quality-analyst/pull/397
 [#410]: https://github.com/GIScience/ohsome-quality-analyst/pull/410
+
 
 ## 0.10.1
 
