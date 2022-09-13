@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Current Main
+## 0.12.0
 
 ### Breaking Changes
 
