@@ -11,13 +11,14 @@
 
 - Improve Currentness indicator ([#274])
 - Add new report `MultilevelCurrentness` ([#403])
-- Add MapAction priority countries to database ([#427])
+- Add MapAction priority countries to database ([#427] [#428])
 
 [#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
 [#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
 [#426]: https://github.com/GIScience/ohsome-quality-analyst/pull/426
 [#427]: https://github.com/GIScience/ohsome-quality-analyst/pull/427
+[#428]: https://github.com/GIScience/ohsome-quality-analyst/pull/428
 
 
 ## 0.11.0
