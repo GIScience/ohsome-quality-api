@@ -1,20 +1,31 @@
 # Changelog
 
-
 ## Current Main
+
+### New Features
+
+- Reports now also have generalized result classes like the indicators ([#372])
+
+[#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
+
+## 0.12.0
 
 ### Breaking Changes
 
-- Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416])
+- Rename layer `ideal_vgi_infrastructure` to `infrastructure_lines` ([#416] [#426])
 
 ### New Features
 
 - Improve Currentness indicator ([#274])
-- Reports now also have generalized result classes like the indicators ([#372])
+- Add new report `MultilevelCurrentness` ([#403])
+- Add MapAction priority countries to database ([#427] [#428])
 
 [#274]: https://github.com/GIScience/ohsome-quality-analyst/pull/274
-[#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
+[#403]: https://github.com/GIScience/ohsome-quality-analyst/pull/403
 [#416]: https://github.com/GIScience/ohsome-quality-analyst/pull/416
+[#426]: https://github.com/GIScience/ohsome-quality-analyst/pull/426
+[#427]: https://github.com/GIScience/ohsome-quality-analyst/pull/427
+[#428]: https://github.com/GIScience/ohsome-quality-analyst/pull/428
 
 
 ## 0.11.0

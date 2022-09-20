@@ -1,0 +1,16 @@
+---
+MultilevelCurrentness:
+  name: Multilevel Currentness
+  description: |
+    This report shows the currentness of four major map features (https://wiki.openstreetmap.org/wiki/Map_features):
+    buildings, land-use and land-cover, points of interest and infrastructure.
+  label_description:
+    red: |
+      The general currentness for major map features in this region is low indicating that most of the major map features have not been updated for many years.
+    yellow: |
+      The currentness of major map features in this region is mediocre. The results for each indicator should be reviewed
+      to determine the suitability of this region.
+    green: |
+      Most of the major map features were edited in recent years. This indicates a high currentness in this region.
+    undefined: |
+      The quality level could not be calculated.

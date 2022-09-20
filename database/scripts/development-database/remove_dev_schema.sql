@@ -20,6 +20,8 @@ DROP TABLE IF EXISTS test.hexcells;
 
 DROP TABLE IF EXISTS development.admin_world_water;
 
+DROP TABLE IF EXISTS development.mapaction_cesdrr_countries;
+
 DROP SCHEMA IF EXISTS development;
 
 DROP SCHEMA IF EXISTS test;
