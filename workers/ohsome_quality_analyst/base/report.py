@@ -72,7 +72,7 @@ class BaseReport(metaclass=ABCMeta):
         result = asdict(self.result)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         if result["class_"] is not None:
-            result["class_"] = int(self.result.class_)
+            result["class_"] = self.result.class_    
         properties = {
             "report": {
                 "metadata": asdict(self.metadata),
