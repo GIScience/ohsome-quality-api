@@ -23,7 +23,6 @@ from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_LAYER,
     get_layer_definition,
     get_valid_indicators,
     get_valid_layers,
@@ -367,7 +366,7 @@ async def create_all_indicators(
         indicator_layer = [(indicator_name, layer_key)]
     else:
         # TODO
-        indicator_layer = INDICATOR_LAYER
+        indicator_layer = "INDICATOR_LAYER"
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)

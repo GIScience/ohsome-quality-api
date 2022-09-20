@@ -6,7 +6,7 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Literal, Optional, Tuple
+from typing import Dict, List, Literal, Optional
 
 import yaml
 
@@ -220,14 +220,14 @@ def get_attribution(data_keys: list) -> str:
 
 
 # TODO
-def get_valid_layers(indcator_name: str) -> tuple:
-    """Get valid Indicator/Layer combination of an Indicator."""
-    return tuple(
-        [tup[1] for tup in INDICATOR_LAYER_THRESHOLDS if tup[0] == indcator_name]
-    )
+def get_valid_layers(indicator_name: str) -> tuple:
+    """Get valid Indicator/Layer combination of an indicator."""
+    indicator_layer = load_metadata("indicators")
+    return tuple([tup[1] for tup in indicator_layer if tup[0] == indicator_name])
 
 
 # TODO
 def get_valid_indicators(layer_key: str) -> tuple:
-    """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER_THRESHOLDS if tup[1] == layer_key])
+    """Get valid Indicator/Layer combination of a layer."""
+    indicator_layer = load_metadata("indicators")
+    return tuple([tup[0] for tup in indicator_layer if tup[1] == layer_key])
