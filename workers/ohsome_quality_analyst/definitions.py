@@ -220,14 +220,23 @@ def get_attribution(data_keys: list) -> str:
 
 
 # TODO
-def get_valid_layers(indicator_name: str) -> tuple:
+def get_valid_layers(indicator_name: str) -> list:
     """Get valid Indicator/Layer combination of an indicator."""
     indicator_layer = load_metadata("indicators")
-    return tuple([tup[1] for tup in indicator_layer if tup[0] == indicator_name])
+    valid_layers = []
+    for key, value in indicator_layer.items():
+        if key == indicator_name:
+            for comb in value["layer-thresholds"]:
+                valid_layers.append(comb["layer"])
+    return valid_layers
 
 
 # TODO
 def get_valid_indicators(layer_key: str) -> tuple:
     """Get valid Indicator/Layer combination of a layer."""
     indicator_layer = load_metadata("indicators")
-    return tuple([tup[0] for tup in indicator_layer if tup[1] == layer_key])
+    valid_indicators = []
+    for key, value in indicator_layer.items():
+        if any(comb["layer"] == layer_key for comb in value["layer-thresholds"]):
+            valid_indicators.append(key)
+    return valid_indicators
