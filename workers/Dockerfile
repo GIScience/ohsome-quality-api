@@ -7,7 +7,7 @@ FROM python:3.8
 # to reduce image size, clean up the apt cache by removing /var/lib/apt/lists.
 RUN apt-get update && \
     apt-get install -y r-base && \
-    apt-get install nodejs && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
