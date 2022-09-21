@@ -2,11 +2,12 @@
 FROM python:3.8
 
 # install R
+# install newer version of NodeJs which is required by SonarCloud
 # to avoid caching issues combine apt-get update and install in one RUN statement.
 # to reduce image size, clean up the apt cache by removing /var/lib/apt/lists.
 RUN apt-get update && \
     apt-get install -y r-base && \
-    apt-get install nodejs && \  # SonarCloud only supports newer NodeJS version
+    apt-get install nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
