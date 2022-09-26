@@ -36,14 +36,14 @@ class BaseIndicator(BaseModel):
     name: IndicatorEnum = pydantic.Field(
         ..., title="Indicator Name", example="GhsPopComparisonBuildings"
     )
-    threshholds: Optional[
+    thresholds: Optional[
         Tuple[
             Union[float, str],
             Union[str, float],
             Union[str, float],
             Union[str, float],
         ]
-    ] = None
+    ]
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
@@ -59,9 +59,9 @@ class BaseIndicator(BaseModel):
     @pydantic.root_validator
     @classmethod
     def validate_thresholds(cls, values):
-        if values["threshholds"] is not None and values["name"] != "Currentness":
+        if values["thresholds"] is not None and values["name"] != "Currentness":
             raise ValueError(
-                "Setting custom threshholds is only supported for the Currentness "
+                "Setting custom thresholds is only supported for the Currentness "
                 + "Indicator.",
             )
         else:

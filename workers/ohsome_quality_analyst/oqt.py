@@ -167,7 +167,9 @@ async def _(
         feature_id = parameters.feature_id
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator_raw = indicator_class(layer=layer, feature=feature)
+    indicator_raw = indicator_class(
+        layer=layer, feature=feature, thresholds=parameters.thresholds
+    )
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
@@ -182,7 +184,7 @@ async def _(
             IndicatorBpolys(
                 name=name,
                 layerKey=parameters.layer_key.value,
-                threshholds=parameters.threshholds,
+                thresholds=parameters.thresholds,
                 bpolys=feature,
             )
         )
@@ -200,7 +202,7 @@ async def _(
     name = parameters.name.value
     layer: Layer = get_layer_definition(parameters.layer_key.value)
     feature = parameters.bpolys
-    threshholds = parameters.threshholds
+    thresholds = parameters.thresholds
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
@@ -208,7 +210,7 @@ async def _(
     logging.info("Layer name:     {0:4}".format(layer.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature, threshholds)
+    indicator = indicator_class(layer, feature, thresholds)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()

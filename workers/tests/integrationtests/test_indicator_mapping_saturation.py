@@ -19,7 +19,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test(self):
         # Heidelberg
-        indicator = MappingSaturation(layer=self.layer, feature=self.feature)
+        indicator = MappingSaturation(
+            layer=self.layer, feature=self.feature, thresholds=None
+        )
         self.assertIsNotNone(indicator.attribution())
 
         asyncio.run(indicator.preprocess())
@@ -91,6 +93,7 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
             indicator = MappingSaturation(
                 layer=get_layer_fixture("building_count"),
                 feature=feature,
+                thresholds=None,
             )
             asyncio.run(indicator.preprocess())
             indicator.calculate()

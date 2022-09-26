@@ -1,6 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
+from typing import Optional, Tuple
 
 import dateutil.parser
 import geojson
@@ -33,6 +34,7 @@ class Currentness(BaseIndicator):
         self,
         layer: Layer,
         feature: geojson.Feature,
+        thresholds: Optional[Tuple[float, float, float, float]],
     ) -> None:
         super().__init__(layer=layer, feature=feature)
         self.threshold_4 = 1
