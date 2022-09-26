@@ -72,7 +72,7 @@ class BaseReport(metaclass=ABCMeta):
         result = asdict(self.result)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         if result["class_"] is not None:
-            result["class_"] = self.result.class_    
+            result["class_"] = self.result.class_
         properties = {
             "report": {
                 "metadata": asdict(self.metadata),
@@ -113,9 +113,15 @@ class BaseReport(metaclass=ABCMeta):
                 self.result.description = self.metadata.label_description["red"]
                 return
 
-        self.result.class_ = round(np.mean(
-            [i.result.class_ for i in self.indicators if i.result.class_ is not None]
-        ))
+        self.result.class_ = round(
+            np.mean(
+                [
+                    i.result.class_
+                    for i in self.indicators
+                    if i.result.class_ is not None
+                ]
+            )
+        )
 
         if self.result.class_ in (4, 5):
             self.result.description = self.metadata.label_description["green"]
