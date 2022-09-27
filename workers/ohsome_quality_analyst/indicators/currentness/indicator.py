@@ -35,8 +35,8 @@ class Currentness(BaseIndicator):
         feature: geojson.Feature,
     ) -> None:
         super().__init__(layer=layer, feature=feature)
-        self.threshold_4 = 1
-        self.threshold_3 = 2
+        self.threshold_4 = 2
+        self.threshold_3 = 3
         self.threshold_2 = 4
         self.threshold_1 = 8
         self.element_count = None
@@ -135,17 +135,27 @@ class Currentness(BaseIndicator):
             threshold_yellow_end=self.threshold_1 - 1,
             threshold_red=self.threshold_1,
         )
-        if self.result.value > self.threshold_1:
+        if self.result.value >= self.threshold_1:
             self.result.class_ = 1
             self.result.description = (
                 self.result.description + self.metadata.label_description["red"]
             )
-        elif self.threshold_1 >= self.result.value > self.threshold_3:
+        elif self.threshold_1 > self.result.value >= self.threshold_2:
             self.result.class_ = 2
             self.result.description = (
                 self.result.description + self.metadata.label_description["yellow"]
             )
-        elif self.threshold_3 >= self.result.value:
+        elif self.threshold_2 > self.result.value >= self.threshold_3:
+            self.result.class_ = 3
+            self.result.description = (
+                self.result.description + self.metadata.label_description["yellow"]
+            )
+        elif self.threshold_3 > self.result.value >= self.threshold_4:
+            self.result.class_ = 4
+            self.result.description = (
+                self.result.description + self.metadata.label_description["green"]
+            )
+        elif self.threshold_4 > self.result.value:
             self.result.class_ = 5
             self.result.description = (
                 self.result.description + self.metadata.label_description["green"]
@@ -195,7 +205,7 @@ class Currentness(BaseIndicator):
                     "!",
                     fontdict={"fontsize": 26},
                 )
-            if year_range >= self.threshold_1:
+            if year_range > self.threshold_1:
                 patch.set_facecolor("red")
                 year_range -= 1
             elif year_range >= self.threshold_2:

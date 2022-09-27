@@ -1,5 +1,13 @@
 # Changelog
 
+## Current Main
+
+### Bug Fixes
+
+- Fix patch colorization of Currentness indicator plot ([#432])
+
+[#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
+
 
 ## 0.12.0
 
