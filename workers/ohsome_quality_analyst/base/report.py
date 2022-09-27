@@ -51,6 +51,8 @@ class BaseReport(metaclass=ABCMeta):
         self,
         feature: Feature,
         indicator_layer: Tuple[IndicatorLayer] = None,
+        blocking_red: bool = False,
+        blocking_undefined: bool = False,
     ):
         self.feature = feature
         self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
@@ -58,8 +60,8 @@ class BaseReport(metaclass=ABCMeta):
         self.indicators: List[BaseIndicator] = []
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-        self.blocking_undefined = False
-        self.blocking_red = False
+        self.blocking_undefined = blocking_undefined
+        self.blocking_red = blocking_red
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 
@@ -104,6 +106,7 @@ class BaseReport(metaclass=ABCMeta):
 
         if self.blocking_undefined:
             if any(i.result.class_ is None for i in self.indicators):
+                self.result.class_ = None
                 self.result.description = self.metadata.label_description["undefined"]
                 return
 

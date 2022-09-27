@@ -34,6 +34,8 @@ class JrcRequirements(BaseReport):
                 IndicatorLayer("TagsRatio", "jrc_mass_gathering_sites_count"),
             ),
             feature=self.feature,
+            blocking_red=self.blocking_red,
+            blocking_undefined=self.blocking_undefined,
         )
 
     def combine_indicators(self) -> None:

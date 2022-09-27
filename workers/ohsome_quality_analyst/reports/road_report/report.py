@@ -11,6 +11,8 @@ class RoadReport(BaseReport):
                 IndicatorLayer("TagsRatio", "major_roads_length"),
             ),
             feature=self.feature,
+            blocking_red=self.blocking_red,
+            blocking_undefined=self.blocking_undefined,
         )
 
     def combine_indicators(self) -> None:

@@ -11,6 +11,8 @@ class SketchmapFitness(BaseReport):
                 IndicatorLayer("PoiDensity", "poi"),
             ),
             feature=self.feature,
+            blocking_red=self.blocking_red,
+            blocking_undefined=self.blocking_undefined,
         )
 
     def combine_indicators(self) -> None:
