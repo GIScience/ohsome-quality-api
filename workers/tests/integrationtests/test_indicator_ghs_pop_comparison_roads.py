@@ -19,6 +19,7 @@ class TestIndicatorGhsPopComparisonRoads(unittest.TestCase):
         self.indicator = GhsPopComparisonRoads(
             feature=feature,
             layer=get_layer_fixture("major_roads_length"),
+            thresholds=None,
         )
 
     @oqt_vcr.use_cassette()

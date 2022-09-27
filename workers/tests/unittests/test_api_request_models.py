@@ -202,6 +202,7 @@ class TestApiRequestModels(unittest.TestCase):
                 "layerKey": "minimal",
                 "dataset": "regions",
                 "featureId": "3",
+                "thresholds": None,
             },
             {
                 "name": "Minimal",
@@ -209,11 +210,13 @@ class TestApiRequestModels(unittest.TestCase):
                 "dataset": "regions",
                 "featureId": "3",
                 "fidField": "ogc_fid",
+                "thresholds": None,
             },
             {
                 "name": "Minimal",
                 "layerKey": "minimal",
                 "bpolys": self.bpolys,
+                "thresholds": None,
             },
         )
         for combination in all_combinations:

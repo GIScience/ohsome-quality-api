@@ -26,6 +26,7 @@ class TestIndicatorCurrentness(unittest.TestCase):
         indicator = Currentness(
             feature=feature,
             layer=get_layer_fixture("major_roads_count"),
+            thresholds=None,
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -51,7 +52,9 @@ class TestIndicatorCurrentness(unittest.TestCase):
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = Currentness(feature=feature, layer=get_layer_fixture("amenities"))
+        indicator = Currentness(
+            feature=feature, layer=get_layer_fixture("amenities"), thresholds=None
+        )
         asyncio.run(indicator.preprocess())
         self.assertEqual(indicator.element_count, 0)
 

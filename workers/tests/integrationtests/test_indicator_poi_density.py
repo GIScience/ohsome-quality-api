@@ -19,7 +19,9 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        self.indicator = PoiDensity(feature=feature, layer=get_layer_fixture("poi"))
+        self.indicator = PoiDensity(
+            feature=feature, layer=get_layer_fixture("poi"), thresholds=None
+        )
 
     @oqt_vcr.use_cassette()
     def test(self):

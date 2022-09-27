@@ -235,6 +235,7 @@ class TestOqt(unittest.TestCase):
                     ]
                 },
             },
+            thresholds=None,
         )
         asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
 

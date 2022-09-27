@@ -85,7 +85,6 @@ class BaseIndicator(metaclass=ABCMeta):
         metadata = get_metadata("indicators", type(self).__name__)
         layer_thresholds = metadata.pop("layer-thresholds")
         if thresholds is None:
-            # TODO: filter layer_thresholds
             for comb in layer_thresholds:
                 if comb["layer"] == layer.key:
                     self.thresholds = comb["thresholds"]
