@@ -19,7 +19,7 @@ building_area:
   filter: building=* and geometry:polygon
 
 major_roads_count:
-  name: Major Roads
+  name: Major Roads Count
   description: |
     The road network defined by all objects which hold the principal tags for
     the road network as defined in the OSM Wiki`:`
@@ -35,7 +35,7 @@ major_roads_count:
     unclassified, residential) and type:way and name=* and name!=""
 
 major_roads_length:
-  name: Major Roads
+  name: Major Roads Length
   description: |
     The road network defined by all objects which hold the principal tags for
     the road network and their link roads as defined in the OSM Wiki`:`
