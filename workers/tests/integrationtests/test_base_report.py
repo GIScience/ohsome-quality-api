@@ -21,8 +21,7 @@ class TestBaseReport:
 
     def test_as_feature(self, feature, layer):
         indicator = MinimalIndicator(feature=feature, layer=layer)
-        report = MinimalReport(feature=feature, indicator_layer=indicator)
-        report.set_indicator_layer()
+        report = MinimalReport(feature=feature)
         for _ in report.indicator_layer:
             report.indicators.append(indicator)
 
@@ -35,7 +34,6 @@ class TestBaseReport:
 
     def test_blocking_red(self, feature, layer):
         report = MinimalReport(feature, blocking_red=True)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for i, _ in enumerate(report.indicator_layer):
@@ -57,7 +55,6 @@ class TestBaseReport:
 
     def test_blocking_undefined(self, feature, layer):
         report = MinimalReport(feature, blocking_undefined=True)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for i, _ in enumerate(report.indicator_layer):
@@ -79,7 +76,6 @@ class TestBaseReport:
 
     def test_no_blocking(self, feature, layer):
         report = MinimalReport(feature)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for i, _ in enumerate(report.indicator_layer):

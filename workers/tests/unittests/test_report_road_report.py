@@ -12,7 +12,6 @@ class TestReportRoadReport(unittest.TestCase):
 
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         report = RoadReport(geometry)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_layer:

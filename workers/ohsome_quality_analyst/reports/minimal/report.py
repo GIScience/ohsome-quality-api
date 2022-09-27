@@ -1,17 +1,24 @@
+from geojson import Feature
+
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 from ohsome_quality_analyst.definitions import get_attribution
 
 
 class Minimal(BaseReport):
-    def set_indicator_layer(self):
+    def __init__(
+        self,
+        feature: Feature,
+        blocking_red: bool = None,
+        blocking_undefined: bool = None,
+    ):
         super().__init__(
             indicator_layer=(
                 IndicatorLayer("MappingSaturation", "building_count"),
                 IndicatorLayer("Currentness", "building_count"),
             ),
-            feature=self.feature,
-            blocking_red=self.blocking_red,
-            blocking_undefined=self.blocking_undefined,
+            feature=feature,
+            blocking_red=blocking_red,
+            blocking_undefined=blocking_undefined,
         )
 
     def combine_indicators(self) -> None:

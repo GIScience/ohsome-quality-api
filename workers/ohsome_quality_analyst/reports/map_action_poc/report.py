@@ -1,8 +1,15 @@
+from geojson import Feature
+
 from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 
 
 class MapActionPoc(BaseReport):
-    def set_indicator_layer(self) -> None:
+    def __init__(
+        self,
+        feature: Feature,
+        blocking_red: bool = None,
+        blocking_undefined: bool = None,
+    ):
         super().__init__(
             indicator_layer=(
                 IndicatorLayer("MappingSaturation", "mapaction_settlements_count"),
@@ -16,9 +23,9 @@ class MapActionPoc(BaseReport):
                 IndicatorLayer("Currentness", "mapaction_lakes_count"),
                 IndicatorLayer("Currentness", "mapaction_rivers_length"),
             ),
-            feature=self.feature,
-            blocking_red=self.blocking_red,
-            blocking_undefined=self.blocking_undefined,
+            feature=feature,
+            blocking_red=blocking_red,
+            blocking_undefined=blocking_undefined,
         )
 
     def combine_indicators(self) -> None:

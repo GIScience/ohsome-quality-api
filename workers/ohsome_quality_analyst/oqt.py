@@ -285,7 +285,6 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     report_class = name_to_class(class_type="report", name=name)
     report = report_class(feature=feature)
-    report.set_indicator_layer()
 
     tasks: List[Coroutine] = []
     for indicator_name, layer_key in report.indicator_layer:
@@ -325,7 +324,6 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
 
     report_class = name_to_class(class_type="report", name=name)
     report = report_class(feature=feature)
-    report.set_indicator_layer()
 
     tasks: List[Coroutine] = []
     for indicator_name, layer_key in report.indicator_layer:

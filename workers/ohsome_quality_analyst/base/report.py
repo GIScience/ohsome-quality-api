@@ -55,11 +55,11 @@ class BaseReport(metaclass=ABCMeta):
         blocking_undefined: bool = False,
     ):
         self.feature = feature
-        self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
 
         self.indicators: List[BaseIndicator] = []
         metadata = get_metadata("reports", type(self).__name__)
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
         self.blocking_undefined = blocking_undefined
         self.blocking_red = blocking_red
         # Results will be written during the lifecycle of the report object (combine())
@@ -134,11 +134,6 @@ class BaseReport(metaclass=ABCMeta):
             self.result.description = self.metadata.label_description["red"]
         else:
             self.result.description = self.metadata.label_description["undefined"]
-
-    @abstractmethod
-    def set_indicator_layer(self) -> None:
-        """Set the attribute indicator_layer."""
-        pass
 
     @classmethod
     def attribution(cls) -> str:

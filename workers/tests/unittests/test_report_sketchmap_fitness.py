@@ -10,7 +10,6 @@ class TestReportSketchmapFitness(unittest.TestCase):
     def test_combine_indicators_mean(self):
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         report = SketchmapFitness(geometry)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_layer:
