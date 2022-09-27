@@ -2,9 +2,13 @@
 
 ## Current Main
 
+### Bug Fixes
+
+- Reports take result class of indicators into account ([#372] [#369])
+
 ### New Features
 
-- Reports now also have generalized result classes like the indicators ([#372])
+- Substitute result values of reports by introducing a result class value ([#372])
 
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 
