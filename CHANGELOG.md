@@ -4,6 +4,7 @@
 
 ### Bug Fixes
 
+- Fix patch colorization of Currentness indicator plot ([#432])
 - Reports take result class of indicators into account ([#372] [#369])
 
 ### New Features
@@ -11,6 +12,8 @@
 - Substitute result values of reports by introducing a result class value ([#372])
 
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
+[#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
+
 
 ## 0.12.0
 
