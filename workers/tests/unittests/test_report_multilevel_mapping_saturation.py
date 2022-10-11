@@ -14,13 +14,12 @@ class TestReportMultilevelMappingSaturation(unittest.TestCase):
 
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         report = MultilevelMappingSaturation(geometry)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_layer:
             indicator = Mock()
             indicator.result = Mock()
-            indicator.result.value = 0.5
+            indicator.result.class_ = 1
             indicator.result.html = "foo"
             report.indicators.append(indicator)
 
@@ -30,7 +29,7 @@ class TestReportMultilevelMappingSaturation(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
         self.assertIsNotNone(report.result.html)
-        self.assertEqual(report.result.value, 0.5)
+        self.assertEqual(report.result.class_, 1)
 
 
 if __name__ == "__main__":
