@@ -50,7 +50,11 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_as_feature(self):
-        indicator = MappingSaturation(layer=self.layer, feature=self.feature)
+        indicator = MappingSaturation(
+            layer=self.layer,
+            feature=self.feature,
+            thresholds=None,
+        )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
 
