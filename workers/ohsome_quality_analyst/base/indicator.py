@@ -90,8 +90,6 @@ class BaseIndicator(metaclass=ABCMeta):
                     self.thresholds = comb["thresholds"]
         else:
             self.thresholds = thresholds
-        # default threshold for self-defined layer
-
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],

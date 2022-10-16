@@ -239,7 +239,7 @@ async def _(
     logging.info("Layer name:     {0:4}".format(layer.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature)
+    indicator = indicator_class(layer, feature, thresholds=None)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()

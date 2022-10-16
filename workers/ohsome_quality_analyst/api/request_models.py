@@ -150,8 +150,11 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
     @pydantic.root_validator
     @classmethod
     def validate_indicator_layer(cls, values):
-        indicator_key = values["name"].value
-        layer_key = values["layer_key"].value
+        try:
+            indicator_key = values["name"].value
+            layer_key = values["layer_key"].value
+        except KeyError:
+            raise ValueError("An issue with the layer or indicator name occurred.")
         if layer_key not in get_valid_layers(indicator_key):
             raise ValueError(
                 "Layer ({0}) is not available for indicator ({1})".format(
@@ -166,8 +169,11 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
     @pydantic.root_validator
     @classmethod
     def validate_indicator_layer(cls, values):
-        indicator_key = values["name"].value
-        layer_key = values["layer_key"].value
+        try:
+            indicator_key = values["name"].value
+            layer_key = values["layer_key"].value
+        except KeyError:
+            raise ValueError("An issue with the layer or indicator name occurred.")
         if layer_key not in get_valid_layers(indicator_key):
             raise ValueError(
                 "Layer ({0}) is not available for indicator ({1})".format(
