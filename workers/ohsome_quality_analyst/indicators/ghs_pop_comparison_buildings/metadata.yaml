@@ -25,4 +25,5 @@ GhsPopComparisonBuildings:
     $pop_count_per_sqkm of people per sqkm.
     $feature_count_per_sqkm buildings per sqkm mapped.
   layer-thresholds:
-    - { layer: building_count, thresholds: [{ a:0.75 }, null, { a: 5.0 }, null] }
+    default: [{ a: 0.75 }, null, { a: 5.0 }, null]
+    building_count: null

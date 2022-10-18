@@ -21,9 +21,10 @@ Currentness:
   result_description: |
       Over 50% of the $elements features ($layer_name) were edited $years.
   layer-thresholds:
-    - { layer: amenities, thresholds: [ 0.2, null, 0.6, null] }
-    - { layer: building_count, thresholds: [ 0.2, null, 0.6, null] }
-    - { layer: major_roads_count, thresholds: [ 0.2, null, 0.6, null] }
-    - { layer: infrastructure_lines, thresholds: [ 0.2, null, 0.6, null] }
-    - { layer: poi, thresholds: [ 0.2, null, 0.6, null] }
-    - { layer: lulc, thresholds: [ 0.2, null, 0.6, null] }
+    default: [ 0.2, null, 0.6, null]
+    amenities: null
+    building_count: null
+    major_roads_count: null
+    infrastructure_lines: null
+    poi: null
+    lulc: null
