@@ -331,3 +331,45 @@ minimal:
   description: A minimal layer definition for testing purposes
   endpoint: elements/count
   filter: building=* and geometry:polygon
+
+school_count:
+  name: School Count
+  description: Count of schools.
+  endpoint: elements/count
+  filter: amenity=school
+
+  kindergarten_count:
+    name: Kindergarten Count
+    description: Count of kindergartens.
+    endpoint: elements/count
+    filter: amenity=kindergarten
+
+  clinic_count:
+    name: Clinic Count
+    description: Count of clinics.
+    endpoint: elements/count
+    filter: amenity=clinic or healthcare=clinic
+
+  doctors_count:
+    name: Doctors Count
+    description: Count of doctors.
+    endpoint: elements/count
+    filter: amenity=doctors or healthcare=doctors
+
+  bus_stop_count:
+    name: Bus Stop Count
+    description: Count of bus stops.
+    endpoint: elements/count
+    filter: highway=bus_stop
+
+  tram_stop_count:
+    name: Tram Stop Count
+    description: Count of schools.
+    endpoint: elements/count
+    filter: railway=tram_stop
+
+  subway_station_count:
+    name: Subway Station Count
+    description: Count of subway stops.
+    endpoint: elements/count
+    filter: station=subway
