@@ -74,30 +74,34 @@ def test_indicator(mock_env_oqt_data_dir, feature, layer):
     indicator.create_figure()
     assert indicator.result.svg is not None
 
-    def test_get_smod_class_share(mock_env_oqt_data_dir, feature):
-        result = get_smod_class_share(FeatureCollection(features=[feature]))
-        assert result == {
-            "urban_centre": [0.05128205128205128],
-            "dense_urban_cluster": [0],
-            "semi_dense_urban_cluster": [0],
-            "suburban_or_peri_urban": [0.029914529914529916],
-            "rural_cluster": [0],
-            "low_density_rural": [0.017094017094017096],
-            "very_low_density_rural": [0.9017094017094017],
-            "water": [0],
-        }
 
-    def test_get_hex_cells(feature):
-        result = asyncio.run(get_hex_cells(feature))
-        assert isinstance(result, FeatureCollection)
-        assert result.features is not None
+def test_get_smod_class_share(mock_env_oqt_data_dir, feature):
+    result = get_smod_class_share(FeatureCollection(features=[feature]))
+    assert result == {
+        "urban_centre": [0.05128205128205128],
+        "dense_urban_cluster": [0],
+        "semi_dense_urban_cluster": [0],
+        "suburban_or_peri_urban": [0.029914529914529916],
+        "rural_cluster": [0],
+        "low_density_rural": [0.017094017094017096],
+        "very_low_density_rural": [0.9017094017094017],
+        "water": [0],
+    }
 
-    def test_get_hex_cells_not_found(feature):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        with pytest.raises(HexCellsNotFoundError):
-            asyncio.run(get_hex_cells(feature))
 
-    def test_get_shdi(feature):
-        result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
-        assert isinstance(result, list)
-        assert len(result) == 1
+def test_get_hex_cells(feature):
+    result = asyncio.run(get_hex_cells(feature))
+    assert isinstance(result, FeatureCollection)
+    assert result.features is not None
+
+
+def test_get_hex_cells_not_found(feature):
+    feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+    with pytest.raises(HexCellsNotFoundError):
+        asyncio.run(get_hex_cells(feature))
+
+
+def test_get_shdi(feature):
+    result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
+    assert isinstance(result, list)
+    assert len(result) == 1
