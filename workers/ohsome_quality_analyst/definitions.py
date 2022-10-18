@@ -219,7 +219,6 @@ def get_attribution(data_keys: list) -> str:
     return "; ".join([str(v) for v in filtered.values()])
 
 
-# TODO
 def get_valid_layers(indicator_name: str) -> list:
     """Get valid Indicator/Layer combination of an indicator."""
     indicator_layer = load_metadata("indicators")
@@ -228,11 +227,10 @@ def get_valid_layers(indicator_name: str) -> list:
         if key == indicator_name:
             for comb in value["layer-thresholds"]:
                 valid_layers.append(comb["layer"])
-    return valid_layers
+    return [l for l in valid_layers if l is not None]  # noqa: E741
 
 
-# TODO
-def get_valid_indicators(layer_key: str) -> tuple:
+def get_valid_indicators(layer_key: str) -> list:
     """Get valid Indicator/Layer combination of a layer."""
     indicator_layer = load_metadata("indicators")
     valid_indicators = []
