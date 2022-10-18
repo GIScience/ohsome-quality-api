@@ -1,6 +1,5 @@
 import asyncio
 import os
-import unittest
 from datetime import datetime
 
 import pytest
@@ -102,7 +101,3 @@ def test_indicator(mock_env_oqt_data_dir, feature, layer):
         result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
         assert isinstance(result, list)
         assert len(result) == 1
-
-
-if __name__ == "__main__":
-    unittest.main()
