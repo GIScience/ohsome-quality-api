@@ -11,6 +11,7 @@ import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_analyst.utils.helper import get_project_root
 
 
 def get_config_path() -> str:
@@ -18,19 +19,8 @@ def get_config_path() -> str:
 
     Read value of the environment variable 'OQT_CONFIG' or use default 'config.yaml'
     """
-    return os.getenv(
-        "OQT_CONFIG",
-        default=os.path.abspath(
-            os.path.join(
-                os.path.dirname(
-                    os.path.abspath(__file__),
-                ),
-                "..",
-                "config",
-                "config.yaml",
-            ),
-        ),
-    )
+    default = str(get_project_root() / "config" / "config.yaml")
+    return os.getenv("OQT_CONFIG", default=default)
 
 
 def load_config_default() -> dict:
@@ -102,19 +92,7 @@ def get_config_value(key: str) -> Union[str, int, dict]:
 
 
 def get_default_data_dir() -> str:
-    """Get the default OQT data directory path.
-
-    Default data directory is a directory named 'data' at the root of the repository.
-    """
-    return os.path.abspath(
-        os.path.join(
-            os.path.dirname(
-                os.path.abspath(__file__),
-            ),
-            "..",
-            "data",
-        )
-    )
+    return str(get_project_root() / "data")
 
 
 def load_logging_config():
