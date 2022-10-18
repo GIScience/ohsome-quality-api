@@ -55,7 +55,7 @@ def test_indicator(feature, layer, mock_env_oqt_data_dir):
     # Calculate
     indicator.calculate()
     assert isinstance(indicator.building_area_prediction, list)
-    assert len(indicator.building_area_prediction) >= 0
+    assert len(indicator.building_area_prediction) > 0
     assert isinstance(indicator.result.timestamp_osm, datetime)
     assert isinstance(indicator.result.timestamp_oqt, datetime)
     assert indicator.result.label is not None
