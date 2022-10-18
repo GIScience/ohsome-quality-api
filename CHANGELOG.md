@@ -50,14 +50,12 @@
 
 ### Breaking Changes
 
-- Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
 - Make inclusion of indicator data in response optional ([#370])
 - Per default properties of the GeoJSON response are not flat ([#375])
 - Remove project specific reports `JrcRequirements`, `SketchmapFitness`, and `MapActionPoc` from the website ([#382])
 - Rename API query parameter `layerName` to `layerKey` and API endpoint `listLayerNames` to `listLayerKeys` ([#376])
 - Rename endpoints for listing of indicator, report, layer, dataset and fid-field names ([#397])
 - Rename environment variable `OHSOME_API` to `OQT_OHSOME_API` ([#255])
-- Change default data directory to be in workers directory ([#312])
 
 ### Bug Fixes
 
