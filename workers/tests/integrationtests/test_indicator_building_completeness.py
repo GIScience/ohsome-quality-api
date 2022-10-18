@@ -1,5 +1,4 @@
 import asyncio
-import os
 from datetime import datetime
 
 import pytest
@@ -13,13 +12,7 @@ from ohsome_quality_analyst.indicators.building_completeness.indicator import (
 )
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 
-from .utils import get_fixture_dir, get_geojson_fixture, get_layer_fixture, oqt_vcr
-
-
-@pytest.fixture
-def mock_env_oqt_data_dir(monkeypatch):
-    directory = os.path.join(get_fixture_dir(), "rasters")
-    monkeypatch.setenv("OQT_DATA_DIR", directory)
+from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
 
 
 @pytest.fixture
@@ -33,7 +26,7 @@ def layer():
 
 
 @oqt_vcr.use_cassette()
-def test_indicator(mock_env_oqt_data_dir, feature, layer):
+def test_indicator(feature, layer, mock_env_oqt_data_dir):
     indicator = BuildingCompleteness(feature=feature, layer=layer)
 
     asyncio.run(indicator.preprocess())
