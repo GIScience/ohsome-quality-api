@@ -1,20 +1,11 @@
 import asyncio
-import os
 from datetime import datetime
-
-import pytest
 
 from ohsome_quality_analyst.indicators.ghs_pop_comparison_roads.indicator import (
     GhsPopComparisonRoads,
 )
 
-from .utils import get_fixture_dir, get_geojson_fixture, get_layer_fixture, oqt_vcr
-
-
-@pytest.fixture
-def mock_env_oqt_data_dir(monkeypatch):
-    directory = os.path.join(get_fixture_dir(), "rasters")
-    monkeypatch.setenv("OQT_DATA_DIR", directory)
+from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
 
 
 @oqt_vcr.use_cassette()

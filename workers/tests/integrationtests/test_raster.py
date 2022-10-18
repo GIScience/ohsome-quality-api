@@ -1,17 +1,7 @@
-import os
-
-import pytest
-
 import ohsome_quality_analyst.raster.client as raster_client
 from ohsome_quality_analyst.definitions import get_raster_dataset
 
-from .utils import get_fixture_dir, get_geojson_fixture
-
-
-@pytest.fixture
-def mock_env_oqt_data_dir(monkeypatch):
-    directory = os.path.join(get_fixture_dir(), "rasters")
-    monkeypatch.setenv("OQT_DATA_DIR", directory)
+from .utils import get_geojson_fixture
 
 
 def test_get_raster_path(mock_env_oqt_data_dir):
