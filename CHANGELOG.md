@@ -6,11 +6,14 @@
 
 - Fix patch colorization of Currentness indicator plot ([#432])
 - Rename duplicated layer name `Major Roads` to `Major Roads Count` and `Major Roads Length`. Results are stored in database using the layer name as part of the primary key. ([#438])
+- Reports take result class of indicators into account ([#372] [#369])
 
 ## New features
 
+- Substitute result values of reports by introducing a result class value ([#372])
 - add new layers `fire_station_count` and `hospitals_count` ([#442])
 
+[#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
 [#438]: https://github.com/GIScience/ohsome-quality-analyst/pull/438
 [#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442

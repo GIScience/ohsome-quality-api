@@ -268,7 +268,7 @@ bpolys = {
     ],
 }
 parameters = {
-    "name": "MinimalTestReport",
+    "name": "Minimal",
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
@@ -282,7 +282,7 @@ response = requests.post(url, json=parameters)
 
 ```json
 {
-  "apiVersion": "0.10.0",
+  "apiVersion": "0.11.0",
   "attribution": {
     "url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
     "text": "© OpenStreetMap contributors"
@@ -293,29 +293,56 @@ response = requests.post(url, json=parameters)
     "coordinates": [ ... ]
   },
   "properties": {
-    "report.metadata.name": "Minimal",
-    "report.metadata.description": "This report shows the quality for two indicators:\nMapping Saturation and Currentness.\nIt's main function is to test the interactions between\ndatabase, api and website.\n",
-    "report.result.label": "green",
-    "report.result.value": 0.8902104187552007,
-    "report.result.description": "All indicators show a good quality.\nThe data in this regions seems to be completely mapped.\n",
-    "indicators.0.metadata.name": "Mapping Saturation",
-    "indicators.0.metadata.description": "Mapping Saturation",
-    "indicators.0.layer.name": "Building Count",
-    "indicators.0.layer.description": "All buildings as defined by all objects tagged with 'building=*'.\n",
-    "indicators.0.result.timestamp_oqt": "2022-07-10T15:18:05.208875+00:00",
-    "indicators.0.result.timestamp_osm": "2022-03-01T00:00:00+00:00",
-    "indicators.0.result.label": "green",
-    "indicators.0.result.value": 0.9804208375104013,
-    "indicators.0.result.description": "The saturation of the last 3 years is 98.04%.\nHigh saturation has been reached (97% < Saturation ≤ 100%).\n",
-    "indicators.1.metadata.name": "Currentness",
-    "indicators.1.metadata.description": "Currentness",
-    "indicators.1.layer.name": "Building Count",
-    "indicators.1.layer.description": "All buildings as defined by all objects tagged with 'building=*'.\n",
-    "indicators.1.result.timestamp_oqt": "2022-07-10T15:33:36.449060+00:00",
-    "indicators.1.result.timestamp_osm": "2022-07-03T20:00:00+00:00",
-    "indicators.1.result.label": "green",
-    "indicators.1.result.value": 0.8,
-    "indicators.1.result.description": "Over 50% of the 40811.0 features (Building Count) were edited in the last 4 years.\nThis is a rather high value and indicates that the map features \nare very unlike to be outdated. This refers to good data quality in \nrespect to currentness.\n"
+    "report": {
+      "metadata": {
+        "name": "Minimal",
+        "description": "This report shows the quality for two indicators:\nMapping Saturation and Currentness.\nIt's main function is to test the interactions between\ndatabase, api and website.\n"
+      },
+      "result": {
+        "class_": 5,
+        "description": "All indicators show a good quality.\nThe data in this regions seems to be completely mapped.\n"
+      }
+    },
+    "indicators": [
+      {
+        "metadata": {
+          "name": "Mapping Saturation",
+          "description": "Calculate if mapping has saturated.\nHigh saturation has been reached if the growth of the fitted curve is minimal.\n"
+        },
+        "layer": {
+          "key": "building_count",
+          "name": "Building Count",
+          "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
+        },
+        "result": {
+          "description": "The saturation of the last 3 years is 98.4%.\nHigh saturation has been reached (97% < Saturation ≤ 100%).\n",
+          "timestamp_oqt": "2022-09-07T20:00:24.897112+00:00",
+          "timestamp_osm": "2022-08-01T00:00:00+00:00",
+          "value": 0.9839766580301241,
+          "label": "green",
+          "class": 5
+        }
+      },
+      {
+        "metadata": {
+          "name": "Currentness",
+          "description": "Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same\ntime range.\nRefers to data quality in respect to currentness.\n"
+        },
+        "layer": {
+          "key": "building_count",
+          "name": "Building Count",
+          "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
+        },
+        "result": {
+          "description": "Over 50% of the 41638.0 features (Building Count) were edited in the last 4 years.\nThis is a rather high value and indicates that the map features \nare very unlike to be outdated. This refers to good data quality in \nrespect to currentness.\n",
+          "timestamp_oqt": "2022-09-07T20:00:24.897112+00:00",
+          "timestamp_osm": "2022-08-28T08:00:00+00:00",
+          "value": 0.8,
+          "label": "green",
+          "class": 5
+        }
+      }
+    ]
   }
 }
 ```
