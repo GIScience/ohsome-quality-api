@@ -83,13 +83,15 @@ class BaseIndicator(metaclass=ABCMeta):
 
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
+
         layer_thresholds = metadata.pop("layer-thresholds")
-        if thresholds is None:
-            for comb in layer_thresholds:
-                if comb["layer"] == layer.key:
-                    self.thresholds = comb["thresholds"]
-        else:
+        if thresholds is not None:
             self.thresholds = thresholds
+        elif layer_thresholds[layer.key] is not None:
+            self.thresholds = layer_thresholds[layer.key]
+        else:
+            self.thresholds = layer_thresholds["default"]
+
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
