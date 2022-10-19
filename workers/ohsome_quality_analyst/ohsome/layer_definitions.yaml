@@ -337,39 +337,46 @@ school_count:
   description: Count of schools.
   endpoint: elements/count
   filter: amenity=school
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
 
-  kindergarten_count:
-    name: Kindergarten Count
-    description: Count of kindergartens.
-    endpoint: elements/count
-    filter: amenity=kindergarten
+kindergarten_count:
+  name: Kindergarten Count
+  description: Count of kindergartens.
+  endpoint: elements/count
+  filter: amenity=kindergarten
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
 
-  clinic_count:
-    name: Clinic Count
-    description: Count of clinics.
-    endpoint: elements/count
-    filter: amenity=clinic or healthcare=clinic
+clinic_count:
+  name: Clinic Count
+  description: Count of clinics.
+  endpoint: elements/count
+  filter: amenity=clinic or healthcare=clinic
+  source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
 
-  doctors_count:
-    name: Doctors Count
-    description: Count of doctors.
-    endpoint: elements/count
-    filter: amenity=doctors or healthcare=doctors
+doctors_count:
+  name: Doctors Count
+  description: Count of doctors.
+  endpoint: elements/count
+  filter: amenity=doctors or healthcare=doctors
+  source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
 
-  bus_stop_count:
-    name: Bus Stop Count
-    description: Count of bus stops.
-    endpoint: elements/count
-    filter: highway=bus_stop
+bus_stop_count:
+  name: Bus Stop Count
+  description: Count of bus stops.
+  endpoint: elements/count
+  filter: highway=bus_stop
+  source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
 
-  tram_stop_count:
-    name: Tram Stop Count
-    description: Count of schools.
-    endpoint: elements/count
-    filter: railway=tram_stop
+tram_stop_count:
+  name: Tram Stop Count
+  description: Count of schools.
+  endpoint: elements/count
+  filter: railway=tram_stop
+  source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
 
-  subway_station_count:
-    name: Subway Station Count
-    description: Count of subway stops.
-    endpoint: elements/count
-    filter: station=subway
+subway_station_count:
+  name: Subway Station Count
+  description: Count of subway stops.
+  endpoint: elements/count
+  filter: station=subway
+  source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
