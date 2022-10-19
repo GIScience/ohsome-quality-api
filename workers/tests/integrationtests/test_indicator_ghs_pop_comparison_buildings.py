@@ -17,9 +17,7 @@ class TestIndicatorGhsPopComparisonBuildings(unittest.TestCase):
             db_client.get_feature_from_db(dataset="regions", feature_id="3")
         )
         layer = get_layer_fixture("building_count")
-        self.indicator = GhsPopComparisonBuildings(
-            feature=feature, layer=layer, thresholds=None
-        )
+        self.indicator = GhsPopComparisonBuildings(feature=feature, layer=layer)
 
     @oqt_vcr.use_cassette()
     def test(self):

@@ -1,6 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
+from typing import Optional, Tuple
 
 import dateutil.parser
 import matplotlib.pyplot as plt
@@ -19,7 +20,10 @@ class GhsPopComparisonRoads(BaseIndicator):
     """Set number of features and population into perspective."""
 
     def __init__(
-        self, layer: Layer, feature: Feature, thresholds: tuple = None
+        self,
+        layer: Layer,
+        feature: Feature,
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
     ) -> None:
         super().__init__(layer=layer, feature=feature, thresholds=thresholds)
         # Those attributes will be set during lifecycle of the object.

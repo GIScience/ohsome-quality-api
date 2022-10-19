@@ -96,7 +96,6 @@ class TestApiIndicatorIo(unittest.TestCase):
             "bpolys": bpolys,
             "dataset": "foo",
             "featureId": "3",
-            "thresholds": None,
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
@@ -196,7 +195,6 @@ class TestApiIndicatorIo(unittest.TestCase):
                     ]
                 },
             },
-            "thresholds": None,
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.run_tests(response, (self.general_schema, self.feature_schema))
@@ -210,7 +208,6 @@ class TestApiIndicatorIo(unittest.TestCase):
                 "description": "",
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },
-            "thresholds": None,
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)

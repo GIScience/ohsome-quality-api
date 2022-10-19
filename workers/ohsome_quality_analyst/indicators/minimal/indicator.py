@@ -1,5 +1,6 @@
 """An Indicator for testing purposes."""
 from string import Template
+from typing import Optional, Tuple
 
 import dateutil.parser
 from geojson import Feature
@@ -11,7 +12,10 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 class Minimal(BaseIndicator):
     def __init__(
-        self, layer: Layer, feature: Feature, thresholds: tuple = None
+        self,
+        layer: Layer,
+        feature: Feature,
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
     ) -> None:
         super().__init__(layer=layer, feature=feature, thresholds=thresholds)
         self.count = 0

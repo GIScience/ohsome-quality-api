@@ -24,9 +24,7 @@ class TestIndicatorBuildingCompleteness(unittest.TestCase):
             db_client.get_feature_from_db(dataset="regions", feature_id="12")
         )
         self.layer = get_layer_fixture("building_area")
-        self.indicator = BuildingCompleteness(
-            feature=self.feature, layer=self.layer, thresholds=None
-        )
+        self.indicator = BuildingCompleteness(feature=self.feature, layer=self.layer)
 
     @mock.patch("ohsome_quality_analyst.raster.client.get_config_value")
     @oqt_vcr.use_cassette()

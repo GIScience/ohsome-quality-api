@@ -21,10 +21,26 @@ Currentness:
   result_description: |
       Over 50% of the $elements features ($layer_name) were edited $years.
   layer-thresholds:
-    default: [ 0.2, null, 0.6, null]
+    default: [ 2, 3, 4, 8]
     amenities: null
     building_count: null
-    major_roads_count: null
     infrastructure_lines: null
-    poi: null
+    jrc_airport_count: null
+    jrc_bridge_count: null
+    jrc_cultural_heritage_site_count: null
+    jrc_education_count: null
+    jrc_health_count: null
+    jrc_mass_gathering_sites_count: null
+    jrc_power_generation_plant_count: null
+    jrc_railway_count: null
+    jrc_road_count: null
+    jrc_water_treatment_plant_count: null
     lulc: null
+    major_roads_count: null
+    mapaction_lakes_count: null
+    mapaction_major_roads_length: null
+    mapaction_rail_length: null
+    mapaction_rivers_length: null
+    mapaction_settlements_count: null
+    poi: null
+

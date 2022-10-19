@@ -40,7 +40,7 @@ class MappingSaturation(BaseIndicator):
         self,
         layer: Layer,
         feature: Feature,
-        thresholds: Optional[Tuple[float, float, float, float]],
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
         super().__init__(layer=layer, feature=feature)

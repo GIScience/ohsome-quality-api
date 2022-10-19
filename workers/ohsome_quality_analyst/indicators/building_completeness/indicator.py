@@ -59,7 +59,7 @@ class BuildingCompleteness(BaseIndicator):
         self,
         layer: Layer,
         feature: Feature,
-        thresholds: Optional[Tuple[float, float, float, float]],
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
     ) -> None:
         if thresholds is None:
             thresholds = (0.2, 0.5, 0.8, 0.9)

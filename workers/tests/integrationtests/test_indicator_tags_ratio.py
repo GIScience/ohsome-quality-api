@@ -23,7 +23,6 @@ class TestIndicatorRatio(unittest.TestCase):
         indicator = TagsRatio(
             feature=self.feature,
             layer=get_layer_fixture("jrc_health_count"),
-            thresholds=None,
         )
         self.assertIsNotNone(indicator.attribution())
 

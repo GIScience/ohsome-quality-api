@@ -10,7 +10,7 @@ class TestIndicatorMinimal(unittest.TestCase):
     def setUp(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         layer = get_layer_fixture("minimal")
-        self.indicator = Minimal(feature=feature, layer=layer, thresholds=None)
+        self.indicator = Minimal(feature=feature, layer=layer)
 
     @oqt_vcr.use_cassette()
     def test(self):
