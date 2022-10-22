@@ -11,7 +11,7 @@
 ## New features
 
 - Substitute result values of reports by introducing a result class value ([#372])
-- add new layers `school_count`, `kindergarten_count`, `clinic_count`, `doctors_count`, `bus_stop_count`, `tram_stop_count`, `subway_station_count` and `hospitals_count` ([#444])
+- add new layers `schools`, `kindergartens`, `clinics`, `doctors`, `bus_stops`, `tram_stops`, `subway_stations`, `marketsplaces`. `parks`, `forests`, `fitness_centres` and `supermarkets` ([#444])
 
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
