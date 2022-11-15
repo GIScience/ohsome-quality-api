@@ -19,11 +19,13 @@
 ### Other Changes
 
 - Move example rasters of data directory to test fixtures ([#312])
+- The website now shows that the BuildingReport is only available for Africa ([#450])
 
 [#312]: https://github.com/GIScience/ohsome-quality-analyst/pull/312
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
 [#438]: https://github.com/GIScience/ohsome-quality-analyst/pull/438
+[#450]: https://github.com/GIScience/ohsome-quality-analyst/pull/450
 
 
 ## 0.12.0
