@@ -77,7 +77,10 @@ class TagsRatio(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_title("Ratio between all features and filtered ones")
+        ax.set_title(
+            "Ratio between all features and the ones"
+            " with \n {} tagged".format(self.layer.ratio_description)
+        )
 
         size = 0.3  # Width of the pie
         handles = []  # Handles for legend

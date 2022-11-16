@@ -10,6 +10,7 @@ building_count:
   endpoint: elements/count
   filter: building=* and geometry:polygon
   ratio_filter: building=* and geometry:polygon and (heigth=* and height!="") or (building:level=* and building:level!="")
+  ratio_description: height or levels
 
 building_area:
   name: Building Area
@@ -33,6 +34,7 @@ major_roads_count:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=* and name!=""
+  ratio_description: name
 
 major_roads_length:
   name: Major Roads Length
@@ -49,6 +51,7 @@ major_roads_length:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=* and name!=""
+  ratio_description: name
 
 amenities:
   name: Amenities
@@ -137,6 +140,8 @@ jrc_health_count:
     or (amenity=clinic and name=* and name!="" and operator=*)
     or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
     or (healthcare=* and name=* and name!="")
+  ratio_description: |
+    name and wheelchair, operator or speciality
 
 jrc_education_count:
   name: JRC Education Facilities
@@ -148,6 +153,7 @@ jrc_education_count:
   ratio_filter: |
     (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
     or (amenity=school and name=* and name!="" and building=*)
+  ratio_description: name and wheelchair
 
 jrc_road_length:
   name: JRC Road Length
@@ -159,6 +165,7 @@ jrc_road_length:
   ratio_filter: |
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
     and maxspeed=* and oneway=*
+  ratio_description: maxspeed and oneway
 
 jrc_road_count:
   name: JRC Road Length
@@ -170,6 +177,7 @@ jrc_road_count:
   ratio_filter: |
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
     and maxspeed=* and oneway=*
+  ratio_description: maxspeed and oneway
 
 jrc_railway_length:
   name: JRC Railways Length
@@ -197,6 +205,7 @@ jrc_airport_count:
   ratio_filter: |
     (aeroway=aerodrome and icao=* and icao!="" and name=*)
     or (aerodrome=* and icao=* and icao!="" and name=*)
+  ratio_description: icao and name
 
 jrc_water_treatment_plant_count:
   name: JRC Water-Treatment Plant Count
@@ -215,6 +224,7 @@ jrc_power_generation_plant_count:
     power=plant
   ratio_filter: |
     power=plant and power=* and name=*
+  ratio_description: power and name
 
 jrc_cultural_heritage_site_count:
   name: JRC Cultural Heritage Sites Count
@@ -225,6 +235,7 @@ jrc_cultural_heritage_site_count:
     heritage=*
   ratio_filter: |
     heritage=* and description=* and image=* and name=* and name!=""
+  ratio_description: image and name
 
 jrc_bridge_count:
   name: JRC Bridge Count
@@ -235,6 +246,7 @@ jrc_bridge_count:
     bridge=yes
   ratio_filter: |
     bridge=yes and name=* and surface=* and highway=* and highway!=""
+  ratio_description: name, surface and highway
 
 jrc_mass_gathering_sites_count:
   name: JRC Mass Gathering Sites Count
@@ -253,6 +265,7 @@ jrc_mass_gathering_sites_count:
     or (leisure in (stadium, sport_centre, water_park) and name=* and name!="")
     or (shop=mall and name=* and name!="")
     or (tourism in (theme_park, zoo, museum) and name=* and name!="")
+  ratio_description: name
 
 mapaction_settlements_count:
   name: MapAction Settlements Count

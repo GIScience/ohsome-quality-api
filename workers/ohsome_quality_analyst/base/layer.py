@@ -24,6 +24,7 @@ class LayerDefinition(BaseLayer):
     filter_: str
     source: Optional[str] = None
     ratio_filter: Optional[str] = None
+    ratio_description: Optional[str] = None
 
 
 @dataclass
