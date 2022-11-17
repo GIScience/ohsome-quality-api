@@ -342,4 +342,5 @@ hospitals_count:
   name: Hospitals Count
   description: All hospitals.
   endpoint: elements/count
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   filter: amenity=hospital or healthcare=hospital
