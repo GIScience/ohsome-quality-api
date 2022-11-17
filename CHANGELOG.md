@@ -2,6 +2,15 @@
 
 ## Current Main
 
+### Other Changes
+
+- TagRatio indicator plot now shows description of the filter used ([#453])
+
+[#453]: https://github.com/GIScience/ohsome-quality-analyst/pull/453
+
+
+## 0.13.0
+
 ### Bug Fixes
 
 - Fix patch colorization of Currentness indicator plot ([#432])

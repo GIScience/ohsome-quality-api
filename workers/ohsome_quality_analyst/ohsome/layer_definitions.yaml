@@ -235,7 +235,7 @@ jrc_cultural_heritage_site_count:
     heritage=*
   ratio_filter: |
     heritage=* and description=* and image=* and name=* and name!=""
-  ratio_description: image and name
+  ratio_description: description, image and name
 
 jrc_bridge_count:
   name: JRC Bridge Count

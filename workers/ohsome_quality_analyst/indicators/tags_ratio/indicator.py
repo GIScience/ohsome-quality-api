@@ -39,9 +39,9 @@ class TagsRatio(BaseIndicator):
             self.result.value = None
             return
         description = Template(self.metadata.result_description).substitute(
-            result=round(self.result.value, 1),
-            all=round(self.count_all, 1),
-            matched=round(self.count_match, 1),
+            result=round(self.result.value, 2),
+            all=round(self.count_all),
+            matched=round(self.count_match),
         )
         if self.count_all == 0:
             self.result.description = description + "No features in this region"
