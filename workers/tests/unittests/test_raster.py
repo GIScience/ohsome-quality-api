@@ -13,7 +13,6 @@ from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
 class TestRaster(unittest.TestCase):
     def setUp(self):
         self.raster_dataset = get_raster_dataset("GHS_BUILT_R2018A")
-
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures/heidelberg-altstadt-feature.geojson",

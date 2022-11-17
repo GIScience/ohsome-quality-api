@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import unittest
+from pathlib import Path
 
 import numpy as np
 from geojson import Feature, Polygon
@@ -15,6 +16,7 @@ from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalRepo
 from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
+    get_project_root,
     json_serialize,
     loads_geojson,
     name_to_class,
@@ -183,6 +185,11 @@ class TestHelper(unittest.TestCase):
     def test_json_serialize_invalid_input(self):
         with self.assertRaises(TypeError):
             json_serialize("foo")
+
+    def test_get_project_root(self):
+        expected = Path(__file__).resolve().parent.parent.parent.resolve()
+        result = get_project_root()
+        self.assertEqual(expected, result)
 
 
 if __name__ == "__main__":

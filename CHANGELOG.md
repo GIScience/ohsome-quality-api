@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 0.13.0
 
 ### Bug Fixes
 
@@ -13,6 +13,15 @@
 - Substitute result values of reports by introducing a result class value ([#372])
 - add new layers `fire_station_count` and `hospitals_count` ([#442])
 
+### Breaking Changes
+
+- Change default data directory to be in workers directory ([#312])
+
+### Other Changes
+
+- Move example rasters of data directory to test fixtures ([#312])
+
+[#312]: https://github.com/GIScience/ohsome-quality-analyst/pull/312
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
 [#438]: https://github.com/GIScience/ohsome-quality-analyst/pull/438
