@@ -339,9 +339,9 @@ schools:
   filter: amenity=school
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
 
-kindergartens:
-  name: Kindergartens
-  description: Count of kindergartens.
+kindergarten:
+  name: Kindergarten
+  description: Count of kindergarten.
   endpoint: elements/count
   filter: amenity=kindergarten
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
