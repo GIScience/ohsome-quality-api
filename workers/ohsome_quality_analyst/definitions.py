@@ -80,7 +80,7 @@ INDICATOR_LAYER = (
     ("MappingSaturation", "poi"),
     ("MappingSaturation", "lulc"),
     ("MappingSaturation", "schools"),
-    ("MappingSaturation", "kindergartens"),
+    ("MappingSaturation", "kindergarten"),
     ("MappingSaturation", "clinics"),
     ("MappingSaturation", "doctors"),
     ("MappingSaturation", "bus_stops"),
