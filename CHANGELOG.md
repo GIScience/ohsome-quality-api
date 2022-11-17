@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 0.13.0
 
 ### Other Changes
 
