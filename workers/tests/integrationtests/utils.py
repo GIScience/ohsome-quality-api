@@ -23,8 +23,16 @@ def filename_generator(function):
     return os.path.splitext(filename)[0] + "." + oqt_vcr.serializer
 
 
+def get_current_dir():
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+def get_fixture_dir():
+    return os.path.join(get_current_dir(), "fixtures")
+
+
 def get_geojson_fixture(name):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
+    path = os.path.join(get_fixture_dir(), name)
     with open(path, "r") as f:
         return geojson.load(f)
 

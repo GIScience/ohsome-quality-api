@@ -145,7 +145,7 @@ website/website/assets/data/regions.geojson
 database/init_db.production/regions.geojson
 database/scripts/schema.test.sql
 database/scripts/schema.dev.sql.gz
-data/
+workers/data/*
 workers/config/*
 !workers/config/sample.config.yaml
 !workers/config/logging.yaml
