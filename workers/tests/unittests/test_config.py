@@ -110,13 +110,14 @@ class TestConfig(unittest.TestCase):
     @mock.patch.dict("os.environ", {}, clear=True)
     def test_get_data_dir_unset_env(self):
         data_dir = config.get_default_data_dir()
-        expected = os.path.join(
-            os.path.dirname(
-                os.path.abspath(__file__),
-            ),
-            "..",
-            "..",
-            "..",
-            "data",
+        expected = os.path.abspath(
+            os.path.join(
+                os.path.dirname(
+                    os.path.abspath(__file__),
+                ),
+                "..",
+                "..",
+                "data",
+            )
         )
-        self.assertTrue(os.path.samefile(data_dir, expected))
+        self.assertEqual(data_dir, expected)
