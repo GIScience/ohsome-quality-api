@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### New features
+
+- add new layers `fire_station_count` and `hospitals_count` ([#442])
+
+[#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
+
+
 ## 0.13.0
 
 ### Bug Fixes
@@ -11,7 +20,6 @@
 ## New features
 
 - Substitute result values of reports by introducing a result class value ([#372])
-- add new layers `fire_station_count` and `hospitals_count` ([#442])
 
 ### Breaking Changes
 
@@ -25,7 +33,6 @@
 [#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
 [#438]: https://github.com/GIScience/ohsome-quality-analyst/pull/438
-[#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
 
 
 ## 0.12.0
