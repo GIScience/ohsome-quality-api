@@ -113,7 +113,7 @@ INDICATOR_LAYER = (
     ("Currentness", "poi"),
     ("Currentness", "lulc"),
     ("Currentness", "schools"),
-    ("Currentness", "kindergartens"),
+    ("Currentness", "kindergarten"),
     ("Currentness", "clinics"),
     ("Currentness", "doctors"),
     ("Currentness", "bus_stops"),
