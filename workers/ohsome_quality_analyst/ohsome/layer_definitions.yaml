@@ -332,15 +332,15 @@ minimal:
   endpoint: elements/count
   filter: building=* and geometry:polygon
 
-fire_stations_count:
-  name: Fire Stations Count
-  description: All firestations.
+fire_stations:
+  name: Fire Stations
+  description: Count of firestations.
   endpoint: elements/count
   filter: amenity=fire_station
 
-hospitals_count:
-  name: Hospitals Count
-  description: All hospitals.
+hospitals:
+  name: Hospitals
+  description: Count of hospitals.
   endpoint: elements/count
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   filter: amenity=hospital or healthcare=hospital
