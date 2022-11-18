@@ -2,7 +2,7 @@
 
 ## Current Main
 
-### New features
+### New Features
 
 - add new layers `fire_station_count` and `hospitals_count` ([#442])
 
