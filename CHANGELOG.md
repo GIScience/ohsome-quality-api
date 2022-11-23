@@ -1,5 +1,14 @@
 # Changelog
 
+##Current Main
+
+###Bug Fixes
+
+- Reports with only undefined indicators are now labeled undefined too ([#456])
+
+[#456]: https://github.com/GIScience/ohsome-quality-analyst/pull/456
+
+
 ## 0.13.0
 
 ### Bug Fixes
