@@ -1,5 +1,15 @@
 # Changelog
 
+##Current Main
+
+###New Features
+
+- Add new layers related to food eniviroment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
+
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
+
+
 ## 0.13.0
 
 ### Bug Fixes
