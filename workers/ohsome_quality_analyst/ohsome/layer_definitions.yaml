@@ -9,7 +9,7 @@ building_count:
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
   filter: building=* and geometry:polygon
-  ratio_filter: building=* and geometry:polygon and (heigth=* and height!="") or (building:level=* and building:level!="")
+  ratio_filter: building=* and geometry:polygon and (height=* and height!="") or (building:levels=* and building:levels!="")
 
 building_area:
   name: Building Area

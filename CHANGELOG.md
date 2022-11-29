@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### Bug Fixes
+
+- fix wrong ratio_filter in layer `building_count` ([#457])
+
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
+
+
 ## 0.13.0
 
 ### Bug Fixes
