@@ -1,13 +1,18 @@
 # Changelog
 
-##Current Main
+## Current Main
 
-###New Features
+### Bug Fixes
+
+- fix wrong ratio_filter in layer `building_count` ([#457])
+
+### New Features
 
 - Add new layers related to food eniviroment ([#455])
 - Add new report `FoodRelatedReport` ([#455])
 
 [#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
 ## 0.13.0
