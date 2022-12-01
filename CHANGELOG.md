@@ -6,8 +6,12 @@
 
 - fix wrong ratio_filter in layer `building_count` ([#457])
 
-[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
+### Other Changes
 
+- Currentness indicator no longer takes deletions into account ([#459])
+
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
+[#459]: https://github.com/GIScience/ohsome-quality-analyst/pull/459
 
 ## 0.13.0
 

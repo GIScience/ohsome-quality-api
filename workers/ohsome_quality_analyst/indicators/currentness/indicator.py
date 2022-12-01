@@ -68,6 +68,7 @@ class Currentness(BaseIndicator):
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
+            contributionType=["geometryChange", "creation", "tagChange"],
         )
         # Fetch contributions of current year
         contributions_current_year = await ohsome_client.query(
@@ -75,6 +76,7 @@ class Currentness(BaseIndicator):
             self.feature,
             time=current_year_interval,
             count_latest_contributions=True,
+            contributionType=["geometryChange", "creation", "tagChange"],
         )
         # Merge contributions
         contributions = (

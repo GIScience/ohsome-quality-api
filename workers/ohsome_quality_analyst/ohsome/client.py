@@ -37,6 +37,7 @@ async def _(
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     count_latest_contributions: Optional[bool] = False,
+    contributionType: Optional[list] = None,
 ) -> dict:
     """Query ohsome API with given Layer definition and arguments.
 
