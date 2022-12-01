@@ -2,11 +2,16 @@
 
 ## Current Main
 
+### Bug Fixes
+
+- fix wrong ratio_filter in layer `building_count` ([#457])
+
 ### New Features
 
 - add new layers `fire_station_count` and `hospitals_count` ([#442])
 
 [#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
 ## 0.13.0
