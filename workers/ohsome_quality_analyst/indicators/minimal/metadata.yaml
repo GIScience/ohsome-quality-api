@@ -14,3 +14,10 @@ Minimal:
       The quality level could not be calculated for this indicator.
   result_description: |
     Some description of the result.
+  layer-thresholds:
+    # layer-key: [thresholds]
+    # A threshold is a list of four values (floats) or function parameters (associative list).
+    # The first element is the threshold between the result class 1 (maps to the label 'red').
+    # The layer key "None" signifies the default thresholds.
+    default: [0.3, null, 0.97, null]
+    minimal: null

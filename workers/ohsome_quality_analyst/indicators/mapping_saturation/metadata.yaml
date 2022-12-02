@@ -15,3 +15,21 @@ MappingSaturation:
       Saturation could not be calculated.
   result_description: |
     The saturation of the last 3 years is $saturation%.
+  layer-thresholds:
+    default: [0.3, null, 0.97, null]
+    amenities: null
+    building_count: null
+    infrastructure_lines: null
+    jrc_education_count: null
+    jrc_health_count: null
+    jrc_mass_gathering_sites_count: null
+    jrc_railway_length: null
+    jrc_road_length: null
+    lulc: null
+    major_roads_length: null
+    mapaction_lakes_area: null
+    mapaction_major_roads_length: null
+    mapaction_rail_length: null
+    mapaction_rivers_length: null
+    mapaction_settlements_count: null
+    poi: null

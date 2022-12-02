@@ -23,7 +23,6 @@ from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_LAYER,
     get_layer_definition,
     get_valid_indicators,
     get_valid_layers,
@@ -168,7 +167,9 @@ async def _(
         feature_id = parameters.feature_id
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator_raw = indicator_class(layer=layer, feature=feature)
+    indicator_raw = indicator_class(
+        layer=layer, feature=feature, thresholds=parameters.thresholds
+    )
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
@@ -183,6 +184,7 @@ async def _(
             IndicatorBpolys(
                 name=name,
                 layerKey=parameters.layer_key.value,
+                thresholds=parameters.thresholds,
                 bpolys=feature,
             )
         )
@@ -200,6 +202,7 @@ async def _(
     name = parameters.name.value
     layer: Layer = get_layer_definition(parameters.layer_key.value)
     feature = parameters.bpolys
+    thresholds = parameters.thresholds
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
@@ -207,7 +210,7 @@ async def _(
     logging.info("Layer name:     {0:4}".format(layer.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature)
+    indicator = indicator_class(layer, feature, thresholds)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
@@ -362,7 +365,8 @@ async def create_all_indicators(
     elif indicator_name is not None and layer_key is not None:
         indicator_layer = [(indicator_name, layer_key)]
     else:
-        indicator_layer = INDICATOR_LAYER
+        # TODO
+        indicator_layer = "INDICATOR_LAYER"
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)

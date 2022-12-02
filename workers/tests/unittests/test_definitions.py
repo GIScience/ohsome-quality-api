@@ -75,17 +75,17 @@ class TestDefinitions(unittest.TestCase):
         indicators = definitions.get_valid_indicators("building_count")
         self.assertEqual(
             indicators,
-            (
-                "GhsPopComparisonBuildings",
+            [
                 "MappingSaturation",
+                "GhsPopComparisonBuildings",
                 "Currentness",
                 "TagsRatio",
-            ),
+            ],
         )
 
     def test_get_valid_layers(self):
         layers = definitions.get_valid_layers("Minimal")
         self.assertEqual(
             layers,
-            ("minimal",),
+            ["minimal"],
         )

@@ -1,6 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
+from typing import Optional, Tuple
 
 import dateutil.parser
 import geojson
@@ -33,12 +34,13 @@ class Currentness(BaseIndicator):
         self,
         layer: Layer,
         feature: geojson.Feature,
+        thresholds: Optional[Tuple[float, float, float, float]] = None,
     ) -> None:
         super().__init__(layer=layer, feature=feature)
-        self.threshold_4 = 2
-        self.threshold_3 = 3
-        self.threshold_2 = 4
-        self.threshold_1 = 8
+        self.threshold_4 = self.thresholds[0]
+        self.threshold_3 = self.thresholds[1]
+        self.threshold_2 = self.thresholds[2]
+        self.threshold_1 = self.thresholds[3]
         self.element_count = None
         self.contributions_sum = None
         self.contributions_rel = {}  # yearly interval

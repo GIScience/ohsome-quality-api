@@ -159,6 +159,34 @@ class TestOqt(unittest.TestCase):
                 )
             )
 
+    @oqt_vcr.use_cassette()
+    def test_create_all_indicators_valid_layer(self):
+        with mock.patch(
+            "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
+            new_callable=AsyncMock,
+        ) as get_feature_ids_mock:
+            get_feature_ids_mock.return_value = ["3", "12", "3", "12", "3", "12"]
+            asyncio.run(
+                oqt.create_all_indicators(
+                    dataset="regions",
+                    indicator_name="Minimal",
+                )
+            )
+
+    @oqt_vcr.use_cassette()
+    def test_create_all_indicators_valid_indicators(self):
+        with mock.patch(
+            "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
+            new_callable=AsyncMock,
+        ) as get_feature_ids_mock:
+            get_feature_ids_mock.return_value = ["3", "12", "3", "12", "3", "12"]
+            asyncio.run(
+                oqt.create_all_indicators(
+                    dataset="regions",
+                    layer_key="minimal",
+                )
+            )
+
     def test_check_area_size(self):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"

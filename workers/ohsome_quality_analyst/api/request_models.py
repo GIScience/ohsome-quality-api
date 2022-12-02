@@ -8,7 +8,7 @@ information derived from `pydantic` models in the automatic generated API docume
 """
 
 from enum import Enum
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 
 import pydantic
 from geojson import Feature, FeatureCollection
@@ -16,12 +16,12 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst.base.layer import LayerData
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_LAYER,
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
     get_layer_keys,
     get_report_names,
+    get_valid_layers,
 )
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
 
@@ -36,6 +36,14 @@ class BaseIndicator(BaseModel):
     name: IndicatorEnum = pydantic.Field(
         ..., title="Indicator Name", example="GhsPopComparisonBuildings"
     )
+    thresholds: Optional[
+        Tuple[
+            Union[float, str],
+            Union[str, float],
+            Union[str, float],
+            Union[str, float],
+        ]
+    ]
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
@@ -47,6 +55,17 @@ class BaseIndicator(BaseModel):
         alias_generator = snake_to_lower_camel
         allow_mutation = False
         extra = "forbid"
+
+    @pydantic.root_validator
+    @classmethod
+    def validate_thresholds(cls, values):
+        if values["thresholds"] is not None and values["name"] != "Currentness":
+            raise ValueError(
+                "Setting custom thresholds is only supported for the Currentness "
+                + "Indicator.",
+            )
+        else:
+            return values
 
 
 class BaseReport(BaseModel):
@@ -132,12 +151,15 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_key"].value)
+            indicator_key = values["name"].value
+            layer_key = values["layer_key"].value
         except KeyError:
             raise ValueError("An issue with the layer or indicator name occurred.")
-        if indicator_layer not in INDICATOR_LAYER:
+        if layer_key not in get_valid_layers(indicator_key):
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Layer ({0}) is not available for indicator ({1})".format(
+                    layer_key, indicator_key
+                )
             )
         else:
             return values
@@ -148,12 +170,15 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_key"].value)
+            indicator_key = values["name"].value
+            layer_key = values["layer_key"].value
         except KeyError:
             raise ValueError("An issue with the layer or indicator name occurred.")
-        if indicator_layer not in INDICATOR_LAYER:
+        if layer_key not in get_valid_layers(indicator_key):
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Layer ({0}) is not available for indicator ({1})".format(
+                    layer_key, indicator_key
+                )
             )
         else:
             return values

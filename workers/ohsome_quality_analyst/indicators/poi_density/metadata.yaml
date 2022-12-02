@@ -22,3 +22,6 @@ PoiDensity:
     The density of landmarks 
     (points of reference, e.g. waterbodies, supermarkets, churches, bus stops) 
     is $result features per sqkm.
+  layer-thresholds:
+    default: [10, null, null, 30]
+    poi: null
