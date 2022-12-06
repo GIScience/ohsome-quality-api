@@ -331,3 +331,65 @@ minimal:
   description: A minimal layer definition for testing purposes
   endpoint: elements/count
   filter: building=* and geometry:polygon
+
+fire_stations:
+  name: Fire Stations
+  description: Count of firestations.
+  endpoint: elements/count
+  filter: amenity=fire_station
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
+
+hospitals:
+  name: Hospitals
+  description: Count of hospitals.
+  endpoint: elements/count
+  filter: amenity=hospital or healthcare=hospital
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
+
+local_food_shops:
+  name: Local food shops
+  description: Count of local food shops
+  endpoint: elements/count
+  filter: shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy
+
+fast_food_restaurants:
+  name: Fast food restaurants
+  description: Count of fast food restaurants
+  endpoint: elements/count
+  filter: amenity=fast_food
+
+restaurants:
+  name: Restaurants
+  description: Count of restaurants
+  endpoint: elements/count
+  filter: amenity=restaurant or amenity=cafe
+
+supermarkets:
+  name: Supermarkets
+  description: Count of supermarkets
+  endpoint: elements/count
+  filter: shop=supermarket
+
+convenience_stores:
+  name: Convenience stores
+  description: Count of convenience stores
+  endpoint: elements/count
+  filter: shop=convenience
+
+pubs_and_biergartens:
+  name: Pubs and biergartens
+  description: Count of pubs and biergartens
+  endpoint: elements/count
+  filter: amenity=pub or amenity=biergarten or amenity=bar
+
+alcohol_and_beverages:
+  name: Alcohol and beverages
+  description: Count of shops selling alcohol
+  endpoint: elements/count
+  filter: shop=alcohol or shop=beverages
+
+sweets_and_pasteries:
+  name: Sweets and pasteries
+  description: Count of shops selling sweets and pasteries
+  endpoint: elements/count
+  filter: shop=pastry or amenity=ice_cream or shop=confectionery

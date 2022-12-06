@@ -1,12 +1,22 @@
 # Changelog
 
-##Current Main
+## Current Main
 
-###Bug Fixes
+### Bug Fixes
 
+- fix wrong ratio_filter in layer `building_count` ([#457])
 - Reports with only undefined indicators are now labeled undefined too ([#456])
 
+### New Features
+
+- add new layers `fire_station_count` and `hospitals_count` ([#442])
+- Add new layers related to food environment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
+
+[#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
 [#456]: https://github.com/GIScience/ohsome-quality-analyst/pull/456
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
 ## 0.13.0
