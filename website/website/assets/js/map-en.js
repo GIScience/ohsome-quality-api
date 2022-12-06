@@ -11,6 +11,10 @@ function fetch_report_from_server(reportName, featureId) {
     return fetch("assets/data/" + fileName);
 }
 
+function fetch_default_report() {
+    return fetch("assets/data/default-report.json");
+}
+
 function fetch_regions_from_api() {
     // TODO: Add cache functionality
     return fetch(apiUrl + "/regions?asGeoJSON=True");
@@ -24,6 +28,19 @@ function status(response) {
         );
         console.log("Fetch regions from OQT API. This takes quite a while.");
         return Promise.resolve(fetch_regions_from_api());
+    } else {
+        return Promise.resolve(response);
+    }
+}
+
+function reportStatus(response) {
+    if (response.status === 404) {
+        console.log(
+            "Could not find report on the server. Status Code: " +
+                response.status
+        );
+        console.log("Fetch default report.");
+        return Promise.resolve(fetch_default_report());
     } else {
         return Promise.resolve(response);
     }
@@ -217,7 +234,7 @@ function buildMap(...charts) {
 
             // httpPostAsync(JSON.stringify(params), handleGetQuality);
 
-            Promise.all([fetch_report_from_server(String(selectedReport), String(areas)).then(status).then(json).then(handleGetQuality)]);
+            Promise.all([fetch_report_from_server(String(selectedReport), String(areas)).then(reportStatus).then(json).then(handleGetQuality)]);
         }
         // when params were sent, get pdf button turns blue
         changeColor();
