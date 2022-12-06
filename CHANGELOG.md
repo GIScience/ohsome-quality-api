@@ -6,11 +6,14 @@
 
 - fix wrong ratio_filter in layer `building_count` ([#457])
 
-### New features
+### New Features
 
+- Add new layers related to food environment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
 - add new layers `schools`, `kindergartens`, `clinics`, `doctors`, `bus_stops`, `tram_stops`, `subway_stations`, `marketsplaces`. `parks`, `forests`, `fitness_centres` and `supermarkets` ([#444])
 
 [#444]: https://github.com/GIScience/ohsome-quality-analyst/pull/444
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
 [#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
