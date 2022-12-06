@@ -1,0 +1,18 @@
+---
+FoodRelatedReport:
+  name: Food Related Report
+  description: |
+    This report shows the quality of food related POIs.
+  label_description:
+    red: |
+      The indicators show a bad quality.
+      The food related POIs seems to be not sufficient mapped in this region.
+    yellow: |
+      At least one indicator shows only medium quality.
+      You should inspect the results for the individual indicators
+      to identify potential data quality concerns.
+    green: |
+      All indicators show a good quality.
+      The food related POIs in this regions seems to be sufficient mapped.
+    undefined: |
+      Could not derive quality level.

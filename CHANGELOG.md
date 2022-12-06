@@ -9,8 +9,11 @@
 ### New Features
 
 - add new layers `fire_station_count` and `hospitals_count` ([#442])
+- Add new layers related to food environment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
 
 [#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
 [#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
