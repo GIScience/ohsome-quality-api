@@ -5,8 +5,10 @@ function fetch_regions_from_server() {
     return fetch("assets/data/regions.geojson");
 }
 
-function fetch_report_from_server() {
-    return fetch("assets/data/test_report.json");
+function fetch_report_from_server(reportName, featureId) {
+    const fileName = reportName + '-' + featureId + '.json';
+    console.log(fileName);
+    return fetch("assets/data/" + fileName);
 }
 
 function fetch_regions_from_api() {
@@ -215,7 +217,7 @@ function buildMap(...charts) {
 
             // httpPostAsync(JSON.stringify(params), handleGetQuality);
 
-            Promise.all([fetch_report_from_server().then(status).then(json).then(handleGetQuality)]);
+            Promise.all([fetch_report_from_server(String(selectedReport), String(areas)).then(status).then(json).then(handleGetQuality)]);
         }
         // when params were sent, get pdf button turns blue
         changeColor();
