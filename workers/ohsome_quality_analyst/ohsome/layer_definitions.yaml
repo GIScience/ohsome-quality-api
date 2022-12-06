@@ -332,6 +332,90 @@ minimal:
   endpoint: elements/count
   filter: building=* and geometry:polygon
 
+schools:
+  name: Schools
+  description: Count of schools.
+  endpoint: elements/count
+  filter: amenity=school
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
+
+kindergarten:
+  name: Kindergarten
+  description: Count of kindergarten.
+  endpoint: elements/count
+  filter: amenity=kindergarten
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
+
+clinics:
+  name: Clinics
+  description: Count of clinics.
+  endpoint: elements/count
+  filter: amenity=clinic or healthcare=clinic
+  source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+
+doctors:
+  name: Doctors
+  description: Count of doctors.
+  endpoint: elements/count
+  filter: amenity=doctors or healthcare=doctors
+  source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+
+bus_stops:
+  name: Bus Stops
+  description: Count of bus stops.
+  endpoint: elements/count
+  filter: highway=bus_stop
+  source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
+
+tram_stops:
+  name: Tram Stops
+  description: Count of schools.
+  endpoint: elements/count
+  filter: railway=tram_stop
+  source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+
+subway_stations:
+  name: Subway Stations
+  description: Count of subway stops.
+  endpoint: elements/count
+  filter: station=subway
+  source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
+
+supermarkets:
+  name: Supermarkets
+  description: Count of supermarkets.
+  endpoint: elements/count
+  filter: shop=supermarket
+  source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
+
+marketplaces:
+  name: Marketplaces
+  description: Count of marketplaces.
+  endpoint: elements/count
+  filter: amenity=marketplace
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
+
+parks:
+  name: Parks
+  description: Count of parks.
+  endpoint: elements/count
+  filter: leisure=park
+  source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
+
+forests:
+  name: Forests
+  description: Count of forests.
+  endpoint: elements/count
+  filter: landuse=forest
+  source: https://wiki.openstreetmap.org/wiki/Forest
+
+fitness_centres:
+  name: Fitness Centres
+  description: Count of fitness centres.
+  endpoint: elements/count
+  filter: leisure in (fitness_centre, sports_centre)
+  source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
+
 fire_stations:
   name: Fire Stations
   description: Count of firestations.
