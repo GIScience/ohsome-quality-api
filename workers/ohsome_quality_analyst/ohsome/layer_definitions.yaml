@@ -337,10 +337,11 @@ fire_stations:
   description: Count of firestations.
   endpoint: elements/count
   filter: amenity=fire_station
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
 
 hospitals:
   name: Hospitals
   description: Count of hospitals.
   endpoint: elements/count
-  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   filter: amenity=hospital or healthcare=hospital
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
