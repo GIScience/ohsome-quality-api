@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 - fix wrong ratio_filter in layer `building_count` ([#457])
+- Reports with only undefined indicators are now labeled undefined too ([#456])
 
 ### New Features
 
@@ -16,6 +17,7 @@
 [#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
 [#444]: https://github.com/GIScience/ohsome-quality-analyst/pull/444
 [#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
+[#456]: https://github.com/GIScience/ohsome-quality-analyst/pull/456
 [#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
