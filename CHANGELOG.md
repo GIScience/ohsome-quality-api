@@ -6,6 +6,12 @@
 
 - fix wrong ratio_filter in layer `building_count` ([#457])
 
+### New Features
+
+- Add new layers related to food environment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
+
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
 [#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 
 
