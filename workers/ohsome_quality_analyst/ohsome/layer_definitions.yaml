@@ -416,6 +416,20 @@ fitness_centres:
   filter: leisure in (fitness_centre, sports_centre)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
 
+fire_stations:
+  name: Fire Stations
+  description: Count of firestations.
+  endpoint: elements/count
+  filter: amenity=fire_station
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
+
+hospitals:
+  name: Hospitals
+  description: Count of hospitals.
+  endpoint: elements/count
+  filter: amenity=hospital or healthcare=hospital
+  source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
+
 local_food_shops:
   name: Local food shops
   description: Count of local food shops
