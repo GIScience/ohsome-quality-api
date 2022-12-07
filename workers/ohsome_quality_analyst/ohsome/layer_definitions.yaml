@@ -326,91 +326,6 @@ lulc:
     Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
     https://www.geog.uni-heidelberg.de/gis/ideal_en.html
 
-arable_land_area:
-  name: Agriculture Arable Land
-  description: Selected features for Corine Category: arable land
-  endpoint: elements/area
-  filter: (landuse=farmland or crop=*) and type:polygon
- 
-permanent_crops_area:
-  name: Agriculture Permanent Crop
-  description: Selected features for Corine Category: permanent crops
-  endpoint: elements/area
-  filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
-
-pastures_area:
-  name: Agriculture Pasture
-  description: Selected features for Corine Category: pastures
-  endpoint: elements/area
-  filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
-
-forest_area:
-  name: Seminatural Land Forest
-  description: Selected features for Corine Category: forest
-  endpoint: elements/area
-  filter: (natural=wood or landuse=forest) and geometry:polygon
-
-shrub_area:
-  name: Seminatural Land Shrub
-  description: Selected features for Corine Category: shrubs
-  endpoint: elements/area
-  filter: (natural in (health, scrub, fell, tundra, shrubbery)) 
-    or (landuse=meadow) and geometry:polygon
-
-open_spaces_area:
-  name: Seminatural Land Open Space
-  description: Selected features for Corine Category: open spaces
-  endpoint: elements/area
-  filter: |
-  (natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse)) and geometry:polygon
-
-wetland_area:
-  name: Wetlands Wetlands  # TODO
-  description: Selected features for Corine Category: wetlands
-  endpoint: elements/area
-  filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
-
-water_area:
-  name: Water Water  # TODO
-  description: Selected features for Corine category: water (including waterways)
-  endpoint: elements/area
-  filter: |
-  (natural in (water, spring, hot_spring)) 
-    or (water in (lake, reservoir, pond, oxbow, basin)) 
-    or (waterway in (river, canal, stream, drain, ditch))
-    or man_made=pipeline or place=sea
-    and (type:point or type:way or geometry:polygon)
-
-waterway_len:
-  name: Water Waterway
-  description: Selected features for Corine category: waterway
-  endpoint: elements/lenght
-  filter: waterway in (river, canal, stream, drain, ditch) and type:way
-
-# TODO
-building_count:
-  name: artifical surfaces buildings
-  description: |
-    All features tagged with 'building=*' for Corine Category: buildings.
-  endpoint: elements/count
-  filter: building=* and geometry:polygon 
-
-# TODO
-highway_len:
-  name: artifical surfaces highways
-  description: |
-   All features tagged with 'highway=*' for Corine Category: highways.
-  endpoint: elements/length
-  filter: highway=* and type:way
-
-# TODO
-railway_len:
-  name: artifical surfaces railways
-  description: |
-   All features tagged with 'railway=*' for Corine Category: railways.
-  endpoint: elements/length
-  filter: railway=* and type:way
-
 minimal:
   name: Minimal
   description: A minimal layer definition for testing purposes
@@ -562,3 +477,89 @@ sweets_and_pasteries:
   description: Count of shops selling sweets and pasteries
   endpoint: elements/count
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
+
+# Land-Use Layers (Corine)
+arable_land_area:
+  name: Agriculture Arable Land
+  description: Selected features for Corine Category: arable land
+  endpoint: elements/area
+  filter: (landuse=farmland or crop=*) and type:polygon
+ 
+permanent_crops_area:
+  name: Agriculture Permanent Crop
+  description: Selected features for Corine Category: permanent crops
+  endpoint: elements/area
+  filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
+
+pastures_area:
+  name: Agriculture Pasture
+  description: Selected features for Corine Category: pastures
+  endpoint: elements/area
+  filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
+
+forest_area:
+  name: Seminatural Land Forest
+  description: Selected features for Corine Category: forest
+  endpoint: elements/area
+  filter: (natural=wood or landuse=forest) and geometry:polygon
+
+shrub_area:
+  name: Seminatural Land Shrub
+  description: Selected features for Corine Category: shrubs
+  endpoint: elements/area
+  filter: (natural in (health, scrub, fell, tundra, shrubbery)) 
+    or (landuse=meadow) and geometry:polygon
+
+open_spaces_area:
+  name: Seminatural Land Open Space
+  description: Selected features for Corine Category: open spaces
+  endpoint: elements/area
+  filter: |
+  (natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse)) and geometry:polygon
+
+wetland_area:
+  name: Wetlands Wetlands  # TODO
+  description: Selected features for Corine Category: wetlands
+  endpoint: elements/area
+  filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
+
+water_area:
+  name: Water Water  # TODO
+  description: Selected features for Corine category: water (including waterways)
+  endpoint: elements/area
+  filter: |
+  (natural in (water, spring, hot_spring)) 
+    or (water in (lake, reservoir, pond, oxbow, basin)) 
+    or (waterway in (river, canal, stream, drain, ditch))
+    or man_made=pipeline or place=sea
+    and (type:point or type:way or geometry:polygon)
+
+waterway_len:
+  name: Water Waterway
+  description: Selected features for Corine category: waterway
+  endpoint: elements/lenght
+  filter: waterway in (river, canal, stream, drain, ditch) and type:way
+
+# TODO
+building_count:
+  name: artifical surfaces buildings
+  description: |
+    All features tagged with 'building=*' for Corine Category: buildings.
+  endpoint: elements/count
+  filter: building=* and geometry:polygon 
+
+# TODO
+highway_len:
+  name: artifical surfaces highways
+  description: |
+   All features tagged with 'highway=*' for Corine Category: highways.
+  endpoint: elements/length
+  filter: highway=* and type:way
+
+# TODO
+railway_len:
+  name: artifical surfaces railways
+  description: |
+   All features tagged with 'railway=*' for Corine Category: railways.
+  endpoint: elements/length
+  filter: railway=* and type:way
