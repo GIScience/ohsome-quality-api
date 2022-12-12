@@ -3,86 +3,103 @@
 # Each layer is defined by ohsome API parameters.
 # https://docs.ohsome.org/ohsome-api/stable/
 
+## Indicators: TagsRatio (only for leaf type), MappingSaturation, Currentness
+
 building_count:
-  name: artifical surfaces buildings
+  name: Buildings CLC
   description: |
-    All features tagged with 'building=*' for Corine Category: buildings.
+    All features tagged with 'building=*', according to CLC Category "Buildings" (level 2) in Artifical Surfaces.
   endpoint: elements/count
   filter: building=* and geometry:polygon 
-#  ratio_filter: building=* and geometry:polygon
 
-highway_len:
-  name: artifical surfaces highways
+major_roads_length:
+  name: Major Roads Length
   description: |
-   All features tagged with 'highway=*' for Corine Category: highways.
+    The road network defined by all objects which hold the principal tags for
+    the road network and their link roads as defined in the OSM Wiki`:`
+    https://wiki.openstreetmap.org/wiki/Key:highway, according to CLC Category "Highways" (level 2) in Artifical Surfaces.
   endpoint: elements/length
-  filter: highway=* and type:way
+  filter: |
+    highway in (motorway, trunk, motorway_link, trunk_link, primary,
+    primary_link, secondary, secondary_link, tertiary, tertiary_link,
+    unclassified, residential) and type:way
 
-railway_len:
-  name: artifical surfaces railways
+railway_length:
+  name: Railways CLC
   description: |
-   All features tagged with 'railway=*' for Corine Category: railways.
+    Selection of OSM railways for CLC Category "Railways" (level 2) in Artifical Surfaces.
   endpoint: elements/length
-  filter: railway=* and type:way
- 
+  filter: |
+    railway in (rail, subway, tram, light_rail, monorail) and type:way
+
 arable_land_area:
-  name: agriculture arable land
+  name: Arable Land CLC
   description: |
-    Selected features for Corine Category: arable land
+    Selected features for CLC Category "Arable Land" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=farmland or crop=*) and type:polygon
  
 permanent_crops_area:
-  name: agriculture permanent crop
-  description: Selected features for Corine Category: permanent crops
+  name: Permanent Crops CLC
+  description: Selected features for CLC Category "Permanent Crops" (level 2) in Agriculture.
   endpoint: elements/area
   filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
 
 pastures_area:
-  name: agriculture pasture
-  description: Selected features for Corine Category: pastures
+  name: Pastures in Corine Land Cover
+  description: Selected features for CLC Category "Pastures" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
 
 forest_area:
-  name: seminatural land forest
-  description: Selected features for Corine Category: forest
+  name: Forests CLC
+  description: Selected features for CLC Category "Forests" (level 2) in Seminatural Land.
   endpoint: elements/area
-  filter: (natural=wood or landuse=forest) and geometry:polygon
+  filter: |
+    (natural=wood or landuse=forest) and geometry:polygon
+
+leaf_type:
+  name: Leaf Types of Forests
+  description: frequency of forests according to CLC Category "Forests" (level 2) tagged with Leaf Type.
+  endpoint: elements/area
+  filter: |
+    (natural=wood or landuse=forest) and geometry:polygon
+  ratio_filter: |
+    (natural=wood or landuse=forest) and
+    leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon 
 
 shrub_area:
-  name: seminatural land shrub
-  description: Selected features for Corine Category: shrubs
+  name: Shrubs CLC
+  description: Selected features for CLC Category "Shrubs" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: (natural in (health, scrub, fell, tundra, shrubbery)) 
     or (landuse=meadow) and geometry:polygon
 
 open_spaces_area:
-  name: seminatural land open space
-  description: Selected features for Corine Category: open spaces
+  name: Open Spaces CLC
+  description: Selected features for CLC Category "Open Spaces" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: |
-  (natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse)) and geometry:polygon
+    (natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse)) and geometry:polygon
 
 wetland_area:
-  name: wetlands wetlands
-  description: Selected features for Corine Category: wetlands
+  name: Wetlands CLC
+  description: Selected features for CLC Category "Wetlands" (level 1).
   endpoint: elements/area
   filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
 
 water_area:
-  name: water water
-  description: Selected features for Corine category: water (including waterways)
+  name: Water CLC
+  description: Selected features for CLC Category "Water" (level 1), excluding waterways.
   endpoint: elements/area
   filter: |
-  (natural in (water, spring, hot_spring)) 
+    (natural in (water, spring, hot_spring)) 
     or (water in (lake, reservoir, pond, oxbow, basin)) 
-    or (waterway in (river, canal, stream, drain, ditch))
-    or man_made=pipeline or place=sea
+    or place=sea
     and (type:point or type:way or geometry:polygon)
 
 waterway_len:
-  name: water waterway
-  description: Selected features for Corine category: waterway
+  name: Waterways CLC
+  description: Selected features for CLC Category "Waterways" (level 2) in Water.
   endpoint: elements/lenght
-  filter: waterway in (river, canal, stream, drain, ditch) and type:way
+  filter: man_made=pipeline or waterway in (river, canal, stream, drain, ditch) and type:way
