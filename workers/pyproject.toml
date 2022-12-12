@@ -22,23 +22,23 @@ secondary = true
 [tool.poetry.dependencies]
 python = ">=3.8,<3.10"  # `rasterstats` restricts Python version to below 3.10
 geojson = "^2.5.0"
-fastapi = "^0.68.0"
+fastapi = "^0.86.0"
 requests = "^2.25.0"
-matplotlib = "^3.2.2"
+matplotlib = "^3.6.2"
 dacite = "^1.6.0"
-PyYAML = "^5.4.1"
+PyYAML = "^6.0"
 toml = "^0.10.2"
 httpx = "^0.23.0"
 asyncpg = "^0.25.0"
 vcrpy = "^4.1.1"
 python-dateutil = "^2.8.2"
-Jinja2 = "^3.0.3"
-scipy = "^1.7.3"  # `scipy` requires Python >=3.7,<3.11
+Jinja2 = "^3.1.2"
+scipy = "^1.9.3"  # `scipy` requires Python >=3.7,<3.11
 rpy2 = "^3.4.5"
 rasterstats = "^0.16.0"  # Only works on Python below 3.10 (Depends on `rasterio`)
 pyproj = "^3.3.0"
 click = "^8.1.2"
-uvicorn = "^0.17.6"
+uvicorn = "^0.20.0"
 schema = "^0.7.5"
 building-completeness-model = {version = "^0.1.0rc3", source = "gistools-ohsome-machine-learning-models"}
 
