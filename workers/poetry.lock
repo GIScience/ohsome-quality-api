@@ -111,7 +111,7 @@ version = "0.1.0rc3"
 description = ""
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.8,<3.11"
 
 [package.dependencies]
 scikit-learn = "1.1.1"
@@ -1203,7 +1203,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"  # `rasterstats` restricts Python version to below 3.10
-content-hash = "c7cad5dfe5bebb87f3349f78e10c0244c896fb01dd2d9e1c4402a587936f5429"
+content-hash = "49058b3e9021002eaa8e3d3ef584805f9d24299c32d71d61afabd2cec7318229"
 
 [metadata.files]
 affine = [
@@ -1286,8 +1286,8 @@ black = [
     {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
 ]
 building-completeness-model = [
-    {file = "building-completeness-model-0.1.0rc3.tar.gz", hash = "sha256:07e85b77a6d81e5821a66db336ef38353c9874bacada1f22306005cd5636ea49"},
-    {file = "building_completeness_model-0.1.0rc3-py3-none-any.whl", hash = "sha256:d1d28e59699ce2b241669557784c093db39a94f553a0856f25215cce3716bcdc"},
+    {file = "building-completeness-model-0.1.0rc3.tar.gz", hash = "sha256:46f6225c38e3a3b7fa86ac5b0532fde858cca79353934954af8f418eebca90e6"},
+    {file = "building_completeness_model-0.1.0rc3-py3-none-any.whl", hash = "sha256:cf1d803636f620915c65b47f9d0755e1998f34b1337ede73d0debcdca67db5ca"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
