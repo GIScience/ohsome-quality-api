@@ -488,75 +488,73 @@ sweets_and_pasteries:
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
 
 # START: Land-Use Layers (Corine)
-arable_land_area:
+clc_arable_land_area:
   name: Arable Land CLC
   description: |
-    Selected features for CLC Category "Arable Land" (level 2) in Agriculture.
+    Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
   endpoint: elements/area
-  filter: (landuse=farmland or crop=*) and type:polygon
+  filter: (landuse=farmland or crop=*) and geometry:polygon
  
-permanent_crops_area:
+clc_permanent_crops_area:
   name: Permanent Crops CLC
-  description: Selected features for CLC Category "Permanent Crops" (level 2) in Agriculture.
+  description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
   endpoint: elements/area
   filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
 
-pastures_area:
+clc_pastures_area:
   name: Pastures in Corine Land Cover
-  description: Selected features for CLC Category "Pastures" (level 2) in Agriculture.
+  description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
 
-forest_area:
+clc_forest_area:
   name: Forests CLC
-  description: Selected features for CLC Category "Forests" (level 2) in Seminatural Land.
+  description: Selected features for Corine Land Cover Category "Forests" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: |
     (natural=wood or landuse=forest) and geometry:polygon
 
-leaf_type:
-  name: Leaf Types of Forests
-  description: frequency of forests according to CLC Category "Forests" (level 2) tagged with Leaf Type.
+clc_leaf_type:
+  name: Leaf Types of Forests CLC
+  description: frequency of forests according to Corine Land Cover Category "Forests" (level 2) tagged with Leaf Type.
   endpoint: elements/area
   filter: |
     (natural=wood or landuse=forest) and geometry:polygon
   ratio_filter: |
     (natural=wood or landuse=forest) and
-    leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon 
+    leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
 
-shrub_area:
+clc_shrub_area:
   name: Shrubs CLC
-  description: Selected features for CLC Category "Shrubs" (level 2) in Seminatural Land.
+  description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
   endpoint: elements/area
-  filter: (natural in (health, scrub, fell, tundra, shrubbery)) 
-    or (landuse=meadow) and geometry:polygon
+  filter: (natural in (scrub, fell, tundra, shrubbery) or landuse=meadow) and geometry:polygon
 
-open_spaces_area:
+clc_open_spaces_area:
   name: Open Spaces CLC
-  description: Selected features for CLC Category "Open Spaces" (level 2) in Seminatural Land.
+  description: Selected features for Corine Land Cover Category "Open Spaces" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: |
-    (natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse)) and geometry:polygon
+    natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
 
-wetland_area:
+clc_wetland_area:
   name: Wetlands CLC
-  description: Selected features for CLC Category "Wetlands" (level 1).
+  description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
   endpoint: elements/area
   filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
 
-water_area:
+clc_water_area:
   name: Water CLC
-  description: Selected features for CLC Category "Water" (level 1), excluding waterways.
+  description: Selected features for Corine Land Cover Category "Water" (level 1), excluding waterways.
   endpoint: elements/area
   filter: |
-    (natural in (water, spring, hot_spring)) 
-    or (water in (lake, reservoir, pond, oxbow, basin))
-    or place=sea
-    and (type:point or type:way or geometry:polygon)
+    (natural in (water, spring, hot_spring)
+    or water in (lake, reservoir, pond, oxbow, basin))
+    and geometry:polygon
 
-waterway_len:
+clc_waterway_len:
   name: Waterways CLC
-  description: Selected features for CLC Category "Waterways" (level 2) in Water.
+  description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
   endpoint: elements/lenght
-  filter: man_made=pipeline or waterway in (river, canal, stream, drain, ditch) and type:way
+  filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
 # END: Land-Use Layers (Corine)
