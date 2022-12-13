@@ -8,8 +8,8 @@ class FoodRelatedReport(BaseReport):
     def __init__(
         self,
         feature: Feature,
-        blocking_red: bool = None,
-        blocking_undefined: bool = None,
+        blocking_red: bool = True,
+        blocking_undefined: bool = True,
     ):
         super().__init__(
             indicator_layer=(
