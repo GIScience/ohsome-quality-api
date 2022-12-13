@@ -40,7 +40,7 @@ pyproj = "^3.3.0"
 click = "^8.1.2"
 uvicorn = "^0.20.0"
 schema = "^0.7.5"
-building-completeness-model = {version = "^0.1.0rc3", source = "gistools-ohsome-machine-learning-models"}
+building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models"}
 
 [tool.poetry.dev-dependencies]
 mypy = "0.930"
