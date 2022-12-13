@@ -45,7 +45,7 @@ Are you looking to add a new layer? Then please have a look at [docs/layer.md](/
 
 ## Development
 
-Please refer to [this document](docs/development_setup.md](/docs/development_setup.md) for a guide on how to setup OQT for development.
+Please refer to [this document](/docs/development_setup.md) for a guide on how to setup OQT for development.
 
 ## Components
 
