@@ -2,7 +2,8 @@
 FoodRelatedReport:
   name: Food Related Report
   description: |
-    This report shows the quality of food related POIs.
+    This report shows the quality of food related POIs. 
+    If one indicator shows bad quality or is undefined this report also shows bad quality or is undefined respectively.
   label_description:
     red: |
       The indicators show a bad quality.
