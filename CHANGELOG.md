@@ -6,7 +6,8 @@
 
 - fix wrong ratio_filter in layer `building_count` ([#457])
 - Reports with only undefined indicators are now labeled undefined too ([#456])
-- fix broken link to doc in README ([#466]
+- fix broken link to doc in README ([#466])
+- `FoodRelatedReport` now uses red & undefined blocking ([#468])
 
 ### New Features
 
@@ -21,6 +22,7 @@
 [#456]: https://github.com/GIScience/ohsome-quality-analyst/pull/456
 [#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
 [#466]: https://github.com/GIScience/ohsome-quality-analyst/pull/466
+[#468]: https://github.com/GIScience/ohsome-quality-analyst/pull/468
 
 
 ## 0.13.0
