@@ -50,6 +50,14 @@ major_roads_length:
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=* and name!=""
 
+railway_length:
+  name: Railways
+  description: |
+    Railway networks.
+  endpoint: elements/length
+  filter: |
+    railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
+
 amenities:
   name: Amenities
   description: All features with the amenities key.
@@ -171,6 +179,7 @@ jrc_road_count:
     highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
     and maxspeed=* and oneway=*
 
+# TODO: Remove this layer and use `railway_length` instead
 jrc_railway_length:
   name: JRC Railways Length
   description: |
@@ -477,3 +486,75 @@ sweets_and_pasteries:
   description: Count of shops selling sweets and pasteries
   endpoint: elements/count
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
+
+# START: Land-Use Layers (Corine)
+clc_arable_land_area:
+  name: Arable Land CLC
+  description: |
+    Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
+  endpoint: elements/area
+  filter: (landuse=farmland or crop=*) and geometry:polygon
+ 
+clc_permanent_crops_area:
+  name: Permanent Crops CLC
+  description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
+  endpoint: elements/area
+  filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
+
+clc_pastures_area:
+  name: Pastures in Corine Land Cover
+  description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
+  endpoint: elements/area
+  filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
+
+clc_forest_area:
+  name: Forests CLC
+  description: Selected features for Corine Land Cover Category "Forests" (level 2) in Seminatural Land.
+  endpoint: elements/area
+  filter: |
+    (natural=wood or landuse=forest) and geometry:polygon
+
+clc_leaf_type:
+  name: Leaf Types of Forests CLC
+  description: frequency of forests according to Corine Land Cover Category "Forests" (level 2) tagged with Leaf Type.
+  endpoint: elements/area
+  filter: |
+    (natural=wood or landuse=forest) and geometry:polygon
+  ratio_filter: |
+    (natural=wood or landuse=forest) and
+    leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
+
+clc_shrub_area:
+  name: Shrubs CLC
+  description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
+  endpoint: elements/area
+  filter: (natural in (scrub, fell, tundra, shrubbery) or landuse=meadow) and geometry:polygon
+
+clc_open_spaces_area:
+  name: Open Spaces CLC
+  description: Selected features for Corine Land Cover Category "Open Spaces" (level 2) in Seminatural Land.
+  endpoint: elements/area
+  filter: |
+    natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
+
+clc_wetland_area:
+  name: Wetlands CLC
+  description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
+  endpoint: elements/area
+  filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
+
+clc_water_area:
+  name: Water CLC
+  description: Selected features for Corine Land Cover Category "Water" (level 1), excluding waterways.
+  endpoint: elements/area
+  filter: |
+    (natural in (water, spring, hot_spring)
+    or water in (lake, reservoir, pond, oxbow, basin))
+    and geometry:polygon
+
+clc_waterway_len:
+  name: Waterways CLC
+  description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
+  endpoint: elements/lenght
+  filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
+# END: Land-Use Layers (Corine)
