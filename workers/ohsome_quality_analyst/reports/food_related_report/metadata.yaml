@@ -2,7 +2,9 @@
 FoodRelatedReport:
   name: Food Related Report
   description: |
-    This report shows the quality of food related POIs.
+    This report shows the quality of food related POIs. It uses red blocking as well as
+    undefined blocking, meaning a single undefined or red indicator leads to an
+    undefined or red report result.
   label_description:
     red: |
       The indicators show a bad quality.
