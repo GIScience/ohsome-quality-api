@@ -94,3 +94,17 @@ class TestBaseReport:
 
         report.combine_indicators()
         assert report.result.label != "undefined" and report.result.label != "red"
+
+    def test_all_indicators_undefined(self, feature, layer):
+        report = MinimalReport(feature, blocking_red=True)
+
+        # Mock indicator objects with a fixed result value
+        for _ in enumerate(report.indicator_layer):
+            indicator = Mock()
+            indicator.result = Mock()
+            indicator.result.class_ = None
+            indicator.result.html = "foo"
+            report.indicators.append(indicator)
+
+        report.combine_indicators()
+        assert report.result.label == "undefined" and report.result.class_ is None

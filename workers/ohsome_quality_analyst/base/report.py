@@ -116,15 +116,19 @@ class BaseReport(metaclass=ABCMeta):
                 self.result.description = self.metadata.label_description["red"]
                 return
 
-        self.result.class_ = round(
-            np.mean(
-                [
-                    i.result.class_
-                    for i in self.indicators
-                    if i.result.class_ is not None
-                ]
+        if all(i.result.class_ is None for i in self.indicators):
+            self.result.class_ = None
+            self.result.description = self.metadata.label_description["undefined"]
+        else:
+            self.result.class_ = round(
+                np.mean(
+                    [
+                        i.result.class_
+                        for i in self.indicators
+                        if i.result.class_ is not None
+                    ]
+                )
             )
-        )
 
         if self.result.class_ in (4, 5):
             self.result.description = self.metadata.label_description["green"]

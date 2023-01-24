@@ -107,9 +107,13 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
     try:
         resp.raise_for_status()
     except httpx.HTTPStatusError as error:
-        raise OhsomeApiError(
-            "Querying the ohsome API failed! " + error.response.json()["message"]
-        ) from error
+        # TODO: Make this more general if issue is closed
+        # https://github.com/GIScience/ohsome-api/issues/288
+        try:
+            message = error.response.json()["message"]
+        except KeyError:
+            message = error.response.json()["error"]
+        raise OhsomeApiError("Querying the ohsome API failed! " + message) from error
     try:
         return geojson.loads(resp.content)
     except JSONDecodeError as error:
