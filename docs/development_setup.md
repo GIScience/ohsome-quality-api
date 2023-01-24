@@ -59,7 +59,7 @@ Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
 
 ### Requirements
 
-- Python: ≥ 3.8 and < 3.10
+- Python: ≥ 3.8
 - Poetry: ≥ 1.1
 - R: ≥ 4.0
 
