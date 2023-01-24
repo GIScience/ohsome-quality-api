@@ -37,7 +37,7 @@ async def _(
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     count_latest_contributions: Optional[bool] = False,
-    contributionType: Optional[list] = None,
+    contribution_type: Optional[list] = None,
 ) -> dict:
     """Query ohsome API with given Layer definition and arguments.
 
@@ -156,6 +156,7 @@ def build_data_dict(
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
     ratio: Optional[bool] = False,
+    contribution_type: Optional[list] = None,
 ) -> dict:
     """Build data dictionary for ohsome API query.
 
@@ -173,6 +174,8 @@ def build_data_dict(
         data["time"] = time
     if ratio:
         data["filter2"] = layer.ratio_filter
+    if contribution_type is not None:
+        data["contributionType"] = contribution_type
     return data
 
 
