@@ -457,12 +457,6 @@ restaurants:
   endpoint: elements/count
   filter: amenity=restaurant or amenity=cafe
 
-supermarkets:
-  name: Supermarkets
-  description: Count of supermarkets
-  endpoint: elements/count
-  filter: shop=supermarket
-
 convenience_stores:
   name: Convenience stores
   description: Count of convenience stores
