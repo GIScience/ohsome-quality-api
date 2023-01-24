@@ -39,6 +39,7 @@
 [#466]: https://github.com/GIScience/ohsome-quality-analyst/pull/466
 [#468]: https://github.com/GIScience/ohsome-quality-analyst/pull/468
 
+
 ## 0.13.0
 
 ### Bug Fixes
