@@ -54,7 +54,7 @@ async def _(
             OSM data.
     """
     url = build_url(layer, ratio, group_by_boundary, count_latest_contributions)
-    data = build_data_dict(layer, bpolys, time, ratio)
+    data = build_data_dict(layer, bpolys, time, ratio, contribution_type)
     response = await query_ohsome_api(url, data)
     return validate_query_results(response, ratio, group_by_boundary)
 
