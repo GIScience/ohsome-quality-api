@@ -55,6 +55,8 @@ class MappingSaturation(BaseIndicator):
         self.upper_threshold = 0.97  # Threshold derived from Gröchenig et al.
         # TODO: What is a good lower threshold?
         self.lower_threshold = 0.30
+        self.above_one_lower_threshold = 1.3
+        self.above_one_upper_threshold = 1.5
 
         # Attributes needed for result determination
         self.best_fit: Optional[models.BaseStatModel] = None
@@ -124,12 +126,16 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.lower_threshold >= self.result.value > 0:
             self.result.class_ = 1
-        else:
-            raise ValueError(
-                "Result value (saturation) is an unexpected value: {}".format(
-                    self.result.value
-                )
-            )
+        elif self.above_one_lower_threshold >= self.result.value > 1:
+            self.result.class_ = 5
+        elif (
+            self.above_one_upper_threshold
+            >= self.result.value
+            > self.above_one_lower_threshold
+        ):
+            self.result.class_ = 3
+        elif self.result.value > self.above_one_upper_threshold:
+            self.result.class_ = 1
         description = Template(self.metadata.result_description).substitute(
             saturation=round(self.result.value * 100, 2)
         )
