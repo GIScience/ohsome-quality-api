@@ -37,7 +37,7 @@ async def _(
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     count_latest_contributions: Optional[bool] = False,
-    contribution_type: Optional[list] = None,
+    contribution_type: Optional[str] = None,
 ) -> dict:
     """Query ohsome API with given Layer definition and arguments.
 
@@ -52,6 +52,8 @@ async def _(
         group_by_boundary: Group by boundary.
         count_latest_contributions:  Count of the latest contributions provided to the
             OSM data.
+        contribution_type: filters contributions by contribution type: ‘creation’,
+            ‘deletion’, ‘tagChange’, ‘geometryChange’ or a combination of them.
     """
     url = build_url(layer, ratio, group_by_boundary, count_latest_contributions)
     data = build_data_dict(layer, bpolys, time, ratio, contribution_type)
@@ -156,7 +158,7 @@ def build_data_dict(
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
     ratio: Optional[bool] = False,
-    contribution_type: Optional[list] = None,
+    contribution_type: Optional[str] = None,
 ) -> dict:
     """Build data dictionary for ohsome API query.
 
