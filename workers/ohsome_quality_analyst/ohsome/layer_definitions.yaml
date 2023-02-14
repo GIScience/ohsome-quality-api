@@ -563,6 +563,6 @@ clc_water_area:
 clc_waterway_len:
   name: Waterways CLC
   description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
-  endpoint: elements/lenght
+  endpoint: elements/length
   filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
 # END: Land-Use Layers (Corine)
