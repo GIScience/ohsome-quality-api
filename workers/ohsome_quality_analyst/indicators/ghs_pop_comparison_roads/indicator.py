@@ -23,7 +23,7 @@ class GhsPopComparisonRoads(BaseIndicator):
         self,
         layer: Layer,
         feature: Feature,
-        thresholds: Optional[Tuple[float, float, float, float]] = None,
+        thresholds: Optional[Tuple[dict, dict, dict, dict]] = None,
     ) -> None:
         super().__init__(layer=layer, feature=feature, thresholds=thresholds)
         # Those attributes will be set during lifecycle of the object.
@@ -39,14 +39,14 @@ class GhsPopComparisonRoads(BaseIndicator):
     def green_threshold_function(self, pop_per_sqkm) -> float:
         """Return road density threshold for green label."""
         if pop_per_sqkm < 5000:
-            return pop_per_sqkm / 500
+            return pop_per_sqkm / self.thresholds[2]["a"]
         else:
             return 10
 
     def yellow_threshold_function(self, pop_per_sqkm) -> float:
         """Return road density threshold for yellow label."""
         if pop_per_sqkm < 5000:
-            return pop_per_sqkm / 1000
+            return pop_per_sqkm / self.thresholds[0]["a"]
         else:
             return 5
 

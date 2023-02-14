@@ -23,7 +23,7 @@ class GhsPopComparisonBuildings(BaseIndicator):
         self,
         layer: Layer,
         feature: Feature,
-        thresholds: Optional[Tuple[float, float, float, float]] = None,
+        thresholds: Optional[Tuple[dict, dict, dict, dict]] = None,
     ) -> None:
         super().__init__(layer=layer, feature=feature, thresholds=thresholds)
         # Those attributes will be set during lifecycle of the object.
@@ -40,13 +40,13 @@ class GhsPopComparisonBuildings(BaseIndicator):
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
-        return 5.0 * np.sqrt(pop_per_sqkm)
+        return self.thresholds[2]["a"] * np.sqrt(pop_per_sqkm)
 
     def yellow_threshold_function(self, pop_per_sqkm) -> float:
         # TODO: Add docstring
         # TODO: adjust threshold functions
         # more precise values? maybe as fraction of the threshold functions?
-        return 0.75 * np.sqrt(pop_per_sqkm)
+        return self.thresholds[0]["a"] * np.sqrt(pop_per_sqkm)
 
     async def preprocess(self) -> None:
         raster = get_raster_dataset("GHS_POP_R2019A")
