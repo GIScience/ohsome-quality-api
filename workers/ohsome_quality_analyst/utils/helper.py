@@ -4,10 +4,10 @@ import importlib
 import json
 import logging
 import os
-import pathlib
 import pkgutil
 import re
 from datetime import date, datetime
+from pathlib import Path
 from typing import Generator, Union
 
 import geojson
@@ -89,7 +89,7 @@ def write_geojson(
 
     If path does not exist it will be created.
     """
-    outfile = pathlib.Path(outfile)
+    outfile = Path(outfile)
     outfile.parent.mkdir(parents=True, exist_ok=True)
     with open(outfile, "w") as file:
         geojson.dump(
@@ -165,3 +165,8 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
         else:
             output.append(val)
     return output
+
+
+def get_project_root() -> Path:
+    """Get root of the Python project."""
+    return Path(__file__).resolve().parent.parent.parent.resolve()

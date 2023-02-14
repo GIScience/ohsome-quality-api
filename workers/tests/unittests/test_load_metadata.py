@@ -19,7 +19,7 @@ class TestReadMetadata(unittest.TestCase):
                         "undefined": str,
                     },
                     "result_description": str,
-                    "layer-thresholds": [dict],
+                    "layer-thresholds": dict,
                 }
             }
         )

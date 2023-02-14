@@ -187,6 +187,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "bpolys": self.feature,
             "layer": {
                 "name": "foo",
+                "key": "foo",
                 "description": "",
                 "data": {
                     "result": [
@@ -205,6 +206,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "bpolys": self.feature,
             "layer": {
                 "name": "foo",
+                "key": "foo",
                 "description": "",
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },

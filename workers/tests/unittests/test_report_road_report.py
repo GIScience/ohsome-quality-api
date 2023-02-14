@@ -12,14 +12,13 @@ class TestReportRoadReport(unittest.TestCase):
 
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         report = RoadReport(geometry)
-        report.set_indicator_layer()
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_layer:
             indicator = Mock()
             indicator.result = Mock()
-            indicator.result.value = 0.5
             indicator.result.html = "foo"
+            indicator.result.class_ = 1
             report.indicators.append(indicator)
 
         report.combine_indicators()
@@ -28,7 +27,7 @@ class TestReportRoadReport(unittest.TestCase):
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
         self.assertIsNotNone(report.result.html)
-        self.assertEqual(report.result.value, 0.5)
+        self.assertEqual(report.result.class_, 1)
 
 
 if __name__ == "__main__":

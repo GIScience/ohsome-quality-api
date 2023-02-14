@@ -1,12 +1,58 @@
 # Changelog
 
-## Current Main
+## 0.14.0
+
+### Bug Fixes
+
+- fix wrong ratio_filter in layer `building_count` ([#457])
+- Reports with only undefined indicators are now labeled undefined too ([#456])
+- fix broken link to doc in README ([#466])
+- `FoodRelatedReport` now uses red & undefined blocking ([#468])
+
+### New Features
+
+- add new layers `fire_station_count` and `hospitals_count` ([#442])
+- Add new layers related to food environment ([#455])
+- Add new report `FoodRelatedReport` ([#455])
+- add new layers `schools`, `kindergartens`, `clinics`, `doctors`, `bus_stops`, `tram_stops`, `subway_stations`, `marketsplaces`. `parks`, `forests`, `fitness_centres` and `supermarkets` ([#444])
+
+### Other Changes
+
+- remove upper Python version requirement limitation. Minimum Python version is 3.8. ([#465])
+- update dependencies ([#465])
+
+[#442]: https://github.com/GIScience/ohsome-quality-analyst/pull/442
+[#444]: https://github.com/GIScience/ohsome-quality-analyst/pull/444
+[#455]: https://github.com/GIScience/ohsome-quality-analyst/pull/455
+[#456]: https://github.com/GIScience/ohsome-quality-analyst/pull/456
+[#457]: https://github.com/GIScience/ohsome-quality-analyst/pull/457
+[#465]: https://github.com/GIScience/ohsome-quality-analyst/pull/465
+[#466]: https://github.com/GIScience/ohsome-quality-analyst/pull/466
+[#468]: https://github.com/GIScience/ohsome-quality-analyst/pull/468
+
+
+## 0.13.0
 
 ### Bug Fixes
 
 - Fix patch colorization of Currentness indicator plot ([#432])
 - Rename duplicated layer name `Major Roads` to `Major Roads Count` and `Major Roads Length`. Results are stored in database using the layer name as part of the primary key. ([#438])
+- Reports take result class of indicators into account ([#372] [#369])
 
+### New features
+
+- Substitute result values of reports by introducing a result class value ([#372])
+
+### Breaking Changes
+
+- Change default data directory to be in workers directory ([#312])
+
+### Other Changes
+
+- Move example rasters of data directory to test fixtures ([#312])
+
+[#312]: https://github.com/GIScience/ohsome-quality-analyst/pull/312
+[#372]: https://github.com/GIScience/ohsome-quality-analyst/pull/372
 [#432]: https://github.com/GIScience/ohsome-quality-analyst/pull/432
 [#438]: https://github.com/GIScience/ohsome-quality-analyst/pull/438
 

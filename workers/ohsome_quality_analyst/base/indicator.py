@@ -87,9 +87,9 @@ class BaseIndicator(metaclass=ABCMeta):
         layer_thresholds = metadata.pop("layer-thresholds")
         if thresholds is not None:
             self.thresholds = thresholds
-        elif layer_thresholds[layer.key] is not None:
+        elif layer.key in layer_thresholds.keys():
             self.thresholds = layer_thresholds[layer.key]
-        else:
+        if hasattr(self, "thresholds") is False or self.thresholds is None:
             self.thresholds = layer_thresholds["default"]
 
         self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)

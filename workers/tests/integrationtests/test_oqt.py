@@ -96,7 +96,7 @@ class TestOqt(unittest.TestCase):
         )
         report = asyncio.run(oqt.create_report(parameters))
         self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
@@ -108,7 +108,7 @@ class TestOqt(unittest.TestCase):
         )
         report = asyncio.run(oqt.create_report(parameters))
         self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
@@ -121,7 +121,7 @@ class TestOqt(unittest.TestCase):
         )
         report = asyncio.run(oqt.create_report(parameters))
         self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
@@ -134,7 +134,7 @@ class TestOqt(unittest.TestCase):
         )
         report = asyncio.run(oqt.create_report(parameters))
         self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.value)
+        self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
     def test_create_report_not_implemented(self):

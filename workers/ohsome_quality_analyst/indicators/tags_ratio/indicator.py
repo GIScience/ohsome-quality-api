@@ -42,6 +42,7 @@ class TagsRatio(BaseIndicator):
         # self.result.value (ratio) can be of type float, NaN if no features of filter1
         # are in the region or None if the layer has no filter2
         if self.result.value == "NaN" or self.result.value is None:
+            self.result.value = None
             return
         description = Template(self.metadata.result_description).substitute(
             result=round(self.result.value, 1),

@@ -1,19 +1,17 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.multilevel_currentness.report import (
-    MultilevelCurrentness,
-)
+from ohsome_quality_analyst.reports.food_related_report.report import FoodRelatedReport
 
 from .utils import get_geojson_fixture
 
 
-class TestReportMultilevelCurrentness(unittest.TestCase):
+class TestReportFoodRelatedReport(unittest.TestCase):
     # TODO: Test case for indicator.result undefined
     def test_combine_indicators_mean(self):
 
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        report = MultilevelCurrentness(geometry)
+        report = FoodRelatedReport(geometry)
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_layer:

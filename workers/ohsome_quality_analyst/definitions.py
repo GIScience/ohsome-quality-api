@@ -231,6 +231,6 @@ def get_valid_indicators(layer_key: str) -> list:
     metadata = load_metadata("indicators")
     valid_indicators = []
     for indicator_key, metadata_ in metadata.items():
-        if any(layer_key in metadata_["layer-thresholds"].keys()):
+        if layer_key in metadata_["layer-thresholds"].keys():
             valid_indicators.append(indicator_key)
     return valid_indicators

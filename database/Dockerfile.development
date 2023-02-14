@@ -5,7 +5,10 @@ FROM postgis/postgis:10-2.5
 # If False additional data for development will be downloaded.
 ARG OQT_TEST_DB
 
-RUN  apt-get update \
+# The next line is necessary for Postgres 10 which is not supported by the pgdg apt repositories anymore.
+# Can be removed when updating.
+RUN rm /etc/apt/sources.list.d/pgdg.list
+RUN apt-get update \
   && apt-get install -y wget \
   && rm -rf /var/lib/apt/lists/*
 
