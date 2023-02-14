@@ -78,8 +78,8 @@ class TagsRatio(BaseIndicator):
         ax = fig.add_subplot()
 
         ax.set_title(
-            "Ratio between all features and the ones"
-            " with \n {} tagged".format(self.layer.ratio_description)
+            "Ratio between all features and the ones "
+            "tagged with:\n{} ".format(self.layer.ratio_description)
         )
 
         size = 0.3  # Width of the pie
