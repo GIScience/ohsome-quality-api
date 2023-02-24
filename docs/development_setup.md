@@ -3,7 +3,7 @@
 To run all components (OQT/API, Database, Website) in Docker containers simply run:
 
 ```bash
-docker-compose up -d
+docker compose up --detach
 ```
 
 After all services are up they are available under:
@@ -20,7 +20,7 @@ Please continue reading for more information on each one of those services. If r
 A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (E.g. SHDI) for those regions. To build and run an already configured image run:
 
 ```bash
-docker-compose up -d oqt-database
+docker compose up --detach oqt-database
 ```
 
 During building of the database Docker image data for development purposes is downloaded. When the database container is running for the first time it takes a few seconds until the database is initialized and ready to accept connections.
@@ -30,15 +30,15 @@ To reinitialize or update the database make sure to delete the volume and rebuil
 
 ```bash
 # Make sure that your git is up2date, e.g. git pull
-docker-compose down --remove-orphans --volumes
-docker-compose up -d --force-recreate --build oqt-database
+docker compose down --remove-orphans --volumes
+docker compose up --detach --force-recreate --build oqt-database
 ```
 
 To avoid using the cache of Docker run:
 
 ```bash
-docker-compose build --no-cache
-docker-compose up -d
+docker compose build --no-cache oqt-database
+docker compose up --detach oqt-database
 ```
 
 > If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory.
