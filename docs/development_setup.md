@@ -20,25 +20,25 @@ Please continue reading for more information on each one of those services. If r
 A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (E.g. SHDI) for those regions. To build and run an already configured image run:
 
 ```bash
-docker compose up --detach oqt-database
+docker compose up --detach database
 ```
 
 During building of the database Docker image data for development purposes is downloaded. When the database container is running for the first time it takes a few seconds until the database is initialized and ready to accept connections.
-Check the progress with `docker logs oqt-database`.
+Check the progress with `docker logs database`.
 
 To reinitialize or update the database make sure to delete the volume and rebuild the image. This will delete all data in the database:
 
 ```bash
 # Make sure that your git is up2date, e.g. git pull
 docker compose down --remove-orphans --volumes
-docker compose up --detach --force-recreate --build oqt-database
+docker compose up --detach --force-recreate --build database
 ```
 
 To avoid using the cache of Docker run:
 
 ```bash
-docker compose build --no-cache oqt-database
-docker compose up --detach oqt-database
+docker compose build --no-cache database
+docker compose up --detach database
 ```
 
 > If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory.
@@ -100,7 +100,7 @@ oqt --help
 ##### Start the API using Docker:
 
 ```bash
-docker-compose up -d oqt-workers
+docker-compose up -d workers
 ```
 
 
