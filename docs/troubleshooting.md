@@ -38,7 +38,7 @@ Fedora/Red Hat: `sudo dnf install blas-devel lapack-devel`
 It's best to use WSL2 (https://docs.microsoft.com/en-us/windows/wsl/install-win10). Make sure to have WSL2 installed, not WSL.
 
 Building the database using the Windows command line usually fails, as the files are written for Linux. A simple workaround is to install the app `Ubuntu 20.04 LTS` from the Windows store and run the command for building the database within this app. 
-If the building of the database still fails, this usually happens as windows changes file endings. Open the file `\ohsome-quality-analyst\database\init_db.development\schema.dev.sh` in an editor and change the format of line endings to UNIX (LF) (Using Notepad++: `Edit` --> `EOL Conversion` --> `Unix (LF)`).
+If the building of the database still fails, this usually happens as windows changes file endings. Open the file `\ohsome-quality-analyst\database\development\schema.dev.sh` in an editor and change the format of line endings to UNIX (LF) (Using Notepad++: `Edit` --> `EOL Conversion` --> `Unix (LF)`).
 
 
 ### Pre commit: ImportError: DLL load failed while importing \_sqlite3: The specified module could not be found.
