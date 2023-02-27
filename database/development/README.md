@@ -6,7 +6,7 @@ A minimal database setup for development is provided utilizing Docker and SQL du
 the production database, which will be downloaded during building of the image.
 
 For more details please refer to the
-[development setup documentation](docs/development-setup.md).
+[development setup documentation](/docs/development_setup.md).
 
 ## Database for Running Tests
 
