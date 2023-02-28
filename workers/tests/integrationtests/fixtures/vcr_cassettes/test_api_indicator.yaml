@@ -1,62 +1,5 @@
 interactions:
 - request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1367'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
-      \   \"value\" : 930.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Mon, 11 Jul 2022 08:12:30 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.41 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
     body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B8.573519%2C+49.415844%5D%2C+%5B8.573125%2C+49.418096%5D%2C+%5B8.573602%2C+49.419967%5D%2C+%5B8.573137%2C+49.423648%5D%2C+%5B8.57776%2C+49.42532%5D%2C+%5B8.579572%2C+49.426242%5D%2C+%5B8.582888%2C+49.426469%5D%2C+%5B8.592864%2C+49.428812%5D%2C+%5B8.611134%2C+49.425455%5D%2C+%5B8.628308%2C+49.442962%5D%2C+%5B8.637725%2C+49.440277%5D%2C+%5B8.647106%2C+49.437602%5D%2C+%5B8.707905%2C+49.446383%5D%2C+%5B8.716206%2C+49.451763%5D%2C+%5B8.724684%2C+49.448596%5D%2C+%5B8.743338%2C+49.446934%5D%2C+%5B8.745999%2C+49.45398%5D%2C+%5B8.741644%2C+49.457488%5D%2C+%5B8.752892%2C+49.459332%5D%2C+%5B8.767943%2C+49.454273%5D%2C+%5B8.762008%2C+49.449545%5D%2C+%5B8.766739%2C+49.438141%5D%2C+%5B8.788416%2C+49.431047%5D%2C+%5B8.789941%2C+49.416687%5D%2C+%5B8.793216%2C+49.41046%5D%2C+%5B8.791873%2C+49.403912%5D%2C+%5B8.787115%2C+49.401839%5D%2C+%5B8.777999%2C+49.401612%5D%2C+%5B8.773679%2C+49.390183%5D%2C+%5B8.769462%2C+49.387665%5D%2C+%5B8.763519%2C+49.387265%5D%2C+%5B8.767844%2C+49.379545%5D%2C+%5B8.75502%2C+49.377409%5D%2C+%5B8.752547%2C+49.376444%5D%2C+%5B8.750183%2C+49.375517%5D%2C+%5B8.749349%2C+49.373812%5D%2C+%5B8.740263%2C+49.374336%5D%2C+%5B8.73117%2C+49.372358%5D%2C+%5B8.725257%2C+49.37439%5D%2C+%5B8.725259%2C+49.371116%5D%2C+%5B8.729116%2C+49.36789%5D%2C+%5B8.725838%2C+49.360442%5D%2C+%5B8.722815%2C+49.357364%5D%2C+%5B8.712037%2C+49.35558%5D%2C+%5B8.67493%2C+49.360645%5D%2C+%5B8.672847%2C+49.358114%5D%2C+%5B8.665655%2C+49.357579%5D%2C+%5B8.66451%2C+49.354379%5D%2C+%5B8.662033%2C+49.35426%5D%2C+%5B8.651996%2C+49.353727%5D%2C+%5B8.657231%2C+49.361494%5D%2C+%5B8.646111%2C+49.369879%5D%2C+%5B8.639986%2C+49.368719%5D%2C+%5B8.637725%2C+49.362532%5D%2C+%5B8.634015%2C+49.352379%5D%2C+%5B8.622614%2C+49.353352%5D%2C+%5B8.622976%2C+49.359493%5D%2C+%5B8.6024%2C+49.366157%5D%2C+%5B8.607315%2C+49.376967%5D%2C+%5B8.612846%2C+49.378247%5D%2C+%5B8.617598%2C+49.379362%5D%2C+%5B8.6324%2C+49.38678%5D%2C+%5B8.637725%2C+49.386869%5D%2C+%5B8.641426%2C+49.38693%5D%2C+%5B8.646667%2C+49.389265%5D%2C+%5B8.643391%2C+49.392889%5D%2C+%5B8.637725%2C+49.393259%5D%2C+%5B8.635895%2C+49.393737%5D%2C+%5B8.630921%2C+49.412538%5D%2C+%5B8.611559%2C+49.40539%5D%2C+%5B8.601979%2C+49.409237%5D%2C+%5B8.577429%2C+49.412229%5D%2C+%5B8.573519%2C+49.415844%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
     headers:
       accept:
@@ -78,8 +21,8 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.6.3\",\n  \"result\" : [ {\n    \"timestamp\" : \"2022-07-03T20:00:00Z\",\n
-      \   \"value\" : 30446.0\n  } ]\n}"
+      \"1.8.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-02-21T12:00:00Z\",\n
+      \   \"value\" : 30532.0\n  } ]\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -100,11 +43,11 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 11 Jul 2022 08:12:30 GMT
+      - Tue, 28 Feb 2023 09:29:10 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
-      - Apache/2.4.41 (Ubuntu)
+      - Apache/2.4.52 (Ubuntu)
       Strict-Transport-Security:
       - max-age=63072000; includeSubdomains;
       Transfer-Encoding:
@@ -113,4 +56,1499 @@ interactions:
       - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"name": "Minimal", "layerKey": "minimal", "dataset": "regions", "featureId":
+      "3", "fidField": "ogc_fid"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '105'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=Heidelberg&fidField=name
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"name": "Minimal", "layerKey": "minimal", "dataset": "regions", "featureId":
+      "Heidelberg", "fidField": "name"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '111'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"name": "Minimal", "layerKey": "minimal", "dataset": "regions", "featureId":
+      "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '82'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=foo&featureId=3
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["query","dataset"],"msg":"value
+      is not a valid enumeration member; permitted: ''regions'', ''mapaction_cesdrr_countries''","type":"type_error.enum","ctx":{"enum_values":["regions","mapaction_cesdrr_countries"]}}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '282'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"name": "Minimal", "layerKey": "minimal", "dataset": "foo", "featureId":
+      "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '78'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","featureId"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","dataset"],"msg":"value
+      is not a valid enumeration member; permitted: ''regions'', ''mapaction_cesdrr_countries''","type":"type_error.enum","ctx":{"enum_values":["regions","mapaction_cesdrr_countries"]}},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","layer"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","name"],"msg":"Computing
+      an Indicator for a Layer with data attached is only supported for the Mapping
+      Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","featureId"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","layerKey"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '1127'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&flatten=False
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&flatten=True
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata.name": "Minimal",
+      "metadata.description": "An minimal Indicator for testing purposes.\n", "layer.key":
+      "minimal", "layer.name": "Minimal", "layer.description": "A minimal layer definition
+      for testing purposes", "result.description": "Some description of the result.\nGood
+      data quality.\n", "result.timestamp_oqt": "2023-02-28T09:28:58.548032+00:00",
+      "result.timestamp_osm": "2023-02-21T12:00:00+00:00", "result.value": 1.0, "result.label":
+      "undefined", "result.class": null}}'
+    headers:
+      content-length:
+      - '2416'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&includeData=False
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&includeData=True
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null},
+      "data": {"count": 30532.0}}}'
+    headers:
+      content-length:
+      - '2403'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid&includeHtml=False
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid&includeHtml=True
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "html": "<div class=\"oqtSection oqtSection-flex\">\n    <div
+      class=\"graphSection indicator-graph\"><?xml version=\"1.0\" encoding=\"utf-8\"
+      standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg
+      xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"288pt\" height=\"288pt\"
+      viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
+      <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
+      xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-02-28T10:29:00.284828</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
+      butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
+      d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
+      id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
+      34.56 \n\" clip-path=\"url(#paf30913c1d)\" style=\"fill: none; stroke: #ffffff;
+      stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
+      id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
+      \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
+      The creation of the Indicator was unsuccessful. -->\n    <g transform=\"translate(29.675781
+      148.199375) scale(0.1 -0.1)\">\n     <defs>\n      <path id=\"DejaVuSans-54\"
+      d=\"M -19 4666 \nL 3928 4666 \nL 3928 4134 \nL 2272 4134 \nL 2272 0 \nL 1638
+      0 \nL 1638 4134 \nL -19 4134 \nL -19 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-68\" d=\"M 3513 2113 \nL 3513 0 \nL 2938 0 \nL 2938 2094 \nQ
+      2938 2591 2744 2837 \nQ 2550 3084 2163 3084 \nQ 1697 3084 1428 2787 \nQ 1159
+      2491 1159 1978 \nL 1159 0 \nL 581 0 \nL 581 4863 \nL 1159 4863 \nL 1159 2956
+      \nQ 1366 3272 1645 3428 \nQ 1925 3584 2291 3584 \nQ 2894 3584 3203 3211 \nQ
+      3513 2838 3513 2113 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-65\"
+      d=\"M 3597 1894 \nL 3597 1613 \nL 953 1613 \nQ 991 1019 1311 708 \nQ 1631 397
+      2203 397 \nQ 2534 397 2845 478 \nQ 3156 559 3463 722 \nL 3463 178 \nQ 3153 47
+      2828 -22 \nQ 2503 -91 2169 -91 \nQ 1331 -91 842 396 \nQ 353 884 353 1716 \nQ
+      353 2575 817 3079 \nQ 1281 3584 2069 3584 \nQ 2775 3584 3186 3129 \nQ 3597 2675
+      3597 1894 \nz\nM 3022 2063 \nQ 3016 2534 2758 2815 \nQ 2500 3097 2075 3097 \nQ
+      1594 3097 1305 2825 \nQ 1016 2553 972 2059 \nL 3022 2063 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-20\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-63\"
+      d=\"M 3122 3366 \nL 3122 2828 \nQ 2878 2963 2633 3030 \nQ 2388 3097 2138 3097
+      \nQ 1578 3097 1268 2742 \nQ 959 2388 959 1747 \nQ 959 1106 1268 751 \nQ 1578
+      397 2138 397 \nQ 2388 397 2633 464 \nQ 2878 531 3122 666 \nL 3122 134 \nQ 2881
+      22 2623 -34 \nQ 2366 -91 2075 -91 \nQ 1284 -91 818 406 \nQ 353 903 353 1747
+      \nQ 353 2603 823 3093 \nQ 1294 3584 2113 3584 \nQ 2378 3584 2631 3529 \nQ 2884
+      3475 3122 3366 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-72\"
+      d=\"M 2631 2963 \nQ 2534 3019 2420 3045 \nQ 2306 3072 2169 3072 \nQ 1681 3072
+      1420 2755 \nQ 1159 2438 1159 1844 \nL 1159 0 \nL 581 0 \nL 581 3500 \nL 1159
+      3500 \nL 1159 2956 \nQ 1341 3275 1631 3429 \nQ 1922 3584 2338 3584 \nQ 2397
+      3584 2469 3576 \nQ 2541 3569 2628 3553 \nL 2631 2963 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-61\" d=\"M 2194 1759 \nQ 1497 1759 1228 1600 \nQ 959 1441 959
+      1056 \nQ 959 750 1161 570 \nQ 1363 391 1709 391 \nQ 2188 391 2477 730 \nQ 2766
+      1069 2766 1631 \nL 2766 1759 \nL 2194 1759 \nz\nM 3341 1997 \nL 3341 0 \nL 2766
+      0 \nL 2766 531 \nQ 2569 213 2275 61 \nQ 1981 -91 1556 -91 \nQ 1019 -91 701 211
+      \nQ 384 513 384 1019 \nQ 384 1609 779 1909 \nQ 1175 2209 1959 2209 \nL 2766
+      2209 \nL 2766 2266 \nQ 2766 2663 2505 2880 \nQ 2244 3097 1772 3097 \nQ 1472
+      3097 1187 3025 \nQ 903 2953 641 2809 \nL 641 3341 \nQ 956 3463 1253 3523 \nQ
+      1550 3584 1831 3584 \nQ 2591 3584 2966 3190 \nQ 3341 2797 3341 1997 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-74\" d=\"M 1172
+      4494 \nL 1172 3500 \nL 2356 3500 \nL 2356 3053 \nL 1172 3053 \nL 1172 1153 \nQ
+      1172 725 1289 603 \nQ 1406 481 1766 481 \nL 2356 481 \nL 2356 0 \nL 1766 0 \nQ
+      1100 0 847 248 \nQ 594 497 594 1153 \nL 594 3053 \nL 172 3053 \nL 172 3500 \nL
+      594 3500 \nL 594 4494 \nL 1172 4494 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-69\" d=\"M 603 3500 \nL 1178 3500 \nL 1178 0 \nL 603 0 \nL 603
+      3500 \nz\nM 603 4863 \nL 1178 4863 \nL 1178 4134 \nL 603 4134 \nL 603 4863 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6f\" d=\"M 1959
+      3097 \nQ 1497 3097 1228 2736 \nQ 959 2375 959 1747 \nQ 959 1119 1226 758 \nQ
+      1494 397 1959 397 \nQ 2419 397 2687 759 \nQ 2956 1122 2956 1747 \nQ 2956 2369
+      2687 2733 \nQ 2419 3097 1959 3097 \nz\nM 1959 3584 \nQ 2709 3584 3137 3096 \nQ
+      3566 2609 3566 1747 \nQ 3566 888 3137 398 \nQ 2709 -91 1959 -91 \nQ 1206 -91
+      779 398 \nQ 353 888 353 1747 \nQ 353 2609 779 3096 \nQ 1206 3584 1959 3584 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6e\" d=\"M 3513
+      2113 \nL 3513 0 \nL 2938 0 \nL 2938 2094 \nQ 2938 2591 2744 2837 \nQ 2550 3084
+      2163 3084 \nQ 1697 3084 1428 2787 \nQ 1159 2491 1159 1978 \nL 1159 0 \nL 581
+      0 \nL 581 3500 \nL 1159 3500 \nL 1159 2956 \nQ 1366 3272 1645 3428 \nQ 1925
+      3584 2291 3584 \nQ 2894 3584 3203 3211 \nQ 3513 2838 3513 2113 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-66\" d=\"M 2375 4863 \nL 2375 4384 \nL 1825 4384 \nQ 1516 4384
+      1395 4259 \nQ 1275 4134 1275 3809 \nL 1275 3500 \nL 2222 3500 \nL 2222 3053
+      \nL 1275 3053 \nL 1275 0 \nL 697 0 \nL 697 3053 \nL 147 3053 \nL 147 3500 \nL
+      697 3500 \nL 697 3744 \nQ 697 4328 969 4595 \nQ 1241 4863 1831 4863 \nL 2375
+      4863 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-49\"
+      d=\"M 628 4666 \nL 1259 4666 \nL 1259 0 \nL 628 0 \nL 628 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-64\" d=\"M 2906 2969 \nL 2906 4863 \nL 3481 4863 \nL 3481 0
+      \nL 2906 0 \nL 2906 525 \nQ 2725 213 2448 61 \nQ 2172 -91 1784 -91 \nQ 1150
+      -91 751 415 \nQ 353 922 353 1747 \nQ 353 2572 751 3078 \nQ 1150 3584 1784 3584
+      \nQ 2172 3584 2448 3432 \nQ 2725 3281 2906 2969 \nz\nM 947 1747 \nQ 947 1113
+      1208 752 \nQ 1469 391 1925 391 \nQ 2381 391 2643 752 \nQ 2906 1113 2906 1747
+      \nQ 2906 2381 2643 2742 \nQ 2381 3103 1925 3103 \nQ 1469 3103 1208 2742 \nQ
+      947 2381 947 1747 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-77\"
+      d=\"M 269 3500 \nL 844 3500 \nL 1563 769 \nL 2278 3500 \nL 2956 3500 \nL 3675
+      769 \nL 4391 3500 \nL 4966 3500 \nL 4050 0 \nL 3372 0 \nL 2619 2869 \nL 1863
+      0 \nL 1184 0 \nL 269 3500 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-73\" d=\"M 2834 3397 \nL 2834 2853 \nQ 2591 2978 2328 3040 \nQ
+      2066 3103 1784 3103 \nQ 1356 3103 1142 2972 \nQ 928 2841 928 2578 \nQ 928 2378
+      1081 2264 \nQ 1234 2150 1697 2047 \nL 1894 2003 \nQ 2506 1872 2764 1633 \nQ
+      3022 1394 3022 966 \nQ 3022 478 2636 193 \nQ 2250 -91 1575 -91 \nQ 1294 -91
+      989 -36 \nQ 684 19 347 128 \nL 347 722 \nQ 666 556 975 473 \nQ 1284 391 1588
+      391 \nQ 1994 391 2212 530 \nQ 2431 669 2431 922 \nQ 2431 1156 2273 1281 \nQ
+      2116 1406 1581 1522 \nL 1381 1569 \nQ 847 1681 609 1914 \nQ 372 2147 372 2553
+      \nQ 372 3047 722 3315 \nQ 1072 3584 1716 3584 \nQ 2034 3584 2315 3537 \nQ 2597
+      3491 2834 3397 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-75\"
+      d=\"M 544 1381 \nL 544 3500 \nL 1119 3500 \nL 1119 1403 \nQ 1119 906 1312 657
+      \nQ 1506 409 1894 409 \nQ 2359 409 2629 706 \nQ 2900 1003 2900 1516 \nL 2900
+      3500 \nL 3475 3500 \nL 3475 0 \nL 2900 0 \nL 2900 538 \nQ 2691 219 2414 64 \nQ
+      2138 -91 1772 -91 \nQ 1169 -91 856 284 \nQ 544 659 544 1381 \nz\nM 1991 3584
+      \nL 1991 3584 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6c\"
+      d=\"M 603 4863 \nL 1178 4863 \nL 1178 0 \nL 603 0 \nL 603 4863 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-2e\" d=\"M 684 794 \nL 1344 794 \nL 1344 0 \nL 684 0 \nL 684
+      794 \nz\n\" transform=\"scale(0.015625)\"/>\n     </defs>\n     <use xlink:href=\"#DejaVuSans-54\"/>\n     <use
+      xlink:href=\"#DejaVuSans-68\" x=\"61.083984\"/>\n     <use xlink:href=\"#DejaVuSans-65\"
+      x=\"124.462891\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"185.986328\"/>\n     <use
+      xlink:href=\"#DejaVuSans-63\" x=\"217.773438\"/>\n     <use xlink:href=\"#DejaVuSans-72\"
+      x=\"272.753906\"/>\n     <use xlink:href=\"#DejaVuSans-65\" x=\"311.617188\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"373.140625\"/>\n     <use xlink:href=\"#DejaVuSans-74\"
+      x=\"434.419922\"/>\n     <use xlink:href=\"#DejaVuSans-69\" x=\"473.628906\"/>\n     <use
+      xlink:href=\"#DejaVuSans-6f\" x=\"501.412109\"/>\n     <use xlink:href=\"#DejaVuSans-6e\"
+      x=\"562.59375\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"625.972656\"/>\n     <use
+      xlink:href=\"#DejaVuSans-6f\" x=\"657.759766\"/>\n     <use xlink:href=\"#DejaVuSans-66\"
+      x=\"718.941406\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"754.146484\"/>\n     <use
+      xlink:href=\"#DejaVuSans-74\" x=\"785.933594\"/>\n     <use xlink:href=\"#DejaVuSans-68\"
+      x=\"825.142578\"/>\n     <use xlink:href=\"#DejaVuSans-65\" x=\"888.521484\"/>\n     <use
+      xlink:href=\"#DejaVuSans-20\" x=\"950.044922\"/>\n     <use xlink:href=\"#DejaVuSans-49\"
+      x=\"981.832031\"/>\n     <use xlink:href=\"#DejaVuSans-6e\" x=\"1011.324219\"/>\n     <use
+      xlink:href=\"#DejaVuSans-64\" x=\"1074.703125\"/>\n     <use xlink:href=\"#DejaVuSans-69\"
+      x=\"1138.179688\"/>\n     <use xlink:href=\"#DejaVuSans-63\" x=\"1165.962891\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"1220.943359\"/>\n     <use xlink:href=\"#DejaVuSans-74\"
+      x=\"1282.222656\"/>\n     <use xlink:href=\"#DejaVuSans-6f\" x=\"1321.431641\"/>\n     <use
+      xlink:href=\"#DejaVuSans-72\" x=\"1382.613281\"/>\n     <use xlink:href=\"#DejaVuSans-20\"
+      x=\"1423.726562\"/>\n     <use xlink:href=\"#DejaVuSans-77\" x=\"1455.513672\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"1537.300781\"/>\n     <use xlink:href=\"#DejaVuSans-73\"
+      x=\"1598.580078\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"1650.679688\"/>\n     <use
+      xlink:href=\"#DejaVuSans-75\" x=\"1682.466797\"/>\n     <use xlink:href=\"#DejaVuSans-6e\"
+      x=\"1745.845703\"/>\n     <use xlink:href=\"#DejaVuSans-73\" x=\"1809.224609\"/>\n     <use
+      xlink:href=\"#DejaVuSans-75\" x=\"1861.324219\"/>\n     <use xlink:href=\"#DejaVuSans-63\"
+      x=\"1924.703125\"/>\n     <use xlink:href=\"#DejaVuSans-63\" x=\"1979.683594\"/>\n     <use
+      xlink:href=\"#DejaVuSans-65\" x=\"2034.664062\"/>\n     <use xlink:href=\"#DejaVuSans-73\"
+      x=\"2096.1875\"/>\n     <use xlink:href=\"#DejaVuSans-73\" x=\"2148.287109\"/>\n     <use
+      xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
+      x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
+      xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
+      </g>\n <defs>\n  <clipPath id=\"paf30913c1d\">\n   <rect x=\"36\" y=\"34.56\"
+      width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
+      class=\"descriptionSection indicator-text\">\n        <h4>Minimal for Minimal</h4>\n        <p><span
+      style=''height: 25px; width: 25px; background-color: #bbb;border-radius: 50%;
+      display: inline-block;'' class=''dot''></span>\n<span style=''height: 25px;
+      width: 25px; background-color: #bbb;border-radius: 50%; display: inline-block;''
+      class=''dot''></span>\n<span style=''height: 25px; width: 25px; background-color:
+      #bbb;border-radius: 50%; display: inline-block;'' class=''dot''></span>\n Undefined
+      Quality</p>\n        <p>Some description of the result.\nGood data quality.\n</p>\n        <p
+      class=\"indicator-metadata-text\">\n            Indicator description:\n            <br
+      />\n            An minimal Indicator for testing purposes.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
+      block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00",
+      "timestamp_osm": "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '14891'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid&includeSvg=False
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-02-28T09:28:58.548032+00:00", "timestamp_osm":
+      "2023-02-21T12:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=minimal&dataset=regions&featureId=3&fidField=ogc_fid&includeSvg=True
+  response:
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "svg": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE
+      svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg
+      xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"288pt\" height=\"288pt\"
+      viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
+      <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
+      xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-02-28T10:29:00.284828</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
+      butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
+      d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
+      id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
+      34.56 \n\" clip-path=\"url(#paf30913c1d)\" style=\"fill: none; stroke: #ffffff;
+      stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
+      id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
+      \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
+      The creation of the Indicator was unsuccessful. -->\n    <g transform=\"translate(29.675781
+      148.199375) scale(0.1 -0.1)\">\n     <defs>\n      <path id=\"DejaVuSans-54\"
+      d=\"M -19 4666 \nL 3928 4666 \nL 3928 4134 \nL 2272 4134 \nL 2272 0 \nL 1638
+      0 \nL 1638 4134 \nL -19 4134 \nL -19 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-68\" d=\"M 3513 2113 \nL 3513 0 \nL 2938 0 \nL 2938 2094 \nQ
+      2938 2591 2744 2837 \nQ 2550 3084 2163 3084 \nQ 1697 3084 1428 2787 \nQ 1159
+      2491 1159 1978 \nL 1159 0 \nL 581 0 \nL 581 4863 \nL 1159 4863 \nL 1159 2956
+      \nQ 1366 3272 1645 3428 \nQ 1925 3584 2291 3584 \nQ 2894 3584 3203 3211 \nQ
+      3513 2838 3513 2113 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-65\"
+      d=\"M 3597 1894 \nL 3597 1613 \nL 953 1613 \nQ 991 1019 1311 708 \nQ 1631 397
+      2203 397 \nQ 2534 397 2845 478 \nQ 3156 559 3463 722 \nL 3463 178 \nQ 3153 47
+      2828 -22 \nQ 2503 -91 2169 -91 \nQ 1331 -91 842 396 \nQ 353 884 353 1716 \nQ
+      353 2575 817 3079 \nQ 1281 3584 2069 3584 \nQ 2775 3584 3186 3129 \nQ 3597 2675
+      3597 1894 \nz\nM 3022 2063 \nQ 3016 2534 2758 2815 \nQ 2500 3097 2075 3097 \nQ
+      1594 3097 1305 2825 \nQ 1016 2553 972 2059 \nL 3022 2063 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-20\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-63\"
+      d=\"M 3122 3366 \nL 3122 2828 \nQ 2878 2963 2633 3030 \nQ 2388 3097 2138 3097
+      \nQ 1578 3097 1268 2742 \nQ 959 2388 959 1747 \nQ 959 1106 1268 751 \nQ 1578
+      397 2138 397 \nQ 2388 397 2633 464 \nQ 2878 531 3122 666 \nL 3122 134 \nQ 2881
+      22 2623 -34 \nQ 2366 -91 2075 -91 \nQ 1284 -91 818 406 \nQ 353 903 353 1747
+      \nQ 353 2603 823 3093 \nQ 1294 3584 2113 3584 \nQ 2378 3584 2631 3529 \nQ 2884
+      3475 3122 3366 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-72\"
+      d=\"M 2631 2963 \nQ 2534 3019 2420 3045 \nQ 2306 3072 2169 3072 \nQ 1681 3072
+      1420 2755 \nQ 1159 2438 1159 1844 \nL 1159 0 \nL 581 0 \nL 581 3500 \nL 1159
+      3500 \nL 1159 2956 \nQ 1341 3275 1631 3429 \nQ 1922 3584 2338 3584 \nQ 2397
+      3584 2469 3576 \nQ 2541 3569 2628 3553 \nL 2631 2963 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-61\" d=\"M 2194 1759 \nQ 1497 1759 1228 1600 \nQ 959 1441 959
+      1056 \nQ 959 750 1161 570 \nQ 1363 391 1709 391 \nQ 2188 391 2477 730 \nQ 2766
+      1069 2766 1631 \nL 2766 1759 \nL 2194 1759 \nz\nM 3341 1997 \nL 3341 0 \nL 2766
+      0 \nL 2766 531 \nQ 2569 213 2275 61 \nQ 1981 -91 1556 -91 \nQ 1019 -91 701 211
+      \nQ 384 513 384 1019 \nQ 384 1609 779 1909 \nQ 1175 2209 1959 2209 \nL 2766
+      2209 \nL 2766 2266 \nQ 2766 2663 2505 2880 \nQ 2244 3097 1772 3097 \nQ 1472
+      3097 1187 3025 \nQ 903 2953 641 2809 \nL 641 3341 \nQ 956 3463 1253 3523 \nQ
+      1550 3584 1831 3584 \nQ 2591 3584 2966 3190 \nQ 3341 2797 3341 1997 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-74\" d=\"M 1172
+      4494 \nL 1172 3500 \nL 2356 3500 \nL 2356 3053 \nL 1172 3053 \nL 1172 1153 \nQ
+      1172 725 1289 603 \nQ 1406 481 1766 481 \nL 2356 481 \nL 2356 0 \nL 1766 0 \nQ
+      1100 0 847 248 \nQ 594 497 594 1153 \nL 594 3053 \nL 172 3053 \nL 172 3500 \nL
+      594 3500 \nL 594 4494 \nL 1172 4494 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-69\" d=\"M 603 3500 \nL 1178 3500 \nL 1178 0 \nL 603 0 \nL 603
+      3500 \nz\nM 603 4863 \nL 1178 4863 \nL 1178 4134 \nL 603 4134 \nL 603 4863 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6f\" d=\"M 1959
+      3097 \nQ 1497 3097 1228 2736 \nQ 959 2375 959 1747 \nQ 959 1119 1226 758 \nQ
+      1494 397 1959 397 \nQ 2419 397 2687 759 \nQ 2956 1122 2956 1747 \nQ 2956 2369
+      2687 2733 \nQ 2419 3097 1959 3097 \nz\nM 1959 3584 \nQ 2709 3584 3137 3096 \nQ
+      3566 2609 3566 1747 \nQ 3566 888 3137 398 \nQ 2709 -91 1959 -91 \nQ 1206 -91
+      779 398 \nQ 353 888 353 1747 \nQ 353 2609 779 3096 \nQ 1206 3584 1959 3584 \nz\n\"
+      transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6e\" d=\"M 3513
+      2113 \nL 3513 0 \nL 2938 0 \nL 2938 2094 \nQ 2938 2591 2744 2837 \nQ 2550 3084
+      2163 3084 \nQ 1697 3084 1428 2787 \nQ 1159 2491 1159 1978 \nL 1159 0 \nL 581
+      0 \nL 581 3500 \nL 1159 3500 \nL 1159 2956 \nQ 1366 3272 1645 3428 \nQ 1925
+      3584 2291 3584 \nQ 2894 3584 3203 3211 \nQ 3513 2838 3513 2113 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-66\" d=\"M 2375 4863 \nL 2375 4384 \nL 1825 4384 \nQ 1516 4384
+      1395 4259 \nQ 1275 4134 1275 3809 \nL 1275 3500 \nL 2222 3500 \nL 2222 3053
+      \nL 1275 3053 \nL 1275 0 \nL 697 0 \nL 697 3053 \nL 147 3053 \nL 147 3500 \nL
+      697 3500 \nL 697 3744 \nQ 697 4328 969 4595 \nQ 1241 4863 1831 4863 \nL 2375
+      4863 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-49\"
+      d=\"M 628 4666 \nL 1259 4666 \nL 1259 0 \nL 628 0 \nL 628 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-64\" d=\"M 2906 2969 \nL 2906 4863 \nL 3481 4863 \nL 3481 0
+      \nL 2906 0 \nL 2906 525 \nQ 2725 213 2448 61 \nQ 2172 -91 1784 -91 \nQ 1150
+      -91 751 415 \nQ 353 922 353 1747 \nQ 353 2572 751 3078 \nQ 1150 3584 1784 3584
+      \nQ 2172 3584 2448 3432 \nQ 2725 3281 2906 2969 \nz\nM 947 1747 \nQ 947 1113
+      1208 752 \nQ 1469 391 1925 391 \nQ 2381 391 2643 752 \nQ 2906 1113 2906 1747
+      \nQ 2906 2381 2643 2742 \nQ 2381 3103 1925 3103 \nQ 1469 3103 1208 2742 \nQ
+      947 2381 947 1747 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-77\"
+      d=\"M 269 3500 \nL 844 3500 \nL 1563 769 \nL 2278 3500 \nL 2956 3500 \nL 3675
+      769 \nL 4391 3500 \nL 4966 3500 \nL 4050 0 \nL 3372 0 \nL 2619 2869 \nL 1863
+      0 \nL 1184 0 \nL 269 3500 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-73\" d=\"M 2834 3397 \nL 2834 2853 \nQ 2591 2978 2328 3040 \nQ
+      2066 3103 1784 3103 \nQ 1356 3103 1142 2972 \nQ 928 2841 928 2578 \nQ 928 2378
+      1081 2264 \nQ 1234 2150 1697 2047 \nL 1894 2003 \nQ 2506 1872 2764 1633 \nQ
+      3022 1394 3022 966 \nQ 3022 478 2636 193 \nQ 2250 -91 1575 -91 \nQ 1294 -91
+      989 -36 \nQ 684 19 347 128 \nL 347 722 \nQ 666 556 975 473 \nQ 1284 391 1588
+      391 \nQ 1994 391 2212 530 \nQ 2431 669 2431 922 \nQ 2431 1156 2273 1281 \nQ
+      2116 1406 1581 1522 \nL 1381 1569 \nQ 847 1681 609 1914 \nQ 372 2147 372 2553
+      \nQ 372 3047 722 3315 \nQ 1072 3584 1716 3584 \nQ 2034 3584 2315 3537 \nQ 2597
+      3491 2834 3397 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-75\"
+      d=\"M 544 1381 \nL 544 3500 \nL 1119 3500 \nL 1119 1403 \nQ 1119 906 1312 657
+      \nQ 1506 409 1894 409 \nQ 2359 409 2629 706 \nQ 2900 1003 2900 1516 \nL 2900
+      3500 \nL 3475 3500 \nL 3475 0 \nL 2900 0 \nL 2900 538 \nQ 2691 219 2414 64 \nQ
+      2138 -91 1772 -91 \nQ 1169 -91 856 284 \nQ 544 659 544 1381 \nz\nM 1991 3584
+      \nL 1991 3584 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path id=\"DejaVuSans-6c\"
+      d=\"M 603 4863 \nL 1178 4863 \nL 1178 0 \nL 603 0 \nL 603 4863 \nz\n\" transform=\"scale(0.015625)\"/>\n      <path
+      id=\"DejaVuSans-2e\" d=\"M 684 794 \nL 1344 794 \nL 1344 0 \nL 684 0 \nL 684
+      794 \nz\n\" transform=\"scale(0.015625)\"/>\n     </defs>\n     <use xlink:href=\"#DejaVuSans-54\"/>\n     <use
+      xlink:href=\"#DejaVuSans-68\" x=\"61.083984\"/>\n     <use xlink:href=\"#DejaVuSans-65\"
+      x=\"124.462891\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"185.986328\"/>\n     <use
+      xlink:href=\"#DejaVuSans-63\" x=\"217.773438\"/>\n     <use xlink:href=\"#DejaVuSans-72\"
+      x=\"272.753906\"/>\n     <use xlink:href=\"#DejaVuSans-65\" x=\"311.617188\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"373.140625\"/>\n     <use xlink:href=\"#DejaVuSans-74\"
+      x=\"434.419922\"/>\n     <use xlink:href=\"#DejaVuSans-69\" x=\"473.628906\"/>\n     <use
+      xlink:href=\"#DejaVuSans-6f\" x=\"501.412109\"/>\n     <use xlink:href=\"#DejaVuSans-6e\"
+      x=\"562.59375\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"625.972656\"/>\n     <use
+      xlink:href=\"#DejaVuSans-6f\" x=\"657.759766\"/>\n     <use xlink:href=\"#DejaVuSans-66\"
+      x=\"718.941406\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"754.146484\"/>\n     <use
+      xlink:href=\"#DejaVuSans-74\" x=\"785.933594\"/>\n     <use xlink:href=\"#DejaVuSans-68\"
+      x=\"825.142578\"/>\n     <use xlink:href=\"#DejaVuSans-65\" x=\"888.521484\"/>\n     <use
+      xlink:href=\"#DejaVuSans-20\" x=\"950.044922\"/>\n     <use xlink:href=\"#DejaVuSans-49\"
+      x=\"981.832031\"/>\n     <use xlink:href=\"#DejaVuSans-6e\" x=\"1011.324219\"/>\n     <use
+      xlink:href=\"#DejaVuSans-64\" x=\"1074.703125\"/>\n     <use xlink:href=\"#DejaVuSans-69\"
+      x=\"1138.179688\"/>\n     <use xlink:href=\"#DejaVuSans-63\" x=\"1165.962891\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"1220.943359\"/>\n     <use xlink:href=\"#DejaVuSans-74\"
+      x=\"1282.222656\"/>\n     <use xlink:href=\"#DejaVuSans-6f\" x=\"1321.431641\"/>\n     <use
+      xlink:href=\"#DejaVuSans-72\" x=\"1382.613281\"/>\n     <use xlink:href=\"#DejaVuSans-20\"
+      x=\"1423.726562\"/>\n     <use xlink:href=\"#DejaVuSans-77\" x=\"1455.513672\"/>\n     <use
+      xlink:href=\"#DejaVuSans-61\" x=\"1537.300781\"/>\n     <use xlink:href=\"#DejaVuSans-73\"
+      x=\"1598.580078\"/>\n     <use xlink:href=\"#DejaVuSans-20\" x=\"1650.679688\"/>\n     <use
+      xlink:href=\"#DejaVuSans-75\" x=\"1682.466797\"/>\n     <use xlink:href=\"#DejaVuSans-6e\"
+      x=\"1745.845703\"/>\n     <use xlink:href=\"#DejaVuSans-73\" x=\"1809.224609\"/>\n     <use
+      xlink:href=\"#DejaVuSans-75\" x=\"1861.324219\"/>\n     <use xlink:href=\"#DejaVuSans-63\"
+      x=\"1924.703125\"/>\n     <use xlink:href=\"#DejaVuSans-63\" x=\"1979.683594\"/>\n     <use
+      xlink:href=\"#DejaVuSans-65\" x=\"2034.664062\"/>\n     <use xlink:href=\"#DejaVuSans-73\"
+      x=\"2096.1875\"/>\n     <use xlink:href=\"#DejaVuSans-73\" x=\"2148.287109\"/>\n     <use
+      xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
+      x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
+      xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
+      </g>\n <defs>\n  <clipPath id=\"paf30913c1d\">\n   <rect x=\"36\" y=\"34.56\"
+      width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
+      "2023-02-28T09:28:58.548032+00:00", "timestamp_osm": "2023-02-21T12:00:00+00:00",
+      "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '13814'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=amenities&dataset=regions&featureId=3
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''amenities'')","type":"value_error"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '181'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"name": "Minimal", "layerKey": "amenities", "dataset": "regions", "featureId":
+      "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '84'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","featureId"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''amenities'')","type":"value_error"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''amenities'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","layer"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","name"],"msg":"Computing
+      an Indicator for a Layer with data attached is only supported for the Mapping
+      Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","featureId"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","layerKey"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '1156'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=building_count&dataset=regions
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["query","featureId"],"msg":"field
+      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '148'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"name": "Minimal", "layerKey": "building_count", "dataset": "regions"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '71'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''building_count'')","type":"value_error"},{"loc":["body","featureId"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","layer"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","name"],"msg":"Computing
+      an Indicator for a Layer with data attached is only supported for the Mapping
+      Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","layerKey"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '1065'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: GET
+    uri: http://testserver/indicator?name=Minimal&layerKey=building_count&feature_id=3
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["query","dataset"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["query","featureId"],"msg":"field
+      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '228'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"name": "Minimal", "layerKey": "building_count", "feature_id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '68'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion":"0.14.0","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''building_count'')","type":"value_error"},{"loc":["body","dataset"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","featureId"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","__root__"],"msg":"Indicator
+      layer combination is invalid: (''Minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","layer"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","name"],"msg":"Computing
+      an Indicator for a Layer with data attached is only supported for the Mapping
+      Saturation Indicator.","type":"value_error"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","layerKey"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '1242'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
 version: 1

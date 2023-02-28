@@ -46,7 +46,8 @@ def get_layer_fixture(name: str) -> LayerDefinition:
 #   before_record_response=replace_body(["image/png"], dummy_png),
 def replace_body(content_types, replacement):
     def before_record_response(response):
-        if any(ct in content_types for ct in response["headers"]["Content-Type"]):
+        headers = {k.lower(): v for k, v in response["headers"].items()}
+        if any(ct in content_types for ct in headers["content-type"]):
             response["body"]["string"] = replacement
         return response
 

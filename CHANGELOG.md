@@ -9,11 +9,13 @@
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
 - feat: disable size limit for Mapping Saturation ([#498])
 - Overhaul docker compose setup ([#483])
+- build(deps): update fastapi ([#488])
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
+[#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 
 ## 0.14.0
