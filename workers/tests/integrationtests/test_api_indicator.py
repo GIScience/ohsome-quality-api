@@ -22,7 +22,7 @@ class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.indicator_name = "Minimal"
+        self.indicator_name = "minimal"
         self.layer_key = "minimal"
         # Heidelberg
         self.dataset = "regions"
@@ -63,7 +63,7 @@ class TestApiIndicator(unittest.TestCase):
             "layer_key": self.layer_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "fidField": self.fid_field,
+            "fid_field": self.fid_field,
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -78,7 +78,7 @@ class TestApiIndicator(unittest.TestCase):
             "layer_key": self.layer_key,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
-            "fidField": "name",
+            "fid_field": "name",
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -128,7 +128,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}&includeSvg={5}".format(
+            "&feature_id={3}&fid_field={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -145,7 +145,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}&includeSvg={5}".format(
+            "&feature_id={3}&fid_field={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -162,7 +162,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_default(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}".format(
+            "&feature_id={3}&fid_field={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -194,7 +194,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}&includeHtml={5}".format(
+            "&feature_id={3}&fid_field={4}&include_html={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -211,7 +211,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}&includeHtml={5}".format(
+            "&feature_id={3}&fid_field={4}&include_html={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -228,7 +228,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_default(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&fidField={4}".format(
+            "&feature_id={3}&fid_field={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -303,7 +303,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&includeData={4}".format(
+            "&feature_id={3}&include_data={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -319,7 +319,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&feature_id={3}&includeData={4}".format(
+            "&feature_id={3}&include_data={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,

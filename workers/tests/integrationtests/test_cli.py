@@ -41,7 +41,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
@@ -61,7 +61,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
@@ -78,7 +78,7 @@ class TestCliIntegration(unittest.TestCase):
     def test_create_report(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "Minimal", "-d", "regions", "-f", "3"],
+            ["create-report", "-r", "minimal", "-d", "regions", "-f", "3"],
         )
         self.assertEqual(result.exit_code, 0)
 
@@ -89,7 +89,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -107,7 +107,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",

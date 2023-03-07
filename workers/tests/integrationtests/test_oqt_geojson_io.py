@@ -13,7 +13,7 @@ from .utils import oqt_vcr
 class TestOqtGeoJsonIO(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.name = "Minimal"
+        self.name = "minimal"
         self.layer_key = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"

@@ -25,7 +25,7 @@ class TestApiIndicatorIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.endpoint = "/indicator"
-        self.indicator_name = "Minimal"
+        self.indicator_name = "minimal"
         self.layer_key = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
@@ -109,7 +109,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "bpolys": feature,
-            "includeSvg": True,
+            "include_svg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -119,7 +119,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "bpolys": feature,
-            "includeSvg": False,
+            "include_svg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -139,10 +139,10 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "layer-key": self.layer_key,
             "bpolys": feature,
-            "includeSvg": True,
-            "includeHtml": True,
+            "include-svg": True,
+            "include-html": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -152,8 +152,8 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "bpolys": feature,
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -161,7 +161,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "layer-key": self.layer_key,
             "bpolys": feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
@@ -183,7 +183,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         ]
 
         parameters = {
-            "name": "MappingSaturation",
+            "name": "mapping-saturation",
             "bpolys": self.feature,
             "layer": {
                 "name": "foo",
@@ -201,7 +201,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
     def test_indicator_layer_data_invalid(self):
         parameters = {
-            "name": "MappingSaturation",
+            "name": "mapping-saturation",
             "bpolys": self.feature,
             "layer": {
                 "name": "foo",

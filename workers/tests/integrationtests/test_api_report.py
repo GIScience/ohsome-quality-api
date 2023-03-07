@@ -22,7 +22,7 @@ class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.report_name = "Minimal"
+        self.report_name = "minimal"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
@@ -62,7 +62,7 @@ class TestApiReport(unittest.TestCase):
             "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "fidField": self.fid_field,
+            "fid_field": self.fid_field,
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -76,7 +76,7 @@ class TestApiReport(unittest.TestCase):
             "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
-            "fidField": "name",
+            "fid_field": "name",
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -87,8 +87,8 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg_true(self):
         url = (
-            "/report?name={0}&dataset={1}&feature_id={2}&fidField={3}"
-            "&includeSvg={4}".format(
+            "/report?name={0}&dataset={1}&feature_id={2}&fid_field={3}"
+            "&include_svg={4}".format(
                 self.report_name,
                 self.dataset,
                 self.feature_id,
@@ -102,8 +102,8 @@ class TestApiReport(unittest.TestCase):
 
     def test_report_include_svg_false(self):
         url = (
-            "/report?name={0}&dataset={1}&feature_id={2}&fidField={3}"
-            "&includeSvg={4}".format(
+            "/report?name={0}&dataset={1}&feature_id={2}&fid_field={3}"
+            "&include_svg={4}".format(
                 self.report_name,
                 self.dataset,
                 self.feature_id,
@@ -116,7 +116,7 @@ class TestApiReport(unittest.TestCase):
         assert "svg" not in result["properties"]["indicators"][0]["result"]
 
     def test_report_include_svg_default(self):
-        url = "/report?name={0}&dataset={1}&feature_id={2}&fidField={3}".format(
+        url = "/report?name={0}&dataset={1}&feature_id={2}&fid_field={3}".format(
             self.report_name,
             self.dataset,
             self.feature_id,
@@ -130,7 +130,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "name": self.report_name,
             "dataset": "foo",
-            "feature_id": self.feature_id,
+            "feature-id": self.feature_id,
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -149,7 +149,7 @@ class TestApiReport(unittest.TestCase):
             },
             {
                 "name": self.report_name,
-                "feature_id": "3",
+                "feature-id": "3",
             },
         ):
             for response in (
@@ -163,8 +163,8 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_html(self):
         url = (
-            "/report?name={0}&dataset={1}&feature_id={2}&fidField={3}"
-            "&includeHtml={4}".format(
+            "/report?name={0}&dataset={1}&feature_id={2}&fid_field={3}"
+            "&include_html={4}".format(
                 self.report_name,
                 self.dataset,
                 self.feature_id,
