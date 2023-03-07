@@ -1,5 +1,17 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- fix pre-commit hooks ([#482])
+- update asyncpg from 0.25 to 0.27 ([#481])
+- refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
+
+[#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
+[#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
+[#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
+
 ## 0.14.0
 
 ### Bug Fixes
