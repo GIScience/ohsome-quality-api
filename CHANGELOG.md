@@ -2,6 +2,11 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- refactor!: change parameter names from snake case to lower hyphen ([#398])
+- refactor!: change indicator and report keys from lower camel case to lower hyphen ([#398])
+
 ### Other Changes
 
 - fix pre-commit hooks ([#482])
@@ -11,7 +16,21 @@
 - Overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
 
+### How to Upgrade
+
+- rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
+- rename API request parameters from camel case to lower hyphen ([#398])
+
+| old           | new            |
+| ---           | ---            |
+| `layerKey`    | `layer-key`    |
+| `includeSvg`  | `include-svg`  |
+| `includeHtml` | `include-html` |
+| `featureId`   | `feature-id`   |
+| `fidField`    | `indicators`   |
+
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
+[#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
