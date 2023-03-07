@@ -1,12 +1,14 @@
+import json
 import logging
-from io import StringIO
 from string import Template
 from typing import List, Optional, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
+import plotly.graph_objects as go
+import plotly.io as pio
 from dateutil.parser import isoparse
 from geojson import Feature
+from plotly.subplots import make_subplots
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
@@ -141,28 +143,60 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-        ax.set_title("Mapping Saturation")
-        ax.plot(
-            self.timestamps,
-            self.values,
-            label="OSM data",
+        fig = make_subplots()
+        fig.add_trace(
+            go.Scatter(
+                x=self.timestamps,
+                y=self.values,
+                name="OSM data",
+                hoverinfo="skip",
+                marker={
+                    "color": "#0057B8",
+                },
+            ),
         )
-        ax.plot(
-            self.timestamps,
-            self.best_fit.fitted_values,
-            label=self.best_fit.name,
+
+        fig.add_trace(
+            go.Scatter(
+                x=self.timestamps,
+                y=self.best_fit.fitted_values,
+                customdata=self.values,
+                name=self.best_fit.name,
+                hovertemplate="<br>".join(
+                    [
+                        "Fitted values %{y}",
+                        "OSM data: %{customdata}",
+                        "<extra></extra>",
+                    ]
+                ),
+                line={"color": "orange", "width": 3},
+                showlegend=True,
+            ),
         )
-        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
-        fig.subplots_adjust(bottom=0.3)
-        fig.tight_layout()
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
+
+        fig.update_layout(
+            title_text="Mapping Saturation",
+            bargap=0.0,
+            plot_bgcolor="rgb(207, 226, 243)",
+            autosize=False,
+            legend=dict(
+                orientation="v",
+                borderwidth=1,
+                xanchor="center",
+                yanchor="middle",
+                x=0.5,
+                y=-0.45,
+            ),
+        )
+
+        fig.update_xaxes(title_text="Date")
+        fig.update_yaxes(title_text="Value")
+
+        fig.show()
+        plot_json = pio.to_json(fig)
+        parsed = json.loads(plot_json)
+        with open("plotDummy.json", "w") as f:
+            json.dump(parsed, f)
 
     def check_edge_cases(self) -> str:
         """Check edge cases
