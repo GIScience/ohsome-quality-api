@@ -13,10 +13,10 @@ class MultilevelMappingSaturation(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("MappingSaturation", "infrastructure_lines"),
-                IndicatorLayer("MappingSaturation", "poi"),
-                IndicatorLayer("MappingSaturation", "lulc"),
-                IndicatorLayer("MappingSaturation", "building_count"),
+                IndicatorLayer("mapping-saturation", "infrastructure_lines"),
+                IndicatorLayer("mapping-saturation", "poi"),
+                IndicatorLayer("mapping-saturation", "lulc"),
+                IndicatorLayer("mapping-saturation", "building_count"),
             ),
             feature=feature,
             blocking_red=blocking_red,
