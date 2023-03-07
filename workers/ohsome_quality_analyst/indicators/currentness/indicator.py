@@ -124,7 +124,7 @@ class Currentness(BaseIndicator):
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             layer_name=self.layer.name,
-            end=self.end,
+            end_date=self.end,
             elements=int(self.contributions_sum),
             green=round(contrib_rel_cum_green * 100, 2),
             yellow=round(contrib_rel_cum_yellow * 100, 2),
@@ -223,7 +223,11 @@ class Currentness(BaseIndicator):
         plt.xticks(list(self.contributions_rel.keys())[::2])
         plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
-        plt.title("Total Contributions: %i" % self.contributions_sum)
+        plt.title(
+            "Total Contributions (up to {0}): {1}".format(
+                self.end, int(self.contributions_sum)
+            )
+        )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
         fig.subplots_adjust(bottom=0.3)
         fig.tight_layout()
