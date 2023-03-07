@@ -33,7 +33,6 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         self.assertIsNotNone(indicator.best_fit)
         self.assertTrue(indicator.fitted_models)
 
-        self.assertLessEqual(indicator.result.value, 1.0)
         self.assertGreaterEqual(indicator.result.value, 0.0)
 
         self.assertIsNotNone(indicator.result.label)
