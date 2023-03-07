@@ -48,7 +48,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "name": self.indicator_name,
             "bpolys": bpoly,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
         }
         return self.client.post(self.endpoint, json=parameters)
 
@@ -107,7 +107,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
             "includeSvg": True,
         }
@@ -117,7 +117,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
             "includeSvg": False,
         }
@@ -127,7 +127,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
@@ -139,7 +139,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
             "includeSvg": True,
             "includeHtml": True,
@@ -150,7 +150,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
             "includeSvg": False,
             "includeHtml": False,
@@ -161,7 +161,7 @@ class TestApiIndicatorIo(unittest.TestCase):
 
         parameters = {
             "name": self.indicator_name,
-            "layerKey": self.layer_key,
+            "layer_key": self.layer_key,
             "bpolys": feature,
         }
         response = self.client.post(self.endpoint, json=parameters)

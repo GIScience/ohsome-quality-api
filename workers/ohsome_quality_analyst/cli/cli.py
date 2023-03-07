@@ -135,13 +135,13 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            layerKey=layer_key,
+            layer_key=layer_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            layerKey=layer_key,
+            layer_key=layer_key,
             dataset=dataset_name,
             featureId=feature_id,
             fidField=fid_field,

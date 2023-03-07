@@ -21,12 +21,12 @@ from .utils import AsyncMock, oqt_vcr
 class TestOqt(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.indicator_name = "Minimal"
-        self.report_name = "Minimal"
+        self.indicator_name = "minimal"
+        self.report_name = "minimal"
         self.layer_key = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
-        self.fid_field = "ogc_fid"
+        self.fid_field = "ogc-fid"
         self.feature = asyncio.run(
             db_client.get_feature_from_db(self.dataset, feature_id=self.feature_id)
         )
@@ -42,7 +42,7 @@ class TestOqt(unittest.TestCase):
         """Test creating indicator from scratch."""
         parameters = IndicatorBpolys(
             name=self.indicator_name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             bpolys=self.feature,
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
@@ -52,7 +52,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_default_fid_field(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             dataset=self.dataset,
             featureId=self.feature_id,
         )
@@ -63,7 +63,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_int(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             dataset=self.dataset,
             featureId=self.feature_id,
             fidField=self.fid_field,
@@ -75,7 +75,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_str(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             dataset=self.dataset,
             featureId="Heidelberg",
             fidField="name",
@@ -154,7 +154,7 @@ class TestOqt(unittest.TestCase):
             asyncio.run(
                 oqt.create_all_indicators(
                     dataset="regions",
-                    indicator_name="Minimal",
+                    indicator_name="minimal",
                     layer_key="minimal",
                 )
             )
@@ -178,7 +178,7 @@ class TestOqt(unittest.TestCase):
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
             name=self.indicator_name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             bpolys=feature,
         )
         with self.assertRaises(ValueError):
@@ -200,8 +200,8 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
-            name="MappingSaturation",
-            layerKey="building_count",
+            name="mapping-saturation",
+            layer_key="building-count",
             bpolys=feature,
         )
         asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
