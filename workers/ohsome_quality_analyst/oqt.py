@@ -67,7 +67,12 @@ async def _(
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
-        if size_restriction and isinstance(parameters, IndicatorBpolys):
+        # Disable size limit for the Mapping Saturation indicator
+        if (
+            size_restriction
+            and isinstance(parameters, IndicatorBpolys)
+            and parameters.name.value != "MappingSaturation"
+        ):
             await check_area_size(feature.geometry)
         tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
     indicators = await gather_with_semaphore(tasks)
