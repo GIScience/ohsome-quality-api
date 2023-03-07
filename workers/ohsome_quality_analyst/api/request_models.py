@@ -188,11 +188,11 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`feature_id`)."
+            "`feature-id`)."
         ),
         "value": {
             "name": "mapping-saturation",
-            "layer-key": "building-count",
+            "layer-key": "building_count",
             "dataset": "regions",
             "feature-id": 3,
             "fid-field": "ogc_fid",
@@ -205,7 +205,7 @@ INDICATOR_EXAMPLES = {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
             "name": "mapping-saturation",
-            "layer-key": "building-count",
+            "layer-key": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -300,7 +300,7 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `feature_id`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
         ),
         "value": {
             "name": "building-report",
