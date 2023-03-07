@@ -54,7 +54,7 @@ class TestOqt(unittest.TestCase):
             name=self.indicator_name,
             layer_key=self.layer_key,
             dataset=self.dataset,
-            featureId=self.feature_id,
+            feature_id=self.feature_id,
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
         self.run_tests(indicator)
@@ -65,7 +65,7 @@ class TestOqt(unittest.TestCase):
             name=self.indicator_name,
             layer_key=self.layer_key,
             dataset=self.dataset,
-            featureId=self.feature_id,
+            feature_id=self.feature_id,
             fidField=self.fid_field,
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
@@ -77,7 +77,7 @@ class TestOqt(unittest.TestCase):
             name=self.indicator_name,
             layer_key=self.layer_key,
             dataset=self.dataset,
-            featureId="Heidelberg",
+            feature_id="Heidelberg",
             fidField="name",
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
@@ -104,7 +104,7 @@ class TestOqt(unittest.TestCase):
         parameters = ReportDatabase(
             name=self.report_name,
             dataset=self.dataset,
-            featureId=self.feature_id,
+            feature_id=self.feature_id,
         )
         report = asyncio.run(oqt.create_report(parameters))
         self.assertIsNotNone(report.result.label)
@@ -116,7 +116,7 @@ class TestOqt(unittest.TestCase):
         parameters = ReportDatabase(
             name=self.report_name,
             dataset=self.dataset,
-            featureId=self.feature_id,
+            feature_id=self.feature_id,
             fidField=self.fid_field,
         )
         report = asyncio.run(oqt.create_report(parameters))
@@ -129,7 +129,7 @@ class TestOqt(unittest.TestCase):
         parameters = ReportDatabase(
             name=self.report_name,
             dataset=self.dataset,
-            featureId="Heidelberg",
+            feature_id="Heidelberg",
             fidField="name",
         )
         report = asyncio.run(oqt.create_report(parameters))

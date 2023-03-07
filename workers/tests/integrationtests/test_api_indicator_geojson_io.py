@@ -95,7 +95,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": self.indicator_name,
             "bpolys": bpolys,
             "dataset": "foo",
-            "featureId": "3",
+            "feature_id": "3",
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)

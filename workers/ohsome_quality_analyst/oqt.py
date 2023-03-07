@@ -299,7 +299,7 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
                     name=indicator_name,
                     layer_key=layer_key,
                     dataset=dataset,
-                    featureId=feature_id,
+                    feature_id=feature_id,
                 ),
                 force=force,
             )
@@ -379,7 +379,7 @@ async def create_all_indicators(
                         name=indicator_name_,
                         layer_key=layer_key_,
                         dataset=dataset,
-                        featureId=fid,
+                        feature_id=fid,
                     ),
                     force=force,
                 )

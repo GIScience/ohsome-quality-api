@@ -48,7 +48,7 @@ class TestApiIndicator(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "dataset": self.dataset,
-            "featureId": self.feature_id,
+            "feature_id": self.feature_id,
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -62,7 +62,7 @@ class TestApiIndicator(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "dataset": self.dataset,
-            "featureId": self.feature_id,
+            "feature_id": self.feature_id,
             "fidField": self.fid_field,
         }
         for response in (
@@ -77,7 +77,7 @@ class TestApiIndicator(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "dataset": self.dataset,
-            "featureId": "Heidelberg",
+            "feature_id": "Heidelberg",
             "fidField": "name",
         }
         for response in (
@@ -92,7 +92,7 @@ class TestApiIndicator(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": self.layer_key,
             "dataset": "foo",
-            "featureId": self.feature_id,
+            "feature_id": self.feature_id,
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -128,7 +128,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+            "&feature_id={3}&fidField={4}&includeSvg={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -145,7 +145,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeSvg={5}".format(
+            "&feature_id={3}&fidField={4}&includeSvg={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -162,7 +162,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_default(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}".format(
+            "&feature_id={3}&fidField={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -180,7 +180,7 @@ class TestApiIndicator(unittest.TestCase):
             "name": self.indicator_name,
             "layer_key": "amenities",
             "dataset": "regions",
-            "featureId": "3",
+            "feature_id": "3",
         }
         for response in (
             self.client.get(ENDPOINT + "?" + urlencode(parameters)),
@@ -194,7 +194,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeHtml={5}".format(
+            "&feature_id={3}&fidField={4}&includeHtml={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -211,7 +211,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}&includeHtml={5}".format(
+            "&feature_id={3}&fidField={4}&includeHtml={5}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -228,7 +228,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_default(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&fidField={4}".format(
+            "&feature_id={3}&fidField={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -242,7 +242,7 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_default(self):
-        url = "/indicator?name={0}&layer_key={1}&dataset={2}&featureId={3}".format(
+        url = "/indicator?name={0}&layer_key={1}&dataset={2}&feature_id={3}".format(
             self.indicator_name,
             self.layer_key,
             self.dataset,
@@ -258,7 +258,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_flatten_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&flatten={4}".format(
+            "&feature_id={3}&flatten={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -274,7 +274,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_flatten_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&flatten={4}".format(
+            "&feature_id={3}&flatten={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -289,7 +289,7 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_default(self):
-        url = "/indicator?name={0}&layer_key={1}&dataset={2}&featureId={3}".format(
+        url = "/indicator?name={0}&layer_key={1}&dataset={2}&feature_id={3}".format(
             self.indicator_name,
             self.layer_key,
             self.dataset,
@@ -303,7 +303,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_true(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&includeData={4}".format(
+            "&feature_id={3}&includeData={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,
@@ -319,7 +319,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_false(self):
         url = (
             "/indicator?name={0}&layer_key={1}&dataset={2}"
-            "&featureId={3}&includeData={4}".format(
+            "&feature_id={3}&includeData={4}".format(
                 self.indicator_name,
                 self.layer_key,
                 self.dataset,

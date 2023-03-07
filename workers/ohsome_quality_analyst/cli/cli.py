@@ -143,7 +143,7 @@ def create_indicator(
             name=indicator_name,
             layer_key=layer_key,
             dataset=dataset_name,
-            featureId=feature_id,
+            feature_id=feature_id,
             fidField=fid_field,
         )
     geojson_object = asyncio.run(oqt.create_indicator_as_geojson(parameters, force))
@@ -188,7 +188,7 @@ def create_report(
         parameters = ReportDatabase(
             name=report_name,
             dataset=dataset_name,
-            featureId=feature_id,
+            feature_id=feature_id,
             fidField=fid_field,
         )
     geojson_object = asyncio.run(oqt.create_report_as_geojson(parameters, force))

@@ -188,7 +188,7 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`featureId`)."
+            "`feature_id`)."
         ),
         "value": {
             "name": "mapping-saturation",
@@ -300,7 +300,7 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `feature_id`)."
         ),
         "value": {
             "name": "building-report",

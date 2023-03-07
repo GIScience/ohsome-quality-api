@@ -88,7 +88,7 @@ class TestApiReportIo(unittest.TestCase):
             "name": self.report_name,
             "bpolys": self.feature,
             "dataset": "foo",
-            "featureId": "3",
+            "feature_id": "3",
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
