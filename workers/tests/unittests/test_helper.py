@@ -18,6 +18,8 @@ from ohsome_quality_analyst.utils.helper import (
     flatten_dict,
     flatten_sequence,
     get_project_root,
+    hyphen_to_camel,
+    hyphen_to_snake,
     json_serialize,
     loads_geojson,
     name_to_class,
@@ -44,12 +46,12 @@ class TestHelper(unittest.TestCase):
 
     def test_name_to_class(self):
         self.assertIs(
-            name_to_class(class_type="indicator", name="Minimal"),
+            name_to_class(class_type="indicator", name="minimal"),
             MinimalIndicator,
         )
 
         self.assertIs(
-            name_to_class(class_type="report", name="Minimal"),
+            name_to_class(class_type="report", name="minimal"),
             MinimalReport,
         )
 
@@ -199,6 +201,12 @@ class TestHelper(unittest.TestCase):
 
     def test_snake_to_hyphen(self):
         assert snake_to_hyphen("snake_case") == "snake-case"
+
+    def test_hyphen_to_camel(self):
+        assert hyphen_to_camel("hyphen-case") == "HyphenCase"
+
+    def test_hyphen_to_snake(self):
+        assert hyphen_to_snake("hyphen-case") == "hyphen_case"
 
 
 if __name__ == "__main__":

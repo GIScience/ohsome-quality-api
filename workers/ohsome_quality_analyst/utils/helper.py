@@ -30,10 +30,11 @@ def name_to_class(class_type: str, name: str):
     #     - https://julienharbulot.com/python-dynamical-import.html
     class_path = "ohsome_quality_analyst.{0}s.{1}.{2}".format(
         class_type,
-        camel_to_snake(name),
+        hyphen_to_snake(name),
         class_type,
     )
-    return getattr(importlib.import_module(class_path), name)
+    class_name = hyphen_to_camel(name)
+    return getattr(importlib.import_module(class_path), class_name)
 
 
 def camel_to_snake(camel: str) -> str:
@@ -44,6 +45,18 @@ def camel_to_snake(camel: str) -> str:
 def camel_to_hyphen(camel: str) -> str:
     """Converts Camel Case to Lower Hyphen Case"""
     return re.sub(r"(?<!^)(?=[A-Z])", "-", camel).lower()
+
+
+def hyphen_to_camel(hyphen: str):
+    """Convert Lower Hyphen Case to Camel Case"""
+    parts = hyphen.split("-")
+    return "".join(p.title() for p in parts)
+
+
+def hyphen_to_snake(hyphen: str):
+    """Convert Lower Hyphen Case to Camel Case"""
+    parts = hyphen.split("-")
+    return "_".join(parts)
 
 
 def snake_to_lower_camel(snake: str) -> str:
