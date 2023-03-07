@@ -195,7 +195,7 @@ INDICATOR_EXAMPLES = {
             "layer-key": "building-count",
             "dataset": "regions",
             "feature-id": 3,
-            "fid-fied": "ogc_fid",
+            "fid-field": "ogc_fid",
             "include-svg": False,
             "include-html": False,
             "flatten": False,
