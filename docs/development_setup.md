@@ -100,7 +100,7 @@ oqt --help
 ##### Start the API using Docker:
 
 ```bash
-docker-compose up -d workers
+docker compose up --detach workers
 ```
 
 
