@@ -21,36 +21,36 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.8.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-02-21T12:00:00Z\",\n
-      \   \"value\" : 30606.37\n  } ]\n}"
+      \"1.8.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-02-28T09:00:00Z\",\n
+      \   \"value\" : 30606.32\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Tue, 28 Feb 2023 09:42:30 GMT
-      Keep-Alive:
+      date:
+      - Wed, 08 Mar 2023 13:34:20 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
