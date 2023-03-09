@@ -170,7 +170,9 @@ class TestOqt(unittest.TestCase):
 
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
         path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "algeria-touggourt-feature.geojson",
         )
         with open(path, "r") as f:
             feature = geojson.load(f)
@@ -183,6 +185,26 @@ class TestOqt(unittest.TestCase):
             asyncio.run(
                 oqt.create_indicator_as_geojson(parameters, size_restriction=True)
             )
+
+    @oqt_vcr.use_cassette()
+    def test_create_indicator_as_geojson_size_limit_bpolys_ms(self):
+        """Size limit is disabled for the Mapping Saturation indicator.
+
+        Test that no error gets raised
+        """
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "algeria-touggourt-feature.geojson",
+        )
+        with open(path, "r") as f:
+            feature = geojson.load(f)
+        parameters = IndicatorBpolys(
+            name="MappingSaturation",
+            layerKey="building_count",
+            bpolys=feature,
+        )
+        asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_size_limit_layer_data(self):
