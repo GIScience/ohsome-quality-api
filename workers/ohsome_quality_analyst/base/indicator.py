@@ -55,7 +55,7 @@ class Result:
     timestamp_osm: Optional[datetime] = None
     value: Optional[float] = None
     class_: Optional[Literal[1, 2, 3, 4, 5]] = None
-    plotly_plot: Optional[dict] = None
+    figure: Optional[dict] = None
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:

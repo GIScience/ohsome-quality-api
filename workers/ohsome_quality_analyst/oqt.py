@@ -220,8 +220,8 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
-    if hasattr(indicator, "create_plotly_figure"):
-        indicator.create_plotly_figure()
+    if hasattr(indicator, "create_figure_plotly"):
+        indicator.create_figure_plotly()
     indicator.create_html()
 
     return indicator
@@ -251,8 +251,8 @@ async def _(
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
-    if hasattr(indicator, "create_plotly_figure"):
-        indicator.create_plotly_figure()
+    if hasattr(indicator, "create_figure_plotly"):
+        indicator.create_figure_plotly()
     indicator.create_html()
 
     return indicator

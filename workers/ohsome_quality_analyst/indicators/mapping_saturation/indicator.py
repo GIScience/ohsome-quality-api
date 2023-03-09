@@ -180,7 +180,7 @@ class MappingSaturation(BaseIndicator):
         self.result.svg = img_data.getvalue()
         plt.close("all")
 
-    def create_plotly_figure(self) -> None:
+    def create_figure_plotly(self) -> None:
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
@@ -235,7 +235,7 @@ class MappingSaturation(BaseIndicator):
 
         plot_json = pio.to_json(fig)
         parsed_plot_json = json.loads(plot_json)
-        self.result.plotly_plot = parsed_plot_json
+        self.result.figure = parsed_plot_json
 
     def check_edge_cases(self) -> str:
         """Check edge cases
