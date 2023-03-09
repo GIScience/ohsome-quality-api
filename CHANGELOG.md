@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### New Features
+
+- Add plot creation via plotly to `MappingSaturation` indicator ([#499])
+
 ### Other Changes
 
 - fix pre-commit hooks ([#482])
@@ -15,6 +19,7 @@
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
+[#499]: https://github.com/GIScience/ohsome-quality-analyst/pull/499
 
 ## 0.14.0
 
