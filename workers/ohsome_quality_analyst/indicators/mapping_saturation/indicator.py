@@ -1,8 +1,10 @@
 import json
 import logging
+from io import StringIO
 from string import Template
 from typing import List, Optional, Union
 
+import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -155,6 +157,33 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
+        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
+        figsize = (400 * px, 400 * px)
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
+        ax.set_title("Mapping Saturation")
+        ax.plot(
+            self.timestamps,
+            self.values,
+            label="OSM data",
+        )
+        ax.plot(
+            self.timestamps,
+            self.best_fit.fitted_values,
+            label=self.best_fit.name,
+        )
+        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
+        fig.subplots_adjust(bottom=0.3)
+        fig.tight_layout()
+        img_data = StringIO()
+        plt.savefig(img_data, format="svg", bbox_inches="tight")
+        self.result.svg = img_data.getvalue()
+        plt.close("all")
+
+    def create_plotly_figure(self) -> None:
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
         fig = make_subplots()
         fig.add_trace(
             go.Scatter(
@@ -204,11 +233,9 @@ class MappingSaturation(BaseIndicator):
         fig.update_xaxes(title_text="Date")
         fig.update_yaxes(title_text="Value")
 
-        fig.show()
         plot_json = pio.to_json(fig)
-        parsed = json.loads(plot_json)
-        with open("plotDummy.json", "w") as f:
-            json.dump(parsed, f)
+        parsed_plot_json = json.loads(plot_json)
+        self.result.plotly_plot = parsed_plot_json
 
     def check_edge_cases(self) -> str:
         """Check edge cases
