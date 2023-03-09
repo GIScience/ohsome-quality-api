@@ -79,7 +79,7 @@ class TestDefinitions(unittest.TestCase):
                 "GhsPopComparisonBuildings",
                 "MappingSaturation",
                 "Currentness",
-                "TagsRatio",
+                "AttributeCompleteness",
             ),
         )
 

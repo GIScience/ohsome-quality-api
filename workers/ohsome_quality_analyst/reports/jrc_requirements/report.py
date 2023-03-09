@@ -31,14 +31,20 @@ class JrcRequirements(BaseReport):
                 #  layer topics
                 # IndicatorLayer("GhsPopComparison", "jrc_road_length"),
                 # IndicatorLayer("GhsPopComparison", "jrc_railway_length"),
-                IndicatorLayer("TagsRatio", "jrc_health_count"),
-                IndicatorLayer("TagsRatio", "jrc_education_count"),
-                IndicatorLayer("TagsRatio", "jrc_road_length"),
-                IndicatorLayer("TagsRatio", "jrc_airport_count"),
-                IndicatorLayer("TagsRatio", "jrc_power_generation_plant_count"),
-                IndicatorLayer("TagsRatio", "jrc_cultural_heritage_site_count"),
-                IndicatorLayer("TagsRatio", "jrc_bridge_count"),
-                IndicatorLayer("TagsRatio", "jrc_mass_gathering_sites_count"),
+                IndicatorLayer("AttributeCompleteness", "jrc_health_count"),
+                IndicatorLayer("AttributeCompleteness", "jrc_education_count"),
+                IndicatorLayer("AttributeCompleteness", "jrc_road_length"),
+                IndicatorLayer("AttributeCompleteness", "jrc_airport_count"),
+                IndicatorLayer(
+                    "AttributeCompleteness", "jrc_power_generation_plant_count"
+                ),
+                IndicatorLayer(
+                    "AttributeCompleteness", "jrc_cultural_heritage_site_count"
+                ),
+                IndicatorLayer("AttributeCompleteness", "jrc_bridge_count"),
+                IndicatorLayer(
+                    "AttributeCompleteness", "jrc_mass_gathering_sites_count"
+                ),
             ),
             feature=feature,
             blocking_red=blocking_red,
