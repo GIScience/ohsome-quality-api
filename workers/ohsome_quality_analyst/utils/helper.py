@@ -59,23 +59,10 @@ def hyphen_to_snake(hyphen: str):
     return "_".join(parts)
 
 
-def snake_to_lower_camel(snake: str) -> str:
-    """Converts Snake Case to Lower Camel Case"""
-    parts = snake.split("_")
-    return parts[0] + "".join(part.title() for part in parts[1:])
-
-
 def snake_to_hyphen(snake: str) -> str:
     """Converts Snake Case to Lower Hyphen Case"""
     parts = snake.split("_")
     return "-".join(parts)
-
-
-def name_to_lower_camel(name: str) -> str:
-    """Convert name to Lower Camel Case"""
-    name = name.replace(" ", "_")
-    name = name.replace("-", "_")
-    return snake_to_lower_camel(name)
 
 
 def get_module_dir(module_name: str) -> str:

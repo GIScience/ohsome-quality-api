@@ -14,7 +14,6 @@ from ohsome_quality_analyst.indicators.minimal.indicator import (
 from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
-    camel_to_snake,
     flatten_dict,
     flatten_sequence,
     get_project_root,
@@ -24,7 +23,6 @@ from ohsome_quality_analyst.utils.helper import (
     loads_geojson,
     name_to_class,
     snake_to_hyphen,
-    snake_to_lower_camel,
 )
 
 from .mapping_saturation import fixtures
@@ -190,14 +188,8 @@ class TestHelper(unittest.TestCase):
         result = get_project_root()
         self.assertEqual(expected, result)
 
-    def test_camel_to_snake(self):
-        assert camel_to_snake("CamelCase") == "camel_case"
-
     def test_camel_to_hyphen(self):
         assert camel_to_hyphen("CamelCase") == "camel-case"
-
-    def test_snake_to_lower_camel(self):
-        assert snake_to_lower_camel("snake_case") == "snakeCase"
 
     def test_snake_to_hyphen(self):
         assert snake_to_hyphen("snake_case") == "snake-case"
