@@ -195,7 +195,7 @@ class TestOqt(unittest.TestCase):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "algeria-touggourt-feature.geojson",
+            "heidelberg-altstadt-feature.geojson",
         )
         with open(path, "r") as f:
             feature = geojson.load(f)
