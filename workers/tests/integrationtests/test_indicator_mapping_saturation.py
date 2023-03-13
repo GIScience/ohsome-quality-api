@@ -41,6 +41,9 @@ class TestIndicatorMappingSaturation(unittest.TestCase):
         indicator.create_figure()
         self.assertIsNotNone(indicator.result.svg)
 
+        indicator.create_figure_plotly()
+        self.assertIsNotNone(indicator.result.figure)
+
         for fm in indicator.fitted_models:
             self.assertFalse(np.isnan(np.sum(fm.fitted_values)))
             self.assertTrue(np.isfinite(np.sum(fm.fitted_values)))
