@@ -23,7 +23,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
