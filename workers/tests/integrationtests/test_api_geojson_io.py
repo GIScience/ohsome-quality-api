@@ -55,7 +55,7 @@ class TestApiReportIo(unittest.TestCase):
                     {
                         "name": "minimal",
                         "bpolys": featurecollection,
-                        "layer-key": "minimal",
+                        "topic": "minimal",
                     },
                 ),
             ):

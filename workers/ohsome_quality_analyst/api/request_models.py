@@ -71,22 +71,21 @@ class BaseReport(BaseModel):
 
 
 class BaseLayerName(BaseModel):
-    """Model for the `layer_key` parameter."""
-
     layer_key: LayerEnum = pydantic.Field(
         ...,
-        title="Layer Key",
-        example="building-count",
+        title="Topic Key",
+        alias="topic",
+        example="building_count",
     )
 
 
 class BaseLayerData(BaseModel):
-    """Model for the parameter `layer`.
+    """Model for the parameter `topic`.
 
-    The Layer consists of name, description and data.
+    The Topic consists of name, description and data.
     """
 
-    layer: LayerData
+    layer: LayerData = pydantic.Field(..., title="Topic", alias="topic")
 
 
 class BaseBpolys(BaseModel):
@@ -138,10 +137,10 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
         try:
             indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
-            raise ValueError("An issue with the layer or indicator name occurred.")
+            raise ValueError("An issue with the topic or indicator keys occurred.")
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_layer)
             )
         else:
             return values
@@ -154,10 +153,10 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
         try:
             indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
-            raise ValueError("An issue with the layer or indicator name occurred.")
+            raise ValueError("An issue with the topic or indicator key occurred.")
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_layer)
             )
         else:
             return values
@@ -169,7 +168,7 @@ class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
     def validate_indicator_name(cls, name):
         if name.value != "mapping-saturation":
             raise ValueError(
-                "Computing an Indicator for a Layer with data attached is only "
+                "Computing an Indicator for a Tpoic with data attached is only "
                 + "supported for the Mapping Saturation Indicator."
             )
         else:
@@ -223,10 +222,10 @@ INDICATOR_EXAMPLES = {
             },
         },
     },
-    "Custom AOI and custom Layer": {
+    "Custom AOI and custom Topic": {
         "summary": (
-            "Request an Indicator for a custom AOI (`bpolys`) and a custom Layer "
-            "(`layer`)."
+            "Request an Indicator for a custom AOI (`bpolys`) and a custom Topic"
+            "(`topic`)."
         ),
         "value": {
             "name": "mapping-saturation",
@@ -245,9 +244,9 @@ INDICATOR_EXAMPLES = {
                     ],
                 },
             },
-            "layer": {
-                "name": "My layer name",
-                "description": "My layer description",
+            "topic": {
+                "name": "My topic name",
+                "description": "My topic description",
                 "data": {
                     "result": [
                         {"timestamp": "2014-01-01T00:00:00Z", "value": 4708},

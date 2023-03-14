@@ -42,7 +42,7 @@ class TestOqt(unittest.TestCase):
         """Test creating indicator from scratch."""
         parameters = IndicatorBpolys(
             name=self.indicator_name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             bpolys=self.feature,
         )
         indicator = asyncio.run(oqt.create_indicator(parameters))
@@ -52,7 +52,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_default_fid_field(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
         )
@@ -63,7 +63,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_int(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
             fid_field=self.fid_field,
@@ -75,7 +75,7 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_dataset_custom_fid_field_str(self):
         parameters = IndicatorDatabase(
             name=self.indicator_name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             dataset=self.dataset,
             feature_id="Heidelberg",
             fid_field="name",
@@ -178,7 +178,7 @@ class TestOqt(unittest.TestCase):
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
             name=self.indicator_name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             bpolys=feature,
         )
         with self.assertRaises(ValueError):
@@ -201,7 +201,7 @@ class TestOqt(unittest.TestCase):
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
             name="mapping-saturation",
-            layer_key="building_count",
+            topic="building_count",
             bpolys=feature,
         )
         asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
@@ -217,7 +217,7 @@ class TestOqt(unittest.TestCase):
         parameters = IndicatorData(
             name="mapping-saturation",
             bpolys=feature,
-            layer={
+            topic={
                 "name": "foo",
                 "description": "bar",
                 "data": {

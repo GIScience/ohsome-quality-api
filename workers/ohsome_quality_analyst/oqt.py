@@ -187,7 +187,7 @@ async def _(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                layer_key=parameters.layer_key.value,
+                topic=parameters.layer_key.value,
                 bpolys=feature,
             )
         )
@@ -297,7 +297,7 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
             create_indicator(
                 IndicatorDatabase(
                     name=indicator_name,
-                    layer_key=layer_key,
+                    topic=layer_key,
                     dataset=dataset,
                     feature_id=feature_id,
                 ),
@@ -336,7 +336,7 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
             create_indicator(
                 IndicatorBpolys(
                     name=indicator_name,
-                    layer_key=layer_key,
+                    topic=layer_key,
                     bpolys=feature,
                 )
             )
@@ -377,7 +377,7 @@ async def create_all_indicators(
                 create_indicator(
                     IndicatorDatabase(
                         name=indicator_name_,
-                        layer_key=layer_key_,
+                        topic=layer_key_,
                         dataset=dataset,
                         feature_id=fid,
                     ),

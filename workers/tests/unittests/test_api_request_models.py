@@ -69,12 +69,12 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_layer_key_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
-        request_models.BaseLayerName(layer_key="building_count")
+        request_models.BaseLayerName(topic="building_count")
 
     def test_layer_key_invalid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
         with self.assertRaises(ValueError):
-            request_models.BaseLayerName(layer_key="foo")
+            request_models.BaseLayerName(topic="foo")
 
     def test_layer_data_valid(self):
         layer = {
@@ -82,7 +82,7 @@ class TestApiRequestModels(unittest.TestCase):
             "description": "bar",
             "data": {},
         }
-        request_models.BaseLayerData(layer=layer)
+        request_models.BaseLayerData(topic=layer)
 
     def test_layer_data_invalid(self):
         for layer in (
@@ -124,13 +124,13 @@ class TestApiRequestModels(unittest.TestCase):
     def test_indicator_database(self):
         request_models.IndicatorDatabase(
             name="minimal",
-            layer_key="minimal",
+            topic="minimal",
             dataset="regions",
             feature_id="3",
         )
         request_models.IndicatorDatabase(
             name="minimal",
-            layer_key="minimal",
+            topic="minimal",
             dataset="regions",
             feature_id="Heidelberg",
             fid_field="name",
@@ -139,14 +139,14 @@ class TestApiRequestModels(unittest.TestCase):
     def test_indicator_bpolys(self):
         request_models.IndicatorBpolys(
             name="minimal",
-            layer_key="minimal",
+            topic="minimal",
             bpolys=self.bpolys,
         )
 
     def test_indicator_invalid_layer_combination(self):
         kwargs = {
             "name": "minimal",
-            "layer-key": "amenities",
+            "topic": "amenities",
             "dataset": "regions",
             "feature-id": 3,
         }
@@ -159,7 +159,7 @@ class TestApiRequestModels(unittest.TestCase):
         request_models.IndicatorData(
             name="mapping-saturation",
             bpolys=self.bpolys,
-            layer={"name": "foo", "description": "bar", "data": {}},
+            topic={"name": "foo", "description": "bar", "data": {}},
         )
 
     def test_indicator_data_invalid_indicator(self):
@@ -173,7 +173,7 @@ class TestApiRequestModels(unittest.TestCase):
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "name",
-            "layer-key",
+            "topic",
             "dataset",
             "feature-id",
             "fid-field",
@@ -199,20 +199,20 @@ class TestApiRequestModels(unittest.TestCase):
         valid_combinations = (
             {
                 "name": "minimal",
-                "layer-key": "minimal",
+                "topic": "minimal",
                 "dataset": "regions",
                 "feature-id": "3",
             },
             {
                 "name": "minimal",
-                "layer-key": "minimal",
+                "topic": "minimal",
                 "dataset": "regions",
                 "feature-id": "3",
                 "fid-field": "ogc_fid",
             },
             {
                 "name": "minimal",
-                "layer-key": "minimal",
+                "topic": "minimal",
                 "bpolys": self.bpolys,
             },
         )
