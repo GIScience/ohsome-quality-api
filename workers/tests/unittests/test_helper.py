@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 from geojson import Feature, Polygon
 
+from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
@@ -52,6 +53,12 @@ class TestHelper(unittest.TestCase):
             name_to_class(class_type="report", name="minimal"),
             MinimalReport,
         )
+
+        self.indicators = load_metadata("indicators")
+        for indicator_name in self.indicators.keys():
+            self.assertIsNotNone(
+                name_to_class(class_type="indicator", name=indicator_name)
+            )
 
     def test_loads_geojson_geometry(self):
         raw = get_fixture("heidelberg-altstadt-geometry.geojson")
