@@ -168,7 +168,7 @@ class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
     def validate_indicator_name(cls, name):
         if name.value != "mapping-saturation":
             raise ValueError(
-                "Computing an Indicator for a Tpoic with data attached is only "
+                "Computing an Indicator for a Topic with data attached is only "
                 + "supported for the Mapping Saturation Indicator."
             )
         else:
@@ -224,7 +224,7 @@ INDICATOR_EXAMPLES = {
     },
     "Custom AOI and custom Topic": {
         "summary": (
-            "Request an Indicator for a custom AOI (`bpolys`) and a custom Topic"
+            "Request an Indicator for a custom AOI (`bpolys`) and a custom Topic "
             "(`topic`)."
         ),
         "value": {
