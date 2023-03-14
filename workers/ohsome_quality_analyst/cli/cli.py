@@ -135,16 +135,16 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            layerKey=layer_key,
+            layer_key=layer_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            layerKey=layer_key,
+            layer_key=layer_key,
             dataset=dataset_name,
-            featureId=feature_id,
-            fidField=fid_field,
+            feature_id=feature_id,
+            fid_field=fid_field,
         )
     geojson_object = asyncio.run(oqt.create_indicator_as_geojson(parameters, force))
     if outfile:
@@ -188,8 +188,8 @@ def create_report(
         parameters = ReportDatabase(
             name=report_name,
             dataset=dataset_name,
-            featureId=feature_id,
-            fidField=fid_field,
+            feature_id=feature_id,
+            fid_field=fid_field,
         )
     geojson_object = asyncio.run(oqt.create_report_as_geojson(parameters, force))
     if outfile:

@@ -23,7 +23,7 @@ from ohsome_quality_analyst.definitions import (
     get_layer_keys,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
+from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -34,7 +34,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 class BaseIndicator(BaseModel):
     name: IndicatorEnum = pydantic.Field(
-        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
+        ..., title="Indicator Name", example="mapping-saturation"
     )
     include_svg: bool = False
     include_html: bool = False
@@ -44,14 +44,16 @@ class BaseIndicator(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_lower_camel
+        alias_generator = snake_to_hyphen
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
 
 
 class BaseReport(BaseModel):
     name: ReportEnum = pydantic.Field(
-        ..., title="Report Name", example="BuildingReport"
+        ..., title="Report Name", example="building-report"
     )
     include_svg: bool = False
     include_html: bool = False
@@ -61,7 +63,9 @@ class BaseReport(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_lower_camel
+        alias_generator = snake_to_hyphen
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
 
@@ -72,7 +76,7 @@ class BaseLayerName(BaseModel):
     layer_key: LayerEnum = pydantic.Field(
         ...,
         title="Layer Key",
-        example="building_count",
+        example="building-count",
     )
 
 
@@ -163,7 +167,7 @@ class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
     @pydantic.validator("name")
     @classmethod
     def validate_indicator_name(cls, name):
-        if name.value != "MappingSaturation":
+        if name.value != "mapping-saturation":
             raise ValueError(
                 "Computing an Indicator for a Layer with data attached is only "
                 + "supported for the Mapping Saturation Indicator."
@@ -184,24 +188,24 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`featureId`)."
+            "`feature-id`)."
         ),
         "value": {
-            "name": "GhsPopComparisonBuildings",
-            "layerKey": "building_count",
+            "name": "mapping-saturation",
+            "layer-key": "building_count",
             "dataset": "regions",
-            "featureId": 3,
-            "fidField": "ogc_fid",
-            "includeSvg": False,
-            "includeHtml": False,
+            "feature-id": 3,
+            "fid-field": "ogc_fid",
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
-            "name": "GhsPopComparisonBuildings",
-            "layerKey": "building_count",
+            "name": "mapping-saturation",
+            "layer-key": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -225,7 +229,7 @@ INDICATOR_EXAMPLES = {
             "(`layer`)."
         ),
         "value": {
-            "name": "MappingSaturation",
+            "name": "mapping-saturation",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -286,8 +290,8 @@ INDICATOR_EXAMPLES = {
                     ]
                 },
             },
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
@@ -296,22 +300,22 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
         ),
         "value": {
-            "name": "BuildingReport",
+            "name": "building-report",
             "dataset": "regions",
-            "featureId": 12,
-            "fidField": "ogc_fid",
-            "includeSvg": False,
-            "includeHtml": False,
+            "feature-id": 12,
+            "fid-field": "ogc_fid",
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "MultilevelMappingSaturation",
+            "name": "building-report",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -327,8 +331,8 @@ REPORT_EXAMPLES = {
                     ],
                 },
             },
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },

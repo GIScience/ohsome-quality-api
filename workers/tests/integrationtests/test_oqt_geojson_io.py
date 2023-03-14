@@ -13,7 +13,7 @@ from .utils import oqt_vcr
 class TestOqtGeoJsonIO(unittest.TestCase):
     def setUp(self):
         # Heidelberg
-        self.name = "Minimal"
+        self.name = "minimal"
         self.layer_key = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
@@ -25,7 +25,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_bpolys(self):
         patameters = IndicatorBpolys(
             name=self.name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             bpolys=self.feature,
         )
         feature = asyncio.run(oqt.create_indicator_as_geojson(patameters))
@@ -35,9 +35,9 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_database(self):
         parameters = IndicatorDatabase(
             name=self.name,
-            layerKey=self.layer_key,
+            layer_key=self.layer_key,
             dataset=self.dataset,
-            featureId=self.feature_id,
+            feature_id=self.feature_id,
         )
         feature = asyncio.run(oqt.create_indicator_as_geojson(parameters))
         self.assertIsInstance(feature, Feature)

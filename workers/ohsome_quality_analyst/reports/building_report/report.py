@@ -12,10 +12,10 @@ class BuildingReport(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("MappingSaturation", "building_count"),
-                IndicatorLayer("Currentness", "building_count"),
-                IndicatorLayer("TagsRatio", "building_count"),
-                IndicatorLayer("BuildingCompleteness", "building_area"),
+                IndicatorLayer("mapping-saturation", "building_count"),
+                IndicatorLayer("currentness", "building_count"),
+                IndicatorLayer("tags-ratio", "building_count"),
+                IndicatorLayer("building-completeness", "building_area"),
             ),
             feature=feature,
             blocking_red=blocking_red,

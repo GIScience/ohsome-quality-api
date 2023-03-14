@@ -20,12 +20,12 @@ class TestApiRequestModels(unittest.TestCase):
             self.bpolys = json.load(file)
 
     def test_base_indicator_valid(self):
-        request_models.BaseIndicator(name="Minimal")
+        request_models.BaseIndicator(name="minimal")
         request_models.BaseIndicator(
-            name="Minimal",
-            includeSvg=True,
-            includeHtml=True,
-            includeData=False,
+            name="minimal",
+            include_svg=True,
+            include_html=True,
+            include_data=False,
             flatten=False,
         )
 
@@ -37,19 +37,19 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseIndicator(includeSvg=True)
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(name="Minimal", include_svg="foo")
+            request_models.BaseIndicator(name="minimal", include_svg="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(name="Minimal", include_html="foo")
+            request_models.BaseIndicator(name="minimal", include_html="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseIndicator(name="Minimal", flatten="foo")
+            request_models.BaseIndicator(name="minimal", flatten="foo")
 
     def test_base_report_valid(self):
-        request_models.BaseReport(name="Minimal")
+        request_models.BaseReport(name="minimal")
         request_models.BaseReport(
-            name="Minimal",
-            includeSvg=True,
-            includeHtml=True,
-            includeData=False,
+            name="minimal",
+            include_svg=True,
+            include_html=True,
+            include_data=False,
             flatten=False,
         )
 
@@ -61,11 +61,11 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseReport(include_svg=True)
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="Minimal", includeSvg="foo")
+            request_models.BaseReport(name="minimal", include_svg="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="Minimal", includeHtml="foo")
+            request_models.BaseReport(name="minimal", include_html="foo")
         with self.assertRaises(ValueError):
-            request_models.BaseReport(name="Minimal", flatten="foo")
+            request_models.BaseReport(name="minimal", flatten="foo")
 
     def test_layer_key_valid(self):
         # Test on BaseIndicator because validation of BaseLayer needs indicator name
@@ -123,32 +123,32 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_indicator_database(self):
         request_models.IndicatorDatabase(
-            name="Minimal",
-            layerKey="minimal",
+            name="minimal",
+            layer_key="minimal",
             dataset="regions",
-            featureId="3",
+            feature_id="3",
         )
         request_models.IndicatorDatabase(
-            name="Minimal",
-            layerKey="minimal",
+            name="minimal",
+            layer_key="minimal",
             dataset="regions",
-            featureId="Heidelberg",
-            fidField="name",
+            feature_id="Heidelberg",
+            fid_field="name",
         )
 
     def test_indicator_bpolys(self):
         request_models.IndicatorBpolys(
-            name="Minimal",
-            layerKey="minimal",
+            name="minimal",
+            layer_key="minimal",
             bpolys=self.bpolys,
         )
 
     def test_indicator_invalid_layer_combination(self):
         kwargs = {
-            "name": "Minimal",
-            "layerKey": "amenities",
+            "name": "minimal",
+            "layer-key": "amenities",
             "dataset": "regions",
-            "featureId": 3,
+            "feature-id": 3,
         }
         with self.assertRaises(ValueError):
             request_models.IndicatorDatabase(**kwargs)
@@ -157,7 +157,7 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_indicator_data(self):
         request_models.IndicatorData(
-            name="MappingSaturation",
+            name="mapping-saturation",
             bpolys=self.bpolys,
             layer={"name": "foo", "description": "bar", "data": {}},
         )
@@ -165,7 +165,7 @@ class TestApiRequestModels(unittest.TestCase):
     def test_indicator_data_invalid_indicator(self):
         with self.assertRaises(ValueError):
             request_models.IndicatorData(
-                name="foor",
+                name="foo",
                 bpolys=self.bpolys,
                 layer={"name": "foo", "description": "bar", "data": {}},
             )
@@ -173,14 +173,14 @@ class TestApiRequestModels(unittest.TestCase):
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "name",
-            "layerKey",
+            "layer-key",
             "dataset",
-            "featureId",
-            "fidField",
+            "feature-id",
+            "fid-field",
             "bpolys",
         )
         param_values = (
-            "Minimal",
+            "minimal",
             "minimal",
             "regions",
             "3",
@@ -198,21 +198,21 @@ class TestApiRequestModels(unittest.TestCase):
                 )
         valid_combinations = (
             {
-                "name": "Minimal",
-                "layerKey": "minimal",
+                "name": "minimal",
+                "layer-key": "minimal",
                 "dataset": "regions",
-                "featureId": "3",
+                "feature-id": "3",
             },
             {
-                "name": "Minimal",
-                "layerKey": "minimal",
+                "name": "minimal",
+                "layer-key": "minimal",
                 "dataset": "regions",
-                "featureId": "3",
-                "fidField": "ogc_fid",
+                "feature-id": "3",
+                "fid-field": "ogc_fid",
             },
             {
-                "name": "Minimal",
-                "layerKey": "minimal",
+                "name": "minimal",
+                "layer-key": "minimal",
                 "bpolys": self.bpolys,
             },
         )

@@ -13,10 +13,10 @@ class MultilevelCurrentness(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("Currentness", "infrastructure_lines"),
-                IndicatorLayer("Currentness", "poi"),
-                IndicatorLayer("Currentness", "lulc"),
-                IndicatorLayer("Currentness", "building_count"),
+                IndicatorLayer("currentness", "infrastructure_lines"),
+                IndicatorLayer("currentness", "poi"),
+                IndicatorLayer("currentness", "lulc"),
+                IndicatorLayer("currentness", "building_count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

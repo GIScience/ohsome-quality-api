@@ -1,10 +1,10 @@
 ---
-GhsPopComparisonRoads:
+ghs-pop-comparison-roads:
   name: GHS-POP Comparison Roads
   description: |
     Comparison between population density and road density.
     This can give an estimate if mapping has been completed.
-  label_description:
+  label-description:
     red: |
       The comparison of population density and road density, that
       a majority of roads has not been mapped yet. This results in a bad
@@ -18,7 +18,7 @@ GhsPopComparisonRoads:
       indicates a good data quality in terms of completeness.
     undefined: |
       The quality level could not be calculated for this indicator.
-  result_description: |
+  result-description: |
     Following the GHS POP dataset, there are 
     $pop_count people living in an area of 
     $area sqkm, which results in a population density 
