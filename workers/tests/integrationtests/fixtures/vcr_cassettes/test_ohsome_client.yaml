@@ -17,12 +17,12 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.8.0\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\"
+      \"1.9.0\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\"
       : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0
       ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ]
       ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n
-      \     \"toTimestamp\" : \"2022-12-11T21:00Z\"\n    },\n    \"replicationSequenceNumber\"
-      : 89822\n  }\n}"
+      \     \"toTimestamp\" : \"2023-03-10T15:00Z\"\n    },\n    \"replicationSequenceNumber\"
+      : 91952\n  }\n}"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 14 Dec 2022 14:01:27 GMT
+      - Tue, 14 Mar 2023 15:03:12 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -74,7 +74,7 @@ interactions:
     method: POST
     uri: https://api.ohsome.org/v1/elements/lenght
   response:
-    content: "{\n  \"timestamp\" : \"2022-12-14T14:01:28.160+00:00\",\n  \"status\"
+    content: "{\n  \"timestamp\" : \"2023-03-14T15:03:12.821+00:00\",\n  \"status\"
       : 404,\n  \"error\" : \"Not Found\",\n  \"path\" : \"/elements/lenght\"\n}"
     headers:
       Access-Control-Allow-Credentials:
@@ -96,7 +96,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 14 Dec 2022 14:01:27 GMT
+      - Tue, 14 Mar 2023 15:03:12 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
@@ -129,8 +129,8 @@ interactions:
     method: POST
     uri: https://api.ohsome.org/v1/elements/length
   response:
-    content: "{\n  \"timestamp\" : \"2022-12-14T14:01:28.310709\",\n  \"status\" :
-      400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional
+    content: "{\n  \"timestamp\" : \"2023-03-14T15:03:13.03085637\",\n  \"status\"
+      : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional
       info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api.
       Detailed error message: line 1, column 13: whitespaces, EQUALS (=), NOT_EQUALS
       (!=) or in expected, EOF encountered.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/length\"\n}"
@@ -154,7 +154,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 14 Dec 2022 14:01:27 GMT
+      - Tue, 14 Mar 2023 15:03:12 GMT
       Server:
       - Apache/2.4.52 (Ubuntu)
       Strict-Transport-Security:
