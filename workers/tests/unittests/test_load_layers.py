@@ -19,6 +19,7 @@ class TestLoadLayers(unittest.TestCase):
                     "description": str,
                     "endpoint": str,
                     "filter": str,
+                    "indicators": list,
                     Optional("ratio_filter", default=None): Or(str, None),
                     Optional("source", default=None): Or(str, None),
                 }
