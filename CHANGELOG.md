@@ -4,22 +4,25 @@
 
 ### Breaking Changes
 
-- refactor!: change parameter names from snake case to lower hyphen ([#398])
-- refactor!: change indicator and report keys from lower camel case to lower hyphen ([#398])
+- change API parameter names for POST requests from snake case to lower hyphen ([#398])
+- change indicator and report keys from lower camel case to lower hyphen ([#398])
+
+### New Features
+
+- disable size limit for Mapping Saturation ([#498])
 
 ### Other Changes
 
 - fix pre-commit hooks ([#482])
 - update asyncpg from 0.25 to 0.27 ([#481])
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
-- feat: disable size limit for Mapping Saturation ([#498])
-- Overhaul docker compose setup ([#483])
+- overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
 
 ### How to Upgrade
 
 - rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
-- rename API request parameters from camel case to lower hyphen ([#398])
+- rename API parameters for POST requests from camel case to lower hyphen ([#398])
 
 | old           | new            |
 | ---           | ---            |
