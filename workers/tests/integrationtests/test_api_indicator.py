@@ -46,7 +46,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_default_fid_field(self):
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "topic": self.layer_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
@@ -60,7 +60,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_custom_fid_field(self):
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "topic": self.layer_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "fid_field": self.fid_field,
@@ -75,7 +75,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_custom_fid_field_2(self):
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "topic": self.layer_key,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
             "fid_field": "name",
@@ -90,7 +90,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_invalid(self):
         parameters = {
             "name": self.indicator_name,
-            "layer_key": self.layer_key,
+            "topic": self.layer_key,
             "dataset": "foo",
             "feature_id": self.feature_id,
         }
@@ -107,12 +107,12 @@ class TestApiIndicator(unittest.TestCase):
         for parameters in (
             {
                 "name": self.indicator_name,
-                "layer_key": "building_count",
+                "topic": "building_count",
                 "dataset": "regions",
             },
             {
                 "name": self.indicator_name,
-                "layer_key": "building_count",
+                "topic": "building_count",
                 "feature_id": "3",
             },
         ):
@@ -127,7 +127,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg_true(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -144,7 +144,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg_false(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}&include_svg={5}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -161,7 +161,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg_default(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -178,7 +178,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_invalid_layer(self):
         parameters = {
             "name": self.indicator_name,
-            "layer_key": "amenities",
+            "topic": "amenities",
             "dataset": "regions",
             "feature_id": "3",
         }
@@ -193,7 +193,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_html_true(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}&include_html={5}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -210,7 +210,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_html_false(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}&include_html={5}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -227,7 +227,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_html_default(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&fid_field={4}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -242,7 +242,7 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_default(self):
-        url = "/indicator?name={0}&layer_key={1}&dataset={2}&feature_id={3}".format(
+        url = "/indicator?name={0}&topic={1}&dataset={2}&feature_id={3}".format(
             self.indicator_name,
             self.layer_key,
             self.dataset,
@@ -257,7 +257,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_true(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&flatten={4}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -273,7 +273,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_flatten_false(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&flatten={4}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -289,7 +289,7 @@ class TestApiIndicator(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_default(self):
-        url = "/indicator?name={0}&layer_key={1}&dataset={2}&feature_id={3}".format(
+        url = "/indicator?name={0}&topic={1}&dataset={2}&feature_id={3}".format(
             self.indicator_name,
             self.layer_key,
             self.dataset,
@@ -302,7 +302,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_true(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&include_data={4}".format(
                 self.indicator_name,
                 self.layer_key,
@@ -318,7 +318,7 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_data_false(self):
         url = (
-            "/indicator?name={0}&layer_key={1}&dataset={2}"
+            "/indicator?name={0}&topic={1}&dataset={2}"
             "&feature_id={3}&include_data={4}".format(
                 self.indicator_name,
                 self.layer_key,

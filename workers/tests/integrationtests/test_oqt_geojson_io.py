@@ -25,7 +25,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_bpolys(self):
         patameters = IndicatorBpolys(
             name=self.name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             bpolys=self.feature,
         )
         feature = asyncio.run(oqt.create_indicator_as_geojson(patameters))
@@ -35,7 +35,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_database(self):
         parameters = IndicatorDatabase(
             name=self.name,
-            layer_key=self.layer_key,
+            topic=self.layer_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
         )
