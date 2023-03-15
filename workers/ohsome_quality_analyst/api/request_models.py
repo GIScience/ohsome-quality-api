@@ -23,7 +23,7 @@ from ohsome_quality_analyst.definitions import (
     get_layer_keys,
     get_report_names,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_lower_camel
+from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -34,7 +34,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 class BaseIndicator(BaseModel):
     name: IndicatorEnum = pydantic.Field(
-        ..., title="Indicator Name", example="GhsPopComparisonBuildings"
+        ..., title="Indicator Name", example="mapping-saturation"
     )
     include_svg: bool = False
     include_html: bool = False
@@ -44,14 +44,16 @@ class BaseIndicator(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_lower_camel
+        alias_generator = snake_to_hyphen
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
 
 
 class BaseReport(BaseModel):
     name: ReportEnum = pydantic.Field(
-        ..., title="Report Name", example="BuildingReport"
+        ..., title="Report Name", example="building-report"
     )
     include_svg: bool = False
     include_html: bool = False
@@ -61,28 +63,29 @@ class BaseReport(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_lower_camel
+        alias_generator = snake_to_hyphen
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
 
 
 class BaseLayerName(BaseModel):
-    """Model for the `layer_key` parameter."""
-
     layer_key: LayerEnum = pydantic.Field(
         ...,
-        title="Layer Key",
+        title="Topic Key",
+        alias="topic",
         example="building_count",
     )
 
 
 class BaseLayerData(BaseModel):
-    """Model for the parameter `layer`.
+    """Model for the parameter `topic`.
 
-    The Layer consists of name, description and data.
+    The Topic consists of name, description and data.
     """
 
-    layer: LayerData
+    layer: LayerData = pydantic.Field(..., title="Topic", alias="topic")
 
 
 class BaseBpolys(BaseModel):
@@ -134,10 +137,10 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
         try:
             indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
-            raise ValueError("An issue with the layer or indicator name occurred.")
+            raise ValueError("An issue with the topic or indicator keys occurred.")
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_layer)
             )
         else:
             return values
@@ -150,10 +153,10 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
         try:
             indicator_layer = (values["name"].value, values["layer_key"].value)
         except KeyError:
-            raise ValueError("An issue with the layer or indicator name occurred.")
+            raise ValueError("An issue with the topic or indicator key occurred.")
         if indicator_layer not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator layer combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_layer)
             )
         else:
             return values
@@ -163,9 +166,9 @@ class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
     @pydantic.validator("name")
     @classmethod
     def validate_indicator_name(cls, name):
-        if name.value != "MappingSaturation":
+        if name.value != "mapping-saturation":
             raise ValueError(
-                "Computing an Indicator for a Layer with data attached is only "
+                "Computing an Indicator for a Topic with data attached is only "
                 + "supported for the Mapping Saturation Indicator."
             )
         else:
@@ -184,24 +187,24 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`featureId`)."
+            "`feature-id`)."
         ),
         "value": {
-            "name": "GhsPopComparisonBuildings",
-            "layerKey": "building_count",
+            "name": "mapping-saturation",
+            "layer-key": "building_count",
             "dataset": "regions",
-            "featureId": 3,
-            "fidField": "ogc_fid",
-            "includeSvg": False,
-            "includeHtml": False,
+            "feature-id": 3,
+            "fid-field": "ogc_fid",
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
-            "name": "GhsPopComparisonBuildings",
-            "layerKey": "building_count",
+            "name": "mapping-saturation",
+            "layer-key": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -219,13 +222,13 @@ INDICATOR_EXAMPLES = {
             },
         },
     },
-    "Custom AOI and custom Layer": {
+    "Custom AOI and custom Topic": {
         "summary": (
-            "Request an Indicator for a custom AOI (`bpolys`) and a custom Layer "
-            "(`layer`)."
+            "Request an Indicator for a custom AOI (`bpolys`) and a custom Topic "
+            "(`topic`)."
         ),
         "value": {
-            "name": "MappingSaturation",
+            "name": "mapping-saturation",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -241,9 +244,9 @@ INDICATOR_EXAMPLES = {
                     ],
                 },
             },
-            "layer": {
-                "name": "My layer name",
-                "description": "My layer description",
+            "topic": {
+                "name": "My topic name",
+                "description": "My topic description",
                 "data": {
                     "result": [
                         {"timestamp": "2014-01-01T00:00:00Z", "value": 4708},
@@ -286,8 +289,8 @@ INDICATOR_EXAMPLES = {
                     ]
                 },
             },
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
@@ -296,22 +299,22 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
         ),
         "value": {
-            "name": "BuildingReport",
+            "name": "building-report",
             "dataset": "regions",
-            "featureId": 12,
-            "fidField": "ogc_fid",
-            "includeSvg": False,
-            "includeHtml": False,
+            "feature-id": 12,
+            "fid-field": "ogc_fid",
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "MultilevelMappingSaturation",
+            "name": "building-report",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -327,8 +330,8 @@ REPORT_EXAMPLES = {
                     ],
                 },
             },
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
             "flatten": False,
         },
     },

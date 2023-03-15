@@ -1,11 +1,11 @@
 ---
-PoiDensity:
+poi-density:
   name: POI Density
   description: |
       The density of Point of Interests (POI).
       It is calculated by the number of features 
       divided by the area in square-kilometers.
-  label_description:
+  label-description:
     red: |
       It is probably hard to orientate on OSM-based sketchmaps of this region. 
       There are just few orientation providing features available, 
@@ -18,7 +18,7 @@ PoiDensity:
       It is probably easy to orientate on OSM-based sketchmaps of this region.
     undefined: |
       The quality level could not be calculated for this indicator.
-  result_description: |
+  result-description: |
     The density of landmarks 
     (points of reference, e.g. waterbodies, supermarkets, churches, bus stops) 
     is $result features per sqkm.

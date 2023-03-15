@@ -76,16 +76,13 @@ class TestDefinitions(unittest.TestCase):
         self.assertEqual(
             indicators,
             (
-                "GhsPopComparisonBuildings",
-                "MappingSaturation",
-                "Currentness",
-                "TagsRatio",
+                "ghs-pop-comparison-buildings",
+                "mapping-saturation",
+                "currentness",
+                "tags-ratio",
             ),
         )
 
     def test_get_valid_layers(self):
-        layers = definitions.get_valid_layers("Minimal")
-        self.assertEqual(
-            layers,
-            ("minimal",),
-        )
+        layers = definitions.get_valid_layers("minimal")
+        self.assertEqual(layers, ("minimal",))

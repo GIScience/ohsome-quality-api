@@ -4,14 +4,18 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 
 import yaml
 
 from ohsome_quality_analyst.base.layer import LayerDefinition
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
-from ohsome_quality_analyst.utils.helper import flatten_sequence, get_module_dir
+from ohsome_quality_analyst.utils.helper import (
+    camel_to_hyphen,
+    flatten_sequence,
+    get_module_dir,
+)
 
 
 @dataclass(frozen=True)
@@ -194,7 +198,9 @@ def load_metadata(module_name: str) -> Dict:
     return metadata
 
 
-def get_metadata(module_name: str, class_name: str) -> Dict:
+def get_metadata(
+    module_name: Literal["indicators", "reports"], class_name: str
+) -> Dict:
     """Get metadata of an indicator or report based on its class name.
 
     This is implemented outside the metadata class to be able to
@@ -210,7 +216,7 @@ def get_metadata(module_name: str, class_name: str) -> Dict:
 
     metadata = load_metadata(module_name)
     try:
-        return metadata[class_name]
+        return metadata[camel_to_hyphen(class_name)]
     except KeyError:
         logging.error(
             "Invalid {0} class name. Valid {0} class names are: ".format(

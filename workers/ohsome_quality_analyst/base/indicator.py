@@ -8,7 +8,6 @@ from io import StringIO
 from typing import Dict, Literal, Optional
 
 import matplotlib.pyplot as plt
-from dacite import from_dict
 from geojson import Feature
 
 from ohsome_quality_analyst.base.layer import BaseLayer as Layer
@@ -74,7 +73,12 @@ class BaseIndicator(metaclass=ABCMeta):
         self.feature: Feature = feature
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.metadata: Metadata = Metadata(
+            name=metadata["name"],
+            description=metadata["description"],
+            label_description=metadata["label-description"],
+            result_description=metadata["result-description"],
+        )
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
