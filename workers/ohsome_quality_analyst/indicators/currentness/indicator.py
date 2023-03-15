@@ -68,6 +68,7 @@ class Currentness(BaseIndicator):
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
+            #  exclude deletions from the response
             contribution_type="geometryChange,creation,tagChange",
         )
         # Fetch contributions of current year
