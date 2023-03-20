@@ -177,22 +177,23 @@ class MappingSaturation(BaseIndicator):
         plt.close("all")
 
     def check_edge_cases(self) -> str:
-        """Check edge cases
+        """Check edge cases.
 
         Returns
             str: Returns description of edge case. Empty string if no edge is present.
         """
-        # TODO: Add check for the case where the history is to short
-        # no data
-        if max(self.values) == 0:
+        if max(self.values) == 0:  # no data
             return "No features were mapped in this region."
-        # TODO: Decide on how many features have to be present to run models.
-        # Values can be a count of features (building )or length of features (streets)
-        # not enough data
-        elif np.sum(self.values) < 10:
-            return "Not enough data in this regions available."
-        # deleted data
-        elif self.latest_value == 0:
+        # TODO: Decide on the minimal number/length/area of features have to be present
+        # to run models (#511).
+        elif np.sum(self.values) < 10:  # not enough data
+            return "Not enough data in total available in this region."
+        elif len(self.values) < 36:  # not enough data points
+            return (
+                "Not enough data points available in this regions. "
+                + "The Mapping Saturation indicator needs data for at least 36 months."
+            )
+        elif self.latest_value == 0:  # data deleted
             return "All mapped features in this region have been deleted."
         return ""
 
