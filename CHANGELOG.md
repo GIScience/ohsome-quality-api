@@ -8,6 +8,11 @@
 - change indicator and report keys from lower camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 
+### Bug Fixes
+
+- mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- mapping-saturation: allow result value above 100% ([#479])
+
 ### New Features
 
 - disable size limit for Mapping Saturation ([#498])
