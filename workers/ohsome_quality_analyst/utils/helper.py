@@ -21,8 +21,8 @@ def name_to_class(class_type: str, name: str):
     """Convert class name of class type (indicator or report) to the class.
 
     Assumptions:
-    - Class is named in Camel Case (E.g. GhsPopComparison).
-    - Path to the module is in Snake Case (E.g. indicators.ghs_pop_comparison.indicator)
+    - Class is named in Camel Case (E.g. MappingSaturation).
+    - Path to the module is in Snake Case (E.g. indicators.mapping_saturation.indicator)
     """
     # Alternatives:
     # - Hard code import of classes

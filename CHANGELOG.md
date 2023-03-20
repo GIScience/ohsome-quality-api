@@ -7,6 +7,7 @@
 - change API parameter names for POST requests from snake case to lower hyphen ([#398])
 - change indicator and report keys from lower camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 
 ### Bug Fixes
 
@@ -49,6 +50,7 @@
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
+[#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 
 ## 0.14.0
 
