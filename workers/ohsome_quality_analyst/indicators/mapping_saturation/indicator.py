@@ -1,7 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,7 +49,6 @@ class MappingSaturation(BaseIndicator):
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
-        self.latest_value: Union[None, int, float] = None
         self.timestamps: list = []
 
         self.upper_threshold = 0.97  # Threshold derived from Gröchenig et al.
@@ -71,7 +70,6 @@ class MappingSaturation(BaseIndicator):
         for item in query_results["result"]:
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
-        self.latest_value = self.values[-1]
 
     def calculate(self) -> None:
         # Latest timestamp of ohsome API results
@@ -193,7 +191,7 @@ class MappingSaturation(BaseIndicator):
                 "Not enough data points available in this regions. "
                 + "The Mapping Saturation indicator needs data for at least 36 months."
             )
-        elif self.latest_value == 0:  # data deleted
+        elif self.values[-1] == 0:  # data deleted
             return "All mapped features in this region have been deleted."
         return ""
 

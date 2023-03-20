@@ -35,7 +35,7 @@ class TestCheckEdgeCases:
 
     def test_data_deleted(self, indicator):
         indicator.values = [i for i in range(36)]
-        indicator.latest_value = 0
+        indicator.values[-1] = 0
         assert (
             indicator.check_edge_cases()
             == "All mapped features in this region have been deleted."
@@ -52,8 +52,8 @@ class TestPreprocess:
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         assert len(indicator.values) > 0
-        assert indicator.latest_value is not None
-        assert indicator.latest_value > 0
+        assert indicator.values[-1] is not None
+        assert indicator.values[-1] > 0
         for t in indicator.timestamps:
             assert isinstance(t, datetime)
 
