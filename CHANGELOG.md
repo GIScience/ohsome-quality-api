@@ -7,7 +7,7 @@
 - change API parameter names for POST requests from snake case to lower hyphen ([#398])
 - change indicator and report keys from lower camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
-- remove GHS POP Comparison indicators: `ghs_pop_comparision_buildings` and `ghs_pop_comparision_roads` ([#515])
+- remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 
 ### Bug Fixes
 
