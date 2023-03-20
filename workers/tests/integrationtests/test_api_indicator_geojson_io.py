@@ -186,7 +186,8 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
-                "name": "foo",
+                "key": "foo",
+                "name": "bar",
                 "description": "",
                 "data": {
                     "result": [
@@ -204,7 +205,8 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
-                "name": "foo",
+                "key": "foo",
+                "name": "bar",
                 "description": "",
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },
