@@ -41,12 +41,14 @@
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
+[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
+[#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 
 ## 0.14.0
 
