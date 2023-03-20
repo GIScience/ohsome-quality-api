@@ -76,7 +76,6 @@ class TestDefinitions(unittest.TestCase):
         self.assertEqual(
             indicators,
             (
-                "ghs-pop-comparison-buildings",
                 "mapping-saturation",
                 "currentness",
                 "tags-ratio",
