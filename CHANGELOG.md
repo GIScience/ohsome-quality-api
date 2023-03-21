@@ -18,6 +18,7 @@
 ### New Features
 
 - disable size limit for Mapping Saturation ([#498])
+- add `project` attribute to topics ([#504])
 
 ### Other Changes
 
@@ -51,6 +52,7 @@
 [#500]: https://github.com/GIScience/ohsome-quality-analyst/pull/500
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
 [#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
+[#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 
