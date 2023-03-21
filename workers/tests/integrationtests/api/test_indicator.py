@@ -10,9 +10,11 @@ from fastapi.testclient import TestClient
 from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
-
-from .api_response_schema import get_general_schema, get_indicator_feature_schema
-from .utils import oqt_vcr
+from tests.integrationtests.api.response_schema import (
+    get_general_schema,
+    get_indicator_feature_schema,
+)
+from tests.integrationtests.utils import oqt_vcr
 
 ENDPOINT = "/indicator"
 

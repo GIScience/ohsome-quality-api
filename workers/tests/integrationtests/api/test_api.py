@@ -10,8 +10,10 @@ import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
-
-from .api_response_schema import get_general_schema, get_result_schema
+from tests.integrationtests.api.response_schema import (
+    get_general_schema,
+    get_result_schema,
+)
 
 
 class TestApi(unittest.TestCase):

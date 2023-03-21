@@ -59,7 +59,7 @@
 [#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
-<<<<<<< HEAD
+[#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
 
 ## 0.14.1
@@ -69,9 +69,6 @@
 - mapping-saturation: allow result value above 100% ([#479])
 
 [#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
-=======
-[#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
->>>>>>> cba033a8 (breaking: remove GET req for indicator and report)
 
 ## 0.14.0
 
