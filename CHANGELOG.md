@@ -18,8 +18,6 @@
 - fix pre-commit hooks ([#482])
 - update asyncpg from 0.25 to 0.27 ([#481])
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
-- feat: disable size limit for Mapping Saturation ([#498])
-- Overhaul docker compose setup ([#483])
 - overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
 
@@ -36,7 +34,6 @@
 | `includeHtml`     | `include-html`    |
 | `featureId`       | `feature-id`      |
 | `fidField`        | `indicators`      |
->>>>>>> main
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
@@ -45,11 +42,8 @@
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
-<<<<<<< HEAD
-[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
-=======
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
->>>>>>> main
+[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
 
 ## 0.14.0
 
