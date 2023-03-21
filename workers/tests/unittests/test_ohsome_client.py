@@ -193,7 +193,7 @@ class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.layer = get_layer_fixture("building_count")
-        self.ratio_layer = get_layer_fixture("jrc_health_count")
+        self.ratio_layer = get_layer_fixture("building_count")
 
     def test(self) -> None:
         ohsome_api = self.ohsome_api
@@ -274,7 +274,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter2": str,
             }
         )
-        layer = get_layer_fixture("jrc_health_count")
+        layer = get_layer_fixture("building_count")
         data = ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
         self.assertTrue(schema.is_valid(data))
 
@@ -287,7 +287,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "time": str,
             }
         )
-        layer = get_layer_fixture("jrc_health_count")
+        layer = get_layer_fixture("building_count")
         data = ohsome_client.build_data_dict(
             layer, self.bpolys, time="2014-01-01", ratio=True
         )

@@ -25,6 +25,7 @@ def test_layer_definition():
         key="key",
         name="name",
         description="description",
+        project="core",
         endpoint="endpoint",
         filter_="filter",
     )
@@ -32,14 +33,7 @@ def test_layer_definition():
         key="key",
         name="name",
         description="description",
-        endpoint="endpoint",
-        filter_="filter",
-        source="source",
-    )
-    LayerDefinition(
-        key="key",
-        name="name",
-        description="description",
+        project="core",
         endpoint="endpoint",
         filter_="filter",
         source="source",
@@ -48,6 +42,16 @@ def test_layer_definition():
         key="key",
         name="name",
         description="description",
+        project="core",
+        endpoint="endpoint",
+        filter_="filter",
+        source="source",
+    )
+    LayerDefinition(
+        key="key",
+        name="name",
+        description="description",
+        project="core",
         endpoint="endpoint",
         filter_="filter",
         source="source",
@@ -70,7 +74,6 @@ def test_layer_definition_extra():
             filter_="filter",
             foo="bar",
         )
-
 
 def test_layer_data():
     LayerData(key="key", name="name", description="description", data={})

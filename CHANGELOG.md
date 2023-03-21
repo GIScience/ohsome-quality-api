@@ -8,17 +8,18 @@
 - change indicator and report keys from lower camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
+- remove JRC related layers and report `jrc_requirements` ([#503])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 
 ### Bug Fixes
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
-- mapping-saturation: allow result value above 100% ([#479])
 
 ### New Features
 
 - disable size limit for Mapping Saturation ([#498])
-- Layer/Topic are now pydantic models instead of dataclasses ([#517])
+- add `project` attribute to topics ([#504])
+- layer/topic are now pydantic models instead of dataclasses ([#517])
 
 ### Other Changes
 
@@ -32,9 +33,9 @@
 
 - rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
 - rename API parameters for POST requests from camel case to lower hyphen ([#398])
-- for requests to the API endpoint `/indicator` for a custom layer/topic add an additional field `key` of type string ([#517])
-  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "layer": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- for requests to the API endpoint `/indicator` for a custom layer/topic add an additional field `key` of type string ([#517])
+  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "layer": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -46,16 +47,25 @@
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
-[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
+[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
+[#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
+
+## 0.14.1
+
+### Bug Fixes
+
+- mapping-saturation: allow result value above 100% ([#479])
+
+[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
 
 ## 0.14.0
 
