@@ -1,9 +1,9 @@
 ---
-BuildingReport:
+building-report:
   name: Building Report
   description: |
       This report gives a general overview of the quality for buildings.
-  label_description:
+  label-description:
     red: |
       The report indicates low quality of the underlying OSM data.
       Probably many buildings are not yet mapped.

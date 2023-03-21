@@ -13,9 +13,9 @@ class RoadReport(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("MappingSaturation", "major_roads_length"),
-                IndicatorLayer("Currentness", "major_roads_count"),
-                IndicatorLayer("AttributeCompleteness", "major_roads_length"),
+                IndicatorLayer("mapping-saturation", "major_roads_length"),
+                IndicatorLayer("currentness", "major_roads_count"),
+                IndicatorLayer("attribute-completeness", "major_roads_length"),
             ),
             feature=feature,
             blocking_red=blocking_red,

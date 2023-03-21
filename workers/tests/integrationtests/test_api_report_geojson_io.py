@@ -22,7 +22,7 @@ class TestApiReportIo(unittest.TestCase):
         self.client = TestClient(app)
         self.endpoint = "/report"
 
-        self.report_name = "Minimal"
+        self.report_name = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.dataset = "regions"
         self.feature_id = 3  # Heidelberg
@@ -88,7 +88,7 @@ class TestApiReportIo(unittest.TestCase):
             "name": self.report_name,
             "bpolys": self.feature,
             "dataset": "foo",
-            "featureId": "3",
+            "feature-id": "3",
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
@@ -100,7 +100,7 @@ class TestApiReportIo(unittest.TestCase):
         parameters = {
             "name": self.report_name,
             "bpolys": self.feature,
-            "includeSvg": True,
+            "include-svg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -111,7 +111,7 @@ class TestApiReportIo(unittest.TestCase):
         parameters = {
             "name": self.report_name,
             "bpolys": self.feature,
-            "includeSvg": False,
+            "include-svg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -132,8 +132,8 @@ class TestApiReportIo(unittest.TestCase):
         parameters = {
             "name": self.report_name,
             "bpolys": self.feature,
-            "includeSvg": False,
-            "includeHtml": True,
+            "include-svg": False,
+            "include-html": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -144,8 +144,8 @@ class TestApiReportIo(unittest.TestCase):
         parameters = {
             "name": self.report_name,
             "bpolys": self.feature,
-            "includeSvg": False,
-            "includeHtml": False,
+            "include-svg": False,
+            "include-html": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()

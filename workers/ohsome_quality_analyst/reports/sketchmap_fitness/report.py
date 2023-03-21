@@ -12,10 +12,10 @@ class SketchmapFitness(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("MappingSaturation", "major_roads_length"),
-                IndicatorLayer("Currentness", "major_roads_count"),
-                IndicatorLayer("Currentness", "amenities"),
-                IndicatorLayer("PoiDensity", "poi"),
+                IndicatorLayer("mapping-saturation", "major_roads_length"),
+                IndicatorLayer("currentness", "major_roads_count"),
+                IndicatorLayer("currentness", "amenities"),
+                IndicatorLayer("poi-density", "poi"),
             ),
             feature=feature,
             blocking_red=blocking_red,

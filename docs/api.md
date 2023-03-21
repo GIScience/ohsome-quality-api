@@ -43,7 +43,7 @@ import requests
 
 url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
-    "name": "GhsPopComparisonBuildings",
+    "name": "mapping-saturation",
     "layerKey": "building_count",
     "dataset": "regions",
     "featureId": 3,
@@ -77,7 +77,7 @@ bpolys = {
     ],
 }
 parameters = {
-    "name": "GhsPopComparisonBuildings",
+    "name": "mapping-saturation",
     "layerKey": "building_count",
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
