@@ -24,7 +24,7 @@ class TestIndicatorAttributeCompleteness(unittest.TestCase):
     def test(self):
         indicator = AttributeCompleteness(
             feature=self.feature,
-            layer=get_layer_fixture("jrc_health_count"),
+            layer=get_layer_fixture("building_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -52,7 +52,7 @@ class TestIndicatorAttributeCompleteness(unittest.TestCase):
             feature = geojson.load(f)
 
         indicator = AttributeCompleteness(
-            layer=get_layer_fixture("jrc_health_count"),
+            layer=get_layer_fixture("clc_leaf_type"),
             feature=feature,
         )
         asyncio.run(indicator.preprocess())
