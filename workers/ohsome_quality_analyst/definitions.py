@@ -64,8 +64,6 @@ RASTER_DATASETS = (
 # Possible indicator layer combinations
 INDICATOR_LAYER = (
     ("building-completeness", "building_area"),
-    ("ghs-pop-comparison-buildings", "building_count"),
-    ("ghs-pop-comparison-roads", "major_roads_length"),
     ("mapping-saturation", "building_count"),
     ("mapping-saturation", "major_roads_length"),
     ("mapping-saturation", "amenities"),
