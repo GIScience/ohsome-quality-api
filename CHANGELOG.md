@@ -8,6 +8,7 @@
 - change indicator and report keys from lower camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
+- remove JRC related layers and report `jrc_requirements` ([#503])
 
 ### Bug Fixes
 
@@ -47,6 +48,7 @@
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
+[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 

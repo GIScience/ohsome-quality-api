@@ -22,7 +22,7 @@ class TestIndicatorRatio(unittest.TestCase):
     def test(self):
         indicator = TagsRatio(
             feature=self.feature,
-            layer=get_layer_fixture("jrc_health_count"),
+            layer=get_layer_fixture("building_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -50,7 +50,7 @@ class TestIndicatorRatio(unittest.TestCase):
             feature = geojson.load(f)
 
         indicator = TagsRatio(
-            layer=get_layer_fixture("jrc_health_count"),
+            layer=get_layer_fixture("clc_leaf_type"),
             feature=feature,
         )
         asyncio.run(indicator.preprocess())
