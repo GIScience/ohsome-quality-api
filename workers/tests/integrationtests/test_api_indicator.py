@@ -5,7 +5,6 @@ https://fastapi.tiangolo.com/tutorial/testing/
 For tests regarding the `bpolys` parameter see `test_api_indicator_geojson_io.py`.
 """
 import unittest
-from urllib.parse import urlencode
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -42,7 +41,7 @@ class TestApiIndicator(unittest.TestCase):
         schema.validate(geojson)  # Print information if validation fails
         self.assertTrue(schema.is_valid(geojson))
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_dataset_default_fid_field(self):
         parameters = {
             "name": self.indicator_name,
@@ -50,13 +49,10 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
-        for response in (
-            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-            self.client.post(ENDPOINT, json=parameters),
-        ):
-            self.run_tests(response)
+        response = self.client.post(ENDPOINT, json=parameters)
+        self.run_tests(response)
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_dataset_custom_fid_field(self):
         parameters = {
             "name": self.indicator_name,
@@ -65,13 +61,10 @@ class TestApiIndicator(unittest.TestCase):
             "feature_id": self.feature_id,
             "fid_field": self.fid_field,
         }
-        for response in (
-            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-            self.client.post(ENDPOINT, json=parameters),
-        ):
-            self.run_tests(response)
+        response = self.client.post(ENDPOINT, json=parameters)
+        self.run_tests(response)
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_dataset_custom_fid_field_2(self):
         parameters = {
             "name": self.indicator_name,
@@ -80,13 +73,10 @@ class TestApiIndicator(unittest.TestCase):
             "feature_id": "Heidelberg",
             "fid_field": "name",
         }
-        for response in (
-            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-            self.client.post(ENDPOINT, json=parameters),
-        ):
-            self.run_tests(response)
+        response = self.client.post(ENDPOINT, json=parameters)
+        self.run_tests(response)
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_dataset_invalid(self):
         parameters = {
             "name": self.indicator_name,
@@ -94,15 +84,12 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "foo",
             "feature_id": self.feature_id,
         }
-        for response in (
-            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-            self.client.post(ENDPOINT, json=parameters),
-        ):
-            self.assertEqual(response.status_code, 422)
-            content = response.json()
-            self.assertEqual(content["type"], "RequestValidationError")
+        response = self.client.post(ENDPOINT, json=parameters)
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_invalid_set_of_arguments(self):
         for parameters in (
             {
@@ -116,65 +103,50 @@ class TestApiIndicator(unittest.TestCase):
                 "feature_id": "3",
             },
         ):
-            for response in (
-                self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-                self.client.post(ENDPOINT, json=parameters),
-            ):
-                self.assertEqual(response.status_code, 422)
-                content = response.json()
-                self.assertEqual(content["type"], "RequestValidationError")
+            response = self.client.post(ENDPOINT, json=parameters)
+            self.assertEqual(response.status_code, 422)
+            content = response.json()
+            self.assertEqual(content["type"], "RequestValidationError")
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_svg_true(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}&include_svg={5}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-                True,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-svg": True,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "svg" in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_svg_false(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}&include_svg={5}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-                False,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-svg": False,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "svg" not in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_svg_default(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "svg" not in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_invalid_layer(self):
         parameters = {
             "name": self.indicator_name,
@@ -182,152 +154,125 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "regions",
             "feature_id": "3",
         }
-        for response in (
-            self.client.get(ENDPOINT + "?" + urlencode(parameters)),
-            self.client.post(ENDPOINT, json=parameters),
-        ):
-            self.assertEqual(response.status_code, 422)
-            content = response.json()
-            self.assertEqual(content["type"], "RequestValidationError")
+        response = self.client.post(ENDPOINT, json=parameters)
+        self.assertEqual(response.status_code, 422)
+        content = response.json()
+        self.assertEqual(content["type"], "RequestValidationError")
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_html_true(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}&include_html={5}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-                True,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-html": True,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "html" in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_html_false(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}&include_html={5}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-                False,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-html": False,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "html" not in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_html_default(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&fid_field={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                self.fid_field,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "html" not in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_flatten_default(self):
-        url = "/indicator?name={0}&topic={1}&dataset={2}&feature_id={3}".format(
-            self.indicator_name,
-            self.layer_key,
-            self.dataset,
-            self.feature_id,
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         # Check flat result value
         assert "result.value" not in result["properties"]
         assert "value" in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_flatten_true(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&flatten={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                True,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "flatten": True,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "result.value" in result["properties"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_flatten_false(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&flatten={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                False,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "flatten": False,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "result.value" not in result["properties"]
         assert "value" in result["properties"]["result"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_data_default(self):
-        url = "/indicator?name={0}&topic={1}&dataset={2}&feature_id={3}".format(
-            self.indicator_name,
-            self.layer_key,
-            self.dataset,
-            self.feature_id,
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "data" not in result["properties"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_data_true(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&include_data={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                True,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-data": True,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "data" in result["properties"]
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_indicator_include_data_false(self):
-        url = (
-            "/indicator?name={0}&topic={1}&dataset={2}"
-            "&feature_id={3}&include_data={4}".format(
-                self.indicator_name,
-                self.layer_key,
-                self.dataset,
-                self.feature_id,
-                False,
-            )
-        )
-        response = self.client.get(url)
+        parameters = {
+            "name": self.indicator_name,
+            "topic": self.layer_key,
+            "dataset": self.dataset,
+            "feature-id": self.feature_id,
+            "include-data": False,
+        }
+        response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "data" not in result["properties"]
 

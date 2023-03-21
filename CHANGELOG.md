@@ -10,6 +10,7 @@
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
+- remove GET request for indicators and reports ([#516])
 
 ### Bug Fixes
 
@@ -36,6 +37,7 @@
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
+- API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -57,6 +59,7 @@
 [#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
+<<<<<<< HEAD
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
 
 ## 0.14.1
@@ -66,6 +69,9 @@
 - mapping-saturation: allow result value above 100% ([#479])
 
 [#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
+=======
+[#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
+>>>>>>> cba033a8 (breaking: remove GET req for indicator and report)
 
 ## 0.14.0
 
