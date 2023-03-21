@@ -196,9 +196,9 @@ function buildMap(...charts){
 			const params = {
 			  "name": String(selectedReport),
 			  "dataset": String(selectedDataset),
-			  "featureId": String(areas),
-			  "includeSvg": true,
-			  "includeHtml": true
+			  "feature-id": String(areas),
+			  "include-svg": true,
+			  "include-html": true
 			}
 			console.log(params)
 			httpPostAsync(JSON.stringify(params), handleGetQuality);

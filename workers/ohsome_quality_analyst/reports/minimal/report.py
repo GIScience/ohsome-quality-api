@@ -13,8 +13,8 @@ class Minimal(BaseReport):
     ):
         super().__init__(
             indicator_layer=(
-                IndicatorLayer("MappingSaturation", "building_count"),
-                IndicatorLayer("Currentness", "building_count"),
+                IndicatorLayer("mapping-saturation", "building_count"),
+                IndicatorLayer("currentness", "building_count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

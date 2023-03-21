@@ -1,11 +1,11 @@
 ---
-TagsRatio:
+tags-ratio:
   name: Tags Ratio
   description: |
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs
       amenity=hospital and wheelchair=yes).
-  label_description:
+  label-description:
     red: |
       Less than 25% of the features match the expected tags.
     yellow: |
@@ -14,6 +14,6 @@ TagsRatio:
       More than 75% of the features match the expected tags.
     undefined: |
       The quality level could not be calculated for this indicator.
-  result_description: |
+  result-description: |
     The ratio of the features (all: $all) compared to features with
     expected tags (matched: $matched) is $result.

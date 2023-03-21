@@ -10,11 +10,45 @@ class TestLayer(unittest.TestCase):
         self.assertRaises(TypeError, BaseLayer, "description")
 
     def test_layer_definition(self):
-        LayerDefinition("key", "name", "description", "endpoint", "filter")
-        LayerDefinition("key", "name", "description", "endpoint", "filter", "source")
-        LayerDefinition("key", "name", "description", "endpoint", "filter", "source")
         LayerDefinition(
-            "key", "name", "description", "endpoint", "filter", "source", "filter2"
+            "key",
+            "name",
+            "description",
+            ["mapping-saturation"],
+            "project",
+            "endpoint",
+            "filter",
+        )
+        LayerDefinition(
+            "key",
+            "name",
+            "description",
+            ["mapping-saturation"],
+            "project",
+            "endpoint",
+            "filter",
+            "source",
+        )
+        LayerDefinition(
+            "key",
+            "name",
+            "description",
+            ["mapping-saturation"],
+            "project",
+            "endpoint",
+            "filter",
+            "source",
+        )
+        LayerDefinition(
+            "key",
+            "name",
+            "description",
+            ["mapping-saturation"],
+            "project",
+            "endpoint",
+            "filter",
+            "source",
+            "filter2",
         )
         self.assertRaises(TypeError, LayerDefinition, ("key", "name", "description"))
         self.assertRaises(TypeError, LayerDefinition, ("key", "endpoint", "filter"))

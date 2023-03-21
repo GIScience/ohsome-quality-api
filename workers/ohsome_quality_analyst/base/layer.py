@@ -22,7 +22,8 @@ class LayerDefinition(BaseLayer):
     key: str
     endpoint: str
     filter_: str
-    indicators: list
+    indicators: list[str]
+    project: str
     source: Optional[str] = None
     ratio_filter: Optional[str] = None
 

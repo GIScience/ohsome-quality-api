@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_analyst"
-version = "0.14.0"
+version = "0.14.1"
 description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://oqt.ohsome.org"
@@ -22,7 +22,7 @@ secondary = true
 [tool.poetry.dependencies]
 python = "^3.8"
 geojson = "^2.5.0"
-fastapi = "^0.86.0"
+fastapi = "^0.92.0"
 requests = "^2.25.0"
 matplotlib = "^3.6.2"
 dacite = "^1.6.0"

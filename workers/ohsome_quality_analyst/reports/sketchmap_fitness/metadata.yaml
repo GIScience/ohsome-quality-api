@@ -1,5 +1,5 @@
 ---
-SketchmapFitness:
+sketchmap-fitness:
   name: Sketchmap Fitness
   description: |
     The sketchmap fitness report consists of four data quality indicators
@@ -7,7 +7,7 @@ SketchmapFitness:
     amenities, density of landmarks). The report tells you whether
     you should expect potential problems when using OSM-based Sketch 
     Maps for the Area-of-Interest.
-  label_description:
+  label-description:
     red: |
       The report indicates low quality of the underlying OSM data.
       It is likely that it is not possible to use
