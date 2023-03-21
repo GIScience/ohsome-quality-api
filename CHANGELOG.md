@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.1
+
+### Bug Fixes
+
+- mapping-saturation: allow result value above 100% ([#479])
+
+[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
+
 ## 0.14.0
 
 ### Bug Fixes
