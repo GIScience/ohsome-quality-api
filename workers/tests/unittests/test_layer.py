@@ -75,6 +75,7 @@ def test_layer_definition_extra():
             foo="bar",
         )
 
+
 def test_layer_data():
     LayerData(key="key", name="name", description="description", data={})
 
