@@ -30,6 +30,7 @@
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
 - overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
+- topics: tidy up and fix filters of core topic definitions ([#520])
 
 ### How to Upgrade
 
@@ -63,6 +64,7 @@
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 [#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
+[#520]: https://github.com/GIScience/ohsome-quality-analyst/pull/520
 
 ## 0.14.1
 
