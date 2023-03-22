@@ -34,8 +34,8 @@
 - rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
 - rename API parameters for POST requests from camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
-- for requests to the API endpoint `/indicator` for a custom layer/topic add an additional field `key` of type string ([#517])
-  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "layer": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
+- for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
+  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 
 | old API parameter | new API parameter |
 | ---               | ---               |
