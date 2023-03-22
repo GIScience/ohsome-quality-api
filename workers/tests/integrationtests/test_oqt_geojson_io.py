@@ -14,7 +14,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def setUp(self):
         # Heidelberg
         self.name = "minimal"
-        self.layer_key = "minimal"
+        self.topic_key = "minimal"
         self.dataset = "regions"
         self.feature_id = "3"
         self.feature = asyncio.run(
@@ -25,7 +25,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_bpolys(self):
         patameters = IndicatorBpolys(
             name=self.name,
-            topic=self.layer_key,
+            topic=self.topic_key,
             bpolys=self.feature,
         )
         feature = asyncio.run(oqt.create_indicator_as_geojson(patameters))
@@ -35,7 +35,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
     def test_create_indicator_as_geojson_database(self):
         parameters = IndicatorDatabase(
             name=self.name,
-            topic=self.layer_key,
+            topic=self.topic_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
         )

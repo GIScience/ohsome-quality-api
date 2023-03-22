@@ -4,23 +4,23 @@ from pydantic import ValidationError
 from ohsome_quality_analyst.base.topic import BaseTopic, TopicData, TopicDefinition
 
 
-def test_base_layer():
+def test_base_topic():
     BaseTopic(key="key", name="name", description="description")
 
 
-def test_base_layer_missing():
+def test_base_topic_missing():
     with pytest.raises(ValidationError):
         BaseTopic(key="key")
         BaseTopic(name="name")
         BaseTopic(description="description")
 
 
-def test_base_layer_extra():
+def test_base_topic_extra():
     with pytest.raises(ValidationError):
         BaseTopic(name="name", key="key", description="description", foo="bar")
 
 
-def test_layer_definition():
+def test_topic_definition():
     TopicDefinition(
         key="key",
         name="name",
@@ -59,12 +59,12 @@ def test_layer_definition():
     )
 
 
-def test_layer_definition_missing():
+def test_topic_definition_missing():
     with pytest.raises(ValidationError):
         TopicDefinition(key="key", name="name", description="description")
 
 
-def test_layer_definition_extra():
+def test_topic_definition_extra():
     with pytest.raises(ValidationError):
         TopicDefinition(
             key="key",
@@ -77,15 +77,15 @@ def test_layer_definition_extra():
         )
 
 
-def test_layer_data():
+def test_topic_data():
     TopicData(key="key", name="name", description="description", data={})
 
 
-def test_layer_missing():
+def test_topic_missing():
     with pytest.raises(ValidationError):
         TopicData(key="key", name="name", description="description")
 
 
-def test_layer_extra():
+def test_topic_extra():
     with pytest.raises(ValidationError):
         TopicData(key="key", name="name", description="description", data={}, foo="bar")

@@ -14,13 +14,13 @@ class TestDefinitions(unittest.TestCase):
         metadata = definitions.get_metadata("indicators", "Minimal")
         self.assertIsInstance(metadata, dict)
 
-    def test_load_layer_definitions(self):
-        layer_definitions = definitions.load_topic_definitions()
-        self.assertIsInstance(layer_definitions, dict)
+    def test_load_topic_definitions(self):
+        topic_definitions = definitions.load_topic_definitions()
+        self.assertIsInstance(topic_definitions, dict)
 
-    def test_get_layer_definitions(self):
-        layer_definitions = definitions.get_topic_definition("minimal")
-        self.assertIsInstance(layer_definitions, TopicDefinition)
+    def test_get_topic_definitions(self):
+        topic_definitions = definitions.get_topic_definition("minimal")
+        self.assertIsInstance(topic_definitions, TopicDefinition)
 
     def test_get_indicator_names(self):
         names = definitions.get_indicator_names()
@@ -30,7 +30,7 @@ class TestDefinitions(unittest.TestCase):
         names = definitions.get_report_names()
         self.assertIsInstance(names, list)
 
-    def test_get_layer_keys(self):
+    def test_get_topic_keys(self):
         names = definitions.get_topic_keys()
         self.assertIsInstance(names, list)
 
@@ -82,6 +82,6 @@ class TestDefinitions(unittest.TestCase):
             ),
         )
 
-    def test_get_valid_layers(self):
-        layers = definitions.get_valid_topic("minimal")
-        self.assertEqual(layers, ("minimal",))
+    def test_get_valid_topics(self):
+        topics = definitions.get_valid_topic("minimal")
+        self.assertEqual(topics, ("minimal",))

@@ -6,7 +6,7 @@ import geojson
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
-from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
+from .utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
 class TestGeodatabase(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestGeodatabase(unittest.TestCase):
         self.feature = asyncio.run(
             db_client.get_feature_from_db(self.dataset, self.feature_id)
         )
-        self.layer = get_layer_fixture("minimal")
+        self.topic = get_topic_fixture("minimal")
 
     def test_get_connection(self):
         async def _test_get_connection():
@@ -37,7 +37,7 @@ class TestGeodatabase(unittest.TestCase):
                 return await conn.fetchval(query)
 
         indicator = Minimal(
-            topic=self.layer,
+            topic=self.topic,
             feature=self.feature,
         )
         asyncio.run(indicator.preprocess())
@@ -58,7 +58,7 @@ class TestGeodatabase(unittest.TestCase):
         self.assertTrue(geojson.loads(result).is_valid)
 
         # load
-        indicator = Minimal(topic=self.layer, feature=self.feature)
+        indicator = Minimal(topic=self.topic, feature=self.feature)
         result = asyncio.run(
             db_client.load_indicator_results(indicator, self.dataset, self.feature_id)
         )

@@ -7,7 +7,7 @@ from ohsome_quality_analyst.indicators.minimal.indicator import (
 )
 from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 
-from .utils import get_geojson_fixture, get_layer_fixture
+from .utils import get_geojson_fixture, get_topic_fixture
 
 
 class TestBaseReport:
@@ -16,11 +16,11 @@ class TestBaseReport:
         return get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
     @pytest.fixture
-    def layer(self):
-        return get_layer_fixture("minimal")
+    def topic(self):
+        return get_topic_fixture("minimal")
 
-    def test_as_feature(self, feature, layer):
-        indicator = MinimalIndicator(feature=feature, topic=layer)
+    def test_as_feature(self, feature, topic):
+        indicator = MinimalIndicator(feature=feature, topic=topic)
         report = MinimalReport(feature=feature)
         for _ in report.indicator_topic:
             report.indicators.append(indicator)
@@ -32,7 +32,7 @@ class TestBaseReport:
     def test_attribution_class_property(self):
         assert isinstance(MinimalReport.attribution(), str)
 
-    def test_blocking_red(self, feature, layer):
+    def test_blocking_red(self, feature, topic):
         report = MinimalReport(feature, blocking_red=True)
 
         # Mock indicator objects with a fixed result value
@@ -53,7 +53,7 @@ class TestBaseReport:
         report.combine_indicators()
         assert report.result.class_ == 1 and report.result.label == "red"
 
-    def test_blocking_undefined(self, feature, layer):
+    def test_blocking_undefined(self, feature, topic):
         report = MinimalReport(feature, blocking_undefined=True)
 
         # Mock indicator objects with a fixed result value
@@ -74,7 +74,7 @@ class TestBaseReport:
         report.combine_indicators()
         assert report.result.class_ is None and report.result.label == "undefined"
 
-    def test_no_blocking(self, feature, layer):
+    def test_no_blocking(self, feature, topic):
         report = MinimalReport(feature)
 
         # Mock indicator objects with a fixed result value
@@ -95,7 +95,7 @@ class TestBaseReport:
         report.combine_indicators()
         assert report.result.label != "undefined" and report.result.label != "red"
 
-    def test_all_indicators_undefined(self, feature, layer):
+    def test_all_indicators_undefined(self, feature, topic):
         report = MinimalReport(feature, blocking_red=True)
 
         # Mock indicator objects with a fixed result value

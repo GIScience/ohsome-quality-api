@@ -3,7 +3,7 @@ import pytest
 from ohsome_quality_analyst.base.indicator import Result
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
-from .utils import get_geojson_fixture, get_layer_fixture
+from .utils import get_geojson_fixture, get_topic_fixture
 
 
 class TestBaseIndicator:
@@ -12,11 +12,11 @@ class TestBaseIndicator:
         return get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
     @pytest.fixture
-    def layer(self):
-        return get_layer_fixture("minimal")
+    def topic(self):
+        return get_topic_fixture("minimal")
 
-    def test_as_feature(self, feature, layer):
-        indicator = Minimal(feature=feature, topic=layer)
+    def test_as_feature(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
         feature = indicator.as_feature()
         assert feature.is_valid
         assert feature.geometry == feature.geometry
@@ -24,16 +24,16 @@ class TestBaseIndicator:
             assert prop in feature["properties"]
         assert "data" not in feature["properties"]
 
-    def test_as_feature_include_data(self, feature, layer):
-        indicator = Minimal(feature=feature, topic=layer)
+    def test_as_feature_include_data(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
         feature = indicator.as_feature(include_data=True)
         assert feature.is_valid
         for key in ("result", "metadata", "topic", "data"):
             assert key in feature["properties"]
         assert "count" in feature["properties"]["data"]
 
-    def test_as_feature_flatten(self, feature, layer):
-        indicator = Minimal(feature=feature, topic=layer)
+    def test_as_feature_flatten(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
         feature = indicator.as_feature(flatten=True)
         assert feature.is_valid
         for key in (
@@ -43,8 +43,8 @@ class TestBaseIndicator:
         ):
             assert key in feature["properties"]
 
-    def test_data_property(self, feature, layer):
-        indicator = Minimal(feature=feature, topic=layer)
+    def test_data_property(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
         assert indicator.data is not None
         for key in ("result", "metadata", "topic", "feature"):
             assert key not in feature["properties"]

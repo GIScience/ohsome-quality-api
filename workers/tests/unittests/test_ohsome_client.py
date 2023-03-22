@@ -16,7 +16,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     TopicDataSchemaError,
 )
 
-from .utils import get_geojson_fixture, get_layer_fixture
+from .utils import get_geojson_fixture, get_topic_fixture
 
 
 class AsyncMock(MagicMock):
@@ -41,7 +41,7 @@ class TestOhsomeClientQuery(TestCase):
 
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.layer = get_layer_fixture("building_count")
+        self.topic = get_topic_fixture("building_count")
 
     def test_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
@@ -50,7 +50,7 @@ class TestOhsomeClientQuery(TestCase):
                 content=self.valid_response,
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
-            response = asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+            response = asyncio.run(ohsome_client.query(self.topic, self.bpolys))
             self.assertDictEqual(response, geojson.loads(self.valid_response))
 
     def test_invalid_response_with_status_code_200(self) -> None:
@@ -62,7 +62,7 @@ class TestOhsomeClientQuery(TestCase):
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
-                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+                asyncio.run(ohsome_client.query(self.topic, self.bpolys))
 
     def test_status_code_400(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
@@ -72,7 +72,7 @@ class TestOhsomeClientQuery(TestCase):
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
             with self.assertRaises(OhsomeApiError):
-                asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+                asyncio.run(ohsome_client.query(self.topic, self.bpolys))
 
     def test_not_implemeted(self) -> None:
         """Query for topic type is not implemeted."""
@@ -86,13 +86,13 @@ class TestOhsomeClientQuery(TestCase):
                 content=self.valid_response,
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
-            asyncio.run(ohsome_client.query(self.layer, self.bpolys))
+            asyncio.run(ohsome_client.query(self.topic, self.bpolys))
             self.assertEqual(
                 "ohsome-quality-analyst",
                 mock_request.call_args[1]["headers"]["user-agent"].split("/")[0],
             )
 
-    def test_layer_data_valid_1(self):
+    def test_topic_data_valid_1(self):
         data = asyncio.run(
             ohsome_client.query(
                 TopicData(
@@ -113,7 +113,7 @@ class TestOhsomeClientQuery(TestCase):
             data,
         )
 
-    def test_layer_data_valid_2(self):
+    def test_topic_data_valid_2(self):
         data = asyncio.run(
             ohsome_client.query(
                 TopicData(
@@ -146,7 +146,7 @@ class TestOhsomeClientQuery(TestCase):
             data,
         )
 
-    def test_layer_data_invalid_empty(self):
+    def test_topic_data_invalid_empty(self):
         with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
@@ -160,7 +160,7 @@ class TestOhsomeClientQuery(TestCase):
                 )
             )
 
-    def test_layer_data_invalid_empty_list(self):
+    def test_topic_data_invalid_empty_list(self):
         with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
@@ -174,7 +174,7 @@ class TestOhsomeClientQuery(TestCase):
                 )
             )
 
-    def test_layer_data_invalid_missing_key(self):
+    def test_topic_data_invalid_missing_key(self):
         with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
@@ -192,31 +192,31 @@ class TestOhsomeClientQuery(TestCase):
 class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
-        self.layer = get_layer_fixture("building_count")
-        self.ratio_layer = get_layer_fixture("building_count")
+        self.topic = get_topic_fixture("building_count")
+        self.ratio_topic = get_topic_fixture("building_count")
 
     def test(self) -> None:
         ohsome_api = self.ohsome_api
-        url = ohsome_client.build_url(self.layer)
+        url = ohsome_client.build_url(self.topic)
         self.assertEqual(ohsome_api + "/elements/count", url)
 
     def test_group_by(self) -> None:
-        url = ohsome_client.build_url(self.layer, group_by_boundary=True)
+        url = ohsome_client.build_url(self.topic, group_by_boundary=True)
         self.assertEqual(self.ohsome_api + "/elements/count/groupBy/boundary", url)
 
     def test_ratio_false(self) -> None:
         ohsome_api = self.ohsome_api
-        url = ohsome_client.build_url(self.ratio_layer)
+        url = ohsome_client.build_url(self.ratio_topic)
         self.assertEqual(ohsome_api + "/elements/count", url)
 
     def test_ratio_true(self) -> None:
         ohsome_api = self.ohsome_api
-        url = ohsome_client.build_url(self.ratio_layer, ratio=True)
+        url = ohsome_client.build_url(self.ratio_topic, ratio=True)
         self.assertEqual(ohsome_api + "/elements/count/ratio", url)
 
     def test_ratio_group_by(self) -> None:
         url = ohsome_client.build_url(
-            self.ratio_layer, ratio=True, group_by_boundary=True
+            self.ratio_topic, ratio=True, group_by_boundary=True
         )
         self.assertEqual(
             self.ohsome_api + "/elements/count/ratio/groupBy/boundary", url
@@ -227,7 +227,7 @@ class TestOhsomeClientBuildData(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.layer = get_layer_fixture("building_count")
+        self.topic = get_topic_fixture("building_count")
 
     def test_feature(self) -> None:
         schema = Schema(
@@ -236,7 +236,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter": str,
             }
         )
-        data = ohsome_client.build_data_dict(self.layer, self.bpolys)
+        data = ohsome_client.build_data_dict(self.topic, self.bpolys)
         self.assertTrue(schema.is_valid(data))
 
     def test_feature_collection(self) -> None:
@@ -247,13 +247,13 @@ class TestOhsomeClientBuildData(TestCase):
             }
         )
         bpolys = FeatureCollection([self.bpolys])
-        data = ohsome_client.build_data_dict(self.layer, bpolys)
+        data = ohsome_client.build_data_dict(self.topic, bpolys)
         self.assertTrue(schema.is_valid(data))
 
     def test_geometry(self) -> None:
         bpolys = self.bpolys.geometry
         with self.assertRaises(TypeError):
-            ohsome_client.build_data_dict(self.layer, bpolys)
+            ohsome_client.build_data_dict(self.topic, bpolys)
 
     def test_time(self) -> None:
         schema = Schema(
@@ -263,7 +263,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "time": str,
             }
         )
-        data = ohsome_client.build_data_dict(self.layer, self.bpolys, time="2014-01-01")
+        data = ohsome_client.build_data_dict(self.topic, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
 
     def test_ratio(self) -> None:
@@ -274,8 +274,8 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter2": str,
             }
         )
-        layer = get_layer_fixture("building_count")
-        data = ohsome_client.build_data_dict(layer, self.bpolys, ratio=True)
+        topic = get_topic_fixture("building_count")
+        data = ohsome_client.build_data_dict(topic, self.bpolys, ratio=True)
         self.assertTrue(schema.is_valid(data))
 
     def test_ratio_time(self) -> None:
@@ -287,9 +287,9 @@ class TestOhsomeClientBuildData(TestCase):
                 "time": str,
             }
         )
-        layer = get_layer_fixture("building_count")
+        topic = get_topic_fixture("building_count")
         data = ohsome_client.build_data_dict(
-            layer, self.bpolys, time="2014-01-01", ratio=True
+            topic, self.bpolys, time="2014-01-01", ratio=True
         )
         self.assertTrue(schema.is_valid(data))
 

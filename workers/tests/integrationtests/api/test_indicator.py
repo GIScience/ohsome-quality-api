@@ -24,7 +24,7 @@ class TestApiIndicator(unittest.TestCase):
         self.client = TestClient(app)
 
         self.indicator_name = "minimal"
-        self.layer_key = "minimal"
+        self.topic_key = "minimal"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
@@ -47,7 +47,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_default_fid_field(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
@@ -58,7 +58,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_custom_fid_field(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "fid_field": self.fid_field,
@@ -70,7 +70,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_custom_fid_field_2(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
             "fid_field": "name",
@@ -82,7 +82,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_dataset_invalid(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": "foo",
             "feature_id": self.feature_id,
         }
@@ -114,7 +114,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_true(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-svg": True,
@@ -127,7 +127,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_false(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-svg": False,
@@ -140,7 +140,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_svg_default(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
         }
@@ -149,7 +149,7 @@ class TestApiIndicator(unittest.TestCase):
         assert "svg" not in result["properties"]["result"]
 
     @oqt_vcr.use_cassette
-    def test_indicator_invalid_layer(self):
+    def test_indicator_invalid_topic(self):
         parameters = {
             "name": self.indicator_name,
             "topic": "amenities",
@@ -165,7 +165,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_true(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-html": True,
@@ -178,7 +178,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_false(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-html": False,
@@ -191,7 +191,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_html_default(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
         }
@@ -203,7 +203,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_flatten_default(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
         }
@@ -217,7 +217,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_flatten_true(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "flatten": True,
@@ -230,7 +230,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_flatten_false(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "flatten": False,
@@ -244,7 +244,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_default(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
         }
@@ -256,7 +256,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_true(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-data": True,
@@ -269,7 +269,7 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_include_data_false(self):
         parameters = {
             "name": self.indicator_name,
-            "topic": self.layer_key,
+            "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
             "include-data": False,

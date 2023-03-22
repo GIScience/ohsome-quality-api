@@ -12,7 +12,7 @@ from ohsome_quality_analyst.indicators.building_completeness.indicator import (
 )
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 
-from .utils import get_geojson_fixture, get_layer_fixture, oqt_vcr
+from .utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
 @pytest.fixture
@@ -21,13 +21,13 @@ def feature():
 
 
 @pytest.fixture
-def layer():
-    return get_layer_fixture("building_area")
+def topic():
+    return get_topic_fixture("building_area")
 
 
 @oqt_vcr.use_cassette()
-def test_indicator(feature, layer, mock_env_oqt_data_dir):
-    indicator = BuildingCompleteness(feature=feature, topic=layer)
+def test_indicator(feature, topic, mock_env_oqt_data_dir):
+    indicator = BuildingCompleteness(feature=feature, topic=topic)
 
     asyncio.run(indicator.preprocess())
     # Data

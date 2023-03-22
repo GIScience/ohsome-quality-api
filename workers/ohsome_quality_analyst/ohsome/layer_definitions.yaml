@@ -386,12 +386,8 @@ sweets_and_pasteries:
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
   project: expanse
 
-<<<<<<< HEAD
 ### LAND-USE LAYERS (CORINE PROJECT) ###
 
-=======
-# START: Land-Use Topic (Corine)
->>>>>>> cf1996ce (refactor: rename layer to topic)
 clc_arable_land_area:
   name: Arable Land CLC
   description: |

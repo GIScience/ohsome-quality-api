@@ -37,7 +37,7 @@ def get_geojson_fixture(name):
         return geojson.load(f)
 
 
-def get_layer_fixture(name: str) -> TopicDefinition:
+def get_topic_fixture(name: str) -> TopicDefinition:
     return get_topic_definition(name)
 
 
