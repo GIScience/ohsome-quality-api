@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 21 Mar 2023 14:26:26 GMT
+      - Wed, 22 Mar 2023 10:50:09 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -74,7 +74,7 @@ interactions:
     method: POST
     uri: https://api.ohsome.org/v1/elements/lenght
   response:
-    content: "{\n  \"timestamp\" : \"2023-03-21T14:26:27.026+00:00\",\n  \"status\"
+    content: "{\n  \"timestamp\" : \"2023-03-22T10:50:10.287+00:00\",\n  \"status\"
       : 404,\n  \"error\" : \"Not Found\",\n  \"path\" : \"/elements/lenght\"\n}"
     headers:
       access-control-allow-credentials:
@@ -96,7 +96,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 21 Mar 2023 14:26:26 GMT
+      - Wed, 22 Mar 2023 10:50:09 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -129,7 +129,7 @@ interactions:
     method: POST
     uri: https://api.ohsome.org/v1/elements/length
   response:
-    content: "{\n  \"timestamp\" : \"2023-03-21T14:26:27.171453586\",\n  \"status\"
+    content: "{\n  \"timestamp\" : \"2023-03-22T10:50:10.4400275\",\n  \"status\"
       : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional
       info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api.
       Detailed error message: line 1, column 13: whitespaces, EQUALS (=), NOT_EQUALS
@@ -154,7 +154,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 21 Mar 2023 14:26:26 GMT
+      - Wed, 22 Mar 2023 10:50:09 GMT
       server:
       - Apache/2.4.52 (Ubuntu)
       strict-transport-security:

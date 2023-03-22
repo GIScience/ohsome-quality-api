@@ -42,8 +42,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -99,8 +99,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -151,8 +151,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -208,8 +208,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -260,8 +260,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -317,8 +317,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -433,8 +433,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -485,8 +485,8 @@ interactions:
       "metadata.description": "An minimal Indicator for testing purposes.\n", "layer.key":
       "minimal", "layer.name": "Minimal", "layer.description": "A minimal layer definition
       for testing purposes", "result.description": "Some description of the result.\nGood
-      data quality.\n", "result.timestamp_oqt": "2023-03-21T13:38:33.567364+00:00",
-      "result.timestamp_osm": "2023-02-28T09:00:00+00:00", "result.value": 1.0, "result.label":
+      data quality.\n", "result.timestamp_oqt": "2023-03-22T10:23:13.082504+00:00",
+      "result.timestamp_osm": "2023-03-10T15:00:00+00:00", "result.value": 1.0, "result.label":
       "undefined", "result.class": null}}'
     headers:
       content-length:
@@ -538,8 +538,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -590,9 +590,9 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null},
-      "data": {"count": 30540.0}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null},
+      "data": {"count": 30646.0}}}'
     headers:
       content-length:
       - '2403'
@@ -643,8 +643,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -702,13 +702,13 @@ interactions:
       viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:38:53.987086</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:23:33.814455</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#p30fa0776b0)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#p5d87871b4c)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -828,7 +828,7 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p30fa0776b0\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"p5d87871b4c\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Minimal for Minimal</h4>\n        <p><span
       style=''height: 25px; width: 25px; background-color: #bbb;border-radius: 50%;
@@ -840,8 +840,8 @@ interactions:
       class=\"indicator-metadata-text\">\n            Indicator description:\n            <br
       />\n            An minimal Indicator for testing purposes.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
       block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
-      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00",
-      "timestamp_osm": "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined",
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00",
+      "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
       content-length:
@@ -893,8 +893,8 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-21T13:38:33.567364+00:00", "timestamp_osm":
-      "2023-02-28T09:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
       - '2375'
@@ -951,13 +951,13 @@ interactions:
       viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:38:53.987086</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:23:33.814455</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#p30fa0776b0)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#p5d87871b4c)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -1077,9 +1077,9 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p30fa0776b0\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"p5d87871b4c\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
-      "2023-03-21T13:38:33.567364+00:00", "timestamp_osm": "2023-02-28T09:00:00+00:00",
+      "2023-03-22T10:23:13.082504+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
       "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
