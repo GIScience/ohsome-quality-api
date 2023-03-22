@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 from ohsome_quality_analyst.definitions import get_attribution
 
 
@@ -12,23 +12,23 @@ class FoodRelatedReport(BaseReport):
         blocking_undefined: bool = True,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("mapping-saturation", "local_food_shops"),
-                IndicatorLayer("currentness", "local_food_shops"),
-                IndicatorLayer("mapping-saturation", "fast_food_restaurants"),
-                IndicatorLayer("currentness", "fast_food_restaurants"),
-                IndicatorLayer("Mapping-saturation", "restaurants"),
-                IndicatorLayer("currentness", "restaurants"),
-                IndicatorLayer("mapping-saturation", "supermarkets"),
-                IndicatorLayer("currentness", "supermarkets"),
-                IndicatorLayer("mapping-saturation", "convenience_stores"),
-                IndicatorLayer("currentness", "convenience_stores"),
-                IndicatorLayer("mapping-saturation", "pubs_and_biergartens"),
-                IndicatorLayer("currentness", "pubs_and_biergartens"),
-                IndicatorLayer("mapping-saturation", "alcohol_and_beverages"),
-                IndicatorLayer("currentness", "alcohol_and_beverages"),
-                IndicatorLayer("mapping-saturation", "sweets_and_pasteries"),
-                IndicatorLayer("currentness", "sweets_and_pasteries"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "local_food_shops"),
+                IndicatorTopic("currentness", "local_food_shops"),
+                IndicatorTopic("mapping-saturation", "fast_food_restaurants"),
+                IndicatorTopic("currentness", "fast_food_restaurants"),
+                IndicatorTopic("Mapping-saturation", "restaurants"),
+                IndicatorTopic("currentness", "restaurants"),
+                IndicatorTopic("mapping-saturation", "supermarkets"),
+                IndicatorTopic("currentness", "supermarkets"),
+                IndicatorTopic("mapping-saturation", "convenience_stores"),
+                IndicatorTopic("currentness", "convenience_stores"),
+                IndicatorTopic("mapping-saturation", "pubs_and_biergartens"),
+                IndicatorTopic("currentness", "pubs_and_biergartens"),
+                IndicatorTopic("mapping-saturation", "alcohol_and_beverages"),
+                IndicatorTopic("currentness", "alcohol_and_beverages"),
+                IndicatorTopic("mapping-saturation", "sweets_and_pasteries"),
+                IndicatorTopic("currentness", "sweets_and_pasteries"),
             ),
             feature=feature,
             blocking_red=blocking_red,

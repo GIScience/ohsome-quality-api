@@ -73,7 +73,7 @@ async def save_indicator_results(
 
     data = (
         indicator.metadata.name,
-        indicator.layer.name,
+        indicator.topic.name,
         dataset,
         feature_id,
         indicator.result.timestamp_oqt,
@@ -115,7 +115,7 @@ async def load_indicator_results(
 
     query_data = (
         indicator.metadata.name,
-        indicator.layer.name,
+        indicator.topic.name,
         dataset,
         feature_id,
     )

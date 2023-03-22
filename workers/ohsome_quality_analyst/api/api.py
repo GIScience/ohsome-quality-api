@@ -37,7 +37,7 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
-    get_layer_keys,
+    get_topic_keys,
     get_report_names,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -254,9 +254,9 @@ async def get_available_regions(asGeoJSON: bool = False):
         return response
 
 
-@app.get("/indicator-layer-combinations")
+@app.get("/indicator-topic-combinations")
 async def get_indicator_layer_combinations():
-    """Get names of available indicator-layer combinations."""
+    """Get names of available indicator-topic combinations."""
     response = empty_api_response()
     response["result"] = INDICATOR_LAYER
     return response
@@ -282,7 +282,7 @@ async def dataset_names():
 async def layer_names():
     """Get names of available layers."""
     response = empty_api_response()
-    response["result"] = get_layer_keys()
+    response["result"] = get_topic_keys()
     return response
 
 

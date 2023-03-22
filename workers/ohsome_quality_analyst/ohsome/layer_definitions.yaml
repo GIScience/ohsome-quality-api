@@ -1,6 +1,6 @@
 ---
-# A layer describes the request which should be made to the ohsome API.
-# Each layer is defined by ohsome API parameters.
+# A topic describes the request which should be made to the ohsome API.
+# Each topic is defined by ohsome API parameters.
 # https://docs.ohsome.org/ohsome-api/stable/
 
 ### CORE TOPICS ###
@@ -472,7 +472,7 @@ clc_waterway_len:
 
 minimal:
   name: Minimal
-  description: A minimal layer definition for testing purposes
+  description: A minimal topic definition for testing purposes
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
   project: misc

@@ -16,37 +16,37 @@ class TestBaseIndicator:
         return get_layer_fixture("minimal")
 
     def test_as_feature(self, feature, layer):
-        indicator = Minimal(feature=feature, layer=layer)
+        indicator = Minimal(feature=feature, topic=layer)
         feature = indicator.as_feature()
         assert feature.is_valid
         assert feature.geometry == feature.geometry
-        for prop in ("result", "metadata", "layer"):
+        for prop in ("result", "metadata", "topic"):
             assert prop in feature["properties"]
         assert "data" not in feature["properties"]
 
     def test_as_feature_include_data(self, feature, layer):
-        indicator = Minimal(feature=feature, layer=layer)
+        indicator = Minimal(feature=feature, topic=layer)
         feature = indicator.as_feature(include_data=True)
         assert feature.is_valid
-        for key in ("result", "metadata", "layer", "data"):
+        for key in ("result", "metadata", "topic", "data"):
             assert key in feature["properties"]
         assert "count" in feature["properties"]["data"]
 
     def test_as_feature_flatten(self, feature, layer):
-        indicator = Minimal(feature=feature, layer=layer)
+        indicator = Minimal(feature=feature, topic=layer)
         feature = indicator.as_feature(flatten=True)
         assert feature.is_valid
         for key in (
             "result.value",
             "metadata.name",
-            "layer.name",
+            "topic.name",
         ):
             assert key in feature["properties"]
 
     def test_data_property(self, feature, layer):
-        indicator = Minimal(feature=feature, layer=layer)
+        indicator = Minimal(feature=feature, topic=layer)
         assert indicator.data is not None
-        for key in ("result", "metadata", "layer", "feature"):
+        for key in ("result", "metadata", "topic", "feature"):
             assert key not in feature["properties"]
 
     def test_attribution_class_property(self):

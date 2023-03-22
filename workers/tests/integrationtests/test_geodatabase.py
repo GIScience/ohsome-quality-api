@@ -37,7 +37,7 @@ class TestGeodatabase(unittest.TestCase):
                 return await conn.fetchval(query)
 
         indicator = Minimal(
-            layer=self.layer,
+            topic=self.layer,
             feature=self.feature,
         )
         asyncio.run(indicator.preprocess())
@@ -50,7 +50,7 @@ class TestGeodatabase(unittest.TestCase):
             "SELECT feature "
             + "FROM results "
             + "WHERE indicator_name = 'Minimal' "
-            + "AND layer_key = 'Minimal' "
+            + "AND layer_key= 'Minimal' "
             + "AND dataset_name = 'regions' "
             + "AND fid = '3';"
         )
@@ -58,7 +58,7 @@ class TestGeodatabase(unittest.TestCase):
         self.assertTrue(geojson.loads(result).is_valid)
 
         # load
-        indicator = Minimal(layer=self.layer, feature=self.feature)
+        indicator = Minimal(topic=self.layer, feature=self.feature)
         result = asyncio.run(
             db_client.load_indicator_results(indicator, self.dataset, self.feature_id)
         )

@@ -12,7 +12,7 @@ class TestReportMinimal(unittest.TestCase):
         report = Minimal(geometry)
 
         # Mock indicator objects with a fixed result value
-        for _ in report.indicator_layer:
+        for _ in report.indicator_topic:
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.html = "foo"

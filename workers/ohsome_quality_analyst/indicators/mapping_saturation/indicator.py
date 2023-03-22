@@ -10,7 +10,7 @@ from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Layer
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
@@ -38,11 +38,11 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        layer: Layer,
+        topic: Layer,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
-        super().__init__(layer=layer, feature=feature)
+        super().__init__(topic=topic, feature=feature)
 
         self.time_range: str = time_range
 
@@ -63,7 +63,7 @@ class MappingSaturation(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
-            self.layer,
+            self.topic,
             self.feature,
             time=self.time_range,
         )

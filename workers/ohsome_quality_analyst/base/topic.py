@@ -1,7 +1,7 @@
 """Pydantic Models for Topics
 
 Note:
-    The layer key, name, description and the ohsome API endpoint and filter are defined
+    The topic key, name, description and the ohsome API endpoint and filter are defined
     in the `layer_definitions.yaml` file in the `ohsome` module.
 """
 
@@ -10,7 +10,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class BaseLayer(BaseModel):
+class BaseTopic(BaseModel):
     key: str
     name: str
     description: str
@@ -21,7 +21,7 @@ class BaseLayer(BaseModel):
         extra = "forbid"
 
 
-class LayerDefinition(BaseLayer):
+class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: str
@@ -31,7 +31,7 @@ class LayerDefinition(BaseLayer):
     ratio_filter: Optional[str] = None
 
 
-class LayerData(BaseLayer):
-    """Includes the data associated with the layer."""
+class TopicData(BaseTopic):
+    """Includes the data associated with the topic."""
 
     data: dict

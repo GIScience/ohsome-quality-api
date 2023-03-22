@@ -169,9 +169,9 @@ class TestApiIndicatorIo(unittest.TestCase):
         assert "html" not in result["properties"]["result"]
 
     def test_indicator_layer_data(self):
-        """Test parameter Layer with data attached.
+        """Test parameter Topic with data attached.
 
-        Data are the ohsome API response result values for Heidelberg and the layer
+        Data are the ohsome API response result values for Heidelberg and the topic
         `building_count`.
         """
         timestamp_objects = [

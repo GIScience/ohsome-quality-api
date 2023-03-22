@@ -50,7 +50,7 @@ interactions:
       "All indicators show a good quality.\nThe data in this regions seems to be completely
       mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
+      has been reached if the growth of the fitted curve is minimal.\n"}, "topic":
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -59,7 +59,7 @@ interactions:
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
       in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
+      to data quality in respect to currentness.\n"}, "topic": {"key": "building_count",
       "name": "Building Count", "description": "All buildings as defined by all objects
       tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
       41.76 % of the elements were edited the last time.\nIn the period from 4 to
@@ -128,7 +128,7 @@ interactions:
       "All indicators show a good quality.\nThe data in this regions seems to be completely
       mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
+      has been reached if the growth of the fitted curve is minimal.\n"}, "topic":
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -137,7 +137,7 @@ interactions:
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
       in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
+      to data quality in respect to currentness.\n"}, "topic": {"key": "building_count",
       "name": "Building Count", "description": "All buildings as defined by all objects
       tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
       41.76 % of the elements were edited the last time.\nIn the period from 4 to
@@ -205,7 +205,7 @@ interactions:
       "All indicators show a good quality.\nThe data in this regions seems to be completely
       mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
+      has been reached if the growth of the fitted curve is minimal.\n"}, "topic":
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -214,7 +214,7 @@ interactions:
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
       in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
+      to data quality in respect to currentness.\n"}, "topic": {"key": "building_count",
       "name": "Building Count", "description": "All buildings as defined by all objects
       tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
       41.76 % of the elements were edited the last time.\nIn the period from 4 to
@@ -1186,7 +1186,7 @@ interactions:
       #e0e0e0;\n        margin: 10px auto;\n    \"\n/>\n        </div>\n    </div>\n</div>",
       "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation",
       "description": "Calculate if mapping has saturated.\nHigh saturation has been
-      reached if the growth of the fitted curve is minimal.\n"}, "layer": {"key":
+      reached if the growth of the fitted curve is minimal.\n"}, "topic": {"key":
       "building_count", "name": "Building Count", "description": "All buildings as
       defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -1614,7 +1614,7 @@ interactions:
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
       in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
+      to data quality in respect to currentness.\n"}, "topic": {"key": "building_count",
       "name": "Building Count", "description": "All buildings as defined by all objects
       tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
       41.76 % of the elements were edited the last time.\nIn the period from 4 to
@@ -2208,7 +2208,7 @@ interactions:
       "All indicators show a good quality.\nThe data in this regions seems to be completely
       mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
+      has been reached if the growth of the fitted curve is minimal.\n"}, "topic":
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -2217,7 +2217,7 @@ interactions:
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
       in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
+      to data quality in respect to currentness.\n"}, "topic": {"key": "building_count",
       "name": "Building Count", "description": "All buildings as defined by all objects
       tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
       41.76 % of the elements were edited the last time.\nIn the period from 4 to
@@ -2287,8 +2287,8 @@ interactions:
       in this regions seems to be completely mapped.\n", "report.result.label": "green",
       "indicators.0.metadata.name": "Mapping Saturation", "indicators.0.metadata.description":
       "Calculate if mapping has saturated.\nHigh saturation has been reached if the
-      growth of the fitted curve is minimal.\n", "indicators.0.layer.key": "building_count",
-      "indicators.0.layer.name": "Building Count", "indicators.0.layer.description":
+      growth of the fitted curve is minimal.\n", "indicators.0.topic.key": "building_count",
+      "indicators.0.topic.name": "Building Count", "indicators.0.topic.description":
       "All buildings as defined by all objects tagged with ''building=*''.\n", "indicators.0.result.description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
       (97% < Saturation \u2264 100%).\n", "indicators.0.result.timestamp_oqt": "2023-03-21T08:49:01.898439+00:00",
@@ -2297,8 +2297,8 @@ interactions:
       5, "indicators.1.metadata.name": "Currentness", "indicators.1.metadata.description":
       "Ratio of all contributions that have been edited since 2008 until the current
       day in relation with years without mapping activities in the same\ntime range.
-      \nRefers to data quality in respect to currentness.\n", "indicators.1.layer.key":
-      "building_count", "indicators.1.layer.name": "Building Count", "indicators.1.layer.description":
+      \nRefers to data quality in respect to currentness.\n", "indicators.1.topic.key":
+      "building_count", "indicators.1.topic.name": "Building Count", "indicators.1.topic.description":
       "All buildings as defined by all objects tagged with ''building=*''.\n", "indicators.1.result.description":
       "In the last 3 years 41.76 % of the elements were edited the last time.\nIn
       the period from 4 to 7 years ago 17.91 % of the elements were edited the last
@@ -2367,7 +2367,7 @@ interactions:
       "All indicators show a good quality.\nThe data in this regions seems to be completely
       mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
+      has been reached if the growth of the fitted curve is minimal.\n"}, "topic":
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
@@ -2782,7 +2782,7 @@ interactions:
       "Currentness", "description": "Ratio of all contributions that have been edited
       since 2008 until the current day in relation with years without mapping activities
       in the same\ntime range. \nRefers to data quality in respect to currentness.\n"},
-      "layer": {"key": "building_count", "name": "Building Count", "description":
+      "topic": {"key": "building_count", "name": "Building Count", "description":
       "All buildings as defined by all objects tagged with ''building=*''.\n"}, "result":
       {"description": "In the last 3 years 41.76 % of the elements were edited the
       last time.\nIn the period from 4 to 7 years ago 17.91 % of the elements were

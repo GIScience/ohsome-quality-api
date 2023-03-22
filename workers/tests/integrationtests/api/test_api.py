@@ -53,7 +53,7 @@ class TestApi(unittest.TestCase):
             self.assertIsInstance(region, dict)
 
     def test_list_indicator_layer_combinations(self):
-        url = "/indicator-layer-combinations"
+        url = "/indicator-topic-combinations"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

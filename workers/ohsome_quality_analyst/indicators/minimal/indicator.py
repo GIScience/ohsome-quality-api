@@ -5,17 +5,17 @@ import dateutil.parser
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Layer
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Minimal(BaseIndicator):
-    def __init__(self, layer: Layer, feature: Feature) -> None:
-        super().__init__(layer=layer, feature=feature)
+    def __init__(self, topic: Layer, feature: Feature) -> None:
+        super().__init__(topic=topic, feature=feature)
         self.count = 0
 
     async def preprocess(self) -> None:
-        query_results = await ohsome_client.query(self.layer, self.feature)
+        query_results = await ohsome_client.query(self.topic, self.feature)
         self.count = query_results["result"][0]["value"]
         self.result.timestamp_osm = dateutil.parser.isoparse(
             query_results["result"][0]["timestamp"]

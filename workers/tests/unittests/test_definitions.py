@@ -1,7 +1,7 @@
 import unittest
 
 from ohsome_quality_analyst import definitions
-from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
@@ -15,12 +15,12 @@ class TestDefinitions(unittest.TestCase):
         self.assertIsInstance(metadata, dict)
 
     def test_load_layer_definitions(self):
-        layer_definitions = definitions.load_layer_definitions()
+        layer_definitions = definitions.load_topic_definitions()
         self.assertIsInstance(layer_definitions, dict)
 
     def test_get_layer_definitions(self):
-        layer_definitions = definitions.get_layer_definition("minimal")
-        self.assertIsInstance(layer_definitions, LayerDefinition)
+        layer_definitions = definitions.get_topic_definition("minimal")
+        self.assertIsInstance(layer_definitions, TopicDefinition)
 
     def test_get_indicator_names(self):
         names = definitions.get_indicator_names()
@@ -31,7 +31,7 @@ class TestDefinitions(unittest.TestCase):
         self.assertIsInstance(names, list)
 
     def test_get_layer_keys(self):
-        names = definitions.get_layer_keys()
+        names = definitions.get_topic_keys()
         self.assertIsInstance(names, list)
 
     def test_get_dataset_names(self):
@@ -64,7 +64,7 @@ class TestDefinitions(unittest.TestCase):
             attributions,
             (
                 "© OpenStreetMap contributors; © European Union, 1995-2022, "
-                "Global Human Settlement Layer Data; "
+                "Global Human Settlement Topic Data; "
                 "Earth Observation Group Nighttime Light Data"
             ),
         )
@@ -83,5 +83,5 @@ class TestDefinitions(unittest.TestCase):
         )
 
     def test_get_valid_layers(self):
-        layers = definitions.get_valid_layers("minimal")
+        layers = definitions.get_valid_topic("minimal")
         self.assertEqual(layers, ("minimal",))

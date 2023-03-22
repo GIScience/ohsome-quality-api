@@ -129,7 +129,7 @@ class TestCliIntegration(unittest.TestCase):
     def test_get_indicator_layer_combination(self):
         result = self.runner.invoke(
             cli,
-            ["-q", "list-indicator-layer-combination"],
+            ["-q", "list-indicator-topic-combination"],
         )
         self.assertEqual(result.exit_code, 0)
         self.assertIsInstance(result.output, str)

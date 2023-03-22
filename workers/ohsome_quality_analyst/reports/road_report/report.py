@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 from ohsome_quality_analyst.definitions import get_attribution
 
 
@@ -12,10 +12,10 @@ class RoadReport(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("mapping-saturation", "major_roads_length"),
-                IndicatorLayer("currentness", "major_roads_count"),
-                IndicatorLayer("attribute-completeness", "major_roads_length"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "major_roads_length"),
+                IndicatorTopic("currentness", "major_roads_count"),
+                IndicatorTopic("attribute-completeness", "major_roads_length"),
             ),
             feature=feature,
             blocking_red=blocking_red,

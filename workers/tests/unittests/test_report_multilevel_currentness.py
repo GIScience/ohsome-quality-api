@@ -16,7 +16,7 @@ class TestReportMultilevelCurrentness(unittest.TestCase):
         report = MultilevelCurrentness(geometry)
 
         # Mock indicator objects with a fixed result value
-        for _ in report.indicator_layer:
+        for _ in report.indicator_topic:
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.class_ = 1

@@ -2,16 +2,16 @@ import unittest
 
 from schema import Optional, Or, Schema
 
-from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.definitions import (
-    get_layer_definition,
-    load_layer_definitions,
+    get_topic_definition,
+    load_topic_definitions,
 )
 
 
 class TestLoadLayers(unittest.TestCase):
     def setUp(self):
-        self.layers = load_layer_definitions()
+        self.layers = load_topic_definitions()
         self.schema = Schema(
             {
                 str: {
@@ -31,10 +31,10 @@ class TestLoadLayers(unittest.TestCase):
         self.assertTrue(self.schema.is_valid(self.layers))
 
     def test_get_layer_definition(self):
-        self.assertRaises(KeyError, get_layer_definition, "")
-        self.assertRaises(KeyError, get_layer_definition, "ajsjdh")
-        self.assertRaises(KeyError, get_layer_definition, None)
-        self.assertIsInstance(get_layer_definition("building_area"), LayerDefinition)
+        self.assertRaises(KeyError, get_topic_definition, "")
+        self.assertRaises(KeyError, get_topic_definition, "ajsjdh")
+        self.assertRaises(KeyError, get_topic_definition, None)
+        self.assertIsInstance(get_topic_definition("building_area"), TopicDefinition)
 
 
 if __name__ == "__main__":

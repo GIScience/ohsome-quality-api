@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 from ohsome_quality_analyst.definitions import get_attribution
 
 
@@ -12,11 +12,11 @@ class MultilevelCurrentness(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("currentness", "infrastructure_lines"),
-                IndicatorLayer("currentness", "poi"),
-                IndicatorLayer("currentness", "lulc"),
-                IndicatorLayer("currentness", "building_count"),
+            indicator_topic=(
+                IndicatorTopic("currentness", "infrastructure_lines"),
+                IndicatorTopic("currentness", "poi"),
+                IndicatorTopic("currentness", "lulc"),
+                IndicatorTopic("currentness", "building_count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

@@ -1,6 +1,6 @@
 from numpy import array
 
-# The ohsome API response result values for Heidelberg and the layer `building_count`
+# The ohsome API response result values for Heidelberg and the topic `building_count`
 VALUES_1 = array(
     [
         1.0,

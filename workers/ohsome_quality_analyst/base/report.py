@@ -40,16 +40,16 @@ class Result:
         return labels.get(self.class_, "undefined")
 
 
-class IndicatorLayer(NamedTuple):
+class IndicatorTopic(NamedTuple):
     indicator_name: str
-    layer_key: str
+    topic_key: str
 
 
 class BaseReport(metaclass=ABCMeta):
     def __init__(
         self,
         feature: Feature,
-        indicator_layer: Tuple[IndicatorLayer] = None,
+        indicator_topic: Tuple[IndicatorTopic] = None,
         blocking_red: bool = False,
         blocking_undefined: bool = False,
     ):
@@ -57,7 +57,7 @@ class BaseReport(metaclass=ABCMeta):
 
         self.indicators: List[BaseIndicator] = []
         metadata = get_metadata("reports", type(self).__name__)
-        self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
+        self.indicator_topic = indicator_topic  # Defines indicator+topic combinations
         self.blocking_undefined = blocking_undefined
         self.blocking_red = blocking_red
         self.metadata: Metadata = Metadata(

@@ -14,20 +14,20 @@ import pydantic
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
 
-from ohsome_quality_analyst.base.layer import LayerData
+from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
-    get_layer_keys,
+    get_topic_keys,
     get_report_names,
 )
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
-LayerEnum = Enum("LayerEnum", {name: name for name in get_layer_keys()})
+TopicEnum = Enum("TopicEnum", {name: name for name in get_topic_keys()})
 DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
@@ -70,8 +70,8 @@ class BaseReport(BaseModel):
         extra = "forbid"
 
 
-class BaseLayerName(BaseModel):
-    layer_key: LayerEnum = pydantic.Field(
+class BaseTopicName(BaseModel):
+    topic_key: TopicEnum = pydantic.Field(
         ...,
         title="Topic Key",
         alias="topic",
@@ -79,13 +79,13 @@ class BaseLayerName(BaseModel):
     )
 
 
-class BaseLayerData(BaseModel):
+class BaseTopicData(BaseModel):
     """Model for the parameter `topic`.
 
     The Topic consists of name, description and data.
     """
 
-    layer: LayerData = pydantic.Field(..., title="Topic", alias="topic")
+    topic: TopicData = pydantic.Field(..., title="Topic", alias="topic")
 
 
 class BaseBpolys(BaseModel):
@@ -130,12 +130,12 @@ class BaseDatabase(BaseModel):
     fid_field: Optional[FidFieldEnum] = None
 
 
-class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
+class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
     @pydantic.root_validator
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_key"].value)
+            indicator_layer = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator keys occurred.")
         if indicator_layer not in INDICATOR_LAYER:
@@ -146,12 +146,12 @@ class IndicatorBpolys(BaseIndicator, BaseLayerName, BaseBpolys):
             return values
 
 
-class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
+class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
     @pydantic.root_validator
     @classmethod
     def validate_indicator_layer(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["layer_key"].value)
+            indicator_layer = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator key occurred.")
         if indicator_layer not in INDICATOR_LAYER:
@@ -162,7 +162,7 @@ class IndicatorDatabase(BaseIndicator, BaseLayerName, BaseDatabase):
             return values
 
 
-class IndicatorData(BaseIndicator, BaseLayerData, BaseBpolys):
+class IndicatorData(BaseIndicator, BaseTopicData, BaseBpolys):
     @pydantic.validator("name")
     @classmethod
     def validate_indicator_name(cls, name):
@@ -191,7 +191,7 @@ INDICATOR_EXAMPLES = {
         ),
         "value": {
             "name": "mapping-saturation",
-            "layer-key": "building_count",
+            "topic-key": "building_count",
             "dataset": "regions",
             "feature-id": 3,
             "fid-field": "ogc_fid",
@@ -204,7 +204,7 @@ INDICATOR_EXAMPLES = {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
             "name": "mapping-saturation",
-            "layer-key": "building_count",
+            "topic-key": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {

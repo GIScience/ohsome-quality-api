@@ -15,76 +15,76 @@ try:
 except ImportError:
     from json import JSONDecodeError
 
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
-from ohsome_quality_analyst.base.layer import LayerData, LayerDefinition
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
+from ohsome_quality_analyst.base.topic import TopicData, TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import LayerDataSchemaError, OhsomeApiError
 
 
 @singledispatch
-async def query(layer) -> dict:
+async def query(topic) -> dict:
     """Query ohsome API."""
     raise NotImplementedError(
-        "Cannot query ohsome API for Layer of type: " + str(type(layer))
+        "Cannot query ohsome API for Topic of type: " + str(type(topic))
     )
 
 
 @query.register
 async def _(
-    layer: LayerDefinition,
+    topic: TopicDefinition,
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     count_latest_contributions: Optional[bool] = False,
 ) -> dict:
-    """Query ohsome API with given Layer definition and arguments.
+    """Query ohsome API with given Topic definition and arguments.
 
     Args:
-        layer: Layer definition with ohsome API endpoint and parameters.
+        topic: Topic definition with ohsome API endpoint and parameters.
         bpolys: GeoJSON `Feature` for a single bounding (multi)polygon.
             `FeatureCollection` for "group by boundaries" queries. In this case the
             argument `group_by` needs to be set to `True`.
         time: One or more ISO-8601 conform timestring(s) as accepted by the ohsome API.
-        ratio: Ratio of OSM elements. The Layer definition needs to have
+        ratio: Ratio of OSM elements. The Topic definition needs to have
             a second filter defined.
         group_by_boundary: Group by boundary.
         count_latest_contributions:  Count of the latest contributions provided to the
             OSM data.
     """
-    url = build_url(layer, ratio, group_by_boundary, count_latest_contributions)
-    data = build_data_dict(layer, bpolys, time, ratio)
+    url = build_url(topic, ratio, group_by_boundary, count_latest_contributions)
+    data = build_data_dict(topic, bpolys, time, ratio)
     response = await query_ohsome_api(url, data)
     return validate_query_results(response, ratio, group_by_boundary)
 
 
 @query.register
 async def _(
-    layer: LayerData,
+    topic: TopicData,
     bpolys: Union[Feature, FeatureCollection],
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     **_kargs,
 ) -> dict:
-    """Validate data attached to the Layer object and return data.
+    """Validate data attached to the Topic object and return data.
 
     Data will only be validated and returned immediately.
     The ohsome API will not be queried.
 
     Args:
-        layer: Layer with name, description and data attached to it.
+        topic: Topic with name, description and data attached to it.
         bpolys: Feature for a single bounding (multi)polygon.
             FeatureCollection for "group by boundaries" queries. In this case the
             argument 'group_by' needs to be set to 'True'.
-        ratio: Ratio of OSM elements. The Layer definition needs to have a second
+        ratio: Ratio of OSM elements. The Topic definition needs to have a second
             filter defined.
         group_by: Group by boundary.
     """
     try:
-        return validate_query_results(layer.data, ratio, group_by_boundary)
+        return validate_query_results(topic.data, ratio, group_by_boundary)
     except SchemaError as error:
         raise LayerDataSchemaError(
-            "Invalid Layer data input to the Mapping Saturation Indicator.",
+            "Invalid Topic data input to the Mapping Saturation Indicator.",
             error,
         )
 
@@ -133,7 +133,7 @@ async def get_latest_ohsome_timestamp() -> datetime.datetime:
 
 
 def build_url(
-    layer: Layer,
+    topic: Topic,
     ratio: bool = False,
     group_by_boundary: bool = False,
     count_latest_contributions: bool = False,
@@ -142,7 +142,7 @@ def build_url(
         return (
             get_config_value("ohsome_api").rstrip("/") + "/contributions/latest/count"
         )
-    url = get_config_value("ohsome_api").rstrip("/") + "/" + layer.endpoint.rstrip("/")
+    url = get_config_value("ohsome_api").rstrip("/") + "/" + topic.endpoint.rstrip("/")
     if ratio:
         url += "/ratio"
     if group_by_boundary:
@@ -151,7 +151,7 @@ def build_url(
 
 
 def build_data_dict(
-    layer: Layer,
+    topic: Topic,
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
     ratio: Optional[bool] = False,
@@ -161,7 +161,7 @@ def build_data_dict(
     Raises:
         TypeError: If 'bpolys' is not of type Feature or FeatureCollection.
     """
-    data = {"filter": layer.filter_}
+    data = {"filter": topic.filter_}
     if isinstance(bpolys, Feature):
         data["bpolys"] = json.dumps(FeatureCollection([bpolys]))
     elif isinstance(bpolys, FeatureCollection):
@@ -171,7 +171,7 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     if ratio:
-        data["filter2"] = layer.ratio_filter
+        data["filter2"] = topic.ratio_filter
     return data
 
 

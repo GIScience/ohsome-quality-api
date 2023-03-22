@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 
 
 class BuildingReport(BaseReport):
@@ -11,11 +11,11 @@ class BuildingReport(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("mapping-saturation", "building_count"),
-                IndicatorLayer("currentness", "building_count"),
-                IndicatorLayer("attribute-completeness", "building_count"),
-                IndicatorLayer("building-completeness", "building_area"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "building_count"),
+                IndicatorTopic("currentness", "building_count"),
+                IndicatorTopic("attribute-completeness", "building_count"),
+                IndicatorTopic("building-completeness", "building_area"),
             ),
             feature=feature,
             blocking_red=blocking_red,

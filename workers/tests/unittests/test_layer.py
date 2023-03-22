@@ -1,27 +1,27 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst.base.layer import BaseLayer, LayerData, LayerDefinition
+from ohsome_quality_analyst.base.topic import BaseTopic, TopicData, TopicDefinition
 
 
 def test_base_layer():
-    BaseLayer(key="key", name="name", description="description")
+    BaseTopic(key="key", name="name", description="description")
 
 
 def test_base_layer_missing():
     with pytest.raises(ValidationError):
-        BaseLayer(key="key")
-        BaseLayer(name="name")
-        BaseLayer(description="description")
+        BaseTopic(key="key")
+        BaseTopic(name="name")
+        BaseTopic(description="description")
 
 
 def test_base_layer_extra():
     with pytest.raises(ValidationError):
-        BaseLayer(name="name", key="key", description="description", foo="bar")
+        BaseTopic(name="name", key="key", description="description", foo="bar")
 
 
 def test_layer_definition():
-    LayerDefinition(
+    TopicDefinition(
         key="key",
         name="name",
         description="description",
@@ -29,16 +29,7 @@ def test_layer_definition():
         endpoint="endpoint",
         filter_="filter",
     )
-    LayerDefinition(
-        key="key",
-        name="name",
-        description="description",
-        project="core",
-        endpoint="endpoint",
-        filter_="filter",
-        source="source",
-    )
-    LayerDefinition(
+    TopicDefinition(
         key="key",
         name="name",
         description="description",
@@ -47,7 +38,16 @@ def test_layer_definition():
         filter_="filter",
         source="source",
     )
-    LayerDefinition(
+    TopicDefinition(
+        key="key",
+        name="name",
+        description="description",
+        project="core",
+        endpoint="endpoint",
+        filter_="filter",
+        source="source",
+    )
+    TopicDefinition(
         key="key",
         name="name",
         description="description",
@@ -61,12 +61,12 @@ def test_layer_definition():
 
 def test_layer_definition_missing():
     with pytest.raises(ValidationError):
-        LayerDefinition(key="key", name="name", description="description")
+        TopicDefinition(key="key", name="name", description="description")
 
 
 def test_layer_definition_extra():
     with pytest.raises(ValidationError):
-        LayerDefinition(
+        TopicDefinition(
             key="key",
             name="name",
             description="description",
@@ -78,14 +78,14 @@ def test_layer_definition_extra():
 
 
 def test_layer_data():
-    LayerData(key="key", name="name", description="description", data={})
+    TopicData(key="key", name="name", description="description", data={})
 
 
 def test_layer_missing():
     with pytest.raises(ValidationError):
-        LayerData(key="key", name="name", description="description")
+        TopicData(key="key", name="name", description="description")
 
 
 def test_layer_extra():
     with pytest.raises(ValidationError):
-        LayerData(key="key", name="name", description="description", data={}, foo="bar")
+        TopicData(key="key", name="name", description="description", data={}, foo="bar")

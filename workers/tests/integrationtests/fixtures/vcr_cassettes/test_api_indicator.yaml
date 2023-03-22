@@ -101,8 +101,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -158,8 +158,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -215,8 +215,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -254,7 +254,7 @@ interactions:
       fields not permitted","type":"value_error.extra"},{"loc":["body","dataset"],"msg":"value
       is not a valid enumeration member; permitted: ''regions'', ''mapaction_cesdrr_countries''","type":"type_error.enum","ctx":{"enum_values":["regions","mapaction_cesdrr_countries"]}},{"loc":["body","bpolys"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      of TopicData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"TopicData"}},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
@@ -311,8 +311,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -368,8 +368,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -425,8 +425,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata.name": "Minimal",
-      "metadata.description": "An minimal Indicator for testing purposes.\n", "layer.key":
-      "minimal", "layer.name": "Minimal", "layer.description": "A minimal layer definition
+      "metadata.description": "An minimal Indicator for testing purposes.\n", "topic.key":
+      "minimal", "topic.name": "Minimal", "topic.description": "A minimal topic definition
       for testing purposes", "result.description": "Some description of the result.\nGood
       data quality.\n", "result.timestamp_oqt": "2023-03-21T07:17:58.864359+00:00",
       "result.timestamp_osm": "2023-03-10T15:00:00+00:00", "result.value": 1.0, "result.label":
@@ -483,8 +483,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -540,8 +540,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null},
@@ -598,8 +598,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -655,8 +655,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "html": "<div class=\"oqtSection oqtSection-flex\">\n    <div
       class=\"graphSection indicator-graph\"><?xml version=\"1.0\" encoding=\"utf-8\"
@@ -858,8 +858,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "timestamp_oqt": "2023-03-21T07:17:58.864359+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
@@ -915,8 +915,8 @@ interactions:
       49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
       [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
       49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      "description": "An minimal Indicator for testing purposes.\n"}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
       data quality.\n", "svg": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE
       svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg
@@ -1089,7 +1089,7 @@ interactions:
       topic combination is invalid: (''minimal'', ''amenities'')","type":"value_error"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''amenities'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      of TopicData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"TopicData"}},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
@@ -1128,7 +1128,7 @@ interactions:
       required","type":"value_error.missing"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      of TopicData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"TopicData"}},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
@@ -1166,7 +1166,7 @@ interactions:
       required","type":"value_error.missing"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      of TopicData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"TopicData"}},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","feature_id"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'

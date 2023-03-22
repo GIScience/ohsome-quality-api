@@ -8,7 +8,7 @@ import httpx
 from geojson import FeatureCollection
 from schema import Schema
 
-from ohsome_quality_analyst.base.layer import LayerData
+from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.exceptions import (
     LayerDataSchemaError,
@@ -75,7 +75,7 @@ class TestOhsomeClientQuery(TestCase):
                 asyncio.run(ohsome_client.query(self.layer, self.bpolys))
 
     def test_not_implemeted(self) -> None:
-        """Query for layer type is not implemeted."""
+        """Query for topic type is not implemeted."""
         with self.assertRaises(NotImplementedError):
             asyncio.run(ohsome_client.query(""))
 
@@ -95,7 +95,7 @@ class TestOhsomeClientQuery(TestCase):
     def test_layer_data_valid_1(self):
         data = asyncio.run(
             ohsome_client.query(
-                LayerData(
+                TopicData(
                     key="key",
                     name="name",
                     description="description",
@@ -116,7 +116,7 @@ class TestOhsomeClientQuery(TestCase):
     def test_layer_data_valid_2(self):
         data = asyncio.run(
             ohsome_client.query(
-                LayerData(
+                TopicData(
                     key="key",
                     name="name",
                     description="description",
@@ -150,7 +150,7 @@ class TestOhsomeClientQuery(TestCase):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData(
+                    TopicData(
                         key="key",
                         name="name",
                         description="description",
@@ -164,7 +164,7 @@ class TestOhsomeClientQuery(TestCase):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData(
+                    TopicData(
                         key="key",
                         name="name",
                         description="description",
@@ -178,7 +178,7 @@ class TestOhsomeClientQuery(TestCase):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData(
+                    TopicData(
                         key="key",
                         name="name",
                         description="description",
