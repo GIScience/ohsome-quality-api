@@ -67,8 +67,9 @@ amenities:
   name: Amenities
   description: All features with the amenities key.
   endpoint: elements/count
+  source: https://wiki.openstreetmap.org/wiki/Key:amenity
   filter: amenity=*
-  project: core
+  project: sketchmap
 
 poi:
   name: POI
@@ -138,7 +139,7 @@ landmarks:
     shop=* or tourism in (hotel, attraction) or
     amenity in (fuel, pharmacy, hospital, school, college, university,
     police, fire_station, restaurant, townhall)
-  project: core
+  project: sketchmap
 
 mapaction_settlements_count:
   name: MapAction Settlements Count
@@ -201,7 +202,7 @@ infrastructure_lines:
   description: Line objects related to infrastructure
   endpoint: elements/length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
-  project: core
+  project: experimental
 
 lulc:
   name: Land Use and Land Cover
@@ -219,14 +220,14 @@ lulc:
     https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
     Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
     https://www.geog.uni-heidelberg.de/gis/ideal_en.html
-  project: core
+  project: idealvgi
 
 minimal:
   name: Minimal
   description: A minimal layer definition for testing purposes
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
-  project: core
+  project: misc
 
 schools:
   name: Schools
