@@ -10,7 +10,7 @@ def test_base_layer():
 
 def test_base_layer_missing():
     with pytest.raises(ValidationError):
-        BaseLayer(name="key")
+        BaseLayer(key="key")
         BaseLayer(name="name")
         BaseLayer(description="description")
 
@@ -70,6 +70,7 @@ def test_layer_definition_extra():
             key="key",
             name="name",
             description="description",
+            project="core",
             endpoint="endpoint",
             filter_="filter",
             foo="bar",
