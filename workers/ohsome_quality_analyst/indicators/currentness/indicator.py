@@ -7,7 +7,7 @@ import geojson
 import matplotlib.pyplot as plt
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
@@ -31,7 +31,7 @@ class Currentness(BaseIndicator):
 
     def __init__(
         self,
-        topic: Layer,
+        topic: Topic,
         feature: geojson.Feature,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
@@ -123,7 +123,7 @@ class Currentness(BaseIndicator):
 
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
-            layer_name=self.topic.name,
+            topic_name=self.topic.name,
             end_date=self.end,
             elements=int(self.contributions_sum),
             green=round(contrib_rel_cum_green * 100, 2),

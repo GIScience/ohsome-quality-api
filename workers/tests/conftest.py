@@ -4,14 +4,14 @@ import geojson
 import pytest
 from geojson import Feature, FeatureCollection
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.definitions import get_topic_definition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
 
 @pytest.fixture(scope="class")
-def topic_building_count() -> Layer:
+def topic_building_count() -> Topic:
     return get_topic_definition("building_count")
 
 

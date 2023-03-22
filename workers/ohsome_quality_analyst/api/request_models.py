@@ -133,14 +133,14 @@ class BaseDatabase(BaseModel):
 class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
     @pydantic.root_validator
     @classmethod
-    def validate_indicator_layer(cls, values):
+    def validate_indicator_topic(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["topic_key"].value)
+            indicator_topic = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator keys occurred.")
-        if indicator_layer not in INDICATOR_LAYER:
+        if indicator_topic not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator topic combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_topic)
             )
         else:
             return values
@@ -149,14 +149,14 @@ class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
 class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
     @pydantic.root_validator
     @classmethod
-    def validate_indicator_layer(cls, values):
+    def validate_indicator_topic(cls, values):
         try:
-            indicator_layer = (values["name"].value, values["topic_key"].value)
+            indicator_topic = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator key occurred.")
-        if indicator_layer not in INDICATOR_LAYER:
+        if indicator_topic not in INDICATOR_LAYER:
             raise ValueError(
-                "Indicator topic combination is invalid: " + str(indicator_layer)
+                "Indicator topic combination is invalid: " + str(indicator_topic)
             )
         else:
             return values

@@ -214,7 +214,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
         content = response.json()
-        self.assertEqual(content["type"], "LayerDataSchemaError")
+        self.assertEqual(content["type"], "TopicDataSchemaError")
 
 
 if __name__ == "__main__":

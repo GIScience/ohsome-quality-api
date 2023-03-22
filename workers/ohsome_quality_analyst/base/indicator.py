@@ -69,7 +69,7 @@ class BaseIndicator(metaclass=ABCMeta):
         topic: Topic,
         feature: Feature,
     ) -> None:
-        self.topic: Layer = topic
+        self.topic: Topic = topic
         self.feature: Feature = feature
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
