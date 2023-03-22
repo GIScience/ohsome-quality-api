@@ -225,7 +225,7 @@ def get_metadata(
         raise
 
 
-def load_topic_definitions() -> Dict:
+def load_topic_definitions() -> list[TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
@@ -234,27 +234,24 @@ def load_topic_definitions() -> Dict:
     directory = get_module_dir("ohsome_quality_analyst.topics")
     file = os.path.join(directory, "presets.yaml")
     with open(file, "r") as f:
-        return yaml.safe_load(f)
+        raw = yaml.safe_load(f)
+    topics = []
+    for k, v in raw.items():
+        v["filter_"] = v.pop("filter")
+        v["key"] = k
+        topics.append(TopicDefinition(**v))
+    return topics
 
 
 def get_topic_definition(topic_key: str) -> TopicDefinition:
-    """Get ohsome API parameters of a single topic based on topic key.
-
-    This is implemented outside the topic class to
-    be able to access topic definitions of all indicators without
-    instantiation of those.
-    """
+    """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
     try:
-        topic = topics[topic_key]
-    except KeyError as error:
+        return next(filter(lambda t: t.key == topic_key, topics))
+    except StopIteration as error:
         raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
+            "Invalid topic key. Valid topic keys are: " + str([t.key for t in topics])
         ) from error
-    # Avoid built-in function name `filter`
-    topic["filter_"] = topic.pop("filter")
-    topic["key"] = topic_key
-    return TopicDefinition(**topic)
 
 
 def get_indicator_classes() -> Dict:
@@ -282,7 +279,7 @@ def get_report_names() -> List[str]:
 
 
 def get_topic_keys() -> List[str]:
-    return list(load_topic_definitions().keys())
+    return [t.key for t in load_topic_definitions()]
 
 
 def get_dataset_names() -> List[str]:

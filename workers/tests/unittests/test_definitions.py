@@ -1,5 +1,7 @@
 import unittest
 
+import pytest
+
 from ohsome_quality_analyst import definitions
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
@@ -13,14 +15,6 @@ class TestDefinitions(unittest.TestCase):
     def test_get_metadata(self):
         metadata = definitions.get_metadata("indicators", "Minimal")
         self.assertIsInstance(metadata, dict)
-
-    def test_load_topic_definitions(self):
-        topic_definitions = definitions.load_topic_definitions()
-        self.assertIsInstance(topic_definitions, dict)
-
-    def test_get_topic_definitions(self):
-        topic_definitions = definitions.get_topic_definition("minimal")
-        self.assertIsInstance(topic_definitions, TopicDefinition)
 
     def test_get_indicator_names(self):
         names = definitions.get_indicator_names()
@@ -85,3 +79,21 @@ class TestDefinitions(unittest.TestCase):
     def test_get_valid_topics(self):
         topics = definitions.get_valid_topics("minimal")
         self.assertEqual(topics, ("minimal",))
+
+
+def test_load_topic_definitions():
+    topics = definitions.load_topic_definitions()
+    for topic in topics:
+        assert isinstance(topic, TopicDefinition)
+
+
+def test_get_topic_definitions():
+    topic = definitions.get_topic_definition("minimal")
+    assert isinstance(topic, TopicDefinition)
+
+
+def test_get_topic_definitions_not_found_error():
+    with pytest.raises(KeyError):
+        definitions.get_topic_definition("foo")
+    with pytest.raises(KeyError):
+        definitions.get_topic_definition(None)

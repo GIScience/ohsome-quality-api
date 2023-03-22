@@ -5,7 +5,7 @@ Define Click command options to avoid redundancy.
 import click
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.definitions import load_metadata, load_topic_definitions
+from ohsome_quality_analyst.definitions import get_topic_keys, load_metadata
 
 indicator_name = click.option(
     "--indicator-name",
@@ -64,7 +64,7 @@ topic_key = click.option(
     "-l",
     required=True,
     type=click.Choice(
-        list(load_topic_definitions().keys()),
+        get_topic_keys(),
         case_sensitive=True,
     ),
     help=(
