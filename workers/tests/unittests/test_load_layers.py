@@ -11,7 +11,7 @@ from ohsome_quality_analyst.definitions import (
 
 class TestLoadLayers(unittest.TestCase):
     def setUp(self):
-        self.layers = load_topic_definitions()
+        self.topics = load_topic_definitions()
         self.schema = Schema(
             {
                 str: {
@@ -27,10 +27,10 @@ class TestLoadLayers(unittest.TestCase):
         )
 
     def test_validate_schema(self):
-        self.schema.validate(self.layers)  # Print information if validation fails
-        self.assertTrue(self.schema.is_valid(self.layers))
+        self.schema.validate(self.topics)  # Print information if validation fails
+        self.assertTrue(self.schema.is_valid(self.topics))
 
-    def test_get_layer_definition(self):
+    def test_get_topic_definition(self):
         self.assertRaises(KeyError, get_topic_definition, "")
         self.assertRaises(KeyError, get_topic_definition, "ajsjdh")
         self.assertRaises(KeyError, get_topic_definition, None)

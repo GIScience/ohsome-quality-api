@@ -67,33 +67,33 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseReport(name="minimal", flatten="foo")
 
-    def test_layer_key_valid(self):
+    def test_topic_key_valid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name
         request_models.BaseTopicName(topic="building_count")
 
-    def test_layer_key_invalid(self):
+    def test_topic_key_invalid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name
         with self.assertRaises(ValueError):
             request_models.BaseTopicName(topic="foo")
 
-    def test_layer_data_valid(self):
-        layer = {
+    def test_topic_data_valid(self):
+        topic = {
             "key": "foo",
             "name": "bar",
             "description": "buz",
             "data": {},
         }
-        request_models.BaseTopicData(topic=layer)
+        request_models.BaseTopicData(topic=topic)
 
-    def test_layer_data_invalid(self):
-        for layer in (
+    def test_topic_data_invalid(self):
+        for topic in (
             {"key": "foo", "name": "bar", "data": {}},
             {"key": "foo", "description": "bar", "data": {}},
             {"key": "foo", "name": "bar", "description": "buz"},
             {"key": "foo", "name": "bar", "description": "buz", "data": "fis"},
         ):
             with self.assertRaises(ValueError):
-                request_models.BaseTopicData(layer=layer)
+                request_models.BaseTopicData(topic=topic)
 
     def test_dataset_valid(self):
         request_models.BaseDatabase(dataset="regions", feature_id="3")
@@ -144,7 +144,7 @@ class TestApiRequestModels(unittest.TestCase):
             bpolys=self.bpolys,
         )
 
-    def test_indicator_invalid_layer_combination(self):
+    def test_indicator_invalid_topic_combination(self):
         kwargs = {
             "name": "minimal",
             "topic": "amenities",
@@ -168,7 +168,7 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.IndicatorData(
                 name="foo",
                 bpolys=self.bpolys,
-                layer={"key": "foo", "name": "bar", "description": "buz", "data": {}},
+                topic={"key": "foo", "name": "bar", "description": "buz", "data": {}},
             )
 
     def test_invalid_set_of_arguments(self):

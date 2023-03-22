@@ -10,7 +10,7 @@ from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
 
-from .utils import get_layer_fixture, oqt_vcr
+from .utils import get_topic_fixture, oqt_vcr
 
 
 class TestIndicatorAttributeCompleteness(unittest.TestCase):
@@ -24,7 +24,7 @@ class TestIndicatorAttributeCompleteness(unittest.TestCase):
     def test(self):
         indicator = AttributeCompleteness(
             feature=self.feature,
-            topic=get_layer_fixture("building_count"),
+            topic=get_topic_fixture("building_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -52,7 +52,7 @@ class TestIndicatorAttributeCompleteness(unittest.TestCase):
             feature = geojson.load(f)
 
         indicator = AttributeCompleteness(
-            topic=get_layer_fixture("clc_leaf_type"),
+            topic=get_topic_fixture("clc_leaf_type"),
             feature=feature,
         )
         asyncio.run(indicator.preprocess())
