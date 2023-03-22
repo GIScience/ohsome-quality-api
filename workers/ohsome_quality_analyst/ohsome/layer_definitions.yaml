@@ -67,7 +67,7 @@ amenities:
   name: Amenities
   description: All features with the amenities key.
   endpoint: elements/count
-  filter: amenity=* and (type:way or type:node)
+  filter: amenity=*
   project: core
 
 poi:
