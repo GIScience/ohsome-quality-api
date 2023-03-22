@@ -9,12 +9,9 @@
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
-<<<<<<< HEAD
 - rename `TagsRatio` indicator to `attribute-completeness` ([#500])
-=======
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
->>>>>>> main
 
 ### Bug Fixes
 
