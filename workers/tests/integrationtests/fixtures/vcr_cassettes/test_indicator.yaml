@@ -1,57 +1,5 @@
 interactions:
 - request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
-      testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
-      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
-    headers:
-      content-length:
-      - '2375'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
     body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature_id":
       "3", "fid_field": "ogc_fid"}'
     headers:
@@ -99,59 +47,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
-      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
-    headers:
-      content-length:
-      - '2375'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=Heidelberg&fid_field=name
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
-      testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -208,59 +104,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
-      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
-    headers:
-      content-length:
-      - '2375'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
-      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
-      "minimal", "name": "Minimal", "description": "A minimal layer definition for
-      testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -317,7 +161,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -326,31 +170,6 @@ interactions:
       - application/geo+json
     http_version: HTTP/1.1
     status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=foo&feature_id=3
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["query","dataset"],"msg":"value
-      is not a valid enumeration member; permitted: ''regions''","type":"type_error.enum","ctx":{"enum_values":["regions"]}}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '223'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
 - request:
     body: '{"name": "minimal", "topic": "minimal", "dataset": "foo", "feature_id":
       "3"}'
@@ -377,21 +196,22 @@ interactions:
       fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
       fields not permitted","type":"value_error.extra"},{"loc":["body","dataset"],"msg":"value
       is not a valid enumeration member; permitted: ''regions''","type":"type_error.enum","ctx":{"enum_values":["regions"]}},{"loc":["body","bpolys"],"msg":"field
-      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
     headers:
       content-length:
-      - '1045'
+      - '987'
       content-type:
       - application/json
     http_version: HTTP/1.1
     status_code: 422
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3"}'
     headers:
       accept:
       - '*/*'
@@ -399,12 +219,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '80'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&flatten=False
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -433,7 +257,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -443,7 +267,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "flatten": false}'
     headers:
       accept:
       - '*/*'
@@ -451,12 +276,73 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '98'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&flatten=True
+    method: POST
+    uri: http://testserver/indicator
+  response:
+    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal layer definition for
+      testing purposes"}, "result": {"description": "Some description of the result.\nGood
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
+      "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '2375'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "flatten": true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '97'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -485,7 +371,7 @@ interactions:
       "metadata.description": "An minimal Indicator for testing purposes.\n", "layer.key":
       "minimal", "layer.name": "Minimal", "layer.description": "A minimal layer definition
       for testing purposes", "result.description": "Some description of the result.\nGood
-      data quality.\n", "result.timestamp_oqt": "2023-03-22T10:23:13.082504+00:00",
+      data quality.\n", "result.timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "result.timestamp_osm": "2023-03-10T15:00:00+00:00", "result.value": 1.0, "result.label":
       "undefined", "result.class": null}}'
     headers:
@@ -496,7 +382,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-data": false}'
     headers:
       accept:
       - '*/*'
@@ -504,12 +391,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '103'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&include_data=False
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -538,7 +429,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -548,7 +439,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-data": true}'
     headers:
       accept:
       - '*/*'
@@ -556,12 +448,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '102'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&include_data=True
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -590,7 +486,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null},
       "data": {"count": 30646.0}}}'
     headers:
@@ -601,7 +497,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-html": false}'
     headers:
       accept:
       - '*/*'
@@ -609,12 +506,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '103'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_html=False
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -643,7 +544,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -653,7 +554,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-html": true}'
     headers:
       accept:
       - '*/*'
@@ -661,12 +563,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '102'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_html=True
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -702,13 +608,13 @@ interactions:
       viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:23:33.814455</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:35:51.405461</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#p5d87871b4c)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#p0be55466ba)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -828,7 +734,7 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p5d87871b4c\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"p0be55466ba\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Minimal for Minimal</h4>\n        <p><span
       style=''height: 25px; width: 25px; background-color: #bbb;border-radius: 50%;
@@ -840,7 +746,7 @@ interactions:
       class=\"indicator-metadata-text\">\n            Indicator description:\n            <br
       />\n            An minimal Indicator for testing purposes.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
       block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
-      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00",
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
@@ -851,7 +757,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-svg": false}'
     headers:
       accept:
       - '*/*'
@@ -859,12 +766,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '102'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_svg=False
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -893,7 +804,7 @@ interactions:
       "description": "An minimal Indicator for testing purposes.\n"}, "layer": {"key":
       "minimal", "name": "Minimal", "description": "A minimal layer definition for
       testing purposes"}, "result": {"description": "Some description of the result.\nGood
-      data quality.\n", "timestamp_oqt": "2023-03-22T10:23:13.082504+00:00", "timestamp_osm":
+      data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00", "timestamp_osm":
       "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -903,7 +814,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "topic": "minimal", "dataset": "regions", "feature-id":
+      "3", "include-svg": true}'
     headers:
       accept:
       - '*/*'
@@ -911,12 +823,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '101'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_svg=True
+    method: POST
+    uri: http://testserver/indicator
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -951,13 +867,13 @@ interactions:
       viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:23:33.814455</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:35:51.405461</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#p5d87871b4c)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#p0be55466ba)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -1077,9 +993,9 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p5d87871b4c\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"p0be55466ba\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
-      "2023-03-22T10:23:13.082504+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
+      "2023-03-22T12:33:24.852481+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
       "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -1088,31 +1004,6 @@ interactions:
       - application/geo+json
     http_version: HTTP/1.1
     status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=amenities&dataset=regions&feature_id=3
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["__root__"],"msg":"Indicator
-      topic combination is invalid: (''minimal'', ''amenities'')","type":"value_error"}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '181'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
 - request:
     body: '{"name": "minimal", "topic": "amenities", "dataset": "regions", "feature_id":
       "3"}'
@@ -1140,40 +1031,15 @@ interactions:
       fields not permitted","type":"value_error.extra"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''amenities'')","type":"value_error"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''amenities'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
-      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
     headers:
       content-length:
-      - '1133'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=building_count&dataset=regions
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["query","feature_id"],"msg":"field
-      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '149'
+      - '1075'
       content-type:
       - application/json
     http_version: HTTP/1.1
@@ -1204,39 +1070,14 @@ interactions:
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","feature-id"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
-      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","dataset"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
     headers:
       content-length:
-      - '1041'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/indicator?name=minimal&topic=building_count&feature_id=3
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["query","dataset"],"msg":"field
-      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '146'
+      - '983'
       content-type:
       - application/json
     http_version: HTTP/1.1
@@ -1267,14 +1108,14 @@ interactions:
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","dataset"],"msg":"field
       required","type":"value_error.missing"},{"loc":["body","__root__"],"msg":"Indicator
       topic combination is invalid: (''minimal'', ''building_count'')","type":"value_error"},{"loc":["body","bpolys"],"msg":"field
-      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"instance
-      of LayerData, tuple or dict expected","type":"type_error.dataclass","ctx":{"class_name":"LayerData"}},{"loc":["body","name"],"msg":"Computing
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","name"],"msg":"Computing
       an Indicator for a Topic with data attached is only supported for the Mapping
       Saturation Indicator.","type":"value_error"},{"loc":["body","feature_id"],"msg":"extra
       fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
     headers:
       content-length:
-      - '1044'
+      - '986'
       content-type:
       - application/json
     http_version: HTTP/1.1

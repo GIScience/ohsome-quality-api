@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 10:45:30 GMT
+      - Wed, 22 Mar 2023 12:38:39 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -86,7 +86,7 @@ interactions:
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
       purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
@@ -94,63 +94,6 @@ interactions:
       - '830'
       content-type:
       - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1367'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.1
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
-      \   \"value\" : 934.0\n  } ]\n}"
-    headers:
-      access-control-allow-credentials:
-      - 'true'
-      access-control-allow-headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
-      - POST, GET
-      access-control-allow-origin:
-      - '*'
-      access-control-max-age:
-      - '3600'
-      cache-control:
-      - no-cache, no-store, must-revalidate
-      connection:
-      - Keep-Alive
-      content-encoding:
-      - gzip
-      content-type:
-      - application/json
-      date:
-      - Wed, 22 Mar 2023 10:45:43 GMT
-      keep-alive:
-      - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
-      - max-age=63072000; includeSubdomains;
-      transfer-encoding:
-      - chunked
-      vary:
-      - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
 - request:
@@ -197,7 +140,64 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 10:45:43 GMT
+      - Wed, 22 Mar 2023 12:38:50 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1367'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.14.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
+      \   \"value\" : 934.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Wed, 22 Mar 2023 12:38:50 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -270,7 +270,7 @@ interactions:
       "properties": {"metadata": {"name": "Minimal", "description": "An minimal Indicator
       for testing purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}, {"type": "Feature", "id": 2, "geometry": {"type": "Polygon",
       "coordinates": [[[8.641543, 49.411303], [8.652386, 49.407391], [8.652606, 49.407365],
@@ -287,7 +287,7 @@ interactions:
       "properties": {"metadata": {"name": "Minimal", "description": "An minimal Indicator
       for testing purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}]}'
     headers:
@@ -326,7 +326,7 @@ interactions:
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
       purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
@@ -404,13 +404,13 @@ interactions:
       width=\"288pt\" height=\"288pt\" viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\"
       version=\"1.1\">\n <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
       xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:45:43.655266</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:38:51.242658</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#pb4b25283a9)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#pa45588b89b)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -530,7 +530,7 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pb4b25283a9\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"pa45588b89b\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n", "html":
       "<div class=\"oqtSection oqtSection-flex\">\n    <div class=\"graphSection indicator-graph\"><?xml
       version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC
@@ -539,13 +539,13 @@ interactions:
       viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:45:43.655266</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:38:51.242658</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#pb4b25283a9)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#pa45588b89b)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -665,7 +665,7 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pb4b25283a9\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"pa45588b89b\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Minimal for Minimal</h4>\n        <p><span
       style=''height: 25px; width: 25px; background-color: #bbb;border-radius: 50%;
@@ -677,7 +677,7 @@ interactions:
       class=\"indicator-metadata-text\">\n            Indicator description:\n            <br
       />\n            An minimal Indicator for testing purposes.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
       block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
-      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
@@ -731,7 +731,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 10:45:52 GMT
+      - Wed, 22 Mar 2023 12:39:00 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -774,7 +774,7 @@ interactions:
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
       purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:
@@ -820,13 +820,13 @@ interactions:
       width=\"288pt\" height=\"288pt\" viewBox=\"0 0 288 288\" xmlns=\"http://www.w3.org/2000/svg\"
       version=\"1.1\">\n <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
       xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T11:45:53.010766</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:39:00.605705</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
       v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 288 \nL 288 288 \nL 288 0 \nL 0 0 \nz\n\" style=\"fill: #ffffff\"/>\n  </g>\n  <g
       id=\"axes_1\">\n   <g id=\"line2d_1\">\n    <path d=\"M 147.6 256.32 \nL 147.6
-      34.56 \n\" clip-path=\"url(#pa8c197dd85)\" style=\"fill: none; stroke: #ffffff;
+      34.56 \n\" clip-path=\"url(#pcbea4bc76c)\" style=\"fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g id=\"text_1\">\n    <g
       id=\"patch_2\">\n     <path d=\"M 28.675781 151.279063 \nL 266.524219 151.279063
       \nL 266.524219 139.600938 \nL 28.675781 139.600938 \nz\n\" style=\"fill: #ffffff\"/>\n    </g>\n    <!--
@@ -946,9 +946,9 @@ interactions:
       xlink:href=\"#DejaVuSans-66\" x=\"2200.386719\"/>\n     <use xlink:href=\"#DejaVuSans-75\"
       x=\"2235.591797\"/>\n     <use xlink:href=\"#DejaVuSans-6c\" x=\"2298.970703\"/>\n     <use
       xlink:href=\"#DejaVuSans-2e\" x=\"2326.753906\"/>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pa8c197dd85\">\n   <rect x=\"36\" y=\"34.56\"
+      </g>\n <defs>\n  <clipPath id=\"pcbea4bc76c\">\n   <rect x=\"36\" y=\"34.56\"
       width=\"223.2\" height=\"221.76\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
-      "2023-03-22T10:45:13.533197+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
+      "2023-03-22T12:33:24.852481+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
       "value": 1.0, "label": "undefined", "class": null}}}'
     headers:
       content-length:
@@ -987,7 +987,7 @@ interactions:
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
       purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
       "A minimal layer definition for testing purposes"}, "result": {"description":
-      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T10:45:13.533197+00:00",
+      "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
     headers:

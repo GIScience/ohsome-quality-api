@@ -1,78 +1,5 @@
 interactions:
 - request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"report": {"metadata":
-      {"name": "Minimal", "description": "This report shows the quality for two indicators:\nMapping
-      Saturation and Currentness.\nIt''s main function is to test the interactions
-      between\ndatabase, api and website.\n"}, "result": {"class_": 4, "description":
-      "All indicators show a good quality.\nThe data in this regions seems to be completely
-      mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
-      Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
-      {"key": "building_count", "name": "Building Count", "description": "All buildings
-      as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
-      "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
-      "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
-      of all contributions that have been edited since 2008 until the current day
-      in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
-      "name": "Building Count", "description": "All buildings as defined by all objects
-      tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
-      41.76 % of the elements were edited the last time.\nIn the period from 4 to
-      7 years ago 17.91 % of the elements were edited the last time.\nThe remaining
-      40.33 % were last edited at least 8 years ago.\nThe median currentness of the
-      37488 features (Building Count) is 5 year(s).\nNote that only contributions
-      up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
-      "class": 2}}]}}'
-    headers:
-      content-length:
-      - '4012'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
     body: '{"name": "minimal", "dataset": "regions", "feature_id": "3", "fid_field":
       "ogc_fid"}'
     headers:
@@ -127,7 +54,7 @@ interactions:
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
@@ -140,80 +67,7 @@ interactions:
       40.33 % were last edited at least 8 years ago.\nThe median currentness of the
       37488 features (Building Count) is 5 year(s).\nNote that only contributions
       up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
-      "class": 2}}]}}'
-    headers:
-      content-length:
-      - '4012'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=Heidelberg&fid_field=name
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"report": {"metadata":
-      {"name": "Minimal", "description": "This report shows the quality for two indicators:\nMapping
-      Saturation and Currentness.\nIt''s main function is to test the interactions
-      between\ndatabase, api and website.\n"}, "result": {"class_": 4, "description":
-      "All indicators show a good quality.\nThe data in this regions seems to be completely
-      mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
-      Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
-      {"key": "building_count", "name": "Building Count", "description": "All buildings
-      as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
-      "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
-      "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
-      of all contributions that have been edited since 2008 until the current day
-      in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
-      "name": "Building Count", "description": "All buildings as defined by all objects
-      tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
-      41.76 % of the elements were edited the last time.\nIn the period from 4 to
-      7 years ago 17.91 % of the elements were edited the last time.\nThe remaining
-      40.33 % were last edited at least 8 years ago.\nThe median currentness of the
-      37488 features (Building Count) is 5 year(s).\nNote that only contributions
-      up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
       "class": 2}}]}}'
     headers:
@@ -278,7 +132,7 @@ interactions:
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
@@ -291,80 +145,7 @@ interactions:
       40.33 % were last edited at least 8 years ago.\nThe median currentness of the
       37488 features (Building Count) is 5 year(s).\nNote that only contributions
       up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
-      "class": 2}}]}}'
-    headers:
-      content-length:
-      - '4012'
-      content-type:
-      - application/geo+json
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3
-  response:
-    content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
-      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
-      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
-      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
-      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
-      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
-      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
-      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
-      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
-      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
-      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
-      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
-      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
-      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
-      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
-      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
-      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
-      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
-      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
-      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
-      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
-      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
-      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
-      49.412229], [8.573519, 49.415844]]]]}, "properties": {"report": {"metadata":
-      {"name": "Minimal", "description": "This report shows the quality for two indicators:\nMapping
-      Saturation and Currentness.\nIt''s main function is to test the interactions
-      between\ndatabase, api and website.\n"}, "result": {"class_": 4, "description":
-      "All indicators show a good quality.\nThe data in this regions seems to be completely
-      mapped.\n", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
-      Saturation", "description": "Calculate if mapping has saturated.\nHigh saturation
-      has been reached if the growth of the fitted curve is minimal.\n"}, "layer":
-      {"key": "building_count", "name": "Building Count", "description": "All buildings
-      as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
-      "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
-      "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
-      "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
-      of all contributions that have been edited since 2008 until the current day
-      in relation with years without mapping activities in the same\ntime range. \nRefers
-      to data quality in respect to currentness.\n"}, "layer": {"key": "building_count",
-      "name": "Building Count", "description": "All buildings as defined by all objects
-      tagged with ''building=*''.\n"}, "result": {"description": "In the last 3 years
-      41.76 % of the elements were edited the last time.\nIn the period from 4 to
-      7 years ago 17.91 % of the elements were edited the last time.\nThe remaining
-      40.33 % were last edited at least 8 years ago.\nThe median currentness of the
-      37488 features (Building Count) is 5 year(s).\nNote that only contributions
-      up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
       "class": 2}}]}}'
     headers:
@@ -428,7 +209,7 @@ interactions:
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
@@ -441,7 +222,7 @@ interactions:
       40.33 % were last edited at least 8 years ago.\nThe median currentness of the
       37488 features (Building Count) is 5 year(s).\nNote that only contributions
       up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
       "class": 2}}]}}'
     headers:
@@ -452,7 +233,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "dataset": "regions", "feature_id": "3", "include-html":
+      true}'
     headers:
       accept:
       - '*/*'
@@ -460,12 +242,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '82'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_html=True
+    method: POST
+    uri: http://testserver/report
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -524,17 +310,17 @@ interactions:
       xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n <metadata>\n  <rdf:RDF
       xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:01.103718</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:33:52.963324</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 281.0225 285.738525 \nL 281.0225 0 \nL 0 0 \nz\n\" style=\"fill:
       #ffffff\"/>\n  </g>\n  <g id=\"axes_1\">\n   <g id=\"patch_2\">\n    <path d=\"M
       46.0125 202.470125 \nL 273.8225 202.470125 \nL 273.8225 22.318125 \nL 46.0125
       22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m29c27d995e\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m06b41dc98d\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m29c27d995e\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
+      xlink:href=\"#m06b41dc98d\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
       stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(43.6425 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -564,7 +350,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"83.704102\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"83.704102\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(70.979102
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -573,13 +359,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"111.003307\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(98.278307
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"138.339909\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(125.614909
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -589,7 +375,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"165.639114\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"165.639114\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(152.914114
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -604,31 +390,31 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"192.975716\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"192.975716\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(180.250716
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"220.274921\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(207.549921
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"247.611523\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(234.886523
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"matplotlib.axis_2\">\n    <g id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path
-      id=\"m70d4b755c0\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
-      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m70d4b755c0\" x=\"46.0125\"
+      id=\"m09475ae6bd\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
+      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m09475ae6bd\" x=\"46.0125\"
       y=\"187.273159\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_9\">\n      <!-- 0 -->\n      <g transform=\"translate(32.65 191.072378)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-30\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"161.607425\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_10\">\n      <!-- 5000 -->\n      <g transform=\"translate(13.5625
       165.406643) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -641,35 +427,35 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"135.94169\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 10000 -->\n      <g transform=\"translate(7.2 139.740909)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"110.275955\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 15000 -->\n      <g transform=\"translate(7.2 114.075174)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"84.610221\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 20000 -->\n      <g transform=\"translate(7.2 88.40944)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"58.944486\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 25000 -->\n      <g transform=\"translate(7.2 62.743705)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"33.278752\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 30000 -->\n      <g transform=\"translate(7.2 37.07797)
       scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-33\" d=\"M
@@ -720,7 +506,7 @@ interactions:
       35.157483 \nL 235.121202 35.116418 \nL 236.168295 34.808429 \nL 238.449461 34.839228
       \nL 239.608742 34.346446 \nL 245.330357 34.171919 \nL 246.452242 33.535409 \nL
       249.817897 32.288054 \nL 250.977179 31.425686 \nL 254.38023 30.994501 \nL 263.4675
-      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#pfb0620331e)\" style=\"fill:
+      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#p2af789b206)\" style=\"fill:
       none; stroke: #1f77b4; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"line2d_17\">\n    <path d=\"M 56.3675 194.281398 \nL 59.770552 192.985276
       \nL 64.332885 190.973783 \nL 67.773332 189.225673 \nL 71.21378 187.247984 \nL
@@ -735,7 +521,7 @@ interactions:
       43.555496 \nL 191.816435 42.268552 \nL 197.463257 40.469253 \nL 203.184871 39.033448
       \nL 208.831693 37.892506 \nL 214.553307 36.988893 \nL 221.434203 36.151618 \nL
       228.240306 35.52256 \nL 237.327576 34.921788 \nL 247.611523 34.473057 \nL 261.261126
-      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#pfb0620331e)\"
+      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#p2af789b206)\"
       style=\"fill: none; stroke: #ff7f0e; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"patch_3\">\n    <path d=\"M 46.0125 202.470125 \nL 46.0125 22.318125 \n\"
       style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter;
@@ -923,7 +709,7 @@ interactions:
       xlink:href=\"#DejaVuSans-6f\" x=\"1486.337891\"/>\n      <use xlink:href=\"#DejaVuSans-64\"
       x=\"1547.519531\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"1610.996094\"/>\n      <use
       xlink:href=\"#DejaVuSans-6c\" x=\"1672.519531\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pfb0620331e\">\n   <rect x=\"46.0125\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p2af789b206\">\n   <rect x=\"46.0125\" y=\"22.318125\"
       width=\"227.81\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Mapping Saturation
       for Building Count</h4>\n        <p><span style=''height: 25px; width: 25px;
@@ -944,8 +730,8 @@ interactions:
       viewBox=\"0 0 311.879062 285.738525\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:16.732217</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:34:02.417849</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 311.879062 285.738525 \nL 311.879062 0 \nL 0 0 \nz\n\"
@@ -953,56 +739,56 @@ interactions:
       d=\"M 50.14375 202.470125 \nL 282.77375 202.470125 \nL 282.77375 22.318125 \nL
       50.14375 22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"patch_3\">\n    <path
       d=\"M 60.717841 202.470125 \nL 71.425781 202.470125 \nL 71.425781 202.221402
-      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_4\">\n    <path
       d=\"M 74.102766 202.470125 \nL 84.810706 202.470125 \nL 84.810706 202.221402
-      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_5\">\n    <path
       d=\"M 87.487691 202.470125 \nL 98.195631 202.470125 \nL 98.195631 197.156507
-      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_6\">\n    <path
       d=\"M 100.872617 202.470125 \nL 111.580557 202.470125 \nL 111.580557 191.07411
-      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_7\">\n    <path
       d=\"M 114.257542 202.470125 \nL 124.965482 202.470125 \nL 124.965482 173.211309
-      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_8\">\n    <path
       d=\"M 127.642467 202.470125 \nL 138.350407 202.470125 \nL 138.350407 146.982386
-      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_9\">\n    <path
       d=\"M 141.027392 202.470125 \nL 151.735332 202.470125 \nL 151.735332 80.505634
-      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_10\">\n    <path
       d=\"M 154.412317 202.470125 \nL 165.120257 202.470125 \nL 165.120257 170.520584
-      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_11\">\n    <path
       d=\"M 167.797243 202.470125 \nL 178.505183 202.470125 \nL 178.505183 116.479958
-      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_12\">\n    <path
       d=\"M 181.182168 202.470125 \nL 191.890108 202.470125 \nL 191.890108 160.029014
-      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_13\">\n    <path
       d=\"M 194.567093 202.470125 \nL 205.275033 202.470125 \nL 205.275033 141.171323
-      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_14\">\n    <path
       d=\"M 207.952018 202.470125 \nL 218.659958 202.470125 \nL 218.659958 182.685377
-      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_15\">\n    <path
       d=\"M 221.336943 202.470125 \nL 232.044883 202.470125 \nL 232.044883 174.183588
-      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_16\">\n    <path
       d=\"M 234.721869 202.470125 \nL 245.429809 202.470125 \nL 245.429809 30.896792
-      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_17\">\n    <path
       d=\"M 248.106794 202.470125 \nL 258.814734 202.470125 \nL 258.814734 49.257038
-      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_18\">\n    <path
       d=\"M 261.491719 202.470125 \nL 272.199659 202.470125 \nL 272.199659 173.279143
-      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m6244422d7b\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"mc9914e4faa\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m6244422d7b\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mc9914e4faa\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(53.346811 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -1032,7 +818,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"92.841661\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"92.841661\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(80.116661
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -1041,13 +827,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"119.611512\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(106.886512
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"146.381362\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(133.656362
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -1057,7 +843,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"173.151213\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"173.151213\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(160.426213
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -1072,19 +858,19 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"199.921063\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"199.921063\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(187.196063
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"226.690913\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(213.965913
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"253.460764\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(240.735764
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -1116,16 +902,16 @@ interactions:
       xlink:href=\"#DejaVuSans-59\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"47.833984\"/>\n      <use
       xlink:href=\"#DejaVuSans-61\" x=\"109.357422\"/>\n      <use xlink:href=\"#DejaVuSans-72\"
       x=\"170.636719\"/>\n     </g>\n    </g>\n   </g>\n   <g id=\"matplotlib.axis_2\">\n    <g
-      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"m8a3882d0f3\"
+      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"mdc1eb32d79\"
       d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m8a3882d0f3\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mdc1eb32d79\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_10\">\n      <!--
       0.0 -->\n      <g transform=\"translate(27.240625 206.269344) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-2e\" d=\"M 684 794 \nL 1344 794 \nL 1344 0 \nL 684 0 \nL 684
       794 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-30\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_2\">\n     <g
-      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"181.278964\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 2.5 -->\n      <g transform=\"translate(27.240625
       185.078183) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -1138,13 +924,13 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-35\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_3\">\n     <g
-      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"160.087803\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 5.0 -->\n      <g transform=\"translate(27.240625
       163.887022) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_4\">\n     <g
-      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"138.896643\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 7.5 -->\n      <g transform=\"translate(27.240625
       142.695861) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-37\"
@@ -1152,31 +938,31 @@ interactions:
       \nL 525 4134 \nL 525 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use
       xlink:href=\"#DejaVuSans-37\"/>\n       <use xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"117.705482\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 10.0 -->\n      <g transform=\"translate(20.878125
       121.504701) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"96.514321\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 12.5 -->\n      <g transform=\"translate(20.878125
       100.31354) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-32\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"75.32316\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_16\">\n      <!-- 15.0 -->\n      <g transform=\"translate(20.878125
       79.122379) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"54.132\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_17\">\n      <!-- 17.5 -->\n      <g transform=\"translate(20.878125
       57.931218) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-37\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"32.940839\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_18\">\n      <!-- 20.0 -->\n      <g transform=\"translate(20.878125
       36.740058) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -1266,7 +1052,7 @@ interactions:
       x=\"1203.890625\"/>\n      <use xlink:href=\"#DejaVuSans-6e\" x=\"1265.072266\"/>\n      <use
       xlink:href=\"#DejaVuSans-73\" x=\"1328.451172\"/>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"line2d_18\">\n    <path d=\"M 199.921063 202.470125 \nL 199.921063 22.318125
-      \n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
+      \n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
       stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.5\"/>\n   </g>\n   <g
       id=\"patch_19\">\n    <path d=\"M 50.14375 202.470125 \nL 50.14375 22.318125
       \n\" style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin:
@@ -1379,7 +1165,7 @@ interactions:
       x=\"639.199219\"/>\n      <use xlink:href=\"#DejaVuSans-32\" x=\"670.986328\"/>\n      <use
       xlink:href=\"#DejaVuSans-30\" x=\"734.609375\"/>\n      <use xlink:href=\"#DejaVuSans-31\"
       x=\"798.232422\"/>\n      <use xlink:href=\"#DejaVuSans-38\" x=\"861.855469\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p9eeef383e5\">\n   <rect x=\"50.14375\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p0eb6a81a8f\">\n   <rect x=\"50.14375\" y=\"22.318125\"
       width=\"232.63\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Currentness for Building
       Count</h4>\n        <p><span style=''height: 25px; width: 25px; background-color:
@@ -1413,17 +1199,17 @@ interactions:
       viewBox=\"0 0 281.0225 285.738525\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:01.103718</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:33:52.963324</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 281.0225 285.738525 \nL 281.0225 0 \nL 0 0 \nz\n\" style=\"fill:
       #ffffff\"/>\n  </g>\n  <g id=\"axes_1\">\n   <g id=\"patch_2\">\n    <path d=\"M
       46.0125 202.470125 \nL 273.8225 202.470125 \nL 273.8225 22.318125 \nL 46.0125
       22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m29c27d995e\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m06b41dc98d\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m29c27d995e\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
+      xlink:href=\"#m06b41dc98d\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
       stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(43.6425 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -1453,7 +1239,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"83.704102\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"83.704102\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(70.979102
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -1462,13 +1248,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"111.003307\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(98.278307
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"138.339909\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(125.614909
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -1478,7 +1264,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"165.639114\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"165.639114\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(152.914114
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -1493,31 +1279,31 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"192.975716\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"192.975716\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(180.250716
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"220.274921\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(207.549921
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"247.611523\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(234.886523
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"matplotlib.axis_2\">\n    <g id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path
-      id=\"m70d4b755c0\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
-      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m70d4b755c0\" x=\"46.0125\"
+      id=\"m09475ae6bd\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
+      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m09475ae6bd\" x=\"46.0125\"
       y=\"187.273159\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_9\">\n      <!-- 0 -->\n      <g transform=\"translate(32.65 191.072378)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-30\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"161.607425\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_10\">\n      <!-- 5000 -->\n      <g transform=\"translate(13.5625
       165.406643) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -1530,35 +1316,35 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"135.94169\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 10000 -->\n      <g transform=\"translate(7.2 139.740909)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"110.275955\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 15000 -->\n      <g transform=\"translate(7.2 114.075174)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"84.610221\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 20000 -->\n      <g transform=\"translate(7.2 88.40944)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"58.944486\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 25000 -->\n      <g transform=\"translate(7.2 62.743705)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"33.278752\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 30000 -->\n      <g transform=\"translate(7.2 37.07797)
       scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-33\" d=\"M
@@ -1609,7 +1395,7 @@ interactions:
       35.157483 \nL 235.121202 35.116418 \nL 236.168295 34.808429 \nL 238.449461 34.839228
       \nL 239.608742 34.346446 \nL 245.330357 34.171919 \nL 246.452242 33.535409 \nL
       249.817897 32.288054 \nL 250.977179 31.425686 \nL 254.38023 30.994501 \nL 263.4675
-      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#pfb0620331e)\" style=\"fill:
+      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#p2af789b206)\" style=\"fill:
       none; stroke: #1f77b4; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"line2d_17\">\n    <path d=\"M 56.3675 194.281398 \nL 59.770552 192.985276
       \nL 64.332885 190.973783 \nL 67.773332 189.225673 \nL 71.21378 187.247984 \nL
@@ -1624,7 +1410,7 @@ interactions:
       43.555496 \nL 191.816435 42.268552 \nL 197.463257 40.469253 \nL 203.184871 39.033448
       \nL 208.831693 37.892506 \nL 214.553307 36.988893 \nL 221.434203 36.151618 \nL
       228.240306 35.52256 \nL 237.327576 34.921788 \nL 247.611523 34.473057 \nL 261.261126
-      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#pfb0620331e)\"
+      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#p2af789b206)\"
       style=\"fill: none; stroke: #ff7f0e; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"patch_3\">\n    <path d=\"M 46.0125 202.470125 \nL 46.0125 22.318125 \n\"
       style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter;
@@ -1812,7 +1598,7 @@ interactions:
       xlink:href=\"#DejaVuSans-6f\" x=\"1486.337891\"/>\n      <use xlink:href=\"#DejaVuSans-64\"
       x=\"1547.519531\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"1610.996094\"/>\n      <use
       xlink:href=\"#DejaVuSans-6c\" x=\"1672.519531\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pfb0620331e\">\n   <rect x=\"46.0125\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p2af789b206\">\n   <rect x=\"46.0125\" y=\"22.318125\"
       width=\"227.81\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Mapping Saturation
       for Building Count</h4>\n        <p><span style=''height: 25px; width: 25px;
@@ -1826,7 +1612,7 @@ interactions:
       description:\n            <br />\n            Calculate if mapping has saturated.\nHigh
       saturation has been reached if the growth of the fitted curve is minimal.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
       block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
-      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
@@ -1847,8 +1633,8 @@ interactions:
       xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n <metadata>\n  <rdf:RDF
       xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:16.732217</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:34:02.417849</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 311.879062 285.738525 \nL 311.879062 0 \nL 0 0 \nz\n\"
@@ -1856,56 +1642,56 @@ interactions:
       d=\"M 50.14375 202.470125 \nL 282.77375 202.470125 \nL 282.77375 22.318125 \nL
       50.14375 22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"patch_3\">\n    <path
       d=\"M 60.717841 202.470125 \nL 71.425781 202.470125 \nL 71.425781 202.221402
-      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_4\">\n    <path
       d=\"M 74.102766 202.470125 \nL 84.810706 202.470125 \nL 84.810706 202.221402
-      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_5\">\n    <path
       d=\"M 87.487691 202.470125 \nL 98.195631 202.470125 \nL 98.195631 197.156507
-      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_6\">\n    <path
       d=\"M 100.872617 202.470125 \nL 111.580557 202.470125 \nL 111.580557 191.07411
-      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_7\">\n    <path
       d=\"M 114.257542 202.470125 \nL 124.965482 202.470125 \nL 124.965482 173.211309
-      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_8\">\n    <path
       d=\"M 127.642467 202.470125 \nL 138.350407 202.470125 \nL 138.350407 146.982386
-      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_9\">\n    <path
       d=\"M 141.027392 202.470125 \nL 151.735332 202.470125 \nL 151.735332 80.505634
-      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_10\">\n    <path
       d=\"M 154.412317 202.470125 \nL 165.120257 202.470125 \nL 165.120257 170.520584
-      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_11\">\n    <path
       d=\"M 167.797243 202.470125 \nL 178.505183 202.470125 \nL 178.505183 116.479958
-      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_12\">\n    <path
       d=\"M 181.182168 202.470125 \nL 191.890108 202.470125 \nL 191.890108 160.029014
-      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_13\">\n    <path
       d=\"M 194.567093 202.470125 \nL 205.275033 202.470125 \nL 205.275033 141.171323
-      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_14\">\n    <path
       d=\"M 207.952018 202.470125 \nL 218.659958 202.470125 \nL 218.659958 182.685377
-      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_15\">\n    <path
       d=\"M 221.336943 202.470125 \nL 232.044883 202.470125 \nL 232.044883 174.183588
-      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_16\">\n    <path
       d=\"M 234.721869 202.470125 \nL 245.429809 202.470125 \nL 245.429809 30.896792
-      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_17\">\n    <path
       d=\"M 248.106794 202.470125 \nL 258.814734 202.470125 \nL 258.814734 49.257038
-      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_18\">\n    <path
       d=\"M 261.491719 202.470125 \nL 272.199659 202.470125 \nL 272.199659 173.279143
-      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m6244422d7b\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"mc9914e4faa\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m6244422d7b\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mc9914e4faa\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(53.346811 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -1935,7 +1721,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"92.841661\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"92.841661\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(80.116661
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -1944,13 +1730,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"119.611512\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(106.886512
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"146.381362\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(133.656362
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -1960,7 +1746,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"173.151213\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"173.151213\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(160.426213
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -1975,19 +1761,19 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"199.921063\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"199.921063\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(187.196063
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"226.690913\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(213.965913
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"253.460764\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(240.735764
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -2019,16 +1805,16 @@ interactions:
       xlink:href=\"#DejaVuSans-59\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"47.833984\"/>\n      <use
       xlink:href=\"#DejaVuSans-61\" x=\"109.357422\"/>\n      <use xlink:href=\"#DejaVuSans-72\"
       x=\"170.636719\"/>\n     </g>\n    </g>\n   </g>\n   <g id=\"matplotlib.axis_2\">\n    <g
-      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"m8a3882d0f3\"
+      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"mdc1eb32d79\"
       d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m8a3882d0f3\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mdc1eb32d79\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_10\">\n      <!--
       0.0 -->\n      <g transform=\"translate(27.240625 206.269344) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-2e\" d=\"M 684 794 \nL 1344 794 \nL 1344 0 \nL 684 0 \nL 684
       794 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-30\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_2\">\n     <g
-      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"181.278964\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 2.5 -->\n      <g transform=\"translate(27.240625
       185.078183) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -2041,13 +1827,13 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-35\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_3\">\n     <g
-      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"160.087803\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 5.0 -->\n      <g transform=\"translate(27.240625
       163.887022) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_4\">\n     <g
-      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"138.896643\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 7.5 -->\n      <g transform=\"translate(27.240625
       142.695861) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-37\"
@@ -2055,31 +1841,31 @@ interactions:
       \nL 525 4134 \nL 525 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use
       xlink:href=\"#DejaVuSans-37\"/>\n       <use xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"117.705482\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 10.0 -->\n      <g transform=\"translate(20.878125
       121.504701) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"96.514321\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 12.5 -->\n      <g transform=\"translate(20.878125
       100.31354) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-32\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"75.32316\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_16\">\n      <!-- 15.0 -->\n      <g transform=\"translate(20.878125
       79.122379) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"54.132\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_17\">\n      <!-- 17.5 -->\n      <g transform=\"translate(20.878125
       57.931218) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-37\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"32.940839\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_18\">\n      <!-- 20.0 -->\n      <g transform=\"translate(20.878125
       36.740058) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -2169,7 +1955,7 @@ interactions:
       x=\"1203.890625\"/>\n      <use xlink:href=\"#DejaVuSans-6e\" x=\"1265.072266\"/>\n      <use
       xlink:href=\"#DejaVuSans-73\" x=\"1328.451172\"/>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"line2d_18\">\n    <path d=\"M 199.921063 202.470125 \nL 199.921063 22.318125
-      \n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
+      \n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
       stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.5\"/>\n   </g>\n   <g
       id=\"patch_19\">\n    <path d=\"M 50.14375 202.470125 \nL 50.14375 22.318125
       \n\" style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin:
@@ -2282,7 +2068,7 @@ interactions:
       x=\"639.199219\"/>\n      <use xlink:href=\"#DejaVuSans-32\" x=\"670.986328\"/>\n      <use
       xlink:href=\"#DejaVuSans-30\" x=\"734.609375\"/>\n      <use xlink:href=\"#DejaVuSans-31\"
       x=\"798.232422\"/>\n      <use xlink:href=\"#DejaVuSans-38\" x=\"861.855469\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p9eeef383e5\">\n   <rect x=\"50.14375\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p0eb6a81a8f\">\n   <rect x=\"50.14375\" y=\"22.318125\"
       width=\"232.63\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n</div>\n    <div
       class=\"descriptionSection indicator-text\">\n        <h4>Currentness for Building
       Count</h4>\n        <p><span style=''height: 25px; width: 25px; background-color:
@@ -2302,7 +2088,7 @@ interactions:
       mapping activities in the same\ntime range. \nRefers to data quality in respect
       to currentness.\n\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
       block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
-      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
       "class": 2}}]}}'
     headers:
@@ -2312,31 +2098,6 @@ interactions:
       - application/geo+json
     http_version: HTTP/1.1
     status_code: 200
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["query","feature_id"],"msg":"field
-      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '149'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
 - request:
     body: '{"name": "minimal", "dataset": "regions"}'
     headers:
@@ -2364,32 +2125,6 @@ interactions:
     headers:
       content-length:
       - '315'
-      content-type:
-      - application/json
-    http_version: HTTP/1.1
-    status_code: 422
-- request:
-    body: ''
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      host:
-      - testserver
-      user-agent:
-      - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&feature-id=3
-  response:
-    content: '{"apiVersion":"0.14.1","detail":[{"loc":["query","dataset"],"msg":"field
-      required","type":"value_error.missing"},{"loc":["query","feature_id"],"msg":"field
-      required","type":"value_error.missing"}],"type":"RequestValidationError"}'
-    headers:
-      content-length:
-      - '229'
       content-type:
       - application/json
     http_version: HTTP/1.1
@@ -2426,7 +2161,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 422
 - request:
-    body: ''
+    body: '{"name": "minimal", "dataset": "regions", "feature_id": "3", "flatten":
+      false}'
     headers:
       accept:
       - '*/*'
@@ -2434,12 +2170,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '78'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3&flatten=False
+    method: POST
+    uri: http://testserver/report
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -2475,7 +2215,7 @@ interactions:
       {"key": "building_count", "name": "Building Count", "description": "All buildings
       as defined by all objects tagged with ''building=*''.\n"}, "result": {"description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      (97% < Saturation \u2264 100%).\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-01T00:00:00+00:00", "value": 0.9879120426001269, "label":
       "green", "class": 5}}, {"metadata": {"name": "Currentness", "description": "Ratio
       of all contributions that have been edited since 2008 until the current day
@@ -2488,7 +2228,7 @@ interactions:
       40.33 % were last edited at least 8 years ago.\nThe median currentness of the
       37488 features (Building Count) is 5 year(s).\nNote that only contributions
       up to 2023-03-10 are taken into account.\nIt is likely that some features are
-      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      up-to-date and some features are outdated.\n", "timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 5.0, "label": "yellow",
       "class": 2}}]}}'
     headers:
@@ -2499,7 +2239,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "dataset": "regions", "feature_id": "3", "flatten":
+      true}'
     headers:
       accept:
       - '*/*'
@@ -2507,12 +2248,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '77'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3&flatten=True
+    method: POST
+    uri: http://testserver/report
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -2549,7 +2294,7 @@ interactions:
       "indicators.0.layer.name": "Building Count", "indicators.0.layer.description":
       "All buildings as defined by all objects tagged with ''building=*''.\n", "indicators.0.result.description":
       "The saturation of the last 3 years is 98.79%.\nHigh saturation has been reached
-      (97% < Saturation \u2264 100%).\n", "indicators.0.result.timestamp_oqt": "2023-03-21T13:32:38.824887+00:00",
+      (97% < Saturation \u2264 100%).\n", "indicators.0.result.timestamp_oqt": "2023-03-22T12:33:24.852481+00:00",
       "indicators.0.result.timestamp_osm": "2023-03-01T00:00:00+00:00", "indicators.0.result.value":
       0.9879120426001269, "indicators.0.result.label": "green", "indicators.0.result.class":
       5, "indicators.1.metadata.name": "Currentness", "indicators.1.metadata.description":
@@ -2564,7 +2309,7 @@ interactions:
       currentness of the 37488 features (Building Count) is 5 year(s).\nNote that
       only contributions up to 2023-03-10 are taken into account.\nIt is likely that
       some features are up-to-date and some features are outdated.\n", "indicators.1.result.timestamp_oqt":
-      "2023-03-21T13:32:38.824887+00:00", "indicators.1.result.timestamp_osm": "2023-03-10T15:00:00+00:00",
+      "2023-03-22T12:33:24.852481+00:00", "indicators.1.result.timestamp_osm": "2023-03-10T15:00:00+00:00",
       "indicators.1.result.value": 5.0, "indicators.1.result.label": "yellow", "indicators.1.result.class":
       2}}'
     headers:
@@ -2575,7 +2320,8 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: ''
+    body: '{"name": "minimal", "dataset": "regions", "feature_id": "3", "include-svg":
+      true}'
     headers:
       accept:
       - '*/*'
@@ -2583,12 +2329,16 @@ interactions:
       - gzip, deflate
       connection:
       - keep-alive
+      content-length:
+      - '81'
+      content-type:
+      - application/json
       host:
       - testserver
       user-agent:
       - testclient
-    method: GET
-    uri: http://testserver/report?name=minimal&dataset=regions&feature_id=3&fid_field=ogc_fid&include_svg=True
+    method: POST
+    uri: http://testserver/report
   response:
     content: '{"apiVersion": "0.14.1", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
@@ -2630,17 +2380,17 @@ interactions:
       viewBox=\"0 0 281.0225 285.738525\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:01.103718</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:33:52.963324</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 281.0225 285.738525 \nL 281.0225 0 \nL 0 0 \nz\n\" style=\"fill:
       #ffffff\"/>\n  </g>\n  <g id=\"axes_1\">\n   <g id=\"patch_2\">\n    <path d=\"M
       46.0125 202.470125 \nL 273.8225 202.470125 \nL 273.8225 22.318125 \nL 46.0125
       22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m29c27d995e\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m06b41dc98d\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m29c27d995e\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
+      xlink:href=\"#m06b41dc98d\" x=\"56.3675\" y=\"202.470125\" style=\"stroke: #000000;
       stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(43.6425 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -2670,7 +2420,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"83.704102\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"83.704102\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(70.979102
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -2679,13 +2429,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"111.003307\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(98.278307
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"138.339909\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(125.614909
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -2695,7 +2445,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"165.639114\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"165.639114\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(152.914114
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -2710,31 +2460,31 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\" x=\"192.975716\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\" x=\"192.975716\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(180.250716
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"220.274921\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(207.549921
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m29c27d995e\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m06b41dc98d\"
       x=\"247.611523\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(234.886523
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"matplotlib.axis_2\">\n    <g id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path
-      id=\"m70d4b755c0\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
-      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m70d4b755c0\" x=\"46.0125\"
+      id=\"m09475ae6bd\" d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width:
+      0.8\"/>\n      </defs>\n      <g>\n       <use xlink:href=\"#m09475ae6bd\" x=\"46.0125\"
       y=\"187.273159\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_9\">\n      <!-- 0 -->\n      <g transform=\"translate(32.65 191.072378)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-30\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_2\">\n     <g id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"161.607425\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_10\">\n      <!-- 5000 -->\n      <g transform=\"translate(13.5625
       165.406643) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -2747,35 +2497,35 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_3\">\n     <g id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"135.94169\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 10000 -->\n      <g transform=\"translate(7.2 139.740909)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_4\">\n     <g id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"110.275955\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 15000 -->\n      <g transform=\"translate(7.2 114.075174)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"84.610221\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 20000 -->\n      <g transform=\"translate(7.2 88.40944)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"58.944486\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 25000 -->\n      <g transform=\"translate(7.2 62.743705)
       scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"254.492188\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m70d4b755c0\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m09475ae6bd\"
       x=\"46.0125\" y=\"33.278752\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 30000 -->\n      <g transform=\"translate(7.2 37.07797)
       scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-33\" d=\"M
@@ -2826,7 +2576,7 @@ interactions:
       35.157483 \nL 235.121202 35.116418 \nL 236.168295 34.808429 \nL 238.449461 34.839228
       \nL 239.608742 34.346446 \nL 245.330357 34.171919 \nL 246.452242 33.535409 \nL
       249.817897 32.288054 \nL 250.977179 31.425686 \nL 254.38023 30.994501 \nL 263.4675
-      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#pfb0620331e)\" style=\"fill:
+      30.506852 \nL 263.4675 30.506852 \n\" clip-path=\"url(#p2af789b206)\" style=\"fill:
       none; stroke: #1f77b4; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"line2d_17\">\n    <path d=\"M 56.3675 194.281398 \nL 59.770552 192.985276
       \nL 64.332885 190.973783 \nL 67.773332 189.225673 \nL 71.21378 187.247984 \nL
@@ -2841,7 +2591,7 @@ interactions:
       43.555496 \nL 191.816435 42.268552 \nL 197.463257 40.469253 \nL 203.184871 39.033448
       \nL 208.831693 37.892506 \nL 214.553307 36.988893 \nL 221.434203 36.151618 \nL
       228.240306 35.52256 \nL 237.327576 34.921788 \nL 247.611523 34.473057 \nL 261.261126
-      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#pfb0620331e)\"
+      34.111851 \nL 263.4675 34.069661 \nL 263.4675 34.069661 \n\" clip-path=\"url(#p2af789b206)\"
       style=\"fill: none; stroke: #ff7f0e; stroke-width: 1.5; stroke-linecap: square\"/>\n   </g>\n   <g
       id=\"patch_3\">\n    <path d=\"M 46.0125 202.470125 \nL 46.0125 22.318125 \n\"
       style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter;
@@ -3029,9 +2779,9 @@ interactions:
       xlink:href=\"#DejaVuSans-6f\" x=\"1486.337891\"/>\n      <use xlink:href=\"#DejaVuSans-64\"
       x=\"1547.519531\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"1610.996094\"/>\n      <use
       xlink:href=\"#DejaVuSans-6c\" x=\"1672.519531\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"pfb0620331e\">\n   <rect x=\"46.0125\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p2af789b206\">\n   <rect x=\"46.0125\" y=\"22.318125\"
       width=\"227.81\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
-      "2023-03-21T13:32:38.824887+00:00", "timestamp_osm": "2023-03-01T00:00:00+00:00",
+      "2023-03-22T12:33:24.852481+00:00", "timestamp_osm": "2023-03-01T00:00:00+00:00",
       "value": 0.9879120426001269, "label": "green", "class": 5}}, {"metadata": {"name":
       "Currentness", "description": "Ratio of all contributions that have been edited
       since 2008 until the current day in relation with years without mapping activities
@@ -3050,8 +2800,8 @@ interactions:
       viewBox=\"0 0 311.879062 285.738525\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n
       <metadata>\n  <rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\"
       xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n   <cc:Work>\n    <dc:type
-      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-21T14:33:16.732217</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
-      v3.7.1, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
+      rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\"/>\n    <dc:date>2023-03-22T13:34:02.417849</dc:date>\n    <dc:format>image/svg+xml</dc:format>\n    <dc:creator>\n     <cc:Agent>\n      <dc:title>Matplotlib
+      v3.7.0, https://matplotlib.org/</dc:title>\n     </cc:Agent>\n    </dc:creator>\n   </cc:Work>\n  </rdf:RDF>\n
       </metadata>\n <defs>\n  <style type=\"text/css\">*{stroke-linejoin: round; stroke-linecap:
       butt}</style>\n </defs>\n <g id=\"figure_1\">\n  <g id=\"patch_1\">\n   <path
       d=\"M 0 285.738525 \nL 311.879062 285.738525 \nL 311.879062 0 \nL 0 0 \nz\n\"
@@ -3059,56 +2809,56 @@ interactions:
       d=\"M 50.14375 202.470125 \nL 282.77375 202.470125 \nL 282.77375 22.318125 \nL
       50.14375 22.318125 \nz\n\" style=\"fill: #ffffff\"/>\n   </g>\n   <g id=\"patch_3\">\n    <path
       d=\"M 60.717841 202.470125 \nL 71.425781 202.470125 \nL 71.425781 202.221402
-      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 60.717841 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_4\">\n    <path
       d=\"M 74.102766 202.470125 \nL 84.810706 202.470125 \nL 84.810706 202.221402
-      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 74.102766 202.221402 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_5\">\n    <path
       d=\"M 87.487691 202.470125 \nL 98.195631 202.470125 \nL 98.195631 197.156507
-      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 87.487691 197.156507 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_6\">\n    <path
       d=\"M 100.872617 202.470125 \nL 111.580557 202.470125 \nL 111.580557 191.07411
-      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 100.872617 191.07411 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_7\">\n    <path
       d=\"M 114.257542 202.470125 \nL 124.965482 202.470125 \nL 124.965482 173.211309
-      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 114.257542 173.211309 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_8\">\n    <path
       d=\"M 127.642467 202.470125 \nL 138.350407 202.470125 \nL 138.350407 146.982386
-      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 127.642467 146.982386 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_9\">\n    <path
       d=\"M 141.027392 202.470125 \nL 151.735332 202.470125 \nL 151.735332 80.505634
-      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 141.027392 80.505634 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_10\">\n    <path
       d=\"M 154.412317 202.470125 \nL 165.120257 202.470125 \nL 165.120257 170.520584
-      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 154.412317 170.520584 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ff0000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_11\">\n    <path
       d=\"M 167.797243 202.470125 \nL 178.505183 202.470125 \nL 178.505183 116.479958
-      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 167.797243 116.479958 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_12\">\n    <path
       d=\"M 181.182168 202.470125 \nL 191.890108 202.470125 \nL 191.890108 160.029014
-      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 181.182168 160.029014 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_13\">\n    <path
       d=\"M 194.567093 202.470125 \nL 205.275033 202.470125 \nL 205.275033 141.171323
-      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 194.567093 141.171323 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_14\">\n    <path
       d=\"M 207.952018 202.470125 \nL 218.659958 202.470125 \nL 218.659958 182.685377
-      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 207.952018 182.685377 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_15\">\n    <path
       d=\"M 221.336943 202.470125 \nL 232.044883 202.470125 \nL 232.044883 174.183588
-      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 221.336943 174.183588 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #ffff00; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_16\">\n    <path
       d=\"M 234.721869 202.470125 \nL 245.429809 202.470125 \nL 245.429809 30.896792
-      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 234.721869 30.896792 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_17\">\n    <path
       d=\"M 248.106794 202.470125 \nL 258.814734 202.470125 \nL 258.814734 49.257038
-      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 248.106794 49.257038 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"patch_18\">\n    <path
       d=\"M 261.491719 202.470125 \nL 272.199659 202.470125 \nL 272.199659 173.279143
-      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill:
+      \nL 261.491719 173.279143 \nz\n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill:
       #008000; stroke: #000000; stroke-linejoin: miter\"/>\n   </g>\n   <g id=\"matplotlib.axis_1\">\n    <g
-      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"m6244422d7b\"
+      id=\"xtick_1\">\n     <g id=\"line2d_1\">\n      <defs>\n       <path id=\"mc9914e4faa\"
       d=\"M 0 0 \nL 0 3.5 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m6244422d7b\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mc9914e4faa\" x=\"66.071811\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_1\">\n      <!--
       2008 -->\n      <g transform=\"translate(53.346811 217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-32\" d=\"M 1228 531 \nL 3431 531 \nL 3431 0 \nL 469 0 \nL 469
@@ -3138,7 +2888,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_2\">\n     <g
-      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"92.841661\"
+      id=\"line2d_2\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"92.841661\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_2\">\n      <!-- 2010 -->\n      <g transform=\"translate(80.116661
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-31\"
@@ -3147,13 +2897,13 @@ interactions:
       \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_3\">\n     <g id=\"line2d_3\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"119.611512\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_3\">\n      <!-- 2012 -->\n      <g transform=\"translate(106.886512
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-32\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_4\">\n     <g id=\"line2d_4\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"146.381362\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_4\">\n      <!-- 2014 -->\n      <g transform=\"translate(133.656362
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-34\"
@@ -3163,7 +2913,7 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-34\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_5\">\n     <g
-      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"173.151213\"
+      id=\"line2d_5\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"173.151213\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_5\">\n      <!-- 2016 -->\n      <g transform=\"translate(160.426213
       217.068562) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-36\"
@@ -3178,19 +2928,19 @@ interactions:
       xlink:href=\"#DejaVuSans-32\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-31\" x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-36\"
       x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"xtick_6\">\n     <g
-      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\" x=\"199.921063\"
+      id=\"line2d_6\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\" x=\"199.921063\"
       y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_6\">\n      <!-- 2018 -->\n      <g transform=\"translate(187.196063
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-31\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-38\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_7\">\n     <g id=\"line2d_7\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"226.690913\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_7\">\n      <!-- 2020 -->\n      <g transform=\"translate(213.965913
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-32\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"190.869141\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#m6244422d7b\"
+      id=\"xtick_8\">\n     <g id=\"line2d_8\">\n      <g>\n       <use xlink:href=\"#mc9914e4faa\"
       x=\"253.460764\" y=\"202.470125\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_8\">\n      <!-- 2022 -->\n      <g transform=\"translate(240.735764
       217.068562) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -3222,16 +2972,16 @@ interactions:
       xlink:href=\"#DejaVuSans-59\"/>\n      <use xlink:href=\"#DejaVuSans-65\" x=\"47.833984\"/>\n      <use
       xlink:href=\"#DejaVuSans-61\" x=\"109.357422\"/>\n      <use xlink:href=\"#DejaVuSans-72\"
       x=\"170.636719\"/>\n     </g>\n    </g>\n   </g>\n   <g id=\"matplotlib.axis_2\">\n    <g
-      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"m8a3882d0f3\"
+      id=\"ytick_1\">\n     <g id=\"line2d_9\">\n      <defs>\n       <path id=\"mdc1eb32d79\"
       d=\"M 0 0 \nL -3.5 0 \n\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </defs>\n      <g>\n       <use
-      xlink:href=\"#m8a3882d0f3\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
+      xlink:href=\"#mdc1eb32d79\" x=\"50.14375\" y=\"202.470125\" style=\"stroke:
       #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g id=\"text_10\">\n      <!--
       0.0 -->\n      <g transform=\"translate(27.240625 206.269344) scale(0.1 -0.1)\">\n       <defs>\n        <path
       id=\"DejaVuSans-2e\" d=\"M 684 794 \nL 1344 794 \nL 1344 0 \nL 684 0 \nL 684
       794 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-30\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_2\">\n     <g
-      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_10\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"181.278964\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_11\">\n      <!-- 2.5 -->\n      <g transform=\"translate(27.240625
       185.078183) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-35\"
@@ -3244,13 +2994,13 @@ interactions:
       transform=\"scale(0.015625)\"/>\n       </defs>\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-35\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_3\">\n     <g
-      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_11\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"160.087803\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_12\">\n      <!-- 5.0 -->\n      <g transform=\"translate(27.240625
       163.887022) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-35\"/>\n       <use
       xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-30\"
       x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g id=\"ytick_4\">\n     <g
-      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\" x=\"50.14375\"
+      id=\"line2d_12\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\" x=\"50.14375\"
       y=\"138.896643\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_13\">\n      <!-- 7.5 -->\n      <g transform=\"translate(27.240625
       142.695861) scale(0.1 -0.1)\">\n       <defs>\n        <path id=\"DejaVuSans-37\"
@@ -3258,31 +3008,31 @@ interactions:
       \nL 525 4134 \nL 525 4666 \nz\n\" transform=\"scale(0.015625)\"/>\n       </defs>\n       <use
       xlink:href=\"#DejaVuSans-37\"/>\n       <use xlink:href=\"#DejaVuSans-2e\" x=\"63.623047\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"95.410156\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_5\">\n     <g id=\"line2d_13\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"117.705482\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_14\">\n      <!-- 10.0 -->\n      <g transform=\"translate(20.878125
       121.504701) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-30\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_6\">\n     <g id=\"line2d_14\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"96.514321\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_15\">\n      <!-- 12.5 -->\n      <g transform=\"translate(20.878125
       100.31354) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-32\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_7\">\n     <g id=\"line2d_15\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"75.32316\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_16\">\n      <!-- 15.0 -->\n      <g transform=\"translate(20.878125
       79.122379) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-35\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-30\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_8\">\n     <g id=\"line2d_16\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"54.132\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_17\">\n      <!-- 17.5 -->\n      <g transform=\"translate(20.878125
       57.931218) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-31\"/>\n       <use
       xlink:href=\"#DejaVuSans-37\" x=\"63.623047\"/>\n       <use xlink:href=\"#DejaVuSans-2e\"
       x=\"127.246094\"/>\n       <use xlink:href=\"#DejaVuSans-35\" x=\"159.033203\"/>\n      </g>\n     </g>\n    </g>\n    <g
-      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#m8a3882d0f3\"
+      id=\"ytick_9\">\n     <g id=\"line2d_17\">\n      <g>\n       <use xlink:href=\"#mdc1eb32d79\"
       x=\"50.14375\" y=\"32.940839\" style=\"stroke: #000000; stroke-width: 0.8\"/>\n      </g>\n     </g>\n     <g
       id=\"text_18\">\n      <!-- 20.0 -->\n      <g transform=\"translate(20.878125
       36.740058) scale(0.1 -0.1)\">\n       <use xlink:href=\"#DejaVuSans-32\"/>\n       <use
@@ -3372,7 +3122,7 @@ interactions:
       x=\"1203.890625\"/>\n      <use xlink:href=\"#DejaVuSans-6e\" x=\"1265.072266\"/>\n      <use
       xlink:href=\"#DejaVuSans-73\" x=\"1328.451172\"/>\n     </g>\n    </g>\n   </g>\n   <g
       id=\"line2d_18\">\n    <path d=\"M 199.921063 202.470125 \nL 199.921063 22.318125
-      \n\" clip-path=\"url(#p9eeef383e5)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
+      \n\" clip-path=\"url(#p0eb6a81a8f)\" style=\"fill: none; stroke-dasharray: 1.5,2.475;
       stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.5\"/>\n   </g>\n   <g
       id=\"patch_19\">\n    <path d=\"M 50.14375 202.470125 \nL 50.14375 22.318125
       \n\" style=\"fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin:
@@ -3485,9 +3235,9 @@ interactions:
       x=\"639.199219\"/>\n      <use xlink:href=\"#DejaVuSans-32\" x=\"670.986328\"/>\n      <use
       xlink:href=\"#DejaVuSans-30\" x=\"734.609375\"/>\n      <use xlink:href=\"#DejaVuSans-31\"
       x=\"798.232422\"/>\n      <use xlink:href=\"#DejaVuSans-38\" x=\"861.855469\"/>\n     </g>\n    </g>\n   </g>\n  </g>\n
-      </g>\n <defs>\n  <clipPath id=\"p9eeef383e5\">\n   <rect x=\"50.14375\" y=\"22.318125\"
+      </g>\n <defs>\n  <clipPath id=\"p0eb6a81a8f\">\n   <rect x=\"50.14375\" y=\"22.318125\"
       width=\"232.63\" height=\"180.152\"/>\n  </clipPath>\n </defs>\n</svg>\n", "timestamp_oqt":
-      "2023-03-21T13:32:38.824887+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
+      "2023-03-22T12:33:24.852481+00:00", "timestamp_osm": "2023-03-10T15:00:00+00:00",
       "value": 5.0, "label": "yellow", "class": 2}}]}}'
     headers:
       content-length:

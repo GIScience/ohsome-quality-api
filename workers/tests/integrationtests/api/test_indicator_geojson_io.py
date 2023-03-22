@@ -11,14 +11,13 @@ from fastapi.testclient import TestClient
 from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
-from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
-
-from .api_response_schema import (
+from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
     get_indicator_feature_schema,
 )
-from .utils import get_geojson_fixture, oqt_vcr
+from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
+from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 
 
 class TestApiIndicatorIo(unittest.TestCase):
@@ -86,6 +85,7 @@ class TestApiIndicatorIo(unittest.TestCase):
     def test_invalid_set_of_arguments(self):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
+            "..",
             "fixtures",
             "heidelberg-altstadt-feature.geojson",
         )
@@ -186,7 +186,8 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
-                "name": "foo",
+                "key": "foo",
+                "name": "bar",
                 "description": "",
                 "data": {
                     "result": [
@@ -204,7 +205,8 @@ class TestApiIndicatorIo(unittest.TestCase):
             "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
-                "name": "foo",
+                "key": "foo",
+                "name": "bar",
                 "description": "",
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },
