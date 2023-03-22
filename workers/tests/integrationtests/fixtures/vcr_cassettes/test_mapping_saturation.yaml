@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -225,7 +225,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 12:40:58 GMT
+      - Mon, 20 Mar 2023 14:37:12 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -254,7 +254,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -464,7 +464,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 12:41:09 GMT
+      - Mon, 20 Mar 2023 14:37:22 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -493,7 +493,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -703,7 +703,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 12:41:20 GMT
+      - Mon, 20 Mar 2023 14:37:30 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -732,7 +732,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -942,7 +942,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 22 Mar 2023 12:41:30 GMT
+      - Mon, 20 Mar 2023 14:37:39 GMT
       keep-alive:
       - timeout=5, max=100
       server:
