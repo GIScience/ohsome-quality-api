@@ -14,7 +14,7 @@ class BuildingReport(BaseReport):
             indicator_layer=(
                 IndicatorLayer("mapping-saturation", "building_count"),
                 IndicatorLayer("currentness", "building_count"),
-                IndicatorLayer("tags-ratio", "building_count"),
+                IndicatorLayer("attribute-completeness", "building_count"),
                 IndicatorLayer("building-completeness", "building_area"),
             ),
             feature=feature,

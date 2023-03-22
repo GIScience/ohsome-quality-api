@@ -1,6 +1,6 @@
 ---
-tags-ratio:
-  name: Tags Ratio
+attribute-completeness:
+  name: Attribute Completeness
   description: |
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs

@@ -78,7 +78,7 @@ class TestDefinitions(unittest.TestCase):
             (
                 "mapping-saturation",
                 "currentness",
-                "tags-ratio",
+                "attribute-completeness",
             ),
         )
 

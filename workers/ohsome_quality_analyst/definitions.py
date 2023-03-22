@@ -153,9 +153,9 @@ INDICATOR_LAYER = (
     ("currentness", "clc_water_area"),
     ("currentness", "clc_waterway_len"),
     ("poi-density", "poi"),
-    ("tags-ratio", "building_count"),
-    ("tags-ratio", "major_roads_length"),
-    ("tags-ratio", "clc_leaf_type"),
+    ("attribute-completeness", "building_count"),
+    ("attribute-completeness", "major_roads_length"),
+    ("attribute-completeness", "clc_leaf_type"),
     ("minimal", "minimal"),
 )
 
