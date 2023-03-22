@@ -17,8 +17,8 @@ from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.config import configure_logging, get_config_value
 from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    load_topic_definitions,
     load_metadata,
+    load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson

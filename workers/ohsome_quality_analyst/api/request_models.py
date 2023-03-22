@@ -20,8 +20,8 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
-    get_topic_keys,
     get_report_names,
+    get_topic_keys,
 )
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
 
