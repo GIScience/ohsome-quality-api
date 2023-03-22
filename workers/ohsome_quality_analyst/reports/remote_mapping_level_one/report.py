@@ -10,8 +10,6 @@ class RemoteMappingLevelOne(BaseReport):
                 # IndicatorLayer("GufComparison"], "building_area"),
                 IndicatorLayer("MappingSaturation", "building_count"),
                 IndicatorLayer("MappingSaturation", "major_roads_length"),
-                IndicatorLayer("GhsPopComparisonRoads", "major_roads_length"),
-                IndicatorLayer("GhsPopComparisonBuildings", "building_count"),
                 IndicatorLayer("Currentness", "building_count"),
                 IndicatorLayer("Currentness", "major_roads_count"),
             )

@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -24,33 +24,33 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
       \   \"value\" : 30646.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 13:56:12 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:06:35 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding

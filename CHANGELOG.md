@@ -2,11 +2,73 @@
 
 ## Current Main
 
+<<<<<<< HEAD
 ### Other Changes
 
 - Currentness indicator no longer takes deletions into account ([#459])
 
 [#459]: https://github.com/GIScience/ohsome-quality-analyst/pull/459
+=======
+### Breaking Changes
+
+- change API parameter names for POST requests from snake case to lower hyphen ([#398])
+- change indicator and report keys from lower camel case to lower hyphen ([#398])
+- rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
+- remove JRC related layers and report `jrc_requirements` ([#503])
+
+### Bug Fixes
+
+- mapping-saturation: add missing edge case detection for too few data points. ([#512])
+
+### New Features
+
+- disable size limit for Mapping Saturation ([#498])
+- add `project` attribute to topics ([#504])
+
+### Other Changes
+
+- fix pre-commit hooks ([#482])
+- update asyncpg from 0.25 to 0.27 ([#481])
+- refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
+- overhaul docker compose setup ([#483])
+- build(deps): update FastAPI to version 0.92.0 ([#488])
+
+### How to Upgrade
+
+- rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
+- rename API parameters for POST requests from camel case to lower hyphen ([#398])
+- rename API parameter `layerKey` and `layer` to `topic` ([#501])
+
+| old API parameter | new API parameter |
+| ---               | ---               |
+| `layerKey`        | `topic`           |
+| `includeSvg`      | `include-svg`     |
+| `includeHtml`     | `include-html`    |
+| `featureId`       | `feature-id`      |
+| `fidField`        | `indicators`      |
+
+[#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
+[#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
+[#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
+[#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
+[#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
+[#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
+[#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
+[#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
+[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
+[#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
+[#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
+[#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
+
+## 0.14.1
+
+### Bug Fixes
+
+- mapping-saturation: allow result value above 100% ([#479])
+
+[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
+>>>>>>> main
 
 ## 0.14.0
 

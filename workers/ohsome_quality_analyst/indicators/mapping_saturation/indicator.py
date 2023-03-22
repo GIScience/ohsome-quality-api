@@ -1,7 +1,7 @@
 import logging
 from io import StringIO
 from string import Template
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,12 +49,13 @@ class MappingSaturation(BaseIndicator):
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
-        self.latest_value: Union[None, int, float] = None
         self.timestamps: list = []
 
         self.upper_threshold = 0.97  # Threshold derived from Gröchenig et al.
         # TODO: What is a good lower threshold?
         self.lower_threshold = 0.30
+        self.above_one_lower_threshold = 1.3
+        self.above_one_upper_threshold = 1.5
 
         # Attributes needed for result determination
         self.best_fit: Optional[models.BaseStatModel] = None
@@ -69,7 +70,6 @@ class MappingSaturation(BaseIndicator):
         for item in query_results["result"]:
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
-        self.latest_value = self.values[-1]
 
     def calculate(self) -> None:
         # Latest timestamp of ohsome API results
@@ -124,6 +124,16 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.lower_threshold >= self.result.value > 0:
             self.result.class_ = 1
+        elif self.above_one_lower_threshold >= self.result.value > 1:
+            self.result.class_ = 5
+        elif (
+            self.above_one_upper_threshold
+            >= self.result.value
+            > self.above_one_lower_threshold
+        ):
+            self.result.class_ = 3
+        elif self.result.value > self.above_one_upper_threshold:
+            self.result.class_ = 1
         else:
             raise ValueError(
                 "Result value (saturation) is an unexpected value: {}".format(
@@ -165,22 +175,23 @@ class MappingSaturation(BaseIndicator):
         plt.close("all")
 
     def check_edge_cases(self) -> str:
-        """Check edge cases
+        """Check edge cases.
 
         Returns
             str: Returns description of edge case. Empty string if no edge is present.
         """
-        # TODO: Add check for the case where the history is to short
-        # no data
-        if max(self.values) == 0:
+        if max(self.values) == 0:  # no data
             return "No features were mapped in this region."
-        # TODO: Decide on how many features have to be present to run models.
-        # Values can be a count of features (building )or length of features (streets)
-        # not enough data
-        elif np.sum(self.values) < 10:
-            return "Not enough data in this regions available."
-        # deleted data
-        elif self.latest_value == 0:
+        # TODO: Decide on the minimal number/length/area of features have to be present
+        # to run models (#511).
+        elif np.sum(self.values) < 10:  # not enough data
+            return "Not enough data in total available in this region."
+        elif len(self.values) < 36:  # not enough data points
+            return (
+                "Not enough data points available in this regions. "
+                + "The Mapping Saturation indicator needs data for at least 36 months."
+            )
+        elif self.values[-1] == 0:  # data deleted
             return "All mapped features in this region have been deleted."
         return ""
 

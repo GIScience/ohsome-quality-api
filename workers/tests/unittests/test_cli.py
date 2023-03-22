@@ -91,7 +91,7 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "Minimal",
+                "minimal",
             ],
             input="Y\n",
         )
@@ -103,7 +103,7 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
             ],

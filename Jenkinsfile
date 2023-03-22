@@ -33,7 +33,7 @@ pipeline {
 
     WORK_DIR = '/opt/oqt'
     MODULE_DIR = 'workers'
-    DATABASE_DIR = 'database'
+    DATABASE_DIR = 'database/development'
     POSTGRES_HOST = 'oqt-database'
     POSTGRES_PORT = 5432
   }
@@ -57,7 +57,7 @@ pipeline {
           }
         }
         script {
-          DATABASE = docker.build("oqt-database", "-f ${DATABASE_DIR}/Dockerfile.development ${DATABASE_DIR}")
+          DATABASE = docker.build("oqt-database", "-f ${DATABASE_DIR}/Dockerfile ${DATABASE_DIR}")
           WORKERS = docker.build("oqt-workers", "${MODULE_DIR}")
           WORKERS_CI = docker.build("oqt-workers-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
         }

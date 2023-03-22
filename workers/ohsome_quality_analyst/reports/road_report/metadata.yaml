@@ -1,9 +1,9 @@
 ---
-RoadReport:
+road-report:
   name: Road Report
   description: |
     This report gives a general overview of the quality for roads.
-  label_description:
+  label-description:
     red: |
       The report indicates low quality of the underlying OSM data.
       Probably many roads are not yet mapped.

@@ -1,10 +1,10 @@
 ---
-BuildingCompleteness:
+building-completeness:
   name: Building Completeness
   description: |
     Weighted average of the ratio between predicted building area and the actual building area in OSM.
     This can give an estimate if mapping has been completed.
-  label_description:
+  label-description:
     red: |
       The building area mapped in OSM is significantly less than predicted.
       This indicates that the vast majority of buildings have not been mapped yet.
@@ -17,7 +17,7 @@ BuildingCompleteness:
       (Weighted averages above 100% are due to uncertainties in the ML model).
     undefined: |
       The quality level could not be calculated for this indicator.
-  result_description: |
+  result-description: |
     For the AOI the building area mapped in OSM is $building_area_osm sqkm and
     the predicted building area is $building_area_prediction sqkm. The weighted
     average of the ratios per hex-cell between the building area mapped in OSM and the

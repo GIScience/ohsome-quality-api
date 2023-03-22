@@ -67,7 +67,12 @@ async def _(
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
-        if size_restriction and isinstance(parameters, IndicatorBpolys):
+        # Disable size limit for the Mapping Saturation indicator
+        if (
+            size_restriction
+            and isinstance(parameters, IndicatorBpolys)
+            and parameters.name.value != "MappingSaturation"
+        ):
             await check_area_size(feature.geometry)
         tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
     indicators = await gather_with_semaphore(tasks)
@@ -182,7 +187,7 @@ async def _(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                layerKey=parameters.layer_key.value,
+                topic=parameters.layer_key.value,
                 bpolys=feature,
             )
         )
@@ -292,9 +297,9 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
             create_indicator(
                 IndicatorDatabase(
                     name=indicator_name,
-                    layerKey=layer_key,
+                    topic=layer_key,
                     dataset=dataset,
-                    featureId=feature_id,
+                    feature_id=feature_id,
                 ),
                 force=force,
             )
@@ -331,7 +336,7 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
             create_indicator(
                 IndicatorBpolys(
                     name=indicator_name,
-                    layerKey=layer_key,
+                    topic=layer_key,
                     bpolys=feature,
                 )
             )
@@ -372,9 +377,9 @@ async def create_all_indicators(
                 create_indicator(
                     IndicatorDatabase(
                         name=indicator_name_,
-                        layerKey=layer_key_,
+                        topic=layer_key_,
                         dataset=dataset,
-                        featureId=fid,
+                        feature_id=fid,
                     ),
                     force=force,
                 )

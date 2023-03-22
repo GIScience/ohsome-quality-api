@@ -1,62 +1,5 @@
 interactions:
 - request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1455'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.0
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
-      \   \"value\" : 235.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:40 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
     body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
     headers:
       accept:
@@ -72,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -81,33 +24,90 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
       \   \"value\" : 934.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:40 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:02:54 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1455'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.14.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
+      \   \"value\" : 235.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Wed, 22 Mar 2023 11:02:54 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -129,7 +129,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -138,33 +138,33 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-03-10T15:00:00Z\",\n
       \   \"value\" : 2113.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:48 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:05 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -182,7 +182,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -195,113 +195,33 @@ interactions:
       \     \"toTimestamp\" : \"2023-03-10T15:00Z\"\n    },\n    \"replicationSequenceNumber\"
       : 91952\n  }\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:49 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F2023-03-10%2FP1Y&contributionType=geometryChange%2Ccreation%2CtagChange
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
       connection:
-      - keep-alive
-      content-length:
-      - '1457'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.0
-    method: POST
-    uri: https://api.ohsome.org/v1/contributions/latest/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n
-      \   \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n
-      \   \"value\" : 3.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n
-      \   \"value\" : 8.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 90.0\n  },
-      {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" :
-      \"2016-01-01T00:00:00Z\",\n    \"value\" : 12.0\n  }, {\n    \"fromTimestamp\"
-      : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n
-      \   \"value\" : 93.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 40.0\n  },
-      {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" :
-      \"2019-01-01T00:00:00Z\",\n    \"value\" : 100.0\n  }, {\n    \"fromTimestamp\"
-      : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n
-      \   \"value\" : 21.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 17.0\n  },
-      {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" :
-      \"2022-01-01T00:00:00Z\",\n    \"value\" : 306.0\n  }, {\n    \"fromTimestamp\"
-      : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2023-01-01T00:00:00Z\",\n
-      \   \"value\" : 218.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-transform, public, max-age=31556926
-      Connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:57 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:05 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -323,7 +243,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -514,33 +434,113 @@ interactions:
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2023-03-01T00:00:00Z\",\n
       \   \"value\" : 932.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:30:57 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:17 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F2023-03-10%2FP1Y&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1457'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.14.1
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n
+      \   \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n
+      \   \"value\" : 3.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 1.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n
+      \   \"value\" : 8.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 90.0\n  },
+      {\n    \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" :
+      \"2016-01-01T00:00:00Z\",\n    \"value\" : 12.0\n  }, {\n    \"fromTimestamp\"
+      : \"2016-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n
+      \   \"value\" : 93.0\n  }, {\n    \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"value\" : 40.0\n  },
+      {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n    \"toTimestamp\" :
+      \"2019-01-01T00:00:00Z\",\n    \"value\" : 100.0\n  }, {\n    \"fromTimestamp\"
+      : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n
+      \   \"value\" : 21.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 17.0\n  },
+      {\n    \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" :
+      \"2022-01-01T00:00:00Z\",\n    \"value\" : 306.0\n  }, {\n    \"fromTimestamp\"
+      : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2023-01-01T00:00:00Z\",\n
+      \   \"value\" : 218.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Wed, 22 Mar 2023 11:03:19 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -562,7 +562,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -571,111 +571,33 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2023-01-01T00:00:00Z\",\n
       \   \"toTimestamp\" : \"2023-03-10T00:00:00Z\",\n    \"value\" : 4.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-transform, public, max-age=31556926
-      Connection:
-      - Keep-Alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:05 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F2023-03-10%2FP1Y&contributionType=geometryChange%2Ccreation%2CtagChange
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
       connection:
-      - keep-alive
-      content-length:
-      - '1545'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.0
-    method: POST
-    uri: https://api.ohsome.org/v1/contributions/latest/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n
-      \   \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n
-      \   \"value\" : 3.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n
-      \   \"value\" : 2.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 5.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n
-      \   \"value\" : 7.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n
-      \   \"value\" : 21.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n
-      \   \"value\" : 4.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
-      \   \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n
-      \   \"value\" : 116.0\n  }, {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n
-      \   \"toTimestamp\" : \"2023-01-01T00:00:00Z\",\n    \"value\" : 58.0\n  } ]\n}"
-    headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
-      - POST, GET
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Max-Age:
-      - '3600'
-      Cache-Control:
-      - no-transform, public, max-age=31556926
-      Connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:13 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:29 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -697,7 +619,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -888,33 +810,111 @@ interactions:
       \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2023-03-01T00:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:13 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:42 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+2%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-01-01%2F2023-03-10%2FP1Y&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1545'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.14.1
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2008-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2009-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2010-01-01T00:00:00Z\",\n
+      \   \"value\" : 0.0\n  }, {\n    \"fromTimestamp\" : \"2010-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2011-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2012-01-01T00:00:00Z\",\n
+      \   \"value\" : 3.0\n  }, {\n    \"fromTimestamp\" : \"2012-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"value\" : 0.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2013-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2014-01-01T00:00:00Z\",\n
+      \   \"value\" : 2.0\n  }, {\n    \"fromTimestamp\" : \"2014-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"value\" : 5.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2015-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2016-01-01T00:00:00Z\",\n
+      \   \"value\" : 7.0\n  }, {\n    \"fromTimestamp\" : \"2016-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2017-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2018-01-01T00:00:00Z\",\n
+      \   \"value\" : 21.0\n  }, {\n    \"fromTimestamp\" : \"2018-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2019-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2020-01-01T00:00:00Z\",\n
+      \   \"value\" : 4.0\n  }, {\n    \"fromTimestamp\" : \"2020-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"value\" : 6.0\n  }, {\n
+      \   \"fromTimestamp\" : \"2021-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2022-01-01T00:00:00Z\",\n
+      \   \"value\" : 116.0\n  }, {\n    \"fromTimestamp\" : \"2022-01-01T00:00:00Z\",\n
+      \   \"toTimestamp\" : \"2023-01-01T00:00:00Z\",\n    \"value\" : 58.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Wed, 22 Mar 2023 11:03:43 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -936,7 +936,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -945,33 +945,33 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2023-01-01T00:00:00Z\",\n
       \   \"toTimestamp\" : \"2023-03-10T00:00:00Z\",\n    \"value\" : 86.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-transform, public, max-age=31556926
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:24 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:53 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -989,7 +989,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -1002,33 +1002,33 @@ interactions:
       \     \"toTimestamp\" : \"2023-03-10T15:00Z\"\n    },\n    \"replicationSequenceNumber\"
       : 91952\n  }\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:33 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:03:56 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -1050,7 +1050,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -1082,33 +1082,33 @@ interactions:
       : \"2022-01-01T00:00:00Z\",\n    \"toTimestamp\" : \"2023-01-01T00:00:00Z\",\n
       \   \"value\" : 570.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-transform, public, max-age=31556926
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:43 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:04:10 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -1130,7 +1130,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -1321,33 +1321,33 @@ interactions:
       \   \"value\" : 2111.0\n  }, {\n    \"timestamp\" : \"2023-03-01T00:00:00Z\",\n
       \   \"value\" : 2111.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-cache, no-store, must-revalidate
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:43 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:04:10 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding
@@ -1369,7 +1369,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.0
+      - ohsome-quality-analyst/0.14.1
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -1378,33 +1378,33 @@ interactions:
       \"1.9.0\",\n  \"result\" : [ {\n    \"fromTimestamp\" : \"2023-01-01T00:00:00Z\",\n
       \   \"toTimestamp\" : \"2023-03-10T00:00:00Z\",\n    \"value\" : 20.0\n  } ]\n}"
     headers:
-      Access-Control-Allow-Credentials:
+      access-control-allow-credentials:
       - 'true'
-      Access-Control-Allow-Headers:
+      access-control-allow-headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      Access-Control-Allow-Methods:
+      access-control-allow-methods:
       - POST, GET
-      Access-Control-Allow-Origin:
+      access-control-allow-origin:
       - '*'
-      Access-Control-Max-Age:
+      access-control-max-age:
       - '3600'
-      Cache-Control:
+      cache-control:
       - no-transform, public, max-age=31556926
-      Connection:
+      connection:
       - Keep-Alive
-      Content-Encoding:
+      content-encoding:
       - gzip
-      Content-Type:
+      content-type:
       - application/json
-      Date:
-      - Wed, 15 Mar 2023 11:31:50 GMT
-      Keep-Alive:
+      date:
+      - Wed, 22 Mar 2023 11:04:21 GMT
+      keep-alive:
       - timeout=5, max=100
-      Server:
+      server:
       - Apache/2.4.52 (Ubuntu)
-      Strict-Transport-Security:
+      strict-transport-security:
       - max-age=63072000; includeSubdomains;
-      Transfer-Encoding:
+      transfer-encoding:
       - chunked
       vary:
       - accept-encoding

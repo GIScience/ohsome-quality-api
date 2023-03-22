@@ -10,6 +10,7 @@ building_count:
   endpoint: elements/count
   filter: building=* and geometry:polygon
   ratio_filter: building=* and geometry:polygon and (height=* and height!="") or (building:levels=* and building:levels!="")
+  project: core
 
 building_area:
   name: Building Area
@@ -17,6 +18,7 @@ building_area:
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
   filter: building=* and geometry:polygon
+  project: core
 
 major_roads_count:
   name: Major Roads Count
@@ -33,6 +35,7 @@ major_roads_count:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=* and name!=""
+  project: core
 
 major_roads_length:
   name: Major Roads Length
@@ -49,6 +52,7 @@ major_roads_length:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=* and name!=""
+  project: core
 
 railway_length:
   name: Railways
@@ -57,12 +61,14 @@ railway_length:
   endpoint: elements/length
   filter: |
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
+  project: core
 
 amenities:
   name: Amenities
   description: All features with the amenities key.
   endpoint: elements/count
   filter: amenity=* and (type:way or type:node)
+  project: core
 
 poi:
   name: POI
@@ -118,6 +124,7 @@ poi:
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
     wilderness_hut, zoo))
     or (vaccination = covid19)
+  project: core
 
 landmarks:
   name: Landmarks for Orientation
@@ -131,137 +138,7 @@ landmarks:
     shop=* or tourism in (hotel, attraction) or
     amenity in (fuel, pharmacy, hospital, school, college, university,
     police, fire_station, restaurant, townhall)
-
-# JRC themes:
-jrc_health_count:
-  name: JRC Healthcare Facilities
-  description: |
-    OSM amenities that are healthcare facilities like hospitals, clinics, doctor and other healthcare types.
-  endpoint: elements/count
-  filter: |
-    amenity in (hospital, clinic, doctors) or (healthcare=*)
-  ratio_filter: |
-    (amenity=hospital and name=* and name!="" and wheelchair=*)
-    or (amenity=clinic and name=* and name!="" and operator=*)
-    or (amenity=doctors and name=* and name!="" and healthcare:speciality=*)
-    or (healthcare=* and name=* and name!="")
-
-jrc_education_count:
-  name: JRC Education Facilities
-  description: |
-    OSM amenities that are education facilities like college, school, kindergarten, university.
-  endpoint: elements/count
-  filter: |
-    amenity in (college, kindergarten, university, school)
-  ratio_filter: |
-    (amenity in (college, kindergarten, university) and name=* and name!="" and wheelchair=*)
-    or (amenity=school and name=* and name!="" and building=*)
-
-jrc_road_length:
-  name: JRC Road Length
-  description: |
-    Selection of OSM highways with maxspeed and oneway tag.
-  endpoint: elements/length
-  filter: |
-    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-  ratio_filter: |
-    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-    and maxspeed=* and oneway=*
-
-jrc_road_count:
-  name: JRC Road Length
-  description: |
-    Selection of OSM highways with maxspeed and oneway tag.
-  endpoint: elements/count
-  filter: |
-    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-  ratio_filter: |
-    highway in (motorway, primary, secondary, tertiary, trunk, unclassified, residential)
-    and maxspeed=* and oneway=*
-
-# TODO: Remove this layer and use `railway_length` instead
-jrc_railway_length:
-  name: JRC Railways Length
-  description: |
-    Selection of OSM railways.
-  endpoint: elements/length
-  filter: |
-    railway in (rail, subway, tram, light_rail, monorail)
-
-jrc_railway_count:
-  name: JRC Railways Length
-  description: |
-    Selection of OSM railways.
-  endpoint: elements/count
-  filter: |
-    railway in (rail, subway, tram, light_rail, monorail)
-
-jrc_airport_count:
-  name: JRC Airports
-  description: |
-    OpenStreetMap Aeroway Aerodromes.
-  endpoint: elements/count
-  filter: |
-    aeroway=aerodrome or aerodrome=*
-  ratio_filter: |
-    (aeroway=aerodrome and icao=* and icao!="" and name=*)
-    or (aerodrome=* and icao=* and icao!="" and name=*)
-
-jrc_water_treatment_plant_count:
-  name: JRC Water-Treatment Plant Count
-  description: |
-    OpenStreetMap water treatment plants.
-  endpoint: elements/count
-  filter: |
-    man_made=water_works
-
-jrc_power_generation_plant_count:
-  name: JRC Power-generation Plant Count
-  description: |
-    OpenStreetMap power-generation-plants.
-  endpoint: elements/count
-  filter: |
-    power=plant
-  ratio_filter: |
-    power=plant and power=* and name=*
-
-jrc_cultural_heritage_site_count:
-  name: JRC Cultural Heritage Sites Count
-  description: |
-    OpenStreetMap cultural-heritage-sites.
-  endpoint: elements/count
-  filter: |
-    heritage=*
-  ratio_filter: |
-    heritage=* and description=* and image=* and name=* and name!=""
-
-jrc_bridge_count:
-  name: JRC Bridge Count
-  description: |
-    OpenStreetMap bridges.
-  endpoint: elements/count
-  filter: |
-    bridge=yes
-  ratio_filter: |
-    bridge=yes and name=* and surface=* and highway=* and highway!=""
-
-jrc_mass_gathering_sites_count:
-  name: JRC Mass Gathering Sites Count
-  description: |
-    OpenStreetMap Mass Gathering Sites, where a lot of people could gather.
-  endpoint: elements/count
-  filter: |
-    (amenity in (place_of_worship, cinema, food_court, festival_grounds, events_venue, theatre,
-        sports_hall, conference_centre, nightclub, marketplace))
-        or (leisure in (stadium, sport_centre, water_park))
-        or (shop=mall )
-        or (tourism in (theme_park, zoo, museum))
-  ratio_filter: |
-    (amenity in (place_of_worship, cinema, food_court, festival_grounds, events_venue, theatre,
-    sports_hall, conference_centre, nightclub, marketplace) and name=* and name!="")
-    or (leisure in (stadium, sport_centre, water_park) and name=* and name!="")
-    or (shop=mall and name=* and name!="")
-    or (tourism in (theme_park, zoo, museum) and name=* and name!="")
+  project: core
 
 mapaction_settlements_count:
   name: MapAction Settlements Count
@@ -269,6 +146,7 @@ mapaction_settlements_count:
     Number of settlements (cities)
   endpoint: elements/count
   filter: place=city and type:node
+  project: mapaction
 
 mapaction_capital_city_count:
   name: MapAction Capital City Count
@@ -276,6 +154,7 @@ mapaction_capital_city_count:
     Number of capital cities
   endpoint: elements/count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
+  project: mapaction
 
 mapaction_rail_length:
   name: MapAction Rail Length
@@ -283,6 +162,7 @@ mapaction_rail_length:
     Length of objects identified as rails (large railways)
   endpoint: elements/length
   filter: railway=rail and type:way
+  project: mapaction
 
 mapaction_major_roads_length:
   name: MapAction Major Roads length
@@ -290,6 +170,7 @@ mapaction_major_roads_length:
     Length of objects identified as major roads (primary, motorway and trunk)
   endpoint: elements/length
   filter: highway in (motorway, trunk, primary) and type:way
+  project: mapaction
 
 mapaction_lakes_count:
   name: MapAction Lakes Count
@@ -297,6 +178,7 @@ mapaction_lakes_count:
     Number of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/count
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  project: mapaction
 
 mapaction_lakes_area:
   name: MapAction Lakes Area
@@ -304,6 +186,7 @@ mapaction_lakes_area:
     Area of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/area
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  project: mapaction
 
 mapaction_rivers_length:
   name: MapAction Rivers Length
@@ -311,12 +194,14 @@ mapaction_rivers_length:
     Length of objects identified as rivers (or riverbanks)
   endpoint: elements/length
   filter: waterway in (riverbank,river) and type:way
+  project: mapaction
 
 infrastructure_lines:
   name: Infrastructure Lines
   description: Line objects related to infrastructure
   endpoint: elements/length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
+  project: core
 
 lulc:
   name: Land Use and Land Cover
@@ -334,12 +219,14 @@ lulc:
     https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
     Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
     https://www.geog.uni-heidelberg.de/gis/ideal_en.html
+  project: core
 
 minimal:
   name: Minimal
   description: A minimal layer definition for testing purposes
   endpoint: elements/count
   filter: building=* and geometry:polygon
+  project: core
 
 schools:
   name: Schools
@@ -347,6 +234,7 @@ schools:
   endpoint: elements/count
   filter: amenity=school
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
+  project: core
 
 kindergarten:
   name: Kindergarten
@@ -354,6 +242,7 @@ kindergarten:
   endpoint: elements/count
   filter: amenity=kindergarten
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
+  project: core
 
 clinics:
   name: Clinics
@@ -361,6 +250,7 @@ clinics:
   endpoint: elements/count
   filter: amenity=clinic or healthcare=clinic
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+  project: core
 
 doctors:
   name: Doctors
@@ -368,6 +258,7 @@ doctors:
   endpoint: elements/count
   filter: amenity=doctors or healthcare=doctors
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+  project: core
 
 bus_stops:
   name: Bus Stops
@@ -375,6 +266,7 @@ bus_stops:
   endpoint: elements/count
   filter: highway=bus_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
+  project: core
 
 tram_stops:
   name: Tram Stops
@@ -382,6 +274,7 @@ tram_stops:
   endpoint: elements/count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+  project: core
 
 subway_stations:
   name: Subway Stations
@@ -389,6 +282,7 @@ subway_stations:
   endpoint: elements/count
   filter: station=subway
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
+  project: core
 
 supermarkets:
   name: Supermarkets
@@ -396,6 +290,7 @@ supermarkets:
   endpoint: elements/count
   filter: shop=supermarket
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
+  project: core
 
 marketplaces:
   name: Marketplaces
@@ -403,6 +298,7 @@ marketplaces:
   endpoint: elements/count
   filter: amenity=marketplace
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
+  project: core
 
 parks:
   name: Parks
@@ -410,6 +306,7 @@ parks:
   endpoint: elements/count
   filter: leisure=park
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
+  project: core
 
 forests:
   name: Forests
@@ -417,6 +314,7 @@ forests:
   endpoint: elements/count
   filter: landuse=forest
   source: https://wiki.openstreetmap.org/wiki/Forest
+  project: core
 
 fitness_centres:
   name: Fitness Centres
@@ -424,6 +322,7 @@ fitness_centres:
   endpoint: elements/count
   filter: leisure in (fitness_centre, sports_centre)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
+  project: core
 
 fire_stations:
   name: Fire Stations
@@ -431,6 +330,7 @@ fire_stations:
   endpoint: elements/count
   filter: amenity=fire_station
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
+  project: core
 
 hospitals:
   name: Hospitals
@@ -438,54 +338,56 @@ hospitals:
   endpoint: elements/count
   filter: amenity=hospital or healthcare=hospital
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
+  project: core
 
 local_food_shops:
   name: Local food shops
   description: Count of local food shops
   endpoint: elements/count
   filter: shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy
+  project: expanse
 
 fast_food_restaurants:
   name: Fast food restaurants
   description: Count of fast food restaurants
   endpoint: elements/count
   filter: amenity=fast_food
+  project: expanse
 
 restaurants:
   name: Restaurants
   description: Count of restaurants
   endpoint: elements/count
   filter: amenity=restaurant or amenity=cafe
-
-supermarkets:
-  name: Supermarkets
-  description: Count of supermarkets
-  endpoint: elements/count
-  filter: shop=supermarket
+  project: expanse
 
 convenience_stores:
   name: Convenience stores
   description: Count of convenience stores
   endpoint: elements/count
   filter: shop=convenience
+  project: expanse
 
 pubs_and_biergartens:
   name: Pubs and biergartens
   description: Count of pubs and biergartens
   endpoint: elements/count
   filter: amenity=pub or amenity=biergarten or amenity=bar
+  project: expanse
 
 alcohol_and_beverages:
   name: Alcohol and beverages
   description: Count of shops selling alcohol
   endpoint: elements/count
   filter: shop=alcohol or shop=beverages
+  project: expanse
 
 sweets_and_pasteries:
   name: Sweets and pasteries
   description: Count of shops selling sweets and pasteries
   endpoint: elements/count
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
+  project: expanse
 
 # START: Land-Use Layers (Corine)
 clc_arable_land_area:
@@ -494,18 +396,21 @@ clc_arable_land_area:
     Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=farmland or crop=*) and geometry:polygon
- 
+  project: corine-land-cover
+
 clc_permanent_crops_area:
   name: Permanent Crops CLC
   description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
   endpoint: elements/area
   filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
+  project: corine-land-cover
 
 clc_pastures_area:
-  name: Pastures in Corine Land Cover
+  name: Pastures CLC
   description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
+  project: corine-land-cover
 
 clc_forest_area:
   name: Forests CLC
@@ -513,6 +418,7 @@ clc_forest_area:
   endpoint: elements/area
   filter: |
     (natural=wood or landuse=forest) and geometry:polygon
+  project: corine-land-cover
 
 clc_leaf_type:
   name: Leaf Types of Forests CLC
@@ -523,12 +429,14 @@ clc_leaf_type:
   ratio_filter: |
     (natural=wood or landuse=forest) and
     leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
+  project: corine-land-cover
 
 clc_shrub_area:
   name: Shrubs CLC
   description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: (natural in (scrub, fell, tundra, shrubbery) or landuse=meadow) and geometry:polygon
+  project: corine-land-cover
 
 clc_open_spaces_area:
   name: Open Spaces CLC
@@ -536,12 +444,14 @@ clc_open_spaces_area:
   endpoint: elements/area
   filter: |
     natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
+  project: corine-land-cover
 
 clc_wetland_area:
   name: Wetlands CLC
   description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
   endpoint: elements/area
   filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
+  project: corine-land-cover
 
 clc_water_area:
   name: Water CLC
@@ -551,10 +461,12 @@ clc_water_area:
     (natural in (water, spring, hot_spring)
     or water in (lake, reservoir, pond, oxbow, basin))
     and geometry:polygon
+  project: corine-land-cover
 
 clc_waterway_len:
   name: Waterways CLC
   description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
   endpoint: elements/length
   filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
+  project: corine-land-cover
 # END: Land-Use Layers (Corine)
