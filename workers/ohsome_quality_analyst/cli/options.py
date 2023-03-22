@@ -5,7 +5,7 @@ Define Click command options to avoid redundancy.
 import click
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.definitions import load_topic_definitions, load_metadata
+from ohsome_quality_analyst.definitions import load_metadata, load_topic_definitions
 
 indicator_name = click.option(
     "--indicator-name",
