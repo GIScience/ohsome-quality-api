@@ -3,6 +3,8 @@
 # Each layer is defined by ohsome API parameters.
 # https://docs.ohsome.org/ohsome-api/stable/
 
+### CORE TOPICS ###
+
 building_count:
   name: Building Count
   description: |
@@ -63,14 +65,6 @@ railway_length:
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
   project: core
 
-amenities:
-  name: Amenities
-  description: All features with the amenities key.
-  endpoint: elements/count
-  source: https://wiki.openstreetmap.org/wiki/Key:amenity
-  filter: amenity=*
-  project: sketchmap
-
 poi:
   name: POI
   description: Points of interest
@@ -126,108 +120,6 @@ poi:
     wilderness_hut, zoo))
     or (vaccination = covid19)
   project: core
-
-landmarks:
-  name: Landmarks for Orientation
-  description: |
-    Landmarks for orientation in a city such as natural features, public transport stations and amenities.
-  endpoint: elements/count
-  source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
-  filter: |
-    natural=peak or leisure=park or boundary=national_park or
-    natural=water or waterway=* or highway=bus_stop or railway=station or
-    shop=* or tourism in (hotel, attraction) or
-    amenity in (fuel, pharmacy, hospital, school, college, university,
-    police, fire_station, restaurant, townhall)
-  project: sketchmap
-
-mapaction_settlements_count:
-  name: MapAction Settlements Count
-  description: |
-    Number of settlements (cities)
-  endpoint: elements/count
-  filter: place=city and type:node
-  project: mapaction
-
-mapaction_capital_city_count:
-  name: MapAction Capital City Count
-  description: |
-    Number of capital cities
-  endpoint: elements/count
-  filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
-  project: mapaction
-
-mapaction_rail_length:
-  name: MapAction Rail Length
-  description: |
-    Length of objects identified as rails (large railways)
-  endpoint: elements/length
-  filter: railway=rail and type:way
-  project: mapaction
-
-mapaction_major_roads_length:
-  name: MapAction Major Roads length
-  description: |
-    Length of objects identified as major roads (primary, motorway and trunk)
-  endpoint: elements/length
-  filter: highway in (motorway, trunk, primary) and type:way
-  project: mapaction
-
-mapaction_lakes_count:
-  name: MapAction Lakes Count
-  description: |
-    Number of objects identified as lakes, lagoons and reservoirs
-  endpoint: elements/count
-  filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
-  project: mapaction
-
-mapaction_lakes_area:
-  name: MapAction Lakes Area
-  description: |
-    Area of objects identified as lakes, lagoons and reservoirs
-  endpoint: elements/area
-  filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
-  project: mapaction
-
-mapaction_rivers_length:
-  name: MapAction Rivers Length
-  description: |
-    Length of objects identified as rivers (or riverbanks)
-  endpoint: elements/length
-  filter: waterway in (riverbank,river) and type:way
-  project: mapaction
-
-infrastructure_lines:
-  name: Infrastructure Lines
-  description: Line objects related to infrastructure
-  endpoint: elements/length
-  filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
-  project: experimental
-
-lulc:
-  name: Land Use and Land Cover
-  description: |
-    Features related to land use and land cover.
-    This definition includes well established tags for coherent areas at the most atomic level available.
-    This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
-    For further details please contact us.
-  endpoint: elements/area
-  filter: |
-    (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
-  source: |
-    https://osmlanduse.org;
-    Fonte et al 2016 https://cartography-gis.com/docsbca/iccgis2016/ICCGIS2016-47.pdf;
-    https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
-    Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
-    https://www.geog.uni-heidelberg.de/gis/ideal_en.html
-  project: idealvgi
-
-minimal:
-  name: Minimal
-  description: A minimal layer definition for testing purposes
-  endpoint: elements/count
-  filter: building=* and building!=no and geometry:polygon
-  project: misc
 
 schools:
   name: Schools
@@ -341,6 +233,110 @@ hospitals:
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   project: core
 
+### SKETCHMAP PROJECT ###
+
+amenities:
+  name: Amenities
+  description: All features with the amenities key.
+  endpoint: elements/count
+  source: https://wiki.openstreetmap.org/wiki/Key:amenity
+  filter: amenity=*
+  project: sketchmap
+
+landmarks:
+  name: Landmarks for Orientation
+  description: |
+    Landmarks for orientation in a city such as natural features, public transport stations and amenities.
+  endpoint: elements/count
+  source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
+  filter: |
+    natural=peak or leisure=park or boundary=national_park or
+    natural=water or waterway=* or highway=bus_stop or railway=station or
+    shop=* or tourism in (hotel, attraction) or
+    amenity in (fuel, pharmacy, hospital, school, college, university,
+    police, fire_station, restaurant, townhall)
+  project: sketchmap
+
+### MAPACTION PROJECT ###
+
+mapaction_settlements_count:
+  name: MapAction Settlements Count
+  description: |
+    Number of settlements (cities)
+  endpoint: elements/count
+  filter: place=city and type:node
+  project: mapaction
+
+mapaction_capital_city_count:
+  name: MapAction Capital City Count
+  description: |
+    Number of capital cities
+  endpoint: elements/count
+  filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
+  project: mapaction
+
+mapaction_rail_length:
+  name: MapAction Rail Length
+  description: |
+    Length of objects identified as rails (large railways)
+  endpoint: elements/length
+  filter: railway=rail and type:way
+  project: mapaction
+
+mapaction_major_roads_length:
+  name: MapAction Major Roads length
+  description: |
+    Length of objects identified as major roads (primary, motorway and trunk)
+  endpoint: elements/length
+  filter: highway in (motorway, trunk, primary) and type:way
+  project: mapaction
+
+mapaction_lakes_count:
+  name: MapAction Lakes Count
+  description: |
+    Number of objects identified as lakes, lagoons and reservoirs
+  endpoint: elements/count
+  filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  project: mapaction
+
+mapaction_lakes_area:
+  name: MapAction Lakes Area
+  description: |
+    Area of objects identified as lakes, lagoons and reservoirs
+  endpoint: elements/area
+  filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  project: mapaction
+
+mapaction_rivers_length:
+  name: MapAction Rivers Length
+  description: |
+    Length of objects identified as rivers (or riverbanks)
+  endpoint: elements/length
+  filter: waterway in (riverbank,river) and type:way
+  project: mapaction
+
+### IDEALVGI PROJECT ###
+
+lulc:
+  name: Land Use and Land Cover
+  description: |
+    Features related to land use and land cover.
+    This definition includes well established tags for coherent areas at the most atomic level available.
+    This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
+    For further details please contact us.
+  endpoint: elements/area
+  filter: |
+    (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
+  source: |
+    https://osmlanduse.org;
+    Fonte et al 2016 https://cartography-gis.com/docsbca/iccgis2016/ICCGIS2016-47.pdf;
+    https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
+    Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
+    https://www.geog.uni-heidelberg.de/gis/ideal_en.html
+  project: idealvgi
+
+### EXPANSE PROJECT ###
+
 local_food_shops:
   name: Local food shops
   description: Count of local food shops
@@ -390,7 +386,8 @@ sweets_and_pasteries:
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
   project: expanse
 
-# START: Land-Use Layers (Corine)
+### LAND-USE LAYERS (CORINE PROJECT) ###
+
 clc_arable_land_area:
   name: Arable Land CLC
   description: |
@@ -470,4 +467,21 @@ clc_waterway_len:
   endpoint: elements/length
   filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
   project: corine-land-cover
-# END: Land-Use Layers (Corine)
+
+### MISC TOPICS ###
+
+minimal:
+  name: Minimal
+  description: A minimal layer definition for testing purposes
+  endpoint: elements/count
+  filter: building=* and building!=no and geometry:polygon
+  project: misc
+
+### EXPERIMENTAL TOPICS ###
+
+infrastructure_lines:
+  name: Infrastructure Lines
+  description: Line objects related to infrastructure
+  endpoint: elements/length
+  filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
+  project: experimental
