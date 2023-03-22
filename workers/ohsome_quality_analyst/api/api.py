@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Union
 
-from fastapi import Body, Depends, FastAPI, Request, status
+from fastapi import Body, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -173,27 +173,14 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator", tags=["indicator"])
-async def get_indicator(parameters=Depends(IndicatorDatabase)):
-    """Request an Indicator for an AOI defined by OQT.
-
-    To request an Indicator for a custom AOI please use the POST method.
-    """
-    return await _fetch_indicator(parameters)
-
-
 @app.post("/indicator", tags=["indicator"])
 async def post_indicator(
     parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
-):
+) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    return await _fetch_indicator(parameters)
-
-
-async def _fetch_indicator(parameters) -> CustomJSONResponse:
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
         size_restriction=True,
@@ -219,27 +206,14 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get("/report", tags=["report"])
-async def get_report(parameters=Depends(ReportDatabase)):
-    """Request an already calculated Report for an AOI defined by OQT.
-
-    To request an Report for a custom AOI please use the POST method.
-    """
-    return await _fetch_report(parameters)
-
-
 @app.post("/report", tags=["report"])
 async def post_report(
     parameters: Union[ReportBpolys, ReportDatabase] = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
-):
+) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
-    return await _fetch_report(parameters)
-
-
-async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
     geojson_object = await oqt.create_report_as_geojson(
         parameters,
         size_restriction=True,

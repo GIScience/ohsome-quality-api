@@ -15,8 +15,7 @@ import httpx
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
-
-from .utils import AsyncMock, get_geojson_fixture
+from tests.integrationtests.utils import AsyncMock, get_geojson_fixture
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -26,6 +25,7 @@ class TestApiReportIo(unittest.TestCase):
     def test_ohsome_timeout(self):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
+            "..",
             "..",
             "unittests",
             "fixtures",

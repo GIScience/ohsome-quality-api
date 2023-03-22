@@ -8,13 +8,12 @@ import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
-
-from .api_response_schema import (
+from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
     get_report_feature_schema,
 )
-from .utils import get_geojson_fixture, oqt_vcr
+from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
 
 
 class TestApiReportIo(unittest.TestCase):

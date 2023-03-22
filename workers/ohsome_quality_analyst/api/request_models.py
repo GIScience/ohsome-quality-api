@@ -245,6 +245,7 @@ INDICATOR_EXAMPLES = {
                 },
             },
             "topic": {
+                "key": "my-topic-key",
                 "name": "My topic name",
                 "description": "My topic description",
                 "data": {
