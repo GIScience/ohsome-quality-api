@@ -15,7 +15,7 @@ class RoadReport(BaseReport):
             indicator_layer=(
                 IndicatorLayer("mapping-saturation", "major_roads_length"),
                 IndicatorLayer("currentness", "major_roads_count"),
-                IndicatorLayer("tags-ratio", "major_roads_length"),
+                IndicatorLayer("attribute-completeness", "major_roads_length"),
             ),
             feature=feature,
             blocking_red=blocking_red,

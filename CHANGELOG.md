@@ -10,6 +10,7 @@
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
+- rename `TagsRatio` indicator to `attribute-completeness` ([#500])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
 
@@ -57,6 +58,7 @@
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
+[#500]: https://github.com/GIScience/ohsome-quality-analyst/pull/500
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
 [#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
 [#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
