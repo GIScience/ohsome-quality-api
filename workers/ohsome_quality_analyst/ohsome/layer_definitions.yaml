@@ -8,8 +8,8 @@ building_count:
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
-  filter: building=* and geometry:polygon
-  ratio_filter: building=* and geometry:polygon and (height=* and height!="") or (building:levels=* and building:levels!="")
+  filter: building=* and building!=no and geometry:polygon
+  ratio_filter: building=* and building!=no and geometry:polygon and (height=* and height!="") or (building:levels=* and building:levels!="")
   project: core
 
 building_area:
@@ -17,7 +17,7 @@ building_area:
   description: |
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
-  filter: building=* and geometry:polygon
+  filter: building=* and building!=no and geometry:polygon
   project: core
 
 major_roads_count:
@@ -225,7 +225,7 @@ minimal:
   name: Minimal
   description: A minimal layer definition for testing purposes
   endpoint: elements/count
-  filter: building=* and geometry:polygon
+  filter: building=* and building!=no and geometry:polygon
   project: core
 
 schools:
