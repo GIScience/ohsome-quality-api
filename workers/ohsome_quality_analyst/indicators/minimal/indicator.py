@@ -5,12 +5,12 @@ import dateutil.parser
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class Minimal(BaseIndicator):
-    def __init__(self, topic: Layer, feature: Feature) -> None:
+    def __init__(self, topic: Topic, feature: Feature) -> None:
         super().__init__(topic=topic, feature=feature)
         self.count = 0
 

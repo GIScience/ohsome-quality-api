@@ -11,9 +11,9 @@ from schema import Schema
 from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.utils.exceptions import (
-    LayerDataSchemaError,
     OhsomeApiError,
     SchemaError,
+    TopicDataSchemaError,
 )
 
 from .utils import get_geojson_fixture, get_layer_fixture
@@ -147,7 +147,7 @@ class TestOhsomeClientQuery(TestCase):
         )
 
     def test_layer_data_invalid_empty(self):
-        with self.assertRaises(LayerDataSchemaError):
+        with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
                     TopicData(
@@ -161,7 +161,7 @@ class TestOhsomeClientQuery(TestCase):
             )
 
     def test_layer_data_invalid_empty_list(self):
-        with self.assertRaises(LayerDataSchemaError):
+        with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
                     TopicData(
@@ -175,7 +175,7 @@ class TestOhsomeClientQuery(TestCase):
             )
 
     def test_layer_data_invalid_missing_key(self):
-        with self.assertRaises(LayerDataSchemaError):
+        with self.assertRaises(TopicDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
                     TopicData(

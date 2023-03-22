@@ -229,7 +229,7 @@ def load_topic_definitions() -> Dict:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
-        A dict with all layers included.
+        A dict with all topics included.
     """
     directory = get_module_dir("ohsome_quality_analyst.ohsome")
     file = os.path.join(directory, "layer_definitions.yaml")

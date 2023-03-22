@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class AttributeCompleteness(BaseIndicator):
-    def __init__(self, topic: Layer, feature: Feature) -> None:
+    def __init__(self, topic: Topic, feature: Feature) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25

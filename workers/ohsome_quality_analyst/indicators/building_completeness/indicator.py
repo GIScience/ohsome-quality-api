@@ -13,7 +13,7 @@ from geojson import Feature, FeatureCollection
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.definitions import get_raster_dataset
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
@@ -56,7 +56,7 @@ class BuildingCompleteness(BaseIndicator):
 
     def __init__(
         self,
-        topic: Layer,
+        topic: Topic,
         feature: Feature,
     ) -> None:
         super().__init__(

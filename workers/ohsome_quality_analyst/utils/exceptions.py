@@ -52,7 +52,7 @@ class RasterDatasetUndefinedError(ValueError):
         self.message = "Raster dataset {0} is not defined".format(raster_name)
 
 
-class LayerDataSchemaError(Exception):
+class TopicDataSchemaError(Exception):
     def __init__(self, message, schema_error: SchemaError):
-        self.name = "LayerDataSchemaError"
+        self.name = "TopicDataSchemaError"
         self.message = "{0}\n{1}".format(message, schema_error)

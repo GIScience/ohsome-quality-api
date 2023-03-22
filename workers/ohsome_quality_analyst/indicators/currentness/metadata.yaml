@@ -22,5 +22,5 @@ currentness:
       In the last $threshold_green years $green % of the elements were edited the last time.
       In the period from $threshold_yellow_start to $threshold_yellow_end years ago $yellow % of the elements were edited the last time.
       The remaining $red % were last edited at least $threshold_red years ago.
-      The median currentness of the $elements features ($layer_name) is $median_years year(s).
+      The median currentness of the $elements features ($topic_name) is $median_years year(s).
       Note that only contributions up to $end_date are taken into account.

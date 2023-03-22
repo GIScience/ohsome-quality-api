@@ -8,7 +8,7 @@ import numpy as np
 from geojson import Feature
 
 from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.topic import BaseTopic as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
@@ -17,7 +17,7 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class PoiDensity(BaseIndicator):
-    def __init__(self, topic: Layer, feature: Feature) -> None:
+    def __init__(self, topic: Topic, feature: Feature) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 30
         self.threshold_red = 10
@@ -39,7 +39,7 @@ class PoiDensity(BaseIndicator):
 
     def calculate(self) -> None:
         # TODO: we need to think about how we handle this
-        #  if there are different layers
+        #  if there are different topics
         self.result.value = self.count / self.area_sqkm  # density
         description = Template(self.metadata.result_description).substitute(
             result=f"{self.result.value:.2f}"

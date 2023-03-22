@@ -18,7 +18,7 @@ except ImportError:
 from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.base.topic import TopicData, TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.utils.exceptions import LayerDataSchemaError, OhsomeApiError
+from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, TopicDataSchemaError
 
 
 @singledispatch
@@ -83,7 +83,7 @@ async def _(
     try:
         return validate_query_results(topic.data, ratio, group_by_boundary)
     except SchemaError as error:
-        raise LayerDataSchemaError(
+        raise TopicDataSchemaError(
             "Invalid Topic data input to the Mapping Saturation Indicator.",
             error,
         )

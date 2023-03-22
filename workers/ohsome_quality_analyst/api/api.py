@@ -43,11 +43,11 @@ from ohsome_quality_analyst.definitions import (
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
-    LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
     RasterDatasetUndefinedError,
     SizeRestrictionError,
+    TopicDataSchemaError,
 )
 from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
@@ -137,7 +137,7 @@ async def validation_exception_handler(
 
 
 @app.exception_handler(HexCellsNotFoundError)
-@app.exception_handler(LayerDataSchemaError)
+@app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(RasterDatasetNotFoundError)
 @app.exception_handler(RasterDatasetUndefinedError)
@@ -146,7 +146,7 @@ async def oqt_exception_handler(
     request: Request,
     exception: Union[
         HexCellsNotFoundError,
-        LayerDataSchemaError,
+        TopicDataSchemaError,
         OhsomeApiError,
         RasterDatasetNotFoundError,
         RasterDatasetUndefinedError,
