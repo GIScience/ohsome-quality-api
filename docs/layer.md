@@ -1,12 +1,12 @@
-# Layer
+# Topic
 
-A layer describes the request which should be made to the 
-[ohsome API](https://api.ohsome.org). Each layer is representative of a 
+A topic describes the request which should be made to the 
+[ohsome API](https://api.ohsome.org). Each topic is representative of a 
 specific set of features, aggregated information or user statistics derived from the 
-OpenStreetMap database. Each layer is defined by the ohsome API `endpoint` and 
-parameters for the `filter`. In addition, each layer definition has a key, name and 
+OpenStreetMap database. Each topic is defined by the ohsome API `endpoint` and 
+parameters for the `filter`. In addition, each topic definition has a key, name and 
 description. Layer definitions are written down as YAML file at 
-`workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml`
+`workers/ohsome_quality_analyst/ohsome/topic_definitions.yaml`
 
 Example:
 
@@ -20,7 +20,7 @@ building_count:
 ```
 
 
-## How to add a new layer?
+## How to add a new topic?
 
 First create an ohsome API query to retrieve desired information from the ohsome API. 
 Helpful resources for this task are:
@@ -30,15 +30,15 @@ Helpful resources for this task are:
 - ohsome API documentation on the `filter` parameter: 
   https://docs.ohsome.org/ohsome-api/stable/filter.html
 
-Second translate the query parameters into a layer definition and extent the file 
+Second translate the query parameters into a topic definition and extent the file 
 `workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml`.
 
-Thirdly specify for which indicator class this layer definition is a valid input. Add 
-those indicator/layer combinations to the `INDICATOR_LAYER` tuple in the 
+Thirdly specify for which indicator class this topic definition is a valid input. Add 
+those indicator/topic combinations to the `INDICATOR_LAYER` tuple in the 
 `workers/ohsome_quality_analyst/utils/definitions.py` module. The tuple consists of the 
-indicator class name and the layer definitions key as strings (E.g. 
+indicator class name and the topic definitions key as strings (E.g. 
 `("MappingSaturation", "building_count")`). If the specification was 
 successfully added to the tuple it is shown in the return of the command 
-`oqt list-layers`.
+`oqt list-topics`.
 
-At last run `oqt create-indicator --layer-key new-layer [...]` to check if the new layer can be used to make requests to the ohsome API and create an indicator successfully.
+At last run `oqt create-indicator --layer-key new-topic [...]` to check if the new topic can be used to make requests to the ohsome API and create an indicator successfully.

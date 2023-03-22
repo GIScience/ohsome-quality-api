@@ -8,9 +8,9 @@ Using the Swagger UI one can create valid `cURL` requests with using an interact
 
 Three types of requests can be made:
 
-- To request an Indicator for an AOI defined by OQT provide the following parameters: `name`, `layerKey`, `dataset` and `featureId`
-- To request an Indicator for a custom AOI provide the following parameters: parameters: `name`, `layerKey` and `bpolys`
-- To request an Indicator for a custom AOI and custom data provide the following parameters: `name`, `bpolys` and `layer`
+- To request an Indicator for an AOI defined by OQT provide the following parameters: `name`, `topic`, `dataset` and `featureId`
+- To request an Indicator for a custom AOI provide the following parameters: parameters: `name`, `topic` and `bpolys`
+- To request an Indicator for a custom AOI and custom data provide the following parameters: `name`, `bpolys` and `topic`
 
 Depending on the input, the output will be a GeoJSON Feature or FeatureCollection with the results of the Indicator as properties. The Feature properties of the input GeoJSON will be preserved if they do not collide with the properties set by OQT.
 
@@ -18,12 +18,12 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 
 | Parameter     | Description                                                                                                                                       |
 | ---           | ---                                                                                                                                               |
-| `name`        | Name of the Indicator                                                                                                                             |
-| `layerKey`    | Name of the layer definition                                                                                                                      |
+| `name`        | Name of the indicator                                                                                                                             |
+| `topic`       | Name of the topic                                                                                                                                 |
 | `dataset`     | Name of the dataset containing bounding polygons                                                                                                  |
 | `featureId`   | Identifier of the feature in the dataset                                                                                                          |
 | `bpolys`      | Bounding polygon(s) as GeoJSON Feature, FeatureCollection, Polygon or MultiPolygon object. The Geometry has to be of type Polygon or MultiPolygon |
-| `layer`       | Name, description and data of a custom layer. Data has to be provided in the same format as the response of the ohsome API would look like        |
+| `topic`       | Name, description and data of a custom topic. Data has to be provided in the same format as the response of the ohsome API would look like        |
 | `includeSvg`  | Include a SVG string of a figure displaying the Indicator results                                                                                 |
 | `includeHtml` | Include a HTML string with the Indicator results                                                                                                  |
 | `flatten`     | Flattening of the GeoJSON properties                                                                                                              |
@@ -44,7 +44,7 @@ import requests
 url = "https://oqt.ohsome.org/api/indicator"
 parameters = {
     "name": "mapping-saturation",
-    "layerKey": "building_count",
+    "topic": "building_count",
     "dataset": "regions",
     "featureId": 3,
     "fidField": "ogc_fid",  # Optional
@@ -78,7 +78,7 @@ bpolys = {
 }
 parameters = {
     "name": "mapping-saturation",
-    "layerKey": "building_count",
+    "topic": "building_count",
     "bpolys": bpolys,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
@@ -87,9 +87,9 @@ parameters = {
 response = requests.post(url, json=parameters)
 ```
 
-### Request an Indicator for a custom AOI and Layer using Python and `requests` Library
+### Request an Indicator for a custom AOI and Topic using Python and `requests` Library
 
-The data attached to a custom layer has to be in the same structure as the ohsome API response: [https://docs.ohsome.org/ohsome-api/stable](https://docs.ohsome.org/ohsome-api/stable)
+The data attached to a custom topic has to be in the same structure as the ohsome API response: [https://docs.ohsome.org/ohsome-api/stable](https://docs.ohsome.org/ohsome-api/stable)
 
 Data used in this example has been taken from the ohsome API response of following request URL: [https://api.ohsome.org/v1/elements/count?bboxes=8.67%2C49.39%2C8.71%2C49.42&filter=building%3D\*%20and%20geometry%3Apolygon&format=json&time=2014-01-01%2F2017-01-01%2FP1M](https://api.ohsome.org/v1/elements/count?bboxes=8.67%2C49.39%2C8.71%2C49.42&filter=building%3D*%20and%20geometry%3Apolygon&format=json&time=2014-01-01%2F2017-01-01%2FP1M)
 
@@ -109,9 +109,10 @@ bpolys = {
         ]
     ],
 }
-layer = {
-    "name": "My layer name",
-    "description": "My layer description",
+topic = {
+    "key": "my-topic-key",
+    "name": "My topic name",
+    "description": "My topic description",
     "data": {
         "result": [
             {"timestamp": "2014-01-01T00:00:00Z", "value": 4708},
@@ -157,7 +158,7 @@ layer = {
 parameters = {
     "name": "MappingSaturation",
     "bpolys": bpolys,
-    "layer": layer,
+    "topic": topic,
     "includeSvg": False,  # Optional
     "includeHtml": False,  # Optional
     "flatten": True,  # Optional
@@ -182,8 +183,8 @@ response = requests.post(url, json=parameters)
   "properties": {
     "metadata.name": "GHS-POP Comparison Buildings",
     "metadata.description": "Comparison between population density and feature density.\nThis can give an estimate if mapping has been completed.\n",
-    "layer.name": "Building Count",
-    "layer.description": "All buildings as defined by all objects tagged with 'building=*'.\n",
+    "topic.name": "Building Count",
+    "topic.description": "All buildings as defined by all objects tagged with 'building=*'.\n",
     "result.timestamp_oqt": "2021-10-05T09:33:30.671060+00:00",
     "result.timestamp_osm": "2021-09-26T20:00:00+00:00",
     "result.label": "green",
@@ -309,7 +310,7 @@ response = requests.post(url, json=parameters)
           "name": "Mapping Saturation",
           "description": "Calculate if mapping has saturated.\nHigh saturation has been reached if the growth of the fitted curve is minimal.\n"
         },
-        "layer": {
+        "topic": {
           "key": "building_count",
           "name": "Building Count",
           "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
@@ -328,7 +329,7 @@ response = requests.post(url, json=parameters)
           "name": "Currentness",
           "description": "Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same\ntime range.\nRefers to data quality in respect to currentness.\n"
         },
-        "layer": {
+        "topic": {
           "key": "building_count",
           "name": "Building Count",
           "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
