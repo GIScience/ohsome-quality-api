@@ -96,9 +96,10 @@ class TestOhsomeClientQuery(TestCase):
         data = asyncio.run(
             ohsome_client.query(
                 LayerData(
-                    "name",
-                    "description",
-                    {
+                    key="key",
+                    name="name",
+                    description="description",
+                    data={
                         "result": [
                             {"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}
                         ]
@@ -116,9 +117,10 @@ class TestOhsomeClientQuery(TestCase):
         data = asyncio.run(
             ohsome_client.query(
                 LayerData(
-                    "name",
-                    "description",
-                    {
+                    key="key",
+                    name="name",
+                    description="description",
+                    data={
                         "result": [
                             {
                                 "value": 1.0,
@@ -148,7 +150,12 @@ class TestOhsomeClientQuery(TestCase):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData("name", "description", {}),
+                    LayerData(
+                        key="key",
+                        name="name",
+                        description="description",
+                        data={},
+                    ),
                     self.bpolys,
                 )
             )
@@ -157,7 +164,12 @@ class TestOhsomeClientQuery(TestCase):
         with self.assertRaises(LayerDataSchemaError):
             asyncio.run(
                 ohsome_client.query(
-                    LayerData("name", "description", {"result": []}),
+                    LayerData(
+                        key="key",
+                        name="name",
+                        description="description",
+                        data={"result": []},
+                    ),
                     self.bpolys,
                 )
             )
@@ -167,9 +179,10 @@ class TestOhsomeClientQuery(TestCase):
             asyncio.run(
                 ohsome_client.query(
                     LayerData(
-                        "name",
-                        "description",
-                        {"result": [{"value": 1.0}]},
+                        key="key",
+                        name="name",
+                        description="description",
+                        data={"result": [{"value": 1.0}]},
                     ),
                     self.bpolys,
                 )

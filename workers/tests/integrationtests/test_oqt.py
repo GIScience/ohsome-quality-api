@@ -218,8 +218,9 @@ class TestOqt(unittest.TestCase):
             name="mapping-saturation",
             bpolys=feature,
             topic={
-                "name": "foo",
-                "description": "bar",
+                "key": "key",
+                "name": "name",
+                "description": "description",
                 "data": {
                     "result": [
                         {

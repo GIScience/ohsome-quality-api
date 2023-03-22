@@ -78,18 +78,19 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_layer_data_valid(self):
         layer = {
-            "name": "foo",
-            "description": "bar",
+            "key": "foo",
+            "name": "bar",
+            "description": "buz",
             "data": {},
         }
         request_models.BaseLayerData(topic=layer)
 
     def test_layer_data_invalid(self):
         for layer in (
-            {"name": "foo", "data": {}},
-            {"description": "bar", "data": {}},
-            {"name": "foo", "description": "bar"},
-            {"name": "foo", "description": "bar", "data": "fis"},
+            {"key": "foo", "name": "bar", "data": {}},
+            {"key": "foo", "description": "bar", "data": {}},
+            {"key": "foo", "name": "bar", "description": "buz"},
+            {"key": "foo", "name": "bar", "description": "buz", "data": "fis"},
         ):
             with self.assertRaises(ValueError):
                 request_models.BaseLayerData(layer=layer)
@@ -159,7 +160,7 @@ class TestApiRequestModels(unittest.TestCase):
         request_models.IndicatorData(
             name="mapping-saturation",
             bpolys=self.bpolys,
-            topic={"name": "foo", "description": "bar", "data": {}},
+            topic={"key": "foo", "name": "bar", "description": "buz", "data": {}},
         )
 
     def test_indicator_data_invalid_indicator(self):
@@ -167,7 +168,7 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.IndicatorData(
                 name="foo",
                 bpolys=self.bpolys,
-                layer={"name": "foo", "description": "bar", "data": {}},
+                layer={"key": "foo", "name": "bar", "description": "buz", "data": {}},
             )
 
     def test_invalid_set_of_arguments(self):

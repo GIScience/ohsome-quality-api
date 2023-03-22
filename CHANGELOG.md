@@ -9,6 +9,7 @@
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
+- requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 
 ### Bug Fixes
 
@@ -18,6 +19,7 @@
 
 - disable size limit for Mapping Saturation ([#498])
 - add `project` attribute to topics ([#504])
+- layer/topic are now pydantic models instead of dataclasses ([#517])
 
 ### Other Changes
 
@@ -32,6 +34,8 @@
 - rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
 - rename API parameters for POST requests from camel case to lower hyphen ([#398])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
+  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -53,6 +57,7 @@
 [#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
 [#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
+[#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
 
 ## 0.14.1
 

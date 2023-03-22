@@ -1,25 +1,29 @@
-from __future__ import annotations
+"""Pydantic Models for Topics
 
-from dataclasses import dataclass
+Note:
+    The layer key, name, description and the ohsome API endpoint and filter are defined
+    in the `layer_definitions.yaml` file in the `ohsome` module.
+"""
+
 from typing import Optional
 
+from pydantic import BaseModel
 
-@dataclass
-class BaseLayer:
+
+class BaseLayer(BaseModel):
+    key: str
     name: str
     description: str
 
+    class Config:
+        title = "Topic"
+        frozen = True
+        extra = "forbid"
 
-@dataclass
+
 class LayerDefinition(BaseLayer):
-    """Layer class including the ohsome API parameters needed to retrieve the data.
+    """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
-    Note:
-        The layer name, description and ohsome API parameters are defined in the
-        `layer_definitions.yaml` file.
-    """
-
-    key: str
     endpoint: str
     filter_: str
     project: str
@@ -27,13 +31,7 @@ class LayerDefinition(BaseLayer):
     ratio_filter: Optional[str] = None
 
 
-@dataclass
 class LayerData(BaseLayer):
-    """Layer class including the data associated with the layer."""
+    """Includes the data associated with the layer."""
 
     data: dict
-    key: Optional[str] = None
-
-    def __post_init__(self):
-        if self.key is None:
-            self.key = self.name.replace(" ", "_").lower()
