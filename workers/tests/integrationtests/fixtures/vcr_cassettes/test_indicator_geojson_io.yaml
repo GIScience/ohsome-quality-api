@@ -84,8 +84,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
@@ -268,8 +268,8 @@ interactions:
       [8.664269, 49.411243], [8.661813, 49.411766], [8.659763, 49.411702], [8.658441,
       49.411733], [8.656567, 49.412318], [8.656542, 49.411595], [8.656512, 49.411047]]]},
       "properties": {"metadata": {"name": "Minimal", "description": "An minimal Indicator
-      for testing purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      for testing purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}, {"type": "Feature", "id": 2, "geometry": {"type": "Polygon",
@@ -285,8 +285,8 @@ interactions:
       [8.651656, 49.409181], [8.649858, 49.409274], [8.647838, 49.409498], [8.646082,
       49.409998], [8.64557, 49.409982], [8.642225, 49.411332], [8.641543, 49.411303]]]},
       "properties": {"metadata": {"name": "Minimal", "description": "An minimal Indicator
-      for testing purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      for testing purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}]}'
@@ -324,8 +324,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
@@ -396,8 +396,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "svg": "<?xml version=\"1.0\"
       encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG
       1.1//EN\"\n  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\"
@@ -772,8 +772,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'
@@ -812,8 +812,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "svg": "<?xml version=\"1.0\"
       encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG
       1.1//EN\"\n  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\"
@@ -985,8 +985,8 @@ interactions:
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"metadata": {"name": "Minimal", "description": "An minimal Indicator for testing
-      purposes.\n"}, "layer": {"key": "minimal", "name": "Minimal", "description":
-      "A minimal layer definition for testing purposes"}, "result": {"description":
+      purposes.\n"}, "topic": {"key": "minimal", "name": "Minimal", "description":
+      "A minimal topic definition for testing purposes"}, "result": {"description":
       "Some description of the result.\nGood data quality.\n", "timestamp_oqt": "2023-03-21T09:37:33.698667+00:00",
       "timestamp_osm": "2023-03-10T15:00:00+00:00", "value": 1.0, "label": "undefined",
       "class": null}}}'

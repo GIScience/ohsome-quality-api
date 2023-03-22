@@ -17,7 +17,7 @@ from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.config import configure_logging, get_config_value
 from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    load_layer_definitions,
+    load_topic_definitions,
     load_metadata,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -62,9 +62,9 @@ def list_reports():
 @cli.command("list-layers")
 def list_layers():
     """List available layers and how they are defined (ohsome API parameters)."""
-    layers = load_layer_definitions()
-    layers = yaml.dump(layers, default_style="|")
-    click.echo(layers)
+    topics = load_topic_definitions()
+    topics = yaml.dump(topics, default_style="|")
+    click.echo(topics)
 
 
 @cli.command("list-datasets")
@@ -93,16 +93,16 @@ def get_available_regions():
         click.echo(format_row.format(region["ogc_fid"], region["name"]))
 
 
-@cli.command("list-indicator-layer-combination")
+@cli.command("list-indicator-topic-combination")
 def get_indicator_layer_combination():
-    """List all possible indicator-layer-combinations."""
+    """List all possible indicator-topic-combinations."""
     for combination in INDICATOR_LAYER:
         click.echo(combination)
 
 
 @cli.command("create-indicator")
 @cli_option(options.indicator_name)
-@cli_option(options.layer_key)
+@cli_option(options.topic_key)
 @cli_option(options.infile)
 @cli_option(options.outfile)
 @cli_option(options.dataset_name)
@@ -113,7 +113,7 @@ def create_indicator(
     indicator_name: str,
     infile: str,
     outfile: str,
-    layer_key: str,
+    topic_key: str,
     feature_id: str,
     dataset_name: str,
     fid_field: str,
@@ -135,13 +135,13 @@ def create_indicator(
             bpolys = json.load(file)
         parameters = IndicatorBpolys(
             name=indicator_name,
-            topic=layer_key,
+            topic=topic_key,
             bpolys=bpolys,
         )
     else:
         parameters = IndicatorDatabase(
             name=indicator_name,
-            topic=layer_key,
+            topic=topic_key,
             dataset=dataset_name,
             feature_id=feature_id,
             fid_field=fid_field,
@@ -219,14 +219,14 @@ def create_report(
     default=None,
 )
 @click.option(
-    "--layer-key",
+    "--topic-key",
     "-l",
     type=click.Choice(
-        list(load_layer_definitions().keys()),
+        list(load_topic_definitions().keys()),
         case_sensitive=True,
     ),
     help=(
-        "Choose a layer. This defines which OSM features will be considered "
+        "Choose a topic. This defines which OSM features will be considered "
         "in the quality analysis."
     ),
     default=None,
@@ -235,13 +235,13 @@ def create_report(
 def create_all_indicators(
     dataset_name: str,
     indicator_name: str,
-    layer_key: str,
+    topic_key: str,
     force: bool,
 ):
     """Create all Indicators for all features of the given dataset.
 
-    The default is to create all Indicator/Layer combinations for all features of the
-    given dataset. This can be restricted to one Indicator type and/or one Layer
+    The default is to create all Indicator/Topic combinations for all features of the
+    given dataset. This can be restricted to one Indicator type and/or one Topic
     definition by providing the corresponding options.
     """
     click.echo(
@@ -258,7 +258,7 @@ def create_all_indicators(
         oqt.create_all_indicators(
             dataset_name,
             indicator_name=indicator_name,
-            layer_key=layer_key,
+            topic_key=topic_key,
             force=force,
         )
     )

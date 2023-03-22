@@ -20,9 +20,9 @@ class TestBaseReport:
         return get_layer_fixture("minimal")
 
     def test_as_feature(self, feature, layer):
-        indicator = MinimalIndicator(feature=feature, layer=layer)
+        indicator = MinimalIndicator(feature=feature, topic=layer)
         report = MinimalReport(feature=feature)
-        for _ in report.indicator_layer:
+        for _ in report.indicator_topic:
             report.indicators.append(indicator)
 
         feature = report.as_feature(flatten=True, include_data=True)
@@ -36,7 +36,7 @@ class TestBaseReport:
         report = MinimalReport(feature, blocking_red=True)
 
         # Mock indicator objects with a fixed result value
-        for i, _ in enumerate(report.indicator_layer):
+        for i, _ in enumerate(report.indicator_topic):
             if i == 0:
                 indicator = Mock()
                 indicator.result = Mock()
@@ -57,7 +57,7 @@ class TestBaseReport:
         report = MinimalReport(feature, blocking_undefined=True)
 
         # Mock indicator objects with a fixed result value
-        for i, _ in enumerate(report.indicator_layer):
+        for i, _ in enumerate(report.indicator_topic):
             if i == 0:
                 indicator = Mock()
                 indicator.result = Mock()
@@ -78,7 +78,7 @@ class TestBaseReport:
         report = MinimalReport(feature)
 
         # Mock indicator objects with a fixed result value
-        for i, _ in enumerate(report.indicator_layer):
+        for i, _ in enumerate(report.indicator_topic):
             if i == 0:
                 indicator = Mock()
                 indicator.result = Mock()
@@ -99,7 +99,7 @@ class TestBaseReport:
         report = MinimalReport(feature, blocking_red=True)
 
         # Mock indicator objects with a fixed result value
-        for _ in enumerate(report.indicator_layer):
+        for _ in enumerate(report.indicator_topic):
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.class_ = None

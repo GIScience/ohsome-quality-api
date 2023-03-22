@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 
 
 class SketchmapFitness(BaseReport):
@@ -11,11 +11,11 @@ class SketchmapFitness(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("mapping-saturation", "major_roads_length"),
-                IndicatorLayer("currentness", "major_roads_count"),
-                IndicatorLayer("currentness", "amenities"),
-                IndicatorLayer("poi-density", "poi"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "major_roads_length"),
+                IndicatorTopic("currentness", "major_roads_count"),
+                IndicatorTopic("currentness", "amenities"),
+                IndicatorTopic("poi-density", "poi"),
             ),
             feature=feature,
             blocking_red=blocking_red,

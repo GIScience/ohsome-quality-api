@@ -27,7 +27,7 @@ def layer():
 
 @oqt_vcr.use_cassette()
 def test_indicator(feature, layer, mock_env_oqt_data_dir):
-    indicator = BuildingCompleteness(feature=feature, layer=layer)
+    indicator = BuildingCompleteness(feature=feature, topic=layer)
 
     asyncio.run(indicator.preprocess())
     # Data

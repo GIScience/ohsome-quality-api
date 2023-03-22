@@ -8,7 +8,7 @@ from typing import Dict, List, Literal, Optional
 
 import yaml
 
-from ohsome_quality_analyst.base.layer import LayerDefinition
+from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
@@ -61,7 +61,7 @@ RASTER_DATASETS = (
     ),
 )
 
-# Possible indicator layer combinations
+# Possible indicator topic combinations
 INDICATOR_LAYER = (
     ("building-completeness", "building_area"),
     ("mapping-saturation", "building_count"),
@@ -162,7 +162,7 @@ INDICATOR_LAYER = (
 ATTRIBUTION_TEXTS = MappingProxyType(
     {
         "OSM": "© OpenStreetMap contributors",
-        "GHSL": "© European Union, 1995-2022, Global Human Settlement Layer Data",
+        "GHSL": "© European Union, 1995-2022, Global Human Settlement Topic Data",
         "VNL": "Earth Observation Group Nighttime Light Data",
     }
 )
@@ -225,8 +225,8 @@ def get_metadata(
         raise
 
 
-def load_layer_definitions() -> Dict:
-    """Read ohsome API parameters of all layer from YAML file.
+def load_topic_definitions() -> Dict:
+    """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
         A dict with all layers included.
@@ -237,24 +237,24 @@ def load_layer_definitions() -> Dict:
         return yaml.safe_load(f)
 
 
-def get_layer_definition(layer_key: str) -> LayerDefinition:
-    """Get ohsome API parameters of a single layer based on layer key.
+def get_topic_definition(topic_key: str) -> TopicDefinition:
+    """Get ohsome API parameters of a single topic based on topic key.
 
-    This is implemented outside the layer class to
-    be able to access layer definitions of all indicators without
+    This is implemented outside the topic class to
+    be able to access topic definitions of all indicators without
     instantiation of those.
     """
-    layers = load_layer_definitions()
+    topics = load_topic_definitions()
     try:
-        layer = layers[layer_key]
+        topic = topics[topic_key]
     except KeyError as error:
         raise KeyError(
-            "Invalid layer key. Valid layer keys are: " + str(layers.keys())
+            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
         ) from error
     # Avoid built-in function name `filter`
-    layer["filter_"] = layer.pop("filter")
-    layer["key"] = layer_key
-    return LayerDefinition(**layer)
+    topic["filter_"] = topic.pop("filter")
+    topic["key"] = topic_key
+    return TopicDefinition(**topic)
 
 
 def get_indicator_classes() -> Dict:
@@ -281,8 +281,8 @@ def get_report_names() -> List[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_layer_keys() -> List[str]:
-    return list(load_layer_definitions().keys())
+def get_topic_keys() -> List[str]:
+    return list(load_topic_definitions().keys())
 
 
 def get_dataset_names() -> List[str]:
@@ -322,11 +322,11 @@ def get_attribution(data_keys: list) -> str:
     return "; ".join([str(v) for v in filtered.values()])
 
 
-def get_valid_layers(indcator_name: str) -> tuple:
-    """Get valid Indicator/Layer combination of an Indicator."""
+def get_valid_topic(indcator_name: str) -> tuple:
+    """Get valid Indicator/Topic combination of an Indicator."""
     return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
 
 
-def get_valid_indicators(layer_key: str) -> tuple:
-    """Get valid Indicator/Layer combination of a Layer."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == layer_key])
+def get_valid_indicators(topic_key: str) -> tuple:
+    """Get valid Indicator/Topic combination of a Topic."""
+    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == topic_key])

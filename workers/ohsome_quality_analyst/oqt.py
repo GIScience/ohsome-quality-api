@@ -19,14 +19,14 @@ from ohsome_quality_analyst.api.request_models import (
     ReportDatabase,
 )
 from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
 from ohsome_quality_analyst.base.report import BaseReport as Report
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
     INDICATOR_LAYER,
-    get_layer_definition,
+    get_topic_definition,
     get_valid_indicators,
-    get_valid_layers,
+    get_valid_topic,
 )
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
@@ -155,12 +155,12 @@ async def _(
     created from scratch and then those results are saved to the database.
     """
     name = parameters.name.value
-    layer: Layer = get_layer_definition(parameters.layer_key.value)
+    topic: Topic = get_topic_definition(parameters.topic_key.value)
 
     logging.info("Fetching Indicator from database ...")
     logging.info("Feature id:     {0:4}".format(parameters.feature_id))
     logging.info("Indicator name: {0:4}".format(name))
-    logging.info("Layer name:     {0:4}".format(layer.name))
+    logging.info("Topic name:     {0:4}".format(topic.name))
 
     dataset = parameters.dataset.value
     if parameters.fid_field is not None:
@@ -173,7 +173,7 @@ async def _(
         feature_id = parameters.feature_id
     feature = await db_client.get_feature_from_db(dataset, feature_id)
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator_raw = indicator_class(layer=layer, feature=feature)
+    indicator_raw = indicator_class(topic=topic, feature=feature)
     failure = False
     try:
         indicator = await db_client.load_indicator_results(
@@ -187,7 +187,7 @@ async def _(
         indicator = await create_indicator(
             IndicatorBpolys(
                 name=name,
-                topic=parameters.layer_key.value,
+                topic=parameters.topic_key.value,
                 bpolys=feature,
             )
         )
@@ -203,16 +203,16 @@ async def _(
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
-    layer: Layer = get_layer_definition(parameters.layer_key.value)
+    topic: Topic = get_topic_definition(parameters.topic_key.value)
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
     logging.info("Indicator name: {0:4}".format(name))
-    logging.info("Layer name:     {0:4}".format(layer.name))
+    logging.info("Topic name:     {0:4}".format(topic.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature)
+    indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
@@ -232,16 +232,16 @@ async def _(
 ) -> Indicator:
     """Create an indicator from scratch."""
     name = parameters.name.value
-    layer = parameters.layer
+    topic = parameters.topic
     feature = parameters.bpolys
 
-    logging.info("Calculating Indicator with custom Layer ...")
+    logging.info("Calculating Indicator with custom Topic ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
     logging.info("Indicator name: {0:4}".format(name))
-    logging.info("Layer name:     {0:4}".format(layer.name))
+    logging.info("Topic name:     {0:4}".format(topic.name))
 
     indicator_class = name_to_class(class_type="indicator", name=name)
-    indicator = indicator_class(layer, feature)
+    indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
@@ -292,12 +292,12 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []
-    for indicator_name, layer_key in report.indicator_layer:
+    for indicator_name, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
                 IndicatorDatabase(
                     name=indicator_name,
-                    topic=layer_key,
+                    topic=topic_key,
                     dataset=dataset,
                     feature_id=feature_id,
                 ),
@@ -331,12 +331,12 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []
-    for indicator_name, layer_key in report.indicator_layer:
+    for indicator_name, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
                 IndicatorBpolys(
                     name=indicator_name,
-                    topic=layer_key,
+                    topic=topic_key,
                     bpolys=feature,
                 )
             )
@@ -350,34 +350,34 @@ async def _(parameters: ReportBpolys, *_args) -> Report:
 async def create_all_indicators(
     dataset: str,
     indicator_name: Optional[str] = None,
-    layer_key: Optional[str] = None,
+    topic_key: Optional[str] = None,
     force: bool = False,
 ) -> None:
-    """Create all indicator/layer combination for the given dataset.
+    """Create all indicator/topic combination for the given dataset.
 
-    Possible Indicator/Layer combinations are defined in `definitions.py`.
+    Possible Indicator/Topic combinations are defined in `definitions.py`.
     This functions executes `create_indicator()` function up to four times concurrently.
     """
-    if indicator_name is not None and layer_key is None:
-        layers = get_valid_layers(indicator_name)
-        indicator_layer = [(indicator_name, lay) for lay in layers]
-    elif indicator_name is None and layer_key is not None:
-        indicators = get_valid_indicators(layer_key)
-        indicator_layer = [(ind, layer_key) for ind in indicators]
-    elif indicator_name is not None and layer_key is not None:
-        indicator_layer = [(indicator_name, layer_key)]
+    if indicator_name is not None and topic_key is None:
+        topics = get_valid_topic(indicator_name)
+        indicator_topic = [(indicator_name, lay) for lay in topics]
+    elif indicator_name is None and topic_key is not None:
+        indicators = get_valid_indicators(topic_key)
+        indicator_topic = [(ind, topic_key) for ind in indicators]
+    elif indicator_name is not None and topic_key is not None:
+        indicator_topic = [(indicator_name, topic_key)]
     else:
-        indicator_layer = INDICATOR_LAYER
+        indicator_topic = INDICATOR_LAYER
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name_, layer_key_ in indicator_layer:
+        for indicator_name_, topic_key_ in indicator_topic:
             tasks.append(
                 create_indicator(
                     IndicatorDatabase(
                         name=indicator_name_,
-                        topic=layer_key_,
+                        topic=topic_key_,
                         dataset=dataset,
                         feature_id=fid,
                     ),

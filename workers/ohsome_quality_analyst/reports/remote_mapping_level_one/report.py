@@ -1,17 +1,17 @@
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 from ohsome_quality_analyst.utils.definitions import get_attribution
 
 
 class RemoteMappingLevelOne(BaseReport):
     def set_indicator_layer(self) -> None:
         super().__init__(
-            indicator_layer=(
+            indicator_topic=(
                 # TODO: Uncomment once implemented
-                # IndicatorLayer("GufComparison"], "building_area"),
-                IndicatorLayer("MappingSaturation", "building_count"),
-                IndicatorLayer("MappingSaturation", "major_roads_length"),
-                IndicatorLayer("Currentness", "building_count"),
-                IndicatorLayer("Currentness", "major_roads_count"),
+                # IndicatorTopic("GufComparison"], "building_area"),
+                IndicatorTopic("MappingSaturation", "building_count"),
+                IndicatorTopic("MappingSaturation", "major_roads_length"),
+                IndicatorTopic("Currentness", "building_count"),
+                IndicatorTopic("Currentness", "major_roads_count"),
             )
         )
 

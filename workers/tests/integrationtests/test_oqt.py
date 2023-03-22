@@ -155,7 +155,7 @@ class TestOqt(unittest.TestCase):
                 oqt.create_all_indicators(
                     dataset="regions",
                     indicator_name="minimal",
-                    layer_key="minimal",
+                    topic_key="minimal",
                 )
             )
 

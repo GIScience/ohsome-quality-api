@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
 
 
 class MapActionPoc(BaseReport):
@@ -11,17 +11,17 @@ class MapActionPoc(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("mapping-saturation", "mapaction_settlements_count"),
-                IndicatorLayer("mapping-saturation", "mapaction_major_roads_length"),
-                IndicatorLayer("mapping-saturation", "mapaction_rail_length"),
-                IndicatorLayer("mapping-saturation", "mapaction_lakes_area"),
-                IndicatorLayer("mapping-saturation", "mapaction_rivers_length"),
-                IndicatorLayer("currentness", "mapaction_settlements_count"),
-                IndicatorLayer("currentness", "mapaction_major_roads_length"),
-                IndicatorLayer("currentness", "mapaction_rail_length"),
-                IndicatorLayer("currentness", "mapaction_lakes_count"),
-                IndicatorLayer("currentness", "mapaction_rivers_length"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "mapaction_settlements_count"),
+                IndicatorTopic("mapping-saturation", "mapaction_major_roads_length"),
+                IndicatorTopic("mapping-saturation", "mapaction_rail_length"),
+                IndicatorTopic("mapping-saturation", "mapaction_lakes_area"),
+                IndicatorTopic("mapping-saturation", "mapaction_rivers_length"),
+                IndicatorTopic("currentness", "mapaction_settlements_count"),
+                IndicatorTopic("currentness", "mapaction_major_roads_length"),
+                IndicatorTopic("currentness", "mapaction_rail_length"),
+                IndicatorTopic("currentness", "mapaction_lakes_count"),
+                IndicatorTopic("currentness", "mapaction_rivers_length"),
             ),
             feature=feature,
             blocking_red=blocking_red,

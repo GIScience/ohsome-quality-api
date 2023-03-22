@@ -68,13 +68,13 @@ class TestApiRequestModels(unittest.TestCase):
             request_models.BaseReport(name="minimal", flatten="foo")
 
     def test_layer_key_valid(self):
-        # Test on BaseIndicator because validation of BaseLayer needs indicator name
-        request_models.BaseLayerName(topic="building_count")
+        # Test on BaseIndicator because validation of BaseTopic needs indicator name
+        request_models.BaseTopicName(topic="building_count")
 
     def test_layer_key_invalid(self):
-        # Test on BaseIndicator because validation of BaseLayer needs indicator name
+        # Test on BaseIndicator because validation of BaseTopic needs indicator name
         with self.assertRaises(ValueError):
-            request_models.BaseLayerName(topic="foo")
+            request_models.BaseTopicName(topic="foo")
 
     def test_layer_data_valid(self):
         layer = {
@@ -83,7 +83,7 @@ class TestApiRequestModels(unittest.TestCase):
             "description": "buz",
             "data": {},
         }
-        request_models.BaseLayerData(topic=layer)
+        request_models.BaseTopicData(topic=layer)
 
     def test_layer_data_invalid(self):
         for layer in (
@@ -93,7 +93,7 @@ class TestApiRequestModels(unittest.TestCase):
             {"key": "foo", "name": "bar", "description": "buz", "data": "fis"},
         ):
             with self.assertRaises(ValueError):
-                request_models.BaseLayerData(layer=layer)
+                request_models.BaseTopicData(layer=layer)
 
     def test_dataset_valid(self):
         request_models.BaseDatabase(dataset="regions", feature_id="3")

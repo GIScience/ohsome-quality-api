@@ -15,7 +15,7 @@ def get_indicator_properties_template():
             "name": str,
             "description": str,
         },
-        "layer": {
+        "topic": {
             "name": str,
             "description": str,
         },
