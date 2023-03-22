@@ -2,13 +2,7 @@
 
 ## Current Main
 
-<<<<<<< HEAD
-### Other Changes
 
-- Currentness indicator no longer takes deletions into account ([#459])
-
-[#459]: https://github.com/GIScience/ohsome-quality-analyst/pull/459
-=======
 ### Breaking Changes
 
 - change API parameter names for POST requests from snake case to lower hyphen ([#398])
@@ -33,6 +27,7 @@
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
 - overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
+- Currentness indicator no longer takes deletions into account ([#459])
 
 ### How to Upgrade
 
@@ -50,6 +45,7 @@
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
+[#459]: https://github.com/GIScience/ohsome-quality-analyst/pull/459
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
