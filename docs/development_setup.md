@@ -133,7 +133,7 @@ Alternative query the API from a terminal using CURL:
 ```bash
 # GET request for an indicator
 curl \
-    -X GET "http://127.0.0.1:8080/indicator/mapping-saturation?layerKey=building_count&dataset=regions&featureId=1" \
+    -X GET "http://127.0.0.1:8080/indicator/mapping-saturation?topic=building_count&dataset=regions&featureId=1" \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     | python -m json.tool > response.json
