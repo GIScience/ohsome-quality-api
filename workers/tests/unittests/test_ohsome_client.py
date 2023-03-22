@@ -293,6 +293,19 @@ class TestOhsomeClientBuildData(TestCase):
         )
         self.assertTrue(schema.is_valid(data))
 
+    def test_contribution_type(self) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "contributionType": str,
+            }
+        )
+        data = ohsome_client.build_data_dict(
+            self.layer, self.bpolys, contribution_type="deletions"
+        )
+        self.assertTrue(schema.is_valid(data))
+
 
 class TestOhsomeClientValidateQuery(TestCase):
     def setUp(self) -> None:
