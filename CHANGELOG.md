@@ -31,6 +31,7 @@
 - overhaul docker compose setup ([#483])
 - build(deps): update FastAPI to version 0.92.0 ([#488])
 - topics: tidy up and fix filters of core topic definitions ([#520])
+- refactor: move base classes to related modules ([#524])
 
 ### How to Upgrade
 
@@ -65,6 +66,7 @@
 [#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
 [#520]: https://github.com/GIScience/ohsome-quality-analyst/pull/520
+[#524]: https://github.com/GIScience/ohsome-quality-analyst/pull/524
 
 ## 0.14.1
 
