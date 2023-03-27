@@ -2,7 +2,7 @@
 
 Note:
     The topic key, name, description and the ohsome API endpoint and filter are defined
-    in the `layer_definitions.yaml` file in the `ohsome` module.
+    in the `topics.yaml` file in the `ohsome` module.
 """
 
 from typing import Optional
