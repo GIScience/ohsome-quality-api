@@ -7,8 +7,8 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from geojson import Feature
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.base.topic import BaseTopic as Topic
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 

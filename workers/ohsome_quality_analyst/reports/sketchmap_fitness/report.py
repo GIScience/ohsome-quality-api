@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
+from ohsome_quality_analyst.reports.base import BaseReport, IndicatorTopic
 
 
 class SketchmapFitness(BaseReport):
