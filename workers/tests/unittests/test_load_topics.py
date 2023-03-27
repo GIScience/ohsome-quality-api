@@ -2,11 +2,11 @@ import unittest
 
 from schema import Optional, Or, Schema
 
-from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.definitions import (
     get_topic_definition,
     load_topic_definitions,
 )
+from ohsome_quality_analyst.topics.models import TopicDefinition
 
 
 class TestLoadLayers(unittest.TestCase):
