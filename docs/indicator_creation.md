@@ -10,7 +10,7 @@ To illustrate the structure of an indicator we created a Class Diagram showing i
 
 ![UML class diagram of OQT](./img/UML-Class-Diagram.png)
 
-As you can see, the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Layer, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the layer can be set during object creation, and the result saves the result of an Indicator instance. 
+As you can see, the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Topic, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the topic can be set during object creation, and the result saves the result of an Indicator instance. 
 
 
 ### Result
@@ -25,9 +25,9 @@ The result object consists of following attributes:
 - `description (str)`: The result description.
 - `svg (str)`: Figure of the result as SVG
 
-### Layer
+### Topic
 
-In the OQT we used the term Layer to describe the result of an ohsome API query. If you need a custom layer from the ohsome API, you can specify new layers in [workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml](/workers/ohsome_quality_analyst/ohsome/layer_definitions.yaml). The layers are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [workers/ohsome_quality_analyst/ohsome/topics.yaml](/workers/ohsome_quality_analyst/ohsome/topics.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 
 ### Metadata
@@ -64,7 +64,7 @@ Your init should call the BaseIndicator init and thus should start like this:
 def __init__(
       self,
       dynamic: bool,
-      layer_key: str,
+      topic_key: str,
       dataset: str = None,
       feature_id: int = None,
       bpolys: FeatureCollection = None,
@@ -73,7 +73,7 @@ def __init__(
           dataset=dataset,
           feature_id=feature_id,
           dynamic=dynamic,
-          layer_key=layer_key,
+          topic_key=topic_key,
           bpolys=bpolys,
       )
 ```
