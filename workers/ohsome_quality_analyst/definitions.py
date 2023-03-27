@@ -62,7 +62,7 @@ RASTER_DATASETS = (
 )
 
 # Possible indicator topic combinations
-INDICATOR_LAYER = (
+INDICATOR_TOPIC = (
     ("building-completeness", "building_area"),
     ("mapping-saturation", "building_count"),
     ("mapping-saturation", "major_roads_length"),
@@ -322,11 +322,11 @@ def get_attribution(data_keys: list) -> str:
     return "; ".join([str(v) for v in filtered.values()])
 
 
-def get_valid_topic(indcator_name: str) -> tuple:
+def get_valid_topics(indcator_name: str) -> tuple:
     """Get valid Indicator/Topic combination of an Indicator."""
-    return tuple([tup[1] for tup in INDICATOR_LAYER if tup[0] == indcator_name])
+    return tuple([tup[1] for tup in INDICATOR_TOPIC if tup[0] == indcator_name])
 
 
 def get_valid_indicators(topic_key: str) -> tuple:
     """Get valid Indicator/Topic combination of a Topic."""
-    return tuple([tup[0] for tup in INDICATOR_LAYER if tup[1] == topic_key])
+    return tuple([tup[0] for tup in INDICATOR_TOPIC if tup[1] == topic_key])

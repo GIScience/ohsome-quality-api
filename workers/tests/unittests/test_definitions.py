@@ -83,5 +83,5 @@ class TestDefinitions(unittest.TestCase):
         )
 
     def test_get_valid_topics(self):
-        topics = definitions.get_valid_topic("minimal")
+        topics = definitions.get_valid_topics("minimal")
         self.assertEqual(topics, ("minimal",))

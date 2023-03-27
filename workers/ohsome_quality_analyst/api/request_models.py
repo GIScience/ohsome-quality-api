@@ -16,7 +16,7 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_LAYER,
+    INDICATOR_TOPIC,
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
@@ -138,7 +138,7 @@ class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
             indicator_topic = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator keys occurred.")
-        if indicator_topic not in INDICATOR_LAYER:
+        if indicator_topic not in INDICATOR_TOPIC:
             raise ValueError(
                 "Indicator topic combination is invalid: " + str(indicator_topic)
             )
@@ -154,7 +154,7 @@ class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
             indicator_topic = (values["name"].value, values["topic_key"].value)
         except KeyError:
             raise ValueError("An issue with the topic or indicator key occurred.")
-        if indicator_topic not in INDICATOR_LAYER:
+        if indicator_topic not in INDICATOR_TOPIC:
             raise ValueError(
                 "Indicator topic combination is invalid: " + str(indicator_topic)
             )

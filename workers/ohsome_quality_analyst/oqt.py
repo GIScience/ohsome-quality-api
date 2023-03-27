@@ -23,10 +23,10 @@ from ohsome_quality_analyst.base.report import BaseReport as Report
 from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_LAYER,
+    INDICATOR_TOPIC,
     get_topic_definition,
     get_valid_indicators,
-    get_valid_topic,
+    get_valid_topics,
 )
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
@@ -359,7 +359,7 @@ async def create_all_indicators(
     This functions executes `create_indicator()` function up to four times concurrently.
     """
     if indicator_name is not None and topic_key is None:
-        topics = get_valid_topic(indicator_name)
+        topics = get_valid_topics(indicator_name)
         indicator_topic = [(indicator_name, lay) for lay in topics]
     elif indicator_name is None and topic_key is not None:
         indicators = get_valid_indicators(topic_key)
@@ -367,7 +367,7 @@ async def create_all_indicators(
     elif indicator_name is not None and topic_key is not None:
         indicator_topic = [(indicator_name, topic_key)]
     else:
-        indicator_topic = INDICATOR_LAYER
+        indicator_topic = INDICATOR_TOPIC
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
