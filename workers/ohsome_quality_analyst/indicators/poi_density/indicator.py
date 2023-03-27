@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from geojson import Feature
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo

@@ -4,8 +4,8 @@ import geojson
 import pytest
 from geojson import Feature, FeatureCollection
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.definitions import get_topic_definition
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 

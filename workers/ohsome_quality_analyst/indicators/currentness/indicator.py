@@ -6,9 +6,9 @@ import dateutil.parser
 import geojson
 import matplotlib.pyplot as plt
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
 class Currentness(BaseIndicator):

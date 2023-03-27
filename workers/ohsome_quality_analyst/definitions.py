@@ -8,8 +8,8 @@ from typing import Dict, List, Literal, Optional
 
 import yaml
 
-from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,

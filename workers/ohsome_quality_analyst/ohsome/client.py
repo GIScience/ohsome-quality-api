@@ -15,9 +15,9 @@ try:
 except ImportError:
     from json import JSONDecodeError
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
-from ohsome_quality_analyst.base.topic import TopicData, TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.topics.models import TopicData, TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import OhsomeApiError, TopicDataSchemaError
 
 

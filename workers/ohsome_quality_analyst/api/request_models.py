@@ -14,7 +14,6 @@ import pydantic
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
 
-from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.definitions import (
     INDICATOR_TOPIC,
     get_dataset_names,
@@ -23,6 +22,7 @@ from ohsome_quality_analyst.definitions import (
     get_report_names,
     get_topic_keys,
 )
+from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
