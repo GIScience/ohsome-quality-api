@@ -231,8 +231,8 @@ def load_topic_definitions() -> Dict:
     Returns:
         A dict with all topics included.
     """
-    directory = get_module_dir("ohsome_quality_analyst.ohsome")
-    file = os.path.join(directory, "topics.yaml")
+    directory = get_module_dir("ohsome_quality_analyst.topics")
+    file = os.path.join(directory, "presets.yaml")
     with open(file, "r") as f:
         return yaml.safe_load(f)
 
