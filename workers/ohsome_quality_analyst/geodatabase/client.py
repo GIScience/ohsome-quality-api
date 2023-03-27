@@ -25,8 +25,8 @@ import geojson
 from asyncpg import Record
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator as Indicator
 from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.utils.exceptions import EmptyRecordError
 from ohsome_quality_analyst.utils.helper import json_serialize
 

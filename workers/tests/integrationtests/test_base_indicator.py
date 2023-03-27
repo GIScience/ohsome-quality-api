@@ -1,6 +1,6 @@
 import pytest
 
-from ohsome_quality_analyst.base.indicator import Result
+from ohsome_quality_analyst.indicators.base import Result
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
 from .utils import get_geojson_fixture, get_topic_fixture

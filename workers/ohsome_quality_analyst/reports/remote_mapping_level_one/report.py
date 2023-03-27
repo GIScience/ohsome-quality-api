@@ -1,4 +1,4 @@
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorTopic
+from ohsome_quality_analyst.reports.base import BaseReport, IndicatorTopic
 from ohsome_quality_analyst.utils.definitions import get_attribution
 
 
