@@ -7,14 +7,14 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from geojson import Feature
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
-class TagsRatio(BaseIndicator):
-    def __init__(self, layer: Layer, feature: Feature) -> None:
-        super().__init__(layer=layer, feature=feature)
+class AttributeCompleteness(BaseIndicator):
+    def __init__(self, topic: Topic, feature: Feature) -> None:
+        super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.count_all = None
@@ -22,7 +22,7 @@ class TagsRatio(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results_count = await ohsome_client.query(
-            self.layer,
+            self.topic,
             self.feature,
             ratio=True,
         )
@@ -34,7 +34,7 @@ class TagsRatio(BaseIndicator):
 
     def calculate(self) -> None:
         # self.result.value (ratio) can be of type float, NaN if no features of filter1
-        # are in the region or None if the layer has no filter2
+        # are in the region or None if the topic has no filter2
         if self.result.value == "NaN" or self.result.value is None:
             self.result.value = None
             return
@@ -115,7 +115,7 @@ class TagsRatio(BaseIndicator):
 
         black_patch = mpatches.Patch(
             color="black",
-            label=f"{self.layer.name} \nRatio: {round(self.result.value , 2)}",
+            label=f"{self.topic.name} \nRatio: {round(self.result.value, 2)}",
         )
         handles.append(black_patch)
 

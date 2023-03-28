@@ -2,7 +2,7 @@ import json
 import logging
 from io import StringIO
 from string import Template
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,8 +13,8 @@ from geojson import Feature
 from plotly.subplots import make_subplots
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
@@ -42,18 +42,17 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        layer: Layer,
+        topic: Topic,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
-        super().__init__(layer=layer, feature=feature)
+        super().__init__(topic=topic, feature=feature)
 
         self.time_range: str = time_range
 
         # The following attributes will be set during the life-cycle of the object.
         # Attributes needed for calculation
         self.values: list = []
-        self.latest_value: Union[None, int, float] = None
         self.timestamps: list = []
 
         self.upper_threshold = 0.97  # Threshold derived from Gröchenig et al.
@@ -68,14 +67,13 @@ class MappingSaturation(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
-            self.layer,
+            self.topic,
             self.feature,
             time=self.time_range,
         )
         for item in query_results["result"]:
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
-        self.latest_value = self.values[-1]
 
     def calculate(self) -> None:
         # Latest timestamp of ohsome API results
@@ -238,22 +236,23 @@ class MappingSaturation(BaseIndicator):
         self.result.figure = parsed_plot_json
 
     def check_edge_cases(self) -> str:
-        """Check edge cases
+        """Check edge cases.
 
         Returns
             str: Returns description of edge case. Empty string if no edge is present.
         """
-        # TODO: Add check for the case where the history is to short
-        # no data
-        if max(self.values) == 0:
+        if max(self.values) == 0:  # no data
             return "No features were mapped in this region."
-        # TODO: Decide on how many features have to be present to run models.
-        # Values can be a count of features (building )or length of features (streets)
-        # not enough data
-        elif np.sum(self.values) < 10:
-            return "Not enough data in this regions available."
-        # deleted data
-        elif self.latest_value == 0:
+        # TODO: Decide on the minimal number/length/area of features have to be present
+        # to run models (#511).
+        elif np.sum(self.values) < 10:  # not enough data
+            return "Not enough data in total available in this region."
+        elif len(self.values) < 36:  # not enough data points
+            return (
+                "Not enough data points available in this regions. "
+                + "The Mapping Saturation indicator needs data for at least 36 months."
+            )
+        elif self.values[-1] == 0:  # data deleted
             return "All mapped features in this region have been deleted."
         return ""
 

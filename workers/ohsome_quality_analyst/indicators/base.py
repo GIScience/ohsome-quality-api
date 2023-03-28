@@ -8,10 +8,9 @@ from io import StringIO
 from typing import Dict, Literal, Optional
 
 import matplotlib.pyplot as plt
-from dacite import from_dict
 from geojson import Feature
 
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.html_templates.template import (
     get_template,
@@ -68,14 +67,19 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def __init__(
         self,
-        layer: Layer,
+        topic: Topic,
         feature: Feature,
     ) -> None:
-        self.layer: Layer = layer
+        self.topic: Topic = topic
         self.feature: Feature = feature
         # setattr(object, key, value) could be used instead of relying on from_dict.
         metadata = get_metadata("indicators", type(self).__name__)
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
+        self.metadata: Metadata = Metadata(
+            name=metadata["name"],
+            description=metadata["description"],
+            label_description=metadata["label-description"],
+            result_description=metadata["result-description"],
+        )
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
@@ -100,10 +104,10 @@ class BaseIndicator(metaclass=ABCMeta):
                 "name": self.metadata.name,
                 "description": self.metadata.description,
             },
-            "layer": {
-                "key": self.layer.key,
-                "name": self.layer.name,
-                "description": self.layer.description,
+            "topic": {
+                "key": self.topic.key,
+                "name": self.topic.name,
+                "description": self.topic.description,
             },
             "result": result,
             **self.feature.properties,
@@ -126,7 +130,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @property
     def data(self) -> dict:
-        """All Indicator object attributes except feature, result, metadata and layer.
+        """All Indicator object attributes except feature, result, metadata and topic.
 
         Note:
             Attributes will be dumped and immediately loaded again by the `json`
@@ -137,7 +141,7 @@ class BaseIndicator(metaclass=ABCMeta):
         data = vars(self).copy()
         data.pop("result")
         data.pop("metadata")
-        data.pop("layer")
+        data.pop("topic")
         data.pop("feature")
         return json.loads(json.dumps(data, default=json_serialize).encode())
 
@@ -210,7 +214,7 @@ class BaseIndicator(metaclass=ABCMeta):
         template = get_template("indicator")
         self.result.html = template.render(
             indicator_name=self.metadata.name,
-            layer_name=self.layer.name,
+            topic_name=self.topic.name,
             svg=self.result.svg,
             result_description=self.result.description,
             indicator_description=self.metadata.description,

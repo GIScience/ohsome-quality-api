@@ -23,7 +23,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
@@ -41,7 +41,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
@@ -61,7 +61,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "-d",
@@ -78,7 +78,7 @@ class TestCliIntegration(unittest.TestCase):
     def test_create_report(self):
         result = self.runner.invoke(
             cli,
-            ["create-report", "-r", "Minimal", "-d", "regions", "-f", "3"],
+            ["create-report", "-r", "minimal", "-d", "regions", "-f", "3"],
         )
         self.assertEqual(result.exit_code, 0)
 
@@ -89,7 +89,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -107,7 +107,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "-d",
                 "regions",
                 "-f",
@@ -126,10 +126,10 @@ class TestCliIntegration(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(result.output, str)
 
-    def test_get_indicator_layer_combination(self):
+    def test_get_indicator_topic_combination(self):
         result = self.runner.invoke(
             cli,
-            ["-q", "list-indicator-layer-combination"],
+            ["-q", "list-indicator-topic-combination"],
         )
         self.assertEqual(result.exit_code, 0)
         self.assertIsInstance(result.output, str)

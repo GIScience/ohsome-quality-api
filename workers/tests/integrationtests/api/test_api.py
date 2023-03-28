@@ -10,8 +10,10 @@ import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_analyst.api.api import app
-
-from .api_response_schema import get_general_schema, get_result_schema
+from tests.integrationtests.api.response_schema import (
+    get_general_schema,
+    get_result_schema,
+)
 
 
 class TestApi(unittest.TestCase):
@@ -50,8 +52,8 @@ class TestApi(unittest.TestCase):
         for region in response_content["result"]:
             self.assertIsInstance(region, dict)
 
-    def test_list_indicator_layer_combinations(self):
-        url = "/indicator-layer-combinations"
+    def test_list_indicator_topic_combinations(self):
+        url = "/indicator-topic-combinations"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

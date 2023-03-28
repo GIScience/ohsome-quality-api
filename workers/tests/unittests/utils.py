@@ -2,8 +2,8 @@ import os
 
 import geojson
 
-from ohsome_quality_analyst.base.layer import LayerDefinition
-from ohsome_quality_analyst.definitions import get_layer_definition
+from ohsome_quality_analyst.base.topic import TopicDefinition
+from ohsome_quality_analyst.definitions import get_topic_definition
 
 
 def get_geojson_fixture(name):
@@ -12,5 +12,5 @@ def get_geojson_fixture(name):
         return geojson.load(f)
 
 
-def get_layer_fixture(name: str) -> LayerDefinition:
-    return get_layer_definition(name)
+def get_topic_fixture(name: str) -> TopicDefinition:
+    return get_topic_definition(name)

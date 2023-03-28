@@ -11,7 +11,7 @@ from rpy2.rinterface_lib.embedded import RRuntimeError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 import ohsome_quality_analyst.ohsome.client as ohsome_client
-from ohsome_quality_analyst.definitions import get_layer_definition
+from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 
 
@@ -38,13 +38,13 @@ def plot(xdata, ydata, model_list):
     plt.show()
 
 
-async def query_ohsome_api(features, layers) -> list:
+async def query_ohsome_api(features, topics) -> list:
     time_range = "2008-01-01//P1M"
     results = []
     for feature in features:
-        for layer in layers:
+        for topic in topics:
             query_results = await ohsome_client.query(
-                layer,
+                topic,
                 feature.geometry,
                 time=time_range,
             )
@@ -52,11 +52,11 @@ async def query_ohsome_api(features, layers) -> list:
     return results
 
 
-def get_layers(layer_keys) -> list:
-    layers = []
-    for layer_key in layer_keys:
-        layers.append(get_layer_definition(layer_key))
-    return layers
+def get_topics(topic_keys) -> list:
+    topics = []
+    for topic_key in topic_keys:
+        topics.append(get_topic_definition(topic_key))
+    return topics
 
 
 async def get_features() -> list:
@@ -120,8 +120,8 @@ if __name__ == "__main__":
             values = pickle.load(f)
     else:
         features_ = asyncio.run(get_features())
-        layers_ = get_layers(("building_count", "major_roads_length"))
-        values = asyncio.run(query_ohsome_api(features_, layers_))
+        topic_ = get_topics(("building_count", "major_roads_length"))
+        values = asyncio.run(query_ohsome_api(features_, topic_))
         with open(file_path, "wb") as f:
             pickle.dump(values, f)
     run_all_models(values)

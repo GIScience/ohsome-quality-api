@@ -1,6 +1,6 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
+from ohsome_quality_analyst.reports.base import BaseReport, IndicatorTopic
 
 
 class MapActionPoc(BaseReport):
@@ -11,17 +11,17 @@ class MapActionPoc(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("MappingSaturation", "mapaction_settlements_count"),
-                IndicatorLayer("MappingSaturation", "mapaction_major_roads_length"),
-                IndicatorLayer("MappingSaturation", "mapaction_rail_length"),
-                IndicatorLayer("MappingSaturation", "mapaction_lakes_area"),
-                IndicatorLayer("MappingSaturation", "mapaction_rivers_length"),
-                IndicatorLayer("Currentness", "mapaction_settlements_count"),
-                IndicatorLayer("Currentness", "mapaction_major_roads_length"),
-                IndicatorLayer("Currentness", "mapaction_rail_length"),
-                IndicatorLayer("Currentness", "mapaction_lakes_count"),
-                IndicatorLayer("Currentness", "mapaction_rivers_length"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "mapaction_settlements_count"),
+                IndicatorTopic("mapping-saturation", "mapaction_major_roads_length"),
+                IndicatorTopic("mapping-saturation", "mapaction_rail_length"),
+                IndicatorTopic("mapping-saturation", "mapaction_lakes_area"),
+                IndicatorTopic("mapping-saturation", "mapaction_rivers_length"),
+                IndicatorTopic("currentness", "mapaction_settlements_count"),
+                IndicatorTopic("currentness", "mapaction_major_roads_length"),
+                IndicatorTopic("currentness", "mapaction_rail_length"),
+                IndicatorTopic("currentness", "mapaction_lakes_count"),
+                IndicatorTopic("currentness", "mapaction_rivers_length"),
             ),
             feature=feature,
             blocking_red=blocking_red,

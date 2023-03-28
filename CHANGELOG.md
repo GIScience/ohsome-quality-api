@@ -6,20 +6,81 @@
 
 - Add plot creation via plotly to `MappingSaturation` indicator ([#499])
 
+### Breaking Changes
+
+- change API parameter names for POST requests from snake case to lower hyphen ([#398])
+- change indicator and report keys from lower camel case to lower hyphen ([#398])
+- rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
+- remove JRC related layers and report `jrc_requirements` ([#503])
+- rename `TagsRatio` indicator to `attribute-completeness` ([#500])
+- requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
+- remove GET request for indicators and reports ([#516])
+
+### Bug Fixes
+
+- mapping-saturation: add missing edge case detection for too few data points. ([#512])
+
+### New Features
+
+- disable size limit for Mapping Saturation ([#498])
+- add `project` attribute to topics ([#504])
+- layer/topic are now pydantic models instead of dataclasses ([#517])
+
 ### Other Changes
 
 - fix pre-commit hooks ([#482])
 - update asyncpg from 0.25 to 0.27 ([#481])
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
-- feat: disable size limit for Mapping Saturation ([#498])
-- Overhaul docker compose setup ([#483])
+- overhaul docker compose setup ([#483])
+- build(deps): update FastAPI to version 0.92.0 ([#488])
+- topics: tidy up and fix filters of core topic definitions ([#520])
+- refactor: move base classes to related modules ([#524])
+
+### How to Upgrade
+
+- rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
+- rename API parameters for POST requests from camel case to lower hyphen ([#398])
+- rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
+  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
+- API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
+
+| old API parameter | new API parameter |
+| ---               | ---               |
+| `layerKey`        | `topic`           |
+| `includeSvg`      | `include-svg`     |
+| `includeHtml`     | `include-html`    |
+| `featureId`       | `feature-id`      |
+| `fidField`        | `indicators`      |
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
+[#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
 [#481]: https://github.com/GIScience/ohsome-quality-analyst/pull/481
 [#482]: https://github.com/GIScience/ohsome-quality-analyst/pull/482
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
+[#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
 [#499]: https://github.com/GIScience/ohsome-quality-analyst/pull/499
+[#500]: https://github.com/GIScience/ohsome-quality-analyst/pull/500
+[#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
+[#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503
+[#504]: https://github.com/GIScience/ohsome-quality-analyst/pull/504
+[#512]: https://github.com/GIScience/ohsome-quality-analyst/pull/512
+[#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
+[#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
+[#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
+[#520]: https://github.com/GIScience/ohsome-quality-analyst/pull/520
+[#524]: https://github.com/GIScience/ohsome-quality-analyst/pull/524
+
+## 0.14.1
+
+### Bug Fixes
+
+- mapping-saturation: allow result value above 100% ([#479])
+
+[#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
+>>>>>>> main
 
 ## 0.14.0
 

@@ -6,12 +6,14 @@ from datetime import datetime
 import geojson
 
 from ohsome_quality_analyst.geodatabase import client as db_client
-from ohsome_quality_analyst.indicators.tags_ratio.indicator import TagsRatio
+from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
+    AttributeCompleteness,
+)
 
-from .utils import get_layer_fixture, oqt_vcr
+from .utils import get_topic_fixture, oqt_vcr
 
 
-class TestIndicatorRatio(unittest.TestCase):
+class TestIndicatorAttributeCompleteness(unittest.TestCase):
     def setUp(self):
         # Heidelberg
         self.feature = asyncio.run(
@@ -20,9 +22,9 @@ class TestIndicatorRatio(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test(self):
-        indicator = TagsRatio(
+        indicator = AttributeCompleteness(
             feature=self.feature,
-            layer=get_layer_fixture("jrc_health_count"),
+            topic=get_topic_fixture("building_count"),
         )
         self.assertIsNotNone(indicator.attribution())
 
@@ -49,8 +51,8 @@ class TestIndicatorRatio(unittest.TestCase):
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = TagsRatio(
-            layer=get_layer_fixture("jrc_health_count"),
+        indicator = AttributeCompleteness(
+            topic=get_topic_fixture("clc_leaf_type"),
             feature=feature,
         )
         asyncio.run(indicator.preprocess())

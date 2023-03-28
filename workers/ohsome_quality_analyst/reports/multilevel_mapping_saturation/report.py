@@ -1,7 +1,7 @@
 from geojson import Feature
 
-from ohsome_quality_analyst.base.report import BaseReport, IndicatorLayer
 from ohsome_quality_analyst.definitions import get_attribution
+from ohsome_quality_analyst.reports.base import BaseReport, IndicatorTopic
 
 
 class MultilevelMappingSaturation(BaseReport):
@@ -12,11 +12,11 @@ class MultilevelMappingSaturation(BaseReport):
         blocking_undefined: bool = None,
     ):
         super().__init__(
-            indicator_layer=(
-                IndicatorLayer("MappingSaturation", "infrastructure_lines"),
-                IndicatorLayer("MappingSaturation", "poi"),
-                IndicatorLayer("MappingSaturation", "lulc"),
-                IndicatorLayer("MappingSaturation", "building_count"),
+            indicator_topic=(
+                IndicatorTopic("mapping-saturation", "infrastructure_lines"),
+                IndicatorTopic("mapping-saturation", "poi"),
+                IndicatorTopic("mapping-saturation", "lulc"),
+                IndicatorTopic("mapping-saturation", "building_count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

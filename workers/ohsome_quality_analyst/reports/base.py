@@ -6,15 +6,14 @@ from dataclasses import asdict, dataclass
 from typing import List, Literal, NamedTuple, Tuple
 
 import numpy as np
-from dacite import from_dict
 from geojson import Feature
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.html_templates.template import (
     get_template,
     get_traffic_light,
 )
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
@@ -41,16 +40,16 @@ class Result:
         return labels.get(self.class_, "undefined")
 
 
-class IndicatorLayer(NamedTuple):
+class IndicatorTopic(NamedTuple):
     indicator_name: str
-    layer_key: str
+    topic_key: str
 
 
 class BaseReport(metaclass=ABCMeta):
     def __init__(
         self,
         feature: Feature,
-        indicator_layer: Tuple[IndicatorLayer] = None,
+        indicator_topic: Tuple[IndicatorTopic] = None,
         blocking_red: bool = False,
         blocking_undefined: bool = False,
     ):
@@ -58,10 +57,14 @@ class BaseReport(metaclass=ABCMeta):
 
         self.indicators: List[BaseIndicator] = []
         metadata = get_metadata("reports", type(self).__name__)
-        self.metadata: Metadata = from_dict(data_class=Metadata, data=metadata)
-        self.indicator_layer = indicator_layer  # Defines indicator+layer combinations
+        self.indicator_topic = indicator_topic  # Defines indicator+topic combinations
         self.blocking_undefined = blocking_undefined
         self.blocking_red = blocking_red
+        self.metadata: Metadata = Metadata(
+            name=metadata["name"],
+            description=metadata["description"],
+            label_description=metadata["label-description"],
+        )
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 

@@ -5,7 +5,7 @@ Define Click command options to avoid redundancy.
 import click
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.definitions import load_layer_definitions, load_metadata
+from ohsome_quality_analyst.definitions import load_metadata, load_topic_definitions
 
 indicator_name = click.option(
     "--indicator-name",
@@ -59,16 +59,16 @@ dataset_name = click.option(
     default=None,
 )
 
-layer_key = click.option(
-    "--layer-key",
+topic_key = click.option(
+    "--topic-key",
     "-l",
     required=True,
     type=click.Choice(
-        list(load_layer_definitions().keys()),
+        list(load_topic_definitions().keys()),
         case_sensitive=True,
     ),
     help=(
-        "Choose a layer. This defines which OSM features will be considered "
+        "Choose a topic. This defines which OSM features will be considered "
         "in the quality analysis."
     ),
 )

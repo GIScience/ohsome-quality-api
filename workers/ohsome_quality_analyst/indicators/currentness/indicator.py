@@ -6,8 +6,8 @@ import dateutil.parser
 import geojson
 import matplotlib.pyplot as plt
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
@@ -31,10 +31,10 @@ class Currentness(BaseIndicator):
 
     def __init__(
         self,
-        layer: Layer,
+        topic: Topic,
         feature: geojson.Feature,
     ) -> None:
-        super().__init__(layer=layer, feature=feature)
+        super().__init__(topic=topic, feature=feature)
         self.threshold_4 = 2
         self.threshold_3 = 3
         self.threshold_2 = 4
@@ -57,21 +57,21 @@ class Currentness(BaseIndicator):
             self.end,
         )
         # Fetch number of features
-        response = await ohsome_client.query(self.layer, self.feature)
+        response = await ohsome_client.query(self.topic, self.feature)
         self.element_count = response["result"][0]["value"]
         self.result.timestamp_osm = dateutil.parser.isoparse(
             response["result"][0]["timestamp"]
         )
         # Fetch all contributions of past years
         contributions_yearly = await ohsome_client.query(
-            self.layer,
+            self.topic,
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
         )
         # Fetch contributions of current year
         contributions_current_year = await ohsome_client.query(
-            self.layer,
+            self.topic,
             self.feature,
             time=current_year_interval,
             count_latest_contributions=True,
@@ -123,7 +123,7 @@ class Currentness(BaseIndicator):
 
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
-            layer_name=self.layer.name,
+            topic_name=self.topic.name,
             end_date=self.end,
             elements=int(self.contributions_sum),
             green=round(contrib_rel_cum_green * 100, 2),

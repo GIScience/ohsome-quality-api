@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Union
 
-from fastapi import Body, Depends, FastAPI, Request, status
+from fastapi import Body, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,22 +32,22 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    INDICATOR_LAYER,
+    INDICATOR_TOPIC,
     get_attribution,
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
-    get_layer_keys,
     get_report_names,
+    get_topic_keys,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
-    LayerDataSchemaError,
     OhsomeApiError,
     RasterDatasetNotFoundError,
     RasterDatasetUndefinedError,
     SizeRestrictionError,
+    TopicDataSchemaError,
 )
 from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
 
@@ -137,7 +137,7 @@ async def validation_exception_handler(
 
 
 @app.exception_handler(HexCellsNotFoundError)
-@app.exception_handler(LayerDataSchemaError)
+@app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(RasterDatasetNotFoundError)
 @app.exception_handler(RasterDatasetUndefinedError)
@@ -146,7 +146,7 @@ async def oqt_exception_handler(
     request: Request,
     exception: Union[
         HexCellsNotFoundError,
-        LayerDataSchemaError,
+        TopicDataSchemaError,
         OhsomeApiError,
         RasterDatasetNotFoundError,
         RasterDatasetUndefinedError,
@@ -173,27 +173,14 @@ def empty_api_response() -> dict:
     }
 
 
-@app.get("/indicator", tags=["indicator"])
-async def get_indicator(parameters=Depends(IndicatorDatabase)):
-    """Request an Indicator for an AOI defined by OQT.
-
-    To request an Indicator for a custom AOI please use the POST method.
-    """
-    return await _fetch_indicator(parameters)
-
-
 @app.post("/indicator", tags=["indicator"])
 async def post_indicator(
     parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
-):
+) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    return await _fetch_indicator(parameters)
-
-
-async def _fetch_indicator(parameters) -> CustomJSONResponse:
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
         size_restriction=True,
@@ -219,27 +206,14 @@ async def _fetch_indicator(parameters) -> CustomJSONResponse:
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get("/report", tags=["report"])
-async def get_report(parameters=Depends(ReportDatabase)):
-    """Request an already calculated Report for an AOI defined by OQT.
-
-    To request an Report for a custom AOI please use the POST method.
-    """
-    return await _fetch_report(parameters)
-
-
 @app.post("/report", tags=["report"])
 async def post_report(
     parameters: Union[ReportBpolys, ReportDatabase] = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
-):
+) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
-    return await _fetch_report(parameters)
-
-
-async def _fetch_report(parameters: Union[ReportBpolys, ReportDatabase]):
     geojson_object = await oqt.create_report_as_geojson(
         parameters,
         size_restriction=True,
@@ -280,11 +254,11 @@ async def get_available_regions(asGeoJSON: bool = False):
         return response
 
 
-@app.get("/indicator-layer-combinations")
+@app.get("/indicator-topic-combinations")
 async def get_indicator_layer_combinations():
-    """Get names of available indicator-layer combinations."""
+    """Get names of available indicator-topic combinations."""
     response = empty_api_response()
-    response["result"] = INDICATOR_LAYER
+    response["result"] = INDICATOR_TOPIC
     return response
 
 
@@ -308,7 +282,7 @@ async def dataset_names():
 async def layer_names():
     """Get names of available layers."""
     response = empty_api_response()
-    response["result"] = get_layer_keys()
+    response["result"] = get_topic_keys()
     return response
 
 

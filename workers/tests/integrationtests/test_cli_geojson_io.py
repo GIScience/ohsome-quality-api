@@ -36,7 +36,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-indicator",
                     "-i",
-                    "Minimal",
+                    "minimal",
                     "-l",
                     "minimal",
                     "--infile",
@@ -62,7 +62,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "--infile",
@@ -88,7 +88,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-indicator",
                     "-i",
-                    "Minimal",
+                    "minimal",
                     "-l",
                     "minimal",
                     "--infile",
@@ -114,7 +114,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "--infile",
@@ -140,7 +140,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-indicator",
                     "-i",
-                    "Minimal",
+                    "minimal",
                     "-l",
                     "minimal",
                     "--infile",
@@ -166,7 +166,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-indicator",
                 "-i",
-                "Minimal",
+                "minimal",
                 "-l",
                 "minimal",
                 "--infile",
@@ -192,7 +192,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "Minimal",
+                    "minimal",
                     "--infile",
                     infile,
                     "--outfile",
@@ -216,7 +216,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "--infile",
                 infile,
             ],
@@ -241,7 +241,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "Minimal",
+                    "minimal",
                     "--infile",
                     infile,
                     "--outfile",
@@ -265,7 +265,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "--infile",
                 infile,
             ],
@@ -290,7 +290,7 @@ class TestCliIntegration(unittest.TestCase):
                 [
                     "create-report",
                     "-r",
-                    "Minimal",
+                    "minimal",
                     "--infile",
                     infile,
                     "--outfile",
@@ -314,7 +314,7 @@ class TestCliIntegration(unittest.TestCase):
             [
                 "create-report",
                 "-r",
-                "Minimal",
+                "minimal",
                 "--infile",
                 infile,
             ],

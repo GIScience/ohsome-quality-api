@@ -16,6 +16,6 @@ class TestGetDefaultFigure(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        indicator = Minimal(feature=feature, layer=mock.Mock())
+        indicator = Minimal(feature=feature, topic=mock.Mock())
         self.assertIsInstance(indicator.result.svg, str)
         # TODO: Validate SVG

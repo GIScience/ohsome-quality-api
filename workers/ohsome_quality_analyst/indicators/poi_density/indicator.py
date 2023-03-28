@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from geojson import Feature
 
-from ohsome_quality_analyst.base.indicator import BaseIndicator
-from ohsome_quality_analyst.base.layer import BaseLayer as Layer
+from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
+from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 # threshold values defining the color of the traffic light
@@ -17,8 +17,8 @@ from ohsome_quality_analyst.ohsome import client as ohsome_client
 
 
 class PoiDensity(BaseIndicator):
-    def __init__(self, layer: Layer, feature: Feature) -> None:
-        super().__init__(layer=layer, feature=feature)
+    def __init__(self, topic: Topic, feature: Feature) -> None:
+        super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 30
         self.threshold_red = 10
         self.area_sqkm = None
@@ -31,7 +31,7 @@ class PoiDensity(BaseIndicator):
         return self.threshold_red * area
 
     async def preprocess(self) -> None:
-        query_results_count = await ohsome_client.query(self.layer, self.feature)
+        query_results_count = await ohsome_client.query(self.topic, self.feature)
         self.area_sqkm = await get_area_of_bpolys(self.feature.geometry)
         self.count = query_results_count["result"][0]["value"]
         timestamp = query_results_count["result"][0]["timestamp"]
@@ -39,7 +39,7 @@ class PoiDensity(BaseIndicator):
 
     def calculate(self) -> None:
         # TODO: we need to think about how we handle this
-        #  if there are different layers
+        #  if there are different topics
         self.result.value = self.count / self.area_sqkm  # density
         description = Template(self.metadata.result_description).substitute(
             result=f"{self.result.value:.2f}"
