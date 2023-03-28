@@ -9,7 +9,6 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from dateutil.parser import isoparse
 from geojson import Feature
-from plotly.subplots import make_subplots
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.base.topic import BaseTopic as Topic
@@ -181,7 +180,7 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        fig = make_subplots()
+        fig = go.Figure()
         fig.add_trace(
             go.Scatter(
                 x=self.timestamps,
@@ -216,14 +215,13 @@ class MappingSaturation(BaseIndicator):
             title_text="Mapping Saturation",
             bargap=0.0,
             plot_bgcolor="rgb(207, 226, 243)",
-            autosize=False,
             legend=dict(
                 orientation="v",
                 borderwidth=1,
                 xanchor="center",
-                yanchor="middle",
+                yanchor="top",
                 x=0.5,
-                y=-0.45,
+                y=-0.1,
             ),
         )
 
