@@ -9,7 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from ohsome_quality_analyst import (
     __author__,
@@ -49,7 +49,11 @@ from ohsome_quality_analyst.utils.exceptions import (
     SizeRestrictionError,
     TopicDataSchemaError,
 )
-from ohsome_quality_analyst.utils.helper import json_serialize, name_to_class
+from ohsome_quality_analyst.utils.helper import (
+    json_serialize,
+    name_to_class,
+    snake_to_hyphen,
+)
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -171,6 +175,27 @@ def empty_api_response() -> dict:
             "url": ATTRIBUTION_URL,
         },
     }
+
+
+# TODO: Belongs to temporary endpoint defined below
+class MappingSaturationModel(BaseModel):
+    bpolys: Union[Feature, FeatureCollection]
+    topic_key: str
+
+    class Config:
+        alias_generator = snake_to_hyphen
+
+
+# TODO: Make this endpoint general and remove `/indicator` endpoint below
+@app.post("/indicators/mapping-saturation", tags=["indicator"])
+async def post_indicator_mapping_saturation(
+    parameters: MappingSaturationModel,
+) -> CustomJSONResponse:
+    """Request an Indicator for an AOI."""
+    parameters = IndicatorBpolys(
+        name="mapping-saturation", topic=parameters.topic_key, bpolys=parameters.bpolys
+    )
+    return await post_indicator(parameters)
 
 
 @app.post("/indicator", tags=["indicator"])
