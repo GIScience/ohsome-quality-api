@@ -1,4 +1,3 @@
-import json
 import logging
 from io import StringIO
 from string import Template
@@ -231,9 +230,7 @@ class MappingSaturation(BaseIndicator):
         fig.update_xaxes(title_text="Date")
         fig.update_yaxes(title_text="Value")
 
-        plot_json = pio.to_json(fig)
-        parsed_plot_json = json.loads(plot_json)
-        self.result.figure = parsed_plot_json
+        self.result.figure = pio.to_json(fig)
 
     def check_edge_cases(self) -> str:
         """Check edge cases.
