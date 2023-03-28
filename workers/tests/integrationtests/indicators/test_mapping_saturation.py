@@ -2,7 +2,8 @@ import asyncio
 from datetime import datetime
 
 import numpy as np
-import plotly.io
+import plotly.graph_objects as pgo
+import plotly.io as pio
 import pytest
 
 from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
@@ -128,10 +129,14 @@ class TestFigure:
         return i
 
     @pytest.mark.skip(reason="Only for manual testing.")
-    def test_figure_manual(self, indicator):
+    def test_create_figure_manual(self, indicator):
         indicator.create_figure_plotly()
-        fig = plotly.io.from_json(indicator.result.figure)
-        plotly.io.show(fig)
+        pio.show(indicator.result.figure)
+
+    def test_create_figure(self, indicator):
+        indicator.create_figure_plotly()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
 
 @oqt_vcr.use_cassette
