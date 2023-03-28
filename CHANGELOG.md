@@ -80,7 +80,6 @@
 - mapping-saturation: allow result value above 100% ([#479])
 
 [#479]: https://github.com/GIScience/ohsome-quality-analyst/pull/479
->>>>>>> main
 
 ## 0.14.0
 
