@@ -59,12 +59,6 @@ def list_reports():
     click.echo(metadata)
 
 
-@cli.command("list-layers")
-def list_layers():
-    """List available layers and how they are defined (ohsome API parameters)."""
-    click.echo("Deprecated")
-
-
 @cli.command("list-datasets")
 def list_datasets():
     """List available datasets."""
