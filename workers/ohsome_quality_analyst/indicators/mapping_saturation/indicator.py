@@ -192,19 +192,10 @@ class MappingSaturation(BaseIndicator):
             pgo.Scatter(
                 x=self.timestamps,
                 y=self.best_fit.fitted_values,
-                name="Fitted data ({})".format(self.best_fit.name),
+                name="Fitted data",
             ),
         )
-        fig.update_layout(
-            title_text="Mapping Saturation",
-            legend=dict(
-                borderwidth=1,
-                xanchor="center",
-                yanchor="top",
-                x=0.5,
-                y=-0.1,
-            ),
-        )
+        fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(title_text="Date")
         fig.update_yaxes(title_text="Value")
         raw = fig.to_dict()
