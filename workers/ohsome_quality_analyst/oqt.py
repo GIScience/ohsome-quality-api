@@ -18,7 +18,6 @@ from ohsome_quality_analyst.api.request_models import (
     ReportBpolys,
     ReportDatabase,
 )
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
     INDICATOR_TOPIC,
@@ -28,6 +27,7 @@ from ohsome_quality_analyst.definitions import (
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,

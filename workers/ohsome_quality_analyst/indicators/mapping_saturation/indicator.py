@@ -10,10 +10,10 @@ from dateutil.parser import isoparse
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
-from ohsome_quality_analyst.base.topic import BaseTopic as Topic
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
 class MappingSaturation(BaseIndicator):
