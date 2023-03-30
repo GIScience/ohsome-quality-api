@@ -5,6 +5,7 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
+import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
@@ -173,6 +174,33 @@ class MappingSaturation(BaseIndicator):
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
         plt.close("all")
+
+    def create_figure_plotly(self) -> None:
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+
+        fig = pgo.Figure()
+        fig.add_trace(
+            pgo.Scatter(
+                x=self.timestamps,
+                y=self.values,
+                name="OSM data",
+            ),
+        )
+        fig.add_trace(
+            pgo.Scatter(
+                x=self.timestamps,
+                y=self.best_fit.fitted_values,
+                name="Fitted data",
+            ),
+        )
+        fig.update_layout(title_text="Mapping Saturation")
+        fig.update_xaxes(title_text="Date")
+        fig.update_yaxes(title_text="Value")
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
 
     def check_edge_cases(self) -> str:
         """Check edge cases.

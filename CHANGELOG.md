@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### New Features
+
+- Add plot creation via plotly to `MappingSaturation` indicator ([#499])
+
 ### Breaking Changes
 
 - change API parameter names for POST requests from snake case to lower hyphen ([#398])
@@ -59,6 +63,7 @@
 [#483]: https://github.com/GIScience/ohsome-quality-analyst/pull/483
 [#488]: https://github.com/GIScience/ohsome-quality-analyst/pull/488
 [#498]: https://github.com/GIScience/ohsome-quality-analyst/pull/498
+[#499]: https://github.com/GIScience/ohsome-quality-analyst/pull/499
 [#500]: https://github.com/GIScience/ohsome-quality-analyst/pull/500
 [#501]: https://github.com/GIScience/ohsome-quality-analyst/pull/501
 [#503]: https://github.com/GIScience/ohsome-quality-analyst/pull/503

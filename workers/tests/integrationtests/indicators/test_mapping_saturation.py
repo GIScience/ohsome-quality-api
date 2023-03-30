@@ -2,6 +2,8 @@ import asyncio
 from datetime import datetime
 
 import numpy as np
+import plotly.graph_objects as pgo
+import plotly.io as pio
 import pytest
 
 from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
@@ -115,6 +117,26 @@ class TestCalculation:
                 v = properties[f"{key}.fitted_values.{str(j)}"]
                 assert not np.isnan(v)
                 assert np.isfinite(v)
+
+
+class TestFigure:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
+    def test_create_figure_manual(self, indicator):
+        indicator.create_figure_plotly()
+        pio.show(indicator.result.figure)
+
+    def test_create_figure(self, indicator):
+        indicator.create_figure_plotly()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
 
 @oqt_vcr.use_cassette
