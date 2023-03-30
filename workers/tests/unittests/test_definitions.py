@@ -1,7 +1,7 @@
 import unittest
 
 from ohsome_quality_analyst import definitions
-from ohsome_quality_analyst.base.topic import TopicDefinition
+from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 

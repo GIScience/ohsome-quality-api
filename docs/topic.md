@@ -6,7 +6,7 @@ specific set of features, aggregated information or user statistics derived from
 OpenStreetMap database. Each topic is defined by the ohsome API `endpoint` and 
 parameters for the `filter`. In addition, each topic definition has a key, name and 
 description. Topic definitions are written down as YAML file at 
-`workers/ohsome_quality_analyst/ohsome/topics.yaml`
+`workers/ohsome_quality_analyst/topics/presets.yaml`
 
 Example:
 
@@ -31,7 +31,7 @@ Helpful resources for this task are:
   https://docs.ohsome.org/ohsome-api/stable/filter.html
 
 Second translate the query parameters into a topic definition and extent the file 
-`workers/ohsome_quality_analyst/ohsome/topics.yaml`.
+`workers/ohsome_quality_analyst/topics/presets.yaml`.
 
 Thirdly specify for which indicator class this topic definition is a valid input. Add 
 those indicator/topic combinations to the `INDICATOR_TOPIC` tuple in the 

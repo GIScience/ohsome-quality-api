@@ -8,8 +8,8 @@ from typing import Dict, List, Literal, Optional
 
 import yaml
 
-from ohsome_quality_analyst.base.topic import TopicDefinition
 from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
@@ -231,8 +231,8 @@ def load_topic_definitions() -> Dict:
     Returns:
         A dict with all topics included.
     """
-    directory = get_module_dir("ohsome_quality_analyst.ohsome")
-    file = os.path.join(directory, "topics.yaml")
+    directory = get_module_dir("ohsome_quality_analyst.topics")
+    file = os.path.join(directory, "presets.yaml")
     with open(file, "r") as f:
         return yaml.safe_load(f)
 

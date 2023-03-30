@@ -8,8 +8,8 @@ import httpx
 from geojson import FeatureCollection
 from schema import Schema
 
-from ohsome_quality_analyst.base.topic import TopicData
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.exceptions import (
     OhsomeApiError,
     SchemaError,
