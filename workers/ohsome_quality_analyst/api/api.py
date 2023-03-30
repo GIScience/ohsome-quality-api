@@ -334,13 +334,13 @@ async def list_fid_fields():
     return response
 
 
-@app.get("/metadata/topics", tags=["report"])
+@app.get("/metadata/topics", tags=["metadata"])
 async def metadata_topic() -> TopicListResponse:
     """Get topics."""
     return TopicListResponse(result=load_topic_definitions())
 
 
-@app.get("/metadata/topics/{key}", tags=["report"])
+@app.get("/metadata/topics/{key}", tags=["metadata"])
 async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
     """Get topic by key."""
     return TopicResponse(result=get_topic_definition(key.value))
