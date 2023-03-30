@@ -177,7 +177,7 @@ def empty_api_response() -> dict:
     }
 
 
-# TODO: Belongs to temporary endpoint defined below
+# TODO (Experimental): Belongs to temporary endpoint defined below
 class MappingSaturationModel(BaseModel):
     bpolys: Union[Feature, FeatureCollection]
     topic_key: str
@@ -186,8 +186,8 @@ class MappingSaturationModel(BaseModel):
         alias_generator = snake_to_hyphen
 
 
-# TODO: Make this endpoint general and remove `/indicator` endpoint below
-@app.post("/indicators/mapping-saturation", tags=["indicator"])
+# TODO (Experimental): Make this endpoint general and remove `/indicator` endpoint below
+@app.post("/indicators/mapping-saturation", tags=["indicator"], include_in_schema=False)
 async def post_indicator_mapping_saturation(
     parameters: MappingSaturationModel,
 ) -> CustomJSONResponse:
