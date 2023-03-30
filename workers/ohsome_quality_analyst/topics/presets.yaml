@@ -12,6 +12,10 @@ building_count:
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
   ratio_filter: building=* and building!=no and geometry:polygon and height=* or building:levels=*
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
   project: core
 
 building_area:
@@ -20,6 +24,8 @@ building_area:
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
   filter: building=* and building!=no and geometry:polygon
+  indicators:
+    - building-completeness
   project: core
 
 major_roads_count:
@@ -37,6 +43,8 @@ major_roads_count:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
+  indicators:
+    - currentness
   project: core
 
 major_roads_length:
@@ -54,6 +62,9 @@ major_roads_length:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
+  indicators:
+    - mapping-saturation
+    - attribute-completeness
   project: core
 
 railway_length:
@@ -63,6 +74,9 @@ railway_length:
   endpoint: elements/length
   filter: |
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 poi:
@@ -119,6 +133,10 @@ poi:
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
     wilderness_hut, zoo))
     or (vaccination = covid19)
+  indicators:
+    - mapping-saturation
+    - currentness
+    - poi-density
   project: core
 
 schools:
@@ -127,6 +145,9 @@ schools:
   endpoint: elements/count
   filter: amenity=school
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 kindergarten:
@@ -135,6 +156,9 @@ kindergarten:
   endpoint: elements/count
   filter: amenity=kindergarten
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 clinics:
@@ -143,6 +167,9 @@ clinics:
   endpoint: elements/count
   filter: amenity=clinic or healthcare=clinic
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 doctors:
@@ -151,6 +178,9 @@ doctors:
   endpoint: elements/count
   filter: amenity=doctors or healthcare=doctors
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 bus_stops:
@@ -159,6 +189,9 @@ bus_stops:
   endpoint: elements/count
   filter: highway=bus_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 tram_stops:
@@ -167,6 +200,9 @@ tram_stops:
   endpoint: elements/count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 subway_stations:
@@ -175,6 +211,9 @@ subway_stations:
   endpoint: elements/count
   filter: station=subway
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 supermarkets:
@@ -183,6 +222,9 @@ supermarkets:
   endpoint: elements/count
   filter: shop=supermarket
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 marketplaces:
@@ -191,6 +233,9 @@ marketplaces:
   endpoint: elements/count
   filter: amenity=marketplace
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 parks:
@@ -199,6 +244,9 @@ parks:
   endpoint: elements/count
   filter: leisure=park
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 forests:
@@ -207,6 +255,9 @@ forests:
   endpoint: elements/count
   filter: landuse=forest
   source: https://wiki.openstreetmap.org/wiki/Forest
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 fitness_centres:
@@ -215,6 +266,9 @@ fitness_centres:
   endpoint: elements/count
   filter: leisure in (fitness_centre, sports_centre)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 fire_stations:
@@ -223,6 +277,9 @@ fire_stations:
   endpoint: elements/count
   filter: amenity=fire_station
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 hospitals:
@@ -231,6 +288,9 @@ hospitals:
   endpoint: elements/count
   filter: amenity=hospital or healthcare=hospital
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
+  indicators:
+    - mapping-saturation
+    - currentness
   project: core
 
 ### SKETCHMAP PROJECT ###
@@ -241,6 +301,9 @@ amenities:
   endpoint: elements/count
   source: https://wiki.openstreetmap.org/wiki/Key:amenity
   filter: amenity=*
+  indicators:
+    - mapping-saturation
+    - currentness
   project: sketchmap
 
 landmarks:
@@ -255,6 +318,7 @@ landmarks:
     shop=* or tourism in (hotel, attraction) or
     amenity in (fuel, pharmacy, hospital, school, college, university,
     police, fire_station, restaurant, townhall)
+  indicators: []
   project: sketchmap
 
 ### MAPACTION PROJECT ###
@@ -265,6 +329,9 @@ mapaction_settlements_count:
     Number of settlements (cities)
   endpoint: elements/count
   filter: place=city and type:node
+  indicators:
+    - mapping-saturation
+    - currentness
   project: mapaction
 
 mapaction_capital_city_count:
@@ -273,6 +340,7 @@ mapaction_capital_city_count:
     Number of capital cities
   endpoint: elements/count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
+  indicators: []
   project: mapaction
 
 mapaction_rail_length:
@@ -281,6 +349,9 @@ mapaction_rail_length:
     Length of objects identified as rails (large railways)
   endpoint: elements/length
   filter: railway=rail and type:way
+  indicators:
+    - mapping-saturation
+    - currentness
   project: mapaction
 
 mapaction_major_roads_length:
@@ -289,6 +360,9 @@ mapaction_major_roads_length:
     Length of objects identified as major roads (primary, motorway and trunk)
   endpoint: elements/length
   filter: highway in (motorway, trunk, primary) and type:way
+  indicators:
+    - mapping-saturation
+    - currentness
   project: mapaction
 
 mapaction_lakes_count:
@@ -297,6 +371,8 @@ mapaction_lakes_count:
     Number of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/count
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  indicators:
+    - currentness
   project: mapaction
 
 mapaction_lakes_area:
@@ -305,6 +381,8 @@ mapaction_lakes_area:
     Area of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/area
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
+  indicators:
+    - mapping-saturation
   project: mapaction
 
 mapaction_rivers_length:
@@ -313,6 +391,9 @@ mapaction_rivers_length:
     Length of objects identified as rivers (or riverbanks)
   endpoint: elements/length
   filter: waterway in (riverbank,river) and type:way
+  indicators:
+    - mapping-saturation
+    - currentness
   project: mapaction
 
 ### IDEALVGI PROJECT ###
@@ -333,6 +414,9 @@ lulc:
     https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
     Schultz et al 2017 https://doi.org/10.1016/j.jag.2017.07.014;
     https://www.geog.uni-heidelberg.de/gis/ideal_en.html
+  indicators:
+    - mapping-saturation
+    - currentness
   project: idealvgi
 
 ### EXPANSE PROJECT ###
@@ -342,6 +426,9 @@ local_food_shops:
   description: Count of local food shops
   endpoint: elements/count
   filter: shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 fast_food_restaurants:
@@ -349,6 +436,9 @@ fast_food_restaurants:
   description: Count of fast food restaurants
   endpoint: elements/count
   filter: amenity=fast_food
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 restaurants:
@@ -356,6 +446,9 @@ restaurants:
   description: Count of restaurants
   endpoint: elements/count
   filter: amenity=restaurant or amenity=cafe
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 convenience_stores:
@@ -363,6 +456,9 @@ convenience_stores:
   description: Count of convenience stores
   endpoint: elements/count
   filter: shop=convenience
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 pubs_and_biergartens:
@@ -370,6 +466,9 @@ pubs_and_biergartens:
   description: Count of pubs and biergartens
   endpoint: elements/count
   filter: amenity=pub or amenity=biergarten or amenity=bar
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 alcohol_and_beverages:
@@ -377,6 +476,9 @@ alcohol_and_beverages:
   description: Count of shops selling alcohol
   endpoint: elements/count
   filter: shop=alcohol or shop=beverages
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 sweets_and_pasteries:
@@ -384,6 +486,9 @@ sweets_and_pasteries:
   description: Count of shops selling sweets and pasteries
   endpoint: elements/count
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
+  indicators:
+    - mapping-saturation
+    - currentness
   project: expanse
 
 ### LAND-USE LAYERS (CORINE PROJECT) ###
@@ -394,6 +499,9 @@ clc_arable_land_area:
     Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=farmland or crop=*) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_permanent_crops_area:
@@ -401,6 +509,9 @@ clc_permanent_crops_area:
   description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
   endpoint: elements/area
   filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_pastures_area:
@@ -408,6 +519,9 @@ clc_pastures_area:
   description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_forest_area:
@@ -416,6 +530,9 @@ clc_forest_area:
   endpoint: elements/area
   filter: |
     (natural=wood or landuse=forest) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_leaf_type:
@@ -427,6 +544,10 @@ clc_leaf_type:
   ratio_filter: |
     (natural=wood or landuse=forest) and
     leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
   project: corine-land-cover
 
 clc_shrub_area:
@@ -434,6 +555,9 @@ clc_shrub_area:
   description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
   endpoint: elements/area
   filter: (natural in (scrub, fell, tundra, shrubbery) or landuse=meadow) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_open_spaces_area:
@@ -442,6 +566,9 @@ clc_open_spaces_area:
   endpoint: elements/area
   filter: |
     natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_wetland_area:
@@ -449,6 +576,9 @@ clc_wetland_area:
   description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
   endpoint: elements/area
   filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_water_area:
@@ -459,6 +589,9 @@ clc_water_area:
     (natural in (water, spring, hot_spring)
     or water in (lake, reservoir, pond, oxbow, basin))
     and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 clc_waterway_len:
@@ -466,6 +599,9 @@ clc_waterway_len:
   description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
   endpoint: elements/length
   filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
   project: corine-land-cover
 
 ### MISC TOPICS ###
@@ -475,6 +611,8 @@ minimal:
   description: A minimal topic definition for testing purposes
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
+  indicators:
+    - minimal
   project: misc
 
 ### EXPERIMENTAL TOPICS ###
@@ -484,4 +622,7 @@ infrastructure_lines:
   description: Line objects related to infrastructure
   endpoint: elements/length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
   project: experimental
