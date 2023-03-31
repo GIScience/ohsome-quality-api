@@ -11,6 +11,7 @@ def building_count():
         ),
         "endpoint": "elements/count",
         "filter": "building=* and building!=no and geometry:polygon",
+        "indicators": ["mapping-saturation", "currentness", "attribute-completeness"],
         "ratio_filter": (
             "building=* and building!=no and geometry:polygon and height=* or "
             + "building:levels=*"
