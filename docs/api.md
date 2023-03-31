@@ -182,9 +182,9 @@ response = requests.post(url, json=parameters)
   },
   "properties": {
     "metadata.name": "GHS-POP Comparison Buildings",
-    "metadata.description": "Comparison between population density and feature density.\nThis can give an estimate if mapping has been completed.\n",
+    "metadata.description": "Comparison between population density and feature density. This can give an estimate if mapping has been completed. ",
     "topic.name": "Building Count",
-    "topic.description": "All buildings as defined by all objects tagged with 'building=*'.\n",
+    "topic.description": "All buildings as defined by all objects tagged with 'building=*'. ",
     "result.timestamp_oqt": "2021-10-05T09:33:30.671060+00:00",
     "result.timestamp_osm": "2021-09-26T20:00:00+00:00",
     "result.label": "green",
@@ -297,26 +297,26 @@ response = requests.post(url, json=parameters)
     "report": {
       "metadata": {
         "name": "Minimal",
-        "description": "This report shows the quality for two indicators:\nMapping Saturation and Currentness.\nIt's main function is to test the interactions between\ndatabase, api and website.\n"
+        "description": "This report shows the quality for two indicators: Mapping Saturation and Currentness. It's main function is to test the interactions between database, api and website. "
       },
       "result": {
         "class_": 5,
-        "description": "All indicators show a good quality.\nThe data in this regions seems to be completely mapped.\n"
+        "description": "All indicators show a good quality. The data in this regions seems to be completely mapped. "
       }
     },
     "indicators": [
       {
         "metadata": {
           "name": "Mapping Saturation",
-          "description": "Calculate if mapping has saturated.\nHigh saturation has been reached if the growth of the fitted curve is minimal.\n"
+          "description": "Calculate if mapping has saturated. High saturation has been reached if the growth of the fitted curve is minimal. "
         },
         "topic": {
           "key": "building_count",
           "name": "Building Count",
-          "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
+          "description": "All buildings as defined by all objects tagged with 'building=*'. "
         },
         "result": {
-          "description": "The saturation of the last 3 years is 98.4%.\nHigh saturation has been reached (97% < Saturation ≤ 100%).\n",
+          "description": "The saturation of the last 3 years is 98.4%. High saturation has been reached (97% < Saturation ≤ 100%). ",
           "timestamp_oqt": "2022-09-07T20:00:24.897112+00:00",
           "timestamp_osm": "2022-08-01T00:00:00+00:00",
           "value": 0.9839766580301241,
@@ -327,15 +327,15 @@ response = requests.post(url, json=parameters)
       {
         "metadata": {
           "name": "Currentness",
-          "description": "Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same\ntime range.\nRefers to data quality in respect to currentness.\n"
+          "description": "Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same time range. Refers to data quality in respect to currentness. "
         },
         "topic": {
           "key": "building_count",
           "name": "Building Count",
-          "description": "All buildings as defined by all objects tagged with 'building=*'.\n"
+          "description": "All buildings as defined by all objects tagged with 'building=*'. "
         },
         "result": {
-          "description": "Over 50% of the 41638.0 features (Building Count) were edited in the last 4 years.\nThis is a rather high value and indicates that the map features \nare very unlike to be outdated. This refers to good data quality in \nrespect to currentness.\n",
+          "description": "Over 50% of the 41638.0 features (Building Count) were edited in the last 4 years. This is a rather high value and indicates that the map features  are very unlike to be outdated. This refers to good data quality in  respect to currentness. ",
           "timestamp_oqt": "2022-09-07T20:00:24.897112+00:00",
           "timestamp_osm": "2022-08-28T08:00:00+00:00",
           "value": 0.8,
