@@ -337,7 +337,7 @@ async def list_fid_fields():
 @app.get("/metadata/topics", tags=["metadata"])
 async def metadata_topic() -> TopicListResponse:
     """Get topics."""
-    return TopicListResponse(result=load_topic_definitions())
+    return TopicListResponse(result=list(load_topic_definitions().values()))
 
 
 @app.get("/metadata/topics/{key}", tags=["metadata"])

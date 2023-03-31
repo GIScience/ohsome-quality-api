@@ -84,7 +84,7 @@ class TestDefinitions(unittest.TestCase):
 def test_load_topic_definitions():
     topics = definitions.load_topic_definitions()
     for topic in topics:
-        assert isinstance(topic, TopicDefinition)
+        assert isinstance(topics[topic], TopicDefinition)
 
 
 def test_get_topic_definitions():

@@ -225,7 +225,7 @@ def get_metadata(
         raise
 
 
-def load_topic_definitions() -> List[TopicDefinition]:
+def load_topic_definitions() -> Dict[str, TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
@@ -235,11 +235,11 @@ def load_topic_definitions() -> List[TopicDefinition]:
     file = os.path.join(directory, "presets.yaml")
     with open(file, "r") as f:
         raw = yaml.safe_load(f)
-    topics = []
+    topics = {}
     for k, v in raw.items():
         v["filter"] = v.pop("filter")
         v["key"] = k
-        topics.append(TopicDefinition(**v))
+        topics[k] = TopicDefinition(**v)
     return topics
 
 
@@ -247,10 +247,10 @@ def get_topic_definition(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
     try:
-        return next(filter(lambda t: t.key == topic_key, topics))
-    except StopIteration as error:
+        return topics[topic_key]
+    except KeyError as error:
         raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str([t.key for t in topics])
+            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
         ) from error
 
 
@@ -279,7 +279,7 @@ def get_report_names() -> List[str]:
 
 
 def get_topic_keys() -> List[str]:
-    return [t.key for t in load_topic_definitions()]
+    return [str(t) for t in load_topic_definitions().keys()]
 
 
 def get_dataset_names() -> List[str]:
