@@ -34,7 +34,7 @@ from ohsome_quality_analyst.api.response_models import TopicListResponse, TopicR
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    INDICATOR_TOPIC,
+    get_all_valid_topic_indicator_combinations,
     get_attribution,
     get_dataset_names,
     get_fid_fields,
@@ -298,7 +298,7 @@ async def get_available_regions(asGeoJSON: bool = False):
 async def get_indicator_layer_combinations():
     """Get names of available indicator-topic combinations."""
     response = empty_api_response()
-    response["result"] = INDICATOR_TOPIC
+    response["result"] = get_all_valid_topic_indicator_combinations()
     return response
 
 

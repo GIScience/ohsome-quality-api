@@ -15,12 +15,12 @@ from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
 
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_TOPIC,
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
     get_report_names,
     get_topic_keys,
+    get_valid_indicators,
 )
 from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
@@ -135,12 +135,16 @@ class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
     @classmethod
     def validate_indicator_topic(cls, values):
         try:
-            indicator_topic = (values["name"].value, values["topic_key"].value)
+            indicator = values["name"].value
+            topic = values["topic_key"].value
         except KeyError:
             raise ValueError("An issue with the topic or indicator keys occurred.")
-        if indicator_topic not in INDICATOR_TOPIC:
+        if indicator not in get_valid_indicators(topic):
             raise ValueError(
-                "Indicator topic combination is invalid: " + str(indicator_topic)
+                "Indicator topic combination is invalid: "
+                + str(indicator)
+                + ", "
+                + str(topic)
             )
         else:
             return values
@@ -151,12 +155,16 @@ class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
     @classmethod
     def validate_indicator_topic(cls, values):
         try:
-            indicator_topic = (values["name"].value, values["topic_key"].value)
+            indicator = values["name"].value
+            topic = values["topic_key"].value
         except KeyError:
             raise ValueError("An issue with the topic or indicator key occurred.")
-        if indicator_topic not in INDICATOR_TOPIC:
+        if indicator not in get_valid_indicators(topic):
             raise ValueError(
-                "Indicator topic combination is invalid: " + str(indicator_topic)
+                "Indicator topic combination is invalid: "
+                + str(indicator)
+                + ", "
+                + str(topic)
             )
         else:
             return values
