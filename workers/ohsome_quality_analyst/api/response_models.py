@@ -1,4 +1,5 @@
 """API response models"""
+from typing import Dict, List
 
 from pydantic import BaseModel
 
@@ -10,7 +11,7 @@ from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 class ResponseBase(BaseModel):
     api_version: str = __version__
-    attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
+    attribution: Dict[str, str] = {"url": ATTRIBUTION_URL}
 
     class Config:
         """Pydantic config class."""
@@ -25,4 +26,4 @@ class TopicResponse(ResponseBase):
 
 
 class TopicListResponse(ResponseBase):
-    result: list[TopicDefinition]
+    result: List[TopicDefinition]
