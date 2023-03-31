@@ -36,6 +36,7 @@
 - refactor(topic): rename layer to topic ([#521])
 - refactor(topic): move `base/topic.py` to `topics/models.py` and `layer_defintions.yaml` to `topics/presets.yaml` ([#523])
 - refactor: move base classes to related modules ([#524])
+- refactor: move topic-indicator-combinations to topic definition ([#528])
 
 ### How to Upgrade
 
@@ -70,11 +71,12 @@
 [#515]: https://github.com/GIScience/ohsome-quality-analyst/pull/515
 [#516]: https://github.com/GIScience/ohsome-quality-analyst/pull/516
 [#517]: https://github.com/GIScience/ohsome-quality-analyst/pull/517
+[#519]: https://github.com/GIScience/ohsome-quality-analyst/pull/519
 [#520]: https://github.com/GIScience/ohsome-quality-analyst/pull/520
 [#521]: https://github.com/GIScience/ohsome-quality-analyst/pull/521
 [#523]: https://github.com/GIScience/ohsome-quality-analyst/pull/523
 [#524]: https://github.com/GIScience/ohsome-quality-analyst/pull/524
-[#519]: https://github.com/GIScience/ohsome-quality-analyst/pull/519
+[#528]: https://github.com/GIScience/ohsome-quality-analyst/pull/528
 
 ## 0.14.1
 
