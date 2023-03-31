@@ -21,8 +21,8 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-03-19T21:00:00Z\",\n
-      \   \"value\" : 30653.0,\n    \"value2\" : 8755.0,\n    \"ratio\" : 0.285616\n
+      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-03-26T21:00:00Z\",\n
+      \   \"value\" : 30656.0,\n    \"value2\" : 8756.0,\n    \"ratio\" : 0.285621\n
       \ } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -44,7 +44,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Thu, 23 Mar 2023 10:42:14 GMT
+      - Fri, 31 Mar 2023 16:37:36 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -58,7 +58,7 @@ interactions:
     http_version: HTTP/1.1
     status_code: 200
 - request:
-    body: filter=%28natural%3Dwood+or+landuse%3Dforest%29+and+geometry%3Apolygon%0A&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter2=%28natural%3Dwood+or+landuse%3Dforest%29+and%0Aleaf_type+in+%28broadleaved%2C+needleleaved%2C+mixed%29+and+geometry%3Apolygon%0A
+    body: filter=%28natural%3Dwood+or+landuse%3Dforest%29+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&filter2=%28natural%3Dwood+or+landuse%3Dforest%29+and+leaf_type+in+%28broadleaved%2C+needleleaved%2C+mixed%29+and+geometry%3Apolygon
     headers:
       accept:
       - '*/*'
@@ -67,7 +67,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '606'
+      - '598'
       content-type:
       - application/x-www-form-urlencoded
       host:
@@ -79,7 +79,7 @@ interactions:
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-03-19T21:00:00Z\",\n
+      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-03-26T21:00:00Z\",\n
       \   \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -101,7 +101,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Thu, 23 Mar 2023 10:42:19 GMT
+      - Fri, 31 Mar 2023 16:37:41 GMT
       keep-alive:
       - timeout=5, max=100
       server:
