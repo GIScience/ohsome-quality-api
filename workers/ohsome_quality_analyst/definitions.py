@@ -225,7 +225,7 @@ def get_metadata(
         raise
 
 
-def load_topic_definitions() -> list[TopicDefinition]:
+def load_topic_definitions() -> List[TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
