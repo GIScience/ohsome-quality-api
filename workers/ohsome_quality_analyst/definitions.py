@@ -319,11 +319,13 @@ def get_attribution(data_keys: list) -> str:
     return "; ".join([str(v) for v in filtered.values()])
 
 
-def get_valid_topics(indcator_name: str) -> tuple:
+def get_valid_topics(indicator_name: str) -> tuple:
     """Get valid Indicator/Topic combination of an Indicator."""
-    return tuple([tup[1] for tup in INDICATOR_TOPIC if tup[0] == indcator_name])
+    td = load_topic_definitions()
+    return tuple(topic for topic in td if indicator_name in td[topic].indicators)
 
 
 def get_valid_indicators(topic_key: str) -> tuple:
     """Get valid Indicator/Topic combination of a Topic."""
-    return tuple([tup[0] for tup in INDICATOR_TOPIC if tup[1] == topic_key])
+    td = load_topic_definitions()
+    return tuple(td[topic_key].indicators)

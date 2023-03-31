@@ -5,7 +5,7 @@ Note:
     in the `presets.yaml` file in the `topic` module.
 """
 
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -26,6 +26,7 @@ class TopicDefinition(BaseTopic):
 
     endpoint: str
     filter: str
+    indicators: List[str]
     project: str
     source: Optional[str] = None
     ratio_filter: Optional[str] = None
