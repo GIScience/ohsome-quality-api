@@ -10,7 +10,7 @@ def building_count():
             "All buildings as defined by all objects tagged with 'building=*'.\n"
         ),
         "endpoint": "elements/count",
-        "filter_": "building=* and building!=no and geometry:polygon",
+        "filter": "building=* and building!=no and geometry:polygon",
         "ratio_filter": (
             "building=* and building!=no and geometry:polygon and height=* or "
             + "building:levels=*"

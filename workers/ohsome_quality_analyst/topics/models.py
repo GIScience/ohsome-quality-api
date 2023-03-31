@@ -25,7 +25,7 @@ class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: str
-    filter_: str
+    filter: str
     project: str
     source: Optional[str] = None
     ratio_filter: Optional[str] = None

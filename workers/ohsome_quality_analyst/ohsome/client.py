@@ -161,7 +161,7 @@ def build_data_dict(
     Raises:
         TypeError: If 'bpolys' is not of type Feature or FeatureCollection.
     """
-    data = {"filter": topic.filter_}
+    data = {"filter": topic.filter}
     if isinstance(bpolys, Feature):
         data["bpolys"] = json.dumps(FeatureCollection([bpolys]))
     elif isinstance(bpolys, FeatureCollection):

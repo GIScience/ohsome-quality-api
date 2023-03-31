@@ -237,7 +237,7 @@ def load_topic_definitions() -> List[TopicDefinition]:
         raw = yaml.safe_load(f)
     topics = []
     for k, v in raw.items():
-        v["filter_"] = v.pop("filter")
+        v["filter"] = v.pop("filter")
         v["key"] = k
         topics.append(TopicDefinition(**v))
     return topics
