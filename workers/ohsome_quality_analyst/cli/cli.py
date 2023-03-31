@@ -16,7 +16,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.config import configure_logging, get_config_value
 from ohsome_quality_analyst.definitions import (
-    INDICATOR_TOPIC,
+    get_all_valid_topic_indicator_combinations,
     get_topic_keys,
     load_metadata,
 )
@@ -88,7 +88,7 @@ def get_available_regions():
 @cli.command("list-indicator-topic-combination")
 def get_indicator_layer_combination():
     """List all possible indicator-topic-combinations."""
-    for combination in INDICATOR_TOPIC:
+    for combination in get_all_valid_topic_indicator_combinations():
         click.echo(combination)
 
 
