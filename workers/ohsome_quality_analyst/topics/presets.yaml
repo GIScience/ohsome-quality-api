@@ -7,7 +7,7 @@
 
 building_count:
   name: Building Count
-  description: |
+  description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
@@ -20,7 +20,7 @@ building_count:
 
 building_area:
   name: Building Area
-  description: |
+  description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/area
   filter: building=* and building!=no and geometry:polygon
@@ -30,16 +30,16 @@ building_area:
 
 major_roads_count:
   name: Major Roads Count
-  description: |
+  description: >-
     The road network defined by all objects which hold the principal tags for
     the road network as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/count
-  filter: |
+  filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way
-  ratio_filter: |
+  ratio_filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
@@ -49,16 +49,16 @@ major_roads_count:
 
 major_roads_length:
   name: Major Roads Length
-  description: |
+  description: >-
     The road network defined by all objects which hold the principal tags for
     the road network and their link roads as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements/length
-  filter: |
+  filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way
-  ratio_filter: |
+  ratio_filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
@@ -69,10 +69,10 @@ major_roads_length:
 
 railway_length:
   name: Railways
-  description: |
+  description: >-
     Railway networks.
   endpoint: elements/length
-  filter: |
+  filter: >-
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
   indicators:
     - mapping-saturation
@@ -84,7 +84,7 @@ poi:
   description: Points of interest
   endpoint: elements/count
   source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
-  filter: |
+  filter: >-
     (aeroway in (aerodrome, helipad, heliport))
     or (amenity in (animal_boarding, animal_shelter, arts_centre, atm, baby_hatch, bank, bar, bbq, bench,
     bicycle_parking, bicycle_rental, bicycle_repair_station, biergarten, boat_sharing, brothel, bureau_de_change,
@@ -308,11 +308,11 @@ amenities:
 
 landmarks:
   name: Landmarks for Orientation
-  description: |
+  description: >-
     Landmarks for orientation in a city such as natural features, public transport stations and amenities.
   endpoint: elements/count
   source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
-  filter: |
+  filter: >-
     natural=peak or leisure=park or boundary=national_park or
     natural=water or waterway=* or highway=bus_stop or railway=station or
     shop=* or tourism in (hotel, attraction) or
@@ -325,7 +325,7 @@ landmarks:
 
 mapaction_settlements_count:
   name: MapAction Settlements Count
-  description: |
+  description: >-
     Number of settlements (cities)
   endpoint: elements/count
   filter: place=city and type:node
@@ -336,7 +336,7 @@ mapaction_settlements_count:
 
 mapaction_capital_city_count:
   name: MapAction Capital City Count
-  description: |
+  description: >-
     Number of capital cities
   endpoint: elements/count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
@@ -345,7 +345,7 @@ mapaction_capital_city_count:
 
 mapaction_rail_length:
   name: MapAction Rail Length
-  description: |
+  description: >-
     Length of objects identified as rails (large railways)
   endpoint: elements/length
   filter: railway=rail and type:way
@@ -356,7 +356,7 @@ mapaction_rail_length:
 
 mapaction_major_roads_length:
   name: MapAction Major Roads length
-  description: |
+  description: >-
     Length of objects identified as major roads (primary, motorway and trunk)
   endpoint: elements/length
   filter: highway in (motorway, trunk, primary) and type:way
@@ -367,7 +367,7 @@ mapaction_major_roads_length:
 
 mapaction_lakes_count:
   name: MapAction Lakes Count
-  description: |
+  description: >-
     Number of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/count
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
@@ -377,7 +377,7 @@ mapaction_lakes_count:
 
 mapaction_lakes_area:
   name: MapAction Lakes Area
-  description: |
+  description: >-
     Area of objects identified as lakes, lagoons and reservoirs
   endpoint: elements/area
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
@@ -387,7 +387,7 @@ mapaction_lakes_area:
 
 mapaction_rivers_length:
   name: MapAction Rivers Length
-  description: |
+  description: >-
     Length of objects identified as rivers (or riverbanks)
   endpoint: elements/length
   filter: waterway in (riverbank,river) and type:way
@@ -400,15 +400,15 @@ mapaction_rivers_length:
 
 lulc:
   name: Land Use and Land Cover
-  description: |
+  description: >-
     Features related to land use and land cover.
     This definition includes well established tags for coherent areas at the most atomic level available.
     This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
     For further details please contact us.
   endpoint: elements/area
-  filter: |
+  filter: >-
     (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
-  source: |
+  source: >-
     https://osmlanduse.org;
     Fonte et al 2016 https://cartography-gis.com/docsbca/iccgis2016/ICCGIS2016-47.pdf;
     https://github.com/jasp382/glass/tree/master/core/glass/ete/osm2lulc;
@@ -495,7 +495,7 @@ sweets_and_pasteries:
 
 clc_arable_land_area:
   name: Arable Land CLC
-  description: |
+  description: >-
     Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
   endpoint: elements/area
   filter: (landuse=farmland or crop=*) and geometry:polygon
@@ -528,7 +528,7 @@ clc_forest_area:
   name: Forests CLC
   description: Selected features for Corine Land Cover Category "Forests" (level 2) in Seminatural Land.
   endpoint: elements/area
-  filter: |
+  filter: >-
     (natural=wood or landuse=forest) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -539,9 +539,9 @@ clc_leaf_type:
   name: Leaf Types of Forests CLC
   description: frequency of forests according to Corine Land Cover Category "Forests" (level 2) tagged with Leaf Type.
   endpoint: elements/area
-  filter: |
+  filter: >-
     (natural=wood or landuse=forest) and geometry:polygon
-  ratio_filter: |
+  ratio_filter: >-
     (natural=wood or landuse=forest) and
     leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
   indicators:
@@ -564,7 +564,7 @@ clc_open_spaces_area:
   name: Open Spaces CLC
   description: Selected features for Corine Land Cover Category "Open Spaces" (level 2) in Seminatural Land.
   endpoint: elements/area
-  filter: |
+  filter: >-
     natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -585,7 +585,7 @@ clc_water_area:
   name: Water CLC
   description: Selected features for Corine Land Cover Category "Water" (level 1), excluding waterways.
   endpoint: elements/area
-  filter: |
+  filter: >-
     (natural in (water, spring, hot_spring)
     or water in (lake, reservoir, pond, oxbow, basin))
     and geometry:polygon
