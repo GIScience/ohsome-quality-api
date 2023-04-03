@@ -231,14 +231,3 @@ def get_valid_indicators(topic_key: str) -> tuple:
     """Get valid Indicator/Topic combination of a Topic."""
     td = load_topic_definitions()
     return tuple(td[topic_key].indicators)
-
-
-# TODO: refactor code to remove this method. It was only there to reload the old
-#  INDICATOR_TOPIC constant
-def get_all_valid_topic_indicator_combinations() -> List[tuple]:
-    """Get all valid Indicator/Topic combinations."""
-    combinations = []
-    for indicator in get_indicator_names():
-        for topic in get_valid_topics(indicator):
-            combinations.append((indicator, topic))
-    return combinations

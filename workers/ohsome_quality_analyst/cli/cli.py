@@ -15,11 +15,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.config import configure_logging, get_config_value
-from ohsome_quality_analyst.definitions import (
-    get_all_valid_topic_indicator_combinations,
-    get_topic_keys,
-    load_metadata,
-)
+from ohsome_quality_analyst.definitions import get_topic_keys, load_metadata
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
 
@@ -83,13 +79,6 @@ def get_available_regions():
     click.echo(format_row.format("---", "-" * 19))
     for region in sorted(regions, key=lambda k: k["ogc_fid"]):
         click.echo(format_row.format(region["ogc_fid"], region["name"]))
-
-
-@cli.command("list-indicator-topic-combination")
-def get_indicator_layer_combination():
-    """List all possible indicator-topic-combinations."""
-    for combination in get_all_valid_topic_indicator_combinations():
-        click.echo(combination)
 
 
 @cli.command("create-indicator")

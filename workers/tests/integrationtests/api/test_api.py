@@ -52,13 +52,6 @@ class TestApi(unittest.TestCase):
         for region in response_content["result"]:
             self.assertIsInstance(region, dict)
 
-    def test_list_indicator_topic_combinations(self):
-        url = "/indicator-topic-combinations"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        self.assertIsInstance(response.json(), dict)
-
     def test_list_indicators(self):
         url = "/indicators"
         response = self.client.get(url)
