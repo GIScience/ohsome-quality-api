@@ -11,7 +11,6 @@ from .utils import get_geojson_fixture
 class TestReportMultilevelCurrentness(unittest.TestCase):
     # TODO: Test case for indicator.result undefined
     def test_combine_indicators_mean(self):
-
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         report = MultilevelCurrentness(geometry)
 
