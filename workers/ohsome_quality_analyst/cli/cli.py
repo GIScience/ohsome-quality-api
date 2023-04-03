@@ -17,8 +17,8 @@ from ohsome_quality_analyst.cli import options
 from ohsome_quality_analyst.config import configure_logging, get_config_value
 from ohsome_quality_analyst.definitions import (
     INDICATOR_TOPIC,
+    get_topic_keys,
     load_metadata,
-    load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.helper import json_serialize, write_geojson
@@ -57,14 +57,6 @@ def list_reports():
     metadata = load_metadata("reports")
     metadata = yaml.dump(metadata, default_style="|")
     click.echo(metadata)
-
-
-@cli.command("list-layers")
-def list_layers():
-    """List available layers and how they are defined (ohsome API parameters)."""
-    topics = load_topic_definitions()
-    topics = yaml.dump(topics, default_style="|")
-    click.echo(topics)
 
 
 @cli.command("list-datasets")
@@ -222,7 +214,7 @@ def create_report(
     "--topic-key",
     "-l",
     type=click.Choice(
-        list(load_topic_definitions().keys()),
+        get_topic_keys(),
         case_sensitive=True,
     ),
     help=(

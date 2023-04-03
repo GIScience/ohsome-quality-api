@@ -68,15 +68,6 @@ class TestApi(unittest.TestCase):
         self.assertTrue(self.general_schema.is_valid(response_content))
         self.assertTrue(self.result_schema.is_valid(response_content))
 
-    def test_list_layers(self):
-        url = "/layers"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        response_content = json.loads(response.content)
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.result_schema.is_valid(response_content))
-
     def test_list_datasets(self):
         url = "/datasets"
         response = self.client.get(url)

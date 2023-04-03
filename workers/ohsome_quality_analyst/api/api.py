@@ -28,7 +28,9 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorDatabase,
     ReportBpolys,
     ReportDatabase,
+    TopicEnum,
 )
+from ohsome_quality_analyst.api.response_models import TopicListResponse, TopicResponse
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
@@ -38,7 +40,8 @@ from ohsome_quality_analyst.definitions import (
     get_fid_fields,
     get_indicator_names,
     get_report_names,
-    get_topic_keys,
+    get_topic_definition,
+    load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
@@ -73,6 +76,18 @@ TAGS_METADATA = [
     {
         "name": "report",
         "description": "Request a Report",
+        "externalDocs": {
+            "description": "External docs",
+            "url": (
+                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
+                + __version__
+                + "/docs/api.md"
+            ),
+        },
+    },
+    {
+        "name": "metadata",
+        "description": "Request Metadata",
         "externalDocs": {
             "description": "External docs",
             "url": (
@@ -303,14 +318,6 @@ async def dataset_names():
     return response
 
 
-@app.get("/layers")
-async def layer_names():
-    """Get names of available layers."""
-    response = empty_api_response()
-    response["result"] = get_topic_keys()
-    return response
-
-
 @app.get("/reports")
 async def report_names():
     """Get names of available reports."""
@@ -325,6 +332,18 @@ async def list_fid_fields():
     response = empty_api_response()
     response["result"] = get_fid_fields()
     return response
+
+
+@app.get("/metadata/topics", tags=["metadata"])
+async def metadata_topic() -> TopicListResponse:
+    """Get topics."""
+    return TopicListResponse(result=list(load_topic_definitions().values()))
+
+
+@app.get("/metadata/topics/{key}", tags=["metadata"])
+async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
+    """Get topic by key."""
+    return TopicResponse(result=get_topic_definition(key.value))
 
 
 def remove_result_item_from_properties(

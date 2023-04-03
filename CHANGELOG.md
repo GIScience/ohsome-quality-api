@@ -2,10 +2,6 @@
 
 ## Current Main
 
-### New Features
-
-- Add plot creation via plotly to `MappingSaturation` indicator ([#499])
-
 ### Breaking Changes
 
 - change API parameter names for POST requests from snake case to lower hyphen ([#398])
@@ -26,6 +22,8 @@
 - disable size limit for Mapping Saturation ([#498])
 - add `project` attribute to topics ([#504])
 - layer/topic are now pydantic models instead of dataclasses ([#517])
+- add plot creation via plotly to `MappingSaturation` indicator ([#499])
+- api: add `/metadata/topic` endpoint ([#519])
 
 ### Other Changes
 
@@ -76,6 +74,7 @@
 [#521]: https://github.com/GIScience/ohsome-quality-analyst/pull/521
 [#523]: https://github.com/GIScience/ohsome-quality-analyst/pull/523
 [#524]: https://github.com/GIScience/ohsome-quality-analyst/pull/524
+[#519]: https://github.com/GIScience/ohsome-quality-analyst/pull/519
 
 ## 0.14.1
 

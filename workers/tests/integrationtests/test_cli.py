@@ -150,14 +150,6 @@ class TestCliIntegration(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
         self.assertIsInstance(result.output, str)
 
-    def test_list_layers(self):
-        result = self.runner.invoke(
-            cli,
-            ["-q", "list-layers"],
-        )
-        self.assertEqual(result.exit_code, 0)
-        self.assertIsInstance(result.output, str)
-
     def test_list_datasets(self):
         result = self.runner.invoke(
             cli,

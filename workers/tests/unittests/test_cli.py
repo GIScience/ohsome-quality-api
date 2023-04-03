@@ -36,10 +36,6 @@ class TestCliUnit(unittest.TestCase):
         result = self.runner.invoke(cli, ["list-reports"])
         assert result.exit_code == 0
 
-    def test_list_layers(self):
-        result = self.runner.invoke(cli, ["list-layers"])
-        assert result.exit_code == 0
-
     def test_list_datasets(self):
         result = self.runner.invoke(cli, ["list-datasets"])
         assert result.exit_code == 0

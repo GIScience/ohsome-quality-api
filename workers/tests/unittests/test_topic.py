@@ -27,7 +27,7 @@ def test_topic_definition():
         description="description",
         project="core",
         endpoint="endpoint",
-        filter_="filter",
+        filter="filter",
     )
     TopicDefinition(
         key="key",
@@ -35,7 +35,7 @@ def test_topic_definition():
         description="description",
         project="core",
         endpoint="endpoint",
-        filter_="filter",
+        filter="filter",
         source="source",
     )
     TopicDefinition(
@@ -44,7 +44,7 @@ def test_topic_definition():
         description="description",
         project="core",
         endpoint="endpoint",
-        filter_="filter",
+        filter="filter",
         source="source",
     )
     TopicDefinition(
@@ -53,7 +53,7 @@ def test_topic_definition():
         description="description",
         project="core",
         endpoint="endpoint",
-        filter_="filter",
+        filter="filter",
         source="source",
         ratio_filter="ration_filter",
     )
@@ -72,7 +72,7 @@ def test_topic_definition_extra():
             description="description",
             project="core",
             endpoint="endpoint",
-            filter_="filter",
+            filter="filter",
             foo="bar",
         )
 
