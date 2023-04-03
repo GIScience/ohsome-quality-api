@@ -44,12 +44,12 @@ building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-
 plotly = "^5.13.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.2"
-pytest-cov = "^2.12.0"
-pep8-naming = "^0.12.1"
-pre-commit = "^2.15.0"
-black = "^22.3.0"
-flake8 = "^4.0.1"
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+pep8-naming = "^0.13.3"
+pre-commit = "^3.2.1"
+black = "^23.3.0"
+flake8 = "^6.0.0"
 isort = "^5.12.0"
 
 [tool.poetry.scripts]
