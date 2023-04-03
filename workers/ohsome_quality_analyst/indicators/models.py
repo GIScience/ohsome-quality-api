@@ -1,20 +1,27 @@
-from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Dict, Literal, Optional
+from typing import Literal, Optional
+
+from pydantic import BaseModel
+
+from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
-@dataclass
-class Metadata:
+class Metadata(BaseModel):
     """Metadata of an indicator as defined in the metadata.yaml file."""
 
     name: str
     description: str
-    label_description: Dict
+    label_description: dict
     result_description: str
 
+    class Config:
+        alias_generator = snake_to_hyphen
+        title = "Metadata"
+        frozen = True
+        extra = "forbid"
 
-@dataclass
-class Result:
+
+class Result(BaseModel):
     """The result of the Indicator.
 
     Attributes:
