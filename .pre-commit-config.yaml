@@ -1,12 +1,12 @@
 files: ^workers/
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 23.3.0
     hooks:
       - id: black
         args: ["--check", "--diff"]
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 6.0.0
     hooks:
       - id: flake8
         args: ["--count", "--statistics", "--config", "workers/setup.cfg"]
@@ -16,7 +16,7 @@ repos:
       - id: isort
         args: ["--check", "--diff", "--settings-path", "workers/setup.cfg"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.4.0
     hooks:
     -   id: check-added-large-files
         args: ["--maxkb=1024"]
