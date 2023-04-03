@@ -2,7 +2,6 @@
 
 import json
 from abc import ABCMeta, abstractmethod
-from dataclasses import asdict
 from io import StringIO
 
 import matplotlib.pyplot as plt
@@ -26,16 +25,9 @@ class BaseIndicator(metaclass=ABCMeta):
         topic: Topic,
         feature: Feature,
     ) -> None:
+        self.metadata: Metadata = get_metadata("indicators", type(self).__name__)
         self.topic: Topic = topic
         self.feature: Feature = feature
-        # setattr(object, key, value) could be used instead of relying on from_dict.
-        metadata = get_metadata("indicators", type(self).__name__)
-        self.metadata: Metadata = Metadata(
-            name=metadata["name"],
-            description=metadata["description"],
-            label_description=metadata["label-description"],
-            result_description=metadata["result-description"],
-        )
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
             svg=self._get_default_figure(),
@@ -52,7 +44,7 @@ class BaseIndicator(metaclass=ABCMeta):
             flatten (bool): If true flatten the properties.
             include_data (bool): If true include additional data in the properties.
         """
-        result = asdict(self.result)  # only attributes, no properties
+        result = self.result.dict()  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         result["class"] = result.pop("class_")
         properties = {

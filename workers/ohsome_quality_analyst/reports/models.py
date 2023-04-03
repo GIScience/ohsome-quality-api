@@ -1,20 +1,25 @@
-from __future__ import annotations
-
-from dataclasses import dataclass
 from typing import Literal
 
+from pydantic import BaseModel
 
-@dataclass
-class Metadata:
+from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+
+
+class Metadata(BaseModel):
     """Metadata of a report as defined in the metadata.yaml file"""
 
     name: str
     description: str
     label_description: dict
 
+    class Config:
+        alias_generator = snake_to_hyphen
+        title = "Metadata"
+        frozen = True
+        extra = "forbid"
 
-@dataclass
-class Result:
+
+class Result(BaseModel):
     """The result of the Report."""
 
     class_: Literal[1, 2, 3, 4, 5] | None = None
