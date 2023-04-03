@@ -20,7 +20,7 @@ url = "https://gitlab.gistools.geog.uni-heidelberg.de/api/v4/groups/277/-/packag
 secondary = true
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 geojson = "^2.5.0"
 fastapi = "^0.92.0"
 requests = "^2.25.0"

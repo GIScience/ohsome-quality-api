@@ -1,5 +1,5 @@
 # based on Debian
-FROM python:3.8
+FROM python:3.10
 
 # install R
 # to avoid caching issues combine apt-get update and install in one RUN statement.
