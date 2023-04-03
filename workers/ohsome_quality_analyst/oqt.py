@@ -20,7 +20,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
-    get_all_valid_topic_indicator_combinations,
+    get_indicator_names,
     get_topic_definition,
     get_valid_indicators,
     get_valid_topics,
@@ -371,7 +371,10 @@ async def create_all_indicators(
     elif indicator_name is not None and topic_key is not None:
         indicator_topic = [(indicator_name, topic_key)]
     else:
-        indicator_topic = get_all_valid_topic_indicator_combinations()
+        indicator_topic = []
+        for indicator in get_indicator_names():
+            for topic in get_valid_topics(indicator):
+                indicator_topic.append((indicator, topic))
 
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
