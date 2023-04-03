@@ -7,7 +7,7 @@ def building_count():
         "key": "building_count",
         "name": "Building Count",
         "description": (
-            "All buildings as defined by all objects tagged with 'building=*'.\n"
+            "All buildings as defined by all objects tagged with 'building=*'."
         ),
         "endpoint": "elements/count",
         "filter": "building=* and building!=no and geometry:polygon",

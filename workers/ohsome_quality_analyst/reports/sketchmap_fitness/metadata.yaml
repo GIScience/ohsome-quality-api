@@ -1,24 +1,24 @@
 ---
 sketchmap-fitness:
   name: Sketchmap Fitness
-  description: |
+  description: >-
     The sketchmap fitness report consists of four data quality indicators
     (mapping saturation of major roads, currentness of major-roads and
     amenities, density of landmarks). The report tells you whether
     you should expect potential problems when using OSM-based Sketch 
     Maps for the Area-of-Interest.
   label-description:
-    red: |
+    red: >-
       The report indicates low quality of the underlying OSM data.
       It is likely that it is not possible to use
       the Sketch Map Tool for this area without first improving the local OSM data, 
       e.g. through a Mapathon.
-    yellow: |
+    yellow: >-
       The report indicates medium quality of the underlying OSM data.
       You should inspect the results for the individual indicators
       to identify potential data quality concerns.
-    green: |
+    green: >-
       This regions seems to be well suited for mapping
       using the Sketch Map Tool.
-    undefined: |
+    undefined: >-
       Could not derive quality level.

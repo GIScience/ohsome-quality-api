@@ -13,7 +13,7 @@ Example:
 ```yaml
 building_count:
   name: Building Count
-  description: |
+  description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
   filter: building=* and geometry:polygon

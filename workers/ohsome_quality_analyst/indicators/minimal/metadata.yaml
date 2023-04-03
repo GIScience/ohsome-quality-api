@@ -1,16 +1,16 @@
 ---
 minimal:
   name: Minimal
-  description: |
+  description: >-
       An minimal Indicator for testing purposes.
   label-description:
-    red: |
+    red: >-
       Bad data quality.
-    yellow: |
+    yellow: >-
       Medium data quality.
-    green: |
+    green: >-
       Good data quality.
-    undefined: |
+    undefined: >-
       The quality level could not be calculated for this indicator.
-  result-description: |
+  result-description: >-
     Some description of the result.

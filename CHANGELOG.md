@@ -37,6 +37,9 @@
 - refactor(topic): move `base/topic.py` to `topics/models.py` and `layer_defintions.yaml` to `topics/presets.yaml` ([#523])
 - refactor: move base classes to related modules ([#524])
 - refactor: move topic-indicator-combinations to topic definition ([#528])
+- fix: remove unnecessary newlines from API output and internal definitions ([#529])
+- build: update minimal python version to 3.10 ([#531])
+- build: update dev dependencies ([#531])
 
 ### How to Upgrade
 
@@ -77,6 +80,8 @@
 [#523]: https://github.com/GIScience/ohsome-quality-analyst/pull/523
 [#524]: https://github.com/GIScience/ohsome-quality-analyst/pull/524
 [#528]: https://github.com/GIScience/ohsome-quality-analyst/pull/528
+[#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
+[#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 
 ## 0.14.1
 
