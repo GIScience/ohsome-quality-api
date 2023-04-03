@@ -199,7 +199,7 @@ INDICATOR_EXAMPLES = {
         ),
         "value": {
             "name": "mapping-saturation",
-            "topic-key": "building_count",
+            "topic": "building_count",
             "dataset": "regions",
             "feature-id": 3,
             "fid-field": "ogc_fid",
@@ -212,7 +212,7 @@ INDICATOR_EXAMPLES = {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
             "name": "mapping-saturation",
-            "topic-key": "building_count",
+            "topic": "building_count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
