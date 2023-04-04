@@ -14,7 +14,7 @@ from ohsome_quality_analyst.indicators.models import Metadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
 # from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
-from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.topics.models import TopicDefinition as Topic
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
@@ -30,8 +30,13 @@ def topic_building_count(topic_key_building_count) -> Topic:
 
 
 @pytest.fixture()
-def topics() -> list[Topic]:
-    return list(load_topic_definitions().values())
+def topics_dict() -> dict[str, Topic]:
+    return load_topic_definitions()
+
+
+@pytest.fixture()
+def topics_list(topics_dict) -> list[Topic]:
+    return list(topics_dict.values())
 
 
 @pytest.fixture(scope="class")
@@ -62,14 +67,3 @@ def indicator_metadata_minimal() -> Metadata:
 @pytest.fixture
 def indicators_metadata() -> list[Metadata]:
     return list(load_metadata("indicators").values())
-
-
-# TODO
-# @pytest.fixture()
-# def indicator_mapping_saturation(
-#     topic_key_building_count, feature_germany_heidelberg
-# ) -> Indicator:
-#     return MappingSaturation(
-#         topic=topic_key_building_count,
-#         feature=feature_germany_heidelberg,
-#     )

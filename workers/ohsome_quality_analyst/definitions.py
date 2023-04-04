@@ -111,7 +111,7 @@ def load_metadata(
 def get_metadata(
     module_name: Literal["indicators", "reports"], class_name: str
 ) -> IndicatorMetadata | ReportMetadata:
-    """Get metadata of an indicator based on its class name.
+    """Get metadata of an indicator or report based on its class name.
 
     This is implemented outside the metadata class to be able to access metadata of all
     indicators/reports without instantiating of those.
