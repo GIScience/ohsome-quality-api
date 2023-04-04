@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Literal, Optional
+from typing import Literal
 
 import yaml
 
@@ -33,7 +33,7 @@ class RasterDataset:
     name: str
     filename: str
     crs: str
-    nodata: Optional[int]
+    nodata: int | None
 
 
 RASTER_DATASETS = (
@@ -91,11 +91,11 @@ def load_metadata(
         as keys and metadata as values.
     """
     assert module_name == "indicators" or module_name == "reports"
-    directory = get_module_dir("ohsome_quality_analyst.{0}".format(module_name))
+    directory = get_module_dir("ohsome_quality_analyst.{}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     raw = {}
     for file in files:
-        with open(file, "r") as f:
+        with open(file) as f:
             raw = {**raw, **yaml.safe_load(f)}  # Merge dicts
     metadata = {}
     match module_name:
@@ -128,7 +128,7 @@ def get_metadata(
         raise
 
 
-def load_topic_definitions() -> Dict[str, TopicDefinition]:
+def load_topic_definitions() -> dict[str, TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
@@ -136,7 +136,7 @@ def load_topic_definitions() -> Dict[str, TopicDefinition]:
     """
     directory = get_module_dir("ohsome_quality_analyst.topics")
     file = os.path.join(directory, "presets.yaml")
-    with open(file, "r") as f:
+    with open(file) as f:
         raw = yaml.safe_load(f)
     topics = {}
     for k, v in raw.items():
@@ -157,7 +157,7 @@ def get_topic_definition(topic_key: str) -> TopicDefinition:
         ) from error
 
 
-def get_indicator_classes() -> Dict:
+def get_indicator_classes() -> dict:
     """Map indicator name to corresponding class."""
     raise NotImplementedError(
         "Use utils.definitions.load_indicator_metadata() and"
@@ -165,7 +165,7 @@ def get_indicator_classes() -> Dict:
     )
 
 
-def get_report_classes() -> Dict:
+def get_report_classes() -> dict:
     """Map report name to corresponding class."""
     raise NotImplementedError(
         "Use utils.definitions.load_indicator_metadata() and"
@@ -173,23 +173,23 @@ def get_report_classes() -> Dict:
     )
 
 
-def get_indicator_names() -> List[str]:
+def get_indicator_names() -> list[str]:
     return list(load_metadata("indicators").keys())
 
 
-def get_report_names() -> List[str]:
+def get_report_names() -> list[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_topic_keys() -> List[str]:
+def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
 
 
-def get_dataset_names() -> List[str]:
+def get_dataset_names() -> list[str]:
     return list(get_config_value("datasets").keys())
 
 
-def get_raster_dataset_names() -> List[str]:
+def get_raster_dataset_names() -> list[str]:
     return [r.name for r in RASTER_DATASETS]
 
 
@@ -211,13 +211,13 @@ def get_raster_dataset(name: str) -> RasterDataset:
         raise RasterDatasetUndefinedError(name) from e
 
 
-def get_fid_fields() -> List[str]:
+def get_fid_fields() -> list[str]:
     return flatten_sequence(get_config_value("datasets").values())
 
 
 def get_attribution(data_keys: list) -> str:
     """Return attribution text. Individual attributions are separated by semicolons."""
-    assert set(data_keys) <= set(("OSM", "GHSL", "VNL"))
+    assert set(data_keys) <= {"OSM", "GHSL", "VNL"}
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])
 

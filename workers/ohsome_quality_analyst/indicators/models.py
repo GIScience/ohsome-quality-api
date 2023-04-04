@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -42,10 +42,10 @@ class Result(BaseModel):
     svg: str
     html: str
     timestamp_oqt: datetime = datetime.now(timezone.utc)  # UTC datetime object
-    timestamp_osm: Optional[datetime] = None
-    value: Optional[float] = None
-    class_: Optional[Literal[1, 2, 3, 4, 5]] = None
-    figure: Optional[dict] = None
+    timestamp_osm: datetime | None = None
+    value: float | None = None
+    class_: Literal[1, 2, 3, 4, 5] | None = None
+    figure: dict | None = None
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:

@@ -1,7 +1,6 @@
 import fnmatch
 import json
 import logging
-from typing import Union
 
 from fastapi import Body, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -140,7 +139,7 @@ class CustomJSONResponse(JSONResponse):
 @app.exception_handler(ValidationError)
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
-    request: Request, exception: Union[RequestValidationError, ValidationError]
+    request: Request, exception: RequestValidationError | ValidationError
 ):
     """Override request validation exceptions.
 
@@ -171,14 +170,14 @@ async def validation_exception_handler(
 @app.exception_handler(SizeRestrictionError)
 async def oqt_exception_handler(
     request: Request,
-    exception: Union[
-        HexCellsNotFoundError,
-        TopicDataSchemaError,
-        OhsomeApiError,
-        RasterDatasetNotFoundError,
-        RasterDatasetUndefinedError,
-        SizeRestrictionError,
-    ],
+    exception: (
+        HexCellsNotFoundError
+        | TopicDataSchemaError
+        | OhsomeApiError
+        | RasterDatasetNotFoundError
+        | RasterDatasetUndefinedError
+        | SizeRestrictionError
+    ),
 ):
     """Exception handler for custom OQT exceptions."""
     return JSONResponse(
@@ -202,7 +201,7 @@ def empty_api_response() -> dict:
 
 # TODO (Experimental): Belongs to temporary endpoint defined below
 class MappingSaturationModel(BaseModel):
-    bpolys: Union[Feature, FeatureCollection]
+    bpolys: Feature | FeatureCollection
     topic_key: str
 
     class Config:
@@ -223,7 +222,9 @@ async def post_indicator_mapping_saturation(
 
 @app.post("/indicator", tags=["indicator"])
 async def post_indicator(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
+    parameters: IndicatorBpolys
+    | IndicatorDatabase
+    | IndicatorData = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
@@ -256,7 +257,8 @@ async def post_indicator(
 
 @app.post("/report", tags=["report"])
 async def post_report(
-    parameters: Union[ReportBpolys, ReportDatabase] = Body(
+    parameters: ReportBpolys
+    | ReportDatabase = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
@@ -375,7 +377,7 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
 
 
 def remove_result_item_from_properties(
-    geojson_object: Union[Feature, FeatureCollection], key: str, flatten: bool
+    geojson_object: Feature | FeatureCollection, key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
 
