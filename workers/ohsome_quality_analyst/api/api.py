@@ -26,11 +26,17 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
     IndicatorDatabase,
+    IndicatorEnum,
     ReportBpolys,
     ReportDatabase,
     TopicEnum,
 )
-from ohsome_quality_analyst.api.response_models import TopicListResponse, TopicResponse
+from ohsome_quality_analyst.api.response_models import (
+    IndicatorMetadataListResponse,
+    IndicatorMetadataResponse,
+    TopicListResponse,
+    TopicResponse,
+)
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
@@ -38,8 +44,10 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
+    get_metadata,
     get_report_names,
     get_topic_definition,
+    load_metadata,
     load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -52,6 +60,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     TopicDataSchemaError,
 )
 from ohsome_quality_analyst.utils.helper import (
+    hyphen_to_camel,
     json_serialize,
     name_to_class,
     snake_to_hyphen,
@@ -335,6 +344,34 @@ async def metadata_topic() -> TopicListResponse:
 async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
     """Get topic by key."""
     return TopicResponse(result=get_topic_definition(key.value))
+
+
+@app.get(
+    "/metadata/indicators",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {"__all__": {"label_description": True, "result_description": True}}
+    },
+)
+async def metadata_indicators() -> IndicatorMetadataListResponse:
+    """Get metadata of all indicators."""
+    return IndicatorMetadataListResponse(
+        result=list(load_metadata("indicators").values())
+    )
+
+
+@app.get(
+    "/metadata/indicators/{key}",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {"label_description": True, "result_description": True}
+    },
+)
+async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataResponse:
+    """Get metadata of an indicator by key."""
+    return IndicatorMetadataResponse(
+        result=get_metadata("indicators", hyphen_to_camel(key.value))
+    )
 
 
 def remove_result_item_from_properties(
