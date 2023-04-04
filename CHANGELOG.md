@@ -41,6 +41,7 @@
 - fix: remove unnecessary newlines from API output and internal definitions ([#529])
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
+- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 
 ### How to Upgrade
 
@@ -84,6 +85,7 @@
 [#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
+[#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 
 ## 0.14.1
 
