@@ -43,7 +43,7 @@ class Currentness(BaseIndicator):
         self.contributions_sum = None
         self.contributions_rel = {}  # yearly interval
         self.contributions_abs = {}  # yearly interval
-        self.start = "2008-01-01"
+        self.start = ""
         self.end = None
         self.low_contributions_threshold = 0
 
@@ -51,11 +51,9 @@ class Currentness(BaseIndicator):
         """Get absolute number of contributions for each year since given start date"""
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         self.end = latest_ohsome_stamp.strftime("%Y-%m-%d")
+        self.start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
         past_years_interval = "{0}/{1}/{2}".format(self.start, self.end, "P1Y")
-        current_year_interval = "{0}/{1}".format(
-            "{0}-01-01".format(latest_ohsome_stamp.year),
-            self.end,
-        )
+
         # Fetch number of features
         response = await ohsome_client.query(self.topic, self.feature)
         self.element_count = response["result"][0]["value"]
@@ -63,27 +61,18 @@ class Currentness(BaseIndicator):
             response["result"][0]["timestamp"]
         )
         # Fetch all contributions of past years
-        contributions_yearly = await ohsome_client.query(
+        contributions = await ohsome_client.query(
             self.topic,
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
         )
-        # Fetch contributions of current year
-        contributions_current_year = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            time=current_year_interval,
-            count_latest_contributions=True,
-        )
+        years_since_today = 0
         # Merge contributions
-        contributions = (
-            contributions_yearly["result"] + contributions_current_year["result"]
-        )
-        for contrib in contributions:
-            time = dateutil.parser.isoparse(contrib["fromTimestamp"])
+        for contrib in reversed(contributions["result"]):
             count = contrib["value"]
-            self.contributions_abs[time.strftime("%Y")] = count
+            self.contributions_abs[years_since_today] = count
+            years_since_today += 1
 
     def calculate(self) -> None:
         """Calculate the years since over 50% of the elements were last edited"""
@@ -117,9 +106,8 @@ class Currentness(BaseIndicator):
                 contrib_rel_cum_red += contrib_rel
         self.contributions_rel = dict(sorted(contributions_rel.items()))
         # calculate the year in which 50% of the total edits have been made
-        self.median_year = get_median_year(self.contributions_rel)
+        self.result.value = get_median_year(self.contributions_rel)
         # years since last edit has been made
-        self.result.value = int(self.result.timestamp_oqt.year) - self.median_year
 
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
@@ -177,7 +165,7 @@ class Currentness(BaseIndicator):
                 + "({0}) with the given tags ".format(self.contributions_sum)
             )
 
-    def create_figure(self) -> None:
+    def create_figure_old(self) -> None:
         """Create a plot.
 
         Shows the percentage of contributions for each year.
@@ -187,11 +175,12 @@ class Currentness(BaseIndicator):
             return
         px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
         figsize = (400 * px, 400 * px)
+        test = dict(reversed(list(self.contributions_rel.items())))
         fig = plt.figure(figsize=figsize, tight_layout=True)
         ax = fig.add_subplot()
         patches = ax.bar(
-            self.contributions_rel.keys(),
-            height=[v * 100 for v in self.contributions_rel.values()],
+            test.keys(),
+            height=[v * 100 for v in test.values()],
             edgecolor="black",
         )
         year_range = len(self.contributions_rel)
@@ -215,17 +204,17 @@ class Currentness(BaseIndicator):
                 patch.set_facecolor("green")
                 year_range -= 1
         plt.axvline(
-            x=str(self.median_year),
+            x=str(self.result.value),
             linestyle=":",
             color="black",
-            label="Median Year: {0}".format(self.median_year),
+            label="Median Year: {0}".format(self.result.value),
         )
         plt.xticks(list(self.contributions_rel.keys())[::2])
         plt.xlabel("Year")
         plt.ylabel("Percentage of contributions")
         plt.title(
-            "Total Contributions (up to {0}): {1}".format(
-                self.end, int(self.contributions_sum)
+            "Total Contributions (up to {0}): \n {1}".format(
+                self.end, int(self.element_count)
             )
         )
         ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
