@@ -84,10 +84,6 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp_oqt, datetime)
 
-    def test_figure(self, indicator):
-        indicator.create_figure()
-        assert indicator.result.svg is not None
-
     def test_as_feature(self, indicator):
         indicator_feature = indicator.as_feature()
         properties = indicator_feature.properties
@@ -130,13 +126,14 @@ class TestFigure:
 
     @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
     def test_create_figure_manual(self, indicator):
-        indicator.create_figure_plotly()
+        indicator.create_figure()
         pio.show(indicator.result.figure)
 
     def test_create_figure(self, indicator):
-        indicator.create_figure_plotly()
+        indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        assert indicator.result.svg is not None
 
 
 @oqt_vcr.use_cassette
