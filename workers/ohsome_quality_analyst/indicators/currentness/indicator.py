@@ -5,6 +5,7 @@ from string import Template
 import dateutil.parser
 import geojson
 import matplotlib.pyplot as plt
+import plotly.graph_objects as pgo
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -224,6 +225,54 @@ class Currentness(BaseIndicator):
         plt.savefig(img_data, format="svg", bbox_inches="tight")
         self.result.svg = img_data.getvalue()
         plt.close("all")
+
+    def create_figure(self) -> None:
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+        colors = []
+        for i in range(len(self.contributions_rel)):
+            if i < self.threshold_3:
+                colors.append("green")
+            elif i < self.threshold_1:
+                colors.append("yellow")
+            elif i >= self.threshold_1:
+                colors.append("red")
+        fig = pgo.Figure(
+            data=pgo.Bar(
+                x=list(self.contributions_rel.keys()),
+                y=list(self.contributions_rel.values()),
+                marker_color=colors,
+                name="test",
+            )
+        )
+        fig.add_vline(
+            x=self.result.value,
+            line_width=3,
+            line_dash="dash",
+            line_color="black",
+        )
+        fig.add_annotation(
+            text="The dashed line indicates the time since which more than 50% "
+            "of the objects have been edited.",
+            showarrow=False,
+            xref="paper",
+            yref="paper",
+            x=1.1,
+            y=0.8,
+            bordercolor="black",
+            borderwidth=1,
+        )
+        fig.update_layout(
+            title_text="Total Contributions (up to {0}): \n {1}".format(
+                self.end, int(self.element_count)
+            )
+        )
+        fig.update_xaxes(title_text="Years since", autorange="reversed")
+        fig.update_yaxes(title_text="Percentage of contributions")
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
 
 
 def get_last_edited_year(contributions: dict) -> int:
