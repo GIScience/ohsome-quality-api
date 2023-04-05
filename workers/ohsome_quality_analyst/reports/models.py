@@ -6,7 +6,7 @@ from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
 class ReportMetadata(BaseModel):
-    """ReportMetadata of a report as defined in the metadata.yaml file"""
+    """Metadata of a report as defined in the metadata.yaml file"""
 
     name: str
     description: str
