@@ -7,7 +7,7 @@ from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
 class IndicatorMetadata(BaseModel):
-    """ReportMetadata of an indicator as defined in the metadata.yaml file."""
+    """Metadata of an indicator as defined in the metadata.yaml file."""
 
     name: str
     description: str
