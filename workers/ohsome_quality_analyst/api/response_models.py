@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
-from ohsome_quality_analyst.indicators.models import Metadata
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
@@ -26,8 +26,8 @@ class TopicListResponse(ResponseBase):
 
 
 class IndicatorMetadataResponse(ResponseBase):
-    result: Metadata
+    result: IndicatorMetadata
 
 
 class IndicatorMetadataListResponse(ResponseBase):
-    result: list[Metadata]
+    result: list[IndicatorMetadata]

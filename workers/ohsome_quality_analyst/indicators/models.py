@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
-class Metadata(BaseModel):
-    """Metadata of an indicator as defined in the metadata.yaml file."""
+class IndicatorMetadata(BaseModel):
+    """ReportMetadata of an indicator as defined in the metadata.yaml file."""
 
     name: str
     description: str
@@ -16,7 +16,7 @@ class Metadata(BaseModel):
 
     class Config:
         alias_generator = snake_to_hyphen
-        title = "Metadata"
+        title = "IndicatorMetadata"
         frozen = True
         extra = "forbid"
 

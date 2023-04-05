@@ -13,7 +13,7 @@ from ohsome_quality_analyst.html_templates.template import (
     get_traffic_light,
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator
-from ohsome_quality_analyst.reports.models import Metadata, Result
+from ohsome_quality_analyst.reports.models import ReportMetadata, Result
 from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
@@ -30,7 +30,7 @@ class BaseReport(metaclass=ABCMeta):
         blocking_red: bool = False,
         blocking_undefined: bool = False,
     ):
-        self.metadata: Metadata = get_metadata("reports", type(self).__name__)
+        self.metadata: ReportMetadata = get_metadata("reports", type(self).__name__)
         self.feature = feature
 
         self.indicators: List[BaseIndicator] = []

@@ -9,8 +9,8 @@ from typing import Literal
 import yaml
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.indicators.models import Metadata as IndicatorMetadata
-from ohsome_quality_analyst.reports.models import Metadata as ReportMetadata
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (

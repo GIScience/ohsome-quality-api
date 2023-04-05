@@ -12,7 +12,7 @@ from ohsome_quality_analyst.html_templates.template import (
     get_template,
     get_traffic_light,
 )
-from ohsome_quality_analyst.indicators.models import Metadata, Result
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
@@ -25,7 +25,9 @@ class BaseIndicator(metaclass=ABCMeta):
         topic: Topic,
         feature: Feature,
     ) -> None:
-        self.metadata: Metadata = get_metadata("indicators", type(self).__name__)
+        self.metadata: IndicatorMetadata = get_metadata(
+            "indicators", type(self).__name__
+        )
         self.topic: Topic = topic
         self.feature: Feature = feature
         self.result: Result = Result(
