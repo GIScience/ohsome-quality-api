@@ -42,7 +42,7 @@ schema = "^0.7.5"
 building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models"}
 kaleido = "0.2.1"
 plotly = "^5.14.0"
-pyproj = "3.3.0"
+pyproj = "~3.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.2"
