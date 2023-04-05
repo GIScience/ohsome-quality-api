@@ -62,17 +62,6 @@ def test_project_core(client, response_template, metadata_mapping_saturation):
 
 
 @pytest.mark.skip(reason="Not yet implemented")
-def test_project_experimental(client, response_template):
-    response = client.get("/metadata/indicators/?project=experimental")
-    assert response.status_code == 200
-
-    content = response.json()
-    result = content.pop("result")
-    assert content == response_template
-    assert "Mapping Saturation" not in [r["name"] for r in result]
-
-
-@pytest.mark.skip(reason="Not yet implemented")
 def test_project_not_found_error(client):
     response = client.get("/metadata/indicators/?project=foo")
     assert response.status_code == 404  # Not Found
