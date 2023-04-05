@@ -16,7 +16,7 @@ class IndicatorMetadata(BaseModel):
 
     class Config:
         alias_generator = snake_to_hyphen
-        title = "IndicatorMetadata"
+        title = "Metadata"
         frozen = True
         extra = "forbid"
 

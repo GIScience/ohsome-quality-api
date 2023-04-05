@@ -94,7 +94,7 @@ TAGS_METADATA = [
     },
     {
         "name": "metadata",
-        "description": "Request ReportMetadata",
+        "description": "Request Metadata",
         "externalDocs": {
             "description": "External docs",
             "url": (
