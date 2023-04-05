@@ -3,8 +3,10 @@ import unittest
 import pytest
 
 from ohsome_quality_analyst import definitions
-from ohsome_quality_analyst.indicators.models import Metadata as IndicatorMetadata
-from ohsome_quality_analyst.reports.base import Metadata as ReportMetadata
+from ohsome_quality_analyst.indicators.models import (
+    IndicatorMetadata as IndicatorMetadata,
+)
+from ohsome_quality_analyst.reports.base import ReportMetadata as ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 

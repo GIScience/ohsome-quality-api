@@ -10,7 +10,7 @@ from ohsome_quality_analyst.definitions import (
     load_metadata,
     load_topic_definitions,
 )
-from ohsome_quality_analyst.indicators.models import Metadata
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
 # from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
@@ -60,10 +60,10 @@ def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollect
 
 
 @pytest.fixture
-def indicator_metadata_minimal() -> Metadata:
+def indicator_metadata_minimal() -> IndicatorMetadata:
     return get_metadata("indicators", "Minimal")
 
 
 @pytest.fixture
-def indicators_metadata() -> list[Metadata]:
+def indicators_metadata() -> list[IndicatorMetadata]:
     return list(load_metadata("indicators").values())
