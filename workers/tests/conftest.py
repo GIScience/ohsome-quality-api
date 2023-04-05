@@ -14,7 +14,7 @@ from ohsome_quality_analyst.indicators.models import Metadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
 # from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
-from ohsome_quality_analyst.topics.models import TopicDefinition as Topic
+from ohsome_quality_analyst.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
@@ -25,17 +25,17 @@ def topic_key_building_count() -> str:
 
 
 @pytest.fixture(scope="class")
-def topic_building_count(topic_key_building_count) -> Topic:
+def topic_building_count(topic_key_building_count) -> TopicDefinition:
     return get_topic_definition(topic_key_building_count)
 
 
 @pytest.fixture()
-def topics_dict() -> dict[str, Topic]:
+def topics_dict() -> dict[str, TopicDefinition]:
     return load_topic_definitions()
 
 
 @pytest.fixture()
-def topics_list(topics_dict) -> list[Topic]:
+def topics_list(topics_dict) -> list[TopicDefinition]:
     return list(topics_dict.values())
 
 
