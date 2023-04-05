@@ -14,7 +14,7 @@ class ReportMetadata(BaseModel):
 
     class Config:
         alias_generator = snake_to_hyphen
-        title = "ReportMetadata"
+        title = "Metadata"
         frozen = True
         extra = "forbid"
 
