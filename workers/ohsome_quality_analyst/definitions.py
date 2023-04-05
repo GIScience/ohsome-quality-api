@@ -95,7 +95,7 @@ def load_metadata(
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     raw = {}
     for file in files:
-        with open(file) as f:
+        with open(file, "r") as f:
             raw.update(yaml.safe_load(f))  # Merge dicts
     metadata = {}
     match module_name:
@@ -136,7 +136,7 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     """
     directory = get_module_dir("ohsome_quality_analyst.topics")
     file = os.path.join(directory, "presets.yaml")
-    with open(file) as f:
+    with open(file, "r") as f:
         raw = yaml.safe_load(f)
     topics = {}
     for k, v in raw.items():
