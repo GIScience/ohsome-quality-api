@@ -96,7 +96,7 @@ def load_metadata(
     raw = {}
     for file in files:
         with open(file) as f:
-            raw = {**raw, **yaml.safe_load(f)}  # Merge dicts
+            raw.update(yaml.safe_load(f))  # Merge dicts
     metadata = {}
     match module_name:
         case "indicators":
