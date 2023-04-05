@@ -24,6 +24,7 @@
 - layer/topic are now pydantic models instead of dataclasses ([#517])
 - add plot creation via plotly to `MappingSaturation` indicator ([#499])
 - api: add `/metadata/topic` endpoint ([#519])
+- api: add `/metadata/indicators` endpoint ([#533])
 
 ### Other Changes
 
@@ -82,6 +83,7 @@
 [#528]: https://github.com/GIScience/ohsome-quality-analyst/pull/528
 [#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
+[#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 
 ## 0.14.1
 
