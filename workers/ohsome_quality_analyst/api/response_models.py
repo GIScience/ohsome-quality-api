@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
@@ -33,9 +34,18 @@ class IndicatorMetadataListResponse(ResponseBase):
     result: list[IndicatorMetadata]
 
 
+class ReportMetadataResponse(ResponseBase):
+    result: ReportMetadata
+
+
+class ReportMetadataListResponse(ResponseBase):
+    result: list[ReportMetadata]
+
+
 class MetadataResponse(ResponseBase):
     class MetadataResultSchema(BaseModel):
         indicators: list[IndicatorMetadata]
+        reports: list[ReportMetadata]
         topics: list[TopicDefinition]
 
     result: MetadataResultSchema
