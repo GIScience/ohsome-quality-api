@@ -47,6 +47,7 @@ from ohsome_quality_analyst.definitions import (
     get_attribution,
     get_dataset_names,
     get_fid_fields,
+    get_indicator_definitions,
     get_indicator_names,
     get_metadata,
     get_report_names,
@@ -360,7 +361,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
         "topics": get_topic_definitions(project=project.value),
-        "indicators": list(load_metadata("indicators").values()),
+        "indicators": get_indicator_definitions(project=project.value),
         "reports": list(load_metadata("reports").values()),
     }
     return MetadataResponse(result=result)
@@ -385,10 +386,12 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
         "result": {"__all__": {"label_description": True, "result_description": True}}
     },
 )
-async def metadata_indicators() -> IndicatorMetadataListResponse:
+async def metadata_indicators(
+    project: ProjectEnum = DEFAULT_PROJECT,
+) -> IndicatorMetadataListResponse:
     """Get metadata of all indicators."""
     return IndicatorMetadataListResponse(
-        result=list(load_metadata("indicators").values())
+        result=get_indicator_definitions(project=project.value)
     )
 
 
