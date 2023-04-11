@@ -50,10 +50,10 @@ from ohsome_quality_analyst.definitions import (
     get_indicator_definitions,
     get_indicator_names,
     get_metadata,
+    get_report_definitions,
     get_report_names,
     get_topic_definition,
     get_topic_definitions,
-    load_metadata,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
@@ -362,7 +362,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     result = {
         "topics": get_topic_definitions(project=project.value),
         "indicators": get_indicator_definitions(project=project.value),
-        "reports": list(load_metadata("reports").values()),
+        "reports": get_report_definitions(project=project.value),
     }
     return MetadataResponse(result=result)
 
@@ -414,9 +414,13 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
     tags=["metadata"],
     response_model_exclude={"result": {"__all__": {"label_description": True}}},
 )
-async def metadata_reports() -> ReportMetadataListResponse:
+async def metadata_reports(
+    project: ProjectEnum = DEFAULT_PROJECT,
+) -> ReportMetadataListResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataListResponse(result=list(load_metadata("reports").values()))
+    return ReportMetadataListResponse(
+        result=get_report_definitions(project=project.value)
+    )
 
 
 @app.get(
