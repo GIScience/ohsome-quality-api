@@ -16,6 +16,7 @@
 ### Bug Fixes
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- currentness: add appropriate timeout for ohsome API metadata requests ([#537])
 
 ### New Features
 
@@ -86,6 +87,7 @@
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
+[#537]: https://github.com/GIScience/ohsome-quality-analyst/pull/537
 
 ## 0.14.1
 
