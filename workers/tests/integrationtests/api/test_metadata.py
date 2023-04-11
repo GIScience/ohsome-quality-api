@@ -2,7 +2,11 @@ import pytest
 
 
 def test_metadata(
-    client, response_template, building_count, metadata_mapping_saturation
+    client,
+    response_template,
+    building_count,
+    metadata_mapping_saturation,
+    metadata_report_minimal,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -20,7 +24,10 @@ def test_metadata(
         filter(lambda t: t["name"] == "Mapping Saturation", result["indicators"])
     )
     # check reports result
-    # no report in core yet
+    # TODO: change to t["key"]
+    assert metadata_report_minimal == next(
+        filter(lambda t: t["name"] == "Minimal", result["reports"])
+    )
 
 
 @pytest.mark.skip(reason="Not yet implemented")
@@ -48,7 +55,11 @@ def test_project_core(
 
 @pytest.mark.skip(reason="Not yet implemented")
 def test_project_misc(
-    client, response_template, metadata_topic_minimal, metadata_indicator_minimal
+    client,
+    response_template,
+    metadata_topic_minimal,
+    metadata_indicator_minimal,
+    metadata_report_minimal,
 ):
     response = client.get("/metadata?project=misc")
     assert response.status_code == 200
@@ -66,4 +77,7 @@ def test_project_misc(
         filter(lambda t: t["name"] == "Minimal", result["indicators"])
     )
     # check reports result
-    # no report in core yet
+    # TODO: change to t["key"]
+    assert metadata_report_minimal == next(
+        filter(lambda t: t["name"] == "Minimal", result["reports"])
+    )
