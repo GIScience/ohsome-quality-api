@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Literal
+from typing import Iterable, Literal
 
 import yaml
 
@@ -145,6 +145,14 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
+def get_topic_definitions(project: str = None) -> list[TopicDefinition]:
+    topics = load_topic_definitions()
+    if project:
+        return [v for v in topics.values() if v.project == project.value]
+    else:
+        return list(topics.values())
+
+
 def get_topic_definition(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
@@ -182,6 +190,10 @@ def get_report_names() -> list[str]:
 
 def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
+
+
+def get_project_keys() -> Iterable[str]:
+    return set(t.project for t in load_topic_definitions().values())
 
 
 def get_dataset_names() -> list[str]:

@@ -26,6 +26,7 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorData,
     IndicatorDatabase,
     IndicatorEnum,
+    ProjectEnum,
     ReportBpolys,
     ReportDatabase,
     ReportEnum,
@@ -50,8 +51,8 @@ from ohsome_quality_analyst.definitions import (
     get_metadata,
     get_report_names,
     get_topic_definition,
+    get_topic_definitions,
     load_metadata,
-    load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.utils.exceptions import (
@@ -109,6 +110,9 @@ TAGS_METADATA = [
         },
     },
 ]
+
+# TODO: to be replaced by config
+DEFAULT_PROJECT = ProjectEnum.core
 
 configure_logging()
 logging.info("Logging enabled")
@@ -352,10 +356,10 @@ async def list_fid_fields():
         }
     },
 )
-async def metadata() -> MetadataResponse:
+async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
-        "topics": list(load_topic_definitions().values()),
+        "topics": get_topic_definitions(project=project.value),
         "indicators": list(load_metadata("indicators").values()),
         "reports": list(load_metadata("reports").values()),
     }
@@ -363,9 +367,9 @@ async def metadata() -> MetadataResponse:
 
 
 @app.get("/metadata/topics", tags=["metadata"])
-async def metadata_topic() -> TopicListResponse:
+async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> TopicListResponse:
     """Get topics."""
-    return TopicListResponse(result=list(load_topic_definitions().values()))
+    return TopicListResponse(result=get_topic_definitions(project=project.value))
 
 
 @app.get("/metadata/topics/{key}", tags=["metadata"])
