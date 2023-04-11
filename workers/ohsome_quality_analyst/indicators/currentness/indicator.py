@@ -40,7 +40,7 @@ class Currentness(BaseIndicator):
         self.threshold_3 = 3
         self.threshold_2 = 4
         self.threshold_1 = 8
-        self.element_count = None
+        self.element_count = 0
         self.contributions_sum = None
         self.contributions_rel = {}  # yearly interval
         self.contributions_abs = {}  # yearly interval
@@ -55,12 +55,6 @@ class Currentness(BaseIndicator):
         self.start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
         past_years_interval = "{0}/{1}/{2}".format(self.start, self.end, "P1Y")
 
-        # Fetch number of features
-        response = await ohsome_client.query(self.topic, self.feature)
-        self.element_count = response["result"][0]["value"]
-        self.result.timestamp_osm = dateutil.parser.isoparse(
-            response["result"][0]["timestamp"]
-        )
         # Fetch all contributions of past years
         contributions = await ohsome_client.query(
             self.topic,
@@ -73,9 +67,14 @@ class Currentness(BaseIndicator):
         years_since_today = 0
         # Merge contributions
         for contrib in reversed(contributions["result"]):
+            if years_since_today == 0:
+                self.result.timestamp_osm = dateutil.parser.isoparse(
+                    contrib["toTimestamp"]
+                )
             count = contrib["value"]
             self.contributions_abs[years_since_today] = count
             years_since_today += 1
+            self.element_count += count
 
     def calculate(self) -> None:
         """Calculate the years since over 50% of the elements were last edited"""
