@@ -75,3 +75,15 @@ def metadata_indicator_minimal():
         "name": "Minimal",
         "description": "An minimal Indicator for testing purposes.",
     }
+
+
+@pytest.fixture
+def metadata_report_minimal():
+    return {
+        "name": "Minimal",
+        "description": (
+            "This report shows the quality for two indicators: Mapping Saturation and "
+            + "Currentness. It's main function is to test the interactions between "
+            + "database, api and website."
+        ),
+    }
