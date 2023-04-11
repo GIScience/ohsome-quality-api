@@ -102,6 +102,21 @@ def test_get_topic_definitions():
         assert isinstance(topic, TopicDefinition)
 
 
+def test_get_indicator_definitions():
+    indicators = definitions.get_indicator_definitions()
+    assert isinstance(indicators, list)
+    for indicator in indicators:
+        assert isinstance(indicator, IndicatorMetadata)
+
+
+def test_get_indicator_definitions_with_project():
+    indicators = definitions.get_indicator_definitions("core")
+    assert isinstance(indicators, list)
+    for indicator in indicators:
+        assert isinstance(indicator, IndicatorMetadata)
+        assert indicator.project == "core"
+
+
 def test_get_topic_definitions_with_project():
     topics = definitions.get_topic_definitions("core")
     assert isinstance(topics, list)

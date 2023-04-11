@@ -28,7 +28,6 @@ def test_by_key_not_found_error(client):
     assert response.status_code == 422
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_project_core(client, response_template, metadata_mapping_saturation):
     response = client.get("/metadata/indicators/?project=core")
     assert response.status_code == 200

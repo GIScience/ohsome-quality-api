@@ -51,6 +51,7 @@ def metadata_mapping_saturation():
             "Calculate if mapping has saturated. High saturation has been reached if "
             + "the growth of the fitted curve is minimal."
         ),
+        "project": "core",
     }
 
 
@@ -74,6 +75,7 @@ def metadata_indicator_minimal():
     return {
         "name": "Minimal",
         "description": "An minimal Indicator for testing purposes.",
+        "project": "misc",
     }
 
 
