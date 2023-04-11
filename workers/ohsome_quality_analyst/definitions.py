@@ -161,6 +161,14 @@ def get_indicator_definitions(project: str = None) -> list[IndicatorMetadata]:
         return list(indicators.values())
 
 
+def get_report_definitions(project: str = None) -> list[ReportMetadata]:
+    reports = load_metadata("reports")
+    if project:
+        return [v for v in reports.values() if v.project == project]
+    else:
+        return list(reports.values())
+
+
 def get_topic_definition(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
