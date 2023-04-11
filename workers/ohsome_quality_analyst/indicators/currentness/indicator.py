@@ -67,6 +67,8 @@ class Currentness(BaseIndicator):
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
+            #  exclude deletions from the response
+            contribution_type="geometryChange,creation,tagChange",
         )
         years_since_today = 0
         # Merge contributions
@@ -262,7 +264,6 @@ class Currentness(BaseIndicator):
         )
         fig.update_xaxes(title_text="Years since", autorange="reversed")
         fig.update_yaxes(title_text="Percentage of contributions")
-        fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
