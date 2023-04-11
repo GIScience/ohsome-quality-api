@@ -252,24 +252,17 @@ class Currentness(BaseIndicator):
             line_dash="dash",
             line_color="black",
         )
-        fig.add_annotation(
-            text="The dashed line indicates the time since which more than 50% "
-            "of the objects have been edited.",
-            showarrow=False,
-            xref="paper",
-            yref="paper",
-            x=1.1,
-            y=0.8,
-            bordercolor="black",
-            borderwidth=1,
-        )
         fig.update_layout(
-            title_text="Total Contributions (up to {0}): \n {1}".format(
+            title_text="Total Contributions (up to {0}): {1}".format(
                 self.end, int(self.element_count)
             )
+            + "<br>"
+            + "The dashed line indicates the time since which more than 50% "
+            "of the objects have been edited.",
         )
         fig.update_xaxes(title_text="Years since", autorange="reversed")
         fig.update_yaxes(title_text="Percentage of contributions")
+        fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
