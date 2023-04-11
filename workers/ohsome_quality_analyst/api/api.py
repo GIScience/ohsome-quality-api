@@ -33,6 +33,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataListResponse,
     IndicatorMetadataResponse,
+    MetadataResponse,
     TopicListResponse,
     TopicResponse,
 )
@@ -334,6 +335,26 @@ async def list_fid_fields():
     response = empty_api_response()
     response["result"] = get_fid_fields()
     return response
+
+
+@app.get(
+    "/metadata",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {
+            "indicators": {
+                "__all__": {"label_description": True, "result_description": True}
+            },
+        }
+    },
+)
+async def metadata() -> MetadataResponse:
+    """Get topics."""
+    result = {
+        "topics": list(load_topic_definitions().values()),
+        "indicators": list(load_metadata("indicators").values()),
+    }
+    return MetadataResponse(result=result)
 
 
 @app.get("/metadata/topics", tags=["metadata"])
