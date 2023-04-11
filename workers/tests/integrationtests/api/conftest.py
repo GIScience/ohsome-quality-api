@@ -88,4 +88,5 @@ def metadata_report_minimal():
             + "Currentness. It's main function is to test the interactions between "
             + "database, api and website."
         ),
+        "project": "misc",
     }
