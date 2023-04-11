@@ -1,6 +1,7 @@
 ---
 minimal:
   name: Minimal
+  project: misc
   description: >-
       An minimal Indicator for testing purposes.
   label-description:

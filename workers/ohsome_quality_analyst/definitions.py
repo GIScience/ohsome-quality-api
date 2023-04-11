@@ -148,9 +148,17 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
 def get_topic_definitions(project: str = None) -> list[TopicDefinition]:
     topics = load_topic_definitions()
     if project:
-        return [v for v in topics.values() if v.project == project.value]
+        return [v for v in topics.values() if v.project == project]
     else:
         return list(topics.values())
+
+
+def get_indicator_definitions(project: str = None) -> list[IndicatorMetadata]:
+    indicators = load_metadata("indicators")
+    if project:
+        return [v for v in indicators.values() if v.project == project]
+    else:
+        return list(indicators.values())
 
 
 def get_topic_definition(topic_key: str) -> TopicDefinition:
