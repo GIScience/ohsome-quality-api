@@ -15,7 +15,6 @@ def test_metadata_topic(client, response_template, building_count):
     # assert "minimal" not in [topic["key"] for topic in result]
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_metadata_topic_project_core(client, response_template, building_count):
     response = client.get("/metadata/topics/?project=core")
     assert response.status_code == 200
@@ -29,7 +28,6 @@ def test_metadata_topic_project_core(client, response_template, building_count):
     assert "minimal" not in [topic["key"] for topic in result]
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_metadata_topic_project_experimental(client, response_template):
     response = client.get("/metadata/topics/?project=experimental")
     assert response.status_code == 200

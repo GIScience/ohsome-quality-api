@@ -77,22 +77,37 @@ class TestDefinitions(unittest.TestCase):
         self.assertEqual(topics, ("minimal",))
 
 
-def test_load_topic_definitions():
+def test_load_topic_definition():
     topics = definitions.load_topic_definitions()
     for topic in topics:
         assert isinstance(topics[topic], TopicDefinition)
 
 
-def test_get_topic_definitions():
+def test_get_topic_definition():
     topic = definitions.get_topic_definition("minimal")
     assert isinstance(topic, TopicDefinition)
 
 
-def test_get_topic_definitions_not_found_error():
+def test_get_topic_definition_not_found_error():
     with pytest.raises(KeyError):
         definitions.get_topic_definition("foo")
     with pytest.raises(KeyError):
         definitions.get_topic_definition(None)
+
+
+def test_get_topic_definitions():
+    topics = definitions.get_topic_definitions()
+    assert isinstance(topics, list)
+    for topic in topics:
+        assert isinstance(topic, TopicDefinition)
+
+
+def test_get_topic_definitions_with_project():
+    topics = definitions.get_topic_definitions("core")
+    assert isinstance(topics, list)
+    for topic in topics:
+        assert isinstance(topic, TopicDefinition)
+        assert topic.project == "core"
 
 
 def test_load_metadata_indicator():
