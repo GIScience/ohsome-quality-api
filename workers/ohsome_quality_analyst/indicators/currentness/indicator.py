@@ -1,10 +1,8 @@
 import logging
-from io import StringIO
 from string import Template
 
 import dateutil.parser
 import geojson
-import matplotlib.pyplot as plt
 import plotly.graph_objects as pgo
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
@@ -166,66 +164,6 @@ class Currentness(BaseIndicator):
                 "Attention: In this region there are very few contributions "
                 + "({0}) with the given tags ".format(self.contributions_sum)
             )
-
-    def create_figure_old(self) -> None:
-        """Create a plot.
-
-        Shows the percentage of contributions for each year.
-        """
-        if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
-            return
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        test = dict(reversed(list(self.contributions_rel.items())))
-        fig = plt.figure(figsize=figsize, tight_layout=True)
-        ax = fig.add_subplot()
-        patches = ax.bar(
-            test.keys(),
-            height=[v * 100 for v in test.values()],
-            edgecolor="black",
-        )
-        year_range = len(self.contributions_rel)
-        last_edited_year = get_last_edited_year(self.contributions_abs)
-        years_since_last_edit = int(self.result.timestamp_oqt.year) - last_edited_year
-        for patch in patches:
-            if year_range <= years_since_last_edit:
-                ax.text(
-                    patch.get_x(),
-                    max(self.contributions_rel.values()) * 100 / 2,
-                    "!",
-                    fontdict={"fontsize": 26},
-                )
-            if year_range > self.threshold_1:
-                patch.set_facecolor("red")
-                year_range -= 1
-            elif year_range >= self.threshold_2:
-                patch.set_facecolor("yellow")
-                year_range -= 1
-            else:
-                patch.set_facecolor("green")
-                year_range -= 1
-        plt.axvline(
-            x=str(self.result.value),
-            linestyle=":",
-            color="black",
-            label="Median Year: {0}".format(self.result.value),
-        )
-        plt.xticks(list(self.contributions_rel.keys())[::2])
-        plt.xlabel("Year")
-        plt.ylabel("Percentage of contributions")
-        plt.title(
-            "Total Contributions (up to {0}): \n {1}".format(
-                self.end, int(self.element_count)
-            )
-        )
-        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
-        fig.subplots_adjust(bottom=0.3)
-        fig.tight_layout()
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
