@@ -31,3 +31,11 @@ class IndicatorMetadataResponse(ResponseBase):
 
 class IndicatorMetadataListResponse(ResponseBase):
     result: list[IndicatorMetadata]
+
+
+class MetadataResponse(ResponseBase):
+    class MetadataResultSchema(BaseModel):
+        indicators: list[IndicatorMetadata]
+        topics: list[TopicDefinition]
+
+    result: MetadataResultSchema
