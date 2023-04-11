@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_metadata(
     client,
     response_template,
@@ -24,13 +21,9 @@ def test_metadata(
         filter(lambda t: t["name"] == "Mapping Saturation", result["indicators"])
     )
     # check reports result
-    # TODO: change to t["key"]
-    assert metadata_report_minimal == next(
-        filter(lambda t: t["name"] == "Minimal", result["reports"])
-    )
+    # TODO: add report when a core report is implemented
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_project_core(
     client, response_template, building_count, metadata_mapping_saturation
 ):
@@ -40,20 +33,16 @@ def test_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
+    for p in result["topics"] + result["indicators"] + result["reports"]:
+        assert p["project"] == "core"
     # check topics result
-    assert building_count == next(
-        filter(lambda t: t["key"] == "building_count", result["topics"])
-    )
+    assert len(result["topics"]) > 0
     # check indicators result
-    # TODO: change to t["key"]
-    assert metadata_mapping_saturation == next(
-        filter(lambda t: t["name"] == "Mapping Saturation", result["indicators"])
-    )
+    assert len(result["indicators"]) > 0
     # check reports result
     # no report in core yet
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_project_misc(
     client,
     response_template,
@@ -67,16 +56,15 @@ def test_project_misc(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
+    for p in result["topics"] + result["indicators"] + result["reports"]:
+        assert p["project"] == "misc"
     # check topics result
-    assert metadata_topic_minimal == next(
-        filter(lambda t: t["key"] == "minimal", result["topics"])
-    )
+    assert len(result["topics"]) > 0
     # check indicators result
-    # TODO: change to t["key"]
-    assert metadata_indicator_minimal == next(
-        filter(lambda t: t["name"] == "Minimal", result["indicators"])
-    )
+    assert len(result["indicators"]) > 0
     # check reports result
+    assert len(result["reports"]) > 0
+    # TODO: remove when a "core" report is implemented and added in test_metadata
     # TODO: change to t["key"]
     assert metadata_report_minimal == next(
         filter(lambda t: t["name"] == "Minimal", result["reports"])
