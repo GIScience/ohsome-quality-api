@@ -28,12 +28,15 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorEnum,
     ReportBpolys,
     ReportDatabase,
+    ReportEnum,
     TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataListResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
+    ReportMetadataListResponse,
+    ReportMetadataResponse,
     TopicListResponse,
     TopicResponse,
 )
@@ -345,6 +348,7 @@ async def list_fid_fields():
             "indicators": {
                 "__all__": {"label_description": True, "result_description": True}
             },
+            "reports": {"__all__": {"label_description": True}},
         }
     },
 )
@@ -353,6 +357,7 @@ async def metadata() -> MetadataResponse:
     result = {
         "topics": list(load_topic_definitions().values()),
         "indicators": list(load_metadata("indicators").values()),
+        "reports": list(load_metadata("reports").values()),
     }
     return MetadataResponse(result=result)
 
@@ -394,6 +399,28 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
     """Get metadata of an indicator by key."""
     return IndicatorMetadataResponse(
         result=get_metadata("indicators", hyphen_to_camel(key.value))
+    )
+
+
+@app.get(
+    "/metadata/reports",
+    tags=["metadata"],
+    response_model_exclude={"result": {"__all__": {"label_description": True}}},
+)
+async def metadata_reports() -> ReportMetadataListResponse:
+    """Get metadata of all indicators."""
+    return ReportMetadataListResponse(result=list(load_metadata("reports").values()))
+
+
+@app.get(
+    "/metadata/reports/{key}",
+    tags=["metadata"],
+    response_model_exclude={"result": {"label_description": True}},
+)
+async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
+    """Get metadata of an indicator by key."""
+    return ReportMetadataResponse(
+        result=get_metadata("reports", hyphen_to_camel(key.value))
     )
 
 
