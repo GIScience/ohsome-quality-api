@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_analyst"
-version = "0.14.1"
+version = "0.14.2"
 description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://oqt.ohsome.org"
@@ -36,12 +36,13 @@ Jinja2 = "^3.1.2"
 scipy = "^1.9.3"
 rpy2 = "^3.4.5"
 rasterstats = "^0.16.0"
-pyproj = "^3.3.0"
 click = "^8.1.2"
 uvicorn = "^0.20.0"
 schema = "^0.7.5"
 building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models"}
-plotly = "^5.13.1"
+kaleido = "0.2.1"
+plotly = "^5.14.0"
+pyproj = "~3.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.2"

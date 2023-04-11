@@ -1,9 +1,7 @@
 import logging
-from io import StringIO
 from string import Template
 from typing import List, Optional
 
-import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
@@ -152,33 +150,6 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-        ax.set_title("Mapping Saturation")
-        ax.plot(
-            self.timestamps,
-            self.values,
-            label="OSM data",
-        )
-        ax.plot(
-            self.timestamps,
-            self.best_fit.fitted_values,
-            label=self.best_fit.name,
-        )
-        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
-        fig.subplots_adjust(bottom=0.3)
-        fig.tight_layout()
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
-
-    def create_figure_plotly(self) -> None:
-        if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
-            return
 
         fig = pgo.Figure()
         fig.add_trace(
@@ -201,6 +172,10 @@ class MappingSaturation(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
 
     def check_edge_cases(self) -> str:
         """Check edge cases.

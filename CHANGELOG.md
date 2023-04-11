@@ -24,6 +24,7 @@
 - layer/topic are now pydantic models instead of dataclasses ([#517])
 - add plot creation via plotly to `MappingSaturation` indicator ([#499])
 - api: add `/metadata/topic` endpoint ([#519])
+- api: add `/metadata/indicators` endpoint ([#533])
 
 ### Other Changes
 
@@ -40,6 +41,7 @@
 - fix: remove unnecessary newlines from API output and internal definitions ([#529])
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
+- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 
 ### How to Upgrade
 
@@ -82,6 +84,16 @@
 [#528]: https://github.com/GIScience/ohsome-quality-analyst/pull/528
 [#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
+[#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
+[#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
+
+## 0.14.2
+
+### Bug Fixes
+
+- currentness: add appropriate timeout for ohsome API metadata requests ([#537])
+
+[#537]: https://github.com/GIScience/ohsome-quality-analyst/issues/537
 
 ## 0.14.1
 

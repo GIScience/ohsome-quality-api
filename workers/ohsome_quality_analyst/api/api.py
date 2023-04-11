@@ -1,7 +1,6 @@
 import fnmatch
 import json
 import logging
-from typing import Union
 
 from fastapi import Body, FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -26,11 +25,17 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
     IndicatorDatabase,
+    IndicatorEnum,
     ReportBpolys,
     ReportDatabase,
     TopicEnum,
 )
-from ohsome_quality_analyst.api.response_models import TopicListResponse, TopicResponse
+from ohsome_quality_analyst.api.response_models import (
+    IndicatorMetadataListResponse,
+    IndicatorMetadataResponse,
+    TopicListResponse,
+    TopicResponse,
+)
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
@@ -38,8 +43,10 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
+    get_metadata,
     get_report_names,
     get_topic_definition,
+    load_metadata,
     load_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
@@ -52,6 +59,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     TopicDataSchemaError,
 )
 from ohsome_quality_analyst.utils.helper import (
+    hyphen_to_camel,
     json_serialize,
     name_to_class,
     snake_to_hyphen,
@@ -131,7 +139,7 @@ class CustomJSONResponse(JSONResponse):
 @app.exception_handler(ValidationError)
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
-    request: Request, exception: Union[RequestValidationError, ValidationError]
+    request: Request, exception: RequestValidationError | ValidationError
 ):
     """Override request validation exceptions.
 
@@ -162,14 +170,14 @@ async def validation_exception_handler(
 @app.exception_handler(SizeRestrictionError)
 async def oqt_exception_handler(
     request: Request,
-    exception: Union[
-        HexCellsNotFoundError,
-        TopicDataSchemaError,
-        OhsomeApiError,
-        RasterDatasetNotFoundError,
-        RasterDatasetUndefinedError,
-        SizeRestrictionError,
-    ],
+    exception: (
+        HexCellsNotFoundError
+        | TopicDataSchemaError
+        | OhsomeApiError
+        | RasterDatasetNotFoundError
+        | RasterDatasetUndefinedError
+        | SizeRestrictionError
+    ),
 ):
     """Exception handler for custom OQT exceptions."""
     return JSONResponse(
@@ -193,7 +201,7 @@ def empty_api_response() -> dict:
 
 # TODO (Experimental): Belongs to temporary endpoint defined below
 class MappingSaturationModel(BaseModel):
-    bpolys: Union[Feature, FeatureCollection]
+    bpolys: Feature | FeatureCollection
     topic_key: str
 
     class Config:
@@ -214,7 +222,9 @@ async def post_indicator_mapping_saturation(
 
 @app.post("/indicator", tags=["indicator"])
 async def post_indicator(
-    parameters: Union[IndicatorBpolys, IndicatorDatabase, IndicatorData] = Body(
+    parameters: IndicatorBpolys
+    | IndicatorDatabase
+    | IndicatorData = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
@@ -247,7 +257,8 @@ async def post_indicator(
 
 @app.post("/report", tags=["report"])
 async def post_report(
-    parameters: Union[ReportBpolys, ReportDatabase] = Body(
+    parameters: ReportBpolys
+    | ReportDatabase = Body(
         ...,
         examples=REPORT_EXAMPLES,
     )
@@ -337,8 +348,36 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
     return TopicResponse(result=get_topic_definition(key.value))
 
 
+@app.get(
+    "/metadata/indicators",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {"__all__": {"label_description": True, "result_description": True}}
+    },
+)
+async def metadata_indicators() -> IndicatorMetadataListResponse:
+    """Get metadata of all indicators."""
+    return IndicatorMetadataListResponse(
+        result=list(load_metadata("indicators").values())
+    )
+
+
+@app.get(
+    "/metadata/indicators/{key}",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {"label_description": True, "result_description": True}
+    },
+)
+async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataResponse:
+    """Get metadata of an indicator by key."""
+    return IndicatorMetadataResponse(
+        result=get_metadata("indicators", hyphen_to_camel(key.value))
+    )
+
+
 def remove_result_item_from_properties(
-    geojson_object: Union[Feature, FeatureCollection], key: str, flatten: bool
+    geojson_object: Feature | FeatureCollection, key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
 

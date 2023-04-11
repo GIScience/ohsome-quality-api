@@ -129,7 +129,8 @@ async def get_latest_ohsome_timestamp() -> datetime.datetime:
     """Get latest unix timestamp from the ohsome API."""
     url = get_config_value("ohsome_api").rstrip("/") + "/metadata"
     headers = {"user-agent": get_config_value("user_agent")}
-    async with httpx.AsyncClient() as client:
+    # 660s timeout for reading, and a 300s timeout elsewhere.
+    async with httpx.AsyncClient(timeout=httpx.Timeout(300, read=660)) as client:
         resp = await client.get(url=url, headers=headers)
     strtime = resp.json()["extractRegion"]["temporalExtent"]["toTimestamp"]
     return datetime.datetime.strptime(strtime, "%Y-%m-%dT%H:%MZ")

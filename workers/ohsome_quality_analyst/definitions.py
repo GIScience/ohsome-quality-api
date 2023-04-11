@@ -4,11 +4,13 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Dict, List, Literal, Optional
+from typing import Literal
 
 import yaml
 
 from ohsome_quality_analyst.config import get_config_value
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
@@ -31,7 +33,7 @@ class RasterDataset:
     name: str
     filename: str
     crs: str
-    nodata: Optional[int]
+    nodata: int | None
 
 
 RASTER_DATASETS = (
@@ -75,7 +77,9 @@ ATTRIBUTION_URL = (
 )
 
 
-def load_metadata(module_name: str) -> Dict:
+def load_metadata(
+    module_name: Literal["indicators", "reports"]
+) -> dict[str, IndicatorMetadata, ReportMetadata]:
     """Read metadata of all indicators or reports from YAML files.
 
     Those text files are located in the directory of each indicator/report.
@@ -86,48 +90,45 @@ def load_metadata(module_name: str) -> Dict:
         A Dict with the class names of the indicators/reports
         as keys and metadata as values.
     """
-    if module_name != "indicators" and module_name != "reports":
-        raise ValueError("module name value can only be 'indicators' or 'reports'.")
-
-    directory = get_module_dir("ohsome_quality_analyst.{0}".format(module_name))
+    assert module_name == "indicators" or module_name == "reports"
+    directory = get_module_dir("ohsome_quality_analyst.{}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
-    metadata = {}
+    raw = {}
     for file in files:
         with open(file, "r") as f:
-            metadata = {**metadata, **yaml.safe_load(f)}  # Merge dicts
+            raw.update(yaml.safe_load(f))  # Merge dicts
+    metadata = {}
+    match module_name:
+        case "indicators":
+            for k, v in raw.items():
+                metadata[k] = IndicatorMetadata(**v)
+        case "reports":
+            for k, v in raw.items():
+                metadata[k] = ReportMetadata(**v)
     return metadata
 
 
 def get_metadata(
     module_name: Literal["indicators", "reports"], class_name: str
-) -> Dict:
+) -> IndicatorMetadata | ReportMetadata:
     """Get metadata of an indicator or report based on its class name.
 
-    This is implemented outside the metadata class to be able to
-    access metadata of all indicators/reports without instantiation of those.
+    This is implemented outside the metadata class to be able to access metadata of all
+    indicators/reports without instantiating of those.
 
     Args:
         module_name: Either indicators or reports.
-        class_name: Any class name in Camel Case which is implemented
-                    as report or indicator
+        class_name: Class name of an indicator (camel case).
     """
-    if module_name not in ("indicators", "reports"):
-        raise ValueError("module name value can only be 'indicators' or 'reports'.")
-
     metadata = load_metadata(module_name)
     try:
         return metadata[camel_to_hyphen(class_name)]
     except KeyError:
-        logging.error(
-            "Invalid {0} class name. Valid {0} class names are: ".format(
-                module_name[:-1]
-            )
-            + str(metadata.keys())
-        )
+        logging.error("Invalid class name: " + class_name)
         raise
 
 
-def load_topic_definitions() -> Dict[str, TopicDefinition]:
+def load_topic_definitions() -> dict[str, TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
@@ -156,7 +157,7 @@ def get_topic_definition(topic_key: str) -> TopicDefinition:
         ) from error
 
 
-def get_indicator_classes() -> Dict:
+def get_indicator_classes() -> dict:
     """Map indicator name to corresponding class."""
     raise NotImplementedError(
         "Use utils.definitions.load_indicator_metadata() and"
@@ -164,7 +165,7 @@ def get_indicator_classes() -> Dict:
     )
 
 
-def get_report_classes() -> Dict:
+def get_report_classes() -> dict:
     """Map report name to corresponding class."""
     raise NotImplementedError(
         "Use utils.definitions.load_indicator_metadata() and"
@@ -172,23 +173,23 @@ def get_report_classes() -> Dict:
     )
 
 
-def get_indicator_names() -> List[str]:
+def get_indicator_names() -> list[str]:
     return list(load_metadata("indicators").keys())
 
 
-def get_report_names() -> List[str]:
+def get_report_names() -> list[str]:
     return list(load_metadata("reports").keys())
 
 
-def get_topic_keys() -> List[str]:
+def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
 
 
-def get_dataset_names() -> List[str]:
+def get_dataset_names() -> list[str]:
     return list(get_config_value("datasets").keys())
 
 
-def get_raster_dataset_names() -> List[str]:
+def get_raster_dataset_names() -> list[str]:
     return [r.name for r in RASTER_DATASETS]
 
 
@@ -210,13 +211,13 @@ def get_raster_dataset(name: str) -> RasterDataset:
         raise RasterDatasetUndefinedError(name) from e
 
 
-def get_fid_fields() -> List[str]:
+def get_fid_fields() -> list[str]:
     return flatten_sequence(get_config_value("datasets").values())
 
 
 def get_attribution(data_keys: list) -> str:
     """Return attribution text. Individual attributions are separated by semicolons."""
-    assert set(data_keys) <= set(("OSM", "GHSL", "VNL"))
+    assert set(data_keys) <= {"OSM", "GHSL", "VNL"}
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])
 

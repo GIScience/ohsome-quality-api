@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.2
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
@@ -73,7 +73,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.1
+      - ohsome-quality-analyst/0.14.2
     method: POST
     uri: https://api.ohsome.org/v1/elements/area/ratio
   response:
