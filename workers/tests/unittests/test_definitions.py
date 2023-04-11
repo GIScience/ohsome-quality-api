@@ -117,6 +117,21 @@ def test_get_indicator_definitions_with_project():
         assert indicator.project == "core"
 
 
+def test_get_report_definitions():
+    reports = definitions.get_report_definitions()
+    assert isinstance(reports, list)
+    for report in reports:
+        assert isinstance(report, ReportMetadata)
+
+
+def test_get_report_definitions_with_project():
+    reports = definitions.get_report_definitions("core")
+    assert isinstance(reports, list)
+    for report in reports:
+        assert isinstance(report, ReportMetadata)
+        assert report.project == "core"
+
+
 def test_get_topic_definitions_with_project():
     topics = definitions.get_topic_definitions("core")
     assert isinstance(topics, list)
