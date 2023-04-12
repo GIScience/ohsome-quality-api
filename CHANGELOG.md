@@ -16,6 +16,7 @@
 ### Bug Fixes
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- currentness: fix wrong count of contributions due to multiple requests ([#535])
 
 ### New Features
 
@@ -24,7 +25,7 @@
 - layer/topic are now pydantic models instead of dataclasses ([#517])
 - add plot creation via plotly to `MappingSaturation` indicator ([#499])
 - api: add `/metadata/topic` endpoint ([#519])
-- api: add `/metadata/indicators` endpoint ([#533])
+- api: add `/metadata/indicators` endpoint ([#533]) 
 
 ### Other Changes
 
@@ -42,6 +43,9 @@
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
+- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#535])
+- currentness: contribution requests now exclude deletions ([#535])
+- currentness: now aggregated on an annual basis instead of per calendar year ([#535])
 
 ### How to Upgrade
 
@@ -85,6 +89,7 @@
 [#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
+[#535]: https://github.com/GIScience/ohsome-quality-analyst/pull/535
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 
 ## 0.14.2
