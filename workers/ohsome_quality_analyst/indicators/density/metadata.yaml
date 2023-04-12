@@ -1,6 +1,6 @@
 ---
-poi-density:
-  name: POI Density
+density:
+  name: Density
   project: experimental
   description: >-
       The density of Point of Interests (POI).

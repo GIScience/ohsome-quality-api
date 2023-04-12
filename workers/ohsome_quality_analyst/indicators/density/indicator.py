@@ -16,7 +16,7 @@ from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 # derived directly from sketchmap_fitness repo
 
 
-class PoiDensity(BaseIndicator):
+class Density(BaseIndicator):
     def __init__(self, topic: Topic, feature: Feature) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 30
@@ -71,7 +71,7 @@ class PoiDensity(BaseIndicator):
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        ax.set_title("POI Density (POIs per Area)")
+        ax.set_title("Density (POIs per Area)")
         ax.set_xlabel("Area [$km^2$]")
         ax.set_ylabel("POIs")
 

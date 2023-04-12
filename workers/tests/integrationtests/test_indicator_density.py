@@ -5,12 +5,12 @@ from datetime import datetime
 
 import geojson
 
-from ohsome_quality_analyst.indicators.poi_density.indicator import PoiDensity
+from ohsome_quality_analyst.indicators.density.indicator import Density
 
 from .utils import get_topic_fixture, oqt_vcr
 
 
-class TestIndicatorPoiDensity(unittest.TestCase):
+class TestIndicatorDensity(unittest.TestCase):
     def setUp(self):
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -19,7 +19,7 @@ class TestIndicatorPoiDensity(unittest.TestCase):
         )
         with open(infile, "r") as f:
             feature = geojson.load(f)
-        self.indicator = PoiDensity(feature=feature, topic=get_topic_fixture("poi"))
+        self.indicator = Density(feature=feature, topic=get_topic_fixture("poi"))
 
     @oqt_vcr.use_cassette()
     def test(self):
