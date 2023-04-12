@@ -176,7 +176,7 @@ doctors:
   name: Doctors
   description: Count of doctors.
   endpoint: elements/count
-  filter: amenity=doctors or healthcare=doctors
+  filter: amenity=doctors or healthcare=doctor
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
