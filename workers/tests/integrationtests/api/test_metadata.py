@@ -12,14 +12,9 @@ def test_metadata(
     result = content.pop("result")
     assert content == response_template
     # check topics result
-    assert building_count == next(
-        filter(lambda t: t["key"] == "building_count", result["topics"])
-    )
+    assert building_count == result["topics"]["building_count"]
     # check indicators result
-    # TODO: change to t["key"]
-    assert metadata_mapping_saturation == next(
-        filter(lambda t: t["name"] == "Mapping Saturation", result["indicators"])
-    )
+    assert metadata_mapping_saturation == result["indicators"]["mapping-saturation"]
     # check reports result
     # TODO: add report when a core report is implemented
 
@@ -33,8 +28,9 @@ def test_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for p in result["topics"] + result["indicators"] + result["reports"]:
-        assert p["project"] == "core"
+    for k in ("topics", "indicators", "reports"):
+        for p in result[k].values():
+            assert p["project"] == "core"
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
@@ -56,8 +52,9 @@ def test_project_misc(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for p in result["topics"] + result["indicators"] + result["reports"]:
-        assert p["project"] == "misc"
+    for k in ("topics", "indicators", "reports"):
+        for p in result[k].values():
+            assert p["project"] == "misc"
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
@@ -65,7 +62,4 @@ def test_project_misc(
     # check reports result
     assert len(result["reports"]) > 0
     # TODO: remove when a "core" report is implemented and added in test_metadata
-    # TODO: change to t["key"]
-    assert metadata_report_minimal == next(
-        filter(lambda t: t["name"] == "Minimal", result["reports"])
-    )
+    assert metadata_report_minimal == result["reports"]["minimal"]

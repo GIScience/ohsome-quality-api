@@ -78,7 +78,7 @@ ATTRIBUTION_URL = (
 
 def load_metadata(
     module_name: Literal["indicators", "reports"]
-) -> dict[str, IndicatorMetadata, ReportMetadata]:
+) -> dict[str, IndicatorMetadata | ReportMetadata]:
     """Read metadata of all indicators or reports from YAML files.
 
     Those text files are located in the directory of each indicator/report.
@@ -145,28 +145,28 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
-def get_topic_definitions(project: str = None) -> list[TopicDefinition]:
+def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
     topics = load_topic_definitions()
     if project:
-        return [v for v in topics.values() if v.project == project]
+        return {k: v for k, v in topics.items() if v.project == project}
     else:
-        return list(topics.values())
+        return topics
 
 
-def get_indicator_definitions(project: str = None) -> list[IndicatorMetadata]:
+def get_indicator_definitions(project: str = None) -> dict[str, IndicatorMetadata]:
     indicators = load_metadata("indicators")
     if project:
-        return [v for v in indicators.values() if v.project == project]
+        return {k: v for k, v in indicators.items() if v.project == project}
     else:
-        return list(indicators.values())
+        return indicators
 
 
-def get_report_definitions(project: str = None) -> list[ReportMetadata]:
+def get_report_definitions(project: str = None) -> dict[str, ReportMetadata]:
     reports = load_metadata("reports")
     if project:
-        return [v for v in reports.values() if v.project == project]
+        return {k: v for k, v in reports.items() if v.project == project}
     else:
-        return list(reports.values())
+        return reports
 
 
 def get_topic_definition(topic_key: str) -> TopicDefinition:

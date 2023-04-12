@@ -8,9 +8,7 @@ def test(client, response_template, metadata_mapping_saturation):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_mapping_saturation == next(
-        filter(lambda r: r["name"] == "Mapping Saturation", result)
-    )
+    assert metadata_mapping_saturation == result["mapping-saturation"]
 
 
 def test_by_key(client, response_template, metadata_indicator_minimal):
@@ -35,10 +33,8 @@ def test_project_core(client, response_template, metadata_mapping_saturation):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_mapping_saturation == next(
-        filter(lambda r: r["name"] == "Mapping Saturation", result)
-    )
-    assert "Minimal" not in [r["name"] for r in result]
+    assert metadata_mapping_saturation == result["mapping-saturation"]
+    assert "minimal" not in result.keys()
 
 
 @pytest.mark.skip(reason="Not yet implemented")
