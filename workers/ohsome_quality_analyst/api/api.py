@@ -350,6 +350,7 @@ async def list_fid_fields():
     tags=["metadata"],
     response_model_exclude={
         "result": {
+            "topics": {k.value: {"key": True} for k in TopicEnum},
             "indicators": {
                 k.value: {"label_description": True, "result_description": True}
                 for k in IndicatorEnum
@@ -368,13 +369,25 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     return MetadataResponse(result=result)
 
 
-@app.get("/metadata/topics", tags=["metadata"])
+@app.get(
+    "/metadata/topics",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {k.value: {"key": True} for k in TopicEnum},
+    },
+)
 async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> TopicListResponse:
     """Get topics."""
     return TopicListResponse(result=get_topic_definitions(project=project.value))
 
 
-@app.get("/metadata/topics/{key}", tags=["metadata"])
+@app.get(
+    "/metadata/topics/{key}",
+    tags=["metadata"],
+    response_model_exclude={
+        "result": {"key": True},
+    },
+)
 async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
     """Get topic by key."""
     return TopicResponse(result=get_topic_definition(key.value))

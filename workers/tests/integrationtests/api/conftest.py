@@ -26,7 +26,6 @@ def response_template():
 @pytest.fixture
 def building_count():
     return {
-        "key": "building_count",
         "name": "Building Count",
         "description": (
             "All buildings as defined by all objects tagged with 'building=*'."
