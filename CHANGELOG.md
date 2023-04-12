@@ -44,6 +44,7 @@
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#535])
+- api: fix attribution URL path ([#543])
 - currentness: contribution requests now exclude deletions ([#535])
 - currentness: now aggregated on an annual basis instead of per calendar year ([#535])
 
@@ -91,6 +92,7 @@
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 [#535]: https://github.com/GIScience/ohsome-quality-analyst/pull/535
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
+[#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 
 ## 0.14.2
 

@@ -285,7 +285,7 @@ response = requests.post(url, json=parameters)
 {
   "apiVersion": "0.11.0",
   "attribution": {
-    "url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    "url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
     "text": "© OpenStreetMap contributors"
   },
   "type": "Feature",

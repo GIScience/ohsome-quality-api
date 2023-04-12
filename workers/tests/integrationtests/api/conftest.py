@@ -17,7 +17,7 @@ def response_template():
         "attribution": {
             "url": (
                 "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
-                + "data/COPYRIGHTS.md"
+                + "COPYRIGHTS.md"
             ),
         },
     }
