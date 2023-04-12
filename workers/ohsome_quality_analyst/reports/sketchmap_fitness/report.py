@@ -15,7 +15,7 @@ class SketchmapFitness(BaseReport):
                 IndicatorTopic("mapping-saturation", "major_roads_length"),
                 IndicatorTopic("currentness", "major_roads_count"),
                 IndicatorTopic("currentness", "amenities"),
-                IndicatorTopic("poi-density", "poi"),
+                IndicatorTopic("density", "poi"),
             ),
             feature=feature,
             blocking_red=blocking_red,
