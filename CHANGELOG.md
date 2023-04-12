@@ -16,6 +16,7 @@
 - remove API endpoints `/indicator` and `/report` ([#554])
 - remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
+- rename `PoiDensity` indicator to `density` ([#544])
 
 ### Bug Fixes
 
@@ -56,6 +57,9 @@
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
 - factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
+- density: substitute matplotlib SVG with plotly SVG ([#544])
+- add density indicator to `landmarks` topic ([#544])
+- SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
 
 ### How to Upgrade
 
@@ -104,6 +108,7 @@
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 [#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
+[#544]: https://github.com/GIScience/ohsome-quality-analyst/pull/544
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 
