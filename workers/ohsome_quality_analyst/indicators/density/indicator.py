@@ -1,10 +1,9 @@
 import logging
-from io import StringIO
 from string import Template
 
 import dateutil.parser
-import matplotlib.pyplot as plt
 import numpy as np
+import plotly.graph_objects as go
 from geojson import Feature
 
 from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
@@ -66,59 +65,96 @@ class Density(BaseIndicator):
             logging.info("Result is undefined. Skipping figure creation.")
             return
 
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-
-        ax.set_title("Density (POIs per Area)")
-        ax.set_xlabel("Area [$km^2$]")
-        ax.set_ylabel("POIs")
-
-        # Set x max value based on area
         if self.area_sqkm < 10:
             max_area = 10
         else:
             max_area = round(self.area_sqkm * 2 / 10) * 10
+
+        # Create x-axis data
         x = np.linspace(0, max_area, 2)
 
-        # Plot thresholds as line.
+        # Calculate y-axis data for thresholds
         y1 = [self.green_threshold_function(xi) for xi in x]
         y2 = [self.yellow_threshold_function(xi) for xi in x]
 
-        line = ax.plot(
-            x,
-            y1,
-            color="black",
-            label="Threshold A",
+        # Calculate y-axis data for fill_between areas
+        fill_1 = np.maximum(y2, 0)
+        fill_2 = np.maximum(y1, 0)
+        fill_3 = np.maximum(y2, self.count)
+
+        # Create figure and add traces
+        fig = go.Figure()
+
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=fill_1,
+                mode="lines",
+                fill="tonexty",
+                line=dict(color="red"),
+                showlegend=False,
+            )
         )
-        plt.setp(line, linestyle="--")
-
-        line = ax.plot(
-            x,
-            y2,
-            color="black",
-            label="Threshold B",
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=fill_2,
+                mode="lines",
+                fill="tonexty",
+                line=dict(color="yellow"),
+                showlegend=False,
+            )
         )
-        plt.setp(line, linestyle=":")
-
-        # Fill in space between thresholds
-        ax.fill_between(x, y2, 0, alpha=0.5, color="red")
-        ax.fill_between(x, y1, y2, alpha=0.5, color="yellow")
-        ax.fill_between(x, y1, max(max(y1), self.count), alpha=0.5, color="green")
-
-        # Plot point as circle ("o").
-        ax.plot(
-            self.area_sqkm,
-            self.count,
-            "o",
-            color="black",
-            label="location",
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=fill_3,
+                mode="lines",
+                fill="tonexty",
+                line=dict(color="green"),
+                showlegend=False,
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=y2,
+                mode="lines",
+                line=dict(dash="dot", color="black"),
+                name="Threshold B",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=y1,
+                mode="lines",
+                line=dict(dash="dash", color="black"),
+                name="Threshold A",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[self.area_sqkm],
+                y=[self.count],
+                mode="markers",
+                marker=dict(symbol="circle", size=10, color="black"),
+                name="Location",
+            )
         )
 
-        ax.legend()
+        # Update layout
+        fig.update_layout(
+            title="Density (POIs per Area)",
+            xaxis_title="Area ($km^2$)",
+            yaxis_title="POIs",
+            template="plotly_dark",
+        )
 
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg")
-        self.result.svg = img_data.getvalue()  # this is svg data
-        plt.close("all")
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
