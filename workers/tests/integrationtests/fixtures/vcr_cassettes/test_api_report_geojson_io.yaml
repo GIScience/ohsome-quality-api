@@ -547,7 +547,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
@@ -1551,7 +1551,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "FeatureCollection", "features":
       [{"type": "Feature", "id": 1, "geometry": {"type": "Polygon", "coordinates":
       [[[8.656512, 49.411047], [8.658857, 49.410217], [8.662864, 49.408734], [8.662656,
@@ -1657,7 +1657,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
@@ -1750,7 +1750,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
@@ -1811,7 +1811,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
@@ -3559,7 +3559,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
@@ -3620,7 +3620,7 @@ interactions:
     method: POST
     uri: http://testserver/report
   response:
-    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/data/COPYRIGHTS.md",
+    content: '{"apiVersion": "0.14.0", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
       "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "id": 0, "geometry":
       {"type": "Polygon", "coordinates": [[[8.674092, 49.404271], [8.69585, 49.404271],
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":

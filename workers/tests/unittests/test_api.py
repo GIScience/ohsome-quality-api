@@ -16,7 +16,7 @@ class TestApi(unittest.TestCase):
             "attribution": {
                 "url": (
                     "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
-                    + "data/COPYRIGHTS.md"
+                    + "COPYRIGHTS.md"
                 ),
             },
         }
