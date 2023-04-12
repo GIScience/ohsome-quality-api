@@ -8,9 +8,7 @@ def test_metadata_topic(client, response_template, building_count):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert building_count == next(
-        filter(lambda t: t["key"] == "building_count", result)
-    )
+    assert building_count == result["building_count"]
     # TODO
     # assert "minimal" not in [topic["key"] for topic in result]
 
@@ -22,10 +20,8 @@ def test_metadata_topic_project_core(client, response_template, building_count):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert building_count == next(
-        filter(lambda t: t["key"] == "building_count", result)
-    )
-    assert "minimal" not in [topic["key"] for topic in result]
+    assert building_count == result["building_count"]
+    assert "minimal" not in result.keys()
 
 
 def test_metadata_topic_project_experimental(client, response_template):
@@ -35,8 +31,8 @@ def test_metadata_topic_project_experimental(client, response_template):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert "building_count" not in [topic["key"] for topic in result]
-    assert "minimal" not in [topic["key"] for topic in result]
+    assert "building_count" not in result.keys()
+    assert "minimal" not in result.keys()
 
 
 @pytest.mark.skip(reason="Not yet implemented")

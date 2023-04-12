@@ -351,9 +351,10 @@ async def list_fid_fields():
     response_model_exclude={
         "result": {
             "indicators": {
-                "__all__": {"label_description": True, "result_description": True}
+                k.value: {"label_description": True, "result_description": True}
+                for k in IndicatorEnum
             },
-            "reports": {"__all__": {"label_description": True}},
+            "reports": {k.value: {"label_description": True} for k in ReportEnum},
         }
     },
 )
@@ -383,7 +384,10 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
     "/metadata/indicators",
     tags=["metadata"],
     response_model_exclude={
-        "result": {"__all__": {"label_description": True, "result_description": True}}
+        "result": {
+            k.value: {"label_description": True, "result_description": True}
+            for k in IndicatorEnum
+        },
     },
 )
 async def metadata_indicators(
@@ -412,7 +416,9 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
 @app.get(
     "/metadata/reports",
     tags=["metadata"],
-    response_model_exclude={"result": {"__all__": {"label_description": True}}},
+    response_model_exclude={
+        "result": {k.value: {"label_description": True} for k in ReportEnum}
+    },
 )
 async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,

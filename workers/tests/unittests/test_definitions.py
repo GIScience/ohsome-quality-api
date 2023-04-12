@@ -97,45 +97,45 @@ def test_get_topic_definition_not_found_error():
 
 def test_get_topic_definitions():
     topics = definitions.get_topic_definitions()
-    assert isinstance(topics, list)
-    for topic in topics:
+    assert isinstance(topics, dict)
+    for topic in topics.values():
         assert isinstance(topic, TopicDefinition)
 
 
 def test_get_indicator_definitions():
     indicators = definitions.get_indicator_definitions()
-    assert isinstance(indicators, list)
-    for indicator in indicators:
+    assert isinstance(indicators, dict)
+    for indicator in indicators.values():
         assert isinstance(indicator, IndicatorMetadata)
 
 
 def test_get_indicator_definitions_with_project():
     indicators = definitions.get_indicator_definitions("core")
-    assert isinstance(indicators, list)
-    for indicator in indicators:
+    assert isinstance(indicators, dict)
+    for indicator in indicators.values():
         assert isinstance(indicator, IndicatorMetadata)
         assert indicator.project == "core"
 
 
 def test_get_report_definitions():
     reports = definitions.get_report_definitions()
-    assert isinstance(reports, list)
-    for report in reports:
+    assert isinstance(reports, dict)
+    for report in reports.values():
         assert isinstance(report, ReportMetadata)
 
 
 def test_get_report_definitions_with_project():
     reports = definitions.get_report_definitions("core")
-    assert isinstance(reports, list)
-    for report in reports:
+    assert isinstance(reports, dict)
+    for report in reports.values():
         assert isinstance(report, ReportMetadata)
         assert report.project == "core"
 
 
 def test_get_topic_definitions_with_project():
     topics = definitions.get_topic_definitions("core")
-    assert isinstance(topics, list)
-    for topic in topics:
+    assert isinstance(topics, dict)
+    for topic in topics.values():
         assert isinstance(topic, TopicDefinition)
         assert topic.project == "core"
 

@@ -35,8 +35,8 @@ def topics_dict() -> dict[str, TopicDefinition]:
 
 
 @pytest.fixture()
-def topics_list(topics_dict) -> list[TopicDefinition]:
-    return list(topics_dict.values())
+def topics_list(topics_dict) -> dict[str, TopicDefinition]:
+    return topics_dict
 
 
 @pytest.fixture(scope="class")
@@ -65,5 +65,5 @@ def indicator_metadata_minimal() -> IndicatorMetadata:
 
 
 @pytest.fixture
-def indicators_metadata() -> list[IndicatorMetadata]:
-    return list(load_metadata("indicators").values())
+def indicators_metadata() -> dict[str, IndicatorMetadata]:
+    return load_metadata("indicators")

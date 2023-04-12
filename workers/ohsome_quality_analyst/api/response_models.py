@@ -23,7 +23,7 @@ class TopicResponse(ResponseBase):
 
 
 class TopicListResponse(ResponseBase):
-    result: list[TopicDefinition]
+    result: dict[str, TopicDefinition]
 
 
 class IndicatorMetadataResponse(ResponseBase):
@@ -31,7 +31,7 @@ class IndicatorMetadataResponse(ResponseBase):
 
 
 class IndicatorMetadataListResponse(ResponseBase):
-    result: list[IndicatorMetadata]
+    result: dict[str, IndicatorMetadata]
 
 
 class ReportMetadataResponse(ResponseBase):
@@ -39,13 +39,13 @@ class ReportMetadataResponse(ResponseBase):
 
 
 class ReportMetadataListResponse(ResponseBase):
-    result: list[ReportMetadata]
+    result: dict[str, ReportMetadata]
 
 
 class MetadataResponse(ResponseBase):
     class MetadataResultSchema(BaseModel):
-        indicators: list[IndicatorMetadata]
-        reports: list[ReportMetadata]
-        topics: list[TopicDefinition]
+        indicators: dict[str, IndicatorMetadata]
+        reports: dict[str, ReportMetadata]
+        topics: dict[str, TopicDefinition]
 
     result: MetadataResultSchema
