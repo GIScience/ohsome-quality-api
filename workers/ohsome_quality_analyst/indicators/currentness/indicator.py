@@ -205,6 +205,10 @@ class Currentness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
+
 
 def get_last_edited_year(contributions: dict) -> int:
     """Get the year in which the last edit has been made"""
