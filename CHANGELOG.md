@@ -43,6 +43,7 @@
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 - api: fix attribution URL path ([#543])
+- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#551])
 
 ### How to Upgrade
 
@@ -88,6 +89,7 @@
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
+[#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
 
 ## 0.14.2
 
