@@ -143,7 +143,6 @@ class Density(BaseIndicator):
                 name="Location",
             )
         )
-        fig.show()
         # Update layout
         fig.update_layout(
             title="Density (Features per Area)",
