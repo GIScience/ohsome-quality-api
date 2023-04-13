@@ -80,7 +80,7 @@ class Density(BaseIndicator):
         # Calculate y-axis data for fill_between areas
         fill_1 = np.maximum(y2, 0)
         fill_2 = np.maximum(y1, 0)
-        fill_3 = np.maximum(y2, self.count)
+        fill_3 = np.maximum(y1[1], np.array([self.count, self.count]))
 
         # Create figure and add traces
         fig = go.Figure()
@@ -133,6 +133,7 @@ class Density(BaseIndicator):
                 name="Threshold A",
             )
         )
+
         fig.add_trace(
             go.Scatter(
                 x=[self.area_sqkm],
@@ -142,15 +143,13 @@ class Density(BaseIndicator):
                 name="Location",
             )
         )
-
+        fig.show()
         # Update layout
         fig.update_layout(
-            title="Density (POIs per Area)",
-            xaxis_title="Area ($km^2$)",
-            yaxis_title="POIs",
-            template="plotly_dark",
+            title="Density (Features per Area)",
+            xaxis_title="Area (km²)",
+            yaxis_title="Features",
         )
-
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
