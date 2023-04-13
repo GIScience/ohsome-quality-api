@@ -3,7 +3,7 @@ density:
   name: Density
   project: experimental
   description: >-
-      The density of Point of Interests (POI).
+      The density of features.
       It is calculated by the number of features 
       divided by the area in square-kilometers.
   label-description:
