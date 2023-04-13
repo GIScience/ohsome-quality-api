@@ -16,6 +16,7 @@
 ### Bug Fixes
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- doctors topic: use correct filter ([#540])
 
 ### New Features
 
@@ -87,6 +88,7 @@
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
+[#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 
 ## 0.14.2
