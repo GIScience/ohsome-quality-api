@@ -167,9 +167,9 @@ class BuildingCompleteness(BaseIndicator):
             x=[i for i in self.completeness_ratio],
             y=self.building_area_prediction,
             histnorm="density",
-            nbinsx=15,
+            nbinsx=5,
             xbins=dict(start=0, end=1.5),
-            # marker=dict(edgecolor="black", color="grey"),
+            marker=dict(color="rgba(0,0,0,0.5)", line=dict(color="black", width=1)),
         )
 
         # apply threshold coloring to histogram bins
@@ -190,16 +190,8 @@ class BuildingCompleteness(BaseIndicator):
         trace.marker.color = colors
         trace.showlegend = False
         trace.hoverinfo = "none"
-        # weighted_avg = self.result.value * 100
-        # trace_name = f"Weighted Average: {weighted_avg:.0f}%"
-        # trace.add_vline(
-        #     x=self.result.value,
-        #     line_dash="dash",
-        #     line_color="black",
-        #     annotation_text=trace_name,
-        #     annotation_position="top right",
-        #     annotation_font_size=12,
-        # )
+        weighted_avg = self.result.value * 100
+        trace_name = f"Weighted Average: {weighted_avg:.0f}%"
 
         # create layout
         layout = go.Layout(
@@ -215,12 +207,18 @@ class BuildingCompleteness(BaseIndicator):
                 tickformat=".0%",
                 showticklabels=True,
             ),
-            height=500,
-            margin=dict(t=80),
         )
 
         # create figure and add trace and layout
         fig = go.Figure(data=[trace], layout=layout)
+        fig.add_vline(
+            x=self.result.value,
+            line_dash="dash",
+            line_color="black",
+            annotation_text=trace_name,
+            annotation_position="top right",
+            annotation_font_size=12,
+        )
         fig.show()
         img_data = StringIO()
         plt.savefig(img_data, format="svg", bbox_inches="tight")
