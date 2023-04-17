@@ -1,11 +1,9 @@
 import logging
 import os
-from io import StringIO
 from string import Template
 
 import dateutil.parser
 import geojson
-import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objs as go
 from building_completeness_model import Predictor, Processor
@@ -197,14 +195,13 @@ class BuildingCompleteness(BaseIndicator):
         layout = go.Layout(
             title=dict(text="Building Completeness"),
             xaxis=dict(
-                title=dict(text="Completeness Ratio [%]"),
+                title=dict(text="Completeness Ratio"),
                 range=[0, 1.5],
                 tickformat=".0%",
                 showticklabels=True,
             ),
             yaxis=dict(
                 title=dict(text="Distribution Density [%]"),
-                tickformat=".0%",
                 showticklabels=True,
             ),
         )
@@ -219,11 +216,13 @@ class BuildingCompleteness(BaseIndicator):
             annotation_position="top right",
             annotation_font_size=12,
         )
-        fig.show()
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
 
 
 def get_smod_class_share(featurecollection: FeatureCollection) -> dict:
