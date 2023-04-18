@@ -45,6 +45,7 @@ class Currentness(BaseIndicator):
         self.start = ""
         self.end = None
         self.low_contributions_threshold = 0
+        self.dates = []
 
     async def preprocess(self) -> None:
         """Get absolute number of contributions for each year since given start date"""
@@ -190,15 +191,20 @@ class Currentness(BaseIndicator):
             line_color="black",
         )
         fig.update_layout(
-            title_text="Total Contributions (up to {0}): {1}".format(
+            title_text="Currentness"
+            + "<br>"
+            + "<sup>Total Contributions (up to {0}): {1}</sup>".format(
                 self.end, int(self.element_count)
             )
             + "<br>"
-            + "The dashed line indicates the time since which more than 50% "
-            "of the objects have been edited.",
+            + "<sup>The dashed line indicates the time since which more than 50% "
+            "of the objects have been edited.</sup>",
         )
-        fig.update_xaxes(title_text="Years since", autorange="reversed")
-        fig.update_yaxes(title_text="Percentage of contributions")
+        fig.update_xaxes(title_text="Years since today", autorange="reversed")
+        fig.update_yaxes(
+            title_text="Percentage of contributions",
+            tickformat=".0%",
+        )
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
