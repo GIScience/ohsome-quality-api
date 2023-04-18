@@ -11,8 +11,7 @@ from ohsome_quality_analyst.indicators.currentness.indicator import (
     get_last_edited_year,
     get_median_year,
 )
-
-from .utils import get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
 
 class TestIndicatorCurrentness(unittest.TestCase):
@@ -45,7 +44,7 @@ class TestIndicatorCurrentness(unittest.TestCase):
         """Test area with no amenities"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
+            "../fixtures",
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
