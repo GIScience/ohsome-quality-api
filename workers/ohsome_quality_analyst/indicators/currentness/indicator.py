@@ -92,7 +92,7 @@ class Currentness(BaseIndicator):
         contrib_rel_cum_yellow = 0
         contrib_rel_cum_red = 0
         for num_of_years, (year, contrib_abs) in enumerate(
-            reversed(self.contributions_abs.items()),
+            self.contributions_abs.items(),
             start=1,
         ):
             contrib_rel = contrib_abs / self.contributions_sum
