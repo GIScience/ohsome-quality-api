@@ -1,7 +1,7 @@
 import pytest
 
 
-def test(client, response_template, metadata_report_minimal):
+def test(client, response_template):
     response = client.get("/metadata/reports/")
     assert response.status_code == 200
 
