@@ -17,6 +17,7 @@
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
 - currentness: fix wrong count of contributions due to multiple requests ([#535])
+- doctors topic: use correct filter ([#540])
 
 ### New Features
 
@@ -25,7 +26,7 @@
 - layer/topic are now pydantic models instead of dataclasses ([#517])
 - add plot creation via plotly to `MappingSaturation` indicator ([#499])
 - api: add `/metadata/topic` endpoint ([#519])
-- api: add `/metadata/indicators` endpoint ([#533]) 
+- api: add `/metadata/indicators` endpoint ([#533])
 
 ### Other Changes
 
@@ -92,6 +93,7 @@
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
 [#535]: https://github.com/GIScience/ohsome-quality-analyst/pull/535
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
+[#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 
 ## 0.14.2
