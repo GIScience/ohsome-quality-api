@@ -34,9 +34,9 @@ def test_metadata_topics_fail():
         TopicResponse(result={"foo": "bar"})
 
 
-def test_metadata_topics_list(topics_list):
-    response = TopicListResponse(result=topics_list)
-    assert response.result == topics_list
+def test_metadata_topics_list(topic_definitions):
+    response = TopicListResponse(result=topic_definitions)
+    assert response.result == topic_definitions
 
 
 def test_metadata_indicators(indicator_metadata_minimal):

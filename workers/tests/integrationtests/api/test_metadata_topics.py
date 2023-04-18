@@ -1,26 +1,28 @@
 import pytest
 
 
-def test_metadata_topic(client, response_template, building_count):
+def test_metadata_topic(client, response_template, metadata_topic_building_count):
     response = client.get("/metadata/topics")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert building_count == result["building_count"]
+    assert metadata_topic_building_count == result["building_count"]
     # TODO
     # assert "minimal" not in [topic["key"] for topic in result]
 
 
-def test_metadata_topic_project_core(client, response_template, building_count):
+def test_metadata_topic_project_core(
+    client, response_template, metadata_topic_building_count
+):
     response = client.get("/metadata/topics/?project=core")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert building_count == result["building_count"]
+    assert metadata_topic_building_count == result["building_count"]
     assert "minimal" not in result.keys()
 
 
@@ -42,14 +44,16 @@ def test_metadata_topic_project_not_found_error(client):
     # content = response.json()
 
 
-def test_metadata_topic_by_key(client, response_template, building_count):
+def test_metadata_topic_by_key(
+    client, response_template, metadata_topic_building_count
+):
     response = client.get("/metadata/topics/building_count")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert result == building_count
+    assert result == metadata_topic_building_count
 
 
 def test_metadata_topic_by_key_not_found_error(client):
