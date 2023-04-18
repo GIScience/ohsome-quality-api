@@ -12,6 +12,7 @@ def test(client, response_template, metadata_indicator_mapping_saturation):
         metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["mapping-saturation"]
     )
+    assert "minimal" not in result.keys()
 
 
 def test_by_key(client, response_template, metadata_indicator_minimal):

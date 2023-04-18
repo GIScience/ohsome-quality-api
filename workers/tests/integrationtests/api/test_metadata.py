@@ -3,6 +3,7 @@ def test_metadata(
     response_template,
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
+    metadata_report_multilevel_mapping_saturation,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -21,7 +22,10 @@ def test_metadata(
         == result["indicators"]["mapping-saturation"]
     )
     # check reports result
-    # TODO: add report when a core report is implemented
+    assert (
+        metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
+        == result["reports"]["multilevel-mapping-saturation"]
+    )
 
 
 def test_project_core(
@@ -42,13 +46,12 @@ def test_project_core(
     # check indicators result
     assert len(result["indicators"]) > 0
     # check reports result
-    # no report in core yet
+    assert len(result["reports"]) > 0
 
 
 def test_project_misc(
     client,
     response_template,
-    metadata_report_minimal,
 ):
     response = client.get("/metadata?project=misc")
     assert response.status_code == 200
@@ -65,5 +68,3 @@ def test_project_misc(
     assert len(result["indicators"]) > 0
     # check reports result
     assert len(result["reports"]) > 0
-    # TODO: remove when a "core" report is implemented and added in test_metadata
-    assert metadata_report_minimal["minimal"] == result["reports"]["minimal"]
