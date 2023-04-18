@@ -1,14 +1,14 @@
 import pytest
 
 
-def test(client, response_template, metadata_mapping_saturation):
+def test(client, response_template, metadata_indicator_mapping_saturation):
     response = client.get("/metadata/indicators/")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_mapping_saturation == result["mapping-saturation"]
+    assert metadata_indicator_mapping_saturation == result["mapping-saturation"]
 
 
 def test_by_key(client, response_template, metadata_indicator_minimal):
@@ -26,14 +26,14 @@ def test_by_key_not_found_error(client):
     assert response.status_code == 422
 
 
-def test_project_core(client, response_template, metadata_mapping_saturation):
+def test_project_core(client, response_template, metadata_indicator_mapping_saturation):
     response = client.get("/metadata/indicators/?project=core")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_mapping_saturation == result["mapping-saturation"]
+    assert metadata_indicator_mapping_saturation == result["mapping-saturation"]
     assert "minimal" not in result.keys()
 
 

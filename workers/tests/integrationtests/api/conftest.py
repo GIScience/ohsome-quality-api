@@ -24,7 +24,7 @@ def response_template():
 
 
 @pytest.fixture
-def building_count():
+def metadata_topic_building_count():
     return {
         "name": "Building Count",
         "description": (
@@ -43,7 +43,7 @@ def building_count():
 
 
 @pytest.fixture
-def metadata_mapping_saturation():
+def metadata_indicator_mapping_saturation():
     return {
         "name": "Mapping Saturation",
         "description": (

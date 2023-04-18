@@ -30,13 +30,8 @@ def topic_building_count(topic_key_building_count) -> TopicDefinition:
 
 
 @pytest.fixture()
-def topics_dict() -> dict[str, TopicDefinition]:
+def topic_definitions() -> dict[str, TopicDefinition]:
     return load_topic_definitions()
-
-
-@pytest.fixture()
-def topics_list(topics_dict) -> dict[str, TopicDefinition]:
-    return topics_dict
 
 
 @pytest.fixture(scope="class")

@@ -1,8 +1,8 @@
 def test_metadata(
     client,
     response_template,
-    building_count,
-    metadata_mapping_saturation,
+    metadata_topic_building_count,
+    metadata_indicator_mapping_saturation,
     metadata_report_minimal,
 ):
     response = client.get("/metadata")
@@ -12,15 +12,21 @@ def test_metadata(
     result = content.pop("result")
     assert content == response_template
     # check topics result
-    assert building_count == result["topics"]["building_count"]
+    assert metadata_topic_building_count == result["topics"]["building_count"]
     # check indicators result
-    assert metadata_mapping_saturation == result["indicators"]["mapping-saturation"]
+    assert (
+        metadata_indicator_mapping_saturation
+        == result["indicators"]["mapping-saturation"]
+    )
     # check reports result
     # TODO: add report when a core report is implemented
 
 
 def test_project_core(
-    client, response_template, building_count, metadata_mapping_saturation
+    client,
+    response_template,
+    metadata_topic_building_count,
+    metadata_indicator_mapping_saturation,
 ):
     response = client.get("/metadata?project=core")
     assert response.status_code == 200
