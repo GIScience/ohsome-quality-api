@@ -59,7 +59,7 @@ class Currentness(BaseIndicator):
             self.feature,
             time=past_years_interval,
             count_latest_contributions=True,
-            #  exclude deletions from the response
+            # exclude deletions from the response
             contribution_type="geometryChange,creation,tagChange",
         )
         years_since_today = 0
@@ -78,7 +78,6 @@ class Currentness(BaseIndicator):
         """Calculate the years since over 50% of the elements were last edited"""
         logging.info(f"Calculation for indicator: {self.metadata.name}")
 
-        # It can be that features have been edited, but have been deleted since.
         if self.element_count == 0:
             self.result.description = (
                 "In the area of interest no features "
@@ -105,9 +104,8 @@ class Currentness(BaseIndicator):
             else:
                 contrib_rel_cum_red += contrib_rel
         self.contributions_rel = dict(sorted(contributions_rel.items()))
-        # calculate the year in which 50% of the total edits have been made
+        # calculate the years since which 50% of the total edits have been made
         self.result.value = get_median_year(self.contributions_rel)
-        # years since last edit has been made
 
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
