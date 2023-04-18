@@ -1,6 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from ohsome_quality_analyst import __version__
+from ohsome_quality_analyst.api.request_models import (
+    IndicatorEnum,
+    ReportEnum,
+    TopicEnum,
+)
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 from ohsome_quality_analyst.reports.models import ReportMetadata
@@ -21,13 +26,37 @@ class ResponseBase(BaseModel):
 class TopicMetadataResponse(ResponseBase):
     result: dict[str, TopicDefinition]
 
+    @validator("result")
+    @classmethod
+    def check_topic_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            TopicEnum(key)
+        return value
+
 
 class IndicatorMetadataResponse(ResponseBase):
     result: dict[str, IndicatorMetadata]
 
+    @validator("result")
+    @classmethod
+    def check_indicator_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            IndicatorEnum(key)
+        return value
+
 
 class ReportMetadataResponse(ResponseBase):
     result: dict[str, ReportMetadata]
+
+    @validator("result")
+    @classmethod
+    def check_report_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            ReportEnum(key)
+        return value
 
 
 class MetadataResponse(ResponseBase):

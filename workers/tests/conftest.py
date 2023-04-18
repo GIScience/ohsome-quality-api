@@ -11,6 +11,7 @@ from ohsome_quality_analyst.definitions import (
     load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.reports.models import ReportMetadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
 # from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
@@ -27,6 +28,14 @@ def topic_key_building_count() -> str:
 @pytest.fixture(scope="class")
 def topic_building_count(topic_key_building_count) -> TopicDefinition:
     return get_topic_definition(topic_key_building_count)
+
+
+@pytest.fixture(scope="class")
+def metadata_topic_building_count(
+    topic_key_building_count,
+    topic_building_count,
+) -> dict[str, TopicDefinition]:
+    return {topic_key_building_count: topic_building_count}
 
 
 @pytest.fixture()
@@ -55,10 +64,20 @@ def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollect
 
 
 @pytest.fixture
-def indicator_metadata_minimal() -> IndicatorMetadata:
-    return get_metadata("indicators", "Minimal")
+def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
+    return {"minimal": get_metadata("indicators", "Minimal")}
 
 
 @pytest.fixture
 def indicators_metadata() -> dict[str, IndicatorMetadata]:
     return load_metadata("indicators")
+
+
+@pytest.fixture
+def metadata_report_minimal() -> dict[str, ReportMetadata]:
+    return {"minimal": get_metadata("reports", "Minimal")}
+
+
+@pytest.fixture
+def reports_metadata() -> dict[str, ReportMetadata]:
+    return load_metadata("reports")
