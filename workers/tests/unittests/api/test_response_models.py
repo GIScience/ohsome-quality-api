@@ -3,10 +3,10 @@ from pydantic import ValidationError
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.api.response_models import (
-    IndicatorMetadataListResponse,
+    AllIndicatorMetadataResponse,
+    AllTopicsResponse,
     IndicatorMetadataResponse,
     ResponseBase,
-    TopicListResponse,
     TopicResponse,
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
@@ -35,7 +35,7 @@ def test_metadata_topics_fail():
 
 
 def test_metadata_topics_list(topic_definitions):
-    response = TopicListResponse(result=topic_definitions)
+    response = AllTopicsResponse(result=topic_definitions)
     assert response.result == topic_definitions
 
 
@@ -56,5 +56,5 @@ def test_metadata_indicators_fail():
 
 
 def test_metadata_indicators_list(indicators_metadata):
-    response = IndicatorMetadataListResponse(result=indicators_metadata)
+    response = AllIndicatorMetadataResponse(result=indicators_metadata)
     assert response.result == indicators_metadata

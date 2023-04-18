@@ -33,12 +33,12 @@ from ohsome_quality_analyst.api.request_models import (
     TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
-    IndicatorMetadataListResponse,
+    AllIndicatorMetadataResponse,
+    AllReportMetadataResponse,
+    AllTopicsResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
-    ReportMetadataListResponse,
     ReportMetadataResponse,
-    TopicListResponse,
     TopicResponse,
 )
 from ohsome_quality_analyst.config import configure_logging
@@ -376,9 +376,9 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
         "result": {k.value: {"key": True} for k in TopicEnum},
     },
 )
-async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> TopicListResponse:
+async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> AllTopicsResponse:
     """Get topics."""
-    return TopicListResponse(result=get_topic_definitions(project=project.value))
+    return AllTopicsResponse(result=get_topic_definitions(project=project.value))
 
 
 @app.get(
@@ -405,9 +405,9 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
 )
 async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
-) -> IndicatorMetadataListResponse:
+) -> AllIndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return IndicatorMetadataListResponse(
+    return AllIndicatorMetadataResponse(
         result=get_indicator_definitions(project=project.value)
     )
 
@@ -435,9 +435,9 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
 )
 async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
-) -> ReportMetadataListResponse:
+) -> AllReportMetadataResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataListResponse(
+    return AllReportMetadataResponse(
         result=get_report_definitions(project=project.value)
     )
 
