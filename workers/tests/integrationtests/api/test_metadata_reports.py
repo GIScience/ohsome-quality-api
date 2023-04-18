@@ -1,15 +1,18 @@
 import pytest
 
 
-def test(client, response_template):
+def test(client, response_template, metadata_report_multilevel_mapping_saturation):
     response = client.get("/metadata/reports/")
     assert response.status_code == 200
 
     content = response.json()
-    content.pop("result")
+    result = content.pop("result")
     assert content == response_template
-    # TODO: add assert (comparable to test_indicators::test)
-    #  as soon as a report is considered "core"
+    assert (
+        metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
+        == result["multilevel-mapping-saturation"]
+    )
+    assert "minimal" not in result.keys()
 
 
 def test_by_key(client, response_template, metadata_report_minimal):
@@ -27,14 +30,20 @@ def test_by_key_not_found_error(client):
     assert response.status_code == 422
 
 
-def test_project_misc(client, response_template, metadata_report_minimal):
-    response = client.get("/metadata/reports/?project=misc")
+def test_project_core(
+    client, response_template, metadata_report_multilevel_mapping_saturation
+):
+    response = client.get("/metadata/reports/?project=core")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_report_minimal["minimal"] == result["minimal"]
+    assert (
+        metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
+        == result["multilevel-mapping-saturation"]
+    )
+    assert "minimal" not in result.keys()
 
 
 @pytest.mark.skip(reason="Not yet implemented")
