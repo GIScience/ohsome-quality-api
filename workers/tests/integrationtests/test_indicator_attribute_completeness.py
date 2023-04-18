@@ -1,11 +1,12 @@
 import asyncio
 import os
-import unittest
 from datetime import datetime
 
 import geojson
+import plotly.graph_objects as pgo
+import plotly.io as pio
+import pytest
 
-from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
@@ -13,32 +14,33 @@ from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
 from .utils import get_topic_fixture, oqt_vcr
 
 
-class TestIndicatorAttributeCompleteness(unittest.TestCase):
-    def setUp(self):
-        # Heidelberg
-        self.feature = asyncio.run(
-            db_client.get_feature_from_db(dataset="regions", feature_id="3")
-        )
-
-    @oqt_vcr.use_cassette()
-    def test(self):
+class TestPreprocess:
+    @oqt_vcr.use_cassette
+    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = AttributeCompleteness(
-            feature=self.feature,
-            topic=get_topic_fixture("building_count"),
+            topic_building_count, feature_germany_heidelberg
         )
-        self.assertIsNotNone(indicator.attribution())
-
         asyncio.run(indicator.preprocess())
-        self.assertIsInstance(indicator.result.timestamp_osm, datetime)
-        self.assertIsInstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
 
-        indicator.calculate()
-        self.assertIsNotNone(indicator.result.label)
-        self.assertIsNotNone(indicator.result.value)
-        self.assertIsNotNone(indicator.result.description)
 
-        indicator.create_figure()
-        self.assertIsNotNone(indicator.result.svg)
+class TestCalculation:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    def test_calculate(self, indicator):
+        assert indicator.result.value >= 0.0
+        assert indicator.result.label in ["green", "yellow", "red", "undefined"]
+        assert indicator.result.description is not None
+
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+        assert isinstance(indicator.result.timestamp_oqt, datetime)
 
     @oqt_vcr.use_cassette()
     def test_no_features(self):
@@ -56,12 +58,29 @@ class TestIndicatorAttributeCompleteness(unittest.TestCase):
             feature=feature,
         )
         asyncio.run(indicator.preprocess())
-        self.assertEqual(indicator.count_all, 0)
+        assert indicator.count_all == 0
 
         indicator.calculate()
-        self.assertEqual(indicator.result.label, "undefined")
-        self.assertEqual(indicator.result.value, None)
+        assert indicator.result.label == "undefined"
+        assert indicator.result.value is None
 
 
-if __name__ == "__main__":
-    unittest.main()
+class TestFigure:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
+    def test_create_figure_manual(self, indicator):
+        indicator.create_figure()
+        pio.show(indicator.result.figure)
+
+    def test_create_figure(self, indicator):
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        assert indicator.result.svg is not None
