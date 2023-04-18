@@ -34,7 +34,7 @@ def test_project_misc(client, response_template, metadata_report_minimal):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_report_minimal == result["minimal"]
+    assert metadata_report_minimal["minimal"] == result["minimal"]
 
 
 @pytest.mark.skip(reason="Not yet implemented")

@@ -3,11 +3,9 @@ from pydantic import ValidationError
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.api.response_models import (
-    AllIndicatorMetadataResponse,
-    AllTopicsResponse,
     IndicatorMetadataResponse,
     ResponseBase,
-    TopicResponse,
+    TopicMetadataResponse,
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 
@@ -19,23 +17,23 @@ def test_base():
 
 
 def test_metadata_topics(topic_building_count):
-    response = TopicResponse(result=topic_building_count)
+    response = TopicMetadataResponse(result=topic_building_count)
     assert response.result == topic_building_count
 
 
 def test_metadata_topics_fail():
     with pytest.raises(ValidationError):
-        TopicResponse(result="")
+        TopicMetadataResponse(result="")
     with pytest.raises(ValidationError):
-        TopicResponse(result="bar")
+        TopicMetadataResponse(result="bar")
     with pytest.raises(ValidationError):
-        TopicResponse(result={})
+        TopicMetadataResponse(result={})
     with pytest.raises(ValidationError):
-        TopicResponse(result={"foo": "bar"})
+        TopicMetadataResponse(result={"foo": "bar"})
 
 
 def test_metadata_topics_list(topic_definitions):
-    response = AllTopicsResponse(result=topic_definitions)
+    response = TopicMetadataResponse(result=topic_definitions)
     assert response.result == topic_definitions
 
 
@@ -56,5 +54,5 @@ def test_metadata_indicators_fail():
 
 
 def test_metadata_indicators_list(indicators_metadata):
-    response = AllIndicatorMetadataResponse(result=indicators_metadata)
+    response = IndicatorMetadataResponse(result=indicators_metadata)
     assert response.result == indicators_metadata

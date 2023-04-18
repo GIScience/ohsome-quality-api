@@ -11,10 +11,13 @@ def test_metadata(
     result = content.pop("result")
     assert content == response_template
     # check topics result
-    assert metadata_topic_building_count == result["topics"]["building_count"]
+    assert (
+        metadata_topic_building_count["building_count"]
+        == result["topics"]["building_count"]
+    )
     # check indicators result
     assert (
-        metadata_indicator_mapping_saturation
+        metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["indicators"]["mapping-saturation"]
     )
     # check reports result
@@ -24,8 +27,6 @@ def test_metadata(
 def test_project_core(
     client,
     response_template,
-    metadata_topic_building_count,
-    metadata_indicator_mapping_saturation,
 ):
     response = client.get("/metadata?project=core")
     assert response.status_code == 200
@@ -65,4 +66,4 @@ def test_project_misc(
     # check reports result
     assert len(result["reports"]) > 0
     # TODO: remove when a "core" report is implemented and added in test_metadata
-    assert metadata_report_minimal == result["reports"]["minimal"]
+    assert metadata_report_minimal["minimal"] == result["reports"]["minimal"]
