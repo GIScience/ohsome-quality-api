@@ -18,27 +18,15 @@ class ResponseBase(BaseModel):
         extra = "forbid"
 
 
-class TopicResponse(ResponseBase):
-    result: TopicDefinition
-
-
-class AllTopicsResponse(ResponseBase):
+class TopicMetadataResponse(ResponseBase):
     result: dict[str, TopicDefinition]
 
 
 class IndicatorMetadataResponse(ResponseBase):
-    result: IndicatorMetadata
-
-
-class AllIndicatorMetadataResponse(ResponseBase):
     result: dict[str, IndicatorMetadata]
 
 
 class ReportMetadataResponse(ResponseBase):
-    result: ReportMetadata
-
-
-class AllReportMetadataResponse(ResponseBase):
     result: dict[str, ReportMetadata]
 
 

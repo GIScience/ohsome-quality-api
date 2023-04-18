@@ -33,13 +33,10 @@ from ohsome_quality_analyst.api.request_models import (
     TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
-    AllIndicatorMetadataResponse,
-    AllReportMetadataResponse,
-    AllTopicsResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
     ReportMetadataResponse,
-    TopicResponse,
+    TopicMetadataResponse,
 )
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
@@ -376,21 +373,21 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
         "result": {k.value: {"key": True} for k in TopicEnum},
     },
 )
-async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> AllTopicsResponse:
+async def metadata_topic(
+    project: ProjectEnum = DEFAULT_PROJECT,
+) -> TopicMetadataResponse:
     """Get topics."""
-    return AllTopicsResponse(result=get_topic_definitions(project=project.value))
+    return TopicMetadataResponse(result=get_topic_definitions(project=project.value))
 
 
 @app.get(
     "/metadata/topics/{key}",
     tags=["metadata"],
-    response_model_exclude={
-        "result": {"key": True},
-    },
+    response_model_exclude={"result": {k.value: {"key": True} for k in TopicEnum}},
 )
-async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
+async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     """Get topic by key."""
-    return TopicResponse(result=get_topic_definition(key.value))
+    return TopicMetadataResponse(result={key.value: get_topic_definition(key.value)})
 
 
 @app.get(
@@ -405,9 +402,9 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicResponse:
 )
 async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
-) -> AllIndicatorMetadataResponse:
+) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return AllIndicatorMetadataResponse(
+    return IndicatorMetadataResponse(
         result=get_indicator_definitions(project=project.value)
     )
 
@@ -416,13 +413,16 @@ async def metadata_indicators(
     "/metadata/indicators/{key}",
     tags=["metadata"],
     response_model_exclude={
-        "result": {"label_description": True, "result_description": True}
+        "result": {
+            k.value: {"label_description": True, "result_description": True}
+            for k in IndicatorEnum
+        }
     },
 )
 async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataResponse:
     """Get metadata of an indicator by key."""
     return IndicatorMetadataResponse(
-        result=get_metadata("indicators", hyphen_to_camel(key.value))
+        result={key.value: get_metadata("indicators", hyphen_to_camel(key.value))}
     )
 
 
@@ -435,22 +435,22 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
 )
 async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
-) -> AllReportMetadataResponse:
+) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
-    return AllReportMetadataResponse(
-        result=get_report_definitions(project=project.value)
-    )
+    return ReportMetadataResponse(result=get_report_definitions(project=project.value))
 
 
 @app.get(
     "/metadata/reports/{key}",
     tags=["metadata"],
-    response_model_exclude={"result": {"label_description": True}},
+    response_model_exclude={
+        "result": {k.value: {"label_description": True} for k in ReportEnum}
+    },
 )
 async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     """Get metadata of an indicator by key."""
     return ReportMetadataResponse(
-        result=get_metadata("reports", hyphen_to_camel(key.value))
+        result={key.value: get_metadata("reports", hyphen_to_camel(key.value))}
     )
 
 
