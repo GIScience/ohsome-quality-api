@@ -9,8 +9,7 @@ def test_metadata_topic(client, response_template, metadata_topic_building_count
     result = content.pop("result")
     assert content == response_template
     assert metadata_topic_building_count == result["building_count"]
-    # TODO
-    # assert "minimal" not in [topic["key"] for topic in result]
+    assert "minimal" not in result.keys()
 
 
 def test_metadata_topic_project_core(
