@@ -3,7 +3,6 @@ def test_metadata(
     response_template,
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
-    metadata_report_minimal,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -48,8 +47,6 @@ def test_project_core(
 def test_project_misc(
     client,
     response_template,
-    metadata_topic_minimal,
-    metadata_indicator_minimal,
     metadata_report_minimal,
 ):
     response = client.get("/metadata?project=misc")
