@@ -1,6 +1,8 @@
 import asyncio
 from datetime import datetime
 
+import plotly.graph_objects as pgo
+import plotly.io as pio
 import pytest
 from geojson import FeatureCollection
 
@@ -15,12 +17,12 @@ from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 from .utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def feature():
     return get_geojson_fixture("algeria-touggourt-feature.geojson")
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def topic():
     return get_topic_fixture("building_area")
 
@@ -66,6 +68,27 @@ def test_indicator(feature, topic, mock_env_oqt_data_dir):
     # Create Figure
     indicator.create_figure()
     assert indicator.result.svg is not None
+
+
+class TestFigure:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, feature, topic):
+        i = BuildingCompleteness(feature=feature, topic=topic)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
+    def test_create_figure_manual(self, indicator):
+        indicator.create_figure()
+        pio.show(indicator.result.figure)
+
+    def test_create_figure(self, indicator):
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        assert indicator.result.svg is not None
 
 
 def test_get_smod_class_share(mock_env_oqt_data_dir, feature):
