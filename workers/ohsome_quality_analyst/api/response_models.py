@@ -22,7 +22,7 @@ class TopicResponse(ResponseBase):
     result: TopicDefinition
 
 
-class TopicListResponse(ResponseBase):
+class AllTopicsResponse(ResponseBase):
     result: dict[str, TopicDefinition]
 
 
@@ -30,7 +30,7 @@ class IndicatorMetadataResponse(ResponseBase):
     result: IndicatorMetadata
 
 
-class IndicatorMetadataListResponse(ResponseBase):
+class AllIndicatorMetadataResponse(ResponseBase):
     result: dict[str, IndicatorMetadata]
 
 
@@ -38,7 +38,7 @@ class ReportMetadataResponse(ResponseBase):
     result: ReportMetadata
 
 
-class ReportMetadataListResponse(ResponseBase):
+class AllReportMetadataResponse(ResponseBase):
     result: dict[str, ReportMetadata]
 
 
