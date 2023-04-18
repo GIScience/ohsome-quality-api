@@ -42,6 +42,25 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp_oqt, datetime)
 
+    @oqt_vcr.use_cassette()
+    def test_no_amenities(self):
+        """Test area with no amenities"""
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "../fixtures",
+            "niger-kanan-bakache.geojson",
+        )
+        with open(infile, "r") as f:
+            feature = geojson.load(f)
+
+        indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
+        asyncio.run(indicator.preprocess())
+        assert indicator.element_count == 0
+
+        indicator.calculate()
+        assert indicator.result.label == "undefined"
+        assert indicator.result.value is None
+
 
 class TestFigure:
     @pytest.fixture(scope="class")
@@ -62,26 +81,6 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
         assert indicator.result.svg is not None
-
-
-@oqt_vcr.use_cassette()
-def test_no_amenities():
-    """Test area with no amenities"""
-    infile = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "../fixtures",
-        "niger-kanan-bakache.geojson",
-    )
-    with open(infile, "r") as f:
-        feature = geojson.load(f)
-
-    indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
-    asyncio.run(indicator.preprocess())
-    assert indicator.element_count == 0
-
-    indicator.calculate()
-    assert indicator.result.label == "undefined"
-    assert indicator.result.value is None
 
 
 def test_get_last_edited_year():
