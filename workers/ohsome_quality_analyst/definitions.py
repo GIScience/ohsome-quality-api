@@ -147,7 +147,7 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
 
 def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
     topics = load_topic_definitions()
-    if project:
+    if project is not None:
         return {k: v for k, v in topics.items() if v.project == project}
     else:
         return topics
@@ -155,7 +155,7 @@ def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
 
 def get_indicator_definitions(project: str = None) -> dict[str, IndicatorMetadata]:
     indicators = load_metadata("indicators")
-    if project:
+    if project is not None:
         return {k: v for k, v in indicators.items() if v.project == project}
     else:
         return indicators
@@ -163,7 +163,7 @@ def get_indicator_definitions(project: str = None) -> dict[str, IndicatorMetadat
 
 def get_report_definitions(project: str = None) -> dict[str, ReportMetadata]:
     reports = load_metadata("reports")
-    if project:
+    if project is not None:
         return {k: v for k, v in reports.items() if v.project == project}
     else:
         return reports
