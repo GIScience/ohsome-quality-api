@@ -58,6 +58,7 @@ def metadata_indicator_mapping_saturation():
                 + "if the growth of the fitted curve is minimal."
             ),
             "project": "core",
+            "quality-dimension": "completeness",
         }
     }
 
@@ -102,6 +103,7 @@ def metadata_indicator_minimal():
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
             "project": "misc",
+            "quality-dimension": "none",
         }
     }
 
