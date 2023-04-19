@@ -3,13 +3,13 @@ from unittest.mock import Mock
 
 from ohsome_quality_analyst.reports.sketchmap_fitness.report import SketchmapFitness
 
-from .utils import get_geojson_fixture
+from ..utils import load_geojson_fixture
 
 
 class TestReportSketchmapFitness(unittest.TestCase):
     def test_combine_indicators_mean(self):
-        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        report = SketchmapFitness(geometry)
+        feature = load_geojson_fixture("feature-germany-heidelberg.geojson")
+        report = SketchmapFitness(feature)
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_topic:

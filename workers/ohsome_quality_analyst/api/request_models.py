@@ -7,9 +7,11 @@ Besides data validation through `pydantic`, `FastAPI` will display additional
 information derived from `pydantic` models in the automatic generated API documentation.
 """
 
+import json
 from enum import Enum
 from typing import Optional, Union
 
+import geojson
 import pydantic
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
@@ -21,10 +23,13 @@ from ohsome_quality_analyst.definitions import (
     get_project_keys,
     get_report_names,
     get_topic_keys,
-    get_valid_indicators,
 )
 from ohsome_quality_analyst.topics.models import TopicData
-from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.validators import (
+    validate_geojson,
+    validate_indicator_topic_combination,
+)
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -116,12 +121,9 @@ class BaseBpolys(BaseModel):
     @pydantic.validator("bpolys")
     @classmethod
     def validate_bpolys(cls, value) -> dict:
-        """Validate GeoJSON."""
-        # Load and validate GeoJSON
-        for _ in loads_geojson(value):
-            # Check if exceptions are raised by `loads_geojson`
-            pass
-        return value
+        obj = geojson.loads(json.dumps(value))
+        validate_geojson(obj)  # Check if exceptions are raised
+        return obj
 
 
 class BaseDatabase(BaseModel):
@@ -141,15 +143,8 @@ class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
             topic = values["topic_key"].value
         except KeyError:
             raise ValueError("An issue with the topic or indicator keys occurred.")
-        if indicator not in get_valid_indicators(topic):
-            raise ValueError(
-                "Indicator topic combination is invalid: "
-                + str(indicator)
-                + ", "
-                + str(topic)
-            )
-        else:
-            return values
+        validate_indicator_topic_combination(indicator, topic)
+        return values
 
 
 class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
@@ -161,15 +156,8 @@ class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
             topic = values["topic_key"].value
         except KeyError:
             raise ValueError("An issue with the topic or indicator key occurred.")
-        if indicator not in get_valid_indicators(topic):
-            raise ValueError(
-                "Indicator topic combination is invalid: "
-                + str(indicator)
-                + ", "
-                + str(topic)
-            )
-        else:
-            return values
+        validate_indicator_topic_combination(indicator, topic)
+        return values
 
 
 class IndicatorData(BaseIndicator, BaseTopicData, BaseBpolys):

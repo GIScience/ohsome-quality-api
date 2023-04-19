@@ -5,14 +5,14 @@ from ohsome_quality_analyst.reports.multilevel_mapping_saturation.report import 
     MultilevelMappingSaturation,
 )
 
-from .utils import get_geojson_fixture
+from ..utils import load_geojson_fixture
 
 
 class TestReportMultilevelMappingSaturation(unittest.TestCase):
     # TODO: Test case for indicator.result undefined
     def test_combine_indicators_mean(self):
-        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        report = MultilevelMappingSaturation(geometry)
+        feature = load_geojson_fixture("feature-germany-heidelberg.geojson")
+        report = MultilevelMappingSaturation(feature)
 
         # Mock indicator objects with a fixed result value
         for _ in report.indicator_topic:

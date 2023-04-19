@@ -2,7 +2,7 @@ import os
 
 import geojson
 import pytest
-from geojson import Feature, FeatureCollection
+from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
@@ -54,13 +54,57 @@ def feature_germany_heidelberg() -> Feature:
 
 
 @pytest.fixture(scope="class")
+def feature_collection_germany_heidelberg() -> FeatureCollection:
+    # Single Feature
+    path = os.path.join(
+        FIXTURE_DIR,
+        "feature-collection-germany-heidelberg.geojson",
+    )
+    with open(path, "r") as f:
+        return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
 def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollection:
+    # Multiple Features
     path = os.path.join(
         FIXTURE_DIR,
         "feature-collection-germany-heidelberg-bahnstadt-bergheim.geojson",
     )
     with open(path, "r") as f:
         return geojson.load(f)
+
+
+@pytest.fixture
+def feature_collection_invalid() -> FeatureCollection:
+    # Invalid Geometry
+    return FeatureCollection(
+        features=[
+            Feature(
+                geometry=Polygon(
+                    [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
+                )
+            )
+        ]
+    )
+
+
+@pytest.fixture(params=["Point", "LineString", "Polygon"])
+def geojson_unsupported_object_type(request):
+    # Invalid Geometry
+    return geojson.utils.generate_random(request.param)
+
+
+@pytest.fixture(params=["Point", "LineString"])
+def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
+    # Invalid Geometry
+    return FeatureCollection(
+        features=[
+            Feature(
+                geometry=geojson.utils.generate_random(request.param),
+            ),
+        ]
+    )
 
 
 @pytest.fixture

@@ -1,7 +1,6 @@
 """Standalone helper functions."""
 
 import importlib
-import json
 import logging
 import os
 import pkgutil
@@ -12,7 +11,7 @@ from typing import Generator, Union
 
 import geojson
 import numpy as np
-from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.indicators.mapping_saturation.models import BaseStatModel
 
@@ -112,25 +111,15 @@ def write_geojson(
         logging.info("Output file written:\t" + str(outfile))
 
 
-def loads_geojson(bpolys: dict) -> Generator[Feature, None, None]:
+def loads_geojson(
+    bpolys: FeatureCollection | Feature,
+) -> Generator[Feature, None, None]:
     """Load and validate GeoJSON object."""
-    bpolys = geojson.loads(json.dumps(bpolys))
-    if bpolys.is_valid is False:
-        raise ValueError(
-            "The provided parameter `bpolys` is not a valid GeoJSON: " + bpolys.errors()
-        )
-    elif isinstance(bpolys, FeatureCollection):
+    if isinstance(bpolys, FeatureCollection):
         for feature in bpolys["features"]:
             yield feature
-    elif isinstance(bpolys, Feature):
-        yield bpolys
-    elif isinstance(bpolys, (Polygon, MultiPolygon)):
-        yield Feature(geometry=bpolys)
     else:
-        raise ValueError(
-            "Input GeoJSON Objects have to be of type "
-            + " Feature, FeatureCollection, Polygon or MultiPolygon"
-        )
+        yield bpolys  # return Feature
 
 
 def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dict:
