@@ -46,10 +46,10 @@
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
-- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#535])
 - api: fix attribution URL path ([#543])
-- currentness: contribution requests now exclude deletions ([#535])
-- currentness: now aggregated on an annual basis instead of per calendar year ([#535])
+- currentness: substitute matplotlib SVG with plotly SVG ([#535])
+- currentness: exclude deletions when requesting contributions ([#535])
+- currentness: aggregate on an annual basis instead of per calendar year ([#535])
 
 ### How to Upgrade
 
