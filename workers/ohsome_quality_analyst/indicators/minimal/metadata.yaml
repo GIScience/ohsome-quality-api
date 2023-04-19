@@ -2,6 +2,7 @@
 minimal:
   name: Minimal
   project: misc
+  quality-dimension: none
   description: >-
       An minimal Indicator for testing purposes.
   label-description:

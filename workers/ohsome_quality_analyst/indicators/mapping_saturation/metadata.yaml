@@ -2,6 +2,7 @@
 mapping-saturation:
   name: Mapping Saturation
   project: core
+  quality-dimension: completeness
   description: >-
     Calculate if mapping has saturated.
     High saturation has been reached if the growth of the fitted curve is minimal.
