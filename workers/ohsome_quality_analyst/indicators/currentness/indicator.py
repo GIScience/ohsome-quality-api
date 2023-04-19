@@ -206,7 +206,6 @@ def get_last_edited_year(contributions: list) -> int:
     for year, contrib in enumerate(contributions):  # latest contribution first
         if contrib != 0:
             return year
-    raise ValueError("Unexpected code path.")
 
 
 def get_median_year(contributions_rel: list) -> int:
@@ -216,4 +215,3 @@ def get_median_year(contributions_rel: list) -> int:
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
             return year
-    raise ValueError("Unexpected code path.")
