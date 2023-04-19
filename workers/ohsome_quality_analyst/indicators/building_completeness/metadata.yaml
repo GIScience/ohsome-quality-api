@@ -1,6 +1,7 @@
 ---
 building-completeness:
   name: Building Completeness
+  project: experimental
   description: >-
     Weighted average of the ratio between predicted building area and the actual building area in OSM.
     This can give an estimate if mapping has been completed.

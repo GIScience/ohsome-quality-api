@@ -1,8 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from ohsome_quality_analyst import __version__
+from ohsome_quality_analyst.api.request_models import (
+    IndicatorEnum,
+    ReportEnum,
+    TopicEnum,
+)
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
@@ -17,17 +23,46 @@ class ResponseBase(BaseModel):
         extra = "forbid"
 
 
-class TopicResponse(ResponseBase):
-    result: TopicDefinition
+class TopicMetadataResponse(ResponseBase):
+    result: dict[str, TopicDefinition]
 
-
-class TopicListResponse(ResponseBase):
-    result: list[TopicDefinition]
+    @validator("result")
+    @classmethod
+    def check_topic_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            TopicEnum(key)
+        return value
 
 
 class IndicatorMetadataResponse(ResponseBase):
-    result: IndicatorMetadata
+    result: dict[str, IndicatorMetadata]
+
+    @validator("result")
+    @classmethod
+    def check_indicator_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            IndicatorEnum(key)
+        return value
 
 
-class IndicatorMetadataListResponse(ResponseBase):
-    result: list[IndicatorMetadata]
+class ReportMetadataResponse(ResponseBase):
+    result: dict[str, ReportMetadata]
+
+    @validator("result")
+    @classmethod
+    def check_report_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            ReportEnum(key)
+        return value
+
+
+class MetadataResponse(ResponseBase):
+    class MetadataResultSchema(BaseModel):
+        indicators: dict[str, IndicatorMetadata]
+        reports: dict[str, ReportMetadata]
+        topics: dict[str, TopicDefinition]
+
+    result: MetadataResultSchema

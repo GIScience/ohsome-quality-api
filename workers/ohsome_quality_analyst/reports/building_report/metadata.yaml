@@ -1,6 +1,7 @@
 ---
 building-report:
   name: Building Report
+  project: experimental
   description: >-
       This report gives a general overview of the quality for buildings.
   label-description:
