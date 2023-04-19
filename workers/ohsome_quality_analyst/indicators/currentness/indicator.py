@@ -69,7 +69,7 @@ class Currentness(BaseIndicator):
 
     def calculate(self):
         """Calculate the years since over 50% of the elements were last edited"""
-        logging.info(f"Calculation for indicator: {self.metadata.name}")
+        logging.info("Calculation for indicator: {}".format(self.metadata.name))
 
         if self.contrib_sum == 0:
             self.result.description = (
@@ -112,21 +112,19 @@ class Currentness(BaseIndicator):
             threshold_yellow_start=self.t2,
             threshold_yellow_end=self.t1 - 1,
             threshold_red=self.t1,
-        )
-        self.result.description = (
-            self.result.description + self.metadata.label_description[label]
+            label_description=self.metadata.label_description[label],
         )
 
         last_edited_year = get_last_edited_year(self.contrib_abs)
         if last_edited_year != self.result.timestamp_oqt.year:
             self.result.description += (
                 "Attention: There was no mapping activity after "
-                + f"{last_edited_year} in this region."
+                + "{} in this region.".format(last_edited_year)
             )
         if self.contrib_sum < self.low_contributions_threshold:
             self.result.description += (
                 "Attention: In this region there are very few contributions "
-                + f"({self.contrib_sum}) with the given tags "
+                + "({}) with the given tags ".format(self.contrib_sum)
             )
 
     def create_figure(self):
@@ -182,7 +180,7 @@ class Currentness(BaseIndicator):
             )
         )
         fig.update_xaxes(
-            title_text=f"Interval: {self.interval}",
+            title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",
             dtick="M12",
             tick0=self.timestamps[-1],

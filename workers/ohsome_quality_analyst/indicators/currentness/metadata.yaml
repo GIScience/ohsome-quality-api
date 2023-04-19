@@ -25,3 +25,4 @@ currentness:
       The remaining $red % were last edited at least $threshold_red years ago.
       The median currentness of the $elements features ($topic_name) is $median_years year(s).
       Note that only contributions up to $end_date are taken into account.
+      $label_description
