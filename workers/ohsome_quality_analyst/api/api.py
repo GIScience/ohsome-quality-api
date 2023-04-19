@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 from ohsome_quality_analyst import (
     __author__,
@@ -60,6 +60,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     RasterDatasetUndefinedError,
     SizeRestrictionError,
     TopicDataSchemaError,
+    ValidationError,
 )
 from ohsome_quality_analyst.utils.helper import (
     hyphen_to_camel,
@@ -142,20 +143,13 @@ class CustomJSONResponse(JSONResponse):
         return json.dumps(content, default=json_serialize).encode()
 
 
-@app.exception_handler(ValidationError)
 @app.exception_handler(RequestValidationError)
+@app.exception_handler(ValidationError)
 async def validation_exception_handler(
-    request: Request, exception: RequestValidationError | ValidationError
+    request: Request,
+    exception: RequestValidationError | ValidationError,
 ):
-    """Override request validation exceptions.
-
-    `pydantic` raises on exception regardless of the number of errors found.
-    The `ValidationError` will contain information about all the errors.
-
-    FastAPIs `RequestValidationError` is a subclass of pydantic's `ValidationError`.
-    Because of the usage of `@pydantic.validate_arguments` decorator
-    `ValidationError` needs to be specified in this handler as well.
-    """
+    """Exception handler for validation exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder(
@@ -185,7 +179,7 @@ async def oqt_exception_handler(
         | SizeRestrictionError
     ),
 ):
-    """Exception handler for custom OQT exceptions."""
+    """Exception handler for OQT exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={

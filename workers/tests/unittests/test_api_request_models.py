@@ -4,9 +4,16 @@ import json
 import os
 import unittest
 
-from geojson import Polygon
+import pytest
+from pydantic import ValidationError
 
 from ohsome_quality_analyst.api import request_models
+from ohsome_quality_analyst.utils.exceptions import (
+    GeoJsonError,
+    GeoJsonGeometryTypeError,
+    GeoJsonObjectTypeError,
+    IndicatorTopicError,
+)
 
 
 class TestApiRequestModels(unittest.TestCase):
@@ -111,17 +118,6 @@ class TestApiRequestModels(unittest.TestCase):
         with self.assertRaises(ValueError):
             request_models.BaseDatabase(dataset="foo", feature_id="3")
 
-    def test_bpolys_valid(self):
-        request_models.BaseBpolys(bpolys=self.bpolys)
-
-    def test_bpolys_invalid(self):
-        bpolys = Polygon(
-            [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
-        )
-
-        with self.assertRaises(ValueError):
-            request_models.BaseBpolys(bpolys=bpolys)
-
     def test_indicator_database(self):
         request_models.IndicatorDatabase(
             name="minimal",
@@ -145,16 +141,19 @@ class TestApiRequestModels(unittest.TestCase):
         )
 
     def test_indicator_invalid_topic_combination(self):
-        kwargs = {
-            "name": "minimal",
-            "topic": "amenities",
-            "dataset": "regions",
-            "feature-id": 3,
-        }
-        with self.assertRaises(ValueError):
-            request_models.IndicatorDatabase(**kwargs)
-        with self.assertRaises(ValueError):
-            request_models.IndicatorBpolys(**kwargs)
+        with self.assertRaises(IndicatorTopicError):
+            request_models.IndicatorDatabase(
+                name="minimal",
+                topic="amenities",
+                dataset="regions",
+                feature_id=3,
+            )
+        with self.assertRaises(IndicatorTopicError):
+            request_models.IndicatorBpolys(
+                name="minimal",
+                topic="amenities",
+                bpolys=self.bpolys,
+            )
 
     def test_indicator_data(self):
         request_models.IndicatorData(
@@ -226,3 +225,53 @@ class TestApiRequestModels(unittest.TestCase):
             ):
                 with self.assertRaises(ValueError):
                     model(**combination)
+
+
+def test_bpolys_valid(
+    feature_collection_germany_heidelberg,
+    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+):
+    # Single Feature
+    request_models.BaseBpolys(bpolys=feature_collection_germany_heidelberg)
+    # Multiple Features
+    request_models.BaseBpolys(
+        bpolys=feature_collection_germany_heidelberg_bahnstadt_bergheim
+    )
+
+
+def test_bpolys_invalid(feature_collection_invalid):
+    with pytest.raises((GeoJsonError, ValidationError)):
+        request_models.BaseBpolys(bpolys=feature_collection_invalid)
+
+
+# TODO
+@pytest.mark.skip(reason="Support for Feature will be discontinued.")
+def test_bpolys_unsupported_object_type_feature(feature_germany_heidelberg):
+    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+        request_models.BaseBpolys(bpolys=feature_germany_heidelberg)
+
+
+def test_bpolys_unsupported_object_type(geojson_unsupported_object_type):
+    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+        request_models.BaseBpolys(bpolys=geojson_unsupported_object_type)
+
+
+def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometry_type):
+    with pytest.raises((GeoJsonGeometryTypeError, ValidationError)):
+        request_models.BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
+
+
+def test_invalid_indicator_topic_combination(feature_collection_germany_heidelberg):
+    with pytest.raises(IndicatorTopicError):
+        request_models.IndicatorDatabase(
+            name="minimal",
+            topic="amenities",
+            dataset="regions",
+            feature_id=3,
+        )
+    with pytest.raises(IndicatorTopicError):
+        request_models.IndicatorBpolys(
+            name="minimal",
+            topic="amenities",
+            bpolys=feature_collection_germany_heidelberg,
+        )

@@ -1,11 +1,11 @@
 import datetime
-import json
 import os
 import unittest
 from pathlib import Path
 
+import geojson
 import numpy as np
-from geojson import Feature, Polygon
+from geojson import Feature
 
 from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
@@ -32,7 +32,7 @@ from .mapping_saturation import fixtures
 def get_fixture(name):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
     with open(path, "r") as file:
-        return json.load(file)
+        return geojson.load(file)
 
 
 class TestHelper(unittest.TestCase):
@@ -60,10 +60,6 @@ class TestHelper(unittest.TestCase):
                 name_to_class(class_type="indicator", name=indicator_name)
             )
 
-    def test_loads_geojson_geometry(self):
-        raw = get_fixture("heidelberg-altstadt-geometry.geojson")
-        self.run_tests(raw)
-
     def test_loads_geojson_feature(self):
         raw = get_fixture("heidelberg-altstadt-feature.geojson")
         self.run_tests(raw)
@@ -75,20 +71,6 @@ class TestHelper(unittest.TestCase):
     def test_loads_geojson_featurecollection_single_feature(self):
         raw = get_fixture("heidelberg-altstadt-featurecollection.geojson")
         self.run_tests(raw)
-
-    def test_loads_geojson_invalid_geometry_type(self):
-        raw = get_fixture("line-string.geojson")
-        with self.assertRaises(ValueError):
-            for _ in loads_geojson(raw):
-                pass
-
-    def test_loads_geojson_invalid_geojson(self):
-        polygon = Polygon(
-            [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
-        )
-        with self.assertRaises(ValueError):
-            for _ in loads_geojson(polygon):
-                pass
 
     def test_flatten_dict(self):
         deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}

@@ -2,6 +2,51 @@
 from schema import SchemaError
 
 
+class ValidationError(Exception):
+    pass
+
+
+class GeoJsonError(ValidationError):
+    """Invalid GeoJSON Object."""
+
+    def __init__(self, errors):
+        self.name = "GeoJsonError"
+        self.message = "Invalid GeoJSON Object: {}".format(errors)
+
+
+class GeoJsonObjectTypeError(ValidationError):
+    """Invalid GeoJSON object type."""
+
+    def __init__(self):
+        self.name = "GeoJsonObjectTypeError"
+        self.message = (
+            "Unsupported GeoJSON object Type. GeoJSON object has to be of type "
+            + "FeatureCollection or Feature."
+        )
+
+
+class GeoJsonGeometryTypeError(ValidationError):
+    """Invalid GeoJSON geometry type."""
+
+    def __init__(self):
+        self.name = "GeoJsonGeometryTypeError"
+        self.message = (
+            "Unsupported GeoJSON geometry Type. GeoJSON geometry has to be of type "
+            + "Polygon or MultiPolygon"
+        )
+
+
+class IndicatorTopicError(ValidationError):
+    """Invalid indicator topic error."""
+
+    def __init__(self, indicator, topic):
+        self.name = "IndicatorTopicError"
+        self.message = "Invalid combination of indicator and topic: {} and {}".format(
+            indicator,
+            topic,
+        )
+
+
 class OhsomeApiError(Exception):
     """Request to ohsome API failed."""
 
