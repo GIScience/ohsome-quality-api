@@ -10,8 +10,7 @@ import pytest
 from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
-
-from .utils import get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
 
 class TestPreprocess:
@@ -47,7 +46,7 @@ class TestCalculation:
         """Test area with no features"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
+            "../fixtures",
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
@@ -74,7 +73,7 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
