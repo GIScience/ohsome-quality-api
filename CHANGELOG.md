@@ -43,7 +43,7 @@
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 - api: fix attribution URL path ([#543])
-- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#551])
+- attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
 
 ### How to Upgrade
 
