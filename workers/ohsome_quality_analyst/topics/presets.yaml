@@ -25,6 +25,7 @@ building_area:
   endpoint: elements/area
   filter: building=* and building!=no and geometry:polygon
   indicators:
+    - mapping-saturation
     - building-completeness
   project: core
 
