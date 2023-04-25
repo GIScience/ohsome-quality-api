@@ -2,9 +2,8 @@
 
 import json
 from abc import ABCMeta, abstractmethod
-from io import StringIO
 
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from geojson import Feature
 
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
@@ -32,9 +31,9 @@ class BaseIndicator(metaclass=ABCMeta):
         self.feature: Feature = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
-            svg=self._get_default_figure(),
             html="",
         )
+        self._get_default_figure()
 
     def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
         """Return a GeoJSON Feature object.
@@ -133,24 +132,28 @@ class BaseIndicator(metaclass=ABCMeta):
 
     def _get_default_figure(self) -> str:
         """Return a SVG as default figure for indicators."""
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        plt.figure(figsize=figsize)
-        plt.text(
-            5.5,
-            0.5,
-            "The creation of the Indicator was unsuccessful.",
-            bbox={"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 1},
-            ha="center",
-            va="center",
-        )
-        plt.axvline(5.5, color="w", linestyle="solid")
-        plt.axis("off")
 
-        svg_string = StringIO()
-        plt.savefig(svg_string, format="svg")
-        plt.close("all")
-        return svg_string.getvalue()
+        fig = go.Figure()
+
+        fig.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+
+        # add text annotation at the center
+        fig.add_annotation(
+            text="The creation of the Indicator was unsuccessful.",
+            showarrow=False,
+            font=dict(size=32, color="black"),
+        )
+
+        fig.update_xaxes(showticklabels=False, zeroline=False)
+        fig.update_yaxes(showticklabels=False, zeroline=False)
+
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
 
     def create_html(self):
         if self.result.label == "red":
