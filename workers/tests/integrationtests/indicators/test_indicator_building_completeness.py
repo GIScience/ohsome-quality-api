@@ -13,8 +13,7 @@ from ohsome_quality_analyst.indicators.building_completeness.indicator import (
     get_smod_class_share,
 )
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
-
-from .utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
 @pytest.fixture(scope="class")
@@ -27,47 +26,54 @@ def topic():
     return get_topic_fixture("building_area")
 
 
-@oqt_vcr.use_cassette()
-def test_indicator(feature, topic, mock_env_oqt_data_dir):
-    indicator = BuildingCompleteness(feature=feature, topic=topic)
+class TestPreprocess:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def test_preprocess(self, feature, topic):
+        indicator = BuildingCompleteness(topic, feature)
+        asyncio.run(indicator.preprocess())
+        assert isinstance(indicator.building_area_osm, list)
+        assert len(indicator.building_area_osm) == 9
+        assert isinstance(indicator.hex_cell_geohash, list)
+        assert len(indicator.hex_cell_geohash) == 9
+        # Covariates
+        assert isinstance(indicator.covariates, dict)
+        assert len(indicator.covariates) == 12
+        for key in (
+            "urban_centre",
+            "dense_urban_cluster",
+            "semi_dense_urban_cluster",
+            "suburban_or_peri_urban",
+            "rural_cluster",
+            "low_density_rural",
+            "very_low_density_rural",
+            "water",
+        ):
+            assert len(indicator.covariates[key]) == 9
+            for i in indicator.covariates[key]:
+                assert i is not None
+                assert i >= 0
 
-    asyncio.run(indicator.preprocess())
-    # Data
-    assert isinstance(indicator.building_area_osm, list)
-    assert len(indicator.building_area_osm) == 9
-    assert isinstance(indicator.hex_cell_geohash, list)
-    assert len(indicator.hex_cell_geohash) == 9
-    # Covariates
-    assert isinstance(indicator.covariates, dict)
-    assert len(indicator.covariates) == 12
-    for key in (
-        "urban_centre",
-        "dense_urban_cluster",
-        "semi_dense_urban_cluster",
-        "suburban_or_peri_urban",
-        "rural_cluster",
-        "low_density_rural",
-        "very_low_density_rural",
-        "water",
-    ):
-        assert len(indicator.covariates[key]) == 9
-        for i in indicator.covariates[key]:
-            assert i is not None
-            assert i >= 0
-    # Calculate
-    indicator.calculate()
-    assert isinstance(indicator.building_area_prediction, list)
-    assert len(indicator.building_area_prediction) > 0
-    assert isinstance(indicator.result.timestamp_osm, datetime)
-    assert isinstance(indicator.result.timestamp_oqt, datetime)
-    assert indicator.result.label is not None
-    assert indicator.result.value is not None
-    assert indicator.result.description is not None
-    assert indicator.result.value <= 1.0
-    assert indicator.result.value >= 0.0
-    # Create Figure
-    indicator.create_figure()
-    assert indicator.result.svg is not None
+
+class TestCalculation:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, feature, topic):
+        i = BuildingCompleteness(feature=feature, topic=topic)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    def test_calculate(self, indicator):
+        assert isinstance(indicator.building_area_prediction, list)
+        assert len(indicator.building_area_prediction) > 0
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert indicator.result.label is not None
+        assert indicator.result.value is not None
+        assert indicator.result.description is not None
+        assert indicator.result.value <= 1.0
+        assert indicator.result.value >= 0.0
 
 
 class TestFigure:

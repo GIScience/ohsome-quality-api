@@ -50,6 +50,7 @@
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
+- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#552])
 
 ### How to Upgrade
 
@@ -98,6 +99,7 @@
 [#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
+[#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
 
 ## 0.14.2
 
