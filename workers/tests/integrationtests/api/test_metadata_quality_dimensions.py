@@ -1,7 +1,7 @@
 def test_metadata_quality_dimensions(
     client, response_template, metadata_quality_dimension_completeness
 ):
-    response = client.get("/metadata/quality_dimensions")
+    response = client.get("/metadata/quality-dimensions")
     assert response.status_code == 200
 
     content = response.json()
@@ -16,7 +16,7 @@ def test_metadata_quality_dimensions(
 def test_metadata_quality_dimensions_by_key(
     client, response_template, metadata_quality_dimension_completeness
 ):
-    response = client.get("/metadata/quality_dimensions/completeness")
+    response = client.get("/metadata/quality-dimensions/completeness")
     assert response.status_code == 200
 
     content = response.json()
@@ -26,5 +26,5 @@ def test_metadata_quality_dimensions_by_key(
 
 
 def test_metadata_quality_dimensions_by_key_not_found_error(client):
-    response = client.get("/metadata/quality_dimensions/foo")
+    response = client.get("/metadata/quality-dimensions/foo")
     assert response.status_code == 422

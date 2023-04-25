@@ -80,4 +80,9 @@ class MetadataResponse(ResponseBase):
         topics: dict[str, TopicDefinition]
         quality_dimensions: dict[str, QualityDimension]
 
+        class Config:
+            alias_generator = snake_to_hyphen
+            frozen = True
+            extra = "forbid"
+
     result: MetadataResultSchema
