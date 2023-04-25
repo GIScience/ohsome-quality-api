@@ -5,7 +5,6 @@
 [![build status](https://jenkins.ohsome.org/buildStatus/icon?job=ohsome-quality-analyst/main)](https://jenkins.ohsome.org/blue/organizations/jenkins/ohsome-quality-analyst/activity/?branch=main)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-analyst&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-analyst)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
 The ohsome quality analyst (OQT) computes and provides data quality estimations (indicators) for OpenStreetMap.
@@ -18,10 +17,6 @@ The following blog posts give insight into OQT:
 - [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
 - [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
 - as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
-
-## Website
-
-The easiest access to quality estimations is through our [website](https://oqt.ohsome.org). There reports with pre-computed indicators can be accessed for a selection of regions made by the OQT team. Currently it is not possible to upload custom areas-of-interest (AOIs) and compute report or indicators for those.
 
 ## API
 

@@ -297,7 +297,7 @@ response = requests.post(url, json=parameters)
     "report": {
       "metadata": {
         "name": "Minimal",
-        "description": "This report shows the quality for two indicators: Mapping Saturation and Currentness. It's main function is to test the interactions between database, api and website. "
+        "description": "This report shows the quality for two indicators: Mapping Saturation and Currentness. It's main function is to test the interactions between database and api. "
       },
       "result": {
         "class_": 5,
