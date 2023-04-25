@@ -331,7 +331,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
         "topics": get_topic_definitions(project=project.value),
-        "quality_dimensions": get_quality_dimensions(),
+        "quality-dimensions": get_quality_dimensions(),
         "indicators": get_indicator_definitions(project=project.value),
         "reports": get_report_definitions(project=project.value),
     }
@@ -363,7 +363,7 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
 
 
 @app.get(
-    "/metadata/quality_dimensions",
+    "/metadata/quality-dimensions",
     tags=["metadata"],
 )
 async def metadata_quality_dimension() -> QualityDimensionMetadataResponse:
@@ -372,7 +372,7 @@ async def metadata_quality_dimension() -> QualityDimensionMetadataResponse:
 
 
 @app.get(
-    "/metadata/quality_dimensions/{key}",
+    "/metadata/quality-dimensions/{key}",
     tags=["metadata"],
 )
 async def metadata_quality_dimension_by_key(
