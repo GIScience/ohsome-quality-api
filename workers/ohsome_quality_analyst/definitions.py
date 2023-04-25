@@ -10,7 +10,6 @@ import yaml
 
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
-from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
@@ -146,22 +145,6 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
-def load_quality_dimensions() -> dict[str, QualityDimension]:
-    """Read definitions of quality dimensions.
-
-    Returns:
-        A dict with all quality dimensions included.
-    """
-    directory = get_module_dir("ohsome_quality_analyst.quality_dimensions")
-    file = os.path.join(directory, "quality_dimensions.yaml")
-    with open(file, "r") as f:
-        raw = yaml.safe_load(f)
-    quality_dimensions = {}
-    for k, v in raw.items():
-        quality_dimensions[k] = QualityDimension(**v)
-    return quality_dimensions
-
-
 def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
     topics = load_topic_definitions()
     if project is not None:
@@ -186,11 +169,6 @@ def get_report_definitions(project: str = None) -> dict[str, ReportMetadata]:
         return reports
 
 
-def get_quality_dimensions() -> dict[str, QualityDimension]:
-    quality_dimensions = load_quality_dimensions()
-    return quality_dimensions
-
-
 def get_topic_definition(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
@@ -199,17 +177,6 @@ def get_topic_definition(topic_key: str) -> TopicDefinition:
     except KeyError as error:
         raise KeyError(
             "Invalid topic key. Valid topic keys are: " + str(topics.keys())
-        ) from error
-
-
-def get_quality_dimension(qd_key: str) -> QualityDimension:
-    quality_dimensions = get_quality_dimensions()
-    try:
-        return quality_dimensions[qd_key]
-    except KeyError as error:
-        raise KeyError(
-            "Invalid quality dimension0key. Valid quality dimension keys are: "
-            + str(quality_dimensions.keys())
         ) from error
 
 
@@ -239,10 +206,6 @@ def get_report_names() -> list[str]:
 
 def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
-
-
-def get_quality_dimension_keys() -> list[str]:
-    return [str(t) for t in load_quality_dimensions().keys()]
 
 
 def get_project_keys() -> Iterable[str]:

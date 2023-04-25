@@ -28,7 +28,6 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorDatabase,
     IndicatorEnum,
     ProjectEnum,
-    QualityDimensionEnum,
     ReportBpolys,
     ReportDatabase,
     ReportEnum,
@@ -47,13 +46,16 @@ from ohsome_quality_analyst.definitions import (
     get_attribution,
     get_indicator_definitions,
     get_metadata,
-    get_quality_dimension,
-    get_quality_dimensions,
     get_report_definitions,
     get_topic_definition,
     get_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.quality_dimensions.definitions import (
+    QualityDimensionEnum,
+    get_quality_dimension,
+    get_quality_dimensions,
+)
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
     OhsomeApiError,
