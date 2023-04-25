@@ -1,5 +1,6 @@
 multilevel-mapping-saturation:
   name: Multilevel Mapping Saturation
+  project: core
   description: >-
     This report shows the mapping saturation of four major Map Features (https://wiki.openstreetmap.org/wiki/Map_features): buildings, land-use/land-cover, points of interest and infrastructure.
     It evolved from the OSM Element Vectorisation tool (https://gitlab.gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-vectorisation).

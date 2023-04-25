@@ -16,6 +16,7 @@
 ### Bug Fixes
 
 - mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- currentness: fix wrong count of contributions due to multiple requests ([#535])
 - doctors topic: use correct filter ([#540])
 
 ### New Features
@@ -26,6 +27,8 @@
 - add plot creation via plotly to `MappingSaturation` indicator ([#499])
 - api: add `/metadata/topic` endpoint ([#519])
 - api: add `/metadata/indicators` endpoint ([#533])
+- api: add `/metadata/reports` endpoint ([#545])
+- api: add `/metadata` endpoint ([#545])
 
 ### Other Changes
 
@@ -44,6 +47,9 @@
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
 - api: fix attribution URL path ([#543])
+- currentness: substitute matplotlib SVG with plotly SVG ([#535])
+- currentness: exclude deletions when requesting contributions ([#535])
+- currentness: aggregate on an annual basis instead of per calendar year ([#535])
 
 ### How to Upgrade
 
@@ -87,9 +93,11 @@
 [#529]: https://github.com/GIScience/ohsome-quality-analyst/pull/529
 [#531]: https://github.com/GIScience/ohsome-quality-analyst/pull/531
 [#533]: https://github.com/GIScience/ohsome-quality-analyst/pull/533
+[#535]: https://github.com/GIScience/ohsome-quality-analyst/pull/535
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 [#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
+[#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
 
 ## 0.14.2
 

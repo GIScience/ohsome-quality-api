@@ -1,6 +1,7 @@
 ---
 poi-density:
   name: POI Density
+  project: experimental
   description: >-
       The density of Point of Interests (POI).
       It is calculated by the number of features 

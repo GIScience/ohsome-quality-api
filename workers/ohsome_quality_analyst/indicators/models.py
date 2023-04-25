@@ -13,6 +13,7 @@ class IndicatorMetadata(BaseModel):
     description: str
     label_description: dict
     result_description: str
+    project: str
 
     class Config:
         alias_generator = snake_to_hyphen

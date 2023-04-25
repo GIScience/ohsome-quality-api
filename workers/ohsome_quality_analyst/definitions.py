@@ -4,7 +4,7 @@ import logging
 import os
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Literal
+from typing import Iterable, Literal
 
 import yaml
 
@@ -78,7 +78,7 @@ ATTRIBUTION_URL = (
 
 def load_metadata(
     module_name: Literal["indicators", "reports"]
-) -> dict[str, IndicatorMetadata, ReportMetadata]:
+) -> dict[str, IndicatorMetadata | ReportMetadata]:
     """Read metadata of all indicators or reports from YAML files.
 
     Those text files are located in the directory of each indicator/report.
@@ -145,6 +145,30 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
+def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
+    topics = load_topic_definitions()
+    if project is not None:
+        return {k: v for k, v in topics.items() if v.project == project}
+    else:
+        return topics
+
+
+def get_indicator_definitions(project: str = None) -> dict[str, IndicatorMetadata]:
+    indicators = load_metadata("indicators")
+    if project is not None:
+        return {k: v for k, v in indicators.items() if v.project == project}
+    else:
+        return indicators
+
+
+def get_report_definitions(project: str = None) -> dict[str, ReportMetadata]:
+    reports = load_metadata("reports")
+    if project is not None:
+        return {k: v for k, v in reports.items() if v.project == project}
+    else:
+        return reports
+
+
 def get_topic_definition(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_definitions()
@@ -182,6 +206,10 @@ def get_report_names() -> list[str]:
 
 def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
+
+
+def get_project_keys() -> Iterable[str]:
+    return set(t.project for t in load_topic_definitions().values())
 
 
 def get_dataset_names() -> list[str]:

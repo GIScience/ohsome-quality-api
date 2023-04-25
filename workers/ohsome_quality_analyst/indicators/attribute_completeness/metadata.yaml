@@ -1,6 +1,7 @@
 ---
 attribute-completeness:
   name: Attribute Completeness
+  project: experimental
   description: >-
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs

@@ -11,6 +11,7 @@ class ReportMetadata(BaseModel):
     name: str
     description: str
     label_description: dict
+    project: str
 
     class Config:
         alias_generator = snake_to_hyphen
