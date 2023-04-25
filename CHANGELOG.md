@@ -12,6 +12,7 @@
 - rename `TagsRatio` indicator to `attribute-completeness` ([#500])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
+- delete website ([#557])
 
 ### Bug Fixes
 
