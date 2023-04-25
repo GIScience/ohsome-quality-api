@@ -1,8 +1,9 @@
 import fnmatch
 import json
 import logging
+from typing import Annotated
 
-from fastapi import Body, FastAPI, Request, status
+from fastapi import Body, FastAPI, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -64,6 +65,7 @@ from ohsome_quality_analyst.utils.helper import (
     name_to_class,
     snake_to_hyphen,
 )
+from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -204,20 +206,15 @@ class MappingSaturationModel(BaseModel):
         alias_generator = snake_to_hyphen
 
 
-# TODO (Experimental): Make this endpoint general and remove `/indicator` endpoint below
-@app.post("/indicators/mapping-saturation", tags=["indicator"], include_in_schema=False)
-async def post_indicator_mapping_saturation(
-    parameters: MappingSaturationModel,
-) -> CustomJSONResponse:
-    """Request an Indicator for an AOI."""
-    parameters = IndicatorBpolys(
-        name="mapping-saturation", topic=parameters.topic_key, bpolys=parameters.bpolys
-    )
-    return await post_indicator(parameters)
-
-
-@app.post("/indicator", tags=["indicator"])
+@app.post("/indicators/{key}", tags=["indicator"])
 async def post_indicator(
+    key: Annotated[
+        IndicatorEnum,
+        Path(
+            title="Indicator Key",
+            example="mapping-saturation",
+        ),
+    ],
     parameters: IndicatorBpolys
     | IndicatorDatabase
     | IndicatorData = Body(
@@ -226,8 +223,11 @@ async def post_indicator(
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
+    if isinstance(parameters, (IndicatorBpolys, IndicatorDatabase)):
+        validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
+        key=key.value,
         size_restriction=True,
     )
     if parameters.include_svg is False:
@@ -245,23 +245,31 @@ async def post_indicator(
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
         class_type="indicator",
-        name=parameters.name.value,
+        name=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.post("/report", tags=["report"])
+@app.post("/reports/{key}", tags=["report"])
 async def post_report(
+    key: Annotated[
+        ReportEnum,
+        Path(
+            title="Report Key",
+            example="building-report",
+        ),
+    ],
     parameters: ReportBpolys
     | ReportDatabase = Body(
         ...,
         examples=REPORT_EXAMPLES,
-    )
+    ),
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(
         parameters,
+        key=key.value,
         size_restriction=True,
     )
     if parameters.include_html is False:
@@ -278,7 +286,8 @@ async def post_report(
         )
     response = empty_api_response()
     response["attribution"]["text"] = name_to_class(
-        class_type="report", name=parameters.name.value
+        class_type="report",
+        name=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
