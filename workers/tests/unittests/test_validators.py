@@ -1,11 +1,10 @@
 import pytest
 
 from ohsome_quality_analyst.utils.exceptions import (
-    GeoJsonError,
-    GeoJsonGeometryTypeError,
-    GeoJsonObjectTypeError,
-    IndicatorTopicError,
-    ValidationError,
+    GeoJSONError,
+    GeoJSONGeometryTypeError,
+    GeoJSONObjectTypeError,
+    IndicatorTopicCombinationError,
 )
 from ohsome_quality_analyst.utils.validators import (
     validate_geojson,
@@ -29,21 +28,21 @@ def test_validate_geojson_feature_collection(
 
 def test_validate_geojson_invalid_geometry(feature_collection_invalid):
     # Invalid Polygon geometry
-    with pytest.raises((GeoJsonError, ValidationError)):
+    with pytest.raises(GeoJSONError):
         validate_geojson(feature_collection_invalid)
 
 
 # TODO
 @pytest.mark.skip(reason="Support for Feature will be discontinued.")
 def test_validate_geojson_unsupported_object_type_feature(feature_germany_heidelberg):
-    # Only GeoJson Feature Collection are supported not Feature
-    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+    # Only GeoJSON Feature Collection are supported not Feature
+    with pytest.raises(GeoJSONObjectTypeError):
         validate_geojson(feature_germany_heidelberg)
 
 
 def test_validate_geojson_unsupported_object_type(geojson_unsupported_object_type):
-    # Only GeoJson Feature Collection are supported not Geometry
-    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+    # Only GeoJSON Feature Collection are supported not Geometry
+    with pytest.raises(GeoJSONObjectTypeError):
         validate_geojson(geojson_unsupported_object_type)
 
 
@@ -52,7 +51,7 @@ def test_validate_geojson_unsupported_geometry_type(
 ):
     # Only a collection of features with geometry type Polygon and MultiPolygon are
     # supported.
-    with pytest.raises((GeoJsonGeometryTypeError, ValidationError)):
+    with pytest.raises(GeoJSONGeometryTypeError):
         validate_geojson(feature_collection_unsupported_geometry_type)
 
 
@@ -61,5 +60,5 @@ def test_validate_indicator_topic_combination():
 
 
 def test_validate_indicator_topic_combination_invalid():
-    with pytest.raises((IndicatorTopicError, ValidationError)):
+    with pytest.raises(IndicatorTopicCombinationError):
         validate_indicator_topic_combination("minimal", "building_count")
