@@ -12,6 +12,7 @@
 - rename `TagsRatio` indicator to `attribute-completeness` ([#500])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
+- remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
 
 ### Bug Fixes
 
@@ -98,6 +99,7 @@
 [#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
+[#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 
 ## 0.14.2
 
