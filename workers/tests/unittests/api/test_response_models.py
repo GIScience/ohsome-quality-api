@@ -4,6 +4,7 @@ from pydantic import ValidationError
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
+    QualityDimensionMetadataResponse,
     ReportMetadataResponse,
     ResponseBase,
     TopicMetadataResponse,
@@ -38,6 +39,31 @@ def test_metadata_topics_fail(topic_building_count):
 def test_metadata_topics_list(topic_definitions):
     response = TopicMetadataResponse(result=topic_definitions)
     assert response.result == topic_definitions
+
+
+def test_metadata_quality_dimensions(metadata_quality_dimension_completeness):
+    response = QualityDimensionMetadataResponse(
+        result=metadata_quality_dimension_completeness
+    )
+    assert response.result == metadata_quality_dimension_completeness
+
+
+def test_metadata_quality_dimensions_fail(quality_dimension_completeness):
+    with pytest.raises(ValidationError):
+        QualityDimensionMetadataResponse(result="")
+    with pytest.raises(ValidationError):
+        QualityDimensionMetadataResponse(result="bar")
+    with pytest.raises(ValidationError):
+        QualityDimensionMetadataResponse(result={})
+    with pytest.raises(ValidationError):
+        QualityDimensionMetadataResponse(result={"foo": "bar"})
+    with pytest.raises(ValidationError):
+        QualityDimensionMetadataResponse(result={"foo": quality_dimension_completeness})
+
+
+def test_metadata_quality_dimensions_list(quality_dimensions):
+    response = QualityDimensionMetadataResponse(result=quality_dimensions)
+    assert response.result == quality_dimensions
 
 
 def test_metadata_indicators(metadata_indicator_minimal):

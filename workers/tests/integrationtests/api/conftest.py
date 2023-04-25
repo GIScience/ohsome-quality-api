@@ -80,6 +80,16 @@ def metadata_report_multilevel_mapping_saturation():
 
 
 @pytest.fixture
+def metadata_quality_dimension_completeness():
+    return {
+        "completeness": {
+            "name": "Completeness",
+            "description": "something that is still a TODO",
+        }
+    }
+
+
+@pytest.fixture
 def metadata_topic_minimal():
     return {
         "minimal": {

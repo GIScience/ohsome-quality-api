@@ -153,7 +153,7 @@ def load_quality_dimensions() -> dict[str, QualityDimension]:
         A dict with all quality dimensions included.
     """
     directory = get_module_dir("ohsome_quality_analyst.quality_dimensions")
-    file = os.path.join(directory, "presets.yaml")
+    file = os.path.join(directory, "quality_dimensions.yaml")
     with open(file, "r") as f:
         raw = yaml.safe_load(f)
     quality_dimensions = {}
@@ -239,6 +239,10 @@ def get_report_names() -> list[str]:
 
 def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_definitions().keys()]
+
+
+def get_quality_dimension_keys() -> list[str]:
+    return [str(t) for t in load_quality_dimensions().keys()]
 
 
 def get_project_keys() -> Iterable[str]:

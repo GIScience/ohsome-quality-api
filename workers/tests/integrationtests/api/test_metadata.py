@@ -4,6 +4,7 @@ def test_metadata(
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
     metadata_report_multilevel_mapping_saturation,
+    metadata_quality_dimension_completeness,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -15,6 +16,11 @@ def test_metadata(
     assert (
         metadata_topic_building_count["building_count"]
         == result["topics"]["building_count"]
+    )
+    # check quality dimensions result
+    assert (
+        metadata_quality_dimension_completeness["completeness"]
+        == result["quality_dimensions"]["completeness"]
     )
     # check indicators result
     assert (
