@@ -2,7 +2,7 @@
 currentness:
   name: Currentness
   project: experimental
-  quality-dimension: todo
+  quality-dimension: currentness
   description: >-
     Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
     time range. 
