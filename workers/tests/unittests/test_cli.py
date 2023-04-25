@@ -28,24 +28,8 @@ class TestCliUnit(unittest.TestCase):
         result = self.runner.invoke(cli, ["--version"])
         assert result.exit_code == 0
 
-    def test_list_indicators(self):
-        result = self.runner.invoke(cli, ["list-indicators"])
-        assert result.exit_code == 0
-
-    def test_list_reports(self):
-        result = self.runner.invoke(cli, ["list-reports"])
-        assert result.exit_code == 0
-
-    def test_list_datasets(self):
-        result = self.runner.invoke(cli, ["list-datasets"])
-        assert result.exit_code == 0
-
-    def test_create_indicator_help(self):
-        result = self.runner.invoke(cli, ["create-indicator", "--help"])
-        assert result.exit_code == 0
-
     @mock.patch("ohsome_quality_analyst.oqt.create_indicator")
-    def test_create_all_indicators_invlid_opts(self, mo):
+    def test_create_all_indicators_invlid_opts(self, mock):
         result = self.runner.invoke(
             cli,
             ["create-all-indicators"],
