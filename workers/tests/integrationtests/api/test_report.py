@@ -16,14 +16,13 @@ from tests.integrationtests.api.response_schema import (
 )
 from tests.integrationtests.utils import oqt_vcr
 
-ENDPOINT = "/report"
+ENDPOINT = "/reports/minimal"
 
 
 class TestApiReport(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.report_name = "minimal"
         # Heidelberg
         self.dataset = "regions"
         self.feature_id = "3"
@@ -47,7 +46,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_get_report_dataset_default_fid_field(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
@@ -57,7 +55,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_get_report_dataset_custom_fid_field(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "fid_field": self.fid_field,
@@ -68,7 +65,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_get_report_dataset_custom_fid_field_2(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
             "fid_field": "name",
@@ -79,7 +75,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg_true(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "include-svg": True,
@@ -90,7 +85,6 @@ class TestApiReport(unittest.TestCase):
 
     def test_report_include_svg_false(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "include-svg": False,
@@ -101,7 +95,6 @@ class TestApiReport(unittest.TestCase):
 
     def test_report_include_svg_default(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
@@ -111,7 +104,6 @@ class TestApiReport(unittest.TestCase):
 
     def test_indicator_dataset_invalid(self):
         parameters = {
-            "name": self.report_name,
             "dataset": "foo",
             "feature-id": self.feature_id,
         }
@@ -124,11 +116,9 @@ class TestApiReport(unittest.TestCase):
     def test_indicator_invalid_set_of_arguments(self):
         for parameters in (
             {
-                "name": self.report_name,
                 "dataset": "regions",
             },
             {
-                "name": self.report_name,
                 "feature-id": "3",
             },
         ):
@@ -140,7 +130,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_include_html(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "include-html": True,
@@ -152,7 +141,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_flatten_default(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
@@ -167,7 +155,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_flatten_true(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "flatten": True,
@@ -180,7 +167,6 @@ class TestApiReport(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_flatten_false(self):
         parameters = {
-            "name": self.report_name,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
             "flatten": False,

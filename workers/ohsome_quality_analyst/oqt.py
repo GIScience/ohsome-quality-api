@@ -15,8 +15,10 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
     IndicatorDatabase,
+    IndicatorEnum,
     ReportBpolys,
     ReportDatabase,
+    ReportEnum,
 )
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
@@ -51,6 +53,7 @@ async def create_indicator_as_geojson(parameters):
 @create_indicator_as_geojson.register(IndicatorData)
 async def _(
     parameters: Union[IndicatorBpolys, IndicatorData],
+    key: IndicatorEnum,
     size_restriction: bool = False,
     **_kwargs,
 ) -> Union[Feature, FeatureCollection]:
@@ -71,10 +74,12 @@ async def _(
         if (
             size_restriction
             and isinstance(parameters, IndicatorBpolys)
-            and parameters.name.value != "MappingSaturation"
+            and key != "mapping-saturation"
         ):
             await check_area_size(feature.geometry)
-        tasks.append(create_indicator(parameters.copy(update={"bpolys": feature})))
+        tasks.append(
+            create_indicator(parameters.copy(update={"bpolys": feature}), key=key)
+        )
     indicators = await gather_with_semaphore(tasks)
     features = [
         i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
@@ -88,16 +93,18 @@ async def _(
 @create_indicator_as_geojson.register(IndicatorDatabase)
 async def _(
     parameters: IndicatorDatabase,
+    key: IndicatorEnum,
     force: bool = False,
     **_kwargs,
 ) -> Feature:
     """Create an indicator as GeoJSON object."""
-    indicator = await create_indicator(parameters, force)
+    indicator = await create_indicator(parameters, key, force)
     return indicator.as_feature(parameters.flatten, parameters.include_data)
 
 
 async def create_report_as_geojson(
     parameters: Union[ReportBpolys, ReportDatabase],
+    key: ReportEnum,
     force: bool = False,
     size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
@@ -119,6 +126,7 @@ async def create_report_as_geojson(
             # asynchronously
             report = await create_report(
                 parameters.copy(update={"bpolys": feature}),
+                key,
                 force,
             )
             features.append(
@@ -129,7 +137,7 @@ async def create_report_as_geojson(
         else:
             return FeatureCollection(features=features)
     elif isinstance(parameters, ReportDatabase):
-        report = await create_report(parameters, force)
+        report = await create_report(parameters, key, force)
         return report.as_feature(parameters.flatten, parameters.include_data)
     else:
         raise ValueError("Unexpected parameters: " + str(parameters))
@@ -145,6 +153,7 @@ async def create_indicator(parameters) -> Indicator:
 @create_indicator.register
 async def _(
     parameters: IndicatorDatabase,
+    key: IndicatorEnum,
     force: bool = False,
 ) -> Indicator:
     """Create an Indicator by fetching the results from the database.
@@ -154,12 +163,11 @@ async def _(
     In case fetching the Indicator results from the database fails, the Indicator is
     created from scratch and then those results are saved to the database.
     """
-    name = parameters.name.value
     topic: Topic = get_topic_definition(parameters.topic_key.value)
 
     logging.info("Fetching Indicator from database ...")
     logging.info("Feature id:     {0:4}".format(parameters.feature_id))
-    logging.info("Indicator name: {0:4}".format(name))
+    logging.info("Indicator key: {0:4}".format(key)),
     logging.info("Topic name:     {0:4}".format(topic.name))
 
     dataset = parameters.dataset.value
@@ -172,7 +180,7 @@ async def _(
     else:
         feature_id = parameters.feature_id
     feature = await db_client.get_feature_from_db(dataset, feature_id)
-    indicator_class = name_to_class(class_type="indicator", name=name)
+    indicator_class = name_to_class(class_type="indicator", name=key)
     indicator_raw = indicator_class(topic=topic, feature=feature)
     failure = False
     try:
@@ -186,10 +194,10 @@ async def _(
     if force or failure:
         indicator = await create_indicator(
             IndicatorBpolys(
-                name=name,
                 topic=parameters.topic_key.value,
                 bpolys=feature,
-            )
+            ),
+            key=key,
         )
         await db_client.save_indicator_results(indicator, dataset, feature_id)
     indicator.create_html()
@@ -199,19 +207,19 @@ async def _(
 @create_indicator.register
 async def _(
     parameters: IndicatorBpolys,
+    key: IndicatorEnum,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
-    name = parameters.name.value
     topic: Topic = get_topic_definition(parameters.topic_key.value)
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator name: {0:4}".format(name))
+    logging.info("Indicator key: {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
-    indicator_class = name_to_class(class_type="indicator", name=name)
+    indicator_class = name_to_class(class_type="indicator", name=key)
     indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
@@ -228,19 +236,24 @@ async def _(
 @create_indicator.register
 async def _(
     parameters: IndicatorData,
+    key: IndicatorEnum,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
-    name = parameters.name.value
+    if key != "mapping-saturation":
+        raise ValueError(
+            "Computing an Indicator for a Topic with data attached is only "
+            + "supported for the Mapping Saturation Indicator."
+        )
     topic = parameters.topic
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator with custom Topic ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator name: {0:4}".format(name))
+    logging.info("Indicator key: {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
-    indicator_class = name_to_class(class_type="indicator", name=name)
+    indicator_class = name_to_class(class_type="indicator", name=key)
     indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
@@ -265,7 +278,7 @@ async def create_report(parameters) -> Report:
 
 
 @create_report.register
-async def _(parameters: ReportDatabase, force: bool = False) -> Report:
+async def _(parameters: ReportDatabase, key: ReportEnum, force: bool = False) -> Report:
     """Create a Report.
 
     Fetches indicator results form the database.
@@ -273,11 +286,9 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
 
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
-    name = parameters.name.value
-
     logging.info("Creating Report...")
     logging.info("Feature id:  {0:4}".format(parameters.feature_id))
-    logging.info("Report name: {0:4}".format(name))
+    logging.info("Report key: {0:4}".format(key))
 
     dataset = parameters.dataset.value
     if parameters.fid_field is not None:
@@ -290,19 +301,19 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
         feature_id = parameters.feature_id
 
     feature = await db_client.get_feature_from_db(dataset, feature_id)
-    report_class = name_to_class(class_type="report", name=name)
+    report_class = name_to_class(class_type="report", name=key)
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []
-    for indicator_name, topic_key in report.indicator_topic:
+    for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
                 IndicatorDatabase(
-                    name=indicator_name,
                     topic=topic_key,
                     dataset=dataset,
                     feature_id=feature_id,
                 ),
+                key=indicator_key,
                 force=force,
             )
         )
@@ -313,34 +324,31 @@ async def _(parameters: ReportDatabase, force: bool = False) -> Report:
 
 
 @create_report.register
-async def _(parameters: ReportBpolys, *_args) -> Report:
+async def _(parameters: ReportBpolys, key: ReportEnum, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
 
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
-    name, feature = (
-        parameters.name.value,
-        parameters.bpolys,
-    )
+    feature = parameters.bpolys
 
     logging.info("Creating Report...")
     logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
-    logging.info("Report name: {0:4}".format(name))
+    logging.info("Report key: {0:4}".format(key))
 
-    report_class = name_to_class(class_type="report", name=name)
+    report_class = name_to_class(class_type="report", name=key)
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []
-    for indicator_name, topic_key in report.indicator_topic:
+    for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
                 IndicatorBpolys(
-                    name=indicator_name,
                     topic=topic_key,
                     bpolys=feature,
-                )
+                ),
+                key=indicator_key,
             )
         )
     report.indicators = await gather_with_semaphore(tasks)
@@ -377,15 +385,15 @@ async def create_all_indicators(
     tasks: List[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
-        for indicator_name_, topic_key_ in indicator_topic:
+        for indicator_key_, topic_key_ in indicator_topic:
             tasks.append(
                 create_indicator(
                     IndicatorDatabase(
-                        name=indicator_name_,
                         topic=topic_key_,
                         dataset=dataset,
                         feature_id=fid,
                     ),
+                    key=indicator_key_,
                     force=force,
                 )
             )

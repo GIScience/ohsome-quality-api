@@ -23,8 +23,7 @@ from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 class TestApiIndicatorIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-        self.endpoint = "/indicator"
-        self.indicator_name = "minimal"
+        self.endpoint = "/indicators/minimal"
         self.topic_key = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
 
@@ -45,17 +44,10 @@ class TestApiIndicatorIo(unittest.TestCase):
     def post_response(self, bpoly):
         """Return HTTP POST response"""
         parameters = {
-            "name": self.indicator_name,
             "bpolys": bpoly,
             "topic": self.topic_key,
         }
         return self.client.post(self.endpoint, json=parameters)
-
-    @oqt_vcr.use_cassette()
-    def test_indicator_bpolys_geometry(self):
-        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        response = self.post_response(geometry)
-        self.run_tests(response, (self.general_schema, self.feature_schema))
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_feature(self):
@@ -92,7 +84,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         with open(path, "r") as f:
             bpolys = f.read()
         parameters = {
-            "name": self.indicator_name,
             "bpolys": bpolys,
             "dataset": "foo",
             "feature_id": "3",
@@ -106,7 +97,6 @@ class TestApiIndicatorIo(unittest.TestCase):
     def test_indicator_include_svg(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
             "include_svg": True,
@@ -116,7 +106,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         assert "svg" in result["properties"]["result"]
 
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
             "include_svg": False,
@@ -126,7 +115,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         assert "svg" not in result["properties"]["result"]
 
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
         }
@@ -138,7 +126,6 @@ class TestApiIndicatorIo(unittest.TestCase):
     def test_indicator_include_html(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
             "include-svg": True,
@@ -149,7 +136,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         assert "html" in result["properties"]["result"]
 
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
             "include-svg": False,
@@ -160,7 +146,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         assert "html" not in result["properties"]["result"]
 
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "bpolys": feature,
         }
@@ -183,7 +168,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         ]
 
         parameters = {
-            "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
                 "key": "foo",
@@ -197,12 +181,11 @@ class TestApiIndicatorIo(unittest.TestCase):
                 },
             },
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post("/indicators/mapping-saturation", json=parameters)
         self.run_tests(response, (self.general_schema, self.feature_schema))
 
     def test_indicator_topic_data_invalid(self):
         parameters = {
-            "name": "mapping-saturation",
             "bpolys": self.feature,
             "topic": {
                 "key": "foo",
@@ -211,7 +194,7 @@ class TestApiIndicatorIo(unittest.TestCase):
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post("/indicators/mapping-saturation", json=parameters)
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "TopicDataSchemaError")
