@@ -17,7 +17,7 @@ def validate_indicator_topic_combination(indicator: str, topic: str):
 def validate_geojson(bpolys: GeoJSON):
     """Validate GeoJSON object."""
     if not bpolys.is_valid:
-        raise GeoJsonError(errors=bpolys.errors)
+        raise GeoJsonError(errors=bpolys.errors())
     elif isinstance(bpolys, FeatureCollection):
         for feature in bpolys["features"]:
             validate_geojson(feature)
