@@ -42,13 +42,9 @@ from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
     get_attribution,
-    get_dataset_names,
-    get_fid_fields,
     get_indicator_definitions,
-    get_indicator_names,
     get_metadata,
     get_report_definitions,
-    get_report_names,
     get_topic_definition,
     get_topic_definitions,
 )
@@ -302,38 +298,6 @@ async def get_available_regions(asGeoJSON: bool = False):
     else:
         response["result"] = await db_client.get_regions()
         return response
-
-
-@app.get("/indicators")
-async def indicator_names():
-    """Get names of available indicators."""
-    response = empty_api_response()
-    response["result"] = get_indicator_names()
-    return response
-
-
-@app.get("/datasets")
-async def dataset_names():
-    """Get names of available datasets."""
-    response = empty_api_response()
-    response["result"] = get_dataset_names()
-    return response
-
-
-@app.get("/reports")
-async def report_names():
-    """Get names of available reports."""
-    response = empty_api_response()
-    response["result"] = get_report_names()
-    return response
-
-
-@app.get("/fid-fields")
-async def list_fid_fields():
-    """List available fid fields for each dataset."""
-    response = empty_api_response()
-    response["result"] = get_fid_fields()
-    return response
 
 
 @app.get(
