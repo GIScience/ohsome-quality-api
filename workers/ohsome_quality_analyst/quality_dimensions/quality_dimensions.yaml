@@ -1,0 +1,22 @@
+---
+# TODO description
+
+completeness:
+  name: Completeness
+  description: >-
+    something that is still a TODO
+
+currentness:
+  name: Currentness
+  description: >-
+    something that is still a TODO
+
+minimal:
+  name: Minimal
+  description: >-
+    something that is still a TODO
+
+none:
+  name: None
+  description: >-
+    No specific quality dimension
