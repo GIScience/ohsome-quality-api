@@ -1,34 +1,60 @@
 import asyncio
-import unittest
+
+import plotly.graph_objects as pgo
+import plotly.io as pio
+import pytest
 
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 
-from .utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
+from .utils import oqt_vcr
 
 
-class TestIndicatorMinimal(unittest.TestCase):
-    def setUp(self):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        topic = get_topic_fixture("minimal")
-        self.indicator = Minimal(feature=feature, topic=topic)
-
-    @oqt_vcr.use_cassette()
-    def test(self):
-        assert self.indicator.attribution() is not None
-
-        asyncio.run(self.indicator.preprocess())
-        assert self.indicator.count is not None
-
-        self.indicator.calculate()
-        assert self.indicator.result.label is not None
-        assert self.indicator.result.value is not None
-        assert self.indicator.result.description is not None
-        assert self.indicator.result.timestamp_oqt is not None
-        assert self.indicator.result.timestamp_osm is not None
-
-        self.indicator.create_figure()
-        assert self.indicator.result.svg is not None
+class TestAttribution:
+    @oqt_vcr.use_cassette
+    def test_attribution(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        assert indicator.attribution() is not None
 
 
-if __name__ == "__main__":
-    unittest.main()
+class TestPreprocess:
+    @oqt_vcr.use_cassette
+    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        assert indicator.count is not None
+
+
+class TestCalculate:
+    @oqt_vcr.use_cassette
+    def test_calculate(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+
+        assert indicator.result.value is not None
+        assert indicator.result.label is not None
+        assert indicator.result.description is not None
+        assert indicator.result.timestamp_oqt is not None
+        assert indicator.result.timestamp_osm is not None
+
+
+class TestFigure:
+    @pytest.fixture(scope="class")
+    @oqt_vcr.use_cassette
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        i = Minimal(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
+
+    @pytest.mark.skip(reason="Only for manual testing.")  # uncomment for manual test
+    def test_create_figure_manual(self, indicator):
+        indicator.create_figure()
+        pio.show(indicator.result.figure)
+
+    def test_create_figure(self, indicator):
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        assert indicator.result.svg is not None
