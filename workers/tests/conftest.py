@@ -6,11 +6,14 @@ from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
+    get_quality_dimension,
     get_topic_definition,
     load_metadata,
+    load_quality_dimensions,
     load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
@@ -51,6 +54,31 @@ def metadata_topic_building_count(
 @pytest.fixture()
 def topic_definitions() -> dict[str, TopicDefinition]:
     return load_topic_definitions()
+
+
+@pytest.fixture(scope="class")
+def quality_dimension_key_completeness() -> str:
+    return "completeness"
+
+
+@pytest.fixture(scope="class")
+def quality_dimension_completeness(
+    quality_dimension_key_completeness,
+) -> QualityDimension:
+    return get_quality_dimension(quality_dimension_key_completeness)
+
+
+@pytest.fixture(scope="class")
+def metadata_quality_dimension_completeness(
+    quality_dimension_key_completeness,
+    quality_dimension_completeness,
+) -> dict[str, QualityDimension]:
+    return {quality_dimension_key_completeness: quality_dimension_completeness}
+
+
+@pytest.fixture()
+def quality_dimensions() -> dict[str, QualityDimension]:
+    return load_quality_dimensions()
 
 
 @pytest.fixture(scope="class")

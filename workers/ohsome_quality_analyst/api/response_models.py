@@ -3,11 +3,13 @@ from pydantic import BaseModel, validator
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.api.request_models import (
     IndicatorEnum,
+    QualityDimensionEnum,
     ReportEnum,
     TopicEnum,
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
@@ -32,6 +34,18 @@ class TopicMetadataResponse(ResponseBase):
         assert len(value) > 0
         for key in value.keys():
             TopicEnum(key)
+        return value
+
+
+class QualityDimensionMetadataResponse(ResponseBase):
+    result: dict[str, QualityDimension]
+
+    @validator("result")
+    @classmethod
+    def check_quality_dimension_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            QualityDimensionEnum(key)
         return value
 
 
@@ -64,5 +78,6 @@ class MetadataResponse(ResponseBase):
         indicators: dict[str, IndicatorMetadata]
         reports: dict[str, ReportMetadata]
         topics: dict[str, TopicDefinition]
+        quality_dimensions: dict[str, QualityDimension]
 
     result: MetadataResultSchema

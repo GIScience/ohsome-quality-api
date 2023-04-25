@@ -28,6 +28,7 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorDatabase,
     IndicatorEnum,
     ProjectEnum,
+    QualityDimensionEnum,
     ReportBpolys,
     ReportDatabase,
     ReportEnum,
@@ -36,6 +37,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
     MetadataResponse,
+    QualityDimensionMetadataResponse,
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
@@ -45,6 +47,8 @@ from ohsome_quality_analyst.definitions import (
     get_attribution,
     get_indicator_definitions,
     get_metadata,
+    get_quality_dimension,
+    get_quality_dimensions,
     get_report_definitions,
     get_topic_definition,
     get_topic_definitions,
@@ -327,6 +331,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
         "topics": get_topic_definitions(project=project.value),
+        "quality_dimensions": get_quality_dimensions(),
         "indicators": get_indicator_definitions(project=project.value),
         "reports": get_report_definitions(project=project.value),
     }
@@ -355,6 +360,28 @@ async def metadata_topic(
 async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     """Get topic by key."""
     return TopicMetadataResponse(result={key.value: get_topic_definition(key.value)})
+
+
+@app.get(
+    "/metadata/quality_dimensions",
+    tags=["metadata"],
+)
+async def metadata_quality_dimension() -> QualityDimensionMetadataResponse:
+    """Get topics."""
+    return QualityDimensionMetadataResponse(result=get_quality_dimensions())
+
+
+@app.get(
+    "/metadata/quality_dimensions/{key}",
+    tags=["metadata"],
+)
+async def metadata_quality_dimension_by_key(
+    key: QualityDimensionEnum,
+) -> QualityDimensionMetadataResponse:
+    """Get topic by key."""
+    return QualityDimensionMetadataResponse(
+        result={key.value: get_quality_dimension(key.value)}
+    )
 
 
 @app.get(
