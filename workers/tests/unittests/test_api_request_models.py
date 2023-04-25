@@ -9,10 +9,9 @@ from pydantic import ValidationError
 
 from ohsome_quality_analyst.api import request_models
 from ohsome_quality_analyst.utils.exceptions import (
-    GeoJsonError,
-    GeoJsonGeometryTypeError,
-    GeoJsonObjectTypeError,
-    IndicatorTopicError,
+    GeoJSONError,
+    GeoJSONGeometryTypeError,
+    GeoJSONObjectTypeError,
 )
 
 
@@ -240,38 +239,50 @@ def test_bpolys_valid(
 
 
 def test_bpolys_invalid(feature_collection_invalid):
-    with pytest.raises((GeoJsonError, ValidationError)):
+    with pytest.raises((GeoJSONError, ValidationError)):
         request_models.BaseBpolys(bpolys=feature_collection_invalid)
 
 
 # TODO
 @pytest.mark.skip(reason="Support for Feature will be discontinued.")
 def test_bpolys_unsupported_object_type_feature(feature_germany_heidelberg):
-    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+    with pytest.raises((GeoJSONObjectTypeError, ValidationError)):
         request_models.BaseBpolys(bpolys=feature_germany_heidelberg)
 
 
 def test_bpolys_unsupported_object_type(geojson_unsupported_object_type):
-    with pytest.raises((GeoJsonObjectTypeError, ValidationError)):
+    with pytest.raises((GeoJSONObjectTypeError, ValidationError)):
         request_models.BaseBpolys(bpolys=geojson_unsupported_object_type)
 
 
 def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometry_type):
-    with pytest.raises((GeoJsonGeometryTypeError, ValidationError)):
+    with pytest.raises((GeoJSONGeometryTypeError, ValidationError)):
         request_models.BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
-def test_invalid_indicator_topic_combination(feature_collection_germany_heidelberg):
-    with pytest.raises(IndicatorTopicError):
-        request_models.IndicatorDatabase(
-            name="minimal",
-            topic="amenities",
-            dataset="regions",
-            feature_id=3,
-        )
-    with pytest.raises(IndicatorTopicError):
-        request_models.IndicatorBpolys(
-            name="minimal",
-            topic="amenities",
-            bpolys=feature_collection_germany_heidelberg,
-        )
+def test_indicator_database():
+    request_models.IndicatorDatabase(
+        topic="minimal",
+        dataset="regions",
+        feature_id="3",
+    )
+    request_models.IndicatorDatabase(
+        topic="minimal",
+        dataset="regions",
+        feature_id="Heidelberg",
+        fid_field="name",
+    )
+
+
+def test_indicator_bpolys(feature_collection_germany_heidelberg):
+    request_models.IndicatorBpolys(
+        topic="minimal",
+        bpolys=feature_collection_germany_heidelberg,
+    )
+
+
+def test_indicator_data(feature_collection_germany_heidelberg):
+    request_models.IndicatorData(
+        bpolys=feature_collection_germany_heidelberg,
+        topic={"key": "foo", "name": "bar", "description": "buz", "data": {}},
+    )
