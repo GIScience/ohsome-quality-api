@@ -52,6 +52,7 @@
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
+- base indicator: substitute matplotlib SVG with plotly SVG ([#549])
 - api: fix attribution URL path ([#543])
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
