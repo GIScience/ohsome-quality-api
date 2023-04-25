@@ -13,6 +13,9 @@
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
 - remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
+- remove API endpoints `/indicator` and `/report` ([#554])
+- remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields`
+- discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 
 ### Bug Fixes
 
@@ -30,6 +33,7 @@
 - api: add `/metadata/indicators` endpoint ([#533])
 - api: add `/metadata/reports` endpoint ([#545])
 - api: add `/metadata` endpoint ([#545])
+- api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
 
 ### Other Changes
 
@@ -51,6 +55,7 @@
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
+- factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
 
 ### How to Upgrade
 
