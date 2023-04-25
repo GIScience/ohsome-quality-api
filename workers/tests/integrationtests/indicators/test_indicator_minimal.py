@@ -5,8 +5,7 @@ import plotly.io as pio
 import pytest
 
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
-
-from .utils import oqt_vcr
+from tests.integrationtests.utils import oqt_vcr
 
 
 class TestAttribution:
@@ -26,12 +25,15 @@ class TestPreprocess:
 
 
 class TestCalculate:
+    @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
-    def test_calculate(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
-        indicator.calculate()
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        i = Minimal(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        i.calculate()
+        return i
 
+    def test_calculate(self, indicator):
         assert indicator.result.value is not None
         assert indicator.result.label is not None
         assert indicator.result.description is not None
