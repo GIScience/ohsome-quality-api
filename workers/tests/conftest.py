@@ -6,13 +6,15 @@ from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
-    get_quality_dimension,
     get_topic_definition,
     load_metadata,
-    load_quality_dimensions,
     load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.quality_dimensions.definitions import (
+    get_quality_dimension,
+    load_quality_dimensions,
+)
 from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 

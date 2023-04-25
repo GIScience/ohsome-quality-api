@@ -113,7 +113,7 @@ def metadata_indicator_minimal():
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
             "project": "misc",
-            "quality-dimension": "none",
+            "quality-dimension": "minimal",
         }
     }
 
