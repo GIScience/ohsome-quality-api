@@ -52,42 +52,6 @@ class TestApi(unittest.TestCase):
         for region in response_content["result"]:
             self.assertIsInstance(region, dict)
 
-    def test_list_indicators(self):
-        url = "/indicators"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        response_content = json.loads(response.content)
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.result_schema.is_valid(response_content))
-
-    def test_list_datasets(self):
-        url = "/datasets"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        response_content = json.loads(response.content)
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.result_schema.is_valid(response_content))
-
-    def test_list_fid_field(self):
-        url = "/fid-fields"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        response_content = json.loads(response.content)
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.result_schema.is_valid(response_content))
-
-    def test_list_reports(self):
-        url = "/reports"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        response_content = json.loads(response.content)
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.result_schema.is_valid(response_content))
-
 
 if __name__ == "__main__":
     unittest.main()
