@@ -35,11 +35,7 @@ services:
 
   database:
     container_name: oqt-database
-    build:
-      context: database/development
-      args:
-        # Setup minimal database for running tests
-        OQT_TEST_DB: "False"
+    image: postgis/postgis:15-3.3
     environment:
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
