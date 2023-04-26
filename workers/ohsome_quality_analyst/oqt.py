@@ -32,7 +32,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import loads_geojson, name_to_class
+from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
 from ohsome_quality_analyst.utils.helper_asyncio import (
     filter_exceptions,
     gather_with_semaphore,
@@ -178,7 +178,7 @@ async def _(
     else:
         feature_id = parameters.feature_id
     feature = await db_client.get_feature_from_db(dataset, feature_id)
-    indicator_class = name_to_class(class_type="indicator", name=key)
+    indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator_raw = indicator_class(topic=topic, feature=feature)
     failure = False
     try:
@@ -217,7 +217,7 @@ async def _(
     logging.info("Indicator key:  {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
-    indicator_class = name_to_class(class_type="indicator", name=key)
+    indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
@@ -251,7 +251,7 @@ async def _(
     logging.info("Indicator key:  {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
-    indicator_class = name_to_class(class_type="indicator", name=key)
+    indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
@@ -299,7 +299,7 @@ async def _(parameters: ReportDatabase, key: str, force: bool = False) -> Report
         feature_id = parameters.feature_id
 
     feature = await db_client.get_feature_from_db(dataset, feature_id)
-    report_class = name_to_class(class_type="report", name=key)
+    report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []
@@ -335,7 +335,7 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
     logging.info("Report key:  {0:4}".format(key))
 
-    report_class = name_to_class(class_type="report", name=key)
+    report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
     tasks: List[Coroutine] = []

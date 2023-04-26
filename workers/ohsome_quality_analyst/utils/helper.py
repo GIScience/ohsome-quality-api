@@ -16,23 +16,18 @@ from geojson import Feature, FeatureCollection
 from ohsome_quality_analyst.indicators.mapping_saturation.models import BaseStatModel
 
 
-def name_to_class(class_type: str, name: str):
-    """Convert class name of class type (indicator or report) to the class.
-
-    Assumptions:
-    - Class is named in Camel Case (E.g. MappingSaturation).
-    - Path to the module is in Snake Case (E.g. indicators.mapping_saturation.indicator)
-    """
+def get_class_from_key(class_type: str, key: str):
+    """Convert indicator or report key to the class name."""
     # Alternatives:
     # - Hard code import of classes
     # - Dynamically import all classes in package
     #     - https://julienharbulot.com/python-dynamical-import.html
     class_path = "ohsome_quality_analyst.{0}s.{1}.{2}".format(
         class_type,
-        hyphen_to_snake(name),
+        hyphen_to_snake(key),
         class_type,
     )
-    class_name = hyphen_to_camel(name)
+    class_name = hyphen_to_camel(key)
     return getattr(importlib.import_module(class_path), class_name)
 
 

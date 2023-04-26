@@ -60,9 +60,9 @@ from ohsome_quality_analyst.utils.exceptions import (
     ValidationError,
 )
 from ohsome_quality_analyst.utils.helper import (
+    get_class_from_key,
     hyphen_to_camel,
     json_serialize,
-    name_to_class,
     snake_to_hyphen,
 )
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
@@ -243,9 +243,9 @@ async def post_indicator(
             parameters.flatten,
         )
     response = empty_api_response()
-    response["attribution"]["text"] = name_to_class(
+    response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
-        name=key.value,
+        key=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
@@ -285,9 +285,9 @@ async def post_report(
             parameters.flatten,
         )
     response = empty_api_response()
-    response["attribution"]["text"] = name_to_class(
+    response["attribution"]["text"] = get_class_from_key(
         class_type="report",
-        name=key.value,
+        key=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
