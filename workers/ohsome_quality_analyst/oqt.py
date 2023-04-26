@@ -167,7 +167,7 @@ async def _(
 
     logging.info("Fetching Indicator from database ...")
     logging.info("Feature id:     {0:4}".format(parameters.feature_id))
-    logging.info("Indicator key: {0:4}".format(key)),
+    logging.info("Indicator key:  {0:4}".format(key)),
     logging.info("Topic name:     {0:4}".format(topic.name))
 
     dataset = parameters.dataset.value
@@ -216,7 +216,7 @@ async def _(
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator key: {0:4}".format(key))
+    logging.info("Indicator key:  {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
     indicator_class = name_to_class(class_type="indicator", name=key)
@@ -250,7 +250,7 @@ async def _(
 
     logging.info("Calculating Indicator with custom Topic ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator key: {0:4}".format(key))
+    logging.info("Indicator key:  {0:4}".format(key))
     logging.info("Topic name:     {0:4}".format(topic.name))
 
     indicator_class = name_to_class(class_type="indicator", name=key)
@@ -288,7 +288,7 @@ async def _(parameters: ReportDatabase, key: ReportEnum, force: bool = False) ->
     """
     logging.info("Creating Report...")
     logging.info("Feature id:  {0:4}".format(parameters.feature_id))
-    logging.info("Report key: {0:4}".format(key))
+    logging.info("Report key:  {0:4}".format(key))
 
     dataset = parameters.dataset.value
     if parameters.fid_field is not None:
@@ -335,7 +335,7 @@ async def _(parameters: ReportBpolys, key: ReportEnum, *_args) -> Report:
 
     logging.info("Creating Report...")
     logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
-    logging.info("Report key: {0:4}".format(key))
+    logging.info("Report key:  {0:4}".format(key))
 
     report_class = name_to_class(class_type="report", name=key)
     report = report_class(feature=feature)
