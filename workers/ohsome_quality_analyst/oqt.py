@@ -15,10 +15,8 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
     IndicatorDatabase,
-    IndicatorEnum,
     ReportBpolys,
     ReportDatabase,
-    ReportEnum,
 )
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import (
@@ -53,7 +51,7 @@ async def create_indicator_as_geojson(parameters):
 @create_indicator_as_geojson.register(IndicatorData)
 async def _(
     parameters: Union[IndicatorBpolys, IndicatorData],
-    key: IndicatorEnum,
+    key: str,
     size_restriction: bool = False,
     **_kwargs,
 ) -> Union[Feature, FeatureCollection]:
@@ -93,7 +91,7 @@ async def _(
 @create_indicator_as_geojson.register(IndicatorDatabase)
 async def _(
     parameters: IndicatorDatabase,
-    key: IndicatorEnum,
+    key: str,
     force: bool = False,
     **_kwargs,
 ) -> Feature:
@@ -104,7 +102,7 @@ async def _(
 
 async def create_report_as_geojson(
     parameters: Union[ReportBpolys, ReportDatabase],
-    key: ReportEnum,
+    key: str,
     force: bool = False,
     size_restriction: bool = False,
 ) -> Union[Feature, FeatureCollection]:
@@ -153,7 +151,7 @@ async def create_indicator(parameters) -> Indicator:
 @create_indicator.register
 async def _(
     parameters: IndicatorDatabase,
-    key: IndicatorEnum,
+    key: str,
     force: bool = False,
 ) -> Indicator:
     """Create an Indicator by fetching the results from the database.
@@ -207,7 +205,7 @@ async def _(
 @create_indicator.register
 async def _(
     parameters: IndicatorBpolys,
-    key: IndicatorEnum,
+    key: str,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -236,7 +234,7 @@ async def _(
 @create_indicator.register
 async def _(
     parameters: IndicatorData,
-    key: IndicatorEnum,
+    key: str,
     *_args,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -278,7 +276,7 @@ async def create_report(parameters) -> Report:
 
 
 @create_report.register
-async def _(parameters: ReportDatabase, key: ReportEnum, force: bool = False) -> Report:
+async def _(parameters: ReportDatabase, key: str, force: bool = False) -> Report:
     """Create a Report.
 
     Fetches indicator results form the database.
@@ -324,7 +322,7 @@ async def _(parameters: ReportDatabase, key: ReportEnum, force: bool = False) ->
 
 
 @create_report.register
-async def _(parameters: ReportBpolys, key: ReportEnum, *_args) -> Report:
+async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
