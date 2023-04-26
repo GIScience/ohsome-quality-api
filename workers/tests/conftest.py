@@ -21,8 +21,18 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures
 
 
 @pytest.fixture(scope="class")
+def topic_key_minimal() -> str:
+    return "minimal"
+
+
+@pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
     return "building_count"
+
+
+@pytest.fixture(scope="class")
+def topic_minimal(topic_key_minimal) -> TopicDefinition:
+    return get_topic_definition(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
