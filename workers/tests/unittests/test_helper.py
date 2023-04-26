@@ -17,12 +17,12 @@ from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
     flatten_dict,
     flatten_sequence,
+    get_class_from_key,
     get_project_root,
     hyphen_to_camel,
     hyphen_to_snake,
     json_serialize,
     loads_geojson,
-    name_to_class,
     snake_to_hyphen,
 )
 
@@ -45,19 +45,19 @@ class TestHelper(unittest.TestCase):
 
     def test_name_to_class(self):
         self.assertIs(
-            name_to_class(class_type="indicator", name="minimal"),
+            get_class_from_key(class_type="indicator", key="minimal"),
             MinimalIndicator,
         )
 
         self.assertIs(
-            name_to_class(class_type="report", name="minimal"),
+            get_class_from_key(class_type="report", key="minimal"),
             MinimalReport,
         )
 
         self.indicators = load_metadata("indicators")
         for indicator_name in self.indicators.keys():
             self.assertIsNotNone(
-                name_to_class(class_type="indicator", name=indicator_name)
+                get_class_from_key(class_type="indicator", key=indicator_name)
             )
 
     def test_loads_geojson_feature(self):
