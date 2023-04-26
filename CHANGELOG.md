@@ -14,7 +14,7 @@
 - remove GET request for indicators and reports ([#516])
 - remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
 - remove API endpoints `/indicator` and `/report` ([#554])
-- remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields`
+- remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 
 ### Bug Fixes
@@ -65,6 +65,7 @@
 - for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
+- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
 
 | old API parameter | new API parameter |
 | ---               | ---               |
