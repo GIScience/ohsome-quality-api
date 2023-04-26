@@ -25,7 +25,6 @@ def topic():
     return get_topic_fixture("building_area")
 
 
-@pytest.mark.skip(reason="TODO reenable after database upgrade")
 @oqt_vcr.use_cassette()
 def test_indicator(feature, topic, mock_env_oqt_data_dir):
     indicator = BuildingCompleteness(feature=feature, topic=topic)
