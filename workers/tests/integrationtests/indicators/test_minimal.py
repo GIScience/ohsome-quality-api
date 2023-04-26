@@ -10,16 +10,16 @@ from tests.integrationtests.utils import oqt_vcr
 
 class TestAttribution:
     @oqt_vcr.use_cassette
-    def test_attribution(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
+    def test_attribution(self, topic_minimal, feature_germany_heidelberg):
+        indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         assert indicator.attribution() is not None
 
 
 class TestPreprocess:
     @oqt_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Minimal(topic_building_count, feature_germany_heidelberg)
+    def test_preprocess(self, topic_minimal, feature_germany_heidelberg):
+        indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         assert indicator.count is not None
 
@@ -27,8 +27,8 @@ class TestPreprocess:
 class TestCalculate:
     @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = Minimal(topic_building_count, feature_germany_heidelberg)
+    def indicator(self, topic_minimal, feature_germany_heidelberg):
+        i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
         return i
@@ -44,8 +44,8 @@ class TestCalculate:
 class TestFigure:
     @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = Minimal(topic_building_count, feature_germany_heidelberg)
+    def indicator(self, topic_minimal, feature_germany_heidelberg):
+        i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
         return i
