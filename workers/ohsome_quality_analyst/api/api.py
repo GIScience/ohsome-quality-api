@@ -27,7 +27,6 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorData,
     IndicatorDatabase,
     IndicatorEnum,
-    ProjectEnum,
     ReportBpolys,
     ReportDatabase,
     ReportEnum,
@@ -36,6 +35,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
     MetadataResponse,
+    ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
     ReportMetadataResponse,
     TopicMetadataResponse,
@@ -51,6 +51,11 @@ from ohsome_quality_analyst.definitions import (
     get_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.projects.definitions import (
+    ProjectEnum,
+    get_project,
+    get_projects,
+)
 from ohsome_quality_analyst.quality_dimensions.definitions import (
     QualityDimensionEnum,
     get_quality_dimension,
@@ -334,6 +339,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     result = {
         "topics": get_topic_definitions(project=project.value),
         "quality-dimensions": get_quality_dimensions(),
+        "projects": get_projects(),
         "indicators": get_indicator_definitions(project=project.value),
         "reports": get_report_definitions(project=project.value),
     }
@@ -384,6 +390,26 @@ async def metadata_quality_dimension_by_key(
     return QualityDimensionMetadataResponse(
         result={key.value: get_quality_dimension(key.value)}
     )
+
+
+@app.get(
+    "/metadata/projects",
+    tags=["metadata"],
+)
+async def metadata_projects() -> ProjectMetadataResponse:
+    """Get projects."""
+    return ProjectMetadataResponse(result=get_projects())
+
+
+@app.get(
+    "/metadata/projects/{key}",
+    tags=["metadata"],
+)
+async def metadata_project_by_key(
+    key: ProjectEnum,
+) -> ProjectMetadataResponse:
+    """Get project by key."""
+    return ProjectMetadataResponse(result={key.value: get_project(key.value)})
 
 
 @app.get(
