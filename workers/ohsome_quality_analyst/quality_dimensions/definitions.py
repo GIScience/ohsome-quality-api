@@ -35,7 +35,7 @@ def get_quality_dimension(qd_key: str) -> QualityDimension:
         return quality_dimensions[qd_key]
     except KeyError as error:
         raise KeyError(
-            "Invalid quality dimension0key. Valid quality dimension keys are: "
+            "Invalid quality dimension key. Valid quality dimension keys are: "
             + str(quality_dimensions.keys())
         ) from error
 
