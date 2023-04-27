@@ -1,0 +1,42 @@
+---
+# TODO description
+
+core:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+mapaction:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+sketchmap:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+misc:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+experimental:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+corine-land-cover:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+idealvgi:
+  name: TODO
+  description: >-
+    something that is still a TODO
+
+expanse:
+  name: TODO
+  description: >-
+    something that is still a TODO
