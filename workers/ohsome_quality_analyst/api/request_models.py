@@ -20,7 +20,6 @@ from ohsome_quality_analyst.definitions import (
     get_dataset_names,
     get_fid_fields,
     get_indicator_names,
-    get_project_keys,
     get_report_names,
     get_topic_keys,
 )
@@ -33,7 +32,6 @@ ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
 TopicEnum = Enum("TopicEnum", {name: name for name in get_topic_keys()})
 DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
-ProjectEnum = Enum("ProjectEnum", {name: name for name in get_project_keys()})
 
 
 class BaseIndicator(BaseModel):
