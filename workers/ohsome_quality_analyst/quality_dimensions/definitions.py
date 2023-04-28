@@ -25,8 +25,7 @@ def load_quality_dimensions() -> dict[str, QualityDimension]:
 
 
 def get_quality_dimensions() -> dict[str, QualityDimension]:
-    quality_dimensions = load_quality_dimensions()
-    return quality_dimensions
+    return load_quality_dimensions()
 
 
 def get_quality_dimension(qd_key: str) -> QualityDimension:

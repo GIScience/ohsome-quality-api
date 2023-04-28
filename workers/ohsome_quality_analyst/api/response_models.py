@@ -42,11 +42,11 @@ class QualityDimensionMetadataResponse(ResponseBase):
 
     @validator("result")
     @classmethod
-    def check_quality_dimension_dict(cls, value):
-        assert len(value) > 0
-        for key in value.keys():
+    def check_quality_dimension_dict(cls, values):
+        assert len(values) > 0
+        for key in values.keys():
             QualityDimensionEnum(key)
-        return value
+        return values
 
 
 class IndicatorMetadataResponse(ResponseBase):

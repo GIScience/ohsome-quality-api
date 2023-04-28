@@ -1,9 +1,4 @@
-"""Pydantic Models for Quality Dimensions
-
-Note:
-    TODO The topic key, name, description and the ohsome API endpoint and filter are
-    defined in the `quality_dimensions.yaml` file in the `quality_dimensions` module.
-"""
+"""Pydantic Models for Quality Dimensions."""
 from pydantic import BaseModel
 
 
