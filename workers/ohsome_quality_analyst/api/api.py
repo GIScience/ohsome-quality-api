@@ -368,8 +368,8 @@ async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     "/metadata/quality-dimensions",
     tags=["metadata"],
 )
-async def metadata_quality_dimension() -> QualityDimensionMetadataResponse:
-    """Get topics."""
+async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
+    """Get quality dimensions."""
     return QualityDimensionMetadataResponse(result=get_quality_dimensions())
 
 
@@ -380,7 +380,7 @@ async def metadata_quality_dimension() -> QualityDimensionMetadataResponse:
 async def metadata_quality_dimension_by_key(
     key: QualityDimensionEnum,
 ) -> QualityDimensionMetadataResponse:
-    """Get topic by key."""
+    """Get quality dimension by key."""
     return QualityDimensionMetadataResponse(
         result={key.value: get_quality_dimension(key.value)}
     )
