@@ -58,6 +58,7 @@ def metadata_indicator_mapping_saturation():
                 + "if the growth of the fitted curve is minimal."
             ),
             "project": "core",
+            "quality-dimension": "completeness",
         }
     }
 
@@ -74,6 +75,16 @@ def metadata_report_multilevel_mapping_saturation():
             + "gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-"
             + "vectorisation).",
             "project": "core",
+        }
+    }
+
+
+@pytest.fixture
+def metadata_quality_dimension_completeness():
+    return {
+        "completeness": {
+            "name": "Completeness",
+            "description": "something that is still a TODO",
         }
     }
 
@@ -102,6 +113,7 @@ def metadata_indicator_minimal():
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
             "project": "misc",
+            "quality-dimension": "minimal",
         }
     }
 

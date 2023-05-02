@@ -35,6 +35,7 @@
 - api: add `/metadata/reports` endpoint ([#545])
 - api: add `/metadata` endpoint ([#545])
 - api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
+- add quality dimensions to indicators ([#561])
 
 ### Other Changes
 
@@ -114,7 +115,8 @@
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
 [#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
-[#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/549
+[#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
+[#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
 
 ## 0.14.2
 

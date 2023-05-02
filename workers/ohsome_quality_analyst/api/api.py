@@ -36,6 +36,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
     MetadataResponse,
+    QualityDimensionMetadataResponse,
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
@@ -50,6 +51,11 @@ from ohsome_quality_analyst.definitions import (
     get_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.quality_dimensions.definitions import (
+    QualityDimensionEnum,
+    get_quality_dimension,
+    get_quality_dimensions,
+)
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
     OhsomeApiError,
@@ -327,6 +333,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
         "topics": get_topic_definitions(project=project.value),
+        "quality-dimensions": get_quality_dimensions(),
         "indicators": get_indicator_definitions(project=project.value),
         "reports": get_report_definitions(project=project.value),
     }
@@ -355,6 +362,28 @@ async def metadata_topic(
 async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     """Get topic by key."""
     return TopicMetadataResponse(result={key.value: get_topic_definition(key.value)})
+
+
+@app.get(
+    "/metadata/quality-dimensions",
+    tags=["metadata"],
+)
+async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
+    """Get quality dimensions."""
+    return QualityDimensionMetadataResponse(result=get_quality_dimensions())
+
+
+@app.get(
+    "/metadata/quality-dimensions/{key}",
+    tags=["metadata"],
+)
+async def metadata_quality_dimension_by_key(
+    key: QualityDimensionEnum,
+) -> QualityDimensionMetadataResponse:
+    """Get quality dimension by key."""
+    return QualityDimensionMetadataResponse(
+        result={key.value: get_quality_dimension(key.value)}
+    )
 
 
 @app.get(

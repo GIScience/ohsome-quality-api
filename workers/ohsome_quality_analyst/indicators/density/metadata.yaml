@@ -2,6 +2,7 @@
 density:
   name: Density
   project: experimental
+  quality-dimension: none
   description: >-
       The density of features.
       It is calculated by the number of features 
