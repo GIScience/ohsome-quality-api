@@ -1,7 +1,6 @@
 """Standalone helper functions."""
 
 import importlib
-import json
 import logging
 import os
 import pkgutil
@@ -12,28 +11,23 @@ from typing import Generator, Union
 
 import geojson
 import numpy as np
-from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.indicators.mapping_saturation.models import BaseStatModel
 
 
-def name_to_class(class_type: str, name: str):
-    """Convert class name of class type (indicator or report) to the class.
-
-    Assumptions:
-    - Class is named in Camel Case (E.g. MappingSaturation).
-    - Path to the module is in Snake Case (E.g. indicators.mapping_saturation.indicator)
-    """
+def get_class_from_key(class_type: str, key: str):
+    """Convert indicator or report key to the class name."""
     # Alternatives:
     # - Hard code import of classes
     # - Dynamically import all classes in package
     #     - https://julienharbulot.com/python-dynamical-import.html
     class_path = "ohsome_quality_analyst.{0}s.{1}.{2}".format(
         class_type,
-        hyphen_to_snake(name),
+        hyphen_to_snake(key),
         class_type,
     )
-    class_name = hyphen_to_camel(name)
+    class_name = hyphen_to_camel(key)
     return getattr(importlib.import_module(class_path), class_name)
 
 
@@ -112,25 +106,15 @@ def write_geojson(
         logging.info("Output file written:\t" + str(outfile))
 
 
-def loads_geojson(bpolys: dict) -> Generator[Feature, None, None]:
+def loads_geojson(
+    bpolys: FeatureCollection | Feature,
+) -> Generator[Feature, None, None]:
     """Load and validate GeoJSON object."""
-    bpolys = geojson.loads(json.dumps(bpolys))
-    if bpolys.is_valid is False:
-        raise ValueError(
-            "The provided parameter `bpolys` is not a valid GeoJSON: " + bpolys.errors()
-        )
-    elif isinstance(bpolys, FeatureCollection):
+    if isinstance(bpolys, FeatureCollection):
         for feature in bpolys["features"]:
             yield feature
-    elif isinstance(bpolys, Feature):
-        yield bpolys
-    elif isinstance(bpolys, (Polygon, MultiPolygon)):
-        yield Feature(geometry=bpolys)
     else:
-        raise ValueError(
-            "Input GeoJSON Objects have to be of type "
-            + " Feature, FeatureCollection, Polygon or MultiPolygon"
-        )
+        yield bpolys  # return Feature
 
 
 def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dict:

@@ -1,5 +1,4 @@
-# ohsomehex-db uses postgres v.10
-FROM postgis/postgis:10-2.5
+FROM postgis/postgis:15-3.3
 
 # If True only minimal database for running tests will be setup.
 # If False additional data for development will be downloaded.

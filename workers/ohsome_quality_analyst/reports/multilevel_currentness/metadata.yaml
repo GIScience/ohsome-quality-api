@@ -1,6 +1,7 @@
 ---
 multilevel-currentness:
   name: Multilevel Currentness
+  project: experimental
   description: >-
     This report shows the currentness of four major map features (https://wiki.openstreetmap.org/wiki/Map_features):
     buildings, land-use and land-cover, points of interest and infrastructure.

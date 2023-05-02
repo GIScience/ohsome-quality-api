@@ -25,6 +25,7 @@ building_area:
   endpoint: elements/area
   filter: building=* and building!=no and geometry:polygon
   indicators:
+    - mapping-saturation
     - building-completeness
   project: core
 
@@ -136,7 +137,7 @@ poi:
   indicators:
     - mapping-saturation
     - currentness
-    - poi-density
+    - density
   project: core
 
 schools:
@@ -176,7 +177,7 @@ doctors:
   name: Doctors
   description: Count of doctors.
   endpoint: elements/count
-  filter: amenity=doctors or healthcare=doctors
+  filter: amenity=doctors or healthcare=doctor
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
@@ -318,7 +319,8 @@ landmarks:
     shop=* or tourism in (hotel, attraction) or
     amenity in (fuel, pharmacy, hospital, school, college, university,
     police, fire_station, restaurant, townhall)
-  indicators: []
+  indicators:
+    - density
   project: sketchmap
 
 ### MAPACTION PROJECT ###
