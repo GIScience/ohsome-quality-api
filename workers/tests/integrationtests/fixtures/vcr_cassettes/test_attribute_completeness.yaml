@@ -15,14 +15,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst
+      - ohsome-quality-analyst/0.14.2
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-04-09T20:00:00Z\",\n
-      \   \"value\" : 29788.0,\n    \"value2\" : 8516.0,\n    \"ratio\" : 0.285887\n
+      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-04-23T20:00:00Z\",\n
+      \   \"value\" : 29718.0,\n    \"value2\" : 8515.0,\n    \"ratio\" : 0.286527\n
       \ } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -44,7 +44,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 18 Apr 2023 16:10:54 GMT
+      - Tue, 02 May 2023 06:52:44 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -73,13 +73,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst
+      - ohsome-quality-analyst/0.14.2
     method: POST
     uri: https://api.ohsome.org/v1/elements/area/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-04-09T20:00:00Z\",\n
+      \"1.9.0\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-04-23T20:00:00Z\",\n
       \   \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -101,7 +101,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 18 Apr 2023 16:10:59 GMT
+      - Tue, 02 May 2023 06:52:49 GMT
       keep-alive:
       - timeout=5, max=100
       server:

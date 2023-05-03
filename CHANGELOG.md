@@ -62,6 +62,7 @@
 - density: substitute matplotlib SVG with plotly SVG ([#544])
 - add density indicator to `landmarks` topic ([#544])
 - SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
+- attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
 
 ### How to Upgrade
 
@@ -112,6 +113,7 @@
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
 [#544]: https://github.com/GIScience/ohsome-quality-analyst/pull/544
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
+[#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
