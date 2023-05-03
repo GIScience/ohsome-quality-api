@@ -34,6 +34,7 @@ async def _(
     topic: TopicDefinition,
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
+    attribute=None,
     ratio: Optional[bool] = False,
     group_by_boundary: Optional[bool] = False,
     count_latest_contributions: Optional[bool] = False,
@@ -56,7 +57,7 @@ async def _(
             ‘deletion’, ‘tagChange’, ‘geometryChange’ or a combination of them.
     """
     url = build_url(topic, ratio, group_by_boundary, count_latest_contributions)
-    data = build_data_dict(topic, bpolys, time, ratio, contribution_type)
+    data = build_data_dict(topic, bpolys, time, attribute, ratio, contribution_type)
     response = await query_ohsome_api(url, data)
     return validate_query_results(response, ratio, group_by_boundary)
 
@@ -158,6 +159,7 @@ def build_data_dict(
     topic: Topic,
     bpolys: Union[Feature, FeatureCollection],
     time: Optional[str] = None,
+    attribute=None,
     ratio: Optional[bool] = False,
     contribution_type: Optional[str] = None,
 ) -> dict:
@@ -176,7 +178,7 @@ def build_data_dict(
     if time is not None:
         data["time"] = time
     if ratio:
-        data["filter2"] = topic.ratio_filter
+        data["filter2"] = topic.filter + " and " + attribute.filter_
     if contribution_type is not None:
         data["contributionType"] = contribution_type
     return data

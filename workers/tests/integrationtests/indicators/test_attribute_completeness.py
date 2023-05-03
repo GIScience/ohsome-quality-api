@@ -1,3 +1,4 @@
+import asyncio
 from dataclasses import dataclass
 
 import pytest
@@ -5,7 +6,6 @@ import pytest
 from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
-from tests.integrationtests.utils import oqt_vcr
 
 
 @pytest.fixture()
@@ -14,7 +14,7 @@ def attribute():
     class MockAttribute:
         filter_: str
 
-    return MockAttribute(filter_="height=* OR building:level=*")
+    return MockAttribute(filter_="(height=* or building:level=*)")
 
 
 @pytest.fixture()
@@ -24,6 +24,6 @@ def indicator(topic_building_count, feature_germany_heidelberg, attribute):
     )
 
 
-@oqt_vcr
 def test_attribute_completeness(indicator):
-    indicator.preprocess()
+    asyncio.run(indicator.preprocess())
+    assert indicator.ratio is not None

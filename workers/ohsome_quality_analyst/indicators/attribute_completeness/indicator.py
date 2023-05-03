@@ -14,7 +14,7 @@ from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 class AttributeCompleteness(BaseIndicator):
     # TODO make attribute a list
-    def __init__(self, topic: Topic, feature: Feature, attribute: Attribute) -> None:
+    def __init__(self, topic: Topic, feature: Feature, attribute) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
@@ -28,7 +28,7 @@ class AttributeCompleteness(BaseIndicator):
         response = await ohsome_client.query(
             self.topic,
             self.feature,
-            self.attribute,
+            attribute=self.attribute,
             ratio=True,
         )
         timestamp = response["ratioResult"][0]["timestamp"]
