@@ -26,4 +26,5 @@ def indicator(topic_building_count, feature_germany_heidelberg, attribute):
 
 def test_attribute_completeness(indicator):
     asyncio.run(indicator.preprocess())
+    indicator.calculate()
     assert indicator.ratio is not None
