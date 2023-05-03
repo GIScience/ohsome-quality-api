@@ -13,24 +13,29 @@ from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
 class AttributeCompleteness(BaseIndicator):
-    def __init__(self, topic: Topic, feature: Feature) -> None:
+    # TODO make attribute a list
+    def __init__(self, topic: Topic, feature: Feature, attribute: Attribute) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.count_all = None
-        self.count_match = None
+        self.attribute = attribute
+        self.ratio = None
+        self.absolute_value_1 = None
+        self.absolute_value_2 = None
 
     async def preprocess(self) -> None:
-        query_results_count = await ohsome_client.query(
+        # Get attribute filter
+        response = await ohsome_client.query(
             self.topic,
             self.feature,
+            self.attribute,
             ratio=True,
         )
-        self.result.value = query_results_count["ratioResult"][0]["ratio"]
-        self.count_all = query_results_count["ratioResult"][0]["value"]
-        self.count_match = query_results_count["ratioResult"][0]["value2"]
-        timestamp = query_results_count["ratioResult"][0]["timestamp"]
+        timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+        self.ratio = response["ratioResult"][0]["ratio"]
+        self.absolute_value_1 = response["ratioResult"][0]["value"]
+        self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
         # self.result.value (ratio) can be of type float, NaN if no features of filter1
