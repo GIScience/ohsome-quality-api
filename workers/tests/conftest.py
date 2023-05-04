@@ -4,6 +4,7 @@ import geojson
 import pytest
 from geojson import Feature, FeatureCollection, Polygon
 
+from ohsome_quality_analyst.attributes.models import Attribute
 from ohsome_quality_analyst.definitions import (
     get_metadata,
     get_topic_definition,
@@ -81,6 +82,15 @@ def metadata_quality_dimension_completeness(
 @pytest.fixture()
 def quality_dimensions() -> dict[str, QualityDimension]:
     return load_quality_dimensions()
+
+
+@pytest.fixture(scope="class")
+def attribute() -> Attribute:
+    return Attribute(
+        name="test attribute",
+        description="super descriptive text",
+        filter="(height=* or building:levels=*)",
+    )
 
 
 @pytest.fixture(scope="class")

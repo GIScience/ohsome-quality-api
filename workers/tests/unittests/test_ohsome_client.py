@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import geojson
 import httpx
+import pytest
 from geojson import FeatureCollection
 from schema import Schema
 
@@ -189,6 +190,26 @@ class TestOhsomeClientQuery(TestCase):
             )
 
 
+class TestOhsomeClientBuildUrlPytest:
+    ohsome_url = "https://api.ohsome.org/v1"
+
+    def test_ratio_false(self, topic_building_count) -> None:
+        ohsome_api = self.ohsome_url
+        url = ohsome_client.build_url(topic_building_count)
+        assert ohsome_api + "/elements/count" == url
+
+    def test_ratio_true(self, topic_building_count, attribute) -> None:
+        ohsome_api = self.ohsome_url
+        url = ohsome_client.build_url(topic_building_count, attribute=attribute)
+        assert ohsome_api + "/elements/count/ratio" == url
+
+    def test_ratio_group_by(self, topic_building_count, attribute) -> None:
+        url = ohsome_client.build_url(
+            topic_building_count, attribute=attribute, group_by_boundary=True
+        )
+        assert self.ohsome_url + "/elements/count/ratio/groupBy/boundary" == url
+
+
 class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
@@ -204,23 +225,42 @@ class TestOhsomeClientBuildUrl(TestCase):
         url = ohsome_client.build_url(self.topic, group_by_boundary=True)
         self.assertEqual(self.ohsome_api + "/elements/count/groupBy/boundary", url)
 
-    def test_ratio_false(self) -> None:
-        ohsome_api = self.ohsome_api
-        url = ohsome_client.build_url(self.ratio_topic)
-        self.assertEqual(ohsome_api + "/elements/count", url)
 
-    def test_ratio_true(self) -> None:
-        ohsome_api = self.ohsome_api
-        url = ohsome_client.build_url(self.ratio_topic, ratio=True)
-        self.assertEqual(ohsome_api + "/elements/count/ratio", url)
+class TestOhsomeClientBuildDataPytesttest:
+    def test_ratio(
+        self, topic_building_count, feature_germany_heidelberg, attribute
+    ) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "filter2": str,
+            }
+        )
 
-    def test_ratio_group_by(self) -> None:
-        url = ohsome_client.build_url(
-            self.ratio_topic, ratio=True, group_by_boundary=True
+        data = ohsome_client.build_data_dict(
+            topic_building_count, feature_germany_heidelberg, attribute=attribute
         )
-        self.assertEqual(
-            self.ohsome_api + "/elements/count/ratio/groupBy/boundary", url
+        assert schema.is_valid(data) is True
+
+    def test_ratio_time(
+        self, topic_building_count, feature_germany_heidelberg, attribute
+    ) -> None:
+        schema = Schema(
+            {
+                "bpolys": str,
+                "filter": str,
+                "filter2": str,
+                "time": str,
+            }
         )
+        data = ohsome_client.build_data_dict(
+            topic_building_count,
+            feature_germany_heidelberg,
+            time="2014-01-01",
+            attribute=attribute,
+        )
+        assert schema.is_valid(data) is True
 
 
 class TestOhsomeClientBuildData(TestCase):
@@ -266,32 +306,107 @@ class TestOhsomeClientBuildData(TestCase):
         data = ohsome_client.build_data_dict(self.topic, self.bpolys, time="2014-01-01")
         self.assertTrue(schema.is_valid(data))
 
-    def test_ratio(self) -> None:
-        schema = Schema(
-            {
-                "bpolys": str,
-                "filter": str,
-                "filter2": str,
-            }
-        )
-        topic = get_topic_fixture("building_count")
-        data = ohsome_client.build_data_dict(topic, self.bpolys, ratio=True)
-        self.assertTrue(schema.is_valid(data))
 
-    def test_ratio_time(self) -> None:
-        schema = Schema(
-            {
-                "bpolys": str,
-                "filter": str,
-                "filter2": str,
-                "time": str,
-            }
+class TestOhsomeClientValidateQueryPytest:
+    def test_valid_ratio(self, attribute):
+        data = {
+            "ratioResult": [
+                {
+                    "ratio": 1.0,
+                    "value": 1.0,
+                    "value2": 1.0,
+                    "timestamp": "2020-03-20T01:30:08.180856",
+                }
+            ]
+        }
+        assert data == ohsome_client.validate_query_results(data, attribute=attribute)
+
+    def test_valid_ratio_nan(self, attribute):
+        data = {
+            "ratioResult": [
+                {
+                    "ratio": "NaN",
+                    "value": 1.0,
+                    "value2": 1.0,
+                    "timestamp": "2020-03-20T01:30:08.180856",
+                }
+            ]
+        }
+        assert data == ohsome_client.validate_query_results(data, attribute=attribute)
+
+    def test_invalid_empty_ratio(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results({}, attribute=attribute)
+
+    def test_invalid_empty_list_ratio(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"ratioResult": []}, attribute=attribute
+            )
+
+    def test_invalid_missing_key_timestamp_ratio(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"ratioResult": [{"value": 1.0}]}, attribute=attribute
+            )
+
+    def test_invalid_missing_key_value_ratio(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"result": [{"timestamp": "2020-03-20T01:30:08.180856"}]},
+                attribute=attribute,
+            )
+
+    def test_valid_ratio_group_by(self, attribute):
+        data = {
+            "groupByResult": [
+                {
+                    "ratioResult": [
+                        {
+                            "ratio": 1.0,
+                            "value": 1.0,
+                            "value2": 1.0,
+                            "timestamp": "2020-03-20T01:30:08.180856",
+                        }
+                    ],
+                    "groupByObject": "foo",
+                }
+            ]
+        }
+        assert data == ohsome_client.validate_query_results(
+            data, attribute=attribute, group_by_boundary=True
         )
-        topic = get_topic_fixture("building_count")
-        data = ohsome_client.build_data_dict(
-            topic, self.bpolys, time="2014-01-01", ratio=True
-        )
-        self.assertTrue(schema.is_valid(data))
+
+    def test_invalid_empty_ratio_group_by(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {}, attribute=attribute, group_by_boundary=True
+            )
+
+    def test_invalid_empty_list_ratio_group_by(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {"groupByResult": []}, attribute=attribute, group_by_boundary=True
+            )
+
+    def test_invalid_missing_key_ratio_group_by(self, attribute):
+        with pytest.raises(SchemaError):
+            ohsome_client.validate_query_results(
+                {
+                    "groupByResult": [
+                        {
+                            "ratioResult": [
+                                {
+                                    "value": 1.0,
+                                    "timestamp": "2020-03-20T01:30:08.180856",
+                                }
+                            ]
+                        }
+                    ]
+                },
+                attribute=attribute,
+                group_by_boundary=True,
+            )
 
 
 class TestOhsomeClientValidateQuery(TestCase):
@@ -378,107 +493,5 @@ class TestOhsomeClientValidateQuery(TestCase):
                         }
                     ]
                 },
-                group_by_boundary=True,
-            )
-
-    def test_valid_ratio(self):
-        data = {
-            "ratioResult": [
-                {
-                    "ratio": 1.0,
-                    "value": 1.0,
-                    "value2": 1.0,
-                    "timestamp": "2020-03-20T01:30:08.180856",
-                }
-            ]
-        }
-        self.assertDictEqual(
-            data, ohsome_client.validate_query_results(data, ratio=True)
-        )
-
-    def test_valid_ratio_nan(self):
-        data = {
-            "ratioResult": [
-                {
-                    "ratio": "NaN",
-                    "value": 1.0,
-                    "value2": 1.0,
-                    "timestamp": "2020-03-20T01:30:08.180856",
-                }
-            ]
-        }
-        self.assertDictEqual(
-            data, ohsome_client.validate_query_results(data, ratio=True)
-        )
-
-    def test_invalid_empty_ratio(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({}, ratio=True)
-
-    def test_invalid_empty_list_ratio(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({"ratioResult": []}, ratio=True)
-
-    def test_invalid_missing_key_timestamp_ratio(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results(
-                {"ratioResult": [{"value": 1.0}]}, ratio=True
-            )
-
-    def test_invalid_missing_key_value_ratio(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results(
-                {"result": [{"timestamp": "2020-03-20T01:30:08.180856"}]}, ratio=True
-            )
-
-    def test_valid_ratio_group_by(self):
-        data = {
-            "groupByResult": [
-                {
-                    "ratioResult": [
-                        {
-                            "ratio": 1.0,
-                            "value": 1.0,
-                            "value2": 1.0,
-                            "timestamp": "2020-03-20T01:30:08.180856",
-                        }
-                    ],
-                    "groupByObject": "foo",
-                }
-            ]
-        }
-        self.assertDictEqual(
-            data,
-            ohsome_client.validate_query_results(
-                data, ratio=True, group_by_boundary=True
-            ),
-        )
-
-    def test_invalid_empty_ratio_group_by(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results({}, ratio=True, group_by_boundary=True)
-
-    def test_invalid_empty_list_ratio_group_by(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results(
-                {"groupByResult": []}, ratio=True, group_by_boundary=True
-            )
-
-    def test_invalid_missing_key_ratio_group_by(self):
-        with self.assertRaises(SchemaError):
-            ohsome_client.validate_query_results(
-                {
-                    "groupByResult": [
-                        {
-                            "ratioResult": [
-                                {
-                                    "value": 1.0,
-                                    "timestamp": "2020-03-20T01:30:08.180856",
-                                }
-                            ]
-                        }
-                    ]
-                },
-                ratio=True,
                 group_by_boundary=True,
             )
