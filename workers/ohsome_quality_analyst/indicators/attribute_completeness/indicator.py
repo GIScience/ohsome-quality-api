@@ -15,6 +15,23 @@ from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
 class AttributeCompleteness(BaseIndicator):
+    """
+    Attribute completeness of map features.
+
+    The ratio of features of a given topic to features of the same topic with additional
+    (expected) attributes.
+
+    Terminology:
+        topic: Category of map features. Translates to a ohsome filter.
+        attribute: Additional (expected) tag(s) describing a map feature. Translates to
+            a ohsome filter.
+
+    Example: How many buildings (topic) have height information (attribute)?
+
+    Premise: Every map feature of a given topic should have certain additional
+        attributes.
+    """
+
     # TODO make attribute a list
     def __init__(self, topic: Topic, feature: Feature, attribute: Attribute) -> None:
         super().__init__(topic=topic, feature=feature)
@@ -57,17 +74,17 @@ class AttributeCompleteness(BaseIndicator):
         if self.ratio >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                    description + self.metadata.label_description["green"]
+                description + self.metadata.label_description["green"]
             )
         elif self.threshold_yellow > self.ratio >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                    description + self.metadata.label_description["yellow"]
+                description + self.metadata.label_description["yellow"]
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                    description + self.metadata.label_description["red"]
+                description + self.metadata.label_description["red"]
             )
 
     def create_figure(self) -> None:
