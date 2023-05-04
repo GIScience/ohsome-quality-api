@@ -141,10 +141,8 @@ class AttributeCompleteness(BaseIndicator):
 
         fig.update_xaxes(visible=False)
 
-        fig.update_yaxes(visible=False)
-
         base = [0, 0]
-        # todo: test if we can remove the base stuff
+        # TODO: test if we can remove the base stuff
         fig.add_annotation(
             ax=base[0],
             ay=base[1],
