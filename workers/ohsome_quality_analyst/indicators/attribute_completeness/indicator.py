@@ -38,7 +38,6 @@ class AttributeCompleteness(BaseIndicator):
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute = attribute
-        self.ratio = None
         self.absolute_value_1 = None
         self.absolute_value_2 = None
 
@@ -51,19 +50,18 @@ class AttributeCompleteness(BaseIndicator):
         )
         timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.ratio = self.result.value = response["ratioResult"][0]["ratio"]
+        self.result.value = response["ratioResult"][0]["ratio"]
         self.absolute_value_1 = response["ratioResult"][0]["value"]
         self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
-        # self.ratio can be of type float, NaN if no features of filter1
-        # are in the region or None if the topic has no filter2
-        if self.ratio == "NaN" or self.ratio is None:
-            self.ratio = None
+        # result (ratio) can be NaN if no features matching filter1
+        if self.result.value == "NaN":
             self.result.value = None
+        if self.result.value is None:
             return
         description = Template(self.metadata.result_description).substitute(
-            result=round(self.ratio, 1),
+            result=round(self.result.value, 1),
             all=round(self.absolute_value_1, 1),
             matched=round(self.absolute_value_2, 1),
         )
@@ -71,12 +69,12 @@ class AttributeCompleteness(BaseIndicator):
             self.result.description = description + "No features in this region"
             return
 
-        if self.ratio >= self.threshold_yellow:
+        if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
                 description + self.metadata.label_description["green"]
             )
-        elif self.threshold_yellow > self.ratio >= self.threshold_red:
+        elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
                 description + self.metadata.label_description["yellow"]
@@ -152,8 +150,8 @@ class AttributeCompleteness(BaseIndicator):
             ay=base[1],
             axref="x",
             ayref="y",
-            x=rotate(ratio=self.ratio)[0],
-            y=rotate(ratio=self.ratio)[1],
+            x=rotate(ratio=self.result.value)[0],
+            y=rotate(ratio=self.result.value)[1],
             xref="x",
             yref="y",
             showarrow=True,
@@ -163,7 +161,7 @@ class AttributeCompleteness(BaseIndicator):
         )
 
         fig.add_annotation(
-            text=f"{self.ratio * 100:.1f}%",
+            text=f"{self.result.value * 100:.1f}%",
             align="center",
             font=dict(color="black", size=35),
             showarrow=False,
