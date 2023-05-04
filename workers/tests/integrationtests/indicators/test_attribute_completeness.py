@@ -22,7 +22,7 @@ class TestPreprocess:
             topic_building_count, feature_germany_heidelberg, attribute
         )
         asyncio.run(indicator.preprocess())
-        assert indicator.ratio is not None
+        assert indicator.result.valie is not None
         assert isinstance(indicator.result.timestamp_oqt, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -39,6 +39,7 @@ class TestCalculation:
         return i
 
     def test_calculate(self, indicator):
+        assert indicator.result.value is not None
         assert indicator.result.value >= 0.0
         assert indicator.result.label != "red"
         assert indicator.result.description is not None
