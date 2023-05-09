@@ -102,7 +102,7 @@ class AttributeCompleteness(BaseIndicator):
             go.Indicator(
                 domain={"x": [0, 1], "y": [0, 1]},
                 mode="gauge",
-                title={"text": "Attribute completeness", "font": {"size": 40}},
+                title={"text": "Attribute Completeness", "font": {"size": 40}},
                 type="indicator",
                 gauge={
                     "axis": {
@@ -136,10 +136,11 @@ class AttributeCompleteness(BaseIndicator):
             xaxis={"showgrid": False, "range": [-1, 1]},
             yaxis={"showgrid": False, "range": [0, 1]},
             plot_bgcolor="rgba(0,0,0,0)",
-            autosize=False,
+            autosize=True,
         )
 
         fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
 
         base = [0, 0]
         # TODO: test if we can remove the base stuff
