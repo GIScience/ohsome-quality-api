@@ -1,10 +1,8 @@
 import logging
-from io import StringIO
 from string import Template
 
 import dateutil.parser
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
+import plotly.graph_objs as go
 from geojson import Feature
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
@@ -72,57 +70,60 @@ class AttributeCompleteness(BaseIndicator):
             logging.info("Result is undefined. Skipping figure creation.")
             return
 
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-
-        ax.set_title("Ratio between all features and filtered ones")
-
-        size = 0.3  # Width of the pie
-        handles = []  # Handles for legend
-
-        # Plot outer Pie (Traffic Light)
-        radius = 1
-        sizes = [0.25, 0.50, 0.25]
-        colors = ["green", "yellow", "red"]
-        labels = ["Good", "Medium", "Bad"]
-        ax.pie(
-            sizes,
-            radius=radius,
-            colors=colors,
-            startangle=90,
-            wedgeprops={"width": size, "alpha": 0.5},
-        )
-
-        for c, l in zip(colors, labels):
-            handles.append(mpatches.Patch(color=c, label=f"{l}"))
+        fig = go.Figure()
 
         # Plot inner Pie (Indicator Value)
-        radius = 1 - size
         if type(self.result.value) == str:
-            sizes = (0, 1)
+            values = [1]
+            labels = [""]
+            marker_colors = ["white"]
         else:
-            sizes = (1 - self.result.value, self.result.value)
-        colors = ("white", "black")
-        ax.pie(
-            sizes,
-            radius=radius,
-            colors=colors,
-            startangle=90,
-            wedgeprops={"width": size},
+            values = [self.result.value, 1 - self.result.value]
+            labels = [
+                f"{self.topic.name} <br> Ratio: {round(self.result.value, 2)}",
+                "",
+            ]
+            marker_colors = ["black", "white"]
+
+        fig.add_trace(
+            go.Pie(
+                values=values,
+                labels=labels,
+                sort=False,
+                marker_colors=marker_colors,
+                textinfo="none",
+            )
         )
 
-        black_patch = mpatches.Patch(
-            color="black",
-            label=f"{self.topic.name} \nRatio: {round(self.result.value, 2)}",
+        # Plot outer Pie (Traffic Light)
+        fig.add_trace(
+            go.Pie(
+                values=[0.25, 0.25, 0.50],
+                labels=["Bad", "Good", "Medium"],
+                marker_colors=["red", "green", "yellow"],
+                hole=0.5,
+                sort=False,
+                textinfo="none",
+            )
         )
-        handles.append(black_patch)
 
-        ax.legend(handles=handles)
-        ax.axis("equal")
-        img_data = StringIO()
-        plt.tight_layout()
-        plt.savefig(img_data, format="svg")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
+        fig.update_layout(
+            title={
+                "text": "Ratio between all features and filtered ones",
+                "y": 0.95,
+                "x": 0.5,
+                "yanchor": "top",
+            },
+            legend={
+                "y": 0.5,
+                "x": 0.75,
+            },
+        )
+
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")

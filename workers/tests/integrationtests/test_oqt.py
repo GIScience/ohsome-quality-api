@@ -40,47 +40,40 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_indicator_bpolys(self):
         """Test creating indicator from scratch."""
-        parameters = IndicatorBpolys(
-            name=self.indicator_name,
-            topic=self.topic_key,
-            bpolys=self.feature,
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters))
+        parameters = IndicatorBpolys(topic=self.topic_key, bpolys=self.feature)
+        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_default_fid_field(self):
         parameters = IndicatorDatabase(
-            name=self.indicator_name,
             topic=self.topic_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
         )
-        indicator = asyncio.run(oqt.create_indicator(parameters))
+        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_custom_fid_field_int(self):
         parameters = IndicatorDatabase(
-            name=self.indicator_name,
             topic=self.topic_key,
             dataset=self.dataset,
             feature_id=self.feature_id,
             fid_field=self.fid_field,
         )
-        indicator = asyncio.run(oqt.create_indicator(parameters))
+        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_dataset_custom_fid_field_str(self):
         parameters = IndicatorDatabase(
-            name=self.indicator_name,
             topic=self.topic_key,
             dataset=self.dataset,
             feature_id="Heidelberg",
             fid_field="name",
         )
-        indicator = asyncio.run(oqt.create_indicator(parameters))
+        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
     def test_create_indicator_not_implemented(self):
@@ -89,24 +82,17 @@ class TestOqt(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_create_report_bpolys(self):
-        """Test creating indicator from scratch using the 'bpolys'parameters ."""
-        parameters = ReportBpolys(
-            name=self.report_name,
-            bpolys=self.feature,
-        )
-        report = asyncio.run(oqt.create_report(parameters))
+        """Test creating report from scratch using the 'bpolys'parameters ."""
+        parameters = ReportBpolys(bpolys=self.feature)
+        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
     @oqt_vcr.use_cassette()
     def test_create_report_dataset_default_fid_field(self):
-        parameters = ReportDatabase(
-            name=self.report_name,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-        )
-        report = asyncio.run(oqt.create_report(parameters))
+        parameters = ReportDatabase(dataset=self.dataset, feature_id=self.feature_id)
+        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
@@ -114,12 +100,11 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_report_dataset_custom_fid_field_int(self):
         parameters = ReportDatabase(
-            name=self.report_name,
             dataset=self.dataset,
             feature_id=self.feature_id,
             fid_field=self.fid_field,
         )
-        report = asyncio.run(oqt.create_report(parameters))
+        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
@@ -127,12 +112,11 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_report_dataset_custom_fid_field_str(self):
         parameters = ReportDatabase(
-            name=self.report_name,
             dataset=self.dataset,
             feature_id="Heidelberg",
             fid_field="name",
         )
-        report = asyncio.run(oqt.create_report(parameters))
+        report = asyncio.run(oqt.create_report(parameters, self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
@@ -177,13 +161,14 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
-            name=self.indicator_name,
             topic=self.topic_key,
             bpolys=feature,
         )
         with self.assertRaises(ValueError):
             asyncio.run(
-                oqt.create_indicator_as_geojson(parameters, size_restriction=True)
+                oqt.create_indicator_as_geojson(
+                    parameters, key=self.indicator_name, size_restriction=True
+                )
             )
 
     @oqt_vcr.use_cassette()
@@ -200,11 +185,14 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
-            name="mapping-saturation",
             topic="building_count",
             bpolys=feature,
         )
-        asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
+        asyncio.run(
+            oqt.create_indicator_as_geojson(
+                parameters, key="mapping-saturation", size_restriction=True
+            )
+        )
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_size_limit_topic_data(self):
@@ -215,7 +203,6 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorData(
-            name="mapping-saturation",
             bpolys=feature,
             topic={
                 "key": "key",
@@ -231,7 +218,11 @@ class TestOqt(unittest.TestCase):
                 },
             },
         )
-        asyncio.run(oqt.create_indicator_as_geojson(parameters, size_restriction=True))
+        asyncio.run(
+            oqt.create_indicator_as_geojson(
+                parameters, key="mapping-saturation", size_restriction=True
+            )
+        )
 
 
 if __name__ == "__main__":

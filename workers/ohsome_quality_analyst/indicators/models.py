@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
@@ -14,6 +15,7 @@ class IndicatorMetadata(BaseModel):
     label_description: dict
     result_description: str
     project: str
+    quality_dimension: QualityDimensionEnum
 
     class Config:
         alias_generator = snake_to_hyphen
@@ -40,13 +42,13 @@ class Result(BaseModel):
     """
 
     description: str
-    svg: str
     html: str
     timestamp_oqt: datetime = datetime.now(timezone.utc)  # UTC datetime object
     timestamp_osm: datetime | None = None
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None
     figure: dict | None = None
+    svg: str | None = None
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:

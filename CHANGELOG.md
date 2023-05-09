@@ -12,6 +12,11 @@
 - rename `TagsRatio` indicator to `attribute-completeness` ([#500])
 - requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
+- remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
+- remove API endpoints `/indicator` and `/report` ([#554])
+- remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
+- discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
+- rename `PoiDensity` indicator to `density` ([#544])
 
 ### Bug Fixes
 
@@ -29,6 +34,8 @@
 - api: add `/metadata/indicators` endpoint ([#533])
 - api: add `/metadata/reports` endpoint ([#545])
 - api: add `/metadata` endpoint ([#545])
+- api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
+- add quality dimensions to indicators ([#561])
 
 ### Other Changes
 
@@ -46,11 +53,17 @@
 - build: update minimal python version to 3.10 ([#531])
 - build: update dev dependencies ([#531])
 - mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
+- base indicator: substitute matplotlib SVG with plotly SVG ([#559])
 - api: fix attribution URL path ([#543])
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
-- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#552])
+- building-completeness: substitute matplotlib SVG with plotly SVG ([#552])
+- factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
+- density: substitute matplotlib SVG with plotly SVG ([#544])
+- add density indicator to `landmarks` topic ([#544])
+- SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
+- attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
 
 ### How to Upgrade
 
@@ -60,6 +73,7 @@
 - for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
+- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -98,8 +112,14 @@
 [#536]: https://github.com/GIScience/ohsome-quality-analyst/pull/536
 [#540]: https://github.com/GIScience/ohsome-quality-analyst/issues/540
 [#543]: https://github.com/GIScience/ohsome-quality-analyst/pull/543
+[#544]: https://github.com/GIScience/ohsome-quality-analyst/pull/544
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
+[#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
 [#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
+[#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
+[#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
+[#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
+
 
 ## 0.14.2
 

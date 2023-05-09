@@ -2,7 +2,7 @@ import os
 
 import geojson
 import pytest
-from geojson import Feature, FeatureCollection
+from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
@@ -11,6 +11,11 @@ from ohsome_quality_analyst.definitions import (
     load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.quality_dimensions.definitions import (
+    get_quality_dimension,
+    load_quality_dimensions,
+)
+from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
@@ -21,8 +26,18 @@ FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures
 
 
 @pytest.fixture(scope="class")
+def topic_key_minimal() -> str:
+    return "minimal"
+
+
+@pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
     return "building_count"
+
+
+@pytest.fixture(scope="class")
+def topic_minimal(topic_key_minimal) -> TopicDefinition:
+    return get_topic_definition(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
@@ -44,6 +59,31 @@ def topic_definitions() -> dict[str, TopicDefinition]:
 
 
 @pytest.fixture(scope="class")
+def quality_dimension_key_completeness() -> str:
+    return "completeness"
+
+
+@pytest.fixture(scope="class")
+def quality_dimension_completeness(
+    quality_dimension_key_completeness,
+) -> QualityDimension:
+    return get_quality_dimension(quality_dimension_key_completeness)
+
+
+@pytest.fixture(scope="class")
+def metadata_quality_dimension_completeness(
+    quality_dimension_key_completeness,
+    quality_dimension_completeness,
+) -> dict[str, QualityDimension]:
+    return {quality_dimension_key_completeness: quality_dimension_completeness}
+
+
+@pytest.fixture()
+def quality_dimensions() -> dict[str, QualityDimension]:
+    return load_quality_dimensions()
+
+
+@pytest.fixture(scope="class")
 def feature_germany_heidelberg() -> Feature:
     path = os.path.join(
         FIXTURE_DIR,
@@ -54,13 +94,59 @@ def feature_germany_heidelberg() -> Feature:
 
 
 @pytest.fixture(scope="class")
+def feature_collection_germany_heidelberg() -> FeatureCollection:
+    # Single Feature
+    path = os.path.join(
+        FIXTURE_DIR,
+        "feature-collection-germany-heidelberg.geojson",
+    )
+    with open(path, "r") as f:
+        return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
 def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollection:
+    # Multiple Features
     path = os.path.join(
         FIXTURE_DIR,
         "feature-collection-germany-heidelberg-bahnstadt-bergheim.geojson",
     )
     with open(path, "r") as f:
         return geojson.load(f)
+
+
+@pytest.fixture
+def feature_collection_invalid() -> FeatureCollection:
+    # Invalid Geometry
+    return FeatureCollection(
+        features=[
+            Feature(
+                geometry=Polygon(
+                    [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
+                )
+            )
+        ]
+    )
+
+
+@pytest.fixture(params=["Point", "LineString", "Polygon"])
+def geojson_unsupported_object_type(request):
+    # TODO: Uncomment once only FeatureCollection is supported
+    # if request.param == "Feature":
+    #     return Feature(geometry=geojson.utils.generate_random("Polygon"))
+    return geojson.utils.generate_random(request.param)
+
+
+@pytest.fixture(params=["Point", "LineString"])
+def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
+    # Invalid Geometry
+    return FeatureCollection(
+        features=[
+            Feature(
+                geometry=geojson.utils.generate_random(request.param),
+            ),
+        ]
+    )
 
 
 @pytest.fixture

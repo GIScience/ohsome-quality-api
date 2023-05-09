@@ -7,9 +7,11 @@ Besides data validation through `pydantic`, `FastAPI` will display additional
 information derived from `pydantic` models in the automatic generated API documentation.
 """
 
+import json
 from enum import Enum
 from typing import Optional, Union
 
+import geojson
 import pydantic
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
@@ -21,10 +23,10 @@ from ohsome_quality_analyst.definitions import (
     get_project_keys,
     get_report_names,
     get_topic_keys,
-    get_valid_indicators,
 )
 from ohsome_quality_analyst.topics.models import TopicData
-from ohsome_quality_analyst.utils.helper import loads_geojson, snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.validators import validate_geojson
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
 ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
@@ -35,9 +37,6 @@ ProjectEnum = Enum("ProjectEnum", {name: name for name in get_project_keys()})
 
 
 class BaseIndicator(BaseModel):
-    name: IndicatorEnum = pydantic.Field(
-        ..., title="Indicator Name", example="mapping-saturation"
-    )
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
@@ -54,9 +53,6 @@ class BaseIndicator(BaseModel):
 
 
 class BaseReport(BaseModel):
-    name: ReportEnum = pydantic.Field(
-        ..., title="Report Name", example="building-report"
-    )
     include_svg: bool = False
     include_html: bool = False
     include_data: bool = False
@@ -115,13 +111,10 @@ class BaseBpolys(BaseModel):
 
     @pydantic.validator("bpolys")
     @classmethod
-    def validate_bpolys(cls, value) -> dict:
-        """Validate GeoJSON."""
-        # Load and validate GeoJSON
-        for _ in loads_geojson(value):
-            # Check if exceptions are raised by `loads_geojson`
-            pass
-        return value
+    def validate_bpolys(cls, value) -> FeatureCollection | Feature:
+        obj = geojson.loads(json.dumps(value))
+        validate_geojson(obj)  # Check if exceptions are raised
+        return obj
 
 
 class BaseDatabase(BaseModel):
@@ -133,56 +126,15 @@ class BaseDatabase(BaseModel):
 
 
 class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
-    @pydantic.root_validator
-    @classmethod
-    def validate_indicator_topic(cls, values):
-        try:
-            indicator = values["name"].value
-            topic = values["topic_key"].value
-        except KeyError:
-            raise ValueError("An issue with the topic or indicator keys occurred.")
-        if indicator not in get_valid_indicators(topic):
-            raise ValueError(
-                "Indicator topic combination is invalid: "
-                + str(indicator)
-                + ", "
-                + str(topic)
-            )
-        else:
-            return values
+    pass
 
 
 class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
-    @pydantic.root_validator
-    @classmethod
-    def validate_indicator_topic(cls, values):
-        try:
-            indicator = values["name"].value
-            topic = values["topic_key"].value
-        except KeyError:
-            raise ValueError("An issue with the topic or indicator key occurred.")
-        if indicator not in get_valid_indicators(topic):
-            raise ValueError(
-                "Indicator topic combination is invalid: "
-                + str(indicator)
-                + ", "
-                + str(topic)
-            )
-        else:
-            return values
+    pass
 
 
 class IndicatorData(BaseIndicator, BaseTopicData, BaseBpolys):
-    @pydantic.validator("name")
-    @classmethod
-    def validate_indicator_name(cls, name):
-        if name.value != "mapping-saturation":
-            raise ValueError(
-                "Computing an Indicator for a Topic with data attached is only "
-                + "supported for the Mapping Saturation Indicator."
-            )
-        else:
-            return name
+    pass
 
 
 class ReportBpolys(BaseReport, BaseBpolys):
@@ -200,7 +152,6 @@ INDICATOR_EXAMPLES = {
             "`feature-id`)."
         ),
         "value": {
-            "name": "mapping-saturation",
             "topic": "building_count",
             "dataset": "regions",
             "feature-id": 3,
@@ -213,7 +164,6 @@ INDICATOR_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
-            "name": "mapping-saturation",
             "topic": "building_count",
             "bpolys": {
                 "type": "Feature",
@@ -238,7 +188,6 @@ INDICATOR_EXAMPLES = {
             "(`topic`)."
         ),
         "value": {
-            "name": "mapping-saturation",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -313,7 +262,6 @@ REPORT_EXAMPLES = {
             "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
         ),
         "value": {
-            "name": "building-report",
             "dataset": "regions",
             "feature-id": 12,
             "fid-field": "ogc_fid",
@@ -325,7 +273,6 @@ REPORT_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request a Report for a custom AOI (`bpolys`).",
         "value": {
-            "name": "building-report",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {

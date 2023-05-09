@@ -1,14 +1,15 @@
 import fnmatch
 import json
 import logging
+from typing import Annotated
 
-from fastapi import Body, FastAPI, Request, status
+from fastapi import Body, FastAPI, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 from ohsome_quality_analyst import (
     __author__,
@@ -35,6 +36,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
     MetadataResponse,
+    QualityDimensionMetadataResponse,
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
@@ -42,17 +44,18 @@ from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
     get_attribution,
-    get_dataset_names,
-    get_fid_fields,
     get_indicator_definitions,
-    get_indicator_names,
     get_metadata,
     get_report_definitions,
-    get_report_names,
     get_topic_definition,
     get_topic_definitions,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
+from ohsome_quality_analyst.quality_dimensions.definitions import (
+    QualityDimensionEnum,
+    get_quality_dimension,
+    get_quality_dimensions,
+)
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
     OhsomeApiError,
@@ -60,13 +63,15 @@ from ohsome_quality_analyst.utils.exceptions import (
     RasterDatasetUndefinedError,
     SizeRestrictionError,
     TopicDataSchemaError,
+    ValidationError,
 )
 from ohsome_quality_analyst.utils.helper import (
+    get_class_from_key,
     hyphen_to_camel,
     json_serialize,
-    name_to_class,
     snake_to_hyphen,
 )
+from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 
@@ -142,20 +147,13 @@ class CustomJSONResponse(JSONResponse):
         return json.dumps(content, default=json_serialize).encode()
 
 
-@app.exception_handler(ValidationError)
 @app.exception_handler(RequestValidationError)
+@app.exception_handler(ValidationError)
 async def validation_exception_handler(
-    request: Request, exception: RequestValidationError | ValidationError
+    request: Request,
+    exception: RequestValidationError | ValidationError,
 ):
-    """Override request validation exceptions.
-
-    `pydantic` raises on exception regardless of the number of errors found.
-    The `ValidationError` will contain information about all the errors.
-
-    FastAPIs `RequestValidationError` is a subclass of pydantic's `ValidationError`.
-    Because of the usage of `@pydantic.validate_arguments` decorator
-    `ValidationError` needs to be specified in this handler as well.
-    """
+    """Exception handler for validation exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder(
@@ -185,7 +183,7 @@ async def oqt_exception_handler(
         | SizeRestrictionError
     ),
 ):
-    """Exception handler for custom OQT exceptions."""
+    """Exception handler for OQT exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
@@ -214,20 +212,15 @@ class MappingSaturationModel(BaseModel):
         alias_generator = snake_to_hyphen
 
 
-# TODO (Experimental): Make this endpoint general and remove `/indicator` endpoint below
-@app.post("/indicators/mapping-saturation", tags=["indicator"], include_in_schema=False)
-async def post_indicator_mapping_saturation(
-    parameters: MappingSaturationModel,
-) -> CustomJSONResponse:
-    """Request an Indicator for an AOI."""
-    parameters = IndicatorBpolys(
-        name="mapping-saturation", topic=parameters.topic_key, bpolys=parameters.bpolys
-    )
-    return await post_indicator(parameters)
-
-
-@app.post("/indicator", tags=["indicator"])
+@app.post("/indicators/{key}", tags=["indicator"])
 async def post_indicator(
+    key: Annotated[
+        IndicatorEnum,
+        Path(
+            title="Indicator Key",
+            example="mapping-saturation",
+        ),
+    ],
     parameters: IndicatorBpolys
     | IndicatorDatabase
     | IndicatorData = Body(
@@ -236,8 +229,11 @@ async def post_indicator(
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
+    if isinstance(parameters, (IndicatorBpolys, IndicatorDatabase)):
+        validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
+        key=key.value,
         size_restriction=True,
     )
     if parameters.include_svg is False:
@@ -253,25 +249,33 @@ async def post_indicator(
             parameters.flatten,
         )
     response = empty_api_response()
-    response["attribution"]["text"] = name_to_class(
+    response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
-        name=parameters.name.value,
+        key=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.post("/report", tags=["report"])
+@app.post("/reports/{key}", tags=["report"])
 async def post_report(
+    key: Annotated[
+        ReportEnum,
+        Path(
+            title="Report Key",
+            example="building-report",
+        ),
+    ],
     parameters: ReportBpolys
     | ReportDatabase = Body(
         ...,
         examples=REPORT_EXAMPLES,
-    )
+    ),
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(
         parameters,
+        key=key.value,
         size_restriction=True,
     )
     if parameters.include_html is False:
@@ -287,8 +291,9 @@ async def post_report(
             parameters.flatten,
         )
     response = empty_api_response()
-    response["attribution"]["text"] = name_to_class(
-        class_type="report", name=parameters.name.value
+    response["attribution"]["text"] = get_class_from_key(
+        class_type="report",
+        key=key.value,
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
@@ -310,38 +315,6 @@ async def get_available_regions(asGeoJSON: bool = False):
         return response
 
 
-@app.get("/indicators")
-async def indicator_names():
-    """Get names of available indicators."""
-    response = empty_api_response()
-    response["result"] = get_indicator_names()
-    return response
-
-
-@app.get("/datasets")
-async def dataset_names():
-    """Get names of available datasets."""
-    response = empty_api_response()
-    response["result"] = get_dataset_names()
-    return response
-
-
-@app.get("/reports")
-async def report_names():
-    """Get names of available reports."""
-    response = empty_api_response()
-    response["result"] = get_report_names()
-    return response
-
-
-@app.get("/fid-fields")
-async def list_fid_fields():
-    """List available fid fields for each dataset."""
-    response = empty_api_response()
-    response["result"] = get_fid_fields()
-    return response
-
-
 @app.get(
     "/metadata",
     tags=["metadata"],
@@ -360,6 +333,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
         "topics": get_topic_definitions(project=project.value),
+        "quality-dimensions": get_quality_dimensions(),
         "indicators": get_indicator_definitions(project=project.value),
         "reports": get_report_definitions(project=project.value),
     }
@@ -388,6 +362,28 @@ async def metadata_topic(
 async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     """Get topic by key."""
     return TopicMetadataResponse(result={key.value: get_topic_definition(key.value)})
+
+
+@app.get(
+    "/metadata/quality-dimensions",
+    tags=["metadata"],
+)
+async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
+    """Get quality dimensions."""
+    return QualityDimensionMetadataResponse(result=get_quality_dimensions())
+
+
+@app.get(
+    "/metadata/quality-dimensions/{key}",
+    tags=["metadata"],
+)
+async def metadata_quality_dimension_by_key(
+    key: QualityDimensionEnum,
+) -> QualityDimensionMetadataResponse:
+    """Get quality dimension by key."""
+    return QualityDimensionMetadataResponse(
+        result={key.value: get_quality_dimension(key.value)}
+    )
 
 
 @app.get(
