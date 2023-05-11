@@ -1,9 +1,4 @@
-"""Pydantic Models for Projects
-
-Note:
-    TODO The topic key, name, description and the ohsome API endpoint and filter are
-    defined in the `projects.yaml` file in the `projects` module.
-"""
+"""Pydantic Models for Projects."""
 from pydantic import BaseModel
 
 
