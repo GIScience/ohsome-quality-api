@@ -58,6 +58,7 @@
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
+- building-completeness: substitute matplotlib SVG with plotly SVG ([#552])
 - factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
 - density: substitute matplotlib SVG with plotly SVG ([#544])
 - add density indicator to `landmarks` topic ([#544])
@@ -114,6 +115,7 @@
 [#544]: https://github.com/GIScience/ohsome-quality-analyst/pull/544
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
 [#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
+[#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
