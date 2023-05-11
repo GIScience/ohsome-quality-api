@@ -16,20 +16,19 @@ from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture()
 def feature():
     return get_geojson_fixture("algeria-touggourt-feature.geojson")
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture()
 def topic():
     return get_topic_fixture("building_area")
 
 
 class TestPreprocess:
-    @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
-    def test_preprocess(self, feature, topic):
+    def test_preprocess(self, feature, topic, mock_env_oqt_data_dir):
         indicator = BuildingCompleteness(topic, feature)
         asyncio.run(indicator.preprocess())
         assert isinstance(indicator.building_area_osm, list)
@@ -55,10 +54,10 @@ class TestPreprocess:
                 assert i >= 0
 
 
-class TestCalculation:
-    @pytest.fixture(scope="class")
+class TestCalculationFigure:
+    @pytest.fixture
     @oqt_vcr.use_cassette
-    def indicator(self, feature, topic):
+    def indicator(self, feature, topic, mock_env_oqt_data_dir):
         i = BuildingCompleteness(feature=feature, topic=topic)
         asyncio.run(i.preprocess())
         i.calculate()
@@ -75,16 +74,6 @@ class TestCalculation:
         assert indicator.result.value <= 1.0
         assert indicator.result.value >= 0.0
 
-
-class TestFigure:
-    @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
-    def indicator(self, feature, topic):
-        i = BuildingCompleteness(feature=feature, topic=topic)
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
-
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
@@ -97,33 +86,31 @@ class TestFigure:
         assert indicator.result.svg is not None
 
 
-def test_get_smod_class_share(mock_env_oqt_data_dir, feature):
-    result = get_smod_class_share(FeatureCollection(features=[feature]))
-    assert result == {
-        "urban_centre": [0.05128205128205128],
-        "dense_urban_cluster": [0],
-        "semi_dense_urban_cluster": [0],
-        "suburban_or_peri_urban": [0.029914529914529916],
-        "rural_cluster": [0],
-        "low_density_rural": [0.017094017094017096],
-        "very_low_density_rural": [0.9017094017094017],
-        "water": [0],
-    }
+class TestGetData:
+    def test_get_smod_class_share(self, mock_env_oqt_data_dir, feature):
+        result = get_smod_class_share(FeatureCollection(features=[feature]))
+        assert result == {
+            "urban_centre": [0.05128205128205128],
+            "dense_urban_cluster": [0],
+            "semi_dense_urban_cluster": [0],
+            "suburban_or_peri_urban": [0.029914529914529916],
+            "rural_cluster": [0],
+            "low_density_rural": [0.017094017094017096],
+            "very_low_density_rural": [0.9017094017094017],
+            "water": [0],
+        }
 
+    def test_get_hex_cells(self, feature):
+        result = asyncio.run(get_hex_cells(feature))
+        assert isinstance(result, FeatureCollection)
+        assert result.features is not None
 
-def test_get_hex_cells(feature):
-    result = asyncio.run(get_hex_cells(feature))
-    assert isinstance(result, FeatureCollection)
-    assert result.features is not None
+    def test_get_hex_cells_not_found(self, feature):
+        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        with pytest.raises(HexCellsNotFoundError):
+            asyncio.run(get_hex_cells(feature))
 
-
-def test_get_hex_cells_not_found(feature):
-    feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-    with pytest.raises(HexCellsNotFoundError):
-        asyncio.run(get_hex_cells(feature))
-
-
-def test_get_shdi(feature):
-    result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
-    assert isinstance(result, list)
-    assert len(result) == 1
+    def test_get_shdi(self, feature):
+        result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
+        assert isinstance(result, list)
+        assert len(result) == 1
