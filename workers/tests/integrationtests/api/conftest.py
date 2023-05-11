@@ -90,6 +90,16 @@ def metadata_quality_dimension_completeness():
 
 
 @pytest.fixture
+def metadata_project_core():
+    return {
+        "core": {
+            "name": "TODO",
+            "description": "something that is still a TODO",
+        }
+    }
+
+
+@pytest.fixture
 def metadata_topic_minimal():
     return {
         "minimal": {
