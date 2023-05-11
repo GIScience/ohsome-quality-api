@@ -93,6 +93,7 @@ class MetadataResponse(ResponseBase):
         reports: dict[str, ReportMetadata]
         topics: dict[str, TopicDefinition]
         quality_dimensions: dict[str, QualityDimension]
+        projects: dict[str, Project]
 
         class Config:
             alias_generator = snake_to_hyphen

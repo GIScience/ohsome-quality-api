@@ -4,7 +4,7 @@ from ohsome_quality_analyst.projects import definitions
 from ohsome_quality_analyst.projects.models import Project
 
 
-@pytest.fixture(params=["minimal", "core", "experimental"])
+@pytest.fixture(params=["misc", "core", "experimental"])
 def valid_project_keys(request):
     return request.param
 
