@@ -120,7 +120,6 @@
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
 
-
 ## 0.14.2
 
 ### Bug Fixes
