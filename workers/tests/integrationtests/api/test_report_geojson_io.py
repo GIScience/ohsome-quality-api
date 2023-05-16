@@ -160,6 +160,17 @@ class TestApiReportIo(unittest.TestCase):
         result = response.json()
         assert "html" not in result["properties"]["report"]["result"]
 
+    @oqt_vcr.use_cassette()
+    def test_return_feature_collection(self):
+        parameters = {
+            "name": self.report_name,
+            "bpolys": self.feature,
+        }
+        response = self.client.post(self.endpoint, json=parameters)
+        result = response.json()
+        assert "html" not in result["properties"]["report"]["result"]
+        assert result["type"] == "FeatureCollection"
+
 
 if __name__ == "__main__":
     unittest.main()
