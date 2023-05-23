@@ -1,0 +1,993 @@
+interactions:
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature_id": "3", "fid_field":
+      "ogc_fid"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '85'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature_id": "Heidelberg",
+      "fid_field": "name"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '91'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature_id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '61'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "foo", "feature_id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '57'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion":"0.14.2","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","dataset"],"msg":"value
+      is not a valid enumeration member; permitted: ''regions''","type":"type_error.enum","ctx":{"enum_values":["regions"]}},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '824'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '61'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "flatten":
+      false}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '79'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "flatten":
+      true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '78'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata.name": "Minimal",
+      "metadata.description": "An minimal Indicator for testing purposes.", "topic.key":
+      "minimal", "topic.name": "Minimal", "topic.description": "A minimal topic definition
+      for testing purposes", "result.description": "Some description of the result.Good
+      data quality.", "result.timestamp_oqt": "2023-05-23T12:38:58.884652+00:00",
+      "result.timestamp_osm": "2023-05-14T20:00:00+00:00", "result.value": 1.0, "result.figure.layout.plot_bgcolor":
+      "white", "result.figure.layout.paper_bgcolor": "white", "result.figure.layout.annotations.0.font.color":
+      "black", "result.figure.layout.annotations.0.font.size": 32, "result.figure.layout.annotations.0.showarrow":
+      false, "result.figure.layout.annotations.0.text": "The creation of the Indicator
+      was unsuccessful.", "result.figure.layout.xaxis.showticklabels": false, "result.figure.layout.xaxis.zeroline":
+      false, "result.figure.layout.yaxis.showticklabels": false, "result.figure.layout.yaxis.zeroline":
+      false, "result.label": "undefined", "result.class": null}}'
+    headers:
+      content-length:
+      - '2953'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-data":
+      false}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '84'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-data":
+      true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '83'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}, "data": {"count": 30662.0}}}'
+    headers:
+      content-length:
+      - '2727'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-html":
+      false}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '84'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-html":
+      true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '83'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "html": "<div class=\"oqtSection oqtSection-flex\">\n    <div
+      class=\"graphSection indicator-graph\"><svg class=\"main-svg\" xmlns=\"http://www.w3.org/2000/svg\"
+      xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"700\" height=\"500\" style=\"\"
+      viewBox=\"0 0 700 500\"><rect x=\"0\" y=\"0\" width=\"700\" height=\"500\" style=\"fill:
+      rgb(255, 255, 255); fill-opacity: 1;\"/><defs id=\"defs-e94d93\"><g class=\"clips\"><clipPath
+      id=\"clipe94d93xyplot\" class=\"plotclip\"><rect width=\"540\" height=\"320\"/></clipPath><clipPath
+      class=\"axesclip\" id=\"clipe94d93x\"><rect x=\"80\" y=\"0\" width=\"540\" height=\"500\"/></clipPath><clipPath
+      class=\"axesclip\" id=\"clipe94d93y\"><rect x=\"0\" y=\"100\" width=\"700\"
+      height=\"320\"/></clipPath><clipPath class=\"axesclip\" id=\"clipe94d93xy\"><rect
+      x=\"80\" y=\"100\" width=\"540\" height=\"320\"/></clipPath></g><g class=\"gradients\"/><g
+      class=\"patterns\"/></defs><g class=\"bglayer\"/><g class=\"layer-below\"><g
+      class=\"imagelayer\"/><g class=\"shapelayer\"/></g><g class=\"cartesianlayer\"><g
+      class=\"subplot xy\"><g class=\"layer-subplot\"><g class=\"shapelayer\"/><g
+      class=\"imagelayer\"/></g><g class=\"minor-gridlayer\"><g class=\"x\"/><g class=\"y\"/></g><g
+      class=\"gridlayer\"><g class=\"x\"><path class=\"xgrid crisp\" transform=\"translate(157.14,0)\"
+      d=\"M0,100v320\" style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width:
+      1px;\"/><path class=\"xgrid crisp\" transform=\"translate(234.29,0)\" d=\"M0,100v320\"
+      style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path
+      class=\"xgrid crisp\" transform=\"translate(311.43,0)\" d=\"M0,100v320\" style=\"stroke:
+      rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid
+      crisp\" transform=\"translate(388.57,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid crisp\"
+      transform=\"translate(465.71,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid crisp\"
+      transform=\"translate(542.86,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/></g><g class=\"y\"><path
+      class=\"ygrid crisp\" transform=\"translate(0,356)\" d=\"M80,0h540\" style=\"stroke:
+      rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid
+      crisp\" transform=\"translate(0,292)\" d=\"M80,0h540\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid crisp\"
+      transform=\"translate(0,228)\" d=\"M80,0h540\" style=\"stroke: rgb(255, 255,
+      255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid crisp\" transform=\"translate(0,164)\"
+      d=\"M80,0h540\" style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width:
+      1px;\"/></g></g><g class=\"zerolinelayer\"/><path class=\"xlines-below\"/><path
+      class=\"ylines-below\"/><g class=\"overlines-below\"/><g class=\"xaxislayer-below\"/><g
+      class=\"yaxislayer-below\"/><g class=\"overaxes-below\"/><g class=\"plot\" transform=\"translate(80,100)\"
+      clip-path=\"url(#clipe94d93xyplot)\"/><g class=\"overplot\"/><path class=\"xlines-above
+      crisp\" d=\"M0,0\" style=\"fill: none;\"/><path class=\"ylines-above crisp\"
+      d=\"M0,0\" style=\"fill: none;\"/><g class=\"overlines-above\"/><g class=\"xaxislayer-above\"/><g
+      class=\"yaxislayer-above\"/><g class=\"overaxes-above\"/></g></g><g class=\"polarlayer\"/><g
+      class=\"smithlayer\"/><g class=\"ternarylayer\"/><g class=\"geolayer\"/><g class=\"funnelarealayer\"/><g
+      class=\"pielayer\"/><g class=\"iciclelayer\"/><g class=\"treemaplayer\"/><g
+      class=\"sunburstlayer\"/><g class=\"glimages\"/><defs id=\"topdefs-e94d93\"><g
+      class=\"clips\"/></defs><g class=\"layer-above\"><g class=\"imagelayer\"/><g
+      class=\"shapelayer\"/></g><g class=\"infolayer\"><g class=\"g-gtitle\"/><g class=\"g-xtitle\"/><g
+      class=\"g-ytitle\"/><g class=\"annotation\" data-index=\"0\" style=\"opacity:
+      1;\"><g class=\"annotation-text-g\" transform=\"rotate(0,350,260)\"><g class=\"cursor-pointer\"
+      transform=\"translate(-30,239)\"><rect class=\"bg\" x=\"0.5\" y=\"0.5\" width=\"759\"
+      height=\"41\" style=\"stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity:
+      0; fill: rgb(0, 0, 0); fill-opacity: 0;\"/><text class=\"annotation-text\" text-anchor=\"middle\"
+      x=\"380.375\" y=\"32\" style=\"font-family: ''Open Sans'', verdana, arial, sans-serif;
+      font-size: 32px; fill: rgb(0, 0, 0); fill-opacity: 1; white-space: pre;\">The
+      creation of the Indicator was unsuccessful.</text></g></g></g></g></svg></div>\n    <div
+      class=\"descriptionSection indicator-text\">\n        <h4>Minimal for Minimal</h4>\n        <p><span
+      style=''height: 25px; width: 25px; background-color: #bbb;border-radius: 50%;
+      display: inline-block;'' class=''dot''></span>\n<span style=''height: 25px;
+      width: 25px; background-color: #bbb;border-radius: 50%; display: inline-block;''
+      class=''dot''></span>\n<span style=''height: 25px; width: 25px; background-color:
+      #bbb;border-radius: 50%; display: inline-block;'' class=''dot''></span>\n Undefined
+      Quality</p>\n        <p>Some description of the result.Good data quality.</p>\n        <p
+      class=\"indicator-metadata-text\">\n            Indicator description:\n            <br
+      />\n            An minimal Indicator for testing purposes.\n        </p>\n    </div>\n</div>\n<hr\n    class=\"indicator-splitline\"\n    style=\"\n        display:
+      block;\n        height: 1px;\n        border: 0;\n        border-top: 1px solid
+      #e0e0e0;\n        margin: 10px auto;\n    \"\n/>", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00",
+      "timestamp_osm": "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data":
+      [], "layout": {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations":
+      [{"font": {"color": "black", "size": 32}, "showarrow": false, "text": "The creation
+      of the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '8228'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-svg":
+      false}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '83'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "label": "undefined",
+      "class": null}}}'
+    headers:
+      content-length:
+      - '2699'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "minimal", "dataset": "regions", "feature-id": "3", "include-svg":
+      true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '82'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion": "0.14.2", "attribution": {"url": "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md",
+      "text": "\u00a9 OpenStreetMap contributors"}, "type": "Feature", "geometry":
+      {"type": "MultiPolygon", "coordinates": [[[[8.573519, 49.415844], [8.573125,
+      49.418096], [8.573602, 49.419967], [8.573137, 49.423648], [8.57776, 49.42532],
+      [8.579572, 49.426242], [8.582888, 49.426469], [8.592864, 49.428812], [8.611134,
+      49.425455], [8.628308, 49.442962], [8.637725, 49.440277], [8.647106, 49.437602],
+      [8.707905, 49.446383], [8.716206, 49.451763], [8.724684, 49.448596], [8.743338,
+      49.446934], [8.745999, 49.45398], [8.741644, 49.457488], [8.752892, 49.459332],
+      [8.767943, 49.454273], [8.762008, 49.449545], [8.766739, 49.438141], [8.788416,
+      49.431047], [8.789941, 49.416687], [8.793216, 49.41046], [8.791873, 49.403912],
+      [8.787115, 49.401839], [8.777999, 49.401612], [8.773679, 49.390183], [8.769462,
+      49.387665], [8.763519, 49.387265], [8.767844, 49.379545], [8.75502, 49.377409],
+      [8.752547, 49.376444], [8.750183, 49.375517], [8.749349, 49.373812], [8.740263,
+      49.374336], [8.73117, 49.372358], [8.725257, 49.37439], [8.725259, 49.371116],
+      [8.729116, 49.36789], [8.725838, 49.360442], [8.722815, 49.357364], [8.712037,
+      49.35558], [8.67493, 49.360645], [8.672847, 49.358114], [8.665655, 49.357579],
+      [8.66451, 49.354379], [8.662033, 49.35426], [8.651996, 49.353727], [8.657231,
+      49.361494], [8.646111, 49.369879], [8.639986, 49.368719], [8.637725, 49.362532],
+      [8.634015, 49.352379], [8.622614, 49.353352], [8.622976, 49.359493], [8.6024,
+      49.366157], [8.607315, 49.376967], [8.612846, 49.378247], [8.617598, 49.379362],
+      [8.6324, 49.38678], [8.637725, 49.386869], [8.641426, 49.38693], [8.646667,
+      49.389265], [8.643391, 49.392889], [8.637725, 49.393259], [8.635895, 49.393737],
+      [8.630921, 49.412538], [8.611559, 49.40539], [8.601979, 49.409237], [8.577429,
+      49.412229], [8.573519, 49.415844]]]]}, "properties": {"metadata": {"name": "Minimal",
+      "description": "An minimal Indicator for testing purposes."}, "topic": {"key":
+      "minimal", "name": "Minimal", "description": "A minimal topic definition for
+      testing purposes"}, "result": {"description": "Some description of the result.Good
+      data quality.", "timestamp_oqt": "2023-05-23T12:38:58.884652+00:00", "timestamp_osm":
+      "2023-05-14T20:00:00+00:00", "value": 1.0, "figure": {"data": [], "layout":
+      {"plot_bgcolor": "white", "paper_bgcolor": "white", "annotations": [{"font":
+      {"color": "black", "size": 32}, "showarrow": false, "text": "The creation of
+      the Indicator was unsuccessful."}], "xaxis": {"showticklabels": false, "zeroline":
+      false}, "yaxis": {"showticklabels": false, "zeroline": false}}}, "svg": "<svg
+      class=\"main-svg\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"
+      width=\"700\" height=\"500\" style=\"\" viewBox=\"0 0 700 500\"><rect x=\"0\"
+      y=\"0\" width=\"700\" height=\"500\" style=\"fill: rgb(255, 255, 255); fill-opacity:
+      1;\"/><defs id=\"defs-e94d93\"><g class=\"clips\"><clipPath id=\"clipe94d93xyplot\"
+      class=\"plotclip\"><rect width=\"540\" height=\"320\"/></clipPath><clipPath
+      class=\"axesclip\" id=\"clipe94d93x\"><rect x=\"80\" y=\"0\" width=\"540\" height=\"500\"/></clipPath><clipPath
+      class=\"axesclip\" id=\"clipe94d93y\"><rect x=\"0\" y=\"100\" width=\"700\"
+      height=\"320\"/></clipPath><clipPath class=\"axesclip\" id=\"clipe94d93xy\"><rect
+      x=\"80\" y=\"100\" width=\"540\" height=\"320\"/></clipPath></g><g class=\"gradients\"/><g
+      class=\"patterns\"/></defs><g class=\"bglayer\"/><g class=\"layer-below\"><g
+      class=\"imagelayer\"/><g class=\"shapelayer\"/></g><g class=\"cartesianlayer\"><g
+      class=\"subplot xy\"><g class=\"layer-subplot\"><g class=\"shapelayer\"/><g
+      class=\"imagelayer\"/></g><g class=\"minor-gridlayer\"><g class=\"x\"/><g class=\"y\"/></g><g
+      class=\"gridlayer\"><g class=\"x\"><path class=\"xgrid crisp\" transform=\"translate(157.14,0)\"
+      d=\"M0,100v320\" style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width:
+      1px;\"/><path class=\"xgrid crisp\" transform=\"translate(234.29,0)\" d=\"M0,100v320\"
+      style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path
+      class=\"xgrid crisp\" transform=\"translate(311.43,0)\" d=\"M0,100v320\" style=\"stroke:
+      rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid
+      crisp\" transform=\"translate(388.57,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid crisp\"
+      transform=\"translate(465.71,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"xgrid crisp\"
+      transform=\"translate(542.86,0)\" d=\"M0,100v320\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/></g><g class=\"y\"><path
+      class=\"ygrid crisp\" transform=\"translate(0,356)\" d=\"M80,0h540\" style=\"stroke:
+      rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid
+      crisp\" transform=\"translate(0,292)\" d=\"M80,0h540\" style=\"stroke: rgb(255,
+      255, 255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid crisp\"
+      transform=\"translate(0,228)\" d=\"M80,0h540\" style=\"stroke: rgb(255, 255,
+      255); stroke-opacity: 1; stroke-width: 1px;\"/><path class=\"ygrid crisp\" transform=\"translate(0,164)\"
+      d=\"M80,0h540\" style=\"stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width:
+      1px;\"/></g></g><g class=\"zerolinelayer\"/><path class=\"xlines-below\"/><path
+      class=\"ylines-below\"/><g class=\"overlines-below\"/><g class=\"xaxislayer-below\"/><g
+      class=\"yaxislayer-below\"/><g class=\"overaxes-below\"/><g class=\"plot\" transform=\"translate(80,100)\"
+      clip-path=\"url(#clipe94d93xyplot)\"/><g class=\"overplot\"/><path class=\"xlines-above
+      crisp\" d=\"M0,0\" style=\"fill: none;\"/><path class=\"ylines-above crisp\"
+      d=\"M0,0\" style=\"fill: none;\"/><g class=\"overlines-above\"/><g class=\"xaxislayer-above\"/><g
+      class=\"yaxislayer-above\"/><g class=\"overaxes-above\"/></g></g><g class=\"polarlayer\"/><g
+      class=\"smithlayer\"/><g class=\"ternarylayer\"/><g class=\"geolayer\"/><g class=\"funnelarealayer\"/><g
+      class=\"pielayer\"/><g class=\"iciclelayer\"/><g class=\"treemaplayer\"/><g
+      class=\"sunburstlayer\"/><g class=\"glimages\"/><defs id=\"topdefs-e94d93\"><g
+      class=\"clips\"/></defs><g class=\"layer-above\"><g class=\"imagelayer\"/><g
+      class=\"shapelayer\"/></g><g class=\"infolayer\"><g class=\"g-gtitle\"/><g class=\"g-xtitle\"/><g
+      class=\"g-ytitle\"/><g class=\"annotation\" data-index=\"0\" style=\"opacity:
+      1;\"><g class=\"annotation-text-g\" transform=\"rotate(0,350,260)\"><g class=\"cursor-pointer\"
+      transform=\"translate(-30,239)\"><rect class=\"bg\" x=\"0.5\" y=\"0.5\" width=\"759\"
+      height=\"41\" style=\"stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity:
+      0; fill: rgb(0, 0, 0); fill-opacity: 0;\"/><text class=\"annotation-text\" text-anchor=\"middle\"
+      x=\"380.375\" y=\"32\" style=\"font-family: ''Open Sans'', verdana, arial, sans-serif;
+      font-size: 32px; fill: rgb(0, 0, 0); fill-opacity: 1; white-space: pre;\">The
+      creation of the Indicator was unsuccessful.</text></g></g></g></g></svg>", "label":
+      "undefined", "class": null}}}'
+    headers:
+      content-length:
+      - '7157'
+      content-type:
+      - application/geo+json
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"topic": "building_count", "dataset": "regions"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '49'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion":"0.14.2","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","feature-id"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","dataset"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '566'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"topic": "building_count", "feature_id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '46'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion":"0.14.2","detail":[{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"},{"loc":["body","dataset"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","bpolys"],"msg":"field
+      required","type":"value_error.missing"},{"loc":["body","topic"],"msg":"value
+      is not a valid dict","type":"type_error.dict"},{"loc":["body","feature_id"],"msg":"extra
+      fields not permitted","type":"value_error.extra"}],"type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '569'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+- request:
+    body: '{"topic": "amenities", "dataset": "regions", "feature_id": "3"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '63'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: '{"apiVersion":"0.14.2","detail":"Invalid combination of indicator and
+      topic: minimal and amenities","type":"RequestValidationError"}'
+    headers:
+      content-length:
+      - '132'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
+version: 1
