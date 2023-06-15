@@ -130,10 +130,7 @@ async def create_report_as_geojson(
             features.append(
                 report.as_feature(parameters.flatten, parameters.include_data)
             )
-        if len(features) == 1:
-            return features[0]
-        else:
-            return FeatureCollection(features=features)
+        return FeatureCollection(features=features)
     elif isinstance(parameters, ReportDatabase):
         report = await create_report(parameters, key, force)
         return report.as_feature(parameters.flatten, parameters.include_data)
