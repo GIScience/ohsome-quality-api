@@ -89,6 +89,7 @@
   ]
 }
 ```
+
 | old API parameter | new API parameter |
 | ---               | ---               |
 | `layerKey`        | `topic`           |
@@ -132,7 +133,6 @@
 [#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
 [#554]: https://github.com/GIScience/ohsome-quality-analyst/pull/554
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
-[#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/549
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
 [#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
