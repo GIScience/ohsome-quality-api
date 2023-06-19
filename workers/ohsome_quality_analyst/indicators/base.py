@@ -52,6 +52,8 @@ class BaseIndicator(metaclass=ABCMeta):
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
+                "project": self.metadata.project,
+                "quality-dimension": self.metadata.quality_dimension,
             },
             "topic": {
                 "key": self.topic.key,

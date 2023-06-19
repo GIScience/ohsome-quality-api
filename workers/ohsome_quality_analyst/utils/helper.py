@@ -6,6 +6,7 @@ import os
 import pkgutil
 import re
 from datetime import date, datetime
+from enum import Enum
 from pathlib import Path
 from typing import Generator, Union
 
@@ -83,6 +84,8 @@ def json_serialize(obj):
         return float(obj)
     elif isinstance(obj, np.ndarray):
         return obj.tolist()
+    elif isinstance(obj, Enum):
+        return obj.value
     else:
         raise TypeError
 
