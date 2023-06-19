@@ -553,7 +553,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -1566,7 +1566,7 @@ interactions:
       49.411733], [8.656567, 49.412318], [8.656542, 49.411595], [8.656512, 49.411047]]]},
       "properties": {"report": {"metadata": {"name": "Minimal", "description": "This
       report shows the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -1604,7 +1604,7 @@ interactions:
       49.409998], [8.64557, 49.409982], [8.642225, 49.411332], [8.641543, 49.411303]]]},
       "properties": {"report": {"metadata": {"name": "Minimal", "description": "This
       report shows the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -1663,7 +1663,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -1756,7 +1756,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -1817,7 +1817,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "html": "<div id=\"reportResultSection\"
       class=\"oqtSection light-blue\">\n    <div class=\"oqtSection-container\">\n        <div
@@ -1836,7 +1836,7 @@ interactions:
       class=\"indicator-metadata-text\">\n                    Report description:<br
       />This report shows the quality for two indicators:\nMapping Saturation and
       Currentness.\nIt''s main function is to test the interactions between\ndatabase,
-      api and website.\n\n                </p>\n            </div>\n            <hr\n                class=\"indicator-splitline\"\n                style=\"\n                    display:
+      api and dashboard.\n\n                </p>\n            </div>\n            <hr\n                class=\"indicator-splitline\"\n                style=\"\n                    display:
       block;\n                    height: 1px;\n                    border: 0;\n                    border-top:
       1px solid #e0e0e0;\n                    margin: 10px auto;\n                \"\n            />\n        </div>\n        <div
       class=\"oqtSection-container\">\n            <h3>Data Quality Indicators</h3>\n            <div
@@ -3565,7 +3565,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate
@@ -3626,7 +3626,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators:\nMapping Saturation and Currentness.\nIt''s
-      main function is to test the interactions between\ndatabase, api and website.\n"},
+      main function is to test the interactions between\ndatabase, api and dashboard.\n"},
       "result": {"class_": 4, "description": "All indicators show a good quality.\nThe
       data in this regions seems to be completely mapped.\n", "label": "green"}},
       "indicators": [{"metadata": {"name": "Mapping Saturation", "description": "Calculate

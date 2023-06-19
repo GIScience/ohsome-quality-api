@@ -136,7 +136,7 @@ def metadata_report_minimal():
             "description": (
                 "This report shows the quality for two indicators: Mapping Saturation "
                 + "and Currentness. It's main function is to test the interactions "
-                + "between database, api and website."
+                + "between database, api and dashboard."
             ),
             "project": "misc",
         }
