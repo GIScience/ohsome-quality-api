@@ -11,6 +11,8 @@ from ohsome_quality_analyst.definitions import (
     load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.projects.definitions import get_project, load_projects
+from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.quality_dimensions.definitions import (
     get_quality_dimension,
     load_quality_dimensions,
@@ -91,6 +93,26 @@ def metadata_quality_dimension_completeness(
 @pytest.fixture()
 def quality_dimensions() -> dict[str, QualityDimension]:
     return load_quality_dimensions()
+
+
+@pytest.fixture(scope="class")
+def project_key_core() -> str:
+    return "core"
+
+
+@pytest.fixture(scope="class")
+def project_core(project_key_core) -> Project:
+    return get_project(project_key_core)
+
+
+@pytest.fixture(scope="class")
+def metadata_project_core(project_key_core, project_core) -> dict[str, Project]:
+    return {project_key_core: project_core}
+
+
+@pytest.fixture()
+def projects() -> dict[str, Project]:
+    return load_projects()
 
 
 @pytest.fixture(scope="class")

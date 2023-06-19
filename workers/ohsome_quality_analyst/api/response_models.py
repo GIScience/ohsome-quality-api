@@ -8,6 +8,8 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
+from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
@@ -49,6 +51,18 @@ class QualityDimensionMetadataResponse(ResponseBase):
         return values
 
 
+class ProjectMetadataResponse(ResponseBase):
+    result: dict[str, Project]
+
+    @validator("result")
+    @classmethod
+    def check_project_dict(cls, value):
+        assert len(value) > 0
+        for key in value.keys():
+            ProjectEnum(key)
+        return value
+
+
 class IndicatorMetadataResponse(ResponseBase):
     result: dict[str, IndicatorMetadata]
 
@@ -79,6 +93,7 @@ class MetadataResponse(ResponseBase):
         reports: dict[str, ReportMetadata]
         topics: dict[str, TopicDefinition]
         quality_dimensions: dict[str, QualityDimension]
+        projects: dict[str, Project]
 
         class Config:
             alias_generator = snake_to_hyphen

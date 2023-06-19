@@ -17,7 +17,7 @@ class FoodRelatedReport(BaseReport):
                 IndicatorTopic("currentness", "local_food_shops"),
                 IndicatorTopic("mapping-saturation", "fast_food_restaurants"),
                 IndicatorTopic("currentness", "fast_food_restaurants"),
-                IndicatorTopic("Mapping-saturation", "restaurants"),
+                IndicatorTopic("mapping-saturation", "restaurants"),
                 IndicatorTopic("currentness", "restaurants"),
                 IndicatorTopic("mapping-saturation", "supermarkets"),
                 IndicatorTopic("currentness", "supermarkets"),

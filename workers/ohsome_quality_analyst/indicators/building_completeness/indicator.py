@@ -1,13 +1,11 @@
 import logging
 import os
-from io import StringIO
 from string import Template
 
 import dateutil.parser
 import geojson
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
 import numpy as np
+import plotly.graph_objs as go
 from building_completeness_model import Predictor, Processor
 from geojson import Feature, FeatureCollection
 
@@ -162,47 +160,69 @@ class BuildingCompleteness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        px = 1 / plt.rcParams["figure.dpi"]  # Pixel in inches
-        figsize = (400 * px, 400 * px)
-        fig = plt.figure(figsize=figsize, tight_layout=True)
-        ax = fig.add_subplot()
-        ax.set_title("Building Completeness")
-        ax.set_xlabel("Completeness Ratio [%]")
-        ax.set_ylabel("Distribution Density [%]")
-        ax.xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
-        ax.yaxis.set_major_formatter(mtick.PercentFormatter(10))
-        _, _, patches = ax.hist(
-            [i for i in self.completeness_ratio],
-            bins=15,  # to account for overprediction (>100% completeness)
-            range=(0, 1.5),
-            density=True,
-            weights=self.building_area_prediction,
-            edgecolor="black",
+        # create histogram trace
+        trace = go.Histogram(
+            x=[i for i in self.completeness_ratio],
+            y=self.building_area_prediction,
+            histnorm="density",
+            nbinsx=5,
+            xbins=dict(start=0, end=1.5),
+            marker=dict(color="rgba(0,0,0,0.5)", line=dict(color="black", width=1)),
         )
-        for patch in patches:
-            x = round(abs(patch.get_x()), 2)
-            if x >= self.threshhold_green():
-                patch.set_facecolor("green")
-            elif x >= self.threshhold_yellow():
-                patch.set_facecolor("yellow")
-            elif 0.0 <= x < self.threshhold_yellow():
-                patch.set_facecolor("red")
-            else:
-                patch.set_facecolor("grey")
-        plt.axvline(
+
+        # apply threshold coloring to histogram bins
+        green_thresh = self.threshhold_green()
+        yellow_thresh = self.threshhold_yellow()
+        colors = [
+            "green"
+            if x >= green_thresh
+            else "yellow"
+            if x >= yellow_thresh
+            else "red"
+            if 0 <= x < yellow_thresh
+            else "grey"
+            for x in trace.x
+        ]
+
+        # update trace with threshold coloring and vertical line for weighted average
+        trace.marker.color = colors
+        trace.showlegend = False
+        trace.hoverinfo = "none"
+        weighted_avg = self.result.value * 100
+        trace_name = f"Weighted Average: {weighted_avg:.0f}%"
+
+        # create layout
+        layout = go.Layout(
+            title=dict(text="Building Completeness"),
+            xaxis=dict(
+                title=dict(text="Completeness Ratio"),
+                range=[0, 1.5],
+                tickformat=".0%",
+                showticklabels=True,
+            ),
+            yaxis=dict(
+                title=dict(text="Distribution Density [%]"),
+                showticklabels=True,
+            ),
+        )
+
+        # create figure and add trace and layout
+        fig = go.Figure(data=[trace], layout=layout)
+        fig.add_vline(
             x=self.result.value,
-            linestyle=":",
-            color="black",
-            label="Weighted Average: {0}%".format(int(self.result.value * 100)),
+            line_dash="dash",
+            line_color="black",
+            annotation_text=trace_name,
+            annotation_position="top right",
+            annotation_font_size=12,
         )
-        ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.45))
-        # has to be executed after "major formatter setting"
-        plt.xlim(0, 1.5)
-        plt.ylim(0, 10)
-        img_data = StringIO()
-        plt.savefig(img_data, format="svg", bbox_inches="tight")
-        self.result.svg = img_data.getvalue()
-        plt.close("all")
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+        # Legacy support for SVGs
+        img_bytes = fig.to_image(format="svg")
+        self.result.svg = img_bytes.decode("utf-8")
 
 
 def get_smod_class_share(featurecollection: FeatureCollection) -> dict:

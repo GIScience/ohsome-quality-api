@@ -15,17 +15,19 @@ keywords = [
   ]
 
 [[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
 name = "gistools-ohsome-machine-learning-models"
 url = "https://gitlab.gistools.geog.uni-heidelberg.de/api/v4/groups/277/-/packages/pypi/simple"
-secondary = true
+priority = "supplemental"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 geojson = "^2.5.0"
 fastapi = "^0.92.0"
-requests = "^2.25.0"
-matplotlib = "^3.6.2"
-dacite = "^1.6.0"
+requests = "^2.31.0"
 PyYAML = "^6.0"
 toml = "^0.10.2"
 httpx = "^0.23.0"
@@ -60,5 +62,5 @@ oqt = "ohsome_quality_analyst.cli.cli:cli"
 "Issues" = "https://github.com/GIScience/ohsome-quality-analyst/issues"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

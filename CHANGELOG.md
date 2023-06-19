@@ -17,6 +17,7 @@
 - remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename `PoiDensity` indicator to `density` ([#544])
+- homogenize API response schema for errors ([#562])
 
 ### Bug Fixes
 
@@ -36,6 +37,7 @@
 - api: add `/metadata` endpoint ([#545])
 - api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
 - add quality dimensions to indicators ([#561])
+- add project names and descriptions ([#563])
 
 ### Other Changes
 
@@ -58,11 +60,15 @@
 - currentness: substitute matplotlib SVG with plotly SVG ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
+- building-completeness: substitute matplotlib SVG with plotly SVG ([#552])
 - factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
 - density: substitute matplotlib SVG with plotly SVG ([#544])
 - add density indicator to `landmarks` topic ([#544])
 - SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
 - attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
+- build(poetry): add primary and supplemental source ([#576])
+- build: update `requests` to "^2.31.0" ([#576])
+- build: remove unused dependeny `dacite` ([#576])
 
 ### How to Upgrade
 
@@ -73,6 +79,19 @@
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
 - to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
+- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
+- all error message have following schema ([#562]):
+```json
+{
+  "apiVersion": "__version__",
+  "type": "exception.name",
+  "detail": [
+    {
+      "msg": "exception.message"
+    }
+  ]
+}
+```
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -114,9 +133,14 @@
 [#544]: https://github.com/GIScience/ohsome-quality-analyst/pull/544
 [#545]: https://github.com/GIScience/ohsome-quality-analyst/pull/545
 [#551]: https://github.com/GIScience/ohsome-quality-analyst/pull/551
+[#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
+[#554]: https://github.com/GIScience/ohsome-quality-analyst/pull/554
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
+[#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
+[#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
+[#576]: https://github.com/GIScience/ohsome-quality-analyst/pull/576
 
 ## 0.14.2
 

@@ -19,9 +19,8 @@ from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
 class TestApiReportIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-        self.endpoint = "/report"
+        self.endpoint = "/reports/minimal"
 
-        self.report_name = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.dataset = "regions"
         self.feature_id = 3  # Heidelberg
@@ -44,14 +43,14 @@ class TestApiReportIo(unittest.TestCase):
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
-        data = {"name": self.report_name, "bpolys": bpoly}
+        data = {"bpolys": bpoly}
         return self.client.post(self.endpoint, json=data)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_geometry(self):
         geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
         response = self.post_response(geometry)
-        self.run_tests(response)
+        self.assertEqual(response.status_code, 422)
 
     @oqt_vcr.use_cassette()
     def test_report_bpolys_feature(self):
@@ -84,7 +83,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_invalid_set_of_arguments(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
             "dataset": "foo",
             "feature-id": "3",
@@ -97,7 +95,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg_true(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
             "include-svg": True,
         }
@@ -108,7 +105,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg_false(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
             "include-svg": False,
         }
@@ -119,7 +115,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_svg_default(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
         }
         response = self.client.post(self.endpoint, json=parameters)
@@ -129,7 +124,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_html_true(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
             "include-svg": False,
             "include-html": True,
@@ -141,7 +135,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_html_false(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
             "include-svg": False,
             "include-html": False,
@@ -153,7 +146,6 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_report_include_html_default(self):
         parameters = {
-            "name": self.report_name,
             "bpolys": self.feature,
         }
         response = self.client.post(self.endpoint, json=parameters)

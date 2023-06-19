@@ -1,6 +1,7 @@
 def test_metadata(
     client,
     response_template,
+    metadata_project_core,
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
     metadata_report_multilevel_mapping_saturation,
@@ -22,6 +23,8 @@ def test_metadata(
         metadata_quality_dimension_completeness["completeness"]
         == result["quality-dimensions"]["completeness"]
     )
+    # check projects result
+    assert metadata_project_core["core"] == result["projects"]["core"]
     # check indicators result
     assert (
         metadata_indicator_mapping_saturation["mapping-saturation"]
