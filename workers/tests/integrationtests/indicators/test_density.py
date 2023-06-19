@@ -5,7 +5,9 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
+from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.density.indicator import Density
+from ohsome_quality_analyst.topics.models import TopicDefinition
 from tests.integrationtests.utils import oqt_vcr
 
 
@@ -18,6 +20,11 @@ class TestPreprocess:
         assert indicator.count is not None
         assert isinstance(indicator.result.timestamp_oqt, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
+
+
+@pytest.fixture(scope="class")
+def topic_poi() -> TopicDefinition:
+    return get_topic_definition("poi")
 
 
 class TestCalculation:

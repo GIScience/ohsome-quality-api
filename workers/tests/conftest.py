@@ -33,11 +33,6 @@ def topic_key_minimal() -> str:
 
 
 @pytest.fixture(scope="class")
-def topic_key_poi() -> str:
-    return "poi"
-
-
-@pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
     return "building_count"
 
@@ -45,11 +40,6 @@ def topic_key_building_count() -> str:
 @pytest.fixture(scope="class")
 def topic_minimal(topic_key_minimal) -> TopicDefinition:
     return get_topic_definition(topic_key_minimal)
-
-
-@pytest.fixture(scope="class")
-def topic_poi(topic_key_poi) -> TopicDefinition:
-    return get_topic_definition(topic_key_poi)
 
 
 @pytest.fixture(scope="class")
