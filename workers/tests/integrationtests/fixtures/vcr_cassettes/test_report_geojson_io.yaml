@@ -440,7 +440,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators: Mapping Saturation and Currentness. It''s main
-      function is to test the interactions between database, api and website.", "project":
+      function is to test the interactions between database, api and dashboard.", "project":
       "misc"}, "result": {"class_": 4, "description": "All indicators show a good
       quality. The data in this regions seems to be completely mapped.", "label":
       "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation", "description":
@@ -1440,7 +1440,7 @@ interactions:
       49.411733], [8.656567, 49.412318], [8.656542, 49.411595], [8.656512, 49.411047]]]},
       "properties": {"report": {"metadata": {"name": "Minimal", "description": "This
       report shows the quality for two indicators: Mapping Saturation and Currentness.
-      It''s main function is to test the interactions between database, api and website.",
+      It''s main function is to test the interactions between database, api and dashboard.",
       "project": "misc"}, "result": {"class_": 4, "description": "All indicators show
       a good quality. The data in this regions seems to be completely mapped.", "label":
       "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation", "description":
@@ -1686,7 +1686,7 @@ interactions:
       [8.641543, 49.411303]]]}, "properties": {"report": {"metadata": {"name": "Minimal",
       "description": "This report shows the quality for two indicators: Mapping Saturation
       and Currentness. It''s main function is to test the interactions between database,
-      api and website.", "project": "misc"}, "result": {"class_": 5, "description":
+      api and dashboard.", "project": "misc"}, "result": {"class_": 5, "description":
       "All indicators show a good quality. The data in this regions seems to be completely
       mapped.", "label": "green"}}, "indicators": [{"metadata": {"name": "Mapping
       Saturation", "description": "Calculate if mapping has saturated. High saturation
@@ -2017,7 +2017,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators: Mapping Saturation and Currentness. It''s main
-      function is to test the interactions between database, api and website.", "project":
+      function is to test the interactions between database, api and dashboard.", "project":
       "misc"}, "result": {"class_": 4, "description": "All indicators show a good
       quality. The data in this regions seems to be completely mapped.", "label":
       "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation", "description":
@@ -2289,7 +2289,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators: Mapping Saturation and Currentness. It''s main
-      function is to test the interactions between database, api and website.", "project":
+      function is to test the interactions between database, api and dashboard.", "project":
       "misc"}, "result": {"class_": 4, "description": "All indicators show a good
       quality. The data in this regions seems to be completely mapped.", "html": "<div
       id=\"reportResultSection\" class=\"oqtSection light-blue\">\n    <div class=\"oqtSection-container\">\n        <div
@@ -2307,7 +2307,7 @@ interactions:
       data in this regions seems to be completely mapped.</p>\n                <p
       class=\"indicator-metadata-text\">\n                    Report description:<br
       />This report shows the quality for two indicators: Mapping Saturation and Currentness.
-      It''s main function is to test the interactions between database, api and website.\n                </p>\n            </div>\n            <hr\n                class=\"indicator-splitline\"\n                style=\"\n                    display:
+      It''s main function is to test the interactions between database, api and dashboard.\n                </p>\n            </div>\n            <hr\n                class=\"indicator-splitline\"\n                style=\"\n                    display:
       block;\n                    height: 1px;\n                    border: 0;\n                    border-top:
       1px solid #e0e0e0;\n                    margin: 10px auto;\n                \"\n            />\n        </div>\n        <div
       class=\"oqtSection-container\">\n            <h3>Data Quality Indicators</h3>\n            <div
@@ -3284,7 +3284,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators: Mapping Saturation and Currentness. It''s main
-      function is to test the interactions between database, api and website.", "project":
+      function is to test the interactions between database, api and dashboard.", "project":
       "misc"}, "result": {"class_": 4, "description": "All indicators show a good
       quality. The data in this regions seems to be completely mapped.", "label":
       "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation", "description":
@@ -3555,7 +3555,7 @@ interactions:
       [8.69585, 49.415552], [8.674092, 49.415552], [8.674092, 49.404271]]]}, "properties":
       {"report": {"metadata": {"name": "Minimal", "description": "This report shows
       the quality for two indicators: Mapping Saturation and Currentness. It''s main
-      function is to test the interactions between database, api and website.", "project":
+      function is to test the interactions between database, api and dashboard.", "project":
       "misc"}, "result": {"class_": 4, "description": "All indicators show a good
       quality. The data in this regions seems to be completely mapped.", "label":
       "green"}}, "indicators": [{"metadata": {"name": "Mapping Saturation", "description":
