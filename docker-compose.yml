@@ -21,18 +21,6 @@ services:
     depends_on:
       - database
 
-  website:
-    container_name: oqt-website
-    build:
-      context: website/
-      dockerfile: Dockerfile
-    ports:
-      - "8081:80"
-    volumes:
-      - ./website/website:/usr/share/nginx/html
-    depends_on:
-      - workers
-
   database:
     container_name: oqt-database
     build:
