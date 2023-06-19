@@ -13,6 +13,7 @@ from ohsome_quality_analyst.html_templates.template import (
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
 
 
@@ -59,10 +60,13 @@ class BaseIndicator(metaclass=ABCMeta):
                 "key": self.topic.key,
                 "name": self.topic.name,
                 "description": self.topic.description,
+                "project": None,  # Not every topic object has a project (TopicData)
             },
             "result": result,
             **self.feature.properties,
         }
+        if isinstance(self.topic, TopicData):
+            properties["topic"]["project"] = self.topic.project
         if include_data:
             properties["data"] = self.data
         if flatten:
