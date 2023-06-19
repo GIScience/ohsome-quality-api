@@ -18,6 +18,7 @@
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename `PoiDensity` indicator to `density` ([#544])
 - homogenize API response schema for errors ([#562])
+- remove website from repository ([#578])
 
 ### Bug Fixes
 
@@ -141,6 +142,7 @@
 [#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
 [#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
 [#576]: https://github.com/GIScience/ohsome-quality-analyst/pull/576
+[#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
 
 ## 0.14.2
 
