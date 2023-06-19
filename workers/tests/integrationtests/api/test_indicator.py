@@ -16,14 +16,13 @@ from tests.integrationtests.api.response_schema import (
 )
 from tests.integrationtests.utils import oqt_vcr
 
-ENDPOINT = "/indicator"
+ENDPOINT = "/indicators/minimal"
 
 
 class TestApiIndicator(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-        self.indicator_name = "minimal"
         self.topic_key = "minimal"
         # Heidelberg
         self.dataset = "regions"
@@ -46,7 +45,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_dataset_default_fid_field(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
@@ -57,7 +55,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_dataset_custom_fid_field(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": self.feature_id,
@@ -69,7 +66,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_dataset_custom_fid_field_2(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature_id": "Heidelberg",
@@ -81,7 +77,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_dataset_invalid(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": "foo",
             "feature_id": self.feature_id,
@@ -95,12 +90,10 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_invalid_set_of_arguments(self):
         for parameters in (
             {
-                "name": self.indicator_name,
                 "topic": "building_count",
                 "dataset": "regions",
             },
             {
-                "name": self.indicator_name,
                 "topic": "building_count",
                 "feature_id": "3",
             },
@@ -113,7 +106,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_svg_true(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -126,7 +118,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_svg_false(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -139,7 +130,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_svg_default(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -151,7 +141,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_invalid_topic(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": "amenities",
             "dataset": "regions",
             "feature_id": "3",
@@ -164,7 +153,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_html_true(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -177,7 +165,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_html_false(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -190,7 +177,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_html_default(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -202,7 +188,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_flatten_default(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -216,7 +201,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_flatten_true(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -229,7 +213,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_flatten_false(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -243,7 +226,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_data_default(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -255,7 +237,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_data_true(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,
@@ -268,7 +249,6 @@ class TestApiIndicator(unittest.TestCase):
     @oqt_vcr.use_cassette
     def test_indicator_include_data_false(self):
         parameters = {
-            "name": self.indicator_name,
             "topic": self.topic_key,
             "dataset": self.dataset,
             "feature-id": self.feature_id,

@@ -63,6 +63,9 @@ async def _(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
+    if isinstance(parameters.bpolys, Feature):
+        raise ValueError("Input must be a FeatureCollection, not a Feature.")
+
     tasks: List[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" not in feature.keys():
@@ -82,10 +85,7 @@ async def _(
     features = [
         i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
     ]
-    if len(features) == 1:
-        return features[0]
-    else:
-        return FeatureCollection(features=features)
+    return FeatureCollection(features=features)
 
 
 @create_indicator_as_geojson.register(IndicatorDatabase)
@@ -326,6 +326,9 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
 
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
+    if isinstance(parameters.bpolys, Feature):
+        raise ValueError("Input must be a FeatureCollection, not a Feature.")
+
     feature = parameters.bpolys
 
     logging.info("Creating Report...")

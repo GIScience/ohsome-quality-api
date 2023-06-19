@@ -47,6 +47,17 @@ class TestOqtGeoJsonIO(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_indicator_as_geojson(""))
 
+    @oqt_vcr.use_cassette()
+    def test_always_return_feature_collection(self):
+        patameters = IndicatorBpolys(
+            topic=self.topic_key,
+            bpolys=self.feature,
+        )
+        feature = asyncio.run(
+            oqt.create_indicator_as_geojson(patameters, key=self.name)
+        )
+        assert feature["type"] == "FeatureCollection"
+
 
 if __name__ == "__main__":
     unittest.main()
