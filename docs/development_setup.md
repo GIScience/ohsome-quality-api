@@ -63,7 +63,7 @@ Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
 - Poetry: ≥ 1.5
 - R: ≥ 4.0
 
-This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system using `pip` or `pipx`.
+This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system using `pip`.
 
 
 ### Installation
