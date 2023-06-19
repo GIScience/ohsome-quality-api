@@ -4,10 +4,8 @@ from schema import SchemaError
 
 class ValidationError(Exception):
     def __init__(self):
+        self.name = ""
         self.message = ""
-
-    def errors(self):
-        return self.message
 
 
 class GeoJSONError(ValidationError):

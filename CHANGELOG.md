@@ -17,6 +17,7 @@
 - remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename `PoiDensity` indicator to `density` ([#544])
+- homogenize API response schema for errors ([#562])
 
 ### Bug Fixes
 
@@ -75,7 +76,19 @@
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
 - to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
-
+- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
+- all error message have following schema ([#562]):
+```json
+{
+  "apiVersion": "__version__",
+  "type": "exception.name",
+  "detail": [
+    {
+      "msg": "exception.message"
+    }
+  ]
+}
+```
 | old API parameter | new API parameter |
 | ---               | ---               |
 | `layerKey`        | `topic`           |
@@ -119,8 +132,10 @@
 [#552]: https://github.com/GIScience/ohsome-quality-analyst/pull/552
 [#554]: https://github.com/GIScience/ohsome-quality-analyst/pull/554
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
+[#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/549
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
+[#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
 [#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
 
 ## 0.14.2
