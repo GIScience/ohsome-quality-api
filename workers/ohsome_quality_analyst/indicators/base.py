@@ -65,7 +65,7 @@ class BaseIndicator(metaclass=ABCMeta):
             "result": result,
             **self.feature.properties,
         }
-        if isinstance(self.topic, TopicData):
+        if not isinstance(self.topic, TopicData):
             properties["topic"]["project"] = self.topic.project
         if include_data:
             properties["data"] = self.data
