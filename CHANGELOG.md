@@ -66,6 +66,9 @@
 - add density indicator to `landmarks` topic ([#544])
 - SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
 - attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
+- build(poetry): add primary and supplemental source ([#576])
+- build: update `requests` to "^2.31.0" ([#576])
+- build: remove unused dependeny `dacite` ([#576])
 
 ### How to Upgrade
 
@@ -137,6 +140,7 @@
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
 [#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
 [#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
+[#576]: https://github.com/GIScience/ohsome-quality-analyst/pull/576
 
 ## 0.14.2
 
