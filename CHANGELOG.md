@@ -69,7 +69,8 @@
 - attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
 - build(poetry): add primary and supplemental source ([#576])
 - build: update `requests` to "^2.31.0" ([#576])
-- build: remove unused dependeny `dacite` ([#576])
+- build: remove unused dependency `dacite` ([#576])
+- swagger: server Swagger UI files not via CDN ([#581])
 
 ### How to Upgrade
 
@@ -143,6 +144,7 @@
 [#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
 [#576]: https://github.com/GIScience/ohsome-quality-analyst/pull/576
 [#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
+[#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 
 ## 0.14.2
 
