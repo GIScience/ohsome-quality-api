@@ -15,9 +15,13 @@ keywords = [
   ]
 
 [[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
 name = "gistools-ohsome-machine-learning-models"
 url = "https://gitlab.gistools.geog.uni-heidelberg.de/api/v4/groups/277/-/packages/pypi/simple"
-secondary = true
+priority = "supplemental"
 
 [tool.poetry.dependencies]
 python = "^3.10"
