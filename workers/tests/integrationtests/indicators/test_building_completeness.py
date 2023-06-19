@@ -105,7 +105,7 @@ class TestGetData:
         assert isinstance(result, FeatureCollection)
         assert result.features is not None
 
-    def test_get_hex_cells_not_found(self, feature):
+    def test_get_hex_cells_not_found(self):
         feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         with pytest.raises(HexCellsNotFoundError):
             asyncio.run(get_hex_cells(feature))
