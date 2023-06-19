@@ -153,10 +153,9 @@ class CustomJSONResponse(JSONResponse):
 
 
 @app.exception_handler(RequestValidationError)
-@app.exception_handler(ValidationError)
 async def validation_exception_handler(
-    request: Request,
-    exception: RequestValidationError | ValidationError,
+    _: Request,
+    exception: RequestValidationError,
 ):
     """Exception handler for validation exceptions."""
     return JSONResponse(
@@ -164,8 +163,8 @@ async def validation_exception_handler(
         content=jsonable_encoder(
             {
                 "apiVersion": __version__,
-                "detail": exception.errors(),
                 "type": "RequestValidationError",
+                "detail": exception.errors(),
             },
         ),
     )
@@ -177,24 +176,28 @@ async def validation_exception_handler(
 @app.exception_handler(RasterDatasetNotFoundError)
 @app.exception_handler(RasterDatasetUndefinedError)
 @app.exception_handler(SizeRestrictionError)
+@app.exception_handler(ValidationError)
 async def oqt_exception_handler(
-    request: Request,
-    exception: (
-        HexCellsNotFoundError
-        | TopicDataSchemaError
-        | OhsomeApiError
-        | RasterDatasetNotFoundError
-        | RasterDatasetUndefinedError
-        | SizeRestrictionError
-    ),
+    _: Request,
+    exception: HexCellsNotFoundError
+    | TopicDataSchemaError
+    | OhsomeApiError
+    | RasterDatasetNotFoundError
+    | RasterDatasetUndefinedError
+    | SizeRestrictionError
+    | ValidationError,
 ):
     """Exception handler for OQT exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
             "apiVersion": __version__,
-            "detail": exception.message,
             "type": exception.name,
+            "detail": [
+                {
+                    "msg": exception.message,
+                },
+            ],
         },
     )
 
