@@ -157,26 +157,34 @@ class Currentness(BaseIndicator):
         # https://github.com/plotly/plotly.py/issues/3065
         x0 = (start - relativedelta(months=6)).timestamp() * 1000
         x1 = (end + relativedelta(months=6)).timestamp() * 1000
-        fig.add_vrect(
-            x0=x0,
-            x1=x1,
-            annotation_text=(
-                "In this time period at least 50%<br>of features have been edited."
-            ),
-            annotation_position="top",
-            fillcolor="gray",
-            layer="below",
-            line_width=0,
-            opacity=0.25,
-        )
 
+        y_min = min(self.contrib_rel)
+        y_max = max(self.contrib_rel) * 1.05
+
+        fig.add_trace(
+            pgo.Scatter(
+                x=[x0, x0, x1, x1, x0],
+                y=[y_min, y_max, y_max, y_min, y_min],
+                fill="toself",
+                mode="lines",
+                name="",
+                text="In this time period at least 50%<br>of features have been edited",
+                line_width=0,
+                opacity=0.25,
+                fillcolor="gray",
+                hoverlabel=dict(bgcolor="lightgray"),
+            )
+        )
         fig.update_layout(
+            hovermode="x",
+            yaxis_range=[0, y_max],
+            showlegend=False,
             title_text=(
                 "Currentness<br><sup>Total Contributions (up to {}): {}</sup>".format(
                     self.timestamps[0].strftime("%Y-%m-%d"),
                     int(self.contrib_sum),
                 )
-            )
+            ),
         )
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
