@@ -70,7 +70,7 @@
 - build(poetry): add primary and supplemental source ([#576])
 - build: update `requests` to "^2.31.0" ([#576])
 - build: remove unused dependency `dacite` ([#576])
-- swagger: server Swagger UI files not via CDN ([#581])
+- swagger: serve Swagger UI files not via CDN ([#581])
 
 ### How to Upgrade
 
