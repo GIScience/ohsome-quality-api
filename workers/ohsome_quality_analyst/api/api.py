@@ -86,7 +86,7 @@ from ohsome_quality_analyst.utils.helper import (
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
-
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "static")
 TAGS_METADATA = [
     {
         "name": "indicator",
@@ -154,8 +154,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "static")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
