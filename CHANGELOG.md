@@ -19,6 +19,7 @@
 - rename `PoiDensity` indicator to `density` ([#544])
 - homogenize API response schema for errors ([#562])
 - remove website from repository ([#578])
+- api: remove `/regions` endpoint ([#583])
 
 ### Bug Fixes
 
@@ -147,6 +148,7 @@
 [#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
 [#579]: https://github.com/GIScience/ohsome-quality-analyst/pull/579
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
+[#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 
 ## 0.14.2
 
