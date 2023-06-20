@@ -7,9 +7,15 @@ from fastapi import Body, FastAPI, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import (
+    get_redoc_html,
+    get_swagger_ui_html,
+    get_swagger_ui_oauth2_redirect_html,
+)
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
+from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
     __author__,
@@ -136,6 +142,8 @@ app = FastAPI(
         "email": __email__,
     },
     openapi_tags=TAGS_METADATA,
+    docs_url=None,
+    redoc_url=None,
 )
 
 app.add_middleware(
@@ -146,6 +154,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount(
+    "/static", StaticFiles(directory="ohsome_quality_analyst/static"), name="static"
+)
+
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - Swagger UI",
+        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
+        swagger_js_url="/static/swagger-ui-bundle.js",
+        swagger_css_url="/static/swagger-ui.css",
+        swagger_favicon_url="/static/favicon-32x32.png",
+    )
+
+
+@app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
+async def swagger_ui_redirect():
+    return get_swagger_ui_oauth2_redirect_html()
+
+
+@app.get("/redoc", include_in_schema=False)
+async def redoc_html():
+    return get_redoc_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - ReDoc",
+        redoc_js_url="/static/redoc.standalone.js",
+        redoc_favicon_url="/static/favicon-32x32.png",
+    )
+
 
 class CustomJSONResponse(JSONResponse):
     def render(self, content):
@@ -153,10 +192,9 @@ class CustomJSONResponse(JSONResponse):
 
 
 @app.exception_handler(RequestValidationError)
-@app.exception_handler(ValidationError)
 async def validation_exception_handler(
-    request: Request,
-    exception: RequestValidationError | ValidationError,
+    _: Request,
+    exception: RequestValidationError,
 ):
     """Exception handler for validation exceptions."""
     return JSONResponse(
@@ -164,8 +202,8 @@ async def validation_exception_handler(
         content=jsonable_encoder(
             {
                 "apiVersion": __version__,
-                "detail": exception.errors(),
                 "type": "RequestValidationError",
+                "detail": exception.errors(),
             },
         ),
     )
@@ -177,24 +215,28 @@ async def validation_exception_handler(
 @app.exception_handler(RasterDatasetNotFoundError)
 @app.exception_handler(RasterDatasetUndefinedError)
 @app.exception_handler(SizeRestrictionError)
+@app.exception_handler(ValidationError)
 async def oqt_exception_handler(
-    request: Request,
-    exception: (
-        HexCellsNotFoundError
-        | TopicDataSchemaError
-        | OhsomeApiError
-        | RasterDatasetNotFoundError
-        | RasterDatasetUndefinedError
-        | SizeRestrictionError
-    ),
+    _: Request,
+    exception: HexCellsNotFoundError
+    | TopicDataSchemaError
+    | OhsomeApiError
+    | RasterDatasetNotFoundError
+    | RasterDatasetUndefinedError
+    | SizeRestrictionError
+    | ValidationError,
 ):
     """Exception handler for OQT exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
             "apiVersion": __version__,
-            "detail": exception.message,
             "type": exception.name,
+            "detail": [
+                {
+                    "msg": exception.message,
+                },
+            ],
         },
     )
 

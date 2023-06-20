@@ -19,8 +19,11 @@ class AsyncMock(MagicMock):
 
 def filename_generator(function):
     """Return filename of function source file with the appropriate file-ending."""
-    filename = os.path.basename(inspect.getsourcefile(function))
-    return os.path.splitext(filename)[0] + "." + oqt_vcr.serializer
+    test_path = inspect.getsourcefile(function)
+    # path relative to TEST_DIR
+    rel_test_path = os.path.relpath(os.path.dirname(test_path), TEST_DIR)
+    filename_base = os.path.splitext(os.path.basename(test_path))[0]
+    return os.path.join(rel_test_path, filename_base + "." + oqt_vcr.serializer)
 
 
 def get_current_dir():
@@ -72,4 +75,6 @@ oqt_vcr = vcr.VCR(
     match_on=["method", "scheme", "host", "port", "path", "query", "body"],
     func_path_generator=filename_generator,
     before_record_response=replace_body(["image/png"], dummy_png),
+    ignore_hosts=["testserver"],
+    ignore_localhost=True,  # do not record HTTP requests to local FastAPI test instance
 )

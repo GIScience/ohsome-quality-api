@@ -17,6 +17,8 @@
 - remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename `PoiDensity` indicator to `density` ([#544])
+- homogenize API response schema for errors ([#562])
+- remove website from repository ([#578])
 
 ### Bug Fixes
 
@@ -65,6 +67,11 @@
 - add density indicator to `landmarks` topic ([#544])
 - SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
 - attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
+- build(poetry): add primary and supplemental source ([#576])
+- build: update `requests` to "^2.31.0" ([#576])
+- build: remove unused dependency `dacite` ([#576])
+- swagger: serve Swagger UI files not via CDN ([#581])
+- tests(vcr): don't record local requests and change cassettes directory structure ([#579])
 
 ### How to Upgrade
 
@@ -75,6 +82,19 @@
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
 - to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
+- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
+- all error message have following schema ([#562]):
+```json
+{
+  "apiVersion": "__version__",
+  "type": "exception.name",
+  "detail": [
+    {
+      "msg": "exception.message"
+    }
+  ]
+}
+```
 
 | old API parameter | new API parameter |
 | ---               | ---               |
@@ -121,7 +141,12 @@
 [#556]: https://github.com/GIScience/ohsome-quality-analyst/pull/556
 [#559]: https://github.com/GIScience/ohsome-quality-analyst/pull/559
 [#561]: https://github.com/GIScience/ohsome-quality-analyst/pull/561
+[#562]: https://github.com/GIScience/ohsome-quality-analyst/pull/562
 [#563]: https://github.com/GIScience/ohsome-quality-analyst/pull/563
+[#576]: https://github.com/GIScience/ohsome-quality-analyst/pull/576
+[#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
+[#579]: https://github.com/GIScience/ohsome-quality-analyst/pull/579
+[#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 
 ## 0.14.2
 

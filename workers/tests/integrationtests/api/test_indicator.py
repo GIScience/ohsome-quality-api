@@ -148,7 +148,7 @@ class TestApiIndicator(unittest.TestCase):
         response = self.client.post(ENDPOINT, json=parameters)
         self.assertEqual(response.status_code, 422)
         content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
+        self.assertEqual(content["type"], "IndicatorTopicCombinationError")
 
     @oqt_vcr.use_cassette
     def test_indicator_include_html_true(self):
