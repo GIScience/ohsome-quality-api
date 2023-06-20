@@ -72,8 +72,8 @@ class Currentness(BaseIndicator):
 
         if self.contrib_sum == 0:
             self.result.description = (
-                "In the area of interest no features of the selected topic are present "
-                + "today."
+                "In the area of interest no features of "
+                "the selected topic are present today."
             )
             return
 
@@ -114,11 +114,11 @@ class Currentness(BaseIndicator):
             label_description=self.metadata.label_description[label],
         )
 
-        last_edited_year = get_last_edited_year(self.contrib_abs)
-        if last_edited_year != self.result.timestamp_oqt.year:
+        last_edited_year = get_how_many_years_no_activity(self.contrib_abs)
+        if last_edited_year > 0:
             self.result.description += (
-                " Attention: There was no mapping activity after "
-                + "{} in this region.".format(last_edited_year)
+                f" Attention: There was no mapping activity for "
+                f"{last_edited_year} year(s) in this region."
             )
 
     def create_figure(self):
@@ -193,7 +193,7 @@ class Currentness(BaseIndicator):
         self.result.svg = img_bytes.decode("utf-8")
 
 
-def get_last_edited_year(contributions: list) -> int:
+def get_how_many_years_no_activity(contributions: list) -> int:
     """Get the number of years since today when the last contribution has been made."""
     for year, contrib in enumerate(contributions):  # latest contribution first
         if contrib != 0:
