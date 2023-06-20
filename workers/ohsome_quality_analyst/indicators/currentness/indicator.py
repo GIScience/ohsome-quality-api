@@ -143,6 +143,11 @@ class Currentness(BaseIndicator):
                 xperiod0=self.timestamps[-1],
                 xperiod="M12",
                 xperiodalignment="start",
+                hovertemplate=(
+                    "%{y} (%{customdata}) of features<br>"
+                    "last modified in %{x}<extra></extra>"
+                ),
+                customdata=self.contrib_abs,
             )
         )
 
