@@ -20,6 +20,7 @@ class AsyncMock(MagicMock):
 def filename_generator(function):
     """Return filename of function source file with the appropriate file-ending."""
     test_path = inspect.getsourcefile(function)
+    # path relative to TEST_DIR
     rel_test_path = os.path.relpath(os.path.dirname(test_path), TEST_DIR)
     filename_base = os.path.splitext(os.path.basename(test_path))[0]
     return os.path.join(rel_test_path, filename_base + "." + oqt_vcr.serializer)
