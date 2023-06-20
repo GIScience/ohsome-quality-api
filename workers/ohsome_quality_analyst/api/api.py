@@ -1,6 +1,7 @@
 import fnmatch
 import json
 import logging
+import os
 from typing import Annotated
 
 from fastapi import Body, FastAPI, Path, Request, status
@@ -154,9 +155,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount(
-    "/static", StaticFiles(directory="ohsome_quality_analyst/static"), name="static"
-)
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/docs", include_in_schema=False)
