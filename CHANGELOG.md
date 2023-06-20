@@ -44,6 +44,7 @@
 - add project names and descriptions ([#563])
 - api: allow multiple projects per topic/indicator/report ([#601])
 - api: add possibility to query all metadata (independent of project) ([#601])
+- api: support responses in JSON format for `/indicator/` ([#582])
 
 ### Other Changes
 
@@ -148,6 +149,7 @@
 [#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
 [#579]: https://github.com/GIScience/ohsome-quality-analyst/pull/579
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
+[#582]: https://github.com/GIScience/ohsome-quality-analyst/pull/582
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
 [#598]: https://github.com/GIScience/ohsome-quality-analyst/pull/598

@@ -17,6 +17,7 @@ from tests.integrationtests.api.response_schema import (
 from tests.integrationtests.utils import oqt_vcr
 
 ENDPOINT = "/indicators/minimal"
+HEADERS = {"accept": "application/geo+json"}
 
 
 class TestApiIndicator(unittest.TestCase):
@@ -49,7 +50,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "feature_id": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         self.run_tests(response)
 
     @oqt_vcr.use_cassette
@@ -60,7 +61,7 @@ class TestApiIndicator(unittest.TestCase):
             "feature_id": self.feature_id,
             "fid_field": self.fid_field,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         self.run_tests(response)
 
     @oqt_vcr.use_cassette
@@ -71,7 +72,7 @@ class TestApiIndicator(unittest.TestCase):
             "feature_id": "Heidelberg",
             "fid_field": "name",
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         self.run_tests(response)
 
     @oqt_vcr.use_cassette
@@ -81,7 +82,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "foo",
             "feature_id": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "RequestValidationError")
@@ -98,7 +99,7 @@ class TestApiIndicator(unittest.TestCase):
                 "feature_id": "3",
             },
         ):
-            response = self.client.post(ENDPOINT, json=parameters)
+            response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
             self.assertEqual(response.status_code, 422)
             content = response.json()
             self.assertEqual(content["type"], "RequestValidationError")
@@ -111,7 +112,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeSvg": True,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "svg" in feature["properties"]["result"]
@@ -124,7 +125,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeSvg": False,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "svg" not in feature["properties"]["result"]
@@ -136,7 +137,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "featureId": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "svg" not in feature["properties"]["result"]
@@ -148,7 +149,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": "regions",
             "feature_id": "3",
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "IndicatorTopicCombinationError")
@@ -161,7 +162,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeHtml": True,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "html" in feature["properties"]["result"]
@@ -174,7 +175,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeHtml": False,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "html" not in feature["properties"]["result"]
@@ -186,7 +187,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "featureId": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "html" not in feature["properties"]["result"]
@@ -198,7 +199,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "featureId": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         # Check flat result value
         for feature in result["features"]:
@@ -213,7 +214,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "flatten": True,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "result.value" in feature["properties"]
@@ -226,7 +227,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "flatten": False,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "result.value" not in feature["properties"]
@@ -239,7 +240,7 @@ class TestApiIndicator(unittest.TestCase):
             "dataset": self.dataset,
             "featureId": self.feature_id,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "data" not in feature["properties"]
@@ -252,7 +253,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeData": True,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "data" in feature["properties"]
@@ -265,7 +266,7 @@ class TestApiIndicator(unittest.TestCase):
             "featureId": self.feature_id,
             "includeData": False,
         }
-        response = self.client.post(ENDPOINT, json=parameters)
+        response = self.client.post(ENDPOINT, json=parameters, headers=HEADERS)
         result = response.json()
         for feature in result["features"]:
             assert "data" not in feature["properties"]
