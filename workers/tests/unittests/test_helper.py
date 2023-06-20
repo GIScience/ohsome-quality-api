@@ -22,7 +22,6 @@ from ohsome_quality_analyst.utils.helper import (
     hyphen_to_camel,
     hyphen_to_snake,
     json_serialize,
-    loads_geojson,
     snake_to_hyphen,
 )
 
@@ -38,7 +37,7 @@ def get_fixture(name):
 class TestHelper(unittest.TestCase):
     def run_tests(self, raw: dict, number_of_features: int = 1) -> None:
         i = 0
-        for feature in loads_geojson(raw):
+        for feature in raw:
             i += 1
             self.assertIsInstance(feature, Feature)
         self.assertEqual(i, number_of_features)

@@ -83,7 +83,14 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_report_bpolys(self):
         """Test creating report from scratch using the 'bpolys'parameters ."""
-        parameters = ReportBpolys(bpolys=self.feature)
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
+        )
+        with open(path, "r") as f:
+            feature = geojson.load(f)
+        parameters = ReportBpolys(bpolys=feature)
         report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
@@ -148,9 +155,10 @@ class TestOqt(unittest.TestCase):
             os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
         )
         with open(path, "r") as f:
-            feature = geojson.load(f)
+            geom = geojson.load(f)
         with self.assertRaises(ValueError):
-            asyncio.run(oqt.check_area_size(feature.geometry))
+            for feature in geom["features"]:
+                asyncio.run(oqt.check_area_size(feature.geometry))
 
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
         path = os.path.join(
@@ -180,7 +188,7 @@ class TestOqt(unittest.TestCase):
         path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
-            "heidelberg-altstadt-feature.geojson",
+            "heidelberg-bahnstadt-bergheim-featurecollection.geojson",
         )
         with open(path, "r") as f:
             feature = geojson.load(f)

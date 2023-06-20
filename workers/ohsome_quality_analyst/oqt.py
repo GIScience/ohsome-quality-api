@@ -32,7 +32,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     EmptyRecordError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
+from ohsome_quality_analyst.utils.helper import get_class_from_key
 from ohsome_quality_analyst.utils.helper_asyncio import (
     filter_exceptions,
     gather_with_semaphore,
@@ -54,7 +54,7 @@ async def _(
     key: str,
     size_restriction: bool = False,
     **_kwargs,
-) -> Union[Feature, FeatureCollection]:
+) -> FeatureCollection:
     """Create an indicator or multiple indicators as GeoJSON object.
 
     Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
@@ -63,11 +63,9 @@ async def _(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    if isinstance(parameters.bpolys, Feature):
-        raise ValueError("Input must be a FeatureCollection, not a Feature.")
 
     tasks: List[Coroutine] = []
-    for i, feature in enumerate(loads_geojson(parameters.bpolys)):
+    for i, feature in enumerate(parameters.bpolys["features"]):
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
@@ -105,7 +103,7 @@ async def create_report_as_geojson(
     key: str,
     force: bool = False,
     size_restriction: bool = False,
-) -> Union[Feature, FeatureCollection]:
+) -> FeatureCollection:
     """Create a report or multiple reports as GeoJSON object.
 
     Returns:
@@ -114,7 +112,7 @@ async def create_report_as_geojson(
     """
     if isinstance(parameters, ReportBpolys):
         features = []
-        for i, feature in enumerate(loads_geojson(parameters.bpolys)):
+        for i, feature in enumerate(parameters.bpolys["features"]):
             if "id" not in feature.keys():
                 feature["id"] = i
             if size_restriction:
@@ -326,8 +324,6 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
 
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
-    if isinstance(parameters.bpolys, Feature):
-        raise ValueError("Input must be a FeatureCollection, not a Feature.")
 
     feature = parameters.bpolys
 

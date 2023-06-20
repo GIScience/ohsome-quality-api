@@ -998,4 +998,36 @@ interactions:
       - application/json
     http_version: HTTP/1.1
     status_code: 422
+- request:
+    body: '{"bpolys": {"type": "FeatureCollection", "features": [{"type": "Feature",
+      "geometry": {"type": "Polygon", "coordinates": [[[-15.46875, 37.160317], [45.703125,
+      37.160317], [45.703125, 70.612614], [-15.46875, 70.612614], [-15.46875, 37.160317]]]},
+      "properties": {}}]}, "topic": "minimal"}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '286'
+      content-type:
+      - application/json
+      host:
+      - testserver
+      user-agent:
+      - testclient
+    method: POST
+    uri: http://testserver/indicators/minimal
+  response:
+    content: "{\"apiVersion\":\"0.14.2\",\"detail\":\"Input GeoJSON Geometry is too
+      big. The area should be less than 100 km\xB2.\",\"type\":\"SizeRestrictionError\"}"
+    headers:
+      content-length:
+      - '138'
+      content-type:
+      - application/json
+    http_version: HTTP/1.1
+    status_code: 422
 version: 1
