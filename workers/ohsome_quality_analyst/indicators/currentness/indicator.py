@@ -144,8 +144,8 @@ class Currentness(BaseIndicator):
                 xperiod="M12",
                 xperiodalignment="start",
                 hovertemplate=(
-                    "%{y} (%{customdata}) of features<br>"
-                    "last modified in %{x}<extra></extra>"
+                    "%{y} of features (%{customdata})<br>"
+                    "last modified until %{x}<extra></extra>"
                 ),
                 customdata=self.contrib_abs,
             )
