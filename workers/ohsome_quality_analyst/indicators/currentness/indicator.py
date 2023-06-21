@@ -179,12 +179,7 @@ class Currentness(BaseIndicator):
             hovermode="x",
             yaxis_range=[0, y_max],
             showlegend=False,
-            title_text=(
-                "Currentness<br><sup>Total Contributions (up to {}): {}</sup>".format(
-                    self.timestamps[0].strftime("%Y-%m-%d"),
-                    int(self.contrib_sum),
-                )
-            ),
+            title_text=("Currentness"),
         )
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
