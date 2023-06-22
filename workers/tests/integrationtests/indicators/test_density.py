@@ -11,6 +11,11 @@ from ohsome_quality_analyst.topics.models import TopicDefinition
 from tests.integrationtests.utils import oqt_vcr
 
 
+@pytest.fixture(scope="class")
+def topic_poi() -> TopicDefinition:
+    return get_topic_definition("poi")
+
+
 class TestPreprocess:
     @oqt_vcr.use_cassette
     def test_preprocess(self, topic_poi, feature_germany_heidelberg):
@@ -20,11 +25,6 @@ class TestPreprocess:
         assert indicator.count is not None
         assert isinstance(indicator.result.timestamp_oqt, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
-
-
-@pytest.fixture(scope="class")
-def topic_poi() -> TopicDefinition:
-    return get_topic_definition("poi")
 
 
 class TestCalculation:
