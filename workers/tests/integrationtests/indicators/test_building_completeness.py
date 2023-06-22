@@ -63,6 +63,7 @@ class TestCalculationFigure:
         i.calculate()
         return i
 
+    @oqt_vcr.use_cassette
     def test_calculate(self, indicator):
         assert isinstance(indicator.building_area_prediction, list)
         assert len(indicator.building_area_prediction) > 0
@@ -75,10 +76,12 @@ class TestCalculationFigure:
         assert indicator.result.value >= 0.0
 
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @oqt_vcr.use_cassette
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
 
+    @oqt_vcr.use_cassette
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
