@@ -15,7 +15,6 @@ from fastapi.openapi.docs import (
 )
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
-from pydantic import BaseModel
 from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
@@ -79,7 +78,6 @@ from ohsome_quality_analyst.utils.helper import (
     get_class_from_key,
     hyphen_to_camel,
     json_serialize,
-    snake_to_hyphen,
 )
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
@@ -246,15 +244,6 @@ def empty_api_response() -> dict:
             "url": ATTRIBUTION_URL,
         },
     }
-
-
-# TODO (Experimental): Belongs to temporary endpoint defined below
-class MappingSaturationModel(BaseModel):
-    bpolys: Feature | FeatureCollection
-    topic_key: str
-
-    class Config:
-        alias_generator = snake_to_hyphen
 
 
 @app.post("/indicators/{key}", tags=["indicator"])
