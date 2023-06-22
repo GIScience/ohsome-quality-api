@@ -82,10 +82,7 @@ async def _(
     features = [
         i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
     ]
-    if len(features) == 1:
-        return features[0]
-    else:
-        return FeatureCollection(features=features)
+    return FeatureCollection(features=features)
 
 
 @create_indicator_as_geojson.register(IndicatorDatabase)
@@ -94,10 +91,11 @@ async def _(
     key: str,
     force: bool = False,
     **_kwargs,
-) -> Feature:
+) -> FeatureCollection:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, key, force)
-    return indicator.as_feature(parameters.flatten, parameters.include_data)
+    indicator.as_feature(parameters.flatten, parameters.include_data)
+    return FeatureCollection(features=[indicator.feature])
 
 
 async def create_report_as_geojson(
