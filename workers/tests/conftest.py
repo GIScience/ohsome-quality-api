@@ -1,3 +1,4 @@
+import logging
 import os
 
 import geojson
@@ -25,6 +26,11 @@ from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
+
+# TODO: Workaround to avoid cluttering of stdout because of
+# https://github.com/pytest-dev/pytest/issues/5502
+logger = logging.getLogger("rpy2")
+logger.propagate = False
 
 
 @pytest.fixture(scope="class")
