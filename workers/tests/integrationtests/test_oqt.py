@@ -14,6 +14,7 @@ from ohsome_quality_analyst.api.request_models import (
     ReportDatabase,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
+from tests.integrationtests.utils import get_geojson_fixture
 
 from .utils import AsyncMock, oqt_vcr
 
@@ -153,13 +154,7 @@ class TestOqt(unittest.TestCase):
             asyncio.run(oqt.check_area_size(feature.geometry))
 
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "fixtures",
-            "algeria-touggourt-feature.geojson",
-        )
-        with open(path, "r") as f:
-            feature = geojson.load(f)
+        feature = get_geojson_fixture("europe.geojson")
         parameters = IndicatorBpolys(
             topic=self.topic_key,
             bpolys=feature,
