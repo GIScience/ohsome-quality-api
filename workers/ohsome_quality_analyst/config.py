@@ -31,7 +31,7 @@ def load_config_default() -> dict:
         "postgres_user": "oqt",
         "postgres_password": "oqt",
         "data_dir": get_default_data_dir(),
-        "geom_size_limit": 100,
+        "geom_size_limit": 1000,
         "log_level": "INFO",
         "ohsome_api": "https://api.ohsome.org/v1/",
         "concurrent_computations": 4,
