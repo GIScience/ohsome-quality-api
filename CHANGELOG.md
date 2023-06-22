@@ -71,7 +71,7 @@
 - build(poetry): add primary and supplemental source ([#576])
 - build: update `requests` to "^2.31.0" ([#576])
 - build: remove unused dependency `dacite` ([#576])
-- swagger: serve Swagger UI files not via CDN ([#581])
+- swagger: serve Swagger UI files not via CDN ([#581], [#593])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
 
 ### How to Upgrade
@@ -149,6 +149,7 @@
 [#579]: https://github.com/GIScience/ohsome-quality-analyst/pull/579
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
+[#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
 
 ## 0.14.2
 

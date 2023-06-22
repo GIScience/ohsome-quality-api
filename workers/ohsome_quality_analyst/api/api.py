@@ -156,14 +156,15 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html():
+async def custom_swagger_ui_html(request: Request):
+    root_path = request.scope.get("root_path")
     return get_swagger_ui_html(
         openapi_url=app.openapi_url,
         title=app.title + " - Swagger UI",
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
-        swagger_js_url="/static/swagger-ui-bundle.js",
-        swagger_css_url="/static/swagger-ui.css",
-        swagger_favicon_url="/static/favicon-32x32.png",
+        swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
+        swagger_css_url=root_path + "/static/swagger-ui.css",
+        swagger_favicon_url=root_path + "/static/favicon-32x32.png",
     )
 
 
@@ -173,12 +174,13 @@ async def swagger_ui_redirect():
 
 
 @app.get("/redoc", include_in_schema=False)
-async def redoc_html():
+async def redoc_html(request: Request):
+    root_path = request.scope.get("root_path")
     return get_redoc_html(
         openapi_url=app.openapi_url,
         title=app.title + " - ReDoc",
-        redoc_js_url="/static/redoc.standalone.js",
-        redoc_favicon_url="/static/favicon-32x32.png",
+        redoc_js_url=root_path + "/static/redoc.standalone.js",
+        redoc_favicon_url=root_path + "/static/favicon-32x32.png",
     )
 
 
