@@ -350,11 +350,11 @@ async def post_report(
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
     result = {
-        "topics": get_topic_definitions(project=project.value),
+        "topics": get_topic_definitions(project=project),
         "quality-dimensions": get_quality_dimensions(),
         "projects": get_projects(),
-        "indicators": get_indicator_definitions(project=project.value),
-        "reports": get_report_definitions(project=project.value),
+        "indicators": get_indicator_definitions(project=project),
+        "reports": get_report_definitions(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -370,7 +370,7 @@ async def metadata_topic(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> TopicMetadataResponse:
     """Get topics."""
-    return TopicMetadataResponse(result=get_topic_definitions(project=project.value))
+    return TopicMetadataResponse(result=get_topic_definitions(project=project))
 
 
 @app.get(
@@ -439,9 +439,7 @@ async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return IndicatorMetadataResponse(
-        result=get_indicator_definitions(project=project.value)
-    )
+    return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
 
 
 @app.get(
@@ -472,7 +470,7 @@ async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataResponse(result=get_report_definitions(project=project.value))
+    return ReportMetadataResponse(result=get_report_definitions(project=project))
 
 
 @app.get(

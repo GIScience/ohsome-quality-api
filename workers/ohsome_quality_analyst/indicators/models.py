@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
@@ -14,7 +15,7 @@ class IndicatorMetadata(BaseModel):
     description: str
     label_description: dict
     result_description: str
-    project: str
+    project: ProjectEnum
     quality_dimension: QualityDimensionEnum
 
     class Config:
