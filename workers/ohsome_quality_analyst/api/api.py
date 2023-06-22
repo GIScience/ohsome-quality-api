@@ -1,15 +1,22 @@
 import fnmatch
 import json
 import logging
+import os
 from typing import Annotated
 
 from fastapi import Body, FastAPI, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import (
+    get_redoc_html,
+    get_swagger_ui_html,
+    get_swagger_ui_oauth2_redirect_html,
+)
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
 from pydantic import BaseModel
+from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
     __author__,
@@ -43,14 +50,12 @@ from ohsome_quality_analyst.api.response_models import (
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    get_attribution,
     get_indicator_definitions,
     get_metadata,
     get_report_definitions,
     get_topic_definition,
     get_topic_definitions,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.projects.definitions import (
     ProjectEnum,
     get_project,
@@ -79,7 +84,7 @@ from ohsome_quality_analyst.utils.helper import (
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
-
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 TAGS_METADATA = [
     {
         "name": "indicator",
@@ -136,6 +141,8 @@ app = FastAPI(
         "email": __email__,
     },
     openapi_tags=TAGS_METADATA,
+    docs_url=None,
+    redoc_url=None,
 )
 
 app.add_middleware(
@@ -145,6 +152,36 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html(request: Request):
+    root_path = request.scope.get("root_path")
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - Swagger UI",
+        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
+        swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
+        swagger_css_url=root_path + "/static/swagger-ui.css",
+        swagger_favicon_url=root_path + "/static/favicon-32x32.png",
+    )
+
+
+@app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
+async def swagger_ui_redirect():
+    return get_swagger_ui_oauth2_redirect_html()
+
+
+@app.get("/redoc", include_in_schema=False)
+async def redoc_html(request: Request):
+    root_path = request.scope.get("root_path")
+    return get_redoc_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - ReDoc",
+        redoc_js_url=root_path + "/static/redoc.standalone.js",
+        redoc_favicon_url=root_path + "/static/favicon-32x32.png",
+    )
 
 
 class CustomJSONResponse(JSONResponse):
@@ -305,22 +342,6 @@ async def post_report(
     ).attribution()
     response.update(geojson_object)
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
-
-
-@app.get("/regions")
-async def get_available_regions(asGeoJSON: bool = False):
-    """Get regions as list of names and identifiers or as a GeoJSON."""
-    response = empty_api_response()
-    if asGeoJSON is True:
-        regions = await db_client.get_regions_as_geojson()
-        response.update(regions)
-        response["attribution"]["text"] = get_attribution(["OSM"])
-        return JSONResponse(
-            content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-        )
-    else:
-        response["result"] = await db_client.get_regions()
-        return response
 
 
 @app.get(
