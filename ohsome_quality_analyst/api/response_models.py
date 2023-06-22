@@ -8,6 +8,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.indicators.models import Result as IndicatorResult
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -26,6 +27,22 @@ class ResponseBase(BaseModel):
         frozen = True
         extra = "forbid"
         allow_population_by_field_name = True
+
+
+class IndicatorResponse(ResponseBase):
+    class IndicatorResultSchema(BaseModel):
+        metadata: IndicatorMetadata
+        topic: TopicDefinition
+        quality_dimensions: QualityDimension
+        project: Project
+        result: IndicatorResult
+
+        class Config:
+            alias_generator = snake_to_hyphen
+            frozen = True
+            extra = "forbid"
+
+    result: IndicatorResultSchema
 
 
 class TopicMetadataResponse(ResponseBase):
