@@ -21,6 +21,7 @@
 - remove website from repository ([#578])
 - api: remove `/regions` endpoint ([#583])
 - api: use lower camel case instead of hyphen-case for all non-dynamic JSON keys (e.g. not indicator keys) ([#603])
+- api: response of `indicator` is always a FeatureCollections ([#598])
 
 ### Bug Fixes
 
@@ -149,6 +150,7 @@
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
+[#598]: https://github.com/GIScience/ohsome-quality-analyst/pull/598
 [#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
 [#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 [#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605
