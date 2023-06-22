@@ -9,6 +9,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
+
 
 class BaseTopic(BaseModel):
     key: str
@@ -27,7 +29,7 @@ class TopicDefinition(BaseTopic):
     endpoint: str
     filter: str
     indicators: List[str]
-    project: str
+    project: ProjectEnum
     source: Optional[str] = None
     ratio_filter: Optional[str] = None
 

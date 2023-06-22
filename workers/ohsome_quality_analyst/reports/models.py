@@ -2,6 +2,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.utils.helper import snake_to_hyphen
 
 
@@ -11,7 +12,7 @@ class ReportMetadata(BaseModel):
     name: str
     description: str
     label_description: dict
-    project: str
+    project: ProjectEnum
 
     class Config:
         alias_generator = snake_to_hyphen
