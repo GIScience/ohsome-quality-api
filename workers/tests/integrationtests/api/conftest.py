@@ -74,7 +74,7 @@ def metadata_report_multilevel_mapping_saturation():
             + "It evolved from the OSM Element Vectorisation tool (https://gitlab."
             + "gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-"
             + "vectorisation).",
-            "project": "core",
+            "projects": ["core"],
         }
     }
 
@@ -138,6 +138,6 @@ def metadata_report_minimal():
                 + "and Currentness. It's main function is to test the interactions "
                 + "between database, api and dashboard."
             ),
-            "project": "misc",
+            "projects": ["misc"],
         }
     }
