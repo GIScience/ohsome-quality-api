@@ -114,7 +114,7 @@ def test_get_indicator_definitions_with_project():
     assert isinstance(indicators, dict)
     for indicator in indicators.values():
         assert isinstance(indicator, IndicatorMetadata)
-        assert indicator.project == "core"
+        assert indicator.projects == ["core"]
 
 
 def test_get_report_definitions():
