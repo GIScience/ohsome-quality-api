@@ -15,7 +15,7 @@ class IndicatorMetadata(BaseModel):
     description: str
     label_description: dict
     result_description: str
-    project: ProjectEnum
+    projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
 
     class Config:
