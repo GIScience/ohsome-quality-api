@@ -57,7 +57,15 @@ def metadata_indicator_mapping_saturation():
                 "Calculate if mapping has saturated. High saturation has been reached "
                 + "if the growth of the fitted curve is minimal."
             ),
-            "projects": ["core"],
+            "projects": [
+                "core",
+                "corine-land-cover",
+                "expanse",
+                "experimental",
+                "idealvgi",
+                "mapaction",
+                "sketchmap",
+            ],
             "quality-dimension": "completeness",
         }
     }
