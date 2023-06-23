@@ -29,7 +29,7 @@ class TopicDefinition(BaseTopic):
     endpoint: str
     filter: str
     indicators: List[str]
-    project: ProjectEnum
+    projects: list[ProjectEnum]
     source: Optional[str] = None
     ratio_filter: Optional[str] = None
 
