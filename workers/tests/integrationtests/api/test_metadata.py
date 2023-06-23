@@ -47,10 +47,10 @@ def test_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "reports"):
+    for k in ("topics",):
         for p in result[k].values():
             assert p["project"] == "core"
-    for k in ("indicators",):
+    for k in ("indicators", "reports"):
         for p in result[k].values():
             assert "core" in p["projects"]
     # check topics result
@@ -71,10 +71,10 @@ def test_project_misc(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "reports"):
+    for k in ("topics",):
         for p in result[k].values():
             assert p["project"] == "misc"
-    for k in ("indicators",):
+    for k in ("indicators", "reports"):
         for p in result[k].values():
             assert "misc" in p["projects"]
     # check topics result
