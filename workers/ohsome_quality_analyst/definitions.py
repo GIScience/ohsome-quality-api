@@ -149,7 +149,7 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
 def get_topic_definitions(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
     topics = load_topic_definitions()
     if project is not None:
-        return {k: v for k, v in topics.items() if v.project == project}
+        return {k: v for k, v in topics.items() if project in v.projects}
     else:
         return topics
 
