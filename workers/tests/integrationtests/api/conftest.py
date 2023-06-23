@@ -42,7 +42,7 @@ def metadata_topic_building_count():
                 "building=* and building!=no and geometry:polygon and height=* or "
                 + "building:levels=*"
             ),
-            "project": "core",
+            "projects": ["core"],
             "source": None,  # TODO: Should not be in response if None
         }
     }
@@ -110,7 +110,7 @@ def metadata_topic_minimal():
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": ["minimal"],
             "ratio_filter": None,  # TODO: Should not be in response if None
-            "project": "misc",
+            "projects": ["misc"],
             "source": None,  # TODO: Should not be in response if None
         }
     }
