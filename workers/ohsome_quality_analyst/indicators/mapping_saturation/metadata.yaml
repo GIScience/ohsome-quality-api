@@ -1,7 +1,8 @@
 ---
 mapping-saturation:
   name: Mapping Saturation
-  project: core
+  projects:
+    - core
   quality-dimension: completeness
   description: >-
     Calculate if mapping has saturated.

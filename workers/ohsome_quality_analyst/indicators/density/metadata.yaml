@@ -1,7 +1,8 @@
 ---
 density:
   name: Density
-  project: experimental
+  projects:
+    - experimental
   quality-dimension: none
   description: >-
       The density of features.
