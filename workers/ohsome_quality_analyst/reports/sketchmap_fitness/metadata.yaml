@@ -1,7 +1,8 @@
 ---
 sketchmap-fitness:
   name: Sketch Map Fitness
-  project: sketchmap
+  projects:
+    - sketchmap
   description: >-
     The Sketch Map Fitness Report consists of four data quality indicators
     (mapping saturation of major roads, currentness of major roads and

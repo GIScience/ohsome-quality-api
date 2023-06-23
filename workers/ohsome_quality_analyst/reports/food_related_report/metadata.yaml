@@ -1,7 +1,8 @@
 ---
 food-related-report:
   name: Food Related Report
-  project: experimental
+  projects:
+    - experimental
   description: >-
     This report shows the quality of food related POIs. 
     If one indicator shows bad quality or is undefined this report also shows bad quality or is undefined respectively.
