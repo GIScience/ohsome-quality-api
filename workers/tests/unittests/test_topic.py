@@ -54,6 +54,16 @@ def test_topic_definition():
         key="key",
         name="name",
         description="description",
+        indicators=["mapping-saturation", "minimal"],
+        projects=["core", "experimental"],
+        endpoint="endpoint",
+        filter="filter",
+        source="source",
+    )
+    TopicDefinition(
+        key="key",
+        name="name",
+        description="description",
         indicators=[],
         projects=["core"],
         endpoint="endpoint",
