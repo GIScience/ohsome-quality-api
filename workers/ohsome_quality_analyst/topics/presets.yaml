@@ -16,7 +16,8 @@ building_count:
     - mapping-saturation
     - currentness
     - attribute-completeness
-  project: core
+  projects:
+    - core
 
 building_area:
   name: Building Area
@@ -27,7 +28,8 @@ building_area:
   indicators:
     - mapping-saturation
     - building-completeness
-  project: core
+  projects:
+    - core
 
 major_roads_count:
   name: Major Roads Count
@@ -46,7 +48,8 @@ major_roads_count:
     unclassified, residential) and type:way and name=*
   indicators:
     - currentness
-  project: core
+  projects:
+    - core
 
 major_roads_length:
   name: Major Roads Length
@@ -66,7 +69,8 @@ major_roads_length:
   indicators:
     - mapping-saturation
     - attribute-completeness
-  project: core
+  projects:
+    - core
 
 railway_length:
   name: Railways
@@ -78,7 +82,8 @@ railway_length:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 poi:
   name: POI
@@ -138,7 +143,8 @@ poi:
     - mapping-saturation
     - currentness
     - density
-  project: core
+  projects:
+    - core
 
 schools:
   name: Schools
@@ -149,7 +155,8 @@ schools:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 kindergarten:
   name: Kindergarten
@@ -160,7 +167,8 @@ kindergarten:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 clinics:
   name: Clinics
@@ -171,7 +179,8 @@ clinics:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 doctors:
   name: Doctors
@@ -182,7 +191,8 @@ doctors:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 bus_stops:
   name: Bus Stops
@@ -193,7 +203,8 @@ bus_stops:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 tram_stops:
   name: Tram Stops
@@ -204,7 +215,8 @@ tram_stops:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 subway_stations:
   name: Subway Stations
@@ -215,7 +227,8 @@ subway_stations:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 supermarkets:
   name: Supermarkets
@@ -226,7 +239,8 @@ supermarkets:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 marketplaces:
   name: Marketplaces
@@ -237,7 +251,8 @@ marketplaces:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 parks:
   name: Parks
@@ -248,7 +263,8 @@ parks:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 forests:
   name: Forests
@@ -259,7 +275,8 @@ forests:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 fitness_centres:
   name: Fitness Centres
@@ -270,7 +287,8 @@ fitness_centres:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 fire_stations:
   name: Fire Stations
@@ -281,7 +299,8 @@ fire_stations:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 hospitals:
   name: Hospitals
@@ -292,7 +311,8 @@ hospitals:
   indicators:
     - mapping-saturation
     - currentness
-  project: core
+  projects:
+    - core
 
 ### SKETCHMAP PROJECT ###
 
@@ -305,7 +325,8 @@ amenities:
   indicators:
     - mapping-saturation
     - currentness
-  project: sketchmap
+  projects:
+    - sketchmap
 
 landmarks:
   name: Landmarks for Orientation
@@ -321,7 +342,8 @@ landmarks:
     police, fire_station, restaurant, townhall)
   indicators:
     - density
-  project: sketchmap
+  projects:
+    - sketchmap
 
 ### MAPACTION PROJECT ###
 
@@ -334,7 +356,8 @@ mapaction_settlements_count:
   indicators:
     - mapping-saturation
     - currentness
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_capital_city_count:
   name: MapAction Capital City Count
@@ -343,7 +366,8 @@ mapaction_capital_city_count:
   endpoint: elements/count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
   indicators: []
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_rail_length:
   name: MapAction Rail Length
@@ -354,7 +378,8 @@ mapaction_rail_length:
   indicators:
     - mapping-saturation
     - currentness
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_major_roads_length:
   name: MapAction Major Roads length
@@ -365,7 +390,8 @@ mapaction_major_roads_length:
   indicators:
     - mapping-saturation
     - currentness
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_lakes_count:
   name: MapAction Lakes Count
@@ -375,7 +401,8 @@ mapaction_lakes_count:
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
   indicators:
     - currentness
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_lakes_area:
   name: MapAction Lakes Area
@@ -385,7 +412,8 @@ mapaction_lakes_area:
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
   indicators:
     - mapping-saturation
-  project: mapaction
+  projects:
+    - mapaction
 
 mapaction_rivers_length:
   name: MapAction Rivers Length
@@ -396,7 +424,8 @@ mapaction_rivers_length:
   indicators:
     - mapping-saturation
     - currentness
-  project: mapaction
+  projects:
+    - mapaction
 
 ### IDEALVGI PROJECT ###
 
@@ -419,7 +448,8 @@ lulc:
   indicators:
     - mapping-saturation
     - currentness
-  project: idealvgi
+  projects:
+    - idealvgi
 
 ### EXPANSE PROJECT ###
 
@@ -431,7 +461,8 @@ local_food_shops:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 fast_food_restaurants:
   name: Fast food restaurants
@@ -441,7 +472,8 @@ fast_food_restaurants:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 restaurants:
   name: Restaurants
@@ -451,7 +483,8 @@ restaurants:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 convenience_stores:
   name: Convenience stores
@@ -461,7 +494,8 @@ convenience_stores:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 pubs_and_biergartens:
   name: Pubs and biergartens
@@ -471,7 +505,8 @@ pubs_and_biergartens:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 alcohol_and_beverages:
   name: Alcohol and beverages
@@ -481,7 +516,8 @@ alcohol_and_beverages:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 sweets_and_pasteries:
   name: Sweets and pasteries
@@ -491,7 +527,8 @@ sweets_and_pasteries:
   indicators:
     - mapping-saturation
     - currentness
-  project: expanse
+  projects:
+    - expanse
 
 ### LAND-USE LAYERS (CORINE PROJECT) ###
 
@@ -504,7 +541,8 @@ clc_arable_land_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_permanent_crops_area:
   name: Permanent Crops CLC
@@ -514,7 +552,8 @@ clc_permanent_crops_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_pastures_area:
   name: Pastures CLC
@@ -524,7 +563,8 @@ clc_pastures_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_forest_area:
   name: Forests CLC
@@ -535,7 +575,8 @@ clc_forest_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_leaf_type:
   name: Leaf Types of Forests CLC
@@ -550,7 +591,8 @@ clc_leaf_type:
     - mapping-saturation
     - currentness
     - attribute-completeness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_shrub_area:
   name: Shrubs CLC
@@ -560,7 +602,8 @@ clc_shrub_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_open_spaces_area:
   name: Open Spaces CLC
@@ -571,7 +614,8 @@ clc_open_spaces_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_wetland_area:
   name: Wetlands CLC
@@ -581,7 +625,8 @@ clc_wetland_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_water_area:
   name: Water CLC
@@ -594,7 +639,8 @@ clc_water_area:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 clc_waterway_len:
   name: Waterways CLC
@@ -604,7 +650,8 @@ clc_waterway_len:
   indicators:
     - mapping-saturation
     - currentness
-  project: corine-land-cover
+  projects:
+    - corine-land-cover
 
 ### MISC TOPICS ###
 
@@ -615,7 +662,8 @@ minimal:
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - minimal
-  project: misc
+  projects:
+    - misc
 
 ### EXPERIMENTAL TOPICS ###
 
@@ -627,4 +675,5 @@ infrastructure_lines:
   indicators:
     - mapping-saturation
     - currentness
-  project: experimental
+  projects:
+    - experimental
