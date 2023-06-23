@@ -167,7 +167,7 @@ def get_indicator_definitions(
 def get_report_definitions(project: ProjectEnum = None) -> dict[str, ReportMetadata]:
     reports = load_metadata("reports")
     if project is not None:
-        return {k: v for k, v in reports.items() if v.project == project}
+        return {k: v for k, v in reports.items() if project in v.projects}
     else:
         return reports
 
