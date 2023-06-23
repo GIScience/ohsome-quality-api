@@ -159,7 +159,7 @@ def get_indicator_definitions(
 ) -> dict[str, IndicatorMetadata]:
     indicators = load_metadata("indicators")
     if project is not None:
-        return {k: v for k, v in indicators.items() if v.project == project}
+        return {k: v for k, v in indicators.items() if project in v.projects}
     else:
         return indicators
 
