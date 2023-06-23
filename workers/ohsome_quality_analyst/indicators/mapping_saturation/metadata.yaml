@@ -3,6 +3,12 @@ mapping-saturation:
   name: Mapping Saturation
   projects:
     - core
+    - corine-land-cover
+    - expanse
+    - experimental
+    - idealvgi
+    - mapaction
+    - sketchmap
   quality-dimension: completeness
   description: >-
     Calculate if mapping has saturated.
