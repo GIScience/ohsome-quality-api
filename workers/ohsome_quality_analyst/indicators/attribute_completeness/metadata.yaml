@@ -1,7 +1,8 @@
 ---
 attribute-completeness:
   name: Attribute Completeness
-  project: experimental
+  projects:
+    - experimental
   quality-dimension: completeness
   description: >-
       Derive the ratio of OSM features compared to features which

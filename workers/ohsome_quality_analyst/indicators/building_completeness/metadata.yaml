@@ -1,7 +1,8 @@
 ---
 building-completeness:
   name: Building Completeness
-  project: experimental
+  projects:
+    - experimental
   quality-dimension: completeness
   description: >-
     Weighted average of the ratio between predicted building area and the actual building area in OSM.
