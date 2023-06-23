@@ -1,7 +1,8 @@
 ---
 map-action-poc:
   name: MapAction POC Country Overview
-  project: experimental
+  projects:
+    - experimental
   description: >-
     This report is a proof of concept (POC) data quality report for a MapAction country overview product.
   label-description:

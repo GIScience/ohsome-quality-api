@@ -1,7 +1,8 @@
 ---
 minimal:
   name: Minimal
-  project: misc
+  projects:
+    - misc
   description: >-
     This report shows the quality for two indicators:
     Mapping Saturation and Currentness.
