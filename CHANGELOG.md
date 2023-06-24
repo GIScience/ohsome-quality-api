@@ -73,6 +73,7 @@
 - build: remove unused dependency `dacite` ([#576])
 - swagger: serve Swagger UI files not via CDN ([#581], [#593])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
+- split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
 
 ### How to Upgrade
 
@@ -150,6 +151,7 @@
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
+[#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
 
 ## 0.14.2
 

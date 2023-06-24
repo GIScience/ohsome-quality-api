@@ -146,7 +146,13 @@ def build_url(
         return (
             get_config_value("ohsome_api").rstrip("/") + "/contributions/latest/count"
         )
-    url = get_config_value("ohsome_api").rstrip("/") + "/" + topic.endpoint.rstrip("/")
+    url = (
+        get_config_value("ohsome_api").rstrip("/")
+        + "/"
+        + topic.endpoint.rstrip("/")
+        + "/"
+        + topic.aggregation_type.rstrip("/")
+    )
     if ratio:
         url += "/ratio"
     if group_by_boundary:

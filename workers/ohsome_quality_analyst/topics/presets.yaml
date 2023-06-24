@@ -9,7 +9,8 @@ building_count:
   name: Building Count
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   ratio_filter: building=* and building!=no and geometry:polygon and height=* or building:levels=*
   indicators:
@@ -22,7 +23,8 @@ building_area:
   name: Building Area
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - mapping-saturation
@@ -35,7 +37,8 @@ major_roads_count:
     The road network defined by all objects which hold the principal tags for
     the road network as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
@@ -54,7 +57,8 @@ major_roads_length:
     The road network defined by all objects which hold the principal tags for
     the road network and their link roads as defined in the OSM Wiki`:`
     https://wiki.openstreetmap.org/wiki/Key:highway
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
@@ -72,7 +76,8 @@ railway_length:
   name: Railways
   description: >-
     Railway networks.
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: >-
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
   indicators:
@@ -83,7 +88,8 @@ railway_length:
 poi:
   name: POI
   description: Points of interest
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
   filter: >-
     (aeroway in (aerodrome, helipad, heliport))
@@ -143,7 +149,8 @@ poi:
 schools:
   name: Schools
   description: Count of schools.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=school
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
   indicators:
@@ -154,7 +161,8 @@ schools:
 kindergarten:
   name: Kindergarten
   description: Count of kindergarten.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=kindergarten
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
   indicators:
@@ -165,7 +173,8 @@ kindergarten:
 clinics:
   name: Clinics
   description: Count of clinics.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=clinic or healthcare=clinic
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
@@ -176,7 +185,8 @@ clinics:
 doctors:
   name: Doctors
   description: Count of doctors.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=doctors or healthcare=doctor
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
@@ -187,7 +197,8 @@ doctors:
 bus_stops:
   name: Bus Stops
   description: Count of bus stops.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: highway=bus_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
   indicators:
@@ -198,7 +209,8 @@ bus_stops:
 tram_stops:
   name: Tram Stops
   description: Count of schools.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
   indicators:
@@ -209,7 +221,8 @@ tram_stops:
 subway_stations:
   name: Subway Stations
   description: Count of subway stops.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: station=subway
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
   indicators:
@@ -220,7 +233,8 @@ subway_stations:
 supermarkets:
   name: Supermarkets
   description: Count of supermarkets.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: shop=supermarket
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
@@ -231,7 +245,8 @@ supermarkets:
 marketplaces:
   name: Marketplaces
   description: Count of marketplaces.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=marketplace
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
   indicators:
@@ -242,7 +257,8 @@ marketplaces:
 parks:
   name: Parks
   description: Count of parks.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: leisure=park
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
   indicators:
@@ -253,7 +269,8 @@ parks:
 forests:
   name: Forests
   description: Count of forests.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: landuse=forest
   source: https://wiki.openstreetmap.org/wiki/Forest
   indicators:
@@ -264,7 +281,8 @@ forests:
 fitness_centres:
   name: Fitness Centres
   description: Count of fitness centres.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: leisure in (fitness_centre, sports_centre)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
   indicators:
@@ -275,7 +293,8 @@ fitness_centres:
 fire_stations:
   name: Fire Stations
   description: Count of firestations.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=fire_station
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
   indicators:
@@ -286,7 +305,8 @@ fire_stations:
 hospitals:
   name: Hospitals
   description: Count of hospitals.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=hospital or healthcare=hospital
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   indicators:
@@ -299,7 +319,8 @@ hospitals:
 amenities:
   name: Amenities
   description: All features with the amenities key.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   source: https://wiki.openstreetmap.org/wiki/Key:amenity
   filter: amenity=*
   indicators:
@@ -311,7 +332,8 @@ landmarks:
   name: Landmarks for Orientation
   description: >-
     Landmarks for orientation in a city such as natural features, public transport stations and amenities.
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
   filter: >-
     natural=peak or leisure=park or boundary=national_park or
@@ -329,7 +351,8 @@ mapaction_settlements_count:
   name: MapAction Settlements Count
   description: >-
     Number of settlements (cities)
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: place=city and type:node
   indicators:
     - mapping-saturation
@@ -340,7 +363,8 @@ mapaction_capital_city_count:
   name: MapAction Capital City Count
   description: >-
     Number of capital cities
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
   indicators: []
   project: mapaction
@@ -349,7 +373,8 @@ mapaction_rail_length:
   name: MapAction Rail Length
   description: >-
     Length of objects identified as rails (large railways)
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: railway=rail and type:way
   indicators:
     - mapping-saturation
@@ -360,7 +385,8 @@ mapaction_major_roads_length:
   name: MapAction Major Roads length
   description: >-
     Length of objects identified as major roads (primary, motorway and trunk)
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: highway in (motorway, trunk, primary) and type:way
   indicators:
     - mapping-saturation
@@ -371,7 +397,8 @@ mapaction_lakes_count:
   name: MapAction Lakes Count
   description: >-
     Number of objects identified as lakes, lagoons and reservoirs
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
   indicators:
     - currentness
@@ -381,7 +408,8 @@ mapaction_lakes_area:
   name: MapAction Lakes Area
   description: >-
     Area of objects identified as lakes, lagoons and reservoirs
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
   indicators:
     - mapping-saturation
@@ -391,7 +419,8 @@ mapaction_rivers_length:
   name: MapAction Rivers Length
   description: >-
     Length of objects identified as rivers (or riverbanks)
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: waterway in (riverbank,river) and type:way
   indicators:
     - mapping-saturation
@@ -407,7 +436,8 @@ lulc:
     This definition includes well established tags for coherent areas at the most atomic level available.
     This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
     For further details please contact us.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: >-
     (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
   source: >-
@@ -426,7 +456,8 @@ lulc:
 local_food_shops:
   name: Local food shops
   description: Count of local food shops
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy
   indicators:
     - mapping-saturation
@@ -436,7 +467,8 @@ local_food_shops:
 fast_food_restaurants:
   name: Fast food restaurants
   description: Count of fast food restaurants
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=fast_food
   indicators:
     - mapping-saturation
@@ -446,7 +478,8 @@ fast_food_restaurants:
 restaurants:
   name: Restaurants
   description: Count of restaurants
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=restaurant or amenity=cafe
   indicators:
     - mapping-saturation
@@ -456,7 +489,8 @@ restaurants:
 convenience_stores:
   name: Convenience stores
   description: Count of convenience stores
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: shop=convenience
   indicators:
     - mapping-saturation
@@ -466,7 +500,8 @@ convenience_stores:
 pubs_and_biergartens:
   name: Pubs and biergartens
   description: Count of pubs and biergartens
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: amenity=pub or amenity=biergarten or amenity=bar
   indicators:
     - mapping-saturation
@@ -476,7 +511,8 @@ pubs_and_biergartens:
 alcohol_and_beverages:
   name: Alcohol and beverages
   description: Count of shops selling alcohol
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: shop=alcohol or shop=beverages
   indicators:
     - mapping-saturation
@@ -486,7 +522,8 @@ alcohol_and_beverages:
 sweets_and_pasteries:
   name: Sweets and pasteries
   description: Count of shops selling sweets and pasteries
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: shop=pastry or amenity=ice_cream or shop=confectionery
   indicators:
     - mapping-saturation
@@ -499,7 +536,8 @@ clc_arable_land_area:
   name: Arable Land CLC
   description: >-
     Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: (landuse=farmland or crop=*) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -509,7 +547,8 @@ clc_arable_land_area:
 clc_permanent_crops_area:
   name: Permanent Crops CLC
   description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: landuse in (vineyard, orchard, farmland) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -519,7 +558,8 @@ clc_permanent_crops_area:
 clc_pastures_area:
   name: Pastures CLC
   description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: (landuse=grass or natural=grassland or landcover=grass or natural=fell) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -529,7 +569,8 @@ clc_pastures_area:
 clc_forest_area:
   name: Forests CLC
   description: Selected features for Corine Land Cover Category "Forests" (level 2) in Seminatural Land.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: >-
     (natural=wood or landuse=forest) and geometry:polygon
   indicators:
@@ -540,7 +581,8 @@ clc_forest_area:
 clc_leaf_type:
   name: Leaf Types of Forests CLC
   description: frequency of forests according to Corine Land Cover Category "Forests" (level 2) tagged with Leaf Type.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: >-
     (natural=wood or landuse=forest) and geometry:polygon
   ratio_filter: >-
@@ -555,7 +597,8 @@ clc_leaf_type:
 clc_shrub_area:
   name: Shrubs CLC
   description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: (natural in (scrub, fell, tundra, shrubbery) or landuse=meadow) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -565,7 +608,8 @@ clc_shrub_area:
 clc_open_spaces_area:
   name: Open Spaces CLC
   description: Selected features for Corine Land Cover Category "Open Spaces" (level 2) in Seminatural Land.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: >-
     natural in (beach, bare_rock, rock, stone, glacier, ridge, peak, earth_bank, cliff, arete, shingle, crevasse) and geometry:polygon
   indicators:
@@ -576,7 +620,8 @@ clc_open_spaces_area:
 clc_wetland_area:
   name: Wetlands CLC
   description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: (natural in (wetland, mud) or landuse=salt_pond) and geometry:polygon
   indicators:
     - mapping-saturation
@@ -586,7 +631,8 @@ clc_wetland_area:
 clc_water_area:
   name: Water CLC
   description: Selected features for Corine Land Cover Category "Water" (level 1), excluding waterways.
-  endpoint: elements/area
+  endpoint: elements
+  aggregation_type: area
   filter: >-
     (natural in (water, spring, hot_spring)
     or water in (lake, reservoir, pond, oxbow, basin))
@@ -599,7 +645,8 @@ clc_water_area:
 clc_waterway_len:
   name: Waterways CLC
   description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: waterway in (river, canal, stream, drain, ditch) and geometry:line
   indicators:
     - mapping-saturation
@@ -611,7 +658,8 @@ clc_waterway_len:
 minimal:
   name: Minimal
   description: A minimal topic definition for testing purposes
-  endpoint: elements/count
+  endpoint: elements
+  aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - minimal
@@ -622,7 +670,8 @@ minimal:
 infrastructure_lines:
   name: Infrastructure Lines
   description: Line objects related to infrastructure
-  endpoint: elements/length
+  endpoint: elements
+  aggregation_type: length
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
   indicators:
     - mapping-saturation

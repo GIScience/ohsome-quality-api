@@ -31,7 +31,8 @@ def metadata_topic_building_count():
             "description": (
                 "All buildings as defined by all objects tagged with 'building=*'."
             ),
-            "endpoint": "elements/count",
+            "endpoint": "elements",
+            "aggregation_type": "count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": [
                 "mapping-saturation",
@@ -106,7 +107,8 @@ def metadata_topic_minimal():
             "key": "minimal",
             "name": "Minimal",
             "description": "A minimal topic definition for testing purposes",
-            "endpoint": "elements/count",
+            "endpoint": "elements",
+            "aggregation_type": "count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": ["minimal"],
             "ratio_filter": None,  # TODO: Should not be in response if None
