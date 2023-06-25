@@ -40,6 +40,8 @@
 - api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
 - add quality dimensions to indicators ([#561])
 - add project names and descriptions ([#563])
+- api: allow multiple projects per topic/indicator/report ([#601])
+- api: add possibility to query all metadata (independent of project) ([#601])
 
 ### Other Changes
 
@@ -150,6 +152,7 @@
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
+[#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
 
 ## 0.14.2
 
