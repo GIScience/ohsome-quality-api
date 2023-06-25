@@ -349,6 +349,8 @@ async def post_report(
 )
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
     result = {
         "topics": get_topic_definitions(project=project),
         "quality-dimensions": get_quality_dimensions(),
@@ -370,6 +372,8 @@ async def metadata_topic(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> TopicMetadataResponse:
     """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
     return TopicMetadataResponse(result=get_topic_definitions(project=project))
 
 
@@ -439,6 +443,8 @@ async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
+    if project == ProjectEnum.all:
+        project = None
     return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
 
 
@@ -470,6 +476,8 @@ async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
+    if project == ProjectEnum.all:
+        project = None
     return ReportMetadataResponse(result=get_report_definitions(project=project))
 
 

@@ -1,3 +1,10 @@
+from ohsome_quality_analyst.api.request_models import (
+    IndicatorEnum,
+    ReportEnum,
+    TopicEnum,
+)
+
+
 def test_metadata(
     client,
     response_template,
@@ -77,3 +84,21 @@ def test_project_misc(
     assert len(result["indicators"]) > 0
     # check reports result
     assert len(result["reports"]) > 0
+
+
+def test_project_all(
+    client,
+    response_template,
+):
+    response = client.get("/metadata?project=all")
+    assert response.status_code == 200
+
+    content = response.json()
+    result = content.pop("result")
+    assert content == response_template
+    # check topics result
+    assert len(result["topics"]) == len(TopicEnum)
+    # check indicators result
+    assert len(result["indicators"]) == len(IndicatorEnum)
+    # check reports result
+    assert len(result["reports"]) == len(ReportEnum)
