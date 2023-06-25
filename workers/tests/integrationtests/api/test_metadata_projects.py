@@ -6,6 +6,8 @@ def test_metadata_projects(client, response_template, metadata_project_core):
     result = content.pop("result")
     assert content == response_template
     assert metadata_project_core["core"] == result["core"]
+    # result shouldn't contain the all key
+    assert "all" not in result
 
 
 def test_metadata_projects_by_key(client, response_template, metadata_project_core):
