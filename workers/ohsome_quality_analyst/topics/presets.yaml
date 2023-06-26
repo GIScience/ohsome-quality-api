@@ -5,7 +5,7 @@
 
 ### CORE TOPICS ###
 
-building_count:
+building-count:
   name: Building Count
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
@@ -19,7 +19,7 @@ building_count:
   projects:
     - core
 
-building_area:
+building-area:
   name: Building Area
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
@@ -31,7 +31,7 @@ building_area:
   projects:
     - core
 
-major_roads_count:
+major-roads-count:
   name: Major Roads Count
   description: >-
     The road network defined by all objects which hold the principal tags for
@@ -51,7 +51,7 @@ major_roads_count:
   projects:
     - core
 
-major_roads_length:
+major-roads-length:
   name: Major Roads Length
   description: >-
     The road network defined by all objects which hold the principal tags for
@@ -72,7 +72,7 @@ major_roads_length:
   projects:
     - core
 
-railway_length:
+railway-length:
   name: Railways
   description: >-
     Railway networks.
@@ -194,7 +194,7 @@ doctors:
   projects:
     - core
 
-bus_stops:
+bus-stops:
   name: Bus Stops
   description: Count of bus stops.
   endpoint: elements/count
@@ -206,7 +206,7 @@ bus_stops:
   projects:
     - core
 
-tram_stops:
+tram-stops:
   name: Tram Stops
   description: Count of schools.
   endpoint: elements/count
@@ -218,7 +218,7 @@ tram_stops:
   projects:
     - core
 
-subway_stations:
+subway-stations:
   name: Subway Stations
   description: Count of subway stops.
   endpoint: elements/count
@@ -278,7 +278,7 @@ forests:
   projects:
     - core
 
-fitness_centres:
+fitness-centres:
   name: Fitness Centres
   description: Count of fitness centres.
   endpoint: elements/count
@@ -290,7 +290,7 @@ fitness_centres:
   projects:
     - core
 
-fire_stations:
+fire-stations:
   name: Fire Stations
   description: Count of firestations.
   endpoint: elements/count
@@ -347,7 +347,7 @@ landmarks:
 
 ### MAPACTION PROJECT ###
 
-mapaction_settlements_count:
+mapaction-settlements-count:
   name: MapAction Settlements Count
   description: >-
     Number of settlements (cities)
@@ -359,7 +359,7 @@ mapaction_settlements_count:
   projects:
     - mapaction
 
-mapaction_capital_city_count:
+mapaction-capital-city-count:
   name: MapAction Capital City Count
   description: >-
     Number of capital cities
@@ -369,7 +369,7 @@ mapaction_capital_city_count:
   projects:
     - mapaction
 
-mapaction_rail_length:
+mapaction-rail-length:
   name: MapAction Rail Length
   description: >-
     Length of objects identified as rails (large railways)
@@ -381,7 +381,7 @@ mapaction_rail_length:
   projects:
     - mapaction
 
-mapaction_major_roads_length:
+mapaction-major-roads-length:
   name: MapAction Major Roads length
   description: >-
     Length of objects identified as major roads (primary, motorway and trunk)
@@ -393,7 +393,7 @@ mapaction_major_roads_length:
   projects:
     - mapaction
 
-mapaction_lakes_count:
+mapaction-lakes-count:
   name: MapAction Lakes Count
   description: >-
     Number of objects identified as lakes, lagoons and reservoirs
@@ -404,7 +404,7 @@ mapaction_lakes_count:
   projects:
     - mapaction
 
-mapaction_lakes_area:
+mapaction-lakes-area:
   name: MapAction Lakes Area
   description: >-
     Area of objects identified as lakes, lagoons and reservoirs
@@ -415,7 +415,7 @@ mapaction_lakes_area:
   projects:
     - mapaction
 
-mapaction_rivers_length:
+mapaction-rivers-length:
   name: MapAction Rivers Length
   description: >-
     Length of objects identified as rivers (or riverbanks)
@@ -453,7 +453,7 @@ lulc:
 
 ### EXPANSE PROJECT ###
 
-local_food_shops:
+local-food-shops:
   name: Local food shops
   description: Count of local food shops
   endpoint: elements/count
@@ -464,7 +464,7 @@ local_food_shops:
   projects:
     - expanse
 
-fast_food_restaurants:
+fast-food-restaurants:
   name: Fast food restaurants
   description: Count of fast food restaurants
   endpoint: elements/count
@@ -486,7 +486,7 @@ restaurants:
   projects:
     - expanse
 
-convenience_stores:
+convenience-stores:
   name: Convenience stores
   description: Count of convenience stores
   endpoint: elements/count
@@ -497,7 +497,7 @@ convenience_stores:
   projects:
     - expanse
 
-pubs_and_biergartens:
+pubs-and-biergartens:
   name: Pubs and biergartens
   description: Count of pubs and biergartens
   endpoint: elements/count
@@ -508,7 +508,7 @@ pubs_and_biergartens:
   projects:
     - expanse
 
-alcohol_and_beverages:
+alcohol-and-beverages:
   name: Alcohol and beverages
   description: Count of shops selling alcohol
   endpoint: elements/count
@@ -519,7 +519,7 @@ alcohol_and_beverages:
   projects:
     - expanse
 
-sweets_and_pasteries:
+sweets-and-pasteries:
   name: Sweets and pasteries
   description: Count of shops selling sweets and pasteries
   endpoint: elements/count
@@ -532,7 +532,7 @@ sweets_and_pasteries:
 
 ### LAND-USE LAYERS (CORINE PROJECT) ###
 
-clc_arable_land_area:
+clc-arable-land-area:
   name: Arable Land CLC
   description: >-
     Selected features for Corine Land Cover Category "Arable Land" (level 2) in Agriculture.
@@ -544,7 +544,7 @@ clc_arable_land_area:
   projects:
     - corine-land-cover
 
-clc_permanent_crops_area:
+clc-permanent-crops-area:
   name: Permanent Crops CLC
   description: Selected features for Corine Land Cover Category "Permanent Crops" (level 2) in Agriculture.
   endpoint: elements/area
@@ -555,7 +555,7 @@ clc_permanent_crops_area:
   projects:
     - corine-land-cover
 
-clc_pastures_area:
+clc-pastures-area:
   name: Pastures CLC
   description: Selected features for Corine Land Cover Category "Pastures" (level 2) in Agriculture.
   endpoint: elements/area
@@ -566,7 +566,7 @@ clc_pastures_area:
   projects:
     - corine-land-cover
 
-clc_forest_area:
+clc-forest-area:
   name: Forests CLC
   description: Selected features for Corine Land Cover Category "Forests" (level 2) in Seminatural Land.
   endpoint: elements/area
@@ -578,7 +578,7 @@ clc_forest_area:
   projects:
     - corine-land-cover
 
-clc_leaf_type:
+clc-leaf-type:
   name: Leaf Types of Forests CLC
   description: frequency of forests according to Corine Land Cover Category "Forests" (level 2) tagged with Leaf Type.
   endpoint: elements/area
@@ -594,7 +594,7 @@ clc_leaf_type:
   projects:
     - corine-land-cover
 
-clc_shrub_area:
+clc-shrub-area:
   name: Shrubs CLC
   description: Selected features for Corine Land Cover Category "Shrubs" (level 2) in Seminatural Land.
   endpoint: elements/area
@@ -605,7 +605,7 @@ clc_shrub_area:
   projects:
     - corine-land-cover
 
-clc_open_spaces_area:
+clc-open-spaces-area:
   name: Open Spaces CLC
   description: Selected features for Corine Land Cover Category "Open Spaces" (level 2) in Seminatural Land.
   endpoint: elements/area
@@ -617,7 +617,7 @@ clc_open_spaces_area:
   projects:
     - corine-land-cover
 
-clc_wetland_area:
+clc-wetland-area:
   name: Wetlands CLC
   description: Selected features for Corine Land Cover Category "Wetlands" (level 1).
   endpoint: elements/area
@@ -628,7 +628,7 @@ clc_wetland_area:
   projects:
     - corine-land-cover
 
-clc_water_area:
+clc-water-area:
   name: Water CLC
   description: Selected features for Corine Land Cover Category "Water" (level 1), excluding waterways.
   endpoint: elements/area
@@ -642,7 +642,7 @@ clc_water_area:
   projects:
     - corine-land-cover
 
-clc_waterway_len:
+clc-waterway-len:
   name: Waterways CLC
   description: Selected features for Corine Land Cover Category "Waterways" (level 2) in Water.
   endpoint: elements/length
@@ -667,7 +667,7 @@ minimal:
 
 ### EXPERIMENTAL TOPICS ###
 
-infrastructure_lines:
+infrastructure-lines:
   name: Infrastructure Lines
   description: Line objects related to infrastructure
   endpoint: elements/length
