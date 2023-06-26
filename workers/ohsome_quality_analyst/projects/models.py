@@ -10,3 +10,4 @@ class Project(BaseModel):
         title = "Project"
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True
