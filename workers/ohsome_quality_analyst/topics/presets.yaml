@@ -11,7 +11,7 @@ building_count:
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements/count
   filter: building=* and building!=no and geometry:polygon
-  ratio_filter: building=* and building!=no and geometry:polygon and height=* or building:levels=*
+  ratio-filter: building=* and building!=no and geometry:polygon and height=* or building:levels=*
   indicators:
     - mapping-saturation
     - currentness
@@ -42,7 +42,7 @@ major_roads_count:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way
-  ratio_filter: >-
+  ratio-filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
@@ -62,7 +62,7 @@ major_roads_length:
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way
-  ratio_filter: >-
+  ratio-filter: >-
     highway in (motorway, trunk, motorway_link, trunk_link, primary,
     primary_link, secondary, secondary_link, tertiary, tertiary_link,
     unclassified, residential) and type:way and name=*
@@ -584,7 +584,7 @@ clc_leaf_type:
   endpoint: elements/area
   filter: >-
     (natural=wood or landuse=forest) and geometry:polygon
-  ratio_filter: >-
+  ratio-filter: >-
     (natural=wood or landuse=forest) and
     leaf_type in (broadleaved, needleleaved, mixed) and geometry:polygon
   indicators:
