@@ -5,7 +5,7 @@ map-action-poc:
     - experimental
   description: >-
     This report is a proof of concept (POC) data quality report for a MapAction country overview product.
-  label-description:
+  label_description:
     red: >-
       The data quality in this region is low.
       It is very likely that this regions has not been completely

@@ -8,7 +8,7 @@ minimal:
     Mapping Saturation and Currentness.
     It's main function is to test the interactions between
     database, api and dashboard.
-  label-description:
+  label_description:
     red: >-
       The data quality in this region is low.
       It is very likely that this regions has not been completely

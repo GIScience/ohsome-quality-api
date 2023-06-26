@@ -3,12 +3,12 @@ density:
   name: Density
   projects:
     - experimental
-  quality-dimension: none
+  quality_dimension: none
   description: >-
       The density of features.
       It is calculated by the number of features 
       divided by the area in square-kilometers.
-  label-description:
+  label_description:
     red: >-
       It is probably hard to orientate on OSM-based sketchmaps of this region. 
       There are just few orientation providing features available, 
@@ -21,7 +21,7 @@ density:
       It is probably easy to orientate on OSM-based sketchmaps of this region.
     undefined: >-
       The quality level could not be calculated for this indicator.
-  result-description: >-
+  result_description: >-
     The density of landmarks 
     (points of reference, e.g. waterbodies, supermarkets, churches, bus stops) 
     is $result features per sqkm.

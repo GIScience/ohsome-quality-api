@@ -353,7 +353,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
         project = None
     result = {
         "topics": get_topic_definitions(project=project),
-        "quality-dimensions": get_quality_dimensions(),
+        "quality_dimensions": get_quality_dimensions(),
         "projects": get_projects(),
         "indicators": get_indicator_definitions(project=project),
         "reports": get_report_definitions(project=project),
