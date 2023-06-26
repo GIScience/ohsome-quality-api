@@ -147,15 +147,15 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`feature-id`)."
+            "`featureId`)."
         ),
         "value": {
             "topic": "building-count",
             "dataset": "regions",
-            "feature-id": 3,
-            "fid-field": "ogc_fid",
-            "include-svg": False,
-            "include-html": False,
+            "featureId": 3,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
@@ -247,8 +247,8 @@ INDICATOR_EXAMPLES = {
                     ]
                 },
             },
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
@@ -257,14 +257,14 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
         ),
         "value": {
             "dataset": "regions",
-            "feature-id": 12,
-            "fid-field": "ogc_fid",
-            "include-svg": False,
-            "include-html": False,
+            "featureId": 12,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
@@ -286,8 +286,8 @@ REPORT_EXAMPLES = {
                     ],
                 },
             },
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },

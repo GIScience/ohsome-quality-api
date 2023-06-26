@@ -73,8 +73,8 @@ class TestApiRequestModels(unittest.TestCase):
         param_keys = (
             "topic",
             "dataset",
-            "feature-id",
-            "fid-field",
+            "featureId",
+            "fidField",
             "bpolys",
         )
         param_values = (
@@ -97,13 +97,13 @@ class TestApiRequestModels(unittest.TestCase):
             {
                 "topic": "minimal",
                 "dataset": "regions",
-                "feature-id": "3",
+                "featureId": "3",
             },
             {
                 "topic": "minimal",
                 "dataset": "regions",
-                "feature-id": "3",
-                "fid-field": "ogc_fid",
+                "featureId": "3",
+                "fidField": "ogc_fid",
             },
             {
                 "topic": "minimal",

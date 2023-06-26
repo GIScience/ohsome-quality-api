@@ -108,8 +108,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-svg": True,
+            "featureId": self.feature_id,
+            "includeSvg": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -120,8 +120,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-svg": False,
+            "featureId": self.feature_id,
+            "includeSvg": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -132,7 +132,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -155,8 +155,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-html": True,
+            "featureId": self.feature_id,
+            "includeHtml": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -167,8 +167,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-html": False,
+            "featureId": self.feature_id,
+            "includeHtml": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -179,7 +179,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -190,7 +190,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -203,7 +203,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
             "flatten": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
@@ -215,7 +215,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
             "flatten": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
@@ -228,7 +228,7 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -239,8 +239,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-data": True,
+            "featureId": self.feature_id,
+            "includeData": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -251,8 +251,8 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-data": False,
+            "featureId": self.feature_id,
+            "includeData": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
