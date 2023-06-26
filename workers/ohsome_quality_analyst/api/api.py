@@ -157,7 +157,7 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 async def custom_swagger_ui_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_swagger_ui_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - Swagger UI",
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
@@ -175,7 +175,7 @@ async def swagger_ui_redirect():
 async def redoc_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - ReDoc",
         redoc_js_url=root_path + "/static/redoc.standalone.js",
         redoc_favicon_url=root_path + "/static/favicon-32x32.png",
