@@ -22,8 +22,8 @@ def test_metadata(
     assert content == response_template
     # check topics result
     assert (
-        metadata_topic_building_count["building_count"]
-        == result["topics"]["building_count"]
+        metadata_topic_building_count["building-count"]
+        == result["topics"]["building-count"]
     )
     # check quality dimensions result
     assert (

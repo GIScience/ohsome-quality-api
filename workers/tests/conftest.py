@@ -40,7 +40,7 @@ def topic_key_minimal() -> str:
 
 @pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
-    return "building_count"
+    return "building-count"
 
 
 @pytest.fixture(scope="class")

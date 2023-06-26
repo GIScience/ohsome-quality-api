@@ -71,7 +71,7 @@ class BaseTopicName(BaseModel):
         ...,
         title="Topic Key",
         alias="topic",
-        example="building_count",
+        example="building-count",
     )
 
 
@@ -150,7 +150,7 @@ INDICATOR_EXAMPLES = {
             "`feature-id`)."
         ),
         "value": {
-            "topic": "building_count",
+            "topic": "building-count",
             "dataset": "regions",
             "feature-id": 3,
             "fid-field": "ogc_fid",
@@ -162,7 +162,7 @@ INDICATOR_EXAMPLES = {
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
-            "topic": "building_count",
+            "topic": "building-count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {

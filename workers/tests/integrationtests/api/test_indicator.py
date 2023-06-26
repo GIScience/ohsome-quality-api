@@ -90,11 +90,11 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_invalid_set_of_arguments(self):
         for parameters in (
             {
-                "topic": "building_count",
+                "topic": "building-count",
                 "dataset": "regions",
             },
             {
-                "topic": "building_count",
+                "topic": "building-count",
                 "feature_id": "3",
             },
         ):

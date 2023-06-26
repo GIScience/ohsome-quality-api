@@ -13,8 +13,8 @@ class Minimal(BaseReport):
     ):
         super().__init__(
             indicator_topic=(
-                IndicatorTopic("mapping-saturation", "building_count"),
-                IndicatorTopic("currentness", "building_count"),
+                IndicatorTopic("mapping-saturation", "building-count"),
+                IndicatorTopic("currentness", "building-count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

@@ -41,7 +41,7 @@ class TestOhsomeClientQuery(TestCase):
 
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.topic = get_topic_fixture("building_count")
+        self.topic = get_topic_fixture("building-count")
 
     def test_valid_response(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:
@@ -192,8 +192,8 @@ class TestOhsomeClientQuery(TestCase):
 class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
-        self.topic = get_topic_fixture("building_count")
-        self.ratio_topic = get_topic_fixture("building_count")
+        self.topic = get_topic_fixture("building-count")
+        self.ratio_topic = get_topic_fixture("building-count")
 
     def test(self) -> None:
         ohsome_api = self.ohsome_api
@@ -227,7 +227,7 @@ class TestOhsomeClientBuildData(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.topic = get_topic_fixture("building_count")
+        self.topic = get_topic_fixture("building-count")
 
     def test_feature(self) -> None:
         schema = Schema(
@@ -274,7 +274,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter2": str,
             }
         )
-        topic = get_topic_fixture("building_count")
+        topic = get_topic_fixture("building-count")
         data = ohsome_client.build_data_dict(topic, self.bpolys, ratio=True)
         self.assertTrue(schema.is_valid(data))
 
@@ -287,7 +287,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "time": str,
             }
         )
-        topic = get_topic_fixture("building_count")
+        topic = get_topic_fixture("building-count")
         data = ohsome_client.build_data_dict(
             topic, self.bpolys, time="2014-01-01", ratio=True
         )

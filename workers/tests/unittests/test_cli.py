@@ -59,7 +59,7 @@ class TestCliUnit(unittest.TestCase):
                 "-d",
                 "regions",
                 "-l",
-                "building_count",
+                "building-count",
             ],
             input="Y\n",
         )
