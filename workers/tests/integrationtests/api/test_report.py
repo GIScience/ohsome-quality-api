@@ -77,7 +77,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-svg": True,
+            "includeSvg": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -87,7 +87,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-svg": False,
+            "includeSvg": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -105,7 +105,7 @@ class TestApiReport(unittest.TestCase):
     def test_indicator_dataset_invalid(self):
         parameters = {
             "dataset": "foo",
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         self.assertEqual(response.status_code, 422)
@@ -119,7 +119,7 @@ class TestApiReport(unittest.TestCase):
                 "dataset": "regions",
             },
             {
-                "feature-id": "3",
+                "featureId": "3",
             },
         ):
             response = self.client.post(ENDPOINT, json=parameters)
@@ -132,7 +132,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-html": True,
+            "includeHtml": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()

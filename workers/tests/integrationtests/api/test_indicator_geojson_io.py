@@ -128,8 +128,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include-svg": True,
-            "include-html": True,
+            "includeSvg": True,
+            "includeHtml": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -138,8 +138,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()

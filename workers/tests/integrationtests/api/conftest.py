@@ -13,7 +13,7 @@ def client():
 @pytest.fixture
 def response_template():
     return {
-        "api-version": oqt_version,
+        "apiVersion": oqt_version,
         "attribution": {
             "url": (
                 "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
@@ -38,7 +38,7 @@ def metadata_topic_building_count():
                 "currentness",
                 "attribute-completeness",
             ],
-            "ratio-filter": (
+            "ratioFilter": (
                 "building=* and building!=no and geometry:polygon and height=* or "
                 + "building:levels=*"
             ),
@@ -66,7 +66,7 @@ def metadata_indicator_mapping_saturation():
                 "mapaction",
                 "sketchmap",
             ],
-            "quality-dimension": "completeness",
+            "qualityDimension": "completeness",
         }
     }
 
@@ -117,7 +117,7 @@ def metadata_topic_minimal():
             "endpoint": "elements/count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": ["minimal"],
-            "ratio-filter": None,  # TODO: Should not be in response if None
+            "ratioFilter": None,  # TODO: Should not be in response if None
             "projects": ["misc"],
             "source": None,  # TODO: Should not be in response if None
         }
@@ -131,7 +131,7 @@ def metadata_indicator_minimal():
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
             "projects": ["misc"],
-            "quality-dimension": "minimal",
+            "qualityDimension": "minimal",
         }
     }
 
