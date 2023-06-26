@@ -38,6 +38,7 @@ class TopicDefinition(BaseTopic):
         alias_generator = snake_to_hyphen
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True
 
 
 class TopicData(BaseTopic):
