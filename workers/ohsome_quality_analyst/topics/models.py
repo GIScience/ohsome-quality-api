@@ -10,7 +10,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
 class BaseTopic(BaseModel):
@@ -35,7 +35,7 @@ class TopicDefinition(BaseTopic):
     ratio_filter: Optional[str] = None
 
     class Config:
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         frozen = True
         extra = "forbid"
         allow_population_by_field_name = True

@@ -24,7 +24,7 @@ from ohsome_quality_analyst.definitions import (
     get_topic_keys,
 )
 from ohsome_quality_analyst.topics.models import TopicData
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 from ohsome_quality_analyst.utils.validators import validate_geojson
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
@@ -43,7 +43,7 @@ class BaseIndicator(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         # Allow population by field name not just by alias name
         allow_population_by_field_name = True
         allow_mutation = False
@@ -59,7 +59,7 @@ class BaseReport(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         # Allow population by field name not just by alias name
         allow_population_by_field_name = True
         allow_mutation = False

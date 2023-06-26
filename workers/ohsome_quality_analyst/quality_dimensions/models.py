@@ -10,3 +10,4 @@ class QualityDimension(BaseModel):
         title = "Topic"
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True

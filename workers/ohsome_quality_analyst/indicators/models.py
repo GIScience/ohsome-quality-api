@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
 class IndicatorMetadata(BaseModel):
@@ -19,10 +19,11 @@ class IndicatorMetadata(BaseModel):
     quality_dimension: QualityDimensionEnum
 
     class Config:
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         title = "Metadata"
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True
 
 
 class Result(BaseModel):
