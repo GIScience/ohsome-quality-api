@@ -20,6 +20,7 @@
 - homogenize API response schema for errors ([#562])
 - remove website from repository ([#578])
 - api: remove `/regions` endpoint ([#583])
+- api: use lower camel case instead of hyphen-case for all non-dynamic JSON keys (e.g. not indicator keys) ([#603])
 
 ### Bug Fixes
 
@@ -102,10 +103,6 @@
 | old API parameter | new API parameter |
 | ---               | ---               |
 | `layerKey`        | `topic`           |
-| `includeSvg`      | `include-svg`     |
-| `includeHtml`     | `include-html`    |
-| `featureId`       | `feature-id`      |
-| `fidField`        | `indicators`      |
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
@@ -153,6 +150,7 @@
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
 [#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
+[#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 
 ## 0.14.2
 
