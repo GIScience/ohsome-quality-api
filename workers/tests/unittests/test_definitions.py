@@ -62,7 +62,7 @@ class TestDefinitions(unittest.TestCase):
         self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
 
     def test_get_valid_indicators(self):
-        indicators = definitions.get_valid_indicators("building_count")
+        indicators = definitions.get_valid_indicators("building-count")
         self.assertEqual(
             indicators,
             (

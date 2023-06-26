@@ -23,7 +23,7 @@ def feature():
 
 @pytest.fixture(scope="class")
 def topic():
-    return get_topic_fixture("building_area")
+    return get_topic_fixture("building-area")
 
 
 class TestPreprocess:

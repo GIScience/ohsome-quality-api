@@ -157,7 +157,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         """Test parameter Topic with data attached.
 
         Data are the ohsome API response result values for Heidelberg and the topic
-        `building_count`.
+        `building-count`.
         """
         timestamp_objects = [
             datetime(2020, 7, 17, 9, 10, 0) + timedelta(days=1 * x)

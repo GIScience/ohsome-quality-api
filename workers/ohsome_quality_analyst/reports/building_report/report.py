@@ -12,10 +12,10 @@ class BuildingReport(BaseReport):
     ):
         super().__init__(
             indicator_topic=(
-                IndicatorTopic("mapping-saturation", "building_count"),
-                IndicatorTopic("currentness", "building_count"),
-                IndicatorTopic("attribute-completeness", "building_count"),
-                IndicatorTopic("building-completeness", "building_area"),
+                IndicatorTopic("mapping-saturation", "building-count"),
+                IndicatorTopic("currentness", "building-count"),
+                IndicatorTopic("attribute-completeness", "building-count"),
+                IndicatorTopic("building-completeness", "building-area"),
             ),
             feature=feature,
             blocking_red=blocking_red,

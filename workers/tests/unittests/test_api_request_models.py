@@ -27,7 +27,7 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_topic_key_valid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name
-        request_models.BaseTopicName(topic="building_count")
+        request_models.BaseTopicName(topic="building-count")
 
     def test_topic_key_invalid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name

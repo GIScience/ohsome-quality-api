@@ -7,11 +7,11 @@ class RemoteMappingLevelOne(BaseReport):
         super().__init__(
             indicator_topic=(
                 # TODO: Uncomment once implemented
-                # IndicatorTopic("GufComparison"], "building_area"),
-                IndicatorTopic("MappingSaturation", "building_count"),
-                IndicatorTopic("MappingSaturation", "major_roads_length"),
-                IndicatorTopic("Currentness", "building_count"),
-                IndicatorTopic("Currentness", "major_roads_count"),
+                # IndicatorTopic("GufComparison"], "building-area"),
+                IndicatorTopic("MappingSaturation", "building-count"),
+                IndicatorTopic("MappingSaturation", "major-roads-length"),
+                IndicatorTopic("Currentness", "building-count"),
+                IndicatorTopic("Currentness", "major-roads-count"),
             )
         )
 
