@@ -5,7 +5,7 @@ Note:
     in the `presets.yaml` file in the `topic` module.
 """
 
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel
 
@@ -25,7 +25,7 @@ class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: str
-    aggregation_type: str
+    aggregation_type: Literal["area", "count", "length", "perimeter"]
     filter: str
     indicators: List[str]
     project: str

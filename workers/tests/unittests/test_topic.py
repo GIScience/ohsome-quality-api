@@ -28,7 +28,7 @@ def test_topic_definition():
         indicators=["mapping-saturation"],
         project="core",
         endpoint="endpoint",
-        aggregation_type="aggregation_type",
+        aggregation_type="count",
         filter="filter",
     )
     TopicDefinition(
@@ -38,7 +38,7 @@ def test_topic_definition():
         indicators=["mapping-saturation"],
         project="core",
         endpoint="endpoint",
-        aggregation_type="aggregation_type",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -49,7 +49,7 @@ def test_topic_definition():
         indicators=["mapping-saturation", "minimal"],
         project="core",
         endpoint="endpoint",
-        aggregation_type="aggregation_type",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -60,7 +60,7 @@ def test_topic_definition():
         indicators=[],
         project="core",
         endpoint="endpoint",
-        aggregation_type="aggregation_type",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -71,7 +71,7 @@ def test_topic_definition():
         indicators=["mapping-saturation"],
         project="core",
         endpoint="endpoint",
-        aggregation_type="aggregation_type",
+        aggregation_type="count",
         filter="filter",
         source="source",
         ratio_filter="ration_filter",
