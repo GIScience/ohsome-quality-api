@@ -64,7 +64,6 @@ RESPONSE_SCHEMA_GEOJSON = Schema(
                 "geometry": dict,
                 Optional("id"): Or(str, int),
                 "properties": {
-                    Optional("id"): Or(str, int),
                     "metadata": {
                         "name": str,
                         "description": str,
@@ -145,7 +144,6 @@ def test_minimal_fc(
     assert schema.is_valid(response.json())
 
 
-@oqt_vcr.use_cassette
 def test_custom_data(client, bpolys, headers, schema):
     """Test parameter Topic with custom data attached."""
     endpoint = ENDPOINT + "mapping-saturation"
@@ -192,7 +190,7 @@ def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
     parameters = {
         "topic": topic_key_minimal,
         "bpolys": bpolys,
-        "include_svg": True,
+        "includeSvg": True,
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
@@ -209,7 +207,7 @@ def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
     parameters = {
         "topic": topic_key_minimal,
         "bpolys": bpolys,
-        "include_svg": False,
+        "includeSvg": False,
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
