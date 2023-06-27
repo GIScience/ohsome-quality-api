@@ -29,7 +29,6 @@ Check out the interactive [API documentation](https://oqt.ohsome.org/api/docs) a
 
 Contributions of any form are more than welcome! Please take a look at our [contributing
 guidelines](CONTRIBUTING.md) for details on our git workflow and style guide.
-on.
 
 ## Development
 
