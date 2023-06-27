@@ -94,8 +94,8 @@ async def _(
 ) -> FeatureCollection:
     """Create an indicator as GeoJSON object."""
     indicator = await create_indicator(parameters, key, force)
-    indicator.as_feature(parameters.flatten, parameters.include_data)
-    return FeatureCollection(features=[indicator.feature])
+    feature = indicator.as_feature(parameters.flatten, parameters.include_data)
+    return FeatureCollection(features=[feature])
 
 
 async def create_report_as_geojson(

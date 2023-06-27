@@ -49,7 +49,7 @@ class BaseIndicator(metaclass=ABCMeta):
         result = self.result.dict()  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         result["class"] = result.pop("class_")
-        self.feature.properties = {
+        properties = {
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
@@ -66,21 +66,21 @@ class BaseIndicator(metaclass=ABCMeta):
             **self.feature.properties,
         }
         if not isinstance(self.topic, TopicData):
-            self.feature.properties["topic"]["project"] = self.topic.project
+            properties["topic"]["projects"] = self.topic.projects
         if include_data:
-            self.feature.properties["data"] = self.data
+            properties["data"] = self.data
         if flatten:
-            self.feature.properties = flatten_dict(self.feature.properties)
+            properties = flatten_dict(properties)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,
                 geometry=self.feature.geometry,
-                properties=self.feature.properties,
+                properties=properties,
             )
         else:
             return Feature(
                 geometry=self.feature.geometry,
-                properties=self.feature.properties,
+                properties=properties,
             )
 
     @property
