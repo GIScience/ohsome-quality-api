@@ -24,7 +24,7 @@ from ohsome_quality_analyst.definitions import (
     get_topic_keys,
 )
 from ohsome_quality_analyst.topics.models import TopicData
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 from ohsome_quality_analyst.utils.validators import validate_geojson
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
@@ -43,7 +43,7 @@ class BaseIndicator(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         # Allow population by field name not just by alias name
         allow_population_by_field_name = True
         allow_mutation = False
@@ -59,7 +59,7 @@ class BaseReport(BaseModel):
     class Config:
         """Pydantic config class."""
 
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         # Allow population by field name not just by alias name
         allow_population_by_field_name = True
         allow_mutation = False
@@ -71,7 +71,7 @@ class BaseTopicName(BaseModel):
         ...,
         title="Topic Key",
         alias="topic",
-        example="building_count",
+        example="building-count",
     )
 
 
@@ -147,22 +147,22 @@ INDICATOR_EXAMPLES = {
     "OQT AOI": {
         "summary": (
             "Request an Indicator for an AOI defined by OQT (`dataset` and "
-            "`feature-id`)."
+            "`featureId`)."
         ),
         "value": {
-            "topic": "building_count",
+            "topic": "building-count",
             "dataset": "regions",
-            "feature-id": 3,
-            "fid-field": "ogc_fid",
-            "include-svg": False,
-            "include-html": False,
+            "featureId": 3,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
     "Custom AOI": {
         "summary": "Request an Indicator for a custom AOI (`bpolys`).",
         "value": {
-            "topic": "building_count",
+            "topic": "building-count",
             "bpolys": {
                 "type": "Feature",
                 "geometry": {
@@ -247,8 +247,8 @@ INDICATOR_EXAMPLES = {
                     ]
                 },
             },
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
@@ -257,14 +257,14 @@ INDICATOR_EXAMPLES = {
 REPORT_EXAMPLES = {
     "OQT AOI": {
         "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `feature-id`)."
+            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
         ),
         "value": {
             "dataset": "regions",
-            "feature-id": 12,
-            "fid-field": "ogc_fid",
-            "include-svg": False,
-            "include-html": False,
+            "featureId": 12,
+            "fidField": "ogc_fid",
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },
@@ -286,8 +286,8 @@ REPORT_EXAMPLES = {
                     ],
                 },
             },
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
             "flatten": False,
         },
     },

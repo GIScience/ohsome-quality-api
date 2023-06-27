@@ -1,5 +1,7 @@
 import pytest
 
+from ohsome_quality_analyst.api.request_models import IndicatorEnum
+
 
 def test(client, response_template, metadata_indicator_mapping_saturation):
     response = client.get("/metadata/indicators/")
@@ -42,6 +44,19 @@ def test_project_core(client, response_template, metadata_indicator_mapping_satu
         == result["mapping-saturation"]
     )
     assert "minimal" not in result.keys()
+
+
+def test_project_all(
+    client,
+    response_template,
+):
+    response = client.get("/metadata/indicators/?project=all")
+    assert response.status_code == 200
+
+    content = response.json()
+    result = content.pop("result")
+    assert content == response_template
+    assert len(result) == len(IndicatorEnum)
 
 
 @pytest.mark.skip(reason="Not yet implemented")

@@ -10,6 +10,7 @@ import yaml
 
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
@@ -145,26 +146,28 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
-def get_topic_definitions(project: str = None) -> dict[str, TopicDefinition]:
+def get_topic_definitions(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
     topics = load_topic_definitions()
     if project is not None:
-        return {k: v for k, v in topics.items() if v.project == project}
+        return {k: v for k, v in topics.items() if project in v.projects}
     else:
         return topics
 
 
-def get_indicator_definitions(project: str = None) -> dict[str, IndicatorMetadata]:
+def get_indicator_definitions(
+    project: ProjectEnum = None,
+) -> dict[str, IndicatorMetadata]:
     indicators = load_metadata("indicators")
     if project is not None:
-        return {k: v for k, v in indicators.items() if v.project == project}
+        return {k: v for k, v in indicators.items() if project in v.projects}
     else:
         return indicators
 
 
-def get_report_definitions(project: str = None) -> dict[str, ReportMetadata]:
+def get_report_definitions(project: ProjectEnum = None) -> dict[str, ReportMetadata]:
     reports = load_metadata("reports")
     if project is not None:
-        return {k: v for k, v in reports.items() if v.project == project}
+        return {k: v for k, v in reports.items() if project in v.projects}
     else:
         return reports
 

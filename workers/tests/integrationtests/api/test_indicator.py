@@ -11,8 +11,8 @@ from schema import Schema
 
 from ohsome_quality_analyst.api.api import app
 from tests.integrationtests.api.response_schema import (
+    get_featurecollection_schema,
     get_general_schema,
-    get_indicator_feature_schema,
 )
 from tests.integrationtests.utils import oqt_vcr
 
@@ -30,12 +30,12 @@ class TestApiIndicator(unittest.TestCase):
         self.fid_field = "ogc_fid"
 
         self.general_schema = get_general_schema()
-        self.feature_schema = get_indicator_feature_schema()
+        self.featurecollection_schema = get_featurecollection_schema()
 
     def run_tests(self, response) -> None:
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
-        for schema in (self.general_schema, self.feature_schema):
+        for schema in (self.general_schema, self.featurecollection_schema):
             self.validate(response.json(), schema)
 
     def validate(self, geojson: dict, schema: Schema) -> None:
@@ -90,11 +90,11 @@ class TestApiIndicator(unittest.TestCase):
     def test_indicator_invalid_set_of_arguments(self):
         for parameters in (
             {
-                "topic": "building_count",
+                "topic": "building-count",
                 "dataset": "regions",
             },
             {
-                "topic": "building_count",
+                "topic": "building-count",
                 "feature_id": "3",
             },
         ):
@@ -108,35 +108,38 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-svg": True,
+            "featureId": self.feature_id,
+            "includeSvg": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "svg" in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "svg" in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_svg_false(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-svg": False,
+            "featureId": self.feature_id,
+            "includeSvg": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "svg" not in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "svg" not in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_svg_default(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "svg" not in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "svg" not in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_invalid_topic(self):
@@ -155,108 +158,117 @@ class TestApiIndicator(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-html": True,
+            "featureId": self.feature_id,
+            "includeHtml": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "html" in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "html" in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_html_false(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-html": False,
+            "featureId": self.feature_id,
+            "includeHtml": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "html" not in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "html" not in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_html_default(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "html" not in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "html" not in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_flatten_default(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         # Check flat result value
-        assert "result.value" not in result["properties"]
-        assert "value" in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "result.value" not in feature["properties"]
+            assert "value" in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_flatten_true(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
             "flatten": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "result.value" in result["properties"]
+        for feature in result["features"]:
+            assert "result.value" in feature["properties"]
 
     @oqt_vcr.use_cassette
     def test_indicator_flatten_false(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
             "flatten": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "result.value" not in result["properties"]
-        assert "value" in result["properties"]["result"]
+        for feature in result["features"]:
+            assert "result.value" not in feature["properties"]
+            assert "value" in feature["properties"]["result"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_data_default(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "data" not in result["properties"]
+        for feature in result["features"]:
+            assert "data" not in feature["properties"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_data_true(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-data": True,
+            "featureId": self.feature_id,
+            "includeData": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "data" in result["properties"]
+        for feature in result["features"]:
+            assert "data" in feature["properties"]
 
     @oqt_vcr.use_cassette
     def test_indicator_include_data_false(self):
         parameters = {
             "topic": self.topic_key,
             "dataset": self.dataset,
-            "feature-id": self.feature_id,
-            "include-data": False,
+            "featureId": self.feature_id,
+            "includeData": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "data" not in result["properties"]
+        for feature in result["features"]:
+            assert "data" not in feature["properties"]
 
 
 if __name__ == "__main__":

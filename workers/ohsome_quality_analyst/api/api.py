@@ -157,7 +157,7 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 async def custom_swagger_ui_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_swagger_ui_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - Swagger UI",
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
@@ -175,7 +175,7 @@ async def swagger_ui_redirect():
 async def redoc_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - ReDoc",
         redoc_js_url=root_path + "/static/redoc.standalone.js",
         redoc_favicon_url=root_path + "/static/favicon-32x32.png",
@@ -349,12 +349,14 @@ async def post_report(
 )
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
     result = {
-        "topics": get_topic_definitions(project=project.value),
-        "quality-dimensions": get_quality_dimensions(),
+        "topics": get_topic_definitions(project=project),
+        "quality_dimensions": get_quality_dimensions(),
         "projects": get_projects(),
-        "indicators": get_indicator_definitions(project=project.value),
-        "reports": get_report_definitions(project=project.value),
+        "indicators": get_indicator_definitions(project=project),
+        "reports": get_report_definitions(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -370,7 +372,9 @@ async def metadata_topic(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> TopicMetadataResponse:
     """Get topics."""
-    return TopicMetadataResponse(result=get_topic_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return TopicMetadataResponse(result=get_topic_definitions(project=project))
 
 
 @app.get(
@@ -439,9 +443,9 @@ async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return IndicatorMetadataResponse(
-        result=get_indicator_definitions(project=project.value)
-    )
+    if project == ProjectEnum.all:
+        project = None
+    return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
 
 
 @app.get(
@@ -472,7 +476,9 @@ async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataResponse(result=get_report_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return ReportMetadataResponse(result=get_report_definitions(project=project))
 
 
 @app.get(

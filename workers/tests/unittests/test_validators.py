@@ -61,4 +61,4 @@ def test_validate_indicator_topic_combination():
 
 def test_validate_indicator_topic_combination_invalid():
     with pytest.raises(IndicatorTopicCombinationError):
-        validate_indicator_topic_combination("minimal", "building_count")
+        validate_indicator_topic_combination("minimal", "building-count")

@@ -53,20 +53,20 @@ class BaseIndicator(metaclass=ABCMeta):
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
-                "project": self.metadata.project,
+                "projects": self.metadata.projects,
                 "quality-dimension": self.metadata.quality_dimension,
             },
             "topic": {
                 "key": self.topic.key,
                 "name": self.topic.name,
                 "description": self.topic.description,
-                "project": None,  # Not every topic object has a project (TopicData)
+                "projects": None,  # Not every topic object has a project (TopicData)
             },
             "result": result,
             **self.feature.properties,
         }
         if not isinstance(self.topic, TopicData):
-            properties["topic"]["project"] = self.topic.project
+            properties["topic"]["projects"] = self.topic.projects
         if include_data:
             properties["data"] = self.data
         if flatten:

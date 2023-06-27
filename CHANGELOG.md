@@ -20,6 +20,8 @@
 - homogenize API response schema for errors ([#562])
 - remove website from repository ([#578])
 - api: remove `/regions` endpoint ([#583])
+- api: use lower camel case instead of hyphen-case for all non-dynamic JSON keys (e.g. not indicator keys) ([#603])
+- api: response of `indicator` is always a FeatureCollections ([#598])
 
 ### Bug Fixes
 
@@ -40,6 +42,8 @@
 - api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
 - add quality dimensions to indicators ([#561])
 - add project names and descriptions ([#563])
+- api: allow multiple projects per topic/indicator/report ([#601])
+- api: add possibility to query all metadata (independent of project) ([#601])
 
 ### Other Changes
 
@@ -71,7 +75,7 @@
 - build(poetry): add primary and supplemental source ([#576])
 - build: update `requests` to "^2.31.0" ([#576])
 - build: remove unused dependency `dacite` ([#576])
-- swagger: serve Swagger UI files not via CDN ([#581], [#593])
+- swagger: serve Swagger UI files not via CDN ([#581], [#593], [#605])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
 - split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
 
@@ -101,10 +105,6 @@
 | old API parameter | new API parameter |
 | ---               | ---               |
 | `layerKey`        | `topic`           |
-| `includeSvg`      | `include-svg`     |
-| `includeHtml`     | `include-html`    |
-| `featureId`       | `feature-id`      |
-| `fidField`        | `indicators`      |
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
@@ -151,7 +151,11 @@
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
+[#598]: https://github.com/GIScience/ohsome-quality-analyst/pull/598
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
+[#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
+[#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
+[#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605
 
 ## 0.14.2
 

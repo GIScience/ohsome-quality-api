@@ -1,13 +1,14 @@
 ---
 minimal:
   name: Minimal
-  project: misc
+  projects:
+    - misc
   description: >-
     This report shows the quality for two indicators:
     Mapping Saturation and Currentness.
     It's main function is to test the interactions between
     database, api and dashboard.
-  label-description:
+  label_description:
     red: >-
       The data quality in this region is low.
       It is very likely that this regions has not been completely

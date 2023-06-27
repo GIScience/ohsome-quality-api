@@ -16,7 +16,7 @@ class MultilevelCurrentness(BaseReport):
                 IndicatorTopic("currentness", "infrastructure_lines"),
                 IndicatorTopic("currentness", "poi"),
                 IndicatorTopic("currentness", "lulc"),
-                IndicatorTopic("currentness", "building_count"),
+                IndicatorTopic("currentness", "building-count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

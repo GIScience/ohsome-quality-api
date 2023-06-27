@@ -26,9 +26,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         self.endpoint = "/indicators/minimal"
         self.topic_key = "minimal"
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-
-        self.general_schema = get_general_schema()
         self.feature_schema = get_indicator_feature_schema()
+        self.general_schema = get_general_schema()
         self.featurecollection_schema = get_featurecollection_schema()
 
     def run_tests(self, response, schemata: Tuple[Schema]) -> None:
@@ -52,7 +51,7 @@ class TestApiIndicatorIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_feature(self):
         response = self.post_response(self.feature)
-        self.run_tests(response, (self.general_schema, self.feature_schema))
+        self.run_tests(response, (self.general_schema, self.featurecollection_schema))
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_featurecollection(self):
@@ -103,7 +102,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        assert "svg" in result["properties"]["result"]
+        for feat in result["features"]:
+            assert "svg" in feat["properties"]["result"]
 
         parameters = {
             "topic": self.topic_key,
@@ -112,7 +112,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        assert "svg" not in result["properties"]["result"]
+        for feat in result["features"]:
+            assert "svg" not in feat["properties"]["result"]
 
         parameters = {
             "topic": self.topic_key,
@@ -120,7 +121,8 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        self.assertNotIn("result.svg", list(result["properties"].keys()))
+        for feat in result["features"]:
+            self.assertNotIn("result.svg", list(feat["properties"].keys()))
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_html(self):
@@ -128,22 +130,24 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include-svg": True,
-            "include-html": True,
+            "includeSvg": True,
+            "includeHtml": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        assert "html" in result["properties"]["result"]
+        for feat in result["features"]:
+            assert "html" in feat["properties"]["result"]
 
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        assert "html" not in result["properties"]["result"]
+        for feat in result["features"]:
+            assert "html" not in feat["properties"]["result"]
 
         parameters = {
             "topic": self.topic_key,
@@ -151,13 +155,14 @@ class TestApiIndicatorIo(unittest.TestCase):
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
-        assert "html" not in result["properties"]["result"]
+        for feat in result["features"]:
+            assert "html" not in feat["properties"]["result"]
 
     def test_indicator_topic_data(self):
         """Test parameter Topic with data attached.
 
         Data are the ohsome API response result values for Heidelberg and the topic
-        `building_count`.
+        `building-count`.
         """
         timestamp_objects = [
             datetime(2020, 7, 17, 9, 10, 0) + timedelta(days=1 * x)
@@ -182,7 +187,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             },
         }
         response = self.client.post("/indicators/mapping-saturation", json=parameters)
-        self.run_tests(response, (self.general_schema, self.feature_schema))
+        self.run_tests(response, (self.general_schema, self.featurecollection_schema))
 
     def test_indicator_topic_data_invalid(self):
         parameters = {

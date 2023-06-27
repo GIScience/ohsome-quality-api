@@ -1,10 +1,11 @@
 ---
 building-report:
   name: Building Report
-  project: experimental
+  projects:
+    - experimental
   description: >-
       This report gives a general overview of the quality for buildings.
-  label-description:
+  label_description:
     red: >-
       The report indicates low quality of the underlying OSM data.
       Probably many buildings are not yet mapped.
