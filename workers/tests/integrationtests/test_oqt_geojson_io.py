@@ -1,7 +1,7 @@
 import asyncio
 import unittest
 
-from geojson import Feature
+from geojson import FeatureCollection
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import IndicatorBpolys, IndicatorDatabase
@@ -30,7 +30,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
         feature = asyncio.run(
             oqt.create_indicator_as_geojson(patameters, key=self.name)
         )
-        self.assertIsInstance(feature, Feature)
+        self.assertIsInstance(feature, FeatureCollection)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_database(self):
@@ -40,7 +40,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
             feature_id=self.feature_id,
         )
         feature = asyncio.run(oqt.create_indicator_as_geojson(parameters, self.name))
-        self.assertIsInstance(feature, Feature)
+        self.assertIsInstance(feature, FeatureCollection)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_not_implemented(self):
