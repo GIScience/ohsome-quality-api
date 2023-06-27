@@ -26,17 +26,13 @@ logging.info("Logging message")
 All relevant components should be tested. Please write tests for newly integrated
 functionality.
 
-Tests are written using the
-[unittest library](https://docs.python.org/3/library/unittest.html).
-The test runner is [pytest](https://docs.pytest.org/en/stable/). Tests are separated
-into integration tests and unit tests. Unit tests should run without having access to
-the database or services on the internet (e.g. ohsome API).
+The test framework is [pytest](https://docs.pytest.org/en/stable/).
 
 To run all tests:
 
 ```bash
 cd workers/
-pytest tests
+pytest
 ```
 
 ### Writing tests
@@ -63,12 +59,9 @@ Writing tests using VCR.py with our custom decorator is as easy as:
 ```python
 from .utils import oqt_vcr
 
-class TestSomething(unittest.TestCase):
-
-    @oqt_vcr.use_cassette()
-    def test_something(self):
-        oqt.do_something(…)
-        self.assertSomething(something)
+@oqt_vcr.use_cassette
+def test_something(self):
+    oqt.do_something(…)
 ```
 
 Good examples can be found in 
