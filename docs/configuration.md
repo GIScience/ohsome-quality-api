@@ -15,25 +15,12 @@ Below is a table listing all possible configuration variables.
 | Postgres Password           | `POSTGRES_PASSWORD`           | `postgres_password`       | `oqt`                                   | "                                                                           |
 | Configuration File Path     | `OQT_CONFIG`                  | -                         | `workers/config/config.yaml`            | Absolute path to the configuration file                                     |
 | Data Directory              | `OQT_DATA_DIR`                | `data_dir`                | `workers/data`                          | Absolute path to the directory for raster files                             |
-| Datasets and Features IDs   | -                             | `datasets`                | `[{"regions": {"default": "ogc_fid"}}]` | Dataset and Features Ids available in the database (see description below)  |
 | Geometry Size Limit (km²)   | `OQT_GEOM_SIZE_LIMIT`         | `geom_size_limit`         | `1000`                                  | Area restriction of the input geometry to the OQT API (sqkm)                |
 | Python Log Level            | `OQT_LOG_LEVEL`               | `log_level`               | `INFO`                                  | Python logging level                                                        |
 | Concurrent Computations     | `OQT_CONCURRENT_COMPUTATIONS` | `concurrent_computations` | `4`                                     | Limit number of concurrent Indicator computations for one API request       |
 | User Agent                  | `OQT_USER_AGENT`              | `user_agent`              | `ohsome-quality-analyst/{version}`      | User-Agent header for requests tot the ohsome API                           |
 | ohsome API URL              | `OQT_OHSOME_API`              | `ohsome_api`              | `https://api.ohsome.org/v1/`            | ohsome API URL                                                              |
 
-_Note on the 'Datasets and Features IDs' configuration:_ Defines the datasets and
-features IDs which are available in the database and for which Indicators should be
-calculated. The `dataset` field refers to the name of the relation and `default` and
-`other` refer to possible identifier of the features. The default configuration looks
-like this:
-
-```yaml
-datasets:
-    regions:
-        default: ogc_fid
-        other: [name] # Optional
-```
 
 ## Configuration File
 
