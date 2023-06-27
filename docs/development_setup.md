@@ -131,43 +131,62 @@ Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the
 Alternative query the API from a terminal using CURL:
 
 ```bash
-# GET request for an indicator
-curl \
-    -X GET "http://127.0.0.1:8080/indicator/mapping-saturation?topic=building-count&dataset=regions&featureId=1" \
-    -H 'Content-Type: application/json' \
-    -H 'Accept: application/json' \
-    | python -m json.tool > response.json
-
-
-# POST request for a report
-curl \
-    -X POST "http://127.0.0.1:8080/report/MinimalTestReport" \
-    -H 'Content-Type: application/json' \
-    -H 'Accept: application/json' \
-    -d '{"dataset": "regions", "featureId": 1}' \
-    | python -m json.tool > response.json
+curl -X 'POST' \
+  'http://127.0.0.1:8080/indicators/mapping-saturation' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "topic": "building-count",
+  "bpolys": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            8.674092292785645,
+            49.40427147224242
+          ],
+          [
+            8.695850372314453,
+            49.40427147224242
+          ],
+          [
+            8.695850372314453,
+            49.415552187316095
+          ],
+          [
+            8.674092292785645,
+            49.415552187316095
+          ],
+          [
+            8.674092292785645,
+            49.40427147224242
+          ]
+        ]
+      ]
+    }
+  }
+}' \
+| python -m json.tool > response.json
 ```
 
 
 ### Tests
 
-All relevant components should be tested. Please write tests for newly integrated functionality. 
+All relevant components should be tested. Please write tests for newly integrated
+functionality.
 
-Tests are written using the [unittest library](https://docs.python.org/3/library/unittest.html).
-The test runner is [pytest](https://docs.pytest.org/en/stable/).
-Tests are separated into integration tests and unit tests.
-Unit tests should run without having access to the database or services on the internet (e.g. ohsome API).
+The test framework is [pytest](https://docs.pytest.org/en/stable/).
 
-Run all tests:
+To run all tests just execute `pytest`:
 
 ```bash
 cd workers/
-pytest tests
+pytest
 ```
 
-
 #### Writing tests
-
 
 ##### VCR (videocassette recorder) for tests
 
@@ -181,16 +200,12 @@ Writing tests using VCR.py with our custom decorator is as easy as:
 ```python
 from .utils import oqt_vcr
 
-class TestSomething(unittest.TestCase):
-
-    @oqt_vcr.use_cassette()
-    def test_something(self):
-        oqt.do_something(…)
-        self.assertSomething(something)
+@oqt_vcr.use_cassette
+def test_something(self):
+    oqt.do_something(…)
 ```
 
 Good examples can be found in [test_oqt.py](/workers/tests/integrationtests/test_oqt.py).
-
 
 ##### Asynchronous functions
 
@@ -218,4 +233,24 @@ import logging
 
 logging.info("Logging message")
 ```
->>>>>>> 8008b974 (Configure OQT using files or environment variables)
+
+
+### Database Library
+
+OQT uses [asyncpg](https://magicstack.github.io/asyncpg/current/) as database interface
+library.
+
+#### `executemany` Query
+
+In Psycopg one can execute a query for each element of a list with
+`executemany(insert_query, vars_list)`.
+
+To achieve similar results in `asyncpg`, one would write an SQL query which takes an array
+as input:
+
+```python
+await conn.fetch('''
+    INSERT INTO people (name) (SELECT unnest ($1))
+    RETURNING id
+''', ['anne', 'ben', 'charlie'])
+```
