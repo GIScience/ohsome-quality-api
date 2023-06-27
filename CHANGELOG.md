@@ -44,7 +44,7 @@
 - add project names and descriptions ([#563])
 - api: allow multiple projects per topic/indicator/report ([#601])
 - api: add possibility to query all metadata (independent of project) ([#601])
-- api: support responses in JSON format for `/indicator/` ([#582])
+- api: support responses in JSON format for `/indicators/{key}` ([#582])
 
 ### Other Changes
 
@@ -87,7 +87,6 @@
 - for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
   - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
 - API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
-- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
 - to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
 - all error message have following schema ([#562]):
 ```json
