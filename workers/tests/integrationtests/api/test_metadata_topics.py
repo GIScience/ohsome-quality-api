@@ -1,5 +1,3 @@
-import pytest
-
 from ohsome_quality_analyst.api.request_models import TopicEnum
 
 
@@ -50,11 +48,9 @@ def test_project_all(
     assert len(result) == len(TopicEnum)
 
 
-@pytest.mark.skip(reason="Not yet implemented")
 def test_metadata_topic_project_not_found_error(client):
     response = client.get("/metadata/topics/?project=foo")
-    assert response.status_code == 404  # Not Found
-    # content = response.json()
+    assert response.status_code == 422
 
 
 def test_metadata_topic_by_key(
