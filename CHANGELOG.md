@@ -7,7 +7,7 @@
 #### API
 
 - change JSON keys in request and response models from snake case to:
-    - (1) hypen case for identifiers such as indicator, report and topic keys ([#398])
+    - (1) hyphen case for identifiers such as indicator, report and topic keys ([#398])
     - (2) camel case for other keys ([#603])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
@@ -16,7 +16,7 @@
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
 - remove GET request for indicators and reports ([#516])
-- remove API enspoints:
+- remove API endpoints:
     - `/indicator` and `/report` ([#554])
     - `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
     - `/regions` ([#583])
@@ -40,7 +40,7 @@
 
 #### Indicators
 
-- mapping-saturation: add missing edge case detection for too few data points. ([#512])
+- mapping-saturation: add missing edge case detection for too few data points ([#512])
 - currentness: fix wrong count of contributions due to multiple requests ([#535])
 - currentness: exclude deletions when requesting contributions ([#535])
 - currentness: aggregate on an annual basis instead of per calendar year ([#535])
@@ -54,19 +54,19 @@
 ### New Features
 
 - add `project` attribute to indicators, reports and topics ([#504], [#563], [#601], [#601])
-- add `quality-dimensions` attribute to indicators ([#561])
-- layer/topic are now pydantic models instead of dataclasses ([#517])
+- add `qualityDimensions` attribute to indicators ([#561])
+- topic is now a pydantic model instead of a dataclass ([#517])
 - substitute indicator result figure creation with `plotly` instead of `matplotlib` ([#499], [#536], [#559], [#535], [#552], [#544], [#551])
 
 #### API
 
 - add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
-    - support JSON in addition to GeoJSON responses (#582)
+    - support JSON in addition to GeoJSON responses ([#582])
 - add `/metadata/topic` endpoint ([#519])
 - add `/metadata/indicators` endpoint ([#533])
 - add `/metadata/reports` endpoint ([#545])
 - add `/metadata` endpoint ([#545], [#601])
-- disable size limit for Mapping Saturation ([#498])
+- mapping-saturation: disable size limit ([#498])
 
 ### Other Changes
 
@@ -79,23 +79,32 @@
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
 - refactor(topic): rename layer to topic ([#521])
 - refactor(topic): move `base/topic.py` to `topics/models.py` and `layer_defintions.yaml` to `topics/presets.yaml` ([#523])
-- refactor: factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
+- refactor: factor out validators from pydantic models to validators module ([#554])
+- refactor: add validation exceptions ([#554])
 - refactor: move base classes to related modules ([#524])
-- refactor: move topic-indicatt of group members topic definition ([#528])
+- refactor: move topic-indicator-combinations to topic definition ([#528])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
 
 ### How to Upgrade
 
 #### API
-- use endpoint `/indicators/{key}` and `/reports/{key}` instead of `/indicator` and `/report`
-- use endpoint `/metadata` to retrieve metadata
-- rename request parameter `layerKey` and `layer` to `topic` ([#501]) change
-- JSON keys in rtOther gequests and responses from snake case and lower camel
-- case to: (1) hypen case for identifiers such as indicator, report and topic
-- keys (E.g.`MappingSaturation` to `mapping-saturation`) ([#398]) (2) camel
-- case for other keys ([#603])
-- for requests to the API endpoint `/indicators/{key}` for a custom topic add an additional field `key` of type string ([#517])
-  - E.g. `{"bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
+- use new endpoints `/indicators/{key}` and `/reports/{key}` for computing indicators and reports
+- use new endpoint `/metadata` to retrieve metadata
+- change JSON keys in request and response models:
+  - (1) hyphen case for identifiers such as indicator, report and topic keys ([#398])
+  - (2) camel case for other keys ([#603])
+- for requests to the API endpoint `/indicators/{key}` for a custom topic add another field `key` of type string ([#517]):
+```json
+{
+    "bpolys": {...},
+    "topic": {
+        "key": "my-key",
+        "name": "my-name",
+        "description": "my-description",
+        "data": {...}
+    }
+}
+```
 - change parsing of error messages to work with following schema ([#562]):
 ```json
 {
@@ -109,9 +118,16 @@
 }
 ```
 
-| old API parameter | new API parameter |
-| ---               | ---               |
-| `layerKey`        | `topic`           |
+#### Renamed keys
+
+| type          | old          | new                      |
+|---------------|--------------|--------------------------|
+| API parameter | `layerKey`   | `topic`                  |
+| indicator key | `TagsRatio`  | `attribute-completeness` |
+| indicator key | `PoiDensity` | `density`                |
+| indicator key | _CamelCase_  | _hyphen-case_            |
+| report key    | _CamelCase_  | _hyphen-case_            |
+| topic key     | _snake_case_ | _hyphen-case_            |
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
