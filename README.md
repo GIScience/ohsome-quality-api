@@ -6,24 +6,28 @@
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-analyst&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-analyst)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
+[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2Fdashboard.ohsome.org&label=dashboard)](https://dashboard.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
-
-Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is now as easy as pie.
 
 The ohsome quality analyst (OQT) computes and provides data quality estimations (indicators) for OpenStreetMap.
 
+Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is now as easy as pie.
+
 The software is developed by [Heidelberg Institute for Geoinformation Technology (HeiGIT)](https://heigit.org/) and based on the [ohsome platform](https://heigit.org/big-spatial-data-analytics-en/ohsome/).
 
-## Blog
+## Usage
 
-The following blog posts give insight into OQT:
-- [Introducing the ohsome quality analyst (OQT)](https://heigit.org/introducing-the-ohsome-quality-analyst-oqt)
-- [Behind the scenes of the ohsome quality analyst (OQT)](https://heigit.org/behind-the-scenes-of-the-ohsome-quality-analyst-oqt)
-- as well as other [blog posts about OQT](https://heigit.org/tag/oqt-en)
+### Dashboard
 
-## API
+For quick insights, you can start exploring OQT through the [ohsome dashboard](https://dashboard.ohsome.org).
+
+### API
 
 Check out the interactive [API documentation](https://oqt.ohsome.org/api/docs) and [examples](https://github.com/GIScience/oqt-examples).
+
+## About
+
+On the [OQT website](https://oqt.ohsome.org) you can find more details about OQT. If you want to follow the history or future of OQTs development or just want to stay up-to-date, you can have a look at our [blog posts about OQT](https://heigit.org/tag/oqt-en).
 
 ## Contributing
 
