@@ -8,7 +8,7 @@
 
 - change JSON keys in request and response models from snake case to:
     - (1) hyphen case for identifiers such as indicator, report and topic keys ([#398])
-    - (2) camel case for other keys ([#603])
+    - (2) camel case for other keys ([#603], [#625])
 - discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
 - rename `TagsRatio` indicator to `attribute-completeness` ([#500])
@@ -179,6 +179,7 @@
 [#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
 [#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 [#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605
+[#625]: https://github.com/GIScience/ohsome-quality-analyst/pull/625
 
 ## 0.14.2
 
