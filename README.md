@@ -27,7 +27,7 @@ Check out the interactive [API documentation](https://oqt.ohsome.org/api/docs) a
 
 ## About
 
-On the [OQT website](https://oqt.ohsome.org) you can find more details about OQT. If you want to follow the history or future of OQTs development or just want to stay up-to-date, you can have a look at our [blog posts about OQT](https://heigit.org/tag/oqt-en).
+On our [website](https://oqt.ohsome.org) you can find more details about OQT. If you want to read up on the history of OQT or want to stay up-to-date, take a look at our [blog posts](https://heigit.org/tag/oqt-en).
 
 ## Contributing
 
