@@ -20,8 +20,8 @@ def get_indicator_properties_template():
             "description": str,
         },
         "result": {
-            "timestampOqt": str,
-            "timestampOsm": Or(str),
+            "timestampOQT": str,
+            "timestampOSM": Or(str),
             "value": Or(float, str, int, None),
             "label": str,
             "description": str,
