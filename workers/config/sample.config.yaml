@@ -9,7 +9,7 @@ postgres_password: oqt
 # Default: repo-root/data
 data_dir: /some/absolute/path
 # Restrict size of input geometry to the OQT API (sqkm)
-geom_size_limit: 100
+geom_size_limit: 1000
 # Python logging level
 log_level: INFO
 # ohsome API URL
@@ -19,8 +19,3 @@ concurrent_computations: 4
 # User-Agent header for request to the ohsome API
 # Default: 'ohsome-quality-analyst/{version}'
 user_agent: ohsome-quality-analyst
-# Datasets and Feature IDs available in the database
-datasets:
-  regions:  # Name of relation with GEOM
-    default: ogc_fid  # Default unique id field
-    other: [name] # More unique id fields (optional)
