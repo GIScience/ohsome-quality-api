@@ -185,8 +185,8 @@ response = requests.post(url, json=parameters)
     "metadata.description": "Comparison between population density and feature density. This can give an estimate if mapping has been completed. ",
     "topic.name": "Building Count",
     "topic.description": "All buildings as defined by all objects tagged with 'building=*'. ",
-    "result.timestampOqt": "2021-10-05T09:33:30.671060+00:00",
-    "result.timestampOsm": "2021-09-26T20:00:00+00:00",
+    "result.timestampOQT": "2021-10-05T09:33:30.671060+00:00",
+    "result.timestampOSM": "2021-09-26T20:00:00+00:00",
     "result.label": "green",
     "result.value": 1,
     "result.description": "...",
@@ -317,8 +317,8 @@ response = requests.post(url, json=parameters)
         },
         "result": {
           "description": "The saturation of the last 3 years is 98.4%. High saturation has been reached (97% < Saturation ≤ 100%). ",
-          "timestampOqt": "2022-09-07T20:00:24.897112+00:00",
-          "timestampOsm": "2022-08-01T00:00:00+00:00",
+          "timestampOQT": "2022-09-07T20:00:24.897112+00:00",
+          "timestampOSM": "2022-08-01T00:00:00+00:00",
           "value": 0.9839766580301241,
           "label": "green",
           "class": 5
@@ -336,8 +336,8 @@ response = requests.post(url, json=parameters)
         },
         "result": {
           "description": "Over 50% of the 41638.0 features (Building Count) were edited in the last 4 years. This is a rather high value and indicates that the map features  are very unlike to be outdated. This refers to good data quality in  respect to currentness. ",
-          "timestampOqt": "2022-09-07T20:00:24.897112+00:00",
-          "timestampOsm": "2022-08-28T08:00:00+00:00",
+          "timestampOQT": "2022-09-07T20:00:24.897112+00:00",
+          "timestampOSM": "2022-08-28T08:00:00+00:00",
           "value": 0.8,
           "label": "green",
           "class": 5
