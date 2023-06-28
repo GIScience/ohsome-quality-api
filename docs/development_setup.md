@@ -198,7 +198,7 @@ The VCR [record mode](https://vcrpy.readthedocs.io/en/latest/usage.html#record-m
 Writing tests using VCR.py with our custom decorator is as easy as: 
 
 ```python
-from .utils import oqt_vcr
+from tests.integrationtests.utils import oqt_vcr
 
 @oqt_vcr.use_cassette
 def test_something(self):
