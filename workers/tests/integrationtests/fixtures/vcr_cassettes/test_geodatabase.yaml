@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.2
+      - ohsome-quality-analyst/0.15.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
