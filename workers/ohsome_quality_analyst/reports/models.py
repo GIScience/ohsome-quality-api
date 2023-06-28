@@ -29,6 +29,11 @@ class Result(BaseModel):
     description: str = ""
     html: str = ""
 
+    class Config:
+        alias_generator = snake_to_lower_camel
+        extra = "forbid"
+        allow_population_by_field_name = True
+
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:
         labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}

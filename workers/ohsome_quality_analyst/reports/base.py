@@ -46,10 +46,8 @@ class BaseReport(metaclass=ABCMeta):
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        result = self.result.dict()  # only attributes, no properties
+        result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        if result["class_"] is not None:
-            result["class_"] = self.result.class_
         properties = {
             "report": {
                 "metadata": self.metadata.dict(),
