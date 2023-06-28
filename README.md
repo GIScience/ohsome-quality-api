@@ -8,7 +8,7 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
-Thanks to the [ohsome dashboard](https://ohsome.org/apps/dashboard/) generating quality estimations of OpenStreetMap data for an arbitrary region is now as easy as pie.
+Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is now as easy as pie.
 
 The ohsome quality analyst (OQT) computes and provides data quality estimations (indicators) for OpenStreetMap.
 
