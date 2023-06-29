@@ -53,10 +53,10 @@
 
 ### New Features
 
-- add `project` attribute to indicators, reports and topics ([#504], [#563], [#601], [#601])
+- add `project` attribute to indicators, reports and topics ([#504], [#563], [#601])
 - add `qualityDimensions` attribute to indicators ([#561])
 - topic is now a pydantic model instead of a dataclass ([#517])
-- substitute indicator result figure creation with `plotly` instead of `matplotlib` ([#499], [#536], [#559], [#535], [#552], [#544], [#551])
+- substitute indicator result figure creation with `plotly` instead of `matplotlib` ([#499], [#535], [#536], [#544], [#551], [#552], [#559])
 
 #### API
 
@@ -72,7 +72,7 @@
 
 - build(docker): overhaul docker compose setup ([#483])
 - build: fix pre-commit hooks ([#482])
-- build: update dependencies ([#481], [#488], [#531], [#531], [#576])
+- build: update dependencies ([#481], [#488], [#531], [#576])
 - api: remove unnecessary newlines from API output and internal definitions ([#529])
 - api: serve Swagger UI files not via CDN ([#581], [#593], [#605])
 - api: fix attribution URL path ([#543])
