@@ -61,7 +61,7 @@
 #### API
 
 - add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
-    - support JSON in addition to GeoJSON responses ([#582])
+    - support JSON in addition to GeoJSON responses ([#582], [#627])
 - add `/metadata/topic` endpoint ([#519])
 - add `/metadata/indicators` endpoint ([#533])
 - add `/metadata/reports` endpoint ([#545])
@@ -180,6 +180,7 @@
 [#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 [#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605
 [#625]: https://github.com/GIScience/ohsome-quality-analyst/pull/625
+[#627]: https://github.com/GIScience/ohsome-quality-analyst/pull/627
 
 ## 0.14.2
 
