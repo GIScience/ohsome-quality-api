@@ -72,7 +72,7 @@
 
 - build(docker): overhaul docker compose setup ([#483])
 - build: fix pre-commit hooks ([#482])
-- build: update dependencies ([#481], [#488], [#531], [#531], [#576], [#576])
+- build: update dependencies ([#481], [#488], [#531], [#531], [#576])
 - api: remove unnecessary newlines from API output and internal definitions ([#529])
 - api: serve Swagger UI files not via CDN ([#581], [#593], [#605])
 - api: fix attribution URL path ([#543])
