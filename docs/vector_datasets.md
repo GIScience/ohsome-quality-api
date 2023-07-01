@@ -3,15 +3,6 @@
 OQT operates on vector datasets stored in a PostGIS database.
 
 
-## Setup
-
-Missing in this document are dataset: NUTS, GADM and GHS-POP.
-
-NUTS and GADM will probably be removed in the future: https://github.com/GIScience/ohsome-quality-analyst/issues/165
-
-GHS-POP in the database will be replaced by a raster file stored on disk.
-
-
 ### The Human Development Index (SHDI)
 
 Information:

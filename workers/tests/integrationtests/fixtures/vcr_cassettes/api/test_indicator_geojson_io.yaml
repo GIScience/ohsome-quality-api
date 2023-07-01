@@ -15,13 +15,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.2
+      - ohsome-quality-analyst/0.15.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
       \   \"value\" : 2118.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -43,64 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:11:02 GMT
-      keep-alive:
-      - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
-      - max-age=63072000; includeSubdomains;
-      transfer-encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1388'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-analyst/0.14.2
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
-      \   \"value\" : 935.0\n  } ]\n}"
-    headers:
-      access-control-allow-credentials:
-      - 'true'
-      access-control-allow-headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
-      - POST, GET
-      access-control-allow-origin:
-      - '*'
-      access-control-max-age:
-      - '3600'
-      cache-control:
-      - no-cache, no-store, must-revalidate
-      connection:
-      - Keep-Alive
-      content-encoding:
-      - gzip
-      content-type:
-      - application/json
-      date:
-      - Tue, 20 Jun 2023 08:11:09 GMT
+      - Tue, 27 Jun 2023 10:33:11 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -129,13 +72,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.2
+      - ohsome-quality-analyst/0.15.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
       \   \"value\" : 236.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -157,7 +100,64 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:11:09 GMT
+      - Tue, 27 Jun 2023 10:33:17 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22id%22%3A+1%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1388'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.15.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
+      \   \"value\" : 935.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Tue, 27 Jun 2023 10:33:17 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -186,13 +186,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.2
+      - ohsome-quality-analyst/0.15.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
       \   \"value\" : 2118.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -214,7 +214,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:11:15 GMT
+      - Tue, 27 Jun 2023 10:33:24 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -243,13 +243,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.14.2
+      - ohsome-quality-analyst/0.15.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
       \   \"value\" : 2118.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -271,7 +271,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:11:22 GMT
+      - Tue, 27 Jun 2023 10:33:31 GMT
       keep-alive:
       - timeout=5, max=100
       server:

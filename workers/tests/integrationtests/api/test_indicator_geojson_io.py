@@ -19,6 +19,8 @@ from tests.integrationtests.api.response_schema import (
 from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
 from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 
+HEADERS = {"accept": "application/geo+json"}
+
 
 class TestApiIndicatorIo(unittest.TestCase):
     def setUp(self):
@@ -46,7 +48,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "bpolys": bpoly,
             "topic": self.topic_key,
         }
-        return self.client.post(self.endpoint, json=parameters)
+        return self.client.post(self.endpoint, json=parameters, headers=HEADERS)
 
     @oqt_vcr.use_cassette()
     def test_indicator_bpolys_feature(self):
@@ -98,9 +100,9 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include_svg": True,
+            "includeSvg": True,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             assert "svg" in feat["properties"]["result"]
@@ -108,9 +110,9 @@ class TestApiIndicatorIo(unittest.TestCase):
         parameters = {
             "topic": self.topic_key,
             "bpolys": feature,
-            "include_svg": False,
+            "includeSvg": False,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             assert "svg" not in feat["properties"]["result"]
@@ -119,7 +121,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "topic": self.topic_key,
             "bpolys": feature,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             self.assertNotIn("result.svg", list(feat["properties"].keys()))
@@ -133,7 +135,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "includeSvg": True,
             "includeHtml": True,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             assert "html" in feat["properties"]["result"]
@@ -144,7 +146,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "includeSvg": False,
             "includeHtml": False,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             assert "html" not in feat["properties"]["result"]
@@ -153,7 +155,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             "topic": self.topic_key,
             "bpolys": feature,
         }
-        response = self.client.post(self.endpoint, json=parameters)
+        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
         result = response.json()
         for feat in result["features"]:
             assert "html" not in feat["properties"]["result"]
@@ -186,7 +188,9 @@ class TestApiIndicatorIo(unittest.TestCase):
                 },
             },
         }
-        response = self.client.post("/indicators/mapping-saturation", json=parameters)
+        response = self.client.post(
+            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+        )
         self.run_tests(response, (self.general_schema, self.featurecollection_schema))
 
     def test_indicator_topic_data_invalid(self):
@@ -199,7 +203,9 @@ class TestApiIndicatorIo(unittest.TestCase):
                 "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
             },
         }
-        response = self.client.post("/indicators/mapping-saturation", json=parameters)
+        response = self.client.post(
+            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+        )
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "TopicDataSchemaError")

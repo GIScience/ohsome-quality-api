@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -45,12 +45,19 @@ class Result(BaseModel):
 
     description: str
     html: str
-    timestamp_oqt: datetime = datetime.now(timezone.utc)  # UTC datetime object
-    timestamp_osm: datetime | None = None
+    timestamp_oqt: datetime = Field(
+        default=datetime.now(timezone.utc), alias="timestampOQT"
+    )  # UTC datetime object
+    timestamp_osm: datetime | None = Field(default=None, alias="timestampOSM")
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None
     figure: dict | None = None
     svg: str | None = None
+
+    class Config:
+        alias_generator = snake_to_lower_camel
+        extra = "forbid"
+        allow_population_by_field_name = True
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:

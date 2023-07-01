@@ -3909,15 +3909,6 @@
             ]
           ]
         ]
-      },
-      "properties": {
-        "osm_id": -285864,
-        "boundary": "administrative",
-        "admin_level": 6,
-        "parents": "-22027,-62611,-51477",
-        "name": "Heidelberg",
-        "local_name": "Heidelberg",
-        "name_en": null
       }
     }
   ]

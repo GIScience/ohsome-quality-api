@@ -1,94 +1,111 @@
 # Changelog
 
-## Current Main
+## 0.15.0
 
 ### Breaking Changes
 
-- change API parameter names for POST requests from snake case to lower hyphen ([#398])
-- change indicator and report keys from lower camel case to lower hyphen ([#398])
+#### API
+
+- change JSON keys in request and response models from snake case to:
+    - (1) hyphen case for identifiers such as indicator, report and topic keys ([#398])
+    - (2) camel case for other keys ([#603], [#625])
+- discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
 - rename API parameter `layerKey` and `layer` to `topic` ([#501])
+- rename `TagsRatio` indicator to `attribute-completeness` ([#500])
+- rename `PoiDensity` indicator to `density` ([#544])
 - remove GHS POP Comparison indicators: `ghs_pop_comparison_buildings` and `ghs_pop_comparison_roads` ([#515])
 - remove JRC related layers and report `jrc_requirements` ([#503])
-- rename `TagsRatio` indicator to `attribute-completeness` ([#500])
-- requests to the API endpoint `/indicator` for a custom layer/topic need an additional field `key` of type string ([#517])
 - remove GET request for indicators and reports ([#516])
-- remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
-- remove API endpoints `/indicator` and `/report` ([#554])
-- remove API endpoints `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
-- discontinue support GeoJSON Geometry as value for `bpolys` parameters ([#554])
-- rename `PoiDensity` indicator to `density` ([#544])
+- remove API endpoints:
+    - `/indicator` and `/report` ([#554])
+    - `/indicators`, `/reports`, `/datasets` and `/fid-fields` ([#554])
+    - `/regions` ([#583])
+- requests to the API endpoint `/indicators` for a custom layer/topic need an additional field `key` of type string ([#517])
 - homogenize API response schema for errors ([#562])
+- response of `/indicators` is always a FeatureCollections ([#598])
+
+#### CLI
+
+- remove all CLI commands except commands for creating all indicators for a given dataset ([#556])
+
+#### Website
+
 - remove website from repository ([#578])
-- api: remove `/regions` endpoint ([#583])
-- api: use lower camel case instead of hyphen-case for all non-dynamic JSON keys (e.g. not indicator keys) ([#603])
-- api: response of `indicator` is always a FeatureCollections ([#598])
 
 ### Bug Fixes
 
-- mapping-saturation: add missing edge case detection for too few data points. ([#512])
+#### Reports
+
+- sketch-map-fitness: use `landmarks` instead of `poi` topic ([#544])
+
+#### Indicators
+
+- mapping-saturation: add missing edge case detection for too few data points ([#512])
 - currentness: fix wrong count of contributions due to multiple requests ([#535])
-- doctors topic: use correct filter ([#540])
+- currentness: exclude deletions when requesting contributions ([#535])
+- currentness: aggregate on an annual basis instead of per calendar year ([#535])
+
+#### Topics
+
+- tidy up and fix filters of core topic definitions ([#520])
+- doctors: use correct filter ([#540])
+- landmarks: add `density` indicator to `landmarks` topic ([#544])
 
 ### New Features
 
-- disable size limit for Mapping Saturation ([#498])
-- add `project` attribute to topics ([#504])
-- layer/topic are now pydantic models instead of dataclasses ([#517])
-- add plot creation via plotly to `MappingSaturation` indicator ([#499])
-- api: add `/metadata/topic` endpoint ([#519])
-- api: add `/metadata/indicators` endpoint ([#533])
-- api: add `/metadata/reports` endpoint ([#545])
-- api: add `/metadata` endpoint ([#545])
-- api: add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
-- add quality dimensions to indicators ([#561])
-- add project names and descriptions ([#563])
-- api: allow multiple projects per topic/indicator/report ([#601])
-- api: add possibility to query all metadata (independent of project) ([#601])
+- add `project` attribute to indicators, reports and topics ([#504], [#563], [#601])
+- add `qualityDimensions` attribute to indicators ([#561])
+- topic is now a pydantic model instead of a dataclass ([#517])
+- substitute indicator result figure creation with `plotly` instead of `matplotlib` ([#499], [#535], [#536], [#544], [#551], [#552], [#559])
+
+#### API
+
+- add `/indicators/{key}` and `/reports/{key}` endpoints ([#554])
+    - support JSON in addition to GeoJSON responses ([#582], [#627])
+- add `/metadata/topic` endpoint ([#519])
+- add `/metadata/indicators` endpoint ([#533])
+- add `/metadata/reports` endpoint ([#545])
+- add `/metadata` endpoint ([#545], [#601])
+- mapping-saturation: disable size limit ([#498])
 
 ### Other Changes
 
-- fix pre-commit hooks ([#482])
-- update asyncpg from 0.25 to 0.27 ([#481])
+- build(docker): overhaul docker compose setup ([#483])
+- build: fix pre-commit hooks ([#482])
+- build: update dependencies ([#481], [#488], [#531], [#576])
+- api: remove unnecessary newlines from API output and internal definitions ([#529])
+- api: serve Swagger UI files not via CDN ([#581], [#593], [#605])
+- api: fix attribution URL path ([#543])
 - refactor(db): remove artifacts as well as old init scripts and restructure directories ([#388])
-- overhaul docker compose setup ([#483])
-- build(deps): update FastAPI to version 0.92.0 ([#488])
-- topics: tidy up and fix filters of core topic definitions ([#520])
 - refactor(topic): rename layer to topic ([#521])
 - refactor(topic): move `base/topic.py` to `topics/models.py` and `layer_defintions.yaml` to `topics/presets.yaml` ([#523])
+- refactor: factor out validators from pydantic models to validators module ([#554])
+- refactor: add validation exceptions ([#554])
 - refactor: move base classes to related modules ([#524])
 - refactor: move topic-indicator-combinations to topic definition ([#528])
-- fix: remove unnecessary newlines from API output and internal definitions ([#529])
-- build: update minimal python version to 3.10 ([#531])
-- build: update dev dependencies ([#531])
-- mapping-saturation: substitute matplotlib SVG with plotly SVG ([#536])
-- base indicator: substitute matplotlib SVG with plotly SVG ([#559])
-- api: fix attribution URL path ([#543])
-- currentness: substitute matplotlib SVG with plotly SVG ([#535])
-- currentness: exclude deletions when requesting contributions ([#535])
-- currentness: aggregate on an annual basis instead of per calendar year ([#535])
-- building-completeness: substitute matplotlib SVG with plotly SVG ([#552])
-- factor out validators from pydantic models to own validators module. Add validation exceptions. ([#554])
-- density: substitute matplotlib SVG with plotly SVG ([#544])
-- add density indicator to `landmarks` topic ([#544])
-- SketchMapFitness: now uses `landmarks` for density indicator instead of `poi`topic ([#544])
-- attribute-completeness: substitute matplotlib SVG with plotly SVG ([#551])
-- build(poetry): add primary and supplemental source ([#576])
-- build: update `requests` to "^2.31.0" ([#576])
-- build: remove unused dependency `dacite` ([#576])
-- swagger: serve Swagger UI files not via CDN ([#581], [#593], [#605])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
 
 ### How to Upgrade
 
-- rename indicator keys from camel case to lower hyphen ([#398]): E.g. `MappingSaturation` to `mapping-saturation`
-- rename API parameters for POST requests from camel case to lower hyphen ([#398])
-- rename API parameter `layerKey` and `layer` to `topic` ([#501])
-- for requests to the API endpoint `/indicator` for a custom topic add an additional field `key` of type string ([#517])
-  - E.g. `{"name": "mapping-saturation", "bpolys": {...}, "topic": {"key": "my-key", "name": "my-name", "description": "my-description", "data": {...}}"`
-- API endpoint `/indicator` and `/report` do not support GET request anymore. Change request to those endpoints to use the POST method ([#516]).
-- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
-- to compute an indicator or report request the new API endpoints `/indicators/{key}` and `/reports/{key}` ([#554])
-- all error message have following schema ([#562]):
+#### API
+- use new endpoints `/indicators/{key}` and `/reports/{key}` for computing indicators and reports
+- use new endpoint `/metadata` to retrieve metadata
+- change JSON keys in request and response models:
+  - (1) hyphen case for identifiers such as indicator, report and topic keys ([#398])
+  - (2) camel case for other keys ([#603])
+- for requests to the API endpoint `/indicators/{key}` for a custom topic add another field `key` of type string ([#517]):
+```json
+{
+    "bpolys": {...},
+    "topic": {
+        "key": "my-key",
+        "name": "my-name",
+        "description": "my-description",
+        "data": {...}
+    }
+}
+```
+- change parsing of error messages to work with following schema ([#562]):
 ```json
 {
   "apiVersion": "__version__",
@@ -101,9 +118,16 @@
 }
 ```
 
-| old API parameter | new API parameter |
-| ---               | ---               |
-| `layerKey`        | `topic`           |
+#### Renamed keys
+
+| type          | old          | new                      |
+|---------------|--------------|--------------------------|
+| API parameter | `layerKey`   | `topic`                  |
+| indicator key | `TagsRatio`  | `attribute-completeness` |
+| indicator key | `PoiDensity` | `density`                |
+| indicator key | _CamelCase_  | _hyphen-case_            |
+| report key    | _CamelCase_  | _hyphen-case_            |
+| topic key     | _snake_case_ | _hyphen-case_            |
 
 [#388]: https://github.com/GIScience/ohsome-quality-analyst/pull/388
 [#398]: https://github.com/GIScience/ohsome-quality-analyst/pull/398
@@ -148,12 +172,15 @@
 [#578]: https://github.com/GIScience/ohsome-quality-analyst/pull/578
 [#579]: https://github.com/GIScience/ohsome-quality-analyst/pull/579
 [#581]: https://github.com/GIScience/ohsome-quality-analyst/pull/581
+[#582]: https://github.com/GIScience/ohsome-quality-analyst/pull/582
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
 [#598]: https://github.com/GIScience/ohsome-quality-analyst/pull/598
 [#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
 [#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 [#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605
+[#625]: https://github.com/GIScience/ohsome-quality-analyst/pull/625
+[#627]: https://github.com/GIScience/ohsome-quality-analyst/pull/627
 
 ## 0.14.2
 
@@ -370,6 +397,7 @@
 
 - Update `poi` layer based on ([`openpoiservice`]) [#246])
 - Remove `ideal_vgi_poi` layer in favor of new `poi` layer ([#246])
+
 
 ### New Features
 
