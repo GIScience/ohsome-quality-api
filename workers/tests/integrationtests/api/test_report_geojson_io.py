@@ -85,7 +85,7 @@ class TestApiReportIo(unittest.TestCase):
         parameters = {
             "bpolys": self.feature,
             "dataset": "foo",
-            "feature-id": "3",
+            "featureId": "3",
         }
         response = self.client.post(self.endpoint, json=parameters)
         self.assertEqual(response.status_code, 422)
@@ -96,7 +96,7 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_svg_true(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": True,
+            "includeSvg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -106,7 +106,7 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_svg_false(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
+            "includeSvg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -125,8 +125,8 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_html_true(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
-            "include-html": True,
+            "includeSvg": False,
+            "includeHtml": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -136,8 +136,8 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_html_false(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()

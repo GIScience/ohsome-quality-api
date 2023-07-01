@@ -180,7 +180,7 @@ class TestOqt(unittest.TestCase):
         with open(path, "r") as f:
             feature = geojson.load(f)
         parameters = IndicatorBpolys(
-            topic="building_count",
+            topic="building-count",
             bpolys=feature,
         )
         asyncio.run(

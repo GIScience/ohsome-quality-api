@@ -54,6 +54,18 @@ def hyphen_to_snake(hyphen: str):
     return "_".join(parts)
 
 
+def snake_to_camel(snake: str):
+    """Convert Lower Hyphen Case to Camel Case"""
+    parts = snake.split("_")
+    return "".join(p.title() for p in parts)
+
+
+def snake_to_lower_camel(snake: str):
+    """Convert Lower Hyphen Case to Lower Camel Case"""
+    camel_case = snake_to_camel(snake)
+    return camel_case[0].lower() + camel_case[1:]
+
+
 def snake_to_hyphen(snake: str) -> str:
     """Converts Snake Case to Lower Hyphen Case"""
     parts = snake.split("_")

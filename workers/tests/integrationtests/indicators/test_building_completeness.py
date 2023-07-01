@@ -16,14 +16,14 @@ from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def feature():
     return get_geojson_fixture("algeria-touggourt-feature.geojson")
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def topic():
-    return get_topic_fixture("building_area")
+    return get_topic_fixture("building-area")
 
 
 class TestPreprocess:
@@ -55,7 +55,7 @@ class TestPreprocess:
 
 
 class TestCalculationFigure:
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
     def indicator(self, feature, topic, mock_env_oqt_data_dir):
         i = BuildingCompleteness(feature=feature, topic=topic)
@@ -63,6 +63,7 @@ class TestCalculationFigure:
         i.calculate()
         return i
 
+    @oqt_vcr.use_cassette
     def test_calculate(self, indicator):
         assert isinstance(indicator.building_area_prediction, list)
         assert len(indicator.building_area_prediction) > 0
@@ -75,10 +76,12 @@ class TestCalculationFigure:
         assert indicator.result.value >= 0.0
 
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @oqt_vcr.use_cassette
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
 
+    @oqt_vcr.use_cassette
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)

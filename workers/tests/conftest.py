@@ -40,7 +40,7 @@ def topic_key_minimal() -> str:
 
 @pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
-    return "building_count"
+    return "building-count"
 
 
 @pytest.fixture(scope="class")
@@ -130,6 +130,11 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
     )
     with open(path, "r") as f:
         return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
+def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
+    return feature_collection_germany_heidelberg
 
 
 @pytest.fixture(scope="class")

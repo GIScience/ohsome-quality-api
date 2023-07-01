@@ -27,7 +27,7 @@ class TestApiRequestModels(unittest.TestCase):
 
     def test_topic_key_valid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name
-        request_models.BaseTopicName(topic="building_count")
+        request_models.BaseTopicName(topic="building-count")
 
     def test_topic_key_invalid(self):
         # Test on BaseIndicator because validation of BaseTopic needs indicator name
@@ -73,8 +73,8 @@ class TestApiRequestModels(unittest.TestCase):
         param_keys = (
             "topic",
             "dataset",
-            "feature-id",
-            "fid-field",
+            "featureId",
+            "fidField",
             "bpolys",
         )
         param_values = (
@@ -97,13 +97,13 @@ class TestApiRequestModels(unittest.TestCase):
             {
                 "topic": "minimal",
                 "dataset": "regions",
-                "feature-id": "3",
+                "featureId": "3",
             },
             {
                 "topic": "minimal",
                 "dataset": "regions",
-                "feature-id": "3",
-                "fid-field": "ogc_fid",
+                "featureId": "3",
+                "fidField": "ogc_fid",
             },
             {
                 "topic": "minimal",

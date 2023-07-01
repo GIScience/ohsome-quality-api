@@ -4,7 +4,7 @@ import logging
 import os
 from typing import Annotated
 
-from fastapi import Body, FastAPI, Path, Request, status
+from fastapi import Body, FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +15,7 @@ from fastapi.openapi.docs import (
 )
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
@@ -82,7 +83,9 @@ from ohsome_quality_analyst.utils.helper import (
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
+MEDIA_TYPE_JSON = "application/json"
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+
 TAGS_METADATA = [
     {
         "name": "indicator",
@@ -157,7 +160,7 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 async def custom_swagger_ui_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_swagger_ui_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - Swagger UI",
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
@@ -175,7 +178,7 @@ async def swagger_ui_redirect():
 async def redoc_html(request: Request):
     root_path = request.scope.get("root_path")
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - ReDoc",
         redoc_js_url=root_path + "/static/redoc.standalone.js",
         redoc_favicon_url=root_path + "/static/favicon-32x32.png",
@@ -198,7 +201,7 @@ async def validation_exception_handler(
         content=jsonable_encoder(
             {
                 "apiVersion": __version__,
-                "type": "RequestValidationError",
+                "type": exception.__class__.__name__,
                 "detail": exception.errors(),
             },
         ),
@@ -237,6 +240,22 @@ async def oqt_exception_handler(
     )
 
 
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(_: Request, exception: StarletteHTTPException):
+    return JSONResponse(
+        status_code=exception.status_code,
+        content={
+            "apiVersion": __version__,
+            "type": exception.__class__.__name__,
+            "detail": [
+                {
+                    "msg": exception.detail,
+                },
+            ],
+        },
+    )
+
+
 def empty_api_response() -> dict:
     return {
         "apiVersion": __version__,
@@ -246,8 +265,18 @@ def empty_api_response() -> dict:
     }
 
 
-@app.post("/indicators/{key}", tags=["indicator"])
+@app.post(
+    "/indicators/{key}",
+    tags=["indicator"],
+    responses={
+        200: {
+            "content": {MEDIA_TYPE_GEOJSON: {}},
+            "description": "Return JSON or GeoJSON.",
+        }
+    },
+)
 async def post_indicator(
+    request: Request,
     key: Annotated[
         IndicatorEnum,
         Path(
@@ -287,8 +316,28 @@ async def post_indicator(
         class_type="indicator",
         key=key.value,
     ).attribution()
-    response.update(geojson_object)
-    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+    # TODO: if accept=JSON no GeoJSON should be created in the first place.
+    #   factor out logic and decision to base/indicator.py and oqt.py
+    #   base/indicator.py should have `as_dict` alongside `as_feature`
+    if request.headers["accept"] == MEDIA_TYPE_JSON:
+        response["results"] = []
+        # TODO: remove check once only FeatureCollection is supported
+        if isinstance(geojson_object, FeatureCollection):
+            for feature in geojson_object.features:
+                response["results"].append(feature.properties)
+        else:
+            response["results"].append(geojson_object.properties)
+        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+    elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
+        response.update(geojson_object)
+        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+    else:
+        detail = "Content-Type needs to be either {0} or {1}".format(
+            MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
+        )
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail
+        )
 
 
 @app.post("/reports/{key}", tags=["report"])
@@ -349,12 +398,14 @@ async def post_report(
 )
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
     result = {
-        "topics": get_topic_definitions(project=project.value),
-        "quality-dimensions": get_quality_dimensions(),
+        "topics": get_topic_definitions(project=project),
+        "quality_dimensions": get_quality_dimensions(),
         "projects": get_projects(),
-        "indicators": get_indicator_definitions(project=project.value),
-        "reports": get_report_definitions(project=project.value),
+        "indicators": get_indicator_definitions(project=project),
+        "reports": get_report_definitions(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -370,7 +421,9 @@ async def metadata_topic(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> TopicMetadataResponse:
     """Get topics."""
-    return TopicMetadataResponse(result=get_topic_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return TopicMetadataResponse(result=get_topic_definitions(project=project))
 
 
 @app.get(
@@ -439,9 +492,9 @@ async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return IndicatorMetadataResponse(
-        result=get_indicator_definitions(project=project.value)
-    )
+    if project == ProjectEnum.all:
+        project = None
+    return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
 
 
 @app.get(
@@ -472,7 +525,9 @@ async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataResponse(result=get_report_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return ReportMetadataResponse(result=get_report_definitions(project=project))
 
 
 @app.get(

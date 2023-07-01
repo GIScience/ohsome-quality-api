@@ -77,7 +77,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-svg": True,
+            "includeSvg": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -87,7 +87,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-svg": False,
+            "includeSvg": False,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -105,7 +105,7 @@ class TestApiReport(unittest.TestCase):
     def test_indicator_dataset_invalid(self):
         parameters = {
             "dataset": "foo",
-            "feature-id": self.feature_id,
+            "featureId": self.feature_id,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         self.assertEqual(response.status_code, 422)
@@ -119,7 +119,7 @@ class TestApiReport(unittest.TestCase):
                 "dataset": "regions",
             },
             {
-                "feature-id": "3",
+                "featureId": "3",
             },
         ):
             response = self.client.post(ENDPOINT, json=parameters)
@@ -132,7 +132,7 @@ class TestApiReport(unittest.TestCase):
         parameters = {
             "dataset": self.dataset,
             "feature_id": self.feature_id,
-            "include-html": True,
+            "includeHtml": True,
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
@@ -148,7 +148,7 @@ class TestApiReport(unittest.TestCase):
         result = response.json()
         # Check flat result value
         assert "report.result.class_" not in result["properties"]
-        assert "class_" in result["properties"]["report"]["result"]
+        assert "class" in result["properties"]["report"]["result"]
         assert "indicators.0.result.value" not in result["properties"]
         assert "value" in result["properties"]["indicators"][0]["result"]
 
@@ -161,7 +161,7 @@ class TestApiReport(unittest.TestCase):
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "report.result.class_" in result["properties"]
+        assert "report.result.class" in result["properties"]
         assert "indicators.0.result.value" in result["properties"]
 
     @oqt_vcr.use_cassette()
@@ -174,7 +174,7 @@ class TestApiReport(unittest.TestCase):
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "report.result.class_" not in result["properties"]
-        assert "class_" in result["properties"]["report"]["result"]
+        assert "class" in result["properties"]["report"]["result"]
         assert "indicators.0.result.value" not in result["properties"]
         assert "value" in result["properties"]["indicators"][0]["result"]
 

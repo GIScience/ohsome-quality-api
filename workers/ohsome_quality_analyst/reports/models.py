@@ -2,7 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
 class ReportMetadata(BaseModel):
@@ -11,13 +12,14 @@ class ReportMetadata(BaseModel):
     name: str
     description: str
     label_description: dict
-    project: str
+    projects: list[ProjectEnum]
 
     class Config:
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         title = "Metadata"
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True
 
 
 class Result(BaseModel):
@@ -26,6 +28,11 @@ class Result(BaseModel):
     class_: Literal[1, 2, 3, 4, 5] | None = None
     description: str = ""
     html: str = ""
+
+    class Config:
+        alias_generator = snake_to_lower_camel
+        extra = "forbid"
+        allow_population_by_field_name = True
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:

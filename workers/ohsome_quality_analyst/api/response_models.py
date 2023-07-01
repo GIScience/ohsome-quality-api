@@ -14,7 +14,7 @@ from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensi
 from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.models import TopicDefinition
-from ohsome_quality_analyst.utils.helper import snake_to_hyphen
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
 class ResponseBase(BaseModel):
@@ -22,9 +22,10 @@ class ResponseBase(BaseModel):
     attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
 
     class Config:
-        alias_generator = snake_to_hyphen
+        alias_generator = snake_to_lower_camel
         frozen = True
         extra = "forbid"
+        allow_population_by_field_name = True
 
 
 class TopicMetadataResponse(ResponseBase):
@@ -96,8 +97,9 @@ class MetadataResponse(ResponseBase):
         projects: dict[str, Project]
 
         class Config:
-            alias_generator = snake_to_hyphen
+            alias_generator = snake_to_lower_camel
             frozen = True
             extra = "forbid"
+            allow_population_by_field_name = True
 
     result: MetadataResultSchema

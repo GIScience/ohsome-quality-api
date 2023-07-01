@@ -1,5 +1,7 @@
 import pytest
 
+from ohsome_quality_analyst.api.request_models import ReportEnum
+
 
 def test(client, response_template, metadata_report_multilevel_mapping_saturation):
     response = client.get("/metadata/reports/")
@@ -44,6 +46,19 @@ def test_project_core(
         == result["multilevel-mapping-saturation"]
     )
     assert "minimal" not in result.keys()
+
+
+def test_project_all(
+    client,
+    response_template,
+):
+    response = client.get("/metadata/reports/?project=all")
+    assert response.status_code == 200
+
+    content = response.json()
+    result = content.pop("result")
+    assert content == response_template
+    assert len(result) == len(ReportEnum)
 
 
 @pytest.mark.skip(reason="Not yet implemented")
