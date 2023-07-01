@@ -20,8 +20,8 @@ def get_indicator_properties_template():
             "description": str,
         },
         "result": {
-            "timestamp_oqt": str,
-            "timestamp_osm": Or(str),
+            "timestampOQT": str,
+            "timestampOSM": Or(str),
             "value": Or(float, str, int, None),
             "label": str,
             "description": str,
@@ -88,7 +88,7 @@ def get_report_feature_schema(number_of_indicators: int) -> Schema:
                         "description": str,
                     },
                     "result": {
-                        "class_": Or(int, None),
+                        "class": Or(int, None),
                         "label": str,
                         "description": str,
                     },

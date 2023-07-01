@@ -133,6 +133,11 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
 
 
 @pytest.fixture(scope="class")
+def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
+    return feature_collection_germany_heidelberg
+
+
+@pytest.fixture(scope="class")
 def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollection:
     # Multiple Features
     path = os.path.join(
