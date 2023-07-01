@@ -168,7 +168,10 @@ class MappingSaturation(BaseIndicator):
         )
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(title_text="Date")
-        fig.update_yaxes(title_text=self.topic.endpoint.split("/")[1].capitalize())
+        if "endpoint" in self.topic:
+            fig.update_yaxes(title_text=self.topic.endpoint.split("/")[1].capitalize())
+        else:
+            fig.update_yaxes(title_text="Value")
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
