@@ -320,7 +320,9 @@ async def post_indicator(
     #   factor out logic and decision to base/indicator.py and oqt.py
     #   base/indicator.py should have `as_dict` alongside `as_feature`
     if request.headers["accept"] == MEDIA_TYPE_JSON:
-        response["results"] = [feature.properties for feature in geojson_object.features]
+        response["results"] = [
+            feature.properties for feature in geojson_object.features
+        ]
         return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
         response.update(geojson_object)
