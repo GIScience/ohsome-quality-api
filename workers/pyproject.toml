@@ -65,12 +65,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 select = [
-    "E",  # pycodestyle Error
-    "F",  # Pyflakes
-    "I",  # isort
-    "N",  # pep8-nameing
-    "Q",  # flake8-quotes
-    "W",  # pycodestyle Warning
+    "E",    # pycodestyle Error
+    "F",    # Pyflakes
+    "I",    # isort
+    "N",    # pep8-nameing
+    "Q",    # flake8-quotes
+    "W",    # pycodestyle Warning
+    "C90",  # mccabe
 ]
 
 [tool.ruff.per-file-ignores]

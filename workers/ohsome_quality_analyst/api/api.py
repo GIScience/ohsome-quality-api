@@ -544,7 +544,7 @@ async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     )
 
 
-def remove_result_item_from_properties(
+def remove_result_item_from_properties(  # noqa: C901
     geojson_object: Feature | FeatureCollection, key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
