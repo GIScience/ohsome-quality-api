@@ -148,7 +148,7 @@ class TestApiReport(unittest.TestCase):
         result = response.json()
         # Check flat result value
         assert "report.result.class_" not in result["properties"]
-        assert "class_" in result["properties"]["report"]["result"]
+        assert "class" in result["properties"]["report"]["result"]
         assert "indicators.0.result.value" not in result["properties"]
         assert "value" in result["properties"]["indicators"][0]["result"]
 
@@ -161,7 +161,7 @@ class TestApiReport(unittest.TestCase):
         }
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
-        assert "report.result.class_" in result["properties"]
+        assert "report.result.class" in result["properties"]
         assert "indicators.0.result.value" in result["properties"]
 
     @oqt_vcr.use_cassette()
@@ -174,7 +174,7 @@ class TestApiReport(unittest.TestCase):
         response = self.client.post(ENDPOINT, json=parameters)
         result = response.json()
         assert "report.result.class_" not in result["properties"]
-        assert "class_" in result["properties"]["report"]["result"]
+        assert "class" in result["properties"]["report"]["result"]
         assert "indicators.0.result.value" not in result["properties"]
         assert "value" in result["properties"]["indicators"][0]["result"]
 

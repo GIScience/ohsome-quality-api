@@ -22,7 +22,7 @@ RESPONSE_SCHEMA_JSON = Schema(
             "url": str,
             Optional("text"): str,
         },
-        "result": [
+        "results": [
             {
                 Optional("id"): Or(str, int),
                 "metadata": {
@@ -34,8 +34,8 @@ RESPONSE_SCHEMA_JSON = Schema(
                     "description": str,
                 },
                 "result": {
-                    "timestamp_oqt": str,
-                    "timestamp_osm": Or(str),
+                    "timestampOQT": str,
+                    "timestampOSM": Or(str),
                     "value": Or(float, str, int, None),
                     "label": str,
                     "description": str,
@@ -73,8 +73,8 @@ RESPONSE_SCHEMA_GEOJSON = Schema(
                         "description": str,
                     },
                     "result": {
-                        "timestamp_oqt": str,
-                        "timestamp_osm": Or(str),
+                        "timestampOQT": str,
+                        "timestampOSM": Or(str),
                         "value": Or(float, str, int, None),
                         "label": str,
                         "description": str,
@@ -196,7 +196,7 @@ def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
     content = response.json()
     assert schema.is_valid(content)
     if schema.name == "json":
-        for result in content["result"]:
+        for result in content["results"]:
             assert "svg" in result["result"].keys()
     elif schema.name == "geojson":
         for feature in content["features"]:
@@ -213,7 +213,7 @@ def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
     content = response.json()
     assert schema.is_valid(content)
     if schema.name == "json":
-        for result in content["result"]:
+        for result in content["results"]:
             assert "svg" not in result["result"].keys()
     elif schema.name == "geojson":
         for feature in content["features"]:
@@ -229,7 +229,7 @@ def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
     content = response.json()
     assert schema.is_valid(content)
     if schema.name == "json":
-        for result in content["result"]:
+        for result in content["results"]:
             assert "svg" not in result["result"].keys()
     elif schema.name == "geojson":
         for feature in content["features"]:

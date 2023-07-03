@@ -165,14 +165,7 @@ class Currentness(BaseIndicator):
             opacity=0.25,
         )
 
-        fig.update_layout(
-            title_text=(
-                "Currentness<br><sup>Total Contributions (up to {}): {}</sup>".format(
-                    self.timestamps[0].strftime("%Y-%m-%d"),
-                    int(self.contrib_sum),
-                )
-            )
-        )
+        fig.update_layout(title_text="Currentness")
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",

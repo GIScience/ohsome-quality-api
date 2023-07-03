@@ -46,15 +46,14 @@ class BaseIndicator(metaclass=ABCMeta):
             flatten (bool): If true flatten the properties.
             include_data (bool): If true include additional data in the properties.
         """
-        result = self.result.dict()  # only attributes, no properties
+        result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        result["class"] = result.pop("class_")
         properties = {
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
                 "projects": self.metadata.projects,
-                "quality-dimension": self.metadata.quality_dimension,
+                "qualityDimension": self.metadata.quality_dimension,
             },
             "topic": {
                 "key": self.topic.key,
