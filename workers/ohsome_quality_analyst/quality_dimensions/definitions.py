@@ -16,7 +16,7 @@ def load_quality_dimensions() -> dict[str, QualityDimension]:
     """
     directory = get_module_dir("ohsome_quality_analyst.quality_dimensions")
     file = os.path.join(directory, "quality_dimensions.yaml")
-    with open(file, "r") as f:
+    with open(file) as f:
         raw = yaml.safe_load(f)
     quality_dimensions = {}
     for k, v in raw.items():

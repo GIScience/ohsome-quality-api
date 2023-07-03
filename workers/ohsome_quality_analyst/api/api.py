@@ -292,7 +292,7 @@ async def post_indicator(
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, (IndicatorBpolys, IndicatorDatabase)):
+    if isinstance(parameters, IndicatorBpolys | IndicatorDatabase):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -332,7 +332,7 @@ async def post_indicator(
         response.update(geojson_object)
         return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
     else:
-        detail = "Content-Type needs to be either {0} or {1}".format(
+        detail = "Content-Type needs to be either {} or {}".format(
             MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
         )
         raise HTTPException(

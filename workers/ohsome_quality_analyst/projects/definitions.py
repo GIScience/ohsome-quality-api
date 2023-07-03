@@ -16,7 +16,7 @@ def load_projects() -> dict[str, Project]:
     """
     directory = get_module_dir("ohsome_quality_analyst.projects")
     file = os.path.join(directory, "projects.yaml")
-    with open(file, "r") as f:
+    with open(file) as f:
         raw = yaml.safe_load(f)
     projects = {}
     for k, v in raw.items():

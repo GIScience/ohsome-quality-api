@@ -5,10 +5,10 @@ import logging
 import os
 import pkgutil
 import re
+from collections.abc import Generator
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Generator, Union
 
 import geojson
 import numpy as np
@@ -23,7 +23,7 @@ def get_class_from_key(class_type: str, key: str):
     # - Hard code import of classes
     # - Dynamically import all classes in package
     #     - https://julienharbulot.com/python-dynamical-import.html
-    class_path = "ohsome_quality_analyst.{0}s.{1}.{2}".format(
+    class_path = "ohsome_quality_analyst.{}s.{}.{}".format(
         class_type,
         hyphen_to_snake(key),
         class_type,
@@ -86,7 +86,7 @@ def json_serialize(obj):
     It should return a JSON encodable version of the object or raise a TypeError.
     https://docs.python.org/3/library/json.html#basic-usage
     """
-    if isinstance(obj, (date, datetime)):
+    if isinstance(obj, date | datetime):
         return obj.isoformat()
     elif isinstance(obj, BaseStatModel):
         return obj.as_dict()
@@ -102,9 +102,7 @@ def json_serialize(obj):
         raise TypeError
 
 
-def write_geojson(
-    outfile: str, geojson_object: Union[Feature, FeatureCollection]
-) -> None:
+def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> None:
     """Writes a GeoJSON object to disk.
 
     If path does not exist it will be created.
@@ -126,8 +124,7 @@ def loads_geojson(
 ) -> Generator[Feature, None, None]:
     """Load and validate GeoJSON object."""
     if isinstance(bpolys, FeatureCollection):
-        for feature in bpolys["features"]:
-            yield feature
+        yield from bpolys["features"]
     else:
         yield bpolys  # return Feature
 
@@ -161,7 +158,7 @@ def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dic
         return {prefix: input_}
 
 
-def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
+def flatten_sequence(input_seq: dict | list | tuple | set) -> list:
     """Returns the given input sequence as a list.
 
     If the input is a dict, it returns all values.
@@ -170,7 +167,7 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
     if isinstance(input_seq, dict):
         input_seq = input_seq.values()
     for val in input_seq:
-        if isinstance(val, (dict, list, tuple, set)):
+        if isinstance(val, dict | list | tuple | set):
             output += flatten_sequence(val)
         else:
             output.append(val)

@@ -24,8 +24,8 @@ def get_traffic_light(label, red="#bbb", yellow="#bbb", green="#bbb"):
         "border-radius: 50%; display: inline-block;'"
     )
     return (
-        "<span {0} class='dot'></span>\n<span {1} class='dot'>"
-        "</span>\n<span {2} class='dot'></span>\n {3}".format(
+        "<span {} class='dot'></span>\n<span {} class='dot'>"
+        "</span>\n<span {} class='dot'></span>\n {}".format(
             dot_css.format(red),
             dot_css.format(yellow),
             dot_css.format(green),

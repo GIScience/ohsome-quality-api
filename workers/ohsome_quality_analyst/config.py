@@ -5,7 +5,6 @@ import logging.config
 import os
 import sys
 from types import MappingProxyType
-from typing import Union
 
 import rpy2.rinterface_lib.callbacks
 import yaml
@@ -35,7 +34,7 @@ def load_config_default() -> dict:
         "log_level": "INFO",
         "ohsome_api": "https://api.ohsome.org/v1/",
         "concurrent_computations": 4,
-        "user_agent": "ohsome-quality-analyst/{}".format(oqt_version),
+        "user_agent": f"ohsome-quality-analyst/{oqt_version}",
         "datasets": {
             "regions": {
                 "default": "ogc_fid",
@@ -48,7 +47,7 @@ def load_config_default() -> dict:
 def load_config_from_file(path: str) -> dict:
     """Load configuration from file on disk."""
     if os.path.isfile(path):
-        with open(path, "r") as f:
+        with open(path) as f:
             return yaml.safe_load(f)
     else:
         return {}
@@ -86,7 +85,7 @@ def get_config() -> MappingProxyType:
     return MappingProxyType(cfg)
 
 
-def get_config_value(key: str) -> Union[str, int, dict]:
+def get_config_value(key: str) -> str | int | dict:
     config = get_config()
     return config[key]
 
@@ -106,7 +105,7 @@ def load_logging_config():
         "logging.yaml",
     )
     level = get_log_level()
-    with open(path, "r") as f:
+    with open(path) as f:
         config = yaml.safe_load(f)
     config["root"]["level"] = getattr(logging, level.upper())
     return config

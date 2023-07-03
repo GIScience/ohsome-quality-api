@@ -15,7 +15,6 @@ raise an `RRuntimeError`.
 
 import os
 from abc import ABC, abstractmethod
-from typing import Union
 
 import numpy as np
 import rpy2.robjects.packages as rpackages
@@ -54,7 +53,7 @@ class BaseStatModel(ABC):
         pass
 
     @property
-    def mae(self) -> Union[ArrayLike, DTypeLike]:
+    def mae(self) -> ArrayLike | DTypeLike:
         """Mean absolute error"""
         return np.mean(np.abs(np.subtract(self.ydata, self.fitted_values)))
 
@@ -257,7 +256,7 @@ class SSdoubleS(BaseStatModel):
             ydata = ydata + 1
         rstats = rpackages.importr("stats")
         fp = os.path.join(os.path.dirname(os.path.realpath(__file__)), "ssdoubles.R")
-        with open(fp, "r") as f:
+        with open(fp) as f:
             ssdoubles = f.read()
         robjects.r(ssdoubles)
         fmla = robjects.Formula("y ~ SSdoubleS(x, e, f, k, b, Z, c)")

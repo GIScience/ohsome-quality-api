@@ -2,9 +2,10 @@
 import glob
 import logging
 import os
+from collections.abc import Iterable
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Iterable, Literal
+from typing import Literal
 
 import yaml
 
@@ -91,11 +92,11 @@ def load_metadata(
         as keys and metadata as values.
     """
     assert module_name == "indicators" or module_name == "reports"
-    directory = get_module_dir("ohsome_quality_analyst.{}".format(module_name))
+    directory = get_module_dir(f"ohsome_quality_analyst.{module_name}")
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     raw = {}
     for file in files:
-        with open(file, "r") as f:
+        with open(file) as f:
             raw.update(yaml.safe_load(f))  # Merge dicts
     metadata = {}
     match module_name:
@@ -136,7 +137,7 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     """
     directory = get_module_dir("ohsome_quality_analyst.topics")
     file = os.path.join(directory, "presets.yaml")
-    with open(file, "r") as f:
+    with open(file) as f:
         raw = yaml.safe_load(f)
     topics = {}
     for k, v in raw.items():

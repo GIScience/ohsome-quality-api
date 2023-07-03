@@ -18,7 +18,6 @@ import json
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Union
 
 import asyncpg
 import geojson
@@ -64,11 +63,11 @@ async def save_indicator_results(
     logging.info("Save indicator result to database")
 
     file_path = os.path.join(WORKING_DIR, "create_results_table.sql")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         create_query = file.read()
 
     file_path = os.path.join(WORKING_DIR, "save_results.sql")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         upsert_query = file.read()
 
     data = (
@@ -110,7 +109,7 @@ async def load_indicator_results(
     logging.info("Load Indicator results from database")
 
     file_path = os.path.join(WORKING_DIR, "load_results.sql")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         query = file.read()
 
     query_data = (
@@ -141,7 +140,7 @@ async def load_indicator_results(
     return indicator
 
 
-async def get_feature_ids(dataset: str) -> List[str]:
+async def get_feature_ids(dataset: str) -> list[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
     fid_field = get_config_value("datasets")[dataset]["default"]
@@ -153,7 +152,7 @@ async def get_feature_ids(dataset: str) -> List[str]:
     return [str(record[fid_field]) for record in records]
 
 
-async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
+async def get_area_of_bpolys(bpolys: Polygon | MultiPolygon):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -181,9 +180,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
     logging.info("Feature id field: " + fid_field)
 
     query = (
-        "SELECT ST_AsGeoJSON(geom) "
-        + "FROM {0} ".format(dataset)
-        + "WHERE {0} = $1".format(fid_field)
+        "SELECT ST_AsGeoJSON(geom) " + f"FROM {dataset} " + f"WHERE {fid_field} = $1"
     )
     logging.debug("SQL Query: " + query)
     if await type_of(dataset, fid_field) == "integer":
@@ -195,7 +192,7 @@ async def get_feature_from_db(dataset: str, feature_id: str) -> Feature:
 
 async def get_regions_as_geojson() -> FeatureCollection:
     file_path = os.path.join(WORKING_DIR, "regions_as_geojson.sql")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         query = file.read()
     async with get_connection() as conn:
         record = await conn.fetchrow(query)
@@ -207,7 +204,7 @@ async def get_regions_as_geojson() -> FeatureCollection:
     return feature_collection
 
 
-async def get_regions() -> List[dict]:
+async def get_regions() -> list[dict]:
     query = "SELECT  name, ogc_fid FROM regions"
     async with get_connection() as conn:
         records = await conn.fetch(query)
@@ -246,11 +243,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     if not sanity_check_fid_field(dataset, fid_field):
         raise ValueError("Input feature id field is not valid: " + fid_field)
     uid = get_config_value("datasets")[dataset]["default"]
-    query = (
-        "SELECT {uid} ".format(uid=uid)
-        + "FROM {dataset} ".format(dataset=dataset)
-        + "WHERE {fid_field} = $1".format(fid_field=fid_field)
-    )
+    query = f"SELECT {uid} " + f"FROM {dataset} " + f"WHERE {fid_field} = $1"
     if await type_of(dataset, fid_field) == "integer":
         feature_id = int(feature_id)
     async with get_connection() as conn:
@@ -258,7 +251,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     return str(record[0])
 
 
-async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
+async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by
@@ -268,7 +261,7 @@ async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
     the intersection area as the weight.
     """
     file_path = os.path.join(WORKING_DIR, "select_shdi.sql")
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         query = file.read()
     if isinstance(bpoly, Feature):
         geom = [str(bpoly.geometry)]
@@ -276,7 +269,7 @@ async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
         geom = [str(feature.geometry) for feature in bpoly.features]
     else:
         raise TypeError(
-            "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead.".format(
+            "Expected type `Feature` or `FeatureCollection`. Got `{}` instead.".format(
                 type(bpoly)
             )
         )

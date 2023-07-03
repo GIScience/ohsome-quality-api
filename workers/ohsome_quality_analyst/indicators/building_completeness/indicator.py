@@ -275,7 +275,7 @@ async def get_hex_cells(feature: Feature) -> FeatureCollection:
         ),
         "select_hex_cells.sql",
     )
-    with open(file_path, "r") as file:
+    with open(file_path) as file:
         query = file.read()
     async with db_client.get_connection() as conn:
         record = await conn.fetchrow(query, str(feature.geometry))

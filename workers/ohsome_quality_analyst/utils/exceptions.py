@@ -13,7 +13,7 @@ class GeoJSONError(ValidationError):
 
     def __init__(self, errors):
         self.name = "GeoJSONError"
-        self.message = "Invalid GeoJSON object: {}".format(errors)
+        self.message = f"Invalid GeoJSON object: {errors}"
 
 
 class GeoJSONObjectTypeError(ValidationError):
@@ -64,7 +64,7 @@ class SizeRestrictionError(ValueError):
         self.name = "SizeRestrictionError"
         self.message = (
             "Input GeoJSON Geometry is too big. "
-            + "The area should be less than {0} km².".format(geom_size_limit)
+            + f"The area should be less than {geom_size_limit} km²."
         )
 
 
@@ -90,16 +90,16 @@ class HexCellsNotFoundError(DatabaseError):
 class RasterDatasetNotFoundError(FileNotFoundError):
     def __init__(self, raster):
         self.name = "RasterDatasetNotFoundError"
-        self.message = "Raster dataset {0} has not been found.".format(raster.name)
+        self.message = f"Raster dataset {raster.name} has not been found."
 
 
 class RasterDatasetUndefinedError(ValueError):
     def __init__(self, raster_name: str):
         self.name = "RasterDatasetUndefinedError"
-        self.message = "Raster dataset {0} is not defined".format(raster_name)
+        self.message = f"Raster dataset {raster_name} is not defined"
 
 
 class TopicDataSchemaError(Exception):
     def __init__(self, message, schema_error: SchemaError):
         self.name = "TopicDataSchemaError"
-        self.message = "{0}\n{1}".format(message, schema_error)
+        self.message = f"{message}\n{schema_error}"

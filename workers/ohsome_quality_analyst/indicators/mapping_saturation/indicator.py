@@ -1,6 +1,5 @@
 import logging
 from string import Template
-from typing import List, Optional
 
 import numpy as np
 import plotly.graph_objects as pgo
@@ -57,8 +56,8 @@ class MappingSaturation(BaseIndicator):
         self.above_one_upper_threshold = 1.5
 
         # Attributes needed for result determination
-        self.best_fit: Optional[models.BaseStatModel] = None
-        self.fitted_models: List[models.BaseStatModel] = []
+        self.best_fit: models.BaseStatModel | None = None
+        self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
@@ -88,13 +87,13 @@ class MappingSaturation(BaseIndicator):
             models.SSasymp,
             models.SSmicmen,
         ):
-            logging.info("Run {}".format(model.name))
+            logging.info(f"Run {model.name}")
             try:
                 fitted_models.append(model(xdata=xdata, ydata=np.array(self.values)))
             # RRuntimeError can occur if data can not be modeled by the R model
             except RRuntimeError as error:
                 logging.info(
-                    'Skipping model "{0}" due to RRuntimeError: {1}'.format(
+                    'Skipping model "{}" due to RRuntimeError: {}'.format(
                         model.name, str(error).strip()
                     )
                 )
@@ -102,7 +101,7 @@ class MappingSaturation(BaseIndicator):
             # RuntimeError can occur if data could not be modeled by `curve_fit` (scipy)
             except RuntimeError as error:
                 logging.info(
-                    'Skipping model "{0}" due to RuntimeError: {1}'.format(
+                    'Skipping model "{}" due to RuntimeError: {}'.format(
                         model.name, str(error).strip()
                     )
                 )

@@ -4,8 +4,8 @@ Functions are triggered by the CLI and API.
 """
 import asyncio
 import logging
+from collections.abc import Coroutine
 from functools import singledispatch
-from typing import Coroutine, List, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -50,11 +50,11 @@ async def create_indicator_as_geojson(parameters):
 @create_indicator_as_geojson.register(IndicatorBpolys)
 @create_indicator_as_geojson.register(IndicatorData)
 async def _(
-    parameters: Union[IndicatorBpolys, IndicatorData],
+    parameters: IndicatorBpolys | IndicatorData,
     key: str,
     size_restriction: bool = False,
     **_kwargs,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create an indicator or multiple indicators as GeoJSON object.
 
     Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
@@ -63,7 +63,7 @@ async def _(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
@@ -99,11 +99,11 @@ async def _(
 
 
 async def create_report_as_geojson(
-    parameters: Union[ReportBpolys, ReportDatabase],
+    parameters: ReportBpolys | ReportDatabase,
     key: str,
     force: bool = False,
     size_restriction: bool = False,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create a report or multiple reports as GeoJSON object.
 
     Returns:
@@ -162,9 +162,9 @@ async def _(
     topic: Topic = get_topic_definition(parameters.topic_key.value)
 
     logging.info("Fetching Indicator from database ...")
-    logging.info("Feature id:     {0:4}".format(parameters.feature_id))
-    logging.info("Indicator key:  {0:4}".format(key)),
-    logging.info("Topic name:     {0:4}".format(topic.name))
+    logging.info(f"Feature id:     {parameters.feature_id:4}")
+    logging.info(f"Indicator key:  {key:4}"),
+    logging.info(f"Topic name:     {topic.name:4}")
 
     dataset = parameters.dataset.value
     if parameters.fid_field is not None:
@@ -211,9 +211,9 @@ async def _(
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
-    logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator key:  {0:4}".format(key))
-    logging.info("Topic name:     {0:4}".format(topic.name))
+    logging.info("Feature id:     {:4}".format(feature.get("id", 1)))
+    logging.info(f"Indicator key:  {key:4}")
+    logging.info(f"Topic name:     {topic.name:4}")
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
@@ -245,9 +245,9 @@ async def _(
     feature = parameters.bpolys
 
     logging.info("Calculating Indicator with custom Topic ...")
-    logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
-    logging.info("Indicator key:  {0:4}".format(key))
-    logging.info("Topic name:     {0:4}".format(topic.name))
+    logging.info("Feature id:     {:4}".format(feature.get("id", 1)))
+    logging.info(f"Indicator key:  {key:4}")
+    logging.info(f"Topic name:     {topic.name:4}")
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
@@ -283,8 +283,8 @@ async def _(parameters: ReportDatabase, key: str, force: bool = False) -> Report
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
     logging.info("Creating Report...")
-    logging.info("Feature id:  {0:4}".format(parameters.feature_id))
-    logging.info("Report key:  {0:4}".format(key))
+    logging.info(f"Feature id:  {parameters.feature_id:4}")
+    logging.info(f"Report key:  {key:4}")
 
     dataset = parameters.dataset.value
     if parameters.fid_field is not None:
@@ -300,7 +300,7 @@ async def _(parameters: ReportDatabase, key: str, force: bool = False) -> Report
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
@@ -330,13 +330,13 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     feature = parameters.bpolys
 
     logging.info("Creating Report...")
-    logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
-    logging.info("Report key:  {0:4}".format(key))
+    logging.info("Feature id:  {:4}".format(feature.get("id", 1)))
+    logging.info(f"Report key:  {key:4}")
 
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
@@ -355,8 +355,8 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
 
 async def create_all_indicators(
     dataset: str,
-    indicator_name: Optional[str] = None,
-    topic_key: Optional[str] = None,
+    indicator_name: str | None = None,
+    topic_key: str | None = None,
     force: bool = False,
 ) -> None:
     """Create all indicator/topic combination for the given dataset.
@@ -378,7 +378,7 @@ async def create_all_indicators(
             for topic in get_valid_topics(indicator):
                 indicator_topic.append((indicator, topic))
 
-    tasks: List[asyncio.Task] = []
+    tasks: list[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
         for indicator_key_, topic_key_ in indicator_topic:
@@ -398,9 +398,9 @@ async def create_all_indicators(
     exceptions = filter_exceptions(results)
     for exception in exceptions:
         message = getattr(exception, "message", repr(exception))
-        logging.warning("Ignoring error: {0}".format(message))
+        logging.warning(f"Ignoring error: {message}")
 
 
-async def check_area_size(geom: Union[Polygon, MultiPolygon]):
+async def check_area_size(geom: Polygon | MultiPolygon):
     if await db_client.get_area_of_bpolys(geom) > get_config_value("geom_size_limit"):
         raise SizeRestrictionError(get_config_value("geom_size_limit"))
