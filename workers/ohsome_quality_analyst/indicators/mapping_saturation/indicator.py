@@ -70,7 +70,7 @@ class MappingSaturation(BaseIndicator):
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
 
-    def calculate(self) -> None:
+    def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results
         self.result.timestamp_osm = self.timestamps[-1]
         edge_case_description = self.check_edge_cases()
