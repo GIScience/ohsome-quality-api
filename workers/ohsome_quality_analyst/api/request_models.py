@@ -9,7 +9,7 @@ information derived from `pydantic` models in the automatic generated API docume
 
 import json
 from enum import Enum
-from typing import Optional, Union
+from typing import Union
 
 import geojson
 import pydantic
@@ -115,19 +115,7 @@ class BaseBpolys(BaseModel):
         return obj
 
 
-class BaseDatabase(BaseModel):
-    """Model for the combination of parameters: `dataset`, `feature_id`, `fid_field`."""
-
-    dataset: DatasetEnum = pydantic.Field(..., title="Dataset Name", example="regions")
-    feature_id: str = pydantic.Field(..., title="Feature Id", example="3")
-    fid_field: Optional[FidFieldEnum] = None
-
-
 class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
-    pass
-
-
-class IndicatorDatabase(BaseIndicator, BaseTopicName, BaseDatabase):
     pass
 
 
@@ -136,10 +124,6 @@ class IndicatorData(BaseIndicator, BaseTopicData, BaseBpolys):
 
 
 class ReportBpolys(BaseReport, BaseBpolys):
-    pass
-
-
-class ReportDatabase(BaseReport, BaseDatabase):
     pass
 
 
@@ -245,45 +229,6 @@ INDICATOR_EXAMPLES = {
                         {"timestamp": "2016-12-01T00:00:00Z", "value": 6016},
                         {"timestamp": "2017-01-01T00:00:00Z", "value": 6015},
                     ]
-                },
-            },
-            "includeSvg": False,
-            "includeHtml": False,
-            "flatten": False,
-        },
-    },
-}
-
-REPORT_EXAMPLES = {
-    "OQT AOI": {
-        "summary": (
-            "Request a Report for a AOI defined by OQT (`dataset` and `featureId`)."
-        ),
-        "value": {
-            "dataset": "regions",
-            "featureId": 12,
-            "fidField": "ogc_fid",
-            "includeSvg": False,
-            "includeHtml": False,
-            "flatten": False,
-        },
-    },
-    "Custom AOI": {
-        "summary": "Request a Report for a custom AOI (`bpolys`).",
-        "value": {
-            "bpolys": {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [8.674092292785645, 49.40427147224242],
-                            [8.695850372314453, 49.40427147224242],
-                            [8.695850372314453, 49.415552187316095],
-                            [8.674092292785645, 49.415552187316095],
-                            [8.674092292785645, 49.40427147224242],
-                        ]
-                    ],
                 },
             },
             "includeSvg": False,

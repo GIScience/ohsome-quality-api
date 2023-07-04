@@ -53,22 +53,6 @@ class TestApiRequestModels(unittest.TestCase):
             with self.assertRaises(ValueError):
                 request_models.BaseTopicData(topic=topic)
 
-    def test_dataset_valid(self):
-        request_models.BaseDatabase(dataset="regions", feature_id="3")
-        request_models.BaseDatabase(
-            dataset="regions", feature_id="3", fid_field="ogc_fid"
-        )
-        request_models.BaseDatabase(dataset="regions", feature_id="3")
-        request_models.BaseDatabase(
-            dataset="regions", feature_id="3", fid_field="ogc_fid"
-        )
-
-    def test_dataset_invalid(self):
-        with self.assertRaises(ValueError):
-            request_models.BaseDatabase(dataset="foo", feature_id="3")
-        with self.assertRaises(ValueError):
-            request_models.BaseDatabase(dataset="foo", feature_id="3")
-
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "topic",
@@ -113,12 +97,8 @@ class TestApiRequestModels(unittest.TestCase):
         for combination in all_combinations:
             if combination in valid_combinations:
                 continue
-            for model in (
-                request_models.IndicatorBpolys,
-                request_models.IndicatorDatabase,
-            ):
-                with self.assertRaises(ValueError):
-                    model(**combination)
+            with self.assertRaises(ValueError):
+                request_models.IndicatorBpolys(**combination)
 
 
 def test_base_indicator_valid():
@@ -195,20 +175,6 @@ def test_bpolys_unsupported_object_type(geojson_unsupported_object_type):
 def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometry_type):
     with pytest.raises((GeoJSONGeometryTypeError, ValidationError)):
         request_models.BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
-
-
-def test_indicator_database():
-    request_models.IndicatorDatabase(
-        topic="minimal",
-        dataset="regions",
-        feature_id="3",
-    )
-    request_models.IndicatorDatabase(
-        topic="minimal",
-        dataset="regions",
-        feature_id="Heidelberg",
-        fid_field="name",
-    )
 
 
 def test_indicator_bpolys(feature_collection_germany_heidelberg):

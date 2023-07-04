@@ -9,9 +9,7 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
-    IndicatorDatabase,
     ReportBpolys,
-    ReportDatabase,
 )
 from ohsome_quality_analyst.geodatabase import client as db_client
 from tests.integrationtests.utils import get_geojson_fixture
@@ -45,38 +43,6 @@ class TestOqt(unittest.TestCase):
         indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_default_fid_field(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_custom_fid_field_int(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            fid_field=self.fid_field,
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_custom_fid_field_str(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id="Heidelberg",
-            fid_field="name",
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
     def test_create_indicator_not_implemented(self):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_indicator(""))
@@ -86,38 +52,6 @@ class TestOqt(unittest.TestCase):
         """Test creating report from scratch using the 'bpolys'parameters ."""
         parameters = ReportBpolys(bpolys=self.feature)
         report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_default_fid_field(self):
-        parameters = ReportDatabase(dataset=self.dataset, feature_id=self.feature_id)
-        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_custom_fid_field_int(self):
-        parameters = ReportDatabase(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            fid_field=self.fid_field,
-        )
-        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_custom_fid_field_str(self):
-        parameters = ReportDatabase(
-            dataset=self.dataset,
-            feature_id="Heidelberg",
-            fid_field="name",
-        )
-        report = asyncio.run(oqt.create_report(parameters, self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
