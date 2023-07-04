@@ -1,5 +1,11 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- style: use `ruff` instead `flake8` and `isort`
+
 ## 0.15.0
 
 ### Breaking Changes

@@ -28,6 +28,5 @@ COPY --chown=oqt:oqt ohsome_quality_analyst ohsome_quality_analyst
 COPY --chown=oqt:oqt tests tests
 COPY --chown=oqt:oqt scripts/start_api.py scripts/start_api.py
 COPY --chown=oqt:oqt config/logging.yaml config/logging.yaml
-COPY --chown=oqt:oqt setup.cfg setup.cfg
 RUN python -m poetry install --no-ansi --no-interaction
 
