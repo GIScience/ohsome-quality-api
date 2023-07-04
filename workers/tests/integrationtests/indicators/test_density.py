@@ -49,16 +49,15 @@ class TestFigure:
         i = Density(topic_poi, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
+        i.create_figure()
         return i
 
     # comment out for manual test
     @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
-        indicator.create_figure()
         pio.show(indicator.result.figure)
 
     def test_create_figure(self, indicator):
-        indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
         assert indicator.result.svg is not None
