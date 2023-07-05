@@ -1,7 +1,6 @@
 import asyncio
 import os
 import unittest
-from unittest import mock
 
 import geojson
 
@@ -11,10 +10,10 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorData,
     ReportBpolys,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
+from tests.conftest import FIXTURE_DIR
 from tests.integrationtests.utils import get_geojson_fixture
 
-from .utils import AsyncMock, oqt_vcr
+from .utils import oqt_vcr
 
 
 class TestOqt(unittest.TestCase):
@@ -23,12 +22,14 @@ class TestOqt(unittest.TestCase):
         self.indicator_name = "minimal"
         self.report_name = "minimal"
         self.topic_key = "minimal"
-        self.dataset = "regions"
-        self.feature_id = "3"
         self.fid_field = "ogc_fid"
-        self.feature = asyncio.run(
-            db_client.get_feature_from_db(self.dataset, feature_id=self.feature_id)
+
+        path = os.path.join(
+            FIXTURE_DIR,
+            "feature-collection-germany-heidelberg.geojson",
         )
+        with open(path, "r") as f:
+            self.feature = geojson.load(f)
 
     def run_tests(self, indicator):
         self.assertIsNotNone(indicator.result.label)
@@ -59,24 +60,6 @@ class TestOqt(unittest.TestCase):
     def test_create_report_not_implemented(self):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_report(""))
-
-    @oqt_vcr.use_cassette()
-    def test_create_all_indicators(self):
-        with mock.patch(
-            "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
-            new_callable=AsyncMock,
-        ) as get_feature_ids_mock:
-            # Trigger concurrent calculation of more then 4 indicators.
-            # The default semaphore is 4. Make sure no error is raised due to
-            # initialization of semaphore outside the event-loop.
-            get_feature_ids_mock.return_value = ["3", "12", "3", "12", "3", "12"]
-            asyncio.run(
-                oqt.create_all_indicators(
-                    dataset="regions",
-                    indicator_name="minimal",
-                    topic_key="minimal",
-                )
-            )
 
     def test_check_area_size(self):
         path = os.path.join(
