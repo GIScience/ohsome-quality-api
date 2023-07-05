@@ -1,11 +1,13 @@
 import asyncio
+import os
 import unittest
 
+import geojson
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import IndicatorBpolys
-from ohsome_quality_analyst.geodatabase import client as db_client
+from tests.conftest import FIXTURE_DIR
 
 from .utils import oqt_vcr
 
@@ -15,11 +17,12 @@ class TestOqtGeoJsonIO(unittest.TestCase):
         # Heidelberg
         self.name = "minimal"
         self.topic_key = "minimal"
-        self.dataset = "regions"
-        self.feature_id = "3"
-        self.feature = asyncio.run(
-            db_client.get_feature_from_db(self.dataset, feature_id=self.feature_id)
+        path = os.path.join(
+            FIXTURE_DIR,
+            "feature-collection-germany-heidelberg.geojson",
         )
+        with open(path, "r") as f:
+            self.feature = geojson.load(f)
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_bpolys(self):
