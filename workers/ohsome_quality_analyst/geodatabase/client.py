@@ -17,7 +17,6 @@ On preventing SQL injections:
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Union
 
 import asyncpg
 import geojson
@@ -46,7 +45,7 @@ async def get_connection():
         await conn.close()
 
 
-async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
+async def get_area_of_bpolys(bpolys: Polygon | MultiPolygon):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -63,21 +62,7 @@ async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
     return result["area_sqkm"]
 
 
-async def get_regions_as_geojson() -> FeatureCollection:
-    file_path = os.path.join(WORKING_DIR, "regions_as_geojson.sql")
-    with open(file_path, "r") as file:
-        query = file.read()
-    async with get_connection() as conn:
-        record = await conn.fetchrow(query)
-    feature_collection = geojson.loads(record[0])
-    # To be compliant with rfc7946 "id" should be a member of the feature
-    # and not of the properties.
-    for feature in feature_collection["features"]:
-        feature["id"] = feature["properties"].pop("id")
-    return feature_collection
-
-
-async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
+async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by

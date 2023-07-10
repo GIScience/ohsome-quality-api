@@ -4,7 +4,7 @@ Functions are triggered by the API.
 """
 import logging
 from functools import singledispatch
-from typing import Coroutine, List, Union
+from typing import Coroutine
 
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
 
@@ -35,11 +35,11 @@ async def create_indicator_as_geojson(parameters):
 @create_indicator_as_geojson.register(IndicatorBpolys)
 @create_indicator_as_geojson.register(IndicatorData)
 async def _(
-    parameters: Union[IndicatorBpolys, IndicatorData],
+    parameters: IndicatorBpolys | IndicatorData,
     key: str,
     size_restriction: bool = False,
     **_kwargs,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create an indicator or multiple indicators as GeoJSON object.
 
     Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
@@ -48,7 +48,7 @@ async def _(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
@@ -75,7 +75,7 @@ async def create_report_as_geojson(
     key: str,
     force: bool = False,
     size_restriction: bool = False,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create a report or multiple reports as GeoJSON object.
 
     Returns:
@@ -200,7 +200,7 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
@@ -217,6 +217,6 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     return report
 
 
-async def check_area_size(geom: Union[Polygon, MultiPolygon]):
+async def check_area_size(geom: Polygon | MultiPolygon):
     if await db_client.get_area_of_bpolys(geom) > get_config_value("geom_size_limit"):
         raise SizeRestrictionError(get_config_value("geom_size_limit"))
