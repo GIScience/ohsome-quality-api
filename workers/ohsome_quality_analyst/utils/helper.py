@@ -86,7 +86,7 @@ def json_serialize(obj):
     It should return a JSON encodable version of the object or raise a TypeError.
     https://docs.python.org/3/library/json.html#basic-usage
     """
-    if isinstance(obj, (date, datetime)):
+    if isinstance(obj, date | datetime):
         return obj.isoformat()
     elif isinstance(obj, BaseStatModel):
         return obj.as_dict()
@@ -168,7 +168,7 @@ def flatten_sequence(input_seq: dict | list | tuple | set) -> list:
     if isinstance(input_seq, dict):
         input_seq = input_seq.values()
     for val in input_seq:
-        if isinstance(val, (dict, list, tuple, set)):
+        if isinstance(val, dict | list | tuple | set):
             output += flatten_sequence(val)
         else:
             output.append(val)
