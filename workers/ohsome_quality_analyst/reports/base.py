@@ -2,7 +2,7 @@ from __future__ import annotations  # superfluous in Python 3.10
 
 import logging
 from abc import ABCMeta, abstractmethod
-from typing import List, NamedTuple, Tuple
+from typing import NamedTuple
 
 import numpy as np
 from geojson import Feature
@@ -26,14 +26,14 @@ class BaseReport(metaclass=ABCMeta):
     def __init__(
         self,
         feature: Feature,
-        indicator_topic: Tuple[IndicatorTopic] = None,
+        indicator_topic: tuple[IndicatorTopic] = None,
         blocking_red: bool = False,
         blocking_undefined: bool = False,
     ):
         self.metadata: ReportMetadata = get_metadata("reports", type(self).__name__)
         self.feature = feature
 
-        self.indicators: List[BaseIndicator] = []
+        self.indicators: list[BaseIndicator] = []
         self.indicator_topic = indicator_topic  # Defines indicator+topic combinations
         self.blocking_undefined = blocking_undefined
         self.blocking_red = blocking_red
@@ -46,10 +46,8 @@ class BaseReport(metaclass=ABCMeta):
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        result = self.result.dict()  # only attributes, no properties
+        result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        if result["class_"] is not None:
-            result["class_"] = self.result.class_
         properties = {
             "report": {
                 "metadata": self.metadata.dict(),

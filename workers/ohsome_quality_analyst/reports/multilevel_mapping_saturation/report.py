@@ -16,7 +16,7 @@ class MultilevelMappingSaturation(BaseReport):
                 IndicatorTopic("mapping-saturation", "infrastructure_lines"),
                 IndicatorTopic("mapping-saturation", "poi"),
                 IndicatorTopic("mapping-saturation", "lulc"),
-                IndicatorTopic("mapping-saturation", "building_count"),
+                IndicatorTopic("mapping-saturation", "building-count"),
             ),
             feature=feature,
             blocking_red=blocking_red,

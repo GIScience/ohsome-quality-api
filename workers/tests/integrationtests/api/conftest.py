@@ -13,7 +13,7 @@ def client():
 @pytest.fixture
 def response_template():
     return {
-        "api-version": oqt_version,
+        "apiVersion": oqt_version,
         "attribution": {
             "url": (
                 "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
@@ -26,7 +26,7 @@ def response_template():
 @pytest.fixture
 def metadata_topic_building_count():
     return {
-        "building_count": {
+        "building-count": {
             "name": "Building Count",
             "description": (
                 "All buildings as defined by all objects tagged with 'building=*'."
@@ -38,11 +38,11 @@ def metadata_topic_building_count():
                 "currentness",
                 "attribute-completeness",
             ],
-            "ratio_filter": (
+            "ratioFilter": (
                 "building=* and building!=no and geometry:polygon and height=* or "
                 + "building:levels=*"
             ),
-            "project": "core",
+            "projects": ["core"],
             "source": None,  # TODO: Should not be in response if None
         }
     }
@@ -57,8 +57,16 @@ def metadata_indicator_mapping_saturation():
                 "Calculate if mapping has saturated. High saturation has been reached "
                 + "if the growth of the fitted curve is minimal."
             ),
-            "project": "core",
-            "quality-dimension": "completeness",
+            "projects": [
+                "core",
+                "corine-land-cover",
+                "expanse",
+                "experimental",
+                "idealvgi",
+                "mapaction",
+                "sketchmap",
+            ],
+            "qualityDimension": "completeness",
         }
     }
 
@@ -74,7 +82,7 @@ def metadata_report_multilevel_mapping_saturation():
             + "It evolved from the OSM Element Vectorisation tool (https://gitlab."
             + "gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-"
             + "vectorisation).",
-            "project": "core",
+            "projects": ["core"],
         }
     }
 
@@ -109,8 +117,8 @@ def metadata_topic_minimal():
             "endpoint": "elements/count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": ["minimal"],
-            "ratio_filter": None,  # TODO: Should not be in response if None
-            "project": "misc",
+            "ratioFilter": None,  # TODO: Should not be in response if None
+            "projects": ["misc"],
             "source": None,  # TODO: Should not be in response if None
         }
     }
@@ -122,8 +130,8 @@ def metadata_indicator_minimal():
         "minimal": {
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
-            "project": "misc",
-            "quality-dimension": "minimal",
+            "projects": ["misc"],
+            "qualityDimension": "minimal",
         }
     }
 
@@ -138,6 +146,6 @@ def metadata_report_minimal():
                 + "and Currentness. It's main function is to test the interactions "
                 + "between database, api and dashboard."
             ),
-            "project": "misc",
+            "projects": ["misc"],
         }
     }

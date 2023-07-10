@@ -5,9 +5,11 @@ Note:
     in the `presets.yaml` file in the `topic` module.
 """
 
-from typing import List, Optional
 
 from pydantic import BaseModel
+
+from ohsome_quality_analyst.projects.definitions import ProjectEnum
+from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
 class BaseTopic(BaseModel):
@@ -26,10 +28,16 @@ class TopicDefinition(BaseTopic):
 
     endpoint: str
     filter: str
-    indicators: List[str]
-    project: str
-    source: Optional[str] = None
-    ratio_filter: Optional[str] = None
+    indicators: list[str]
+    projects: list[ProjectEnum]
+    source: str | None = None
+    ratio_filter: str | None = None
+
+    class Config:
+        alias_generator = snake_to_lower_camel
+        frozen = True
+        extra = "forbid"
+        allow_population_by_field_name = True
 
 
 class TopicData(BaseTopic):

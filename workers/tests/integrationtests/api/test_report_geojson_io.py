@@ -22,9 +22,6 @@ class TestApiReportIo(unittest.TestCase):
         self.endpoint = "/reports/minimal"
 
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.dataset = "regions"
-        self.feature_id = 3  # Heidelberg
-        self.fid_field = "ogc_fid"
 
         number_of_indicators = 2
 
@@ -81,22 +78,10 @@ class TestApiReportIo(unittest.TestCase):
         self.assertEqual(response.status_code, 422)
 
     @oqt_vcr.use_cassette()
-    def test_invalid_set_of_arguments(self):
-        parameters = {
-            "bpolys": self.feature,
-            "dataset": "foo",
-            "feature-id": "3",
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
-
-    @oqt_vcr.use_cassette()
     def test_report_include_svg_true(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": True,
+            "includeSvg": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -106,7 +91,7 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_svg_false(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
+            "includeSvg": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -125,8 +110,8 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_html_true(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
-            "include-html": True,
+            "includeSvg": False,
+            "includeHtml": True,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()
@@ -136,8 +121,8 @@ class TestApiReportIo(unittest.TestCase):
     def test_report_include_html_false(self):
         parameters = {
             "bpolys": self.feature,
-            "include-svg": False,
-            "include-html": False,
+            "includeSvg": False,
+            "includeHtml": False,
         }
         response = self.client.post(self.endpoint, json=parameters)
         result = response.json()

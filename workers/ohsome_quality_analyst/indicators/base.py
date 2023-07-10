@@ -46,27 +46,26 @@ class BaseIndicator(metaclass=ABCMeta):
             flatten (bool): If true flatten the properties.
             include_data (bool): If true include additional data in the properties.
         """
-        result = self.result.dict()  # only attributes, no properties
+        result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        result["class"] = result.pop("class_")
         properties = {
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
-                "project": self.metadata.project,
-                "quality-dimension": self.metadata.quality_dimension,
+                "projects": self.metadata.projects,
+                "qualityDimension": self.metadata.quality_dimension,
             },
             "topic": {
                 "key": self.topic.key,
                 "name": self.topic.name,
                 "description": self.topic.description,
-                "project": None,  # Not every topic object has a project (TopicData)
+                "projects": None,  # Not every topic object has a project (TopicData)
             },
             "result": result,
             **self.feature.properties,
         }
         if not isinstance(self.topic, TopicData):
-            properties["topic"]["project"] = self.topic.project
+            properties["topic"]["projects"] = self.topic.projects
         if include_data:
             properties["data"] = self.data
         if flatten:

@@ -1,9 +1,10 @@
 import fnmatch
 import json
 import logging
+import os
 from typing import Annotated
 
-from fastapi import Body, FastAPI, Path, Request, status
+from fastapi import Body, FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +15,7 @@ from fastapi.openapi.docs import (
 )
 from fastapi.responses import JSONResponse
 from geojson import Feature, FeatureCollection
-from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
@@ -28,13 +29,10 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
-    REPORT_EXAMPLES,
     IndicatorBpolys,
     IndicatorData,
-    IndicatorDatabase,
     IndicatorEnum,
     ReportBpolys,
-    ReportDatabase,
     ReportEnum,
     TopicEnum,
 )
@@ -49,14 +47,12 @@ from ohsome_quality_analyst.api.response_models import (
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    get_attribution,
     get_indicator_definitions,
     get_metadata,
     get_report_definitions,
     get_topic_definition,
     get_topic_definitions,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
 from ohsome_quality_analyst.projects.definitions import (
     ProjectEnum,
     get_project,
@@ -80,11 +76,12 @@ from ohsome_quality_analyst.utils.helper import (
     get_class_from_key,
     hyphen_to_camel,
     json_serialize,
-    snake_to_hyphen,
 )
 from ohsome_quality_analyst.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
+MEDIA_TYPE_JSON = "application/json"
+STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
 TAGS_METADATA = [
     {
@@ -153,21 +150,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.mount(
-    "/static", StaticFiles(directory="ohsome_quality_analyst/static"), name="static"
-)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html():
+async def custom_swagger_ui_html(request: Request):
+    root_path = request.scope.get("root_path")
     return get_swagger_ui_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - Swagger UI",
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
-        swagger_js_url="/static/swagger-ui-bundle.js",
-        swagger_css_url="/static/swagger-ui.css",
-        swagger_favicon_url="/static/favicon-32x32.png",
+        swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
+        swagger_css_url=root_path + "/static/swagger-ui.css",
+        swagger_favicon_url=root_path + "/static/favicon-32x32.png",
     )
 
 
@@ -177,12 +172,13 @@ async def swagger_ui_redirect():
 
 
 @app.get("/redoc", include_in_schema=False)
-async def redoc_html():
+async def redoc_html(request: Request):
+    root_path = request.scope.get("root_path")
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=root_path + app.openapi_url,
         title=app.title + " - ReDoc",
-        redoc_js_url="/static/redoc.standalone.js",
-        redoc_favicon_url="/static/favicon-32x32.png",
+        redoc_js_url=root_path + "/static/redoc.standalone.js",
+        redoc_favicon_url=root_path + "/static/favicon-32x32.png",
     )
 
 
@@ -202,7 +198,7 @@ async def validation_exception_handler(
         content=jsonable_encoder(
             {
                 "apiVersion": __version__,
-                "type": "RequestValidationError",
+                "type": exception.__class__.__name__,
                 "detail": exception.errors(),
             },
         ),
@@ -241,6 +237,22 @@ async def oqt_exception_handler(
     )
 
 
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(_: Request, exception: StarletteHTTPException):
+    return JSONResponse(
+        status_code=exception.status_code,
+        content={
+            "apiVersion": __version__,
+            "type": exception.__class__.__name__,
+            "detail": [
+                {
+                    "msg": exception.detail,
+                },
+            ],
+        },
+    )
+
+
 def empty_api_response() -> dict:
     return {
         "apiVersion": __version__,
@@ -250,17 +262,18 @@ def empty_api_response() -> dict:
     }
 
 
-# TODO (Experimental): Belongs to temporary endpoint defined below
-class MappingSaturationModel(BaseModel):
-    bpolys: Feature | FeatureCollection
-    topic_key: str
-
-    class Config:
-        alias_generator = snake_to_hyphen
-
-
-@app.post("/indicators/{key}", tags=["indicator"])
+@app.post(
+    "/indicators/{key}",
+    tags=["indicator"],
+    responses={
+        200: {
+            "content": {MEDIA_TYPE_GEOJSON: {}},
+            "description": "Return JSON or GeoJSON.",
+        }
+    },
+)
 async def post_indicator(
+    request: Request,
     key: Annotated[
         IndicatorEnum,
         Path(
@@ -269,14 +282,13 @@ async def post_indicator(
         ),
     ],
     parameters: IndicatorBpolys
-    | IndicatorDatabase
     | IndicatorData = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, (IndicatorBpolys, IndicatorDatabase)):
+    if isinstance(parameters, IndicatorBpolys):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -300,8 +312,24 @@ async def post_indicator(
         class_type="indicator",
         key=key.value,
     ).attribution()
-    response.update(geojson_object)
-    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+    # TODO: if accept=JSON no GeoJSON should be created in the first place.
+    #   factor out logic and decision to base/indicator.py and oqt.py
+    #   base/indicator.py should have `as_dict` alongside `as_feature`
+    if request.headers["accept"] == MEDIA_TYPE_JSON:
+        response["results"] = [
+            feature.properties for feature in geojson_object.features
+        ]
+        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+    elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
+        response.update(geojson_object)
+        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+    else:
+        detail = "Content-Type needs to be either {0} or {1}".format(
+            MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
+        )
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail
+        )
 
 
 @app.post("/reports/{key}", tags=["report"])
@@ -313,11 +341,7 @@ async def post_report(
             example="building-report",
         ),
     ],
-    parameters: ReportBpolys
-    | ReportDatabase = Body(
-        ...,
-        examples=REPORT_EXAMPLES,
-    ),
+    parameters: ReportBpolys,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(
@@ -346,22 +370,6 @@ async def post_report(
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get("/regions")
-async def get_available_regions(asGeoJSON: bool = False):
-    """Get regions as list of names and identifiers or as a GeoJSON."""
-    response = empty_api_response()
-    if asGeoJSON is True:
-        regions = await db_client.get_regions_as_geojson()
-        response.update(regions)
-        response["attribution"]["text"] = get_attribution(["OSM"])
-        return JSONResponse(
-            content=jsonable_encoder(response), media_type=MEDIA_TYPE_GEOJSON
-        )
-    else:
-        response["result"] = await db_client.get_regions()
-        return response
-
-
 @app.get(
     "/metadata",
     tags=["metadata"],
@@ -378,12 +386,14 @@ async def get_available_regions(asGeoJSON: bool = False):
 )
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
     result = {
-        "topics": get_topic_definitions(project=project.value),
-        "quality-dimensions": get_quality_dimensions(),
+        "topics": get_topic_definitions(project=project),
+        "quality_dimensions": get_quality_dimensions(),
         "projects": get_projects(),
-        "indicators": get_indicator_definitions(project=project.value),
-        "reports": get_report_definitions(project=project.value),
+        "indicators": get_indicator_definitions(project=project),
+        "reports": get_report_definitions(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -399,7 +409,9 @@ async def metadata_topic(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> TopicMetadataResponse:
     """Get topics."""
-    return TopicMetadataResponse(result=get_topic_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return TopicMetadataResponse(result=get_topic_definitions(project=project))
 
 
 @app.get(
@@ -468,9 +480,9 @@ async def metadata_indicators(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> IndicatorMetadataResponse:
     """Get metadata of all indicators."""
-    return IndicatorMetadataResponse(
-        result=get_indicator_definitions(project=project.value)
-    )
+    if project == ProjectEnum.all:
+        project = None
+    return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
 
 
 @app.get(
@@ -501,7 +513,9 @@ async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
 ) -> ReportMetadataResponse:
     """Get metadata of all indicators."""
-    return ReportMetadataResponse(result=get_report_definitions(project=project.value))
+    if project == ProjectEnum.all:
+        project = None
+    return ReportMetadataResponse(result=get_report_definitions(project=project))
 
 
 @app.get(
@@ -518,7 +532,7 @@ async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     )
 
 
-def remove_result_item_from_properties(
+def remove_result_item_from_properties(  # noqa: C901
     geojson_object: Feature | FeatureCollection, key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.

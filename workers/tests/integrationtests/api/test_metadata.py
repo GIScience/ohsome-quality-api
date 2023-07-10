@@ -1,3 +1,10 @@
+from ohsome_quality_analyst.api.request_models import (
+    IndicatorEnum,
+    ReportEnum,
+    TopicEnum,
+)
+
+
 def test_metadata(
     client,
     response_template,
@@ -15,13 +22,13 @@ def test_metadata(
     assert content == response_template
     # check topics result
     assert (
-        metadata_topic_building_count["building_count"]
-        == result["topics"]["building_count"]
+        metadata_topic_building_count["building-count"]
+        == result["topics"]["building-count"]
     )
     # check quality dimensions result
     assert (
         metadata_quality_dimension_completeness["completeness"]
-        == result["quality-dimensions"]["completeness"]
+        == result["qualityDimensions"]["completeness"]
     )
     # check projects result
     assert metadata_project_core["core"] == result["projects"]["core"]
@@ -49,7 +56,7 @@ def test_project_core(
     assert content == response_template
     for k in ("topics", "indicators", "reports"):
         for p in result[k].values():
-            assert p["project"] == "core"
+            assert "core" in p["projects"]
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
@@ -70,10 +77,28 @@ def test_project_misc(
     assert content == response_template
     for k in ("topics", "indicators", "reports"):
         for p in result[k].values():
-            assert p["project"] == "misc"
+            assert "misc" in p["projects"]
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
     assert len(result["indicators"]) > 0
     # check reports result
     assert len(result["reports"]) > 0
+
+
+def test_project_all(
+    client,
+    response_template,
+):
+    response = client.get("/metadata?project=all")
+    assert response.status_code == 200
+
+    content = response.json()
+    result = content.pop("result")
+    assert content == response_template
+    # check topics result
+    assert len(result["topics"]) == len(TopicEnum)
+    # check indicators result
+    assert len(result["indicators"]) == len(IndicatorEnum)
+    # check reports result
+    assert len(result["reports"]) == len(ReportEnum)

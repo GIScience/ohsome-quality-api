@@ -53,7 +53,7 @@ class TestCalculation:
             feature = geojson.load(f)
 
         indicator = AttributeCompleteness(
-            topic=get_topic_fixture("clc_leaf_type"),
+            topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
         )
         asyncio.run(indicator.preprocess())

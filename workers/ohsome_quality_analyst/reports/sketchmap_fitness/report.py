@@ -12,8 +12,8 @@ class SketchmapFitness(BaseReport):
     ):
         super().__init__(
             indicator_topic=(
-                IndicatorTopic("mapping-saturation", "major_roads_length"),
-                IndicatorTopic("currentness", "major_roads_count"),
+                IndicatorTopic("mapping-saturation", "major-roads-length"),
+                IndicatorTopic("currentness", "major-roads-count"),
                 IndicatorTopic("currentness", "amenities"),
                 IndicatorTopic("density", "landmarks"),
             ),

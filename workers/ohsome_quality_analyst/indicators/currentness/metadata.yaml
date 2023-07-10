@@ -1,13 +1,14 @@
 ---
 currentness:
   name: Currentness
-  project: experimental
-  quality-dimension: currentness
+  projects:
+    - experimental
+  quality_dimension: currentness
   description: >-
     Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
     time range. 
     Refers to data quality in respect to currentness.
-  label-description:
+  label_description:
     red: >-
       It is likely that many features are outdated.
     yellow: >-
@@ -20,10 +21,10 @@ currentness:
       for this area of interest. Refer to other indicators that rely on 
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
-  result-description: >-
-      In the last $threshold_green years $green % of the elements were edited the last time.
+  result_description: >-
+      From the current $elements elements were $green % last edited in the past $threshold_green years (creation, tag change or geometry change).
       In the period from $threshold_yellow_start to $threshold_yellow_end years ago $yellow % of the elements were edited the last time.
       The remaining $red % were last edited at least $threshold_red years ago.
-      The median currentness of the $elements features ($topic_name) is $median_years year(s).
+      The median currentness of the selected features ($topic_name) is $median_years year(s).
       Note that only contributions up to $end_date are taken into account.
       $label_description

@@ -1,3 +1,4 @@
+import logging
 import os
 
 import geojson
@@ -26,6 +27,11 @@ from ohsome_quality_analyst.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
+# TODO: Workaround to avoid cluttering of stdout because of
+# https://github.com/pytest-dev/pytest/issues/5502
+logger = logging.getLogger("rpy2")
+logger.propagate = False
+
 
 @pytest.fixture(scope="class")
 def topic_key_minimal() -> str:
@@ -34,7 +40,7 @@ def topic_key_minimal() -> str:
 
 @pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
-    return "building_count"
+    return "building-count"
 
 
 @pytest.fixture(scope="class")
@@ -124,6 +130,11 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
     )
     with open(path, "r") as f:
         return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
+def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
+    return feature_collection_germany_heidelberg
 
 
 @pytest.fixture(scope="class")

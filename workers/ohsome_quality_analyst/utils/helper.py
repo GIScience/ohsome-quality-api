@@ -8,7 +8,7 @@ import re
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Generator, Union
+from typing import Generator
 
 import geojson
 import numpy as np
@@ -54,6 +54,18 @@ def hyphen_to_snake(hyphen: str):
     return "_".join(parts)
 
 
+def snake_to_camel(snake: str):
+    """Convert Lower Hyphen Case to Camel Case"""
+    parts = snake.split("_")
+    return "".join(p.title() for p in parts)
+
+
+def snake_to_lower_camel(snake: str):
+    """Convert Lower Hyphen Case to Lower Camel Case"""
+    camel_case = snake_to_camel(snake)
+    return camel_case[0].lower() + camel_case[1:]
+
+
 def snake_to_hyphen(snake: str) -> str:
     """Converts Snake Case to Lower Hyphen Case"""
     parts = snake.split("_")
@@ -74,7 +86,7 @@ def json_serialize(obj):
     It should return a JSON encodable version of the object or raise a TypeError.
     https://docs.python.org/3/library/json.html#basic-usage
     """
-    if isinstance(obj, (date, datetime)):
+    if isinstance(obj, date | datetime):
         return obj.isoformat()
     elif isinstance(obj, BaseStatModel):
         return obj.as_dict()
@@ -90,9 +102,7 @@ def json_serialize(obj):
         raise TypeError
 
 
-def write_geojson(
-    outfile: str, geojson_object: Union[Feature, FeatureCollection]
-) -> None:
+def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> None:
     """Writes a GeoJSON object to disk.
 
     If path does not exist it will be created.
@@ -149,7 +159,7 @@ def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dic
         return {prefix: input_}
 
 
-def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
+def flatten_sequence(input_seq: dict | list | tuple | set) -> list:
     """Returns the given input sequence as a list.
 
     If the input is a dict, it returns all values.
@@ -158,7 +168,7 @@ def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
     if isinstance(input_seq, dict):
         input_seq = input_seq.values()
     for val in input_seq:
-        if isinstance(val, (dict, list, tuple, set)):
+        if isinstance(val, dict | list | tuple | set):
             output += flatten_sequence(val)
         else:
             output.append(val)

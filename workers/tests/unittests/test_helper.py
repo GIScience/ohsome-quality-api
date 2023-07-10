@@ -23,7 +23,9 @@ from ohsome_quality_analyst.utils.helper import (
     hyphen_to_snake,
     json_serialize,
     loads_geojson,
+    snake_to_camel,
     snake_to_hyphen,
+    snake_to_lower_camel,
 )
 
 from .mapping_saturation import fixtures
@@ -179,6 +181,12 @@ class TestHelper(unittest.TestCase):
 
     def test_camel_to_hyphen(self):
         assert camel_to_hyphen("CamelCase") == "camel-case"
+
+    def test_snake_to_camel(self):
+        assert snake_to_camel("snake_case") == "SnakeCase"
+
+    def test_snake_to_lower_camel(self):
+        assert snake_to_lower_camel("snake_case") == "snakeCase"
 
     def test_snake_to_hyphen(self):
         assert snake_to_hyphen("snake_case") == "snake-case"

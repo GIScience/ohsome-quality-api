@@ -15,7 +15,6 @@ raise an `RRuntimeError`.
 
 import os
 from abc import ABC, abstractmethod
-from typing import Union
 
 import numpy as np
 import rpy2.robjects.packages as rpackages
@@ -54,7 +53,7 @@ class BaseStatModel(ABC):
         pass
 
     @property
-    def mae(self) -> Union[ArrayLike, DTypeLike]:
+    def mae(self) -> ArrayLike | DTypeLike:
         """Mean absolute error"""
         return np.mean(np.abs(np.subtract(self.ydata, self.fitted_values)))
 
