@@ -22,9 +22,6 @@ class TestApiReportIo(unittest.TestCase):
         self.endpoint = "/reports/minimal"
 
         self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        self.dataset = "regions"
-        self.feature_id = 3  # Heidelberg
-        self.fid_field = "ogc_fid"
 
         number_of_indicators = 2
 
@@ -79,18 +76,6 @@ class TestApiReportIo(unittest.TestCase):
         feature = get_geojson_fixture("europe.geojson")
         response = self.post_response(feature)
         self.assertEqual(response.status_code, 422)
-
-    @oqt_vcr.use_cassette()
-    def test_invalid_set_of_arguments(self):
-        parameters = {
-            "bpolys": self.feature,
-            "dataset": "foo",
-            "featureId": "3",
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
     def test_report_include_svg_true(self):

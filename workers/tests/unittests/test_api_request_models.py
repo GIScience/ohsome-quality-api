@@ -53,6 +53,7 @@ class TestApiRequestModels(unittest.TestCase):
             with self.assertRaises(ValueError):
                 request_models.BaseTopicData(topic=topic)
 
+    # TODO: considered for removal
     def test_invalid_set_of_arguments(self):
         param_keys = (
             "topic",
@@ -78,17 +79,6 @@ class TestApiRequestModels(unittest.TestCase):
                     {key: value for key, value in zip(key_comb, val_comb)}
                 )
         valid_combinations = (
-            {
-                "topic": "minimal",
-                "dataset": "regions",
-                "featureId": "3",
-            },
-            {
-                "topic": "minimal",
-                "dataset": "regions",
-                "featureId": "3",
-                "fidField": "ogc_fid",
-            },
             {
                 "topic": "minimal",
                 "bpolys": self.bpolys,
