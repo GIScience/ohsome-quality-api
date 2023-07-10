@@ -27,7 +27,7 @@ class BaseTopic(BaseModel):
 class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
-    endpoint: str
+    endpoint: Literal["elements"]
     aggregation_type: Literal["area", "count", "length", "perimeter"]
     filter: str
     indicators: List[str]
