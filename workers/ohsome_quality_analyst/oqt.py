@@ -1,6 +1,6 @@
 """Controller for the creation of Indicators and Reports.
 
-Functions are triggered by the CLI and API.
+Functions are triggered by the API.
 """
 import logging
 from functools import singledispatch
