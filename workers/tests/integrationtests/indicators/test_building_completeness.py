@@ -1,5 +1,6 @@
 import asyncio
 from datetime import datetime
+from unittest.mock import AsyncMock
 
 import plotly.graph_objects as pgo
 import plotly.io as pio
@@ -26,9 +27,48 @@ def topic():
     return get_topic_fixture("building-area")
 
 
+@pytest.fixture(scope="class")
+def hexcells():
+    return get_geojson_fixture("algeria-touggourt-hexcells.geojson")
+
+
+@pytest.fixture(scope="class")
+def shdi():
+    # fmt: off
+    return [0.749352689479516, 0.749352689479516, 0.749352689479516, 0.749352689479516,
+            0.749352689479516, 0.749352689479516, 0.749352689479516, 0.749352689479516,
+            0.749352689479516]
+    # fmt: on
+
+
+@pytest.fixture(scope="class")
+def mock_get_hex_cells(class_mocker, hexcells):
+    async_mock = AsyncMock(return_value=hexcells)
+    class_mocker.patch(
+        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_hex_cells",  # noqa
+        side_effect=async_mock,
+    )
+
+
+@pytest.fixture(scope="class")
+def mock_get_shdi(class_mocker, shdi):
+    async_mock = AsyncMock(return_value=shdi)
+    class_mocker.patch(
+        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_shdi",
+        side_effect=async_mock,
+    )
+
+
 class TestPreprocess:
     @oqt_vcr.use_cassette
-    def test_preprocess(self, feature, topic, mock_env_oqt_data_dir):
+    def test_preprocess(
+        self,
+        feature,
+        topic,
+        mock_env_oqt_data_dir,
+        mock_get_hex_cells,
+        mock_get_shdi,
+    ):
         indicator = BuildingCompleteness(topic, feature)
         asyncio.run(indicator.preprocess())
         assert isinstance(indicator.building_area_osm, list)
@@ -57,13 +97,19 @@ class TestPreprocess:
 class TestCalculationFigure:
     @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
-    def indicator(self, feature, topic, mock_env_oqt_data_dir):
+    def indicator(
+        self,
+        feature,
+        topic,
+        mock_env_oqt_data_dir,
+        mock_get_hex_cells,
+        mock_get_shdi,
+    ):
         i = BuildingCompleteness(feature=feature, topic=topic)
         asyncio.run(i.preprocess())
         i.calculate()
         return i
 
-    @oqt_vcr.use_cassette
     def test_calculate(self, indicator):
         assert isinstance(indicator.building_area_prediction, list)
         assert len(indicator.building_area_prediction) > 0
@@ -76,12 +122,10 @@ class TestCalculationFigure:
         assert indicator.result.value >= 0.0
 
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    @oqt_vcr.use_cassette
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
 
-    @oqt_vcr.use_cassette
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)

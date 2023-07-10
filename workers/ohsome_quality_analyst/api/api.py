@@ -29,13 +29,10 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
-    REPORT_EXAMPLES,
     IndicatorBpolys,
     IndicatorData,
-    IndicatorDatabase,
     IndicatorEnum,
     ReportBpolys,
-    ReportDatabase,
     ReportEnum,
     TopicEnum,
 )
@@ -285,14 +282,13 @@ async def post_indicator(
         ),
     ],
     parameters: IndicatorBpolys
-    | IndicatorDatabase
     | IndicatorData = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, IndicatorBpolys | IndicatorDatabase):
+    if isinstance(parameters, IndicatorBpolys):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -345,11 +341,7 @@ async def post_report(
             example="building-report",
         ),
     ],
-    parameters: ReportBpolys
-    | ReportDatabase = Body(
-        ...,
-        examples=REPORT_EXAMPLES,
-    ),
+    parameters: ReportBpolys,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(

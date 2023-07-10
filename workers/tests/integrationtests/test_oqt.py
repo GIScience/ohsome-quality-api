@@ -1,7 +1,6 @@
 import asyncio
 import os
 import unittest
-from unittest import mock
 
 import geojson
 
@@ -9,14 +8,12 @@ from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
-    IndicatorDatabase,
     ReportBpolys,
-    ReportDatabase,
 )
-from ohsome_quality_analyst.geodatabase import client as db_client
+from tests.conftest import FIXTURE_DIR
 from tests.integrationtests.utils import get_geojson_fixture
 
-from .utils import AsyncMock, oqt_vcr
+from .utils import oqt_vcr
 
 
 class TestOqt(unittest.TestCase):
@@ -25,12 +22,13 @@ class TestOqt(unittest.TestCase):
         self.indicator_name = "minimal"
         self.report_name = "minimal"
         self.topic_key = "minimal"
-        self.dataset = "regions"
-        self.feature_id = "3"
-        self.fid_field = "ogc_fid"
-        self.feature = asyncio.run(
-            db_client.get_feature_from_db(self.dataset, feature_id=self.feature_id)
+
+        path = os.path.join(
+            FIXTURE_DIR,
+            "feature-collection-germany-heidelberg.geojson",
         )
+        with open(path, "r") as f:
+            self.feature = geojson.load(f)
 
     def run_tests(self, indicator):
         self.assertIsNotNone(indicator.result.label)
@@ -42,38 +40,6 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_bpolys(self):
         """Test creating indicator from scratch."""
         parameters = IndicatorBpolys(topic=self.topic_key, bpolys=self.feature)
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_default_fid_field(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_custom_fid_field_int(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            fid_field=self.fid_field,
-        )
-        indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
-        self.run_tests(indicator)
-
-    @oqt_vcr.use_cassette()
-    def test_create_indicator_dataset_custom_fid_field_str(self):
-        parameters = IndicatorDatabase(
-            topic=self.topic_key,
-            dataset=self.dataset,
-            feature_id="Heidelberg",
-            fid_field="name",
-        )
         indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
@@ -90,59 +56,9 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_default_fid_field(self):
-        parameters = ReportDatabase(dataset=self.dataset, feature_id=self.feature_id)
-        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_custom_fid_field_int(self):
-        parameters = ReportDatabase(
-            dataset=self.dataset,
-            feature_id=self.feature_id,
-            fid_field=self.fid_field,
-        )
-        report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
-    @oqt_vcr.use_cassette()
-    def test_create_report_dataset_custom_fid_field_str(self):
-        parameters = ReportDatabase(
-            dataset=self.dataset,
-            feature_id="Heidelberg",
-            fid_field="name",
-        )
-        report = asyncio.run(oqt.create_report(parameters, self.report_name))
-        self.assertIsNotNone(report.result.label)
-        self.assertIsNotNone(report.result.class_)
-        self.assertIsNotNone(report.result.description)
-
     def test_create_report_not_implemented(self):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_report(""))
-
-    @oqt_vcr.use_cassette()
-    def test_create_all_indicators(self):
-        with mock.patch(
-            "ohsome_quality_analyst.geodatabase.client.get_feature_ids",
-            new_callable=AsyncMock,
-        ) as get_feature_ids_mock:
-            # Trigger concurrent calculation of more then 4 indicators.
-            # The default semaphore is 4. Make sure no error is raised due to
-            # initialization of semaphore outside the event-loop.
-            get_feature_ids_mock.return_value = ["3", "12", "3", "12", "3", "12"]
-            asyncio.run(
-                oqt.create_all_indicators(
-                    dataset="regions",
-                    indicator_name="minimal",
-                    topic_key="minimal",
-                )
-            )
 
     def test_check_area_size(self):
         path = os.path.join(
