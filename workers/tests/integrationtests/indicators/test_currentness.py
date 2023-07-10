@@ -74,7 +74,7 @@ class TestFigure:
         return i
 
     # comment out for manual test
-    # @pytest.mark.skip(reason="Only for manual testing.")
+    @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
