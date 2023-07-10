@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### Breaking
+
+- api: remove `dataset` and `fid` parameter
+
 ### Other Changes
 
 - style: use `ruff` instead `flake8` and `isort`
