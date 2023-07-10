@@ -22,7 +22,6 @@ class TestOqt(unittest.TestCase):
         self.indicator_name = "minimal"
         self.report_name = "minimal"
         self.topic_key = "minimal"
-        self.fid_field = "ogc_fid"
 
         path = os.path.join(
             FIXTURE_DIR,
