@@ -13,7 +13,7 @@ class TestGeodatabase(unittest.TestCase):
     def setUp(self):
         path = os.path.join(
             FIXTURE_DIR,
-            "feature-collection-germany-heidelberg.geojson",
+            "feature-germany-heidelberg.geojson",
         )
         with open(path, "r") as f:
             self.feature = geojson.load(f)
