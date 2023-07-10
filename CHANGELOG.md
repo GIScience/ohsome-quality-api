@@ -1,5 +1,21 @@
 # Changelog
 
+## Current Main
+
+### Breaking
+
+- api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
+- cli: remove CLI ([#634])
+
+### Other Changes
+
+- style: use `ruff` instead `flake8` and `isort` ([#630])
+- split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
+
+[#600](https://github.com/GIScience/ohsome-quality-analyst/pull/600)
+[#630](https://github.com/GIScience/ohsome-quality-analyst/pull/630)
+[#634](https://github.com/GIScience/ohsome-quality-analyst/pull/634)
+
 ## 0.15.0
 
 ### Breaking Changes
@@ -84,7 +100,6 @@
 - refactor: move base classes to related modules ([#524])
 - refactor: move topic-indicator-combinations to topic definition ([#528])
 - tests(vcr): don't record local requests and change cassettes directory structure ([#579])
-- split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
 
 ### How to Upgrade
 
@@ -177,7 +192,6 @@
 [#583]: https://github.com/GIScience/ohsome-quality-analyst/pull/583
 [#593]: https://github.com/GIScience/ohsome-quality-analyst/pull/593
 [#598]: https://github.com/GIScience/ohsome-quality-analyst/pull/598
-[#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
 [#601]: https://github.com/GIScience/ohsome-quality-analyst/pull/601
 [#603]: https://github.com/GIScience/ohsome-quality-analyst/pull/603
 [#605]: https://github.com/GIScience/ohsome-quality-analyst/pull/605

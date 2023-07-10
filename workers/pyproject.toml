@@ -47,16 +47,12 @@ plotly = "^5.14.0"
 pyproj = "~3.3.0"
 
 [tool.poetry.dev-dependencies]
+black = "^23.3.0"
+pre-commit = "^3.2.1"
 pytest = "^7.2.2"
 pytest-cov = "^4.0.0"
-pep8-naming = "^0.13.3"
-pre-commit = "^3.2.1"
-black = "^23.3.0"
-flake8 = "^6.0.0"
-isort = "^5.12.0"
-
-[tool.poetry.scripts]
-oqt = "ohsome_quality_analyst.cli.cli:cli"
+pytest-mock = "^3.11.1"
+ruff = "^0.0.275"
 
 [tool.poetry.urls]
 "Issues" = "https://github.com/GIScience/ohsome-quality-analyst/issues"
@@ -64,3 +60,20 @@ oqt = "ohsome_quality_analyst.cli.cli:cli"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = [
+    "E",    # pycodestyle Error
+    "F",    # Pyflakes
+    "I",    # isort
+    "N",    # pep8-nameing
+    "Q",    # flake8-quotes
+    "W",    # pycodestyle Warning
+    "C90",  # mccabe
+]
+
+[tool.ruff.per-file-ignores]
+"ohsome_quality_analyst/indicators/mapping_saturation/models.py" = [
+    "N803",
+    "N806",
+]

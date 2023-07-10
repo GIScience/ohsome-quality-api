@@ -87,13 +87,6 @@ For local development no additional configuration is required. Per default OQT w
 ### Usage
 
 
-#### CLI
-
-```bash
-oqt --help
-```
-
-
 #### API
 
 
@@ -221,7 +214,7 @@ Logging is enabled by default.
 #### Configuration
 
 The logging module is configured in `config.py`. Both entry-points to
-`ohsome_quality_analyst`, the `cli.py` and the `api.py`, will call the configuration
+`ohsome_quality_analyst`, the `api.py`, will call the configuration
 function defined in `definitions.py`. The default log level is `INFO`. This can be
 overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
 [configuration documentation](docs/configuration.md)).

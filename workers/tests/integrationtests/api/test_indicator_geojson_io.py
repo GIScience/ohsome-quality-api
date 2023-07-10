@@ -2,10 +2,8 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
-import os
 import unittest
 from datetime import datetime, timedelta
-from typing import Tuple
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -32,7 +30,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         self.general_schema = get_general_schema()
         self.featurecollection_schema = get_featurecollection_schema()
 
-    def run_tests(self, response, schemata: Tuple[Schema]) -> None:
+    def run_tests(self, response, schemata: tuple[Schema]) -> None:
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
         for schema in schemata:
@@ -73,26 +71,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         self.assertEqual(response.status_code, 422)
         content = response.json()
         self.assertEqual(content["type"], "SizeRestrictionError")
-
-    @oqt_vcr.use_cassette()
-    def test_invalid_set_of_arguments(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "fixtures",
-            "heidelberg-altstadt-feature.geojson",
-        )
-        with open(path, "r") as f:
-            bpolys = f.read()
-        parameters = {
-            "bpolys": bpolys,
-            "dataset": "foo",
-            "feature_id": "3",
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        self.assertEqual(response.status_code, 422)
-        content = response.json()
-        self.assertEqual(content["type"], "RequestValidationError")
 
     @oqt_vcr.use_cassette()
     def test_indicator_include_svg(self):

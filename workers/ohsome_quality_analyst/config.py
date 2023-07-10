@@ -5,7 +5,6 @@ import logging.config
 import os
 import sys
 from types import MappingProxyType
-from typing import Union
 
 import rpy2.rinterface_lib.callbacks
 import yaml
@@ -86,7 +85,7 @@ def get_config() -> MappingProxyType:
     return MappingProxyType(cfg)
 
 
-def get_config_value(key: str) -> Union[str, int, dict]:
+def get_config_value(key: str) -> str | int | dict:
     config = get_config()
     return config[key]
 
