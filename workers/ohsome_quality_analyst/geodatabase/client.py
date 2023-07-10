@@ -44,7 +44,7 @@ async def get_connection():
     finally:
         await conn.close()
 
-  
+
 async def get_area_of_bpolys(bpolys: Polygon | MultiPolygon):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")

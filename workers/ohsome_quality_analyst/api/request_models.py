@@ -10,7 +10,6 @@ information derived from `pydantic` models in the automatic generated API docume
 import json
 from enum import Enum
 
-
 import geojson
 import pydantic
 from geojson import Feature, FeatureCollection
