@@ -5,7 +5,7 @@ Functions are triggered by the CLI and API.
 import asyncio
 import logging
 from functools import singledispatch
-from typing import Coroutine, List, Optional, Union
+from typing import Coroutine, Optional, Union
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -63,7 +63,7 @@ async def _(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for i, feature in enumerate(loads_geojson(parameters.bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
@@ -300,7 +300,7 @@ async def _(parameters: ReportDatabase, key: str, force: bool = False) -> Report
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
@@ -336,7 +336,7 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
 
-    tasks: List[Coroutine] = []
+    tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
@@ -378,7 +378,7 @@ async def create_all_indicators(
             for topic in get_valid_topics(indicator):
                 indicator_topic.append((indicator, topic))
 
-    tasks: List[asyncio.Task] = []
+    tasks: list[asyncio.Task] = []
     fids = await db_client.get_feature_ids(dataset)
     for fid in fids:
         for indicator_key_, topic_key_ in indicator_topic:

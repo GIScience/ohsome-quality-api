@@ -5,7 +5,6 @@ https://fastapi.tiangolo.com/tutorial/testing/
 import os
 import unittest
 from datetime import datetime, timedelta
-from typing import Tuple
 
 from fastapi.testclient import TestClient
 from schema import Schema
@@ -32,7 +31,7 @@ class TestApiIndicatorIo(unittest.TestCase):
         self.general_schema = get_general_schema()
         self.featurecollection_schema = get_featurecollection_schema()
 
-    def run_tests(self, response, schemata: Tuple[Schema]) -> None:
+    def run_tests(self, response, schemata: tuple[Schema]) -> None:
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
         for schema in schemata:

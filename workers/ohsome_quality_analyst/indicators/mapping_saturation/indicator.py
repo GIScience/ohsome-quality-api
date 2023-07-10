@@ -1,6 +1,6 @@
 import logging
 from string import Template
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 import plotly.graph_objects as pgo
@@ -58,7 +58,7 @@ class MappingSaturation(BaseIndicator):
 
         # Attributes needed for result determination
         self.best_fit: Optional[models.BaseStatModel] = None
-        self.fitted_models: List[models.BaseStatModel] = []
+        self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(

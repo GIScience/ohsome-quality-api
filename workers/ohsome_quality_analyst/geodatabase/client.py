@@ -18,7 +18,7 @@ import json
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import List, Union
+from typing import Union
 
 import asyncpg
 import geojson
@@ -141,7 +141,7 @@ async def load_indicator_results(
     return indicator
 
 
-async def get_feature_ids(dataset: str) -> List[str]:
+async def get_feature_ids(dataset: str) -> list[str]:
     """Get all ids of a certain dataset"""
     # Safe against SQL injection because of predefined values
     fid_field = get_config_value("datasets")[dataset]["default"]
@@ -207,7 +207,7 @@ async def get_regions_as_geojson() -> FeatureCollection:
     return feature_collection
 
 
-async def get_regions() -> List[dict]:
+async def get_regions() -> list[dict]:
     query = "SELECT  name, ogc_fid FROM regions"
     async with get_connection() as conn:
         records = await conn.fetch(query)
@@ -258,7 +258,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     return str(record[0])
 
 
-async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> List[Record]:
+async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by
