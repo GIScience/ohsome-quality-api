@@ -8,7 +8,7 @@ import re
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Generator, Union
+from typing import Generator
 
 import geojson
 import numpy as np
@@ -102,9 +102,7 @@ def json_serialize(obj):
         raise TypeError
 
 
-def write_geojson(
-    outfile: str, geojson_object: Union[Feature, FeatureCollection]
-) -> None:
+def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> None:
     """Writes a GeoJSON object to disk.
 
     If path does not exist it will be created.
@@ -161,7 +159,7 @@ def flatten_dict(input_: dict, *, separator: str = ".", prefix: str = "") -> dic
         return {prefix: input_}
 
 
-def flatten_sequence(input_seq: Union[dict, list, tuple, set]) -> list:
+def flatten_sequence(input_seq: dict | list | tuple | set) -> list:
     """Returns the given input sequence as a list.
 
     If the input is a dict, it returns all values.

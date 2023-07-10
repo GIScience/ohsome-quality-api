@@ -18,7 +18,6 @@ import json
 import logging
 import os
 from contextlib import asynccontextmanager
-from typing import Union
 
 import asyncpg
 import geojson
@@ -153,7 +152,7 @@ async def get_feature_ids(dataset: str) -> list[str]:
     return [str(record[fid_field]) for record in records]
 
 
-async def get_area_of_bpolys(bpolys: Union[Polygon, MultiPolygon]):
+async def get_area_of_bpolys(bpolys: Polygon | MultiPolygon):
     """Calculates the area of a geojson geometry in postgis"""
     logging.info("Get area of polygon")
     query = """
@@ -258,7 +257,7 @@ async def map_fid_to_uid(dataset: str, feature_id: str, fid_field: str) -> str:
     return str(record[0])
 
 
-async def get_shdi(bpoly: Union[Feature, FeatureCollection]) -> list[Record]:
+async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by

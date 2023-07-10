@@ -5,7 +5,7 @@ Functions are triggered by the CLI and API.
 import asyncio
 import logging
 from functools import singledispatch
-from typing import Coroutine, Optional, Union
+from typing import Coroutine
 
 from asyncpg.exceptions import UndefinedTableError
 from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -50,11 +50,11 @@ async def create_indicator_as_geojson(parameters):
 @create_indicator_as_geojson.register(IndicatorBpolys)
 @create_indicator_as_geojson.register(IndicatorData)
 async def _(
-    parameters: Union[IndicatorBpolys, IndicatorData],
+    parameters: IndicatorBpolys | IndicatorData,
     key: str,
     size_restriction: bool = False,
     **_kwargs,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create an indicator or multiple indicators as GeoJSON object.
 
     Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
@@ -99,11 +99,11 @@ async def _(
 
 
 async def create_report_as_geojson(
-    parameters: Union[ReportBpolys, ReportDatabase],
+    parameters: ReportBpolys | ReportDatabase,
     key: str,
     force: bool = False,
     size_restriction: bool = False,
-) -> Union[Feature, FeatureCollection]:
+) -> Feature | FeatureCollection:
     """Create a report or multiple reports as GeoJSON object.
 
     Returns:
@@ -355,8 +355,8 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
 
 async def create_all_indicators(
     dataset: str,
-    indicator_name: Optional[str] = None,
-    topic_key: Optional[str] = None,
+    indicator_name: str | None = None,
+    topic_key: str | None = None,
     force: bool = False,
 ) -> None:
     """Create all indicator/topic combination for the given dataset.
@@ -401,6 +401,6 @@ async def create_all_indicators(
         logging.warning("Ignoring error: {0}".format(message))
 
 
-async def check_area_size(geom: Union[Polygon, MultiPolygon]):
+async def check_area_size(geom: Polygon | MultiPolygon):
     if await db_client.get_area_of_bpolys(geom) > get_config_value("geom_size_limit"):
         raise SizeRestrictionError(get_config_value("geom_size_limit"))

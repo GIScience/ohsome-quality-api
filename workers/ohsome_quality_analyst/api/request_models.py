@@ -9,7 +9,6 @@ information derived from `pydantic` models in the automatic generated API docume
 
 import json
 from enum import Enum
-from typing import Optional, Union
 
 import geojson
 import pydantic
@@ -87,7 +86,7 @@ class BaseTopicData(BaseModel):
 class BaseBpolys(BaseModel):
     """Model for the `bpolys` parameter."""
 
-    bpolys: Union[Feature, FeatureCollection] = pydantic.Field(
+    bpolys: Feature | FeatureCollection = pydantic.Field(
         ...,
         title="bpolys",
         example={
@@ -120,7 +119,7 @@ class BaseDatabase(BaseModel):
 
     dataset: DatasetEnum = pydantic.Field(..., title="Dataset Name", example="regions")
     feature_id: str = pydantic.Field(..., title="Feature Id", example="3")
-    fid_field: Optional[FidFieldEnum] = None
+    fid_field: FidFieldEnum | None = None
 
 
 class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
