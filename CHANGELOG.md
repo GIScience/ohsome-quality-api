@@ -4,7 +4,8 @@
 
 ### Breaking
 
-- api: remove `dataset` and `fid` parameter
+- api: remove `dataset`, `featureId` and `fidField` parameter
+- cli: remove CLI
 
 ### Other Changes
 
