@@ -6,10 +6,9 @@ USER root:root
 RUN bash -c 'echo "deb https://deb.nodesource.com/node_14.x focal main" > /etc/apt/sources.list.d/nodesource.list && \
              curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key > /etc/apt/trusted.gpg.d/nodesource.asc'
 
-# install pg_isready to be able to check if database is ready to be used
 # install java and node for sonar-scanner
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends postgresql-client openjdk-17-jre-headless nodejs && \
+    apt-get install --yes --no-install-recommends openjdk-17-jre-headless nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 USER oqt:oqt
