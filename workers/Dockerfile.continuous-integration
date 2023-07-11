@@ -2,10 +2,6 @@ FROM oqt-workers:latest
 
 USER root:root
 
-# temporary fix, due to sonar-scanner requiring node ≥ 14 which is only available in Debian bookworm (testing)
-RUN bash -c 'echo "deb https://deb.nodesource.com/node_14.x focal main" > /etc/apt/sources.list.d/nodesource.list && \
-             curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key > /etc/apt/trusted.gpg.d/nodesource.asc'
-
 # install java and node for sonar-scanner
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends openjdk-17-jre-headless nodejs && \
