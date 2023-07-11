@@ -9,5 +9,5 @@ def calculate_area(feature: Feature) -> float:
     coordinates = tuple(coords(feature))
     lons = tuple(c[0] for c in coordinates)
     lats = tuple(c[1] for c in coordinates)
-    area, _ = geod.polygon_area_perimeter(lons, lats)
+    area, _ = geod.polygon_area_perimeter(lons=lons, lats=lats)
     return area
