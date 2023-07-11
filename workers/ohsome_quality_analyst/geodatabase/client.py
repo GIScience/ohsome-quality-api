@@ -14,14 +14,12 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
-import logging
 import os
 from contextlib import asynccontextmanager
 
 import asyncpg
-import geojson
 from asyncpg import Record
-from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.config import get_config_value
 
@@ -43,23 +41,6 @@ async def get_connection():
         yield conn
     finally:
         await conn.close()
-
-
-async def get_area_of_bpolys(bpolys: Polygon | MultiPolygon):
-    """Calculates the area of a geojson geometry in postgis"""
-    logging.info("Get area of polygon")
-    query = """
-        SELECT
-            public.ST_Area(
-                st_setsrid(
-                    public.ST_GeomFromGeoJSON($1)::public.geography,
-                    4326
-                    )
-            ) / (1000*1000) as area_sqkm
-        """
-    async with get_connection() as conn:
-        result = await conn.fetchrow(query, geojson.dumps(bpolys))
-    return result["area_sqkm"]
 
 
 async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:

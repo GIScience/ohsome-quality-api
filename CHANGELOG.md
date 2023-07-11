@@ -11,10 +11,17 @@
 
 - style: use `ruff` instead `flake8` and `isort` ([#630])
 - split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
+- mapping-saturation: y-axis now shows the aggregation type used ([#611])
+- refactor: calculate geom area with pyproj instead of PostGIS ([#639])
+- currentness: improve plot and description ([#589])
 
-[#600](https://github.com/GIScience/ohsome-quality-analyst/pull/600)
-[#630](https://github.com/GIScience/ohsome-quality-analyst/pull/630)
-[#634](https://github.com/GIScience/ohsome-quality-analyst/pull/634)
+
+[#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
+[#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
+[#611]: https://github.com/GIScience/ohsome-quality-analyst/pull/611
+[#630]: https://github.com/GIScience/ohsome-quality-analyst/pull/630
+[#634]: https://github.com/GIScience/ohsome-quality-analyst/pull/634
+[#639]: https://github.com/GIScience/ohsome-quality-analyst/pull/639
 
 ## 0.15.0
 

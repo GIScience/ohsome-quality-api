@@ -26,10 +26,6 @@ class TestGeodatabase(unittest.TestCase):
         result = asyncio.run(_test_get_connection())
         self.assertEqual(result[0], 1)
 
-    def test_get_area_of_bpolys(self):
-        result = asyncio.run(db_client.get_area_of_bpolys(self.feature.geometry))
-        self.assertIsInstance(result, float)
-
     def test_get_shdi_single_intersection_feature(self):
         """Input geometry intersects only with one SHDI region."""
         result = asyncio.run(db_client.get_shdi(self.feature))

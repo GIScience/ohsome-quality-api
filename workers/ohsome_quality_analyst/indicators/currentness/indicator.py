@@ -72,8 +72,8 @@ class Currentness(BaseIndicator):
 
         if self.contrib_sum == 0:
             self.result.description = (
-                "In the area of interest no features of the selected topic are present "
-                + "today."
+                "In the area of interest no features of "
+                "the selected topic are present today."
             )
             return
 
@@ -114,11 +114,11 @@ class Currentness(BaseIndicator):
             label_description=self.metadata.label_description[label],
         )
 
-        last_edited_year = get_last_edited_year(self.contrib_abs)
-        if last_edited_year != self.result.timestamp_oqt.year:
+        last_edited_year = get_how_many_years_no_activity(self.contrib_abs)
+        if last_edited_year > 0:
             self.result.description += (
-                " Attention: There was no mapping activity after "
-                + "{} in this region.".format(last_edited_year)
+                f" Attention: There was no mapping activity for "
+                f"{last_edited_year} year(s) in this region."
             )
 
     def create_figure(self):
@@ -143,6 +143,11 @@ class Currentness(BaseIndicator):
                 xperiod0=self.timestamps[-1],
                 xperiod="M12",
                 xperiodalignment="start",
+                hovertemplate=(
+                    "%{y} of features (%{customdata})<br>"
+                    "last modified until %{x}<extra></extra>"
+                ),
+                customdata=self.contrib_abs,
             )
         )
 
@@ -152,20 +157,30 @@ class Currentness(BaseIndicator):
         # https://github.com/plotly/plotly.py/issues/3065
         x0 = (start - relativedelta(months=6)).timestamp() * 1000
         x1 = (end + relativedelta(months=6)).timestamp() * 1000
-        fig.add_vrect(
-            x0=x0,
-            x1=x1,
-            annotation_text=(
-                "In this time period at least 50%<br>of features have been edited."
-            ),
-            annotation_position="top",
-            fillcolor="gray",
-            layer="below",
-            line_width=0,
-            opacity=0.25,
-        )
 
-        fig.update_layout(title_text="Currentness")
+        y_min = min(self.contrib_rel)
+        y_max = max(self.contrib_rel) * 1.05
+
+        fig.add_trace(
+            pgo.Scatter(
+                x=[x0, x0, x1, x1, x0],
+                y=[y_min, y_max, y_max, y_min, y_min],
+                fill="toself",
+                mode="lines",
+                name="",
+                text="In this time period at least 50%<br>of features have been edited",
+                line_width=0,
+                opacity=0.25,
+                fillcolor="gray",
+                hoverlabel=dict(bgcolor="lightgray"),
+            )
+        )
+        fig.update_layout(
+            hovermode="x",
+            yaxis_range=[0, y_max],
+            showlegend=False,
+            title_text=("Currentness"),
+        )
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",
@@ -186,7 +201,7 @@ class Currentness(BaseIndicator):
         self.result.svg = img_bytes.decode("utf-8")
 
 
-def get_last_edited_year(contributions: list) -> int:
+def get_how_many_years_no_activity(contributions: list) -> int:
     """Get the number of years since today when the last contribution has been made."""
     for year, contrib in enumerate(contributions):  # latest contribution first
         if contrib != 0:
