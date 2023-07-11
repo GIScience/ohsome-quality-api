@@ -60,11 +60,11 @@ class OhsomeApiError(Exception):
 class SizeRestrictionError(ValueError):
     """Exception raised if size of input GeoJSON Geometry is too big."""
 
-    def __init__(self, geom_size_limit):
+    def __init__(self, geom_size_limit, geom_size):
         self.name = "SizeRestrictionError"
         self.message = (
-            "Input GeoJSON Geometry is too big. "
-            + "The area should be less than {0} km².".format(geom_size_limit)
+            f"Input GeoJSON Geometry is too big ({geom_size_limit} km²). "
+            f"The area should be less than {geom_size} km²."
         )
 
 
