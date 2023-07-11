@@ -6,22 +6,20 @@ import logging
 from functools import singledispatch
 from typing import Coroutine
 
-from geojson import Feature, FeatureCollection, MultiPolygon, Polygon
+from geojson import Feature, FeatureCollection
 
-import ohsome_quality_analyst.geodatabase.client as db_client
 from ohsome_quality_analyst.api.request_models import (
     IndicatorBpolys,
     IndicatorData,
     ReportBpolys,
 )
-from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
-from ohsome_quality_analyst.utils.exceptions import SizeRestrictionError
 from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
+from ohsome_quality_analyst.utils.validators import validate_area
 
 
 @singledispatch
@@ -59,7 +57,7 @@ async def _(
             and isinstance(parameters, IndicatorBpolys)
             and key != "mapping-saturation"
         ):
-            await check_area_size(feature.geometry)
+            validate_area(feature)
         tasks.append(
             create_indicator(parameters.copy(update={"bpolys": feature}), key=key)
         )
@@ -87,7 +85,7 @@ async def create_report_as_geojson(
         if "id" not in feature.keys():
             feature["id"] = i
         if size_restriction:
-            await check_area_size(feature.geometry)
+            validate_area(feature)
         # Reports for a FeatureCollection are not created asynchronously (as it is
         # the case with indicators), because indicators of a report are created
         # asynchronously
@@ -215,8 +213,3 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     report.combine_indicators()
     report.create_html()
     return report
-
-
-async def check_area_size(geom: Polygon | MultiPolygon):
-    if await db_client.get_area_of_bpolys(geom) > get_config_value("geom_size_limit"):
-        raise SizeRestrictionError(get_config_value("geom_size_limit"))
