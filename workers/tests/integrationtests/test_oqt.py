@@ -60,15 +60,6 @@ class TestOqt(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             asyncio.run(oqt.create_report(""))
 
-    def test_check_area_size(self):
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
-        )
-        with open(path, "r") as f:
-            feature = geojson.load(f)
-        with self.assertRaises(ValueError):
-            asyncio.run(oqt.check_area_size(feature.geometry))
-
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
         feature = get_geojson_fixture("europe.geojson")
         parameters = IndicatorBpolys(
