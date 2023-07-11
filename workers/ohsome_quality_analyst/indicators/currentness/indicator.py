@@ -45,6 +45,7 @@ class Currentness(BaseIndicator):
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
+        self.threshold_low_contributions = 25
 
     async def preprocess(self):
         """Get absolute number of contributions for each year since given start date"""
@@ -80,7 +81,9 @@ class Currentness(BaseIndicator):
         self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
         self.result.value = get_median_year(self.contrib_rel)
 
-        if self.result.value >= self.t1:
+        if self.contrib_sum < self.threshold_low_contributions:
+            pass
+        elif self.result.value >= self.t1:
             self.result.class_ = 1
             label = "red"
         elif self.t1 > self.result.value >= self.t2:
@@ -98,6 +101,10 @@ class Currentness(BaseIndicator):
         else:
             raise ValueError("Ratio has an unexpected value.")
 
+        # if self.contrib_sum < self.threshold_low_contributions:
+        #     label_description = (f"Attention: ",)
+        # else:
+        #     label_description = (self.metadata.label_description[label],)
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             topic_name=self.topic.name,

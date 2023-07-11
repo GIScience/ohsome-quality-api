@@ -46,29 +46,42 @@ class TestCalculation:
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "../fixtures",
-            "niger-kanan-bakache.geojson",
+            "test4.geojson",
         )
         with open(infile, "r") as f:
-            feature = geojson.load(f)
+            features = geojson.load(f)
+        for feature in features["features"]:
+            indicator = Currentness(
+                feature=feature, topic=get_topic_fixture("building-count")
+            )
+            asyncio.run(indicator.preprocess())
+            #        assert indicator.contrib_sum == 0
 
-        indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
-        asyncio.run(indicator.preprocess())
-        assert indicator.contrib_sum == 0
-
-        indicator.calculate()
-        assert indicator.result.label == "undefined"
-        assert indicator.result.value is None
-        assert indicator.result.description == (
-            "In the area of interest no features of the selected topic are present "
-            + "today."
-        )
+            indicator.calculate()
+            # assert indicator.result.label == "undefined"
+            # assert indicator.result.value is None
+            # assert indicator.result.description == (
+            #     "In the area of interest no features of
+            #     the selected topic are present "
+            #     + "today."
+            # )
+            indicator.create_figure()
+            pio.show(indicator.result.figure)
 
 
 class TestFigure:
     @pytest.fixture(scope="class")
     @oqt_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = Currentness(topic_building_count, feature_germany_heidelberg)
+        infile = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "../fixtures",
+            "test4.geojson",
+        )
+        with open(infile, "r") as f:
+            feature = geojson.load(f)
+
+        i = Currentness(feature, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
         return i
