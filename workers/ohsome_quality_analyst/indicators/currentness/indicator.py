@@ -101,10 +101,14 @@ class Currentness(BaseIndicator):
         else:
             raise ValueError("Ratio has an unexpected value.")
 
-        # if self.contrib_sum < self.threshold_low_contributions:
-        #     label_description = (f"Attention: ",)
-        # else:
-        #     label_description = (self.metadata.label_description[label],)
+        if self.contrib_sum < self.threshold_low_contributions:
+            label_description = (
+                f"Attention: There are only {self.contrib_sum} "
+                f" with the selected filter in this region."
+                f" The significance of the result is limited.",
+            )
+        else:
+            label_description = self.metadata.label_description[label]
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             topic_name=self.topic.name,
@@ -118,7 +122,7 @@ class Currentness(BaseIndicator):
             threshold_yellow_start=self.t2,
             threshold_yellow_end=self.t1 - 1,
             threshold_red=self.t1,
-            label_description=self.metadata.label_description[label],
+            label_description=label_description,
         )
 
         last_edited_year = get_last_edited_year(self.contrib_abs)
@@ -129,10 +133,6 @@ class Currentness(BaseIndicator):
             )
 
     def create_figure(self):
-        if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
-            return
-
         colors = []
         for i in range(len(self.contrib_rel)):
             if i < self.t3:
@@ -152,25 +152,25 @@ class Currentness(BaseIndicator):
                 xperiodalignment="start",
             )
         )
-
-        start = self.timestamps[self.result.value]
-        end = self.timestamps[0]
-        # Workaround setting text annotation for data with date-time:
-        # https://github.com/plotly/plotly.py/issues/3065
-        x0 = (start - relativedelta(months=6)).timestamp() * 1000
-        x1 = (end + relativedelta(months=6)).timestamp() * 1000
-        fig.add_vrect(
-            x0=x0,
-            x1=x1,
-            annotation_text=(
-                "In this time period at least 50%<br>of features have been edited."
-            ),
-            annotation_position="top",
-            fillcolor="gray",
-            layer="below",
-            line_width=0,
-            opacity=0.25,
-        )
+        if self.result.value is not None:
+            start = self.timestamps[self.result.value]
+            end = self.timestamps[0]
+            # Workaround setting text annotation for data with date-time:
+            # https://github.com/plotly/plotly.py/issues/3065
+            x0 = (start - relativedelta(months=6)).timestamp() * 1000
+            x1 = (end + relativedelta(months=6)).timestamp() * 1000
+            fig.add_vrect(
+                x0=x0,
+                x1=x1,
+                annotation_text=(
+                    "In this time period at least 50%<br>of features have been edited."
+                ),
+                annotation_position="top",
+                fillcolor="gray",
+                layer="below",
+                line_width=0,
+                opacity=0.25,
+            )
 
         fig.update_layout(title_text="Currentness")
         fig.update_xaxes(
