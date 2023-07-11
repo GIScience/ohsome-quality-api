@@ -6,10 +6,10 @@ import numpy as np
 import plotly.graph_objects as go
 from geojson import Feature
 
-from ohsome_quality_analyst.geodatabase.client import get_area_of_bpolys
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.utils.helper_geo import calculate_area
 
 # threshold values defining the color of the traffic light
 # derived directly from sketchmap_fitness repo
@@ -31,7 +31,7 @@ class Density(BaseIndicator):
 
     async def preprocess(self) -> None:
         query_results_count = await ohsome_client.query(self.topic, self.feature)
-        self.area_sqkm = await get_area_of_bpolys(self.feature.geometry)
+        self.area_sqkm = calculate_area(self.feature) / (1000 * 1000)
         self.count = query_results_count["result"][0]["value"]
         timestamp = query_results_count["result"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
