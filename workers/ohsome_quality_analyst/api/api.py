@@ -29,13 +29,10 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
-    REPORT_EXAMPLES,
     IndicatorBpolys,
     IndicatorData,
-    IndicatorDatabase,
     IndicatorEnum,
     ReportBpolys,
-    ReportDatabase,
     ReportEnum,
     TopicEnum,
 )
@@ -285,14 +282,13 @@ async def post_indicator(
         ),
     ],
     parameters: IndicatorBpolys
-    | IndicatorDatabase
     | IndicatorData = Body(
         ...,
         examples=INDICATOR_EXAMPLES,
     ),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, (IndicatorBpolys, IndicatorDatabase)):
+    if isinstance(parameters, IndicatorBpolys):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -320,13 +316,9 @@ async def post_indicator(
     #   factor out logic and decision to base/indicator.py and oqt.py
     #   base/indicator.py should have `as_dict` alongside `as_feature`
     if request.headers["accept"] == MEDIA_TYPE_JSON:
-        response["results"] = []
-        # TODO: remove check once only FeatureCollection is supported
-        if isinstance(geojson_object, FeatureCollection):
-            for feature in geojson_object.features:
-                response["results"].append(feature.properties)
-        else:
-            response["results"].append(geojson_object.properties)
+        response["results"] = [
+            feature.properties for feature in geojson_object.features
+        ]
         return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
         response.update(geojson_object)
@@ -349,11 +341,7 @@ async def post_report(
             example="building-report",
         ),
     ],
-    parameters: ReportBpolys
-    | ReportDatabase = Body(
-        ...,
-        examples=REPORT_EXAMPLES,
-    ),
+    parameters: ReportBpolys,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(
@@ -544,7 +532,7 @@ async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     )
 
 
-def remove_result_item_from_properties(
+def remove_result_item_from_properties(  # noqa: C901
     geojson_object: Feature | FeatureCollection, key: str, flatten: bool
 ) -> None:
     """Remove item from the properties of a GeoJSON Feature or FeatureCollection.

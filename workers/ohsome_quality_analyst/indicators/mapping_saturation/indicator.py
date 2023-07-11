@@ -1,6 +1,5 @@
 import logging
 from string import Template
-from typing import List, Optional
 
 import numpy as np
 import plotly.graph_objects as pgo
@@ -57,8 +56,8 @@ class MappingSaturation(BaseIndicator):
         self.above_one_upper_threshold = 1.5
 
         # Attributes needed for result determination
-        self.best_fit: Optional[models.BaseStatModel] = None
-        self.fitted_models: List[models.BaseStatModel] = []
+        self.best_fit: models.BaseStatModel | None = None
+        self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
@@ -70,7 +69,7 @@ class MappingSaturation(BaseIndicator):
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
 
-    def calculate(self) -> None:
+    def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results
         self.result.timestamp_osm = self.timestamps[-1]
         edge_case_description = self.check_edge_cases()

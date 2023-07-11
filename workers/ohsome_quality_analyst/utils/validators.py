@@ -22,7 +22,7 @@ def validate_geojson(bpolys: GeoJSON):
         for feature in bpolys["features"]:
             validate_geojson(feature)
     elif isinstance(bpolys, Feature):
-        if not isinstance(bpolys.geometry, (Polygon, MultiPolygon)):
+        if not isinstance(bpolys.geometry, Polygon | MultiPolygon):
             raise GeoJSONGeometryTypeError()
     else:
         raise GeoJSONObjectTypeError()

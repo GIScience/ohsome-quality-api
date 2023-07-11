@@ -47,35 +47,16 @@ All development work is based on the main branch (`main`). Merge requests are ex
 
 ### Tools
 
-This project uses [black](https://github.com/psf/black), [flake8](https://gitlab.com/pycqa/flake8) and [isort](https://github.com/PyCQA/isort) to ensure consistent code style. Those tools should already be installed in your virtual environment since they are dependencies defined in the `pyproject.toml` file.
-
-Black and isort will autoformat the code. Flake8 shows only what should be fixed but will not make any changes to the code base.
-
-The configuration of flake8 and isort is stored in `workers/setup.cfg`.
-
-Run black, flake8 and isort with following commands:
-
-```bash
-cd workers/
-poetry shell
-black .
-flake8 .
-isort .
-```
-
-> Tip: Changes can be checked manually with `git diff`.
-
-> Tip: Mark in-line that flake8 should not raise any error: `print()  # noqa`
+This project uses [`black`](https://github.com/psf/black) and [`ruff`](https://github.com/astral-sh/ruff) to ensure consistent code style. See the `workers/pyproject.toml` file for configuration.
 
 
 #### A Note on the Configuration
 
-The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work, specify the configuration file manually. You know that this has happened if pre-commit throws an error even though flake8 and isort has been executed.
+The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work, specify the configuration file manually. E.g:
 
 ```bash
-poetry run black .'
-poetry run flake8 --config setup.cfg .'
-poetry run isort --interactive --settings-path setup.cfg .'
+poetry run black workers
+poetry run ruff --config workers/pyproject.toml workers
 ```
 
 

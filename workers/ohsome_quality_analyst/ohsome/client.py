@@ -1,7 +1,6 @@
 import datetime
 import json
 from functools import singledispatch
-from typing import Optional, Union
 
 import geojson
 import httpx
@@ -32,12 +31,12 @@ async def query(topic) -> dict:
 @query.register
 async def _(
     topic: TopicDefinition,
-    bpolys: Union[Feature, FeatureCollection],
-    time: Optional[str] = None,
-    ratio: Optional[bool] = False,
-    group_by_boundary: Optional[bool] = False,
-    count_latest_contributions: Optional[bool] = False,
-    contribution_type: Optional[str] = None,
+    bpolys: Feature | FeatureCollection,
+    time: str | None = None,
+    ratio: bool | None = False,
+    group_by_boundary: bool | None = False,
+    count_latest_contributions: bool | None = False,
+    contribution_type: str | None = None,
 ) -> dict:
     """Query ohsome API with given Topic definition and arguments.
 
@@ -64,9 +63,9 @@ async def _(
 @query.register
 async def _(
     topic: TopicData,
-    bpolys: Union[Feature, FeatureCollection],
-    ratio: Optional[bool] = False,
-    group_by_boundary: Optional[bool] = False,
+    bpolys: Feature | FeatureCollection,
+    ratio: bool | None = False,
+    group_by_boundary: bool | None = False,
     **_kargs,
 ) -> dict:
     """Validate data attached to the Topic object and return data.
@@ -142,11 +141,10 @@ def build_url(
     group_by_boundary: bool = False,
     count_latest_contributions: bool = False,
 ):
+    base_url = get_config_value("ohsome_api").rstrip("/")
     if count_latest_contributions:
-        return (
-            get_config_value("ohsome_api").rstrip("/") + "/contributions/latest/count"
-        )
-    url = get_config_value("ohsome_api").rstrip("/") + "/" + topic.endpoint.rstrip("/")
+        return base_url + "/contributions/latest/count"
+    url = base_url + "/" + topic.endpoint + "/" + topic.aggregation_type
     if ratio:
         url += "/ratio"
     if group_by_boundary:
@@ -156,10 +154,10 @@ def build_url(
 
 def build_data_dict(
     topic: Topic,
-    bpolys: Union[Feature, FeatureCollection],
-    time: Optional[str] = None,
-    ratio: Optional[bool] = False,
-    contribution_type: Optional[str] = None,
+    bpolys: Feature | FeatureCollection,
+    time: str | None = None,
+    ratio: bool | None = False,
+    contribution_type: str | None = None,
 ) -> dict:
     """Build data dictionary for ohsome API query.
 

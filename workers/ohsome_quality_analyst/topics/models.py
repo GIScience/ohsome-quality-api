@@ -5,7 +5,7 @@ Note:
     in the `presets.yaml` file in the `topic` module.
 """
 
-from typing import List, Optional
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -27,12 +27,13 @@ class BaseTopic(BaseModel):
 class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
-    endpoint: str
+    endpoint: Literal["elements"]
+    aggregation_type: Literal["area", "count", "length", "perimeter"]
     filter: str
-    indicators: List[str]
+    indicators: list[str]
     projects: list[ProjectEnum]
-    source: Optional[str] = None
-    ratio_filter: Optional[str] = None
+    source: str | None = None
+    ratio_filter: str | None = None
 
     class Config:
         alias_generator = snake_to_lower_camel

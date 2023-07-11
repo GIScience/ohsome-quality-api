@@ -1,5 +1,21 @@
 # Changelog
 
+## Current Main
+
+### Breaking
+
+- api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
+- cli: remove CLI ([#634])
+
+### Other Changes
+
+- style: use `ruff` instead `flake8` and `isort` ([#630])
+- split 'endpoint' parameter of topics to `endpoint` and `aggregation_type` ([#600])
+
+[#600](https://github.com/GIScience/ohsome-quality-analyst/pull/600)
+[#630](https://github.com/GIScience/ohsome-quality-analyst/pull/630)
+[#634](https://github.com/GIScience/ohsome-quality-analyst/pull/634)
+
 ## 0.15.0
 
 ### Breaking Changes

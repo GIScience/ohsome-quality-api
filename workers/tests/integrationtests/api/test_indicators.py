@@ -185,7 +185,7 @@ def test_custom_data(client, bpolys, headers, schema):
 
 
 @oqt_vcr.use_cassette
-def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):
+def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):  # noqa: C901
     endpoint = ENDPOINT + "minimal"
     parameters = {
         "topic": topic_key_minimal,

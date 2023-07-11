@@ -140,6 +140,9 @@ cython_debug/
 # Pycharm
 .idea/
 
+# Ruff
+.ruff_cache/
+
 # OQT
 database/scripts/schema.test.sql
 database/scripts/schema.dev.sql.gz

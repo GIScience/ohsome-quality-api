@@ -27,7 +27,8 @@ def test_topic_definition():
         description="description",
         indicators=["mapping-saturation"],
         projects=["core"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
     )
     TopicDefinition(
@@ -36,7 +37,8 @@ def test_topic_definition():
         description="description",
         indicators=["mapping-saturation"],
         projects=["core"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -46,7 +48,8 @@ def test_topic_definition():
         description="description",
         indicators=["mapping-saturation", "minimal"],
         projects=["core"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -56,7 +59,8 @@ def test_topic_definition():
         description="description",
         indicators=["mapping-saturation", "minimal"],
         projects=["core", "experimental"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -66,7 +70,8 @@ def test_topic_definition():
         description="description",
         indicators=[],
         projects=["core"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
         source="source",
     )
@@ -76,7 +81,8 @@ def test_topic_definition():
         description="description",
         indicators=["mapping-saturation"],
         projects=["core"],
-        endpoint="endpoint",
+        endpoint="elements",
+        aggregation_type="count",
         filter="filter",
         source="source",
         ratio_filter="ration_filter",
@@ -95,7 +101,7 @@ def test_topic_definition_extra():
             name="name",
             description="description",
             projects=["core"],
-            endpoint="endpoint",
+            endpoint="elements",
             filter="filter",
             foo="bar",
         )
