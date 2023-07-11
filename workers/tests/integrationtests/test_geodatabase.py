@@ -3,10 +3,13 @@ import os
 import unittest
 
 import geojson
+import pytest
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 from tests.conftest import FIXTURE_DIR
 from tests.integrationtests.utils import get_geojson_fixture
+
+pytestmark = pytest.mark.skip("dependency on database setup.")
 
 
 class TestGeodatabase(unittest.TestCase):
