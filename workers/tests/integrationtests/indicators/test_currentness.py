@@ -9,7 +9,7 @@ import pytest
 
 from ohsome_quality_analyst.indicators.currentness.indicator import (
     Currentness,
-    get_last_edited_year,
+    get_how_many_years_no_activity,
     get_median_year,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
@@ -59,8 +59,8 @@ class TestCalculation:
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
         assert indicator.result.description == (
-            "In the area of interest no features of the selected topic are present "
-            + "today."
+            "In the area of interest no "
+            "features of the selected topic are present today."
         )
 
 
@@ -89,12 +89,12 @@ class TestFigure:
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
     expected = 0
-    result = get_last_edited_year(given)
+    result = get_how_many_years_no_activity(given)
     assert result == expected
 
     given = [0, 0, 5, 0]
     expected = 2
-    result = get_last_edited_year(given)
+    result = get_how_many_years_no_activity(given)
     assert result == expected
 
 
