@@ -10,7 +10,7 @@ from rpy2.rinterface_lib.embedded import RRuntimeError
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.indicators.mapping_saturation import models
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.topics.models import BaseTopic, TopicData
 
 
 class MappingSaturation(BaseIndicator):
@@ -36,7 +36,7 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        topic: Topic,
+        topic: BaseTopic,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
@@ -167,7 +167,10 @@ class MappingSaturation(BaseIndicator):
         )
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(title_text="Date")
-        fig.update_yaxes(title_text="Value")
+        if isinstance(self.topic, TopicData):
+            fig.update_yaxes(title_text="Value")
+        else:
+            fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
