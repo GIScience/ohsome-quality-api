@@ -17,6 +17,8 @@
 - build(db): refactor database setup ([#633])
 - refactor: calculate geom area with pyproj instead of PostGIS ([#639])
 - currentness: improve plot and description ([#589])
+- refactor: remove separate workers directory ([#647])
+- build: tidy up docker (and jenkins) setup ([#647])
 
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -28,6 +30,7 @@
 [#639]: https://github.com/GIScience/ohsome-quality-analyst/pull/639
 [#642]: https://github.com/GIScience/ohsome-quality-analyst/pull/642
 [#644]: https://github.com/GIScience/ohsome-quality-analyst/pull/644
+[#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 
 ## 0.15.0
 
