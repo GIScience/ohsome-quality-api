@@ -262,6 +262,37 @@ def empty_api_response() -> dict:
     }
 
 
+@app.post("/indicators/mapping-saturation/data", include_in_schema=False)
+async def post_indicator_ms(parameters: IndicatorData) -> CustomJSONResponse:
+    """Legacy support for computing the Mapping Saturation indicator for given data."""
+    geojson_object = await oqt.create_indicator_as_geojson(
+        parameters,
+        key="mapping-saturation",
+    )
+    if parameters.include_svg is False:
+        remove_result_item_from_properties(
+            geojson_object,
+            "svg",
+            parameters.flatten,
+        )
+    if parameters.include_html is False:
+        remove_result_item_from_properties(
+            geojson_object,
+            "html",
+            parameters.flatten,
+        )
+    response = empty_api_response()
+    response["attribution"]["text"] = get_class_from_key(
+        class_type="indicator",
+        key="mapping-saturation",
+    ).attribution()
+    # TODO: if accept=JSON no GeoJSON should be created in the first place.
+    #   factor out logic and decision to base/indicator.py and oqt.py
+    #   base/indicator.py should have `as_dict` alongside `as_feature`
+    response["results"] = [feature.properties for feature in geojson_object.features]
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+
+
 @app.post(
     "/indicators/{key}",
     tags=["indicator"],
@@ -281,11 +312,7 @@ async def post_indicator(
             example="mapping-saturation",
         ),
     ],
-    parameters: IndicatorBpolys
-    | IndicatorData = Body(
-        ...,
-        examples=INDICATOR_EXAMPLES,
-    ),
+    parameters: IndicatorBpolys = Body(..., examples=INDICATOR_EXAMPLES),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorBpolys):

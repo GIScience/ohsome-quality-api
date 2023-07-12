@@ -167,9 +167,9 @@ class TestApiIndicatorIo(unittest.TestCase):
             },
         }
         response = self.client.post(
-            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+            "/indicators/mapping-saturation/data", json=parameters, headers=HEADERS
         )
-        self.run_tests(response, (self.general_schema, self.featurecollection_schema))
+        self.assertEqual(response.status_code, 200)
 
     def test_indicator_topic_data_invalid(self):
         parameters = {
@@ -182,7 +182,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             },
         }
         response = self.client.post(
-            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+            "/indicators/mapping-saturation/data", json=parameters, headers=HEADERS
         )
         self.assertEqual(response.status_code, 422)
         content = response.json()

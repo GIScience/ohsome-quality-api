@@ -144,9 +144,9 @@ def test_minimal_fc(
     assert schema.is_valid(response.json())
 
 
-def test_custom_data(client, bpolys, headers, schema):
+def test_mapping_saturation_data(client, bpolys, headers):
     """Test parameter Topic with custom data attached."""
-    endpoint = ENDPOINT + "mapping-saturation"
+    endpoint = ENDPOINT + "mapping-saturation/data"
     timestamp_objects = [
         datetime(2020, 7, 17, 9, 10, 0) + timedelta(days=1 * x)
         for x in range(DATA.size)
@@ -169,7 +169,7 @@ def test_custom_data(client, bpolys, headers, schema):
         },
     }
     response = client.post(endpoint, json=parameters, headers=headers)
-    assert schema.is_valid(response.json())
+    assert RESPONSE_SCHEMA_JSON.is_valid(response.json())
 
     parameters = {
         "bpolys": bpolys,
