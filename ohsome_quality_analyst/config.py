@@ -100,7 +100,7 @@ def load_logging_config():
         os.path.dirname(
             os.path.abspath(__file__),
         ),
-        "../workers",
+        "..",
         "config",
         "logging.yaml",
     )

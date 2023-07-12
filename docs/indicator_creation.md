@@ -27,7 +27,7 @@ The result object consists of following attributes:
 
 ### Topic
 
-In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [workers/ohsome_quality_analyst/topics/presets.yaml](/ohsome_quality_analyst/topics/presets.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [ohsome_quality_analyst/topics/presets.yaml](/ohsome_quality_analyst/topics/presets.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 
 ### Metadata

@@ -6,7 +6,7 @@ pipeline {
 
   environment {
     REPO_NAME = sh(returnStdout: true, script: 'basename `git remote get-url origin` .git').trim()
-    VERSION = sh(returnStdout: true, script: 'grep -Po "^version = \\"\\K([^\\"]+)" workers/pyproject.toml').trim()
+    VERSION = sh(returnStdout: true, script: 'grep -Po "^version = \\"\\K([^\\"]+)" pyproject.toml').trim()
     LATEST_AUTHOR = sh(returnStdout: true, script: 'git show -s --pretty=%an').trim()
     LATEST_COMMIT_ID = sh(returnStdout: true, script: 'git describe --tags --long  --always').trim()
 
@@ -22,7 +22,7 @@ pipeline {
     POETRY_RUN = 'python -m poetry run'
 
     WORK_DIR = '/opt/oqt'
-    MODULE_DIR = 'workers'
+    MODULE_DIR = '.'
   }
 
   stages {

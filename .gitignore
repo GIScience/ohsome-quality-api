@@ -144,9 +144,7 @@ cython_debug/
 .ruff_cache/
 
 # OQT
-database/scripts/schema.test.sql
-database/scripts/schema.dev.sql.gz
-workers/data/*
-config/*
-!config/sample.config.yaml
-!config/logging.yaml
+/data/*
+/config/*
+!/config/sample.config.yaml
+!/config/logging.yaml
