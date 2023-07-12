@@ -62,9 +62,7 @@ async def _(
             create_indicator(parameters.copy(update={"bpolys": feature}), key=key)
         )
     indicators = await gather_with_semaphore(tasks)
-    features = [
-        i.as_feature(parameters.flatten, parameters.include_data) for i in indicators
-    ]
+    features = [i.as_feature(parameters.include_data) for i in indicators]
     return FeatureCollection(features=features)
 
 
@@ -94,7 +92,7 @@ async def create_report_as_geojson(
             key,
             force,
         )
-        features.append(report.as_feature(parameters.flatten, parameters.include_data))
+        features.append(report.as_feature(parameters.include_data))
     if len(features) == 1:
         return features[0]
     else:

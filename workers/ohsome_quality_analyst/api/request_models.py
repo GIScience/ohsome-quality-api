@@ -34,10 +34,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseIndicator(BaseModel):
-    include_svg: bool = False
-    include_html: bool = False
     include_data: bool = False
-    flatten: bool = False
 
     class Config:
         """Pydantic config class."""
@@ -50,10 +47,7 @@ class BaseIndicator(BaseModel):
 
 
 class BaseReport(BaseModel):
-    include_svg: bool = False
-    include_html: bool = False
     include_data: bool = False
-    flatten: bool = False
 
     class Config:
         """Pydantic config class."""

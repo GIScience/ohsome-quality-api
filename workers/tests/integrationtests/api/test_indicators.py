@@ -37,7 +37,6 @@ RESPONSE_SCHEMA_JSON = Schema(
                     "label": str,
                     "description": str,
                     "figure": dict,
-                    Optional("svg"): str,
                 },
             }
         ],
@@ -76,7 +75,6 @@ RESPONSE_SCHEMA_GEOJSON = Schema(
                         "label": str,
                         "description": str,
                         "figure": dict,
-                        Optional("svg"): str,
                     },
                 },
             }
@@ -139,57 +137,3 @@ def test_minimal_fc(
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
-
-
-@oqt_vcr.use_cassette
-def test_include_svg(client, bpolys, topic_key_minimal, headers, schema):  # noqa: C901
-    endpoint = ENDPOINT + "minimal"
-    parameters = {
-        "topic": topic_key_minimal,
-        "bpolys": bpolys,
-        "includeSvg": True,
-    }
-    response = client.post(endpoint, json=parameters, headers=headers)
-    content = response.json()
-    assert schema.is_valid(content)
-    if schema.name == "json":
-        for result in content["results"]:
-            assert "svg" in result["result"].keys()
-    elif schema.name == "geojson":
-        for feature in content["features"]:
-            assert "svg" in feature["properties"]["result"].keys()
-    else:
-        raise ValueError("Unexpected schema name")
-
-    parameters = {
-        "topic": topic_key_minimal,
-        "bpolys": bpolys,
-        "includeSvg": False,
-    }
-    response = client.post(endpoint, json=parameters, headers=headers)
-    content = response.json()
-    assert schema.is_valid(content)
-    if schema.name == "json":
-        for result in content["results"]:
-            assert "svg" not in result["result"].keys()
-    elif schema.name == "geojson":
-        for feature in content["features"]:
-            assert "svg" not in feature["properties"]["result"].keys()
-    else:
-        raise ValueError("Unexpected schema name")
-
-    parameters = {
-        "topic": topic_key_minimal,
-        "bpolys": bpolys,
-    }
-    response = client.post(endpoint, json=parameters, headers=headers)
-    content = response.json()
-    assert schema.is_valid(content)
-    if schema.name == "json":
-        for result in content["results"]:
-            assert "svg" not in result["result"].keys()
-    elif schema.name == "geojson":
-        for feature in content["features"]:
-            assert "svg" not in feature["properties"]["result"].keys()
-    else:
-        raise ValueError("Unexpected schema name")

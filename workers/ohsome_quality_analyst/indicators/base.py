@@ -14,7 +14,7 @@ from ohsome_quality_analyst.html_templates.template import (
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.topics.models import TopicData
-from ohsome_quality_analyst.utils.helper import flatten_dict, json_serialize
+from ohsome_quality_analyst.utils.helper import json_serialize
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -36,14 +36,13 @@ class BaseIndicator(metaclass=ABCMeta):
         )
         self._get_default_figure()
 
-    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
+    def as_feature(self, include_data: bool = False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
 
         Args:
-            flatten (bool): If true flatten the properties.
             include_data (bool): If true include additional data in the properties.
         """
         result = self.result.dict(by_alias=True)  # only attributes, no properties
@@ -68,8 +67,6 @@ class BaseIndicator(metaclass=ABCMeta):
             properties["topic"]["projects"] = self.topic.projects
         if include_data:
             properties["data"] = self.data
-        if flatten:
-            properties = flatten_dict(properties)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,
