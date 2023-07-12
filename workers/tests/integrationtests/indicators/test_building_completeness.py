@@ -147,15 +147,18 @@ class TestGetData:
             "water": [0],
         }
 
+    @pytest.mark.skip("dependency on database setup.")
     def test_get_hex_cells(self, feature):
         result = asyncio.run(get_hex_cells(feature))
         assert isinstance(result, FeatureCollection)
         assert result.features is not None
 
+    @pytest.mark.skip("dependency on database setup.")
     def test_get_hex_cells_not_found(self, feature_germany_heidelberg):
         with pytest.raises(HexCellsNotFoundError):
             asyncio.run(get_hex_cells(feature_germany_heidelberg))
 
+    @pytest.mark.skip("dependency on database setup.")
     def test_get_shdi(self, feature):
         result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
         assert isinstance(result, list)

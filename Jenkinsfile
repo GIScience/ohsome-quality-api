@@ -1,13 +1,3 @@
-def withDockerNetwork(Closure inner) {
-  try {
-    networkId = UUID.randomUUID().toString()
-    sh "docker network create ${networkId}"
-    inner.call(networkId)
-  } finally {
-    sh "docker network rm ${networkId}"
-  }
-}
-
 pipeline {
   agent {label 'main'}
   options {
@@ -33,9 +23,6 @@ pipeline {
 
     WORK_DIR = '/opt/oqt'
     MODULE_DIR = 'workers'
-    DATABASE_DIR = 'database/development'
-    POSTGRES_HOST = 'oqt-database'
-    POSTGRES_PORT = 5432
   }
 
   stages {
@@ -57,7 +44,6 @@ pipeline {
           }
         }
         script {
-          DATABASE = docker.build("oqt-database", "-f ${DATABASE_DIR}/Dockerfile ${DATABASE_DIR}")
           WORKERS = docker.build("oqt-workers", "${MODULE_DIR}")
           WORKERS_CI = docker.build("oqt-workers-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
         }
@@ -72,47 +58,31 @@ pipeline {
     stage ('Test') {
       steps {
         script {
-          withDockerNetwork{ n ->
-            DATABASE.withRun("""--network ${n} \
-                                --name ${POSTGRES_HOST} \
-                                -p ${POSTGRES_PORT} \
-                                -e POSTGRES_DB=oqt \
-                                -e POSTGRES_USER=oqt \
-                                -e POSTGRES_PASSWORD=oqt""") { c ->
-              WORKERS_CI.inside("""--network ${n} \
-                                   -e POSTGRES_HOST=${POSTGRES_HOST} \
-                                   -e POSTGRES_PORT=${POSTGRES_PORT} \
-                                   --add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
-                // wait for database to be ready
-                timeout(time: 30, unit: 'SECONDS') {
-                  sh 'while ! pg_isready --host ${POSTGRES_HOST} --port ${POSTGRES_PORT}; do sleep 5; done'
-                }
-                // run pytest
-                sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
-                // replace absolute dir in the coverage file with actually used dir for sonar-scanner
-                sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
-                // run static analysis with sonar-scanner
-                def scannerHome = tool 'SonarScanner 4';
-                withSonarQubeEnv('sonarcloud GIScience/ohsome') {
-                  SONAR_CLI_PARAMETER =
-                    "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml " +
-                    "-Dsonar.projectVersion=${VERSION}"
-                  if (env.CHANGE_ID) {
-                    SONAR_CLI_PARAMETER += " " +
-                      "-Dsonar.pullrequest.key=${env.CHANGE_ID} " +
-                      "-Dsonar.pullrequest.branch=${env.CHANGE_BRANCH} " +
-                      "-Dsonar.pullrequest.base=${env.CHANGE_TARGET}"
-                  } else {
-                    SONAR_CLI_PARAMETER += " " +
-                      "-Dsonar.branch.name=${env.BRANCH_NAME}"
-                  }
-                  sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
-                }
-                // run other static code analysis
-                sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
-                sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff .'
+          WORKERS_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
+            // run pytest
+            sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
+            // replace absolute dir in the coverage file with actually used dir for sonar-scanner
+            sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
+            // run static analysis with sonar-scanner
+            def scannerHome = tool 'SonarScanner 4';
+            withSonarQubeEnv('sonarcloud GIScience/ohsome') {
+              SONAR_CLI_PARAMETER =
+                "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml " +
+                "-Dsonar.projectVersion=${VERSION}"
+              if (env.CHANGE_ID) {
+                SONAR_CLI_PARAMETER += " " +
+                  "-Dsonar.pullrequest.key=${env.CHANGE_ID} " +
+                  "-Dsonar.pullrequest.branch=${env.CHANGE_BRANCH} " +
+                  "-Dsonar.pullrequest.base=${env.CHANGE_TARGET}"
+              } else {
+                SONAR_CLI_PARAMETER += " " +
+                  "-Dsonar.branch.name=${env.BRANCH_NAME}"
               }
+              sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
             }
+            // run other static code analysis
+            sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
+            sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff .'
           }
         }
       }
