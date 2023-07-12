@@ -74,12 +74,12 @@ def run_all_models(list_of_values):
         ydata = np.asarray(val)
         fitted_models = []
         for model in (
-                models.Sigmoid,
-                models.SSlogis,
-                models.SSdoubleS,
-                models.SSfpl,
-                models.SSasymp,
-                models.SSmicmen,
+            models.Sigmoid,
+            models.SSlogis,
+            models.SSdoubleS,
+            models.SSfpl,
+            models.SSasymp,
+            models.SSmicmen,
         ):
             logging.info("Run {}".format(model.name))
             try:
