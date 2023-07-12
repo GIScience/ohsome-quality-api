@@ -4,8 +4,11 @@ from types import MappingProxyType
 from unittest import mock
 
 import asyncpg
+import pytest
 
 from ohsome_quality_analyst.geodatabase import client as pg_client
+
+pytestmark = pytest.mark.skip("dependency on database setup.")
 
 
 async def get_connection_context_manager():

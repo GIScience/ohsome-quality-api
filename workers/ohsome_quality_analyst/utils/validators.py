@@ -1,12 +1,15 @@
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
 
+from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.definitions import get_valid_indicators
 from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
     IndicatorTopicCombinationError,
+    SizeRestrictionError,
 )
+from ohsome_quality_analyst.utils.helper_geo import calculate_area
 
 
 def validate_indicator_topic_combination(indicator: str, topic: str):
@@ -26,3 +29,11 @@ def validate_geojson(bpolys: GeoJSON):
             raise GeoJSONGeometryTypeError()
     else:
         raise GeoJSONObjectTypeError()
+
+
+def validate_area(feature: Feature):
+    """Check area size of feature against size limit configuration value."""
+    size_limit = float(get_config_value("geom_size_limit"))
+    area = calculate_area(feature) / (1000 * 1000)  # sqkm
+    if area > size_limit:
+        raise SizeRestrictionError(size_limit, area)

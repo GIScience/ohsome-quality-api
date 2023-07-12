@@ -1,5 +1,6 @@
 # based on Debian
-FROM python:3.10
+# we have to use bullseye, because bookworm doesn't work with older Docker versions which are still in use
+FROM python:3.10-bullseye
 
 # install R
 # to avoid caching issues combine apt-get update and install in one RUN statement.

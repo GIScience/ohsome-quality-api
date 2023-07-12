@@ -3,8 +3,7 @@ services:
   workers:
     container_name: oqt-workers
     build:
-      context: ./workers
-      dockerfile: Dockerfile
+      context: workers/
     environment:
       OQT_CONFIG: /config/config.yaml
       OQT_DATA_DIR: /data
@@ -17,17 +16,14 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     networks:
-      - dev-database
+      - database
     depends_on:
       - database
 
   database:
     container_name: oqt-database
     build:
-      context: database/development
-      args:
-        # Setup minimal database for running tests
-        OQT_TEST_DB: "False"
+      context: database/
     environment:
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
@@ -35,12 +31,12 @@ services:
     ports:
       - "5445:5432"
     networks:
-      - dev-database
+      - database
     volumes:
-      - dev-pg-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 networks:
-  dev-database:
+  database:
 
 volumes:
-  dev-pg-data:
+  pgdata:
