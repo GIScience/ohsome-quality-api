@@ -27,7 +27,7 @@ The result object consists of following attributes:
 
 ### Topic
 
-In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [workers/ohsome_quality_analyst/topics/presets.yaml](/workers/ohsome_quality_analyst/topics/presets.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [workers/ohsome_quality_analyst/topics/presets.yaml](/ohsome_quality_analyst/topics/presets.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
 
 
 ### Metadata
@@ -129,5 +129,5 @@ OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
 
 > `rpy2` is an interface to R running embedded in a Python process.
 
-For an example how OQT is using `rpy2` have a look the module [`models.py`](/workers/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
+For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
 Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.
