@@ -5,6 +5,7 @@
 ### Breaking
 
 - api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
+- api: computing mapping-saturation indicator for given data is now a separate endpoint ([#642])
 - cli: remove CLI ([#634])
 
 ### Other Changes
@@ -24,6 +25,7 @@
 [#633]: https://github.com/GIScience/ohsome-quality-analyst/pull/633
 [#634]: https://github.com/GIScience/ohsome-quality-analyst/pull/634
 [#639]: https://github.com/GIScience/ohsome-quality-analyst/pull/639
+[#642]: https://github.com/GIScience/ohsome-quality-analyst/pull/642
 
 ## 0.15.0
 
