@@ -69,7 +69,6 @@ This project uses [Poetry](https://python-poetry.org/docs/) for packaging and de
 ### Installation
 
 ```bash
-cd workers/
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
@@ -100,7 +99,7 @@ docker compose up --detach workers
 ##### Start the API using a Python script:
 
 ```bash
-cd workers/scripts
+cd scripts
 python start_api.py
 ```
 
@@ -175,7 +174,6 @@ The test framework is [pytest](https://docs.pytest.org/en/stable/).
 To run all tests just execute `pytest`:
 
 ```bash
-cd workers/
 pytest
 ```
 
