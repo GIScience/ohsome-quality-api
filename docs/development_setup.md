@@ -184,21 +184,22 @@ pytest
 ##### VCR (videocassette recorder) for tests
 
 All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
-This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](/workers/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository.
+This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository.
 
 The VCR [record mode](https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes) is configurable through the environment variable `VCR_RECORD_MODE`. To ensure that every request is covered by cassettes, run the tests with the record mode `none`. If necessary, the cassettes can be re-recorded by deleting the cassettes and run all tests again, or using the record mode `all`. This is not necessary in normal cases, because not-yet-stored requests are downloaded automatically.
 
-Writing tests using VCR.py with our custom decorator is as easy as: 
+Writing tests using VCR.py with our custom decorator is as easy as:
 
 ```python
-from tests.integrationtests.utils import oqt_vcr
+from tests import oqt_vcr
+
 
 @oqt_vcr.use_cassette
 def test_something(self):
     oqt.do_something(…)
 ```
 
-Good examples can be found in [test_oqt.py](/workers/tests/integrationtests/test_oqt.py).
+Good examples can be found in [test_oqt.py](/tests/integrationtests/test_oqt.py).
 
 ##### Asynchronous functions
 

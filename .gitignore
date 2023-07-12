@@ -147,6 +147,6 @@ cython_debug/
 database/scripts/schema.test.sql
 database/scripts/schema.dev.sql.gz
 workers/data/*
-workers/config/*
-!workers/config/sample.config.yaml
-!workers/config/logging.yaml
+config/*
+!config/sample.config.yaml
+!config/logging.yaml

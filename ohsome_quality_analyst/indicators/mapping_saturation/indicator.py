@@ -80,12 +80,12 @@ class MappingSaturation(BaseIndicator):
         xdata = np.array(range(len(self.timestamps)))
         fitted_models = []
         for model in (
-            models.Sigmoid,
-            models.SSlogis,
-            models.SSdoubleS,
-            models.SSfpl,
-            models.SSasymp,
-            models.SSmicmen,
+                models.Sigmoid,
+                models.SSlogis,
+                models.SSdoubleS,
+                models.SSfpl,
+                models.SSasymp,
+                models.SSmicmen,
         ):
             logging.info("Run {}".format(model.name))
             try:
