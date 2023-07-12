@@ -32,17 +32,6 @@ class TestBaseIndicator:
             assert key in feature["properties"]
         assert "count" in feature["properties"]["data"]
 
-    def test_as_feature_flatten(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
-        feature = indicator.as_feature(flatten=True)
-        assert feature.is_valid
-        for key in (
-            "result.value",
-            "metadata.name",
-            "topic.name",
-        ):
-            assert key in feature["properties"]
-
     def test_data_property(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
         assert indicator.data is not None

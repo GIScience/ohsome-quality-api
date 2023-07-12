@@ -77,66 +77,6 @@ class TestApiReportIo(unittest.TestCase):
         response = self.post_response(feature)
         self.assertEqual(response.status_code, 422)
 
-    @oqt_vcr.use_cassette()
-    def test_report_include_svg_true(self):
-        parameters = {
-            "bpolys": self.feature,
-            "includeSvg": True,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "svg" in result["properties"]["indicators"][0]["result"]
-
-    @oqt_vcr.use_cassette()
-    def test_report_include_svg_false(self):
-        parameters = {
-            "bpolys": self.feature,
-            "includeSvg": False,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "svg" not in result["properties"]["indicators"][0]["result"]
-
-    @oqt_vcr.use_cassette()
-    def test_report_include_svg_default(self):
-        parameters = {
-            "bpolys": self.feature,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "svg" not in result["properties"]["indicators"][0]["result"]
-
-    @oqt_vcr.use_cassette()
-    def test_report_include_html_true(self):
-        parameters = {
-            "bpolys": self.feature,
-            "includeSvg": False,
-            "includeHtml": True,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "html" in result["properties"]["report"]["result"]
-
-    @oqt_vcr.use_cassette()
-    def test_report_include_html_false(self):
-        parameters = {
-            "bpolys": self.feature,
-            "includeSvg": False,
-            "includeHtml": False,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "html" not in result["properties"]["report"]["result"]
-
-    @oqt_vcr.use_cassette()
-    def test_report_include_html_default(self):
-        parameters = {
-            "bpolys": self.feature,
-        }
-        response = self.client.post(self.endpoint, json=parameters)
-        result = response.json()
-        assert "html" not in result["properties"]["report"]["result"]
-
 
 if __name__ == "__main__":
     unittest.main()

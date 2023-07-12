@@ -93,44 +93,10 @@ class TestApiRequestModels(unittest.TestCase):
 
 def test_base_indicator_valid():
     request_models.BaseIndicator()
-    request_models.BaseIndicator(
-        include_svg=True,
-        include_html=True,
-        include_data=True,
-        flatten=True,
-    )
-
-
-def test_base_indicator_invalid():
-    with pytest.raises(ValueError):
-        request_models.BaseIndicator(include_svg="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseIndicator(include_html="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseIndicator(include_data="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseIndicator(flatten="foo")
 
 
 def test_base_report_valid():
     request_models.BaseReport()
-    request_models.BaseReport(
-        include_svg=True,
-        include_html=True,
-        include_data=False,
-        flatten=False,
-    )
-
-
-def test_base_report_invalid():
-    with pytest.raises(ValueError):
-        request_models.BaseReport(include_svg="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseReport(include_html="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseReport(include_data="foo")
-    with pytest.raises(ValueError):
-        request_models.BaseReport(flatten="foo")
 
 
 def test_bpolys_valid(

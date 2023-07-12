@@ -14,7 +14,6 @@ from ohsome_quality_analyst.html_templates.template import (
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.reports.models import ReportMetadata, Result
-from ohsome_quality_analyst.utils.helper import flatten_dict
 
 
 class IndicatorTopic(NamedTuple):
@@ -40,7 +39,7 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 
-    def as_feature(self, flatten: bool = False, include_data: bool = False) -> Feature:
+    def as_feature(self, include_data: bool = False) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
@@ -61,8 +60,6 @@ class BaseReport(metaclass=ABCMeta):
             properties["indicators"].append(
                 indicator.as_feature(include_data=include_data)["properties"]
             )
-        if flatten:
-            properties = flatten_dict(properties)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,

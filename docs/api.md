@@ -24,9 +24,6 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 | `featureId`   | Identifier of the feature in the dataset                                                                                                          |
 | `bpolys`      | Bounding polygon(s) as GeoJSON Feature, FeatureCollection, Polygon or MultiPolygon object. The Geometry has to be of type Polygon or MultiPolygon |
 | `topic`       | Name, description and data of a custom topic. Data has to be provided in the same format as the response of the ohsome API would look like        |
-| `includeSvg`  | Include a SVG string of a figure displaying the Indicator results                                                                                 |
-| `includeHtml` | Include a HTML string with the Indicator results                                                                                                  |
-| `flatten`     | Flattening of the GeoJSON properties                                                                                                              |
 
 Parameters are in part mutual exclusive (e.g. either `dataset` and `featureId` or `bpolys`). If the response contains multiple errors probably not all required parameters and/or mutual exclusive parameters have been provided.
 
@@ -48,9 +45,6 @@ parameters = {
     "dataset": "regions",
     "featureId": 3,
     "fidField": "ogc_fid",  # Optional
-    "includeSvg": False,  # Optional
-    "includeHtml": False,  # Optional
-    "flatten": False,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -80,9 +74,6 @@ parameters = {
     "name": "mapping-saturation",
     "topic": "building_count",
     "bpolys": bpolys,
-    "includeSvg": False,  # Optional
-    "includeHtml": False,  # Optional
-    "flatten": False,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -159,9 +150,6 @@ parameters = {
     "name": "MappingSaturation",
     "bpolys": bpolys,
     "topic": topic,
-    "includeSvg": False,  # Optional
-    "includeHtml": False,  # Optional
-    "flatten": True,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```
@@ -218,9 +206,6 @@ Depending on the input, the output will be a GeoJSON Feature or FeatureCollectio
 | `dataset`     | Name of the dataset containing bounding polygons                                                                                                  |
 | `featureId`   | Identifier of the feature in the dataset                                                                                                          |
 | `bpolys`      | Bounding polygon(s) as GeoJSON Feature, FeatureCollection, Polygon or MultiPolygon object. The Geometry has to be of type Polygon or MultiPolygon |
-| `includeSvg`  | Include a SVG string of a figure displaying the Indicator results                                                                                 |
-| `includeHtml` | Include a HTML string with the Indicator results                                                                                                  |
-| `flatten`     | Flattening of the GeoJSON properties                                                                                                              |
 
 Some parameters are mutually exclusive (E.g. either `dataset` and `featureId` or `bpolys`). If the response contains multiple errors, it is likely that not all required parameters and/or mutually exclusive parameters have been provided.
 
@@ -240,9 +225,6 @@ parameters = {
     "name": "MinimalTestReport",
     "dataset": "regions",
     "featureId": 3,
-    "includeSvg": False,  # Optional
-    "includeHtml": False,  # Optional
-    "flatten": False,  # Optional
 }
 # Response using the GET method
 response = requests.get(url, params=parameters)
@@ -271,10 +253,7 @@ bpolys = {
 parameters = {
     "name": "Minimal",
     "bpolys": bpolys,
-    "includeSvg": False,  # Optional
-    "includeHtml": False,  # Optional
     "includeData": False,  # Optional
-    "flatten": False,  # Optional
 }
 response = requests.post(url, json=parameters)
 ```

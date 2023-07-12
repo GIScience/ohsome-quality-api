@@ -101,19 +101,6 @@ class TestCalculation:
             assert not np.isnan(np.sum(fm["fitted_values"]))
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
-    def test_as_feature_flattend(self, indicator):
-        indicator_feature = indicator.as_feature(flatten=True, include_data=True)
-        properties = indicator_feature.properties
-        assert properties["data.best_fit.name"] is not None
-        prefix = "data.fitted_models."
-        fitted_model_keys = (prefix + "0", prefix + "1", prefix + "2")
-        for i, key in enumerate(fitted_model_keys):
-            fm = indicator.fitted_models[i]
-            for j in range(len(fm.fitted_values)):
-                v = properties[f"{key}.fitted_values.{str(j)}"]
-                assert not np.isnan(v)
-                assert np.isfinite(v)
-
 
 class TestFigure:
     @pytest.fixture(scope="class")
