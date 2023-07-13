@@ -27,11 +27,11 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     INDICATOR_EXAMPLES,
-    IndicatorBpolys,
-    IndicatorData,
+    IndicatorDataRequest,
     IndicatorEnum,
-    ReportBpolys,
+    IndicatorRequest,
     ReportEnum,
+    ReportRequest,
     TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
@@ -261,7 +261,7 @@ def empty_api_response() -> dict:
 
 
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
-async def post_indicator_ms(parameters: IndicatorData) -> CustomJSONResponse:
+async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -298,10 +298,10 @@ async def post_indicator(
             example="mapping-saturation",
         ),
     ],
-    parameters: IndicatorBpolys = Body(..., examples=INDICATOR_EXAMPLES),
+    parameters: IndicatorRequest = Body(..., examples=INDICATOR_EXAMPLES),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, IndicatorBpolys):
+    if isinstance(parameters, IndicatorRequest):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator_as_geojson(
         parameters,
@@ -342,7 +342,7 @@ async def post_report(
             example="building-report",
         ),
     ],
-    parameters: ReportBpolys,
+    parameters: ReportRequest,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report_as_geojson(

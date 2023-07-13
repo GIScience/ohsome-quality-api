@@ -6,7 +6,7 @@ import geojson
 from geojson import FeatureCollection
 
 from ohsome_quality_analyst import oqt
-from ohsome_quality_analyst.api.request_models import IndicatorBpolys
+from ohsome_quality_analyst.api.request_models import IndicatorRequest
 from tests.conftest import FIXTURE_DIR
 
 from .utils import oqt_vcr
@@ -26,7 +26,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
 
     @oqt_vcr.use_cassette()
     def test_create_indicator_as_geojson_bpolys(self):
-        patameters = IndicatorBpolys(
+        patameters = IndicatorRequest(
             topic=self.topic_key,
             bpolys=self.feature,
         )

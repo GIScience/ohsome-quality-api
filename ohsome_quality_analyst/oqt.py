@@ -9,9 +9,9 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
-    IndicatorBpolys,
-    IndicatorData,
-    ReportBpolys,
+    IndicatorDataRequest,
+    IndicatorRequest,
+    ReportRequest,
 )
 from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
@@ -30,10 +30,10 @@ async def create_indicator_as_geojson(parameters):
     )
 
 
-@create_indicator_as_geojson.register(IndicatorBpolys)
-@create_indicator_as_geojson.register(IndicatorData)
+@create_indicator_as_geojson.register(IndicatorRequest)
+@create_indicator_as_geojson.register(IndicatorDataRequest)
 async def _(
-    parameters: IndicatorBpolys | IndicatorData,
+    parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
     size_restriction: bool = False,
     **_kwargs,
@@ -54,7 +54,7 @@ async def _(
         # Disable size limit for the Mapping Saturation indicator
         if (
             size_restriction
-            and isinstance(parameters, IndicatorBpolys)
+            and isinstance(parameters, IndicatorRequest)
             and key != "mapping-saturation"
         ):
             validate_area(feature)
@@ -67,7 +67,7 @@ async def _(
 
 
 async def create_report_as_geojson(
-    parameters: ReportBpolys,
+    parameters: ReportRequest,
     key: str,
     force: bool = False,
     size_restriction: bool = False,
@@ -108,7 +108,7 @@ async def create_indicator(parameters) -> Indicator:
 
 @create_indicator.register
 async def _(
-    parameters: IndicatorBpolys,
+    parameters: IndicatorRequest,
     key: str,
     *_args,
 ) -> Indicator:
@@ -137,7 +137,7 @@ async def _(
 
 @create_indicator.register
 async def _(
-    parameters: IndicatorData,
+    parameters: IndicatorDataRequest,
     key: str,
     *_args,
 ) -> Indicator:
@@ -180,7 +180,7 @@ async def create_report(parameters) -> Report:
 
 
 @create_report.register
-async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
+async def _(parameters: ReportRequest, key: str, *_args) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
@@ -200,7 +200,7 @@ async def _(parameters: ReportBpolys, key: str, *_args) -> Report:
     for indicator_key, topic_key in report.indicator_topic:
         tasks.append(
             create_indicator(
-                IndicatorBpolys(
+                IndicatorRequest(
                     topic=topic_key,
                     bpolys=feature,
                 ),
