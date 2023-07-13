@@ -19,6 +19,8 @@
 - currentness: improve plot and description ([#589])
 - refactor: remove separate workers directory ([#647])
 - build: tidy up docker (and jenkins) setup ([#647])
+- refactor(api): clean-up and rename request models ([#649])
+- refactor(api): move openapi param example to model ([#649])
 
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -31,6 +33,7 @@
 [#642]: https://github.com/GIScience/ohsome-quality-analyst/pull/642
 [#644]: https://github.com/GIScience/ohsome-quality-analyst/pull/644
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
+[#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
 
 ## 0.15.0
 
