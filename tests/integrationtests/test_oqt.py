@@ -61,7 +61,7 @@ class TestOqt(unittest.TestCase):
             asyncio.run(oqt.create_report(""))
 
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
-        feature = get_geojson_fixture("europe.geojson")
+        feature = get_geojson_fixture("europe.geojson")  # TODO: use pytest fixture
         parameters = IndicatorBpolys(
             topic=self.topic_key,
             bpolys=feature,
@@ -100,7 +100,10 @@ class TestOqt(unittest.TestCase):
     def test_create_indicator_as_geojson_size_limit_topic_data(self):
         """No error should be raised."""
         path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "fixtures", "europe.geojson"
+            # TODO: use pytest fixture
+            os.path.dirname(os.path.abspath(__file__)),
+            "fixtures",
+            "europe.geojson",
         )
         with open(path, "r") as f:
             feature = geojson.load(f)

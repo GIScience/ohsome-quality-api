@@ -7,7 +7,7 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 import pytest
 from schema import Optional, Or, Schema
 
-from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
+from tests.integrationtests.utils import oqt_vcr
 
 ENDPOINT = "/indicators/"
 
@@ -92,11 +92,6 @@ pytestmark = pytest.mark.parametrize(
         ({"accept": "application/geo+json"}, RESPONSE_SCHEMA_GEOJSON),
     ],
 )
-
-
-@pytest.fixture
-def europe():
-    return get_geojson_fixture("europe.geojson")
 
 
 @oqt_vcr.use_cassette
