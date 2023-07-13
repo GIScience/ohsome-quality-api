@@ -6,9 +6,9 @@ import geojson
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.api.request_models import (
-    IndicatorBpolys,
-    IndicatorData,
-    ReportBpolys,
+    IndicatorDataRequest,
+    IndicatorRequest,
+    ReportRequest,
 )
 from tests.conftest import FIXTURE_DIR
 from tests.integrationtests.utils import get_geojson_fixture
@@ -39,7 +39,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_indicator_bpolys(self):
         """Test creating indicator from scratch."""
-        parameters = IndicatorBpolys(topic=self.topic_key, bpolys=self.feature)
+        parameters = IndicatorRequest(topic=self.topic_key, bpolys=self.feature)
         indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
@@ -50,7 +50,7 @@ class TestOqt(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_create_report_bpolys(self):
         """Test creating report from scratch using the 'bpolys'parameters ."""
-        parameters = ReportBpolys(bpolys=self.feature)
+        parameters = ReportRequest(bpolys=self.feature)
         report = asyncio.run(oqt.create_report(parameters, key=self.report_name))
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.class_)
@@ -62,7 +62,7 @@ class TestOqt(unittest.TestCase):
 
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
         feature = get_geojson_fixture("europe.geojson")  # TODO: use pytest fixture
-        parameters = IndicatorBpolys(
+        parameters = IndicatorRequest(
             topic=self.topic_key,
             bpolys=feature,
         )
@@ -86,7 +86,7 @@ class TestOqt(unittest.TestCase):
         )
         with open(path, "r") as f:
             feature = geojson.load(f)
-        parameters = IndicatorBpolys(
+        parameters = IndicatorRequest(
             topic="building-count",
             bpolys=feature,
         )
@@ -107,7 +107,7 @@ class TestOqt(unittest.TestCase):
         )
         with open(path, "r") as f:
             feature = geojson.load(f)
-        parameters = IndicatorData(
+        parameters = IndicatorDataRequest(
             bpolys=feature,
             topic={
                 "key": "key",

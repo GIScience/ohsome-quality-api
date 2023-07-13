@@ -33,50 +33,6 @@ DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
 FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
-class BaseIndicator(BaseModel):
-    include_data: bool = False
-
-    class Config:
-        """Pydantic config class."""
-
-        alias_generator = snake_to_lower_camel
-        # Allow population by field name not just by alias name
-        allow_population_by_field_name = True
-        allow_mutation = False
-        extra = "forbid"
-
-
-class BaseReport(BaseModel):
-    include_data: bool = False
-
-    class Config:
-        """Pydantic config class."""
-
-        alias_generator = snake_to_lower_camel
-        # Allow population by field name not just by alias name
-        allow_population_by_field_name = True
-        allow_mutation = False
-        extra = "forbid"
-
-
-class BaseTopicName(BaseModel):
-    topic_key: TopicEnum = pydantic.Field(
-        ...,
-        title="Topic Key",
-        alias="topic",
-        example="building-count",
-    )
-
-
-class BaseTopicData(BaseModel):
-    """Model for the parameter `topic`.
-
-    The Topic consists of name, description and data.
-    """
-
-    topic: TopicData = pydantic.Field(..., title="Topic", alias="topic")
-
-
 class BaseBpolys(BaseModel):
     """Model for the `bpolys` parameter."""
 
@@ -108,16 +64,55 @@ class BaseBpolys(BaseModel):
         return obj
 
 
-class IndicatorBpolys(BaseIndicator, BaseTopicName, BaseBpolys):
-    pass
+class IndicatorRequest(BaseBpolys):
+    topic_key: TopicEnum = pydantic.Field(
+        ...,
+        title="Topic Key",
+        alias="topic",
+        example="building-count",
+    )
+    include_data: bool = False
+
+    class Config:
+        """Pydantic config class."""
+
+        alias_generator = snake_to_lower_camel
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
+        allow_mutation = False
+        extra = "forbid"
 
 
-class IndicatorData(BaseIndicator, BaseTopicData, BaseBpolys):
-    pass
+class IndicatorDataRequest(BaseBpolys):
+    """Model for the `/indicators/mapping-saturation/data` endpoint.
+
+    The Topic consists of name, description and data.
+    """
+
+    include_data: bool = False
+    topic: TopicData = pydantic.Field(..., title="Topic", alias="topic")
+
+    class Config:
+        """Pydantic config class."""
+
+        alias_generator = snake_to_lower_camel
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
+        allow_mutation = False
+        extra = "forbid"
 
 
-class ReportBpolys(BaseReport, BaseBpolys):
-    pass
+class ReportRequest(BaseBpolys):
+    include_data: bool = False
+
+    class Config:
+        """Pydantic config class."""
+
+        alias_generator = snake_to_lower_camel
+        # Allow population by field name not just by alias name
+        allow_population_by_field_name = True
+        allow_mutation = False
+        extra = "forbid"
 
 
 INDICATOR_EXAMPLES = {
