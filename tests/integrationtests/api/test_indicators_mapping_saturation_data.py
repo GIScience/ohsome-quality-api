@@ -4,7 +4,7 @@ from schema import Optional, Or, Schema
 
 from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 
-ENDPOINT = "/indicators/"
+ENDPOINT = "/indicators/mapping-saturation/data"
 
 
 RESPONSE_SCHEMA_JSON = Schema(
@@ -44,7 +44,6 @@ RESPONSE_SCHEMA_JSON = Schema(
 
 def test_mapping_saturation_data(client, bpolys):
     """Test parameter Topic with custom data attached."""
-    endpoint = ENDPOINT + "mapping-saturation/data"
     timestamp_objects = [
         datetime(2020, 7, 17, 9, 10, 0) + timedelta(days=1 * x)
         for x in range(DATA.size)
@@ -66,9 +65,11 @@ def test_mapping_saturation_data(client, bpolys):
             },
         },
     }
-    response = client.post(endpoint, json=parameters)
+    response = client.post(ENDPOINT, json=parameters)
     assert RESPONSE_SCHEMA_JSON.is_valid(response.json())
 
+
+def test_mapping_saturation_data_invalid(client, bpolys):
     parameters = {
         "bpolys": bpolys,
         "topic": {
@@ -78,5 +79,5 @@ def test_mapping_saturation_data(client, bpolys):
             "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
         },
     }
-    response = client.post(endpoint, json=parameters)
+    response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422
