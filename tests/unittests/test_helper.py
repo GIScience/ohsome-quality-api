@@ -15,7 +15,6 @@ from ohsome_quality_analyst.indicators.minimal.indicator import (
 from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
-    flatten_dict,
     flatten_sequence,
     get_class_from_key,
     get_project_root,
@@ -73,71 +72,6 @@ class TestHelper(unittest.TestCase):
     def test_loads_geojson_featurecollection_single_feature(self):
         raw = get_fixture("heidelberg-altstadt-featurecollection.geojson")
         self.run_tests(raw)
-
-    def test_flatten_dict(self):
-        deep = {"foo": {"bar": "baz", "lang": {"нет": "tak"}}, "something": 5}
-        flat = {"foo.bar": "baz", "foo.lang.нет": "tak", "something": 5}
-        self.assertDictEqual(flatten_dict(deep), flat)
-
-    def test_flatten_dict_list(self):
-        deep = {"foo": {"bar": "baz", "lang": {"нет": ["tak", "tak2"]}}, "something": 5}
-        flat = {
-            "foo.bar": "baz",
-            "foo.lang.нет.0": "tak",
-            "foo.lang.нет.1": "tak2",
-            "something": 5,
-        }
-        self.assertDictEqual(flatten_dict(deep), flat)
-
-    def test_flatten_dict_list_nested(self):
-        deep = {
-            "foo": {
-                "bar": "baz",
-                "lang": {
-                    "нет": [
-                        {"tak": {"taktak": "taktaktak"}},
-                        {"tok": {"toktok": "toktoktok"}},
-                    ]
-                },
-            },
-            "something": 5,
-        }
-        flat = {
-            "foo.bar": "baz",
-            "foo.lang.нет.0.tak.taktak": "taktaktak",
-            "foo.lang.нет.1.tok.toktok": "toktoktok",
-            "something": 5,
-        }
-        self.assertDictEqual(flatten_dict(deep), flat)
-
-    def test_flatten_dict_list_nested_2(self):
-        deep = {
-            "foo": {
-                "bar": "baz",
-                "lang": {
-                    "нет": [
-                        [
-                            {"tak": "taktak"},
-                            {"tok": "toktok"},
-                        ],
-                        [
-                            {"tak2": "taktak2"},
-                            {"tok2": "toktok2"},
-                        ],
-                    ]
-                },
-            },
-            "something": 5,
-        }
-        flat = {
-            "foo.bar": "baz",
-            "foo.lang.нет.0.0.tak": "taktak",
-            "foo.lang.нет.0.1.tok": "toktok",
-            "foo.lang.нет.1.0.tak2": "taktak2",
-            "foo.lang.нет.1.1.tok2": "toktok2",
-            "something": 5,
-        }
-        self.assertDictEqual(flatten_dict(deep), flat)
 
     # TODO: add tests for other input than dict
     def test_flatten_seq(self):

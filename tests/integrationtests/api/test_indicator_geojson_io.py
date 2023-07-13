@@ -72,72 +72,6 @@ class TestApiIndicatorIo(unittest.TestCase):
         content = response.json()
         self.assertEqual(content["type"], "SizeRestrictionError")
 
-    @oqt_vcr.use_cassette()
-    def test_indicator_include_svg(self):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-            "includeSvg": True,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            assert "svg" in feat["properties"]["result"]
-
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-            "includeSvg": False,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            assert "svg" not in feat["properties"]["result"]
-
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            self.assertNotIn("result.svg", list(feat["properties"].keys()))
-
-    @oqt_vcr.use_cassette()
-    def test_indicator_include_html(self):
-        feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-            "includeSvg": True,
-            "includeHtml": True,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            assert "html" in feat["properties"]["result"]
-
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-            "includeSvg": False,
-            "includeHtml": False,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            assert "html" not in feat["properties"]["result"]
-
-        parameters = {
-            "topic": self.topic_key,
-            "bpolys": feature,
-        }
-        response = self.client.post(self.endpoint, json=parameters, headers=HEADERS)
-        result = response.json()
-        for feat in result["features"]:
-            assert "html" not in feat["properties"]["result"]
-
     def test_indicator_topic_data(self):
         """Test parameter Topic with data attached.
 
@@ -167,9 +101,9 @@ class TestApiIndicatorIo(unittest.TestCase):
             },
         }
         response = self.client.post(
-            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+            "/indicators/mapping-saturation/data", json=parameters, headers=HEADERS
         )
-        self.run_tests(response, (self.general_schema, self.featurecollection_schema))
+        self.assertEqual(response.status_code, 200)
 
     def test_indicator_topic_data_invalid(self):
         parameters = {
@@ -182,7 +116,7 @@ class TestApiIndicatorIo(unittest.TestCase):
             },
         }
         response = self.client.post(
-            "/indicators/mapping-saturation", json=parameters, headers=HEADERS
+            "/indicators/mapping-saturation/data", json=parameters, headers=HEADERS
         )
         self.assertEqual(response.status_code, 422)
         content = response.json()

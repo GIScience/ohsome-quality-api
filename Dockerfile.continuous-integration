@@ -1,4 +1,4 @@
-FROM oqt-workers:latest
+FROM oqt-api:latest
 
 USER root:root
 

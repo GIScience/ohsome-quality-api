@@ -47,16 +47,14 @@ All development work is based on the main branch (`main`). Merge requests are ex
 
 ### Tools
 
-This project uses [`black`](https://github.com/psf/black) and [`ruff`](https://github.com/astral-sh/ruff) to ensure consistent code style. See the `workers/pyproject.toml` file for configuration.
+This project uses [`black`](https://github.com/psf/black) and [`ruff`](https://github.com/astral-sh/ruff) to ensure consistent code style. See the `pyproject.toml` file for configuration.
 
 
 #### A Note on the Configuration
 
-The configuration file will be respected automatically when running those tools from the `workers` directory. If this does not work, specify the configuration file manually. E.g:
-
 ```bash
-poetry run black workers
-poetry run ruff --config workers/pyproject.toml workers
+poetry run black .
+poetry run ruff .
 ```
 
 

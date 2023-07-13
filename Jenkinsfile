@@ -6,7 +6,7 @@ pipeline {
 
   environment {
     REPO_NAME = sh(returnStdout: true, script: 'basename `git remote get-url origin` .git').trim()
-    VERSION = sh(returnStdout: true, script: 'grep -Po "^version = \\"\\K([^\\"]+)" workers/pyproject.toml').trim()
+    VERSION = sh(returnStdout: true, script: 'grep -Po "^version = \\"\\K([^\\"]+)" pyproject.toml').trim()
     LATEST_AUTHOR = sh(returnStdout: true, script: 'git show -s --pretty=%an').trim()
     LATEST_COMMIT_ID = sh(returnStdout: true, script: 'git describe --tags --long  --always').trim()
 
@@ -22,7 +22,7 @@ pipeline {
     POETRY_RUN = 'python -m poetry run'
 
     WORK_DIR = '/opt/oqt'
-    MODULE_DIR = 'workers'
+    MODULE_DIR = '.'
   }
 
   stages {
@@ -44,8 +44,8 @@ pipeline {
           }
         }
         script {
-          WORKERS = docker.build("oqt-workers", "${MODULE_DIR}")
-          WORKERS_CI = docker.build("oqt-workers-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
+          DOCKER_API = docker.build("oqt-api", "${MODULE_DIR}")
+          DOCKER_API_CI = docker.build("oqt-api-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
         }
       }
       post {
@@ -58,7 +58,7 @@ pipeline {
     stage ('Test') {
       steps {
         script {
-          WORKERS_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
+          DOCKER_API_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
             // run pytest
             sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
             // replace absolute dir in the coverage file with actually used dir for sonar-scanner
@@ -108,7 +108,7 @@ pipeline {
       }
       steps {
         script {
-          WORKERS.inside {
+          DOCKER_API.inside {
             update_notify = sh(returnStdout: true, script: 'cd ${WORK_DIR} && ${POETRY} update ${POETRY_OPTIONS} --dry-run | tail -n +4 | grep -v ": Skipped " | sort -u').trim()
             echo update_notify
           }

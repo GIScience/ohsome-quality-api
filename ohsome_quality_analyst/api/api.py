@@ -1,4 +1,3 @@
-import fnmatch
 import json
 import logging
 import os
@@ -14,7 +13,6 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import JSONResponse
-from geojson import Feature, FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -262,6 +260,25 @@ def empty_api_response() -> dict:
     }
 
 
+@app.post("/indicators/mapping-saturation/data", include_in_schema=False)
+async def post_indicator_ms(parameters: IndicatorData) -> CustomJSONResponse:
+    """Legacy support for computing the Mapping Saturation indicator for given data."""
+    geojson_object = await oqt.create_indicator_as_geojson(
+        parameters,
+        key="mapping-saturation",
+    )
+    response = empty_api_response()
+    response["attribution"]["text"] = get_class_from_key(
+        class_type="indicator",
+        key="mapping-saturation",
+    ).attribution()
+    # TODO: if accept=JSON no GeoJSON should be created in the first place.
+    #   factor out logic and decision to base/indicator.py and oqt.py
+    #   base/indicator.py should have `as_dict` alongside `as_feature`
+    response["results"] = [feature.properties for feature in geojson_object.features]
+    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+
+
 @app.post(
     "/indicators/{key}",
     tags=["indicator"],
@@ -281,11 +298,7 @@ async def post_indicator(
             example="mapping-saturation",
         ),
     ],
-    parameters: IndicatorBpolys
-    | IndicatorData = Body(
-        ...,
-        examples=INDICATOR_EXAMPLES,
-    ),
+    parameters: IndicatorBpolys = Body(..., examples=INDICATOR_EXAMPLES),
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorBpolys):
@@ -295,18 +308,6 @@ async def post_indicator(
         key=key.value,
         size_restriction=True,
     )
-    if parameters.include_svg is False:
-        remove_result_item_from_properties(
-            geojson_object,
-            "svg",
-            parameters.flatten,
-        )
-    if parameters.include_html is False:
-        remove_result_item_from_properties(
-            geojson_object,
-            "html",
-            parameters.flatten,
-        )
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
@@ -349,18 +350,6 @@ async def post_report(
         key=key.value,
         size_restriction=True,
     )
-    if parameters.include_html is False:
-        remove_result_item_from_properties(
-            geojson_object,
-            "html",
-            parameters.flatten,
-        )
-    if parameters.include_svg is False:
-        remove_result_item_from_properties(
-            geojson_object,
-            "svg",
-            parameters.flatten,
-        )
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="report",
@@ -530,42 +519,3 @@ async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     return ReportMetadataResponse(
         result={key.value: get_metadata("reports", hyphen_to_camel(key.value))}
     )
-
-
-def remove_result_item_from_properties(  # noqa: C901
-    geojson_object: Feature | FeatureCollection, key: str, flatten: bool
-) -> None:
-    """Remove item from the properties of a GeoJSON Feature or FeatureCollection.
-
-    If properties are flattened pattern matching (See 'fnmatch.fnmatch') is used to
-    delete the item with given key from the properties, else item with given key will
-    be removed.
-    """
-
-    def _remove_item_from_properties_pattern(properties: dict, pattern: str) -> None:
-        for key in list(properties.keys()):
-            if fnmatch.fnmatch(key, pattern):
-                del properties[key]
-
-    def _remove_item_from_properties_key(properties: dict, key: str) -> None:
-        if "result" in properties.keys():
-            properties["result"].pop(key, None)
-        if "report" in properties.keys():
-            properties["report"]["result"].pop(key, None)
-        if "indicators" in properties.keys():
-            for indicator in properties["indicators"]:
-                indicator["result"].pop(key, None)
-
-    if isinstance(geojson_object, Feature):
-        if flatten:
-            pattern = "*result." + key
-            _remove_item_from_properties_pattern(geojson_object["properties"], pattern)
-        else:
-            _remove_item_from_properties_key(geojson_object["properties"], key)
-    elif isinstance(geojson_object, FeatureCollection):
-        for feature in geojson_object["features"]:
-            if flatten:
-                pattern = "*result." + key
-                _remove_item_from_properties_pattern(feature["properties"], pattern)
-            else:
-                _remove_item_from_properties_key(feature["properties"], key)

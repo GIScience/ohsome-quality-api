@@ -5,7 +5,9 @@
 ### Breaking
 
 - api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
+- api: computing mapping-saturation indicator for given data is now a separate endpoint ([#642])
 - cli: remove CLI ([#634])
+- api: remove `include_svg`, `include_html` and `flatten` parameter ([#644])
 
 ### Other Changes
 
@@ -15,6 +17,8 @@
 - build(db): refactor database setup ([#633])
 - refactor: calculate geom area with pyproj instead of PostGIS ([#639])
 - currentness: improve plot and description ([#589])
+- refactor: remove separate workers directory ([#647])
+- build: tidy up docker (and jenkins) setup ([#647])
 
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -24,6 +28,9 @@
 [#633]: https://github.com/GIScience/ohsome-quality-analyst/pull/633
 [#634]: https://github.com/GIScience/ohsome-quality-analyst/pull/634
 [#639]: https://github.com/GIScience/ohsome-quality-analyst/pull/639
+[#642]: https://github.com/GIScience/ohsome-quality-analyst/pull/642
+[#644]: https://github.com/GIScience/ohsome-quality-analyst/pull/644
+[#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 
 ## 0.15.0
 

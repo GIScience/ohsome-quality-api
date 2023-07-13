@@ -1,9 +1,8 @@
 version: "3"
 services:
-  workers:
-    container_name: oqt-workers
-    build:
-      context: workers/
+  api:
+    container_name: oqt-api
+    build: .
     environment:
       OQT_CONFIG: /config/config.yaml
       OQT_DATA_DIR: /data
@@ -12,31 +11,23 @@ services:
     command: poetry run python scripts/start_api.py --host 0.0.0.0
     volumes:
       - ./data:/data
-      - ./workers/config:/config
+      - ./config:/config
     ports:
       - "127.0.0.1:8080:8080"
-    networks:
-      - database
     depends_on:
       - database
 
   database:
     container_name: oqt-database
-    build:
-      context: database/
+    build: database/
     environment:
       POSTGRES_DB: oqt
       POSTGRES_USER: oqt
       POSTGRES_PASSWORD: oqt
     ports:
       - "5445:5432"
-    networks:
-      - database
     volumes:
       - pgdata:/var/lib/postgresql/data
-
-networks:
-  database:
 
 volumes:
   pgdata:
