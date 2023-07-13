@@ -3,7 +3,7 @@ import logging
 import os
 from typing import Annotated
 
-from fastapi import Body, FastAPI, HTTPException, Path, Request, status
+from fastapi import FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,7 +26,6 @@ from ohsome_quality_analyst import (
     oqt,
 )
 from ohsome_quality_analyst.api.request_models import (
-    INDICATOR_EXAMPLES,
     IndicatorDataRequest,
     IndicatorEnum,
     IndicatorRequest,
@@ -298,7 +297,7 @@ async def post_indicator(
             example="mapping-saturation",
         ),
     ],
-    parameters: IndicatorRequest = Body(..., examples=INDICATOR_EXAMPLES),
+    parameters: IndicatorRequest,
 ) -> CustomJSONResponse:
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorRequest):
