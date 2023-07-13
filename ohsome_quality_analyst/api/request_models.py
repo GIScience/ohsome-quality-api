@@ -1,12 +1,3 @@
-"""Data models of the API request body.
-
-This module uses the library `pydantic` for data validation and
-settings management using Python type hinting.
-
-Besides data validation through `pydantic`, `FastAPI` will display additional
-information derived from `pydantic` models in the automatic generated API documentation.
-"""
-
 import json
 from enum import Enum
 
@@ -34,27 +25,7 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseBpolys(BaseModel):
-    """Model for the `bpolys` parameter."""
-
-    bpolys: Feature | FeatureCollection = pydantic.Field(
-        ...,
-        title="bpolys",
-        example={
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [8.674092292785645, 49.40427147224242],
-                        [8.695850372314453, 49.40427147224242],
-                        [8.695850372314453, 49.415552187316095],
-                        [8.674092292785645, 49.415552187316095],
-                        [8.674092292785645, 49.40427147224242],
-                    ]
-                ],
-            },
-        },
-    )
+    bpolys: Feature | FeatureCollection
 
     @pydantic.validator("bpolys")
     @classmethod
@@ -81,6 +52,28 @@ class IndicatorRequest(BaseBpolys):
         allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
+        schema_extra = {
+            "examples": [
+                {
+                    "topic": "building-count",
+                    "bpolys": {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                                [
+                                    [8.674092292785645, 49.40427147224242],
+                                    [8.695850372314453, 49.40427147224242],
+                                    [8.695850372314453, 49.415552187316095],
+                                    [8.674092292785645, 49.415552187316095],
+                                    [8.674092292785645, 49.40427147224242],
+                                ]
+                            ],
+                        },
+                    },
+                }
+            ]
+        }
 
 
 class IndicatorDataRequest(BaseBpolys):
@@ -113,28 +106,3 @@ class ReportRequest(BaseBpolys):
         allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
-
-
-INDICATOR_EXAMPLES = {
-    "AOI": {
-        "summary": "Request an Indicator for a given AOI (`bpolys`).",
-        "value": {
-            "topic": "building-count",
-            "bpolys": {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [8.674092292785645, 49.40427147224242],
-                            [8.695850372314453, 49.40427147224242],
-                            [8.695850372314453, 49.415552187316095],
-                            [8.674092292785645, 49.415552187316095],
-                            [8.674092292785645, 49.40427147224242],
-                        ]
-                    ],
-                },
-            },
-        },
-    },
-}
