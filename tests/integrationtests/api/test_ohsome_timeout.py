@@ -18,7 +18,7 @@ from ohsome_quality_analyst.api.api import app
 from tests.integrationtests.utils import AsyncMock, get_geojson_fixture
 
 
-class TestApiReportIo(unittest.TestCase):
+class TestApiOhsomeTimeout(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
