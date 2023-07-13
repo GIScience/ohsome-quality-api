@@ -7,7 +7,7 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 import pytest
 from schema import Optional, Or, Schema
 
-from tests.integrationtests.utils import oqt_vcr
+from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
 
 ENDPOINT = "/indicators/"
 
@@ -94,6 +94,11 @@ pytestmark = pytest.mark.parametrize(
 )
 
 
+@pytest.fixture
+def europe():
+    return get_geojson_fixture("europe.geojson")
+
+
 @oqt_vcr.use_cassette
 @pytest.mark.parametrize(
     "indicator,topic",
@@ -137,3 +142,15 @@ def test_minimal_fc(
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
+
+
+def test_bpolys_size_limit(client, europe, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {
+        "bpolys": europe,
+        "topic": "minimal",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "SizeRestrictionError"
