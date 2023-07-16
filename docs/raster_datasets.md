@@ -5,7 +5,7 @@ downloaded and saved to the OQT data directory.
 
 ## Location (Data directory)
 
-The default data directory is `workers/data`. The location can be changed by setting the
+The default data directory is `data`. The location can be changed by setting the
 `data_dir` variable in the configuration file or the environment variable `$OQT_DATA_DIR`.
 
 The `data` directory is listed in `.gitignore`. This way the original raster files in
