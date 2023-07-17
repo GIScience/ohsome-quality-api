@@ -43,10 +43,6 @@ class TestOqt(unittest.TestCase):
         indicator = asyncio.run(oqt.create_indicator(parameters, self.indicator_name))
         self.run_tests(indicator)
 
-    def test_create_indicator_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            asyncio.run(oqt.create_indicator(""))
-
     @oqt_vcr.use_cassette()
     def test_create_report_bpolys(self):
         """Test creating report from scratch using the 'bpolys'parameters ."""
@@ -56,10 +52,6 @@ class TestOqt(unittest.TestCase):
         self.assertIsNotNone(report.result.class_)
         self.assertIsNotNone(report.result.description)
 
-    def test_create_report_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            asyncio.run(oqt.create_report(""))
-
     def test_create_indicator_as_geojson_size_limit_bpolys(self):
         feature = get_geojson_fixture("europe.geojson")  # TODO: use pytest fixture
         parameters = IndicatorRequest(
@@ -68,9 +60,7 @@ class TestOqt(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             asyncio.run(
-                oqt.create_indicator_as_geojson(
-                    parameters, key=self.indicator_name, size_restriction=True
-                )
+                oqt.create_indicator_as_geojson(parameters, key=self.indicator_name)
             )
 
     @oqt_vcr.use_cassette()
@@ -91,9 +81,7 @@ class TestOqt(unittest.TestCase):
             bpolys=feature,
         )
         asyncio.run(
-            oqt.create_indicator_as_geojson(
-                parameters, key="mapping-saturation", size_restriction=True
-            )
+            oqt.create_indicator_as_geojson(parameters, key="mapping-saturation")
         )
 
     @oqt_vcr.use_cassette()
@@ -124,9 +112,7 @@ class TestOqt(unittest.TestCase):
             },
         )
         asyncio.run(
-            oqt.create_indicator_as_geojson(
-                parameters, key="mapping-saturation", size_restriction=True
-            )
+            oqt.create_indicator_as_geojson(parameters, key="mapping-saturation")
         )
 
 
