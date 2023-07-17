@@ -14,6 +14,7 @@ from tests.integrationtests.api.response_schema import (
     get_report_feature_schema,
 )
 from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
+from tests.utils import load_geojson_fixture
 
 
 class TestApiReportIo(unittest.TestCase):
@@ -21,7 +22,9 @@ class TestApiReportIo(unittest.TestCase):
         self.client = TestClient(app)
         self.endpoint = "/reports/minimal"
 
-        self.feature = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
+        self.featurecollection = load_geojson_fixture(
+            "feature-collection-germany-heidelberg.geojson"
+        )
 
         number_of_indicators = 2
 
@@ -44,22 +47,8 @@ class TestApiReportIo(unittest.TestCase):
         return self.client.post(self.endpoint, json=data)
 
     @oqt_vcr.use_cassette()
-    def test_report_bpolys_geometry(self):
-        geometry = get_geojson_fixture("heidelberg-altstadt-geometry.geojson")
-        response = self.post_response(geometry)
-        self.assertEqual(response.status_code, 422)
-
-    @oqt_vcr.use_cassette()
-    def test_report_bpolys_feature(self):
-        response = self.post_response(self.feature)
-        self.run_tests(response)
-
-    @oqt_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
-        featurecollection = get_geojson_fixture(
-            "heidelberg-bahnstadt-bergheim-featurecollection.geojson"
-        )
-        response = self.post_response(featurecollection)
+        response = self.post_response(self.featurecollection)
         self.assertEqual(response.status_code, 200)
 
         response_geojson = geojson.loads(response.content)

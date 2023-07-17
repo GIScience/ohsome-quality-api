@@ -3,7 +3,7 @@ from enum import Enum
 
 import geojson
 import pydantic
-from geojson import Feature, FeatureCollection
+from geojson import FeatureCollection
 from pydantic import BaseModel
 
 from ohsome_quality_analyst.definitions import (
@@ -25,12 +25,14 @@ FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseBpolys(BaseModel):
-    bpolys: Feature | FeatureCollection
+    bpolys: FeatureCollection
 
     @pydantic.validator("bpolys")
     @classmethod
-    def validate_bpolys(cls, value) -> FeatureCollection | Feature:
+    def validate_bpolys(cls, value) -> FeatureCollection:
         obj = geojson.loads(json.dumps(value))
+        if not isinstance(obj, FeatureCollection):
+            raise ValueError("must be of type FeatureCollection")
         validate_geojson(obj)  # Check if exceptions are raised
         return obj
 

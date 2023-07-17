@@ -30,25 +30,28 @@ async def create_indicator_as_geojson(
         Depending on the input a single indicator as GeoJSON Feature will be returned
         or multiple indicators as GeoJSON FeatureCollection will be returned.
     """
+    bpolys = parameters.bpolys
+    if isinstance(parameters, IndicatorDataRequest):
+        topic = parameters.topic
+    else:
+        topic = get_topic_definition(parameters.topic_key.value)
+
     tasks: list[Coroutine] = []
-    for i, feature in enumerate(loads_geojson(parameters.bpolys)):
+    for i, feature in enumerate(loads_geojson(bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
         if isinstance(parameters, IndicatorRequest) and key != "mapping-saturation":
             validate_area(feature)
-        tasks.append(
-            create_indicator(parameters.copy(update={"bpolys": feature}), key=key)
-        )
+        tasks.append(create_indicator(key, feature, topic))
     indicators = await gather_with_semaphore(tasks)
     features = [i.as_feature(parameters.include_data) for i in indicators]
     return FeatureCollection(features=features)
 
 
 async def create_report_as_geojson(
-    parameters: ReportRequest,
-    key: str,
+    parameters: ReportRequest, key: str
 ) -> Feature | FeatureCollection:
     """Create a report or multiple reports as GeoJSON object.
 
@@ -64,27 +67,13 @@ async def create_report_as_geojson(
         # Reports for a FeatureCollection are not created asynchronously (as it is
         # the case with indicators), because indicators of a report are created
         # asynchronously
-        report = await create_report(
-            parameters.copy(update={"bpolys": feature}),
-            key,
-        )
+        report = await create_report(key, feature)
         features.append(report.as_feature(parameters.include_data))
-    if len(features) == 1:
-        return features[0]
-    else:
-        return FeatureCollection(features=features)
+    return FeatureCollection(features=features)
 
 
-async def create_indicator(
-    parameters: IndicatorRequest | IndicatorDataRequest,
-    key: str,
-) -> Indicator:
+async def create_indicator(key: str, feature: Feature, topic) -> Indicator:
     """Create an indicator from scratch."""
-    if isinstance(parameters, IndicatorDataRequest):
-        topic = parameters.topic
-    else:
-        topic = get_topic_definition(parameters.topic_key.value)
-    feature = parameters.bpolys
 
     logging.info("Calculating Indicator for custom AOI ...")
     logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
@@ -105,14 +94,13 @@ async def create_indicator(
     return indicator
 
 
-async def create_report(parameters: ReportRequest, key: str) -> Report:
+async def create_report(key: str, feature: Feature) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
 
     Indicators for a Report are created asynchronously utilizing semaphores.
     """
-    feature = parameters.bpolys
 
     logging.info("Creating Report...")
     logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
@@ -123,16 +111,11 @@ async def create_report(parameters: ReportRequest, key: str) -> Report:
 
     tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
-        tasks.append(
-            create_indicator(
-                IndicatorRequest(
-                    topic=topic_key,
-                    bpolys=feature,
-                ),
-                key=indicator_key,
-            )
-        )
+        topic = get_topic_definition(topic_key)
+        tasks.append(create_indicator(indicator_key, feature, topic))
+
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
     report.create_html()
+
     return report
