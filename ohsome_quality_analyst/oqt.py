@@ -83,7 +83,6 @@ async def create_indicator(key: str, feature: Feature, topic) -> Indicator:
     indicator.calculate()
     logging.info("Run figure creation")
     indicator.create_figure()
-    indicator.create_html()
 
     return indicator
 
@@ -110,6 +109,5 @@ async def create_report(key: str, feature: Feature) -> Report:
 
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
-    report.create_html()
 
     return report
