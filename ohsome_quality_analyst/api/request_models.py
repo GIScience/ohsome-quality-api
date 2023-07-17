@@ -1,27 +1,14 @@
 import json
-from enum import Enum
 
 import geojson
 import pydantic
 from geojson import FeatureCollection
 from pydantic import BaseModel
 
-from ohsome_quality_analyst.definitions import (
-    get_dataset_names,
-    get_fid_fields,
-    get_indicator_names,
-    get_report_names,
-    get_topic_keys,
-)
+from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 from ohsome_quality_analyst.utils.validators import validate_geojson
-
-IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_names()})
-ReportEnum = Enum("ReportEnum", {name: name for name in get_report_names()})
-TopicEnum = Enum("TopicEnum", {name: name for name in get_topic_keys()})
-DatasetEnum = Enum("DatasetNames", {name: name for name in get_dataset_names()})
-FidFieldEnum = Enum("FidFieldEnum", {name: name for name in get_fid_fields()})
 
 
 class BaseBpolys(BaseModel):

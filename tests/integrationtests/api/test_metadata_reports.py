@@ -1,4 +1,4 @@
-from ohsome_quality_analyst.api.request_models import ReportEnum
+from ohsome_quality_analyst.reports.definitions import ReportEnum
 
 
 def test(client, response_template, metadata_report_multilevel_mapping_saturation):
