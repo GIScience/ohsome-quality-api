@@ -28,7 +28,7 @@ from tests.integrationtests.utils import oqt_vcr
 def test_create_indicator(feature, indicator, topic, request):
     """Minimal viable request for a single bpoly."""
     topic = request.getfixturevalue(topic)
-    indicator = asyncio.run(oqt.create_indicator(indicator, feature, topic))
+    indicator = asyncio.run(oqt._create_indicator(indicator, feature, topic))
     assert indicator.result.label is not None
     assert indicator.result.value is not None
     assert indicator.result.description is not None
@@ -37,7 +37,7 @@ def test_create_indicator(feature, indicator, topic, request):
 
 @oqt_vcr.use_cassette
 def test_create_report(feature):
-    report = asyncio.run(oqt.create_report("minimal", feature))
+    report = asyncio.run(oqt._create_report("minimal", feature))
     assert report.result.label is not None
     assert report.result.class_ is not None
     assert report.result.description is not None
@@ -64,9 +64,7 @@ class TestOqt(unittest.TestCase):
             bpolys=self.feature,
         )
         with self.assertRaises(ValueError):
-            asyncio.run(
-                oqt.create_indicator_as_geojson(parameters, key=self.indicator_name)
-            )
+            asyncio.run(oqt.create_indicator(parameters, key=self.indicator_name))
 
     @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
     @oqt_vcr.use_cassette
@@ -79,9 +77,7 @@ class TestOqt(unittest.TestCase):
             topic="building-count",
             bpolys=self.feature,
         )
-        asyncio.run(
-            oqt.create_indicator_as_geojson(parameters, key="mapping-saturation")
-        )
+        asyncio.run(oqt.create_indicator(parameters, key="mapping-saturation"))
 
     @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
     @oqt_vcr.use_cassette
@@ -106,9 +102,7 @@ class TestOqt(unittest.TestCase):
                 },
             },
         )
-        asyncio.run(
-            oqt.create_indicator_as_geojson(parameters, key="mapping-saturation")
-        )
+        asyncio.run(oqt.create_indicator(parameters, key="mapping-saturation"))
 
 
 if __name__ == "__main__":

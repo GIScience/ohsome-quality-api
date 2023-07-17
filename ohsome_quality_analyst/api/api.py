@@ -262,7 +262,7 @@ def empty_api_response() -> dict:
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
-    geojson_object = await oqt.create_indicator_as_geojson(
+    geojson_object = await oqt.create_indicator(
         parameters,
         key="mapping-saturation",
     )
@@ -302,7 +302,7 @@ async def post_indicator(
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorRequest):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    geojson_object = await oqt.create_indicator_as_geojson(parameters, key=key.value)
+    geojson_object = await oqt.create_indicator(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
@@ -340,7 +340,7 @@ async def post_report(
     parameters: ReportRequest,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
-    geojson_object = await oqt.create_report_as_geojson(parameters, key=key.value)
+    geojson_object = await oqt.create_report(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="report",
