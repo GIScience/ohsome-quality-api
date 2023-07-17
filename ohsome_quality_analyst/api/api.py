@@ -27,11 +27,8 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     IndicatorDataRequest,
-    IndicatorEnum,
     IndicatorRequest,
-    ReportEnum,
     ReportRequest,
-    TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
@@ -50,6 +47,7 @@ from ohsome_quality_analyst.definitions import (
     get_topic_definition,
     get_topic_definitions,
 )
+from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
 from ohsome_quality_analyst.projects.definitions import (
     ProjectEnum,
     get_project,
@@ -60,6 +58,8 @@ from ohsome_quality_analyst.quality_dimensions.definitions import (
     get_quality_dimension,
     get_quality_dimensions,
 )
+from ohsome_quality_analyst.reports.definitions import ReportEnum
+from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
     OhsomeApiError,

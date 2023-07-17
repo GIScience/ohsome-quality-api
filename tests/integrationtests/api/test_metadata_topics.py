@@ -1,4 +1,4 @@
-from ohsome_quality_analyst.api.request_models import TopicEnum
+from ohsome_quality_analyst.topics.definitions import TopicEnum
 
 
 def test_metadata_topic(client, response_template, metadata_topic_building_count):

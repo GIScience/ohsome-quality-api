@@ -1,18 +1,16 @@
 from pydantic import BaseModel, validator
 
 from ohsome_quality_analyst import __version__
-from ohsome_quality_analyst.api.request_models import (
-    IndicatorEnum,
-    ReportEnum,
-    TopicEnum,
-)
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
+from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
+from ohsome_quality_analyst.reports.definitions import ReportEnum
 from ohsome_quality_analyst.reports.models import ReportMetadata
+from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
