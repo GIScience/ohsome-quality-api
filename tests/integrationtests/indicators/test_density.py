@@ -5,8 +5,8 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.density.indicator import Density
+from ohsome_quality_analyst.topics.definitions import get_topic_definition
 from ohsome_quality_analyst.topics.models import TopicDefinition
 from tests.integrationtests.utils import oqt_vcr
 
