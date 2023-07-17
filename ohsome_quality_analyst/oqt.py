@@ -21,20 +21,17 @@ from ohsome_quality_analyst.utils.validators import validate_area
 async def create_indicator_as_geojson(
     parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
-) -> Feature | FeatureCollection:
-    """Create an indicator or multiple indicators as GeoJSON object.
+) -> FeatureCollection:
+    """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
-    Indicators for a FeatureCollection are created asynchronously utilizing semaphores.
-
-    Returns:
-        Depending on the input a single indicator as GeoJSON Feature will be returned
-        or multiple indicators as GeoJSON FeatureCollection will be returned.
+    Indicators are computed asynchronously utilizing semaphores.
     """
     bpolys = parameters.bpolys
     if isinstance(parameters, IndicatorDataRequest):
         topic = parameters.topic
     else:
         topic = get_topic_definition(parameters.topic_key.value)
+    include_data = parameters.include_data
 
     tasks: list[Coroutine] = []
     for i, feature in enumerate(loads_geojson(bpolys)):
@@ -46,21 +43,18 @@ async def create_indicator_as_geojson(
             validate_area(feature)
         tasks.append(create_indicator(key, feature, topic))
     indicators = await gather_with_semaphore(tasks)
-    features = [i.as_feature(parameters.include_data) for i in indicators]
+    features = [i.as_feature(include_data) for i in indicators]
     return FeatureCollection(features=features)
 
 
 async def create_report_as_geojson(
     parameters: ReportRequest, key: str
-) -> Feature | FeatureCollection:
-    """Create a report or multiple reports as GeoJSON object.
-
-    Returns:
-        Depending on the input a single report as GeoJSON Feature will be returned
-        or multiple reports as GeoJSON FeatureCollection will be returned.
-    """
+) -> FeatureCollection:
+    """Create report(s) for features of a GeoJSON FeatureCollection."""
+    bpolys = parameters.bpolys
+    include_data = parameters.include_data
     features = []
-    for i, feature in enumerate(loads_geojson(parameters.bpolys)):
+    for i, feature in enumerate(loads_geojson(bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
         validate_area(feature)
@@ -68,7 +62,7 @@ async def create_report_as_geojson(
         # the case with indicators), because indicators of a report are created
         # asynchronously
         report = await create_report(key, feature)
-        features.append(report.as_feature(parameters.include_data))
+        features.append(report.as_feature(include_data))
     return FeatureCollection(features=features)
 
 
