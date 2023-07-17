@@ -9,10 +9,10 @@ from ohsome_quality_analyst.utils.helper import get_module_dir
 
 
 def get_topic_keys() -> list[str]:
-    return [str(t) for t in load_topic_definitions().keys()]
+    return [str(t) for t in load_topic_presets().keys()]
 
 
-def load_topic_definitions() -> dict[str, TopicDefinition]:
+def load_topic_presets() -> dict[str, TopicDefinition]:
     """Read ohsome API parameters of all topic from YAML file.
 
     Returns:
@@ -30,17 +30,17 @@ def load_topic_definitions() -> dict[str, TopicDefinition]:
     return topics
 
 
-def get_topic_definitions(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
-    topics = load_topic_definitions()
+def get_topic_presets(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
+    topics = load_topic_presets()
     if project is not None:
         return {k: v for k, v in topics.items() if project in v.projects}
     else:
         return topics
 
 
-def get_topic_definition(topic_key: str) -> TopicDefinition:
+def get_topic_preset(topic_key: str) -> TopicDefinition:
     """Get ohsome API parameters of a single topic based on topic key."""
-    topics = load_topic_definitions()
+    topics = load_topic_presets()
     try:
         return topics[topic_key]
     except KeyError as error:
@@ -51,7 +51,7 @@ def get_topic_definition(topic_key: str) -> TopicDefinition:
 
 def get_valid_topics(indicator_name: str) -> tuple:
     """Get valid Indicator/Topic combination of an Indicator."""
-    td = load_topic_definitions()
+    td = load_topic_presets()
     return tuple(topic for topic in td if indicator_name in td[topic].indicators)
 
 

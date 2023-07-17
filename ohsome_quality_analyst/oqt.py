@@ -12,7 +12,7 @@ from ohsome_quality_analyst.api.request_models import (
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
-from ohsome_quality_analyst.topics.definitions import get_topic_definition
+from ohsome_quality_analyst.topics.definitions import get_topic_preset
 from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
@@ -30,7 +30,7 @@ async def create_indicator(
     if isinstance(parameters, IndicatorDataRequest):
         topic = parameters.topic
     else:
-        topic = get_topic_definition(parameters.topic_key.value)
+        topic = get_topic_preset(parameters.topic_key.value)
     include_data = parameters.include_data
 
     tasks: list[Coroutine] = []
@@ -102,7 +102,7 @@ async def _create_report(key: str, feature: Feature) -> Report:
 
     tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
-        topic = get_topic_definition(topic_key)
+        topic = get_topic_preset(topic_key)
         tasks.append(_create_indicator(indicator_key, feature, topic))
 
     report.indicators = await gather_with_semaphore(tasks)

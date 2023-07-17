@@ -8,6 +8,10 @@ from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.utils.helper import get_module_dir
 
 
+def get_project_keys() -> list[str]:
+    return [str(t) for t in load_projects().keys()]
+
+
 def load_projects() -> dict[str, Project]:
     """Read definitions of projects.
 
@@ -24,23 +28,19 @@ def load_projects() -> dict[str, Project]:
     return projects
 
 
-def get_projects() -> dict[str, Project]:
+def get_project_metadata() -> dict[str, Project]:
     projects = load_projects()
     return projects
 
 
 def get_project(project_key: str) -> Project:
-    projects = get_projects()
+    projects = get_project_metadata()
     try:
         return projects[project_key]
     except KeyError as error:
         raise KeyError(
             "Invalid project key. Valid project keys are: " + str(projects.keys())
         ) from error
-
-
-def get_project_keys() -> list[str]:
-    return [str(t) for t in load_projects().keys()]
 
 
 ProjectEnum = Enum("ProjectEnum", {key: key for key in get_project_keys() + ["all"]})

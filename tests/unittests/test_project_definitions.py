@@ -10,7 +10,7 @@ def valid_project_keys(request):
 
 
 def test_get_projects():
-    qds = definitions.get_projects()
+    qds = definitions.get_project_metadata()
     assert isinstance(qds, dict)
     for key, qd in qds.items():
         assert isinstance(key, str)
