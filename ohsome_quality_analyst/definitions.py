@@ -1,7 +1,6 @@
 """Global Variables and Functions."""
 import glob
 import logging
-import os
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Iterable, Literal
@@ -10,9 +9,8 @@ import yaml
 
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
-from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.reports.models import ReportMetadata
-from ohsome_quality_analyst.topics.models import TopicDefinition
+from ohsome_quality_analyst.topics.definitions import load_topic_definitions
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
@@ -128,89 +126,7 @@ def get_metadata(
         raise
 
 
-def load_topic_definitions() -> dict[str, TopicDefinition]:
-    """Read ohsome API parameters of all topic from YAML file.
-
-    Returns:
-        A dict with all topics included.
-    """
-    directory = get_module_dir("ohsome_quality_analyst.topics")
-    file = os.path.join(directory, "presets.yaml")
-    with open(file, "r") as f:
-        raw = yaml.safe_load(f)
-    topics = {}
-    for k, v in raw.items():
-        v["filter"] = v.pop("filter")
-        v["key"] = k
-        topics[k] = TopicDefinition(**v)
-    return topics
-
-
-def get_topic_definitions(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
-    topics = load_topic_definitions()
-    if project is not None:
-        return {k: v for k, v in topics.items() if project in v.projects}
-    else:
-        return topics
-
-
-def get_indicator_definitions(
-    project: ProjectEnum = None,
-) -> dict[str, IndicatorMetadata]:
-    indicators = load_metadata("indicators")
-    if project is not None:
-        return {k: v for k, v in indicators.items() if project in v.projects}
-    else:
-        return indicators
-
-
-def get_report_definitions(project: ProjectEnum = None) -> dict[str, ReportMetadata]:
-    reports = load_metadata("reports")
-    if project is not None:
-        return {k: v for k, v in reports.items() if project in v.projects}
-    else:
-        return reports
-
-
-def get_topic_definition(topic_key: str) -> TopicDefinition:
-    """Get ohsome API parameters of a single topic based on topic key."""
-    topics = load_topic_definitions()
-    try:
-        return topics[topic_key]
-    except KeyError as error:
-        raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
-        ) from error
-
-
-def get_indicator_classes() -> dict:
-    """Map indicator name to corresponding class."""
-    raise NotImplementedError(
-        "Use utils.definitions.load_indicator_metadata() and"
-        + "utils.helper.name_to_class() instead"
-    )
-
-
-def get_report_classes() -> dict:
-    """Map report name to corresponding class."""
-    raise NotImplementedError(
-        "Use utils.definitions.load_indicator_metadata() and"
-        + "utils.helper.name_to_class() instead"
-    )
-
-
-def get_indicator_names() -> list[str]:
-    return list(load_metadata("indicators").keys())
-
-
-def get_report_names() -> list[str]:
-    return list(load_metadata("reports").keys())
-
-
-def get_topic_keys() -> list[str]:
-    return [str(t) for t in load_topic_definitions().keys()]
-
-
+# TODO: duplicate of func with the same name in projects/definition.py ?
 def get_project_keys() -> Iterable[str]:
     return set(t.project for t in load_topic_definitions().values())
 
@@ -250,15 +166,3 @@ def get_attribution(data_keys: list) -> str:
     assert set(data_keys) <= {"OSM", "GHSL", "VNL"}
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])
-
-
-def get_valid_topics(indicator_name: str) -> tuple:
-    """Get valid Indicator/Topic combination of an Indicator."""
-    td = load_topic_definitions()
-    return tuple(topic for topic in td if indicator_name in td[topic].indicators)
-
-
-def get_valid_indicators(topic_key: str) -> tuple:
-    """Get valid Indicator/Topic combination of a Topic."""
-    td = load_topic_definitions()
-    return tuple(td[topic_key].indicators)

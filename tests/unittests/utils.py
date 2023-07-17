@@ -2,7 +2,7 @@ import os
 
 import geojson
 
-from ohsome_quality_analyst.definitions import get_topic_definition
+from ohsome_quality_analyst.topics.definitions import get_topic_definition
 from ohsome_quality_analyst.topics.models import TopicDefinition
 
 

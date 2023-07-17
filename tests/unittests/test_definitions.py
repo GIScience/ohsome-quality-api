@@ -2,6 +2,9 @@ import unittest
 
 import pytest
 
+import ohsome_quality_analyst.indicators.definitions
+import ohsome_quality_analyst.reports.definitions
+import ohsome_quality_analyst.topics.definitions
 from ohsome_quality_analyst import definitions
 from ohsome_quality_analyst.indicators.models import (
     IndicatorMetadata as IndicatorMetadata,
@@ -13,15 +16,15 @@ from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 class TestDefinitions(unittest.TestCase):
     def test_get_indicator_names(self):
-        names = definitions.get_indicator_names()
+        names = ohsome_quality_analyst.indicators.definitions.get_indicator_names()
         self.assertIsInstance(names, list)
 
     def test_get_report_names(self):
-        names = definitions.get_report_names()
+        names = ohsome_quality_analyst.reports.definitions.get_report_names()
         self.assertIsInstance(names, list)
 
     def test_get_topic_keys(self):
-        names = definitions.get_topic_keys()
+        names = ohsome_quality_analyst.topics.definitions.get_topic_keys()
         self.assertIsInstance(names, list)
 
     def test_get_dataset_names(self):
@@ -62,7 +65,9 @@ class TestDefinitions(unittest.TestCase):
         self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
 
     def test_get_valid_indicators(self):
-        indicators = definitions.get_valid_indicators("building-count")
+        indicators = ohsome_quality_analyst.indicators.definitions.get_valid_indicators(
+            "building-count"
+        )
         self.assertEqual(
             indicators,
             (
@@ -73,44 +78,48 @@ class TestDefinitions(unittest.TestCase):
         )
 
     def test_get_valid_topics(self):
-        topics = definitions.get_valid_topics("minimal")
+        topics = ohsome_quality_analyst.topics.definitions.get_valid_topics("minimal")
         self.assertEqual(topics, ("minimal",))
 
 
 def test_load_topic_definition():
-    topics = definitions.load_topic_definitions()
+    topics = ohsome_quality_analyst.topics.definitions.load_topic_definitions()
     for topic in topics:
         assert isinstance(topics[topic], TopicDefinition)
 
 
 def test_get_topic_definition():
-    topic = definitions.get_topic_definition("minimal")
+    topic = ohsome_quality_analyst.topics.definitions.get_topic_definition("minimal")
     assert isinstance(topic, TopicDefinition)
 
 
 def test_get_topic_definition_not_found_error():
     with pytest.raises(KeyError):
-        definitions.get_topic_definition("foo")
+        ohsome_quality_analyst.topics.definitions.get_topic_definition("foo")
     with pytest.raises(KeyError):
-        definitions.get_topic_definition(None)
+        ohsome_quality_analyst.topics.definitions.get_topic_definition(None)
 
 
 def test_get_topic_definitions():
-    topics = definitions.get_topic_definitions()
+    topics = ohsome_quality_analyst.topics.definitions.get_topic_definitions()
     assert isinstance(topics, dict)
     for topic in topics.values():
         assert isinstance(topic, TopicDefinition)
 
 
 def test_get_indicator_definitions():
-    indicators = definitions.get_indicator_definitions()
+    indicators = (
+        ohsome_quality_analyst.indicators.definitions.get_indicator_definitions()
+    )
     assert isinstance(indicators, dict)
     for indicator in indicators.values():
         assert isinstance(indicator, IndicatorMetadata)
 
 
 def test_get_indicator_definitions_with_project():
-    indicators = definitions.get_indicator_definitions("core")
+    indicators = (
+        ohsome_quality_analyst.indicators.definitions.get_indicator_definitions("core")
+    )
     assert isinstance(indicators, dict)
     for indicator in indicators.values():
         assert isinstance(indicator, IndicatorMetadata)
@@ -118,14 +127,14 @@ def test_get_indicator_definitions_with_project():
 
 
 def test_get_report_definitions():
-    reports = definitions.get_report_definitions()
+    reports = ohsome_quality_analyst.reports.definitions.get_report_definitions()
     assert isinstance(reports, dict)
     for report in reports.values():
         assert isinstance(report, ReportMetadata)
 
 
 def test_get_report_definitions_with_project():
-    reports = definitions.get_report_definitions("core")
+    reports = ohsome_quality_analyst.reports.definitions.get_report_definitions("core")
     assert isinstance(reports, dict)
     for report in reports.values():
         assert isinstance(report, ReportMetadata)
@@ -133,7 +142,7 @@ def test_get_report_definitions_with_project():
 
 
 def test_get_topic_definitions_with_project():
-    topics = definitions.get_topic_definitions("core")
+    topics = ohsome_quality_analyst.topics.definitions.get_topic_definitions("core")
     assert isinstance(topics, dict)
     for topic in topics.values():
         assert isinstance(topic, TopicDefinition)

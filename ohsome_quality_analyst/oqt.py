@@ -10,9 +10,9 @@ from ohsome_quality_analyst.api.request_models import (
     IndicatorRequest,
     ReportRequest,
 )
-from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
+from ohsome_quality_analyst.topics.definitions import get_topic_definition
 from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
