@@ -30,9 +30,7 @@ class TestOqtGeoJsonIO(unittest.TestCase):
             topic=self.topic_key,
             bpolys=self.feature,
         )
-        feature = asyncio.run(
-            oqt.create_indicator_as_geojson(patameters, key=self.name)
-        )
+        feature = asyncio.run(oqt.create_indicator(patameters, key=self.name))
         self.assertIsInstance(feature, FeatureCollection)
 
 

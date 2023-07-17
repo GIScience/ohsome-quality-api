@@ -18,7 +18,7 @@ from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
 
 
-async def create_indicator_as_geojson(
+async def create_indicator(
     parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
 ) -> FeatureCollection:
@@ -41,15 +41,13 @@ async def create_indicator_as_geojson(
         # Disable size limit for the Mapping Saturation indicator
         if isinstance(parameters, IndicatorRequest) and key != "mapping-saturation":
             validate_area(feature)
-        tasks.append(create_indicator(key, feature, topic))
+        tasks.append(_create_indicator(key, feature, topic))
     indicators = await gather_with_semaphore(tasks)
     features = [i.as_feature(include_data) for i in indicators]
     return FeatureCollection(features=features)
 
 
-async def create_report_as_geojson(
-    parameters: ReportRequest, key: str
-) -> FeatureCollection:
+async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
     """Create report(s) for features of a GeoJSON FeatureCollection."""
     bpolys = parameters.bpolys
     include_data = parameters.include_data
@@ -61,12 +59,12 @@ async def create_report_as_geojson(
         # Reports for a FeatureCollection are not created asynchronously (as it is
         # the case with indicators), because indicators of a report are created
         # asynchronously
-        report = await create_report(key, feature)
+        report = await _create_report(key, feature)
         features.append(report.as_feature(include_data))
     return FeatureCollection(features=features)
 
 
-async def create_indicator(key: str, feature: Feature, topic) -> Indicator:
+async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
     """Create an indicator from scratch."""
 
     logging.info("Calculating Indicator for custom AOI ...")
@@ -87,7 +85,7 @@ async def create_indicator(key: str, feature: Feature, topic) -> Indicator:
     return indicator
 
 
-async def create_report(key: str, feature: Feature) -> Report:
+async def _create_report(key: str, feature: Feature) -> Report:
     """Create a Report.
 
     Aggregates all indicator results and calculates an overall quality score.
@@ -105,7 +103,7 @@ async def create_report(key: str, feature: Feature) -> Report:
     tasks: list[Coroutine] = []
     for indicator_key, topic_key in report.indicator_topic:
         topic = get_topic_definition(topic_key)
-        tasks.append(create_indicator(indicator_key, feature, topic))
+        tasks.append(_create_indicator(indicator_key, feature, topic))
 
     report.indicators = await gather_with_semaphore(tasks)
     report.combine_indicators()
