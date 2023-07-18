@@ -82,6 +82,11 @@ class Currentness(BaseIndicator):
         self.result.value = get_median_year(self.contrib_rel)
 
         if self.contrib_sum < self.threshold_low_contributions:
+            self.result.description = (
+                f"In the area of interest {self.threshold_low_contributions}"
+                f" features of the selected topic are present today. "
+                f"The significance of the result is low."
+            )
             pass
         elif self.result.value >= self.t1:
             self.result.class_ = 1
@@ -133,6 +138,9 @@ class Currentness(BaseIndicator):
             )
 
     def create_figure(self):
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
         colors = []
         for i in range(len(self.contrib_rel)):
             if i < self.t3:
@@ -141,8 +149,6 @@ class Currentness(BaseIndicator):
                 colors.append("yellow")
             elif i >= self.t1:
                 colors.append("red")
-        if len(self.contrib_rel) == 0:
-            self.contrib_rel = self.contrib_abs
         fig = pgo.Figure(
             data=pgo.Bar(
                 x=self.timestamps,
@@ -158,56 +164,43 @@ class Currentness(BaseIndicator):
                 customdata=self.contrib_abs,
             )
         )
-        if self.result.value is not None:
-            start = self.timestamps[self.result.value]
-            end = self.timestamps[0]
-            # Workaround setting text annotation for data with date-time:
-            # https://github.com/plotly/plotly.py/issues/3065
-            x0 = (start - relativedelta(months=6)).timestamp() * 1000
-            x1 = (end + relativedelta(months=6)).timestamp() * 1000
-            fig.add_vrect(
-                x0=x0,
-                x1=x1,
-                annotation_text=(
-                    "In this time period at least 50%<br>of features have been edited."
-                ),
-                annotation_position="top",
-                fillcolor="gray",
-                layer="below",
+        start = self.timestamps[self.result.value]
+        end = self.timestamps[0]
+        # Workaround setting text annotation for data with date-time:
+        # https://github.com/plotly/plotly.py/issues/3065
+        x0 = (start - relativedelta(months=6)).timestamp() * 1000
+        x1 = (end + relativedelta(months=6)).timestamp() * 1000
+        fig.add_vrect(
+            x0=x0,
+            x1=x1,
+            annotation_text=(
+                "In this time period at least 50%<br>of features have been edited."
+            ),
+            annotation_position="top",
+            fillcolor="gray",
+            layer="below",
+            line_width=0,
+            opacity=0.25,
+        )
+
+        y_min = min(self.contrib_rel)
+        y_max = max(self.contrib_rel) * 1.05
+
+        fig.add_trace(
+            pgo.Scatter(
+                x=[x0, x0, x1, x1, x0],
+                y=[y_min, y_max, y_max, y_min, y_min],
+                fill="toself",
+                mode="lines",
+                name="",
+                text="In this time period at least 50%<br>of "
+                "features have been edited",
                 line_width=0,
                 opacity=0.25,
+                fillcolor="gray",
+                hoverlabel=dict(bgcolor="lightgray"),
             )
-
-            y_min = min(self.contrib_rel)
-            y_max = max(self.contrib_rel) * 1.05
-
-            fig.add_trace(
-                pgo.Scatter(
-                    x=[x0, x0, x1, x1, x0],
-                    y=[y_min, y_max, y_max, y_min, y_min],
-                    fill="toself",
-                    mode="lines",
-                    name="",
-                    text="In this time period at least 50%<br>of "
-                    "features have been edited",
-                    line_width=0,
-                    opacity=0.25,
-                    fillcolor="gray",
-                    hoverlabel=dict(bgcolor="lightgray"),
-                )
-            )
-
-        else:
-            y_max = 1
-            fig.add_annotation(
-                x=0.5,
-                y=0.5,
-                xref="paper",
-                yref="paper",
-                text="Calculation was not successful",
-                showarrow=False,
-                font=dict(size=16),
-            )
+        )
 
         fig.update_layout(
             hovermode="x",

@@ -22,6 +22,7 @@
 - build: tidy up docker (and jenkins) setup ([#647])
 - refactor(api): clean-up and rename request models ([#649])
 - refactor(api): move openapi param example to model ([#649])
+- currentness: results with low contributions are now labeled undefined ([#643])
 
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -32,6 +33,7 @@
 [#634]: https://github.com/GIScience/ohsome-quality-analyst/pull/634
 [#639]: https://github.com/GIScience/ohsome-quality-analyst/pull/639
 [#642]: https://github.com/GIScience/ohsome-quality-analyst/pull/642
+[#643]: https://github.com/GIScience/ohsome-quality-analyst/pull/643
 [#644]: https://github.com/GIScience/ohsome-quality-analyst/pull/644
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 [#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
