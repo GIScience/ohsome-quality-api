@@ -141,7 +141,8 @@ class Currentness(BaseIndicator):
                 colors.append("yellow")
             elif i >= self.t1:
                 colors.append("red")
-
+        if len(self.contrib_rel) == 0:
+            self.contrib_rel = self.contrib_abs
         fig = pgo.Figure(
             data=pgo.Bar(
                 x=self.timestamps,
@@ -177,23 +178,37 @@ class Currentness(BaseIndicator):
                 opacity=0.25,
             )
 
-        y_min = min(self.contrib_rel)
-        y_max = max(self.contrib_rel) * 1.05
+            y_min = min(self.contrib_rel)
+            y_max = max(self.contrib_rel) * 1.05
 
-        fig.add_trace(
-            pgo.Scatter(
-                x=[x0, x0, x1, x1, x0],
-                y=[y_min, y_max, y_max, y_min, y_min],
-                fill="toself",
-                mode="lines",
-                name="",
-                text="In this time period at least 50%<br>of features have been edited",
-                line_width=0,
-                opacity=0.25,
-                fillcolor="gray",
-                hoverlabel=dict(bgcolor="lightgray"),
+            fig.add_trace(
+                pgo.Scatter(
+                    x=[x0, x0, x1, x1, x0],
+                    y=[y_min, y_max, y_max, y_min, y_min],
+                    fill="toself",
+                    mode="lines",
+                    name="",
+                    text="In this time period at least 50%<br>of "
+                    "features have been edited",
+                    line_width=0,
+                    opacity=0.25,
+                    fillcolor="gray",
+                    hoverlabel=dict(bgcolor="lightgray"),
+                )
             )
-        )
+
+        else:
+            y_max = 1
+            fig.add_annotation(
+                x=0.5,
+                y=0.5,
+                xref="paper",
+                yref="paper",
+                text="Calculation was not successful",
+                showarrow=False,
+                font=dict(size=16),
+            )
+
         fig.update_layout(
             hovermode="x",
             yaxis_range=[0, y_max],
