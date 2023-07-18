@@ -24,8 +24,6 @@ def test_bpolys_invalid(feature_collection_invalid):
         BaseBpolys(bpolys=feature_collection_invalid)
 
 
-# TODO
-@pytest.mark.skip(reason="Support for Feature will be discontinued.")
 def test_bpolys_unsupported_object_type_feature(feature_germany_heidelberg):
     with pytest.raises((GeoJSONObjectTypeError, ValidationError)):
         BaseBpolys(bpolys=feature_germany_heidelberg)

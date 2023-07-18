@@ -8,6 +8,7 @@
 - api: computing mapping-saturation indicator for given data is now a separate endpoint ([#642])
 - cli: remove CLI ([#634])
 - api: remove `include_svg`, `include_html` and `flatten` parameter ([#644])
+- api: only accept FeatureCollection as `bpolys` parameter ([#650])
 
 ### Other Changes
 
@@ -34,6 +35,7 @@
 [#644]: https://github.com/GIScience/ohsome-quality-analyst/pull/644
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 [#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
+[#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
 
 ## 0.15.0
 

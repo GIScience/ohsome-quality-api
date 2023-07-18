@@ -302,11 +302,7 @@ async def post_indicator(
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorRequest):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    geojson_object = await oqt.create_indicator_as_geojson(
-        parameters,
-        key=key.value,
-        size_restriction=True,
-    )
+    geojson_object = await oqt.create_indicator_as_geojson(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
@@ -344,11 +340,7 @@ async def post_report(
     parameters: ReportRequest,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
-    geojson_object = await oqt.create_report_as_geojson(
-        parameters,
-        key=key.value,
-        size_restriction=True,
-    )
+    geojson_object = await oqt.create_report_as_geojson(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="report",

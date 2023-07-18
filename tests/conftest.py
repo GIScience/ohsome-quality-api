@@ -122,6 +122,11 @@ def feature_germany_heidelberg() -> Feature:
 
 
 @pytest.fixture(scope="class")
+def feature(feature_germany_heidelberg) -> Feature:
+    return feature_germany_heidelberg
+
+
+@pytest.fixture(scope="class")
 def feature_collection_germany_heidelberg() -> FeatureCollection:
     # Single Feature
     path = os.path.join(
