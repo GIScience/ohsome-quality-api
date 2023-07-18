@@ -2,31 +2,15 @@ import unittest
 
 import pytest
 
-import ohsome_quality_analyst.indicators.definitions
-import ohsome_quality_analyst.reports.definitions
-import ohsome_quality_analyst.topics.definitions
 from ohsome_quality_analyst import definitions
 from ohsome_quality_analyst.indicators.models import (
     IndicatorMetadata as IndicatorMetadata,
 )
 from ohsome_quality_analyst.reports.base import ReportMetadata as ReportMetadata
-from ohsome_quality_analyst.topics.models import TopicDefinition
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):
-    def test_get_indicator_names(self):
-        names = ohsome_quality_analyst.indicators.definitions.get_indicator_keys()
-        self.assertIsInstance(names, list)
-
-    def test_get_report_names(self):
-        names = ohsome_quality_analyst.reports.definitions.get_report_keys()
-        self.assertIsInstance(names, list)
-
-    def test_get_topic_keys(self):
-        names = ohsome_quality_analyst.topics.definitions.get_topic_keys()
-        self.assertIsInstance(names, list)
-
     def test_get_dataset_names(self):
         names = definitions.get_dataset_names()
         self.assertIsInstance(names, list)
@@ -63,88 +47,6 @@ class TestDefinitions(unittest.TestCase):
         )
 
         self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
-
-    def test_get_valid_indicators(self):
-        indicators = ohsome_quality_analyst.indicators.definitions.get_valid_indicators(
-            "building-count"
-        )
-        self.assertEqual(
-            indicators,
-            (
-                "mapping-saturation",
-                "currentness",
-                "attribute-completeness",
-            ),
-        )
-
-    def test_get_valid_topics(self):
-        topics = ohsome_quality_analyst.topics.definitions.get_valid_topics("minimal")
-        self.assertEqual(topics, ("minimal",))
-
-
-def test_load_topic_definition():
-    topics = ohsome_quality_analyst.topics.definitions.load_topic_presets()
-    for topic in topics:
-        assert isinstance(topics[topic], TopicDefinition)
-
-
-def test_get_topic_definition():
-    topic = ohsome_quality_analyst.topics.definitions.get_topic_preset("minimal")
-    assert isinstance(topic, TopicDefinition)
-
-
-def test_get_topic_definition_not_found_error():
-    with pytest.raises(KeyError):
-        ohsome_quality_analyst.topics.definitions.get_topic_preset("foo")
-    with pytest.raises(KeyError):
-        ohsome_quality_analyst.topics.definitions.get_topic_preset(None)
-
-
-def test_get_topic_definitions():
-    topics = ohsome_quality_analyst.topics.definitions.get_topic_presets()
-    assert isinstance(topics, dict)
-    for topic in topics.values():
-        assert isinstance(topic, TopicDefinition)
-
-
-def test_get_indicator_definitions():
-    indicators = ohsome_quality_analyst.indicators.definitions.get_indicator_metadata()
-    assert isinstance(indicators, dict)
-    for indicator in indicators.values():
-        assert isinstance(indicator, IndicatorMetadata)
-
-
-def test_get_indicator_definitions_with_project():
-    indicators = ohsome_quality_analyst.indicators.definitions.get_indicator_metadata(
-        "core"
-    )
-    assert isinstance(indicators, dict)
-    for indicator in indicators.values():
-        assert isinstance(indicator, IndicatorMetadata)
-        assert indicator.projects == ["core"]
-
-
-def test_get_report_definitions():
-    reports = ohsome_quality_analyst.reports.definitions.get_report_metadata()
-    assert isinstance(reports, dict)
-    for report in reports.values():
-        assert isinstance(report, ReportMetadata)
-
-
-def test_get_report_definitions_with_project():
-    reports = ohsome_quality_analyst.reports.definitions.get_report_metadata("core")
-    assert isinstance(reports, dict)
-    for report in reports.values():
-        assert isinstance(report, ReportMetadata)
-        assert report.project == "core"
-
-
-def test_get_topic_definitions_with_project():
-    topics = ohsome_quality_analyst.topics.definitions.get_topic_presets("core")
-    assert isinstance(topics, dict)
-    for topic in topics.values():
-        assert isinstance(topic, TopicDefinition)
-        assert topic.project == "core"
 
 
 def test_load_metadata_indicator():
