@@ -62,6 +62,10 @@ class TestCalculation:
             "In the area of interest no "
             "features of the selected topic are present today."
         )
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        assert indicator.result.svg is not None
 
 
 class TestFigure:
