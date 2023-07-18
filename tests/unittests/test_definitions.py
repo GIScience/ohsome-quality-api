@@ -11,18 +11,10 @@ from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):
-    def test_get_dataset_names(self):
-        names = definitions.get_dataset_names()
-        self.assertIsInstance(names, list)
-
     def test_get_raster_dataset_names(self):
         names = definitions.get_raster_dataset_names()
         self.assertIsInstance(names, list)
         self.assertTrue(names)
-
-    def test_get_fid_fields(self):
-        fields = definitions.get_fid_fields()
-        self.assertIsInstance(fields, list)
 
     def test_get_raster_dataset(self):
         raster = definitions.get_raster_dataset("GHS_BUILT_R2018A")

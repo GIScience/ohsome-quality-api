@@ -7,14 +7,12 @@ from typing import Iterable, Literal
 
 import yaml
 
-from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 from ohsome_quality_analyst.reports.models import ReportMetadata
 from ohsome_quality_analyst.topics.definitions import load_topic_presets
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 from ohsome_quality_analyst.utils.helper import (
     camel_to_hyphen,
-    flatten_sequence,
     get_module_dir,
 )
 
@@ -131,10 +129,6 @@ def get_project_keys() -> Iterable[str]:
     return set(t.project for t in load_topic_presets().values())
 
 
-def get_dataset_names() -> list[str]:
-    return list(get_config_value("datasets").keys())
-
-
 def get_raster_dataset_names() -> list[str]:
     return [r.name for r in RASTER_DATASETS]
 
@@ -155,10 +149,6 @@ def get_raster_dataset(name: str) -> RasterDataset:
         return next(filter(lambda r: r.name == name, RASTER_DATASETS))
     except StopIteration as e:
         raise RasterDatasetUndefinedError(name) from e
-
-
-def get_fid_fields() -> list[str]:
-    return flatten_sequence(get_config_value("datasets").values())
 
 
 def get_attribution(data_keys: list) -> str:
