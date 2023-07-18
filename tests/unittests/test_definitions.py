@@ -7,23 +7,9 @@ from ohsome_quality_analyst.indicators.models import (
     IndicatorMetadata as IndicatorMetadata,
 )
 from ohsome_quality_analyst.reports.base import ReportMetadata as ReportMetadata
-from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):
-    def test_get_raster_dataset_names(self):
-        names = definitions.get_raster_dataset_names()
-        self.assertIsInstance(names, list)
-        self.assertTrue(names)
-
-    def test_get_raster_dataset(self):
-        raster = definitions.get_raster_dataset("GHS_BUILT_R2018A")
-        self.assertIsInstance(raster, definitions.RasterDataset)
-
-    def test_get_raster_dataset_undefined(self):
-        with self.assertRaises(RasterDatasetUndefinedError):
-            definitions.get_raster_dataset("foo")
-
     def test_get_attribution(self):
         attribution = definitions.get_attribution(["OSM"])
         self.assertEqual(attribution, "© OpenStreetMap contributors")
