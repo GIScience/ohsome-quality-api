@@ -11,8 +11,8 @@ from rpy2.rinterface_lib.embedded import RRuntimeError
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 import ohsome_quality_analyst.ohsome.client as ohsome_client
-from ohsome_quality_analyst.definitions import get_topic_definition
 from ohsome_quality_analyst.indicators.mapping_saturation import models
+from ohsome_quality_analyst.topics.definitions import get_topic_preset
 
 
 def plot(xdata, ydata, model_list):
@@ -55,7 +55,7 @@ async def query_ohsome_api(features, topics) -> list:
 def get_topics(topic_keys) -> list:
     topics = []
     for topic_key in topic_keys:
-        topics.append(get_topic_definition(topic_key))
+        topics.append(get_topic_preset(topic_key))
     return topics
 
 

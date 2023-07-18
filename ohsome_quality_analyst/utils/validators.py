@@ -1,7 +1,7 @@
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.definitions import get_valid_indicators
+from ohsome_quality_analyst.indicators.definitions import get_valid_indicators
 from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,

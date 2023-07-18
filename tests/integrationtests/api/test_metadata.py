@@ -1,8 +1,6 @@
-from ohsome_quality_analyst.api.request_models import (
-    IndicatorEnum,
-    ReportEnum,
-    TopicEnum,
-)
+from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
+from ohsome_quality_analyst.reports.definitions import ReportEnum
+from ohsome_quality_analyst.topics.definitions import TopicEnum
 
 
 def test_metadata(

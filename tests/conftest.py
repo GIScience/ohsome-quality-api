@@ -7,9 +7,7 @@ from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
-    get_topic_definition,
     load_metadata,
-    load_topic_definitions,
 )
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata
 from ohsome_quality_analyst.projects.definitions import get_project, load_projects
@@ -20,6 +18,10 @@ from ohsome_quality_analyst.quality_dimensions.definitions import (
 )
 from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
 from ohsome_quality_analyst.reports.models import ReportMetadata
+from ohsome_quality_analyst.topics.definitions import (
+    get_topic_preset,
+    load_topic_presets,
+)
 
 # from ohsome_quality_analyst.indicators import MappingSaturation
 # from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
@@ -45,12 +47,12 @@ def topic_key_building_count() -> str:
 
 @pytest.fixture(scope="class")
 def topic_minimal(topic_key_minimal) -> TopicDefinition:
-    return get_topic_definition(topic_key_minimal)
+    return get_topic_preset(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
 def topic_building_count(topic_key_building_count) -> TopicDefinition:
-    return get_topic_definition(topic_key_building_count)
+    return get_topic_preset(topic_key_building_count)
 
 
 @pytest.fixture(scope="class")
@@ -63,7 +65,7 @@ def metadata_topic_building_count(
 
 @pytest.fixture()
 def topic_definitions() -> dict[str, TopicDefinition]:
-    return load_topic_definitions()
+    return load_topic_presets()
 
 
 @pytest.fixture(scope="class")

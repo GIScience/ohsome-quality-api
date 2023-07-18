@@ -8,7 +8,7 @@ from pyproj import Transformer
 from rasterstats import zonal_stats
 
 from ohsome_quality_analyst.config import get_config_value
-from ohsome_quality_analyst.definitions import RasterDataset
+from ohsome_quality_analyst.raster.definitions import RasterDataset
 from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
 
 

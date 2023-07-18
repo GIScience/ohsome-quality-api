@@ -10,10 +10,10 @@ from building_completeness_model import Predictor, Processor
 from geojson import Feature, FeatureCollection
 
 import ohsome_quality_analyst.geodatabase.client as db_client
-from ohsome_quality_analyst.definitions import get_raster_dataset
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.raster import client as raster_client
+from ohsome_quality_analyst.raster.definitions import get_raster_dataset
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
 

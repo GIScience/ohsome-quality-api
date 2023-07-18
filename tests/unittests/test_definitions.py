@@ -7,44 +7,9 @@ from ohsome_quality_analyst.indicators.models import (
     IndicatorMetadata as IndicatorMetadata,
 )
 from ohsome_quality_analyst.reports.base import ReportMetadata as ReportMetadata
-from ohsome_quality_analyst.topics.models import TopicDefinition
-from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):
-    def test_get_indicator_names(self):
-        names = definitions.get_indicator_names()
-        self.assertIsInstance(names, list)
-
-    def test_get_report_names(self):
-        names = definitions.get_report_names()
-        self.assertIsInstance(names, list)
-
-    def test_get_topic_keys(self):
-        names = definitions.get_topic_keys()
-        self.assertIsInstance(names, list)
-
-    def test_get_dataset_names(self):
-        names = definitions.get_dataset_names()
-        self.assertIsInstance(names, list)
-
-    def test_get_raster_dataset_names(self):
-        names = definitions.get_raster_dataset_names()
-        self.assertIsInstance(names, list)
-        self.assertTrue(names)
-
-    def test_get_fid_fields(self):
-        fields = definitions.get_fid_fields()
-        self.assertIsInstance(fields, list)
-
-    def test_get_raster_dataset(self):
-        raster = definitions.get_raster_dataset("GHS_BUILT_R2018A")
-        self.assertIsInstance(raster, definitions.RasterDataset)
-
-    def test_get_raster_dataset_undefined(self):
-        with self.assertRaises(RasterDatasetUndefinedError):
-            definitions.get_raster_dataset("foo")
-
     def test_get_attribution(self):
         attribution = definitions.get_attribution(["OSM"])
         self.assertEqual(attribution, "© OpenStreetMap contributors")
@@ -60,84 +25,6 @@ class TestDefinitions(unittest.TestCase):
         )
 
         self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
-
-    def test_get_valid_indicators(self):
-        indicators = definitions.get_valid_indicators("building-count")
-        self.assertEqual(
-            indicators,
-            (
-                "mapping-saturation",
-                "currentness",
-                "attribute-completeness",
-            ),
-        )
-
-    def test_get_valid_topics(self):
-        topics = definitions.get_valid_topics("minimal")
-        self.assertEqual(topics, ("minimal",))
-
-
-def test_load_topic_definition():
-    topics = definitions.load_topic_definitions()
-    for topic in topics:
-        assert isinstance(topics[topic], TopicDefinition)
-
-
-def test_get_topic_definition():
-    topic = definitions.get_topic_definition("minimal")
-    assert isinstance(topic, TopicDefinition)
-
-
-def test_get_topic_definition_not_found_error():
-    with pytest.raises(KeyError):
-        definitions.get_topic_definition("foo")
-    with pytest.raises(KeyError):
-        definitions.get_topic_definition(None)
-
-
-def test_get_topic_definitions():
-    topics = definitions.get_topic_definitions()
-    assert isinstance(topics, dict)
-    for topic in topics.values():
-        assert isinstance(topic, TopicDefinition)
-
-
-def test_get_indicator_definitions():
-    indicators = definitions.get_indicator_definitions()
-    assert isinstance(indicators, dict)
-    for indicator in indicators.values():
-        assert isinstance(indicator, IndicatorMetadata)
-
-
-def test_get_indicator_definitions_with_project():
-    indicators = definitions.get_indicator_definitions("core")
-    assert isinstance(indicators, dict)
-    for indicator in indicators.values():
-        assert isinstance(indicator, IndicatorMetadata)
-        assert indicator.projects == ["core"]
-
-
-def test_get_report_definitions():
-    reports = definitions.get_report_definitions()
-    assert isinstance(reports, dict)
-    for report in reports.values():
-        assert isinstance(report, ReportMetadata)
-
-
-def test_get_report_definitions_with_project():
-    reports = definitions.get_report_definitions("core")
-    assert isinstance(reports, dict)
-    for report in reports.values():
-        assert isinstance(report, ReportMetadata)
-        assert report.project == "core"
-
-
-def test_get_topic_definitions_with_project():
-    topics = definitions.get_topic_definitions("core")
-    assert isinstance(topics, dict)
-    for topic in topics.values():
-        assert isinstance(topic, TopicDefinition)
-        assert topic.project == "core"
 
 
 def test_load_metadata_indicator():

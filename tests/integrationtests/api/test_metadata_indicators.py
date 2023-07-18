@@ -1,6 +1,6 @@
 import pytest
 
-from ohsome_quality_analyst.api.request_models import IndicatorEnum
+from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
 
 
 def test(client, response_template, metadata_indicator_mapping_saturation):

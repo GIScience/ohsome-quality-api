@@ -27,11 +27,8 @@ from ohsome_quality_analyst import (
 )
 from ohsome_quality_analyst.api.request_models import (
     IndicatorDataRequest,
-    IndicatorEnum,
     IndicatorRequest,
-    ReportEnum,
     ReportRequest,
-    TopicEnum,
 )
 from ohsome_quality_analyst.api.response_models import (
     IndicatorMetadataResponse,
@@ -44,21 +41,30 @@ from ohsome_quality_analyst.api.response_models import (
 from ohsome_quality_analyst.config import configure_logging
 from ohsome_quality_analyst.definitions import (
     ATTRIBUTION_URL,
-    get_indicator_definitions,
     get_metadata,
-    get_report_definitions,
-    get_topic_definition,
-    get_topic_definitions,
+)
+from ohsome_quality_analyst.indicators.definitions import (
+    IndicatorEnum,
+    get_indicator_metadata,
 )
 from ohsome_quality_analyst.projects.definitions import (
     ProjectEnum,
     get_project,
-    get_projects,
+    get_project_metadata,
 )
 from ohsome_quality_analyst.quality_dimensions.definitions import (
     QualityDimensionEnum,
     get_quality_dimension,
     get_quality_dimensions,
+)
+from ohsome_quality_analyst.reports.definitions import (
+    ReportEnum,
+    get_report_metadata,
+)
+from ohsome_quality_analyst.topics.definitions import (
+    TopicEnum,
+    get_topic_preset,
+    get_topic_presets,
 )
 from ohsome_quality_analyst.utils.exceptions import (
     HexCellsNotFoundError,
@@ -262,7 +268,7 @@ def empty_api_response() -> dict:
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
-    geojson_object = await oqt.create_indicator_as_geojson(
+    geojson_object = await oqt.create_indicator(
         parameters,
         key="mapping-saturation",
     )
@@ -302,7 +308,7 @@ async def post_indicator(
     """Request an Indicator for an AOI defined by OQT or a custom AOI."""
     if isinstance(parameters, IndicatorRequest):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    geojson_object = await oqt.create_indicator_as_geojson(parameters, key=key.value)
+    geojson_object = await oqt.create_indicator(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
@@ -340,7 +346,7 @@ async def post_report(
     parameters: ReportRequest,
 ) -> CustomJSONResponse:
     """Request a Report for an AOI defined by OQT or a custom AOI."""
-    geojson_object = await oqt.create_report_as_geojson(parameters, key=key.value)
+    geojson_object = await oqt.create_report(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="report",
@@ -369,11 +375,11 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
     if project == ProjectEnum.all:
         project = None
     result = {
-        "topics": get_topic_definitions(project=project),
+        "topics": get_topic_presets(project=project),
         "quality_dimensions": get_quality_dimensions(),
-        "projects": get_projects(),
-        "indicators": get_indicator_definitions(project=project),
-        "reports": get_report_definitions(project=project),
+        "projects": get_project_metadata(),
+        "indicators": get_indicator_metadata(project=project),
+        "reports": get_report_metadata(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -391,7 +397,7 @@ async def metadata_topic(
     """Get topics."""
     if project == ProjectEnum.all:
         project = None
-    return TopicMetadataResponse(result=get_topic_definitions(project=project))
+    return TopicMetadataResponse(result=get_topic_presets(project=project))
 
 
 @app.get(
@@ -401,7 +407,7 @@ async def metadata_topic(
 )
 async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
     """Get topic by key."""
-    return TopicMetadataResponse(result={key.value: get_topic_definition(key.value)})
+    return TopicMetadataResponse(result={key.value: get_topic_preset(key.value)})
 
 
 @app.get(
@@ -432,7 +438,7 @@ async def metadata_quality_dimension_by_key(
 )
 async def metadata_projects() -> ProjectMetadataResponse:
     """Get projects."""
-    return ProjectMetadataResponse(result=get_projects())
+    return ProjectMetadataResponse(result=get_project_metadata())
 
 
 @app.get(
@@ -462,7 +468,7 @@ async def metadata_indicators(
     """Get metadata of all indicators."""
     if project == ProjectEnum.all:
         project = None
-    return IndicatorMetadataResponse(result=get_indicator_definitions(project=project))
+    return IndicatorMetadataResponse(result=get_indicator_metadata(project=project))
 
 
 @app.get(
@@ -495,7 +501,7 @@ async def metadata_reports(
     """Get metadata of all indicators."""
     if project == ProjectEnum.all:
         project = None
-    return ReportMetadataResponse(result=get_report_definitions(project=project))
+    return ReportMetadataResponse(result=get_report_metadata(project=project))
 
 
 @app.get(
