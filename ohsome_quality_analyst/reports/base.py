@@ -8,10 +8,6 @@ import numpy as np
 from geojson import Feature
 
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
-from ohsome_quality_analyst.html_templates.template import (
-    get_template,
-    get_traffic_light,
-)
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.reports.models import ReportMetadata, Result
 
@@ -119,21 +115,3 @@ class BaseReport(metaclass=ABCMeta):
         attribution is necessary.
         """
         return get_attribution(["OSM"])
-
-    def create_html(self):
-        if self.result.label == "red":
-            traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
-        elif self.result.label == "yellow":
-            traffic_light = get_traffic_light("Medium Quality", yellow="#FFFF00")
-        elif self.result.label == "green":
-            traffic_light = get_traffic_light("Good Quality", green="#008000")
-        else:
-            traffic_light = get_traffic_light("Undefined Quality")
-        template = get_template("report")
-        self.result.html = template.render(
-            report_name=self.metadata.name,
-            indicators="".join([i.result.html for i in self.indicators]),
-            result_description=self.result.description,
-            metadata=self.metadata.description,
-            traffic_light=traffic_light,
-        )

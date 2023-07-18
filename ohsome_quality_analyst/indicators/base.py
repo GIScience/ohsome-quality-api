@@ -7,10 +7,6 @@ import plotly.graph_objects as go
 from geojson import Feature
 
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
-from ohsome_quality_analyst.html_templates.template import (
-    get_template,
-    get_traffic_light,
-)
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.topics.models import TopicData
@@ -156,22 +152,3 @@ class BaseIndicator(metaclass=ABCMeta):
         # Legacy support for SVGs
         img_bytes = fig.to_image(format="svg")
         self.result.svg = img_bytes.decode("utf-8")
-
-    def create_html(self):
-        if self.result.label == "red":
-            traffic_light = get_traffic_light("Bad Quality", red="#FF0000")
-        elif self.result.label == "yellow":
-            traffic_light = get_traffic_light("Medium Quality", yellow="#FFFF00")
-        elif self.result.label == "green":
-            traffic_light = get_traffic_light("Good Quality", green="#008000")
-        else:
-            traffic_light = get_traffic_light("Undefined Quality")
-        template = get_template("indicator")
-        self.result.html = template.render(
-            indicator_name=self.metadata.name,
-            topic_name=self.topic.name,
-            svg=self.result.svg,
-            result_description=self.result.description,
-            indicator_description=self.metadata.description,
-            traffic_light=traffic_light,
-        )
