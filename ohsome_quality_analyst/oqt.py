@@ -21,7 +21,7 @@ async def create_indicator(
     key: str,
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
-) -> FeatureCollection:
+) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
     Indicators are computed asynchronously utilizing semaphores.
@@ -59,10 +59,9 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
 async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
     """Create an indicator from scratch."""
 
-    logging.info("Calculating Indicator for custom AOI ...")
-    logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
     logging.info("Indicator key:  {0:4}".format(key))
-    logging.info("Topic name:     {0:4}".format(topic.name))
+    logging.info("Topic key:     {0:4}".format(topic.key))
+    logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
@@ -86,8 +85,8 @@ async def _create_report(key: str, feature: Feature) -> Report:
     """
 
     logging.info("Creating Report...")
-    logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
     logging.info("Report key:  {0:4}".format(key))
+    logging.info("Feature id:  {0:4}".format(feature.get("id", "None")))
 
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)
