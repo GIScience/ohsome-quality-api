@@ -15,6 +15,18 @@ class TestBaseIndicator:
     def topic(self):
         return get_topic_fixture("minimal")
 
+    def test_as_dict(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        d = indicator.as_dict()
+        assert set(("result", "metadata", "topic")) <= set(d.keys())  # subset
+        assert "data" not in d.keys()
+
+    def test_as_dict_include_data(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        d = indicator.as_dict(include_data=True)
+        assert set(("result", "metadata", "topic", "data")) <= set(d.keys())  # subset
+        assert "count" in d["data"]
+
     def test_as_feature(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
         feature = indicator.as_feature()

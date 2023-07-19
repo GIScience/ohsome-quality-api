@@ -303,24 +303,16 @@ async def post_indicator(
         parameters.bpolys,
         get_topic_preset(parameters.topic_key.value),
     )
-    # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    geojson_object = FeatureCollection(
-        features=[i.as_feature(parameters.include_data) for i in indicators]
-    )
 
     response = empty_api_response()
-    response["attribution"]["text"] = get_class_from_key(
-        class_type="indicator",
-        key=key.value,
-    ).attribution()
+    response["attribution"]["text"] = indicators[0].attribution()
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
-        response["results"] = [
-            feature.properties for feature in geojson_object.features
-        ]
+        response["results"] = [i.as_dict(parameters.include_data) for i in indicators]
         return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
-        response.update(geojson_object)
+        features = [i.as_feature(parameters.include_data) for i in indicators]
+        response.update(FeatureCollection(features))
         return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
     else:
         detail = "Content-Type needs to be either {0} or {1}".format(
