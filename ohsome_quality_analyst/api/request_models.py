@@ -12,7 +12,28 @@ from ohsome_quality_analyst.utils.validators import validate_geojson
 
 
 class BaseBpolys(BaseModel):
-    bpolys: FeatureCollection
+    bpolys: FeatureCollection = pydantic.Field(
+        {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [8.674092292785645, 49.40427147224242],
+                                [8.695850372314453, 49.40427147224242],
+                                [8.695850372314453, 49.415552187316095],
+                                [8.674092292785645, 49.415552187316095],
+                                [8.674092292785645, 49.40427147224242],
+                            ]
+                        ],
+                    },
+                },
+            ],
+        }
+    )
 
     @pydantic.validator("bpolys")
     @classmethod
@@ -29,7 +50,7 @@ class IndicatorRequest(BaseBpolys):
         ...,
         title="Topic Key",
         alias="topic",
-        example="building-count",
+        # example="building-count",
     )
     include_data: bool = False
 
@@ -41,28 +62,6 @@ class IndicatorRequest(BaseBpolys):
         allow_population_by_field_name = True
         allow_mutation = False
         extra = "forbid"
-        schema_extra = {
-            "examples": [
-                {
-                    "topic": "building-count",
-                    "bpolys": {
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
-                                    [8.674092292785645, 49.40427147224242],
-                                    [8.695850372314453, 49.40427147224242],
-                                    [8.695850372314453, 49.415552187316095],
-                                    [8.674092292785645, 49.415552187316095],
-                                    [8.674092292785645, 49.40427147224242],
-                                ]
-                            ],
-                        },
-                    },
-                }
-            ]
-        }
 
 
 class IndicatorDataRequest(BaseBpolys):
