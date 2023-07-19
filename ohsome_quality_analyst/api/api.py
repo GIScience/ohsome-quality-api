@@ -13,6 +13,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import JSONResponse
+from geojson import FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -256,9 +257,13 @@ def empty_api_response() -> dict:
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
-    geojson_object = await oqt.create_indicator(
-        parameters,
-        key="mapping-saturation",
+    indicators = await oqt.create_indicator(
+        "mapping-saturation",
+        parameters.bpolys,
+        topic=parameters.topic,
+    )
+    geojson_object = FeatureCollection(
+        features=[i.as_feature(parameters.include_data) for i in indicators]
     )
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
@@ -266,8 +271,6 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
         key="mapping-saturation",
     ).attribution()
     # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    #   factor out logic and decision to base/indicator.py and oqt.py
-    #   base/indicator.py should have `as_dict` alongside `as_feature`
     response["results"] = [feature.properties for feature in geojson_object.features]
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
@@ -294,17 +297,23 @@ async def post_indicator(
     parameters: IndicatorRequest,
 ) -> CustomJSONResponse:
     """Request an Indicator for a custom AOI."""
-    if isinstance(parameters, IndicatorRequest):
-        validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    geojson_object = await oqt.create_indicator(parameters, key=key.value)
+    validate_indicator_topic_combination(key.value, parameters.topic_key.value)
+    indicators = await oqt.create_indicator(
+        key.value,
+        parameters.bpolys,
+        get_topic_preset(parameters.topic_key.value),
+    )
+    # TODO: if accept=JSON no GeoJSON should be created in the first place.
+    geojson_object = FeatureCollection(
+        features=[i.as_feature(parameters.include_data) for i in indicators]
+    )
+
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
         class_type="indicator",
         key=key.value,
     ).attribution()
-    # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    #   factor out logic and decision to base/indicator.py and oqt.py
-    #   base/indicator.py should have `as_dict` alongside `as_feature`
+
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         response["results"] = [
             feature.properties for feature in geojson_object.features

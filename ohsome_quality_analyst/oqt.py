@@ -6,45 +6,37 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
-    IndicatorDataRequest,
-    IndicatorRequest,
     ReportRequest,
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
 from ohsome_quality_analyst.topics.definitions import get_topic_preset
+from ohsome_quality_analyst.topics.models import TopicData, TopicDefinition
 from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
 
 
 async def create_indicator(
-    parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
+    bpolys: FeatureCollection,
+    topic: TopicData | TopicDefinition,
 ) -> FeatureCollection:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
     Indicators are computed asynchronously utilizing semaphores.
+    Properties of the input GeoJSON are preserved.
     """
-    bpolys = parameters.bpolys
-    if isinstance(parameters, IndicatorDataRequest):
-        topic = parameters.topic
-    else:
-        topic = get_topic_preset(parameters.topic_key.value)
-    include_data = parameters.include_data
-
     tasks: list[Coroutine] = []
     for i, feature in enumerate(loads_geojson(bpolys)):
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
-        if isinstance(parameters, IndicatorRequest) and key != "mapping-saturation":
+        if isinstance(topic, TopicDefinition) and key != "mapping-saturation":
             validate_area(feature)
         tasks.append(_create_indicator(key, feature, topic))
-    indicators = await gather_with_semaphore(tasks)
-    features = [i.as_feature(include_data) for i in indicators]
-    return FeatureCollection(features=features)
+    return await gather_with_semaphore(tasks)
 
 
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
