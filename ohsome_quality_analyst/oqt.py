@@ -12,7 +12,7 @@ from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
 from ohsome_quality_analyst.topics.definitions import get_topic_preset
 from ohsome_quality_analyst.topics.models import TopicData, TopicDefinition
-from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
+from ohsome_quality_analyst.utils.helper import get_class_from_key
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
 
@@ -28,7 +28,7 @@ async def create_indicator(
     Properties of the input GeoJSON are preserved.
     """
     tasks: list[Coroutine] = []
-    for i, feature in enumerate(loads_geojson(bpolys)):
+    for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
@@ -44,7 +44,7 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
     bpolys = parameters.bpolys
     include_data = parameters.include_data
     features = []
-    for i, feature in enumerate(loads_geojson(bpolys)):
+    for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
         validate_area(feature)

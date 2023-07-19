@@ -5,7 +5,6 @@ from pathlib import Path
 
 import geojson
 import numpy as np
-from geojson import Feature
 
 from ohsome_quality_analyst.definitions import load_metadata
 from ohsome_quality_analyst.indicators.mapping_saturation import models
@@ -21,7 +20,6 @@ from ohsome_quality_analyst.utils.helper import (
     hyphen_to_camel,
     hyphen_to_snake,
     json_serialize,
-    loads_geojson,
     snake_to_camel,
     snake_to_hyphen,
     snake_to_lower_camel,
@@ -37,13 +35,6 @@ def get_fixture(name):
 
 
 class TestHelper(unittest.TestCase):
-    def run_tests(self, raw: dict, number_of_features: int = 1) -> None:
-        i = 0
-        for feature in loads_geojson(raw):
-            i += 1
-            self.assertIsInstance(feature, Feature)
-        self.assertEqual(i, number_of_features)
-
     def test_name_to_class(self):
         self.assertIs(
             get_class_from_key(class_type="indicator", key="minimal"),
@@ -60,18 +51,6 @@ class TestHelper(unittest.TestCase):
             self.assertIsNotNone(
                 get_class_from_key(class_type="indicator", key=indicator_name)
             )
-
-    def test_loads_geojson_feature(self):
-        raw = get_fixture("heidelberg-altstadt-feature.geojson")
-        self.run_tests(raw)
-
-    def test_loads_geojson_featurecollection(self):
-        raw = get_fixture("featurecollection.geojson")
-        self.run_tests(raw, number_of_features=2)
-
-    def test_loads_geojson_featurecollection_single_feature(self):
-        raw = get_fixture("heidelberg-altstadt-featurecollection.geojson")
-        self.run_tests(raw)
 
     # TODO: add tests for other input than dict
     def test_flatten_seq(self):
