@@ -59,6 +59,7 @@ def test__create_report(feature):
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@oqt_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys(
     bpolys, topic_minimal, topic_building_count
 ):
