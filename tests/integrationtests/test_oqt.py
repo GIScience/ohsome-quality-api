@@ -59,29 +59,18 @@ def test__create_report(feature):
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
+def test_create_indicator_size_limit_bpolys(
+    bpolys, topic_minimal, topic_building_count
+):
     with pytest.raises(ValueError):
         asyncio.run(oqt.create_indicator("minimal", bpolys, topic_minimal))
 
-
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqt_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
-    """Size limit is disabled for the Mapping Saturation indicator.
-
-    Test that no error gets raised.
-    """
+    # Size limit is disabled for the Mapping Saturation indicator.
     asyncio.run(
         oqt.create_indicator("mapping-saturation", bpolys, topic_building_count)
     )
 
-
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-def test_create_indicator_size_limit_topic_data(bpolys):
-    """Size limit is disabled for request with custom data.
-
-    Test that no error gets raised.
-    """
+    # Size limit is disabled for request with custom data.
     topic = TopicData(
         key="key",
         name="name",
