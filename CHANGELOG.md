@@ -24,7 +24,8 @@
 - refactor(api): move openapi param example to model ([#649])
 - currentness: results with low contributions are now labeled undefined ([#643])
 - refactor(api): exclude reports endpoint from schema ([#656])
-
+- feat(indicator): add as_dict method ([#653])
+- refactor(oqt/api): move geojson creation to api ([#653])
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
@@ -39,6 +40,7 @@
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 [#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
 [#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
+[#653]: https://github.com/GIScience/ohsome-quality-analyst/pull/653
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
 
 ## 0.15.0
