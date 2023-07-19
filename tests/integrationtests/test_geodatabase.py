@@ -6,7 +6,7 @@ import pytest
 
 import ohsome_quality_analyst.geodatabase.client as db_client
 
-# pytestmark = pytest.mark.skip("dependency on database setup.")
+pytestmark = pytest.mark.skip("dependency on database setup.")
 
 
 def test_get_connection():
