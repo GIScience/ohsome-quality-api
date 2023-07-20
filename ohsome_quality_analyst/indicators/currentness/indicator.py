@@ -45,6 +45,7 @@ class Currentness(BaseIndicator):
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
+        self.threshold_low_contributions = 25
 
     async def preprocess(self):
         """Get absolute number of contributions for each year since given start date"""
@@ -80,7 +81,14 @@ class Currentness(BaseIndicator):
         self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
         self.result.value = get_median_year(self.contrib_rel)
 
-        if self.result.value >= self.t1:
+        if self.contrib_sum < self.threshold_low_contributions:
+            self.result.description = (
+                f"In the area of interest {self.threshold_low_contributions}"
+                f" features of the selected topic are present today. "
+                f"The significance of the result is low."
+            )
+            pass
+        elif self.result.value >= self.t1:
             self.result.class_ = 1
             label = "red"
         elif self.t1 > self.result.value >= self.t2:
@@ -98,6 +106,14 @@ class Currentness(BaseIndicator):
         else:
             raise ValueError("Ratio has an unexpected value.")
 
+        if self.contrib_sum < self.threshold_low_contributions:
+            label_description = (
+                f"Attention: There are only {self.contrib_sum} "
+                f" with the selected filter in this region."
+                f" The significance of the result is limited.",
+            )
+        else:
+            label_description = self.metadata.label_description[label]
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             topic_name=self.topic.name,
@@ -111,7 +127,7 @@ class Currentness(BaseIndicator):
             threshold_yellow_start=self.t2,
             threshold_yellow_end=self.t1 - 1,
             threshold_red=self.t1,
-            label_description=self.metadata.label_description[label],
+            label_description=label_description,
         )
 
         last_edited_year = get_how_many_years_no_activity(self.contrib_abs)
@@ -125,7 +141,6 @@ class Currentness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-
         colors = []
         for i in range(len(self.contrib_rel)):
             if i < self.t3:
@@ -134,7 +149,6 @@ class Currentness(BaseIndicator):
                 colors.append("yellow")
             elif i >= self.t1:
                 colors.append("red")
-
         fig = pgo.Figure(
             data=pgo.Bar(
                 x=self.timestamps,
@@ -150,13 +164,24 @@ class Currentness(BaseIndicator):
                 customdata=self.contrib_abs,
             )
         )
-
         start = self.timestamps[self.result.value]
         end = self.timestamps[0]
         # Workaround setting text annotation for data with date-time:
         # https://github.com/plotly/plotly.py/issues/3065
         x0 = (start - relativedelta(months=6)).timestamp() * 1000
         x1 = (end + relativedelta(months=6)).timestamp() * 1000
+        fig.add_vrect(
+            x0=x0,
+            x1=x1,
+            annotation_text=(
+                "In this time period at least 50%<br>of features have been edited."
+            ),
+            annotation_position="top",
+            fillcolor="gray",
+            layer="below",
+            line_width=0,
+            opacity=0.25,
+        )
 
         y_min = min(self.contrib_rel)
         y_max = max(self.contrib_rel) * 1.05
@@ -168,13 +193,15 @@ class Currentness(BaseIndicator):
                 fill="toself",
                 mode="lines",
                 name="",
-                text="In this time period at least 50%<br>of features have been edited",
+                text="In this time period at least 50%<br>of "
+                "features have been edited",
                 line_width=0,
                 opacity=0.25,
                 fillcolor="gray",
                 hoverlabel=dict(bgcolor="lightgray"),
             )
         )
+
         fig.update_layout(
             hovermode="x",
             yaxis_range=[0, y_max],
