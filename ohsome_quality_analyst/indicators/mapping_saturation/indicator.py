@@ -162,7 +162,7 @@ class MappingSaturation(BaseIndicator):
             pgo.Scatter(
                 x=self.timestamps,
                 y=self.best_fit.fitted_values,
-                name="Fitted data",
+                name="Modelled saturation curve",
             ),
         )
         fig.update_layout(title_text="Mapping Saturation")
@@ -171,6 +171,24 @@ class MappingSaturation(BaseIndicator):
             fig.update_yaxes(title_text="Value")
         else:
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
+
+        fig.add_shape(
+            type="line",
+            x0=min(self.timestamps),
+            x1=max(self.timestamps),
+            y0=self.data["best_fit"]["asymptote"],
+            y1=self.data["best_fit"]["asymptote"],
+            line=dict(color="red", width=2, dash="dash"),
+            name="Estimated total data",
+        )
+        y_max = max(max(self.values), max(self.best_fit.fitted_values))
+        padding_percentage = 0
+        if 0 < 1 - y_max / self.data["best_fit"]["asymptote"] < 0.5:
+            padding_percentage = 1 - y_max / self.data["best_fit"]["asymptote"]
+        padding = y_max * (padding_percentage + 0.05)
+        fig.update_layout(showlegend=True)
+        fig.update_yaxes(range=[min(self.values), y_max + padding])
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
