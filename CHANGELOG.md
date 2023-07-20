@@ -23,6 +23,7 @@
 - refactor(api): clean-up and rename request models ([#649])
 - refactor(api): move openapi param example to model ([#649])
 - currentness: results with low contributions are now labeled undefined ([#643])
+- -mapping-saturation: now shows the estimated total data in the plot ([#658])
 
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -38,6 +39,7 @@
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 [#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
 [#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
+[#658]: https://github.com/GIScience/ohsome-quality-analyst/pull/658
 
 ## 0.15.0
 
