@@ -120,7 +120,6 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
-        assert indicator.result.svg is not None
 
 
 @oqt_vcr.use_cassette

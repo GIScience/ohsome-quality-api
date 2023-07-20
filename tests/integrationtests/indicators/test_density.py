@@ -60,4 +60,3 @@ class TestFigure:
     def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
-        assert indicator.result.svg is not None
