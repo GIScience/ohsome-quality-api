@@ -32,7 +32,7 @@ class BaseIndicator(metaclass=ABCMeta):
     def as_dict(self, include_data: bool = False) -> dict:
         result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        d = {
+        raw_dict = {
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
@@ -49,12 +49,12 @@ class BaseIndicator(metaclass=ABCMeta):
             **self.feature.properties,
         }
         if not isinstance(self.topic, TopicData):
-            d["topic"]["projects"] = self.topic.projects
+            raw_dict["topic"]["projects"] = self.topic.projects
         if include_data:
-            d["data"] = self.data
+            raw_dict["data"] = self.data
         if "id" in self.feature.keys():
-            d["id"] = self.feature.id
-        return d
+            raw_dict["id"] = self.feature.id
+        return raw_dict
 
     def as_feature(self, include_data: bool = False) -> Feature:
         """Return a GeoJSON Feature object.

@@ -50,7 +50,6 @@ class IndicatorRequest(BaseBpolys):
         ...,
         title="Topic Key",
         alias="topic",
-        # example="building-count",
     )
     include_data: bool = False
 

@@ -18,7 +18,7 @@ from tests.integrationtests.utils import oqt_vcr
         ("attribute-completeness", "topic_building_count"),
     ],
 )
-def test_create_indicator(bpolys, indicator, topic, request):
+def test_create_indicator_public(bpolys, indicator, topic, request):
     """Minimal viable request for a single bpoly."""
     topic = request.getfixturevalue(topic)
     indicators = asyncio.run(oqt.create_indicator(indicator, bpolys, topic))
@@ -39,7 +39,7 @@ def test_create_indicator(bpolys, indicator, topic, request):
         ("attribute-completeness", "topic_building_count"),
     ],
 )
-def test__create_indicator(feature, indicator, topic, request):
+def test_create_indicator_private(feature, indicator, topic, request):
     """Minimal viable request for a single bpoly."""
     topic = request.getfixturevalue(topic)
     indicator = asyncio.run(oqt._create_indicator(indicator, feature, topic))
@@ -50,7 +50,7 @@ def test__create_indicator(feature, indicator, topic, request):
 
 
 @oqt_vcr.use_cassette
-def test__create_report(feature):
+def test_create_report_private(feature):
     """Minimal viable request for a single bpoly."""
     report = asyncio.run(oqt._create_report("minimal", feature))
     assert report.result.label is not None
@@ -60,17 +60,23 @@ def test__create_report(feature):
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqt_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys(
-    bpolys, topic_minimal, topic_building_count
-):
+def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
     with pytest.raises(ValueError):
         asyncio.run(oqt.create_indicator("minimal", bpolys, topic_minimal))
 
+
+@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@oqt_vcr.use_cassette
+def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
     # Size limit is disabled for the Mapping Saturation indicator.
     asyncio.run(
         oqt.create_indicator("mapping-saturation", bpolys, topic_building_count)
     )
 
+
+@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@oqt_vcr.use_cassette
+def test_create_indicator_size_limit_bpolys_data(bpolys):
     # Size limit is disabled for request with custom data.
     topic = TopicData(
         key="key",
