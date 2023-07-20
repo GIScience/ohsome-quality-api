@@ -32,7 +32,6 @@ RESPONSE_SCHEMA_JSON = Schema(
                     "label": str,
                     "description": str,
                     "figure": dict,
-                    Optional("svg"): str,
                 },
             }
         ],

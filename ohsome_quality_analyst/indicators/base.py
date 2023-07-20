@@ -28,7 +28,6 @@ class BaseIndicator(metaclass=ABCMeta):
         self.feature: Feature = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
-            html="",
         )
         self._get_default_figure()
 
@@ -122,19 +121,11 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @abstractmethod
     def create_figure(self) -> None:
-        """Create figure plotting indicator results.
-
-        Writes an SVG figure to the svg attribute of the result attribute.
-        """
         pass
 
-    def _get_default_figure(self) -> str:
-        """Return a SVG as default figure for indicators."""
-
+    def _get_default_figure(self) -> None:
         fig = go.Figure()
-
         fig.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-
         # add text annotation at the center
         fig.add_annotation(
             text="The creation of the Indicator was unsuccessful.",
@@ -148,7 +139,3 @@ class BaseIndicator(metaclass=ABCMeta):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")

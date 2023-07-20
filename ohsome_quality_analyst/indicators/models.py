@@ -40,11 +40,9 @@ class Result(BaseModel):
             result labels. This value is used by the reports to determine an overall
             result.
         description (str): The result description.
-        svg (str): Figure of the result as SVG
     """
 
     description: str
-    html: str
     timestamp_oqt: datetime = Field(
         default=datetime.now(timezone.utc), alias="timestampOQT"
     )  # UTC datetime object
@@ -52,7 +50,6 @@ class Result(BaseModel):
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None
     figure: dict | None = None
-    svg: str | None = None
 
     class Config:
         alias_generator = snake_to_lower_camel

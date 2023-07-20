@@ -16,7 +16,6 @@ class TestReportRoadReport(unittest.TestCase):
         for _ in report.indicator_topic:
             indicator = Mock()
             indicator.result = Mock()
-            indicator.result.html = "foo"
             indicator.result.class_ = 1
             report.indicators.append(indicator)
 
@@ -24,7 +23,6 @@ class TestReportRoadReport(unittest.TestCase):
 
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
-        self.assertIsNotNone(report.result.html)
         self.assertEqual(report.result.class_, 1)
 
 

@@ -175,10 +175,6 @@ class MappingSaturation(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")
-
     def check_edge_cases(self) -> str:
         """Check edge cases.
 
