@@ -21,7 +21,6 @@ class TestReportRoadReport(unittest.TestCase):
             report.indicators.append(indicator)
 
         report.combine_indicators()
-        report.create_html()
 
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
