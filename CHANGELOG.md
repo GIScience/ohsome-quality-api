@@ -10,6 +10,10 @@
 - api: remove `include_svg`, `include_html` and `flatten` parameter ([#644])
 - api: only accept FeatureCollection as `bpolys` parameter ([#650])
 
+### New Features
+
+- feat(api): add `includeFigure` parameter to `/indicators` endpoint. ([#659])
+
 ### Other Changes
 
 - style: use `ruff` instead `flake8` and `isort` ([#630])
@@ -42,6 +46,7 @@
 [#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
 [#653]: https://github.com/GIScience/ohsome-quality-analyst/pull/653
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
+[#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
 
 ## 0.15.0
 
