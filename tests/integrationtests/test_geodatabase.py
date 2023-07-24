@@ -27,10 +27,10 @@ def test_get_shdi_single_intersection_feature(feature):
 
 
 def test_get_shdi_single_intersection_featurecollection(
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     result = asyncio.run(
-        db_client.get_shdi(feature_collection_germany_heidelberg_bahnstadt_bergheim)
+        db_client.get_shdi(feature_collection_heidelberg_bahnstadt_bergheim_weststadt)
     )
     assert len(result) == 3
     assert isinstance(result[0]["shdi"], float)

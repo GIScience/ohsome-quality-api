@@ -11,12 +11,12 @@ from ohsome_quality_analyst.utils.exceptions import (
 
 def test_bpolys_valid(
     feature_collection_germany_heidelberg,
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     # Single Feature
     BaseBpolys(bpolys=feature_collection_germany_heidelberg)
     # Multiple Features
-    BaseBpolys(bpolys=feature_collection_germany_heidelberg_bahnstadt_bergheim)
+    BaseBpolys(bpolys=feature_collection_heidelberg_bahnstadt_bergheim_weststadt)
 
 
 def test_bpolys_invalid(feature_collection_invalid):
