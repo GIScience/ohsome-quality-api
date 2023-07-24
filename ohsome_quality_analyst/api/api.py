@@ -287,13 +287,7 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 )
 async def post_indicator(
     request: Request,
-    key: Annotated[
-        IndicatorEnum,
-        Path(
-            title="Indicator Key",
-            example="mapping-saturation",
-        ),
-    ],
+    key: IndicatorEnum,
     parameters: IndicatorRequest,
 ) -> CustomJSONResponse:
     """Request an Indicator for a custom AOI."""

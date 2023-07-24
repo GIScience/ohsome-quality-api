@@ -1,9 +1,8 @@
 import json
 
 import geojson
-import pydantic
 from geojson import FeatureCollection
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, validator
 
 from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.topics.models import TopicData
@@ -35,7 +34,7 @@ class BaseBpolys(BaseModel):
         }
     )
 
-    @pydantic.validator("bpolys")
+    @validator("bpolys")
     @classmethod
     def validate_bpolys(cls, value) -> FeatureCollection:
         obj = geojson.loads(json.dumps(value))
@@ -46,7 +45,7 @@ class BaseBpolys(BaseModel):
 
 
 class IndicatorRequest(BaseBpolys):
-    topic_key: TopicEnum = pydantic.Field(
+    topic_key: TopicEnum = Field(
         ...,
         title="Topic Key",
         alias="topic",
@@ -69,8 +68,8 @@ class IndicatorDataRequest(BaseBpolys):
     The Topic consists of name, description and data.
     """
 
-    include_data: bool = False
-    topic: TopicData = pydantic.Field(..., title="Topic", alias="topic")
+    include_data: bool = True
+    topic: TopicData = Field(..., title="Topic", alias="topic")
 
     class Config:
         """Pydantic config class."""
