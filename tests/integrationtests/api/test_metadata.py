@@ -8,7 +8,6 @@ def test_metadata(
     metadata_project_core,
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
-    metadata_report_multilevel_mapping_saturation,
     metadata_quality_dimension_completeness,
 ):
     response = client.get("/metadata")
@@ -34,11 +33,6 @@ def test_metadata(
         metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["indicators"]["mapping-saturation"]
     )
-    # check reports result
-    # assert (
-    #     metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
-    #     == result["reports"]["multilevel-mapping-saturation"]
-    # )
 
 
 def test_project_core(
@@ -58,8 +52,6 @@ def test_project_core(
     assert len(result["topics"]) > 0
     # check indicators result
     assert len(result["indicators"]) > 0
-    # check reports result
-    # assert len(result["reports"]) > 0
 
 
 def test_project_misc(
@@ -79,8 +71,6 @@ def test_project_misc(
     assert len(result["topics"]) > 0
     # check indicators result
     assert len(result["indicators"]) > 0
-    # check reports result
-    # assert len(result["reports"]) > 0
 
 
 def test_project_all(
@@ -97,5 +87,3 @@ def test_project_all(
     assert len(result["topics"]) == len(TopicEnum)
     # check indicators result
     assert len(result["indicators"]) == len(IndicatorEnum)
-    # check reports result
-    # assert len(result["reports"]) == len(ReportEnum)
