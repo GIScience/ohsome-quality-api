@@ -1,5 +1,4 @@
 from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
-from ohsome_quality_analyst.reports.definitions import ReportEnum
 from ohsome_quality_analyst.topics.definitions import TopicEnum
 
 
@@ -9,7 +8,6 @@ def test_metadata(
     metadata_project_core,
     metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
-    metadata_report_multilevel_mapping_saturation,
     metadata_quality_dimension_completeness,
 ):
     response = client.get("/metadata")
@@ -35,11 +33,6 @@ def test_metadata(
         metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["indicators"]["mapping-saturation"]
     )
-    # check reports result
-    assert (
-        metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
-        == result["reports"]["multilevel-mapping-saturation"]
-    )
 
 
 def test_project_core(
@@ -52,15 +45,13 @@ def test_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "indicators", "reports"):
+    for k in ("topics", "indicators"):
         for p in result[k].values():
             assert "core" in p["projects"]
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
     assert len(result["indicators"]) > 0
-    # check reports result
-    assert len(result["reports"]) > 0
 
 
 def test_project_misc(
@@ -73,15 +64,13 @@ def test_project_misc(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "indicators", "reports"):
+    for k in ("topics", "indicators"):
         for p in result[k].values():
             assert "misc" in p["projects"]
     # check topics result
     assert len(result["topics"]) > 0
     # check indicators result
     assert len(result["indicators"]) > 0
-    # check reports result
-    assert len(result["reports"]) > 0
 
 
 def test_project_all(
@@ -98,5 +87,3 @@ def test_project_all(
     assert len(result["topics"]) == len(TopicEnum)
     # check indicators result
     assert len(result["indicators"]) == len(IndicatorEnum)
-    # check reports result
-    assert len(result["reports"]) == len(ReportEnum)

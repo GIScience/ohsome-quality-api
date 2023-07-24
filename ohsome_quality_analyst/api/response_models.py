@@ -89,7 +89,6 @@ class ReportMetadataResponse(ResponseBase):
 class MetadataResponse(ResponseBase):
     class MetadataResultSchema(BaseModel):
         indicators: dict[str, IndicatorMetadata]
-        reports: dict[str, ReportMetadata]
         topics: dict[str, TopicDefinition]
         quality_dimensions: dict[str, QualityDimension]
         projects: dict[str, Project]

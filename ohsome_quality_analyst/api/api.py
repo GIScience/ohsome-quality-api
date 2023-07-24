@@ -100,18 +100,6 @@ TAGS_METADATA = [
         },
     },
     {
-        "name": "report",
-        "description": "Request a Report",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
-    {
         "name": "metadata",
         "description": "Request Metadata",
         "externalDocs": {
@@ -305,7 +293,7 @@ async def post_indicator(
     ],
     parameters: IndicatorRequest,
 ) -> CustomJSONResponse:
-    """Request an Indicator for an AOI defined by OQT or a custom AOI."""
+    """Request an Indicator for a custom AOI."""
     if isinstance(parameters, IndicatorRequest):
         validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     geojson_object = await oqt.create_indicator(parameters, key=key.value)
@@ -334,7 +322,7 @@ async def post_indicator(
         )
 
 
-@app.post("/reports/{key}", tags=["report"])
+@app.post("/reports/{key}", include_in_schema=False)
 async def post_report(
     key: Annotated[
         ReportEnum,
@@ -345,7 +333,6 @@ async def post_report(
     ],
     parameters: ReportRequest,
 ) -> CustomJSONResponse:
-    """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
@@ -366,7 +353,7 @@ async def post_report(
                 k.value: {"label_description": True, "result_description": True}
                 for k in IndicatorEnum
             },
-            "reports": {k.value: {"label_description": True} for k in ReportEnum},
+            # "reports": {k.value: {"label_description": True} for k in ReportEnum},
         }
     },
 )
@@ -379,7 +366,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
         "quality_dimensions": get_quality_dimensions(),
         "projects": get_project_metadata(),
         "indicators": get_indicator_metadata(project=project),
-        "reports": get_report_metadata(project=project),
+        # "reports": get_report_metadata(project=project),
     }
     return MetadataResponse(result=result)
 
@@ -494,6 +481,7 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
     response_model_exclude={
         "result": {k.value: {"label_description": True} for k in ReportEnum}
     },
+    include_in_schema=False,
 )
 async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
@@ -510,6 +498,7 @@ async def metadata_reports(
     response_model_exclude={
         "result": {k.value: {"label_description": True} for k in ReportEnum}
     },
+    include_in_schema=False,
 )
 async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     """Get metadata of an indicator by key."""
