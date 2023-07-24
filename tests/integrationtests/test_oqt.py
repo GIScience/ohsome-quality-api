@@ -18,10 +18,37 @@ from tests.integrationtests.utils import oqt_vcr
         ("attribute-completeness", "topic_building_count"),
     ],
 )
-def test_create_indicator_public(bpolys, indicator, topic, request):
-    """Minimal viable request for a single bpoly."""
+def test_create_indicator_public_feature_collection_single(
+    bpolys,
+    indicator,
+    topic,
+    request,
+):
+    """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
     indicators = asyncio.run(oqt.create_indicator(indicator, bpolys, topic))
+    assert len(indicators) == 1
+    for indicator in indicators:
+        assert indicator.result.label is not None
+        assert indicator.result.value is not None
+        assert indicator.result.description is not None
+        assert indicator.result.figure is not None
+
+
+@oqt_vcr.use_cassette
+def test_create_indicator_public_feature_collection_multi(
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
+    topic_minimal,
+):
+    """Test create indicators for a feature collection with multiple features."""
+    indicators = asyncio.run(
+        oqt.create_indicator(
+            "minimal",
+            feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
+            topic_minimal,
+        )
+    )
+    assert len(indicators) == 3
     for indicator in indicators:
         assert indicator.result.label is not None
         assert indicator.result.value is not None
@@ -39,8 +66,8 @@ def test_create_indicator_public(bpolys, indicator, topic, request):
         ("attribute-completeness", "topic_building_count"),
     ],
 )
-def test_create_indicator_private(feature, indicator, topic, request):
-    """Minimal viable request for a single bpoly."""
+def test_create_indicator_private_feature(feature, indicator, topic, request):
+    """Test private method to create a single indicator for a single feature."""
     topic = request.getfixturevalue(topic)
     indicator = asyncio.run(oqt._create_indicator(indicator, feature, topic))
     assert indicator.result.label is not None
