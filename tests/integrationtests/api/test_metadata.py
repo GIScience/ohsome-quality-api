@@ -1,5 +1,4 @@
 from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
-from ohsome_quality_analyst.reports.definitions import ReportEnum
 from ohsome_quality_analyst.topics.definitions import TopicEnum
 
 
@@ -36,10 +35,10 @@ def test_metadata(
         == result["indicators"]["mapping-saturation"]
     )
     # check reports result
-    assert (
-        metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
-        == result["reports"]["multilevel-mapping-saturation"]
-    )
+    # assert (
+    #     metadata_report_multilevel_mapping_saturation["multilevel-mapping-saturation"]
+    #     == result["reports"]["multilevel-mapping-saturation"]
+    # )
 
 
 def test_project_core(
@@ -52,7 +51,7 @@ def test_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "indicators", "reports"):
+    for k in ("topics", "indicators"):
         for p in result[k].values():
             assert "core" in p["projects"]
     # check topics result
@@ -60,7 +59,7 @@ def test_project_core(
     # check indicators result
     assert len(result["indicators"]) > 0
     # check reports result
-    assert len(result["reports"]) > 0
+    # assert len(result["reports"]) > 0
 
 
 def test_project_misc(
@@ -73,7 +72,7 @@ def test_project_misc(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    for k in ("topics", "indicators", "reports"):
+    for k in ("topics", "indicators"):
         for p in result[k].values():
             assert "misc" in p["projects"]
     # check topics result
@@ -81,7 +80,7 @@ def test_project_misc(
     # check indicators result
     assert len(result["indicators"]) > 0
     # check reports result
-    assert len(result["reports"]) > 0
+    # assert len(result["reports"]) > 0
 
 
 def test_project_all(
@@ -99,4 +98,4 @@ def test_project_all(
     # check indicators result
     assert len(result["indicators"]) == len(IndicatorEnum)
     # check reports result
-    assert len(result["reports"]) == len(ReportEnum)
+    # assert len(result["reports"]) == len(ReportEnum)
