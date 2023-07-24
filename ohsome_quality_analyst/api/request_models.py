@@ -50,6 +50,7 @@ class IndicatorRequest(BaseBpolys):
         title="Topic Key",
         alias="topic",
     )
+    include_figure: bool = True
     include_data: bool = False
 
     class Config:
@@ -68,8 +69,9 @@ class IndicatorDataRequest(BaseBpolys):
     The Topic consists of name, description and data.
     """
 
-    include_data: bool = True
     topic: TopicData = Field(..., title="Topic", alias="topic")
+    include_figure: bool = False
+    include_data: bool = True
 
     class Config:
         """Pydantic config class."""
