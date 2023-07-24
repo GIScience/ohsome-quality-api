@@ -125,7 +125,7 @@ class TestFigure:
 @oqt_vcr.use_cassette
 def test_immutable_attribute(
     topic_building_count,
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     """Test changes of attribute values when multiple indicators are created.
 
@@ -136,7 +136,9 @@ def test_immutable_attribute(
     """
     indicators = []
     fitted_values = []
-    for feature in feature_collection_germany_heidelberg_bahnstadt_bergheim["features"]:
+    for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt[
+        "features"
+    ]:
         indicator = MappingSaturation(topic_building_count, feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()

@@ -125,14 +125,14 @@ def test_indicators(
 @oqt_vcr.use_cassette
 def test_minimal_fc(
     client,
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
     headers,
     schema,
 ):
     """Minimal viable request for multiple bpolys."""
     endpoint = ENDPOINT + "minimal"
     parameters = {
-        "bpolys": feature_collection_germany_heidelberg_bahnstadt_bergheim,
+        "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
         "topic": "minimal",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
