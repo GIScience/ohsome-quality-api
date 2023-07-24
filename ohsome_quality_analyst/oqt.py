@@ -11,6 +11,7 @@ from ohsome_quality_analyst.api.request_models import (
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
 from ohsome_quality_analyst.topics.definitions import get_topic_preset
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 from ohsome_quality_analyst.topics.models import TopicData, TopicDefinition
 from ohsome_quality_analyst.utils.helper import get_class_from_key
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
@@ -21,6 +22,7 @@ async def create_indicator(
     key: str,
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
+    include_figure: bool = True,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
@@ -35,7 +37,7 @@ async def create_indicator(
         # Disable size limit for the Mapping Saturation indicator
         if isinstance(topic, TopicDefinition) and key != "mapping-saturation":
             validate_area(feature)
-        tasks.append(_create_indicator(key, feature, topic))
+        tasks.append(_create_indicator(key, feature, topic, include_figure))
     return await gather_with_semaphore(tasks)
 
 
@@ -56,7 +58,12 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
     return FeatureCollection(features=features)
 
 
-async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
+async def _create_indicator(
+    key: str,
+    feature: Feature,
+    topic: Topic,
+    include_figure: bool = True,
+) -> Indicator:
     """Create an indicator from scratch."""
 
     logging.info("Indicator key:  {0:4}".format(key))
@@ -70,8 +77,12 @@ async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
     await indicator.preprocess()
     logging.info("Run calculation")
     indicator.calculate()
-    logging.info("Run figure creation")
-    indicator.create_figure()
+
+    if include_figure:
+        logging.info("Run figure creation")
+        indicator.create_figure()
+    else:
+        indicator.result.figure = None
 
     return indicator
 

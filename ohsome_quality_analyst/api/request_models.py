@@ -11,7 +11,7 @@ from ohsome_quality_analyst.utils.validators import validate_geojson
 
 
 class BaseBpolys(BaseModel):
-    bpolys: FeatureCollection = pydantic.Field(
+    bpolys: FeatureCollection = Field(
         {
             "type": "FeatureCollection",
             "features": [
@@ -70,8 +70,8 @@ class IndicatorDataRequest(BaseBpolys):
     """
 
     topic: TopicData = Field(..., title="Topic", alias="topic")
-    include_figure: bool = False
-    include_data: bool = True
+    include_figure: bool = True
+    include_data: bool = False
 
     class Config:
         """Pydantic config class."""

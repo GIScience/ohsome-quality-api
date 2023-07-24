@@ -258,9 +258,10 @@ def empty_api_response() -> dict:
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
     indicators = await oqt.create_indicator(
-        "mapping-saturation",
-        parameters.bpolys,
+        key="mapping-saturation",
+        bpolys=parameters.bpolys,
         topic=parameters.topic,
+        include_figure=parameters.include_figure,
     )
     geojson_object = FeatureCollection(
         features=[i.as_feature(parameters.include_data) for i in indicators]
@@ -293,9 +294,10 @@ async def post_indicator(
     """Request an Indicator for a custom AOI."""
     validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     indicators = await oqt.create_indicator(
-        key.value,
-        parameters.bpolys,
-        get_topic_preset(parameters.topic_key.value),
+        key=key.value,
+        bpolys=parameters.bpolys,
+        topic=get_topic_preset(parameters.topic_key.value),
+        include_figure=parameters.include_figure,
     )
 
     response = empty_api_response()
