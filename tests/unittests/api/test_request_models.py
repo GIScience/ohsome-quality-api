@@ -48,12 +48,12 @@ def test_indicator_request_include_figure(bpolys, topic_key_minimal):
 
 
 def test_indicator_request_include_data(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_data=False)
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_data=True)
 
 
 def test_indicator_request_include_all(bpolys, topic_key_minimal):
     IndicatorRequest(
-        bpolys=bpolys, topic=topic_key_minimal, include_figure=True, include_data=False
+        bpolys=bpolys, topic=topic_key_minimal, include_figure=False, include_data=True
     )
 
 

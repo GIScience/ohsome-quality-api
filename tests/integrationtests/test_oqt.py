@@ -77,6 +77,19 @@ def test_create_indicator_private_feature(feature, indicator, topic, request):
 
 
 @oqt_vcr.use_cassette
+def test_create_indicator_private_include_figure(bpolys, topic_minimal):
+    indicator = asyncio.run(
+        oqt._create_indicator(
+            "minimal",
+            bpolys,
+            topic_minimal,
+            include_figure=False,
+        )
+    )
+    assert indicator.result.figure is None
+
+
+@oqt_vcr.use_cassette
 def test_create_report_private(feature):
     """Minimal viable request for a single bpoly."""
     report = asyncio.run(oqt._create_report("minimal", feature))
