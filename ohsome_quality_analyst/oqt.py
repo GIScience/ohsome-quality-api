@@ -18,6 +18,12 @@ from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
 
 
+class InvalidCRSError(Exception):
+    def __init__(self, message, error_code):
+        super().__init__(message)
+        self.error_code = error_code
+
+
 async def create_indicator(
     parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
@@ -50,6 +56,15 @@ async def create_indicator(
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
     """Create report(s) for features of a GeoJSON FeatureCollection."""
     bpolys = parameters.bpolys
+
+    crs = bpolys.get("crs")
+    if crs is None or "EPSG:4326" not in crs.get("properties", {}).get("name", ""):
+        error_code = 400
+        error_message = (
+            "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS."
+        )
+        raise InvalidCRSError(error_message, error_code)
+
     include_data = parameters.include_data
     features = []
     for i, feature in enumerate(loads_geojson(bpolys)):

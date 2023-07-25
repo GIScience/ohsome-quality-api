@@ -66,6 +66,12 @@ class TestApiReportIo(unittest.TestCase):
         response = self.post_response(feature)
         self.assertEqual(response.status_code, 422)
 
+    @oqt_vcr.use_cassette()
+    def test_wrong_crs(self):
+        feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
+        response = self.post_response(feature)
+        self.assertEqual(response.status_code, 400)
+
 
 if __name__ == "__main__":
     unittest.main()

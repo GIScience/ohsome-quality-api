@@ -1402,4 +1402,116 @@ interactions:
       - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B476355.831199%2C+5472449.365175%5D%2C+%5B477934.34847%2C+5472442.774864%5D%2C+%5B477939.40399%2C+5473696.8852%5D%2C+%5B476361.248384%2C+5473703.475113%5D%2C+%5B476355.831199%2C+5472449.365175%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%2C+%22id%22%3A+0%7D%5D%7D&time=2008-01-01%2F%2FP1M
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '538'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.15.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"timestamp\" : \"2023-07-20T17:38:03.123553623\",\n  \"status\"
+      : 404,\n  \"message\" : \"The provided boundary parameter does not lie completely
+      within the underlying data-extract polygon.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/count\"\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 20 Jul 2023 17:38:03 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 404
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B476355.831199%2C+5472449.365175%5D%2C+%5B477934.34847%2C+5472442.774864%5D%2C+%5B477939.40399%2C+5473696.8852%5D%2C+%5B476361.248384%2C+5473703.475113%5D%2C+%5B476355.831199%2C+5472449.365175%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%2C+%22id%22%3A+0%7D%5D%7D&time=2008-06-18%2F2023-06-18%2FP1Y&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '603'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/0.15.0
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    content: "{\n  \"timestamp\" : \"2023-07-20T17:38:03.124815774\",\n  \"status\"
+      : 404,\n  \"message\" : \"The provided boundary parameter does not lie completely
+      within the underlying data-extract polygon.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/contributions/latest/count\"\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 20 Jul 2023 17:38:03 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 404
 version: 1
