@@ -24,10 +24,10 @@ def test_validate_geojson_feature_collection_single(
 
 
 def test_validate_geojson_feature_collection(
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     # Multiple features
-    validate_geojson(feature_collection_germany_heidelberg_bahnstadt_bergheim)
+    validate_geojson(feature_collection_heidelberg_bahnstadt_bergheim_weststadt)
 
 
 def test_validate_geojson_invalid_geometry(feature_collection_invalid):

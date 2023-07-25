@@ -27,7 +27,6 @@ class Result(BaseModel):
 
     class_: Literal[1, 2, 3, 4, 5] | None = None
     description: str = ""
-    html: str = ""
 
     class Config:
         alias_generator = snake_to_lower_camel

@@ -220,10 +220,6 @@ class BuildingCompleteness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")
-
 
 def get_smod_class_share(featurecollection: FeatureCollection) -> dict:
     """Get the share of GHSL SMOD L2 classes for each feature.

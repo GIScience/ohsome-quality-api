@@ -1,5 +1,3 @@
-"""The base classes on which every indicator class is based on."""
-
 import json
 from abc import ABCMeta, abstractmethod
 
@@ -28,22 +26,13 @@ class BaseIndicator(metaclass=ABCMeta):
         self.feature: Feature = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
-            html="",
         )
         self._get_default_figure()
 
-    def as_feature(self, include_data: bool = False) -> Feature:
-        """Return a GeoJSON Feature object.
-
-        The properties of the Feature contains the attributes of the indicator.
-        The geometry (and properties) of the input GeoJSON object is preserved.
-
-        Args:
-            include_data (bool): If true include additional data in the properties.
-        """
+    def as_dict(self, include_data: bool = False) -> dict:
         result = self.result.dict(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
-        properties = {
+        raw_dict = {
             "metadata": {
                 "name": self.metadata.name,
                 "description": self.metadata.description,
@@ -60,10 +49,25 @@ class BaseIndicator(metaclass=ABCMeta):
             **self.feature.properties,
         }
         if not isinstance(self.topic, TopicData):
-            properties["topic"]["projects"] = self.topic.projects
+            raw_dict["topic"]["projects"] = self.topic.projects
         if include_data:
-            properties["data"] = self.data
+            raw_dict["data"] = self.data
         if "id" in self.feature.keys():
+            raw_dict["id"] = self.feature.id
+        return raw_dict
+
+    def as_feature(self, include_data: bool = False) -> Feature:
+        """Return a GeoJSON Feature object.
+
+        The properties of the Feature contains the attributes of the indicator.
+        The geometry (and properties) of the input GeoJSON object is preserved.
+
+        Args:
+            include_data (bool): If true include additional data in the properties.
+        """
+        properties = self.as_dict(include_data)
+        if "id" in self.feature.keys():
+            properties.pop("id", None)
             return Feature(
                 id=self.feature.id,
                 geometry=self.feature.geometry,
@@ -122,19 +126,11 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @abstractmethod
     def create_figure(self) -> None:
-        """Create figure plotting indicator results.
-
-        Writes an SVG figure to the svg attribute of the result attribute.
-        """
         pass
 
-    def _get_default_figure(self) -> str:
-        """Return a SVG as default figure for indicators."""
-
+    def _get_default_figure(self) -> None:
         fig = go.Figure()
-
         fig.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-
         # add text annotation at the center
         fig.add_annotation(
             text="The creation of the Indicator was unsuccessful.",
@@ -148,7 +144,3 @@ class BaseIndicator(metaclass=ABCMeta):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")

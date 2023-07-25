@@ -223,10 +223,6 @@ class Currentness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")
-
 
 def get_how_many_years_no_activity(contributions: list) -> int:
     """Get the number of years since today when the last contribution has been made."""

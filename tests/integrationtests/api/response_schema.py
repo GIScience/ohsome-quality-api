@@ -25,7 +25,6 @@ def get_indicator_properties_template():
             "value": Or(float, str, int, None),
             "label": str,
             "description": str,
-            Opt("svg"): str,
         },
     }
 

@@ -8,7 +8,6 @@ import re
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Generator
 
 import geojson
 import numpy as np
@@ -117,17 +116,6 @@ def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> 
             allow_nan=True,
         )
         logging.info("Output file written:\t" + str(outfile))
-
-
-def loads_geojson(
-    bpolys: FeatureCollection | Feature,
-) -> Generator[Feature, None, None]:
-    """Load and validate GeoJSON object."""
-    if isinstance(bpolys, FeatureCollection):
-        for feature in bpolys["features"]:
-            yield feature
-    else:
-        yield bpolys  # return Feature
 
 
 def flatten_sequence(input_seq: dict | list | tuple | set) -> list:

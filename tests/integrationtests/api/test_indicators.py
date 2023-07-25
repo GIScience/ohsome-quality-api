@@ -36,7 +36,7 @@ RESPONSE_SCHEMA_JSON = Schema(
                     "value": Or(float, str, int, None),
                     "label": str,
                     "description": str,
-                    "figure": dict,
+                    Optional("figure"): dict,
                 },
             }
         ],
@@ -125,18 +125,46 @@ def test_indicators(
 @oqt_vcr.use_cassette
 def test_minimal_fc(
     client,
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
     headers,
     schema,
 ):
     """Minimal viable request for multiple bpolys."""
     endpoint = ENDPOINT + "minimal"
     parameters = {
-        "bpolys": feature_collection_germany_heidelberg_bahnstadt_bergheim,
+        "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
         "topic": "minimal",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
+
+
+@oqt_vcr.use_cassette
+def test_minimal_include_figure_true(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": True}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    content = response.json()
+    if schema == RESPONSE_SCHEMA_JSON:
+        assert content["results"][0]["result"]["figure"] is not None
+    elif schema == RESPONSE_SCHEMA_GEOJSON:
+        assert content["features"][0]["properties"]["result"]["figure"] is not None
+    else:
+        raise AssertionError()
+
+
+@oqt_vcr.use_cassette
+def test_minimal_include_figure_false(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": False}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    content = response.json()
+    if schema == RESPONSE_SCHEMA_JSON:
+        assert content["results"][0]["result"]["figure"] is None
+    elif schema == RESPONSE_SCHEMA_GEOJSON:
+        assert content["features"][0]["properties"]["result"]["figure"] is None
+    else:
+        raise AssertionError()
 
 
 def test_bpolys_size_limit(client, europe, headers, schema):
