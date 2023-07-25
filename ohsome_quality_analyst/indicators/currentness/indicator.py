@@ -3,8 +3,8 @@ from string import Template
 
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
-from dateutil.relativedelta import relativedelta
 from geojson import Feature
+from plotly.subplots import make_subplots
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -36,10 +36,10 @@ class Currentness(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         # thresholds denote number of years since today:
-        self.t4 = 2
-        self.t3 = 3
-        self.t2 = 4
-        self.t1 = 8
+        self.t4 = 24
+        self.t3 = 36
+        self.t2 = 48
+        self.t1 = 96
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         self.timestamps = []  # up to timestamp
         self.contrib_abs = []  # indices denote years since latest timestamp
@@ -52,7 +52,7 @@ class Currentness(BaseIndicator):
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
-        self.interval = "{}/{}/{}".format(start, end, "P1Y")
+        self.interval = "{}/{}/{}".format(start, end, "P1M")
         # Fetch all contributions of in yearly buckets since 2008
         response = await ohsome_client.query(
             self.topic,
@@ -141,71 +141,55 @@ class Currentness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        colors = []
-        for i in range(len(self.contrib_rel)):
-            if i < self.t3:
-                colors.append("green")
-            elif i < self.t1:
-                colors.append("yellow")
-            elif i >= self.t1:
-                colors.append("red")
-        fig = pgo.Figure(
-            data=pgo.Bar(
-                x=self.timestamps,
-                y=self.contrib_rel,
-                marker_color=colors,
-                xperiod0=self.timestamps[-1],
-                xperiod="M12",
-                xperiodalignment="start",
-                hovertemplate=(
-                    "%{y} of features (%{customdata})<br>"
-                    "last modified until %{x}<extra></extra>"
-                ),
-                customdata=self.contrib_abs,
+        colors_dict = {
+            "green": {
+                "color": "green",
+                "contrib_rel": self.contrib_rel[0 : self.t3],
+                "timestamps": self.timestamps[0 : self.t3],
+            },
+            "yellow": {
+                "color": "yellow",
+                "contrib_rel": self.contrib_rel[self.t3 : self.t1],
+                "timestamps": self.timestamps[self.t3 : self.t1],
+            },
+            "red": {
+                "color": "red",
+                "contrib_rel": self.contrib_rel[self.t1 :],
+                "timestamps": self.timestamps[self.t1 :],
+            },
+        }
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
+        for color, data in colors_dict.items():
+            fig.add_trace(
+                pgo.Bar(
+                    name=sum(data["contrib_rel"]),
+                    x=data["timestamps"],
+                    y=data["contrib_rel"],
+                    marker_color=color,
+                    hovertemplate=(
+                        "%{y} of features (%{customdata})<br>"
+                        "last modified until %{x}<extra></extra>"
+                    ),
+                    customdata=self.contrib_abs,
+                )
             )
-        )
-        start = self.timestamps[self.result.value]
-        end = self.timestamps[0]
-        # Workaround setting text annotation for data with date-time:
-        # https://github.com/plotly/plotly.py/issues/3065
-        x0 = (start - relativedelta(months=6)).timestamp() * 1000
-        x1 = (end + relativedelta(months=6)).timestamp() * 1000
-        fig.add_vrect(
-            x0=x0,
-            x1=x1,
-            annotation_text=(
-                "In this time period at least 50%<br>of features have been edited."
-            ),
-            annotation_position="top",
-            fillcolor="gray",
-            layer="below",
-            line_width=0,
-            opacity=0.25,
-        )
-
-        y_min = min(self.contrib_rel)
-        y_max = max(self.contrib_rel) * 1.05
 
         fig.add_trace(
-            pgo.Scatter(
-                x=[x0, x0, x1, x1, x0],
-                y=[y_min, y_max, y_max, y_min, y_min],
-                fill="toself",
-                mode="lines",
+            pgo.Bar(
                 name="",
-                text="In this time period at least 50%<br>of "
-                "features have been edited",
-                line_width=0,
-                opacity=0.25,
-                fillcolor="gray",
-                hoverlabel=dict(bgcolor="lightgray"),
+                x=self.timestamps,
+                y=self.contrib_abs,
+                visible=False,
+                secondary_y=True,
             )
         )
+
+        y_max = max(self.contrib_rel) * 1.05
 
         fig.update_layout(
             hovermode="x",
             yaxis_range=[0, y_max],
-            showlegend=False,
+            showlegend=True,
             title_text=("Currentness"),
         )
         fig.update_xaxes(
@@ -213,10 +197,16 @@ class Currentness(BaseIndicator):
             ticklabelmode="period",
             dtick="M12",
             tick0=self.timestamps[-1],
+            tickformat="%Y",
         )
         fig.update_yaxes(
             title_text="Percentage of Contributions",
             tickformat=".0%",
+        )
+        fig.update_yaxes(
+            title_text="Some Other Label for the Second Y-axis",
+            tickformat=".",
+            secondary_y=True,
         )
 
         raw = fig.to_dict()
