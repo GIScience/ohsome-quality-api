@@ -31,5 +31,6 @@ All configuration files in this directory (`config`) will be ignored by Git. To 
 To create a new configuration file simply copy the sample configuration file and change the values.
 
 ```
+cd config/
 cp sample.config.yaml config.yaml
 ```
