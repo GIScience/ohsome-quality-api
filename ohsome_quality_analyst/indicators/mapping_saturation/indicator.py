@@ -173,20 +173,22 @@ class MappingSaturation(BaseIndicator):
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
         # plot asymptote
+        asymptote = self.data["best_fit"]["asymptote"]
         fig.add_shape(
             type="line",
             x0=min(self.timestamps),
             x1=max(self.timestamps),
-            y0=self.data["best_fit"]["asymptote"],
-            y1=self.data["best_fit"]["asymptote"],
+            y0=asymptote,
+            y1=asymptote,
             line=dict(color="red", width=2, dash="dash"),
             name="Estimated total data",
         )
         y_max = max(max(self.values), max(self.best_fit.fitted_values))
-        padding_percentage = 0
-        if 0 < 1 - y_max / self.data["best_fit"]["asymptote"] < 0.5:
-            padding_percentage = 1 - y_max / self.data["best_fit"]["asymptote"]
-        padding = y_max * (padding_percentage + 0.05)
+        padding_percentage = 1 - (y_max / asymptote)
+        if 0 < padding_percentage < 0.5:
+            padding = y_max * (padding_percentage + 0.05)
+        else:
+            padding = y_max * 0.05
         fig.update_layout(showlegend=True)
         fig.update_yaxes(range=[min(self.values), y_max + padding])
 
