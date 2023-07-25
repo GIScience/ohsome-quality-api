@@ -172,6 +172,7 @@ class MappingSaturation(BaseIndicator):
         else:
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
+        # plot asymptote
         fig.add_shape(
             type="line",
             x0=min(self.timestamps),
