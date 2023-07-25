@@ -108,13 +108,3 @@ Finally, you need to create a svg figure (e.g. with matplotlib) and save it to `
 If you have defined these three functions, your indicator is ready to go. To show how OQT uses your indicator to be displayed on the OQT Website or in your command line interface, we made a sequence diagram. 
 
 ![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
-
-
-## Notes on the integration of R
-
-OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
-
-> `rpy2` is an interface to R running embedded in a Python process.
-
-For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
-Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.
