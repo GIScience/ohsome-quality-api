@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -17,13 +17,13 @@ class IndicatorMetadata(BaseModel):
     result_description: str
     projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
-
-    class Config:
-        alias_generator = snake_to_lower_camel
-        title = "Metadata"
-        frozen = True
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        title="Metadata",
+        frozen=True,
+        extra="forbid",
+        populate_by_name=True,
+    )
 
 
 class Result(BaseModel):
@@ -50,11 +50,11 @@ class Result(BaseModel):
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None
     figure: dict | None = None
-
-    class Config:
-        alias_generator = snake_to_lower_camel
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        extra="forbid",
+        populate_by_name=True,
+    )
 
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:
