@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -340,58 +340,38 @@ async def post_report(
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get(
-    "/metadata",
-    tags=["metadata"],
-    response_model_exclude={
+@app.get("/metadata", tags=["metadata"], response_model=MetadataResponse)
+async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
+    """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
+    return {
         "result": {
-            "topics": {k.value: {"key": True} for k in TopicEnum},
-            "indicators": {
-                k.value: {"label_description": True, "result_description": True}
-                for k in IndicatorEnum
-            },
-            # "reports": {k.value: {"label_description": True} for k in ReportEnum},
+            "topics": get_topic_presets(project=project),
+            "quality_dimensions": get_quality_dimensions(),
+            "projects": get_project_metadata(),
+            "indicators": get_indicator_metadata(project=project),
+            # "reports": get_report_metadata(project=project),
         }
-    },
-)
-async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
-    """Get topics."""
-    if project == ProjectEnum.all:
-        project = None
-    result = {
-        "topics": get_topic_presets(project=project),
-        "quality_dimensions": get_quality_dimensions(),
-        "projects": get_project_metadata(),
-        "indicators": get_indicator_metadata(project=project),
-        # "reports": get_report_metadata(project=project),
     }
-    return MetadataResponse(result=result)
 
 
-@app.get(
-    "/metadata/topics",
-    tags=["metadata"],
-    response_model_exclude={
-        "result": {k.value: {"key": True} for k in TopicEnum},
-    },
-)
-async def metadata_topic(
-    project: ProjectEnum = DEFAULT_PROJECT,
-) -> TopicMetadataResponse:
+@app.get("/metadata/topics", tags=["metadata"], response_model=TopicMetadataResponse)
+async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
     """Get topics."""
     if project == ProjectEnum.all:
         project = None
-    return TopicMetadataResponse(result=get_topic_presets(project=project))
+    return {"result": get_topic_presets(project=project)}
 
 
 @app.get(
     "/metadata/topics/{key}",
     tags=["metadata"],
-    response_model_exclude={"result": {k.value: {"key": True} for k in TopicEnum}},
+    response_model=TopicMetadataResponse,
 )
-async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
+async def metadata_topic_by_key(key: TopicEnum) -> Any:
     """Get topic by key."""
-    return TopicMetadataResponse(result={key.value: get_topic_preset(key.value)})
+    return {"result": {key.value: get_topic_preset(key.value)}}
 
 
 @app.get(
@@ -403,10 +383,7 @@ async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
     return QualityDimensionMetadataResponse(result=get_quality_dimensions())
 
 
-@app.get(
-    "/metadata/quality-dimensions/{key}",
-    tags=["metadata"],
-)
+@app.get("/metadata/quality-dimensions/{key}", tags=["metadata"])
 async def metadata_quality_dimension_by_key(
     key: QualityDimensionEnum,
 ) -> QualityDimensionMetadataResponse:
@@ -439,37 +416,24 @@ async def metadata_project_by_key(
 @app.get(
     "/metadata/indicators",
     tags=["metadata"],
-    response_model_exclude={
-        "result": {
-            k.value: {"label_description": True, "result_description": True}
-            for k in IndicatorEnum
-        },
-    },
+    response_model=IndicatorMetadataResponse,
 )
-async def metadata_indicators(
-    project: ProjectEnum = DEFAULT_PROJECT,
-) -> IndicatorMetadataResponse:
+async def metadata_indicators(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
     """Get metadata of all indicators."""
     if project == ProjectEnum.all:
         project = None
-    return IndicatorMetadataResponse(result=get_indicator_metadata(project=project))
+    return {"result": get_indicator_metadata(project=project)}
 
 
 @app.get(
     "/metadata/indicators/{key}",
     tags=["metadata"],
-    response_model_exclude={
-        "result": {
-            k.value: {"label_description": True, "result_description": True}
-            for k in IndicatorEnum
-        }
-    },
+    response_model=IndicatorMetadataResponse,
 )
-async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataResponse:
+async def metadata_indicators_by_key(key: IndicatorEnum) -> Any:
     """Get metadata of an indicator by key."""
-    return IndicatorMetadataResponse(
-        result={key.value: get_metadata("indicators", hyphen_to_camel(key.value))}
-    )
+    metadata = get_metadata("indicators", hyphen_to_camel(key.value))
+    return {"result": {key.value: metadata}}
 
 
 @app.get(
