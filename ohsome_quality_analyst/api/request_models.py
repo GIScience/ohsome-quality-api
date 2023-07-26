@@ -45,7 +45,6 @@ class BaseBpolys(BaseConfig):
 
     @field_validator("bpolys")
     @classmethod
-    @classmethod
     def validate_bpolys(cls, value) -> FeatureCollection:
         obj = geojson.loads(json.dumps(value))
         if not isinstance(obj, FeatureCollection):
