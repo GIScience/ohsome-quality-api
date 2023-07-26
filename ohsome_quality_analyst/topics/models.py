@@ -18,9 +18,11 @@ class BaseTopic(BaseModel):
     name: str
     description: str
     model_config = ConfigDict(
-        title="Topic",
-        frozen=True,
+        alias_generator=snake_to_lower_camel,
         extra="forbid",
+        frozen=True,
+        populate_by_name=True,
+        title="Topic",
     )
 
 
@@ -34,12 +36,6 @@ class TopicDefinition(BaseTopic):
     projects: list[ProjectEnum]
     source: str | None = None
     ratio_filter: str | None = None
-    model_config = ConfigDict(
-        alias_generator=snake_to_lower_camel,
-        frozen=True,
-        extra="forbid",
-        populate_by_name=True,
-    )
 
 
 class TopicData(BaseTopic):
