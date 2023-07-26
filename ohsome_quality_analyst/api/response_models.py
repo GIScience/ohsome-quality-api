@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
@@ -18,18 +18,18 @@ from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 class ResponseBase(BaseModel):
     api_version: str = __version__
     attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
-
-    class Config:
-        alias_generator = snake_to_lower_camel
-        frozen = True
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        frozen=True,
+        extra="forbid",
+        populate_by_name=True,
+    )
 
 
 class TopicMetadataResponse(ResponseBase):
     result: dict[str, TopicDefinition]
 
-    @validator("result")
+    @field_validator("result")
     @classmethod
     def check_topic_dict(cls, value):
         assert len(value) > 0
@@ -41,7 +41,7 @@ class TopicMetadataResponse(ResponseBase):
 class QualityDimensionMetadataResponse(ResponseBase):
     result: dict[str, QualityDimension]
 
-    @validator("result")
+    @field_validator("result")
     @classmethod
     def check_quality_dimension_dict(cls, values):
         assert len(values) > 0
@@ -53,7 +53,7 @@ class QualityDimensionMetadataResponse(ResponseBase):
 class ProjectMetadataResponse(ResponseBase):
     result: dict[str, Project]
 
-    @validator("result")
+    @field_validator("result")
     @classmethod
     def check_project_dict(cls, value):
         assert len(value) > 0
@@ -65,7 +65,7 @@ class ProjectMetadataResponse(ResponseBase):
 class IndicatorMetadataResponse(ResponseBase):
     result: dict[str, IndicatorMetadata]
 
-    @validator("result")
+    @field_validator("result")
     @classmethod
     def check_indicator_dict(cls, value):
         assert len(value) > 0
@@ -77,7 +77,7 @@ class IndicatorMetadataResponse(ResponseBase):
 class ReportMetadataResponse(ResponseBase):
     result: dict[str, ReportMetadata]
 
-    @validator("result")
+    @field_validator("result")
     @classmethod
     def check_report_dict(cls, value):
         assert len(value) > 0
@@ -92,11 +92,11 @@ class MetadataResponse(ResponseBase):
         topics: dict[str, TopicDefinition]
         quality_dimensions: dict[str, QualityDimension]
         projects: dict[str, Project]
-
-        class Config:
-            alias_generator = snake_to_lower_camel
-            frozen = True
-            extra = "forbid"
-            allow_population_by_field_name = True
+        model_config = ConfigDict(
+            alias_generator=snake_to_lower_camel,
+            frozen=True,
+            extra="forbid",
+            populate_by_name=True,
+        )
 
     result: MetadataResultSchema
