@@ -10,7 +10,16 @@ from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 from ohsome_quality_analyst.utils.validators import validate_geojson
 
 
-class BaseBpolys(BaseModel):
+class BaseConfig(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        populate_by_name=True,
+        frozen=True,
+        extra="forbid",
+    )
+
+
+class BaseBpolys(BaseConfig):
     bpolys: dict = Field(
         {
             "type": "FeatureCollection",
@@ -53,12 +62,6 @@ class IndicatorRequest(BaseBpolys):
     )
     include_figure: bool = True
     include_data: bool = False
-    model_config = ConfigDict(
-        alias_generator=snake_to_lower_camel,
-        populate_by_name=True,
-        frozen=True,
-        extra="forbid",
-    )
 
 
 class IndicatorDataRequest(BaseBpolys):
@@ -70,19 +73,7 @@ class IndicatorDataRequest(BaseBpolys):
     topic: TopicData = Field(..., title="Topic", alias="topic")
     include_figure: bool = True
     include_data: bool = False
-    model_config = ConfigDict(
-        alias_generator=snake_to_lower_camel,
-        populate_by_name=True,
-        frozen=True,
-        extra="forbid",
-    )
 
 
 class ReportRequest(BaseBpolys):
     include_data: bool = False
-    model_config = ConfigDict(
-        alias_generator=snake_to_lower_camel,
-        populate_by_name=True,
-        frozen=True,
-        extra="forbid",
-    )
