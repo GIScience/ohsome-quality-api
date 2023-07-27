@@ -3,28 +3,55 @@ from pydantic import ValidationError
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.api.response_models import (
+    BaseResponse,
+    IndicatorMetadata,
     IndicatorMetadataResponse,
     ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
     ReportMetadataResponse,
-    ResponseBase,
+    TopicMetadata,
     TopicMetadataResponse,
 )
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 
 
 def test_base():
-    response = ResponseBase()
+    response = BaseResponse()
     assert response.api_version == __version__
     assert response.attribution == {"url": ATTRIBUTION_URL}
 
 
-def test_metadata_topics(metadata_topic_building_count):
-    response = TopicMetadataResponse(result=metadata_topic_building_count)
-    assert response.result == metadata_topic_building_count
+def test_topic_metadata():
+    TopicMetadata(
+        name="foo",
+        description="foo",
+        endpoint="elements",
+        aggregation_type="area",
+        filter="foo",
+        indicators=["mapping-saturation"],
+        projects=["core"],
+        source=None,
+    )
 
 
-def test_metadata_topics_fail(topic_building_count):
+def test_topic_metadata_response():
+    TopicMetadataResponse(
+        result={
+            "building-count": TopicMetadata(
+                name="foo",
+                description="foo",
+                endpoint="elements",
+                aggregation_type="area",
+                filter="foo",
+                indicators=["mapping-saturation"],
+                projects=["core"],
+                source=None,
+            )
+        }
+    )
+
+
+def test_topic_metadata_response_fail(topic_building_count):
     with pytest.raises(ValidationError):
         TopicMetadataResponse(result="")
     with pytest.raises(ValidationError):
@@ -35,11 +62,6 @@ def test_metadata_topics_fail(topic_building_count):
         TopicMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         TopicMetadataResponse(result={"foo": topic_building_count})
-
-
-def test_metadata_topics_list(topic_definitions):
-    response = TopicMetadataResponse(result=topic_definitions)
-    assert response.result == topic_definitions
 
 
 def test_metadata_quality_dimensions(metadata_quality_dimension_completeness):
@@ -90,12 +112,29 @@ def test_metadata_projects_list(projects):
     assert response.result == projects
 
 
-def test_metadata_indicators(metadata_indicator_minimal):
-    response = IndicatorMetadataResponse(result=metadata_indicator_minimal)
-    assert response.result == metadata_indicator_minimal
+def test_indicator_metadata():
+    IndicatorMetadata(
+        name="foo",
+        description="foo",
+        projects=["core"],
+        quality_dimension="completeness",
+    )
 
 
-def test_metadata_indicators_fail(metadata_indicator_minimal):
+def test_indicator_metadata_response():
+    IndicatorMetadataResponse(
+        result={
+            "mapping-saturation": IndicatorMetadata(
+                name="foo",
+                description="foo",
+                projects=["core"],
+                quality_dimension="completeness",
+            )
+        }
+    )
+
+
+def test_indicator_metadata_response_fail(metadata_indicator_minimal):
     with pytest.raises(ValidationError):
         IndicatorMetadataResponse(result="")
     with pytest.raises(ValidationError):
@@ -106,11 +145,6 @@ def test_metadata_indicators_fail(metadata_indicator_minimal):
         IndicatorMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         IndicatorMetadataResponse(result={"foo": metadata_indicator_minimal})
-
-
-def test_metadata_indicators_list(indicators_metadata):
-    response = IndicatorMetadataResponse(result=indicators_metadata)
-    assert response.result == indicators_metadata
 
 
 def test_metadata_reports(metadata_report_minimal):

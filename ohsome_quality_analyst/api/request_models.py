@@ -2,7 +2,7 @@ import json
 
 import geojson
 from geojson import FeatureCollection
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.topics.models import TopicData
@@ -10,8 +10,17 @@ from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 from ohsome_quality_analyst.utils.validators import validate_geojson
 
 
-class BaseBpolys(BaseModel):
-    bpolys: FeatureCollection = Field(
+class BaseConfig(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        populate_by_name=True,
+        frozen=True,
+        extra="forbid",
+    )
+
+
+class BaseBpolys(BaseConfig):
+    bpolys: dict = Field(
         {
             "type": "FeatureCollection",
             "features": [
@@ -34,7 +43,7 @@ class BaseBpolys(BaseModel):
         }
     )
 
-    @validator("bpolys")
+    @field_validator("bpolys")
     @classmethod
     def validate_bpolys(cls, value) -> FeatureCollection:
         obj = geojson.loads(json.dumps(value))
@@ -53,15 +62,6 @@ class IndicatorRequest(BaseBpolys):
     include_figure: bool = True
     include_data: bool = False
 
-    class Config:
-        """Pydantic config class."""
-
-        alias_generator = snake_to_lower_camel
-        # Allow population by field name not just by alias name
-        allow_population_by_field_name = True
-        allow_mutation = False
-        extra = "forbid"
-
 
 class IndicatorDataRequest(BaseBpolys):
     """Model for the `/indicators/mapping-saturation/data` endpoint.
@@ -73,24 +73,6 @@ class IndicatorDataRequest(BaseBpolys):
     include_figure: bool = True
     include_data: bool = False
 
-    class Config:
-        """Pydantic config class."""
-
-        alias_generator = snake_to_lower_camel
-        # Allow population by field name not just by alias name
-        allow_population_by_field_name = True
-        allow_mutation = False
-        extra = "forbid"
-
 
 class ReportRequest(BaseBpolys):
     include_data: bool = False
-
-    class Config:
-        """Pydantic config class."""
-
-        alias_generator = snake_to_lower_camel
-        # Allow population by field name not just by alias name
-        allow_population_by_field_name = True
-        allow_mutation = False
-        extra = "forbid"

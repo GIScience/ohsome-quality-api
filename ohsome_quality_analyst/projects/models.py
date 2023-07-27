@@ -1,13 +1,13 @@
 """Pydantic Models for Projects."""
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class Project(BaseModel):
     name: str
     description: str
-
-    class Config:
-        title = "Project"
-        frozen = True
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        title="Project",
+        frozen=True,
+        extra="forbid",
+        populate_by_name=True,
+    )

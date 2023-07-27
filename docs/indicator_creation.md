@@ -108,26 +108,3 @@ Finally, you need to create a svg figure (e.g. with matplotlib) and save it to `
 If you have defined these three functions, your indicator is ready to go. To show how OQT uses your indicator to be displayed on the OQT Website or in your command line interface, we made a sequence diagram. 
 
 ![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
-
-
-## Notes on the usage of `scikit-learn` models
-
-Indicators can load pre-trained `scikit-learn` models from disk. Please refer to the `scikit-learn` documentation about [Model Persistence](https://scikit-learn.org/stable/modules/model_persistence.html?highlight=export) to learn what needs to be taken into account when exporting models.
-
-OQT has following minimal requirements on an `scikit-learn` model:
-- The `scitkit-learn` version with which the model is created needs to be the same version as the one OQT uses.
-- The models has to be saved to disk using the `joblib` module.
-- The cross validation score needs to be provided.
-
-OQT provides a function to load a model from disk (`ohsome_quality_analyst.utils.helpers.load_sklearn_model`).
-This function will raise an Exception if a `scitkit-learn` version mismatch occurs.
-
-
-## Notes on the integration of R
-
-OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
-
-> `rpy2` is an interface to R running embedded in a Python process.
-
-For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
-Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.

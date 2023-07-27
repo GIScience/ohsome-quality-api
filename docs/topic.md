@@ -1,41 +1,34 @@
 # Topic
 
-A topic describes the request which should be made to the 
-[ohsome API](https://api.ohsome.org). Each topic is representative of a 
-specific set of features, aggregated information or user statistics derived from the 
-OpenStreetMap database. Each topic is defined by the ohsome API `endpoint`, an `aggregation_type` and 
-parameters for the `filter`. In addition, each topic definition has a key, name and 
-description. Topic definitions are written down as YAML file at 
-`ohsome_quality_analyst/topics/presets.yaml`
+A topic describes the request which should be made to the [ohsome API](https://api.ohsome.org). Each topic is representative of a specific set of features, aggregated information or user statistics derived from the OpenStreetMap database. Each topic is defined by the ohsome API `endpoint`, an `aggregation_type` and the `filter` parameter. In addition, each topic preset has a key, name, description, a list of valid indicators and a list of projects the topic belongs to. Topic presets are written down as YAML file at `ohsome_quality_analyst/topics/presets.yaml`
 
-Example:
+## Example
 
 ```yaml
-building_count:
+building-count:
   name: Building Count
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements
   aggregation_type: count
   filter: building=* and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
 ```
 
+## How to Add a New Topic?
 
-## How to add a new topic?
-
-First create an ohsome API query to retrieve desired information from the ohsome API. 
-Helpful resources for this task are:
-- Interactive ohsome API interface: https://api.ohsome.org/v1/swagger-ui.html
-- ohsome API documentation on the `aggregation_type`s and `endpoint`s: 
+First create an ohsome API query to retrieve desired information from the ohsome API. Helpful resources for this task are:
+- The Swagger UI of the ohsome API:
+  https://api.ohsome.org/v1/swagger-ui.html
+- ohsome API documentation on the `aggregation_type` and `endpoint` parameters: 
   https://docs.ohsome.org/ohsome-api/stable/endpoints.html
-- ohsome API documentation on the `filter` parameter: 
+- ohsome API documentation on the `filter` parameter:
   https://docs.ohsome.org/ohsome-api/stable/filter.html
 
-Second translate the query parameters into a topic definition and extent the file 
+Second translate the query parameters into a topic preset and extent this file:
 `ohsome_quality_analyst/topics/presets.yaml`.
-
-Thirdly specify for which indicator class this topic definition is a valid input. Add 
-those indicator/topic combinations to the `INDICATOR_TOPIC` tuple in the 
-`ohsome_quality_analyst/utils/definitions.py` module. The tuple consists of the 
-indicator class name and the topic definitions key as strings (E.g. 
-`("MappingSaturation", "building_count")`). 
