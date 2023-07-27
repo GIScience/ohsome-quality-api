@@ -19,7 +19,7 @@ RESPONSE_SCHEMA_JSON = Schema(
             "url": str,
             Optional("text"): str,
         },
-        "results": [
+        "result": [
             {
                 Optional("id"): Or(str, int),
                 "metadata": {
@@ -146,7 +146,7 @@ def test_minimal_include_figure_true(client, bpolys, headers, schema):
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
-        assert content["results"][0]["result"]["figure"] is not None
+        assert content["result"][0]["result"]["figure"] is not None
     elif schema == RESPONSE_SCHEMA_GEOJSON:
         assert content["features"][0]["properties"]["result"]["figure"] is not None
     else:
@@ -160,7 +160,7 @@ def test_minimal_include_figure_false(client, bpolys, headers, schema):
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
-        assert content["results"][0]["result"]["figure"] is None
+        assert content["result"][0]["result"]["figure"] is None
     elif schema == RESPONSE_SCHEMA_GEOJSON:
         assert content["features"][0]["properties"]["result"]["figure"] is None
     else:

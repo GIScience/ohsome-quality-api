@@ -7,7 +7,6 @@ from geojson import Feature
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
-from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import json_serialize
 
 
@@ -29,34 +28,30 @@ class BaseIndicator(metaclass=ABCMeta):
         )
         self._get_default_figure()
 
-    def as_dict(self, include_data: bool = False) -> dict:
-        result = self.result.dict(by_alias=True)  # only attributes, no properties
-        result["label"] = self.result.label  # label is a property
+    def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
+        if exclude_label:
+            result = self.result.model_dump(by_alias=True, exclude={"label"})
+        else:
+            result = self.result.model_dump(by_alias=True)
         raw_dict = {
-            "metadata": {
-                "name": self.metadata.name,
-                "description": self.metadata.description,
-                "projects": self.metadata.projects,
-                "qualityDimension": self.metadata.quality_dimension,
-            },
-            "topic": {
-                "key": self.topic.key,
-                "name": self.topic.name,
-                "description": self.topic.description,
-                "projects": None,  # Not every topic object has a project (TopicData)
-            },
+            "metadata": self.metadata.model_dump(
+                by_alias=True,
+                exclude={"result_description", "label_description"},
+            ),
+            "topic": self.topic.model_dump(
+                by_alias=True,
+                exclude={"ratio_filter"},
+            ),
             "result": result,
             **self.feature.properties,
         }
-        if not isinstance(self.topic, TopicData):
-            raw_dict["topic"]["projects"] = self.topic.projects
         if include_data:
             raw_dict["data"] = self.data
         if "id" in self.feature.keys():
             raw_dict["id"] = self.feature.id
         return raw_dict
 
-    def as_feature(self, include_data: bool = False) -> Feature:
+    def as_feature(self, include_data: bool = False, exclude_label=False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -65,9 +60,8 @@ class BaseIndicator(metaclass=ABCMeta):
         Args:
             include_data (bool): If true include additional data in the properties.
         """
-        properties = self.as_dict(include_data)
+        properties = self.as_dict(include_data, exclude_label)
         if "id" in self.feature.keys():
-            properties.pop("id", None)
             return Feature(
                 id=self.feature.id,
                 geometry=self.feature.geometry,
