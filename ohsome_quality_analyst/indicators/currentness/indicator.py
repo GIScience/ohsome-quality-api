@@ -145,15 +145,18 @@ class Currentness(BaseIndicator):
             "green": {
                 "color": "green",
                 "contrib_rel": self.contrib_rel[0 : self.t3],
+                "contrib_abs": self.contrib_abs[0 : self.t3],
                 "timestamps": self.timestamps[0 : self.t3],
             },
             "yellow": {
                 "color": "yellow",
                 "contrib_rel": self.contrib_rel[self.t3 : self.t1],
+                "contrib_abs": self.contrib_abs[self.t3 : self.t1],
                 "timestamps": self.timestamps[self.t3 : self.t1],
             },
             "red": {
                 "color": "red",
+                "contrib_abs": self.contrib_abs[self.t1 :],
                 "contrib_rel": self.contrib_rel[self.t1 :],
                 "timestamps": self.timestamps[self.t1 :],
             },
@@ -162,27 +165,37 @@ class Currentness(BaseIndicator):
         for color, data in colors_dict.items():
             fig.add_trace(
                 pgo.Bar(
-                    name=sum(data["contrib_rel"]),
+                    name=str(round(sum(data["contrib_rel"]) * 100, 2)) + "%",
+                    x=data["timestamps"],
+                    y=data["contrib_abs"],
+                    marker_color=color,
+                    showlegend=False,
+                    hovertemplate=None,
+                    hoverinfo="skip",
+                ),
+                secondary_y=True,
+            )
+            fig.add_trace(
+                pgo.Bar(
+                    name=str(round(sum(data["contrib_rel"]) * 100, 2)) + "%",
                     x=data["timestamps"],
                     y=data["contrib_rel"],
                     marker_color=color,
                     hovertemplate=(
-                        "%{y} of features (%{customdata})<br>"
-                        "last modified until %{x}<extra></extra>"
+                        "%{y} of features (%{customdata[0]})<br>"
+                        "last modified until %{customdata[1]}<extra></extra>"
                     ),
-                    customdata=self.contrib_abs,
+                    customdata=list(
+                        zip(
+                            [i for i in (data["contrib_abs"])],
+                            [
+                                timestamp.strftime("%m/%d/%Y")
+                                for timestamp in data["timestamps"]
+                            ],
+                        )
+                    ),
                 )
             )
-
-        fig.add_trace(
-            pgo.Bar(
-                name="",
-                x=self.timestamps,
-                y=self.contrib_abs,
-                visible=False,
-                secondary_y=True,
-            )
-        )
 
         y_max = max(self.contrib_rel) * 1.05
 
@@ -195,18 +208,23 @@ class Currentness(BaseIndicator):
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",
-            dtick="M12",
+            dtick="M6",
+            tickformat="%b\n%Y",
+            tickangle=0,
             tick0=self.timestamps[-1],
-            tickformat="%Y",
         )
         fig.update_yaxes(
             title_text="Percentage of Contributions",
             tickformat=".0%",
         )
         fig.update_yaxes(
-            title_text="Some Other Label for the Second Y-axis",
+            title_text="Absolute Count of Contributions",
             tickformat=".",
             secondary_y=True,
+        )
+        fig.update_legends(
+            x=0,
+            y=0.95,
         )
 
         raw = fig.to_dict()
