@@ -17,9 +17,7 @@ from ohsome_quality_analyst.topics.definitions import TopicEnum
 from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
 
 
-class ResponseBase(BaseModel):
-    api_version: str = __version__
-    attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
+class BaseConfig(BaseModel):
     model_config = ConfigDict(
         alias_generator=snake_to_lower_camel,
         frozen=True,
@@ -28,7 +26,12 @@ class ResponseBase(BaseModel):
     )
 
 
-class TopicMetadata(BaseModel):
+class BaseResponse(BaseConfig):
+    api_version: str = __version__
+    attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
+
+
+class TopicMetadata(BaseConfig):
     name: str
     description: str
     endpoint: Literal["elements"]
@@ -40,7 +43,7 @@ class TopicMetadata(BaseModel):
     model_config = ConfigDict(title="Topic Metadata")
 
 
-class TopicMetadataResponse(ResponseBase):
+class TopicMetadataResponse(BaseResponse):
     result: dict[str, TopicMetadata]
 
     @field_validator("result")
@@ -52,7 +55,7 @@ class TopicMetadataResponse(ResponseBase):
         return value
 
 
-class QualityDimensionMetadataResponse(ResponseBase):
+class QualityDimensionMetadataResponse(BaseResponse):
     result: dict[str, QualityDimension]
 
     @field_validator("result")
@@ -64,7 +67,7 @@ class QualityDimensionMetadataResponse(ResponseBase):
         return values
 
 
-class ProjectMetadataResponse(ResponseBase):
+class ProjectMetadataResponse(BaseResponse):
     result: dict[str, Project]
 
     @field_validator("result")
@@ -76,7 +79,7 @@ class ProjectMetadataResponse(ResponseBase):
         return value
 
 
-class IndicatorMetadata(BaseModel):
+class IndicatorMetadata(BaseConfig):
     name: str
     description: str
     projects: list[ProjectEnum]
@@ -84,7 +87,7 @@ class IndicatorMetadata(BaseModel):
     model_config = ConfigDict(title="Indicator Metadata")
 
 
-class IndicatorMetadataResponse(ResponseBase):
+class IndicatorMetadataResponse(BaseResponse):
     result: dict[str, IndicatorMetadata]
 
     @field_validator("result")
@@ -96,7 +99,7 @@ class IndicatorMetadataResponse(ResponseBase):
         return value
 
 
-class ReportMetadataResponse(ResponseBase):
+class ReportMetadataResponse(BaseResponse):
     result: dict[str, ReportMetadata]
 
     @field_validator("result")
@@ -108,7 +111,7 @@ class ReportMetadataResponse(ResponseBase):
         return value
 
 
-class Metadata(BaseModel):
+class Metadata(BaseConfig):
     indicators: dict[str, IndicatorMetadata]
     topics: dict[str, TopicMetadata]
     quality_dimensions: dict[str, QualityDimension]
@@ -116,5 +119,5 @@ class Metadata(BaseModel):
     model_config = ConfigDict(title="Metadata")
 
 
-class MetadataResponse(ResponseBase):
+class MetadataResponse(BaseResponse):
     result: Metadata
