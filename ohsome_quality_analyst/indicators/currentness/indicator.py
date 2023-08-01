@@ -35,17 +35,25 @@ class Currentness(BaseIndicator):
         feature: Feature,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        # thresholds denote number of years since today:
-        self.t4 = 24
-        self.t3 = 36
-        self.t2 = 48
-        self.t1 = 96
+        # thresholds denote number of months (years) since today:
+        self.t4 = 24  # 2 years
+        self.t3 = 36  # 3 years
+        self.t2 = 48  # 4 years
+        self.t1 = 96  # 8 years
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         self.to_timestamps = []  # up to timestamp
         self.from_timestamps = []
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
+
+        # TODO:
+        self.contrib_rel_t1 = []
+        self.contrib_abs_t1 = []
+        self.to_timestamps_t1 = []
+        self.from_timestamps_t1 = []
+        self.timestamps_t1 = []
+
         self.threshold_low_contributions = 25
 
     async def preprocess(self):
@@ -89,11 +97,16 @@ class Currentness(BaseIndicator):
 
         if self.contrib_sum < self.threshold_low_contributions:
             self.result.description = (
-                f"In the area of interest {self.threshold_low_contributions}"
-                f" features of the selected topic are present today. "
-                f"The significance of the result is low."
+                "In the area of interest less than {0}".format(
+                    self.threshold_low_contributions
+                )
+                + " features of the selected topic are present today. "
+                + "The significance of the result is low."
             )
             pass
+
+        # If green above 50 -> green
+        # if green + yellow above 50 -> yellow
         elif self.result.value >= self.t1:
             self.result.class_ = 1
             label = "red"
@@ -109,6 +122,10 @@ class Currentness(BaseIndicator):
         elif self.t4 > self.result.value:
             self.result.class_ = 5
             label = "green"
+
+        # TODO: Maybe add to description if not green
+        # 50 % of features/elements were edited for the last time in the period between
+        # $from_timestamp_2 and $to_timestamp_2.
         else:
             raise ValueError("Ratio has an unexpected value.")
 
@@ -120,19 +137,13 @@ class Currentness(BaseIndicator):
             )
         else:
             label_description = self.metadata.label_description[label]
+        contrib_rel_t2 = sum(self.contrib_rel[0 : self.t3]) * 100  # cumulative
         self.result.description = Template(self.metadata.result_description).substitute(
-            years=self.result.value,
-            topic_name=self.topic.name,
-            end_date=self.to_timestamps[0].strftime("%Y-%m-%d"),
-            elements=int(self.contrib_sum),
-            green=round(sum(self.contrib_rel[: self.t2]) * 100, 2),  # cumulative
-            yellow=round(sum(self.contrib_rel[self.t2 : self.t1]) * 100, 2),
-            red=round(sum(self.contrib_rel[self.t1 :]) * 100, 2),
-            median_years=self.result.value,
-            threshold_green=self.t2 - 1,
-            threshold_yellow_start=self.t2,
-            threshold_yellow_end=self.t1 - 1,
-            threshold_red=self.t1,
+            contrib_rel_t2=f"{contrib_rel_t2:.2f}",
+            topic=self.topic.name,
+            from_timestamp=self.from_timestamps[0 : self.t3][-1].strftime("%m/%d/%Y"),
+            to_timestamp=self.to_timestamps[0].strftime("%m/%d/%Y"),
+            # elements=int(self.contrib_sum), # TODO
             label_description=label_description,
         )
 
@@ -244,11 +255,11 @@ class Currentness(BaseIndicator):
             tick0=self.to_timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Percentage of Contributions",
+            title_text="Percentage of Latest Contributions",
             tickformat=".0%",
         )
         fig.update_yaxes(
-            title_text="Absolute Number of Contributions",
+            title_text="Absolute Number of Latest Contributions",
             tickformat=".",
             secondary_y=True,
         )

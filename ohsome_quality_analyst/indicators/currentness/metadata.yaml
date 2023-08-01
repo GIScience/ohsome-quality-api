@@ -22,9 +22,4 @@ currentness:
       an extrinsic comparison to identify if this means that data quality is 
       bad or if there is just nothing to map here.
   result_description: >-
-      From the current $elements elements were $green % last edited in the past $threshold_green years (creation, tag change or geometry change).
-      In the period from $threshold_yellow_start to $threshold_yellow_end years ago $yellow % of the elements were edited the last time.
-      The remaining $red % were last edited at least $threshold_red years ago.
-      The median currentness of the selected features ($topic_name) is $median_years year(s).
-      Note that only contributions up to $end_date are taken into account.
-      $label_description
+      In the area of interest $contrib_rel_t2 of features/elements ($topic) were edited for the last time in the period between $from_timestamp and $to_timestamp.
