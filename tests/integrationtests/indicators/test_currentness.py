@@ -10,7 +10,7 @@ import pytest
 from ohsome_quality_analyst.indicators.currentness.indicator import (
     Currentness,
     get_how_many_years_no_activity,
-    get_median_year,
+    get_median_month,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
@@ -100,13 +100,13 @@ def test_get_last_edited_year():
     assert result == expected
 
 
-def test_get_median_year():
+def test_get_median_month():
     given = [0.2, 0, 0.6, 0.2]
     expected = 2
-    result = get_median_year(given)
+    result = get_median_month(given)
     assert result == expected
 
     given = [0.6, 0, 0.2, 0.2]
     expected = 0
-    result = get_median_year(given)
+    result = get_median_month(given)
     assert result == expected

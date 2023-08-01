@@ -3,6 +3,7 @@ from string import Template
 
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
+from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
 
@@ -36,23 +37,17 @@ class Currentness(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         # thresholds denote number of months (years) since today:
-        self.t4 = 24  # 2 years
-        self.t3 = 36  # 3 years
-        self.t2 = 48  # 4 years
-        self.t1 = 96  # 8 years
+        self.months_green = 36  # 3 years
+        self.months_yellow = 96  # 8 years
+        self.t1 = 0.75
+        self.t2 = 0.5
+        self.t3 = 0.3
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         self.to_timestamps = []  # up to timestamp
         self.from_timestamps = []
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
-
-        # TODO:
-        self.contrib_rel_t1 = []
-        self.contrib_abs_t1 = []
-        self.to_timestamps_t1 = []
-        self.from_timestamps_t1 = []
-        self.timestamps_t1 = []
 
         self.threshold_low_contributions = 25
 
@@ -93,7 +88,41 @@ class Currentness(BaseIndicator):
             return
 
         self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
-        self.result.value = get_median_year(self.contrib_rel)
+
+        self.contrib_rel_red = self.contrib_rel[self.months_yellow :]
+        self.contrib_abs_red = self.contrib_abs[self.months_yellow :]
+        self.to_timestamps_red = self.to_timestamps[self.months_yellow :]
+        self.from_timestamps_red = self.from_timestamps[self.months_yellow :]
+        self.timestamps_red = [
+            fr + (to - fr) / 2
+            for to, fr in zip(self.to_timestamps_red, self.from_timestamps_red)
+        ]
+
+        self.contrib_rel_yellow = self.contrib_rel[
+            self.months_green : self.months_yellow
+        ]
+        self.contrib_abs_yellow = self.contrib_abs[
+            self.months_green : self.months_yellow
+        ]
+        self.to_timestamps_yellow = self.to_timestamps[
+            self.months_green : self.months_yellow
+        ]
+        self.from_timestamps_yellow = self.from_timestamps[
+            self.months_green : self.months_yellow
+        ]
+        self.timestamps_yellow = [
+            fr + (to - fr) / 2
+            for to, fr in zip(self.to_timestamps_yellow, self.from_timestamps_yellow)
+        ]
+
+        self.contrib_rel_green = self.contrib_rel[0 : self.months_green]
+        self.contrib_abs_green = self.contrib_abs[0 : self.months_green]
+        self.to_timestamps_green = self.to_timestamps[0 : self.months_green]
+        self.from_timestamps_green = self.from_timestamps[0 : self.months_green]
+        self.timestamps_green = [
+            fr + (to - fr) / 2
+            for to, fr in zip(self.to_timestamps_green, self.from_timestamps_green)
+        ]
 
         if self.contrib_sum < self.threshold_low_contributions:
             self.result.description = (
@@ -107,25 +136,24 @@ class Currentness(BaseIndicator):
 
         # If green above 50 -> green
         # if green + yellow above 50 -> yellow
-        elif self.result.value >= self.t1:
-            self.result.class_ = 1
-            label = "red"
-        elif self.t1 > self.result.value >= self.t2:
-            self.result.class_ = 2
-            label = "yellow"
-        elif self.t2 > self.result.value >= self.t3:
-            self.result.class_ = 3
-            label = "yellow"
-        elif self.t3 > self.result.value >= self.t4:
-            self.result.class_ = 4
-            label = "green"
-        elif self.t4 > self.result.value:
+        elif sum(self.contrib_rel_green) >= self.t1:
             self.result.class_ = 5
             label = "green"
-
-        # TODO: Maybe add to description if not green
-        # 50 % of features/elements were edited for the last time in the period between
-        # $from_timestamp_2 and $to_timestamp_2.
+        elif sum(self.contrib_rel_green) >= self.t2:
+            self.result.class_ = 4
+            label = "green"
+        elif sum(self.contrib_rel_red) >= self.t3:
+            self.result.class_ = 1
+            label = "red"
+        elif sum(self.contrib_rel_green) + sum(self.contrib_rel_yellow) >= self.t1:
+            self.result.class_ = 3
+            label = "yellow"
+        elif (
+            sum(self.contrib_rel_green) + sum(self.contrib_rel_yellow) < self.t1
+            and sum(self.contrib_rel_red) < self.t3
+        ):
+            self.result.class_ = 2
+            label = "yellow"
         else:
             raise ValueError("Ratio has an unexpected value.")
 
@@ -137,14 +165,20 @@ class Currentness(BaseIndicator):
             )
         else:
             label_description = self.metadata.label_description[label]
-        contrib_rel_t2 = sum(self.contrib_rel[0 : self.t3]) * 100  # cumulative
         self.result.description = Template(self.metadata.result_description).substitute(
-            contrib_rel_t2=f"{contrib_rel_t2:.2f}",
+            contrib_rel_t2=f"{sum(self.contrib_rel_green)*100:.2f}",
             topic=self.topic.name,
-            from_timestamp=self.from_timestamps[0 : self.t3][-1].strftime("%m/%d/%Y"),
+            from_timestamp=self.from_timestamps[0 : self.months_green][-1].strftime(
+                "%m/%d/%Y"
+            ),
             to_timestamp=self.to_timestamps[0].strftime("%m/%d/%Y"),
-            # elements=int(self.contrib_sum), # TODO
+            elements=int(self.contrib_sum),
             label_description=label_description,
+            from_timestamp_50_perc=(
+                self.to_timestamps[0]
+                - relativedelta(months=get_median_month(self.contrib_rel))
+            ).strftime("%m/%d/%Y"),
+            to_timestamp_50_perc=self.to_timestamps[0].strftime("%m/%d/%Y"),
         )
 
         last_edited_year = get_how_many_years_no_activity(self.contrib_abs)
@@ -161,27 +195,27 @@ class Currentness(BaseIndicator):
         colors_dict = {
             "green": {
                 "color": "green",
-                "contrib_rel": self.contrib_rel[0 : self.t3],
-                "contrib_abs": self.contrib_abs[0 : self.t3],
-                "to_timestamps": self.to_timestamps[0 : self.t3],
-                "from_timestamps": self.from_timestamps[0 : self.t3],
-                "timestamps": self.timestamps[0 : self.t3],
+                "contrib_rel": self.contrib_rel_green,
+                "contrib_abs": self.contrib_abs_green,
+                "to_timestamps": self.to_timestamps_green,
+                "from_timestamps": self.from_timestamps_green,
+                "timestamps": self.timestamps_green,
             },
             "yellow": {
                 "color": "yellow",
-                "contrib_rel": self.contrib_rel[self.t3 : self.t1],
-                "contrib_abs": self.contrib_abs[self.t3 : self.t1],
-                "to_timestamps": self.to_timestamps[self.t3 : self.t1],
-                "from_timestamps": self.from_timestamps[self.t3 : self.t1],
-                "timestamps": self.timestamps[self.t3 : self.t1],
+                "contrib_rel": self.contrib_rel_yellow,
+                "contrib_abs": self.contrib_abs_yellow,
+                "to_timestamps": self.to_timestamps_yellow,
+                "from_timestamps": self.from_timestamps_yellow,
+                "timestamps": self.timestamps_yellow,
             },
             "red": {
                 "color": "red",
-                "contrib_abs": self.contrib_abs[self.t1 :],
-                "contrib_rel": self.contrib_rel[self.t1 :],
-                "to_timestamps": self.to_timestamps[self.t1 :],
-                "from_timestamps": self.from_timestamps[self.t1 :],
-                "timestamps": self.timestamps[self.t1 :],
+                "contrib_abs": self.contrib_abs_red,
+                "contrib_rel": self.contrib_rel_red,
+                "to_timestamps": self.to_timestamps_red,
+                "from_timestamps": self.from_timestamps_red,
+                "timestamps": self.timestamps_red,
             },
         }
         fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -281,10 +315,10 @@ def get_how_many_years_no_activity(contributions: list) -> int:
             return year
 
 
-def get_median_year(contributions_rel: list) -> int:
+def get_median_month(contributions_rel: list) -> int:
     """Get the number of years since today when 50% of contributions have been made."""
     contrib_rel_cum = 0
-    for year, contrib in enumerate(contributions_rel):  # latest contribution first
+    for month, contrib in enumerate(contributions_rel):  # latest contribution first
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
-            return year
+            return month
