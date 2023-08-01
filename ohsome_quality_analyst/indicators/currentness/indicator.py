@@ -41,7 +41,8 @@ class Currentness(BaseIndicator):
         self.t2 = 48
         self.t1 = 96
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
-        self.timestamps = []  # up to timestamp
+        self.to_timestamps = []  # up to timestamp
+        self.from_timestamps = []
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
@@ -62,10 +63,15 @@ class Currentness(BaseIndicator):
             contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
         )
         for c in reversed(response["result"]):  # latest contributions first
-            self.timestamps.append(isoparse(c["toTimestamp"]))
+            self.to_timestamps.append(isoparse(c["toTimestamp"]))
+            self.from_timestamps.append(isoparse(c["fromTimestamp"]))
+            self.timestamps = [
+                fr + (to - fr) / 2
+                for to, fr in zip(self.to_timestamps, self.from_timestamps)
+            ]
             self.contrib_abs.append(c["value"])
             self.contrib_sum += c["value"]
-        self.result.timestamp_osm = self.timestamps[0]
+        self.result.timestamp_osm = self.to_timestamps[0]
 
     def calculate(self):
         """Calculate the years since over 50% of the elements were last edited"""
@@ -117,7 +123,7 @@ class Currentness(BaseIndicator):
         self.result.description = Template(self.metadata.result_description).substitute(
             years=self.result.value,
             topic_name=self.topic.name,
-            end_date=self.timestamps[0].strftime("%Y-%m-%d"),
+            end_date=self.to_timestamps[0].strftime("%Y-%m-%d"),
             elements=int(self.contrib_sum),
             green=round(sum(self.contrib_rel[: self.t2]) * 100, 2),  # cumulative
             yellow=round(sum(self.contrib_rel[self.t2 : self.t1]) * 100, 2),
@@ -146,54 +152,78 @@ class Currentness(BaseIndicator):
                 "color": "green",
                 "contrib_rel": self.contrib_rel[0 : self.t3],
                 "contrib_abs": self.contrib_abs[0 : self.t3],
+                "to_timestamps": self.to_timestamps[0 : self.t3],
+                "from_timestamps": self.from_timestamps[0 : self.t3],
                 "timestamps": self.timestamps[0 : self.t3],
             },
             "yellow": {
                 "color": "yellow",
                 "contrib_rel": self.contrib_rel[self.t3 : self.t1],
                 "contrib_abs": self.contrib_abs[self.t3 : self.t1],
+                "to_timestamps": self.to_timestamps[self.t3 : self.t1],
+                "from_timestamps": self.from_timestamps[self.t3 : self.t1],
                 "timestamps": self.timestamps[self.t3 : self.t1],
             },
             "red": {
                 "color": "red",
                 "contrib_abs": self.contrib_abs[self.t1 :],
                 "contrib_rel": self.contrib_rel[self.t1 :],
+                "to_timestamps": self.to_timestamps[self.t1 :],
+                "from_timestamps": self.from_timestamps[self.t1 :],
                 "timestamps": self.timestamps[self.t1 :],
             },
         }
         fig = make_subplots(specs=[[{"secondary_y": True}]])
+        # Common variables for both traces
+        hover_template_abs = None
+        hover_template_rel = (
+            "%{y} of features (%{customdata[0]})<br>"
+            "were last modified in the period from %{customdata[2]}"
+            " to %{customdata[1]}<extra></extra>"
+        )
+
         for color, data in colors_dict.items():
+            contribution_percentage = round(sum(data["contrib_rel"]) * 100, 2)
+            name = str(contribution_percentage) + "%"
+            timestamps = data["timestamps"]
+
+            customdata = list(
+                zip(
+                    data["contrib_abs"],
+                    [
+                        timestamp.strftime("%m/%d/%Y")
+                        for timestamp in data["to_timestamps"]
+                    ],
+                    [
+                        timestamp.strftime("%m/%d/%Y")
+                        for timestamp in data["from_timestamps"]
+                    ],
+                )
+            )
+
+            # Trace for absolute contributions
             fig.add_trace(
                 pgo.Bar(
-                    name=str(round(sum(data["contrib_rel"]) * 100, 2)) + "%",
-                    x=data["timestamps"],
+                    name=name,
+                    x=timestamps,
                     y=data["contrib_abs"],
                     marker_color=color,
                     showlegend=False,
-                    hovertemplate=None,
+                    hovertemplate=hover_template_abs,
                     hoverinfo="skip",
                 ),
                 secondary_y=True,
             )
+
+            # Trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
-                    name=str(round(sum(data["contrib_rel"]) * 100, 2)) + "%",
-                    x=data["timestamps"],
+                    name=name,
+                    x=timestamps,
                     y=data["contrib_rel"],
                     marker_color=color,
-                    hovertemplate=(
-                        "%{y} of features (%{customdata[0]})<br>"
-                        "last modified until %{customdata[1]}<extra></extra>"
-                    ),
-                    customdata=list(
-                        zip(
-                            [i for i in (data["contrib_abs"])],
-                            [
-                                timestamp.strftime("%m/%d/%Y")
-                                for timestamp in data["timestamps"]
-                            ],
-                        )
-                    ),
+                    hovertemplate=hover_template_rel,
+                    customdata=customdata,
                 )
             )
 
@@ -208,20 +238,21 @@ class Currentness(BaseIndicator):
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",
-            dtick="M6",
+            # dtick="M6",
             tickformat="%b\n%Y",
-            tickangle=0,
-            tick0=self.timestamps[-1],
+            # tickangle=0,
+            tick0=self.to_timestamps[-1],
         )
         fig.update_yaxes(
             title_text="Percentage of Contributions",
             tickformat=".0%",
         )
         fig.update_yaxes(
-            title_text="Absolute Count of Contributions",
+            title_text="Absolute Number of Contributions",
             tickformat=".",
             secondary_y=True,
         )
+        # fixed legend, because we do not high contributions in 2008
         fig.update_legends(
             x=0,
             y=0.95,
