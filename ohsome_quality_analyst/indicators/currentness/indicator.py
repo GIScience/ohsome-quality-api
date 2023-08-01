@@ -19,15 +19,7 @@ class Currentness(BaseIndicator):
     time range
 
     Attributes:
-        t4 (int): Number of years it should have been since 50%
-            of the items were last edited to be in the second best class
-        t3 (int): Number of years it should have been since 50%
-            of the items were last edited to be in the second best class
-        t2 (int): Number of years it should have been since 50%
-            of the items were last edited to be in the third best class
-        t1 (int): Number of years it should have been since 50%
-            of the items were last edited to be in the second worst class. If
-            the result is lower than this threshold, it is assigned to the worst class
+        t1, t2, t3 (float): Ratio of all contributions to be in a specific class
     """
 
     def __init__(
@@ -37,8 +29,8 @@ class Currentness(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         # thresholds denote number of months (years) since today:
-        self.months_green = 36  # 3 years
-        self.months_yellow = 96  # 8 years
+        self.months_up_to_date = 36  # 3 years
+        self.months_partially_current = 96  # 8 years
         self.t1 = 0.75
         self.t2 = 0.5
         self.t3 = 0.3
@@ -89,40 +81,54 @@ class Currentness(BaseIndicator):
 
         self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
 
-        self.contrib_rel_red = self.contrib_rel[self.months_yellow :]
-        self.contrib_abs_red = self.contrib_abs[self.months_yellow :]
-        self.to_timestamps_red = self.to_timestamps[self.months_yellow :]
-        self.from_timestamps_red = self.from_timestamps[self.months_yellow :]
-        self.timestamps_red = [
+        self.contrib_rel_outdated = self.contrib_rel[self.months_partially_current :]
+        self.contrib_abs_outdated = self.contrib_abs[self.months_partially_current :]
+        self.to_timestamps_outdated = self.to_timestamps[
+            self.months_partially_current :
+        ]
+        self.from_timestamps_outdated = self.from_timestamps[
+            self.months_partially_current :
+        ]
+        self.timestamps_outdated = [
             fr + (to - fr) / 2
-            for to, fr in zip(self.to_timestamps_red, self.from_timestamps_red)
+            for to, fr in zip(
+                self.to_timestamps_outdated, self.from_timestamps_outdated
+            )
         ]
 
-        self.contrib_rel_yellow = self.contrib_rel[
-            self.months_green : self.months_yellow
+        self.contrib_rel_partially_current = self.contrib_rel[
+            self.months_up_to_date : self.months_partially_current
         ]
-        self.contrib_abs_yellow = self.contrib_abs[
-            self.months_green : self.months_yellow
+        self.contrib_abs_partially_current = self.contrib_abs[
+            self.months_up_to_date : self.months_partially_current
         ]
-        self.to_timestamps_yellow = self.to_timestamps[
-            self.months_green : self.months_yellow
+        self.to_timestamps_partially_current = self.to_timestamps[
+            self.months_up_to_date : self.months_partially_current
         ]
-        self.from_timestamps_yellow = self.from_timestamps[
-            self.months_green : self.months_yellow
+        self.from_timestamps_partially_current = self.from_timestamps[
+            self.months_up_to_date : self.months_partially_current
         ]
-        self.timestamps_yellow = [
+        self.timestamps_partially_current = [
             fr + (to - fr) / 2
-            for to, fr in zip(self.to_timestamps_yellow, self.from_timestamps_yellow)
+            for to, fr in zip(
+                self.to_timestamps_partially_current,
+                self.from_timestamps_partially_current,
+            )
         ]
 
-        self.contrib_rel_green = self.contrib_rel[0 : self.months_green]
-        self.contrib_abs_green = self.contrib_abs[0 : self.months_green]
-        self.to_timestamps_green = self.to_timestamps[0 : self.months_green]
-        self.from_timestamps_green = self.from_timestamps[0 : self.months_green]
-        self.timestamps_green = [
-            fr + (to - fr) / 2
-            for to, fr in zip(self.to_timestamps_green, self.from_timestamps_green)
+        self.contrib_rel_up_to_date = self.contrib_rel[0 : self.months_up_to_date]
+        self.contrib_abs_up_to_date = self.contrib_abs[0 : self.months_up_to_date]
+        self.to_timestamps_up_to_date = self.to_timestamps[0 : self.months_up_to_date]
+        self.from_timestamps_up_to_date = self.from_timestamps[
+            0 : self.months_up_to_date
         ]
+        self.timestamps_up_to_date = [
+            fr + (to - fr) / 2
+            for to, fr in zip(
+                self.to_timestamps_up_to_date, self.from_timestamps_up_to_date
+            )
+        ]
+        self.result.value = sum(self.contrib_rel_up_to_date)
 
         if self.contrib_sum < self.threshold_low_contributions:
             self.result.description = (
@@ -136,21 +142,25 @@ class Currentness(BaseIndicator):
 
         # If green above 50 -> green
         # if green + yellow above 50 -> yellow
-        elif sum(self.contrib_rel_green) >= self.t1:
+        elif sum(self.contrib_rel_up_to_date) >= self.t1:
             self.result.class_ = 5
             label = "green"
-        elif sum(self.contrib_rel_green) >= self.t2:
+        elif sum(self.contrib_rel_up_to_date) >= self.t2:
             self.result.class_ = 4
             label = "green"
-        elif sum(self.contrib_rel_red) >= self.t3:
+        elif sum(self.contrib_rel_outdated) >= self.t3:
             self.result.class_ = 1
             label = "red"
-        elif sum(self.contrib_rel_green) + sum(self.contrib_rel_yellow) >= self.t1:
+        elif (
+            sum(self.contrib_rel_up_to_date) + sum(self.contrib_rel_partially_current)
+            >= self.t1
+        ):
             self.result.class_ = 3
             label = "yellow"
         elif (
-            sum(self.contrib_rel_green) + sum(self.contrib_rel_yellow) < self.t1
-            and sum(self.contrib_rel_red) < self.t3
+            sum(self.contrib_rel_up_to_date) + sum(self.contrib_rel_partially_current)
+            < self.t1
+            and sum(self.contrib_rel_outdated) < self.t3
         ):
             self.result.class_ = 2
             label = "yellow"
@@ -166,11 +176,11 @@ class Currentness(BaseIndicator):
         else:
             label_description = self.metadata.label_description[label]
         self.result.description = Template(self.metadata.result_description).substitute(
-            contrib_rel_t2=f"{sum(self.contrib_rel_green)*100:.2f}",
+            contrib_rel_t2=f"{sum(self.contrib_rel_up_to_date) * 100:.2f}",
             topic=self.topic.name,
-            from_timestamp=self.from_timestamps[0 : self.months_green][-1].strftime(
-                "%m/%d/%Y"
-            ),
+            from_timestamp=self.from_timestamps[0 : self.months_up_to_date][
+                -1
+            ].strftime("%m/%d/%Y"),
             to_timestamp=self.to_timestamps[0].strftime("%m/%d/%Y"),
             elements=int(self.contrib_sum),
             label_description=label_description,
@@ -195,27 +205,27 @@ class Currentness(BaseIndicator):
         colors_dict = {
             "green": {
                 "color": "green",
-                "contrib_rel": self.contrib_rel_green,
-                "contrib_abs": self.contrib_abs_green,
-                "to_timestamps": self.to_timestamps_green,
-                "from_timestamps": self.from_timestamps_green,
-                "timestamps": self.timestamps_green,
+                "contrib_rel": self.contrib_rel_up_to_date,
+                "contrib_abs": self.contrib_abs_up_to_date,
+                "to_timestamps": self.to_timestamps_up_to_date,
+                "from_timestamps": self.from_timestamps_up_to_date,
+                "timestamps": self.timestamps_up_to_date,
             },
             "yellow": {
                 "color": "yellow",
-                "contrib_rel": self.contrib_rel_yellow,
-                "contrib_abs": self.contrib_abs_yellow,
-                "to_timestamps": self.to_timestamps_yellow,
-                "from_timestamps": self.from_timestamps_yellow,
-                "timestamps": self.timestamps_yellow,
+                "contrib_rel": self.contrib_rel_partially_current,
+                "contrib_abs": self.contrib_abs_partially_current,
+                "to_timestamps": self.to_timestamps_partially_current,
+                "from_timestamps": self.from_timestamps_partially_current,
+                "timestamps": self.timestamps_partially_current,
             },
             "red": {
                 "color": "red",
-                "contrib_abs": self.contrib_abs_red,
-                "contrib_rel": self.contrib_rel_red,
-                "to_timestamps": self.to_timestamps_red,
-                "from_timestamps": self.from_timestamps_red,
-                "timestamps": self.timestamps_red,
+                "contrib_abs": self.contrib_abs_outdated,
+                "contrib_rel": self.contrib_rel_outdated,
+                "to_timestamps": self.to_timestamps_outdated,
+                "from_timestamps": self.from_timestamps_outdated,
+                "timestamps": self.timestamps_outdated,
             },
         }
         fig = make_subplots(specs=[[{"secondary_y": True}]])

@@ -1,0 +1,90 @@
+---
+  major-roads-count:
+    thresholds:
+        - 48
+        - 96
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  major-roads-length:
+    thresholds:
+        - 48
+        - 96
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  railway-length:
+      thresholds:
+          - 96
+          - 132
+      source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  bus-stops:
+      thresholds:
+          - 48
+          - 96
+      source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  tram-stops:
+      thresholds:
+          - 48
+          - 96
+      source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  subway-station:
+      thresholds:
+          - 48
+          - 96
+      source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  mapaction-rail-length:
+      thresholds:
+          - 96
+          - 132
+      source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  mapaction-major-roads-length:
+    thresholds:
+        - 48
+        - 96
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  local-food-shops:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  fast-food-restaurants:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  restaurants:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  convenience-stores:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  pubs-and-biergartens:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  alcohol-and-beverages:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+  sweets-and-pasteries:
+    thresholds:
+        - 24
+        - 48
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
