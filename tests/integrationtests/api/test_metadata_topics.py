@@ -1,19 +1,28 @@
 from ohsome_quality_analyst.topics.definitions import TopicEnum
 
 
-def test_metadata_topic(client, response_template, metadata_topic_building_count):
+def test_metadata_topic(
+    client,
+    response_template,
+    response_metadata_topic_building_count,
+):
     response = client.get("/metadata/topics")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_topic_building_count["building-count"] == result["building-count"]
+    assert (
+        response_metadata_topic_building_count["building-count"]
+        == result["building-count"]
+    )
     assert "minimal" not in result.keys()
 
 
 def test_metadata_topic_project_core(
-    client, response_template, metadata_topic_building_count
+    client,
+    response_template,
+    response_metadata_topic_building_count,
 ):
     response = client.get("/metadata/topics/?project=core")
     assert response.status_code == 200
@@ -21,7 +30,10 @@ def test_metadata_topic_project_core(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_topic_building_count["building-count"] == result["building-count"]
+    assert (
+        response_metadata_topic_building_count["building-count"]
+        == result["building-count"]
+    )
     assert "minimal" not in result.keys()
 
 
@@ -54,7 +66,9 @@ def test_metadata_topic_project_not_found_error(client):
 
 
 def test_metadata_topic_by_key(
-    client, response_template, metadata_topic_building_count
+    client,
+    response_template,
+    response_metadata_topic_building_count,
 ):
     response = client.get("/metadata/topics/building-count")
     assert response.status_code == 200
@@ -62,7 +76,7 @@ def test_metadata_topic_by_key(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert result == metadata_topic_building_count
+    assert result == response_metadata_topic_building_count
 
 
 def test_metadata_topic_by_key_not_found_error(client):

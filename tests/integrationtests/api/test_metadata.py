@@ -6,7 +6,7 @@ def test_metadata(
     client,
     response_template,
     metadata_project_core,
-    metadata_topic_building_count,
+    response_metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
     metadata_quality_dimension_completeness,
 ):
@@ -18,7 +18,7 @@ def test_metadata(
     assert content == response_template
     # check topics result
     assert (
-        metadata_topic_building_count["building-count"]
+        response_metadata_topic_building_count["building-count"]
         == result["topics"]["building-count"]
     )
     # check quality dimensions result

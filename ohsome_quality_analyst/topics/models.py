@@ -7,7 +7,7 @@ Note:
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.utils.helper import snake_to_lower_camel
@@ -17,11 +17,13 @@ class BaseTopic(BaseModel):
     key: str
     name: str
     description: str
-
-    class Config:
-        title = "Topic"
-        frozen = True
-        extra = "forbid"
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        extra="forbid",
+        frozen=True,
+        populate_by_name=True,
+        title="Topic",
+    )
 
 
 class TopicDefinition(BaseTopic):
@@ -34,12 +36,6 @@ class TopicDefinition(BaseTopic):
     projects: list[ProjectEnum]
     source: str | None = None
     ratio_filter: str | None = None
-
-    class Config:
-        alias_generator = snake_to_lower_camel
-        frozen = True
-        extra = "forbid"
-        allow_population_by_field_name = True
 
 
 class TopicData(BaseTopic):
