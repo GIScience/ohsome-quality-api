@@ -3,9 +3,9 @@ import asyncio
 import pytest
 
 from ohsome_quality_analyst.api.response_models import (
+    CompIndicator,
     IndicatorGeoJSONResponse,
     IndicatorJSONResponse,
-    IndicatorProperties,
 )
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
 from tests.integrationtests.utils import oqt_vcr
@@ -23,7 +23,7 @@ class TestIndicatorResponseModels:
 
     def test_indicator_property(self, indicator):
         raw_dict = indicator.as_dict(exclude_label=True)
-        IndicatorProperties(**raw_dict)
+        CompIndicator(**raw_dict)
 
     def test_indicator_json_response(self, indicator):
         raw_dict = indicator.as_dict(exclude_label=True)

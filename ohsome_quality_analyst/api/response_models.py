@@ -127,23 +127,21 @@ class TopicProperties(TopicMetadata):
     key: TopicEnum
 
 
-class IndicatorProperties(BaseConfig):
-    # Composition class for indicator responses
+class CompIndicator(BaseConfig):
+    # Indicator model for composition in response models.
     metadata: IndicatorMetadata
     topic: TopicProperties
     result: IndicatorResult
-    model_config = ConfigDict(
-        extra="allow",  # indicators can include extra attributes
-    )
+    model_config = ConfigDict(extra="allow")  # indicators can include extra attributes
 
 
 class IndicatorJSONResponse(BaseResponse):
-    result: list[IndicatorProperties]
+    result: list[CompIndicator]
     model_config = ConfigDict(extra="allow")
 
 
 class IndicatorGeoJSONResponse(
     BaseResponse,
-    FeatureCollection[Feature[Polygon | MultiPolygon, IndicatorProperties]],
+    FeatureCollection[Feature[Polygon | MultiPolygon, CompIndicator]],
 ):
     model_config = ConfigDict(extra="allow")
