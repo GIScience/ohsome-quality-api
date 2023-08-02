@@ -28,18 +28,23 @@ class Currentness(BaseIndicator):
         feature: Feature,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        # thresholds denote number of months (years) since today:
-        self.months_up_to_date = 36  # 3 years
-        self.months_partially_current = 96  # 8 years
-        self.t1 = 0.75
-        self.t2 = 0.5
-        self.t3 = 0.3
+        # everything up to this number of months is considered up-to-date:
+        self.up_to_date = 36  # number of months since today
+        # everything older then this number of months is considered out-of-date:
+        self.out_of_date = 96  # number of months since today
+        self.t1 = 0.75  # percentage
+        self.t2 = 0.5  # percentage
+        self.t3 = 0.3  # percentage
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
-        self.to_timestamps = []  # up to timestamp
+        self.to_timestamps = []
         self.from_timestamps = []
+        self.timestamps = []  # middle of time period
         self.contrib_abs = []  # indices denote years since latest timestamp
         self.contrib_rel = []  # "
         self.contrib_sum = 0
+        self.bin_up_to_date = {}
+        self.bin_in_between = {}
+        self.bin_ut_of_date = {}
 
         self.threshold_low_contributions = 25
 
@@ -60,10 +65,8 @@ class Currentness(BaseIndicator):
         for c in reversed(response["result"]):  # latest contributions first
             self.to_timestamps.append(isoparse(c["toTimestamp"]))
             self.from_timestamps.append(isoparse(c["fromTimestamp"]))
-            self.timestamps = [
-                fr + (to - fr) / 2
-                for to, fr in zip(self.to_timestamps, self.from_timestamps)
-            ]
+            for to_ts, from_ts in zip(self.to_timestamps, self.from_timestamps):
+                self.timestamps.append(from_ts + (to_ts - from_ts) / 2)
             self.contrib_abs.append(c["value"])
             self.contrib_sum += c["value"]
         self.result.timestamp_osm = self.to_timestamps[0]
@@ -81,14 +84,12 @@ class Currentness(BaseIndicator):
 
         self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
 
-        self.contrib_rel_outdated = self.contrib_rel[self.months_partially_current :]
-        self.contrib_abs_outdated = self.contrib_abs[self.months_partially_current :]
-        self.to_timestamps_outdated = self.to_timestamps[
-            self.months_partially_current :
-        ]
-        self.from_timestamps_outdated = self.from_timestamps[
-            self.months_partially_current :
-        ]
+        self.out_of_date_bin = self.create_bin(self.out_of_date, len(self.timestamps))
+
+        self.contrib_rel_outdated = self.contrib_rel[self.out_of_date :]
+        self.contrib_abs_outdated = self.contrib_abs[self.out_of_date :]
+        self.to_timestamps_outdated = self.to_timestamps[self.out_of_date :]
+        self.from_timestamps_outdated = self.from_timestamps[self.out_of_date :]
         self.timestamps_outdated = [
             fr + (to - fr) / 2
             for to, fr in zip(
@@ -97,16 +98,16 @@ class Currentness(BaseIndicator):
         ]
 
         self.contrib_rel_partially_current = self.contrib_rel[
-            self.months_up_to_date : self.months_partially_current
+            self.up_to_date : self.out_of_date
         ]
         self.contrib_abs_partially_current = self.contrib_abs[
-            self.months_up_to_date : self.months_partially_current
+            self.up_to_date : self.out_of_date
         ]
         self.to_timestamps_partially_current = self.to_timestamps[
-            self.months_up_to_date : self.months_partially_current
+            self.up_to_date : self.out_of_date
         ]
         self.from_timestamps_partially_current = self.from_timestamps[
-            self.months_up_to_date : self.months_partially_current
+            self.up_to_date : self.out_of_date
         ]
         self.timestamps_partially_current = [
             fr + (to - fr) / 2
@@ -116,12 +117,10 @@ class Currentness(BaseIndicator):
             )
         ]
 
-        self.contrib_rel_up_to_date = self.contrib_rel[0 : self.months_up_to_date]
-        self.contrib_abs_up_to_date = self.contrib_abs[0 : self.months_up_to_date]
-        self.to_timestamps_up_to_date = self.to_timestamps[0 : self.months_up_to_date]
-        self.from_timestamps_up_to_date = self.from_timestamps[
-            0 : self.months_up_to_date
-        ]
+        self.contrib_rel_up_to_date = self.contrib_rel[0 : self.up_to_date]
+        self.contrib_abs_up_to_date = self.contrib_abs[0 : self.up_to_date]
+        self.to_timestamps_up_to_date = self.to_timestamps[0 : self.up_to_date]
+        self.from_timestamps_up_to_date = self.from_timestamps[0 : self.up_to_date]
         self.timestamps_up_to_date = [
             fr + (to - fr) / 2
             for to, fr in zip(
@@ -178,9 +177,9 @@ class Currentness(BaseIndicator):
         self.result.description = Template(self.metadata.result_description).substitute(
             contrib_rel_t2=f"{sum(self.contrib_rel_up_to_date) * 100:.2f}",
             topic=self.topic.name,
-            from_timestamp=self.from_timestamps[0 : self.months_up_to_date][
-                -1
-            ].strftime("%m/%d/%Y"),
+            from_timestamp=self.from_timestamps[0 : self.up_to_date][-1].strftime(
+                "%m/%d/%Y"
+            ),
             to_timestamp=self.to_timestamps[0].strftime("%m/%d/%Y"),
             elements=int(self.contrib_sum),
             label_description=label_description,
@@ -316,6 +315,15 @@ class Currentness(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+    def create_bin(self, i, j) -> dict[str, list]:
+        return {
+            "contrib_abs": self.contrib_abs[i:j],
+            "contrib_rel": self.contrib_rel[i:j],
+            "to_timestamps": self.to_timestamps[i:j],
+            "from_timestamps": self.from_timestamps[i:j],
+            "timestamp": self.timestamps[i:j],
+        }
 
 
 def get_how_many_years_no_activity(contributions: list) -> int:
