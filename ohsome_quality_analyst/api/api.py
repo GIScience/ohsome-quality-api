@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Annotated, Any
+from typing import Annotated, Any, Union
 
 from fastapi import FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -32,6 +32,8 @@ from ohsome_quality_analyst.api.request_models import (
     ReportRequest,
 )
 from ohsome_quality_analyst.api.response_models import (
+    IndicatorGeoJSONResponse,
+    IndicatorJSONResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
     ProjectMetadataResponse,
@@ -279,18 +281,25 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 @app.post(
     "/indicators/{key}",
     tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
     responses={
         200: {
-            "content": {MEDIA_TYPE_GEOJSON: {}},
-            "description": "Return JSON or GeoJSON.",
-        }
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
     },
 )
 async def post_indicator(
     request: Request,
     key: IndicatorEnum,
     parameters: IndicatorRequest,
-) -> CustomJSONResponse:
+) -> Any:
     """Request an Indicator for a custom AOI."""
     validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     indicators = await oqt.create_indicator(
@@ -300,16 +309,29 @@ async def post_indicator(
         include_figure=parameters.include_figure,
     )
 
-    response = empty_api_response()
-    response["attribution"]["text"] = indicators[0].attribution()
-
     if request.headers["accept"] == MEDIA_TYPE_JSON:
-        response["results"] = [i.as_dict(parameters.include_data) for i in indicators]
-        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+        return {
+            "result": [
+                i.as_dict(parameters.include_data, exclude_label=True)
+                for i in indicators
+            ],
+            "attribution": {
+                "url": ATTRIBUTION_URL,
+                "text": indicators[0].attribution(),
+            },
+        }
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
-        features = [i.as_feature(parameters.include_data) for i in indicators]
-        response.update(FeatureCollection(features))
-        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+        return {
+            "type": "FeatureCollection",
+            "features": [
+                i.as_feature(parameters.include_data, exclude_label=True)
+                for i in indicators
+            ],
+            "attribution": {
+                "url": ATTRIBUTION_URL,
+                "text": indicators[0].attribution(),
+            },
+        }
     else:
         detail = "Content-Type needs to be either {0} or {1}".format(
             MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON

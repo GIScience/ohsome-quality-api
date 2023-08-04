@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -56,6 +56,7 @@ class Result(BaseModel):
         populate_by_name=True,
     )
 
+    @computed_field
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:
         labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}

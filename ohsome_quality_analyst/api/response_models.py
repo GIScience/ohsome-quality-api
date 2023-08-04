@@ -1,12 +1,12 @@
-"""Pydantic models of API responses."""
-
 from typing import Literal
 
+from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from ohsome_quality_analyst import __version__
 from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
 from ohsome_quality_analyst.indicators.definitions import IndicatorEnum
+from ohsome_quality_analyst.indicators.models import Result as IndicatorResult
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.projects.models import Project
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -121,3 +121,27 @@ class Metadata(BaseConfig):
 
 class MetadataResponse(BaseResponse):
     result: Metadata
+
+
+class TopicProperties(TopicMetadata):
+    key: TopicEnum
+
+
+class CompIndicator(BaseConfig):
+    # Indicator model for composition in response models.
+    metadata: IndicatorMetadata
+    topic: TopicProperties
+    result: IndicatorResult
+    model_config = ConfigDict(extra="allow")  # indicators can include extra attributes
+
+
+class IndicatorJSONResponse(BaseResponse):
+    result: list[CompIndicator]
+    model_config = ConfigDict(extra="allow")
+
+
+class IndicatorGeoJSONResponse(
+    BaseResponse,
+    FeatureCollection[Feature[Polygon | MultiPolygon, CompIndicator]],
+):
+    model_config = ConfigDict(extra="allow")
