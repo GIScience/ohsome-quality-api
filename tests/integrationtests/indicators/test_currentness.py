@@ -40,6 +40,25 @@ class TestCalculation:
         assert indicator.result.label == "green"
         assert indicator.result.description is not None
 
+    def test_thresholds(self, topic_building_count, feature_germany_heidelberg):
+        indicator_building_count = Currentness(
+            feature=feature_germany_heidelberg, topic=topic_building_count
+        )
+        indicator_road_count = Currentness(
+            feature=feature_germany_heidelberg,
+            topic=get_topic_fixture("major-roads-count"),
+        )
+
+        asyncio.run(indicator_building_count.preprocess())
+
+        asyncio.run(indicator_road_count.preprocess())
+
+        assert indicator_road_count.up_to_date == 48
+        assert indicator_road_count.out_of_date == 96
+
+        assert indicator_building_count.up_to_date == 36
+        assert indicator_building_count.out_of_date == 96
+
     @oqt_vcr.use_cassette()
     def test_no_amenities(self):
         """Test area with no amenities"""

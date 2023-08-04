@@ -49,6 +49,22 @@ def get_topic_preset(topic_key: str) -> TopicDefinition:
         ) from error
 
 
+def load_topic_thresholds(indicator_name, topic_name):
+    """Read ohsome API parameters of all topic from YAML file.
+
+    Returns:
+        A dict with all topics included.
+    """
+    directory = get_module_dir("ohsome_quality_analyst.indicators")
+    file = os.path.join(directory, indicator_name, "thresholds.yaml")
+    with open(file, "r") as f:
+        raw = yaml.safe_load(f)
+    for k, v in raw.items():
+        if k == topic_name:
+            return v["thresholds"]
+    return None
+
+
 def get_valid_topics(indicator_name: str) -> tuple:
     """Get valid Indicator/Topic combination of an Indicator."""
     td = load_topic_presets()

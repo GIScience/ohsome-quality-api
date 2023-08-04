@@ -6,6 +6,7 @@ from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
+from topics.definitions import load_topic_thresholds
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -50,6 +51,13 @@ class Currentness(BaseIndicator):
 
     async def preprocess(self):
         """Get absolute number of contributions for each year since given start date"""
+        thresholds = load_topic_thresholds(
+            IndicatorName="currentness", TopicName=self.topic.key
+        )
+        if thresholds is not None:
+            self.up_to_date = thresholds[0]
+            self.out_of_date = thresholds[1]
+
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
