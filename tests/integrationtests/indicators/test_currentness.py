@@ -20,7 +20,7 @@ class TestPreprocess:
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
-        assert len(indicator.contrib_abs) > 0
+        assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
         assert isinstance(indicator.result.timestamp_oqt, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)

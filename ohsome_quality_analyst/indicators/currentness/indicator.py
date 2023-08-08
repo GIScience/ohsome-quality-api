@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 from string import Template
 
 import plotly.graph_objects as pgo
@@ -6,11 +7,25 @@ from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
-from topics.definitions import load_topic_thresholds
 
+# from topics.definitions import load_topic_thresholds
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+
+
+@dataclass
+class Bin:
+    """Bucket of contributions.
+
+    Indices denote years since latest timestamp.
+    """
+
+    contrib_abs: list
+    contrib_rel: list
+    to_timestamps: list
+    from_timestamps: list
+    timestamps: list  # middle of time period
 
 
 class Currentness(BaseIndicator):
@@ -37,32 +52,32 @@ class Currentness(BaseIndicator):
         self.t2 = 0.5  # percentage
         self.t3 = 0.3  # percentage
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
-        self.to_timestamps = []
-        self.from_timestamps = []
-        self.timestamps = []  # middle of time period
-        self.contrib_abs = []  # indices denote years since latest timestamp
-        self.contrib_rel = []  # "
+        # self.to_timestamps = []
+        # self.from_timestamps = []
+        # self.timestamps = []  # middle of time period
+        # self.contrib_abs = []  # indices denote years since latest timestamp
+        # self.contrib_rel = []  # "
         self.contrib_sum = 0
-        self.bin_up_to_date = {}
-        self.bin_in_between = {}
-        self.bin_ut_of_date = {}
+        self.bin_total: Bin
+        self.bin_up_to_date: Bin
+        self.bin_in_between: Bin
+        self.bin_ut_of_date: Bin
 
         self.threshold_low_contributions = 25
 
     async def preprocess(self):
-        """Get absolute number of contributions for each year since given start date"""
-        thresholds = load_topic_thresholds(
-            IndicatorName="currentness", TopicName=self.topic.key
-        )
-        if thresholds is not None:
-            self.up_to_date = thresholds[0]
-            self.out_of_date = thresholds[1]
+        """Fetch all latest contributions in monthly buckets since 2008"""
+        # thresholds = load_topic_thresholds(
+        #     IndicatorName="currentness", TopicName=self.topic.key
+        # )
+        # if thresholds is not None:
+        #     self.up_to_date = thresholds[0]
+        #     self.out_of_date = thresholds[1]
 
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
         self.interval = "{}/{}/{}".format(start, end, "P1M")
-        # Fetch all contributions of in yearly buckets since 2008
         response = await ohsome_client.query(
             self.topic,
             self.feature,
@@ -70,14 +85,29 @@ class Currentness(BaseIndicator):
             count_latest_contributions=True,
             contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
         )
+        to_timestamps = []
+        from_timestamps = []
+        timestamps = []
+        contrib_abs = []
+        contrib_rel = []
         for c in reversed(response["result"]):  # latest contributions first
-            self.to_timestamps.append(isoparse(c["toTimestamp"]))
-            self.from_timestamps.append(isoparse(c["fromTimestamp"]))
-            for to_ts, from_ts in zip(self.to_timestamps, self.from_timestamps):
-                self.timestamps.append(from_ts + (to_ts - from_ts) / 2)
-            self.contrib_abs.append(c["value"])
+            to_ts = isoparse(c["toTimestamp"])
+            from_ts = isoparse(c["fromTimestamp"])
+            ts = from_ts + (to_ts - from_ts) / 2
+            to_timestamps.append(to_ts)
+            from_timestamps.append(from_ts)
+            timestamps.append(ts)
+            contrib_abs.append(c["value"])
             self.contrib_sum += c["value"]
-        self.result.timestamp_osm = self.to_timestamps[0]
+        contrib_rel = [c / self.contrib_sum for c in contrib_abs]
+        self.bin_total = Bin(
+            contrib_abs,
+            contrib_rel,
+            to_timestamps,
+            from_timestamps,
+            timestamps,
+        )
+        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
         """Calculate the years since over 50% of the elements were last edited"""
@@ -90,53 +120,57 @@ class Currentness(BaseIndicator):
             )
             return
 
-        self.contrib_rel = [c / self.contrib_sum for c in self.contrib_abs]
+        self.bin_out_of_date = self.create_bin(
+            self.out_of_date,
+            len(self.bin_total.timestamps),
+        )
+        # self.contrib_rel_outdated = self.contrib_rel[self.out_of_date :]
+        # self.contrib_abs_outdated = self.contrib_abs[self.out_of_date :]
+        # self.to_timestamps_outdated = self.to_timestamps[self.out_of_date :]
+        # self.from_timestamps_outdated = self.from_timestamps[self.out_of_date :]
+        # self.timestamps_outdated = [
+        #     fr + (to - fr) / 2
+        #     for to, fr in zip(
+        #         self.to_timestamps_outdated, self.from_timestamps_outdated
+        #     )
+        # ]
 
-        self.out_of_date_bin = self.create_bin(self.out_of_date, len(self.timestamps))
+        self.bin_in_between = self.create_bin(self.up_to_date, self.out_of_date)
+        # self.contrib_rel_partially_current = self.contrib_rel[
+        #     self.up_to_date : self.out_of_date
+        # ]
+        # self.contrib_abs_partially_current = self.contrib_abs[
+        #     self.up_to_date : self.out_of_date
+        # ]
+        # self.to_timestamps_partially_current = self.to_timestamps[
+        #     self.up_to_date : self.out_of_date
+        # ]
+        # self.from_timestamps_partially_current = self.from_timestamps[
+        #     self.up_to_date : self.out_of_date
+        # ]
+        # self.timestamps_partially_current = [
+        #     fr + (to - fr) / 2
+        #     for to, fr in zip(
+        #         self.to_timestamps_partially_current,
+        #         self.from_timestamps_partially_current,
+        #     )
+        # ]
 
-        self.contrib_rel_outdated = self.contrib_rel[self.out_of_date :]
-        self.contrib_abs_outdated = self.contrib_abs[self.out_of_date :]
-        self.to_timestamps_outdated = self.to_timestamps[self.out_of_date :]
-        self.from_timestamps_outdated = self.from_timestamps[self.out_of_date :]
-        self.timestamps_outdated = [
-            fr + (to - fr) / 2
-            for to, fr in zip(
-                self.to_timestamps_outdated, self.from_timestamps_outdated
-            )
-        ]
+        self.bin_up_to_date = self.create_bin(0, self.up_to_date)
+        # self.contrib_rel_up_to_date = self.contrib_rel[0 : self.up_to_date]
+        # self.contrib_abs_up_to_date = self.contrib_abs[0 : self.up_to_date]
+        # self.to_timestamps_up_to_date = self.to_timestamps[0 : self.up_to_date]
+        # self.from_timestamps_up_to_date = self.from_timestamps[0 : self.up_to_date]
+        # self.timestamps_up_to_date = [
+        #     fr + (to - fr) / 2
+        #     for to, fr in zip(
+        #         self.to_timestamps_up_to_date, self.from_timestamps_up_to_date
+        #     )
+        # ]
 
-        self.contrib_rel_partially_current = self.contrib_rel[
-            self.up_to_date : self.out_of_date
-        ]
-        self.contrib_abs_partially_current = self.contrib_abs[
-            self.up_to_date : self.out_of_date
-        ]
-        self.to_timestamps_partially_current = self.to_timestamps[
-            self.up_to_date : self.out_of_date
-        ]
-        self.from_timestamps_partially_current = self.from_timestamps[
-            self.up_to_date : self.out_of_date
-        ]
-        self.timestamps_partially_current = [
-            fr + (to - fr) / 2
-            for to, fr in zip(
-                self.to_timestamps_partially_current,
-                self.from_timestamps_partially_current,
-            )
-        ]
+        self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
-        self.contrib_rel_up_to_date = self.contrib_rel[0 : self.up_to_date]
-        self.contrib_abs_up_to_date = self.contrib_abs[0 : self.up_to_date]
-        self.to_timestamps_up_to_date = self.to_timestamps[0 : self.up_to_date]
-        self.from_timestamps_up_to_date = self.from_timestamps[0 : self.up_to_date]
-        self.timestamps_up_to_date = [
-            fr + (to - fr) / 2
-            for to, fr in zip(
-                self.to_timestamps_up_to_date, self.from_timestamps_up_to_date
-            )
-        ]
-        self.result.value = sum(self.contrib_rel_up_to_date)
-
+        # TODO: is this tested?
         if self.contrib_sum < self.threshold_low_contributions:
             self.result.description = (
                 "In the area of interest less than {0}".format(
@@ -146,33 +180,26 @@ class Currentness(BaseIndicator):
                 + "The significance of the result is low."
             )
             pass
-
         # If green above 50 -> green
         # if green + yellow above 50 -> yellow
-        elif sum(self.contrib_rel_up_to_date) >= self.t1:
-            self.result.class_ = 5
-            label = "green"
-        elif sum(self.contrib_rel_up_to_date) >= self.t2:
-            self.result.class_ = 4
-            label = "green"
-        elif sum(self.contrib_rel_outdated) >= self.t3:
+        elif sum(self.bin_out_of_date.contrib_rel) >= self.t3:
             self.result.class_ = 1
-            label = "red"
+        elif sum(self.bin_up_to_date.contrib_rel) >= self.t1:
+            self.result.class_ = 5
+        elif sum(self.bin_up_to_date.contrib_rel) >= self.t2:
+            self.result.class_ = 4
         elif (
-            sum(self.contrib_rel_up_to_date) + sum(self.contrib_rel_partially_current)
+            sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
             >= self.t1
         ):
             self.result.class_ = 3
-            label = "yellow"
         elif (
-            sum(self.contrib_rel_up_to_date) + sum(self.contrib_rel_partially_current)
-            < self.t1
-            and sum(self.contrib_rel_outdated) < self.t3
+            sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
+            >= self.t2
         ):
             self.result.class_ = 2
-            label = "yellow"
         else:
-            raise ValueError("Ratio has an unexpected value.")
+            self.result.class_ = 1
 
         if self.contrib_sum < self.threshold_low_contributions:
             label_description = (
@@ -181,24 +208,24 @@ class Currentness(BaseIndicator):
                 f" The significance of the result is limited.",
             )
         else:
-            label_description = self.metadata.label_description[label]
+            label_description = self.metadata.label_description[self.result.label]
         self.result.description = Template(self.metadata.result_description).substitute(
-            contrib_rel_t2=f"{sum(self.contrib_rel_up_to_date) * 100:.2f}",
+            contrib_rel_t2=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.2f}",
             topic=self.topic.name,
-            from_timestamp=self.from_timestamps[0 : self.up_to_date][-1].strftime(
-                "%m/%d/%Y"
-            ),
-            to_timestamp=self.to_timestamps[0].strftime("%m/%d/%Y"),
+            from_timestamp=self.bin_up_to_date.from_timestamps[0 : self.up_to_date][
+                -1
+            ].strftime("%m/%d/%Y"),
+            to_timestamp=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
             elements=int(self.contrib_sum),
             label_description=label_description,
             from_timestamp_50_perc=(
-                self.to_timestamps[0]
-                - relativedelta(months=get_median_month(self.contrib_rel))
+                self.bin_total.to_timestamps[0]
+                - relativedelta(months=get_median_month(self.bin_total.contrib_rel))
             ).strftime("%m/%d/%Y"),
-            to_timestamp_50_perc=self.to_timestamps[0].strftime("%m/%d/%Y"),
+            to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
         )
 
-        last_edited_year = get_how_many_years_no_activity(self.contrib_abs)
+        last_edited_year = get_how_many_years_no_activity(self.bin_total.contrib_abs)
         if last_edited_year > 0:
             self.result.description += (
                 f" Attention: There was no mapping activity for "
@@ -324,14 +351,14 @@ class Currentness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def create_bin(self, i, j) -> dict[str, list]:
-        return {
-            "contrib_abs": self.contrib_abs[i:j],
-            "contrib_rel": self.contrib_rel[i:j],
-            "to_timestamps": self.to_timestamps[i:j],
-            "from_timestamps": self.from_timestamps[i:j],
-            "timestamp": self.timestamps[i:j],
-        }
+    def create_bin(self, i, j) -> Bin:
+        return Bin(
+            contrib_abs=self.bin_total.contrib_abs[i:j],
+            contrib_rel=self.bin_total.contrib_rel[i:j],
+            to_timestamps=self.bin_total.to_timestamps[i:j],
+            from_timestamps=self.bin_total.from_timestamps[i:j],
+            timestamps=self.bin_total.timestamps[i:j],
+        )
 
 
 def get_how_many_years_no_activity(contributions: list) -> int:
