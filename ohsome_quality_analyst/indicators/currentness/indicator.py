@@ -16,10 +16,10 @@ from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
-from topics.definitions import load_topic_thresholds
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
+from ohsome_quality_analyst.topics.definitions import load_topic_thresholds
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
