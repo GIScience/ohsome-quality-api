@@ -16,8 +16,8 @@ from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
+from topics.definitions import load_topic_thresholds
 
-# from topics.definitions import load_topic_thresholds
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
@@ -25,7 +25,7 @@ from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 @dataclass
 class Bin:
-    """Bucket of contributions.
+    """Bin or bucket of contributions.
 
     Indices denote years since latest timestamp.
     """
@@ -71,12 +71,13 @@ class Currentness(BaseIndicator):
 
     async def preprocess(self):
         """Fetch all latest contributions in monthly buckets since 2008"""
-        # thresholds = load_topic_thresholds(
-        #     IndicatorName="currentness", TopicName=self.topic.key
-        # )
-        # if thresholds is not None:
-        #     self.up_to_date = thresholds[0]
-        #     self.out_of_date = thresholds[1]
+        thresholds = load_topic_thresholds(
+            indicator_name="currentness",
+            topic_name=self.topic.key,
+        )
+        if thresholds is not None:
+            self.up_to_date = thresholds[0]
+            self.out_of_date = thresholds[1]
 
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
@@ -122,9 +123,18 @@ class Currentness(BaseIndicator):
             )
             return
 
-        self.bin_up_to_date = self.create_bin(0, self.up_to_date)
-        self.bin_in_between = self.create_bin(self.up_to_date, self.out_of_date)
-        self.bin_out_of_date = self.create_bin(
+        self.bin_up_to_date = create_bin(
+            self.bin_total,
+            0,
+            self.up_to_date,
+        )
+        self.bin_in_between = create_bin(
+            self.bin_total,
+            self.up_to_date,
+            self.out_of_date,
+        )
+        self.bin_out_of_date = create_bin(
+            self.bin_total,
             self.out_of_date,
             len(self.bin_total.timestamps),
         )
@@ -197,14 +207,10 @@ class Currentness(BaseIndicator):
             logging.info("Result is undefined. Skipping figure creation.")
             return
         fig = make_subplots(specs=[[{"secondary_y": True}]])
-        # Common variables for both traces
         for bucket, color in zip(
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             ("green", "yellow", "red"),
         ):
-            # contribution_percentage = round(sum(bucket.contrib_rel * 100, 2))
-            # name = str(contribution_percentage) + "%"
-            contrib_rel_per = "{:.0%}".format(sum(bucket.contrib_rel))
             customdata = list(
                 zip(
                     bucket.contrib_abs,
@@ -218,7 +224,19 @@ class Currentness(BaseIndicator):
                 "%{customdata[2]} to %{customdata[1]}"
             )
 
-            # Trace for absolute contributions
+            # Trace for relative contributions
+            fig.add_trace(
+                pgo.Bar(
+                    name="{:.0%}".format(sum(bucket.contrib_rel)),
+                    x=bucket.timestamps,
+                    y=bucket.contrib_rel,
+                    marker_color=color,
+                    customdata=customdata,
+                    hovertemplate=hovertemplate,
+                )
+            )
+
+            # Mock trace for absolute contributions to get second y-axis
             fig.add_trace(
                 pgo.Bar(
                     name=None,
@@ -232,32 +250,14 @@ class Currentness(BaseIndicator):
                 secondary_y=True,
             )
 
-            # Trace for relative contributions
-            fig.add_trace(
-                pgo.Bar(
-                    name=contrib_rel_per,
-                    x=bucket.timestamps,
-                    y=bucket.contrib_rel,
-                    marker_color=color,
-                    hovertemplate=hovertemplate,
-                    customdata=customdata,
-                )
-            )
-
-        y_max = max(self.bin_total.contrib_rel) * 1.05
-
         fig.update_layout(
-            hovermode="x",
-            yaxis_range=[0, y_max],
-            showlegend=True,
+            # hovermode="x",  : TODO
             title_text=("Currentness"),
         )
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
             ticklabelmode="period",
-            # dtick="M6",
             tickformat="%b\n%Y",
-            # tickangle=0,
             tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
@@ -269,7 +269,7 @@ class Currentness(BaseIndicator):
             tickformat=".",
             secondary_y=True,
         )
-        # fixed legend, because we do not high contributions in 2008
+        # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
             x=0,
             y=0.95,
@@ -278,15 +278,6 @@ class Currentness(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-
-    def create_bin(self, i, j) -> Bin:
-        return Bin(
-            contrib_abs=self.bin_total.contrib_abs[i:j],
-            contrib_rel=self.bin_total.contrib_rel[i:j],
-            to_timestamps=self.bin_total.to_timestamps[i:j],
-            from_timestamps=self.bin_total.from_timestamps[i:j],
-            timestamps=self.bin_total.timestamps[i:j],
-        )
 
 
 def get_num_months_last_contrib(contrib: list) -> int:
@@ -303,3 +294,13 @@ def get_median_month(contrib_rel: list) -> int:
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
             return month
+
+
+def create_bin(b: Bin, i: int, j: int) -> Bin:
+    return Bin(
+        contrib_abs=b.contrib_abs[i:j],
+        contrib_rel=b.contrib_rel[i:j],
+        to_timestamps=b.to_timestamps[i:j],
+        from_timestamps=b.from_timestamps[i:j],
+        timestamps=b.timestamps[i:j],
+    )

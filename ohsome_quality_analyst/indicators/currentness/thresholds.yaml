@@ -1,8 +1,9 @@
 ---
+# thresholds are number of months
 major-roads-count:
     thresholds:
-        - 48
-        - 96
+      up_to_date: 48
+      out_of_date: 96
     source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
 
 major-roads-length:
