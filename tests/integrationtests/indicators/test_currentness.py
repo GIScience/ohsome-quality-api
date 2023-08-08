@@ -9,8 +9,8 @@ import pytest
 
 from ohsome_quality_analyst.indicators.currentness.indicator import (
     Currentness,
-    get_how_many_years_no_activity,
     get_median_month,
+    get_num_months_last_contrib,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
@@ -96,7 +96,7 @@ class TestFigure:
         return i
 
     # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
+    # @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
@@ -110,12 +110,12 @@ class TestFigure:
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
     expected = 0
-    result = get_how_many_years_no_activity(given)
+    result = get_num_months_last_contrib(given)
     assert result == expected
 
     given = [0, 0, 5, 0]
     expected = 2
-    result = get_how_many_years_no_activity(given)
+    result = get_num_months_last_contrib(given)
     assert result == expected
 
 

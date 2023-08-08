@@ -1,3 +1,12 @@
+"""Currentness Indicator
+
+Abbreviations:
+    contrib_rel: Relative number of contributions per month [%]
+    contrib_abs: Absolute number of contributions per month [%]
+    contrib_sum: Total number of contributions
+    ts: Timestamp
+"""
+
 import logging
 from dataclasses import dataclass
 from string import Template
@@ -48,20 +57,15 @@ class Currentness(BaseIndicator):
         self.up_to_date = 36  # number of months since today
         # everything older then this number of months is considered out-of-date:
         self.out_of_date = 96  # number of months since today
-        self.t1 = 0.75  # percentage
-        self.t2 = 0.5  # percentage
-        self.t3 = 0.3  # percentage
+        self.t1 = 0.75  # [%]
+        self.t2 = 0.5
+        self.t3 = 0.3
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
-        # self.to_timestamps = []
-        # self.from_timestamps = []
-        # self.timestamps = []  # middle of time period
-        # self.contrib_abs = []  # indices denote years since latest timestamp
-        # self.contrib_rel = []  # "
         self.contrib_sum = 0
         self.bin_total: Bin
         self.bin_up_to_date: Bin
         self.bin_in_between: Bin
-        self.bin_ut_of_date: Bin
+        self.bin_out_of_date: Bin
 
         self.threshold_low_contributions = 25
 
@@ -111,8 +115,6 @@ class Currentness(BaseIndicator):
 
     def calculate(self):
         """Calculate the years since over 50% of the elements were last edited"""
-        logging.info("Calculation for indicator: {}".format(self.metadata.name))
-
         if self.contrib_sum == 0:
             self.result.description = (
                 "In the area of interest no features of "
@@ -120,57 +122,17 @@ class Currentness(BaseIndicator):
             )
             return
 
+        self.bin_up_to_date = self.create_bin(0, self.up_to_date)
+        self.bin_in_between = self.create_bin(self.up_to_date, self.out_of_date)
         self.bin_out_of_date = self.create_bin(
             self.out_of_date,
             len(self.bin_total.timestamps),
         )
-        # self.contrib_rel_outdated = self.contrib_rel[self.out_of_date :]
-        # self.contrib_abs_outdated = self.contrib_abs[self.out_of_date :]
-        # self.to_timestamps_outdated = self.to_timestamps[self.out_of_date :]
-        # self.from_timestamps_outdated = self.from_timestamps[self.out_of_date :]
-        # self.timestamps_outdated = [
-        #     fr + (to - fr) / 2
-        #     for to, fr in zip(
-        #         self.to_timestamps_outdated, self.from_timestamps_outdated
-        #     )
-        # ]
-
-        self.bin_in_between = self.create_bin(self.up_to_date, self.out_of_date)
-        # self.contrib_rel_partially_current = self.contrib_rel[
-        #     self.up_to_date : self.out_of_date
-        # ]
-        # self.contrib_abs_partially_current = self.contrib_abs[
-        #     self.up_to_date : self.out_of_date
-        # ]
-        # self.to_timestamps_partially_current = self.to_timestamps[
-        #     self.up_to_date : self.out_of_date
-        # ]
-        # self.from_timestamps_partially_current = self.from_timestamps[
-        #     self.up_to_date : self.out_of_date
-        # ]
-        # self.timestamps_partially_current = [
-        #     fr + (to - fr) / 2
-        #     for to, fr in zip(
-        #         self.to_timestamps_partially_current,
-        #         self.from_timestamps_partially_current,
-        #     )
-        # ]
-
-        self.bin_up_to_date = self.create_bin(0, self.up_to_date)
-        # self.contrib_rel_up_to_date = self.contrib_rel[0 : self.up_to_date]
-        # self.contrib_abs_up_to_date = self.contrib_abs[0 : self.up_to_date]
-        # self.to_timestamps_up_to_date = self.to_timestamps[0 : self.up_to_date]
-        # self.from_timestamps_up_to_date = self.from_timestamps[0 : self.up_to_date]
-        # self.timestamps_up_to_date = [
-        #     fr + (to - fr) / 2
-        #     for to, fr in zip(
-        #         self.to_timestamps_up_to_date, self.from_timestamps_up_to_date
-        #     )
-        # ]
 
         self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
         # TODO: is this tested?
+        # TODO: factor out to a check_edge_cases function (see mapping saturation)
         if self.contrib_sum < self.threshold_low_contributions:
             self.result.description = (
                 "In the area of interest less than {0}".format(
@@ -212,9 +174,7 @@ class Currentness(BaseIndicator):
         self.result.description = Template(self.metadata.result_description).substitute(
             contrib_rel_t2=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.2f}",
             topic=self.topic.name,
-            from_timestamp=self.bin_up_to_date.from_timestamps[0 : self.up_to_date][
-                -1
-            ].strftime("%m/%d/%Y"),
+            from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%m/%d/%Y"),
             to_timestamp=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
             elements=int(self.contrib_sum),
             label_description=label_description,
@@ -225,7 +185,7 @@ class Currentness(BaseIndicator):
             to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
         )
 
-        last_edited_year = get_how_many_years_no_activity(self.bin_total.contrib_abs)
+        last_edited_year = get_num_months_last_contrib(self.bin_total.contrib_abs)
         if last_edited_year > 0:
             self.result.description += (
                 f" Attention: There was no mapping activity for "
@@ -236,69 +196,37 @@ class Currentness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        colors_dict = {
-            "green": {
-                "color": "green",
-                "contrib_rel": self.contrib_rel_up_to_date,
-                "contrib_abs": self.contrib_abs_up_to_date,
-                "to_timestamps": self.to_timestamps_up_to_date,
-                "from_timestamps": self.from_timestamps_up_to_date,
-                "timestamps": self.timestamps_up_to_date,
-            },
-            "yellow": {
-                "color": "yellow",
-                "contrib_rel": self.contrib_rel_partially_current,
-                "contrib_abs": self.contrib_abs_partially_current,
-                "to_timestamps": self.to_timestamps_partially_current,
-                "from_timestamps": self.from_timestamps_partially_current,
-                "timestamps": self.timestamps_partially_current,
-            },
-            "red": {
-                "color": "red",
-                "contrib_abs": self.contrib_abs_outdated,
-                "contrib_rel": self.contrib_rel_outdated,
-                "to_timestamps": self.to_timestamps_outdated,
-                "from_timestamps": self.from_timestamps_outdated,
-                "timestamps": self.timestamps_outdated,
-            },
-        }
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         # Common variables for both traces
-        hover_template_abs = None
-        hover_template_rel = (
-            "%{y} of features (%{customdata[0]})<br>"
-            "were last modified in the period from %{customdata[2]}"
-            " to %{customdata[1]}<extra></extra>"
-        )
-
-        for color, data in colors_dict.items():
-            contribution_percentage = round(sum(data["contrib_rel"]) * 100, 2)
-            name = str(contribution_percentage) + "%"
-            timestamps = data["timestamps"]
-
+        for bucket, color in zip(
+            (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
+            ("green", "yellow", "red"),
+        ):
+            # contribution_percentage = round(sum(bucket.contrib_rel * 100, 2))
+            # name = str(contribution_percentage) + "%"
+            contrib_rel_per = "{:.0%}".format(sum(bucket.contrib_rel))
             customdata = list(
                 zip(
-                    data["contrib_abs"],
-                    [
-                        timestamp.strftime("%m/%d/%Y")
-                        for timestamp in data["to_timestamps"]
-                    ],
-                    [
-                        timestamp.strftime("%m/%d/%Y")
-                        for timestamp in data["from_timestamps"]
-                    ],
+                    bucket.contrib_abs,
+                    [ts.strftime("%m/%d/%Y") for ts in bucket.to_timestamps],
+                    [ts.strftime("%m/%d/%Y") for ts in bucket.from_timestamps],
                 )
+            )
+            hovertemplate = (
+                "%{y} of features (%{customdata[0]}) "
+                "were last modified in the period from "
+                "%{customdata[2]} to %{customdata[1]}"
             )
 
             # Trace for absolute contributions
             fig.add_trace(
                 pgo.Bar(
-                    name=name,
-                    x=timestamps,
-                    y=data["contrib_abs"],
+                    name=None,
+                    x=bucket.timestamps,
+                    y=bucket.contrib_abs,
                     marker_color=color,
                     showlegend=False,
-                    hovertemplate=hover_template_abs,
+                    hovertemplate=None,
                     hoverinfo="skip",
                 ),
                 secondary_y=True,
@@ -307,16 +235,16 @@ class Currentness(BaseIndicator):
             # Trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
-                    name=name,
-                    x=timestamps,
-                    y=data["contrib_rel"],
+                    name=contrib_rel_per,
+                    x=bucket.timestamps,
+                    y=bucket.contrib_rel,
                     marker_color=color,
-                    hovertemplate=hover_template_rel,
+                    hovertemplate=hovertemplate,
                     customdata=customdata,
                 )
             )
 
-        y_max = max(self.contrib_rel) * 1.05
+        y_max = max(self.bin_total.contrib_rel) * 1.05
 
         fig.update_layout(
             hovermode="x",
@@ -330,7 +258,7 @@ class Currentness(BaseIndicator):
             # dtick="M6",
             tickformat="%b\n%Y",
             # tickangle=0,
-            tick0=self.to_timestamps[-1],
+            tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
             title_text="Percentage of Latest Contributions",
@@ -361,17 +289,17 @@ class Currentness(BaseIndicator):
         )
 
 
-def get_how_many_years_no_activity(contributions: list) -> int:
-    """Get the number of years since today when the last contribution has been made."""
-    for year, contrib in enumerate(contributions):  # latest contribution first
+def get_num_months_last_contrib(contrib: list) -> int:
+    """Get the number of months since today when the last contribution has been made."""
+    for month, contrib in enumerate(contrib):  # latest contribution first
         if contrib != 0:
-            return year
+            return month
 
 
-def get_median_month(contributions_rel: list) -> int:
+def get_median_month(contrib_rel: list) -> int:
     """Get the number of years since today when 50% of contributions have been made."""
     contrib_rel_cum = 0
-    for month, contrib in enumerate(contributions_rel):  # latest contribution first
+    for month, contrib in enumerate(contrib_rel):  # latest contribution first
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
             return month
