@@ -8,7 +8,9 @@ import plotly.io as pio
 import pytest
 
 from ohsome_quality_analyst.indicators.currentness.indicator import (
+    Bin,
     Currentness,
+    create_bin,
     get_median_month,
     get_num_months_last_contrib,
 )
@@ -58,6 +60,17 @@ class TestCalculation:
 
         assert indicator_building_count.up_to_date == 36
         assert indicator_building_count.out_of_date == 96
+
+    def test_low_contributions(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        indicator.contrib_sum = 20
+        indicator.calculate()
+
+        # Check if the result description contains the message about low contributions
+        assert (
+            "The significance of the result is limited." in indicator.result.description
+        )
 
     @oqt_vcr.use_cassette()
     def test_no_amenities(self):
@@ -129,3 +142,43 @@ def test_get_median_month():
     expected = 0
     result = get_median_month(given)
     assert result == expected
+
+
+def test_create_bin():
+    contrib_abs = [10, 20, 30, 40, 50]
+    contrib_rel = [0.1, 0.2, 0.3, 0.4, 0.5]
+    to_timestamps = [
+        "2023-01-01",
+        "2023-02-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-05-01",
+    ]
+    from_timestamps = [
+        "2023-01-01",
+        "2023-02-01",
+        "2023-03-01",
+        "2023-04-01",
+        "2023-05-01",
+    ]
+    timestamps = ["2023-01-15", "2023-02-15", "2023-03-15", "2023-04-15", "2023-05-15"]
+
+    bin_total = Bin(
+        contrib_abs, contrib_rel, to_timestamps, from_timestamps, timestamps
+    )
+
+    i = 1  # Start index
+    j = 4  # End index
+
+    new_bin = create_bin(bin_total, i, j)
+
+    assert new_bin.contrib_abs == [20, 30, 40]
+    assert new_bin.contrib_rel == [0.2, 0.3, 0.4]
+    assert new_bin.to_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
+    assert new_bin.from_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
+    assert new_bin.timestamps == ["2023-02-15", "2023-03-15", "2023-04-15"]
+
+    assert len(new_bin.contrib_abs) == len(new_bin.contrib_rel)
+    assert len(new_bin.contrib_rel) == len(new_bin.to_timestamps)
+    assert len(new_bin.to_timestamps) == len(new_bin.from_timestamps)
+    assert len(new_bin.from_timestamps) == len(new_bin.timestamps)

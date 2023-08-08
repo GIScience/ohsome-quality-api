@@ -55,7 +55,7 @@ class Currentness(BaseIndicator):
         super().__init__(topic=topic, feature=feature)
         # everything up to this number of months is considered up-to-date:
         self.up_to_date = 36  # number of months since today
-        # everything older then this number of months is considered out-of-date:
+        # everything older than this number of months is considered out-of-date:
         self.out_of_date = 96  # number of months since today
         self.t1 = 0.75  # [%]
         self.t2 = 0.5
@@ -76,8 +76,8 @@ class Currentness(BaseIndicator):
             topic_name=self.topic.key,
         )
         if thresholds is not None:
-            self.up_to_date = thresholds[0]
-            self.out_of_date = thresholds[1]
+            self.up_to_date = thresholds["up_to_date"]
+            self.out_of_date = thresholds["out_of_date"]
 
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
@@ -177,7 +177,7 @@ class Currentness(BaseIndicator):
             label_description = (
                 f"Attention: There are only {self.contrib_sum} "
                 f" with the selected filter in this region."
-                f" The significance of the result is limited.",
+                f" The significance of the result is limited."
             )
         else:
             label_description = self.metadata.label_description[self.result.label]
@@ -187,14 +187,13 @@ class Currentness(BaseIndicator):
             from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%m/%d/%Y"),
             to_timestamp=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
             elements=int(self.contrib_sum),
-            label_description=label_description,
             from_timestamp_50_perc=(
                 self.bin_total.to_timestamps[0]
                 - relativedelta(months=get_median_month(self.bin_total.contrib_rel))
             ).strftime("%m/%d/%Y"),
             to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
         )
-
+        self.result.description += label_description
         last_edited_year = get_num_months_last_contrib(self.bin_total.contrib_abs)
         if last_edited_year > 0:
             self.result.description += (
@@ -222,6 +221,7 @@ class Currentness(BaseIndicator):
                 "%{y} of features (%{customdata[0]}) "
                 "were last modified in the period from "
                 "%{customdata[2]} to %{customdata[1]}"
+                "<extra></extra>"
             )
 
             # Trace for relative contributions
