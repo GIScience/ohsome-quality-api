@@ -32,6 +32,7 @@
 - feat(indicator): add as_dict method ([#653])
 - refactor(oqt/api): move geojson creation to api ([#653])
 - build: bump fastapi and pydantic major version ([#669])
+- using a geojson with wrong projection now throws specific error ([#667])
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
@@ -49,6 +50,7 @@
 [#653]: https://github.com/GIScience/ohsome-quality-analyst/pull/653
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
 [#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
+[#667]: https://github.com/GIScience/ohsome-quality-analyst/pull/667
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
 
