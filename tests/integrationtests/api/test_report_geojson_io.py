@@ -6,6 +6,7 @@ import unittest
 
 import geojson
 from fastapi.testclient import TestClient
+from utils.validators import InvalidCRSError, validate_geojson
 
 from ohsome_quality_analyst.api.api import app
 from tests.integrationtests.api.response_schema import (
@@ -69,8 +70,15 @@ class TestApiReportIo(unittest.TestCase):
     @oqt_vcr.use_cassette()
     def test_wrong_crs(self):
         feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
-        response = self.post_response(feature)
-        self.assertEqual(response.status_code, 400)
+
+        with self.assertRaises(InvalidCRSError) as context:
+            validate_geojson(feature)
+        exception = context.exception
+        self.assertEqual(exception.error_code, 400)
+        self.assertEqual(
+            exception.args[0],
+            "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none.",
+        )
 
 
 if __name__ == "__main__":

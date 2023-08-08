@@ -35,7 +35,7 @@ def validate_geojson(bpolys: GeoJSON):
             raise GeoJSONGeometryTypeError()
     else:
         raise GeoJSONObjectTypeError()
-    crs = bpolys.get("crs")
+    crs = bpolys.get("crs", None)
     if crs is None:
         pass
     elif "urn:ogc:def:crs:OGC::CRS84" in crs["properties"]["name"]:
