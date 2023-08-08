@@ -6,9 +6,9 @@ import unittest
 
 import geojson
 from fastapi.testclient import TestClient
-from utils.validators import InvalidCRSError, validate_geojson
 
 from ohsome_quality_analyst.api.api import app
+from ohsome_quality_analyst.utils.validators import InvalidCRSError, validate_geojson
 from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
