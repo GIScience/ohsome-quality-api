@@ -12,7 +12,8 @@
 
 ### New Features
 
-- feat(api): add `includeFigure` parameter to `/indicators` endpoint. ([#659])
+- feat(api): add `includeFigure` parameter to `/indicators` endpoint ([#659])
+- feat(api): add indicator response models ([#670])
 
 ### Other Changes
 
@@ -49,6 +50,7 @@
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
 [#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
+[#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
 
 ## 0.15.0
 
