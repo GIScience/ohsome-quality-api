@@ -17,6 +17,23 @@ from ohsome_quality_analyst.indicators.currentness.indicator import (
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
 
+class TestInit:
+    def test_thresholds_topic(self, topic_building_count, feature_germany_heidelberg):
+        """Test topic specific thresholds setting after init of indicator."""
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        assert indicator.up_to_date == 36
+        assert indicator.out_of_date == 96
+
+    def test_thresholds_default(self, feature_germany_heidelberg):
+        """Test default thresholds setting after init of indicator."""
+        indicator = Currentness(
+            feature=feature_germany_heidelberg,
+            topic=get_topic_fixture("major-roads-count"),
+        )
+        assert indicator.up_to_date == 48
+        assert indicator.out_of_date == 96
+
+
 class TestPreprocess:
     @oqt_vcr.use_cassette
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
@@ -41,25 +58,6 @@ class TestCalculation:
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
         assert indicator.result.description is not None
-
-    def test_thresholds(self, topic_building_count, feature_germany_heidelberg):
-        indicator_building_count = Currentness(
-            feature=feature_germany_heidelberg, topic=topic_building_count
-        )
-        indicator_road_count = Currentness(
-            feature=feature_germany_heidelberg,
-            topic=get_topic_fixture("major-roads-count"),
-        )
-
-        asyncio.run(indicator_building_count.preprocess())
-
-        asyncio.run(indicator_road_count.preprocess())
-
-        assert indicator_road_count.up_to_date == 48
-        assert indicator_road_count.out_of_date == 96
-
-        assert indicator_building_count.up_to_date == 36
-        assert indicator_building_count.out_of_date == 96
 
     def test_low_contributions(self, topic_building_count, feature_germany_heidelberg):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
@@ -161,10 +159,20 @@ def test_create_bin():
         "2023-04-01",
         "2023-05-01",
     ]
-    timestamps = ["2023-01-15", "2023-02-15", "2023-03-15", "2023-04-15", "2023-05-15"]
+    timestamps = [
+        "2023-01-15",
+        "2023-02-15",
+        "2023-03-15",
+        "2023-04-15",
+        "2023-05-15",
+    ]
 
     bin_total = Bin(
-        contrib_abs, contrib_rel, to_timestamps, from_timestamps, timestamps
+        contrib_abs,
+        contrib_rel,
+        to_timestamps,
+        from_timestamps,
+        timestamps,
     )
 
     i = 1  # Start index
@@ -178,7 +186,10 @@ def test_create_bin():
     assert new_bin.from_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
     assert new_bin.timestamps == ["2023-02-15", "2023-03-15", "2023-04-15"]
 
-    assert len(new_bin.contrib_abs) == len(new_bin.contrib_rel)
-    assert len(new_bin.contrib_rel) == len(new_bin.to_timestamps)
-    assert len(new_bin.to_timestamps) == len(new_bin.from_timestamps)
-    assert len(new_bin.from_timestamps) == len(new_bin.timestamps)
+    assert (
+        len(new_bin.contrib_abs)
+        == len(new_bin.contrib_rel)
+        == len(new_bin.from_timestamps)
+        == len(new_bin.to_timestamps)
+        == len(new_bin.timestamps)
+    )
