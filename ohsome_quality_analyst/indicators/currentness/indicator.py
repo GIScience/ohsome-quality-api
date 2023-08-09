@@ -5,13 +5,16 @@ Abbreviations:
     contrib_abs: Absolute number of contributions per month [%]
     contrib_sum: Total number of contributions
     ts: Timestamp
+    th: Threshold
 """
 
 import logging
+import os
 from dataclasses import dataclass
 from string import Template
 
 import plotly.graph_objects as pgo
+import yaml
 from dateutil.parser import isoparse
 from dateutil.relativedelta import relativedelta
 from geojson import Feature
@@ -19,7 +22,6 @@ from plotly.subplots import make_subplots
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.topics.definitions import load_topic_thresholds
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
 
 
@@ -53,13 +55,12 @@ class Currentness(BaseIndicator):
         feature: Feature,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        # everything up to this number of months is considered up-to-date:
-        self.up_to_date = 36  # number of months since today
-        # everything older than this number of months is considered out-of-date:
-        self.out_of_date = 96  # number of months since today
-        self.t1 = 0.75  # [%]
-        self.t2 = 0.5
-        self.t3 = 0.3
+        # thresholds for binning
+        self.up_to_date, self.out_of_date = load_thresholds(self.topic.key)
+        # thresholds for determining result class based on share of features in bins
+        self.th1 = 0.75  # [%]
+        self.th2 = 0.5
+        self.th3 = 0.3
         self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         self.contrib_sum = 0
         self.bin_total: Bin
@@ -67,18 +68,8 @@ class Currentness(BaseIndicator):
         self.bin_in_between: Bin
         self.bin_out_of_date: Bin
 
-        self.threshold_low_contributions = 25
-
     async def preprocess(self):
         """Fetch all latest contributions in monthly buckets since 2008"""
-        thresholds = load_topic_thresholds(
-            indicator_name="currentness",
-            topic_name=self.topic.key,
-        )
-        if thresholds is not None:
-            self.up_to_date = thresholds["up_to_date"]
-            self.out_of_date = thresholds["out_of_date"]
-
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
@@ -95,6 +86,7 @@ class Currentness(BaseIndicator):
         timestamps = []
         contrib_abs = []
         contrib_rel = []
+        contrib_sum = 0
         for c in reversed(response["result"]):  # latest contributions first
             to_ts = isoparse(c["toTimestamp"])
             from_ts = isoparse(c["fromTimestamp"])
@@ -103,8 +95,11 @@ class Currentness(BaseIndicator):
             from_timestamps.append(from_ts)
             timestamps.append(ts)
             contrib_abs.append(c["value"])
-            self.contrib_sum += c["value"]
-        contrib_rel = [c / self.contrib_sum for c in contrib_abs]
+            contrib_sum += c["value"]
+        if contrib_sum == 0:
+            contrib_rel = [0 for _ in contrib_abs]
+        else:
+            contrib_rel = [c / contrib_sum for c in contrib_abs]
         self.bin_total = Bin(
             contrib_abs,
             contrib_rel,
@@ -112,15 +107,14 @@ class Currentness(BaseIndicator):
             from_timestamps,
             timestamps,
         )
+        self.contrib_sum = contrib_sum
         self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
         """Calculate the years since over 50% of the elements were last edited"""
-        if self.contrib_sum == 0:
-            self.result.description = (
-                "In the area of interest no features of "
-                "the selected topic are present today."
-            )
+
+        abort, self.result.description = check_edge_cases(self.contrib_sum)
+        if abort:
             return
 
         self.bin_up_to_date = create_bin(
@@ -141,47 +135,31 @@ class Currentness(BaseIndicator):
 
         self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
-        # TODO: is this tested?
-        # TODO: factor out to a check_edge_cases function (see mapping saturation)
-        if self.contrib_sum < self.threshold_low_contributions:
-            self.result.description = (
-                "In the area of interest less than {0}".format(
-                    self.threshold_low_contributions
-                )
-                + " features of the selected topic are present today. "
-                + "The significance of the result is low."
-            )
-            pass
         # If green above 50 -> green
         # if green + yellow above 50 -> yellow
-        elif sum(self.bin_out_of_date.contrib_rel) >= self.t3:
+        if sum(self.bin_out_of_date.contrib_rel) >= self.th3:
             self.result.class_ = 1
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.t1:
+        elif sum(self.bin_up_to_date.contrib_rel) >= self.th1:
             self.result.class_ = 5
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.t2:
+        elif sum(self.bin_up_to_date.contrib_rel) >= self.th2:
             self.result.class_ = 4
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.t1
+            >= self.th1
         ):
             self.result.class_ = 3
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.t2
+            >= self.th2
         ):
             self.result.class_ = 2
         else:
             self.result.class_ = 1
 
-        if self.contrib_sum < self.threshold_low_contributions:
-            label_description = (
-                f"Attention: There are only {self.contrib_sum} "
-                f" with the selected filter in this region."
-                f" The significance of the result is limited."
-            )
-        else:
-            label_description = self.metadata.label_description[self.result.label]
-        self.result.description = Template(self.metadata.result_description).substitute(
+        label_description = self.metadata.label_description[self.result.label]
+        self.result.description += Template(
+            self.metadata.result_description
+        ).substitute(
             contrib_rel_t2=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.2f}",
             topic=self.topic.name,
             from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%m/%d/%Y"),
@@ -251,7 +229,6 @@ class Currentness(BaseIndicator):
             )
 
         fig.update_layout(
-            # hovermode="x",  : TODO
             title_text=("Currentness"),
         )
         fig.update_xaxes(
@@ -280,6 +257,58 @@ class Currentness(BaseIndicator):
         self.result.figure = raw
 
 
+def load_thresholds(topic_key: str) -> tuple[int, int]:
+    """Load thresholds based on topic keys.
+
+    Thresholds denote the number of months since today.
+    Thresholds are used to discern if the features are up-to-date or out-of-date.
+
+    up-to-data: everything up to this number of months is considered up-to-date
+    out-of-date: everything older than this number of months is considered out-of-date
+
+    Returns:
+        tuple: (up-to-date, out-of-date)
+    """
+    file = os.path.join(os.path.dirname(__file__), "thresholds.yaml")
+    with open(file, "r") as f:
+        raw = yaml.safe_load(f)
+    try:
+        # topic thresholds
+        thresholds = raw[topic_key]["thresholds"]
+        return (thresholds["up_to_date"], thresholds["out_of_date"])
+    except KeyError:
+        # default thresholds
+        return (36, 96)
+
+
+def create_bin(b: Bin, i: int, j: int) -> Bin:
+    return Bin(
+        contrib_abs=b.contrib_abs[i:j],
+        contrib_rel=b.contrib_rel[i:j],
+        to_timestamps=b.to_timestamps[i:j],
+        from_timestamps=b.from_timestamps[i:j],
+        timestamps=b.timestamps[i:j],
+    )
+
+
+def check_edge_cases(contrib_sum) -> tuple[bool, str]:
+    """Check and describe edge cases and flag if computation should be aborted."""
+    if contrib_sum == 0:  # no data
+        return (
+            True,
+            "In the area of interest no features of the selected topic are "
+            "present today.",
+        )
+    elif contrib_sum < 25:  # not enough data
+        return (
+            False,
+            "In the area of interest less than 25 features of the selected "
+            "topic are present today. The significance of the result is low.",
+        )
+    else:
+        return (False, "")
+
+
 def get_num_months_last_contrib(contrib: list) -> int:
     """Get the number of months since today when the last contribution has been made."""
     for month, contrib in enumerate(contrib):  # latest contribution first
@@ -294,13 +323,3 @@ def get_median_month(contrib_rel: list) -> int:
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
             return month
-
-
-def create_bin(b: Bin, i: int, j: int) -> Bin:
-    return Bin(
-        contrib_abs=b.contrib_abs[i:j],
-        contrib_rel=b.contrib_rel[i:j],
-        to_timestamps=b.to_timestamps[i:j],
-        from_timestamps=b.from_timestamps[i:j],
-        timestamps=b.timestamps[i:j],
-    )
