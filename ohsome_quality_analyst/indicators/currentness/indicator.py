@@ -46,7 +46,7 @@ class Currentness(BaseIndicator):
     time range
 
     Attributes:
-        t1, t2, t3 (float): Ratio of all contributions to be in a specific class
+        th1, th2, th3 (float): Ratio of all contributions to be in a specific class
     """
 
     def __init__(
@@ -111,8 +111,7 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
-        """Calculate the years since over 50% of the elements were last edited"""
-
+        # TODO: does this need a docstring
         abort, self.result.description = check_edge_cases(self.contrib_sum)
         if abort:
             return
@@ -172,6 +171,8 @@ class Currentness(BaseIndicator):
             to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
         )
         self.result.description += label_description
+
+        # TODO: factor out to edge case
         last_edited_year = get_num_months_last_contrib(self.bin_total.contrib_abs)
         if last_edited_year > 0:
             self.result.description += (
