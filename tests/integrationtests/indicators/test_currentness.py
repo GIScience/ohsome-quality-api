@@ -66,8 +66,23 @@ class TestCalculation:
         indicator.calculate()
 
         # Check if the result description contains the message about low contributions
+        assert "The significance of the result is low." in indicator.result.description
+
+    def test_months_without_edit(
+        self, topic_building_count, feature_germany_heidelberg
+    ):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        indicator.bin_total.contrib_abs = [
+            0 if i < 12 else contribs
+            for i, contribs in enumerate(indicator.bin_total.contrib_abs)
+        ]
+        indicator.calculate()
+
+        # Check if the result description contains the message about low contributions
         assert (
-            "The significance of the result is limited." in indicator.result.description
+            "Attention: There was no mapping activity for"
+            in indicator.result.description
         )
 
     @oqt_vcr.use_cassette()
@@ -107,7 +122,7 @@ class TestFigure:
         return i
 
     # comment out for manual test
-    # @pytest.mark.skip(reason="Only for manual testing.")
+    @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)

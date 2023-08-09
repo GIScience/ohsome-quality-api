@@ -112,8 +112,10 @@ class Currentness(BaseIndicator):
 
     def calculate(self):
         # TODO: does this need a docstring
-        abort, self.result.description = check_edge_cases(self.contrib_sum)
-        if abort:
+        abort, self.result.description = check_edge_cases(
+            self.contrib_sum, self.bin_total
+        )
+        if abort is True:
             return
 
         self.bin_up_to_date = create_bin(
@@ -171,14 +173,6 @@ class Currentness(BaseIndicator):
             to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
         )
         self.result.description += label_description
-
-        # TODO: factor out to edge case
-        last_edited_year = get_num_months_last_contrib(self.bin_total.contrib_abs)
-        if last_edited_year > 0:
-            self.result.description += (
-                f" Attention: There was no mapping activity for "
-                f"{last_edited_year} year(s) in this region."
-            )
 
     def create_figure(self):
         if self.result.label == "undefined":
@@ -292,7 +286,7 @@ def create_bin(b: Bin, i: int, j: int) -> Bin:
     )
 
 
-def check_edge_cases(contrib_sum) -> tuple[bool, str]:
+def check_edge_cases(contrib_sum, bin_total) -> tuple[bool, str]:
     """Check and describe edge cases and flag if computation should be aborted."""
     if contrib_sum == 0:  # no data
         return (
@@ -307,7 +301,14 @@ def check_edge_cases(contrib_sum) -> tuple[bool, str]:
             "topic are present today. The significance of the result is low.",
         )
     else:
-        return (False, "")
+        months_til_last_contrib = get_num_months_last_contrib(bin_total.contrib_abs)
+        if months_til_last_contrib >= 12:
+            return (
+                False,
+                f" Attention: There was no mapping activity for "
+                f"{months_til_last_contrib} months in this region.",
+            )
+        return False, ""
 
 
 def get_num_months_last_contrib(contrib: list) -> int:
@@ -318,7 +319,7 @@ def get_num_months_last_contrib(contrib: list) -> int:
 
 
 def get_median_month(contrib_rel: list) -> int:
-    """Get the number of years since today when 50% of contributions have been made."""
+    """Get the number of months since today when 50% of contributions have been made."""
     contrib_rel_cum = 0
     for month, contrib in enumerate(contrib_rel):  # latest contribution first
         contrib_rel_cum += contrib
