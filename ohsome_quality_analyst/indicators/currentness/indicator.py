@@ -40,22 +40,13 @@ class Bin:
 
 
 class Currentness(BaseIndicator):
-    """
-    Ratio of all contributions that have been edited since 2008 until the
-    current day in relation with years without mapping activities in the same
-    time range
-
-    Attributes:
-        th1, th2, th3 (float): Ratio of all contributions to be in a specific class
-    """
-
     def __init__(
         self,
         topic: Topic,
         feature: Feature,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        # thresholds for binning
+        # thresholds for binning in months
         self.up_to_date, self.out_of_date = load_thresholds(self.topic.key)
         # thresholds for determining result class based on share of features in bins
         self.th1 = 0.75  # [%]
@@ -69,7 +60,11 @@ class Currentness(BaseIndicator):
         self.bin_out_of_date: Bin
 
     async def preprocess(self):
-        """Fetch all latest contributions in monthly buckets since 2008"""
+        """Fetch all latest contributions in monthly buckets since 2008
+
+        Beside the creation, latest contribution includes also the change to the
+        geometry and the tag. It excludes deletion.
+        """
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
@@ -111,12 +106,21 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
+        """Determine up-to-date and out-of-date contributions.
+
+        Put contributions into three bins: (1) up to date (2) in between and (3) out of
+        date. The range of those bins are based on the topic. After binning determine
+        the result class based on share of features in each bin.
+        """
         # TODO: does this need a docstring
-        abort, self.result.description = check_edge_cases(
-            self.contrib_sum, self.bin_total
-        )
-        if abort is True:
+        edge_cases = check_major_edge_cases(self.contrib_sum)
+        if edge_cases:
+            self.result.description = edge_cases
             return
+        self.result.description = check_minor_edge_cases(
+            self.contrib_sum,
+            self.bin_total,
+        )
 
         self.bin_up_to_date = create_bin(
             self.bin_total,
@@ -136,8 +140,6 @@ class Currentness(BaseIndicator):
 
         self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
-        # If green above 50 -> green
-        # if green + yellow above 50 -> yellow
         if sum(self.bin_out_of_date.contrib_rel) >= self.th3:
             self.result.class_ = 1
         elif sum(self.bin_up_to_date.contrib_rel) >= self.th1:
@@ -197,7 +199,7 @@ class Currentness(BaseIndicator):
                 "<extra></extra>"
             )
 
-            # Trace for relative contributions
+            # trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
                     name="{:.0%}".format(sum(bucket.contrib_rel)),
@@ -209,7 +211,7 @@ class Currentness(BaseIndicator):
                 )
             )
 
-            # Mock trace for absolute contributions to get second y-axis
+            # mock trace for absolute contributions to get second y-axis
             fig.add_trace(
                 pgo.Bar(
                     name=None,
@@ -286,29 +288,33 @@ def create_bin(b: Bin, i: int, j: int) -> Bin:
     )
 
 
-def check_edge_cases(contrib_sum, bin_total) -> tuple[bool, str]:
-    """Check and describe edge cases and flag if computation should be aborted."""
+def check_major_edge_cases(contrib_sum) -> str:
+    """Check edge cases and return description.
+
+    Major edge cases should lead to cancellation of calculation.
+    """
     if contrib_sum == 0:  # no data
-        return (
-            True,
-            "In the area of interest no features of the selected topic are "
-            "present today.",
-        )
-    elif contrib_sum < 25:  # not enough data
-        return (
-            False,
-            "In the area of interest less than 25 features of the selected "
-            "topic are present today. The significance of the result is low.",
-        )
+        return "In the area of interest no features of the selected topic are present \
+                today."
     else:
-        months_til_last_contrib = get_num_months_last_contrib(bin_total.contrib_abs)
-        if months_til_last_contrib >= 12:
-            return (
-                False,
-                f" Attention: There was no mapping activity for "
-                f"{months_til_last_contrib} months in this region.",
-            )
-        return False, ""
+        return ""
+
+
+def check_minor_edge_cases(contrib_sum, bin_total) -> str:
+    """Check edge cases and return description.
+
+    Minor edge cases should *not* lead to cancellation of calculation.
+    """
+    num_months = get_num_months_last_contrib(bin_total.contrib_abs)
+    if contrib_sum < 25:  # not enough data
+        return "Attention: In the area of interest less than 25 features of the \
+                selected topic are present today. The significance of the result is \
+                low."
+    elif num_months >= 12:
+        return f"Attention: There was no mapping activity for {num_months} months in \
+                this region."
+    else:
+        return ""
 
 
 def get_num_months_last_contrib(contrib: list) -> int:
