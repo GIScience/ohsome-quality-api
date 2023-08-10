@@ -1,13 +1,20 @@
+import glob
 import json
 from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
+import yaml
 from geojson import Feature
 
-from ohsome_quality_analyst.definitions import get_attribution, get_metadata
+from ohsome_quality_analyst.definitions import get_attribution
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
-from ohsome_quality_analyst.utils.helper import json_serialize
+from ohsome_quality_analyst.utils.helper import (
+    camel_to_hyphen,
+    camel_to_snake,
+    get_module_dir,
+    json_serialize,
+)
 
 
 class BaseIndicator(metaclass=ABCMeta):
@@ -18,9 +25,7 @@ class BaseIndicator(metaclass=ABCMeta):
         topic: Topic,
         feature: Feature,
     ) -> None:
-        self.metadata: IndicatorMetadata = get_metadata(
-            "indicators", type(self).__name__
-        )
+        self.metadata: IndicatorMetadata = self.get_template()
         self.topic: Topic = topic
         self.feature: Feature = feature
         self.result: Result = Result(
@@ -138,3 +143,17 @@ class BaseIndicator(metaclass=ABCMeta):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+    def get_template(self) -> None:
+        """Get template for indicator."""
+        indicator_key = camel_to_snake(type(self).__name__)
+        directory = get_module_dir(
+            "ohsome_quality_analyst.indicators.{}".format(indicator_key)
+        )
+        file = glob.glob(directory + "/metadata.yaml", recursive=True)
+        with open(file[0], "r") as file:
+            raw = yaml.safe_load(file)
+        metadata = {}
+        for k, v in raw.items():
+            metadata[k] = IndicatorMetadata(**v)
+        return metadata[camel_to_hyphen(type(self).__name__)]

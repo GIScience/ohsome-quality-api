@@ -1,7 +1,7 @@
 import pytest
 
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
-from ohsome_quality_analyst.indicators.models import Result
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 
 from .utils import get_geojson_fixture, get_topic_fixture
 
@@ -52,6 +52,12 @@ class TestBaseIndicator:
 
     def test_attribution_class_property(self):
         assert isinstance(Minimal.attribution(), str)
+
+    def test_get_template(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        indicator.get_template()
+        assert isinstance(indicator.metadata, IndicatorMetadata)
+        assert isinstance(indicator.result, Result)
 
 
 class TestBaseResult:
