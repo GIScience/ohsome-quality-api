@@ -294,8 +294,10 @@ def check_major_edge_cases(contrib_sum) -> str:
     Major edge cases should lead to cancellation of calculation.
     """
     if contrib_sum == 0:  # no data
-        return "In the area of interest no features of the selected topic are present \
-                today."
+        return (
+            "In the area of interest no features of the selected topic are present "
+            "today."
+        )
     else:
         return ""
 
@@ -307,12 +309,16 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     """
     num_months = get_num_months_last_contrib(bin_total.contrib_abs)
     if contrib_sum < 25:  # not enough data
-        return "Attention: In the area of interest less than 25 features of the \
-                selected topic are present today. The significance of the result is \
-                low."
+        return (
+            "Attention: In the area of interest less than 25 features of the"
+            " selected topic are present today. The significance of the result is"
+            " low."
+        )
     elif num_months >= 12:
-        return f"Attention: There was no mapping activity for {num_months} months in \
-                this region."
+        return (
+            f"Attention: There was no mapping activity for {num_months} months in "
+            f"this region."
+        )
     else:
         return ""
 
