@@ -112,7 +112,6 @@ class Currentness(BaseIndicator):
         date. The range of those bins are based on the topic. After binning determine
         the result class based on share of features in each bin.
         """
-        # TODO: does this need a docstring
         edge_cases = check_major_edge_cases(self.contrib_sum)
         if edge_cases:
             self.result.description = edge_cases
