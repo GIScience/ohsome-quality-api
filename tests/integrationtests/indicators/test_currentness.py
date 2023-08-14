@@ -51,41 +51,34 @@ class TestCalculation:
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
-        i.calculate()
         return i
 
     def test_calculate(self, indicator):
+        indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
         assert indicator.result.description is not None
 
-    def test_low_contributions(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+    def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
 
         # Check if the result description contains the message about low contributions
         assert "The significance of the result is low." in indicator.result.description
 
-    def test_months_without_edit(
-        self, topic_building_count, feature_germany_heidelberg
-    ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+    def test_months_without_edit(self, indicator):
+        indicator.contrib_sum = 30
         indicator.bin_total.contrib_abs = [
-            0 if i < 12 else contribs
-            for i, contribs in enumerate(indicator.bin_total.contrib_abs)
+            0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
         ]
         indicator.calculate()
-
         # Check if the result description contains the message about low contributions
         assert (
             "Attention: There was no mapping activity for"
             in indicator.result.description
         )
 
-    @oqt_vcr.use_cassette()
+    @oqt_vcr.use_cassette
     def test_no_amenities(self):
         """Test area with no amenities"""
         infile = os.path.join(
@@ -119,16 +112,15 @@ class TestFigure:
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
+        i.create_figure()
         return i
 
     # comment out for manual test
     @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
-        indicator.create_figure()
         pio.show(indicator.result.figure)
 
     def test_create_figure(self, indicator):
-        indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
