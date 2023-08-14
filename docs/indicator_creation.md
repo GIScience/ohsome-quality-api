@@ -1,33 +1,33 @@
-# Indicator Creation Guide
+# Indicator Guide
 
-To make contributions to the OQT easier we have compiled this guide which explains the components and background knowledge that are needed to build an indicator.<br>
-To understand how to implement your own indicator, it is necessary to know a few things about how the BaseIndicator works and how it is composed. This will be covered in the first part. The second part will give further guidelines on how to implement your own Indicator.
+To gain a deeper understanding of how OQT works, we have compiled this guide which explains the components and background knowledge of an indicator.<br>
+The first part deals with the composition of the BaseIndicator which is the foundation of all indicators. The second part will give further information on how the individual indicators differ.
 
 
 ## 1. BaseIndicator
 
 To illustrate the structure of an indicator we created a Class Diagram showing its most important components. 
 
-![UML class diagram of OQT](./img/UML-Class-Diagram.png)
+![UML class diagram of OQT](./img/UML-Class-Diagram_v0-15.png)
 
-As you can see, the indicator you are trying to create should inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Topic, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the topic can be set during object creation, and the result saves the result of an Indicator instance. 
+As you can see, the indicators inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Topic, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the topic is set during object creation, and the result saves the result of an Indicator instance.
 
 
 ### Result
 
 The result object consists of following attributes:
 
+- `description (str)`: The result description.
 - `timestamp_oqt (datetime)`: Timestamp of the creation of the indicator
 - `timestamp_osm (datetime)`: Timestamp of the used OSM data (e.g. the latest timestamp of the ohsome API results)
-- `label (str)`: Traffic lights like quality label: `green`, `yellow` or `red`. The value is determined by the result classes
 - `value (float)`: The result value
 - `class (int)`: The result class. An integer between 1 and 5. It maps to the result labels: `1` maps to `red`, `2`/`3` map to `yellow` and `4`/`5` map to `green`.  This value is used by the reports to determine an overall result.
-- `description (str)`: The result description.
-- `svg (str)`: Figure of the result as SVG
+- `figure (dict)`: Figure of the result as plotly figure
+- `label (str)`: Traffic lights like quality label: `green`, `yellow` or `red`. The value is determined by the result classes
 
 ### Topic
 
-In the OQT we used the term Topic to describe the result of an ohsome API query. If you need a custom topic from the ohsome API, you can specify new Topics in [ohsome_quality_analyst/topics/presets.yaml](/ohsome_quality_analyst/topics/presets.yaml). The topics are defined with 4 Attributes. A name and a description for documentation purposes and the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality.
+In the OQT we use the term Topic to describe the result of an ohsome API query. The Topics are defined in [ohsome_quality_analyst/topics/presets.yaml](/ohsome_quality_analyst/topics/presets.yaml) with several Attributes. A name and a description for documentation purposes, the ohsome API [endpoint](https://docs.ohsome.org/ohsome-api/stable/endpoints.html) as well as the [aggregation type](https://docs.ohsome.org/ohsome-api/stable/endpoints.html#elements-aggregation) and [filters](https://docs.ohsome.org/ohsome-api/stable/filter.html) for functionality. Furthermore, for each topic it is tagged which indicators can be used with this topic and to which project a topic belongs.
 
 
 ### Metadata
@@ -35,11 +35,11 @@ In the OQT we used the term Topic to describe the result of an ohsome API query.
 See metadata.yaml in part 2.
 
 
-## 2. Your own Indicator
+## 2. Differences of individual Indicators
 
-If you want to create an indicator you need to create **two** files in a folder named after your indicator which is placed in **ohsome_quality_analyst/indicators** e.g. ohsome_quality_analyst/indicators/your_indicator_name.
+For each indicator, at least **two** files in a folder named after the indicator are placed in **ohsome_quality_analyst/indicators** e.g. ohsome_quality_analyst/indicators/mapping_saturation.
 
-The two files are named:
+The two files which are always present are named:
 
 1. **metadata.yaml**
 2. **indicator.py**
@@ -47,64 +47,52 @@ The two files are named:
 
 ### metadata.yaml
 
-The metadata.yaml holds basic information about your indicator e.g. the indicator name, a quick description on what it does and how it works, and a standardized interpretation of its possible results.
-
-The easiest way to set the metadata.yaml up the right way would be to copy it from another indicator and to replace the texts with your own. Just don't replace or change the category names.
+The metadata.yaml holds basic information about the indicator e.g. the indicator name, for which project the indicator can be used, it's quality dimension, a quick description on what it does and how it works, and a standardized interpretation of its possible results.
 
 
 ### indicator.py
 
-In your own indicator.py you only need to implement the three functions `preprocess`, `calculate`, and `create_figure` as well as an `__init__` function which is called to create an instance of your indicator. The rest is working through inherited functionalities.
+The indicator.py always has three functions implemented, named `preprocess`, `calculate`, and `create_figure` as well as an `__init__` function which is called to create an instance of the indicator. The rest is working through inherited functionalities.
 
 
 #### \_\_init\_\_ function
 
-Your init should call the BaseIndicator init and thus should start like this:
+The init calls the BaseIndicator init and thus starts like this:
 ```python
 def __init__(
       self,
-      dynamic: bool,
-      topic_key: str,
-      dataset: str = None,
-      feature_id: int = None,
-      bpolys: FeatureCollection = None,
+      topic: str,
+      feature: str = Feature,
   ) -> None:
       super().__init__(
-          dataset=dataset,
-          feature_id=feature_id,
-          dynamic=dynamic,
-          topic_key=topic_key,
-          bpolys=bpolys,
+          topic=topic, 
+          feature=feature
       )
 ```
 
-Additionally, you can define variable placeholders for important values and preliminary results here.
+Additionally, variable placeholders for important values and preliminary results can be defined here.
 
 
 #### preprocess function
 
-This function should be used to fetch and preprocess the data needed for your indicator. Usually this involves querying the ohsome API and geodatabase. To make this as easy as possible the modules `ohsome/client.py` and `geodatabase/client.py` are provided. Both modules implement asynchronicity. Please make sure to [await](https://docs.python.org/3/library/asyncio-task.html#awaitables) the response when calling functions from those modules. This can be as simple as:
+This function is used to fetch and preprocess the data needed for an indicator. Usually this involves querying the ohsome API by using the module `ohsome/client.py` which implements asynchronicity.
 
-```python
-async def preprocess(self):
-    query_result = await ohsome.client()
-```
-
-All data created during the preprocessing should be stored as attributes of the indicator object.
-
-> Note: When writing tests for the new indicator class, this function has to be called with `asyncio.run(indicator.preprocess())`.
+All data created during the preprocessing will be stored as attributes of the indicator object.
 
 
 #### calculate function
 
-Here you should execute all needed calculations and save the results in your result object (`self.result.label`, `self.result.value` and `self.result.description`). 
+Here all needed calculations are executed and the results saved in the result object (see part 1 which results are calculated). 
 
 
 #### create_figure function
 
-Finally, you need to create a svg figure (e.g. with matplotlib) and save it to `self.result.svg` (e.g. `plt.savefig(self.result.svg, format="svg")`).
+Finally, a plotly figure is created and saved as a dict to `self.result.figure`.
 
 
-If you have defined these three functions, your indicator is ready to go. To show how OQT uses your indicator to be displayed on the OQT Website or in your command line interface, we made a sequence diagram. 
 
-![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
+These three functions are implemented for each indicator, however, more functions specific for the respective indicator can be implemented. 
+
+To show how OQT uses indicators, we made a sequence diagram. 
+
+![UML Sequence Diagram](img/UML-Sequence-Diagram_v0-15.png)
