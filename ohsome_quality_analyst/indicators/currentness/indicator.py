@@ -225,7 +225,8 @@ class Currentness(BaseIndicator):
             )
 
         fig.update_layout(
-            title_text=("Currentness"),
+            title_text="Currentness",
+            legend_title_text="Share of up-to-date features",
         )
         fig.update_xaxes(
             title_text="Interval: {}".format(self.interval),
