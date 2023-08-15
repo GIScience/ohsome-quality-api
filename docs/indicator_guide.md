@@ -37,7 +37,7 @@ See metadata.yaml in part 2.
 
 ## 2. Differences of individual Indicators
 
-For each indicator, at least **two** files in a folder named after the indicator are placed in **ohsome_quality_analyst/indicators** e.g. ohsome_quality_analyst/indicators/mapping_saturation.
+For each indicator, at least two files in a folder named after the indicator are placed in ohsome_quality_analyst/indicators e.g. ohsome_quality_analyst/indicators/mapping_saturation.
 
 The two files which are always present are named:
 
@@ -57,20 +57,7 @@ The indicator.py always has three functions implemented, named `preprocess`, `ca
 
 #### \_\_init\_\_ function
 
-The init calls the BaseIndicator init and thus starts like this:
-```python
-def __init__(
-      self,
-      topic: str,
-      feature: str = Feature,
-  ) -> None:
-      super().__init__(
-          topic=topic, 
-          feature=feature
-      )
-```
-
-Additionally, variable placeholders for important values and preliminary results can be defined here.
+The init calls the BaseIndicator init. Additionally, variable placeholders for important values and preliminary results can be defined here.
 
 
 #### preprocess function
