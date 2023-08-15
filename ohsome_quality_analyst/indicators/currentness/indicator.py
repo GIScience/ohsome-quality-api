@@ -237,11 +237,15 @@ class Currentness(BaseIndicator):
         fig.update_yaxes(
             title_text="Percentage of Latest Contributions",
             tickformat=".0%",
+            color="#444",  # #444 is default color
+            gridcolor="#444",  # #444 is NOT default color
         )
         fig.update_yaxes(
             title_text="Absolute Number of Latest Contributions",
             tickformat=".",
             secondary_y=True,
+            color="#000080",
+            gridcolor="#000080",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
