@@ -79,3 +79,6 @@ select = [
     "N803",
     "N806",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
