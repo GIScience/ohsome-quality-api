@@ -1,6 +1,6 @@
 __version__ = "0.15.0"
 __title__ = "ohsome quality analyst"
-__description__ = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
+__description__ = "Data quality estimations for OpenStreetMap"
 __author__ = "ohsome team"
 __email__ = "ohsome@heigit.org"
 __homepage__ = "https://oqt.ohsome.org/"
