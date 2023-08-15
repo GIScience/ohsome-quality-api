@@ -1,5 +1,3 @@
-"""The base classes on which every indicator class is based on."""
-
 import json
 from abc import ABCMeta, abstractmethod
 
@@ -9,7 +7,6 @@ from geojson import Feature
 from ohsome_quality_analyst.definitions import get_attribution, get_metadata
 from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
-from ohsome_quality_analyst.topics.models import TopicData
 from ohsome_quality_analyst.utils.helper import json_serialize
 
 
@@ -28,11 +25,33 @@ class BaseIndicator(metaclass=ABCMeta):
         self.feature: Feature = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
-            html="",
         )
         self._get_default_figure()
 
-    def as_feature(self, include_data: bool = False) -> Feature:
+    def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
+        if exclude_label:
+            result = self.result.model_dump(by_alias=True, exclude={"label"})
+        else:
+            result = self.result.model_dump(by_alias=True)
+        raw_dict = {
+            "metadata": self.metadata.model_dump(
+                by_alias=True,
+                exclude={"result_description", "label_description"},
+            ),
+            "topic": self.topic.model_dump(
+                by_alias=True,
+                exclude={"ratio_filter"},
+            ),
+            "result": result,
+            **self.feature.properties,
+        }
+        if include_data:
+            raw_dict["data"] = self.data
+        if "id" in self.feature.keys():
+            raw_dict["id"] = self.feature.id
+        return raw_dict
+
+    def as_feature(self, include_data: bool = False, exclude_label=False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -41,28 +60,7 @@ class BaseIndicator(metaclass=ABCMeta):
         Args:
             include_data (bool): If true include additional data in the properties.
         """
-        result = self.result.dict(by_alias=True)  # only attributes, no properties
-        result["label"] = self.result.label  # label is a property
-        properties = {
-            "metadata": {
-                "name": self.metadata.name,
-                "description": self.metadata.description,
-                "projects": self.metadata.projects,
-                "qualityDimension": self.metadata.quality_dimension,
-            },
-            "topic": {
-                "key": self.topic.key,
-                "name": self.topic.name,
-                "description": self.topic.description,
-                "projects": None,  # Not every topic object has a project (TopicData)
-            },
-            "result": result,
-            **self.feature.properties,
-        }
-        if not isinstance(self.topic, TopicData):
-            properties["topic"]["projects"] = self.topic.projects
-        if include_data:
-            properties["data"] = self.data
+        properties = self.as_dict(include_data, exclude_label)
         if "id" in self.feature.keys():
             return Feature(
                 id=self.feature.id,
@@ -122,19 +120,11 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @abstractmethod
     def create_figure(self) -> None:
-        """Create figure plotting indicator results.
-
-        Writes an SVG figure to the svg attribute of the result attribute.
-        """
         pass
 
-    def _get_default_figure(self) -> str:
-        """Return a SVG as default figure for indicators."""
-
+    def _get_default_figure(self) -> None:
         fig = go.Figure()
-
         fig.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-
         # add text annotation at the center
         fig.add_annotation(
             text="The creation of the Indicator was unsuccessful.",
@@ -148,7 +138,3 @@ class BaseIndicator(metaclass=ABCMeta):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")

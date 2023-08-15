@@ -24,13 +24,11 @@ def response_template():
 
 
 @pytest.fixture
-def metadata_topic_building_count():
+def response_metadata_topic_building_count():
     return {
         "building-count": {
             "name": "Building Count",
-            "description": (
-                "All buildings as defined by all objects tagged with 'building=*'."
-            ),
+            "description": "All buildings as defined by all objects tagged with 'building=*'.",  # noqa
             "endpoint": "elements",
             "aggregationType": "count",
             "filter": "building=* and building!=no and geometry:polygon",
@@ -39,13 +37,9 @@ def metadata_topic_building_count():
                 "currentness",
                 "attribute-completeness",
             ],
-            "ratioFilter": (
-                "building=* and building!=no and geometry:polygon and height=* or "
-                + "building:levels=*"
-            ),
             "projects": ["core"],
-            "source": None,  # TODO: Should not be in response if None
-        }
+            "source": None,
+        },
     }
 
 

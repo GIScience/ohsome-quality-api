@@ -161,7 +161,7 @@ class MappingSaturation(BaseIndicator):
         fig.add_trace(
             pgo.Scatter(
                 x=self.timestamps,
-                y=self.best_fit.fitted_values,
+                y=self.best_fit.fitted_values.tolist(),
                 name="Modelled saturation curve",
             ),
         )
@@ -195,10 +195,6 @@ class MappingSaturation(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-
-        # Legacy support for SVGs
-        img_bytes = fig.to_image(format="svg")
-        self.result.svg = img_bytes.decode("utf-8")
 
     def check_edge_cases(self) -> str:
         """Check edge cases.
