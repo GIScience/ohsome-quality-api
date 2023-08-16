@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "ohsome_quality_analyst"
+name = "ohsome_quality_api"
 version = "1.0.0"
-description = "Intrinsic and extrinsic data quality metrics for OpenStreetMap data."
+description = "Data quality estimations for OpenStreetMap."
 authors = ["ohsome team <ohsome@heigit.org>"]
-homepage = "https://oqt.ohsome.org"
-repository = "https://github.com/GIScience/ohsome-quality-analyst"
+homepage = "https://quality.ohsome.org"
+repository = "https://github.com/GIScience/ohsome-quality-api"
 keywords = [
   "osm",
   "gis",

@@ -102,7 +102,7 @@ logging.debug("Debugging output enabled")
 description = """
 Data quality estimations for OpenStreetMap.
 
-[Homepage](https://oqt.ohsome@heigit.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqtApi)
+[Homepage](https://quality.ohsome@heigit.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqtApi)
 """
 
 app = FastAPI(
