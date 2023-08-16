@@ -28,7 +28,7 @@ class TestInit:
         """Test default thresholds setting after init of indicator."""
         indicator = Currentness(
             feature=feature_germany_heidelberg,
-            topic=get_topic_fixture("major-roads-count"),
+            topic=get_topic_fixture("major-roads-length"),
         )
         assert indicator.up_to_date == 48
         assert indicator.out_of_date == 96
@@ -64,7 +64,10 @@ class TestCalculation:
         indicator.calculate()
 
         # Check if the result description contains the message about low contributions
-        assert "The significance of the result is low." in indicator.result.description
+        assert (
+            "Please note that in the area of interest less than 25 features of the "
+            "selected topic are present today."
+        ) in indicator.result.description
 
     def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
@@ -74,7 +77,7 @@ class TestCalculation:
         indicator.calculate()
         # Check if the result description contains the message about low contributions
         assert (
-            "Attention: There was no mapping activity for"
+            "Please note that there was no mapping activity for"
             in indicator.result.description
         )
 
@@ -97,8 +100,8 @@ class TestCalculation:
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
         assert indicator.result.description == (
-            "In the area of interest no "
-            "features of the selected topic are present today."
+            "In the area of interest no features of the selected topic are present "
+            "today."
         )
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
