@@ -103,6 +103,8 @@ class TestCalculation:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        # comment out for manual test
+        # pio.show(indicator.result.figure)
 
 
 class TestFigure:
