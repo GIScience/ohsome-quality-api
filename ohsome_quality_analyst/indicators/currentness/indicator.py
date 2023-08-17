@@ -16,7 +16,6 @@ from string import Template
 import plotly.graph_objects as pgo
 import yaml
 from dateutil.parser import isoparse
-from dateutil.relativedelta import relativedelta
 from geojson import Feature
 from plotly.subplots import make_subplots
 
@@ -106,11 +105,11 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
-        """Determine up-to-date and out-of-date contributions.
+        """Determine up-to-date, in-between and out-of-date contributions.
 
-        Put contributions into three bins: (1) up to date (2) in between and (3) out of
-        date. The range of those bins are based on the topic. After binning determine
-        the result class based on share of features in each bin.
+        Put contributions into three bins: (1) up-to-date (2) in-between and (3)
+        out-of-date. The range of those bins are based on the topic.
+        After binning determine the result class based on share of features in each bin.
         """
         edge_cases = check_major_edge_cases(self.contrib_sum)
         if edge_cases:
@@ -162,18 +161,12 @@ class Currentness(BaseIndicator):
         self.result.description += Template(
             self.metadata.result_description
         ).substitute(
-            contrib_rel_t2=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.2f}",
-            topic=self.topic.name,
-            from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%m/%d/%Y"),
-            to_timestamp=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
-            elements=int(self.contrib_sum),
-            from_timestamp_50_perc=(
-                self.bin_total.to_timestamps[0]
-                - relativedelta(months=get_median_month(self.bin_total.contrib_rel))
-            ).strftime("%m/%d/%Y"),
-            to_timestamp_50_perc=self.bin_total.to_timestamps[0].strftime("%m/%d/%Y"),
+            up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
+            num_of_elements=int(self.contrib_sum),
+            from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%d %b %Y"),
+            to_timestamp=self.bin_total.to_timestamps[0].strftime("%d %b %Y"),
         )
-        self.result.description += label_description
+        self.result.description += "\n" + label_description
 
     def create_figure(self):
         if self.result.label == "undefined":
@@ -314,14 +307,13 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     num_months = get_num_months_last_contrib(bin_total.contrib_abs)
     if contrib_sum < 25:  # not enough data
         return (
-            "Attention: In the area of interest less than 25 features of the"
-            " selected topic are present today. The significance of the result is"
-            " low."
+            "Please note that in the area of interest less than 25 features of the "
+            "selected topic are present today."
         )
     elif num_months >= 12:
         return (
-            f"Attention: There was no mapping activity for {num_months} months in "
-            f"this region."
+            f"Please note that there was no mapping activity for {num_months} months "
+            "in this region."
         )
     else:
         return ""

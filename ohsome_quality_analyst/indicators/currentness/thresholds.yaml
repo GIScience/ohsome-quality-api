@@ -1,5 +1,5 @@
 ---
-# thresholds are number of months
+# thresholds are age in number of months since latest timestamp (today)
 major-roads-count:
     thresholds:
       up_to_date: 48
