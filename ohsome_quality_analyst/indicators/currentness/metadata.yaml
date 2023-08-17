@@ -2,25 +2,18 @@
 currentness:
   name: Currentness
   projects:
-    - experimental
+    - core
   quality_dimension: currentness
   description: >-
-    Ratio of all contributions that have been edited since 2008 until the current day in relation with years without mapping activities in the same
-    time range. 
-    Refers to data quality in respect to currentness.
+    Estimate currentness of features by classifying contributions based on topic specific temporal thresholds into three groups":" up-to-date, in-between and out-of-date.
   label_description:
     red: >-
-      It is likely that many features are outdated.
+      Many features are out-of-date.
     yellow: >-
-      It is likely that some features are up-to-date and some features are outdated.
+      Some features are up-to-date and some features are out-of-date.
     green: >-
-      It is likely that most features are up-to-date.
+      Most features are up-to-date.
     undefined: >-
-      The quality level could not be calculated for this indicator. 
-      This is most likely due to the fact that no features have been mapped 
-      for this area of interest. Refer to other indicators that rely on 
-      an extrinsic comparison to identify if this means that data quality is 
-      bad or if there is just nothing to map here.
+      The quality level could not be calculated for this indicator.
   result_description: >-
-      In the area of interest $contrib_rel_t2 of the $elements features/elements ($topic) were edited for the last time in the period between $from_timestamp and $to_timestamp.
-      50 % of features/elements were edited for the last time in the period between $from_timestamp_50_perc and $to_timestamp_50_perc.
+      In the area of interest $up_to_date_contrib_rel% of the $num_of_elements features were edited for the last time in the period between $from_timestamp and $to_timestamp.
