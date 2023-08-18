@@ -43,7 +43,7 @@ A particular indicator class (child) need to implement three functions:
 
 Following sequence diagram shows when those functions are called during the lifecycle of the indicator:
 
-![UML Sequence Diagram](img/UML-Sequence-Diagram_v0-15.png)
+![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
 
 
 ### `preprocess`
