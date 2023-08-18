@@ -8,7 +8,7 @@ The first part deals with the composition of the BaseIndicator which is the foun
 
 To illustrate the structure of an indicator we created a Class Diagram showing its most important components. 
 
-![UML class diagram of OQT](./img/UML-Class-Diagram_v0-15.png)
+![UML class diagram of OQT](./img/UML-Class-Diagram.png)
 
 As you can see, the indicators inherit from BaseIndicator. This class takes care of most of the needed functionality. The BaseIndicator is built from three elements: Result, Metadata and Topic, and some utility functions. The Metadata is automatically loaded from its corresponding metadata.yaml (see part 2), the topic is set during object creation, and the result saves the result of an Indicator instance.
 
@@ -82,4 +82,4 @@ These three functions are implemented for each indicator, however, more function
 
 To show how OQT uses indicators, we made a sequence diagram. 
 
-![UML Sequence Diagram](img/UML-Sequence-Diagram_v0-15.png)
+![UML Sequence Diagram](img/UML-Sequence-Diagram.png)
