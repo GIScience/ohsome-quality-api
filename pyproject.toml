@@ -26,7 +26,7 @@ priority = "supplemental"
 [tool.poetry.dependencies]
 python = "^3.10"
 geojson = "^2.5.0"
-fastapi = "^0.92.0"
+fastapi = "^0.100.0"
 requests = "^2.31.0"
 PyYAML = "^6.0"
 toml = "^0.10.2"
@@ -45,6 +45,8 @@ building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-
 kaleido = "0.2.1"
 plotly = "^5.14.0"
 pyproj = "^3.6.0"
+pydantic = "^2.1.1"
+geojson-pydantic = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^23.3.0"
@@ -77,3 +79,6 @@ select = [
     "N803",
     "N806",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -17,14 +17,12 @@ class TestReportFoodRelatedReport(unittest.TestCase):
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.class_ = 1
-            indicator.result.html = "foo"
             report.indicators.append(indicator)
 
         report.combine_indicators()
 
         self.assertIsNotNone(report.result.label)
         self.assertIsNotNone(report.result.description)
-        self.assertIsNotNone(report.result.html)
         self.assertEqual(report.result.class_, 1)
 
 

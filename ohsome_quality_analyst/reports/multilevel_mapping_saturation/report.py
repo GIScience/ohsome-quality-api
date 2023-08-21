@@ -13,7 +13,7 @@ class MultilevelMappingSaturation(BaseReport):
     ):
         super().__init__(
             indicator_topic=(
-                IndicatorTopic("mapping-saturation", "infrastructure_lines"),
+                IndicatorTopic("mapping-saturation", "infrastructure-lines"),
                 IndicatorTopic("mapping-saturation", "poi"),
                 IndicatorTopic("mapping-saturation", "lulc"),
                 IndicatorTopic("mapping-saturation", "building-count"),

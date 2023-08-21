@@ -145,11 +145,11 @@ def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
 
 
 @pytest.fixture(scope="class")
-def feature_collection_germany_heidelberg_bahnstadt_bergheim() -> FeatureCollection:
+def feature_collection_heidelberg_bahnstadt_bergheim_weststadt() -> FeatureCollection:
     # Multiple Features
     path = os.path.join(
         FIXTURE_DIR,
-        "feature-collection-germany-heidelberg-bahnstadt-bergheim.geojson",
+        "feature-collection-heidelberg-bahnstadt-bergheim-weststadt.geojson",
     )
     with open(path, "r") as f:
         return geojson.load(f)

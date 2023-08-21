@@ -10,6 +10,11 @@
 - api: remove `include_svg`, `include_html` and `flatten` parameter ([#644])
 - api: only accept FeatureCollection as `bpolys` parameter ([#650])
 
+### New Features
+
+- feat(api): add `includeFigure` parameter to `/indicators` endpoint ([#659])
+- feat(api): add indicator response models ([#670])
+
 ### Other Changes
 
 - style: use `ruff` instead `flake8` and `isort` ([#630])
@@ -23,8 +28,17 @@
 - refactor(api): clean-up and rename request models ([#649])
 - refactor(api): move openapi param example to model ([#649])
 - currentness: results with low contributions are now labeled undefined ([#643])
+- refactor(api): exclude reports endpoint from schema ([#656])
+- feat(indicator): add as_dict method ([#653])
+- refactor(oqt/api): move geojson creation to api ([#653])
+- build: bump fastapi and pydantic major version ([#669])
+- currentness: overhaul currentness indicator #668 
+    - based on monthly interval instead of yearly ([#668])
+    - result class determination based on share of three bins instead of median ([#668])
+    - now uses topic specific thresholds for bin creation ([#668])
+    - plot now shows relative and absolute contributions ([#668])
+    - further improvements to description and plot ([#668])
 - mapping-saturation: now shows the estimated total data in the plot ([#658])
-
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
@@ -39,7 +53,13 @@
 [#647]: https://github.com/GIScience/ohsome-quality-analyst/pull/647
 [#649]: https://github.com/GIScience/ohsome-quality-analyst/pull/649
 [#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
+[#653]: https://github.com/GIScience/ohsome-quality-analyst/pull/653
+[#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
 [#658]: https://github.com/GIScience/ohsome-quality-analyst/pull/658
+[#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
+[#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
+[#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
+[#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
 
 ## 0.15.0
 

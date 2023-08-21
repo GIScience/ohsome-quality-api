@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Annotated
+from typing import Annotated, Any, Union
 
 from fastapi import FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -13,14 +13,13 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import JSONResponse
+from geojson import FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
     __author__,
-    __description__,
     __email__,
-    __homepage__,
     __title__,
     __version__,
     oqt,
@@ -31,6 +30,8 @@ from ohsome_quality_analyst.api.request_models import (
     ReportRequest,
 )
 from ohsome_quality_analyst.api.response_models import (
+    IndicatorGeoJSONResponse,
+    IndicatorJSONResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
     ProjectMetadataResponse,
@@ -87,42 +88,8 @@ MEDIA_TYPE_JSON = "application/json"
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
 TAGS_METADATA = [
-    {
-        "name": "indicator",
-        "description": "Request an Indicator",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
-    {
-        "name": "report",
-        "description": "Request a Report",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
-    {
-        "name": "metadata",
-        "description": "Request Metadata",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
+    {"name": "indicator", "description": "Request an Indicator"},
+    {"name": "metadata", "description": "Request Metadata"},
 ]
 
 # TODO: to be replaced by config
@@ -132,13 +99,18 @@ configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
+description = """
+Data quality estimations for OpenStreetMap.
+
+[Homepage](https://oqt.ohsome@heigit.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqtApi)
+"""
+
 app = FastAPI(
     title=__title__,
-    description=__description__,
+    description=description,
     version=__version__,
     contact={
         "name": __author__,
-        "url": __homepage__,
         "email": __email__,
     },
     openapi_tags=TAGS_METADATA,
@@ -268,9 +240,14 @@ def empty_api_response() -> dict:
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
-    geojson_object = await oqt.create_indicator(
-        parameters,
+    indicators = await oqt.create_indicator(
         key="mapping-saturation",
+        bpolys=parameters.bpolys,
+        topic=parameters.topic,
+        include_figure=parameters.include_figure,
+    )
+    geojson_object = FeatureCollection(
+        features=[i.as_feature(parameters.include_data) for i in indicators]
     )
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
@@ -278,53 +255,64 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
         key="mapping-saturation",
     ).attribution()
     # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    #   factor out logic and decision to base/indicator.py and oqt.py
-    #   base/indicator.py should have `as_dict` alongside `as_feature`
-    response["results"] = [feature.properties for feature in geojson_object.features]
+    response["result"] = [feature.properties for feature in geojson_object.features]
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
 
 @app.post(
     "/indicators/{key}",
     tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
     responses={
         200: {
-            "content": {MEDIA_TYPE_GEOJSON: {}},
-            "description": "Return JSON or GeoJSON.",
-        }
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
     },
 )
 async def post_indicator(
     request: Request,
-    key: Annotated[
-        IndicatorEnum,
-        Path(
-            title="Indicator Key",
-            example="mapping-saturation",
-        ),
-    ],
+    key: IndicatorEnum,
     parameters: IndicatorRequest,
-) -> CustomJSONResponse:
-    """Request an Indicator for an AOI defined by OQT or a custom AOI."""
-    if isinstance(parameters, IndicatorRequest):
-        validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    geojson_object = await oqt.create_indicator(parameters, key=key.value)
-    response = empty_api_response()
-    response["attribution"]["text"] = get_class_from_key(
-        class_type="indicator",
+) -> Any:
+    """Request an indicator for your area of interest."""
+    validate_indicator_topic_combination(key.value, parameters.topic_key.value)
+    indicators = await oqt.create_indicator(
         key=key.value,
-    ).attribution()
-    # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    #   factor out logic and decision to base/indicator.py and oqt.py
-    #   base/indicator.py should have `as_dict` alongside `as_feature`
+        bpolys=parameters.bpolys,
+        topic=get_topic_preset(parameters.topic_key.value),
+        include_figure=parameters.include_figure,
+    )
+
     if request.headers["accept"] == MEDIA_TYPE_JSON:
-        response["results"] = [
-            feature.properties for feature in geojson_object.features
-        ]
-        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
+        return {
+            "result": [
+                i.as_dict(parameters.include_data, exclude_label=True)
+                for i in indicators
+            ],
+            "attribution": {
+                "url": ATTRIBUTION_URL,
+                "text": indicators[0].attribution(),
+            },
+        }
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
-        response.update(geojson_object)
-        return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
+        return {
+            "type": "FeatureCollection",
+            "features": [
+                i.as_feature(parameters.include_data, exclude_label=True)
+                for i in indicators
+            ],
+            "attribution": {
+                "url": ATTRIBUTION_URL,
+                "text": indicators[0].attribution(),
+            },
+        }
     else:
         detail = "Content-Type needs to be either {0} or {1}".format(
             MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
@@ -334,7 +322,7 @@ async def post_indicator(
         )
 
 
-@app.post("/reports/{key}", tags=["report"])
+@app.post("/reports/{key}", include_in_schema=False)
 async def post_report(
     key: Annotated[
         ReportEnum,
@@ -345,7 +333,6 @@ async def post_report(
     ],
     parameters: ReportRequest,
 ) -> CustomJSONResponse:
-    """Request a Report for an AOI defined by OQT or a custom AOI."""
     geojson_object = await oqt.create_report(parameters, key=key.value)
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
@@ -356,58 +343,38 @@ async def post_report(
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 
-@app.get(
-    "/metadata",
-    tags=["metadata"],
-    response_model_exclude={
+@app.get("/metadata", tags=["metadata"], response_model=MetadataResponse)
+async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
+    """Get topics."""
+    if project == ProjectEnum.all:
+        project = None
+    return {
         "result": {
-            "topics": {k.value: {"key": True} for k in TopicEnum},
-            "indicators": {
-                k.value: {"label_description": True, "result_description": True}
-                for k in IndicatorEnum
-            },
-            "reports": {k.value: {"label_description": True} for k in ReportEnum},
+            "topics": get_topic_presets(project=project),
+            "quality_dimensions": get_quality_dimensions(),
+            "projects": get_project_metadata(),
+            "indicators": get_indicator_metadata(project=project),
+            # "reports": get_report_metadata(project=project),
         }
-    },
-)
-async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> MetadataResponse:
-    """Get topics."""
-    if project == ProjectEnum.all:
-        project = None
-    result = {
-        "topics": get_topic_presets(project=project),
-        "quality_dimensions": get_quality_dimensions(),
-        "projects": get_project_metadata(),
-        "indicators": get_indicator_metadata(project=project),
-        "reports": get_report_metadata(project=project),
     }
-    return MetadataResponse(result=result)
 
 
-@app.get(
-    "/metadata/topics",
-    tags=["metadata"],
-    response_model_exclude={
-        "result": {k.value: {"key": True} for k in TopicEnum},
-    },
-)
-async def metadata_topic(
-    project: ProjectEnum = DEFAULT_PROJECT,
-) -> TopicMetadataResponse:
+@app.get("/metadata/topics", tags=["metadata"], response_model=TopicMetadataResponse)
+async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
     """Get topics."""
     if project == ProjectEnum.all:
         project = None
-    return TopicMetadataResponse(result=get_topic_presets(project=project))
+    return {"result": get_topic_presets(project=project)}
 
 
 @app.get(
     "/metadata/topics/{key}",
     tags=["metadata"],
-    response_model_exclude={"result": {k.value: {"key": True} for k in TopicEnum}},
+    response_model=TopicMetadataResponse,
 )
-async def metadata_topic_by_key(key: TopicEnum) -> TopicMetadataResponse:
+async def metadata_topic_by_key(key: TopicEnum) -> Any:
     """Get topic by key."""
-    return TopicMetadataResponse(result={key.value: get_topic_preset(key.value)})
+    return {"result": {key.value: get_topic_preset(key.value)}}
 
 
 @app.get(
@@ -419,10 +386,7 @@ async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
     return QualityDimensionMetadataResponse(result=get_quality_dimensions())
 
 
-@app.get(
-    "/metadata/quality-dimensions/{key}",
-    tags=["metadata"],
-)
+@app.get("/metadata/quality-dimensions/{key}", tags=["metadata"])
 async def metadata_quality_dimension_by_key(
     key: QualityDimensionEnum,
 ) -> QualityDimensionMetadataResponse:
@@ -455,37 +419,24 @@ async def metadata_project_by_key(
 @app.get(
     "/metadata/indicators",
     tags=["metadata"],
-    response_model_exclude={
-        "result": {
-            k.value: {"label_description": True, "result_description": True}
-            for k in IndicatorEnum
-        },
-    },
+    response_model=IndicatorMetadataResponse,
 )
-async def metadata_indicators(
-    project: ProjectEnum = DEFAULT_PROJECT,
-) -> IndicatorMetadataResponse:
+async def metadata_indicators(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
     """Get metadata of all indicators."""
     if project == ProjectEnum.all:
         project = None
-    return IndicatorMetadataResponse(result=get_indicator_metadata(project=project))
+    return {"result": get_indicator_metadata(project=project)}
 
 
 @app.get(
     "/metadata/indicators/{key}",
     tags=["metadata"],
-    response_model_exclude={
-        "result": {
-            k.value: {"label_description": True, "result_description": True}
-            for k in IndicatorEnum
-        }
-    },
+    response_model=IndicatorMetadataResponse,
 )
-async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataResponse:
+async def metadata_indicators_by_key(key: IndicatorEnum) -> Any:
     """Get metadata of an indicator by key."""
-    return IndicatorMetadataResponse(
-        result={key.value: get_metadata("indicators", hyphen_to_camel(key.value))}
-    )
+    metadata = get_metadata("indicators", hyphen_to_camel(key.value))
+    return {"result": {key.value: metadata}}
 
 
 @app.get(
@@ -494,6 +445,7 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> IndicatorMetadataRes
     response_model_exclude={
         "result": {k.value: {"label_description": True} for k in ReportEnum}
     },
+    include_in_schema=False,
 )
 async def metadata_reports(
     project: ProjectEnum = DEFAULT_PROJECT,
@@ -510,6 +462,7 @@ async def metadata_reports(
     response_model_exclude={
         "result": {k.value: {"label_description": True} for k in ReportEnum}
     },
+    include_in_schema=False,
 )
 async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
     """Get metadata of an indicator by key."""

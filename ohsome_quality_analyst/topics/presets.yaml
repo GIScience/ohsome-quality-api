@@ -33,27 +33,6 @@ building-area:
   projects:
     - core
 
-major-roads-count:
-  name: Major Roads Count
-  description: >-
-    The road network defined by all objects which hold the principal tags for
-    the road network as defined in the OSM Wiki`:`
-    https://wiki.openstreetmap.org/wiki/Key:highway
-  endpoint: elements
-  aggregation_type: count
-  filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way
-  ratio_filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way and name=*
-  indicators:
-    - currentness
-  projects:
-    - core
-
 major-roads-length:
   name: Major Roads Length
   description: >-
@@ -73,6 +52,7 @@ major-roads-length:
   indicators:
     - mapping-saturation
     - attribute-completeness
+    - currentness  # currentness always requests /contributions/latest/count [count!]
   projects:
     - core
 
@@ -86,7 +66,7 @@ railway-length:
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness # currentness always requests /contributions/latest/count [count!]
   projects:
     - core
 
@@ -402,7 +382,7 @@ mapaction-rail-length:
   filter: railway=rail and type:way
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness # currentness always requests /contributions/latest/count [count!]
   projects:
     - mapaction
 
@@ -415,7 +395,7 @@ mapaction-major-roads-length:
   filter: highway in (motorway, trunk, primary) and type:way
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness # currentness always requests /contributions/latest/count [count!]
   projects:
     - mapaction
 
@@ -452,7 +432,7 @@ mapaction-rivers-length:
   filter: waterway in (riverbank,river) and type:way
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness # currentness always requests /contributions/latest/count [count!]
   projects:
     - mapaction
 
@@ -477,7 +457,7 @@ lulc:
     https://www.geog.uni-heidelberg.de/gis/ideal_en.html
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness  # currentness always requests /contributions/latest/count [count!]
   projects:
     - idealvgi
 
@@ -568,7 +548,8 @@ sweets-and-pasteries:
     - expanse
 
 ### LAND-USE LAYERS (CORINE PROJECT) ###
-
+#
+# currentness always requests /contributions/latest/count [count!]
 clc-arable-land-area:
   name: Arable Land CLC
   description: >-
@@ -723,6 +704,6 @@ infrastructure-lines:
   filter: (aerialway=* or aeroway=* or highway=* or power=* or railway=* or telecom=*) and geometry:line
   indicators:
     - mapping-saturation
-    - currentness
+    - currentness  # currentness always requests /contributions/latest/count [count!]
   projects:
     - experimental

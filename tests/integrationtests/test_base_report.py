@@ -38,13 +38,11 @@ class TestBaseReport:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = 1
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
             else:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = 5
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
 
         report.combine_indicators()
@@ -59,13 +57,11 @@ class TestBaseReport:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = None
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
             else:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = 5
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
 
         report.combine_indicators()
@@ -80,13 +76,11 @@ class TestBaseReport:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = None
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
             else:
                 indicator = Mock()
                 indicator.result = Mock()
                 indicator.result.class_ = 5
-                indicator.result.html = "foo"
                 report.indicators.append(indicator)
 
         report.combine_indicators()
@@ -100,7 +94,6 @@ class TestBaseReport:
             indicator = Mock()
             indicator.result = Mock()
             indicator.result.class_ = None
-            indicator.result.html = "foo"
             report.indicators.append(indicator)
 
         report.combine_indicators()

@@ -6,45 +6,39 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
-    IndicatorDataRequest,
-    IndicatorRequest,
     ReportRequest,
 )
 from ohsome_quality_analyst.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_analyst.reports.base import BaseReport as Report
 from ohsome_quality_analyst.topics.definitions import get_topic_preset
-from ohsome_quality_analyst.utils.helper import get_class_from_key, loads_geojson
+from ohsome_quality_analyst.topics.models import BaseTopic as Topic
+from ohsome_quality_analyst.topics.models import TopicData, TopicDefinition
+from ohsome_quality_analyst.utils.helper import get_class_from_key
 from ohsome_quality_analyst.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_analyst.utils.validators import validate_area
 
 
 async def create_indicator(
-    parameters: IndicatorRequest | IndicatorDataRequest,
     key: str,
-) -> FeatureCollection:
+    bpolys: FeatureCollection,
+    topic: TopicData | TopicDefinition,
+    include_figure: bool = True,
+) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
     Indicators are computed asynchronously utilizing semaphores.
+    Properties of the input GeoJSON are preserved.
     """
-    bpolys = parameters.bpolys
-    if isinstance(parameters, IndicatorDataRequest):
-        topic = parameters.topic
-    else:
-        topic = get_topic_preset(parameters.topic_key.value)
-    include_data = parameters.include_data
-
     tasks: list[Coroutine] = []
-    for i, feature in enumerate(loads_geojson(bpolys)):
+    for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
-        if isinstance(parameters, IndicatorRequest) and key != "mapping-saturation":
+        if isinstance(topic, TopicDefinition) and key != "mapping-saturation":
             validate_area(feature)
-        tasks.append(_create_indicator(key, feature, topic))
-    indicators = await gather_with_semaphore(tasks)
-    features = [i.as_feature(include_data) for i in indicators]
-    return FeatureCollection(features=features)
+        tasks.append(_create_indicator(key, feature, topic, include_figure))
+    return await gather_with_semaphore(tasks)
 
 
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
@@ -52,7 +46,7 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
     bpolys = parameters.bpolys
     include_data = parameters.include_data
     features = []
-    for i, feature in enumerate(loads_geojson(bpolys)):
+    for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
         validate_area(feature)
@@ -64,13 +58,17 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
     return FeatureCollection(features=features)
 
 
-async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
+async def _create_indicator(
+    key: str,
+    feature: Feature,
+    topic: Topic,
+    include_figure: bool = True,
+) -> Indicator:
     """Create an indicator from scratch."""
 
-    logging.info("Calculating Indicator for custom AOI ...")
-    logging.info("Feature id:     {0:4}".format(feature.get("id", 1)))
     logging.info("Indicator key:  {0:4}".format(key))
-    logging.info("Topic name:     {0:4}".format(topic.name))
+    logging.info("Topic key:     {0:4}".format(topic.key))
+    logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
@@ -79,8 +77,12 @@ async def _create_indicator(key: str, feature: Feature, topic) -> Indicator:
     await indicator.preprocess()
     logging.info("Run calculation")
     indicator.calculate()
-    logging.info("Run figure creation")
-    indicator.create_figure()
+
+    if include_figure:
+        logging.info("Run figure creation")
+        indicator.create_figure()
+    else:
+        indicator.result.figure = None
 
     return indicator
 
@@ -94,8 +96,8 @@ async def _create_report(key: str, feature: Feature) -> Report:
     """
 
     logging.info("Creating Report...")
-    logging.info("Feature id:  {0:4}".format(feature.get("id", 1)))
     logging.info("Report key:  {0:4}".format(key))
+    logging.info("Feature id:  {0:4}".format(feature.get("id", "None")))
 
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)

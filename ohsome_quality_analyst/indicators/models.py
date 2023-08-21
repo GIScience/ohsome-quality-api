@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from ohsome_quality_analyst.projects.definitions import ProjectEnum
 from ohsome_quality_analyst.quality_dimensions.definitions import QualityDimensionEnum
@@ -17,13 +17,13 @@ class IndicatorMetadata(BaseModel):
     result_description: str
     projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
-
-    class Config:
-        alias_generator = snake_to_lower_camel
-        title = "Metadata"
-        frozen = True
-        extra = "forbid"
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        title="Metadata",
+        frozen=True,
+        extra="forbid",
+        populate_by_name=True,
+    )
 
 
 class Result(BaseModel):
@@ -40,11 +40,9 @@ class Result(BaseModel):
             result labels. This value is used by the reports to determine an overall
             result.
         description (str): The result description.
-        svg (str): Figure of the result as SVG
     """
 
     description: str
-    html: str
     timestamp_oqt: datetime = Field(
         default=datetime.now(timezone.utc), alias="timestampOQT"
     )  # UTC datetime object
@@ -52,13 +50,13 @@ class Result(BaseModel):
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None
     figure: dict | None = None
-    svg: str | None = None
+    model_config = ConfigDict(
+        alias_generator=snake_to_lower_camel,
+        extra="forbid",
+        populate_by_name=True,
+    )
 
-    class Config:
-        alias_generator = snake_to_lower_camel
-        extra = "forbid"
-        allow_population_by_field_name = True
-
+    @computed_field
     @property
     def label(self) -> Literal["green", "yellow", "red", "undefined"]:
         labels = {1: "red", 2: "yellow", 3: "yellow", 4: "green", 5: "green"}

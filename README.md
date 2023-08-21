@@ -11,7 +11,7 @@
 
 The ohsome quality analyst (OQT) computes and provides data quality estimations (indicators) for OpenStreetMap.
 
-Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is now as easy as pie.
+Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is as easy as pie.
 
 The software is developed by [Heidelberg Institute for Geoinformation Technology (HeiGIT)](https://heigit.org/) and based on the [ohsome platform](https://heigit.org/big-spatial-data-analytics-en/ohsome/).
 
@@ -23,7 +23,7 @@ For quick insights, you can start exploring OQT through the [ohsome dashboard](h
 
 ### API
 
-Check out the interactive [API documentation](https://oqt.ohsome.org/api/docs) and [examples](https://github.com/GIScience/oqt-examples).
+Check out the interactive [Swagger API documentation](https://oqt.ohsome.org/api/docs) and the [Jupyter Notebook examples](https://github.com/GIScience/oqt-examples).
 
 ## About
 

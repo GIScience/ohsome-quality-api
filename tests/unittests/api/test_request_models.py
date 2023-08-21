@@ -11,12 +11,12 @@ from ohsome_quality_analyst.utils.exceptions import (
 
 def test_bpolys_valid(
     feature_collection_germany_heidelberg,
-    feature_collection_germany_heidelberg_bahnstadt_bergheim,
+    feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     # Single Feature
     BaseBpolys(bpolys=feature_collection_germany_heidelberg)
     # Multiple Features
-    BaseBpolys(bpolys=feature_collection_germany_heidelberg_bahnstadt_bergheim)
+    BaseBpolys(bpolys=feature_collection_heidelberg_bahnstadt_bergheim_weststadt)
 
 
 def test_bpolys_invalid(feature_collection_invalid):
@@ -39,8 +39,22 @@ def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometr
         BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
-def test_indicator_request(bpolys, topic_key_minimal):
+def test_indicator_request_minimal(bpolys, topic_key_minimal):
     IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal)
+
+
+def test_indicator_request_include_figure(bpolys, topic_key_minimal):
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_figure=False)
+
+
+def test_indicator_request_include_data(bpolys, topic_key_minimal):
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_data=True)
+
+
+def test_indicator_request_include_all(bpolys, topic_key_minimal):
+    IndicatorRequest(
+        bpolys=bpolys, topic=topic_key_minimal, include_figure=False, include_data=True
+    )
 
 
 def test_indicator_request_invalid_topic(bpolys):
