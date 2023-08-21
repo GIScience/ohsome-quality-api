@@ -161,7 +161,7 @@ class MappingSaturation(BaseIndicator):
         fig.add_trace(
             pgo.Scatter(
                 x=self.timestamps,
-                y=self.best_fit.fitted_values,
+                y=self.best_fit.fitted_values.tolist(),
                 name="Modelled saturation curve",
             ),
         )
