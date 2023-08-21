@@ -32,6 +32,12 @@
 - feat(indicator): add as_dict method ([#653])
 - refactor(oqt/api): move geojson creation to api ([#653])
 - build: bump fastapi and pydantic major version ([#669])
+- currentness: overhaul currentness indicator #668 
+    - based on monthly interval instead of yearly ([#668])
+    - result class determination based on share of three bins instead of median ([#668])
+    - now uses topic specific thresholds for bin creation ([#668])
+    - plot now shows relative and absolute contributions ([#668])
+    - further improvements to description and plot ([#668])
 - using a geojson with wrong projection now throws specific error ([#667])
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
@@ -51,6 +57,7 @@
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
 [#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
 [#667]: https://github.com/GIScience/ohsome-quality-analyst/pull/667
+[#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
 

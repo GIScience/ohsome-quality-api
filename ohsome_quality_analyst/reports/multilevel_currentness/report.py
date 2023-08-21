@@ -13,7 +13,7 @@ class MultilevelCurrentness(BaseReport):
     ):
         super().__init__(
             indicator_topic=(
-                IndicatorTopic("currentness", "infrastructure_lines"),
+                IndicatorTopic("currentness", "infrastructure-lines"),
                 IndicatorTopic("currentness", "poi"),
                 IndicatorTopic("currentness", "lulc"),
                 IndicatorTopic("currentness", "building-count"),
