@@ -190,6 +190,12 @@ class MappingSaturation(BaseIndicator):
         else:
             padding = y_max * 0.05
         fig.update_layout(showlegend=True)
+        # fixed legend, because we do not expect high contributions in 2008
+        fig.update_legends(
+            x=0,
+            y=1,
+            bgcolor="rgba(0,0,0,0)",
+        )
         fig.update_yaxes(range=[min(self.values), y_max + padding])
 
         raw = fig.to_dict()
