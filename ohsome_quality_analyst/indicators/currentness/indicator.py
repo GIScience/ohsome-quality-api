@@ -51,7 +51,6 @@ class Currentness(BaseIndicator):
         self.th1 = 0.75  # [%]
         self.th2 = 0.5
         self.th3 = 0.3
-        self.interval = ""  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         self.contrib_sum = 0
         self.bin_total: Bin
         self.bin_up_to_date: Bin
@@ -67,11 +66,11 @@ class Currentness(BaseIndicator):
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
         end = latest_ohsome_stamp.strftime("%Y-%m-%d")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
-        self.interval = "{}/{}/{}".format(start, end, "P1M")
+        interval = "{}/{}/{}".format(start, end, "P1M")  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         response = await ohsome_client.query(
             self.topic,
             self.feature,
-            time=self.interval,
+            time=interval,
             count_latest_contributions=True,
             contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
         )
@@ -180,8 +179,8 @@ class Currentness(BaseIndicator):
             customdata = list(
                 zip(
                     bucket.contrib_abs,
-                    [ts.strftime("%m/%d/%Y") for ts in bucket.to_timestamps],
-                    [ts.strftime("%m/%d/%Y") for ts in bucket.from_timestamps],
+                    [ts.strftime("%d %b %Y") for ts in bucket.to_timestamps],
+                    [ts.strftime("%d %b %Y") for ts in bucket.from_timestamps],
                 )
             )
             hovertemplate = (
@@ -221,9 +220,15 @@ class Currentness(BaseIndicator):
             title_text=("Currentness"),
         )
         fig.update_xaxes(
-            title_text="Interval: {}".format(self.interval),
+            title_text="Date",
             ticklabelmode="period",
-            tickformat="%b\n%Y",
+            minor=dict(
+                ticks="inside",
+                dtick="M1",
+                tickcolor="rgba(128,128,128,0.66)",
+            ),
+            tickformat="%b %Y",
+            ticks="outside",
             tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
@@ -234,9 +239,12 @@ class Currentness(BaseIndicator):
             title_text="Absolute Number of Latest Contributions",
             tickformat=".",
             secondary_y=True,
+            griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
+            title="Latest contributions",
+            bgcolor="rgba(255,255,255,0.66)",
             x=0,
             y=0.95,
         )
