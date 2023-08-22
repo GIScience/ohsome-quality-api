@@ -224,7 +224,7 @@ class Currentness(BaseIndicator):
             title_text=("Currentness"),
         )
         fig.update_xaxes(
-            title_text="Date",
+            title_text="Date of Last Edit",
             ticklabelmode="period",
             minor=dict(
                 ticks="inside",
@@ -236,7 +236,7 @@ class Currentness(BaseIndicator):
             tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Latest Contributions [%]<br > Feature Edits [%]",
+            title_text="Features [%]",
             # tickformat=".1%",
             tickformatstops=[
                 dict(dtickrange=[None, 0.001], value=".2%"),
@@ -247,14 +247,14 @@ class Currentness(BaseIndicator):
             secondary_y=False,
         )
         fig.update_yaxes(
-            title_text="Latest Contributions [#]<br >Feature Edits [#]",
+            title_text="Features [#]",
             tickformat=".",
             secondary_y=True,
             griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Last Edit to a Feature{}<br />Feature Age".format(self.get_source()),
+            title="Last Edit to a Feature{}".format(self.get_source()),
             x=0.02,
             y=0.95,
             bgcolor="rgba(255,255,255,0.66)",
@@ -277,7 +277,7 @@ class Currentness(BaseIndicator):
 
     def get_source(self) -> str:
         if self.th_source != "":
-            self.th_source = f"<a href='{self.th_source}' target='_blank'></a>"
+            self.th_source = f"<a href='{self.th_source}' target='_blank'>*</a>"
         return self.th_source
 
 
