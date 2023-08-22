@@ -10,6 +10,7 @@ import pytest
 from ohsome_quality_analyst.indicators.currentness.indicator import (
     Bin,
     Currentness,
+    convert_month_to_year_month_string,
     create_bin,
     get_median_month,
     get_num_months_last_contrib,
@@ -148,6 +149,17 @@ class TestFigure:
         i.create_figure()
         pio.show(i.result.figure)
 
+    def test_get_source(self, indicator):
+        indicator.th_source = ""
+        assert indicator.get_source() == ""
+        indicator.th_source = "www.oqt.org"
+        assert indicator.get_source() == "<a href='www.oqt.org' target='_blank'></a>"
+
+    def test_get_threshold_text(self, indicator):
+        assert indicator.get_threshold_text("red") == "older than 8 years"
+        assert indicator.get_threshold_text("yellow") == "between 3 years and 8 years"
+        assert indicator.get_threshold_text("green") == "younger than 3 years"
+
 
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
@@ -171,6 +183,15 @@ def test_get_median_month():
     expected = 0
     result = get_median_month(given)
     assert result == expected
+
+
+def test_convert_month_to_year_month_string():
+    assert convert_month_to_year_month_string(1) == "1 month"
+    assert convert_month_to_year_month_string(6) == "6 months"
+    assert convert_month_to_year_month_string(12) == "1 year"
+    assert convert_month_to_year_month_string(13) == "1 year 1 month"
+    assert convert_month_to_year_month_string(14) == "1 year 2 months"
+    assert convert_month_to_year_month_string(100) == "8 years 4 months"
 
 
 def test_create_bin():
