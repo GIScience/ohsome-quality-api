@@ -111,7 +111,7 @@ class TestFigure:
         i.calculate()
         return i
 
-    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
