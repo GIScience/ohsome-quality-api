@@ -71,4 +71,4 @@ Please provide [tests](/docs/development_setup.md#tests).
 ## Miscellaneous
 
 - Troubleshooting -> [docs/troubleshooting.md](/docs/troubleshooting.md)
-- How to create a new indicator? -> [docs/indicator_creation.md](/docs/indicator_creation.md).
+- How are indicators structured? -> [docs/indicator_guide.md](/docs/indicator_guide.md).
