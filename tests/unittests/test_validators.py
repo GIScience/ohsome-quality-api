@@ -1,7 +1,7 @@
 from unittest import mock
 
 import pytest
-from integrationtests.utils import get_geojson_fixture
+from unittests.utils import get_geojson_fixture
 
 from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONError,
