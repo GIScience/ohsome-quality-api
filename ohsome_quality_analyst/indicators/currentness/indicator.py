@@ -247,9 +247,9 @@ class Currentness(BaseIndicator):
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
             title="Last Edit to a Feature{}".format(self.get_source()),
+            x=0.02,
+            y=0.85,
             bgcolor="rgba(255,255,255,0.66)",
-            x=0,
-            y=0.95,
         )
 
         raw = fig.to_dict()
