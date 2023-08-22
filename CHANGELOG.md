@@ -38,6 +38,7 @@
     - now uses topic specific thresholds for bin creation ([#668])
     - plot now shows relative and absolute contributions ([#668])
     - further improvements to description and plot ([#668])
+- mapping-saturation: now shows the estimated total data in the plot ([#658])
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
@@ -54,6 +55,7 @@
 [#650]: https://github.com/GIScience/ohsome-quality-analyst/pull/650
 [#653]: https://github.com/GIScience/ohsome-quality-analyst/pull/653
 [#656]: https://github.com/GIScience/ohsome-quality-analyst/pull/656
+[#658]: https://github.com/GIScience/ohsome-quality-analyst/pull/658
 [#659]: https://github.com/GIScience/ohsome-quality-analyst/pull/659
 [#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
