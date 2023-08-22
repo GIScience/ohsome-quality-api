@@ -65,8 +65,8 @@ class TestCalculation:
 
         # Check if the result description contains the message about low contributions
         assert (
-            "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today."
+            "Please note that in the area of interest less than 25 "
+            "features of the selected topic are present today."
         ) in indicator.result.description
 
     def test_months_without_edit(self, indicator):

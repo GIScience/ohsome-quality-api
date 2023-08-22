@@ -46,7 +46,9 @@ class Currentness(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         # thresholds for binning in months
-        self.up_to_date, self.out_of_date = load_thresholds(self.topic.key)
+        self.up_to_date, self.out_of_date, self.th_source = load_thresholds(
+            self.topic.key
+        )
         # thresholds for determining result class based on share of features in bins
         self.th1 = 0.75  # [%]
         self.th2 = 0.5
@@ -114,6 +116,7 @@ class Currentness(BaseIndicator):
         if edge_cases:
             self.result.description = edge_cases
             return
+
         self.result.description = check_minor_edge_cases(
             self.contrib_sum,
             self.bin_total,
@@ -193,7 +196,9 @@ class Currentness(BaseIndicator):
             # trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
-                    name="{:.0%}".format(sum(bucket.contrib_rel)),
+                    name="{:.0%} {}".format(
+                        sum(bucket.contrib_rel), self.get_threshold_text(color)
+                    ),
                     x=bucket.timestamps,
                     y=bucket.contrib_rel,
                     marker_color=color,
@@ -243,7 +248,7 @@ class Currentness(BaseIndicator):
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Latest contributions",
+            title="Last Edit to Feature{}".format(self.get_source()),
             bgcolor="rgba(255,255,255,0.66)",
             x=0,
             y=0.95,
@@ -253,8 +258,32 @@ class Currentness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
+    def get_threshold_text(self, color: str) -> str:
+        match color:
+            case "green":
+                return f"< {convert_month_to_year_month_string(self.up_to_date)}"
+            case "yellow":
+                return f"< {convert_month_to_year_month_string(self.out_of_date)}"
+            case "red":
+                return f"> {convert_month_to_year_month_string(self.out_of_date)}"
 
-def load_thresholds(topic_key: str) -> tuple[int, int]:
+    def get_source(self) -> str:
+        if self.th_source != "":
+            self.th_source = f"<a href='{self.th_source}' target='_blank'>&#185;</a>"
+        return self.th_source
+
+
+def convert_month_to_year_month_string(months: int):
+    years, months = divmod(months, 12)
+    years_string = months_string = ""
+    if years != 0:
+        years_string = f"{years} year" + ("s" if years > 1 else "")
+    if months != 0:
+        months_string = f"{months} month" + ("s" if months > 1 else "")
+    return " ".join([years_string, months_string]).strip()
+
+
+def load_thresholds(topic_key: str) -> tuple[int, int, str]:
     """Load thresholds based on topic keys.
 
     Thresholds denote the number of months since today.
@@ -272,10 +301,17 @@ def load_thresholds(topic_key: str) -> tuple[int, int]:
     try:
         # topic thresholds
         thresholds = raw[topic_key]["thresholds"]
-        return (thresholds["up_to_date"], thresholds["out_of_date"])
+        up_to_date, out_of_date = (thresholds["up_to_date"], thresholds["out_of_date"])
     except KeyError:
         # default thresholds
-        return (36, 96)
+        return 36, 96, ""
+
+    try:
+        # source/reason for threshold
+        return up_to_date, out_of_date, raw[topic_key]["source"]
+    except KeyError:
+        # no citable reason
+        return up_to_date, out_of_date, ""
 
 
 def create_bin(b: Bin, i: int, j: int) -> Bin:
