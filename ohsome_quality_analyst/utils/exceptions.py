@@ -38,6 +38,14 @@ class GeoJSONGeometryTypeError(ValidationError):
         )
 
 
+class InvalidCRSError(ValidationError):
+    def __init__(self):
+        self.name = "InvalidCRSError"
+        self.message = (
+            "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
+        )
+
+
 class IndicatorTopicCombinationError(ValidationError):
     """Invalid indicator topic combination error."""
 
@@ -63,8 +71,8 @@ class SizeRestrictionError(ValueError):
     def __init__(self, geom_size_limit, geom_size):
         self.name = "SizeRestrictionError"
         self.message = (
-            f"Input GeoJSON Geometry is too big ({geom_size_limit} km²). "
-            f"The area should be less than {geom_size} km²."
+            f"Input GeoJSON Geometry is too big ({geom_size} km²). "
+            f"The area should be less than {geom_size_limit} km²."
         )
 
 
