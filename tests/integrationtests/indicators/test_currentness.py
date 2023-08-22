@@ -18,13 +18,14 @@ from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
 
 class TestInit:
-    def test_thresholds_topic(self, topic_building_count, feature_germany_heidelberg):
+    def test_thresholds_default(self, topic_building_count, feature_germany_heidelberg):
         """Test topic specific thresholds setting after init of indicator."""
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         assert indicator.up_to_date == 36
         assert indicator.out_of_date == 96
+        assert indicator.th_source == ""
 
-    def test_thresholds_default(self, feature_germany_heidelberg):
+    def test_thresholds_topic(self, feature_germany_heidelberg):
         """Test default thresholds setting after init of indicator."""
         indicator = Currentness(
             feature=feature_germany_heidelberg,
@@ -32,6 +33,14 @@ class TestInit:
         )
         assert indicator.up_to_date == 48
         assert indicator.out_of_date == 96
+        assert (
+            indicator.th_source
+            == "https://wiki.openstreetmap.org/wiki/StreetComplete/Quests"
+        )
+
+    # TODO
+    def test_get_threshold_text(self):
+        pass
 
 
 class TestPreprocess:
@@ -65,8 +74,8 @@ class TestCalculation:
 
         # Check if the result description contains the message about low contributions
         assert (
-            "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today."
+            "Please note that in the area of interest less than 25 "
+            "features of the selected topic are present today."
         ) in indicator.result.description
 
     def test_months_without_edit(self, indicator):
@@ -127,6 +136,25 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
+    @pytest.mark.skip(reason="Only for manual testing.")
+    def test_outdated_features_plotting(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        """Create a figure with features in the out-of-date category only"""
+        i = Currentness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        len_contribs = len(i.bin_total.contrib_abs) - 84
+        i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
+        new_total = sum(i.bin_total.contrib_abs)
+        i.bin_total.contrib_rel = [
+            value / new_total for value in i.bin_total.contrib_abs
+        ]
+        i.calculate()
+        i.create_figure()
+        pio.show(i.result.figure)
+
 
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
@@ -150,6 +178,11 @@ def test_get_median_month():
     expected = 0
     result = get_median_month(given)
     assert result == expected
+
+
+# TODO
+def test_month_to_year_month_str():
+    pass
 
 
 def test_create_bin():

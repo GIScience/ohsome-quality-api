@@ -46,7 +46,9 @@ class Currentness(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         # thresholds for binning in months
-        self.up_to_date, self.out_of_date = load_thresholds(self.topic.key)
+        self.up_to_date, self.out_of_date, self.th_source = load_thresholds(
+            self.topic.key
+        )
         # thresholds for determining result class based on share of features in bins
         self.th1 = 0.75  # [%]
         self.th2 = 0.5
@@ -78,7 +80,6 @@ class Currentness(BaseIndicator):
         from_timestamps = []
         timestamps = []
         contrib_abs = []
-        contrib_rel = []
         contrib_sum = 0
         for c in reversed(response["result"]):  # latest contributions first
             to_ts = isoparse(c["toTimestamp"])
@@ -193,7 +194,10 @@ class Currentness(BaseIndicator):
             # trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
-                    name="{:.0%}".format(sum(bucket.contrib_rel)),
+                    name="{:.1%} {}".format(
+                        sum(bucket.contrib_rel),
+                        self.get_threshold_text(color),
+                    ),
                     x=bucket.timestamps,
                     y=bucket.contrib_rel,
                     marker_color=color,
@@ -232,29 +236,52 @@ class Currentness(BaseIndicator):
             tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Percentage of Latest Contributions",
-            tickformat=".0%",
+            title_text="Latest Contributions [%]<br > Feature Edits [%]",
+            # tickformat=".1%",
+            tickformatstops=[
+                dict(dtickrange=[None, 0.001], value=".2%"),
+                dict(dtickrange=[0.001, 0.01], value=".1%"),
+                dict(dtickrange=[0.01, 0.1], value=".0%"),
+                dict(dtickrange=[0.1, None], value=".0%"),
+            ],
+            secondary_y=False,
         )
         fig.update_yaxes(
-            title_text="Absolute Number of Latest Contributions",
+            title_text="Latest Contributions [#]<br >Feature Edits [#]",
             tickformat=".",
             secondary_y=True,
             griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Latest contributions",
-            bgcolor="rgba(255,255,255,0.66)",
-            x=0,
+            title="Last Edit to a Feature{}<br />Feature Age".format(self.get_source()),
+            x=0.02,
             y=0.95,
+            bgcolor="rgba(255,255,255,0.66)",
         )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
+    def get_threshold_text(self, color: str) -> str:
+        up_to_date_string = month_to_year_month_str(self.up_to_date)
+        out_of_date_string = month_to_year_month_str(self.out_of_date)
+        match color:
+            case "green":
+                return f"younger than {up_to_date_string}"
+            case "yellow":
+                return f"between {up_to_date_string} and {out_of_date_string}"
+            case "red":
+                return f"older than {out_of_date_string}"
 
-def load_thresholds(topic_key: str) -> tuple[int, int]:
+    def get_source(self) -> str:
+        if self.th_source != "":
+            self.th_source = f"<a href='{self.th_source}' target='_blank'></a>"
+        return self.th_source
+
+
+def load_thresholds(topic_key: str) -> tuple[int, int, str]:
     """Load thresholds based on topic keys.
 
     Thresholds denote the number of months since today.
@@ -272,10 +299,17 @@ def load_thresholds(topic_key: str) -> tuple[int, int]:
     try:
         # topic thresholds
         thresholds = raw[topic_key]["thresholds"]
-        return (thresholds["up_to_date"], thresholds["out_of_date"])
+        up_to_date, out_of_date = (thresholds["up_to_date"], thresholds["out_of_date"])
     except KeyError:
         # default thresholds
-        return (36, 96)
+        return 36, 96, ""
+
+    try:
+        # source/reason for threshold
+        return up_to_date, out_of_date, raw[topic_key]["source"]
+    except KeyError:
+        # no citable reason
+        return up_to_date, out_of_date, ""
 
 
 def create_bin(b: Bin, i: int, j: int) -> Bin:
@@ -336,3 +370,13 @@ def get_median_month(contrib_rel: list) -> int:
         contrib_rel_cum += contrib
         if contrib_rel_cum >= 0.5:
             return month
+
+
+def month_to_year_month_str(months: int):
+    years, months = divmod(months, 12)
+    years_string = months_string = ""
+    if years != 0:
+        years_string = f"{years} year" + ("s" if years > 1 else "")
+    if months != 0:
+        months_string = f"{months} month" + ("s" if months > 1 else "")
+    return " ".join([years_string, months_string]).strip()
