@@ -236,7 +236,13 @@ class Currentness(BaseIndicator):
         )
         fig.update_yaxes(
             title_text="Percentage of Latest Contributions",
-            tickformat=".1%",
+            tickformatstops=[
+                dict(dtickrange=[None, 0.001], value=".2%"),
+                dict(dtickrange=[0.001, 0.01], value=".1%"),
+                dict(dtickrange=[0.01, 0.1], value=".0%"),
+                dict(dtickrange=[0.1, None], value=".0%"),
+            ],
+            secondary_y=False,
         )
         fig.update_yaxes(
             title_text="Absolute Number of Latest Contributions",
@@ -248,7 +254,7 @@ class Currentness(BaseIndicator):
         fig.update_legends(
             title="Last Edit to a Feature{}".format(self.get_source()),
             x=0.02,
-            y=0.85,
+            y=0.95,
             bgcolor="rgba(255,255,255,0.66)",
         )
 
