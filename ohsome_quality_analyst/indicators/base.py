@@ -123,17 +123,24 @@ class BaseIndicator(metaclass=ABCMeta):
         pass
 
     def _get_default_figure(self) -> None:
-        fig = go.Figure()
-        fig.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-        # add text annotation at the center
-        fig.add_annotation(
-            text="The creation of the Indicator was unsuccessful.",
-            showarrow=False,
-            font=dict(size=32, color="black"),
+        fig = go.Figure(
+            go.Pie(
+                values=[1],
+                labels=["The creation of the Indicator was unsuccessful."],
+                texttemplate="%{label}",
+                textposition="inside",
+            ),
         )
-
-        fig.update_xaxes(showticklabels=False, zeroline=False)
-        fig.update_yaxes(showticklabels=False, zeroline=False)
+        fig.update_traces(
+            marker=dict(colors=["rgba(0, 0, 0, 0)"]),
+            hoverinfo="none",
+        )
+        fig.update_layout(
+            title_text=self.metadata.name,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            showlegend=False,
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate

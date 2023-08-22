@@ -1,3 +1,5 @@
+import plotly.graph_objects as pgo
+import plotly.io as pio
 import pytest
 
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
@@ -52,6 +54,13 @@ class TestBaseIndicator:
 
     def test_attribution_class_property(self):
         assert isinstance(Minimal.attribution(), str)
+
+    def test_figure(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        assert isinstance(indicator.result.figure, dict)
+        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        # comment out for manual test
+        pio.show(indicator.result.figure)
 
 
 class TestBaseResult:
