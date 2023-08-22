@@ -38,7 +38,7 @@
     - now uses topic specific thresholds for bin creation ([#668])
     - plot now shows relative and absolute contributions ([#668])
     - further improvements to description and plot ([#668])
-- using a geojson with wrong projection now throws specific error ([#667])
+    - using a geojson with wrong projection now throws specific error ([#667])
 
 [#589]: https://github.com/GIScience/ohsome-quality-analyst/pull/589
 [#600]: https://github.com/GIScience/ohsome-quality-analyst/pull/600
