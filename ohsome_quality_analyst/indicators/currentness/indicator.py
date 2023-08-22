@@ -80,7 +80,6 @@ class Currentness(BaseIndicator):
         from_timestamps = []
         timestamps = []
         contrib_abs = []
-        contrib_rel = []
         contrib_sum = 0
         for c in reversed(response["result"]):  # latest contributions first
             to_ts = isoparse(c["toTimestamp"])
@@ -196,7 +195,7 @@ class Currentness(BaseIndicator):
             # trace for relative contributions
             fig.add_trace(
                 pgo.Bar(
-                    name="{:.0%} {}".format(
+                    name="{:.1%} {}".format(
                         sum(bucket.contrib_rel), self.get_threshold_text(color)
                     ),
                     x=bucket.timestamps,
@@ -238,7 +237,7 @@ class Currentness(BaseIndicator):
         )
         fig.update_yaxes(
             title_text="Percentage of Latest Contributions",
-            tickformat=".0%",
+            tickformat=".1%",
         )
         fig.update_yaxes(
             title_text="Absolute Number of Latest Contributions",
