@@ -38,6 +38,10 @@ class TestInit:
             == "https://wiki.openstreetmap.org/wiki/StreetComplete/Quests"
         )
 
+    # TODO
+    def test_get_threshold_text(self):
+        pass
+
 
 class TestPreprocess:
     @oqt_vcr.use_cassette
@@ -124,7 +128,7 @@ class TestFigure:
         return i
 
     # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
+    # @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
         pio.show(indicator.result.figure)
 
@@ -132,8 +136,11 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
+    @pytest.mark.skip(reason="Only for manual testing.")
     def test_outdated_features_plotting(
-        self, topic_building_count, feature_germany_heidelberg
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
     ):
         """Create a figure with features in the out-of-date category only"""
         i = Currentness(topic_building_count, feature_germany_heidelberg)
@@ -171,6 +178,11 @@ def test_get_median_month():
     expected = 0
     result = get_median_month(given)
     assert result == expected
+
+
+# TODO
+def test_month_to_year_month_str():
+    pass
 
 
 def test_create_bin():
