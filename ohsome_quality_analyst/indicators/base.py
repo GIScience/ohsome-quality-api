@@ -132,12 +132,15 @@ class BaseIndicator(metaclass=ABCMeta):
             ),
         )
         fig.update_traces(
-            insidetextfont=dict(size=27),  # Adjust the font size as needed
-            textfont=dict(color="black"),
-            marker=dict(colors=["rgba(0, 0, 0, 0)"]),  # Set slice color to transparent
-            hoverinfo="none",  # Disable hovering information
+            marker=dict(colors=["rgba(0, 0, 0, 0)"]),
+            hoverinfo="none",
         )
-        fig.update_layout(plot_bgcolor="white", paper_bgcolor="white", showlegend=False)
+        fig.update_layout(
+            title_text=self.metadata.name,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            showlegend=False,
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
