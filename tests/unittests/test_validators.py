@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-from unittests.utils import get_geojson_fixture
 
 from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONError,
@@ -16,6 +15,7 @@ from ohsome_quality_analyst.utils.validators import (
     validate_geojson,
     validate_indicator_topic_combination,
 )
+from tests.unittests.utils import get_geojson_fixture
 
 
 def test_validate_geojson_feature_collection_single(
