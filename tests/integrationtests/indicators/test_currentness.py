@@ -132,6 +132,22 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
+    def test_outdated_features_plotting(
+        self, topic_building_count, feature_germany_heidelberg
+    ):
+        """Create a figure with features in the out-of-date category only"""
+        i = Currentness(topic_building_count, feature_germany_heidelberg)
+        asyncio.run(i.preprocess())
+        len_contribs = len(i.bin_total.contrib_abs) - 84
+        i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
+        new_total = sum(i.bin_total.contrib_abs)
+        i.bin_total.contrib_rel = [
+            value / new_total for value in i.bin_total.contrib_abs
+        ]
+        i.calculate()
+        i.create_figure()
+        pio.show(i.result.figure)
+
 
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
