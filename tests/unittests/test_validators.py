@@ -1,12 +1,14 @@
 from unittest import mock
 
 import pytest
+from integrationtests.utils import get_geojson_fixture
 
 from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
     IndicatorTopicCombinationError,
+    InvalidCRSError,
     SizeRestrictionError,
 )
 from ohsome_quality_analyst.utils.validators import (
@@ -86,3 +88,17 @@ def test_validate_area(feature_germany_heidelberg):
 def test_validate_area_exception(feature_germany_heidelberg):
     with pytest.raises(SizeRestrictionError):
         validate_area(feature_germany_heidelberg)
+
+
+def test_wrong_crs():
+    feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
+    try:
+        validate_geojson(feature)
+    except InvalidCRSError as exception:
+        print("test")
+        assert (
+            str(exception.message)
+            == "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
+        )
+    else:
+        raise AssertionError("Expected InvalidCRSError but no exception was raised")
