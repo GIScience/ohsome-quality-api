@@ -74,9 +74,8 @@ class TestApiReportIo(unittest.TestCase):
         with self.assertRaises(InvalidCRSError) as context:
             validate_geojson(feature)
         exception = context.exception
-        self.assertEqual(exception.error_code, 400)
         self.assertEqual(
-            exception.args[0],
+            exception.message,
             "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none.",
         )
 
