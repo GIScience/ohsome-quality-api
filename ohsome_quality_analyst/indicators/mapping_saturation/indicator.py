@@ -197,7 +197,7 @@ class MappingSaturation(BaseIndicator):
             fig.update_yaxes(range=[min(self.values), y_max + padding])
         fig.update_layout(showlegend=True)
         # fixed legend, because we do not expect high contributions in 2008
-        fig.update_legends(x=0.02, y=0.75, bgcolor="rgba(255,255,255,0.66)")
+        fig.update_legends(x=0.02, y=0.85, bgcolor="rgba(255,255,255,0.66)")
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
