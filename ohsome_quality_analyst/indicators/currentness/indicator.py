@@ -116,7 +116,6 @@ class Currentness(BaseIndicator):
         if edge_cases:
             self.result.description = edge_cases
             return
-
         self.result.description = check_minor_edge_cases(
             self.contrib_sum,
             self.bin_total,
@@ -271,7 +270,7 @@ class Currentness(BaseIndicator):
 
     def get_source(self) -> str:
         if self.th_source != "":
-            self.th_source = f"<a href='{self.th_source}' target='_blank'>*</a>"
+            self.th_source = f"<a href='{self.th_source}' target='_blank'></a>"
         return self.th_source
 
 
