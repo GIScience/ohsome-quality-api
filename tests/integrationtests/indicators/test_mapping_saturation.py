@@ -111,7 +111,7 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
@@ -120,43 +120,6 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
-
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    def test_create_figure_with_high_asymptote_manual(self, indicator):
-        fig = pgo.Figure()
-        fig.add_trace(
-            pgo.Scatter(
-                x=indicator.timestamps,
-                y=indicator.values,
-                name="OSM data",
-            ),
-        )
-        fig.add_trace(
-            pgo.Scatter(
-                x=indicator.timestamps,
-                y=indicator.best_fit.fitted_values,
-                name="Modelled saturation curve",
-            ),
-        )
-        fig.update_layout(title_text="Mapping Saturation")
-        fig.update_xaxes(title_text="Date")
-        fig.update_yaxes(title_text="Value")
-
-        # plot asymptote
-        asymptote = indicator.data["best_fit"]["asymptote"]
-        fig.add_shape(
-            type="line",
-            x0=min(indicator.timestamps),
-            x1=max(indicator.timestamps),
-            y0=asymptote * 2,
-            y1=asymptote * 2,
-            line=dict(color="red", width=2, dash="dash"),
-            name="Estimated total data",
-        )
-        y_max = max(max(indicator.values), max(indicator.best_fit.fitted_values))
-        1 - (y_max / asymptote)
-        fig.update_layout(showlegend=True)
-        fig.show()
 
 
 @oqt_vcr.use_cassette
