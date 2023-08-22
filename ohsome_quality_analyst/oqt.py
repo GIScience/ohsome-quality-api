@@ -35,7 +35,10 @@ async def create_indicator(
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
-        if isinstance(topic, TopicDefinition) and key != "mapping-saturation":
+        if isinstance(topic, TopicDefinition) and key not in [
+            "mapping-saturation",
+            "currentness",
+        ]:
             validate_area(feature)
         tasks.append(_create_indicator(key, feature, topic, include_figure))
     return await gather_with_semaphore(tasks)

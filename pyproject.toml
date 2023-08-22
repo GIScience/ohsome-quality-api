@@ -43,10 +43,10 @@ uvicorn = "^0.20.0"
 schema = "^0.7.5"
 building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models"}
 kaleido = "0.2.1"
-plotly = "^5.14.0"
 pyproj = "^3.6.0"
 pydantic = "^2.1.1"
 geojson-pydantic = "^1.0.0"
+plotly = "^5.16.1"
 
 [tool.poetry.dev-dependencies]
 black = "^23.3.0"
