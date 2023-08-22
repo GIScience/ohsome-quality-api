@@ -157,8 +157,8 @@ class BaseIndicator(metaclass=ABCMeta):
         directory = get_module_dir(
             "ohsome_quality_analyst.indicators.{}".format(indicator_key)
         )
-        file = os.path.join(directory, "/metadata.yaml")
-        with open(file[0], "r") as file:
+        file = os.path.join(directory, "metadata.yaml")
+        with open(file, "r") as file:
             raw = yaml.safe_load(file)
         metadata = {}
         for k, v in raw.items():
