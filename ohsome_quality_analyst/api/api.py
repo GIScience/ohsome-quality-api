@@ -19,9 +19,7 @@ from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_analyst import (
     __author__,
-    __description__,
     __email__,
-    __homepage__,
     __title__,
     __version__,
     oqt,
@@ -90,30 +88,8 @@ MEDIA_TYPE_JSON = "application/json"
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
 TAGS_METADATA = [
-    {
-        "name": "indicator",
-        "description": "Request an Indicator",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
-    {
-        "name": "metadata",
-        "description": "Request Metadata",
-        "externalDocs": {
-            "description": "External docs",
-            "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/"
-                + __version__
-                + "/docs/api.md"
-            ),
-        },
-    },
+    {"name": "indicator", "description": "Request an Indicator"},
+    {"name": "metadata", "description": "Request Metadata"},
 ]
 
 # TODO: to be replaced by config
@@ -123,13 +99,18 @@ configure_logging()
 logging.info("Logging enabled")
 logging.debug("Debugging output enabled")
 
+description = """
+Data quality estimations for OpenStreetMap.
+
+[Homepage](https://oqt.ohsome@heigit.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqtApi)
+"""
+
 app = FastAPI(
     title=__title__,
-    description=__description__,
+    description=description,
     version=__version__,
     contact={
         "name": __author__,
-        "url": __homepage__,
         "email": __email__,
     },
     openapi_tags=TAGS_METADATA,
@@ -274,7 +255,7 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
         key="mapping-saturation",
     ).attribution()
     # TODO: if accept=JSON no GeoJSON should be created in the first place.
-    response["results"] = [feature.properties for feature in geojson_object.features]
+    response["result"] = [feature.properties for feature in geojson_object.features]
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
 
@@ -300,7 +281,7 @@ async def post_indicator(
     key: IndicatorEnum,
     parameters: IndicatorRequest,
 ) -> Any:
-    """Request an Indicator for a custom AOI."""
+    """Request an indicator for your area of interest."""
     validate_indicator_topic_combination(key.value, parameters.topic_key.value)
     indicators = await oqt.create_indicator(
         key=key.value,

@@ -1,6 +1,6 @@
 # Development Setup
 
-To run all components (OQT/API, Database, Website) in Docker containers simply run:
+To run simply run OQT and the Database the provided Docker setup can be used.
 
 ```bash
 docker compose up --detach
@@ -8,105 +8,54 @@ docker compose up --detach
 
 After all services are up they are available under:
 
-- Website: [http://127.0.0.1:8081/](http://127.0.0.1:8081/)
 - API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 - Database: `host=localhost port=5445 dbname=oqt user=oqt password=oqt`
 
-Please continue reading for more information on each one of those services. If running into issues during the setup please check the [troubleshooting](/docs/troubleshooting.md) document. Also feel free to reach out to us.
+For development setup please continue reading.
 
 
-## Database
-
-A database for development purposes is provided as Dockerfile. This database contains custom regions, regions for running tests and datasets (E.g. SHDI) for those regions. To build and run an already configured image run:
-
-```bash
-docker compose up --detach database
-```
-
-During building of the database Docker image data for development purposes is downloaded. When the database container is running for the first time it takes a few seconds until the database is initialized and ready to accept connections.
-Check the progress with `docker logs database`.
-
-To reinitialize or update the database make sure to delete the volume and rebuild the image. This will delete all data in the database:
-
-```bash
-# Make sure that your git is up2date, e.g. git pull
-docker compose down --remove-orphans --volumes
-docker compose up --detach --force-recreate --build database
-```
-
-To avoid using the cache of Docker run:
-
-```bash
-docker compose build --no-cache database
-docker compose up --detach database
-```
-
-> If for development purposes additional datasets are required please have a look at the scripts found in the `database/init_db.production` directory.
-
-
-### Database for running tests
-
-A minimal database setup for running tests is provided. If the build argument `OQT_TEST_DB` is set to `True` a database is initialized with data only for the regions used by the tests. No (additional) data is downloaded as is the case with the database setup for development.
-
-
-## Raster Datasets
-
-Please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md).
-
-
-## OQT Python package
-
-
-### Requirements
+## Requirements
 
 - Python: ≥ 3.10
 - Poetry: ≥ 1.5
 - R: ≥ 4.0
 
-This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system using `pip`.
+This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
+
+For development a database and raster datasets on disk might not be needed. In case the database is needed start the database service defined in the docker compose file. If raster datasets are needed please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md) for setting those up.
 
 
-### Installation
+## Installation
 
 ```bash
 poetry install
 poetry shell  # Spawns a shell within the virtual environment.
 pre-commit install  # Install pre-commit hooks.
 # Hack away
+pytest  # Run all tests
 ```
 
 
-### Configuration
+## Configuration
 
 For all possible configuration parameter please refer to the [configuration documentation](/docs/configuration.md).
 
-For local development no additional configuration is required. Per default OQT will connect to the database defined in `docker-compose.yml`.
+For local development no custom configuration is required.
 
 
-### Usage
-
-
-#### API
-
-
-##### Start the API using Docker:
+## Usage
 
 ```bash
-docker compose up --detach workers
+python scripts/start_api.py
 ```
 
-
-##### Start the API using a Python script:
-
-```bash
-cd scripts
-python start_api.py
-```
+Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
 
 Default host is 127.0.0.1 and port is 8080. To change this, provide the corresponding parameter:
 
 ```bash
-python start_api.py --help
+$ cd scripts
+$ python start_api.py --help
 Usage: start_api.py [OPTIONS]
 
 Options:
@@ -116,55 +65,7 @@ Options:
 ```
 
 
-##### Endpoints
-
-Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
-
-Alternative query the API from a terminal using CURL:
-
-```bash
-curl -X 'POST' \
-  'http://127.0.0.1:8080/indicators/mapping-saturation' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "topic": "building-count",
-  "bpolys": {
-    "type": "Feature",
-    "geometry": {
-      "type": "Polygon",
-      "coordinates": [
-        [
-          [
-            8.674092292785645,
-            49.40427147224242
-          ],
-          [
-            8.695850372314453,
-            49.40427147224242
-          ],
-          [
-            8.695850372314453,
-            49.415552187316095
-          ],
-          [
-            8.674092292785645,
-            49.415552187316095
-          ],
-          [
-            8.674092292785645,
-            49.40427147224242
-          ]
-        ]
-      ]
-    }
-  }
-}' \
-| python -m json.tool > response.json
-```
-
-
-### Tests
+## Tests
 
 All relevant components should be tested. Please write tests for newly integrated
 functionality.
@@ -177,9 +78,7 @@ To run all tests just execute `pytest`:
 pytest
 ```
 
-#### Writing tests
-
-##### VCR (videocassette recorder) for tests
+### VCR for Tests
 
 All tests that are calling function, which are dependent on external resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
 This ensures that the positive test result is not dependent on the external resource. The cassettes are stored in the test directory within [fixtures/vcr_cassettes](/tests/integrationtests/fixtures/vcr_cassettes). These cassettes are supposed to be integrated (committed and pushed) to the repository.
@@ -199,18 +98,18 @@ def test_something(self):
 
 Good examples can be found in [test_oqt.py](/tests/integrationtests/test_oqt.py).
 
-##### Asynchronous functions
+### Asynchronous functions
 
 When writing tests for functions which are asynchronous (using the `async/await` pattern) such as the `preprocess` functions of indicator classes, those functions should be called as follows: `asyncio.run(indicator.preprocess())`.
 
 
-### Logging
+## Logging
 
 Logging is enabled by default.
 
 `ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
 
-#### Configuration
+### Configuration
 
 The logging module is configured in `config.py`. Both entry-points to
 `ohsome_quality_analyst`, the `api.py`, will call the configuration
@@ -218,7 +117,7 @@ function defined in `definitions.py`. The default log level is `INFO`. This can 
 overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
 [configuration documentation](docs/configuration.md)).
 
-#### Usage
+### Usage
 
 ```python
 import logging
@@ -227,12 +126,12 @@ logging.info("Logging message")
 ```
 
 
-### Database Library
+## Database Library
 
 OQT uses [asyncpg](https://magicstack.github.io/asyncpg/current/) as database interface
 library.
 
-#### `executemany` Query
+### `executemany` Query
 
 In Psycopg one can execute a query for each element of a list with
 `executemany(insert_query, vars_list)`.
@@ -248,7 +147,7 @@ await conn.fetch('''
 ```
 
 
-### Notes on the integration of R
+## Notes on the integration of R
 
 OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
 

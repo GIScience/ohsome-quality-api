@@ -14,7 +14,7 @@ RESPONSE_SCHEMA_JSON = Schema(
             "url": str,
             Optional("text"): str,
         },
-        "results": [
+        "result": [
             {
                 Optional("id"): Or(str, int),
                 "metadata": {

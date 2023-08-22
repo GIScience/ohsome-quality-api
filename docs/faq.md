@@ -11,13 +11,3 @@ A saturation of 100 % means that the gradient or slope of the last bit (i.e. las
 #### Why does the curve of Mapping Saturation decline sometimes?
 
 In case that features or tags are deleted the fitted curve can decline.
-
-### Currentness
-
-#### Can smaller time periods (e.g. monthly) be used for computing the Currentness Indicator?
-
-In term of content there is no reason why a smaller time period could not be used.
-
-#### How does deleted features or time periods without any mapping influence the Currentness result?
-
-TODO

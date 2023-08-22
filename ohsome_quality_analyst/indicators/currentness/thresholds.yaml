@@ -1,0 +1,91 @@
+---
+# thresholds are age in number of months since latest timestamp (today)
+major-roads-count:
+    thresholds:
+      up_to_date: 48
+      out_of_date: 96
+    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+major-roads-length:
+  thresholds:
+      up_to_date: 48
+      out_of_date: 96
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+railway-length:
+  thresholds:
+      up_to_date: 96
+      out_of_date: 132
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+bus-stops:
+  thresholds:
+      up_to_date: 48
+      out_of_date: 96
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+tram-stops:
+  thresholds:
+      up_to_date: 48
+      out_of_date: 96
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+subway-station:
+  thresholds:
+      up_to_date: 48
+      out_of_date: 96
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+mapaction-rail-length:
+  thresholds:
+      up_to_date: 96
+      out_of_date: 132
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+mapaction-major-roads-length:
+  thresholds:
+      up_to_date: 48
+      out_of_date: 96
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+local-food-shops:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+fast-food-restaurants:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+restaurants:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+convenience-stores:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+pubs-and-biergartens:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+alcohol-and-beverages:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
+
+sweets-and-pasteries:
+  thresholds:
+      up_to_date: 24
+      out_of_date: 48
+  source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
