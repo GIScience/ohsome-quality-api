@@ -18,13 +18,14 @@ from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
 
 class TestInit:
-    def test_thresholds_topic(self, topic_building_count, feature_germany_heidelberg):
+    def test_thresholds_default(self, topic_building_count, feature_germany_heidelberg):
         """Test topic specific thresholds setting after init of indicator."""
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         assert indicator.up_to_date == 36
         assert indicator.out_of_date == 96
+        assert indicator.th_source == ""
 
-    def test_thresholds_default(self, feature_germany_heidelberg):
+    def test_thresholds_topic(self, feature_germany_heidelberg):
         """Test default thresholds setting after init of indicator."""
         indicator = Currentness(
             feature=feature_germany_heidelberg,
@@ -32,6 +33,10 @@ class TestInit:
         )
         assert indicator.up_to_date == 48
         assert indicator.out_of_date == 96
+        assert (
+            indicator.th_source
+            == "https://wiki.openstreetmap.org/wiki/StreetComplete/Quests"
+        )
 
 
 class TestPreprocess:
