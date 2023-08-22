@@ -248,7 +248,7 @@ class Currentness(BaseIndicator):
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Last Edit to Feature{}".format(self.get_source()),
+            title="Last Edit to a Feature{}".format(self.get_source()),
             bgcolor="rgba(255,255,255,0.66)",
             x=0,
             y=0.95,
@@ -259,17 +259,19 @@ class Currentness(BaseIndicator):
         self.result.figure = raw
 
     def get_threshold_text(self, color: str) -> str:
+        up_to_date_string = convert_month_to_year_month_string(self.up_to_date)
+        out_of_date_string = convert_month_to_year_month_string(self.out_of_date)
         match color:
             case "green":
-                return f"< {convert_month_to_year_month_string(self.up_to_date)}"
+                return f"younger than {up_to_date_string}"
             case "yellow":
-                return f"< {convert_month_to_year_month_string(self.out_of_date)}"
+                return f"between {up_to_date_string} and {out_of_date_string}"
             case "red":
-                return f"> {convert_month_to_year_month_string(self.out_of_date)}"
+                return f"older than {out_of_date_string}"
 
     def get_source(self) -> str:
         if self.th_source != "":
-            self.th_source = f"<a href='{self.th_source}' target='_blank'>&#185;</a>"
+            self.th_source = f"<a href='{self.th_source}' target='_blank'>*</a>"
         return self.th_source
 
 
