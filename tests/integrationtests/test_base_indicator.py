@@ -2,7 +2,7 @@ import plotly.graph_objects as pgo
 import pytest
 
 from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
-from ohsome_quality_analyst.indicators.models import Result
+from ohsome_quality_analyst.indicators.models import IndicatorMetadata, Result
 
 from .utils import get_geojson_fixture, get_topic_fixture
 
@@ -60,6 +60,12 @@ class TestBaseIndicator:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
         # comment out for manual test
         # pio.show(indicator.result.figure)
+
+    def test_get_template(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        indicator.get_template()
+        assert isinstance(indicator.metadata, IndicatorMetadata)
+        assert isinstance(indicator.result, Result)
 
 
 class TestBaseResult:
