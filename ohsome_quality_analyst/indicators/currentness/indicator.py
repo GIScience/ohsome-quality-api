@@ -195,7 +195,8 @@ class Currentness(BaseIndicator):
             fig.add_trace(
                 pgo.Bar(
                     name="{:.1%} {}".format(
-                        sum(bucket.contrib_rel), self.get_threshold_text(color)
+                        sum(bucket.contrib_rel),
+                        self.get_threshold_text(color),
                     ),
                     x=bucket.timestamps,
                     y=bucket.contrib_rel,
@@ -223,7 +224,7 @@ class Currentness(BaseIndicator):
             title_text=("Currentness"),
         )
         fig.update_xaxes(
-            title_text="Date",
+            title_text="Date of Last Edit",
             ticklabelmode="period",
             minor=dict(
                 ticks="inside",
@@ -235,7 +236,8 @@ class Currentness(BaseIndicator):
             tick0=self.bin_total.to_timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Percentage of Latest Contributions",
+            title_text="Features [%]",
+            # tickformat=".1%",
             tickformatstops=[
                 dict(dtickrange=[None, 0.001], value=".2%"),
                 dict(dtickrange=[0.001, 0.01], value=".1%"),
@@ -245,14 +247,14 @@ class Currentness(BaseIndicator):
             secondary_y=False,
         )
         fig.update_yaxes(
-            title_text="Absolute Number of Latest Contributions",
+            title_text="Features [#]",
             tickformat=".",
             secondary_y=True,
             griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Last Edit to a Feature{}".format(self.get_source()),
+            title="Last Edit to a Feature{}".format(self.get_source_text()),
             x=0.02,
             y=0.95,
             bgcolor="rgba(255,255,255,0.66)",
@@ -263,30 +265,30 @@ class Currentness(BaseIndicator):
         self.result.figure = raw
 
     def get_threshold_text(self, color: str) -> str:
-        up_to_date_string = convert_month_to_year_month_string(self.up_to_date)
-        out_of_date_string = convert_month_to_year_month_string(self.out_of_date)
+        up_to_date_str = month_to_year_month(self.up_to_date)
+        out_of_date_str = month_to_year_month(self.out_of_date)
         match color:
             case "green":
-                return f"younger than {up_to_date_string}"
+                return f"younger than {up_to_date_str}"
             case "yellow":
-                return f"between {up_to_date_string} and {out_of_date_string}"
+                return f"between {up_to_date_str} and {out_of_date_str}"
             case "red":
-                return f"older than {out_of_date_string}"
+                return f"older than {out_of_date_str}"
 
-    def get_source(self) -> str:
+    def get_source_text(self) -> str:
         if self.th_source != "":
-            self.th_source = f"<a href='{self.th_source}' target='_blank'></a>"
+            self.th_source = f"<a href='{self.th_source}' target='_blank'>*</a>"
         return self.th_source
 
 
-def convert_month_to_year_month_string(months: int):
+def month_to_year_month(months: int):
     years, months = divmod(months, 12)
-    years_string = months_string = ""
+    years_str = months_str = ""
     if years != 0:
-        years_string = f"{years} year" + ("s" if years > 1 else "")
+        years_str = f"{years} year" + ("s" if years > 1 else "")
     if months != 0:
-        months_string = f"{months} month" + ("s" if months > 1 else "")
-    return " ".join([years_string, months_string]).strip()
+        months_str = f"{months} month" + ("s" if months > 1 else "")
+    return " ".join([years_str, months_str]).strip()
 
 
 def load_thresholds(topic_key: str) -> tuple[int, int, str]:
@@ -306,18 +308,13 @@ def load_thresholds(topic_key: str) -> tuple[int, int, str]:
         raw = yaml.safe_load(f)
     try:
         # topic thresholds
+        source = raw[topic_key].get("source", "")
         thresholds = raw[topic_key]["thresholds"]
         up_to_date, out_of_date = (thresholds["up_to_date"], thresholds["out_of_date"])
     except KeyError:
         # default thresholds
         return 36, 96, ""
-
-    try:
-        # source/reason for threshold
-        return up_to_date, out_of_date, raw[topic_key]["source"]
-    except KeyError:
-        # no citable reason
-        return up_to_date, out_of_date, ""
+    return up_to_date, out_of_date, source
 
 
 def create_bin(b: Bin, i: int, j: int) -> Bin:

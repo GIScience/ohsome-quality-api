@@ -10,10 +10,10 @@ import pytest
 from ohsome_quality_analyst.indicators.currentness.indicator import (
     Bin,
     Currentness,
-    convert_month_to_year_month_string,
     create_bin,
     get_median_month,
     get_num_months_last_contrib,
+    month_to_year_month,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
@@ -135,7 +135,9 @@ class TestFigure:
 
     @pytest.mark.skip(reason="Only for manual testing.")
     def test_outdated_features_plotting(
-        self, topic_building_count, feature_germany_heidelberg
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
     ):
         """Create a figure with features in the out-of-date category only"""
         i = Currentness(topic_building_count, feature_germany_heidelberg)
@@ -152,9 +154,11 @@ class TestFigure:
 
     def test_get_source(self, indicator):
         indicator.th_source = ""
-        assert indicator.get_source() == ""
+        assert indicator.get_source_text() == ""
         indicator.th_source = "www.oqt.org"
-        assert indicator.get_source() == "<a href='www.oqt.org' target='_blank'></a>"
+        assert (
+            indicator.get_source_text() == "<a href='www.oqt.org' target='_blank'>*</a>"
+        )
 
     def test_get_threshold_text(self, indicator):
         assert indicator.get_threshold_text("red") == "older than 8 years"
@@ -186,13 +190,13 @@ def test_get_median_month():
     assert result == expected
 
 
-def test_convert_month_to_year_month_string():
-    assert convert_month_to_year_month_string(1) == "1 month"
-    assert convert_month_to_year_month_string(6) == "6 months"
-    assert convert_month_to_year_month_string(12) == "1 year"
-    assert convert_month_to_year_month_string(13) == "1 year 1 month"
-    assert convert_month_to_year_month_string(14) == "1 year 2 months"
-    assert convert_month_to_year_month_string(100) == "8 years 4 months"
+def test_month_to_year_month():
+    assert month_to_year_month(1) == "1 month"
+    assert month_to_year_month(6) == "6 months"
+    assert month_to_year_month(12) == "1 year"
+    assert month_to_year_month(13) == "1 year 1 month"
+    assert month_to_year_month(14) == "1 year 2 months"
+    assert month_to_year_month(100) == "8 years 4 months"
 
 
 def test_create_bin():
