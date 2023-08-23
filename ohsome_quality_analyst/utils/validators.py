@@ -24,10 +24,10 @@ def validate_geojson(bpolys: GeoJSON):
         raise GeoJSONError(errors=bpolys.errors())
     elif isinstance(bpolys, FeatureCollection):
         for feature in bpolys["features"]:
-            validate_geojson(feature)
+            if not isinstance(feature.geometry, Polygon | MultiPolygon):
+                raise GeoJSONGeometryTypeError()
     elif isinstance(bpolys, Feature):
-        if not isinstance(bpolys.geometry, Polygon | MultiPolygon):
-            raise GeoJSONGeometryTypeError()
+        raise GeoJSONObjectTypeError()
     else:
         raise GeoJSONObjectTypeError()
     crs = bpolys.get("crs", None)
