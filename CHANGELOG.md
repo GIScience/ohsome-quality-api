@@ -9,7 +9,7 @@ This release includes a well specified [API](https://oqt.ohsome.org/api/docs) an
 - api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
 - api: computing mapping-saturation indicator for given data is now a separate endpoint ([#642])
 - cli: remove CLI ([#634])
-- api: remove `include_svg`, `include_html` and `flatten` parameter ([#644])
+- api: remove `include_svg`, `include_html` `include_data` and `flatten` parameter ([#644])
 - api: only accept FeatureCollection as `bpolys` parameter ([#650])
 
 ### New Features
