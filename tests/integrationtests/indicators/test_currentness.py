@@ -133,6 +133,7 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
+    @pytest.mark.skip(reason="Only for manual testing.")
     def test_outdated_features_plotting(
         self, topic_building_count, feature_germany_heidelberg
     ):
