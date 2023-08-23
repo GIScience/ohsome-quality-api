@@ -3,6 +3,7 @@
 import logging
 from typing import Coroutine
 
+import geojson
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
@@ -29,6 +30,7 @@ async def create_indicator(
     Indicators are computed asynchronously utilizing semaphores.
     Properties of the input GeoJSON are preserved.
     """
+    bpolys = geojson.loads(geojson.dumps(vars(bpolys)))
     tasks: list[Coroutine] = []
     for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
