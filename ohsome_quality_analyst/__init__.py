@@ -1,4 +1,4 @@
-__version__ = "0.15.0"
+__version__ = "1.0.0"
 __title__ = "ohsome quality analyst"
 __description__ = "Data quality estimations for OpenStreetMap"
 __author__ = "ohsome team"
