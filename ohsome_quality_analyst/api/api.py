@@ -291,10 +291,7 @@ async def post_indicator(
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         return {
-            "result": [
-                i.as_dict(parameters.include_data, exclude_label=True)
-                for i in indicators
-            ],
+            "result": [i.as_dict(exclude_label=True) for i in indicators],
             "attribution": {
                 "url": ATTRIBUTION_URL,
                 "text": indicators[0].attribution(),
@@ -303,10 +300,7 @@ async def post_indicator(
     elif request.headers["accept"] == MEDIA_TYPE_GEOJSON:
         return {
             "type": "FeatureCollection",
-            "features": [
-                i.as_feature(parameters.include_data, exclude_label=True)
-                for i in indicators
-            ],
+            "features": [i.as_feature(exclude_label=True) for i in indicators],
             "attribution": {
                 "url": ATTRIBUTION_URL,
                 "text": indicators[0].attribution(),
