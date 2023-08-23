@@ -92,13 +92,10 @@ def test_validate_area_exception(feature_germany_heidelberg):
 
 def test_wrong_crs():
     feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
-    try:
+    with pytest.raises(InvalidCRSError) as exc_info:
         validate_geojson(feature)
-    except InvalidCRSError as exception:
-        print("test")
-        assert (
-            str(exception.message)
-            == "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
-        )
-    else:
-        raise AssertionError("Expected InvalidCRSError but no exception was raised")
+
+    expected_message = (
+        "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
+    )
+    assert str(exc_info.value.message) == expected_message
