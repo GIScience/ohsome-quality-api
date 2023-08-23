@@ -254,7 +254,6 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
         class_type="indicator",
         key="mapping-saturation",
     ).attribution()
-    # TODO: if accept=JSON no GeoJSON should be created in the first place.
     response["result"] = [feature.properties for feature in geojson_object.features]
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
