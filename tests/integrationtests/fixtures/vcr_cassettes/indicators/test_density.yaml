@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -15,14 +15,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-06-18T20:00:00Z\",\n
-      \   \"value\" : 17454.0\n  } ]\n}"
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \   \"value\" : 17576.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 24 Jun 2023 11:20:29 GMT
+      - Wed, 23 Aug 2023 09:24:58 GMT
       keep-alive:
       - timeout=5, max=100
       server:

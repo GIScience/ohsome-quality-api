@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -15,14 +15,14 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
-      \   \"value\" : 29787.0,\n    \"value2\" : 8536.0,\n    \"ratio\" : 0.286568\n
+      \"1.9.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \   \"value\" : 29936.0,\n    \"value2\" : 8702.0,\n    \"ratio\" : 0.290687\n
       \ } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -44,7 +44,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:12:09 GMT
+      - Wed, 23 Aug 2023 09:24:31 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -63,7 +63,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -73,13 +73,13 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/area/ratio
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-06-11T20:00:00Z\",\n
+      \"1.9.1\",\n  \"ratioResult\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
       \   \"value\" : 0.0,\n    \"value2\" : 0.0,\n    \"ratio\" : \"NaN\"\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -101,7 +101,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:12:13 GMT
+      - Wed, 23 Aug 2023 09:24:34 GMT
       keep-alive:
       - timeout=5, max=100
       server:
