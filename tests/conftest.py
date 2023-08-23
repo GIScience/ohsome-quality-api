@@ -4,6 +4,7 @@ import os
 import geojson
 import pytest
 from geojson import Feature, FeatureCollection, Polygon
+from geojson_pydantic import FeatureCollection as PydanticFeatureCollection
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
@@ -142,6 +143,11 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
 @pytest.fixture(scope="class")
 def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
     return feature_collection_germany_heidelberg
+
+
+@pytest.fixture(scope="class")
+def pydantic_bpolys(feature_collection_germany_heidelberg) -> PydanticFeatureCollection:
+    return PydanticFeatureCollection(**feature_collection_germany_heidelberg)
 
 
 @pytest.fixture(scope="class")

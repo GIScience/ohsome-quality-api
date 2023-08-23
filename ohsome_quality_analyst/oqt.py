@@ -3,8 +3,8 @@
 import logging
 from typing import Coroutine
 
-import geojson
 from geojson import Feature, FeatureCollection
+from geojson_pydantic import FeatureCollection as PydanticFeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
     ReportRequest,
@@ -21,7 +21,7 @@ from ohsome_quality_analyst.utils.validators import validate_area
 
 async def create_indicator(
     key: str,
-    bpolys: FeatureCollection,
+    bpolys: PydanticFeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
 ) -> list[Indicator]:
@@ -30,10 +30,12 @@ async def create_indicator(
     Indicators are computed asynchronously utilizing semaphores.
     Properties of the input GeoJSON are preserved.
     """
-    bpolys = geojson.loads(geojson.dumps(vars(bpolys)))
+    bpolys = FeatureCollection(
+        [Feature(**feature) for feature in bpolys.model_dump()["features"]]
+    )
     tasks: list[Coroutine] = []
     for i, feature in enumerate(bpolys.features):
-        if "id" not in feature.keys():
+        if "id" not in feature.keys() or feature["id"] is None:
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
@@ -48,7 +50,10 @@ async def create_indicator(
 
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
     """Create report(s) for features of a GeoJSON FeatureCollection."""
-    bpolys = parameters.bpolys
+    bpolys = FeatureCollection(
+        [Feature(**feature) for feature in parameters.bpolys.model_dump()["features"]]
+    )
+
     include_data = parameters.include_data
     features = []
     for i, feature in enumerate(bpolys.features):

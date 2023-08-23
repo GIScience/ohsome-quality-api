@@ -2,6 +2,7 @@ import asyncio
 from unittest import mock
 
 import pytest
+from geojson_pydantic import FeatureCollection as PydanticFeatureCollection
 
 from ohsome_quality_analyst import oqt
 from ohsome_quality_analyst.topics.models import TopicData
@@ -19,14 +20,14 @@ from tests.integrationtests.utils import oqt_vcr
     ],
 )
 def test_create_indicator_public_feature_collection_single(
-    bpolys,
+    pydantic_bpolys,
     indicator,
     topic,
     request,
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    indicators = asyncio.run(oqt.create_indicator(indicator, bpolys, topic))
+    indicators = asyncio.run(oqt.create_indicator(indicator, pydantic_bpolys, topic))
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
@@ -44,7 +45,9 @@ def test_create_indicator_public_feature_collection_multi(
     indicators = asyncio.run(
         oqt.create_indicator(
             "minimal",
-            feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
+            PydanticFeatureCollection(
+                **feature_collection_heidelberg_bahnstadt_bergheim_weststadt
+            ),
             topic_minimal,
         )
     )
@@ -100,23 +103,25 @@ def test_create_report_private(feature):
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqt_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
+def test_create_indicator_size_limit_bpolys(pydantic_bpolys, topic_minimal):
     with pytest.raises(ValueError):
-        asyncio.run(oqt.create_indicator("minimal", bpolys, topic_minimal))
+        asyncio.run(oqt.create_indicator("minimal", pydantic_bpolys, topic_minimal))
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqt_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
+def test_create_indicator_size_limit_bpolys_ms(pydantic_bpolys, topic_building_count):
     # Size limit is disabled for the Mapping Saturation indicator.
     asyncio.run(
-        oqt.create_indicator("mapping-saturation", bpolys, topic_building_count)
+        oqt.create_indicator(
+            "mapping-saturation", pydantic_bpolys, topic_building_count
+        )
     )
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqt_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_data(bpolys):
+def test_create_indicator_size_limit_bpolys_data(pydantic_bpolys):
     # Size limit is disabled for request with custom data.
     topic = TopicData(
         key="key",
@@ -131,4 +136,4 @@ def test_create_indicator_size_limit_bpolys_data(bpolys):
             ]
         },
     )
-    asyncio.run(oqt.create_indicator("mapping-saturation", bpolys, topic))
+    asyncio.run(oqt.create_indicator("mapping-saturation", pydantic_bpolys, topic))
