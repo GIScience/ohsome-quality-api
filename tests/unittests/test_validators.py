@@ -38,8 +38,6 @@ def test_validate_geojson_invalid_geometry(feature_collection_invalid):
         validate_geojson(feature_collection_invalid)
 
 
-# TODO
-@pytest.mark.skip(reason="Support for Feature will be discontinued.")
 def test_validate_geojson_unsupported_object_type_feature(feature_germany_heidelberg):
     # Only GeoJSON Feature Collection are supported not Feature
     with pytest.raises(GeoJSONObjectTypeError):
