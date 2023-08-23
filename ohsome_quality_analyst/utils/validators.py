@@ -7,6 +7,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
     IndicatorTopicCombinationError,
+    InvalidCRSError,
     SizeRestrictionError,
 )
 from ohsome_quality_analyst.utils.helper_geo import calculate_area
@@ -29,6 +30,13 @@ def validate_geojson(bpolys: GeoJSON):
             raise GeoJSONGeometryTypeError()
     else:
         raise GeoJSONObjectTypeError()
+    crs = bpolys.get("crs", None)
+    if crs is None:
+        pass
+    elif "urn:ogc:def:crs:OGC::CRS84" in crs["properties"]["name"]:
+        pass
+    else:
+        raise InvalidCRSError()
 
 
 def validate_area(feature: Feature):

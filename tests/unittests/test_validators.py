@@ -7,6 +7,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
     IndicatorTopicCombinationError,
+    InvalidCRSError,
     SizeRestrictionError,
 )
 from ohsome_quality_analyst.utils.validators import (
@@ -14,6 +15,7 @@ from ohsome_quality_analyst.utils.validators import (
     validate_geojson,
     validate_indicator_topic_combination,
 )
+from tests.unittests.utils import get_geojson_fixture
 
 
 def test_validate_geojson_feature_collection_single(
@@ -86,3 +88,14 @@ def test_validate_area(feature_germany_heidelberg):
 def test_validate_area_exception(feature_germany_heidelberg):
     with pytest.raises(SizeRestrictionError):
         validate_area(feature_germany_heidelberg)
+
+
+def test_wrong_crs():
+    feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
+    with pytest.raises(InvalidCRSError) as exc_info:
+        validate_geojson(feature)
+
+    expected_message = (
+        "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
+    )
+    assert str(exc_info.value.message) == expected_message
