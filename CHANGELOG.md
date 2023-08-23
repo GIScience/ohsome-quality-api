@@ -2,6 +2,8 @@
 
 ## Current Main
 
+This release includes a well specified [API](https://oqt.ohsome.org/api/docs) and two core indicators available through the [ohsome dashboard](https://dashboard.ohsome.org/#backend=oqtApi).
+
 ### Breaking
 
 - api: remove `dataset`, `featureId` and `fidField` parameter ([#634])
