@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -15,28 +15,28 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/area/groupBy/boundary
   response:
     content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
       \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
       \"1.9.1\",\n  \"groupByResult\" : [ {\n    \"groupByObject\" : 4171694,\n    \"result\"
-      : [ {\n      \"timestamp\" : \"2023-06-25T21:00:00Z\",\n      \"value\" : 0.0\n
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n
       \   } ]\n  }, {\n    \"groupByObject\" : 4172685,\n    \"result\" : [ {\n      \"timestamp\"
-      : \"2023-06-25T21:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
-      : 4171692,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-06-25T21:00:00Z\",\n
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
+      : 4171692,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
       \     \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\" : 4170334,\n    \"result\"
-      : [ {\n      \"timestamp\" : \"2023-06-25T21:00:00Z\",\n      \"value\" : 789353.24\n
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 789353.24\n
       \   } ]\n  }, {\n    \"groupByObject\" : 4170335,\n    \"result\" : [ {\n      \"timestamp\"
-      : \"2023-06-25T21:00:00Z\",\n      \"value\" : 4875764.66\n    } ]\n  }, {\n
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 4875604.98\n    } ]\n  }, {\n
       \   \"groupByObject\" : 4172686,\n    \"result\" : [ {\n      \"timestamp\"
-      : \"2023-06-25T21:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
-      : 4171693,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-06-25T21:00:00Z\",\n
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
+      : 4171693,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
       \     \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\" : 4170336,\n    \"result\"
-      : [ {\n      \"timestamp\" : \"2023-06-25T21:00:00Z\",\n      \"value\" : 64849.52\n
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 64849.52\n
       \   } ]\n  }, {\n    \"groupByObject\" : 4172684,\n    \"result\" : [ {\n      \"timestamp\"
-      : \"2023-06-25T21:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  } ]\n}"
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  } ]\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -57,7 +57,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Thu, 06 Jul 2023 12:48:57 GMT
+      - Wed, 23 Aug 2023 09:24:38 GMT
       keep-alive:
       - timeout=5, max=100
       server:
