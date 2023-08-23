@@ -13,6 +13,7 @@ from ohsome_quality_analyst.indicators.currentness.indicator import (
     create_bin,
     get_median_month,
     get_num_months_last_contrib,
+    month_to_year_month,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
 
@@ -37,10 +38,6 @@ class TestInit:
             indicator.th_source
             == "https://wiki.openstreetmap.org/wiki/StreetComplete/Quests"
         )
-
-    # TODO
-    def test_get_threshold_text(self):
-        pass
 
 
 class TestPreprocess:
@@ -155,6 +152,19 @@ class TestFigure:
         i.create_figure()
         pio.show(i.result.figure)
 
+    def test_get_source(self, indicator):
+        indicator.th_source = ""
+        assert indicator.get_source_text() == ""
+        indicator.th_source = "www.oqt.org"
+        assert (
+            indicator.get_source_text() == "<a href='www.oqt.org' target='_blank'>*</a>"
+        )
+
+    def test_get_threshold_text(self, indicator):
+        assert indicator.get_threshold_text("red") == "older than 8 years"
+        assert indicator.get_threshold_text("yellow") == "between 3 years and 8 years"
+        assert indicator.get_threshold_text("green") == "younger than 3 years"
+
 
 def test_get_last_edited_year():
     given = [3, 0, 5, 0]
@@ -180,9 +190,13 @@ def test_get_median_month():
     assert result == expected
 
 
-# TODO
-def test_month_to_year_month_str():
-    pass
+def test_month_to_year_month():
+    assert month_to_year_month(1) == "1 month"
+    assert month_to_year_month(6) == "6 months"
+    assert month_to_year_month(12) == "1 year"
+    assert month_to_year_month(13) == "1 year 1 month"
+    assert month_to_year_month(14) == "1 year 2 months"
+    assert month_to_year_month(100) == "8 years 4 months"
 
 
 def test_create_bin():
