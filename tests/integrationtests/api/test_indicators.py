@@ -118,7 +118,15 @@ def test_indicators(
         "bpolys": bpolys,
         "topic": topic,
     }
-    response = client.post(endpoint, json=parameters, headers=headers)
+    parameters_attribute = {
+        "bpolys": bpolys,
+        "topic": topic,
+        "attribute": "height",
+    }
+    if indicator == "attribute-completeness":
+        response = client.post(endpoint, json=parameters_attribute, headers=headers)
+    else:
+        response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
 
