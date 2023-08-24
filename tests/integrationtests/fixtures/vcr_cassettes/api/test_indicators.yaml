@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:19:50 GMT
+      - Thu, 24 Aug 2023 21:07:14 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -72,7 +72,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -287,7 +287,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:19:57 GMT
+      - Thu, 24 Aug 2023 21:07:22 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -312,7 +312,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -344,7 +344,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:19:59 GMT
+      - Thu, 24 Aug 2023 21:07:25 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -373,7 +373,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -693,7 +693,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:20:06 GMT
+      - Thu, 24 Aug 2023 21:07:32 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -722,7 +722,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count/ratio
   response:
@@ -751,121 +751,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:20:13 GMT
-      keep-alive:
-      - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
-      - max-age=63072000; includeSubdomains;
-      transfer-encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283777%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Bergheim%22%2C+%22local_name%22%3A+%22Bergheim%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+1%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1636'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-api/1.0.1
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
-      \   \"value\" : 930.0\n  } ]\n}"
-    headers:
-      access-control-allow-credentials:
-      - 'true'
-      access-control-allow-headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
-      - POST, GET
-      access-control-allow-origin:
-      - '*'
-      access-control-max-age:
-      - '3600'
-      cache-control:
-      - no-cache, no-store, must-revalidate
-      connection:
-      - Keep-Alive
-      content-encoding:
-      - gzip
-      content-type:
-      - application/json
-      date:
-      - Wed, 30 Aug 2023 12:20:20 GMT
-      keep-alive:
-      - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
-      - max-age=63072000; includeSubdomains;
-      transfer-encoding:
-      - chunked
-      vary:
-      - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.670231%2C+49.405537%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.673993%2C+49.397162%5D%2C+%5B8.67519%2C+49.396593%5D%2C+%5B8.677237%2C+49.395547%5D%2C+%5B8.678009%2C+49.395158%5D%2C+%5B8.679476%2C+49.394736%5D%2C+%5B8.680709%2C+49.394507%5D%2C+%5B8.681877%2C+49.394459%5D%2C+%5B8.683035%2C+49.394452%5D%2C+%5B8.684498%2C+49.394724%5D%2C+%5B8.685867%2C+49.395161%5D%2C+%5B8.6868%2C+49.395618%5D%2C+%5B8.687121%2C+49.395813%5D%2C+%5B8.688811%2C+49.397352%5D%2C+%5B8.688818%2C+49.398172%5D%2C+%5B8.688821%2C+49.398557%5D%2C+%5B8.69078%2C+49.398786%5D%2C+%5B8.691904%2C+49.397883%5D%2C+%5B8.693082%2C+49.397612%5D%2C+%5B8.694151%2C+49.397277%5D%2C+%5B8.694371%2C+49.396897%5D%2C+%5B8.69535%2C+49.396645%5D%2C+%5B8.697794%2C+49.396595%5D%2C+%5B8.698%2C+49.397244%5D%2C+%5B8.697383%2C+49.397369%5D%2C+%5B8.69755%2C+49.397912%5D%2C+%5B8.697462%2C+49.398931%5D%2C+%5B8.69804%2C+49.399857%5D%2C+%5B8.697702%2C+49.40023%5D%2C+%5B8.697911%2C+49.400589%5D%2C+%5B8.697249%2C+49.40193%5D%2C+%5B8.697251%2C+49.402692%5D%2C+%5B8.698847%2C+49.404381%5D%2C+%5B8.698289%2C+49.404777%5D%2C+%5B8.696815%2C+49.404328%5D%2C+%5B8.696045%2C+49.404998%5D%2C+%5B8.69498%2C+49.405405%5D%2C+%5B8.694901%2C+49.405606%5D%2C+%5B8.695544%2C+49.406012%5D%2C+%5B8.695469%2C+49.406699%5D%2C+%5B8.694151%2C+49.406813%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.670231%2C+49.405537%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283787%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Weststadt%22%2C+%22local_name%22%3A+%22Weststadt%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+0%7D%5D%7D
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '2340'
-      content-type:
-      - application/x-www-form-urlencoded
-      host:
-      - api.ohsome.org
-      user-agent:
-      - ohsome-quality-api/1.0.1
-    method: POST
-    uri: https://api.ohsome.org/v1/elements/count
-  response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
-      \   \"value\" : 1573.0\n  } ]\n}"
-    headers:
-      access-control-allow-credentials:
-      - 'true'
-      access-control-allow-headers:
-      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
-      - POST, GET
-      access-control-allow-origin:
-      - '*'
-      access-control-max-age:
-      - '3600'
-      cache-control:
-      - no-cache, no-store, must-revalidate
-      connection:
-      - Keep-Alive
-      content-encoding:
-      - gzip
-      content-type:
-      - application/json
-      date:
-      - Wed, 30 Aug 2023 12:20:20 GMT
+      - Thu, 24 Aug 2023 21:07:39 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -894,7 +780,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -922,7 +808,121 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 30 Aug 2023 12:20:20 GMT
+      - Thu, 24 Aug 2023 21:07:47 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.670231%2C+49.405537%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.673993%2C+49.397162%5D%2C+%5B8.67519%2C+49.396593%5D%2C+%5B8.677237%2C+49.395547%5D%2C+%5B8.678009%2C+49.395158%5D%2C+%5B8.679476%2C+49.394736%5D%2C+%5B8.680709%2C+49.394507%5D%2C+%5B8.681877%2C+49.394459%5D%2C+%5B8.683035%2C+49.394452%5D%2C+%5B8.684498%2C+49.394724%5D%2C+%5B8.685867%2C+49.395161%5D%2C+%5B8.6868%2C+49.395618%5D%2C+%5B8.687121%2C+49.395813%5D%2C+%5B8.688811%2C+49.397352%5D%2C+%5B8.688818%2C+49.398172%5D%2C+%5B8.688821%2C+49.398557%5D%2C+%5B8.69078%2C+49.398786%5D%2C+%5B8.691904%2C+49.397883%5D%2C+%5B8.693082%2C+49.397612%5D%2C+%5B8.694151%2C+49.397277%5D%2C+%5B8.694371%2C+49.396897%5D%2C+%5B8.69535%2C+49.396645%5D%2C+%5B8.697794%2C+49.396595%5D%2C+%5B8.698%2C+49.397244%5D%2C+%5B8.697383%2C+49.397369%5D%2C+%5B8.69755%2C+49.397912%5D%2C+%5B8.697462%2C+49.398931%5D%2C+%5B8.69804%2C+49.399857%5D%2C+%5B8.697702%2C+49.40023%5D%2C+%5B8.697911%2C+49.400589%5D%2C+%5B8.697249%2C+49.40193%5D%2C+%5B8.697251%2C+49.402692%5D%2C+%5B8.698847%2C+49.404381%5D%2C+%5B8.698289%2C+49.404777%5D%2C+%5B8.696815%2C+49.404328%5D%2C+%5B8.696045%2C+49.404998%5D%2C+%5B8.69498%2C+49.405405%5D%2C+%5B8.694901%2C+49.405606%5D%2C+%5B8.695544%2C+49.406012%5D%2C+%5B8.695469%2C+49.406699%5D%2C+%5B8.694151%2C+49.406813%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.670231%2C+49.405537%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283787%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Weststadt%22%2C+%22local_name%22%3A+%22Weststadt%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+0%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '2340'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/1.0.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \   \"value\" : 1573.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 24 Aug 2023 21:07:47 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283777%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Bergheim%22%2C+%22local_name%22%3A+%22Bergheim%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+1%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1636'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-analyst/1.0.0
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/count
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 24 Aug 2023 21:07:47 GMT
       keep-alive:
       - timeout=5, max=100
       server:

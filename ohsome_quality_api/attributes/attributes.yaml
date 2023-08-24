@@ -1,0 +1,21 @@
+building-count:
+  height:
+    name: Height of Buildings
+    description: TODO
+    filter: height=* or building:levels=*
+  house_number:
+    name: House Number
+    description: TODO
+    filter: addr:housenumber=*
+
+clc-leaf-type:
+  leaf_type:
+    name: Type of Leaves
+    description: TODO
+    filter: leaf_type in (broadleaved, needleleaved, mixed)
+
+major-roads-length:
+  name:
+    name: Road Name
+    description: TODO
+    filter: name=*

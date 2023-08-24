@@ -5,6 +5,7 @@ import geojson
 import pytest
 from geojson import Feature, FeatureCollection, Polygon
 
+from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.definitions import (
     get_metadata,
     load_metadata,
@@ -111,6 +112,20 @@ def metadata_project_core(project_key_core, project_core) -> dict[str, Project]:
 @pytest.fixture()
 def projects() -> dict[str, Project]:
     return load_projects()
+
+
+@pytest.fixture(scope="class")
+def attribute() -> Attribute:
+    return Attribute(
+        name="test attribute",
+        description="super descriptive text",
+        filter="(height=* or building:levels=*)",
+    )
+
+
+@pytest.fixture(scope="class")
+def attribute_key() -> str:
+    return "height"
 
 
 @pytest.fixture(scope="class")
