@@ -5,13 +5,13 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -21,8 +21,8 @@ interactions:
       : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0
       ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ]
       ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n
-      \     \"toTimestamp\" : \"2023-06-11T20:00Z\"\n    },\n    \"replicationSequenceNumber\"
-      : 94189\n  }\n}"
+      \     \"toTimestamp\" : \"2023-08-10T20:00Z\"\n    },\n    \"replicationSequenceNumber\"
+      : 95629\n  }\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:10:10 GMT
+      - Wed, 23 Aug 2023 09:22:04 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -62,7 +62,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -70,11 +70,11 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/lenght
   response:
-    content: "{\n  \"timestamp\" : \"2023-06-20T08:10:10.529+00:00\",\n  \"status\"
+    content: "{\n  \"timestamp\" : \"2023-08-23T09:22:04.310+00:00\",\n  \"status\"
       : 404,\n  \"error\" : \"Not Found\",\n  \"path\" : \"/elements/lenght\"\n}"
     headers:
       access-control-allow-credentials:
@@ -96,7 +96,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:10:10 GMT
+      - Wed, 23 Aug 2023 09:22:04 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -115,7 +115,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -125,11 +125,11 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/length
   response:
-    content: "{\n  \"timestamp\" : \"2023-06-20T08:10:10.646843623\",\n  \"status\"
+    content: "{\n  \"timestamp\" : \"2023-08-23T09:22:04.460671361\",\n  \"status\"
       : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional
       info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api.
       Detailed error message: line 1, column 13: whitespaces, EQUALS (=), NOT_EQUALS
@@ -154,7 +154,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:10:10 GMT
+      - Wed, 23 Aug 2023 09:22:04 GMT
       server:
       - Apache/2.4.52 (Ubuntu)
       strict-transport-security:

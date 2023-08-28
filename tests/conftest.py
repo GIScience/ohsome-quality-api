@@ -169,9 +169,8 @@ def feature_collection_invalid() -> dict:
 """
 @pytest.fixture(params=["Point", "LineString", "Polygon"])
 def geojson_unsupported_object_type(request):
-    # TODO: Uncomment once only FeatureCollection is supported
-    # if request.param == "Feature":
-    #     return Feature(geometry=geojson.utils.generate_random("Polygon"))
+    if request.param == "Feature":
+        return Feature(geometry=geojson.utils.generate_random("Polygon"))
     return geojson.utils.generate_random(request.param)
 
 

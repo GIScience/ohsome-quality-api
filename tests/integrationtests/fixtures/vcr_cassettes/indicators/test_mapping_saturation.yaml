@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -207,7 +207,9 @@ interactions:
       \   \"value\" : 29658.0\n  }, {\n    \"timestamp\" : \"2023-04-01T00:00:00Z\",\n
       \   \"value\" : 29775.0\n  }, {\n    \"timestamp\" : \"2023-05-01T00:00:00Z\",\n
       \   \"value\" : 29721.0\n  }, {\n    \"timestamp\" : \"2023-06-01T00:00:00Z\",\n
-      \   \"value\" : 29786.0\n  } ]\n}"
+      \   \"value\" : 29786.0\n  }, {\n    \"timestamp\" : \"2023-07-01T00:00:00Z\",\n
+      \   \"value\" : 29870.0\n  }, {\n    \"timestamp\" : \"2023-08-01T00:00:00Z\",\n
+      \   \"value\" : 29934.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -228,7 +230,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:12:53 GMT
+      - Wed, 23 Aug 2023 09:25:07 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -247,7 +249,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -257,7 +259,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -449,6 +451,8 @@ interactions:
       \   \"value\" : 1572.0\n  }, {\n    \"timestamp\" : \"2023-04-01T00:00:00Z\",\n
       \   \"value\" : 1575.0\n  }, {\n    \"timestamp\" : \"2023-05-01T00:00:00Z\",\n
       \   \"value\" : 1575.0\n  }, {\n    \"timestamp\" : \"2023-06-01T00:00:00Z\",\n
+      \   \"value\" : 1575.0\n  }, {\n    \"timestamp\" : \"2023-07-01T00:00:00Z\",\n
+      \   \"value\" : 1575.0\n  }, {\n    \"timestamp\" : \"2023-08-01T00:00:00Z\",\n
       \   \"value\" : 1575.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
@@ -470,7 +474,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:13:01 GMT
+      - Wed, 23 Aug 2023 09:25:15 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -489,7 +493,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -499,7 +503,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -691,7 +695,9 @@ interactions:
       \   \"value\" : 932.0\n  }, {\n    \"timestamp\" : \"2023-04-01T00:00:00Z\",\n
       \   \"value\" : 935.0\n  }, {\n    \"timestamp\" : \"2023-05-01T00:00:00Z\",\n
       \   \"value\" : 935.0\n  }, {\n    \"timestamp\" : \"2023-06-01T00:00:00Z\",\n
-      \   \"value\" : 935.0\n  } ]\n}"
+      \   \"value\" : 935.0\n  }, {\n    \"timestamp\" : \"2023-07-01T00:00:00Z\",\n
+      \   \"value\" : 935.0\n  }, {\n    \"timestamp\" : \"2023-08-01T00:00:00Z\",\n
+      \   \"value\" : 930.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -712,7 +718,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:13:08 GMT
+      - Wed, 23 Aug 2023 09:25:24 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -731,7 +737,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       connection:
       - keep-alive
       content-length:
@@ -741,7 +747,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/0.15.0
+      - ohsome-quality-analyst/1.0.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -933,7 +939,9 @@ interactions:
       \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2023-04-01T00:00:00Z\",\n
       \   \"value\" : 235.0\n  }, {\n    \"timestamp\" : \"2023-05-01T00:00:00Z\",\n
       \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2023-06-01T00:00:00Z\",\n
-      \   \"value\" : 236.0\n  } ]\n}"
+      \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2023-07-01T00:00:00Z\",\n
+      \   \"value\" : 236.0\n  }, {\n    \"timestamp\" : \"2023-08-01T00:00:00Z\",\n
+      \   \"value\" : 234.0\n  } ]\n}"
     headers:
       access-control-allow-credentials:
       - 'true'
@@ -954,7 +962,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Tue, 20 Jun 2023 08:13:15 GMT
+      - Wed, 23 Aug 2023 09:25:34 GMT
       keep-alive:
       - timeout=5, max=100
       server:

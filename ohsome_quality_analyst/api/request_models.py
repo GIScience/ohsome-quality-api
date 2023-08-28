@@ -27,7 +27,6 @@ class IndicatorRequest(BaseBpolys):
         alias="topic",
     )
     include_figure: bool = True
-    include_data: bool = False
 
 
 class IndicatorDataRequest(BaseBpolys):
@@ -42,4 +41,5 @@ class IndicatorDataRequest(BaseBpolys):
 
 
 class ReportRequest(BaseBpolys):
-    include_data: bool = False
+    pass
+    # include_data: bool = False

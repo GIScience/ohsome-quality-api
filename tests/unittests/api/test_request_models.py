@@ -88,6 +88,4 @@ def test_indicator_request_include_all(
 
 def test_indicator_request_invalid_topic(feature_collection_germany_heidelberg):
     with pytest.raises(ValueError):
-        IndicatorRequest(
-            bpolys=feature_collection_germany_heidelberg.model_dump(), topic="foo"
-        )
+        IndicatorRequest(bpolys=feature_collection_germany_heidelberg, topic="foo")
