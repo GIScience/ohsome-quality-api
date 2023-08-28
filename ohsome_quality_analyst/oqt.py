@@ -47,7 +47,6 @@ async def create_indicator(
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
     """Create report(s) for features of a GeoJSON FeatureCollection."""
 
-    include_data = parameters.include_data
     features = []
     for i, feature in enumerate(parameters.bpolys.features):
         if feature.id is None:
@@ -57,7 +56,7 @@ async def create_report(parameters: ReportRequest, key: str) -> FeatureCollectio
         # the case with indicators), because indicators of a report are created
         # asynchronously
         report = await _create_report(key, feature)
-        features.append(report.as_feature(include_data))
+        features.append(report.as_feature())
     return FeatureCollection(type="FeatureCollection", features=features)
 
 

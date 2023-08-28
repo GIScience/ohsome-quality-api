@@ -65,27 +65,6 @@ def test_indicator_request_include_figure(
     )
 
 
-def test_indicator_request_include_data(
-    feature_collection_germany_heidelberg, topic_key_minimal
-):
-    IndicatorRequest(
-        bpolys=feature_collection_germany_heidelberg.model_dump(),
-        topic=topic_key_minimal,
-        include_data=True,
-    )
-
-
-def test_indicator_request_include_all(
-    feature_collection_germany_heidelberg, topic_key_minimal
-):
-    IndicatorRequest(
-        bpolys=feature_collection_germany_heidelberg.model_dump(),
-        topic=topic_key_minimal,
-        include_figure=False,
-        include_data=True,
-    )
-
-
 def test_indicator_request_invalid_topic(feature_collection_germany_heidelberg):
     with pytest.raises(ValueError):
         IndicatorRequest(bpolys=feature_collection_germany_heidelberg, topic="foo")

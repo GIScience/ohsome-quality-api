@@ -22,12 +22,6 @@ class TestBaseIndicator:
         assert set(("result", "metadata", "topic")) <= set(d.keys())  # subset
         assert "data" not in d.keys()
 
-    def test_as_dict_include_data(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
-        d = indicator.as_dict(include_data=True)
-        assert set(("result", "metadata", "topic", "data")) <= set(d.keys())  # subset
-        assert "count" in d["data"]
-
     def test_as_feature(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
         feature = indicator.as_feature()
@@ -35,13 +29,6 @@ class TestBaseIndicator:
         for key in ["result", "metadata", "topic"]:
             assert feature.properties[key] is not None
         assert feature.properties.get("data", None) is None
-
-    def test_as_feature_include_data(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
-        feature = indicator.as_feature(include_data=True)
-        for key in ["result", "metadata", "topic", "data"]:
-            assert feature.properties[key] is not None
-        assert "count" in feature.properties["data"]
 
     def test_data_property(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
