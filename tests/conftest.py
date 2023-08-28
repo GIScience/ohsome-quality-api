@@ -165,27 +165,6 @@ def feature_collection_invalid() -> dict:
     }
 
 
-# todo: should be no longer needed right?
-"""
-@pytest.fixture(params=["Point", "LineString", "Polygon"])
-def geojson_unsupported_object_type(request):
-    if request.param == "Feature":
-        return Feature(geometry=geojson.utils.generate_random("Polygon"))
-    return geojson.utils.generate_random(request.param)
-
-
-@pytest.fixture(params=["Point", "LineString"])
-def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
-    # Invalid Geometry
-    return FeatureCollection(
-        features=[
-            Feature(
-                geometry=geojson.utils.generate_random(request.param),
-            ),
-        ]
-    )"""
-
-
 @pytest.fixture
 def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
     return {"minimal": get_metadata("indicators", "Minimal")}
