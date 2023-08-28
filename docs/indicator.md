@@ -4,7 +4,7 @@ An indicator estimates data quality for OpenStreetMap (OSM). It takes an area of
 
 ## Base Class
 
-Each particular indicator class inherits from the `BaseIndicator` class of the `ohsome_quality_analyst/indicator/base.py` module. Following class diagram gives an overview of abstract methods and properties of this class:
+Each particular indicator class inherits from the `BaseIndicator` class of the `ohsome_quality_api/indicators/base.py` module. Following class diagram gives an overview of abstract methods and properties of this class:
 
 ![UML class diagram of OQT](./img/UML-Class-Diagram.png)
 
