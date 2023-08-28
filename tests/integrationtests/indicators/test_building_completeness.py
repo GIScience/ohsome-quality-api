@@ -14,7 +14,11 @@ from ohsome_quality_api.indicators.building_completeness.indicator import (
     get_smod_class_share,
 )
 from ohsome_quality_api.utils.exceptions import HexCellsNotFoundError
-from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import (
+    get_geojson_fixture,
+    get_topic_fixture,
+    oqapi_vcr,
+)
 
 
 @pytest.fixture(scope="class")
@@ -60,7 +64,7 @@ def mock_get_shdi(class_mocker, shdi):
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(
         self,
         feature,
@@ -96,7 +100,7 @@ class TestPreprocess:
 
 class TestCalculationFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(
         self,
         feature,

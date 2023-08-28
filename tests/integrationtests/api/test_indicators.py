@@ -7,7 +7,7 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 import pytest
 from schema import Optional, Or, Schema
 
-from tests.integrationtests.utils import oqt_vcr
+from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
 
@@ -94,7 +94,7 @@ pytestmark = pytest.mark.parametrize(
 )
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 @pytest.mark.parametrize(
     "indicator,topic",
     [
@@ -122,7 +122,7 @@ def test_indicators(
     assert schema.is_valid(response.json())
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_minimal_fc(
     client,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
@@ -139,7 +139,7 @@ def test_minimal_fc(
     assert schema.is_valid(response.json())
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_minimal_include_figure_true(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": True}
@@ -153,7 +153,7 @@ def test_minimal_include_figure_true(client, bpolys, headers, schema):
         raise AssertionError()
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_minimal_include_figure_false(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": False}

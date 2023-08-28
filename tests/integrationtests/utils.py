@@ -23,7 +23,7 @@ def filename_generator(function):
     # path relative to TEST_DIR
     rel_test_path = os.path.relpath(os.path.dirname(test_path), TEST_DIR)
     filename_base = os.path.splitext(os.path.basename(test_path))[0]
-    return os.path.join(rel_test_path, filename_base + "." + oqt_vcr.serializer)
+    return os.path.join(rel_test_path, filename_base + "." + oqapi_vcr.serializer)
 
 
 def get_current_dir():
@@ -68,7 +68,7 @@ dummy_png = (
     b"\x00\x00\x00\x00IEND\xaeB`\x82"
 )
 
-oqt_vcr = vcr.VCR(
+oqapi_vcr = vcr.VCR(
     cassette_library_dir=FIXTURE_DIR,
     # details see https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
     record_mode=os.getenv("VCR_RECORD_MODE", default="new_episodes"),

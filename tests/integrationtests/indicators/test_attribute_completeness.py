@@ -10,11 +10,11 @@ import pytest
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
-from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = AttributeCompleteness(
             topic_building_count, feature_germany_heidelberg
@@ -26,7 +26,7 @@ class TestPreprocess:
 
 class TestCalculation:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -41,7 +41,7 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp_oqt, datetime)
 
-    @oqt_vcr.use_cassette()
+    @oqapi_vcr.use_cassette()
     def test_no_features(self):
         """Test area with no features"""
         infile = os.path.join(
@@ -66,7 +66,7 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())

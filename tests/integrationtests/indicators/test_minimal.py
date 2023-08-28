@@ -5,11 +5,11 @@ import plotly.io as pio
 import pytest
 
 from ohsome_quality_api.indicators.minimal.indicator import Minimal
-from tests.integrationtests.utils import oqt_vcr
+from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestAttribution:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_attribution(self, topic_minimal, feature_germany_heidelberg):
         indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -17,7 +17,7 @@ class TestAttribution:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_minimal, feature_germany_heidelberg):
         indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -26,7 +26,7 @@ class TestPreprocess:
 
 class TestCalculate:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_minimal, feature_germany_heidelberg):
         i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -43,7 +43,7 @@ class TestCalculate:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_minimal, feature_germany_heidelberg):
         i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())

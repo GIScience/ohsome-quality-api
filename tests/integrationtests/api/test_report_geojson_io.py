@@ -13,7 +13,7 @@ from tests.integrationtests.api.response_schema import (
     get_general_schema,
     get_report_feature_schema,
 )
-from tests.integrationtests.utils import get_geojson_fixture, oqt_vcr
+from tests.integrationtests.utils import get_geojson_fixture, oqapi_vcr
 from tests.utils import load_geojson_fixture
 
 
@@ -46,7 +46,7 @@ class TestApiReportIo(unittest.TestCase):
         data = {"bpolys": bpoly}
         return self.client.post(self.endpoint, json=data)
 
-    @oqt_vcr.use_cassette()
+    @oqapi_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
         response = self.post_response(self.featurecollection)
         self.assertEqual(response.status_code, 200)
@@ -60,7 +60,7 @@ class TestApiReportIo(unittest.TestCase):
         for feature in response_content["features"]:
             self.assertTrue(self.feature_schema.is_valid(feature))
 
-    @oqt_vcr.use_cassette()
+    @oqapi_vcr.use_cassette()
     def test_report_bpolys_size_limit(self):
         feature = get_geojson_fixture("europe.geojson")
         response = self.post_response(feature)
