@@ -2,17 +2,13 @@ import datetime
 import json
 from functools import singledispatch
 
-import geojson
+# `geojson` uses `simplejson` if it is installed
+from json import JSONDecodeError
+
 import httpx
 from dateutil.parser import isoparse
-from geojson import Feature, FeatureCollection
+from geojson_pydantic import Feature, FeatureCollection
 from schema import Or, Schema, SchemaError, Use
-
-# `geojson` uses `simplejson` if it is installed
-try:
-    from simplejson import JSONDecodeError
-except ImportError:
-    from json import JSONDecodeError
 
 from ohsome_quality_analyst.config import get_config_value
 from ohsome_quality_analyst.topics.models import BaseTopic as Topic
@@ -116,7 +112,7 @@ async def query_ohsome_api(url: str, data: dict) -> dict:
             message = error.response.json()["error"]
         raise OhsomeApiError("Querying the ohsome API failed! " + message) from error
     try:
-        return geojson.loads(resp.content)
+        return json.loads(resp.content)
     except JSONDecodeError as error:
         raise OhsomeApiError(
             "Ohsome API returned invalid GeoJSON after streaming of the response. "
@@ -166,9 +162,13 @@ def build_data_dict(
     """
     data = {"filter": topic.filter}
     if isinstance(bpolys, Feature):
-        data["bpolys"] = json.dumps(FeatureCollection([bpolys]))
+        data["bpolys"] = json.dumps(
+            FeatureCollection(type="FeatureCollection", features=[bpolys]).model_dump(
+                exclude_none=True
+            )
+        )
     elif isinstance(bpolys, FeatureCollection):
-        data["bpolys"] = json.dumps(bpolys)
+        data["bpolys"] = json.dumps(bpolys.model_dump(exclude_none=True))
     else:
         raise TypeError("Parameter 'bpolys' does not have expected type.")
     if time is not None:

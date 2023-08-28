@@ -1,9 +1,8 @@
 """A client to raster datasets existing as files on disk."""
 
 import os
-from copy import deepcopy
 
-import geojson
+from geojson_pydantic import Feature, FeatureCollection
 from pyproj import Transformer
 from rasterstats import zonal_stats
 
@@ -13,7 +12,7 @@ from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
 
 
 def get_zonal_stats(
-    feature: geojson.Feature,
+    feature: Feature,
     raster: RasterDataset,
     *args,
     **kwargs,
@@ -35,7 +34,7 @@ def get_zonal_stats(
     )
 
 
-def transform(feature: geojson.Feature, raster: RasterDataset):
+def transform(feature: Feature, raster: RasterDataset):
     """Convert Feature to RasterDataset CRS.
 
     GeoJSON Feature CRS/SRID is expected to be EPSG:4326.
@@ -43,10 +42,16 @@ def transform(feature: geojson.Feature, raster: RasterDataset):
     if raster.crs == "EPSG:4326":
         return feature
     transformer = Transformer.from_crs("EPSG:4326", raster.crs, always_xy=True)
-    return geojson.utils.map_tuples(
+    import geojson
+
+    gjson = geojson.utils.map_tuples(
         lambda coordinates: transformer.transform(coordinates[0], coordinates[1]),
-        deepcopy(feature),
+        feature.model_dump(),
     )
+    if gjson["type"] == "Feature":
+        return Feature(**gjson)
+    else:
+        return FeatureCollection(**gjson)
 
 
 def get_raster_path(raster: RasterDataset) -> str:

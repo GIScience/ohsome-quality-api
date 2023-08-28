@@ -1,9 +1,7 @@
 import datetime
-import os
 import unittest
 from pathlib import Path
 
-import geojson
 import numpy as np
 
 from ohsome_quality_analyst.definitions import load_metadata
@@ -26,12 +24,6 @@ from ohsome_quality_analyst.utils.helper import (
 )
 
 from .mapping_saturation import fixtures
-
-
-def get_fixture(name):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
-    with open(path, "r") as file:
-        return geojson.load(file)
 
 
 class TestHelper(unittest.TestCase):

@@ -1,6 +1,7 @@
+import json
 import os
 
-import geojson
+from geojson_pydantic import Feature, FeatureCollection
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 
@@ -11,4 +12,8 @@ def load_geojson_fixture(filename):
         filename,
     )
     with open(path, "r") as f:
-        return geojson.load(f)
+        gjson = json.load(f)
+        if gjson["type"] == "FeatureCollection":
+            return FeatureCollection(**gjson)
+        else:
+            return Feature(**gjson)

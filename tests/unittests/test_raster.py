@@ -1,9 +1,10 @@
+import json
 import os
 import tempfile
 import unittest
 from unittest import mock
 
-import geojson
+from geojson_pydantic import Feature
 
 import ohsome_quality_analyst.raster.client as raster_client
 from ohsome_quality_analyst.raster.definitions import get_raster_dataset
@@ -18,7 +19,7 @@ class TestRaster(unittest.TestCase):
             "fixtures/heidelberg-altstadt-feature.geojson",
         )
         with open(path, "r") as f:
-            self.feature = geojson.load(f)
+            self.feature = Feature(**json.load(f))
 
     def test_get_raster_path(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -86,27 +87,31 @@ class TestRaster(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_transform_different_crs(self):
-        expected = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        (664903.2658458926, 5810944.6089190915),
-                        (666571.1021172021, 5810944.6089190915),
-                        (666474.5092985737, 5812131.278240253),
-                        (664806.9147134189, 5812131.278240253),
-                        (664903.2658458926, 5810944.6089190915),
-                    ]
-                ],
-            },
-            "properties": {},
-        }
+        expected = Feature(
+            **{
+                "bbox": None,
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            (664903.2842561695, 5810944.658597255),
+                            (666571.1266135585, 5810944.658597255),
+                            (666474.5362297115, 5812131.297943545),
+                            (664806.9355532578, 5812131.297943545),
+                            (664903.2842561695, 5810944.658597255),
+                        ]
+                    ],
+                },
+                "properties": {},
+                "id": None,
+            }
+        )
         result = raster_client.transform(self.feature, self.raster_dataset)
-        self.assertDictEqual(expected, result)
+        self.assertDictEqual(expected.model_dump(), result.model_dump())
         self.assertNotEqual(self.feature, result)
 
     def test_transform_same_crs(self):
         raster_dataset = get_raster_dataset("VNL")
         result = raster_client.transform(self.feature, raster_dataset)
-        self.assertDictEqual(self.feature, result)
+        self.assertDictEqual(self.feature.model_dump(), result.model_dump())

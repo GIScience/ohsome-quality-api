@@ -3,7 +3,7 @@ from string import Template
 
 import dateutil.parser
 import plotly.graph_objs as go
-from geojson import Feature
+from geojson_pydantic import Feature
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator
 from ohsome_quality_analyst.ohsome import client as ohsome_client

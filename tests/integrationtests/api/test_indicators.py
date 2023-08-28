@@ -3,14 +3,12 @@
 Validate the response from requests to the `/indicators` endpoint of the API.
 """
 
-
 import pytest
 from schema import Optional, Or, Schema
 
 from tests.integrationtests.utils import oqt_vcr
 
 ENDPOINT = "/indicators/"
-
 
 RESPONSE_SCHEMA_JSON = Schema(
     schema={
@@ -44,7 +42,6 @@ RESPONSE_SCHEMA_JSON = Schema(
     name="json",
     ignore_extra_keys=True,
 )
-
 
 RESPONSE_SCHEMA_GEOJSON = Schema(
     schema={
@@ -106,7 +103,7 @@ pytestmark = pytest.mark.parametrize(
 )
 def test_indicators(
     client,
-    bpolys,
+    feature_collection_germany_heidelberg,
     headers,
     schema,
     indicator,
@@ -115,7 +112,7 @@ def test_indicators(
     """Minimal viable request for a single bpoly."""
     endpoint = ENDPOINT + indicator
     parameters = {
-        "bpolys": bpolys,
+        "bpolys": feature_collection_germany_heidelberg.model_dump(),
         "topic": topic,
     }
     response = client.post(endpoint, json=parameters, headers=headers)
@@ -129,10 +126,11 @@ def test_minimal_fc(
     headers,
     schema,
 ):
+    geojson = feature_collection_heidelberg_bahnstadt_bergheim_weststadt.model_dump()
     """Minimal viable request for multiple bpolys."""
     endpoint = ENDPOINT + "minimal"
     parameters = {
-        "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
+        "bpolys": geojson,
         "topic": "minimal",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
@@ -140,9 +138,15 @@ def test_minimal_fc(
 
 
 @oqt_vcr.use_cassette
-def test_minimal_include_figure_true(client, bpolys, headers, schema):
+def test_minimal_include_figure_true(
+    client, feature_collection_germany_heidelberg, headers, schema
+):
     endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": True}
+    parameters = {
+        "bpolys": feature_collection_germany_heidelberg.model_dump(),
+        "topic": "minimal",
+        "includeFigure": True,
+    }
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -154,9 +158,15 @@ def test_minimal_include_figure_true(client, bpolys, headers, schema):
 
 
 @oqt_vcr.use_cassette
-def test_minimal_include_figure_false(client, bpolys, headers, schema):
+def test_minimal_include_figure_false(
+    client, feature_collection_germany_heidelberg, headers, schema
+):
     endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": False}
+    parameters = {
+        "bpolys": feature_collection_germany_heidelberg.model_dump(),
+        "topic": "minimal",
+        "includeFigure": False,
+    }
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -170,7 +180,7 @@ def test_minimal_include_figure_false(client, bpolys, headers, schema):
 def test_bpolys_size_limit(client, europe, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {
-        "bpolys": europe,
+        "bpolys": europe.model_dump(),
         "topic": "minimal",
     }
     response = client.post(endpoint, json=parameters, headers=headers)

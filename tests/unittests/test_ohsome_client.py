@@ -1,11 +1,11 @@
 import asyncio
+import json
 import os
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-import geojson
 import httpx
-from geojson import FeatureCollection
+from geojson_pydantic import FeatureCollection
 from schema import Schema
 
 from ohsome_quality_analyst.ohsome import client as ohsome_client
@@ -51,7 +51,7 @@ class TestOhsomeClientQuery(TestCase):
                 request=httpx.Request("POST", "https://www.example.org/"),
             )
             response = asyncio.run(ohsome_client.query(self.topic, self.bpolys))
-            self.assertDictEqual(response, geojson.loads(self.valid_response))
+            self.assertDictEqual(response, json.loads(self.valid_response))
 
     def test_invalid_response_with_status_code_200(self) -> None:
         """When response is streamed it can be invalid while status code equals 200"""
@@ -246,7 +246,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter": str,
             }
         )
-        bpolys = FeatureCollection([self.bpolys])
+        bpolys = FeatureCollection(type="FeatureCollection", features=[self.bpolys])
         data = ohsome_client.build_data_dict(self.topic, bpolys)
         self.assertTrue(schema.is_valid(data))
 

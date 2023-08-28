@@ -4,7 +4,7 @@ from string import Template
 import numpy as np
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
-from geojson import Feature
+from geojson_pydantic import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_analyst.indicators.base import BaseIndicator

@@ -32,5 +32,5 @@ class TestIndicatorResponseModels:
 
     def test_indicator_geojson_response(self, indicator):
         feature = indicator.as_feature(exclude_label=True)
-        result_dict = {"type": "FeatureCollection", "features": [feature]}
+        result_dict = {"type": "FeatureCollection", "features": [feature.model_dump()]}
         IndicatorGeoJSONResponse(**result_dict)

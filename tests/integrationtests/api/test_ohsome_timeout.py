@@ -15,7 +15,7 @@ import httpx
 from tests.integrationtests.utils import AsyncMock
 
 
-def test_ohsome_timeout(client, bpolys):
+def test_ohsome_timeout(client, feature_collection_germany_heidelberg):
     path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "..",
@@ -37,13 +37,13 @@ def test_ohsome_timeout(client, bpolys):
             (
                 "/reports/minimal",
                 {
-                    "bpolys": bpolys,
+                    "bpolys": feature_collection_germany_heidelberg.model_dump(),
                 },
             ),
             (
                 "/indicators/minimal",
                 {
-                    "bpolys": bpolys,
+                    "bpolys": feature_collection_germany_heidelberg.model_dump(),
                     "topic": "minimal",
                 },
             ),

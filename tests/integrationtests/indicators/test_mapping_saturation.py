@@ -136,9 +136,7 @@ def test_immutable_attribute(
     """
     indicators = []
     fitted_values = []
-    for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt[
-        "features"
-    ]:
+    for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt.features:
         indicator = MappingSaturation(topic_building_count, feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()

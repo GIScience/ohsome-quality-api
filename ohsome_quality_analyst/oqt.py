@@ -3,8 +3,7 @@
 import logging
 from typing import Coroutine
 
-from geojson import Feature, FeatureCollection
-from geojson_pydantic import FeatureCollection as PydanticFeatureCollection
+from geojson_pydantic import Feature, FeatureCollection
 
 from ohsome_quality_analyst.api.request_models import (
     ReportRequest,
@@ -21,7 +20,7 @@ from ohsome_quality_analyst.utils.validators import validate_area
 
 async def create_indicator(
     key: str,
-    bpolys: PydanticFeatureCollection,
+    bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
 ) -> list[Indicator]:
@@ -30,13 +29,10 @@ async def create_indicator(
     Indicators are computed asynchronously utilizing semaphores.
     Properties of the input GeoJSON are preserved.
     """
-    bpolys = FeatureCollection(
-        [Feature(**feature) for feature in bpolys.model_dump()["features"]]
-    )
     tasks: list[Coroutine] = []
     for i, feature in enumerate(bpolys.features):
-        if "id" not in feature.keys() or feature["id"] is None:
-            feature["id"] = i
+        if feature.id is None:
+            feature.id = i
         # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
         if isinstance(topic, TopicDefinition) and key not in [
@@ -50,22 +46,19 @@ async def create_indicator(
 
 async def create_report(parameters: ReportRequest, key: str) -> FeatureCollection:
     """Create report(s) for features of a GeoJSON FeatureCollection."""
-    bpolys = FeatureCollection(
-        [Feature(**feature) for feature in parameters.bpolys.model_dump()["features"]]
-    )
 
     include_data = parameters.include_data
     features = []
-    for i, feature in enumerate(bpolys.features):
-        if "id" not in feature.keys():
-            feature["id"] = i
+    for i, feature in enumerate(parameters.bpolys.features):
+        if feature.id is None:
+            feature.id = i
         validate_area(feature)
         # Reports for a FeatureCollection are not created asynchronously (as it is
         # the case with indicators), because indicators of a report are created
         # asynchronously
         report = await _create_report(key, feature)
         features.append(report.as_feature(include_data))
-    return FeatureCollection(features=features)
+    return FeatureCollection(type="FeatureCollection", features=features)
 
 
 async def _create_indicator(
@@ -75,14 +68,13 @@ async def _create_indicator(
     include_figure: bool = True,
 ) -> Indicator:
     """Create an indicator from scratch."""
-
     logging.info("Indicator key:  {0:4}".format(key))
     logging.info("Topic key:     {0:4}".format(topic.key))
-    logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
+    logging.info("Feature id:     {0:4}".format(feature.id))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
-
+    print(feature)
     logging.info("Run preprocessing")
     await indicator.preprocess()
     logging.info("Run calculation")
@@ -107,7 +99,7 @@ async def _create_report(key: str, feature: Feature) -> Report:
 
     logging.info("Creating Report...")
     logging.info("Report key:  {0:4}".format(key))
-    logging.info("Feature id:  {0:4}".format(feature.get("id", "None")))
+    logging.info("Feature id:  {0:4}".format(feature.id))
 
     report_class = get_class_from_key(class_type="report", key=key)
     report = report_class(feature=feature)

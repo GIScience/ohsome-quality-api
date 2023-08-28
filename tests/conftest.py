@@ -1,10 +1,9 @@
+import json
 import logging
 import os
 
-import geojson
 import pytest
-from geojson import Feature, FeatureCollection, Polygon
-from geojson_pydantic import FeatureCollection as PydanticFeatureCollection
+from geojson_pydantic import Feature, FeatureCollection
 
 from ohsome_quality_analyst.definitions import (
     get_metadata,
@@ -23,9 +22,6 @@ from ohsome_quality_analyst.topics.definitions import (
     get_topic_preset,
     load_topic_presets,
 )
-
-# from ohsome_quality_analyst.indicators import MappingSaturation
-# from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
 from ohsome_quality_analyst.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
@@ -121,12 +117,9 @@ def feature_germany_heidelberg() -> Feature:
         "feature-germany-heidelberg.geojson",
     )
     with open(path, "r") as f:
-        return geojson.load(f)
-
-
-@pytest.fixture(scope="class")
-def feature(feature_germany_heidelberg) -> Feature:
-    return feature_germany_heidelberg
+        feature = Feature(**json.load(f))
+        feature.id = "TestFeature"
+        return feature
 
 
 @pytest.fixture(scope="class")
@@ -137,17 +130,8 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
         "feature-collection-germany-heidelberg.geojson",
     )
     with open(path, "r") as f:
-        return geojson.load(f)
-
-
-@pytest.fixture(scope="class")
-def bpolys(feature_collection_germany_heidelberg) -> FeatureCollection:
-    return feature_collection_germany_heidelberg
-
-
-@pytest.fixture(scope="class")
-def pydantic_bpolys(feature_collection_germany_heidelberg) -> PydanticFeatureCollection:
-    return PydanticFeatureCollection(**feature_collection_germany_heidelberg)
+        g = json.load(f)
+        return FeatureCollection(**g)
 
 
 @pytest.fixture(scope="class")
@@ -158,23 +142,31 @@ def feature_collection_heidelberg_bahnstadt_bergheim_weststadt() -> FeatureColle
         "feature-collection-heidelberg-bahnstadt-bergheim-weststadt.geojson",
     )
     with open(path, "r") as f:
-        return geojson.load(f)
+        return FeatureCollection(**json.load(f))
 
 
 @pytest.fixture
-def feature_collection_invalid() -> FeatureCollection:
+def feature_collection_invalid() -> dict:
     # Invalid Geometry
-    return FeatureCollection(
-        features=[
-            Feature(
-                geometry=Polygon(
-                    [[(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]]
-                )
-            )
-        ]
-    )
+    return {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [(2.38, 57.322), (23.194, -20.28), (-120.43, 19.15), (2.0, 1.0)]
+                    ],
+                },
+            }
+        ],
+    }
 
 
+# todo: should be no longer needed right?
+"""
 @pytest.fixture(params=["Point", "LineString", "Polygon"])
 def geojson_unsupported_object_type(request):
     # TODO: Uncomment once only FeatureCollection is supported
@@ -192,7 +184,7 @@ def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
                 geometry=geojson.utils.generate_random(request.param),
             ),
         ]
-    )
+    )"""
 
 
 @pytest.fixture

@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
-from geojson import FeatureCollection
+from geojson_pydantic import FeatureCollection
 
 from ohsome_quality_analyst.indicators.building_completeness.indicator import (
     BuildingCompleteness,
@@ -134,7 +134,9 @@ class TestCalculationFigure:
 
 class TestGetData:
     def test_get_smod_class_share(self, mock_env_oqt_data_dir, feature):
-        result = get_smod_class_share(FeatureCollection(features=[feature]))
+        result = get_smod_class_share(
+            FeatureCollection(type="FeatureCollection", features=[feature])
+        )
         assert result == {
             "urban_centre": [0.05128205128205128],
             "dense_urban_cluster": [0],

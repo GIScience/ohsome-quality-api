@@ -339,7 +339,7 @@ async def post_report(
         class_type="report",
         key=key.value,
     ).attribution()
-    response.update(geojson_object)
+    response.update(geojson_object.model_dump())
     return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
 
 

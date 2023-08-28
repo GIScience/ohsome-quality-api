@@ -1,6 +1,7 @@
 """Standalone helper functions."""
 
 import importlib
+import json
 import logging
 import os
 import pkgutil
@@ -9,9 +10,8 @@ from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
 
-import geojson
 import numpy as np
-from geojson import Feature, FeatureCollection
+from geojson_pydantic import Feature, FeatureCollection
 
 from ohsome_quality_analyst.indicators.mapping_saturation.models import BaseStatModel
 
@@ -109,8 +109,8 @@ def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> 
     outfile = Path(outfile)
     outfile.parent.mkdir(parents=True, exist_ok=True)
     with open(outfile, "w") as file:
-        geojson.dump(
-            geojson_object,
+        json.dump(
+            geojson_object.model_dump(),
             file,
             default=json_serialize,
             allow_nan=True,
