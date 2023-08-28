@@ -107,12 +107,12 @@ When writing tests for functions which are asynchronous (using the `async/await`
 
 Logging is enabled by default.
 
-`ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
+`ohsome_quality_api` uses the [logging module](https://docs.python.org/3/library/logging.html).
 
 ### Configuration
 
 The logging module is configured in `config.py`. Both entry-points to
-`ohsome_quality_analyst`, the `api.py`, will call the configuration
+`ohsome_quality_api`, the `api.py`, will call the configuration
 function defined in `definitions.py`. The default log level is `INFO`. This can be
 overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
 [configuration documentation](docs/configuration.md)).
