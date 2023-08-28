@@ -1,7 +1,7 @@
 import asyncio
 import unittest
 
-from ohsome_quality_analyst.utils import helper_asyncio
+from ohsome_quality_api.utils import helper_asyncio
 
 
 class TestHelper(unittest.TestCase):

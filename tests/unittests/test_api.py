@@ -1,5 +1,5 @@
-from ohsome_quality_analyst import __version__ as oqt_version
-from ohsome_quality_analyst.api.api import empty_api_response
+from ohsome_quality_api import __version__ as oqt_version
+from ohsome_quality_api.api.api import empty_api_response
 
 
 def test_empty_api_response():

@@ -153,5 +153,5 @@ OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
 
 > `rpy2` is an interface to R running embedded in a Python process.
 
-For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
+For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_api/indicators/mapping_saturation/models.py).
 Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.

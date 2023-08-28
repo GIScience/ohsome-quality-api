@@ -1,5 +1,5 @@
-import ohsome_quality_analyst.raster.client as raster_client
-from ohsome_quality_analyst.raster.definitions import get_raster_dataset
+import ohsome_quality_api.raster.client as raster_client
+from ohsome_quality_api.raster.definitions import get_raster_dataset
 
 from .utils import get_geojson_fixture
 

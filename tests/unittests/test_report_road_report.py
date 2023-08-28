@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.road_report.report import RoadReport
+from ohsome_quality_api.reports.road_report.report import RoadReport
 
 from ..utils import load_geojson_fixture
 

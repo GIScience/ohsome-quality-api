@@ -1,4 +1,4 @@
-from ohsome_quality_analyst.reports import definitions, models
+from ohsome_quality_api.reports import definitions, models
 
 
 def test_get_report_names():

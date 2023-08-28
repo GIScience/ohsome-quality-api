@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.multilevel_currentness.report import (
+from ohsome_quality_api.reports.multilevel_currentness.report import (
     MultilevelCurrentness,
 )
 

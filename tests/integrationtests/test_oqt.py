@@ -3,8 +3,8 @@ from unittest import mock
 
 import pytest
 
-from ohsome_quality_analyst import oqt
-from ohsome_quality_analyst.topics.models import TopicData
+from ohsome_quality_api import oqt
+from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqt_vcr
 
 

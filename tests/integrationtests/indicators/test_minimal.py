@@ -4,7 +4,7 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
+from ohsome_quality_api.indicators.minimal.indicator import Minimal
 from tests.integrationtests.utils import oqt_vcr
 
 

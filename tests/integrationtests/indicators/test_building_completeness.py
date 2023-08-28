@@ -7,13 +7,13 @@ import plotly.io as pio
 import pytest
 from geojson import FeatureCollection
 
-from ohsome_quality_analyst.indicators.building_completeness.indicator import (
+from ohsome_quality_api.indicators.building_completeness.indicator import (
     BuildingCompleteness,
     get_hex_cells,
     get_shdi,
     get_smod_class_share,
 )
-from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
+from ohsome_quality_api.utils.exceptions import HexCellsNotFoundError
 from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
 
 
@@ -45,7 +45,7 @@ def shdi():
 def mock_get_hex_cells(class_mocker, hexcells):
     async_mock = AsyncMock(return_value=hexcells)
     class_mocker.patch(
-        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_hex_cells",  # noqa
+        "ohsome_quality_api.indicators.building_completeness.indicator.get_hex_cells",  # noqa
         side_effect=async_mock,
     )
 
@@ -54,7 +54,7 @@ def mock_get_hex_cells(class_mocker, hexcells):
 def mock_get_shdi(class_mocker, shdi):
     async_mock = AsyncMock(return_value=shdi)
     class_mocker.patch(
-        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_shdi",
+        "ohsome_quality_api.indicators.building_completeness.indicator.get_shdi",
         side_effect=async_mock,
     )
 

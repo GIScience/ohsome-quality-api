@@ -5,27 +5,27 @@ import geojson
 import pytest
 from geojson import Feature, FeatureCollection, Polygon
 
-from ohsome_quality_analyst.definitions import (
+from ohsome_quality_api.definitions import (
     get_metadata,
     load_metadata,
 )
-from ohsome_quality_analyst.indicators.models import IndicatorMetadata
-from ohsome_quality_analyst.projects.definitions import get_project, load_projects
-from ohsome_quality_analyst.projects.models import Project
-from ohsome_quality_analyst.quality_dimensions.definitions import (
+from ohsome_quality_api.indicators.models import IndicatorMetadata
+from ohsome_quality_api.projects.definitions import get_project, load_projects
+from ohsome_quality_api.projects.models import Project
+from ohsome_quality_api.quality_dimensions.definitions import (
     get_quality_dimension,
     load_quality_dimensions,
 )
-from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
-from ohsome_quality_analyst.reports.models import ReportMetadata
-from ohsome_quality_analyst.topics.definitions import (
+from ohsome_quality_api.quality_dimensions.models import QualityDimension
+from ohsome_quality_api.reports.models import ReportMetadata
+from ohsome_quality_api.topics.definitions import (
     get_topic_preset,
     load_topic_presets,
 )
 
-# from ohsome_quality_analyst.indicators import MappingSaturation
-# from ohsome_quality_analyst.indicators.models import BaseIndicator as Indicator
-from ohsome_quality_analyst.topics.models import TopicDefinition
+# from ohsome_quality_api.indicators import MappingSaturation
+# from ohsome_quality_api.indicators.models import BaseIndicator as Indicator
+from ohsome_quality_api.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 

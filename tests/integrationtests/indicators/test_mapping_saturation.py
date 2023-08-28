@@ -6,7 +6,7 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
+from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 from tests.integrationtests.utils import oqt_vcr

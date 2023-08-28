@@ -5,9 +5,9 @@ from unittest import mock
 
 import geojson
 
-import ohsome_quality_analyst.raster.client as raster_client
-from ohsome_quality_analyst.raster.definitions import get_raster_dataset
-from ohsome_quality_analyst.utils.exceptions import RasterDatasetNotFoundError
+import ohsome_quality_api.raster.client as raster_client
+from ohsome_quality_api.raster.definitions import get_raster_dataset
+from ohsome_quality_api.utils.exceptions import RasterDatasetNotFoundError
 
 
 class TestRaster(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestRaster(unittest.TestCase):
             with open(path, "w") as f:
                 f.write("")
             with mock.patch(
-                "ohsome_quality_analyst.raster.client.get_config_value",
+                "ohsome_quality_api.raster.client.get_config_value",
                 return_value=tmpdirname,
             ):
                 self.assertEqual(
@@ -37,7 +37,7 @@ class TestRaster(unittest.TestCase):
                     path,
                 )
 
-    @mock.patch("ohsome_quality_analyst.raster.client.os")
+    @mock.patch("ohsome_quality_api.raster.client.os")
     def test_get_raster_path_error(self, mock_os):
         mock_os.path.exists.return_value = False
         self.assertRaises(
@@ -47,7 +47,7 @@ class TestRaster(unittest.TestCase):
         )
 
     @mock.patch(
-        "ohsome_quality_analyst.raster.client.get_raster_path",
+        "ohsome_quality_api.raster.client.get_raster_path",
         return_value=os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",
@@ -70,7 +70,7 @@ class TestRaster(unittest.TestCase):
         self.assertEqual(expected, result)
 
     @mock.patch(
-        "ohsome_quality_analyst.raster.client.get_raster_path",
+        "ohsome_quality_api.raster.client.get_raster_path",
         return_value=os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "fixtures",

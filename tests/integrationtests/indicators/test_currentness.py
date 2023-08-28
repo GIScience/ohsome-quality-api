@@ -7,7 +7,7 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.currentness.indicator import (
+from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
     Currentness,
     create_bin,
