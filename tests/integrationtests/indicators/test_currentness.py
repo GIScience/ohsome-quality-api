@@ -15,7 +15,7 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
-from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
 class TestInit:
@@ -41,7 +41,7 @@ class TestInit:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -53,7 +53,7 @@ class TestPreprocess:
 
 class TestCalculation:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -87,7 +87,7 @@ class TestCalculation:
             in indicator.result.description
         )
 
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_no_amenities(self):
         """Test area with no amenities"""
         infile = os.path.join(
@@ -116,7 +116,7 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
