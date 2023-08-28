@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst.topics.models import BaseTopic, TopicData, TopicDefinition
+from ohsome_quality_api.topics.models import BaseTopic, TopicData, TopicDefinition
 
 
 def test_base_topic():

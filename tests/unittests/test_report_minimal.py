@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.minimal.report import Minimal
+from ohsome_quality_api.reports.minimal.report import Minimal
 
 from ..utils import load_geojson_fixture
 

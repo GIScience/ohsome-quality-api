@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst.api.request_models import BaseBpolys, IndicatorRequest
-from ohsome_quality_analyst.utils.exceptions import (
+from ohsome_quality_api.api.request_models import BaseBpolys, IndicatorRequest
+from ohsome_quality_api.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,

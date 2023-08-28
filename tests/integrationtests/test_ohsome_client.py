@@ -3,8 +3,8 @@ from datetime import datetime
 
 import pytest
 
-from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
+from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.utils.exceptions import OhsomeApiError
 
 from .utils import oqt_vcr
 

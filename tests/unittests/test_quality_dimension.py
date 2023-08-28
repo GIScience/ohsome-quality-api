@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
+from ohsome_quality_api.quality_dimensions.models import QualityDimension
 
 
 def test_quality_dimension():

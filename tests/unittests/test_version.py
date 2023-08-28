@@ -3,7 +3,7 @@ import unittest
 
 import toml
 
-from ohsome_quality_analyst import __version__ as oqt_version
+from ohsome_quality_api import __version__ as oqt_version
 
 
 class TestVersion(unittest.TestCase):

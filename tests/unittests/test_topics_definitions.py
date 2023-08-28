@@ -1,6 +1,6 @@
 import pytest
 
-from ohsome_quality_analyst.topics import definitions, models
+from ohsome_quality_api.topics import definitions, models
 
 
 def test_get_topic_keys():

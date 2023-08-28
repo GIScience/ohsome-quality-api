@@ -3,7 +3,7 @@
 import click
 import uvicorn
 
-from ohsome_quality_analyst.config import load_logging_config
+from ohsome_quality_api.config import load_logging_config
 
 
 @click.command()
@@ -11,7 +11,7 @@ from ohsome_quality_analyst.config import load_logging_config
 @click.option("--port", default=8080, show_default=True, type=int)
 def run(host: str, port: int):
     uvicorn.run(
-        "ohsome_quality_analyst.api.api:app",
+        "ohsome_quality_api.api.api:app",
         host=host,
         port=port,
         reload=True,

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.map_action_poc.report import MapActionPoc
+from ohsome_quality_api.reports.map_action_poc.report import MapActionPoc
 
 from ..utils import load_geojson_fixture
 

@@ -1,6 +1,6 @@
 import pytest
 
-from ohsome_quality_analyst.api.request_models import (
+from ohsome_quality_api.api.request_models import (
     IndicatorDataRequest,
 )
 

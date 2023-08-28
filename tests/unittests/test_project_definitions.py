@@ -1,7 +1,7 @@
 import pytest
 
-from ohsome_quality_analyst.projects import definitions
-from ohsome_quality_analyst.projects.models import Project
+from ohsome_quality_api.projects import definitions
+from ohsome_quality_api.projects.models import Project
 
 
 @pytest.fixture(params=["misc", "core", "experimental"])

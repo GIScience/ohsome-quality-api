@@ -1,7 +1,7 @@
 import pytest
 
-from ohsome_quality_analyst.quality_dimensions import definitions
-from ohsome_quality_analyst.quality_dimensions.models import QualityDimension
+from ohsome_quality_api.quality_dimensions import definitions
+from ohsome_quality_api.quality_dimensions.models import QualityDimension
 
 
 @pytest.fixture(params=["minimal", "completeness", "currentness"])

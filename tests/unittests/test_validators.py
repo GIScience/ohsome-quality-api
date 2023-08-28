@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from ohsome_quality_analyst.utils.exceptions import (
+from ohsome_quality_api.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
@@ -10,7 +10,7 @@ from ohsome_quality_analyst.utils.exceptions import (
     InvalidCRSError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.validators import (
+from ohsome_quality_api.utils.validators import (
     validate_area,
     validate_geojson,
     validate_indicator_topic_combination,

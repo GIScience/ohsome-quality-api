@@ -4,7 +4,7 @@ import unittest
 import geojson
 import pytest
 
-import ohsome_quality_analyst.geodatabase.client as db_client
+import ohsome_quality_api.geodatabase.client as db_client
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 

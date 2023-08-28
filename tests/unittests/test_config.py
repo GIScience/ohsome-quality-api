@@ -3,7 +3,7 @@ import unittest
 from types import MappingProxyType
 from unittest import mock
 
-from ohsome_quality_analyst import config
+from ohsome_quality_api import config
 
 
 class TestConfig(unittest.TestCase):

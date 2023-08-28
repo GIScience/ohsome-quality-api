@@ -7,7 +7,7 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.attribute_completeness.indicator import (
+from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
 from tests.integrationtests.utils import get_topic_fixture, oqt_vcr

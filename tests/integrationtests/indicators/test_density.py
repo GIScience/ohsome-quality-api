@@ -5,9 +5,9 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.density.indicator import Density
-from ohsome_quality_analyst.topics.definitions import get_topic_preset
-from ohsome_quality_analyst.topics.models import TopicDefinition
+from ohsome_quality_api.indicators.density.indicator import Density
+from ohsome_quality_api.topics.definitions import get_topic_preset
+from ohsome_quality_api.topics.models import TopicDefinition
 from tests.integrationtests.utils import oqt_vcr
 
 
