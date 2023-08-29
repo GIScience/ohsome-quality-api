@@ -70,7 +70,7 @@ def test_validate_indicator_topic_combination_invalid():
 
 @mock.patch.dict(
     "os.environ",
-    {"OQT_GEOM_SIZE_LIMIT": "1000"},
+    {"OQAPI_GEOM_SIZE_LIMIT": "1000"},
     clear=True,
 )
 def test_validate_area(feature_germany_heidelberg):
@@ -80,7 +80,7 @@ def test_validate_area(feature_germany_heidelberg):
 
 @mock.patch.dict(
     "os.environ",
-    {"OQT_GEOM_SIZE_LIMIT": "1"},
+    {"OQAPI_GEOM_SIZE_LIMIT": "1"},
     clear=True,
 )
 def test_validate_area_exception(feature_germany_heidelberg):

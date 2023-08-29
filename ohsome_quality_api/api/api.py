@@ -187,7 +187,7 @@ async def validation_exception_handler(
 @app.exception_handler(RasterDatasetUndefinedError)
 @app.exception_handler(SizeRestrictionError)
 @app.exception_handler(ValidationError)
-async def oqt_exception_handler(
+async def custom_exception_handler(
     _: Request,
     exception: HexCellsNotFoundError
     | TopicDataSchemaError
@@ -197,7 +197,7 @@ async def oqt_exception_handler(
     | SizeRestrictionError
     | ValidationError,
 ):
-    """Exception handler for OQT exceptions."""
+    """Exception handler for custom exceptions."""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={

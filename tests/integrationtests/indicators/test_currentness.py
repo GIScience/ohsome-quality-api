@@ -47,7 +47,7 @@ class TestPreprocess:
         asyncio.run(indicator.preprocess())
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
@@ -155,9 +155,9 @@ class TestFigure:
     def test_get_source(self, indicator):
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
-        indicator.th_source = "www.oqt.org"
+        indicator.th_source = "www.foo.org"
         assert (
-            indicator.get_source_text() == "<a href='www.oqt.org' target='_blank'>*</a>"
+            indicator.get_source_text() == "<a href='www.foo.org' target='_blank'>*</a>"
         )
 
     def test_get_threshold_text(self, indicator):

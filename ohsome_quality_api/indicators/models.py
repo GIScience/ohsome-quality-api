@@ -30,7 +30,7 @@ class Result(BaseModel):
     """The result of the Indicator.
 
     Attributes:
-        timestamp_oqt (datetime): Timestamp of the creation of the indicator
+        timestamp (datetime): Timestamp of the creation of the indicator
         timestamp_osm (datetime): Timestamp of the used OSM data
             (e.g. Latest timestamp of the ohsome API results)
         label (str): Traffic lights like quality label: `green`, `yellow` or `red`. The
@@ -43,9 +43,7 @@ class Result(BaseModel):
     """
 
     description: str
-    timestamp_oqt: datetime = Field(
-        default=datetime.now(timezone.utc), alias="timestampOQT"
-    )  # UTC datetime object
+    timestamp: datetime = Field(default=datetime.now(timezone.utc))
     timestamp_osm: datetime | None = Field(default=None, alias="timestampOSM")
     value: float | None = None
     class_: Literal[1, 2, 3, 4, 5] | None = None

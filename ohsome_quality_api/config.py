@@ -9,32 +9,32 @@ from types import MappingProxyType
 import rpy2.rinterface_lib.callbacks
 import yaml
 
-from ohsome_quality_api import __version__ as oqt_version
+from ohsome_quality_api import __version__
 from ohsome_quality_api.utils.helper import get_project_root
 
 
 def get_config_path() -> str:
     """Get configuration file path
 
-    Read value of the environment variable 'OQT_CONFIG' or use default 'config.yaml'
+    Read value of the environment variable 'OQAPI_CONFIG' or use default 'config.yaml'
     """
     default = str(get_project_root() / "config" / "config.yaml")
-    return os.getenv("OQT_CONFIG", default=default)
+    return os.getenv("OQAPI_CONFIG", default=default)
 
 
 def load_config_default() -> dict:
     return {
         "postgres_host": "localhost",
         "postgres_port": 5445,
-        "postgres_db": "oqt",
-        "postgres_user": "oqt",
-        "postgres_password": "oqt",
+        "postgres_db": "ohsome",
+        "postgres_user": "ohsome",
+        "postgres_password": "ohsome",
         "data_dir": get_default_data_dir(),
         "geom_size_limit": 1000,
         "log_level": "INFO",
         "ohsome_api": "https://api.ohsome.org/v1/",
         "concurrent_computations": 4,
-        "user_agent": "ohsome-quality-analyst/{}".format(oqt_version),
+        "user_agent": "ohsome-quality-api/{}".format(__version__),
         "datasets": {
             "regions": {
                 "default": "ogc_fid",
@@ -61,11 +61,11 @@ def load_config_from_env() -> dict:
         "postgres_db": os.getenv("POSTGRES_DB"),
         "postgres_user": os.getenv("POSTGRES_USER"),
         "postgres_password": os.getenv("POSTGRES_PASSWORD"),
-        "data_dir": os.getenv("OQT_DATA_DIR"),
-        "geom_size_limit": os.getenv("OQT_GEOM_SIZE_LIMIT"),
-        "ohsome_api": os.getenv("OQT_OHSOME_API"),
-        "concurrent_computations": os.getenv("OQT_CONCURRENT_COMPUTATIONS"),
-        "user_agent": os.getenv("OQT_USER_AGENT"),
+        "data_dir": os.getenv("OQAPI_DATA_DIR"),
+        "geom_size_limit": os.getenv("OQAPI_GEOM_SIZE_LIMIT"),
+        "ohsome_api": os.getenv("OQAPI_OHSOME_API"),
+        "concurrent_computations": os.getenv("OQAPI_CONCURRENT_COMPUTATIONS"),
+        "user_agent": os.getenv("OQAPI_USER_AGENT"),
     }
     return {k: v for k, v in cfg.items() if v is not None}
 
@@ -116,7 +116,7 @@ def get_log_level():
         default_level = "DEBUG"
     else:
         default_level = "INFO"
-    return os.getenv("OQT_LOG_LEVEL", default=default_level)
+    return os.getenv("OQAPI_LOG_LEVEL", default=default_level)
 
 
 def configure_logging() -> None:
@@ -127,7 +127,7 @@ def configure_logging() -> None:
             return " library ‘/usr/share/R/library’ contains no packages" in record.msg
 
     # Avoid R library contains no packages WARNING logs.
-    # OQT has no dependencies on additional R libraries.
+    # OQAPI has no dependencies on additional R libraries.
     rpy2.rinterface_lib.callbacks.logger.addFilter(RPY2LoggingFilter())
     # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
     logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)

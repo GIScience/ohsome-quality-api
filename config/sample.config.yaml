@@ -8,7 +8,7 @@ postgres_password: oqt
 # Data directory for raster files
 # Default: repo-root/data
 data_dir: /some/absolute/path
-# Restrict size of input geometry to the OQT API (sqkm)
+# Restrict size of input geometry
 geom_size_limit: 1000
 # Python logging level
 log_level: INFO

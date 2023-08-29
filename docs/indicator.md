@@ -6,7 +6,7 @@ An indicator estimates data quality for OpenStreetMap (OSM). It takes an area of
 
 Each particular indicator class inherits from the `BaseIndicator` class of the `ohsome_quality_api/indicators/base.py` module. Following class diagram gives an overview of abstract methods and properties of this class:
 
-![UML class diagram of OQT](./img/UML-Class-Diagram.png)
+![UML class diagram](./img/UML-Class-Diagram.png)
 
 ### Metadata
 
@@ -22,7 +22,7 @@ Please take a look at the [topic documentation](docs/topic.md).
 The result object consists of following attributes:
 
 - `description (str)`: The result description
-- `timestamp_oqt (datetime)`: Timestamp of the creation of the indicator
+- `timestamp (datetime)`: Timestamp of the creation of the indicator
 - `timestamp_osm (datetime)`: Timestamp of the used OSM data (e.g. the latest timestamp of the ohsome API results)
 - `value (float)`: The result value
 - `class (int)`: The result class. An integer between 1 and 5. It maps to following result labels: 

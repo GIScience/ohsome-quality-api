@@ -23,7 +23,7 @@ class TestPreprocess:
         asyncio.run(indicator.preprocess())
         assert indicator.area_sqkm is not None
         assert indicator.count is not None
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
