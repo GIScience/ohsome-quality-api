@@ -143,7 +143,7 @@ cython_debug/
 # Ruff
 .ruff_cache/
 
-# OQT
+# oqapi
 /data/*
 /config/*
 !/config/sample.config.yaml

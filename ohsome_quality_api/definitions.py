@@ -23,7 +23,7 @@ ATTRIBUTION_TEXTS = MappingProxyType(
 )
 
 ATTRIBUTION_URL = (
-    "https://github.com/GIScience/ohsome-quality-analyst/blob/main/COPYRIGHTS.md"
+    "https://github.com/GIScience/ohsome-quality-api/blob/main/COPYRIGHTS.md"
 )
 
 

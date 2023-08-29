@@ -1,6 +1,6 @@
 # Development Setup
 
-To run simply run ohsome quality API and the Database the provided Docker setup can be used.
+To run simply run the ohsome quality API and the database the provided Docker setup can be used.
 
 ```bash
 docker compose up --detach
@@ -9,7 +9,7 @@ docker compose up --detach
 After all services are up they are available under:
 
 - API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
-- Database: `host=localhost port=5445 dbname=ohsome user=ohsome password=ohsome`
+- Database: `host=localhost port=5445 dbname=oqapi user=oqapi password=oqapi`
 
 For development setup please continue reading.
 
@@ -153,5 +153,5 @@ The package [`rpy2`](https://rpy2.github.io/) is utilized to execute R code.
 
 > `rpy2` is an interface to R running embedded in a Python process.
 
-For an example how ohsome quality API is using `rpy2` have a look the module [`models.py`](/ohsome_quality_api/indicators/mapping_saturation/models.py).
+For an example how the ohsome quality API is using `rpy2` have a look the module [`models.py`](/ohsome_quality_api/indicators/mapping_saturation/models.py).
 Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.

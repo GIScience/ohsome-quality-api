@@ -7,7 +7,7 @@ def test_empty_api_response():
         "apiVersion": version,
         "attribution": {
             "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
+                "https://github.com/GIScience/ohsome-quality-api/blob/main/"
                 + "COPYRIGHTS.md"
             ),
         },

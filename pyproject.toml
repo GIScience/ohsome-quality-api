@@ -55,7 +55,7 @@ pytest-mock = "^3.11.1"
 ruff = "^0.0.275"
 
 [tool.poetry.urls]
-"Issues" = "https://github.com/GIScience/ohsome-quality-analyst/issues"
+"Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
 
 [build-system]
 requires = ["poetry-core"]

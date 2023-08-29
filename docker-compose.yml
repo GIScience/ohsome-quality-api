@@ -1,12 +1,11 @@
 version: "3"
 services:
   api:
-    container_name: ohsome-quality-api
     build: .
     environment:
-      OQA_CONFIG: /config/config.yaml
-      OQA_DATA_DIR: /data
-      POSTGRES_HOST: ohsome-quality-database
+      OQAPI_CONFIG: /config/config.yaml
+      OQAPI_DATA_DIR: /data
+      POSTGRES_HOST: oqapi-database
       POSTGRES_PORT: 5432
     command: poetry run python scripts/start_api.py --host 0.0.0.0
     volumes:
@@ -18,12 +17,11 @@ services:
       - database
 
   database:
-    container_name: ohsome-quality-database
     build: database/
     environment:
-      POSTGRES_DB: ohsome
-      POSTGRES_USER: ohsome
-      POSTGRES_PASSWORD: ohsome
+      POSTGRES_DB: oqapi
+      POSTGRES_USER: oqapi
+      POSTGRES_PASSWORD: oqapi
     ports:
       - "5445:5432"
     volumes:

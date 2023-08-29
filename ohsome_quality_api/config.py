@@ -26,9 +26,9 @@ def load_config_default() -> dict:
     return {
         "postgres_host": "localhost",
         "postgres_port": 5445,
-        "postgres_db": "ohsome",
-        "postgres_user": "ohsome",
-        "postgres_password": "ohsome",
+        "postgres_db": "oqapi",
+        "postgres_user": "oqapi",
+        "postgres_password": "oqapi",
         "data_dir": get_default_data_dir(),
         "geom_size_limit": 1000,
         "log_level": "INFO",

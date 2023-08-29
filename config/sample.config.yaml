@@ -2,9 +2,9 @@
 # Database connection parameters;
 postgres_host: localhost
 postgres_port: 5445
-postgres_db: ohsome
-postgres_user: ohsome
-postgres_password: ohsome
+postgres_db: oqapi
+postgres_user: oqapi
+postgres_password: oqapi
 # Data directory for raster files
 # Default: repo-root/data
 data_dir: /some/absolute/path
