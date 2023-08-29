@@ -16,7 +16,7 @@ def response_template():
         "apiVersion": __version__,
         "attribution": {
             "url": (
-                "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"
+                "https://github.com/GIScience/ohsome-quality-api/blob/main/"
                 + "COPYRIGHTS.md"
             ),
         },

@@ -1,6 +1,6 @@
 # Vector datasets (PostGIS Database)
 
-ohsome quality API operates on vector datasets stored in a PostGIS database.
+The ohsome quality API operates on vector datasets stored in a PostGIS database.
 
 
 ### The Human Development Index (SHDI)

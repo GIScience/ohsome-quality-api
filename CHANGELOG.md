@@ -2,7 +2,7 @@
 
 ## Release 1.0.0
 
-This release includes a well specified [API](https://oqt.ohsome.org/api/docs) and two core indicators available through the [ohsome dashboard](https://dashboard.ohsome.org/#backend=oqtApi).
+This release includes a well specified [API](https://oqt.ohsome.org/api/docs) and two core indicators available through the [ohsome dashboard](https://dashboard.ohsome.org/#backend=oqapi).
 
 ### Breaking
 
