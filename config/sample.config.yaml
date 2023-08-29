@@ -2,9 +2,9 @@
 # Database connection parameters;
 postgres_host: localhost
 postgres_port: 5445
-postgres_db: oqt
-postgres_user: oqt
-postgres_password: oqt
+postgres_db: ohsome
+postgres_user: ohsome
+postgres_password: ohsome
 # Data directory for raster files
 # Default: repo-root/data
 data_dir: /some/absolute/path
@@ -13,9 +13,9 @@ geom_size_limit: 1000
 # Python logging level
 log_level: INFO
 # ohsome API URL
-ohsome_api: https://api.ohsome.org/v1/
+ohsome_api: https://api.ohsome.org/v1
 # Limit number of concurrent Indicator computations
 concurrent_computations: 4
 # User-Agent header for request to the ohsome API
-# Default: 'ohsome-quality-analyst/{version}'
-user_agent: ohsome-quality-analyst
+# Default: 'ohsome-quality-api/{version}'
+user_agent: ohsome-quality-api

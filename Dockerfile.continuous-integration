@@ -1,4 +1,4 @@
-FROM oqt-api:latest
+FROM oqapi-api:latest
 
 USER root:root
 
@@ -11,4 +11,4 @@ RUN apt-get update && \
     apt-get install --yes --no-install-recommends openjdk-17-jre-headless nodejs && \
     rm -rf /var/lib/apt/lists/*
 
-USER oqt:oqt
+USER ohsome:ohsome

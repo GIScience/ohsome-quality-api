@@ -6,7 +6,7 @@ from tests.integrationtests.utils import get_fixture_dir, get_geojson_fixture
 
 
 @pytest.fixture(scope="class")
-def mock_env_oqt_data_dir():
+def mock_env_oqapi_data_dir():
     directory = os.path.join(get_fixture_dir(), "rasters")
     with pytest.MonkeyPatch.context() as mp:
         mp.setenv("OQAPI_DATA_DIR", directory)

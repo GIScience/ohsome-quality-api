@@ -69,7 +69,7 @@ class TestPreprocess:
         self,
         feature,
         topic,
-        mock_env_oqt_data_dir,
+        mock_env_oqapi_data_dir,
         mock_get_hex_cells,
         mock_get_shdi,
     ):
@@ -105,7 +105,7 @@ class TestCalculationFigure:
         self,
         feature,
         topic,
-        mock_env_oqt_data_dir,
+        mock_env_oqapi_data_dir,
         mock_get_hex_cells,
         mock_get_shdi,
     ):
@@ -137,7 +137,7 @@ class TestCalculationFigure:
 
 
 class TestGetData:
-    def test_get_smod_class_share(self, mock_env_oqt_data_dir, feature):
+    def test_get_smod_class_share(self, mock_env_oqapi_data_dir, feature):
         result = get_smod_class_share(FeatureCollection(features=[feature]))
         assert result == {
             "urban_centre": [0.05128205128205128],
