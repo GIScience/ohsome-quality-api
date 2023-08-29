@@ -44,19 +44,3 @@ Please have a look at the API response field `attribution` to figure out which o
 
 - Source: https://globaldatalab.org/shdi/
 - Attribution and use conditions: The development indicators available at the GDL Website can be freely downloaded and used by any interested person or party, provided that the Global Data Lab is mentioned as the source of the indicators and a link to the GDL Website is shown. 
-
-
-## OQT Regions
-
-Region geometry for which OQT provides pre-computed results.
-
-### GADM
-
-- Source: https://gadm.org/license.html
-- Attribution and use condition: The data are freely available for academic use and other non-commercial use. Redistribution or commercial use is not allowed without prior permission.
-
-
-### Nomenclature of Territorial Units for Statistics (NUTS)
-
-- Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units
-- Attribution and use condition: (1) The data will not be used for commercial purposes; (2) The source will be acknowledged.
