@@ -118,7 +118,7 @@ class TestCalculationFigure:
         assert isinstance(indicator.building_area_prediction, list)
         assert len(indicator.building_area_prediction) > 0
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert indicator.result.label is not None
         assert indicator.result.value is not None
         assert indicator.result.description is not None

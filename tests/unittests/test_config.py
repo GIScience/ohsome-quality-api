@@ -38,7 +38,7 @@ class TestConfig(unittest.TestCase):
             ),
         )
 
-    @mock.patch.dict("os.environ", {"OQT_CONFIG": "/some/absolute/path"}, clear=True)
+    @mock.patch.dict("os.environ", {"OQAPI_CONFIG": "/some/absolute/path"}, clear=True)
     def test_get_config_path_set_env(self):
         self.assertEqual(config.get_config_path(), "/some/absolute/path")
 
@@ -51,7 +51,7 @@ class TestConfig(unittest.TestCase):
     @mock.patch.dict(
         "os.environ",
         {
-            "OQT_CONFIG": os.path.join(
+            "OQAPI_CONFIG": os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
                 "fixtures",
                 "config.yaml",
@@ -74,7 +74,7 @@ class TestConfig(unittest.TestCase):
 
     @mock.patch.dict(
         "os.environ",
-        {"OQT_GEOM_SIZE_LIMIT": "200", "POSTGRES_HOST": "foo"},
+        {"OQAPI_GEOM_SIZE_LIMIT": "200", "POSTGRES_HOST": "foo"},
         clear=True,
     )
     def test_load_config_from_env_set(self):
@@ -99,7 +99,7 @@ class TestConfig(unittest.TestCase):
 
     @mock.patch.dict(
         "os.environ",
-        {"OQT_CONFIG": ""},
+        {"OQAPI_CONFIG": ""},
         clear=True,
     )
     def test_get_config_env_empty_str(self):

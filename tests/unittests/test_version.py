@@ -3,7 +3,7 @@ import unittest
 
 import toml
 
-from ohsome_quality_api import __version__ as oqt_version
+from ohsome_quality_api import __version__ as version
 
 
 class TestVersion(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestVersion(unittest.TestCase):
         with open(infile, "r") as fo:
             project_file = toml.load(fo)
             pyproject_version = project_file["tool"]["poetry"]["version"]
-        self.assertEqual(pyproject_version, oqt_version)
+        self.assertEqual(pyproject_version, version)
 
 
 if __name__ == "__main__":

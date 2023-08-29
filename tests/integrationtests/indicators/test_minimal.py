@@ -37,7 +37,7 @@ class TestCalculate:
         assert indicator.result.value is not None
         assert indicator.result.label is not None
         assert indicator.result.description is not None
-        assert indicator.result.timestamp_oqt is not None
+        assert indicator.result.timestamp is not None
         assert indicator.result.timestamp_osm is not None
 
 

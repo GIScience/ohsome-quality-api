@@ -20,7 +20,7 @@ class TestPreprocess:
             topic_building_count, feature_germany_heidelberg
         )
         asyncio.run(indicator.preprocess())
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
@@ -39,7 +39,7 @@ class TestCalculation:
         assert indicator.result.description is not None
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
 
     @oqapi_vcr.use_cassette()
     def test_no_features(self):

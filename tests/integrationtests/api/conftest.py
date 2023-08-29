@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from ohsome_quality_api import __version__ as oqt_version
+from ohsome_quality_api import __version__
 from ohsome_quality_api.api.api import app
 
 
@@ -13,7 +13,7 @@ def client():
 @pytest.fixture
 def response_template():
     return {
-        "apiVersion": oqt_version,
+        "apiVersion": __version__,
         "attribution": {
             "url": (
                 "https://github.com/GIScience/ohsome-quality-analyst/blob/main/"

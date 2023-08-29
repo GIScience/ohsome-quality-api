@@ -98,14 +98,14 @@ def test_create_report_private(feature):
     assert report.result.description is not None
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
     with pytest.raises(ValueError):
         asyncio.run(oqt.create_indicator("minimal", bpolys, topic_minimal))
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
     # Size limit is disabled for the Mapping Saturation indicator.
@@ -114,7 +114,7 @@ def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
     )
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_data(bpolys):
     # Size limit is disabled for request with custom data.

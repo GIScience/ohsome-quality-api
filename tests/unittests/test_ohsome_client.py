@@ -88,7 +88,7 @@ class TestOhsomeClientQuery(TestCase):
             )
             asyncio.run(ohsome_client.query(self.topic, self.bpolys))
             self.assertEqual(
-                "ohsome-quality-analyst",
+                "ohsome-quality-api",
                 mock_request.call_args[1]["headers"]["user-agent"].split("/")[0],
             )
 

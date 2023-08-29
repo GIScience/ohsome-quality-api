@@ -82,7 +82,7 @@ class TestCalculation:
         assert indicator.result.description is not None
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
 
     def test_as_feature(self, indicator):
         indicator_feature = indicator.as_feature()
