@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_api"
-version = "1.0.0"
+version = "1.0.1"
 description = "Data quality estimations for OpenStreetMap."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://quality.ohsome.org"
