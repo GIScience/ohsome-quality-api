@@ -2,11 +2,11 @@ import unittest
 
 import pytest
 
-from ohsome_quality_analyst import definitions
-from ohsome_quality_analyst.indicators.models import (
+from ohsome_quality_api import definitions
+from ohsome_quality_api.indicators.models import (
     IndicatorMetadata as IndicatorMetadata,
 )
-from ohsome_quality_analyst.reports.base import ReportMetadata as ReportMetadata
+from ohsome_quality_api.reports.base import ReportMetadata as ReportMetadata
 
 
 class TestDefinitions(unittest.TestCase):

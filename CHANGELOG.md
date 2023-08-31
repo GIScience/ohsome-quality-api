@@ -1,8 +1,12 @@
 # Changelog
 
+## Release 1.0.1
+
+- refactor: rename "ohsome quality analyst" (OQT) to "ohsome quality API" (oqapi) ([#685])
+
 ## Release 1.0.0
 
-This release includes a well specified [API](https://oqt.ohsome.org/api/docs) and two core indicators available through the [ohsome dashboard](https://dashboard.ohsome.org/#backend=oqtApi).
+This release includes a well specified [API](https://oqt.ohsome.org/api/docs) and two core indicators available through the [ohsome dashboard](https://dashboard.ohsome.org/#backend=oqapi).
 
 ### Breaking
 
@@ -64,6 +68,7 @@ This release includes a well specified [API](https://oqt.ohsome.org/api/docs) an
 [#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
+[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## 0.15.0
 

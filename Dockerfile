@@ -10,24 +10,24 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
-RUN useradd -md /home/oqt oqt
-WORKDIR /opt/oqt
-RUN chown oqt:oqt . -R
-USER oqt:oqt
+RUN useradd -md /home/oqapi oqapi
+WORKDIR /opt/oqapi
+RUN chown oqapi:oqapi . -R
+USER oqapi:oqapi
 
 # make poetry binaries available to the docker container user
-ENV PATH=$PATH:/home/oqt/.local/bin
+ENV PATH=$PATH:/home/oqapi/.local/bin
 
 # install only the dependencies
-COPY --chown=oqt:oqt pyproject.toml pyproject.toml
-COPY --chown=oqt:oqt poetry.lock poetry.lock
+COPY --chown=oqapi:oqapi pyproject.toml pyproject.toml
+COPY --chown=oqapi:oqapi poetry.lock poetry.lock
 RUN pip install --no-cache-dir poetry
 RUN python -m poetry install --no-ansi --no-interaction --no-root
 
 # copy all the other files and install the project
-COPY --chown=oqt:oqt ohsome_quality_analyst ohsome_quality_analyst
-COPY --chown=oqt:oqt tests tests
-COPY --chown=oqt:oqt scripts/start_api.py scripts/start_api.py
-COPY --chown=oqt:oqt config/logging.yaml config/logging.yaml
+COPY --chown=oqapi:oqapi ohsome_quality_api ohsome_quality_api
+COPY --chown=oqapi:oqapi tests tests
+COPY --chown=oqapi:oqapi scripts/start_api.py scripts/start_api.py
+COPY --chown=oqapi:oqapi config/logging.yaml config/logging.yaml
 RUN python -m poetry install --no-ansi --no-interaction
 

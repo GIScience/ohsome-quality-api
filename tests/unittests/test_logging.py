@@ -3,18 +3,18 @@ import os
 import sys
 import unittest
 
-from ohsome_quality_analyst.config import configure_logging
+from ohsome_quality_api.config import configure_logging
 
 
 class TestLogging(unittest.TestCase):
     def setUp(self):
-        self.log_level = os.environ.pop("OQT_LOG_LEVEL", None)
+        self.log_level = os.environ.pop("OQAPI_LOG_LEVEL", None)
 
     def tearDown(self):
         if self.log_level is not None:
-            os.environ["OQT_LOG_LEVEL"] = self.log_level
+            os.environ["OQAPI_LOG_LEVEL"] = self.log_level
         else:
-            os.environ.pop("OQT_LOG_LEVEL", None)
+            os.environ.pop("OQAPI_LOG_LEVEL", None)
 
     def test_logging(self):
         configure_logging()
@@ -34,7 +34,7 @@ class TestLogging(unittest.TestCase):
         configure_logging()
         self.assertEqual(getattr(logging, level), logging.root.level)
 
-        os.environ["OQT_LOG_LEVEL"] = "DEBUG"
+        os.environ["OQAPI_LOG_LEVEL"] = "DEBUG"
         configure_logging()
         self.assertEqual(getattr(logging, "DEBUG"), logging.root.level)
 

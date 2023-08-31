@@ -3,26 +3,26 @@ from datetime import datetime
 
 import pytest
 
-from ohsome_quality_analyst.ohsome import client as ohsome_client
-from ohsome_quality_analyst.utils.exceptions import OhsomeApiError
+from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.utils.exceptions import OhsomeApiError
 
-from .utils import oqt_vcr
+from .utils import oqapi_vcr
 
 
-@oqt_vcr.use_cassette()
+@oqapi_vcr.use_cassette()
 def test_get_latest_ohsome_timestamp():
     time = asyncio.run(ohsome_client.get_latest_ohsome_timestamp())
     assert isinstance(time, datetime)
 
 
-@oqt_vcr.use_cassette()
+@oqapi_vcr.use_cassette()
 def test_query_ohsome_api_exceptions_404():
     url = "https://api.ohsome.org/v1/elements/lenght"  # length is misspelled
     with pytest.raises(OhsomeApiError, match="Not Found.*"):
         asyncio.run(ohsome_client.query_ohsome_api(url, {}))
 
 
-@oqt_vcr.use_cassette()
+@oqapi_vcr.use_cassette()
 def test_query_ohsome_api_exceptions_400():
     url = "https://api.ohsome.org/v1/elements/length"
     with pytest.raises(OhsomeApiError, match="Invalid filter syntax.*"):

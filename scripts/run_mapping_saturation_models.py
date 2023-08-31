@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
-import ohsome_quality_analyst.geodatabase.client as db_client
-import ohsome_quality_analyst.ohsome.client as ohsome_client
-from ohsome_quality_analyst.indicators.mapping_saturation import models
-from ohsome_quality_analyst.topics.definitions import get_topic_preset
+import ohsome_quality_api.geodatabase.client as db_client
+import ohsome_quality_api.ohsome.client as ohsome_client
+from ohsome_quality_api.indicators.mapping_saturation import models
+from ohsome_quality_api.topics.definitions import get_topic_preset
 
 
 def plot(xdata, ydata, model_list):

@@ -4,7 +4,7 @@ from unittest import mock
 import numpy as np
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
-from ohsome_quality_analyst.indicators.mapping_saturation import models
+from ohsome_quality_api.indicators.mapping_saturation import models
 
 from . import fixtures
 

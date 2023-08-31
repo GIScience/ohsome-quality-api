@@ -5,13 +5,13 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       connection:
       - keep-alive
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/1.0.0
+      - ohsome-quality-api/1.0.1
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 23 Aug 2023 09:24:08 GMT
+      - Wed, 30 Aug 2023 12:20:22 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -62,7 +62,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       connection:
       - keep-alive
       content-length:
@@ -72,7 +72,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/1.0.0
+      - ohsome-quality-api/1.0.1
     method: POST
     uri: https://api.ohsome.org/v1/contributions/latest/count
   response:
@@ -392,7 +392,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 23 Aug 2023 09:24:15 GMT
+      - Wed, 30 Aug 2023 12:20:29 GMT
       keep-alive:
       - timeout=5, max=100
       server:
@@ -411,7 +411,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       connection:
       - keep-alive
       content-length:
@@ -421,7 +421,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/1.0.0
+      - ohsome-quality-api/1.0.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
@@ -636,7 +636,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 23 Aug 2023 09:24:16 GMT
+      - Wed, 30 Aug 2023 12:20:29 GMT
       keep-alive:
       - timeout=5, max=100
       server:

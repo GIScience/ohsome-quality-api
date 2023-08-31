@@ -7,14 +7,18 @@ import plotly.io as pio
 import pytest
 from geojson_pydantic import FeatureCollection
 
-from ohsome_quality_analyst.indicators.building_completeness.indicator import (
+from ohsome_quality_api.indicators.building_completeness.indicator import (
     BuildingCompleteness,
     get_hex_cells,
     get_shdi,
     get_smod_class_share,
 )
-from ohsome_quality_analyst.utils.exceptions import HexCellsNotFoundError
-from tests.integrationtests.utils import get_geojson_fixture, get_topic_fixture, oqt_vcr
+from ohsome_quality_api.utils.exceptions import HexCellsNotFoundError
+from tests.integrationtests.utils import (
+    get_geojson_fixture,
+    get_topic_fixture,
+    oqapi_vcr,
+)
 
 
 @pytest.fixture(scope="class")
@@ -45,7 +49,7 @@ def shdi():
 def mock_get_hex_cells(class_mocker, hexcells):
     async_mock = AsyncMock(return_value=hexcells)
     class_mocker.patch(
-        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_hex_cells",  # noqa
+        "ohsome_quality_api.indicators.building_completeness.indicator.get_hex_cells",  # noqa
         side_effect=async_mock,
     )
 
@@ -54,18 +58,18 @@ def mock_get_hex_cells(class_mocker, hexcells):
 def mock_get_shdi(class_mocker, shdi):
     async_mock = AsyncMock(return_value=shdi)
     class_mocker.patch(
-        "ohsome_quality_analyst.indicators.building_completeness.indicator.get_shdi",
+        "ohsome_quality_api.indicators.building_completeness.indicator.get_shdi",
         side_effect=async_mock,
     )
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(
         self,
         feature,
         topic,
-        mock_env_oqt_data_dir,
+        mock_env_oqapi_data_dir,
         mock_get_hex_cells,
         mock_get_shdi,
     ):
@@ -96,12 +100,12 @@ class TestPreprocess:
 
 class TestCalculationFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(
         self,
         feature,
         topic,
-        mock_env_oqt_data_dir,
+        mock_env_oqapi_data_dir,
         mock_get_hex_cells,
         mock_get_shdi,
     ):
@@ -114,7 +118,7 @@ class TestCalculationFigure:
         assert isinstance(indicator.building_area_prediction, list)
         assert len(indicator.building_area_prediction) > 0
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert indicator.result.label is not None
         assert indicator.result.value is not None
         assert indicator.result.description is not None
@@ -133,7 +137,7 @@ class TestCalculationFigure:
 
 
 class TestGetData:
-    def test_get_smod_class_share(self, mock_env_oqt_data_dir, feature):
+    def test_get_smod_class_share(self, mock_env_oqapi_data_dir, feature):
         result = get_smod_class_share(
             FeatureCollection(type="FeatureCollection", features=[feature])
         )
@@ -161,6 +165,10 @@ class TestGetData:
 
     @pytest.mark.skip("dependency on database setup.")
     def test_get_shdi(self, feature):
-        result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
+        result = asyncio.run(
+            get_shdi(
+                FeatureCollection(type="FeatureCollection", features=[feature]),
+            )
+        )
         assert isinstance(result, list)
         assert len(result) == 1

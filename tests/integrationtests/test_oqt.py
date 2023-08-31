@@ -3,12 +3,12 @@ from unittest import mock
 
 import pytest
 
-from ohsome_quality_analyst import oqt
-from ohsome_quality_analyst.topics.models import TopicData
-from tests.integrationtests.utils import oqt_vcr
+from ohsome_quality_api import oqt
+from ohsome_quality_api.topics.models import TopicData
+from tests.integrationtests.utils import oqapi_vcr
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 @pytest.mark.parametrize(
     "indicator,topic",
     [
@@ -37,7 +37,7 @@ def test_create_indicator_public_feature_collection_single(
         assert indicator.result.figure is not None
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_indicator_public_feature_collection_multi(
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
     topic_minimal,
@@ -58,7 +58,7 @@ def test_create_indicator_public_feature_collection_multi(
         assert indicator.result.figure is not None
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 @pytest.mark.parametrize(
     "indicator,topic",
     [
@@ -82,9 +82,10 @@ def test_create_indicator_private_feature(
     assert indicator.result.figure is not None
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_indicator_private_include_figure(
-    feature_germany_heidelberg, topic_minimal
+    feature_germany_heidelberg,
+    topic_minimal,
 ):
     indicator = asyncio.run(
         oqt._create_indicator(
@@ -97,7 +98,7 @@ def test_create_indicator_private_include_figure(
     assert indicator.result.figure is None
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_report_private(feature_germany_heidelberg):
     """Minimal viable request for a single bpoly."""
     report = asyncio.run(oqt._create_report("minimal", feature_germany_heidelberg))
@@ -107,7 +108,7 @@ def test_create_report_private(feature_germany_heidelberg):
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys(
     feature_collection_germany_heidelberg, topic_minimal
 ):
@@ -120,7 +121,7 @@ def test_create_indicator_size_limit_bpolys(
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_ms(
     feature_collection_germany_heidelberg, topic_building_count
 ):
@@ -135,7 +136,7 @@ def test_create_indicator_size_limit_bpolys_ms(
 
 
 @mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_data(feature_collection_germany_heidelberg):
     # Size limit is disabled for request with custom data.
     topic = TopicData(

@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst import __version__
-from ohsome_quality_analyst.api.response_models import (
+from ohsome_quality_api import __version__
+from ohsome_quality_api.api.response_models import (
     BaseResponse,
     IndicatorMetadata,
     IndicatorMetadataResponse,
@@ -12,7 +12,7 @@ from ohsome_quality_analyst.api.response_models import (
     TopicMetadata,
     TopicMetadataResponse,
 )
-from ohsome_quality_analyst.definitions import ATTRIBUTION_URL
+from ohsome_quality_api.definitions import ATTRIBUTION_URL
 
 
 def test_base():

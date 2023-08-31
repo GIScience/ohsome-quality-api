@@ -21,7 +21,7 @@ pipeline {
     // POETRY_RUN = 'python -m poetry run --no-ansi --no-interaction'
     POETRY_RUN = 'python -m poetry run'
 
-    WORK_DIR = '/opt/oqt'
+    WORK_DIR = '/opt/oqapi'
     MODULE_DIR = '.'
   }
 
@@ -44,8 +44,8 @@ pipeline {
           }
         }
         script {
-          DOCKER_API = docker.build("oqt-api", "${MODULE_DIR}")
-          DOCKER_API_CI = docker.build("oqt-api-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
+          DOCKER_API = docker.build("oqapi-api", "${MODULE_DIR}")
+          DOCKER_API_CI = docker.build("oqapi-api-ci", "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
         }
       }
       post {
@@ -60,7 +60,7 @@ pipeline {
         script {
           DOCKER_API_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
             // run pytest
-            sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_analyst --cov-report=xml tests'
+            sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_api --cov-report=xml tests'
             // replace absolute dir in the coverage file with actually used dir for sonar-scanner
             sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
             // run static analysis with sonar-scanner

@@ -1,15 +1,12 @@
-![](docs/img/oqt_logo.png)
-
-# ohsome quality analyst
-
+# ohsome quality API
+ 
 [![build status](https://jenkins.ohsome.org/buildStatus/icon?job=ohsome-quality-analyst/main)](https://jenkins.ohsome.org/blue/organizations/jenkins/ohsome-quality-analyst/activity/?branch=main)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-analyst&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-analyst)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-api)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Foqt.ohsome.org)](https://oqt.ohsome.org)
 [![Dashboard](https://img.shields.io/website?url=https%3A%2F%2Fdashboard.ohsome.org&label=dashboard)](https://dashboard.ohsome.org)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
-The ohsome quality analyst (OQT) computes and provides data quality estimations (indicators) for OpenStreetMap.
+The ohsome quality API computes and provides data quality estimations (indicators) for OpenStreetMap.
 
 Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is as easy as pie.
 
@@ -19,15 +16,15 @@ The software is developed by [Heidelberg Institute for Geoinformation Technology
 
 ### Dashboard
 
-For quick insights, you can start exploring OQT through the [ohsome dashboard](https://dashboard.ohsome.org).
+For quick insights, you can start exploring quality estimations through the [ohsome dashboard](https://dashboard.ohsome.org).
 
 ### API
 
-Check out the interactive [Swagger API documentation](https://oqt.ohsome.org/api/docs) and the [Jupyter Notebook examples](https://github.com/GIScience/oqt-examples).
+Check out the interactive [Swagger API documentation](https://api.quality.ohsome.org/v1/docs) and the [Jupyter Notebook examples](https://github.com/GIScience/ohsome-quality-api-examples).
 
 ## About
 
-On our [website](https://oqt.ohsome.org) you can find more details about OQT. If you want to read up on the history of OQT or want to stay up-to-date, take a look at our [blog posts](https://heigit.org/tag/oqt-en).
+On our [website](https://api.quality.ohsome.org) you can find more details about the ohsome quality API. If you want to read up on the history of ohsome quality API, which was named ohsome quality analyst (OQT) in the past, or want to stay up-to-date, take a look at our [blog posts](https://heigit.org/tag/ohsome-quality-api-en).
 
 ## Contributing
 

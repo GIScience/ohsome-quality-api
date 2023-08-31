@@ -2,18 +2,18 @@ import asyncio
 
 import pytest
 
-from ohsome_quality_analyst.api.response_models import (
+from ohsome_quality_api.api.response_models import (
     CompIndicator,
     IndicatorGeoJSONResponse,
     IndicatorJSONResponse,
 )
-from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
-from tests.integrationtests.utils import oqt_vcr
+from ohsome_quality_api.indicators.minimal.indicator import Minimal
+from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestIndicatorResponseModels:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_minimal, feature_germany_heidelberg):
         indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())

@@ -2,11 +2,11 @@ from unittest import mock
 
 import pytest
 
-from ohsome_quality_analyst.utils.exceptions import (
+from ohsome_quality_api.utils.exceptions import (
     IndicatorTopicCombinationError,
     SizeRestrictionError,
 )
-from ohsome_quality_analyst.utils.validators import (
+from ohsome_quality_api.utils.validators import (
     validate_area,
     validate_indicator_topic_combination,
 )
@@ -23,7 +23,7 @@ def test_validate_indicator_topic_combination_invalid():
 
 @mock.patch.dict(
     "os.environ",
-    {"OQT_GEOM_SIZE_LIMIT": "1000"},
+    {"OQAPI_GEOM_SIZE_LIMIT": "1000"},
     clear=True,
 )
 def test_validate_area(feature_germany_heidelberg):
@@ -33,7 +33,7 @@ def test_validate_area(feature_germany_heidelberg):
 
 @mock.patch.dict(
     "os.environ",
-    {"OQT_GEOM_SIZE_LIMIT": "1"},
+    {"OQAPI_GEOM_SIZE_LIMIT": "1"},
     clear=True,
 )
 def test_validate_area_exception(feature_germany_heidelberg):

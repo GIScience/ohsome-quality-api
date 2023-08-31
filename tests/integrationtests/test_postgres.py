@@ -6,7 +6,7 @@ from unittest import mock
 import asyncpg
 import pytest
 
-from ohsome_quality_analyst.geodatabase import client as pg_client
+from ohsome_quality_api.geodatabase import client as pg_client
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 
@@ -22,7 +22,7 @@ class TestPostgres(unittest.TestCase):
         self.assertEqual(instance_type, asyncpg.connection.Connection)
 
     @mock.patch(
-        "ohsome_quality_analyst.config.get_config",
+        "ohsome_quality_api.config.get_config",
     )
     def test_connection_fails(self, mock_get_config):
         """Test connection failure error due to wrong credentials"""

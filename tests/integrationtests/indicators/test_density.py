@@ -5,10 +5,10 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.density.indicator import Density
-from ohsome_quality_analyst.topics.definitions import get_topic_preset
-from ohsome_quality_analyst.topics.models import TopicDefinition
-from tests.integrationtests.utils import oqt_vcr
+from ohsome_quality_api.indicators.density.indicator import Density
+from ohsome_quality_api.topics.definitions import get_topic_preset
+from ohsome_quality_api.topics.models import TopicDefinition
+from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture(scope="class")
@@ -17,19 +17,19 @@ def topic_poi() -> TopicDefinition:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_poi, feature_germany_heidelberg):
         indicator = Density(topic_poi, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         assert indicator.area_sqkm is not None
         assert indicator.count is not None
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
 class TestCalculation:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_poi, feature_germany_heidelberg):
         i = Density(topic_poi, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -44,7 +44,7 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_poi, feature_germany_heidelberg):
         i = Density(topic_poi, feature_germany_heidelberg)
         asyncio.run(i.preprocess())

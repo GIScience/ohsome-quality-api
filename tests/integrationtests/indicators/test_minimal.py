@@ -4,12 +4,12 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.minimal.indicator import Minimal
-from tests.integrationtests.utils import oqt_vcr
+from ohsome_quality_api.indicators.minimal.indicator import Minimal
+from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestAttribution:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_attribution(self, topic_minimal, feature_germany_heidelberg):
         indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -17,7 +17,7 @@ class TestAttribution:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_minimal, feature_germany_heidelberg):
         indicator = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -26,7 +26,7 @@ class TestPreprocess:
 
 class TestCalculate:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_minimal, feature_germany_heidelberg):
         i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -37,13 +37,13 @@ class TestCalculate:
         assert indicator.result.value is not None
         assert indicator.result.label is not None
         assert indicator.result.description is not None
-        assert indicator.result.timestamp_oqt is not None
+        assert indicator.result.timestamp is not None
         assert indicator.result.timestamp_osm is not None
 
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_minimal, feature_germany_heidelberg):
         i = Minimal(topic_minimal, feature_germany_heidelberg)
         asyncio.run(i.preprocess())

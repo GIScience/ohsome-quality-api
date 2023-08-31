@@ -6,10 +6,10 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
-from ohsome_quality_analyst.indicators.mapping_saturation.indicator import (
+from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
-from tests.integrationtests.utils import oqt_vcr
+from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestCheckEdgeCases:
@@ -49,7 +49,7 @@ class TestCheckEdgeCases:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -62,7 +62,7 @@ class TestPreprocess:
 
 class TestCalculation:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -82,7 +82,7 @@ class TestCalculation:
         assert indicator.result.description is not None
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
 
     def test_as_feature(self, indicator):
         indicator_feature = indicator.as_feature()
@@ -95,7 +95,7 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -113,7 +113,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_immutable_attribute(
     topic_building_count,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,

@@ -2,7 +2,7 @@
 
 ## How to Contribute
 
-Please contribute to this repository through creating [issues](https://github.com/GIScience/ohsome-quality-analyst/issues/new) and [pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests).
+Please contribute to this repository through creating [issues](https://github.com/GIScience/ohsome-quality-api/issues/new) and [pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests).
 
 
 ### Issues

@@ -2,10 +2,10 @@ from unittest.mock import Mock
 
 import pytest
 
-from ohsome_quality_analyst.indicators.minimal.indicator import (
+from ohsome_quality_api.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
 )
-from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
+from ohsome_quality_api.reports.minimal.report import Minimal as MinimalReport
 
 from .utils import get_geojson_fixture, get_topic_fixture
 

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.sketchmap_fitness.report import SketchmapFitness
+from ohsome_quality_api.reports.sketchmap_fitness.report import SketchmapFitness
 
 from ..utils import load_geojson_fixture
 

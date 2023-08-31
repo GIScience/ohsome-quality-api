@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       connection:
       - keep-alive
       content-length:
@@ -15,7 +15,7 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-analyst/1.0.0
+      - ohsome-quality-api/1.0.1
     method: POST
     uri: https://api.ohsome.org/v1/elements/area/groupBy/boundary
   response:
@@ -57,7 +57,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 23 Aug 2023 09:24:38 GMT
+      - Wed, 30 Aug 2023 12:20:49 GMT
       keep-alive:
       - timeout=5, max=100
       server:

@@ -8,7 +8,7 @@ import plotly.io as pio
 import pytest
 from geojson_pydantic import Feature
 
-from ohsome_quality_analyst.indicators.currentness.indicator import (
+from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
     Currentness,
     create_bin,
@@ -16,7 +16,7 @@ from ohsome_quality_analyst.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
-from tests.integrationtests.utils import get_topic_fixture, oqt_vcr
+from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
 class TestInit:
@@ -42,19 +42,19 @@ class TestInit:
 
 
 class TestPreprocess:
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
-        assert isinstance(indicator.result.timestamp_oqt, datetime)
+        assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
 class TestCalculation:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -88,7 +88,7 @@ class TestCalculation:
             in indicator.result.description
         )
 
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def test_no_amenities(self):
         """Test area with no amenities"""
         infile = os.path.join(
@@ -117,7 +117,7 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.fixture(scope="class")
-    @oqt_vcr.use_cassette
+    @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
@@ -156,9 +156,9 @@ class TestFigure:
     def test_get_source(self, indicator):
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
-        indicator.th_source = "www.oqt.org"
+        indicator.th_source = "www.foo.org"
         assert (
-            indicator.get_source_text() == "<a href='www.oqt.org' target='_blank'>*</a>"
+            indicator.get_source_text() == "<a href='www.foo.org' target='_blank'>*</a>"
         )
 
     def test_get_threshold_text(self, indicator):

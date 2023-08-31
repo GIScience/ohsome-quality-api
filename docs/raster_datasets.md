@@ -1,12 +1,12 @@
 # Raster datasets (Stored as file on Disk)
 
-OQT operates on raster datasets stored on disk. Those raster datasets need to be
-downloaded and saved to the OQT data directory.
+ohsome quality API operates on raster datasets stored on disk. Those raster datasets need to be
+downloaded and saved to the OQAPI data directory.
 
 ## Location (Data directory)
 
 The default data directory is `data`. The location can be changed by setting the
-`data_dir` variable in the configuration file or the environment variable `$OQT_DATA_DIR`.
+`data_dir` variable in the configuration file or the environment variable `$OQAPI_DATA_DIR`.
 
 The `data` directory is listed in `.gitignore`. This way the original raster files in
 full size can be stored in this directory for development.
@@ -24,7 +24,7 @@ Information:
 Setup steps:
 1. Download the global raster as single file at [https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K/V2-0/GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.zip](https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_BUILT_LDSMT_GLOBE_R2018A/GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K/V2-0/GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.zip)
 2. Extract archive
-3. Move `GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.tif` to the OQT data directory
+3. Move `GHS_BUILT_LDS2014_GLOBE_R2018A_54009_1K_V2_0.tif` to the OQAPI data directory
 
 ### GHS-POP R2019A
 
@@ -35,7 +35,7 @@ Information:
 Setup steps:
 1. Download the global raster as single file at [https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_MT_GLOBE_R2019A/GHS_POP_E2015_GLOBE_R2019A_54009_1K/V1-0/GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.zip](https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_MT_GLOBE_R2019A/GHS_POP_E2015_GLOBE_R2019A_54009_1K/V1-0/GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.zip)
 2. Extract archive
-3. Move `GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif` to the OQT data directory
+3. Move `GHS_POP_E2015_GLOBE_R2019A_54009_1K_V1_0.tif` to the OQAPI data directory
 
 ### GHS-SMOD R2019A
 
@@ -46,7 +46,7 @@ Information:
 Setup steps:
 1. Download the global raster as single file at [https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_SMOD_POP_GLOBE_R2019A/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K/V2-0/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.zip](https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_SMOD_POP_GLOBE_R2019A/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K/V2-0/GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.zip)
 2. Extract archive
-3. Move `GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif` to the OQT data directory
+3. Move `GHS_SMOD_POP2015_GLOBE_R2019A_54009_1K_V2_0.tif` to the OQAPI data directory
 
 ### Nighttime Lights VIIRS - Annual VNL V2
 
@@ -59,4 +59,4 @@ Setup steps:
 1. Download the global raster as single file at [https://eogdata.mines.edu/nighttime_light/annual/v20/2020/](https://eogdata.mines.edu/nighttime_light/annual/v20/2020/)
     - The filename is `VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif.gz`
 2. Extract the archive
-3. Move `VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif` to the OQT data directory
+3. Move `VNL_v2_npp_2020_global_vcmslcfg_c202102150000.average_masked.tif` to the OQAPI data directory

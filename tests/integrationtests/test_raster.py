@@ -1,16 +1,16 @@
-import ohsome_quality_analyst.raster.client as raster_client
-from ohsome_quality_analyst.raster.definitions import get_raster_dataset
+import ohsome_quality_api.raster.client as raster_client
+from ohsome_quality_api.raster.definitions import get_raster_dataset
 
 from .utils import get_geojson_fixture
 
 
-def test_get_raster_path(mock_env_oqt_data_dir):
+def test_get_raster_path(mock_env_oqapi_data_dir):
     raster = get_raster_dataset("GHS_BUILT_R2018A")
     path = raster_client.get_raster_path(raster)
     assert isinstance(path, str)
 
 
-def test_get_zonal_stats(mock_env_oqt_data_dir):
+def test_get_zonal_stats(mock_env_oqapi_data_dir):
     raster = get_raster_dataset("GHS_BUILT_R2018A")
     feature = get_geojson_fixture("algeria-touggourt-feature.geojson")
 

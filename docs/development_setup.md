@@ -1,6 +1,6 @@
 # Development Setup
 
-To run simply run OQT and the Database the provided Docker setup can be used.
+To run simply run the ohsome quality API and the database the provided Docker setup can be used.
 
 ```bash
 docker compose up --detach
@@ -9,7 +9,7 @@ docker compose up --detach
 After all services are up they are available under:
 
 - API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
-- Database: `host=localhost port=5445 dbname=oqt user=oqt password=oqt`
+- Database: `host=localhost port=5445 dbname=oqapi user=oqapi password=oqapi`
 
 For development setup please continue reading.
 
@@ -88,12 +88,12 @@ The VCR [record mode](https://vcrpy.readthedocs.io/en/latest/usage.html#record-m
 Writing tests using VCR.py with our custom decorator is as easy as:
 
 ```python
-from tests import oqt_vcr
+from tests import oqapi_vcr
 
 
-@oqt_vcr.use_cassette
+@oqapi_vcr.use_cassette
 def test_something(self):
-    oqt.do_something(…)
+    oqapi.do_something(…)
 ```
 
 Good examples can be found in [test_oqt.py](/tests/integrationtests/test_oqt.py).
@@ -107,14 +107,14 @@ When writing tests for functions which are asynchronous (using the `async/await`
 
 Logging is enabled by default.
 
-`ohsome_quality_analyst` uses the [logging module](https://docs.python.org/3/library/logging.html).
+`ohsome_quality_api` uses the [logging module](https://docs.python.org/3/library/logging.html).
 
 ### Configuration
 
 The logging module is configured in `config.py`. Both entry-points to
-`ohsome_quality_analyst`, the `api.py`, will call the configuration
+`ohsome_quality_api`, the `api.py`, will call the configuration
 function defined in `definitions.py`. The default log level is `INFO`. This can be
-overwritten by setting the environment variable `OQT_LOG_LEVEL` (See also the
+overwritten by setting the environment variable `OQAPI_LOG_LEVEL` (See also the
 [configuration documentation](docs/configuration.md)).
 
 ### Usage
@@ -128,7 +128,7 @@ logging.info("Logging message")
 
 ## Database Library
 
-OQT uses [asyncpg](https://magicstack.github.io/asyncpg/current/) as database interface
+[asyncpg](https://magicstack.github.io/asyncpg/current/) is used as database interface
 library.
 
 ### `executemany` Query
@@ -149,9 +149,9 @@ await conn.fetch('''
 
 ## Notes on the integration of R
 
-OQT utilizes the package [`rpy2`](https://rpy2.github.io/) to execute R code.
+The package [`rpy2`](https://rpy2.github.io/) is utilized to execute R code.
 
 > `rpy2` is an interface to R running embedded in a Python process.
 
-For an example how OQT is using `rpy2` have a look the module [`models.py`](/ohsome_quality_analyst/indicators/mapping_saturation/models.py).
+For an example how the ohsome quality API is using `rpy2` have a look the module [`models.py`](/ohsome_quality_api/indicators/mapping_saturation/models.py).
 Through this module the Mapping Saturation indicator uses some of the built-in statistical models of R.

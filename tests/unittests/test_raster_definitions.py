@@ -1,7 +1,7 @@
 import unittest
 
-from ohsome_quality_analyst.raster import definitions
-from ohsome_quality_analyst.utils.exceptions import RasterDatasetUndefinedError
+from ohsome_quality_api.raster import definitions
+from ohsome_quality_api.utils.exceptions import RasterDatasetUndefinedError
 
 
 class TestDefinitions(unittest.TestCase):

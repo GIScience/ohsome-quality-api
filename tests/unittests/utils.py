@@ -3,8 +3,8 @@ import os
 
 from geojson_pydantic import Feature, FeatureCollection
 
-from ohsome_quality_analyst.topics.definitions import get_topic_preset
-from ohsome_quality_analyst.topics.models import TopicDefinition
+from ohsome_quality_api.topics.definitions import get_topic_preset
+from ohsome_quality_api.topics.models import TopicDefinition
 
 
 def get_geojson_fixture(name) -> Feature | FeatureCollection:

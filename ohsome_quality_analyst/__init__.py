@@ -1,6 +1,0 @@
-__version__ = "1.0.0"
-__title__ = "ohsome quality analyst"
-__description__ = "Data quality estimations for OpenStreetMap"
-__author__ = "ohsome team"
-__email__ = "ohsome@heigit.org"
-__homepage__ = "https://oqt.ohsome.org/"

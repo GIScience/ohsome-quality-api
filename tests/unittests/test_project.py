@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_analyst.projects.models import Project
+from ohsome_quality_api.projects.models import Project
 
 
 def test_project():

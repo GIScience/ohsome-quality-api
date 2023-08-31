@@ -4,13 +4,13 @@ from pathlib import Path
 
 import numpy as np
 
-from ohsome_quality_analyst.definitions import load_metadata
-from ohsome_quality_analyst.indicators.mapping_saturation import models
-from ohsome_quality_analyst.indicators.minimal.indicator import (
+from ohsome_quality_api.definitions import load_metadata
+from ohsome_quality_api.indicators.mapping_saturation import models
+from ohsome_quality_api.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
 )
-from ohsome_quality_analyst.reports.minimal.report import Minimal as MinimalReport
-from ohsome_quality_analyst.utils.helper import (
+from ohsome_quality_api.reports.minimal.report import Minimal as MinimalReport
+from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     flatten_sequence,
     get_class_from_key,

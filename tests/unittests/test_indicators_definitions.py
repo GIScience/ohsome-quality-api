@@ -1,4 +1,4 @@
-from ohsome_quality_analyst.indicators import definitions, models
+from ohsome_quality_api.indicators import definitions, models
 
 
 def test_get_indicator_names():

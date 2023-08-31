@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from ohsome_quality_analyst.reports.food_related_report.report import FoodRelatedReport
+from ohsome_quality_api.reports.food_related_report.report import FoodRelatedReport
 
 from ..utils import load_geojson_fixture
 
