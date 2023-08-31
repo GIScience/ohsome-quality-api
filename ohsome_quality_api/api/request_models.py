@@ -1,5 +1,4 @@
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
-from geojson_pydantic.features import Props
 from pydantic import BaseModel, ConfigDict, Field
 
 from ohsome_quality_api.topics.definitions import TopicEnum
@@ -17,7 +16,7 @@ class BaseConfig(BaseModel):
 
 
 class BaseBpolys(BaseConfig):
-    bpolys: FeatureCollection[Feature[Polygon | MultiPolygon, Props]]
+    bpolys: FeatureCollection[Feature[Polygon | MultiPolygon]]
 
 
 class IndicatorRequest(BaseBpolys):

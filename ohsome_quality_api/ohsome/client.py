@@ -160,13 +160,12 @@ def build_data_dict(
     """
     data = {"filter": topic.filter}
     if isinstance(bpolys, Feature):
-        data["bpolys"] = json.dumps(
-            FeatureCollection(type="FeatureCollection", features=[bpolys]).model_dump(
-                exclude_none=True
-            )
-        )
+        data["bpolys"] = FeatureCollection(
+            type="FeatureCollection",
+            features=[bpolys],
+        ).model_dump_json(exclude_none=True)
     elif isinstance(bpolys, FeatureCollection):
-        data["bpolys"] = json.dumps(bpolys.model_dump(exclude_none=True))
+        data["bpolys"] = bpolys.model_dump_json(exclude_none=True)
     else:
         raise TypeError("Parameter 'bpolys' does not have expected type.")
     if time is not None:

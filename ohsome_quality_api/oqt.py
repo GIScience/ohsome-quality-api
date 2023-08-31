@@ -73,7 +73,7 @@ async def _create_indicator(
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(topic, feature)
-    print(feature)
+
     logging.info("Run preprocessing")
     await indicator.preprocess()
     logging.info("Run calculation")

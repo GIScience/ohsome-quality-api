@@ -63,7 +63,9 @@ class BaseReport(metaclass=ABCMeta):
             )
         else:
             return Feature(
-                type="Feature", geometry=self.feature.geometry, properties=properties
+                type="Feature",
+                geometry=self.feature.geometry,
+                properties=properties,
             )
 
     @abstractmethod
