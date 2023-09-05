@@ -12,6 +12,6 @@ def test_calculate_area(feature_germany_heidelberg):
 
 def test_calculate_area_multipolygon(feature_multipolygon_germany_heidelberg):
     # derived from PostGIS SELECT ST_Area( ST_GeomFromGeoJSON(JSON_HERE)::geography)
-    expected = 1795635.9057149887  # derived from PostGIS ST_AREA EPSG:32632
+    expected = 1795635.9057149887
     result = calculate_area(feature_multipolygon_germany_heidelberg)
     assert result == pytest.approx(expected, abs=0.03)
