@@ -7,6 +7,7 @@ import plotly.io as pio
 import pytest
 from geojson_pydantic import FeatureCollection
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.indicators.building_completeness.indicator import (
     BuildingCompleteness,
     get_hex_cells,
@@ -139,7 +140,9 @@ class TestCalculationFigure:
 class TestGetData:
     def test_get_smod_class_share(self, mock_env_oqapi_data_dir, feature):
         result = get_smod_class_share(
-            FeatureCollection(type="FeatureCollection", features=[feature])
+            FeatureCollection[FeatureWithOptionalProperties](
+                type="FeatureCollection", features=[feature]
+            )
         )
         assert result == {
             "urban_centre": [0.05128205128205128],
@@ -167,7 +170,9 @@ class TestGetData:
     def test_get_shdi(self, feature):
         result = asyncio.run(
             get_shdi(
-                FeatureCollection(type="FeatureCollection", features=[feature]),
+                FeatureCollection[FeatureWithOptionalProperties](
+                    type="FeatureCollection", features=[feature]
+                ),
             )
         )
         assert isinstance(result, list)

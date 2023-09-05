@@ -7,6 +7,7 @@ from typing import NamedTuple
 import numpy as np
 from geojson_pydantic import Feature
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.reports.models import ReportMetadata, Result
@@ -55,14 +56,14 @@ class BaseReport(metaclass=ABCMeta):
         for i, indicator in enumerate(self.indicators):
             properties["indicators"].append(indicator.as_feature().properties)
         if self.feature.id is not None:
-            return Feature(
+            return FeatureWithOptionalProperties(
                 type="Feature",
                 id=self.feature.id,
                 geometry=self.feature.geometry,
                 properties=properties,
             )
         else:
-            return Feature(
+            return FeatureWithOptionalProperties(
                 type="Feature",
                 geometry=self.feature.geometry,
                 properties=properties,

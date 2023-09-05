@@ -21,6 +21,7 @@ import asyncpg
 from asyncpg import Record
 from geojson import Feature, FeatureCollection
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.config import get_config_value
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +44,9 @@ async def get_connection():
         await conn.close()
 
 
-async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
+async def get_shdi(
+    bpoly: FeatureWithOptionalProperties | FeatureCollection,
+) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
     Get SHDI by intersecting the bounding polygon with sub-national regions provided by

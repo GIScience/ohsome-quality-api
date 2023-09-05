@@ -2,8 +2,8 @@ import json
 from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
-from geojson_pydantic import Feature
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -16,13 +16,13 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         topic: Topic,
-        feature: Feature,
+        feature: FeatureWithOptionalProperties,
     ) -> None:
         self.metadata: IndicatorMetadata = get_metadata(
             "indicators", type(self).__name__
         )
         self.topic: Topic = topic
-        self.feature: Feature = feature
+        self.feature: FeatureWithOptionalProperties = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
         )
@@ -43,13 +43,14 @@ class BaseIndicator(metaclass=ABCMeta):
                 exclude={"ratio_filter"},
             ),
             "result": result,
-            **self.feature.properties,
         }
+        if self.feature.properties is not None:
+            raw_dict.update(self.feature.properties)
         if self.feature.id is not None:
             raw_dict["id"] = self.feature.id
         return raw_dict
 
-    def as_feature(self, exclude_label=False) -> Feature:
+    def as_feature(self, exclude_label=False) -> FeatureWithOptionalProperties:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -57,7 +58,7 @@ class BaseIndicator(metaclass=ABCMeta):
         """
         properties = self.as_dict(exclude_label)
 
-        return Feature(
+        return FeatureWithOptionalProperties(
             type="Feature",
             id=self.feature.id,
             geometry=self.feature.geometry,

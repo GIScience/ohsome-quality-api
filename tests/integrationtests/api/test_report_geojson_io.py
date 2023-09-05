@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from geojson_pydantic import FeatureCollection
 
 from ohsome_quality_api.api.api import app
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
@@ -36,7 +37,9 @@ class TestApiReportIo(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
 
-        feature_collection = FeatureCollection(**response.content)  # Valid GeoJSON?
+        feature_collection = FeatureCollection[FeatureWithOptionalProperties](
+            **response.content
+        )  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(feature_collection))
         self.assertTrue(self.feature_schema.is_valid(feature_collection))
 
@@ -50,7 +53,7 @@ class TestApiReportIo(unittest.TestCase):
         response = self.post_response(self.featurecollection.model_dump())
         self.assertEqual(response.status_code, 200)
 
-        FeatureCollection(**response.json())
+        FeatureCollection[FeatureWithOptionalProperties](**response.json())
 
         response_content = response.json()
         self.assertTrue(self.general_schema.is_valid(response_content))

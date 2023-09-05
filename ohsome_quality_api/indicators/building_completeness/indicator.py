@@ -9,6 +9,7 @@ from building_completeness_model import Predictor, Processor
 from geojson_pydantic import Feature, FeatureCollection
 
 import ohsome_quality_api.geodatabase.client as db_client
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.raster import client as raster_client
@@ -274,7 +275,7 @@ async def get_hex_cells(feature: Feature) -> FeatureCollection:
         query = file.read()
     async with db_client.get_connection() as conn:
         record = await conn.fetchrow(query, str(feature.geometry))
-    feature_collection = FeatureCollection(**record[0])
+    feature_collection = FeatureCollection[FeatureWithOptionalProperties](**record[0])
     if feature_collection.features is None:
         raise HexCellsNotFoundError
     return feature_collection

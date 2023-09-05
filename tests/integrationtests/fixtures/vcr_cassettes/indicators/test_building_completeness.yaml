@@ -141,4 +141,75 @@ interactions:
       - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B5.932918%2C33.019152%5D%2C%5B5.874573%2C32.995934%5D%2C%5B5.81307%2C33.024295%5D%2C%5B5.809855%2C33.075939%5D%2C%5B5.868222%2C33.0992%5D%2C%5B5.929781%2C33.070774%5D%2C%5B5.932918%2C33.019152%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95930452.2125547%7D%2C%22id%22%3A4171694%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B5.868222%2C33.0992%5D%2C%5B5.809855%2C33.075939%5D%2C%5B5.748282%2C33.104265%5D%2C%5B5.74502%2C33.155916%5D%2C%5B5.803411%2C33.179219%5D%2C%5B5.865039%2C33.150829%5D%2C%5B5.868222%2C33.0992%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95932018.963268%7D%2C%22id%22%3A4172685%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B6.04363%2C33.168571%5D%2C%5B5.98511%2C33.145517%5D%2C%5B5.923495%2C33.174009%5D%2C%5B5.920345%2C33.225623%5D%2C%5B5.978889%2C33.248721%5D%2C%5B6.040559%2C33.220161%5D%2C%5B6.04363%2C33.168571%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95933529.0075574%7D%2C%22id%22%3A4171692%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B6.163817%2C33.1629%5D%2C%5B6.105231%2C33.139974%5D%2C%5B6.04363%2C33.168571%5D%2C%5B6.040559%2C33.220161%5D%2C%5B6.099167%2C33.243133%5D%2C%5B6.160824%2C33.214467%5D%2C%5B6.163817%2C33.1629%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95933383.7868543%7D%2C%22id%22%3A4170334%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B6.108257%2C33.088391%5D%2C%5B6.049759%2C33.065381%5D%2C%5B5.988213%2C33.09391%5D%2C%5B5.98511%2C33.145517%5D%2C%5B6.04363%2C33.168571%5D%2C%5B6.105231%2C33.139974%5D%2C%5B6.108257%2C33.088391%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95931857.5037036%7D%2C%22id%22%3A4170335%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B5.81307%2C33.024295%5D%2C%5B5.75479%2C33.000954%5D%2C%5B5.693273%2C33.029215%5D%2C%5B5.689979%2C33.080882%5D%2C%5B5.748282%2C33.104265%5D%2C%5B5.809855%2C33.075939%5D%2C%5B5.81307%2C33.024295%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95930542.1162593%7D%2C%22id%22%3A4172686%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B5.988213%2C33.09391%5D%2C%5B5.929781%2C33.070774%5D%2C%5B5.868222%2C33.0992%5D%2C%5B5.865039%2C33.150829%5D%2C%5B5.923495%2C33.174009%5D%2C%5B5.98511%2C33.145517%5D%2C%5B5.988213%2C33.09391%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95931910.750078%7D%2C%22id%22%3A4171693%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B6.052817%2C33.013782%5D%2C%5B5.994408%2C32.99069%5D%2C%5B5.932918%2C33.019152%5D%2C%5B5.929781%2C33.070774%5D%2C%5B5.988213%2C33.09391%5D%2C%5B6.049759%2C33.065381%5D%2C%5B6.052817%2C33.013782%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95930343.2759635%7D%2C%22id%22%3A4170336%7D%2C%7B%22type%22%3A%22Feature%22%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPolygon%22%2C%22coordinates%22%3A%5B%5B%5B%5B5.923495%2C33.174009%5D%2C%5B5.865039%2C33.150829%5D%2C%5B5.803411%2C33.179219%5D%2C%5B5.800182%2C33.230855%5D%2C%5B5.858661%2C33.254078%5D%2C%5B5.920345%2C33.225623%5D%2C%5B5.923495%2C33.174009%5D%5D%5D%5D%7D%2C%22properties%22%3A%7B%22area%22%3A95933668.7242033%7D%2C%22id%22%3A4172684%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '3806'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api/1.0.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/area/groupBy/boundary
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.10.0\",\n  \"groupByResult\" : [ {\n    \"groupByObject\" : 4171694,\n    \"result\"
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n
+      \   } ]\n  }, {\n    \"groupByObject\" : 4172685,\n    \"result\" : [ {\n      \"timestamp\"
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
+      : 4171692,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \     \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\" : 4170334,\n    \"result\"
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 789353.24\n
+      \   } ]\n  }, {\n    \"groupByObject\" : 4170335,\n    \"result\" : [ {\n      \"timestamp\"
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 4875604.98\n    } ]\n  }, {\n
+      \   \"groupByObject\" : 4172686,\n    \"result\" : [ {\n      \"timestamp\"
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\"
+      : 4171693,\n    \"result\" : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
+      \     \"value\" : 0.0\n    } ]\n  }, {\n    \"groupByObject\" : 4170336,\n    \"result\"
+      : [ {\n      \"timestamp\" : \"2023-08-10T20:00:00Z\",\n      \"value\" : 64849.52\n
+      \   } ]\n  }, {\n    \"groupByObject\" : 4172684,\n    \"result\" : [ {\n      \"timestamp\"
+      : \"2023-08-10T20:00:00Z\",\n      \"value\" : 0.0\n    } ]\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Mon, 04 Sep 2023 11:56:29 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.52 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1

@@ -1,4 +1,7 @@
+from typing import Generic, Optional, Union
+
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
+from geojson_pydantic.features import Geom, Props
 from pydantic import BaseModel, ConfigDict, Field
 
 from ohsome_quality_api.topics.definitions import TopicEnum
@@ -15,8 +18,14 @@ class BaseConfig(BaseModel):
     )
 
 
+class FeatureWithOptionalProperties(Feature[Geom, Props], Generic[Geom, Props]):
+    properties: Optional[Union[Props, None]] = None
+
+
 class BaseBpolys(BaseConfig):
-    bpolys: FeatureCollection[Feature[Polygon | MultiPolygon]]
+    bpolys: FeatureCollection[
+        FeatureWithOptionalProperties[Polygon | MultiPolygon, Props]
+    ]
 
 
 class IndicatorRequest(BaseBpolys):

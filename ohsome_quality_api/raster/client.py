@@ -6,6 +6,7 @@ from geojson_pydantic import Feature, FeatureCollection
 from pyproj import Transformer
 from rasterstats import zonal_stats
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.raster.definitions import RasterDataset
 from ohsome_quality_api.utils.exceptions import RasterDatasetNotFoundError
@@ -49,9 +50,9 @@ def transform(feature: Feature, raster: RasterDataset):
         feature.model_dump(),
     )
     if gjson["type"] == "Feature":
-        return Feature(**gjson)
+        return FeatureWithOptionalProperties(**gjson)
     else:
-        return FeatureCollection(**gjson)
+        return FeatureCollection[FeatureWithOptionalProperties](**gjson)
 
 
 def get_raster_path(raster: RasterDataset) -> str:

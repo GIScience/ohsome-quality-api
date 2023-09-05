@@ -5,6 +5,7 @@ import pytest
 
 from ohsome_quality_api import oqt
 from ohsome_quality_api.topics.models import TopicData
+from ohsome_quality_api.utils.exceptions import SizeRestrictionError
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -107,12 +108,12 @@ def test_create_report_private(feature_germany_heidelberg):
     assert report.result.description is not None
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys(
     feature_collection_germany_heidelberg, topic_minimal
 ):
-    with pytest.raises(ValueError):
+    with pytest.raises(SizeRestrictionError):
         asyncio.run(
             oqt.create_indicator(
                 "minimal", feature_collection_germany_heidelberg, topic_minimal
@@ -120,7 +121,7 @@ def test_create_indicator_size_limit_bpolys(
         )
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_ms(
     feature_collection_germany_heidelberg, topic_building_count
@@ -135,7 +136,7 @@ def test_create_indicator_size_limit_bpolys_ms(
     )
 
 
-@mock.patch.dict("os.environ", {"OQT_GEOM_SIZE_LIMIT": "1"}, clear=True)
+@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys_data(feature_collection_germany_heidelberg):
     # Size limit is disabled for request with custom data.

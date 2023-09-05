@@ -4,8 +4,9 @@ import os
 from unittest.mock import MagicMock
 
 import vcr
-from geojson_pydantic import Feature, FeatureCollection
+from geojson_pydantic import FeatureCollection
 
+from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.topics.definitions import get_topic_preset
 from ohsome_quality_api.topics.models import TopicDefinition
 
@@ -35,15 +36,15 @@ def get_fixture_dir():
     return os.path.join(get_current_dir(), "fixtures")
 
 
-def get_geojson_fixture(name) -> Feature | FeatureCollection:
+def get_geojson_fixture(name) -> FeatureWithOptionalProperties | FeatureCollection:
     path = os.path.join(get_fixture_dir(), name)
     with open(path, "r") as f:
         geo_json = json.load(f)
 
         if geo_json["type"] == "Feature":
-            return Feature(**geo_json)
+            return FeatureWithOptionalProperties(**geo_json)
         else:
-            return FeatureCollection(**geo_json)
+            return FeatureCollection[FeatureWithOptionalProperties](**geo_json)
 
 
 def get_topic_fixture(name: str) -> TopicDefinition:
