@@ -8,7 +8,6 @@ from geojson import Feature, FeatureCollection
 from ohsome_quality_api.api.request_models import (
     ReportRequest,
 )
-from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_api.reports.base import BaseReport as Report
 from ohsome_quality_api.topics.definitions import get_topic_preset
@@ -23,7 +22,6 @@ async def create_indicator(
     key: str,
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
-    attribute: Attribute | None = None,
     include_figure: bool = True,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
@@ -42,7 +40,7 @@ async def create_indicator(
             "currentness",
         ]:
             validate_area(feature)
-        tasks.append(_create_indicator(key, feature, topic, attribute, include_figure))
+        tasks.append(_create_indicator(key, feature, topic, include_figure))
     return await gather_with_semaphore(tasks)
 
 
@@ -66,7 +64,6 @@ async def _create_indicator(
     key: str,
     feature: Feature,
     topic: Topic,
-    attribute: Attribute | None = None,
     include_figure: bool = True,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -76,10 +73,7 @@ async def _create_indicator(
     logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
-    if key == "attribute-completeness":
-        indicator = indicator_class(topic, feature, attribute)
-    else:
-        indicator = indicator_class(topic, feature)
+    indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()

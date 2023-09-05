@@ -59,7 +59,6 @@ class IndicatorRequest(BaseBpolys):
         title="Topic Key",
         alias="topic",
     )
-    attribute: str | None = None
     include_figure: bool = True
 
 

@@ -101,7 +101,6 @@ pytestmark = pytest.mark.parametrize(
         ("minimal", "minimal"),
         ("mapping-saturation", "building-count"),
         ("currentness", "building-count"),
-        ("attribute-completeness", "building-count"),
     ],
 )
 def test_indicators(
@@ -118,15 +117,7 @@ def test_indicators(
         "bpolys": bpolys,
         "topic": topic,
     }
-    parameters_attribute = {
-        "bpolys": bpolys,
-        "topic": topic,
-        "attribute": "height",
-    }
-    if indicator == "attribute-completeness":
-        response = client.post(endpoint, json=parameters_attribute, headers=headers)
-    else:
-        response = client.post(endpoint, json=parameters, headers=headers)
+    response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
 

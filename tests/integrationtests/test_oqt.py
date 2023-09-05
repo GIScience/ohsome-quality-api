@@ -15,7 +15,6 @@ from tests.integrationtests.utils import oqapi_vcr
         ("minimal", "topic_minimal"),
         ("mapping-saturation", "topic_building_count"),
         ("currentness", "topic_building_count"),
-        ("attribute-completeness", "topic_building_count"),
     ],
 )
 def test_create_indicator_public_feature_collection_single(
@@ -23,21 +22,10 @@ def test_create_indicator_public_feature_collection_single(
     indicator,
     topic,
     request,
-    attribute_key,
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    if indicator == "attribute-completeness":
-        indicators = asyncio.run(
-            oqt.create_indicator(
-                indicator,
-                bpolys,
-                topic,
-                attribute=attribute_key,
-            )
-        )
-    else:
-        indicators = asyncio.run(oqt.create_indicator(indicator, bpolys, topic))
+    indicators = asyncio.run(oqt.create_indicator(indicator, bpolys, topic))
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
@@ -74,25 +62,12 @@ def test_create_indicator_public_feature_collection_multi(
         ("minimal", "topic_minimal"),
         ("mapping-saturation", "topic_building_count"),
         ("currentness", "topic_building_count"),
-        ("attribute-completeness", "topic_building_count"),
     ],
 )
-def test_create_indicator_private_feature(
-    feature, indicator, topic, request, attribute_key
-):
+def test_create_indicator_private_feature(feature, indicator, topic, request):
     """Test private method to create a single indicator for a single feature."""
     topic = request.getfixturevalue(topic)
-    if indicator == "attribute-completeness":
-        indicator = asyncio.run(
-            oqt._create_indicator(
-                indicator,
-                feature,
-                topic,
-                attribute=attribute_key,
-            )
-        )
-    else:
-        indicator = asyncio.run(oqt._create_indicator(indicator, feature, topic))
+    indicator = asyncio.run(oqt._create_indicator(indicator, feature, topic))
     assert indicator.result.label is not None
     assert indicator.result.value is not None
     assert indicator.result.description is not None
