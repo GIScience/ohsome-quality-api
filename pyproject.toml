@@ -6,13 +6,13 @@ authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://quality.ohsome.org"
 repository = "https://github.com/GIScience/ohsome-quality-api"
 keywords = [
-  "osm",
-  "gis",
-  "geography",
-  "metric",
-  "ohsome",
-  "quality",
-  ]
+    "osm",
+    "gis",
+    "geography",
+    "metric",
+    "ohsome",
+    "quality",
+]
 
 [[tool.poetry.source]]
 name = "PyPI"
@@ -25,7 +25,6 @@ priority = "supplemental"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-geojson = "^2.5.0"
 fastapi = "^0.100.0"
 requests = "^2.31.0"
 PyYAML = "^6.0"
@@ -40,7 +39,7 @@ rasterstats = "^0.16.0"
 click = "^8.1.2"
 uvicorn = "^0.20.0"
 schema = "^0.7.5"
-building-completeness-model = {version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models"}
+building-completeness-model = { version = "^0.1.0rc4", source = "gistools-ohsome-machine-learning-models" }
 pyproj = "^3.6.0"
 pydantic = "^2.1.1"
 geojson-pydantic = "^1.0.0"
@@ -63,13 +62,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 select = [
-    "E",    # pycodestyle Error
-    "F",    # Pyflakes
-    "I",    # isort
-    "N",    # pep8-nameing
-    "Q",    # flake8-quotes
-    "W",    # pycodestyle Warning
-    "C90",  # mccabe
+    "E", # pycodestyle Error
+    "F", # Pyflakes
+    "I", # isort
+    "N", # pep8-nameing
+    "Q", # flake8-quotes
+    "W", # pycodestyle Warning
+    "C90", # mccabe
 ]
 
 [tool.ruff.per-file-ignores]

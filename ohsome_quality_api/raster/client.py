@@ -1,5 +1,5 @@
 """A client to raster datasets existing as files on disk."""
-
+import logging
 import os
 
 from geojson_pydantic import Feature, FeatureCollection
@@ -43,12 +43,12 @@ def transform(feature: Feature, raster: RasterDataset):
     if raster.crs == "EPSG:4326":
         return feature
     transformer = Transformer.from_crs("EPSG:4326", raster.crs, always_xy=True)
-    import geojson
 
-    gjson = geojson.utils.map_tuples(
+    gjson = reproject_feature_and_feature_collection(
         lambda coordinates: transformer.transform(coordinates[0], coordinates[1]),
         feature.model_dump(),
     )
+
     if gjson["type"] == "Feature":
         return FeatureWithOptionalProperties(**gjson)
     else:
@@ -61,3 +61,32 @@ def get_raster_path(raster: RasterDataset) -> str:
     if not os.path.exists(path):
         raise RasterDatasetNotFoundError(raster)
     return path
+
+
+def reproject_simple_types(func, obj):
+    """Reproject (Multi)-Polygons to new CRS with passable func."""
+    if obj["type"] == "Polygon":
+        coordinates = [[tuple(func(c)) for c in curve] for curve in obj["coordinates"]]
+    elif obj["type"] == "MultiPolygon":
+        coordinates = [
+            [[tuple(func(c)) for c in curve] for curve in part]
+            for part in obj["coordinates"]
+        ]
+    else:
+        logging.debug("Non Polygon Type detected")
+    return {"type": obj["type"], "coordinates": coordinates}
+
+
+def reproject_feature_and_feature_collection(func, obj):
+    """Reproject Feature(Collection)s to new CRS with passable func."""
+    if obj["type"] == "Feature":
+        obj["geometry"] = (
+            reproject_simple_types(func, obj["geometry"]) if obj["geometry"] else None
+        )
+        return obj
+    elif obj["type"] == "FeatureCollection":
+        feats = [
+            reproject_feature_and_feature_collection(func, feat)
+            for feat in obj["features"]
+        ]
+        return {"type": obj["type"], "features": feats}
