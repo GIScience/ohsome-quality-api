@@ -398,7 +398,8 @@ class TestOhsomeClientValidateQuery(TestCase):
             ]
         }
         assert data == ohsome_client.validate_query_results(
-            data, attribute=self.attribute
+            data,
+            attribute=self.attribute,
         )
 
     def test_valid_ratio_nan(self):
@@ -456,7 +457,9 @@ class TestOhsomeClientValidateQuery(TestCase):
             ]
         }
         assert data == ohsome_client.validate_query_results(
-            data, attribute=self.attribute, group_by_boundary=True
+            data,
+            attribute=self.attribute,
+            group_by_boundary=True,
         )
 
     def test_invalid_empty_ratio_group_by(self):
@@ -468,7 +471,9 @@ class TestOhsomeClientValidateQuery(TestCase):
     def test_invalid_empty_list_ratio_group_by(self):
         with pytest.raises(SchemaError):
             ohsome_client.validate_query_results(
-                {"groupByResult": []}, attribute=self.attribute, group_by_boundary=True
+                {"groupByResult": []},
+                attribute=self.attribute,
+                group_by_boundary=True,
             )
 
     def test_invalid_missing_key_ratio_group_by(self):

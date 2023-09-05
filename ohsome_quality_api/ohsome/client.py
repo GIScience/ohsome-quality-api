@@ -79,8 +79,6 @@ async def _(
         bpolys: Feature for a single bounding (multi)polygon.
             FeatureCollection for "group by boundaries" queries. In this case the
             argument 'group_by' needs to be set to 'True'.
-        ratio: Ratio of OSM elements. The Topic definition needs to have a second
-            filter defined.
         group_by: Group by boundary.
     """
     try:
