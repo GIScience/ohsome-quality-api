@@ -1,5 +1,4 @@
 """A client to raster datasets existing as files on disk."""
-import logging
 import os
 
 from geojson_pydantic import Feature, FeatureCollection
@@ -10,6 +9,7 @@ from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.raster.definitions import RasterDataset
 from ohsome_quality_api.utils.exceptions import RasterDatasetNotFoundError
+from ohsome_quality_api.utils.helper_geo import reproject_feature_and_feature_collection
 
 
 def get_zonal_stats(
@@ -61,32 +61,3 @@ def get_raster_path(raster: RasterDataset) -> str:
     if not os.path.exists(path):
         raise RasterDatasetNotFoundError(raster)
     return path
-
-
-def reproject_simple_types(func, obj):
-    """Reproject (Multi)-Polygons to new CRS with passable func."""
-    if obj["type"] == "Polygon":
-        coordinates = [[tuple(func(c)) for c in curve] for curve in obj["coordinates"]]
-    elif obj["type"] == "MultiPolygon":
-        coordinates = [
-            [[tuple(func(c)) for c in curve] for curve in part]
-            for part in obj["coordinates"]
-        ]
-    else:
-        logging.debug("Non Polygon Type detected")
-    return {"type": obj["type"], "coordinates": coordinates}
-
-
-def reproject_feature_and_feature_collection(func, obj):
-    """Reproject Feature(Collection)s to new CRS with passable func."""
-    if obj["type"] == "Feature":
-        obj["geometry"] = (
-            reproject_simple_types(func, obj["geometry"]) if obj["geometry"] else None
-        )
-        return obj
-    elif obj["type"] == "FeatureCollection":
-        feats = [
-            reproject_feature_and_feature_collection(func, feat)
-            for feat in obj["features"]
-        ]
-        return {"type": obj["type"], "features": feats}

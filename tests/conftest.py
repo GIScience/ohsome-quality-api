@@ -127,6 +127,18 @@ def feature_germany_heidelberg() -> Feature:
 
 
 @pytest.fixture(scope="class")
+def feature_multipolygon_germany_heidelberg() -> Feature:
+    path = os.path.join(
+        FIXTURE_DIR,
+        "feature-multipolygon-germany-heidelberg.geojson",
+    )
+    with open(path, "r") as f:
+        feature = FeatureWithOptionalProperties(**json.load(f))
+        feature.id = "TestFeature"
+        return feature
+
+
+@pytest.fixture(scope="class")
 def feature_collection_germany_heidelberg() -> FeatureCollection:
     # Single Feature
     path = os.path.join(
