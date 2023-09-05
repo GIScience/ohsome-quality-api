@@ -12,7 +12,6 @@ building-count:
   endpoint: elements
   aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
-  ratio_filter: building=* and building!=no and geometry:polygon and height=* or building:levels=*
   indicators:
     - mapping-saturation
     - currentness

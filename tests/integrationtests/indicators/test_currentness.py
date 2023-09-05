@@ -8,6 +8,7 @@ import plotly.io as pio
 import pytest
 
 from ohsome_quality_api.api.request_models import Feature
+from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
     Currentness,
@@ -162,9 +163,11 @@ class TestFigure:
         )
 
     def test_get_threshold_text(self, indicator):
-        assert indicator.get_threshold_text("red") == "older than 8 years"
-        assert indicator.get_threshold_text("yellow") == "between 3 years and 8 years"
-        assert indicator.get_threshold_text("green") == "younger than 3 years"
+        assert indicator.get_threshold_text(Color.RED) == "older than 8 years"
+        assert (
+            indicator.get_threshold_text(Color.YELLOW) == "between 3 years and 8 years"
+        )
+        assert indicator.get_threshold_text(Color.GREEN) == "younger than 3 years"
 
 
 def test_get_last_edited_year():

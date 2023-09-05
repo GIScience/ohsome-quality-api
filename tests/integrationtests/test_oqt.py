@@ -16,7 +16,6 @@ from tests.integrationtests.utils import oqapi_vcr
         ("minimal", "topic_minimal"),
         ("mapping-saturation", "topic_building_count"),
         ("currentness", "topic_building_count"),
-        ("attribute-completeness", "topic_building_count"),
     ],
 )
 def test_create_indicator_public_feature_collection_single(
@@ -66,7 +65,6 @@ def test_create_indicator_public_feature_collection_multi(
         ("minimal", "topic_minimal"),
         ("mapping-saturation", "topic_building_count"),
         ("currentness", "topic_building_count"),
-        ("attribute-completeness", "topic_building_count"),
     ],
 )
 def test_create_indicator_private_feature(

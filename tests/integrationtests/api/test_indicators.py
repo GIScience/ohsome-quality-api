@@ -98,7 +98,6 @@ pytestmark = pytest.mark.parametrize(
         ("minimal", "minimal"),
         ("mapping-saturation", "building-count"),
         ("currentness", "building-count"),
-        ("attribute-completeness", "building-count"),
     ],
 )
 def test_indicators(

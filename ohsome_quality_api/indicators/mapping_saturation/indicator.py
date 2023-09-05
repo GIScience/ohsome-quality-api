@@ -7,6 +7,7 @@ from dateutil.parser import isoparse
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
 from ohsome_quality_api.api.request_models import Feature
+from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.ohsome import client as ohsome_client
@@ -156,6 +157,7 @@ class MappingSaturation(BaseIndicator):
                 x=self.timestamps,
                 y=self.values,
                 name="OSM data",
+                line=dict(color=Color.BLUE.value),
             ),
         )
         fig.add_trace(
@@ -163,6 +165,7 @@ class MappingSaturation(BaseIndicator):
                 x=self.timestamps,
                 y=self.best_fit.fitted_values.tolist(),
                 name="Modelled saturation curve",
+                line=dict(color=Color.RED.value),
             ),
         )
         fig.update_layout(title_text="Mapping Saturation")
@@ -184,7 +187,7 @@ class MappingSaturation(BaseIndicator):
                 x1=max(self.timestamps),
                 y0=asymptote,
                 y1=asymptote,
-                line=dict(color="red", width=2, dash="dash"),
+                line=dict(color=Color.RED.value, width=2, dash="dash"),
                 name="Estimated total data",
                 showlegend=True,
             )

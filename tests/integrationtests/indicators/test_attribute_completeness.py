@@ -16,11 +16,16 @@ from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 class TestPreprocess:
     @oqapi_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+    def test_preprocess(
+        self, topic_building_count, feature_germany_heidelberg, attribute_key
+    ):
         indicator = AttributeCompleteness(
-            topic_building_count, feature_germany_heidelberg
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_key,
         )
         asyncio.run(indicator.preprocess())
+        assert indicator.result.value is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -28,26 +33,36 @@ class TestPreprocess:
 class TestCalculation:
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
+    def indicator(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_key,
+    ):
+        i = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_key,
+        )
         asyncio.run(i.preprocess())
         i.calculate()
         return i
 
     def test_calculate(self, indicator):
+        assert indicator.result.value is not None
         assert indicator.result.value >= 0.0
-        assert indicator.result.label in ["green", "yellow", "red", "undefined"]
+        assert indicator.result.label != "red"
         assert indicator.result.description is not None
-
-        assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @oqapi_vcr.use_cassette()
-    def test_no_features(self):
+    def test_no_features(self, attribute):
         """Test area with no features"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
-            "../fixtures",
+            "..",
+            "fixtures",
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
@@ -56,9 +71,10 @@ class TestCalculation:
         indicator = AttributeCompleteness(
             topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
+            attribute_key="leaf_type",
         )
         asyncio.run(indicator.preprocess())
-        assert indicator.count_all == 0
+        assert indicator.absolute_value_1 == 0
 
         indicator.calculate()
         assert indicator.result.label == "undefined"
@@ -68,13 +84,23 @@ class TestCalculation:
 class TestFigure:
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = AttributeCompleteness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
+    def indicator(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_key,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_key,
+        )
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+        return indicator
 
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    # comment out for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)

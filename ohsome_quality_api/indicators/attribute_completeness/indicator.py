@@ -1,47 +1,70 @@
-import logging
+from math import pi
 from string import Template
 
 import dateutil.parser
-import plotly.graph_objs as go
+import numpy as np
+import plotly.graph_objects as go
 
 from ohsome_quality_api.api.request_models import Feature
+from ohsome_quality_api.attributes.definitions import get_attribute
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 
 class AttributeCompleteness(BaseIndicator):
-    def __init__(self, topic: Topic, feature: Feature) -> None:
+    """
+    Attribute completeness of map features.
+
+    The ratio of features of a given topic to features of the same topic with additional
+    (expected) attributes.
+
+    Terminology:
+        topic: Category of map features. Translates to a ohsome filter.
+        attribute: Additional (expected) tag(s) describing a map feature. Translates to
+            a ohsome filter.
+
+    Example: How many buildings (topic) have height information (attribute)?
+
+    Premise: Every map feature of a given topic should have certain additional
+        attributes.
+    """
+
+    # TODO make attribute a list
+    def __init__(self, topic: Topic, feature: Feature, attribute_key: str) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.count_all = None
-        self.count_match = None
+        self.attribute_key = attribute_key
+        self.absolute_value_1 = None
+        self.absolute_value_2 = None
 
     async def preprocess(self) -> None:
-        query_results_count = await ohsome_client.query(
+        attribute = get_attribute(self.topic.key, self.attribute_key)
+        # Get attribute filter
+        response = await ohsome_client.query(
             self.topic,
             self.feature,
-            ratio=True,
+            attribute=attribute,
         )
-        self.result.value = query_results_count["ratioResult"][0]["ratio"]
-        self.count_all = query_results_count["ratioResult"][0]["value"]
-        self.count_match = query_results_count["ratioResult"][0]["value2"]
-        timestamp = query_results_count["ratioResult"][0]["timestamp"]
+        timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+        self.result.value = response["ratioResult"][0]["ratio"]
+        self.absolute_value_1 = response["ratioResult"][0]["value"]
+        self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
-        # self.result.value (ratio) can be of type float, NaN if no features of filter1
-        # are in the region or None if the topic has no filter2
-        if self.result.value == "NaN" or self.result.value is None:
+        # result (ratio) can be NaN if no features matching filter1
+        if self.result.value == "NaN":
             self.result.value = None
+        if self.result.value is None:
             return
         description = Template(self.metadata.result_description).substitute(
             result=round(self.result.value, 1),
-            all=round(self.count_all, 1),
-            matched=round(self.count_match, 1),
+            all=round(self.absolute_value_1, 1),
+            matched=round(self.absolute_value_2, 1),
         )
-        if self.count_all == 0:
+        if self.absolute_value_1 == 0:
             self.result.description = description + "No features in this region"
             return
 
@@ -62,62 +85,89 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     def create_figure(self) -> None:
-        """Create a nested pie chart.
+        """Create a gauge chart.
 
-        Slices are ordered and plotted counter-clockwise.
+        The gauge chart shows the percentage of features having the requested
+        attribute(s).
         """
-        if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
-            return
 
-        fig = go.Figure()
+        def rotate(ratio, offset=(0, 0)):
+            theta = ratio * pi
+            c, s = np.cos(theta), np.sin(theta)
+            r = np.array(((c, -s), (s, c)))
+            return np.matmul(r.T, (-1, 0)) + offset
 
-        # Plot inner Pie (Indicator Value)
-        if type(self.result.value) == str:
-            values = [1]
-            labels = [""]
-            marker_colors = ["white"]
-        else:
-            values = [self.result.value, 1 - self.result.value]
-            labels = [
-                f"{self.topic.name} <br> Ratio: {round(self.result.value, 2)}",
-                "",
-            ]
-            marker_colors = ["black", "white"]
-
-        fig.add_trace(
-            go.Pie(
-                values=values,
-                labels=labels,
-                sort=False,
-                marker_colors=marker_colors,
-                textinfo="none",
-            )
-        )
-
-        # Plot outer Pie (Traffic Light)
-        fig.add_trace(
-            go.Pie(
-                values=[0.25, 0.25, 0.50],
-                labels=["Bad", "Good", "Medium"],
-                marker_colors=["red", "green", "yellow"],
-                hole=0.5,
-                sort=False,
-                textinfo="none",
+        fig = go.Figure(
+            go.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                mode="gauge",
+                title={"text": "Attribute Completeness", "font": {"size": 40}},
+                type="indicator",
+                gauge={
+                    "axis": {
+                        "range": [None, 100],
+                        "tickwidth": 1,
+                        "tickcolor": "darkblue",
+                        "ticksuffix": "%",
+                        "tickfont": dict(color="black", size=20),
+                    },
+                    "bar": {"color": "rgba(0,0,0,0)"},
+                    "steps": [
+                        {"range": [0, self.threshold_red * 100], "color": "tomato"},
+                        {
+                            "range": [
+                                self.threshold_red * 100,
+                                self.threshold_yellow * 100,
+                            ],
+                            "color": "gold",
+                        },
+                        {
+                            "range": [self.threshold_yellow * 100, 100],
+                            "color": "darkseagreen",
+                        },
+                    ],
+                },
             )
         )
 
         fig.update_layout(
-            title={
-                "text": "Ratio between all features and filtered ones",
-                "y": 0.95,
-                "x": 0.5,
-                "yanchor": "top",
-            },
-            legend={
-                "y": 0.5,
-                "x": 0.75,
-            },
+            font={"color": "black", "family": "Arial"},
+            xaxis={"showgrid": False, "range": [-1, 1]},
+            yaxis={"showgrid": False, "range": [0, 1]},
+            plot_bgcolor="rgba(0,0,0,0)",
+            autosize=True,
+        )
+
+        fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
+
+        base = [0, 0]
+        # TODO: test if we can remove the base stuff
+        fig.add_annotation(
+            ax=base[0],
+            ay=base[1],
+            axref="x",
+            ayref="y",
+            x=rotate(ratio=self.result.value)[0],
+            y=rotate(ratio=self.result.value)[1],
+            xref="x",
+            yref="y",
+            showarrow=True,
+            arrowhead=0,
+            arrowsize=1,
+            arrowwidth=4,
+        )
+
+        fig.add_annotation(
+            text=f"{self.result.value * 100:.1f}%",
+            align="center",
+            font=dict(color="black", size=35),
+            showarrow=False,
+            xref="paper",
+            yref="paper",
+            x=0.5,
+            y=-0.2,
+            borderwidth=0,
         )
 
         raw = fig.to_dict()

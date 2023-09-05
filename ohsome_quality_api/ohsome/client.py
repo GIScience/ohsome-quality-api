@@ -8,6 +8,7 @@ from dateutil.parser import isoparse
 from schema import Or, Schema, SchemaError, Use
 
 from ohsome_quality_api.api.request_models import Feature, FeatureCollection
+from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
@@ -27,7 +28,7 @@ async def _(
     topic: TopicDefinition,
     bpolys: Feature | FeatureCollection,
     time: str | None = None,
-    ratio: bool | None = False,
+    attribute: Attribute | None = None,
     group_by_boundary: bool | None = False,
     count_latest_contributions: bool | None = False,
     contribution_type: str | None = None,
@@ -48,17 +49,17 @@ async def _(
         contribution_type: filters contributions by contribution type: ‘creation’,
             ‘deletion’, ‘tagChange’, ‘geometryChange’ or a combination of them.
     """
-    url = build_url(topic, ratio, group_by_boundary, count_latest_contributions)
-    data = build_data_dict(topic, bpolys, time, ratio, contribution_type)
+    url = build_url(topic, attribute, group_by_boundary, count_latest_contributions)
+    data = build_data_dict(topic, bpolys, time, attribute, contribution_type)
     response = await query_ohsome_api(url, data)
-    return validate_query_results(response, ratio, group_by_boundary)
+    return validate_query_results(response, attribute, group_by_boundary)
 
 
 @query.register
 async def _(
     topic: TopicData,
     bpolys: Feature | FeatureCollection,
-    ratio: bool | None = False,
+    attribute: Attribute | None = False,
     group_by_boundary: bool | None = False,
     **_kargs,
 ) -> dict:
@@ -72,12 +73,10 @@ async def _(
         bpolys: Feature for a single bounding (multi)polygon.
             FeatureCollection for "group by boundaries" queries. In this case the
             argument 'group_by' needs to be set to 'True'.
-        ratio: Ratio of OSM elements. The Topic definition needs to have a second
-            filter defined.
         group_by: Group by boundary.
     """
     try:
-        return validate_query_results(topic.data, ratio, group_by_boundary)
+        return validate_query_results(topic.data, attribute, group_by_boundary)
     except SchemaError as error:
         raise TopicDataSchemaError(
             "Invalid Topic data input to the Mapping Saturation Indicator.",
@@ -131,7 +130,7 @@ async def get_latest_ohsome_timestamp() -> datetime.datetime:
 
 def build_url(
     topic: Topic,
-    ratio: bool = False,
+    attribute: Attribute = None,
     group_by_boundary: bool = False,
     count_latest_contributions: bool = False,
 ):
@@ -139,7 +138,7 @@ def build_url(
     if count_latest_contributions:
         return base_url + "/contributions/latest/count"
     url = base_url + "/" + topic.endpoint + "/" + topic.aggregation_type
-    if ratio:
+    if attribute:
         url += "/ratio"
     if group_by_boundary:
         url += "/groupBy/boundary"
@@ -150,7 +149,7 @@ def build_data_dict(
     topic: Topic,
     bpolys: Feature | FeatureCollection,
     time: str | None = None,
-    ratio: bool | None = False,
+    attribute: Attribute | None = False,
     contribution_type: str | None = None,
 ) -> dict:
     """Build data dictionary for ohsome API query.
@@ -170,8 +169,8 @@ def build_data_dict(
         raise TypeError("Parameter 'bpolys' does not have expected type.")
     if time is not None:
         data["time"] = time
-    if ratio:
-        data["filter2"] = topic.ratio_filter
+    if attribute:
+        data["filter2"] = topic.filter + " and " + attribute.filter
     if contribution_type is not None:
         data["contributionType"] = contribution_type
     return data
@@ -179,7 +178,7 @@ def build_data_dict(
 
 def validate_query_results(
     response: dict,
-    ratio: bool = False,
+    attribute: Attribute = None,
     group_by_boundary: bool = False,
 ) -> dict:
     """Validate query results.
@@ -198,7 +197,7 @@ def validate_query_results(
             }
         ]
     }
-    if ratio:
+    if attribute:
         schema = {
             "ratioResult": [
                 {
