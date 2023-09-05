@@ -19,6 +19,7 @@ from dateutil.parser import isoparse
 from geojson import Feature
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -175,7 +176,7 @@ class Currentness(BaseIndicator):
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         for bucket, color in zip(
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
-            ("green", "yellow", "red"),
+            (Color.GREEN, Color.YELLOW, Color.RED),
         ):
             customdata = list(
                 zip(
@@ -200,7 +201,7 @@ class Currentness(BaseIndicator):
                     ),
                     x=bucket.timestamps,
                     y=bucket.contrib_rel,
-                    marker_color=color,
+                    marker_color=color.value,
                     customdata=customdata,
                     hovertemplate=hovertemplate,
                 )
@@ -212,7 +213,7 @@ class Currentness(BaseIndicator):
                     name=None,
                     x=bucket.timestamps,
                     y=bucket.contrib_abs,
-                    marker_color=color,
+                    marker_color=color.value,
                     showlegend=False,
                     hovertemplate=None,
                     hoverinfo="skip",
@@ -264,16 +265,18 @@ class Currentness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def get_threshold_text(self, color: str) -> str:
+    def get_threshold_text(self, color: Color) -> str:
         up_to_date_str = month_to_year_month(self.up_to_date)
         out_of_date_str = month_to_year_month(self.out_of_date)
         match color:
-            case "green":
+            case color.GREEN:
                 return f"younger than {up_to_date_str}"
-            case "yellow":
+            case color.YELLOW:
                 return f"between {up_to_date_str} and {out_of_date_str}"
-            case "red":
+            case color.RED:
                 return f"older than {out_of_date_str}"
+            case _:
+                raise ValueError()
 
     def get_source_text(self) -> str:
         if self.th_source != "":
