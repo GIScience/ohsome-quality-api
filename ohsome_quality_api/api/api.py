@@ -287,7 +287,6 @@ async def post_indicator(
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,
-        attribute=parameters.attribute,
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
