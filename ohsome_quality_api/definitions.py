@@ -1,6 +1,7 @@
 """Global Variables and Functions."""
 import glob
 import logging
+from enum import Enum
 from types import MappingProxyType
 from typing import Iterable, Literal
 
@@ -25,6 +26,24 @@ ATTRIBUTION_TEXTS = MappingProxyType(
 ATTRIBUTION_URL = (
     "https://github.com/GIScience/ohsome-quality-api/blob/main/COPYRIGHTS.md"
 )
+
+
+# default colors of the Sematic UI CSS Framework
+# used by the ohsome dashboard
+class Color(Enum):
+    RED = "#DB2828"
+    ORANGE = "#F2711C"
+    YELLOW = "#FBBD08"
+    OLIVE = "#B5CC18"
+    GREEN = "#21BA45"
+    TEAL = "#00B5AD"
+    BLUE = "#2185D0"
+    VIOLET = "#6435C9"
+    PURPLE = "#A333C8"
+    PINK = "#E03997"
+    BROWN = "#A5673F"
+    GREY = "#767676"
+    BLACK = "#1B1C1D"
 
 
 def load_metadata(
