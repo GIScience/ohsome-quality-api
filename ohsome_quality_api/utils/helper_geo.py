@@ -23,7 +23,7 @@ def calculate_area(feature: Feature) -> float:
     return area
 
 
-def reproject_simple_types(func, obj):
+def reproject_polygon_or_multi_polygon(func, obj):
     """Reproject (Multi)-Polygons to new CRS with passable func."""
     if obj["type"] == "Polygon":
         coordinates = [[tuple(func(c)) for c in curve] for curve in obj["coordinates"]]
@@ -37,16 +37,18 @@ def reproject_simple_types(func, obj):
     return {"type": obj["type"], "coordinates": coordinates}
 
 
-def reproject_feature_and_feature_collection(func, obj):
+def reproject_feature_or_feature_collection(func, obj):
     """Reproject Feature(Collection)s to new CRS with passable func."""
     if obj["type"] == "Feature":
         obj["geometry"] = (
-            reproject_simple_types(func, obj["geometry"]) if obj["geometry"] else None
+            reproject_polygon_or_multi_polygon(func, obj["geometry"])
+            if obj["geometry"]
+            else None
         )
         return obj
     elif obj["type"] == "FeatureCollection":
         feats = [
-            reproject_feature_and_feature_collection(func, feat)
+            reproject_feature_or_feature_collection(func, feat)
             for feat in obj["features"]
         ]
         return {"type": obj["type"], "features": feats}

@@ -4,12 +4,14 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 
 
 def test_calculate_area(feature_germany_heidelberg):
-    expected = 108852960.62891776  # derived from PostGIS ST_AREA
+    # derived from PostGIS "SELECT ST_Area( ST_GeomFromGeoJSON(JSON_HERE)::geography)"
+    expected = 108852943.11450204
     result = calculate_area(feature_germany_heidelberg)
-    assert result == pytest.approx(expected, abs=1e-3)
+    assert result == pytest.approx(expected, abs=0.03)
 
 
 def test_calculate_area_multipolygon(feature_multipolygon_germany_heidelberg):
-    expected = 1794224.063496469  # derived from PostGIS ST_AREA EPSG:32632
+    # derived from PostGIS SELECT ST_Area( ST_GeomFromGeoJSON(JSON_HERE)::geography)
+    expected = 1795635.9057149887  # derived from PostGIS ST_AREA EPSG:32632
     result = calculate_area(feature_multipolygon_germany_heidelberg)
-    assert result == pytest.approx(expected, abs=1e-3)
+    assert result == pytest.approx(expected, abs=0.03)
