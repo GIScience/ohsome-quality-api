@@ -5,7 +5,7 @@ import unittest
 from unittest import mock
 
 import ohsome_quality_api.raster.client as raster_client
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.raster.definitions import get_raster_dataset
 from ohsome_quality_api.utils.exceptions import RasterDatasetNotFoundError
 
@@ -18,7 +18,7 @@ class TestRaster(unittest.TestCase):
             "fixtures/heidelberg-altstadt-feature.geojson",
         )
         with open(path, "r") as f:
-            self.feature = FeatureWithOptionalProperties(**json.load(f))
+            self.feature = Feature(**json.load(f))
 
     def test_get_raster_path(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -86,7 +86,7 @@ class TestRaster(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_transform_different_crs(self):
-        expected = FeatureWithOptionalProperties(
+        expected = Feature(
             **{
                 "bbox": None,
                 "type": "Feature",

@@ -3,9 +3,8 @@ import logging
 import os
 
 import pytest
-from geojson_pydantic import Feature, FeatureCollection
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.definitions import (
     get_metadata,
     load_metadata,
@@ -121,7 +120,7 @@ def feature_germany_heidelberg() -> Feature:
         "feature-germany-heidelberg.geojson",
     )
     with open(path, "r") as f:
-        feature = FeatureWithOptionalProperties(**json.load(f))
+        feature = Feature(**json.load(f))
         feature.id = "TestFeature"
         return feature
 
@@ -133,7 +132,7 @@ def feature_multipolygon_germany_heidelberg() -> Feature:
         "feature-multipolygon-germany-heidelberg.geojson",
     )
     with open(path, "r") as f:
-        feature = FeatureWithOptionalProperties(**json.load(f))
+        feature = Feature(**json.load(f))
         feature.id = "TestFeature"
         return feature
 
@@ -147,7 +146,7 @@ def feature_collection_germany_heidelberg() -> FeatureCollection:
     )
     with open(path, "r") as f:
         g = json.load(f)
-        return FeatureCollection[FeatureWithOptionalProperties](**g)
+        return FeatureCollection[Feature](**g)
 
 
 @pytest.fixture(scope="class")
@@ -158,7 +157,7 @@ def feature_collection_heidelberg_bahnstadt_bergheim_weststadt() -> FeatureColle
         "feature-collection-heidelberg-bahnstadt-bergheim-weststadt.geojson",
     )
     with open(path, "r") as f:
-        return FeatureCollection[FeatureWithOptionalProperties](**json.load(f))
+        return FeatureCollection[Feature](**json.load(f))
 
 
 @pytest.fixture

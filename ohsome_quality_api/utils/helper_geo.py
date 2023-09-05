@@ -1,7 +1,8 @@
 import logging
 
-from geojson_pydantic import Feature
 from pyproj import Geod
+
+from ohsome_quality_api.api.request_models import Feature
 
 
 def calculate_area(feature: Feature) -> float:

@@ -5,9 +5,8 @@ from abc import ABCMeta, abstractmethod
 from typing import NamedTuple
 
 import numpy as np
-from geojson_pydantic import Feature
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.reports.models import ReportMetadata, Result
@@ -42,11 +41,11 @@ class BaseReport(metaclass=ABCMeta):
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        result = self.result.dict(by_alias=True)  # only attributes, no properties
+        result = self.result.model_dump(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         properties = {
             "report": {
-                "metadata": self.metadata.dict(),
+                "metadata": self.metadata.model_dump(),
                 "result": result,
             },
             "indicators": [],
@@ -56,14 +55,14 @@ class BaseReport(metaclass=ABCMeta):
         for i, indicator in enumerate(self.indicators):
             properties["indicators"].append(indicator.as_feature().properties)
         if self.feature.id is not None:
-            return FeatureWithOptionalProperties(
+            return Feature(
                 type="Feature",
                 id=self.feature.id,
                 geometry=self.feature.geometry,
                 properties=properties,
             )
         else:
-            return FeatureWithOptionalProperties(
+            return Feature(
                 type="Feature",
                 geometry=self.feature.geometry,
                 properties=properties,

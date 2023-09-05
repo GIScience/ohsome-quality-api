@@ -5,10 +5,9 @@ https://fastapi.tiangolo.com/tutorial/testing/
 import unittest
 
 from fastapi.testclient import TestClient
-from geojson_pydantic import FeatureCollection
 
 from ohsome_quality_api.api.api import app
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
@@ -37,7 +36,7 @@ class TestApiReportIo(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
 
-        feature_collection = FeatureCollection[FeatureWithOptionalProperties](
+        feature_collection = FeatureCollection[Feature](
             **response.content
         )  # Valid GeoJSON?
         self.assertTrue(self.general_schema.is_valid(feature_collection))
@@ -53,7 +52,7 @@ class TestApiReportIo(unittest.TestCase):
         response = self.post_response(self.featurecollection.model_dump())
         self.assertEqual(response.status_code, 200)
 
-        FeatureCollection[FeatureWithOptionalProperties](**response.json())
+        FeatureCollection[Feature](**response.json())
 
         response_content = response.json()
         self.assertTrue(self.general_schema.is_valid(response_content))

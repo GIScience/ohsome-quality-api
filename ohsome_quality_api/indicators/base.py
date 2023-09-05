@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -16,13 +16,13 @@ class BaseIndicator(metaclass=ABCMeta):
     def __init__(
         self,
         topic: Topic,
-        feature: FeatureWithOptionalProperties,
+        feature: Feature,
     ) -> None:
         self.metadata: IndicatorMetadata = get_metadata(
             "indicators", type(self).__name__
         )
         self.topic: Topic = topic
-        self.feature: FeatureWithOptionalProperties = feature
+        self.feature: Feature = feature
         self.result: Result = Result(
             description=self.metadata.label_description["undefined"],
         )
@@ -50,7 +50,7 @@ class BaseIndicator(metaclass=ABCMeta):
             raw_dict["id"] = self.feature.id
         return raw_dict
 
-    def as_feature(self, exclude_label=False) -> FeatureWithOptionalProperties:
+    def as_feature(self, exclude_label=False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
@@ -58,7 +58,7 @@ class BaseIndicator(metaclass=ABCMeta):
         """
         properties = self.as_dict(exclude_label)
 
-        return FeatureWithOptionalProperties(
+        return Feature(
             type="Feature",
             id=self.feature.id,
             geometry=self.feature.geometry,

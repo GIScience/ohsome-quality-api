@@ -16,9 +16,9 @@ from string import Template
 import plotly.graph_objects as pgo
 import yaml
 from dateutil.parser import isoparse
-from geojson_pydantic import Feature
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic

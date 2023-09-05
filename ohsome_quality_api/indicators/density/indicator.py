@@ -5,7 +5,7 @@ import dateutil.parser
 import numpy as np
 import plotly.graph_objects as go
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -16,7 +16,7 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 
 
 class Density(BaseIndicator):
-    def __init__(self, topic: Topic, feature: FeatureWithOptionalProperties) -> None:
+    def __init__(self, topic: Topic, feature: Feature) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 30
         self.threshold_red = 10

@@ -5,10 +5,9 @@ from json import JSONDecodeError
 
 import httpx
 from dateutil.parser import isoparse
-from geojson_pydantic import FeatureCollection
 from schema import Or, Schema, SchemaError, Use
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
@@ -26,7 +25,7 @@ async def query(topic) -> dict:
 @query.register
 async def _(
     topic: TopicDefinition,
-    bpolys: FeatureWithOptionalProperties | FeatureCollection,
+    bpolys: Feature | FeatureCollection,
     time: str | None = None,
     ratio: bool | None = False,
     group_by_boundary: bool | None = False,
@@ -58,7 +57,7 @@ async def _(
 @query.register
 async def _(
     topic: TopicData,
-    bpolys: FeatureWithOptionalProperties | FeatureCollection,
+    bpolys: Feature | FeatureCollection,
     ratio: bool | None = False,
     group_by_boundary: bool | None = False,
     **_kargs,
@@ -149,7 +148,7 @@ def build_url(
 
 def build_data_dict(
     topic: Topic,
-    bpolys: FeatureWithOptionalProperties | FeatureCollection,
+    bpolys: Feature | FeatureCollection,
     time: str | None = None,
     ratio: bool | None = False,
     contribution_type: str | None = None,
@@ -160,8 +159,8 @@ def build_data_dict(
         TypeError: If 'bpolys' is not of type Feature or FeatureCollection.
     """
     data = {"filter": topic.filter}
-    if isinstance(bpolys, FeatureWithOptionalProperties):
-        data["bpolys"] = FeatureCollection[FeatureWithOptionalProperties](
+    if isinstance(bpolys, Feature):
+        data["bpolys"] = FeatureCollection[Feature](
             type="FeatureCollection",
             features=[bpolys],
         ).model_dump_json(exclude_none=True)

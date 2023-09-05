@@ -1,10 +1,10 @@
 import pytest
-from geojson_pydantic import FeatureCollection
 from pydantic import ValidationError
 
 from ohsome_quality_api.api.request_models import (
     BaseBpolys,
-    FeatureWithOptionalProperties,
+    Feature,
+    FeatureCollection,
     IndicatorRequest,
 )
 from ohsome_quality_api.utils.exceptions import (
@@ -27,7 +27,7 @@ def test_bpolys_valid(
 
 def test_bpolys_invalid(feature_collection_invalid):
     with pytest.raises((GeoJSONError, ValidationError)):
-        FeatureCollection[FeatureWithOptionalProperties](**feature_collection_invalid)
+        FeatureCollection[Feature](**feature_collection_invalid)
 
 
 def test_bpolys_unsupported_object_type_feature(feature_germany_heidelberg):

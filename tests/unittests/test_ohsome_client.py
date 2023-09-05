@@ -5,10 +5,9 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 import httpx
-from geojson_pydantic import FeatureCollection
 from schema import Schema
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.exceptions import (
@@ -247,7 +246,7 @@ class TestOhsomeClientBuildData(TestCase):
                 "filter": str,
             }
         )
-        bpolys = FeatureCollection[FeatureWithOptionalProperties](
+        bpolys = FeatureCollection[Feature](
             type="FeatureCollection", features=[self.bpolys]
         )
         data = ohsome_client.build_data_dict(self.topic, bpolys)

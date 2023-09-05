@@ -4,9 +4,9 @@ from string import Template
 import numpy as np
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
-from geojson_pydantic import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.ohsome import client as ohsome_client

@@ -3,9 +3,9 @@
 import logging
 from typing import Coroutine
 
-from geojson_pydantic import Feature, FeatureCollection
-
 from ohsome_quality_api.api.request_models import (
+    Feature,
+    FeatureCollection,
     ReportRequest,
 )
 from ohsome_quality_api.indicators.base import BaseIndicator as Indicator

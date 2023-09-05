@@ -5,7 +5,7 @@ import pytest
 from geojson_pydantic import Polygon
 
 import ohsome_quality_api.geodatabase.client as db_client
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 
@@ -61,9 +61,7 @@ def test_get_shdi_multiple_intersections():
             ]
         ],
     )
-    result = asyncio.run(
-        db_client.get_shdi(FeatureWithOptionalProperties(geometry=geom))
-    )
+    result = asyncio.run(db_client.get_shdi(Feature(geometry=geom)))
     assert isinstance(result[0]["shdi"], float)
     assert result[0]["shdi"] <= 1.0
 

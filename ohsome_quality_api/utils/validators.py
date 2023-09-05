@@ -1,5 +1,4 @@
-from geojson_pydantic import Feature
-
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.utils.exceptions import (

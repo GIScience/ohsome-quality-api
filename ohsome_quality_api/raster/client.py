@@ -1,15 +1,14 @@
 """A client to raster datasets existing as files on disk."""
 import os
 
-from geojson_pydantic import Feature, FeatureCollection
 from pyproj import Transformer
 from rasterstats import zonal_stats
 
-from ohsome_quality_api.api.request_models import FeatureWithOptionalProperties
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.raster.definitions import RasterDataset
 from ohsome_quality_api.utils.exceptions import RasterDatasetNotFoundError
-from ohsome_quality_api.utils.helper_geo import reproject_feature_and_feature_collection
+from ohsome_quality_api.utils.helper_geo import reproject_feature_or_feature_collection
 
 
 def get_zonal_stats(
@@ -44,15 +43,15 @@ def transform(feature: Feature, raster: RasterDataset):
         return feature
     transformer = Transformer.from_crs("EPSG:4326", raster.crs, always_xy=True)
 
-    gjson = reproject_feature_and_feature_collection(
+    gjson = reproject_feature_or_feature_collection(
         lambda coordinates: transformer.transform(coordinates[0], coordinates[1]),
         feature.model_dump(),
     )
 
     if gjson["type"] == "Feature":
-        return FeatureWithOptionalProperties(**gjson)
+        return Feature(**gjson)
     else:
-        return FeatureCollection[FeatureWithOptionalProperties](**gjson)
+        return FeatureCollection[Feature](**gjson)
 
 
 def get_raster_path(raster: RasterDataset) -> str:

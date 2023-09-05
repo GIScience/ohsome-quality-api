@@ -13,7 +13,6 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import JSONResponse
-from geojson import FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -25,6 +24,7 @@ from ohsome_quality_api import (
     oqt,
 )
 from ohsome_quality_api.api.request_models import (
+    FeatureCollection,
     IndicatorDataRequest,
     IndicatorRequest,
     ReportRequest,
@@ -247,7 +247,8 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
         include_figure=parameters.include_figure,
     )
     geojson_object = FeatureCollection(
-        features=[i.as_feature(parameters.include_data) for i in indicators]
+        type="FeatureCollection",
+        features=[i.as_feature(parameters.include_data) for i in indicators],
     )
     response = empty_api_response()
     response["attribution"]["text"] = get_class_from_key(
