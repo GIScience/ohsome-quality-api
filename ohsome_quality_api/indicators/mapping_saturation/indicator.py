@@ -33,6 +33,9 @@ class MappingSaturation(BaseIndicator):
     - Barrington-Leigh C and Millard-Ball A (2017): The world’s user-generated road map
         is more than 80% complete
         (https://doi.org/10.1371/journal.pone.0180698 pmid:28797037)
+    - Josephine Brückner, Moritz Schott, Alexander Zipf, and Sven Lautenbach (2021):
+        Assessing shop completeness in OpenStreetMap for two federal states in Germany
+        /https://doi.org/10.5194/agile-giss-2-20-2021)
     """
 
     def __init__(
