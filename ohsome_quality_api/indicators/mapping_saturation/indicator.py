@@ -20,9 +20,11 @@ class MappingSaturation(BaseIndicator):
     Calculate the saturation within the last 3 years.
     Time period is one month since 2008.
 
-    Premise: Each aggregation of features (e.g. length of roads or count of building)
+    Premise: Each aggregation of features (e.g. length of roads or count of buildings)
     has a maximum. After increased mapping activity saturation is reached near this
-    maximum.
+    maximum. In other words: Over time number of objects added to OSM decreases as the
+    number of mapped objects converges against the true number of objects.
+
 
     Different statistical models are used to find out if saturation is reached.
 
