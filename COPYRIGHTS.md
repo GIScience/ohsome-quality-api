@@ -40,7 +40,17 @@ Please have a look at the API response field `attribution` to figure out which o
 - Citation: `Elvidge, C.D, Zhizhin, M., Ghosh T., Hsu FC, Taneja J. Annual time series of global VIIRS nighttime lights derived from monthly averages:2012 to 2019. Remote Sensing 2021, 13(5), p.922, doi:10.3390/rs13050922`
 
 
-## Global Data Lab - Human Development Indices (5.0) 
+## Global Data Lab - Human Development Indices (5.0)
 
 - Source: https://globaldatalab.org/shdi/
 - Attribution and use conditions: The development indicators available at the GDL Website can be freely downloaded and used by any interested person or party, provided that the Global Data Lab is mentioned as the source of the indicators and a link to the GDL Website is shown. 
+
+
+## European Building stock Characteristics (EUBUCCO)
+
+-Source: https://eubucco.com/
+- Attribution and use condition: 
+    - ODbL: Default (95+%)
+    - CC-BY-SA: Prague
+    - CC-BY-NC: Abruzzo
+- Citation: `Milojevic-Dupont, Nikola, Wagner, Felix, Hu, Jiawei, Zumwald, Marius, Nachtigall, Florian, Biljecki, Filip, Heeren, Niko, Kaack, Lynn, Pichler, Peter-Paul, & Creutzig, Felix. (2022). EUBUCCO (v0.1) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7225259`

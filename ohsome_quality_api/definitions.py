@@ -20,6 +20,7 @@ ATTRIBUTION_TEXTS = MappingProxyType(
         "OSM": "© OpenStreetMap contributors",
         "GHSL": "© European Union, 1995-2022, Global Human Settlement Topic Data",
         "VNL": "Earth Observation Group Nighttime Light Data",
+        "EUBUCCO": "European Building stock Characteristics",
     }
 )
 
