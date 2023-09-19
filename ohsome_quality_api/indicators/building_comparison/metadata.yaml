@@ -1,0 +1,19 @@
+---
+building-comparison:
+  name: Building Comparison
+  projects:
+    - experimental
+  quality_dimension: completeness
+  description: >-
+    TODO
+  label_description:
+    red: >-
+      TODO
+    yellow: >-
+      TODO
+    green: >-
+      TODO
+    undefined: >-
+      TODO
+  result_description: >-
+    TODO

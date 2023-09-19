@@ -57,6 +57,11 @@ def topic_building_count(topic_key_building_count) -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
+def topic_building_area() -> TopicDefinition:
+    return get_topic_preset("building-area")
+
+
+@pytest.fixture(scope="class")
 def metadata_topic_building_count(
     topic_key_building_count,
     topic_building_count,

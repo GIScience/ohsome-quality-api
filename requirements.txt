@@ -1,0 +1,5 @@
+adlfs==2023.8.0
+dask-geopandas==0.3.1
+deltalake==0.10.2
+planetary_computer==1.0.0
+mercantile==1.2.1
