@@ -274,6 +274,32 @@ forests:
   projects:
     - core
 
+industrial-landuse-count:
+  name: Industrial Landuse (count)
+  description: Industrial landsites
+  endpoint: elements
+  aggregation_type: count
+  filter: landuse=industrial and type:way
+  source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - experimental
+
+industrial-landuse-area:
+  name: Industrial Landuse (area)
+  description: Industrial areas
+  endpoint: elements
+  aggregation_type: area
+  filter: landuse=industrial and type:way
+  source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - experimental
+
 fitness-centres:
   name: Fitness Centres
   description: Count of fitness centres.
