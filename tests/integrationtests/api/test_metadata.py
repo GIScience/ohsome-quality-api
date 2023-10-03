@@ -23,8 +23,8 @@ def test_metadata(
     )
     # check quality dimensions result
     assert (
-        metadata_quality_dimension_completeness["completeness"]
-        == result["qualityDimensions"]["completeness"]
+        metadata_quality_dimension_completeness["minimal"]
+        == result["qualityDimensions"]["minimal"]
     )
     # check projects result
     assert metadata_project_core["core"] == result["projects"]["core"]
