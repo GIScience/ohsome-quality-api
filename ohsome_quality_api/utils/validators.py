@@ -1,3 +1,5 @@
+import re
+
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
 
 from ohsome_quality_api.config import get_config_value
@@ -24,16 +26,20 @@ def validate_geojson(bpolys: GeoJSON):
         raise GeoJSONError(errors=bpolys.errors())
     elif isinstance(bpolys, FeatureCollection):
         for feature in bpolys["features"]:
-            if not isinstance(feature.geometry, Polygon | MultiPolygon):
+            if not isinstance(feature.geometry, (Polygon, MultiPolygon)):
                 raise GeoJSONGeometryTypeError()
     elif isinstance(bpolys, Feature):
         raise GeoJSONObjectTypeError()
     else:
         raise GeoJSONObjectTypeError()
+
     crs = bpolys.get("crs", None)
     if crs is None:
         pass
-    elif "urn:ogc:def:crs:OGC::CRS84" in crs["properties"]["name"]:
+    elif re.match(
+        r"urn:ogc:def:crs:OGC:\d+(\.\d+)*:CRS84",
+        crs.get("properties", {}).get("name", ""),
+    ):
         pass
     else:
         raise InvalidCRSError()
