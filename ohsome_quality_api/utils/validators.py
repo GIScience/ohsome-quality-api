@@ -1,4 +1,4 @@
-import re
+import fnmatch
 
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
 
@@ -36,9 +36,8 @@ def validate_geojson(bpolys: GeoJSON):
     crs = bpolys.get("crs", None)
     if crs is None:
         pass
-    elif re.match(
-        r"urn:ogc:def:crs:OGC:\d+(\.\d+)*:CRS84",
-        crs.get("properties", {}).get("name", ""),
+    elif fnmatch.fnmatch(
+        crs.get("properties", {}).get("name", ""), "urn:ogc:def:crs:OGC*CRS84"
     ):
         pass
     else:
