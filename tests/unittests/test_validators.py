@@ -101,10 +101,7 @@ def test_wrong_crs():
 
 def test_custom_crs():
     def change_crs(geojson):
-        geojson["crs"] = {
-            "type": "name",
-            "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"},
-        }
+        geojson["crs"] = {"type": "name", "properties": {"name": "EPSG:4326"}}
         return geojson
 
     feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
