@@ -1,6 +1,5 @@
-import fnmatch
-
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
+from pyproj import CRS
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
@@ -36,12 +35,13 @@ def validate_geojson(bpolys: GeoJSON):
     crs = bpolys.get("crs", None)
     if crs is None:
         pass
-    elif fnmatch.fnmatch(
-        crs.get("properties", {}).get("name", ""), "urn:ogc:def:crs:OGC*CRS84"
-    ):
-        pass
     else:
-        raise InvalidCRSError()
+        crs = CRS.from_string(crs.get("properties", {}).get("name", ""))
+        crs_epsg = CRS.to_epsg(crs)
+        if crs_epsg == 4326:
+            pass
+        else:
+            raise InvalidCRSError()
 
 
 def validate_area(feature: Feature):
