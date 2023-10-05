@@ -29,6 +29,7 @@ building-area:
   indicators:
     - mapping-saturation
     - building-completeness
+    - building-comparison
   projects:
     - core
 

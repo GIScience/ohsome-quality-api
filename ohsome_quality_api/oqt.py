@@ -38,6 +38,7 @@ async def create_indicator(
         if isinstance(topic, TopicDefinition) and key not in [
             "mapping-saturation",
             "currentness",
+            "building-comparison",
         ]:
             validate_area(feature)
         tasks.append(_create_indicator(key, feature, topic, include_figure))
