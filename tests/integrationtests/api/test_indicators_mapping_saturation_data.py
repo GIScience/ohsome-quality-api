@@ -6,7 +6,6 @@ from tests.unittests.mapping_saturation.fixtures import VALUES_1 as DATA
 
 ENDPOINT = "/indicators/mapping-saturation/data"
 
-
 RESPONSE_SCHEMA_JSON = Schema(
     schema={
         "apiVersion": str,
@@ -41,7 +40,7 @@ RESPONSE_SCHEMA_JSON = Schema(
 )
 
 
-def test_mapping_saturation_data(client, bpolys):
+def test_mapping_saturation_data(client, feature_collection_germany_heidelberg):
     """Test parameter Topic with custom data attached."""
     timestamp_objects = [
         datetime(2020, 7, 17, 9, 10, 0) + timedelta(days=1 * x)
@@ -51,7 +50,7 @@ def test_mapping_saturation_data(client, bpolys):
     # Data is ohsome API response result for the topic 'building-count' and the bpolys
     #   of for Heidelberg
     parameters = {
-        "bpolys": bpolys,
+        "bpolys": feature_collection_germany_heidelberg.model_dump(),
         "topic": {
             "key": "foo",
             "name": "bar",
@@ -68,9 +67,9 @@ def test_mapping_saturation_data(client, bpolys):
     assert RESPONSE_SCHEMA_JSON.is_valid(response.json())
 
 
-def test_mapping_saturation_data_invalid(client, bpolys):
+def test_mapping_saturation_data_invalid(client, feature_collection_germany_heidelberg):
     parameters = {
-        "bpolys": bpolys,
+        "bpolys": feature_collection_germany_heidelberg.model_dump(),
         "topic": {
             "key": "foo",
             "name": "bar",

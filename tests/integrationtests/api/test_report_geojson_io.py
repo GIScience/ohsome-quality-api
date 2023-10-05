@@ -4,10 +4,10 @@ https://fastapi.tiangolo.com/tutorial/testing/
 """
 import unittest
 
-import geojson
 from fastapi.testclient import TestClient
 
 from ohsome_quality_api.api.api import app
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from tests.integrationtests.api.response_schema import (
     get_featurecollection_schema,
     get_general_schema,
@@ -36,10 +36,11 @@ class TestApiReportIo(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["content-type"], "application/geo+json")
 
-        response_content = geojson.loads(response.content)
-        self.assertTrue(response_content.is_valid)  # Valid GeoJSON?
-        self.assertTrue(self.general_schema.is_valid(response_content))
-        self.assertTrue(self.feature_schema.is_valid(response_content))
+        feature_collection = FeatureCollection[Feature](
+            **response.content
+        )  # Valid GeoJSON?
+        self.assertTrue(self.general_schema.is_valid(feature_collection))
+        self.assertTrue(self.feature_schema.is_valid(feature_collection))
 
     def post_response(self, bpoly):
         """Return HTTP POST response"""
@@ -48,11 +49,10 @@ class TestApiReportIo(unittest.TestCase):
 
     @oqapi_vcr.use_cassette()
     def test_report_bpolys_featurecollection(self):
-        response = self.post_response(self.featurecollection)
+        response = self.post_response(self.featurecollection.model_dump())
         self.assertEqual(response.status_code, 200)
 
-        response_geojson = geojson.loads(response.content)
-        self.assertTrue(response_geojson.is_valid)  # Valid GeoJSON?
+        FeatureCollection[Feature](**response.json())
 
         response_content = response.json()
         self.assertTrue(self.general_schema.is_valid(response_content))
@@ -63,7 +63,7 @@ class TestApiReportIo(unittest.TestCase):
     @oqapi_vcr.use_cassette()
     def test_report_bpolys_size_limit(self):
         feature = get_geojson_fixture("europe.geojson")
-        response = self.post_response(feature)
+        response = self.post_response(feature.model_dump())
         self.assertEqual(response.status_code, 422)
 
 

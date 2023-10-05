@@ -4,8 +4,8 @@ from string import Template
 import dateutil.parser
 import numpy as np
 import plotly.graph_objects as go
-from geojson import Feature
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.attributes.definitions import get_attribute
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client

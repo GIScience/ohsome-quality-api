@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
-from geojson import FeatureCollection
 
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.indicators.building_completeness.indicator import (
     BuildingCompleteness,
     get_hex_cells,
@@ -138,7 +138,9 @@ class TestCalculationFigure:
 
 class TestGetData:
     def test_get_smod_class_share(self, mock_env_oqapi_data_dir, feature):
-        result = get_smod_class_share(FeatureCollection(features=[feature]))
+        result = get_smod_class_share(
+            FeatureCollection[Feature](type="FeatureCollection", features=[feature])
+        )
         assert result == {
             "urban_centre": [0.05128205128205128],
             "dense_urban_cluster": [0],
@@ -163,6 +165,12 @@ class TestGetData:
 
     @pytest.mark.skip("dependency on database setup.")
     def test_get_shdi(self, feature):
-        result = asyncio.run(get_shdi(FeatureCollection(features=[feature])))
+        result = asyncio.run(
+            get_shdi(
+                FeatureCollection[Feature](
+                    type="FeatureCollection", features=[feature]
+                ),
+            )
+        )
         assert isinstance(result, list)
         assert len(result) == 1

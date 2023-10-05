@@ -1,5 +1,4 @@
-from geojson import Feature
-
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import get_attribution
 from ohsome_quality_api.reports.base import BaseReport, IndicatorTopic
 

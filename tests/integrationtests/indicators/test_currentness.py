@@ -1,12 +1,13 @@
 import asyncio
+import json
 import os
 from datetime import datetime
 
-import geojson
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
@@ -97,7 +98,7 @@ class TestCalculation:
             "niger-kanan-bakache.geojson",
         )
         with open(infile, "r") as f:
-            feature = geojson.load(f)
+            feature = Feature(**json.load(f))
 
         indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
         asyncio.run(indicator.preprocess())

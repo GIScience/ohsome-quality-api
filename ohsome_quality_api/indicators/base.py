@@ -2,8 +2,8 @@ import json
 from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
-from geojson import Feature
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata, Result
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -28,7 +28,7 @@ class BaseIndicator(metaclass=ABCMeta):
         )
         self._get_default_figure()
 
-    def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
+    def as_dict(self, exclude_label: bool = False) -> dict:
         if exclude_label:
             result = self.result.model_dump(by_alias=True, exclude={"label"})
         else:
@@ -43,35 +43,27 @@ class BaseIndicator(metaclass=ABCMeta):
                 exclude={"ratio_filter"},
             ),
             "result": result,
-            **self.feature.properties,
         }
-        if include_data:
-            raw_dict["data"] = self.data
-        if "id" in self.feature.keys():
+        if self.feature.properties is not None:
+            raw_dict.update(self.feature.properties)
+        if self.feature.id is not None:
             raw_dict["id"] = self.feature.id
         return raw_dict
 
-    def as_feature(self, include_data: bool = False, exclude_label=False) -> Feature:
+    def as_feature(self, exclude_label=False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
-
-        Args:
-            include_data (bool): If true include additional data in the properties.
         """
-        properties = self.as_dict(include_data, exclude_label)
-        if "id" in self.feature.keys():
-            return Feature(
-                id=self.feature.id,
-                geometry=self.feature.geometry,
-                properties=properties,
-            )
-        else:
-            return Feature(
-                geometry=self.feature.geometry,
-                properties=properties,
-            )
+        properties = self.as_dict(exclude_label)
+
+        return Feature(
+            type="Feature",
+            id=self.feature.id,
+            geometry=self.feature.geometry,
+            properties=properties,
+        )
 
     @property
     def data(self) -> dict:

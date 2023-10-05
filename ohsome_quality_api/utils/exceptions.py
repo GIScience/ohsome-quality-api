@@ -39,11 +39,9 @@ class GeoJSONGeometryTypeError(ValidationError):
 
 
 class InvalidCRSError(ValidationError):
-    def __init__(self):
+    def __init__(self, text):
         self.name = "InvalidCRSError"
-        self.message = (
-            "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
-        )
+        self.message = text
 
 
 class IndicatorTopicCombinationError(ValidationError):

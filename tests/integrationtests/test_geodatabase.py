@@ -1,10 +1,11 @@
 import asyncio
 import unittest
 
-import geojson
 import pytest
+from geojson_pydantic import Polygon
 
 import ohsome_quality_api.geodatabase.client as db_client
+from ohsome_quality_api.api.request_models import Feature
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 
@@ -48,8 +49,9 @@ def test_get_shdi_type_error(feature):
 
 def test_get_shdi_multiple_intersections():
     """Input geometry intersects with multiple SHDI-regions."""
-    geom = geojson.Polygon(
-        [
+    geom = Polygon(
+        type="Polygon",
+        coordinates=[
             [
                 [13.610687255859375, 48.671919512374565],
                 [14.0350341796875, 48.671919512374565],
@@ -59,7 +61,7 @@ def test_get_shdi_multiple_intersections():
             ]
         ],
     )
-    result = asyncio.run(db_client.get_shdi(geojson.Feature(geometry=geom)))
+    result = asyncio.run(db_client.get_shdi(Feature(geometry=geom)))
     assert isinstance(result[0]["shdi"], float)
     assert result[0]["shdi"] <= 1.0
 

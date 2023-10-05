@@ -24,7 +24,6 @@ class TestBaseReport:
         report = MinimalReport(feature=feature)
         for _ in report.indicator_topic:
             report.indicators.append(indicator)
-        assert feature.is_valid
 
     def test_attribution_class_property(self):
         assert isinstance(MinimalReport.attribution(), str)

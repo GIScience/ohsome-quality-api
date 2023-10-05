@@ -5,8 +5,8 @@ from abc import ABCMeta, abstractmethod
 from typing import NamedTuple
 
 import numpy as np
-from geojson import Feature
 
+from ohsome_quality_api.api.request_models import Feature
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.reports.models import ReportMetadata, Result
@@ -35,17 +35,17 @@ class BaseReport(metaclass=ABCMeta):
         # Results will be written during the lifecycle of the report object (combine())
         self.result = Result()
 
-    def as_feature(self, include_data: bool = False) -> Feature:
+    def as_feature(self) -> Feature:
         """Returns a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of all indicators.
         The geometry (and properties) of the input GeoJSON object is preserved.
         """
-        result = self.result.dict(by_alias=True)  # only attributes, no properties
+        result = self.result.model_dump(by_alias=True)  # only attributes, no properties
         result["label"] = self.result.label  # label is a property
         properties = {
             "report": {
-                "metadata": self.metadata.dict(),
+                "metadata": self.metadata.model_dump(),
                 "result": result,
             },
             "indicators": [],
@@ -53,17 +53,20 @@ class BaseReport(metaclass=ABCMeta):
         properties["report"]["metadata"].pop("label_description", None)
 
         for i, indicator in enumerate(self.indicators):
-            properties["indicators"].append(
-                indicator.as_feature(include_data=include_data)["properties"]
-            )
-        if "id" in self.feature.keys():
+            properties["indicators"].append(indicator.as_feature().properties)
+        if self.feature.id is not None:
             return Feature(
+                type="Feature",
                 id=self.feature.id,
                 geometry=self.feature.geometry,
                 properties=properties,
             )
         else:
-            return Feature(geometry=self.feature.geometry, properties=properties)
+            return Feature(
+                type="Feature",
+                geometry=self.feature.geometry,
+                properties=properties,
+            )
 
     @abstractmethod
     def combine_indicators(self) -> None:

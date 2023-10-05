@@ -92,15 +92,6 @@ class TestCalculation:
         assert properties["result"]["description"] is not None
         assert "data" not in properties.keys()
 
-    def test_as_feature_data(self, indicator):
-        indicator_feature = indicator.as_feature(include_data=True)
-        properties = indicator_feature.properties
-        assert properties["data"]["best_fit"]["name"] is not None
-
-        for fm in properties["data"]["fitted_models"]:
-            assert not np.isnan(np.sum(fm["fitted_values"]))
-            assert np.isfinite(np.sum(fm["fitted_values"]))
-
 
 class TestFigure:
     @pytest.fixture(scope="class")
@@ -136,9 +127,7 @@ def test_immutable_attribute(
     """
     indicators = []
     fitted_values = []
-    for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt[
-        "features"
-    ]:
+    for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt.features:
         indicator = MappingSaturation(topic_building_count, feature)
         asyncio.run(indicator.preprocess())
         indicator.calculate()

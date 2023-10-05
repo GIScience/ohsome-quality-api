@@ -3,13 +3,12 @@ import os
 from string import Template
 
 import dateutil.parser
-import geojson
 import numpy as np
 import plotly.graph_objs as go
 from building_completeness_model import Predictor, Processor
-from geojson import Feature, FeatureCollection
 
 import ohsome_quality_api.geodatabase.client as db_client
+from ohsome_quality_api.api.request_models import Feature, FeatureCollection
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.raster import client as raster_client
@@ -111,7 +110,7 @@ class BuildingCompleteness(BaseIndicator):
         self.covariates["ghs_pop"] = [i["sum"] or 0 for i in ghs_pop]
         self.covariates["ghs_pop_density"] = [
             pop / cell.properties["area"]
-            for pop, cell in zip(self.covariates["ghs_pop"], hex_cells["features"])
+            for pop, cell in zip(self.covariates["ghs_pop"], hex_cells.features)
         ]
         self.covariates.update(get_smod_class_share(hex_cells))
 
@@ -275,8 +274,8 @@ async def get_hex_cells(feature: Feature) -> FeatureCollection:
         query = file.read()
     async with db_client.get_connection() as conn:
         record = await conn.fetchrow(query, str(feature.geometry))
-    feature_collection = geojson.loads(record[0])
-    if feature_collection["features"] is None:
+    feature_collection = FeatureCollection[Feature](**record[0])
+    if feature_collection.features is None:
         raise HexCellsNotFoundError
     return feature_collection
 
