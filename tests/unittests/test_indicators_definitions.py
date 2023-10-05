@@ -1,3 +1,7 @@
+import asyncio
+
+import geojson
+
 from ohsome_quality_api.indicators import definitions, models
 
 
@@ -24,3 +28,12 @@ def test_get_indicator_definitions_with_project():
     for indicator in indicators.values():
         assert isinstance(indicator, models.IndicatorMetadata)
         assert indicator.projects == ["core"]
+
+
+def test_get_coverage():
+    coverage = asyncio.run(definitions.get_coverage("building-comparison"))
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)
+    coverage = asyncio.run(definitions.get_coverage("mapping-saturation"))
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)

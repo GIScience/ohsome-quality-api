@@ -1,5 +1,8 @@
+import asyncio
+
 import plotly.graph_objects as pgo
 import pytest
+from geojson import Polygon
 
 from ohsome_quality_api.indicators.minimal.indicator import Minimal
 from ohsome_quality_api.indicators.models import Result
@@ -53,6 +56,11 @@ class TestBaseIndicator:
 
     def test_attribution_class_property(self):
         assert isinstance(Minimal.attribution(), str)
+
+    def test_coverage(self):
+        coverage = asyncio.run(Minimal.coverage())
+        assert isinstance(coverage, Polygon)
+        assert coverage.is_valid
 
     def test_figure(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)

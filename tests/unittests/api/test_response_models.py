@@ -5,6 +5,7 @@ from ohsome_quality_api import __version__
 from ohsome_quality_api.api.response_models import (
     BaseResponse,
     IndicatorMetadata,
+    IndicatorMetadataCoverageResponse,
     IndicatorMetadataResponse,
     ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
@@ -145,6 +146,10 @@ def test_indicator_metadata_response_fail(metadata_indicator_minimal):
         IndicatorMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         IndicatorMetadataResponse(result={"foo": metadata_indicator_minimal})
+
+
+def test_indicator_metadata_coverage(bpolys):
+    IndicatorMetadataCoverageResponse(**bpolys)
 
 
 def test_metadata_reports(metadata_report_minimal):

@@ -2,7 +2,7 @@ import json
 from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
-from geojson import Feature
+from geojson import Feature, MultiPolygon, Polygon
 
 from ohsome_quality_api.definitions import get_attribution, get_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata, Result
@@ -100,6 +100,21 @@ class BaseIndicator(metaclass=ABCMeta):
         attribution is necessary.
         """
         return get_attribution(["OSM"])
+
+    @classmethod
+    async def coverage(cls) -> Polygon | MultiPolygon:
+        """Return coverage geometry. Default is global coverage."""
+        return Polygon(
+            coordinates=[
+                [
+                    (-180, 90),
+                    (-180, -90),
+                    (180, -90),
+                    (180, 90),
+                    (-180, 90),
+                ]
+            ]
+        )
 
     @abstractmethod
     async def preprocess(self) -> None:
