@@ -2,18 +2,20 @@
 building-comparison:
   name: Building Comparison
   projects:
-    - experimental
+    - core
   quality_dimension: completeness
   description: >-
-    TODO
+    Compare the building area of OSM buildings with the building area of
+    reference data.
   label_description:
     red: >-
-      TODO
+      OSM has significant less building area than the reference data.
     yellow: >-
-      TODO
+      OSM has a bit less building area than the reference data.
     green: >-
-      TODO
+      OSM has equal or more building area than the reference data.
     undefined: >-
-      TODO
+      Comparison could not be made.
   result_description: >-
-    TODO
+    $coverage% of the area-of-interest is covered by the reference dataset.
+    The building area of OSM is $ratio% of that of the reference data.
