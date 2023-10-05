@@ -99,9 +99,24 @@ def test_wrong_crs():
     assert str(exc_info.value.message) == expected_message
 
 
-def test_custom_crs():
+def test_custom_crs_short():
     def change_crs(geojson):
         geojson["crs"] = {"type": "name", "properties": {"name": "EPSG:4326"}}
+        return geojson
+
+    feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
+
+    feature = change_crs(feature)
+
+    validate_geojson(feature)
+
+
+def test_custom_crs_long():
+    def change_crs(geojson):
+        geojson["crs"] = {
+            "type": "name",
+            "properties": {"name": "urn:ogc:def:crs:EPSG::4326"},
+        }
         return geojson
 
     feature = get_geojson_fixture("heidelberg-altstadt-epsg32632.geojson")
