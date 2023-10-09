@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 1.1
+
+### Bug Fixes
+
+- crs validation now covers all valid cases ([#721])
+
+[#721]: https://github.com/GIScience/ohsome-quality-analyst/pull/721
+
 ## Release 1.0.1
 
 - refactor: rename "ohsome quality analyst" (OQT) to "ohsome quality API" (oqapi) ([#685])
