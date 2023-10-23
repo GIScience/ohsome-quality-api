@@ -1,16 +1,25 @@
 # Changelog
 
-## Release 1.1
+## Current Main
 
 ### Bug Fixes
 
 - crs validation now covers all valid cases ([#721])
 
+### New Features
+
+- feat(building-comparison): add comparison indicator ([#718])
+- feat(api): add endpoint to retrieve coverage ([#718])
+- feat(db): query building area and coverage from EUBUCCO ([#718])
+
+[#718]: https://github.com/GIScience/ohsome-quality-api/pull/718
 [#721]: https://github.com/GIScience/ohsome-quality-analyst/pull/721
 
 ## Release 1.0.1
 
 - refactor: rename "ohsome quality analyst" (OQT) to "ohsome quality API" (oqapi) ([#685])
+
+[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## Release 1.0.0
 
@@ -76,7 +85,6 @@ This release includes a well specified [API](https://oqt.ohsome.org/api/docs) an
 [#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
-[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## 0.15.0
 
