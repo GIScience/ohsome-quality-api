@@ -49,31 +49,27 @@ class BuildingComparison(BaseIndicator):
         else:
             self.coverage["EUBUCCO"] = None
             return
+        if not self.check_major_edge_cases():
+            db_query_result = await db_client.get_building_area(self.feature)
+            raw = db_query_result[0]["area"] or 0
+            self.area_references["EUBUCCO"] = raw / (1000 * 1000)
 
-        db_query_result = await db_client.get_building_area(self.feature)
-        raw = db_query_result[0]["area"] or 0
-        self.area_references["EUBUCCO"] = raw / (1000 * 1000)
-
-        osm_query_result = await ohsome_client.query(
-            self.topic,
-            self.feature,
-        )
-        raw = osm_query_result["result"][0]["value"] or 0  # if None
-        self.area_osm = raw / (1000 * 1000)
-        self.result.timestamp_osm = parser.isoparse(
-            osm_query_result["result"][0]["timestamp"]
-        )
+            osm_query_result = await ohsome_client.query(
+                self.topic,
+                self.feature,
+            )
+            raw = osm_query_result["result"][0]["value"] or 0  # if None
+            self.area_osm = raw / (1000 * 1000)
+            self.result.timestamp_osm = parser.isoparse(
+                osm_query_result["result"][0]["timestamp"]
+            )
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
-
-        major_edge_case_description = self.check_major_edge_cases()
-        if major_edge_case_description:
-            self.result.description = major_edge_case_description
+        if not self.result.description == "":
             return
-        elif self.check_minor_edge_cases():
+        if self.check_minor_edge_cases():
             self.result.description = self.check_minor_edge_cases()
-            return
         else:
             self.result.description = ""
 
@@ -127,27 +123,33 @@ class BuildingComparison(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def check_major_edge_cases(self) -> str:
+    def check_major_edge_cases(self) -> bool:
         coverage = self.coverage["EUBUCCO"]
         # TODO: generalize function
         if coverage is None or coverage == 0.00:
-            return "Reference dataset does not cover area-of-interest."
+            self.result.description = (
+                "Reference dataset does not cover area-of-interest."
+            )
+            return True
         elif coverage < 0.50:
-            return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
+            self.result.description = (
+                "Only {:.2f}% of the area-of-interest is covered ".format(
+                    coverage * 100
+                )
                 + "by the reference dataset (EUBUCCO). "
                 + "No quality estimation is possible."
             )
+            return True
         else:
-            return ""
+            self.result.description = ""
+            return False
 
     def check_minor_edge_cases(self) -> str:
         coverage = self.coverage["EUBUCCO"]
         if coverage < 0.85:
             return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
-                + "by the reference dataset (EUBUCCO). "
-                + "No quality estimation is possible."
+                "Warning: Low coverage by the reference dataset (EUBUCCO). "
+                + "Quality estimation may be inaccurate. "
             )
         else:
             return ""
