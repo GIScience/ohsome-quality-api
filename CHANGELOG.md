@@ -13,7 +13,7 @@
 - feat(api): add endpoint to retrieve coverage ([#718])
 - feat(db): query building area and coverage from EUBUCCO ([#718])
 
-[#597]: https://github.com/GIScience/ohsome-quality-api/issues/591
+[#591]: https://github.com/GIScience/ohsome-quality-api/issues/591
 [#718]: https://github.com/GIScience/ohsome-quality-api/pull/718
 [#721]: https://github.com/GIScience/ohsome-quality-analyst/pull/721
 
