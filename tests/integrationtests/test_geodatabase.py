@@ -6,7 +6,7 @@ import pytest
 
 import ohsome_quality_api.geodatabase.client as db_client
 
-pytestmark = pytest.mark.skip("dependency on database setup.")
+# pytestmark = pytest.mark.skip("dependency on database setup.")
 
 
 def test_get_connection():
@@ -88,6 +88,13 @@ def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
     bpoly = feature_germany_berlin
     result = asyncio.run(db_client.get_eubucco_coverage_intersection_area(bpoly))
     assert pytest.approx(1.0, 0.1) == result[0]["area_ratio"]
+
+
+def test_get_coverage_intersection(feature_germany_berlin):
+    bpoly = feature_germany_berlin
+    result = asyncio.run(db_client.get_coverage_intersection(bpoly))
+    assert result["geometry"].is_valid
+    assert isinstance(result, geojson.feature.Feature)
 
 
 if __name__ == "__main__":

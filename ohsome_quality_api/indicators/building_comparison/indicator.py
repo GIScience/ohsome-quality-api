@@ -50,6 +50,7 @@ class BuildingComparison(BaseIndicator):
             self.coverage["EUBUCCO"] = None
             return
         if not self.check_major_edge_cases():
+            self.feature = await db_client.get_coverage_intersection(self.feature)
             db_query_result = await db_client.get_building_area(self.feature)
             raw = db_query_result[0]["area"] or 0
             self.area_references["EUBUCCO"] = raw / (1000 * 1000)
