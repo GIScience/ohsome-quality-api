@@ -30,6 +30,24 @@ def mock_get_building_area_empty(class_mocker):
     )
 
 
+@pytest.fixture(scope="class")
+def mock_get_eubucco_coverage_intersection_area(class_mocker):
+    async_mock = AsyncMock(return_value=[{"area_ratio": 1}])
+    class_mocker.patch(
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection_area",
+        side_effect=async_mock,
+    )
+
+
+@pytest.fixture(scope="class")
+def mock_get_eubucco_coverage_intersection(class_mocker, feature_germany_berlin):
+    async_mock = AsyncMock(return_value=feature_germany_berlin)
+    class_mocker.patch(
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection",
+        side_effect=async_mock,
+    )
+
+
 class TestInit:
     @oqapi_vcr.use_cassette
     def test_init(self, topic_building_area, feature_germany_berlin):
@@ -45,6 +63,8 @@ class TestPreprocess:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -65,6 +85,8 @@ class TestCalculate:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -80,6 +102,8 @@ class TestCalculate:
         mock_get_building_area_empty,
         topic_building_area,
         feature_germany_heidelberg,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -96,6 +120,8 @@ class TestFigure:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())

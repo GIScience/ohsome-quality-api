@@ -92,7 +92,7 @@ def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
 
 def test_get_coverage_intersection(feature_germany_berlin):
     bpoly = feature_germany_berlin
-    result = asyncio.run(db_client.get_coverage_intersection(bpoly))
+    result = asyncio.run(db_client.get_eubucco_coverage_intersection(bpoly))
     assert result["geometry"].is_valid
     assert isinstance(result, geojson.feature.Feature)
 

@@ -101,7 +101,7 @@ async def get_eubucco_coverage_intersection_area(bpoly: Feature) -> list[Record]
         return await conn.fetch(query, geom)
 
 
-async def get_coverage_intersection(bpoly: Feature) -> Feature:
+async def get_eubucco_coverage_intersection(bpoly: Feature) -> Feature:
     """Get intersection geometry of AoI and coverage geometry."""
     file_path = os.path.join(WORKING_DIR, "get_coverage_intersection.sql")
     with open(file_path, "r") as file:

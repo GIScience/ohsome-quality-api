@@ -50,7 +50,9 @@ class BuildingComparison(BaseIndicator):
             self.coverage["EUBUCCO"] = None
             return
         if not self.check_major_edge_cases():
-            self.feature = await db_client.get_coverage_intersection(self.feature)
+            self.feature = await db_client.get_eubucco_coverage_intersection(
+                self.feature
+            )
             db_query_result = await db_client.get_building_area(self.feature)
             raw = db_query_result[0]["area"] or 0
             self.area_references["EUBUCCO"] = raw / (1000 * 1000)
@@ -132,7 +134,7 @@ class BuildingComparison(BaseIndicator):
                 "Reference dataset does not cover area-of-interest."
             )
             return True
-        elif coverage < 0.50:
+        elif coverage < 0.10:
             self.result.description = (
                 "Only {:.2f}% of the area-of-interest is covered ".format(
                     coverage * 100
@@ -147,10 +149,11 @@ class BuildingComparison(BaseIndicator):
 
     def check_minor_edge_cases(self) -> str:
         coverage = self.coverage["EUBUCCO"]
-        if coverage < 0.85:
+        if coverage < 0.95:
             return (
-                "Warning: Low coverage by the reference dataset (EUBUCCO). "
-                + "Quality estimation may be inaccurate. "
+                "Warning: Reference data does not cover the whole input geometry. "
+                + f"Input geometry is clipped to the coverage. Results is calculated"
+                f" for {coverage}% of the input geometry."
             )
         else:
             return ""
