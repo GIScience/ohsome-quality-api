@@ -1,5 +1,21 @@
 # Changelog
 
+## Current Main
+
+### Bug Fixes
+
+- building-comparison: is calculated for coverage area only ([#739])
+- building-comparison: result description now shows correct coverage percentage ([#739])
+
+### New Features
+
+- building-comparison: AOI is now clipped to the coverage area ([#739])
+
+### Other Changes
+
+- building-comparison: no quality estimation for areas with strong difference to reference data ([#739])
+
+
 ## Release 1.0.2
 
 ### Bug Fixes
