@@ -22,6 +22,15 @@ def mock_get_building_area(class_mocker):
 
 
 @pytest.fixture(scope="class")
+def mock_get_building_area_low(class_mocker):
+    async_mock = AsyncMock(return_value=[{"area": 1}])
+    class_mocker.patch(
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_building_area",
+        side_effect=async_mock,
+    )
+
+
+@pytest.fixture(scope="class")
 def mock_get_building_area_empty(class_mocker):
     async_mock = AsyncMock(return_value=[{"area": 0}])
     class_mocker.patch(
@@ -111,6 +120,29 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
 
+    @oqapi_vcr.use_cassette
+    def test_calculate_above_one_th(
+        self,
+        mock_get_building_area_low,
+        topic_building_area,
+        feature_germany_heidelberg,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
+    ):
+        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+        assert indicator.result.value is not None
+        assert indicator.result.value > 0
+        assert indicator.result.class_ is None
+        assert indicator.result.description is not None
+        assert (
+            "Warning: No quality estimation made. "
+            "OSM and reference data differ. Reference data is likely outdated."
+            in indicator.result.description
+        )
+        assert indicator.result.label == "undefined"
+
 
 class TestFigure:
     @pytest.fixture(scope="class")
@@ -137,3 +169,37 @@ class TestFigure:
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
         pio.show(indicator.result.figure)
+
+    @oqapi_vcr.use_cassette
+    def test_create_figure_above_one_th(
+        self,
+        mock_get_building_area_low,
+        topic_building_area,
+        feature_germany_berlin,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
+    ):
+        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert indicator.result.figure["data"][0]["type"] == "bar"
+        pgo.Figure(indicator.result.figure)
+
+    @oqapi_vcr.use_cassette
+    def test_create_figure_building_area_zero(
+        self,
+        mock_get_building_area_empty,
+        topic_building_area,
+        feature_germany_berlin,
+        mock_get_eubucco_coverage_intersection_area,
+        mock_get_eubucco_coverage_intersection,
+    ):
+        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert indicator.result.figure["data"][0]["type"] == "bar"
+        pgo.Figure(indicator.result.figure)

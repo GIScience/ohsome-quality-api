@@ -32,6 +32,7 @@ class BuildingComparison(BaseIndicator):
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
+        self.above_one_th = 1.30
 
     @classmethod
     async def coverage(cls) -> Polygon | MultiPolygon:
@@ -90,12 +91,17 @@ class BuildingComparison(BaseIndicator):
                 "\n" + self.metadata.label_description[self.result.label]
             )
             return
-        elif self.result.value >= self.th_high:
+        elif self.above_one_th >= self.result.value >= self.th_high:
             self.result.class_ = 5
-        elif self.result.value >= self.th_low:
+        elif self.th_high > self.result.value >= self.th_low:
             self.result.class_ = 3
-        else:
+        elif self.th_low > self.result.value >= 0:
             self.result.class_ = 1
+        elif self.result.value > self.above_one_th:
+            self.result.description += (
+                "Warning: No quality estimation made. "
+                "OSM and reference data differ. Reference data is likely outdated."
+            )
 
         template = Template(self.metadata.result_description)
         self.result.description += template.substitute(
