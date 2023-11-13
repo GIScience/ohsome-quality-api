@@ -23,7 +23,7 @@ def mock_get_building_area(class_mocker):
 
 @pytest.fixture(scope="class")
 def mock_get_building_area_empty(class_mocker):
-    async_mock = AsyncMock(return_value=[])
+    async_mock = AsyncMock(return_value=[{"area": 0}])
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_building_area",
         side_effect=async_mock,

@@ -76,11 +76,21 @@ class BuildingComparison(BaseIndicator):
         else:
             self.result.description = ""
 
-        self.result.value = float(
-            mean([self.area_osm / v for v in self.area_references.values()])
-        )
+        if all(v == 0 for v in self.area_references.values()):
+            pass
+        else:
+            self.result.value = float(
+                mean(
+                    [self.area_osm / v for v in self.area_references.values() if v != 0]
+                )
+            )
 
-        if self.result.value >= self.th_high:
+        if self.result.value is None:
+            self.result.description += (
+                "\n" + self.metadata.label_description[self.result.label]
+            )
+            return
+        elif self.result.value >= self.th_high:
             self.result.class_ = 5
         elif self.result.value >= self.th_low:
             self.result.class_ = 3
