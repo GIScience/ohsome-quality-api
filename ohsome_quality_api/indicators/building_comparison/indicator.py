@@ -78,6 +78,7 @@ class BuildingComparison(BaseIndicator):
             self.result.description = ""
 
         if all(v == 0 for v in self.area_references.values()):
+            self.result.description += "Warning: No reference data in this area. "
             pass
         else:
             self.result.value = float(
@@ -87,9 +88,6 @@ class BuildingComparison(BaseIndicator):
             )
 
         if self.result.value is None:
-            self.result.description += (
-                "\n" + self.metadata.label_description[self.result.label]
-            )
             return
         elif self.above_one_th >= self.result.value >= self.th_high:
             self.result.class_ = 5
@@ -100,7 +98,7 @@ class BuildingComparison(BaseIndicator):
         elif self.result.value > self.above_one_th:
             self.result.description += (
                 "Warning: No quality estimation made. "
-                "OSM and reference data differ. Reference data is likely outdated."
+                "OSM and reference data differ. Reference data is likely outdated. "
             )
 
         template = Template(self.metadata.result_description)

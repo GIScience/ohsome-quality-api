@@ -14,7 +14,7 @@ from tests.integrationtests.utils import oqapi_vcr
 
 @pytest.fixture(scope="class")
 def mock_get_building_area(class_mocker):
-    async_mock = AsyncMock(return_value=[{"area": 4842587.791645115 / (1000 * 1000)}])
+    async_mock = AsyncMock(return_value=[{"area": 4842587.791645115}])
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_building_area",
         side_effect=async_mock,
@@ -40,19 +40,19 @@ def mock_get_building_area_empty(class_mocker):
 
 
 @pytest.fixture(scope="class")
-def mock_get_eubucco_coverage_intersection_area(class_mocker):
-    async_mock = AsyncMock(return_value=[{"area_ratio": 1}])
+def mock_get_eubucco_coverage_intersection(class_mocker, feature_germany_berlin):
+    async_mock = AsyncMock(return_value=feature_germany_berlin)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection_area",
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection",
         side_effect=async_mock,
     )
 
 
 @pytest.fixture(scope="class")
-def mock_get_eubucco_coverage_intersection(class_mocker, feature_germany_berlin):
-    async_mock = AsyncMock(return_value=feature_germany_berlin)
+def mock_get_eubucco_coverage_intersection_area(class_mocker):
+    async_mock = AsyncMock(return_value=[{"area_ratio": 1}])
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection",
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage_intersection_area",
         side_effect=async_mock,
     )
 
@@ -81,7 +81,7 @@ class TestPreprocess:
         assert indicator.area_osm is not None
         assert indicator.area_osm > 0
         assert indicator.area_references == {
-            "EUBUCCO": 4.842587791645116 / (1000 * 1000)
+            "EUBUCCO": 4.842587791645116,
         }
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
