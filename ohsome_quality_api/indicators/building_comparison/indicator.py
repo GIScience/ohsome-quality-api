@@ -32,6 +32,7 @@ class BuildingComparison(BaseIndicator):
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
+        self.above_one_th = 1.30
 
     @classmethod
     async def coverage(cls) -> Polygon | MultiPolygon:
@@ -49,44 +50,56 @@ class BuildingComparison(BaseIndicator):
         else:
             self.coverage["EUBUCCO"] = None
             return
+        if not self.check_major_edge_cases():
+            self.feature = await db_client.get_eubucco_coverage_intersection(
+                self.feature
+            )
+            db_query_result = await db_client.get_building_area(self.feature)
+            raw = db_query_result[0]["area"] or 0
+            self.area_references["EUBUCCO"] = raw / (1000 * 1000)
 
-        db_query_result = await db_client.get_building_area(self.feature)
-        raw = db_query_result[0]["area"] or 0
-        self.area_references["EUBUCCO"] = raw / (1000 * 1000)
-
-        osm_query_result = await ohsome_client.query(
-            self.topic,
-            self.feature,
-        )
-        raw = osm_query_result["result"][0]["value"] or 0  # if None
-        self.area_osm = raw / (1000 * 1000)
-        self.result.timestamp_osm = parser.isoparse(
-            osm_query_result["result"][0]["timestamp"]
-        )
+            osm_query_result = await ohsome_client.query(
+                self.topic,
+                self.feature,
+            )
+            raw = osm_query_result["result"][0]["value"] or 0  # if None
+            self.area_osm = raw / (1000 * 1000)
+            self.result.timestamp_osm = parser.isoparse(
+                osm_query_result["result"][0]["timestamp"]
+            )
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
-
-        major_edge_case_description = self.check_major_edge_cases()
-        if major_edge_case_description:
-            self.result.description = major_edge_case_description
+        if not self.result.description == "":
             return
-        elif self.check_minor_edge_cases():
+        if self.check_minor_edge_cases():
             self.result.description = self.check_minor_edge_cases()
-            return
         else:
             self.result.description = ""
 
-        self.result.value = float(
-            mean([self.area_osm / v for v in self.area_references.values()])
-        )
-
-        if self.result.value >= self.th_high:
-            self.result.class_ = 5
-        elif self.result.value >= self.th_low:
-            self.result.class_ = 3
+        if all(v == 0 for v in self.area_references.values()):
+            self.result.description += "Warning: No reference data in this area. "
+            pass
         else:
+            self.result.value = float(
+                mean(
+                    [self.area_osm / v for v in self.area_references.values() if v != 0]
+                )
+            )
+
+        if self.result.value is None:
+            return
+        elif self.above_one_th >= self.result.value >= self.th_high:
+            self.result.class_ = 5
+        elif self.th_high > self.result.value >= self.th_low:
+            self.result.class_ = 3
+        elif self.th_low > self.result.value >= 0:
             self.result.class_ = 1
+        elif self.result.value > self.above_one_th:
+            self.result.description += (
+                "Warning: No quality estimation made. "
+                "OSM and reference data differ. Reference data is likely outdated. "
+            )
 
         template = Template(self.metadata.result_description)
         self.result.description += template.substitute(
@@ -127,27 +140,34 @@ class BuildingComparison(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def check_major_edge_cases(self) -> str:
+    def check_major_edge_cases(self) -> bool:
         coverage = self.coverage["EUBUCCO"]
         # TODO: generalize function
         if coverage is None or coverage == 0.00:
-            return "Reference dataset does not cover area-of-interest."
-        elif coverage < 0.50:
-            return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
+            self.result.description = (
+                "Reference dataset does not cover area-of-interest."
+            )
+            return True
+        elif coverage < 0.10:
+            self.result.description = (
+                "Only {:.2f}% of the area-of-interest is covered ".format(
+                    coverage * 100
+                )
                 + "by the reference dataset (EUBUCCO). "
                 + "No quality estimation is possible."
             )
+            return True
         else:
-            return ""
+            self.result.description = ""
+            return False
 
     def check_minor_edge_cases(self) -> str:
         coverage = self.coverage["EUBUCCO"]
-        if coverage < 0.85:
+        if coverage < 0.95:
             return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
-                + "by the reference dataset (EUBUCCO). "
-                + "No quality estimation is possible."
+                "Warning: Reference data does not cover the whole input geometry. "
+                + f"Input geometry is clipped to the coverage. Results is calculated"
+                f" for {coverage}% of the input geometry."
             )
         else:
             return ""

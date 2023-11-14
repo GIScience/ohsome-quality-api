@@ -90,5 +90,12 @@ def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
     assert pytest.approx(1.0, 0.1) == result[0]["area_ratio"]
 
 
+def test_get_coverage_intersection(feature_germany_berlin):
+    bpoly = feature_germany_berlin
+    result = asyncio.run(db_client.get_eubucco_coverage_intersection(bpoly))
+    assert result["geometry"].is_valid
+    assert isinstance(result, geojson.feature.Feature)
+
+
 if __name__ == "__main__":
     unittest.main()

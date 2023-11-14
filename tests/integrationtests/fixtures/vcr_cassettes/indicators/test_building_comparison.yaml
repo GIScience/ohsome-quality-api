@@ -113,4 +113,61 @@ interactions:
       - accept-encoding
     http_version: HTTP/1.1
     status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B13.369514%2C+52.498879%5D%2C+%5B13.373609%2C+52.504164%5D%2C+%5B13.37498%2C+52.503376%5D%2C+%5B13.37765%2C+52.507966%5D%2C+%5B13.39923%2C+52.508077%5D%2C+%5B13.400228%2C+52.509382%5D%2C+%5B13.40803%2C+52.506183%5D%2C+%5B13.409969%2C+52.506928%5D%2C+%5B13.414072%2C+52.504037%5D%2C+%5B13.4272%2C+52.505667%5D%2C+%5B13.429402%2C+52.508563%5D%2C+%5B13.42278%2C+52.512234%5D%2C+%5B13.425927%2C+52.518393%5D%2C+%5B13.429188%2C+52.521203%5D%2C+%5B13.419753%2C+52.525546%5D%2C+%5B13.423642%2C+52.527915%5D%2C+%5B13.438748%2C+52.528778%5D%2C+%5B13.442277%2C+52.531026%5D%2C+%5B13.447168%2C+52.526408%5D%2C+%5B13.452183%2C+52.527796%5D%2C+%5B13.456157%2C+52.522458%5D%2C+%5B13.45529%2C+52.521272%5D%2C+%5B13.462695%2C+52.519928%5D%2C+%5B13.47239%2C+52.520571%5D%2C+%5B13.477729%2C+52.51472%5D%2C+%5B13.475888%2C+52.514863%5D%2C+%5B13.476266%2C+52.510439%5D%2C+%5B13.471164%2C+52.505138%5D%2C+%5B13.468573%2C+52.499657%5D%2C+%5B13.473076%2C+52.499003%5D%2C+%5B13.491443%2C+52.488283%5D%2C+%5B13.482954%2C+52.48605%5D%2C+%5B13.481678%2C+52.487638%5D%2C+%5B13.478628%2C+52.487033%5D%2C+%5B13.476147%2C+52.489944%5D%2C+%5B13.464279%2C+52.493719%5D%2C+%5B13.463355%2C+52.495486%5D%2C+%5B13.45293%2C+52.497707%5D%2C+%5B13.445549%2C+52.494856%5D%2C+%5B13.439262%2C+52.48961%5D%2C+%5B13.4204%2C+52.495864%5D%2C+%5B13.42535%2C+52.488182%5D%2C+%5B13.423705%2C+52.486384%5D%2C+%5B13.407887%2C+52.48886%5D%2C+%5B13.406346%2C+52.482792%5D%2C+%5B13.394613%2C+52.484022%5D%2C+%5B13.394261%2C+52.485775%5D%2C+%5B13.371607%2C+52.484979%5D%2C+%5B13.374019%2C+52.485167%5D%2C+%5B13.373518%2C+52.48797%5D%2C+%5B13.376562%2C+52.49167%5D%2C+%5B13.368229%2C+52.493336%5D%2C+%5B13.369514%2C+52.498879%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-55764%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-62422%2C-51477%22%2C+%22name%22%3A+%22Friedrichshain-Kreuzberg%22%2C+%22local_name%22%3A+%22Friedrichshain-Kreuzberg%22%2C+%22name_en%22%3A+null%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '2231'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api/1.0.2
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/area
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.10.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-10-22T20:00:00Z\",\n
+      \   \"value\" : 5026307.68\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Mon, 13 Nov 2023 11:14:11 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1
