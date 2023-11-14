@@ -14,6 +14,9 @@
 ### Other Changes
 
 - building-comparison: no quality estimation for areas with strong difference to reference data ([#739])
+- test(db): add missing mock for getting coverage from database in tests ([#739])
+
+[#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
 
 
 ## Release 1.0.2
