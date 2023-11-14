@@ -111,6 +111,7 @@ pipeline {
                     }
                     return false
                     }
+            }
             steps {
                 script {
                     DOCKER_API.inside {
