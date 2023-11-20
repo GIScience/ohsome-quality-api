@@ -13,11 +13,11 @@ On preventing SQL injections:
     If the query string is build from user input,
     please make sure no SQL injection attack is possible.
 """
-
 import os
 from contextlib import asynccontextmanager
 
 import asyncpg
+import geojson
 from asyncpg import Record
 from geojson import Feature, FeatureCollection
 
@@ -67,3 +67,47 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
         )
     async with get_connection() as conn:
         return await conn.fetch(query, geom)
+
+
+async def get_building_area(bpoly: Feature) -> list[Record]:
+    """Get area of building footprints for a bounding polygon."""
+    file_path = os.path.join(WORKING_DIR, "select_building_area.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    async with get_connection() as conn:
+        return await conn.fetch(query, geom)
+
+
+async def get_eubucco_coverage() -> list[Record]:
+    file_path = os.path.join(WORKING_DIR, "select_eubucco_coverage.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    async with get_connection() as conn:
+        return await conn.fetch(query)
+
+
+async def get_eubucco_coverage_intersection_area(bpoly: Feature) -> list[Record]:
+    """Get ratio of AOI area to intersection area of AOI and coverage geometry.
+
+    The result is the ratio of area within coverage (between 0-1) or an empty list if
+    AOI lies outside of coverage geometry.
+    """
+    file_path = os.path.join(WORKING_DIR, "select_check_eubucco_coverage.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    async with get_connection() as conn:
+        return await conn.fetch(query, geom)
+
+
+async def get_eubucco_coverage_intersection(bpoly: Feature) -> Feature:
+    """Get intersection geometry of AoI and coverage geometry."""
+    file_path = os.path.join(WORKING_DIR, "get_coverage_intersection.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    async with get_connection() as conn:
+        result = await conn.fetch(query, geom)
+        bpoly["geometry"] = geojson.loads(result[0]["geom"])
+        return bpoly

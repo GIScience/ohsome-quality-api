@@ -44,3 +44,13 @@ Please have a look at the API response field `attribution` to figure out which o
 
 - Source: https://globaldatalab.org/shdi/
 - Attribution and use conditions: The development indicators available at the GDL Website can be freely downloaded and used by any interested person or party, provided that the Global Data Lab is mentioned as the source of the indicators and a link to the GDL Website is shown. 
+
+
+## EUBUCCO
+
+- Source: https://eubucco.com/data/
+- Attribution and use conditions: The EUBUCCO database is composed of files under different licenses:
+    - ODbL: Default (95+%)
+    - CC-BY-SA: Prague (v0_1-CZE_11-OTHER-LICENSE-CC-BY-SA.zip)
+    - CC-BY-NC: Abruzzo (v0_1-ITA_1-OTHER-LICENSE-CC-BY-NC.zip)
+Citation: `Milojevic-Dupont, N., Wagner, F., Nachtigall, F. et al. EUBUCCO v0.1: European building stock characteristics in a common and open database for 200+ million individual buildings. Sci Data 10, 147 (2023). https://doi.org/10.1038/s41597-023-02040-2`

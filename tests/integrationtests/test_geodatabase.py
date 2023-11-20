@@ -64,5 +64,38 @@ def test_get_shdi_multiple_intersections():
     assert result[0]["shdi"] <= 1.0
 
 
+def test_get_building_area(feature_germany_berlin):
+    result = asyncio.run(db_client.get_building_area(feature_germany_berlin))
+    assert result[0]["area"] == 4842587.791645115
+
+
+def test_get_eubucco_coverage():
+    result = asyncio.run(db_client.get_eubucco_coverage())
+    obj: geojson.MultiPolygon = geojson.loads(result[0]["geom"])
+    assert obj.is_valid
+    assert isinstance(obj, geojson.MultiPolygon)
+
+
+def test_get_eubucco_coverage_intersection_area_none(
+    feature_collection_germany_heidelberg,
+):
+    bpoly = feature_collection_germany_heidelberg.features[0]
+    result = asyncio.run(db_client.get_eubucco_coverage_intersection_area(bpoly))
+    assert result == []
+
+
+def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
+    bpoly = feature_germany_berlin
+    result = asyncio.run(db_client.get_eubucco_coverage_intersection_area(bpoly))
+    assert pytest.approx(1.0, 0.1) == result[0]["area_ratio"]
+
+
+def test_get_coverage_intersection(feature_germany_berlin):
+    bpoly = feature_germany_berlin
+    result = asyncio.run(db_client.get_eubucco_coverage_intersection(bpoly))
+    assert result["geometry"].is_valid
+    assert isinstance(result, geojson.feature.Feature)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,8 +1,46 @@
 # Changelog
 
+## Current Main
+
+### Bug Fixes
+
+- building-comparison: is calculated for coverage area only ([#739])
+- building-comparison: result description now shows correct coverage percentage ([#739])
+
+### New Features
+
+- building-comparison: AOI is now clipped to the coverage area ([#739])
+
+### Other Changes
+
+- building-comparison: no quality estimation for areas with strong difference to reference data ([#739])
+- test(db): add missing mock for getting coverage from database in tests ([#739])
+
+[#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
+
+
+## Release 1.0.2
+
+### Bug Fixes
+
+- crs validation now covers all valid cases ([#721])
+
+### New Features
+
+- feat(figures): colors based on semantic UI CSS ([#591])
+- feat(building-comparison): add comparison indicator ([#718])
+- feat(api): add endpoint to retrieve coverage ([#718])
+- feat(db): query building area and coverage from EUBUCCO ([#718])
+
+[#591]: https://github.com/GIScience/ohsome-quality-api/issues/591
+[#718]: https://github.com/GIScience/ohsome-quality-api/pull/718
+[#721]: https://github.com/GIScience/ohsome-quality-analyst/pull/721
+
 ## Release 1.0.1
 
 - refactor: rename "ohsome quality analyst" (OQT) to "ohsome quality API" (oqapi) ([#685])
+
+[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## Release 1.0.0
 
@@ -68,7 +106,6 @@ This release includes a well specified [API](https://oqt.ohsome.org/api/docs) an
 [#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
-[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## 0.15.0
 
