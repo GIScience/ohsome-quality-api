@@ -12,6 +12,7 @@ RUN apt-get update && \
 # within docker container: run without root privileges
 RUN useradd -md /home/oqapi oqapi
 WORKDIR /opt/oqapi
+RUN pip install --no-cache-dir poetry
 RUN chown oqapi:oqapi . -R
 USER oqapi:oqapi
 
@@ -21,7 +22,6 @@ ENV PATH=$PATH:/home/oqapi/.local/bin
 # install only the dependencies
 COPY --chown=oqapi:oqapi pyproject.toml pyproject.toml
 COPY --chown=oqapi:oqapi poetry.lock poetry.lock
-RUN pip install --no-cache-dir poetry
 RUN python -m poetry install --no-ansi --no-interaction --no-root
 
 # copy all the other files and install the project
