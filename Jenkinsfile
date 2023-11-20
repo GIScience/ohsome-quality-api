@@ -23,6 +23,10 @@ pipeline {
 
         WORK_DIR = '/opt/oqapi'
         MODULE_DIR = '.'
+
+        // move to libraries later
+        UID = sh(returnStdout: true, script: 'id -u').trim()
+        GID = sh(returnStdout: true, script: 'id -g').trim()
     }
 
     stages {
@@ -44,7 +48,7 @@ pipeline {
                     }
                 }
                 script {
-                    DOCKER_API = docker.build('oqapi-api', "${MODULE_DIR}")
+                    DOCKER_API = docker.build('oqapi-api', "--build-arg uid=${UID} --build-arg gid=${GID} ${MODULE_DIR}")
                     DOCKER_API_CI = docker.build('oqapi-api-ci', "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
                 }
             }
