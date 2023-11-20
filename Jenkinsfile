@@ -15,11 +15,11 @@ pipeline {
         RELEASE_REGEX = /^([0-9]+(\.[0-9]+)*)(-(RC|beta-|alpha-)[0-9]+)?$/
         RELEASE_DEPLOY = false
         SNAPSHOT_DEPLOY = false
-        POETRY = 'python -m poetry'
-        POETRY_OPTIONS = '--no-ansi --no-interaction'
+        // POETRY = 'python -m poetry'
+        // POETRY_OPTIONS = '--no-ansi --no-interaction'
         // wait for an answer to https://github.com/python-poetry/poetry/issues/1567#issuecomment-800542938
         // POETRY_RUN = 'python -m poetry run --no-ansi --no-interaction'
-        POETRY_RUN = 'python -m poetry run'
+        // POETRY_RUN = 'python -m poetry run'
 
         WORK_DIR = '/opt/oqapi'
         MODULE_DIR = '.'
