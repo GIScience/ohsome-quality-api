@@ -134,8 +134,9 @@ class BuildingComparison(BaseIndicator):
 
         fig.update_layout(title_text=("Building Comparison"), showlegend=True)
         fig.update_yaxes(title_text="Building Area [km²]")
-        fig.update_xaxes(title_text="Datasets")
-
+        fig.update_xaxes(
+            title_text="Datasets (" + get_sources(self.area_references.keys()) + ")"
+        )
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
@@ -171,3 +172,16 @@ class BuildingComparison(BaseIndicator):
             )
         else:
             return ""
+
+
+def get_sources(reference_datasets):
+    sources = ""
+    for dataset in reference_datasets:
+        if dataset in source_links:
+            sources += f"<a href='{source_links[dataset]}'>{dataset}</a>"
+    return sources
+
+
+source_links = {
+    "EUBUCCO": "https://docs.eubucco.com/",
+}
