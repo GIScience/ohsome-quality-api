@@ -13,6 +13,10 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic
 
+SOURCE_LINKS = {
+    "EUBUCCO": "https://docs.eubucco.com/",
+}
+
 
 class BuildingComparison(BaseIndicator):
     def __init__(
@@ -177,11 +181,6 @@ class BuildingComparison(BaseIndicator):
 def get_sources(reference_datasets):
     sources = ""
     for dataset in reference_datasets:
-        if dataset in source_links:
-            sources += f"<a href='{source_links[dataset]}'>{dataset}</a>"
+        if dataset in SOURCE_LINKS.keys():
+            sources += f"<a href='{SOURCE_LINKS[dataset]}'>{dataset}</a>"
     return sources
-
-
-source_links = {
-    "EUBUCCO": "https://docs.eubucco.com/",
-}

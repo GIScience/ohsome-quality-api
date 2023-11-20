@@ -10,6 +10,7 @@
 ### New Features
 
 - building-comparison: AOI is now clipped to the coverage area ([#739])
+- building-comparison: now has link to reference datasets ([#741])
 
 ### Other Changes
 
@@ -17,6 +18,7 @@
 - test(db): add missing mock for getting coverage from database in tests ([#739])
 
 [#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
+[#741]: https://github.com/GIScience/ohsome-quality-api/pull/741
 
 
 ## Release 1.0.2
