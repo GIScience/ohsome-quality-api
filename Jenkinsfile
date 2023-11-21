@@ -62,7 +62,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    DOCKER_API_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'""") { // blacklist api.ohsome.org
+                    DOCKER_API_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'  -v /jenkins/tools:/jenkins/tools:ro""") { // blacklist api.ohsome.org
                         // run pytest
                         sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_api --cov-report=xml tests'
                         // replace absolute dir in the coverage file with actually used dir for sonar-scanner
