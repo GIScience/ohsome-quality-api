@@ -2,6 +2,10 @@
 # we have to use bullseye, because bookworm doesn't work with older Docker versions which are still in use
 FROM python:3.10-bullseye
 
+# Allow to set custom uid and gid values (i.e. for CI)
+ARG uid=1000
+ARG gid=1000
+
 # install R
 # to avoid caching issues combine apt-get update and install in one RUN statement.
 # to reduce image size, clean up the apt cache by removing /var/lib/apt/lists.
@@ -10,8 +14,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
-RUN useradd -md /home/oqapi oqapi
+RUN groupadd -g $gid oqapi
+RUN useradd -md /home/oqapi -u $uid -g $gid oqapi
 WORKDIR /opt/oqapi
+RUN pip install --no-cache-dir poetry
 RUN chown oqapi:oqapi . -R
 USER oqapi:oqapi
 
@@ -21,7 +27,6 @@ ENV PATH=$PATH:/home/oqapi/.local/bin
 # install only the dependencies
 COPY --chown=oqapi:oqapi pyproject.toml pyproject.toml
 COPY --chown=oqapi:oqapi poetry.lock poetry.lock
-RUN pip install --no-cache-dir poetry
 RUN python -m poetry install --no-ansi --no-interaction --no-root
 
 # copy all the other files and install the project
