@@ -98,14 +98,14 @@ pipeline {
         }
 
         stage('Check Dependencies') {
-            // when {
-            //     expression {
-            //         if (currentBuild.number > 1) {
-            //             return (((currentBuild.getStartTimeInMillis() - currentBuild.previousBuild.getStartTimeInMillis()) > 2592000000) && (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX)) //2592000000 30 days in milliseconds
-            //         }
-            //         return false
-            //         }
-            // }
+            when {
+                expression {
+                    if (currentBuild.number > 1) {
+                        return (((currentBuild.getStartTimeInMillis() - currentBuild.previousBuild.getStartTimeInMillis()) > 2592000000) && (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX)) //2592000000 30 days in milliseconds
+                    }
+                    return false
+                    }
+            }
             steps {
                 script {
                     DOCKER_API.inside {
