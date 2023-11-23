@@ -8,4 +8,4 @@ FROM
     eubucco,
     bpoly
 WHERE
-    ST_Intersects (eubucco.geom, bpoly.geom);
+    ST_Intersects (eubucco.centroid, bpoly.geom);
