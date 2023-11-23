@@ -6,8 +6,9 @@ import plotly.graph_objects as pgo
 from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
+from plotly.subplots import make_subplots
 
-from ohsome_quality_api.definitions import Color, get_attribution
+from ohsome_quality_api.definitions import get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
@@ -113,32 +114,25 @@ class BuildingComparison(BaseIndicator):
         if self.result.label == "undefined" and self.check_major_edge_cases():
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        fig = pgo.Figure()
-        fig.add_trace(
-            pgo.Bar(
-                name="OSM",
-                x=["OSM"],
-                y=[round(self.area_osm, 2)],
-                marker_color=Color.GREEN.value,
-            )
+
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            specs=[[{"type": "mapbox"}], [{"type": "mapbox"}]],
+            subplot_titles=("Montreal 1", "Montreal 2"),
         )
-        for name, area in self.area_references.items():
-            fig.add_trace(
-                pgo.Bar(
-                    name=name,
-                    x=[name],
-                    y=[round(area, 2)],
-                    marker_color=Color.PURPLE.value,
-                )
-            )
 
-        fig.update_layout(title_text=("Building Comparison"), showlegend=True)
-        fig.update_yaxes(title_text="Building Area [km²]")
-        fig.update_xaxes(title_text="Datasets")
-
-        raw = fig.to_dict()
-        raw["layout"].pop("template")  # remove boilerplate
-        self.result.figure = raw
+        fig.add_trace(
+            pgo.Scattermapbox(
+                lat=["45.5017"],
+                lon=["-73.5673"],
+                mode="markers",
+                marker=pgo.scattermapbox.Marker(size=14),
+                text=["Montreal"],
+            ),
+            row=1,
+            col=1,
+        )
 
     def check_major_edge_cases(self) -> bool:
         coverage = self.coverage["EUBUCCO"]
