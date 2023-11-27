@@ -166,8 +166,8 @@ class BuildingComparison(BaseIndicator):
         if coverage < 0.95:
             return (
                 "Warning: Reference data does not cover the whole input geometry. "
-                + f"Input geometry is clipped to the coverage. Results is calculated"
-                f" for {coverage}% of the input geometry."
+                + "Input geometry is clipped to the coverage. Result is only calculated"
+                " for the intersection area. "
             )
         else:
             return ""
