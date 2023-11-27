@@ -6,10 +6,12 @@
 
 - building-comparison: is calculated for coverage area only ([#739])
 - building-comparison: result description now shows correct coverage percentage ([#739])
+- mapping-saturation: estimated total line is now always plotted, f it is not more than five times as large as the highest value ([#723])  
 
 ### New Features
 
 - building-comparison: AOI is now clipped to the coverage area ([#739])
+- mapping-saturation: add hover info to estimated total data line ([#723])
 
 ### Other Changes
 
@@ -17,6 +19,7 @@
 - test(db): add missing mock for getting coverage from database in tests ([#739])
 - building-comparison: request EUBUCCO database now 
 
+[#723]: https://github.com/GIScience/ohsome-quality-api/pull/723
 [#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
 
 

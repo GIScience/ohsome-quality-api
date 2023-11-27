@@ -184,23 +184,20 @@ class MappingSaturation(BaseIndicator):
         # plot asymptote
         asymptote = self.data["best_fit"]["asymptote"]
         if asymptote < max(self.values) * 5:
-            fig.add_shape(
-                type="line",
-                x0=min(self.timestamps),
-                x1=max(self.timestamps),
-                y0=asymptote,
-                y1=asymptote,
-                line=dict(color=Color.RED.value, width=2, dash="dash"),
-                name="Estimated total data",
-                showlegend=True,
+            asymptote_line_values = [asymptote for _ in self.values]
+            fig.add_trace(
+                pgo.Scatter(
+                    x=self.timestamps,
+                    y=asymptote_line_values,
+                    name="Estimated total data",
+                    showlegend=True,
+                    line=dict(color=Color.RED.value, dash="dash"),
+                    hovertext=f"Estimated total data: {asymptote}",
+                )
             )
-            y_max = max(max(self.values), max(self.best_fit.fitted_values))
-            padding_percentage = 1 - (y_max / asymptote)
-            if 0 < padding_percentage < 0.5:
-                padding = y_max * (padding_percentage + 0.05)
-            else:
-                padding = y_max * 0.05
-            fig.update_yaxes(range=[min(self.values), y_max + padding])
+            y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)
+            fig.update_yaxes(range=[min(self.values), y_max * 1.05])
+
         fig.update_layout(showlegend=True)
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(x=0.02, y=0.85, bgcolor="rgba(255,255,255,0.66)")
