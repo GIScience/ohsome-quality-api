@@ -54,14 +54,39 @@ class BuildingComparison(BaseIndicator):
             self.feature = await db_client.get_eubucco_coverage_intersection(
                 self.feature
             )
-            db_query_result = await db_client.get_building_area(self.feature)
-            raw = db_query_result[0]["area"] or 0
+            #
+            # # db_query_result = await db_client.get_building_area(self.feature)
+            # connection = psycopg2.connect(
+            #     host=get_config_value("postgres_host"),
+            #     port=get_config_value("postgres_port"),
+            #     database=get_config_value("postgres_db"),
+            #     user=get_config_value("postgres_user"),
+            #     password=get_config_value("postgres_password"),
+            # )
+            # cursor = connection.cursor()
+            # query =
+            # cursor.execute(query)
+            #
+            # # Fetch the results
+            # results = cursor.fetchall()
+            # for row in results:
+            #     print(row)
+            #
+            # # Commit the changes
+            # connection.commit()
+            #
+            # # Close the cursor and connection
+            # cursor.close()
+            # connection.close()
+            logging.info("Stopp.")
+            raw = result[0]["area"] or 0
             self.area_references["EUBUCCO"] = raw / (1000 * 1000)
-
+            # show time for db request
             osm_query_result = await ohsome_client.query(
                 self.topic,
                 self.feature,
             )
+            logging.info("OSM query was successful.")
             raw = osm_query_result["result"][0]["value"] or 0  # if None
             self.area_osm = raw / (1000 * 1000)
             self.result.timestamp_osm = parser.isoparse(
