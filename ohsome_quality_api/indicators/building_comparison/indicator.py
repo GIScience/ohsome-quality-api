@@ -55,6 +55,7 @@ class BuildingComparison(BaseIndicator):
             self.coverage["EUBUCCO"] = None
             return
         if not self.check_major_edge_cases():
+            self.result.description = ""
             self.feature = await db_client.get_eubucco_coverage_intersection(
                 self.feature
             )
@@ -163,7 +164,6 @@ class BuildingComparison(BaseIndicator):
             )
             return True
         else:
-            self.result.description = ""
             return False
 
     def check_minor_edge_cases(self) -> str:
