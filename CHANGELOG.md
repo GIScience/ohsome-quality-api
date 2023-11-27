@@ -17,10 +17,11 @@
 
 - building-comparison: no quality estimation for areas with strong difference to reference data ([#739])
 - test(db): add missing mock for getting coverage from database in tests ([#739])
-- building-comparison: request EUBUCCO database now 
+- building-comparison: request EUBUCCO database now much faster ([#743])
 
 [#723]: https://github.com/GIScience/ohsome-quality-api/pull/723
 [#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
+[#743]: https://github.com/GIScience/ohsome-quality-api/pull/743
 
 
 ## Release 1.0.2
