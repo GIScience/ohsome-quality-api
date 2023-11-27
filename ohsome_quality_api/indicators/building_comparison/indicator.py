@@ -1,12 +1,16 @@
 import logging
+import os
 from string import Template
 
 import geojson
 import plotly.graph_objects as pgo
+import psycopg2
 from dateutil import parser
+from geodatabase.client import WORKING_DIR
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
 
+from config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -54,34 +58,9 @@ class BuildingComparison(BaseIndicator):
             self.feature = await db_client.get_eubucco_coverage_intersection(
                 self.feature
             )
-            #
-            # # db_query_result = await db_client.get_building_area(self.feature)
-            # connection = psycopg2.connect(
-            #     host=get_config_value("postgres_host"),
-            #     port=get_config_value("postgres_port"),
-            #     database=get_config_value("postgres_db"),
-            #     user=get_config_value("postgres_user"),
-            #     password=get_config_value("postgres_password"),
-            # )
-            # cursor = connection.cursor()
-            # query =
-            # cursor.execute(query)
-            #
-            # # Fetch the results
-            # results = cursor.fetchall()
-            # for row in results:
-            #     print(row)
-            #
-            # # Commit the changes
-            # connection.commit()
-            #
-            # # Close the cursor and connection
-            # cursor.close()
-            # connection.close()
-            logging.info("Stopp.")
-            raw = result[0]["area"] or 0
+            db_query_result = await get_eubucco_building_area(self.feature)
+            raw = db_query_result[0][0] or 0
             self.area_references["EUBUCCO"] = raw / (1000 * 1000)
-            # show time for db request
             osm_query_result = await ohsome_client.query(
                 self.topic,
                 self.feature,
@@ -196,3 +175,33 @@ class BuildingComparison(BaseIndicator):
             )
         else:
             return ""
+
+
+async def get_eubucco_building_area(bpoly: Feature) -> float:
+    """Get the building area for a AoI from the EUBUCCO dataset."""
+    connection = psycopg2.connect(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+    file_path = os.path.join(WORKING_DIR, "select_building_area.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    cursor = connection.cursor()
+
+    # Execute the query with the geometry as a parameter
+    cursor.execute(query, (geom,))
+
+    # Fetch the results
+    result = cursor.fetchall()
+
+    # Commit the changes
+    connection.commit()
+
+    # Close the cursor and connection
+    cursor.close()
+    connection.close()
+    return result
