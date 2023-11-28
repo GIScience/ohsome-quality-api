@@ -57,23 +57,24 @@ class BuildingComparison(BaseIndicator):
         else:
             self.coverage["EUBUCCO"] = None
             return
-        if not self.check_major_edge_cases():
-            self.result.description = ""
-            self.feature = await db_client.get_eubucco_coverage_intersection(
-                self.feature
-            )
-            db_query_result = await get_eubucco_building_area(self.feature)
-            self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
-            osm_query_result = await ohsome_client.query(
-                self.topic,
-                self.feature,
-            )
-            logging.info("OSM query was successful.")
-            raw = osm_query_result["result"][0]["value"] or 0  # if None
-            self.area_osm = raw / (1000 * 1000)
-            self.result.timestamp_osm = parser.isoparse(
-                osm_query_result["result"][0]["timestamp"]
-            )
+
+        edge_case = self.check_major_edge_cases()
+        if edge_case:
+            self.result.description = edge_case
+            return
+
+        self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
+        db_query_result = await get_eubucco_building_area(self.feature)
+        self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
+        osm_query_result = await ohsome_client.query(
+            self.topic,
+            self.feature,
+        )
+        raw = osm_query_result["result"][0]["value"] or 0  # if None
+        self.area_osm = raw / (1000 * 1000)
+        self.result.timestamp_osm = parser.isoparse(
+            osm_query_result["result"][0]["timestamp"]
+        )
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
@@ -118,7 +119,10 @@ class BuildingComparison(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined" and self.check_major_edge_cases():
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(
+                "Result is undefined and major edge case is present. "
+                + "Skipping figure creation."
+            )
             return
         fig = pgo.Figure()
         fig.add_trace(
@@ -148,27 +152,24 @@ class BuildingComparison(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def check_major_edge_cases(self) -> bool:
+    def check_major_edge_cases(self) -> str:
+        """If edge case is present return description if not return empty string."""
         coverage = self.coverage["EUBUCCO"]
-        # TODO: generalize function
         if coverage is None or coverage == 0.00:
-            self.result.description = (
-                "Reference dataset does not cover area-of-interest."
-            )
-            return True
+            return "Reference dataset does not cover area-of-interest."
         elif coverage < 0.10:
-            self.result.description = (
+            return (
                 "Only {:.2f}% of the area-of-interest is covered ".format(
                     coverage * 100
                 )
                 + "by the reference dataset (EUBUCCO). "
                 + "No quality estimation is possible."
             )
-            return True
         else:
-            return False
+            return ""
 
     def check_minor_edge_cases(self) -> str:
+        """If edge case is present return description if not return empty string."""
         coverage = self.coverage["EUBUCCO"]
         if coverage < 0.95:
             return (
@@ -182,6 +183,7 @@ class BuildingComparison(BaseIndicator):
 
 async def get_eubucco_building_area(bpoly: Feature) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
+    # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
     with open(file_path, "r") as file:
         query = file.read()
