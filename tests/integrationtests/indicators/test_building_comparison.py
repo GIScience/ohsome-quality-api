@@ -8,6 +8,7 @@ import pytest
 
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
+    get_sources,
 )
 from tests.integrationtests.utils import oqapi_vcr
 
@@ -203,3 +204,8 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "bar"
         pgo.Figure(indicator.result.figure)
+
+
+def test_get_sources():
+    source = get_sources(["EUBUCCO"])
+    assert source == "<a href='https://docs.eubucco.com/'>EUBUCCO</a>"

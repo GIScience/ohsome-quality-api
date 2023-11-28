@@ -12,6 +12,7 @@
 
 - building-comparison: AOI is now clipped to the coverage area ([#739])
 - mapping-saturation: add hover info to estimated total data line ([#723])
+- building-comparison: now has link to reference datasets ([#741])
 
 ### Other Changes
 
@@ -20,6 +21,7 @@
 
 [#723]: https://github.com/GIScience/ohsome-quality-api/pull/723
 [#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
+[#741]: https://github.com/GIScience/ohsome-quality-api/pull/741
 
 
 ## Release 1.0.2
