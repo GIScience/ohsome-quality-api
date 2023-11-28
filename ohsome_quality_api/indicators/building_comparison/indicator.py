@@ -148,7 +148,7 @@ class BuildingComparison(BaseIndicator):
         fig.update_layout(title_text=("Building Comparison"), showlegend=True)
         fig.update_yaxes(title_text="Building Area [km²]")
         fig.update_xaxes(
-            twtle_text="Reference Datasets ("
+            title_text="Reference Datasets ("
             + get_sources(self.area_references.keys())
             + ")"
         )

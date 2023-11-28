@@ -138,8 +138,9 @@ class TestCalculate:
         assert indicator.result.class_ is None
         assert indicator.result.description is not None
         assert (
-            "Warning: No quality estimation made. "
-            "OSM and reference data differ. Reference data is likely outdated."
+            "Warning: Because of a big difference between OSM and the reference "
+            + "data no quality estimation has been made. "
+            + "It could be that the reference data is outdated. "
             in indicator.result.description
         )
         assert indicator.result.label == "undefined"
