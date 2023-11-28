@@ -58,6 +58,7 @@ class BuildingComparison(BaseIndicator):
             self.coverage["EUBUCCO"] = None
             return
         if not self.check_major_edge_cases():
+            self.result.description = ""
             self.feature = await db_client.get_eubucco_coverage_intersection(
                 self.feature
             )
@@ -165,7 +166,6 @@ class BuildingComparison(BaseIndicator):
             )
             return True
         else:
-            self.result.description = ""
             return False
 
     def check_minor_edge_cases(self) -> str:
@@ -173,8 +173,8 @@ class BuildingComparison(BaseIndicator):
         if coverage < 0.95:
             return (
                 "Warning: Reference data does not cover the whole input geometry. "
-                + f"Input geometry is clipped to the coverage. Results is calculated"
-                f" for {coverage}% of the input geometry."
+                + "Input geometry is clipped to the coverage. Result is only calculated"
+                " for the intersection area. "
             )
         else:
             return ""
