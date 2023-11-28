@@ -78,7 +78,7 @@ class BuildingComparison(BaseIndicator):
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
-        if not self.result.description == "":
+        if self.result.label == "undefined" and self.check_major_edge_cases():
             return
         if self.check_minor_edge_cases():
             self.result.description = self.check_minor_edge_cases()
@@ -104,9 +104,11 @@ class BuildingComparison(BaseIndicator):
         elif self.th_low > self.result.value >= 0:
             self.result.class_ = 1
         elif self.result.value > self.above_one_th:
+            # TODO: move this to edge_case functions
             self.result.description += (
-                "Warning: No quality estimation made. "
-                "OSM and reference data differ. Reference data is likely outdated. "
+                "Warning: Because of a big difference between OSM and the reference "
+                + "data no quality estimation has been made. "
+                + "It could be that the reference data is outdated. "
             )
 
         template = Template(self.metadata.result_description)
@@ -146,7 +148,9 @@ class BuildingComparison(BaseIndicator):
         fig.update_layout(title_text=("Building Comparison"), showlegend=True)
         fig.update_yaxes(title_text="Building Area [km²]")
         fig.update_xaxes(
-            title_text="Datasets (" + get_sources(self.area_references.keys()) + ")"
+            twtle_text="Reference Datasets ("
+            + get_sources(self.area_references.keys())
+            + ")"
         )
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
