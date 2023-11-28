@@ -17,6 +17,10 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic
 
+SOURCE_LINKS = {
+    "EUBUCCO": "https://docs.eubucco.com/",
+}
+
 
 class BuildingComparison(BaseIndicator):
     def __init__(
@@ -138,8 +142,9 @@ class BuildingComparison(BaseIndicator):
 
         fig.update_layout(title_text=("Building Comparison"), showlegend=True)
         fig.update_yaxes(title_text="Building Area [km²]")
-        fig.update_xaxes(title_text="Datasets")
-
+        fig.update_xaxes(
+            title_text="Datasets (" + get_sources(self.area_references.keys()) + ")"
+        )
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
@@ -205,3 +210,11 @@ async def get_eubucco_building_area(bpoly: Feature) -> float:
     cursor.close()
     connection.close()
     return result
+
+
+def get_sources(reference_datasets):
+    sources = ""
+    for dataset in reference_datasets:
+        if dataset in SOURCE_LINKS.keys():
+            sources += f"<a href='{SOURCE_LINKS[dataset]}'>{dataset}</a>"
+    return sources
