@@ -1,12 +1,12 @@
 # Changelog
 
-## Current Main
+## Release 1.1.0
 
 ### Bug Fixes
 
 - building-comparison: is calculated for coverage area only ([#739])
 - building-comparison: result description now shows correct coverage percentage ([#739])
-- mapping-saturation: estimated total line is now always plotted, f it is not more than five times as large as the highest value ([#723])  
+- mapping-saturation: estimated total line is now always plotted, f it is not more than five times as large as the highest value ([#723])
 
 ### New Features
 
