@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 1.1.1
+
+### Bug Fixes
+
+- fix(building-comparison): Use psycopg AsyncConnection. Database connection was synchrone. ([ba279b2])
+
+[ba279b2]: https://github.com/GIScience/ohsome-quality-api/commit/ba279b23b82404d9f6c377e2a34683b159803359
+
 ## Release 1.1.0
 
 ### Bug Fixes
