@@ -37,7 +37,7 @@ def response_metadata_topic_building_count():
                 "currentness",
                 "attribute-completeness",
             ],
-            "projects": ["core"],
+            "projects": ["core", "bkg"],
             "source": None,
         },
     }
