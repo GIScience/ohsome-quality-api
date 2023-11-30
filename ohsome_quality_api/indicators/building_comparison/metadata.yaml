@@ -3,6 +3,7 @@ building-comparison:
   name: Building Comparison
   projects:
     - experimental
+    - bkg
   quality_dimension: completeness
   description: >-
     Compare the building area of OSM buildings with the building area of
