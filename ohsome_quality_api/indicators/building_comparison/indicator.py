@@ -199,12 +199,11 @@ async def get_eubucco_building_area(bpoly: Feature) -> float:
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
-    with psycopg.connect(dns) as con:
-        with con.cursor() as cur:
-            cur.execute(query, (geom,))
-            res = cur.fetchall()
-            con.commit()
-    return res[0][0] or 0.0
+    async with await psycopg.AsyncConnection.connect(dns) as con:
+        async with con.cursor() as cur:
+            await cur.execute(query, (geom,))
+            res = await cur.fetchone()
+    return res[0] or 0.0
 
 
 def get_sources(reference_datasets):
