@@ -34,7 +34,7 @@ def get_topic_presets(project: ProjectEnum = None) -> dict[str, TopicDefinition]
     topics = load_topic_presets()
     if project is not None:
         # always include core topics
-        core = {k: v for k, v in topics.items() if "core" in v.projects}
+        core = {k: v for k, v in topics.items() if ProjectEnum.core in v.projects}
         return core | {k: v for k, v in topics.items() if project in v.projects}
     else:
         return topics  # return all
