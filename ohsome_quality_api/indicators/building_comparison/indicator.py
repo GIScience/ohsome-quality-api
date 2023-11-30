@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from string import Template
@@ -6,6 +7,7 @@ import geojson
 import plotly.graph_objects as pgo
 import psycopg
 import yaml
+from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
@@ -61,7 +63,8 @@ class BuildingComparison(BaseIndicator):
             return
 
         self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
-        db_query_result = await get_eubucco_building_area(self.feature)
+        feature_string = json.dumps(self.feature)
+        db_query_result = await get_eubucco_building_area(feature_string)
         self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
         osm_query_result = await ohsome_client.query(
             self.topic,
@@ -186,13 +189,15 @@ class BuildingComparison(BaseIndicator):
             return ""
 
 
-async def get_eubucco_building_area(bpoly: Feature) -> float:
+@alru_cache
+async def get_eubucco_building_area(feature_string: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
+    feature = json.loads(feature_string)
     with open(file_path, "r") as file:
         query = file.read()
-    geom = str(bpoly.geometry)
+    geom = str(feature["geometry"])
     dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
         host=get_config_value("postgres_host"),
         port=get_config_value("postgres_port"),
