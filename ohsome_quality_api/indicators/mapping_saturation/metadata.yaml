@@ -9,6 +9,7 @@ mapping-saturation:
     - idealvgi
     - mapaction
     - sketchmap
+    - bkg
   quality_dimension: completeness
   description: >-
     Calculate if mapping has saturated.

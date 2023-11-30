@@ -3,6 +3,7 @@ currentness:
   name: Currentness
   projects:
     - core
+    - bkg
   quality_dimension: currentness
   description: >-
     Estimate currentness of features by classifying contributions based on topic specific temporal thresholds into three groups: up-to-date, in-between and out-of-date.

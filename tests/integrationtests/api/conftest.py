@@ -60,6 +60,7 @@ def metadata_indicator_mapping_saturation():
                 "idealvgi",
                 "mapaction",
                 "sketchmap",
+                "bkg",
             ],
             "qualityDimension": "completeness",
         }
