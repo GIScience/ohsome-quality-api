@@ -1,0 +1,5 @@
+---
+# set source link and publishing date of compare datasets
+EUBUCCO:
+  link: https://docs.eubucco.com
+  date: 1900
