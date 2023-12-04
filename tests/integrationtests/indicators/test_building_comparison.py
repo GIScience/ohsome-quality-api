@@ -209,4 +209,4 @@ class TestFigure:
 
 def test_get_sources():
     source = get_sources(["EUBUCCO"])
-    assert source == "<a href='https://docs.eubucco.com/'>EUBUCCO</a>"
+    assert source == "<a href='https://docs.eubucco.com'>EUBUCCO</a>"
