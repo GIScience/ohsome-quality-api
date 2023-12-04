@@ -21,6 +21,7 @@
 - building-comparison: AOI is now clipped to the coverage area ([#739])
 - mapping-saturation: add hover info to estimated total data line ([#723])
 - building-comparison: now has link to reference datasets ([#741])
+- building-comparison: added publication date of reference dataset and OSM Timestamp([#750])
 
 ### Other Changes
 
