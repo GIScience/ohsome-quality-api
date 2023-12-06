@@ -2,11 +2,11 @@ import logging
 from string import Template
 
 import geojson
-import plotly.graph_objects as pgo
+import plotly.express as px
+import plotly.subplots as sp
 from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
-from plotly.subplots import make_subplots
 
 from ohsome_quality_api.definitions import get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
@@ -112,27 +112,138 @@ class BuildingComparison(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined" and self.check_major_edge_cases():
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(
+                "Result is undefined and major edge case is present. "
+                + "Skipping figure creation."
+            )
             return
 
-        fig = make_subplots(
-            rows=2,
-            cols=1,
-            specs=[[{"type": "mapbox"}], [{"type": "mapbox"}]],
-            subplot_titles=("Montreal 1", "Montreal 2"),
+        fig = sp.make_subplots(
+            rows=1,
+            cols=2,
+            subplot_titles=("Area", "Coverage"),
+            specs=[[{"type": "xy"}, {"type": "mapbox"}]],
         )
 
-        fig.add_trace(
-            pgo.Scattermapbox(
-                lat=["45.5017"],
-                lon=["-73.5673"],
-                mode="markers",
-                marker=pgo.scattermapbox.Marker(size=14),
-                text=["Montreal"],
-            ),
-            row=1,
-            col=1,
+        trace1 = px.bar(
+            # name="OSM",
+            x=["OSM"],
+            y=[round(self.area_osm, 2)],
+            # marker_color=Color.GREEN.value,
         )
+        coords = self.feature["geometry"]["coordinates"]
+        if self.feature["geometry"]["type"] == "Polygon":
+            coords = [coords]
+        [
+            innermost[0]
+            for outermost in coords
+            for inner in outermost
+            for innermost in inner
+        ]
+        [
+            innermost[1]
+            for outermost in coords
+            for inner in outermost
+            for innermost in inner
+        ]
+        #
+        # # fig.add_trace(
+        # #     pgo.Scattermapbox(
+        # #         lat=lat,
+        # #         lon=lon,
+        # #         mode="lines",
+        # #         marker=pgo.scattermapbox.Marker(
+        # #             size=17, color="rgb(255, 0, 0)", opacity=0.7
+        # #         ),
+        # #         text=["test"],
+        # #         hoverinfo="text",
+        # #     ),
+        # #     row=1,
+        # #     col=2,
+        # # )
+        # fig.add_trace(
+        #     pgo.Scattermapbox(
+        #         lat=[0],
+        #         lon=[0],
+        #     ),
+        #     row=1,
+        #     col=2,
+        # )
+        #
+        # fig.update_layout(mapbox_style="open-street-map")
+        # fig.update_layout(
+        #     # mapbox_bounds={
+        #     #     "west": math.floor(min(lon) * 10) / 10,
+        #     #     "east": math.ceil(max(lon) * 10) / 10,
+        #     #     "south": math.floor(min(lat) * 10) / 10,
+        #     #     "north": math.ceil(max(lat) * 10) / 10,
+        #     # },
+        #     mapbox_bounds={
+        #         "west": min(lon) - 0.5,
+        #         "east": max(lon) + 0.5,
+        #         "south": min(lat) - 0.5,
+        #         "north": max(lat) + 0.5,
+        #     },
+        #     mapbox=pgo.layout.Mapbox(
+        #         layers=[
+        #             {
+        #                 "sourcetype": "geojson",
+        #                 "source": self.feature,
+        #                 "type": "line",
+        #             }
+        #         ]
+        #     ),
+        # )
+
+        # fig = pgo.Figure()
+        # df = pd.DataFrame(
+        #     {
+        #         "id": [146],
+        #         "name": [self.feature["properties"]["name"]],
+        #         "value": [0.166639],
+        #     }
+        # )
+        # fig.add_trace(
+        #     pgo.Choroplethmapbox(
+        #         df,
+        #         geojson=self.feature,
+        #         locations=df.name,
+        #         featureidkey="properties.name",
+        #         z=df.value,
+        #         colorscale="Viridis",
+        #         zmin=0,
+        #         zmax=12,
+        #         marker_opacity=0.5,
+        #         marker_line_width=0
+        #         # mapbox_style="open-street-map",
+        #     )
+        # )
+        trace2 = px.choropleth_mapbox(
+            {"name": [self.feature["properties"]["name"]], "area": self.area_osm},
+            geojson=self.feature,
+            locations="name",
+            featureidkey="properties.name",
+            color=[self.coverage["EUBUCCO"]],
+            color_continuous_scale="Viridis",
+        )
+        #
+        for trace, col in zip([trace1, trace2], range(1, 3)):
+            for data in trace.data:
+                fig.add_trace(data, row=1, col=col)
+
+        fig.update_layout(
+            mapbox_style="open-street-map",
+            # mapbox_bounds={
+            #     "west": min(lon) - 0.5,
+            #     "east": max(lon) + 0.5,
+            #     "south": min(lat) - 0.5,
+            #     "north": max(lat) + 0.5,
+            # },
+        )
+        fig.show()
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
 
     def check_major_edge_cases(self) -> bool:
         coverage = self.coverage["EUBUCCO"]
