@@ -131,16 +131,17 @@ class BuildingComparison(BaseIndicator):
             y=[round(self.area_osm, 2)],
             # marker_color=Color.GREEN.value,
         )
+
         coords = self.feature["geometry"]["coordinates"]
         if self.feature["geometry"]["type"] == "Polygon":
             coords = [coords]
-        [
+        lon = [
             innermost[0]
             for outermost in coords
             for inner in outermost
             for innermost in inner
         ]
-        [
+        lat = [
             innermost[1]
             for outermost in coords
             for inner in outermost
@@ -225,7 +226,12 @@ class BuildingComparison(BaseIndicator):
             featureidkey="properties.name",
             color=[self.coverage["EUBUCCO"]],
             color_continuous_scale="Viridis",
+            range_color=(0, 1),
         )
+        # Create a custom hover template
+        hover_template = "<b>Name</b>: %{location}<br><b>EUBUCCO Coverage</b>: %{z}<br>"
+        trace2.update_traces(hovertemplate=hover_template)
+
         #
         for trace, col in zip([trace1, trace2], range(1, 3)):
             for data in trace.data:
@@ -233,13 +239,14 @@ class BuildingComparison(BaseIndicator):
 
         fig.update_layout(
             mapbox_style="open-street-map",
-            # mapbox_bounds={
-            #     "west": min(lon) - 0.5,
-            #     "east": max(lon) + 0.5,
-            #     "south": min(lat) - 0.5,
-            #     "north": max(lat) + 0.5,
-            # },
+            mapbox_bounds={
+                "west": min(lon) - 0.5,
+                "east": max(lon) + 0.5,
+                "south": min(lat) - 0.5,
+                "north": max(lat) + 0.5,
+            },
         )
+        fig.update_coloraxes(cmin=0, cmax=1)
         fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
