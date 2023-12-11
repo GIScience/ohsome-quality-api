@@ -1,0 +1,15 @@
+EUBUCCO:
+  name: EUBUCCO
+  source: https://docs.eubucco.com/
+  description: >-
+        EUBUCCO is a dataset of building footprints for Europe.
+        It is derived from administrative datasets.
+  color: PURPLE
+
+microsoft-buildings:
+    name: Microsoft Building Footprints
+    source: https://planetarycomputer.microsoft.com/dataset/ms-buildings
+    description: >-
+        Microsoft Building Footprints is a dataset of building footprints for the world.
+        It is derived from satellite imagery.
+    color: ORANGE
