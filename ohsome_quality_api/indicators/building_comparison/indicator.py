@@ -5,6 +5,7 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 import psycopg
+import yaml
 from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
@@ -15,10 +16,6 @@ from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic
-
-SOURCE_LINKS = {
-    "EUBUCCO": "https://docs.eubucco.com/",
-}
 
 
 class BuildingComparison(BaseIndicator):
@@ -130,7 +127,7 @@ class BuildingComparison(BaseIndicator):
         fig.add_trace(
             pgo.Bar(
                 name="OSM",
-                x=["OSM"],
+                x=["OSM" + f" ({self.result.timestamp_osm:%b %d, %Y})"],
                 y=[round(self.area_osm, 2)],
                 marker_color=Color.GREEN.value,
             )
@@ -139,7 +136,11 @@ class BuildingComparison(BaseIndicator):
             fig.add_trace(
                 pgo.Bar(
                     name=name,
-                    x=[name],
+                    x=[
+                        f"{name} ({load_source_data(name)['date']})"
+                        if load_source_data(name)["date"] is not None
+                        else name
+                    ],
                     y=[round(area, 2)],
                     marker_color=Color.PURPLE.value,
                 )
@@ -209,6 +210,21 @@ async def get_eubucco_building_area(bpoly: Feature) -> float:
 def get_sources(reference_datasets):
     sources = ""
     for dataset in reference_datasets:
-        if dataset in SOURCE_LINKS.keys():
-            sources += f"<a href='{SOURCE_LINKS[dataset]}'>{dataset}</a>"
+        source_metadata = load_source_data(dataset)
+        if source_metadata["link"] is not None:
+            sources += f"<a href='{load_source_data(dataset)['link']}'>{dataset}</a>"
+        else:
+            sources += f"{dataset}"
     return sources
+
+
+def load_source_data(reference_dataset) -> dict:
+    file_path = os.path.join(os.path.dirname(__file__), "sources.yaml")
+
+    with open(file_path, "r") as f:
+        raw = yaml.safe_load(f)
+
+    link = raw.get(reference_dataset, {}).get("link")
+    date = raw.get(reference_dataset, {}).get("date")
+
+    return {"link": link, "date": date}
