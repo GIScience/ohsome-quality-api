@@ -8,7 +8,7 @@ from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
 
-from ohsome_quality_api.definitions import get_attribution
+from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
@@ -125,11 +125,19 @@ class BuildingComparison(BaseIndicator):
             specs=[[{"type": "xy"}, {"type": "mapbox"}]],
         )
 
+        x_list = ["OSM"]
+        y_list = [round(self.area_osm, 2)]
+        for reference_set in ["EUBUCCO"]:
+            x_list.append(reference_set)
+            y_list.append(round(self.area_references["EUBUCCO"], 2))
+
+        color_list = [Color.RED.value, Color.BLUE.value]
+
         trace1 = px.bar(
-            # name="OSM",
-            x=["OSM"],
-            y=[round(self.area_osm, 2)],
-            # marker_color=Color.GREEN.value,
+            x=x_list,
+            y=y_list,
+            color=x_list,
+            color_discrete_sequence=color_list,
         )
 
         coords = self.feature["geometry"]["coordinates"]
@@ -147,78 +155,6 @@ class BuildingComparison(BaseIndicator):
             for inner in outermost
             for innermost in inner
         ]
-        #
-        # # fig.add_trace(
-        # #     pgo.Scattermapbox(
-        # #         lat=lat,
-        # #         lon=lon,
-        # #         mode="lines",
-        # #         marker=pgo.scattermapbox.Marker(
-        # #             size=17, color="rgb(255, 0, 0)", opacity=0.7
-        # #         ),
-        # #         text=["test"],
-        # #         hoverinfo="text",
-        # #     ),
-        # #     row=1,
-        # #     col=2,
-        # # )
-        # fig.add_trace(
-        #     pgo.Scattermapbox(
-        #         lat=[0],
-        #         lon=[0],
-        #     ),
-        #     row=1,
-        #     col=2,
-        # )
-        #
-        # fig.update_layout(mapbox_style="open-street-map")
-        # fig.update_layout(
-        #     # mapbox_bounds={
-        #     #     "west": math.floor(min(lon) * 10) / 10,
-        #     #     "east": math.ceil(max(lon) * 10) / 10,
-        #     #     "south": math.floor(min(lat) * 10) / 10,
-        #     #     "north": math.ceil(max(lat) * 10) / 10,
-        #     # },
-        #     mapbox_bounds={
-        #         "west": min(lon) - 0.5,
-        #         "east": max(lon) + 0.5,
-        #         "south": min(lat) - 0.5,
-        #         "north": max(lat) + 0.5,
-        #     },
-        #     mapbox=pgo.layout.Mapbox(
-        #         layers=[
-        #             {
-        #                 "sourcetype": "geojson",
-        #                 "source": self.feature,
-        #                 "type": "line",
-        #             }
-        #         ]
-        #     ),
-        # )
-
-        # fig = pgo.Figure()
-        # df = pd.DataFrame(
-        #     {
-        #         "id": [146],
-        #         "name": [self.feature["properties"]["name"]],
-        #         "value": [0.166639],
-        #     }
-        # )
-        # fig.add_trace(
-        #     pgo.Choroplethmapbox(
-        #         df,
-        #         geojson=self.feature,
-        #         locations=df.name,
-        #         featureidkey="properties.name",
-        #         z=df.value,
-        #         colorscale="Viridis",
-        #         zmin=0,
-        #         zmax=12,
-        #         marker_opacity=0.5,
-        #         marker_line_width=0
-        #         # mapbox_style="open-street-map",
-        #     )
-        # )
         trace2 = px.choropleth_mapbox(
             {"name": [self.feature["properties"]["name"]], "area": self.area_osm},
             geojson=self.feature,
@@ -245,11 +181,21 @@ class BuildingComparison(BaseIndicator):
                 "south": min(lat) - 0.5,
                 "north": max(lat) + 0.5,
             },
+            showlegend=False,
+            coloraxis=dict(showscale=False),
         )
-        fig.update_coloraxes(cmin=0, cmax=1)
-        fig.show()
+        fig.update(
+            layout_coloraxis_showscale=False,
+        )
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
+        for i in range(len(raw["data"])):
+            if i < (len(raw["data"]) - 1):
+                raw["data"][i]["x"] = raw["data"][i]["x"].tolist()
+                raw["data"][i]["y"] = raw["data"][i]["y"].tolist()
+            else:
+                raw["data"][i]["z"] = raw["data"][i]["z"].tolist()
+                raw["data"][i]["locations"] = raw["data"][i]["locations"].tolist()
         self.result.figure = raw
 
     def check_major_edge_cases(self) -> bool:
