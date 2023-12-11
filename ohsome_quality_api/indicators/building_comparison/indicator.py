@@ -129,7 +129,7 @@ class BuildingComparison(BaseIndicator):
         y_list = [round(self.area_osm, 2)]
         for reference_set in ["EUBUCCO"]:
             x_list.append(reference_set)
-            y_list.append(round(self.area_references["EUBUCCO"], 2))
+            y_list.append(round(self.area_references[reference_set], 2))
 
         color_list = [Color.RED.value, Color.BLUE.value]
 
