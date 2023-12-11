@@ -6,7 +6,7 @@ repos:
         args: ["--check", "--diff"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.0.275
+    rev: v0.1.7
     hooks:
       - id: ruff
   - repo: https://github.com/pre-commit/pre-commit-hooks
