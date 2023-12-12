@@ -85,7 +85,7 @@ pipeline {
                             sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
                         }
                         // run other static code analysis
-                        sh 'cd ${WORK_DIR} && ${POETRY_RUN} black --check --diff --no-color .'
+                        sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff format --check --diff .'
                         sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff .'
                     }
                 }
