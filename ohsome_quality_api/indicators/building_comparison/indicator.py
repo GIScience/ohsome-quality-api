@@ -48,21 +48,27 @@ class BuildingComparison(BaseIndicator):
         return get_attribution(["OSM", "EUBUCCO"])
 
     async def preprocess(self) -> None:
-        result = await db_client.get_eubucco_coverage_intersection_area(self.feature)
-        if result:
-            self.coverage["EUBUCCO"] = result[0]["area_ratio"]
-        else:
-            self.coverage["EUBUCCO"] = None
-            return
-
+        # result = await db_client.get_eubucco_coverage_intersection_area(self.feature)
+        # if result:
+        #     self.coverage["EUBUCCO"] = result[0]["area_ratio"]
+        # else:
+        #     self.coverage["EUBUCCO"] = None
+        #     return
+        self.coverage["EUBUCCO"] = 1
         edge_case = self.check_major_edge_cases()
         if edge_case:
             self.result.description = edge_case
             return
 
-        self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
+        # self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
         db_query_result = await get_eubucco_building_area(self.feature)
         self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
+
+        # Query Microsoft Building Footprints
+        self.area_references["microsoft-buildings"] = await get_mbf_building_area(
+            self.feature
+        ) * (100 * 100)
+
         osm_query_result = await ohsome_client.query(
             self.topic,
             self.feature,
@@ -135,14 +141,15 @@ class BuildingComparison(BaseIndicator):
         for name, area in self.area_references.items():
             fig.add_trace(
                 pgo.Bar(
-                    name=name,
+                    name=load_source_data(name)["name"],
                     x=[
-                        f"{name} ({load_source_data(name)['date']})"
+                        f"{load_source_data(name)['name']}"
+                        f" ({load_source_data(name)['date']})"
                         if load_source_data(name)["date"] is not None
                         else name
                     ],
                     y=[round(area, 2)],
-                    marker_color=Color.PURPLE.value,
+                    marker_color=Color[load_source_data(name)["color"]].value,
                 )
             )
 
@@ -207,24 +214,60 @@ async def get_eubucco_building_area(bpoly: Feature) -> float:
     return res[0] or 0.0
 
 
+async def get_mbf_building_area(bpoly: Feature) -> float:
+    """Get the building area for a AoI from the EUBUCCO dataset."""
+    # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
+    file_path = os.path.join(db_client.WORKING_DIR, "mbf.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+    async with await psycopg.AsyncConnection.connect(dns) as con:
+        async with con.cursor() as cur:
+            await cur.execute(query, (geom,))
+            res = await cur.fetchone()
+    return res[0] or 0.0
+
+
 def get_sources(reference_datasets):
-    sources = ""
+    sources = []
     for dataset in reference_datasets:
         source_metadata = load_source_data(dataset)
         if source_metadata["link"] is not None:
-            sources += f"<a href='{load_source_data(dataset)['link']}'>{dataset}</a>"
+            sources.append(
+                f"<a href='{load_source_data(dataset)['link']}'>"
+                f"{load_source_data(dataset)['name']}</a>"
+            )
         else:
-            sources += f"{dataset}"
-    return sources
+            sources.append(f"{dataset}")
+
+    result = ", ".join(sources)
+    return result
 
 
 def load_source_data(reference_dataset) -> dict:
-    file_path = os.path.join(os.path.dirname(__file__), "sources.yaml")
+    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
 
     with open(file_path, "r") as f:
         raw = yaml.safe_load(f)
 
+    name = raw.get(reference_dataset, {}).get("name")
     link = raw.get(reference_dataset, {}).get("link")
     date = raw.get(reference_dataset, {}).get("date")
+    color = raw.get(reference_dataset, {}).get("color")
 
-    return {"link": link, "date": date}
+    return {"name": name, "link": link, "date": date, "color": color}
+
+
+def get_colors(reference_datasets):
+    colors = []
+    for dataset in reference_datasets:
+        colors.append(Color.PURPLE.value)
+    colors[0] = Color.GREEN.value
+    return colors

@@ -79,6 +79,16 @@ async def get_building_area(bpoly: Feature) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
+async def get_building_area_mbf(bpoly: Feature) -> list[Record]:
+    """Get area of building footprints for a bounding polygon."""
+    file_path = os.path.join(WORKING_DIR, "mbf.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    async with get_connection() as conn:
+        return await conn.fetch(query, geom)
+
+
 async def get_eubucco_coverage() -> list[Record]:
     file_path = os.path.join(WORKING_DIR, "select_eubucco_coverage.sql")
     with open(file_path, "r") as file:

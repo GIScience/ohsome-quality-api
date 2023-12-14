@@ -1,6 +1,7 @@
 EUBUCCO:
   name: EUBUCCO
-  source: https://docs.eubucco.com/
+  link: https://docs.eubucco.com/
+  date: Nov 3, 2022
   description: >-
         EUBUCCO is a dataset of building footprints for Europe.
         It is derived from administrative datasets.
@@ -8,7 +9,8 @@ EUBUCCO:
 
 microsoft-buildings:
     name: Microsoft Building Footprints
-    source: https://planetarycomputer.microsoft.com/dataset/ms-buildings
+    link: https://planetarycomputer.microsoft.com/dataset/ms-buildings
+    date: July 5, 2022
     description: >-
         Microsoft Building Footprints is a dataset of building footprints for the world.
         It is derived from satellite imagery.
