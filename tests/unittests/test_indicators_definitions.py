@@ -48,12 +48,15 @@ def test_get_coverage():
         definitions.get_coverage("building-comparison", inverse=False)
     )
     assert coverage.is_valid
-
+    coverage_default = asyncio.run(definitions.get_coverage("building-comparison"))
+    assert coverage_default.is_valid
+    assert coverage == coverage_default
     coverage_inversed = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=True)
     )
     assert coverage_inversed.is_valid
     assert coverage != coverage_inversed
+    assert coverage_default != coverage_inversed
 
     assert isinstance(coverage, geojson.FeatureCollection)
     coverage = asyncio.run(definitions.get_coverage("mapping-saturation"))

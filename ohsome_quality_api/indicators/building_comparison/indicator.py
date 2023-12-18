@@ -39,7 +39,7 @@ class BuildingComparison(BaseIndicator):
         self.above_one_th = 1.30
 
     @classmethod
-    async def coverage(cls, inverse=True) -> Polygon | MultiPolygon:
+    async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
         result = await db_client.get_eubucco_coverage(inverse)
         return geojson.loads(result[0]["geom"])
 
