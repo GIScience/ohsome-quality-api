@@ -441,12 +441,10 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> Any:
 )
 async def metadata_indicators_coverage(
     key: IndicatorEnum,
+    inverse: bool = False,
 ) -> Any:
-    """Get coverage geometry of an indicator by key.
-
-    Empty response means global coverage.
-    """
-    return await get_coverage(key.value)
+    """Get coverage geometry of an indicator by key."""
+    return await get_coverage(key.value, inverse)
 
 
 @app.get(

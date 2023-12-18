@@ -102,19 +102,22 @@ class BaseIndicator(metaclass=ABCMeta):
         return get_attribution(["OSM"])
 
     @classmethod
-    async def coverage(cls) -> Polygon | MultiPolygon:
+    async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
         """Return coverage geometry. Default is global coverage."""
-        return Polygon(
-            coordinates=[
-                [
-                    (-180, 90),
-                    (-180, -90),
-                    (180, -90),
-                    (180, 90),
-                    (-180, 90),
+        if inverse is False:
+            return Polygon(
+                coordinates=[
+                    [
+                        (-180, 90),
+                        (-180, -90),
+                        (180, -90),
+                        (180, 90),
+                        (-180, 90),
+                    ]
                 ]
-            ]
-        )
+            )
+        else:
+            return Polygon(coordinates=[])
 
     @abstractmethod
     async def preprocess(self) -> None:

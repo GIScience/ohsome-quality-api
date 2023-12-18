@@ -43,9 +43,18 @@ def test_get_indicator_definitions_with_project():
         assert indicator.projects == ["core"]
 
 
-def test_get_coverage(mock_select_eubucco_coverage):
-    coverage = asyncio.run(definitions.get_coverage("building-comparison"))
+def test_get_coverage():
+    coverage = asyncio.run(
+        definitions.get_coverage("building-comparison", inverse=False)
+    )
     assert coverage.is_valid
+
+    coverage_inversed = asyncio.run(
+        definitions.get_coverage("building-comparison", inverse=True)
+    )
+    assert coverage_inversed.is_valid
+    assert coverage != coverage_inversed
+
     assert isinstance(coverage, geojson.FeatureCollection)
     coverage = asyncio.run(definitions.get_coverage("mapping-saturation"))
     assert coverage.is_valid

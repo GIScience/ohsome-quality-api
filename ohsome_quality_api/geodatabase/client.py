@@ -79,10 +79,15 @@ async def get_building_area(bpoly: Feature) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
-async def get_eubucco_coverage() -> list[Record]:
+async def get_eubucco_coverage(inverse: bool) -> list[Record]:
     file_path = os.path.join(WORKING_DIR, "select_eubucco_coverage.sql")
     with open(file_path, "r") as file:
         query = file.read()
+    if inverse:
+        table_name = "eubucco_v0_1_coverage_inversed"
+    else:
+        table_name = "eubucco_v0_1_coverage_simple"
+    query = query.format(table_name=table_name)
     async with get_connection() as conn:
         return await conn.fetch(query)
 
