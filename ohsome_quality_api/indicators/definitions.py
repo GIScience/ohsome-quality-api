@@ -27,9 +27,9 @@ def get_valid_indicators(topic_key: str) -> tuple:
     return tuple(td[topic_key].indicators)
 
 
-async def get_coverage(indicator_key: str) -> FeatureCollection:
+async def get_coverage(indicator_key: str, inverse: bool = False) -> FeatureCollection:
     indicator_class = get_class_from_key(class_type="indicator", key=indicator_key)
-    geometry = await indicator_class.coverage()
+    geometry = await indicator_class.coverage(inverse)
     feature = Feature(geometry=geometry, properties={})
     return FeatureCollection(features=[feature])
 
