@@ -3,15 +3,38 @@ from unittest.mock import AsyncMock
 
 import geojson
 import pytest
+from geojson import Polygon
 
 from ohsome_quality_api.indicators import definitions, models
 
 
 @pytest.fixture(scope="class")
 def mock_select_eubucco_coverage(class_mocker, feature_germany_berlin):
-    async_mock = AsyncMock(
-        return_value=[{"geom": geojson.dumps(feature_germany_berlin)}]
-    )
+    async def side_effect(*args, **kwargs):
+        inverse = args[0]
+
+        if inverse:
+            return [
+                {
+                    "geom": geojson.dumps(
+                        Polygon(
+                            coordinates=[
+                                [
+                                    (-180, 90),
+                                    (-180, -90),
+                                    (180, -90),
+                                    (180, 90),
+                                    (-180, 90),
+                                ]
+                            ]
+                        )
+                    )
+                }
+            ]
+        else:
+            return [{"geom": geojson.dumps(Polygon(coordinates=[]))}]
+
+    async_mock = AsyncMock(side_effect=side_effect)
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage",
         side_effect=async_mock,
@@ -43,7 +66,7 @@ def test_get_indicator_definitions_with_project():
         assert indicator.projects == ["core"]
 
 
-def test_get_coverage():
+def test_get_coverage(mock_select_eubucco_coverage):
     coverage = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=False)
     )
