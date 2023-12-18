@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### New Features
+
+- api: add inverse parameter to coverage endpoint ([#762])
+
+[#762]: https://github.com/GIScience/ohsome-quality-api/issues/762
+
+
 ## Release 1.1.1
 
 ### Bug Fixes
