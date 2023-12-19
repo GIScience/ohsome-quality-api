@@ -1,12 +1,11 @@
 # Changelog
 
->>>>>> 1d11b3b7 (chore: add changelog)
 ## Current Main
 
 ### New Features
 
 - api: add inverse parameter to coverage endpoint ([#762])
-- building-comparison: add caching to request to EUBUCCO database ([#754])
+- building-comparison: add caching of requests made to the database for EUBUCCO buidings ([#754])
 
 [#754]: https://github.com/GIScience/ohsome-quality-api/pull/754
 [#762]: https://github.com/GIScience/ohsome-quality-api/issues/762
