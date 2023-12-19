@@ -14,7 +14,7 @@ building-comparison:
     yellow: >-
       OSM has a bit less building area than the reference data.
     green: >-
-      OSM has equal or more building area than the reference data.
+      OSM has almost the same, the same or even more building area than the reference data.
     undefined: >-
       Comparison could not be made.
   result_description: >-
