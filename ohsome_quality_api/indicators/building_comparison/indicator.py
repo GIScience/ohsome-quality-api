@@ -6,6 +6,7 @@ import geojson
 import plotly.graph_objects as pgo
 import psycopg
 import yaml
+from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature, MultiPolygon, Polygon
 from numpy import mean
@@ -39,8 +40,8 @@ class BuildingComparison(BaseIndicator):
         self.above_one_th = 1.30
 
     @classmethod
-    async def coverage(cls) -> Polygon | MultiPolygon:
-        result = await db_client.get_eubucco_coverage()
+    async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
+        result = await db_client.get_eubucco_coverage(inverse)
         return geojson.loads(result[0]["geom"])
 
     @classmethod
@@ -60,8 +61,8 @@ class BuildingComparison(BaseIndicator):
             self.result.description = edge_case
             return
 
-        # self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
-        db_query_result = await get_eubucco_building_area(self.feature)
+        self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
+        db_query_result = await get_eubucco_building_area(geojson.dumps(self.feature))
         self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
 
         # Query Microsoft Building Footprints
@@ -193,9 +194,11 @@ class BuildingComparison(BaseIndicator):
             return ""
 
 
-async def get_eubucco_building_area(bpoly: Feature) -> float:
+@alru_cache
+async def get_eubucco_building_area(bpoly: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
+    bpoly = geojson.loads(bpoly)
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
     with open(file_path, "r") as file:
         query = file.read()

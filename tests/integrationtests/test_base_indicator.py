@@ -58,9 +58,18 @@ class TestBaseIndicator:
         assert isinstance(Minimal.attribution(), str)
 
     def test_coverage(self):
-        coverage = asyncio.run(Minimal.coverage())
+        coverage = asyncio.run(Minimal.coverage(inverse=False))
         assert isinstance(coverage, Polygon)
         assert coverage.is_valid
+        coverage_default = asyncio.run(Minimal.coverage())
+        assert isinstance(coverage_default, Polygon)
+        assert coverage_default.is_valid
+        assert coverage_default == coverage
+        coverage_inversed = asyncio.run(Minimal.coverage(inverse=True))
+        assert isinstance(coverage_inversed, Polygon)
+        assert coverage_inversed.is_valid
+        assert coverage != coverage_inversed
+        assert coverage_default != coverage_inversed
 
     def test_figure(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)

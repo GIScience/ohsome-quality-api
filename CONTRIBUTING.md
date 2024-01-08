@@ -47,13 +47,13 @@ All development work is based on the main branch (`main`). Merge requests are ex
 
 ### Tools
 
-This project uses [`black`](https://github.com/psf/black) and [`ruff`](https://github.com/astral-sh/ruff) to ensure consistent code style. See the `pyproject.toml` file for configuration.
+This project uses [`ruff`](https://github.com/astral-sh/ruff) to ensure consistent code style. See the `pyproject.toml` file for configuration.
 
 
 #### A Note on the Configuration
 
 ```bash
-poetry run black .
+poetry run ruff format .
 poetry run ruff .
 ```
 

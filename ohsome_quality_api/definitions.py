@@ -49,7 +49,7 @@ class Color(Enum):
 
 
 def load_metadata(
-    module_name: Literal["indicators", "reports"]
+    module_name: Literal["indicators", "reports"],
 ) -> dict[str, IndicatorMetadata | ReportMetadata]:
     """Read metadata of all indicators or reports from YAML files.
 
