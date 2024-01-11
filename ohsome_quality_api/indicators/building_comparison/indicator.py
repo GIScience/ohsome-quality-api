@@ -41,21 +41,28 @@ class BuildingComparison(BaseIndicator):
 
     @classmethod
     async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
-        result = await db_client.get_eubucco_coverage(inverse)
-        return geojson.loads(result[0]["geom"])
+        reference_datasets = load_reference_datasets()
+        coverage_names = load_datasets_coverage_names(reference_datasets)
+        result = await db_client.get_reference_coverage(coverage_names, inverse)
+        features = []
+        for i in range(len(result)):
+            feature = geojson.loads(result[i])
+            feature["properties"] = {}
+            feature["properties"]["reference_dataset"] = reference_datasets[i]
+            features.append(feature)
+        return features
 
     @classmethod
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO"])
 
     async def preprocess(self) -> None:
-        # result = await db_client.get_eubucco_coverage_intersection_area(self.feature)
-        # if result:
-        #     self.coverage["EUBUCCO"] = result[0]["area_ratio"]
-        # else:
-        #     self.coverage["EUBUCCO"] = None
-        #     return
-        self.coverage["EUBUCCO"] = 1
+        result = await db_client.get_eubucco_coverage_intersection_area(self.feature)
+        if result:
+            self.coverage["EUBUCCO"] = result[0]["area_ratio"]
+        else:
+            self.coverage["EUBUCCO"] = None
+            return
         edge_case = self.check_major_edge_cases()
         if edge_case:
             self.result.description = edge_case
@@ -66,7 +73,7 @@ class BuildingComparison(BaseIndicator):
         self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
 
         # Query Microsoft Building Footprints
-        self.area_references["microsoft-buildings"] = await get_mbf_building_area(
+        self.area_references["microsoft-buildings"] = await get_microsoft_building_area(
             self.feature
         ) * (100 * 100)
 
@@ -142,15 +149,15 @@ class BuildingComparison(BaseIndicator):
         for name, area in self.area_references.items():
             fig.add_trace(
                 pgo.Bar(
-                    name=load_source_data(name)["name"],
+                    name=load_datasets_metadata(name)["name"],
                     x=[
-                        f"{load_source_data(name)['name']}"
-                        f" ({load_source_data(name)['date']})"
-                        if load_source_data(name)["date"] is not None
+                        f"{load_datasets_metadata(name)['name']}"
+                        f" ({load_datasets_metadata(name)['date']})"
+                        if load_datasets_metadata(name)["date"] is not None
                         else name
                     ],
                     y=[round(area, 2)],
-                    marker_color=Color[load_source_data(name)["color"]].value,
+                    marker_color=Color[load_datasets_metadata(name)["color"]].value,
                 )
             )
 
@@ -217,10 +224,10 @@ async def get_eubucco_building_area(bpoly: str) -> float:
     return res[0] or 0.0
 
 
-async def get_mbf_building_area(bpoly: Feature) -> float:
+async def get_microsoft_building_area(bpoly: Feature) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
-    file_path = os.path.join(db_client.WORKING_DIR, "mbf.sql")
+    file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
     with open(file_path, "r") as file:
         query = file.read()
     geom = str(bpoly.geometry)
@@ -241,11 +248,11 @@ async def get_mbf_building_area(bpoly: Feature) -> float:
 def get_sources(reference_datasets):
     sources = []
     for dataset in reference_datasets:
-        source_metadata = load_source_data(dataset)
+        source_metadata = load_datasets_metadata(dataset)
         if source_metadata["link"] is not None:
             sources.append(
-                f"<a href='{load_source_data(dataset)['link']}'>"
-                f"{load_source_data(dataset)['name']}</a>"
+                f"<a href='{load_datasets_metadata(dataset)['link']}'>"
+                f"{load_datasets_metadata(dataset)['name']}</a>"
             )
         else:
             sources.append(f"{dataset}")
@@ -254,7 +261,7 @@ def get_sources(reference_datasets):
     return result
 
 
-def load_source_data(reference_dataset) -> dict:
+def load_datasets_metadata(reference_dataset) -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
 
     with open(file_path, "r") as f:
@@ -266,6 +273,28 @@ def load_source_data(reference_dataset) -> dict:
     color = raw.get(reference_dataset, {}).get("color")
 
     return {"name": name, "link": link, "date": date, "color": color}
+
+
+def load_datasets_coverage_names(reference_datasets) -> dict:
+    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
+
+    with open(file_path, "r") as f:
+        raw = yaml.safe_load(f)
+
+    coverage_names = []
+    for dataset in reference_datasets:
+        coverage_names.append(raw.get(dataset, {}).get("coverage_name"))
+
+    return coverage_names
+
+
+def load_reference_datasets() -> list:
+    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
+
+    with open(file_path, "r") as f:
+        raw = yaml.safe_load(f)
+
+    return list(raw.keys())
 
 
 def get_colors(reference_datasets):

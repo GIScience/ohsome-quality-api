@@ -86,7 +86,7 @@ def test_coverage_default(client):
     }
 
 
-@pytest.mark.skip(reason="Depends on database")
+# @pytest.mark.skip(reason="Depends on database")
 def test_coverage(client):
     response = client.get("metadata/indicators/building-comparison/coverage")
     assert response.status_code == 200

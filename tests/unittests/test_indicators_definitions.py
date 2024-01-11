@@ -36,7 +36,7 @@ def mock_select_eubucco_coverage(class_mocker, feature_germany_berlin):
 
     async_mock = AsyncMock(side_effect=side_effect)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_eubucco_coverage",
+        "ohsome_quality_api.indicators.building_completeness.indicator.db_client.get_reference_coverage",
         side_effect=async_mock,
     )
 

@@ -3,6 +3,10 @@ import unittest
 
 import geojson
 import pytest
+from indicators.building_comparison.indicator import (
+    load_datasets_coverage_names,
+    load_reference_datasets,
+)
 
 import ohsome_quality_api.geodatabase.client as db_client
 
@@ -69,11 +73,16 @@ def test_get_building_area(feature_germany_berlin):
     assert result[0]["area"] == 4842587.791645115
 
 
-def test_get_eubucco_coverage():
-    result = asyncio.run(db_client.get_eubucco_coverage())
-    obj: geojson.MultiPolygon = geojson.loads(result[0]["geom"])
-    assert obj.is_valid
-    assert isinstance(obj, geojson.MultiPolygon)
+def test_get_reference_coverage():
+    result = asyncio.run(
+        db_client.get_reference_coverage(
+            load_datasets_coverage_names(load_reference_datasets()), inverse=False
+        )
+    )
+    for item in result:
+        obj: geojson.MultiPolygon = geojson.loads(item)
+        assert obj.is_valid
+        assert isinstance(obj, geojson.MultiPolygon)
 
 
 def test_get_eubucco_coverage_intersection_area_none(

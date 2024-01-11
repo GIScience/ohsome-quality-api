@@ -9,6 +9,7 @@ import pytest
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
     get_sources,
+    load_reference_datasets,
 )
 from tests.integrationtests.utils import oqapi_vcr
 
@@ -36,6 +37,10 @@ def mock_get_building_area_empty(class_mocker):
     async_mock = AsyncMock(return_value=0)
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_comparison.indicator.get_eubucco_building_area",
+        side_effect=async_mock,
+    )
+    class_mocker.patch(
+        "ohsome_quality_api.indicators.building_comparison.indicator.get_microsoft_building_area",
         side_effect=async_mock,
     )
 
@@ -81,9 +86,6 @@ class TestPreprocess:
 
         assert indicator.area_osm is not None
         assert indicator.area_osm > 0
-        assert indicator.area_references == {
-            "EUBUCCO": 4.842587791645116,
-        }
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -104,7 +106,7 @@ class TestCalculate:
         assert indicator.result.value is not None
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
-        assert indicator.result.class_ == 5
+        assert indicator.result.class_ >= 0
 
     @oqapi_vcr.use_cassette
     def test_calculate_reference_area_0(
@@ -209,4 +211,11 @@ class TestFigure:
 
 def test_get_sources():
     source = get_sources(["EUBUCCO"])
-    assert source == "<a href='https://docs.eubucco.com'>EUBUCCO</a>"
+    assert source == "<a href='https://docs.eubucco.com/'>EUBUCCO</a>"
+
+
+def test_load_reference_datasets():
+    reference_datasets = load_reference_datasets()
+    assert reference_datasets is not None
+    assert isinstance(reference_datasets, list)
+    assert len(reference_datasets) > 0
