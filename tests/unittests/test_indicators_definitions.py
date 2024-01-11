@@ -11,12 +11,12 @@ from ohsome_quality_api.indicators import definitions, models
 @pytest.fixture(scope="class")
 def mock_select_eubucco_coverage(class_mocker, feature_germany_berlin):
     async def side_effect(*args, **kwargs):
-        inverse = args[0]
+        inverse = args[1]
 
         if inverse:
             return [
-                {
-                    "geom": geojson.dumps(
+                str(
+                    geojson.dumps(
                         Polygon(
                             coordinates=[
                                 [
@@ -29,10 +29,10 @@ def mock_select_eubucco_coverage(class_mocker, feature_germany_berlin):
                             ]
                         )
                     )
-                }
+                )
             ]
         else:
-            return [{"geom": geojson.dumps(Polygon(coordinates=[]))}]
+            return [str(geojson.dumps(Polygon(coordinates=[])))]
 
     async_mock = AsyncMock(side_effect=side_effect)
     class_mocker.patch(
