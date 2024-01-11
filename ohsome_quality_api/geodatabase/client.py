@@ -89,7 +89,7 @@ async def get_building_area_mbf(bpoly: Feature) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
-async def get_reference_coverage(table_names: list, inverse: bool) -> list[Record]:
+async def get_reference_coverage(table_names: list, inverse: bool) -> list[str]:
     """Get reference coverage for a bounding polygon."""
     coverage_list = []
     file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
@@ -103,10 +103,6 @@ async def get_reference_coverage(table_names: list, inverse: bool) -> list[Recor
         query = query.format(table_name=table_name)
         async with get_connection() as conn:
             result = await conn.fetch(query)
-
-            # create geometrycollection
-            geojson.GeometryCollection([geojson.loads(result[0]["geom"])])
-
             coverage_list.append(result[0]["geom"])
     return coverage_list
 
