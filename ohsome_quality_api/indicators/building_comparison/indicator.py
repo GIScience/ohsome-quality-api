@@ -8,7 +8,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature, MultiPolygon, Polygon
+from geojson import Feature
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -40,14 +40,14 @@ class BuildingComparison(BaseIndicator):
         self.above_one_th = 1.30
 
     @classmethod
-    async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
+    async def coverage(cls, inverse=False) -> list[Feature]:
         reference_datasets = load_reference_datasets()
         coverage_names = load_datasets_coverage_names(reference_datasets)
         result = await db_client.get_reference_coverage(coverage_names, inverse)
         features = []
         for i in range(len(result)):
-            feature = geojson.loads(result[i])
-            feature["properties"] = {}
+            geom = geojson.loads(result[i])
+            feature = geojson.Feature(geometry=geom, properties={})
             feature["properties"]["reference_dataset"] = reference_datasets[i]
             features.append(feature)
         return features
@@ -275,7 +275,7 @@ def load_datasets_metadata(reference_dataset) -> dict:
     return {"name": name, "link": link, "date": date, "color": color}
 
 
-def load_datasets_coverage_names(reference_datasets) -> dict:
+def load_datasets_coverage_names(reference_datasets) -> list:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
 
     with open(file_path, "r") as f:
