@@ -8,7 +8,7 @@ EUBUCCO:
   color: PURPLE
   coverage_name: eubucco_v0_1_coverage
 
-microsoft-buildings:
+microsoft_buildings:
     name: Microsoft Building Footprints
     link: https://planetarycomputer.microsoft.com/dataset/ms-buildings
     date: July 5, 2022

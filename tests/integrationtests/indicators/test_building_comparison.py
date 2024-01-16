@@ -16,9 +16,9 @@ from tests.integrationtests.utils import oqapi_vcr
 
 @pytest.fixture(scope="class")
 def mock_get_building_area(class_mocker):
-    async_mock = AsyncMock(return_value=4842587.791645115)
+    async_mock = AsyncMock(return_value=6000000.791645115)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_eubucco_building_area",
+        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
     )
 
@@ -27,7 +27,7 @@ def mock_get_building_area(class_mocker):
 def mock_get_building_area_low(class_mocker):
     async_mock = AsyncMock(return_value=1)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_eubucco_building_area",
+        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
     )
 
@@ -36,29 +36,25 @@ def mock_get_building_area_low(class_mocker):
 def mock_get_building_area_empty(class_mocker):
     async_mock = AsyncMock(return_value=0)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_eubucco_building_area",
-        side_effect=async_mock,
-    )
-    class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_microsoft_building_area",
+        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
     )
 
 
 @pytest.fixture(scope="class")
-def mock_get_eubucco_coverage_intersection(class_mocker, feature_germany_berlin):
+def mock_get_reference_coverage_intersection(class_mocker, feature_germany_berlin):
     async_mock = AsyncMock(return_value=feature_germany_berlin)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_eubucco_coverage_intersection",
+        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_reference_coverage_intersection",
         side_effect=async_mock,
     )
 
 
 @pytest.fixture(scope="class")
-def mock_get_eubucco_coverage_intersection_area(class_mocker):
+def mock_get_reference_coverage_intersection_area(class_mocker):
     async_mock = AsyncMock(return_value=[{"area_ratio": 1}])
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_eubucco_coverage_intersection_area",
+        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_reference_coverage_intersection_area",
         side_effect=async_mock,
     )
 
@@ -78,14 +74,15 @@ class TestPreprocess:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
 
-        assert indicator.area_osm is not None
-        assert indicator.area_osm > 0
+        for area in indicator.area_osm.values():
+            assert area is not None
+            assert area > 0
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -97,8 +94,8 @@ class TestCalculate:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -114,8 +111,8 @@ class TestCalculate:
         mock_get_building_area_empty,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -129,21 +126,19 @@ class TestCalculate:
         mock_get_building_area_low,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        assert indicator.result.value is not None
-        assert indicator.result.value > 0
+        assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.description is not None
         assert (
-            "Warning: Because of a big difference between OSM and the reference "
-            + "data no quality estimation has been made. "
-            + "It could be that the reference data is outdated. "
-            in indicator.result.description
+            "Warning: Because of a big difference between OSM and the"
+            " reference in all reference data. No quality estimation"
+            " will be calculated. " in indicator.result.description
         )
         assert indicator.result.label == "undefined"
 
@@ -156,8 +151,8 @@ class TestFigure:
         mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -180,8 +175,8 @@ class TestFigure:
         mock_get_building_area_low,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -197,8 +192,8 @@ class TestFigure:
         mock_get_building_area_empty,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_eubucco_coverage_intersection_area,
-        mock_get_eubucco_coverage_intersection,
+        mock_get_reference_coverage_intersection_area,
+        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())

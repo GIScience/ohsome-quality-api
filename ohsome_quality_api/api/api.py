@@ -444,8 +444,7 @@ async def metadata_indicators_coverage(
     inverse: bool = False,
 ) -> Any:
     """Get coverage geometry of an indicator by key."""
-    test = await get_coverage(key.value, inverse)
-    return test
+    return await get_coverage(key.value, inverse)
 
 
 @app.get(
