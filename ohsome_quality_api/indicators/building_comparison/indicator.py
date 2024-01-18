@@ -132,45 +132,85 @@ class BuildingComparison(BaseIndicator):
             self.check_major_edge_cases(dataset) for dataset in self.reference_datasets
         ):
             logging.info(
-                "Result is undefined and major edge case is present. "
-                + "Skipping figure creation."
+                "Result is undefined and major edge case is present."
+                " Skipping figure creation."
             )
             return
-        fig = pgo.Figure()
-        for name in self.reference_datasets:
-            fig.add_trace(
-                pgo.Bar(
-                    name=name,
-                    # x=["OSM" + f" ({self.result.timestamp_osm:%b %d, %Y})"],
-                    x=[name],
-                    y=[round(self.area_osm[name], 2)],
-                    marker_color=Color.GREEN.value,
-                )
+
+        hovertext_osm = [
+            f"OSM ({self.result.timestamp_osm:%b %d, %Y})"
+            for _ in self.reference_datasets
+        ]
+
+        reference_data = [
+            (
+                dataset,
+                round(self.area_references[dataset], 2),
+                load_datasets_metadata(dataset),
             )
-            fig.add_trace(
+            for dataset in self.reference_datasets
+        ]
+
+        x_osm, y_osm = (
+            self.reference_datasets,
+            [round(self.area_osm[dataset], 2) for dataset in self.reference_datasets],
+        )
+        hovertext_reference = [
+            f"{metadata['name']} ({metadata['date']})"
+            if metadata["date"] is not None
+            else dataset
+            for dataset, _, metadata in reference_data
+        ]
+        colors_references = [
+            Color[metadata["color"]].value for _, _, metadata in reference_data
+        ]
+
+        fig = pgo.Figure(
+            data=[
                 pgo.Bar(
-                    name=load_datasets_metadata(name)["name"],
-                    # x=[
-                    #     f"{load_datasets_metadata(name)['name']}"
-                    #     f" ({load_datasets_metadata(name)['date']})"
-                    #     if load_datasets_metadata(name)["date"] is not None
-                    #     else name
-                    # ],
-                    x=[name],
-                    y=[round(self.area_references[name], 2)],
-                    marker_color=Color[load_datasets_metadata(name)["color"]].value,
-                )
+                    name="OSM",
+                    x=x_osm,
+                    y=y_osm,
+                    marker_color=Color.GREEN.value,
+                    hovertext=hovertext_osm,
+                ),
+                pgo.Bar(
+                    name=self.reference_datasets[0],
+                    x=self.reference_datasets,
+                    y=[item[1] for item in reference_data],
+                    marker_color=colors_references,
+                    hovertext=hovertext_reference,
+                    legendgroup="Reference",
+                ),
+            ]
+        )
+        for dataset in self.reference_datasets[1:]:
+            fig.add_shape(
+                name=dataset,
+                legendgroup="Reference",
+                showlegend=True,
+                type="rect",
+                layer="below",
+                line=dict(width=0),
+                fillcolor=Color[load_datasets_metadata(dataset)["color"]].value,
+                x0=0,
+                y0=0,
+                x1=0,
+                y1=0,
             )
 
-        fig.update_layout(
-            title_text=("Building Comparison"), showlegend=True, barmode="group"
-        )
-        fig.update_yaxes(title_text="Building Area [km²]")
-        fig.update_xaxes(
-            title_text="Reference Datasets ("
-            + get_sources(self.area_references.keys())
-            + ")"
-        )
+        layout_update = {
+            "title_text": "Building Comparison",
+            "showlegend": True,
+            "barmode": "group",
+            "yaxis_title": "Building Area [km²]",
+            "xaxis_title": f"Reference Datasets ("
+            f"{get_sources(self.area_references.keys())}"
+            f")",
+        }
+
+        fig.update_layout(**layout_update)
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
