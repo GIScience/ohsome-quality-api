@@ -18,5 +18,5 @@ building-comparison:
     undefined: >-
       Comparison could not be made.
   result_description: >-
-    $coverage% of the area-of-interest is covered by the reference dataset.
-    The building area of OSM is $ratio% of that of the reference data.
+    $coverage% of the area-of-interest is covered by the reference dataset $dataset.
+    The building area of OSM is $ratio% of that reference data.
