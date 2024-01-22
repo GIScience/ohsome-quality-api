@@ -61,6 +61,7 @@ class BuildingComparison(BaseIndicator):
 
     async def preprocess(self) -> None:
         self.reference_datasets = load_reference_datasets()
+        major_edgecases = []
         for dataset in self.reference_datasets:
             coverage_name = load_datasets_coverage_names([dataset])[0] + "_simple"
             result = await db_client.get_reference_coverage_intersection_area(
@@ -70,11 +71,10 @@ class BuildingComparison(BaseIndicator):
                 self.coverage[dataset] = result[0]["area_ratio"]
             else:
                 self.coverage[dataset] = None
-                return
             edge_case = self.check_major_edge_cases(dataset)
             if edge_case:
-                self.result.description = edge_case
-                return
+                major_edgecases.append(edge_case)
+                continue
 
             self.coverage_intersections[
                 dataset
@@ -94,6 +94,14 @@ class BuildingComparison(BaseIndicator):
             self.result.timestamp_osm = parser.isoparse(
                 osm_query_result["result"][0]["timestamp"]
             )
+        if len(major_edgecases) == len(self.reference_datasets):
+            self.result.description += (
+                " None of the reference datasets covers the area-of-interest."
+            )
+        elif len(major_edgecases) > 0:
+            self.result.description = "".join(major_edgecases)
+        elif len(major_edgecases) == 0:
+            self.result.description = ""
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
@@ -105,10 +113,8 @@ class BuildingComparison(BaseIndicator):
         for dataset in self.reference_datasets:
             if not self.check_major_edge_cases(dataset):
                 self.result.description += self.check_minor_edge_cases(dataset)
-        else:
-            self.result.description = ""
 
-        self.result.value = self.get_result_value()
+        self.result.value, valid_refs_values = self.get_result_value()
 
         if self.result.value is not None:
             if self.above_one_th >= self.result.value >= self.th_high:
@@ -118,11 +124,13 @@ class BuildingComparison(BaseIndicator):
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
 
-            template = Template(self.metadata.result_description)
-            self.result.description += template.substitute(
-                ratio=round(self.result.value * 100, 2),
-                coverage=round(self.coverage["EUBUCCO"] * 100, 2),
-            )
+            for ref in valid_refs_values.keys():
+                template = Template(self.metadata.result_description)
+                self.result.description += template.substitute(
+                    ratio=round(valid_refs_values[ref] * 100, 2),
+                    coverage=round(self.coverage[ref] * 100, 2),
+                    dataset=ref,
+                )
 
         label_description = self.metadata.label_description[self.result.label]
         self.result.description += "\n" + label_description
@@ -219,7 +227,7 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.coverage[dataset]
         if coverage is None or coverage == 0.00:
-            return f"Reference dataset {dataset} does not cover area-of-interest."
+            return f"Reference dataset {dataset} does not cover area-of-interest. "
         elif coverage < 0.10:
             return (
                 "Only {:.2f}% of the area-of-interest is covered ".format(
@@ -248,11 +256,12 @@ class BuildingComparison(BaseIndicator):
     def get_result_value(self):
         if all(v == 0 for v in self.area_references.values()):
             self.result.description += "Warning: No reference data in this area. "
+            return None, None
         else:
             valid_references = [
                 dataset
                 for dataset in self.reference_datasets
-                if self.area_references[dataset] != 0
+                if dataset in self.area_references
             ]
 
             for dataset in valid_references:
@@ -273,13 +282,25 @@ class BuildingComparison(BaseIndicator):
                     " in all reference"
                     " data. No quality estimation will be calculated. "
                 )
+                return None, None
             else:
+                for dataset, value in result_values.items():
+                    if value > self.above_one_th:
+                        self.result.description += (
+                            f"Warning: Because of a big difference between OSM and the"
+                            f" reference dataset {dataset}, this data is not considered"
+                            f" in the overall result value. "
+                        )
+
                 result_values_in_threshold = {
                     dataset: value
                     for dataset, value in result_values.items()
                     if value <= self.above_one_th
                 }
-                return mean(list(result_values_in_threshold.values()))
+                return (
+                    mean(list(result_values_in_threshold.values())),
+                    result_values_in_threshold,
+                )
 
 
 @alru_cache
@@ -298,6 +319,7 @@ async def get_reference_building_area(bpoly: str, table_name: str) -> float:
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
+    table_name = table_name.replace(" ", "_")
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
             await cur.execute(query.format(table_name=table_name), (geom,))
