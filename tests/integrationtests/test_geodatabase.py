@@ -3,12 +3,12 @@ import unittest
 
 import geojson
 import pytest
-from indicators.building_comparison.indicator import (
+
+import ohsome_quality_api.geodatabase.client as db_client
+from ohsome_quality_api.indicators.building_comparison.indicator import (
     load_datasets_coverage_names,
     load_reference_datasets,
 )
-
-import ohsome_quality_api.geodatabase.client as db_client
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 

@@ -29,9 +29,9 @@ class BuildingComparison(BaseIndicator):
             topic=topic,
             feature=feature,
         )
-        self.reference_datasets = []
+        self.reference_datasets = load_reference_datasets()
         self.area_osm: dict = {}
-        self.area_references: dict = {}
+        self.area_ref: dict = {}  # reference
         # The result is the ratio of area within coverage (between 0-1) or an empty list
         self.coverage: dict = {}
 
@@ -55,14 +55,15 @@ class BuildingComparison(BaseIndicator):
             features.append(feature)
         return features
 
+    # TODO
     @classmethod
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO"])
 
     async def preprocess(self) -> None:
-        self.reference_datasets = load_reference_datasets()
         major_edgecases = []
         for dataset in self.reference_datasets:
+            # get coverage
             coverage_name = load_datasets_coverage_names([dataset])[0] + "_simple"
             result = await db_client.get_reference_coverage_intersection_area(
                 self.feature, coverage_name
@@ -71,6 +72,7 @@ class BuildingComparison(BaseIndicator):
                 self.coverage[dataset] = result[0]["area_ratio"]
             else:
                 self.coverage[dataset] = None
+
             edge_case = self.check_major_edge_cases(dataset)
             if edge_case:
                 major_edgecases.append(edge_case)
@@ -81,10 +83,11 @@ class BuildingComparison(BaseIndicator):
             ] = await db_client.get_reference_coverage_intersection(
                 self.feature, coverage_name
             )
-            self.area_references[dataset] = await get_reference_building_area(
+            self.area_ref[dataset] = await get_reference_building_area(
                 geojson.dumps(self.coverage_intersections[dataset]), dataset
             ) / (1000 * 1000)
 
+            # get osm data for covered area
             osm_query_result = await ohsome_client.query(
                 self.topic,
                 self.coverage_intersections[dataset],
@@ -153,7 +156,7 @@ class BuildingComparison(BaseIndicator):
         reference_data = [
             (
                 dataset,
-                round(self.area_references[dataset], 2),
+                round(self.area_ref[dataset], 2),
                 load_datasets_metadata(dataset),
             )
             for dataset in self.reference_datasets
@@ -213,7 +216,7 @@ class BuildingComparison(BaseIndicator):
             "barmode": "group",
             "yaxis_title": "Building Area [km²]",
             "xaxis_title": f"Reference Datasets ("
-            f"{get_sources(self.area_references.keys())}"
+            f"{get_sources(self.area_ref.keys())}"
             f")",
         }
 
@@ -254,25 +257,25 @@ class BuildingComparison(BaseIndicator):
             return ""
 
     def get_result_value(self):
-        if all(v == 0 for v in self.area_references.values()):
+        if all(v == 0 for v in self.area_ref.values()):
             self.result.description += "Warning: No reference data in this area. "
             return None, None
         else:
             valid_references = [
                 dataset
                 for dataset in self.reference_datasets
-                if dataset in self.area_references
+                if dataset in self.area_ref
             ]
 
             for dataset in valid_references:
                 self.result.description += (
                     f"Warning: No buildings in reference data {dataset} in this area. "
-                    if self.area_references[dataset] == 0
+                    if self.area_ref[dataset] == 0
                     else ""
                 )
 
             result_values = {
-                dataset: self.area_osm[dataset] / self.area_references[dataset]
+                dataset: self.area_osm[dataset] / self.area_ref[dataset]
                 for dataset in valid_references
             }
 

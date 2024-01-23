@@ -111,6 +111,7 @@ class TestInit:
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         assert indicator.th_high == 0.85
         assert indicator.th_low == 0.5
+        assert indicator.reference_datasets == ["EUBUCCO", "Microsoft Buildings"]
 
 
 class TestPreprocess:
