@@ -15,6 +15,7 @@ On preventing SQL injections:
 """
 import os
 from contextlib import asynccontextmanager
+from typing import Literal
 
 import asyncpg
 import geojson
@@ -69,7 +70,9 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
-async def get_building_area(bpoly: Feature, table_names: Literal["EUBUCCO", "Microsoft-Buildings"]) -> list[Record]:
+async def get_building_area(
+    bpoly: Feature, table_names: Literal["EUBUCCO", "Microsoft-Buildings"]
+) -> list[Record]:
     """Get area of building footprints for a bounding polygon."""
     area_list = []
     file_path = os.path.join(WORKING_DIR, "select_building_area.sql")
