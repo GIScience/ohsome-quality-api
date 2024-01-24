@@ -89,19 +89,19 @@ def test_get_eubucco_coverage_intersection_area_none(
     feature_collection_germany_heidelberg,
 ):
     bpoly = feature_collection_germany_heidelberg.features[0]
-    result = asyncio.run(db_client.get_reference_coverage_intersection_area(bpoly))
+    result = asyncio.run(db_client.intersect(bpoly))
     assert result == []
 
 
 def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
     bpoly = feature_germany_berlin
-    result = asyncio.run(db_client.get_reference_coverage_intersection_area(bpoly))
+    result = asyncio.run(db_client.intersect(bpoly))
     assert pytest.approx(1.0, 0.1) == result[0]["area_ratio"]
 
 
 def test_get_coverage_intersection(feature_germany_berlin):
     bpoly = feature_germany_berlin
-    result = asyncio.run(db_client.get_reference_coverage_intersection(bpoly))
+    result = asyncio.run(db_client.get_intersection_geom(bpoly))
     assert result["geometry"].is_valid
     assert isinstance(result, geojson.feature.Feature)
 

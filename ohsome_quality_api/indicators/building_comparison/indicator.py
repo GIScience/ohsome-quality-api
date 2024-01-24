@@ -8,7 +8,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature
+from geojson import Feature, Polygon
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -29,95 +29,107 @@ class BuildingComparison(BaseIndicator):
             topic=topic,
             feature=feature,
         )
-        self.reference_datasets = load_reference_datasets()
-        self.area_osm: dict = {}
-        self.area_ref: dict = {}  # reference
         # The result is the ratio of area within coverage (between 0-1) or an empty list
-        self.coverage: dict = {}
-
+        #
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
         self.above_one_th = 1.30
 
-        self.coverage_intersections = {}
+        self.data_ref: dict[str, dict] = {}
+        self.area_osm: dict[str, float] = {}
+        self.area_ref: dict[str, float] = {}
+        self.area_cov: dict[str, float] = {}
+        self.ratio: dict[str, float]= {}
+        # self.data_ref: list = load_reference_datasets()  # reference datasets
+        for key, val in load_datasets_metadata().items():
+            self.data_ref[key] = val
+            self.area_osm[key] = 0.0
+            self.area_ref[key] = 0.0  # reference areas
+            self.area_cov[key] = 0.0 # covered areas
+            self.ratio[key] = 0.0
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
-        reference_datasets = load_reference_datasets()
-        coverage_names = load_datasets_coverage_names(reference_datasets)
-        result = await db_client.get_reference_coverage(coverage_names, inverse)
+        # TODO: could also return a Feature Collection
         features = []
-        for i in range(len(result)):
-            geom = geojson.loads(result[i])
-            feature = geojson.Feature(geometry=geom, properties={})
-            feature["properties"]["reference_dataset"] = reference_datasets[i]
-            features.append(feature)
-        return features
+        datasets = load_datasets_metadata()
+        for val in datasets.values():
+            if inverse:
+                table = val["coverage"]["inversed"]
+            else:
+                table = val["coverage"]["simple"]
+            res = await db_client.get_reference_coverage(table)
+            features.append(
+                geojson.Feature(
+                    geometry=geojson.loads(res),
+                    properties={"reference_dataset": val["name"]},
+                )
+            )
+            return features
 
-    # TODO
+    # TODO: Add attribution for microsoft buildings
     @classmethod
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO"])
 
     async def preprocess(self) -> None:
-        major_edgecases = []
-        for dataset in self.reference_datasets:
+        for key, val in self.data_ref.items():
             # get coverage
-            coverage_name = load_datasets_coverage_names([dataset])[0] + "_simple"
-            result = await db_client.get_reference_coverage_intersection_area(
-                self.feature, coverage_name
+            self.area_cov[key] = result = await db_client.get_intersection_area(
+                self.feature,
+                val["coverage"]["simple"],
             )
-            if result:
-                self.coverage[dataset] = result[0]["area_ratio"]
-            else:
-                self.coverage[dataset] = None
 
-            edge_case = self.check_major_edge_cases(dataset)
-            if edge_case:
-                major_edgecases.append(edge_case)
+            if self.check_major_edge_cases(key):
                 continue
 
-            self.coverage_intersections[
-                dataset
-            ] = await db_client.get_reference_coverage_intersection(
-                self.feature, coverage_name
+            feature = await db_client.get_intersection_geom(
+                self.feature,
+                val["coverage"]["simple"],
             )
-            self.area_ref[dataset] = await get_reference_building_area(
-                geojson.dumps(self.coverage_intersections[dataset]), dataset
-            ) / (1000 * 1000)
+
+            result = await get_reference_building_area(feature, key)
+            self.area_ref[key] = result / (1000 * 1000)
 
             # get osm data for covered area
-            osm_query_result = await ohsome_client.query(
-                self.topic,
-                self.coverage_intersections[dataset],
-            )
-            raw = osm_query_result["result"][0]["value"] or 0  # if None
-            self.area_osm[dataset] = raw / (1000 * 1000)
-            self.result.timestamp_osm = parser.isoparse(
-                osm_query_result["result"][0]["timestamp"]
-            )
-        if len(major_edgecases) == len(self.reference_datasets):
+            result = await ohsome_client.query(self.topic, feature)
+            value = result["result"][0]["value"] or 0.0  # if None
+            self.area_osm[key] = value / (1000 * 1000)
+            timestamp = result["result"][0]["timestamp"]
+            self.result.timestamp_osm = parser.isoparse(timestamp)
+
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        if len(edge_cases) == len(self.data_ref):
             self.result.description += (
                 " None of the reference datasets covers the area-of-interest."
             )
-        elif len(major_edgecases) > 0:
-            self.result.description = "".join(major_edgecases)
-        elif len(major_edgecases) == 0:
+        elif len(edge_cases) > 0:
+            self.result.description = "".join(edge_cases)
+        elif len(edge_cases) == 0:
             self.result.description = ""
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
-        if self.result.label == "undefined" and all(
-            self.check_major_edge_cases(dataset) for dataset in self.reference_datasets
-        ):
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        if all(edge_cases):
             return
 
-        for dataset in self.reference_datasets:
-            if not self.check_major_edge_cases(dataset):
-                self.result.description += self.check_minor_edge_cases(dataset)
+        for key in self.data_ref.keys():
+            if not self.check_major_edge_cases(key):
+                self.result.description += self.check_minor_edge_cases(key)
 
-        self.result.value, valid_refs_values = self.get_result_value()
+        for key in self.data_ref.keys():
+            try:
+                self.ratio[key] = self.area_osm[key] / self.area_ref[key]
+            except ZeroDivisionError:
+                self.ratio[key] = 0
+
+        self.result.value = mean(
+            [v for v in self.ratio.values() if v <= self.above_one_th]
+        )
+
+        # self.result.value, valid_refs_values = self.get_result_value()
 
         if self.result.value is not None:
             if self.above_one_th >= self.result.value >= self.th_high:
@@ -127,12 +139,12 @@ class BuildingComparison(BaseIndicator):
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
 
-            for ref in valid_refs_values.keys():
+            for key, val in self.ratio.items():
                 template = Template(self.metadata.result_description)
                 self.result.description += template.substitute(
-                    ratio=round(valid_refs_values[ref] * 100, 2),
-                    coverage=round(self.coverage[ref] * 100, 2),
-                    dataset=ref,
+                    ratio=round(val * 100, 2),
+                    coverage=round(self.area_cov[key] * 100, 2),
+                    dataset=self.data_ref[key]["name"],
                 )
 
         label_description = self.metadata.label_description[self.result.label]
@@ -140,7 +152,7 @@ class BuildingComparison(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined" and all(
-            self.check_major_edge_cases(dataset) for dataset in self.reference_datasets
+            self.check_major_edge_cases(dataset) for dataset in self.data_ref
         ):
             logging.info(
                 "Result is undefined and major edge case is present."
@@ -149,8 +161,7 @@ class BuildingComparison(BaseIndicator):
             return
 
         hovertext_osm = [
-            f"OSM ({self.result.timestamp_osm:%b %d, %Y})"
-            for _ in self.reference_datasets
+            f"OSM ({self.result.timestamp_osm:%b %d, %Y})" for _ in self.data_ref
         ]
 
         reference_data = [
@@ -159,12 +170,12 @@ class BuildingComparison(BaseIndicator):
                 round(self.area_ref[dataset], 2),
                 load_datasets_metadata(dataset),
             )
-            for dataset in self.reference_datasets
+            for dataset in self.data_ref
         ]
 
         x_osm, y_osm = (
-            self.reference_datasets,
-            [round(self.area_osm[dataset], 2) for dataset in self.reference_datasets],
+            self.data_ref,
+            [round(self.area_osm[dataset], 2) for dataset in self.data_ref],
         )
         hovertext_reference = [
             f"{metadata['name']} ({metadata['date']})"
@@ -186,8 +197,8 @@ class BuildingComparison(BaseIndicator):
                     hovertext=hovertext_osm,
                 ),
                 pgo.Bar(
-                    name=self.reference_datasets[0],
-                    x=self.reference_datasets,
+                    name=self.data_ref[0],
+                    x=self.data_ref,
                     y=[item[1] for item in reference_data],
                     marker_color=colors_references,
                     hovertext=hovertext_reference,
@@ -195,7 +206,7 @@ class BuildingComparison(BaseIndicator):
                 ),
             ]
         )
-        for dataset in self.reference_datasets[1:]:
+        for dataset in self.data_ref[1:]:
             fig.add_shape(
                 name=dataset,
                 legendgroup="Reference",
@@ -228,7 +239,7 @@ class BuildingComparison(BaseIndicator):
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.coverage[dataset]
+        coverage = self.area_cov[dataset]
         if coverage is None or coverage == 0.00:
             return f"Reference dataset {dataset} does not cover area-of-interest. "
         elif coverage < 0.10:
@@ -244,7 +255,7 @@ class BuildingComparison(BaseIndicator):
 
     def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.coverage[dataset]
+        coverage = self.area_cov[dataset]
         if coverage < 0.95:
             return (
                 f"Warning: Reference data {dataset} does "
@@ -262,9 +273,7 @@ class BuildingComparison(BaseIndicator):
             return None, None
         else:
             valid_references = [
-                dataset
-                for dataset in self.reference_datasets
-                if dataset in self.area_ref
+                dataset for dataset in self.data_ref if dataset in self.area_ref
             ]
 
             for dataset in valid_references:
@@ -307,14 +316,12 @@ class BuildingComparison(BaseIndicator):
 
 
 @alru_cache
-async def get_reference_building_area(bpoly: str, table_name: str) -> float:
+async def get_reference_building_area(feature: Feature, table_name: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
-    bpoly = geojson.loads(bpoly)
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
     with open(file_path, "r") as file:
         query = file.read()
-    geom = str(bpoly.geometry)
     dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
         host=get_config_value("postgres_host"),
         port=get_config_value("postgres_port"),
@@ -323,6 +330,7 @@ async def get_reference_building_area(bpoly: str, table_name: str) -> float:
         password=get_config_value("postgres_password"),
     )
     table_name = table_name.replace(" ", "_")
+    geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
             await cur.execute(query.format(table_name=table_name), (geom,))
@@ -346,18 +354,10 @@ def get_sources(reference_datasets):
     return result
 
 
-def load_datasets_metadata(reference_dataset) -> dict:
+def load_datasets_metadata() -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-
     with open(file_path, "r") as f:
-        raw = yaml.safe_load(f)
-
-    name = raw.get(reference_dataset, {}).get("name")
-    link = raw.get(reference_dataset, {}).get("link")
-    date = raw.get(reference_dataset, {}).get("date")
-    color = raw.get(reference_dataset, {}).get("color")
-
-    return {"name": name, "link": link, "date": date, "color": color}
+        return yaml.safe_load(f)
 
 
 def load_datasets_coverage_names(reference_datasets) -> list:
