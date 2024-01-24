@@ -7,6 +7,6 @@ SELECT
     ST_Area (ST_Intersection (bpoly.geom, coverage.geom)) / ST_Area (bpoly.geom) as area_ratio
 FROM
     bpoly,
-    {coverage_name} coverage
+    {table_name} coverage
 WHERE
     ST_Intersects (bpoly.geom, coverage.geom)

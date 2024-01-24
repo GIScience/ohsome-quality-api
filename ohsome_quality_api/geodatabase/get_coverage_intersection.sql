@@ -6,6 +6,6 @@ SELECT
     ST_AsGeoJSON (ST_Intersection (bpoly.geom, coverage.geom)) AS geom
 FROM
     bpoly,
-    {coverage_name} coverage
+    {table_name} coverage
 WHERE
     ST_Intersects (bpoly.geom, coverage.geom)

@@ -103,7 +103,7 @@ class BaseIndicator(metaclass=ABCMeta):
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
-        """Return coverage geometry. Default is global coverage."""
+        """Return coverage geometries. Default is global coverage."""
         if inverse is False:
             return [
                 Feature(
