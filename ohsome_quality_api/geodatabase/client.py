@@ -116,7 +116,7 @@ async def get_reference_coverage(table_names: list, inverse: bool) -> list[str]:
 
 
 async def get_reference_coverage_intersection_area(
-    bpoly: Feature, coverage_name: str
+    bpoly: Feature, table_name: str
 ) -> list[Record]:
     """Get ratio of AOI area to intersection area of AOI and coverage geometry.
 
@@ -128,11 +128,11 @@ async def get_reference_coverage_intersection_area(
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        return await conn.fetch(query.format(coverage_name=coverage_name), geom)
+        return await conn.fetch(query.format(table_name=table_name), geom)
 
 
 async def get_reference_coverage_intersection(
-    bpoly: Feature, coverage_name: str
+    bpoly: Feature, table_name: str
 ) -> Feature:
     """Get intersection geometry of AoI and coverage geometry."""
     file_path = os.path.join(WORKING_DIR, "get_coverage_intersection.sql")
@@ -140,6 +140,6 @@ async def get_reference_coverage_intersection(
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        result = await conn.fetch(query.format(coverage_name=coverage_name), geom)
+        result = await conn.fetch(query.format(table_name=table_name), geom)
         bpoly["geometry"] = geojson.loads(result[0]["geom"])
         return bpoly
