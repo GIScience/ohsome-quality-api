@@ -89,7 +89,8 @@ async def get_building_area(
     return area_list
 
 
-async def get_reference_coverage(table_name: str) -> str:
+# TODO: Literal type hint?
+async def get_reference_coverage(table_name: str) -> dict:
     """Get reference coverage for a bounding polygon."""
     file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
     with open(file_path, "r") as file:
@@ -105,6 +106,7 @@ async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
     The result is the ratio of area within coverage (between 0-1) or an empty list if
     AOI lies outside of coverage geometry.
     """
+    # TODO rename sql file
     file_path = os.path.join(WORKING_DIR, "select_check_reference_coverage.sql")
     with open(file_path, "r") as file:
         query = file.read()

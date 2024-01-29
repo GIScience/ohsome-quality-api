@@ -22,6 +22,7 @@ ATTRIBUTION_TEXTS = MappingProxyType(
         "VNL": "Earth Observation Group Nighttime Light Data",
         "EUBUCCO": "European building stock characteristics in a common and open "
         + "database",
+        "Microsoft Buildings": "Microsoft Building Footprints (ODbL)",
     }
 )
 
@@ -106,6 +107,6 @@ def get_project_keys() -> Iterable[str]:
 
 def get_attribution(data_keys: list) -> str:
     """Return attribution text. Individual attributions are separated by semicolons."""
-    assert set(data_keys) <= {"OSM", "GHSL", "VNL", "EUBUCCO"}
+    assert set(data_keys) <= {"OSM", "GHSL", "VNL", "EUBUCCO", "Microsoft Buildings"}
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])

@@ -8,7 +8,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature, Polygon
+from geojson import Feature
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -37,17 +37,17 @@ class BuildingComparison(BaseIndicator):
         self.above_one_th = 1.30
 
         self.data_ref: dict[str, dict] = {}
-        self.area_osm: dict[str, float] = {}
-        self.area_ref: dict[str, float] = {}
-        self.area_cov: dict[str, float] = {}
-        self.ratio: dict[str, float]= {}
+        self.area_osm: dict[str, float | None] = {}
+        self.area_ref: dict[str, float | None] = {}
+        self.area_cov: dict[str, float | None] = {}
+        self.ratio: dict[str, float | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
         for key, val in load_datasets_metadata().items():
             self.data_ref[key] = val
-            self.area_osm[key] = 0.0
-            self.area_ref[key] = 0.0  # reference areas
-            self.area_cov[key] = 0.0 # covered areas
-            self.ratio[key] = 0.0
+            self.area_osm[key] = None
+            self.area_ref[key] = None  # reference area of buildings [sqkm]
+            self.area_cov[key] = None  # covered area [%]
+            self.ratio[key] = None
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
@@ -68,15 +68,14 @@ class BuildingComparison(BaseIndicator):
             )
             return features
 
-    # TODO: Add attribution for microsoft buildings
     @classmethod
     def attribution(cls) -> str:
-        return get_attribution(["OSM", "EUBUCCO"])
+        return get_attribution(["OSM", "EUBUCCO", "Microsoft Buildings"])
 
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage
-            self.area_cov[key] = result = await db_client.get_intersection_area(
+            self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
                 val["coverage"]["simple"],
             )
@@ -99,37 +98,37 @@ class BuildingComparison(BaseIndicator):
             timestamp = result["result"][0]["timestamp"]
             self.result.timestamp_osm = parser.isoparse(timestamp)
 
-        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
-        if len(edge_cases) == len(self.data_ref):
-            self.result.description += (
-                " None of the reference datasets covers the area-of-interest."
-            )
-        elif len(edge_cases) > 0:
-            self.result.description = "".join(edge_cases)
-        elif len(edge_cases) == 0:
-            self.result.description = ""
-
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
         if all(edge_cases):
+            self.result.description += (
+                " None of the reference datasets covers the area-of-interest."
+            )
             return
+        self.result.description = "".join(edge_cases)
 
         for key in self.data_ref.keys():
-            if not self.check_major_edge_cases(key):
-                self.result.description += self.check_minor_edge_cases(key)
+            if self.check_major_edge_cases(key):
+                continue
 
-        for key in self.data_ref.keys():
+            self.result.description += self.check_minor_edge_cases(key)
+            # TODO: check for None explicitly?
+            # TODO: add warning for user, that no buildings are present?
             try:
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
             except ZeroDivisionError:
-                self.ratio[key] = 0
+                self.ratio[key] = 0.0
 
-        self.result.value = mean(
-            [v for v in self.ratio.values() if v <= self.above_one_th]
-        )
-
-        # self.result.value, valid_refs_values = self.get_result_value()
+        ratios = [v for v in self.ratio.values() if v is not None]
+        ratios = [v for v in ratios if v <= self.above_one_th]
+        if ratios:
+            self.result.value = float(mean(ratios))
+        else:
+            self.result.description += (
+                "Warning: OSM has substantivly more buildings mapped than the Reference"
+                + " datasets. No quality estimation has been made."
+            )
 
         if self.result.value is not None:
             if self.above_one_th >= self.result.value >= self.th_high:
@@ -140,6 +139,8 @@ class BuildingComparison(BaseIndicator):
                 self.result.class_ = 1
 
             for key, val in self.ratio.items():
+                if val is None:
+                    continue
                 template = Template(self.metadata.result_description)
                 self.result.description += template.substitute(
                     ratio=round(val * 100, 2),
@@ -151,87 +152,78 @@ class BuildingComparison(BaseIndicator):
         self.result.description += "\n" + label_description
 
     def create_figure(self) -> None:
-        if self.result.label == "undefined" and all(
-            self.check_major_edge_cases(dataset) for dataset in self.data_ref
-        ):
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        if self.result.label == "undefined" and all(edge_cases):
             logging.info(
                 "Result is undefined and major edge case is present."
                 " Skipping figure creation."
             )
             return
 
-        hovertext_osm = [
-            f"OSM ({self.result.timestamp_osm:%b %d, %Y})" for _ in self.data_ref
-        ]
-
-        reference_data = [
-            (
-                dataset,
-                round(self.area_ref[dataset], 2),
-                load_datasets_metadata(dataset),
-            )
-            for dataset in self.data_ref
-        ]
-
-        x_osm, y_osm = (
-            self.data_ref,
-            [round(self.area_osm[dataset], 2) for dataset in self.data_ref],
-        )
-        hovertext_reference = [
-            f"{metadata['name']} ({metadata['date']})"
-            if metadata["date"] is not None
-            else dataset
-            for dataset, _, metadata in reference_data
-        ]
-        colors_references = [
-            Color[metadata["color"]].value for _, _, metadata in reference_data
-        ]
+        ref_data = []
+        ref_x = []
+        ref_y = []
+        osm_x = []
+        osm_y = []
+        ref_hover = []
+        osm_hover = []
+        ref_color = []
+        for key, dataset in self.data_ref.items():
+            if self.area_ref[key] is None or self.area_osm[key] is None:
+                continue
+            ref_x.append(dataset["name"])
+            ref_y.append(round(self.area_ref[key], 2))
+            ref_data.append(dataset)
+            osm_x.append(dataset["name"])
+            osm_y.append(round(self.area_osm[key], 2))
+            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
+            osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
+            ref_color.append(Color[dataset["color"]].value)
 
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
-                    name="OSM",
-                    x=x_osm,
-                    y=y_osm,
+                    name="OSM building area",
+                    x=osm_x,
+                    y=osm_y,
                     marker_color=Color.GREEN.value,
-                    hovertext=hovertext_osm,
+                    hovertext=osm_hover,
                 ),
                 pgo.Bar(
-                    name=self.data_ref[0],
-                    x=self.data_ref,
-                    y=[item[1] for item in reference_data],
-                    marker_color=colors_references,
-                    hovertext=hovertext_reference,
+                    name=ref_x[0],
+                    x=ref_x,
+                    y=ref_y,
+                    marker_color=ref_color,
+                    hovertext=ref_hover,
                     legendgroup="Reference",
                 ),
             ]
         )
-        for dataset in self.data_ref[1:]:
+
+        # Put every reference dataset to legend by adding transparent shapes
+        for dataset in list(self.data_ref.values())[1:]:
             fig.add_shape(
-                name=dataset,
+                name=dataset["name"],
                 legendgroup="Reference",
                 showlegend=True,
                 type="rect",
                 layer="below",
                 line=dict(width=0),
-                fillcolor=Color[load_datasets_metadata(dataset)["color"]].value,
+                fillcolor=Color[dataset["color"]].value,
                 x0=0,
                 y0=0,
                 x1=0,
                 y1=0,
             )
 
-        layout_update = {
+        layout = {
             "title_text": "Building Comparison",
             "showlegend": True,
             "barmode": "group",
             "yaxis_title": "Building Area [km²]",
-            "xaxis_title": f"Reference Datasets ("
-            f"{get_sources(self.area_ref.keys())}"
-            f")",
+            "xaxis_title": f"Reference Datasets ({self.format_sources()})",
         }
-
-        fig.update_layout(**layout_update)
+        fig.update_layout(**layout)
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
@@ -267,52 +259,15 @@ class BuildingComparison(BaseIndicator):
         else:
             return ""
 
-    def get_result_value(self):
-        if all(v == 0 for v in self.area_ref.values()):
-            self.result.description += "Warning: No reference data in this area. "
-            return None, None
-        else:
-            valid_references = [
-                dataset for dataset in self.data_ref if dataset in self.area_ref
-            ]
-
-            for dataset in valid_references:
-                self.result.description += (
-                    f"Warning: No buildings in reference data {dataset} in this area. "
-                    if self.area_ref[dataset] == 0
-                    else ""
-                )
-
-            result_values = {
-                dataset: self.area_osm[dataset] / self.area_ref[dataset]
-                for dataset in valid_references
-            }
-
-            if all(value > self.above_one_th for value in result_values.values()):
-                self.result.description += (
-                    "Warning: Because of a big difference between OSM and the reference"
-                    " in all reference"
-                    " data. No quality estimation will be calculated. "
-                )
-                return None, None
+    def format_sources(self):
+        sources = []
+        for dataset in self.data_ref.values():
+            if dataset["link"] is not None:
+                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
             else:
-                for dataset, value in result_values.items():
-                    if value > self.above_one_th:
-                        self.result.description += (
-                            f"Warning: Because of a big difference between OSM and the"
-                            f" reference dataset {dataset}, this data is not considered"
-                            f" in the overall result value. "
-                        )
-
-                result_values_in_threshold = {
-                    dataset: value
-                    for dataset, value in result_values.items()
-                    if value <= self.above_one_th
-                }
-                return (
-                    mean(list(result_values_in_threshold.values())),
-                    result_values_in_threshold,
-                )
+                sources.append(f"{dataset}")
+        result = ", ".join(sources)
+        return result
 
 
 @alru_cache
@@ -338,45 +293,8 @@ async def get_reference_building_area(feature: Feature, table_name: str) -> floa
     return res[0] or 0.0
 
 
-def get_sources(reference_datasets):
-    sources = []
-    for dataset in reference_datasets:
-        source_metadata = load_datasets_metadata(dataset)
-        if source_metadata["link"] is not None:
-            sources.append(
-                f"<a href='{load_datasets_metadata(dataset)['link']}'>"
-                f"{load_datasets_metadata(dataset)['name']}</a>"
-            )
-        else:
-            sources.append(f"{dataset}")
-
-    result = ", ".join(sources)
-    return result
-
-
+# TODO add cache?
 def load_datasets_metadata() -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
     with open(file_path, "r") as f:
         return yaml.safe_load(f)
-
-
-def load_datasets_coverage_names(reference_datasets) -> list:
-    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-
-    with open(file_path, "r") as f:
-        raw = yaml.safe_load(f)
-
-    coverage_names = []
-    for dataset in reference_datasets:
-        coverage_names.append(raw.get(dataset, {}).get("coverage_name"))
-
-    return coverage_names
-
-
-def load_reference_datasets() -> list:
-    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-
-    with open(file_path, "r") as f:
-        raw = yaml.safe_load(f)
-
-    return list(raw.keys())

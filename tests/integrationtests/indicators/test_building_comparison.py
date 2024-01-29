@@ -8,9 +8,6 @@ import pytest
 
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
-    get_sources,
-    load_datasets_coverage_names,
-    load_reference_datasets,
 )
 from tests.integrationtests.utils import oqapi_vcr
 
@@ -32,7 +29,7 @@ def mock_get_building_area(class_mocker):
 
 @pytest.fixture
 def mock_get_building_area_low(class_mocker):
-    async_mock = AsyncMock(return_value=1)
+    async_mock = AsyncMock(return_value=1000000)
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
@@ -40,7 +37,7 @@ def mock_get_building_area_low(class_mocker):
 
 
 @pytest.fixture
-def mock_get_building_area_low_and_expected(class_mocker):
+def mock_get_building_area_low_some(class_mocker):
     async def side_effect_function(*args, **kwargs):
         if args[1] == "EUBUCCO":
             return 1
@@ -94,9 +91,9 @@ def mock_get_intersection_area_none(class_mocker):
 def mock_get_intersection_area_some(class_mocker):
     async def side_effect(*args, **kwargs):
         if "eubucco" in args[1]:
-            return 0.0
+            return 0.0  # 0 %
         else:
-            return 1.0
+            return 1.0  # 100 %
 
     async_mock = AsyncMock(side_effect=side_effect)
     class_mocker.patch(
@@ -113,17 +110,25 @@ class TestInit:
         assert indicator.th_low == 0.5
         assert isinstance(indicator.data_ref, dict)
 
+    def test_get_sources(self, topic_building_area, feature_germany_berlin):
+        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        source = indicator.format_sources()
+        assert "<a href='https://docs.eubucco.com/'>EUBUCCO</a>" in source
+
+    def test_attribution(self, topic_building_area, feature_germany_berlin):
+        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        assert indicator.attribution is not None
+        assert indicator.attribution != ""
+
 
 class TestPreprocess:
     @oqapi_vcr.use_cassette
-    def test_preprocess(
-        self,
-        mock_get_building_area,
-        topic_building_area,
-        feature_germany_berlin,
-        mock_get_intersection_area,
-        mock_get_intersection_geom,
-    ):
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_area",
+        "mock_get_intersection_geom",
+    )
+    def test_preprocess(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
 
@@ -149,16 +154,16 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert indicator.result.timestamp_osm is None
 
-    # TODO
     @oqapi_vcr.use_cassette
-    @pytest.mark.skip()
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area_some",
+    )
     def test_preprocess_some_intersection(
         self,
-        mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_intersection_area_some,
-        mock_get_intersection_geom,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -206,13 +211,15 @@ class TestCalculate:
         assert indicator.result.value == 0.0
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures(
+        "mock_get_intersection_area",
+        "mock_get_intersection_geom",
+        "mock_get_building_area_low",
+    )
     def test_calculate_above_one_th(
         self,
-        mock_get_building_area_low,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_reference_coverage_intersection_area,
-        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -220,19 +227,23 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.description is not None
+        for v in indicator.area_ref.values():
+            assert v is not None
+        for v in indicator.area_osm.values():
+            assert v is not None
         assert (
-            "Warning: Because of a big difference between OSM and the"
-            " reference in all reference data. No quality estimation"
-            " will be calculated. " in indicator.result.description
+            "Warning: OSM has substantivly more buildings mapped than the Reference "
+            "datasets. No quality estimation has been made."
+            in indicator.result.description
         )
         assert indicator.result.label == "undefined"
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures("mock_get_intersection_area_none")
     def test_calculate_no_intersection(
         self,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_reference_coverage_intersection_area_no_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -247,13 +258,15 @@ class TestCalculate:
         assert indicator.result.label == "undefined"
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area_some",
+    )
     def test_calculate_some_intersection(
         self,
-        mock_get_building_area,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_reference_coverage_intersection_area_some_intersection,
-        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -263,6 +276,7 @@ class TestCalculate:
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
         assert indicator.result.description is not None
+        # major edge case description
         assert (
             "Reference dataset EUBUCCO does not cover area-of-interest."
             in indicator.result.description
@@ -273,13 +287,16 @@ class TestCalculate:
         )
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area",
+        "mock_get_building_area_low_some",
+    )
     def test_calculate_above_one_th_and_expected(
         self,
-        mock_get_building_area_low_and_expected,
         topic_building_area,
         feature_germany_heidelberg,
-        mock_get_reference_coverage_intersection_area,
-        mock_get_reference_coverage_intersection,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
@@ -294,10 +311,12 @@ class TestCalculate:
             "of the area-of-interest is covered by the reference dataset"
             in indicator.result.description
         )
-        assert (
-            "this data is not considered in the overall result value."
-            in indicator.result.description
-        )
+        # TODO: should user be warned if a dataset was not fit for comparison?
+        # -> for ratio above self.above_one_th
+        # assert (
+        #     "this data is not considered in the overall result value."
+        #     in indicator.result.description
+        # )
 
 
 class TestFigure:
@@ -305,11 +324,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     def indicator(
         self,
-        mock_get_building_area,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_reference_coverage_intersection_area,
-        mock_get_reference_coverage_intersection,
+        mock_get_building_area,
+        mock_get_intersection_geom,
+        mock_get_intersection_area,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -329,11 +348,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     def test_create_figure_above_one_th(
         self,
-        mock_get_building_area_low,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_reference_coverage_intersection_area,
-        mock_get_reference_coverage_intersection,
+        mock_get_building_area_low,
+        mock_get_intersection_geom,
+        mock_get_intersection_area,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -346,11 +365,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     def test_create_figure_building_area_zero(
         self,
-        mock_get_building_area_empty,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_reference_coverage_intersection_area,
-        mock_get_reference_coverage_intersection,
+        mock_get_building_area_empty,
+        mock_get_intersection_geom,
+        mock_get_intersection_area,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -359,15 +378,3 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "bar"
         pgo.Figure(indicator.result.figure)
-
-
-def test_get_sources():
-    source = get_sources(["EUBUCCO"])
-    assert source == "<a href='https://docs.eubucco.com/'>EUBUCCO</a>"
-
-
-def test_load_reference_datasets():
-    reference_datasets = load_reference_datasets()
-    assert reference_datasets is not None
-    assert isinstance(reference_datasets, list)
-    assert len(reference_datasets) > 0

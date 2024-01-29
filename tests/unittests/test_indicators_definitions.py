@@ -66,6 +66,7 @@ def test_get_indicator_definitions_with_project():
         assert indicator.projects == ["core"]
 
 
+# TODO:
 def test_get_coverage(mock_select_coverage):
     coverage = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=False)

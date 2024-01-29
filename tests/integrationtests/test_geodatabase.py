@@ -5,10 +5,6 @@ import geojson
 import pytest
 
 import ohsome_quality_api.geodatabase.client as db_client
-from ohsome_quality_api.indicators.building_comparison.indicator import (
-    load_datasets_coverage_names,
-    load_reference_datasets,
-)
 
 pytestmark = pytest.mark.skip("dependency on database setup.")
 
@@ -73,12 +69,11 @@ def test_get_building_area(feature_germany_berlin):
     assert result[0]["area"] == 4842587.791645115
 
 
-def test_get_reference_coverage():
-    result = asyncio.run(
-        db_client.get_reference_coverage(
-            load_datasets_coverage_names(load_reference_datasets()), inverse=False
-        )
-    )
+@pytest.mark.parametrize(
+    "table", ["eubucco_v0_1_coverage_simple", "eubucco_v0_1_coverage_inversed"]
+)
+def test_get_reference_coverage(table):
+    result = asyncio.run(db_client.get_reference_coverage(table))
     for item in result:
         obj: geojson.MultiPolygon = geojson.loads(item)
         assert obj.is_valid
