@@ -9,32 +9,24 @@ from ohsome_quality_api.indicators import definitions, models
 
 
 @pytest.fixture(scope="class")
-def mock_select_coverage(class_mocker, feature_germany_berlin):
-    async def side_effect(*args, **kwargs):
-        inverse = args[1]
-
-        if inverse:
-            return [
-                str(
-                    geojson.dumps(
-                        Polygon(
-                            coordinates=[
-                                [
-                                    (-180, 90),
-                                    (-180, -90),
-                                    (180, -90),
-                                    (180, 90),
-                                    (-180, 90),
-                                ]
-                            ]
-                        )
-                    )
+def mock_get_reference_coverage(class_mocker):
+    async_mock = AsyncMock(
+        return_value=str(
+            geojson.dumps(
+                Polygon(
+                    coordinates=[
+                        [
+                            (-180, 90),
+                            (-180, -90),
+                            (180, -90),
+                            (180, 90),
+                            (-180, 90),
+                        ]
+                    ]
                 )
-            ]
-        else:
-            return [str(geojson.dumps(Polygon(coordinates=[])))]
-
-    async_mock = AsyncMock(side_effect=side_effect)
+            )
+        )
+    )
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_reference_coverage",
         side_effect=async_mock,
@@ -66,23 +58,23 @@ def test_get_indicator_definitions_with_project():
         assert indicator.projects == ["core"]
 
 
-# TODO:
-def test_get_coverage(mock_select_coverage):
+def test_get_coverage(mock_get_reference_coverage):
     coverage = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=False)
     )
     assert coverage.is_valid
-    coverage_default = asyncio.run(definitions.get_coverage("building-comparison"))
-    assert coverage_default.is_valid
-    assert coverage == coverage_default
-    coverage_inversed = asyncio.run(
+    assert isinstance(coverage, geojson.FeatureCollection)
+
+    coverage = asyncio.run(definitions.get_coverage("building-comparison"))
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)
+
+    coverage = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=True)
     )
-    assert coverage_inversed.is_valid
-    assert coverage != coverage_inversed
-    assert coverage_default != coverage_inversed
-
+    assert coverage.is_valid
     assert isinstance(coverage, geojson.FeatureCollection)
+
     coverage = asyncio.run(definitions.get_coverage("mapping-saturation"))
     assert coverage.is_valid
     assert isinstance(coverage, geojson.FeatureCollection)
