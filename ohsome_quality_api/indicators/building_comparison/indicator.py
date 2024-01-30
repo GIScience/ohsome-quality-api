@@ -1,5 +1,6 @@
 import logging
 import os
+from functools import cache
 from string import Template
 
 import geojson
@@ -44,8 +45,8 @@ class BuildingComparison(BaseIndicator):
         # self.data_ref: list = load_reference_datasets()  # reference datasets
         for key, val in load_datasets_metadata().items():
             self.data_ref[key] = val
-            self.area_osm[key] = None
-            self.area_ref[key] = None  # reference area of buildings [sqkm]
+            self.area_osm[key] = None  # osm building area
+            self.area_ref[key] = None  # reference building area [sqkm]
             self.area_cov[key] = None  # covered area [%]
             self.ratio[key] = None
 
@@ -74,7 +75,7 @@ class BuildingComparison(BaseIndicator):
 
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
-            # get coverage
+            # get coverage [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
                 val["coverage"]["simple"],
@@ -83,15 +84,17 @@ class BuildingComparison(BaseIndicator):
             if self.check_major_edge_cases(key):
                 continue
 
+            # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
                 val["coverage"]["simple"],
             )
 
+            # get reference building area
             result = await get_reference_building_area(feature, key)
             self.area_ref[key] = result / (1000 * 1000)
 
-            # get osm data for covered area
+            # get osm building area
             result = await ohsome_client.query(self.topic, feature)
             value = result["result"][0]["value"] or 0.0  # if None
             self.area_osm[key] = value / (1000 * 1000)
@@ -109,6 +112,7 @@ class BuildingComparison(BaseIndicator):
         self.result.description = "".join(edge_cases)
 
         for key in self.data_ref.keys():
+            # if None in (self.ratio[key], self.area_cov[key], self.data_ref[key]):
             if self.check_major_edge_cases(key):
                 continue
 
@@ -119,6 +123,13 @@ class BuildingComparison(BaseIndicator):
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
             except ZeroDivisionError:
                 self.ratio[key] = 0.0
+
+            template = Template(self.metadata.result_description)
+            self.result.description += template.substitute(
+                ratio=round(self.ratio[key] * 100, 2),
+                coverage=round(self.area_cov[key] * 100, 2),
+                dataset=self.data_ref[key]["name"],
+            )
 
         ratios = [v for v in self.ratio.values() if v is not None]
         ratios = [v for v in ratios if v <= self.above_one_th]
@@ -137,16 +148,6 @@ class BuildingComparison(BaseIndicator):
                 self.result.class_ = 3
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
-
-            for key, val in self.ratio.items():
-                if val is None:
-                    continue
-                template = Template(self.metadata.result_description)
-                self.result.description += template.substitute(
-                    ratio=round(val * 100, 2),
-                    coverage=round(self.area_cov[key] * 100, 2),
-                    dataset=self.data_ref[key]["name"],
-                )
 
         label_description = self.metadata.label_description[self.result.label]
         self.result.description += "\n" + label_description
@@ -169,7 +170,7 @@ class BuildingComparison(BaseIndicator):
         osm_hover = []
         ref_color = []
         for key, dataset in self.data_ref.items():
-            if self.area_ref[key] is None or self.area_osm[key] is None:
+            if None in (self.area_ref[key], self.area_osm[key]):
                 continue
             ref_x.append(dataset["name"])
             ref_y.append(round(self.area_ref[key], 2))
@@ -293,7 +294,7 @@ async def get_reference_building_area(feature: Feature, table_name: str) -> floa
     return res[0] or 0.0
 
 
-# TODO add cache?
+@cache
 def load_datasets_metadata() -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
     with open(file_path, "r") as f:
