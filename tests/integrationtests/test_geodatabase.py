@@ -3,6 +3,7 @@ import unittest
 
 import geojson
 import pytest
+from geojson import Feature
 
 import ohsome_quality_api.geodatabase.client as db_client
 
@@ -64,39 +65,38 @@ def test_get_shdi_multiple_intersections():
     assert result[0]["shdi"] <= 1.0
 
 
-def test_get_building_area(feature_germany_berlin):
-    result = asyncio.run(db_client.get_building_area(feature_germany_berlin))
-    assert result[0]["area"] == 4842587.791645115
-
-
 @pytest.mark.parametrize(
     "table", ["eubucco_v0_1_coverage_simple", "eubucco_v0_1_coverage_inversed"]
 )
 def test_get_reference_coverage(table):
     result = asyncio.run(db_client.get_reference_coverage(table))
-    for item in result:
-        obj: geojson.MultiPolygon = geojson.loads(item)
-        assert obj.is_valid
-        assert isinstance(obj, geojson.MultiPolygon)
+    assert result.is_valid
+    assert isinstance(result, Feature)
 
 
 def test_get_eubucco_coverage_intersection_area_none(
     feature_collection_germany_heidelberg,
 ):
     bpoly = feature_collection_germany_heidelberg.features[0]
-    result = asyncio.run(db_client.intersect(bpoly))
-    assert result == []
+    result = asyncio.run(
+        db_client.get_intersection_area(bpoly, "eubucco_v0_1_coverage_simple")
+    )
+    assert result == 0.0
 
 
 def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
     bpoly = feature_germany_berlin
-    result = asyncio.run(db_client.intersect(bpoly))
-    assert pytest.approx(1.0, 0.1) == result[0]["area_ratio"]
+    result = asyncio.run(
+        db_client.get_intersection_area(bpoly, "eubucco_v0_1_coverage_simple")
+    )
+    assert pytest.approx(1.0, 0.1) == result
 
 
 def test_get_coverage_intersection(feature_germany_berlin):
     bpoly = feature_germany_berlin
-    result = asyncio.run(db_client.get_intersection_geom(bpoly))
+    result = asyncio.run(
+        db_client.get_intersection_geom(bpoly, "eubucco_v0_1_coverage_simple")
+    )
     assert result["geometry"].is_valid
     assert isinstance(result, geojson.feature.Feature)
 

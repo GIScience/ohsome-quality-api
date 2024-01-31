@@ -15,12 +15,11 @@ On preventing SQL injections:
 """
 import os
 from contextlib import asynccontextmanager
-from typing import Literal
 
 import asyncpg
 import geojson
 from asyncpg import Record
-from geojson import Feature, FeatureCollection
+from geojson import Feature, FeatureCollection, MultiPolygon
 
 from ohsome_quality_api.config import get_config_value
 
@@ -70,33 +69,15 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
-async def get_building_area(
-    bpoly: Feature,
-    table_names: Literal["EUBUCCO", "Microsoft-Buildings"],
-) -> list[Record]:
-    """Get area of building footprints for a bounding polygon."""
-    area_list = []
-    file_path = os.path.join(WORKING_DIR, "select_building_area.sql")
-    with open(file_path, "r") as file:
-        query = file.read()
-    geom = str(bpoly.geometry)
-    for table_name in table_names:
-        async with get_connection() as conn:
-            result = await conn.fetch(
-                query=query.format(table_name=table_name), geom=geom
-            )
-            area_list.append(result[0])
-    return area_list
-
-
-async def get_reference_coverage(table_name: str) -> dict:
+# TODO: Check calls of the function
+async def get_reference_coverage(table_name: str) -> Feature:
     """Get reference coverage for a bounding polygon."""
     file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
     with open(file_path, "r") as file:
         query = file.read()
     async with get_connection() as conn:
         result = await conn.fetch(query.format(table_name=table_name))
-    return result[0]["geom"]
+    return Feature(geometry=geojson.loads(result[0]["geom"]))
 
 
 async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
@@ -117,7 +98,7 @@ async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
             return 0.0
 
 
-async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature | None:
+async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature:
     """Get intersection geometry of AoI and coverage geometry."""
     file_path = os.path.join(WORKING_DIR, "select_intersection.sql")
     with open(file_path, "r") as file:
@@ -126,6 +107,6 @@ async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature | No
     async with get_connection() as conn:
         result = await conn.fetch(query.format(table_name=table_name), geom)
         if result:
-            return geojson.loads(Feature(geometry=result[0]["geom"]))
+            return Feature(geometry=geojson.loads(result[0]["geom"]))
         else:
-            return None
+            return Feature(geometry=MultiPolygon(coordinates=[]))
