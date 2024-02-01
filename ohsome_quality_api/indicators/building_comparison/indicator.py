@@ -165,6 +165,8 @@ class BuildingComparison(BaseIndicator):
         ref_hover = []
         osm_hover = []
         ref_color = []
+        osm_area = []
+        ref_area = []
         for key, dataset in self.data_ref.items():
             if None in (self.area_ref[key], self.area_osm[key]):
                 continue
@@ -176,18 +178,23 @@ class BuildingComparison(BaseIndicator):
             ref_hover.append(f"{dataset['name']} ({dataset['date']})")
             osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
             ref_color.append(Color[dataset["color"]].value)
+            osm_area.append(round(self.area_osm[key], 2))
+            ref_area.append(round(self.area_ref[key], 2))
 
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
-                    name="OSM building area",
+                    name="OSM building area"
+                    + " ("
+                    + "km², ".join(map(str, osm_area))
+                    + "km²)",
                     x=osm_x,
                     y=osm_y,
                     marker_color=Color.GREEN.value,
                     hovertext=osm_hover,
                 ),
                 pgo.Bar(
-                    name=ref_x[0],
+                    name=ref_x[0] + f" ({ref_area[0]} km²)",
                     x=ref_x,
                     y=ref_y,
                     marker_color=ref_color,
@@ -198,9 +205,9 @@ class BuildingComparison(BaseIndicator):
         )
 
         # Put every reference dataset to legend by adding transparent shapes
-        for dataset in list(self.data_ref.values())[1:]:
+        for i, dataset in enumerate(list(self.data_ref.values())[1:]):
             fig.add_shape(
-                name=dataset["name"],
+                name=dataset["name"] + f" ({ref_area[i+1]} km²)",
                 legendgroup="Reference",
                 showlegend=True,
                 type="rect",
