@@ -190,7 +190,7 @@ class BuildingComparison(BaseIndicator):
                     + "km²)",
                     x=osm_x,
                     y=osm_y,
-                    marker_color=Color.GREEN.value,
+                    marker_color=Color.GREY.value,
                     hovertext=osm_hover,
                 ),
                 pgo.Bar(
