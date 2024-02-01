@@ -192,6 +192,7 @@ class BuildingComparison(BaseIndicator):
                     y=osm_y,
                     marker_color=Color.GREY.value,
                     hovertext=osm_hover,
+                    hoverinfo="text",
                 ),
                 pgo.Bar(
                     name=ref_x[0] + f" ({ref_area[0]} km²)",
@@ -199,6 +200,7 @@ class BuildingComparison(BaseIndicator):
                     y=ref_y,
                     marker_color=ref_color,
                     hovertext=ref_hover,
+                    hoverinfo="text",
                     legendgroup="Reference",
                 ),
             ]
