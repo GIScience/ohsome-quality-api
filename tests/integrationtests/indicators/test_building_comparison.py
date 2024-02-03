@@ -320,40 +320,44 @@ class TestCalculate:
 
 
 class TestFigure:
-    @pytest.fixture
     @oqapi_vcr.use_cassette
-    def indicator(
-        self,
-        topic_building_area,
-        feature_germany_berlin,
-        mock_get_building_area,
-        mock_get_intersection_geom,
-        mock_get_intersection_area,
-    ):
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area",
+    )
+    def test_create_figure(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        return indicator
-
-    def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    def test_create_figure_manual(self, indicator):
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area",
+    )
+    def test_create_figure_manual(self, topic_building_area, feature_germany_berlin):
+        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.preprocess())
+        indicator.calculate()
         indicator.create_figure()
         pio.show(indicator.result.figure)
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area",
+    )
     def test_create_figure_above_one_th(
         self,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_building_area_low,
-        mock_get_intersection_geom,
-        mock_get_intersection_area,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
@@ -364,13 +368,15 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)
 
     @oqapi_vcr.use_cassette
+    @pytest.mark.usefixtures(
+        "mock_get_building_area",
+        "mock_get_intersection_geom",
+        "mock_get_intersection_area",
+    )
     def test_create_figure_building_area_zero(
         self,
         topic_building_area,
         feature_germany_berlin,
-        mock_get_building_area_empty,
-        mock_get_intersection_geom,
-        mock_get_intersection_area,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
         asyncio.run(indicator.preprocess())
