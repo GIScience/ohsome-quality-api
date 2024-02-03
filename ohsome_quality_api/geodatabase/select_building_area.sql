@@ -3,9 +3,8 @@ WITH bpoly AS (
         ST_Setsrid (ST_GeomFromGeoJSON (%s), 4326) AS geom
 )
 SELECT
-    SUM(eubucco.area) as area
-FROM
-    eubucco,
+    SUM({table_name}.area) as area
+FROM {table_name},
     bpoly
 WHERE
-    ST_Intersects (eubucco.centroid, bpoly.geom);
+    ST_Intersects ({table_name}.centroid, bpoly.geom);

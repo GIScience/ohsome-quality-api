@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 import asyncpg
 import geojson
 from asyncpg import Record
-from geojson import Feature, FeatureCollection
+from geojson import Feature, FeatureCollection, MultiPolygon
 
 from ohsome_quality_api.config import get_config_value
 
@@ -69,50 +69,44 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
         return await conn.fetch(query, geom)
 
 
-async def get_building_area(bpoly: Feature) -> list[Record]:
-    """Get area of building footprints for a bounding polygon."""
-    file_path = os.path.join(WORKING_DIR, "select_building_area.sql")
+# TODO: Check calls of the function
+async def get_reference_coverage(table_name: str) -> Feature:
+    """Get reference coverage for a bounding polygon."""
+    file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
     with open(file_path, "r") as file:
         query = file.read()
-    geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        return await conn.fetch(query, geom)
+        result = await conn.fetch(query.format(table_name=table_name))
+    return Feature(geometry=geojson.loads(result[0]["geom"]))
 
 
-async def get_eubucco_coverage(inverse: bool) -> list[Record]:
-    file_path = os.path.join(WORKING_DIR, "select_eubucco_coverage.sql")
-    with open(file_path, "r") as file:
-        query = file.read()
-    if inverse:
-        table_name = "eubucco_v0_1_coverage_inversed"
-    else:
-        table_name = "eubucco_v0_1_coverage_simple"
-    query = query.format(table_name=table_name)
-    async with get_connection() as conn:
-        return await conn.fetch(query)
-
-
-async def get_eubucco_coverage_intersection_area(bpoly: Feature) -> list[Record]:
+async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
     """Get ratio of AOI area to intersection area of AOI and coverage geometry.
 
     The result is the ratio of area within coverage (between 0-1) or an empty list if
     AOI lies outside of coverage geometry.
     """
-    file_path = os.path.join(WORKING_DIR, "select_check_eubucco_coverage.sql")
+    file_path = os.path.join(WORKING_DIR, "select_intersection.sql")
     with open(file_path, "r") as file:
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        return await conn.fetch(query, geom)
+        result = await conn.fetch(query.format(table_name=table_name), geom)
+        if result:
+            return result[0]["area_ratio"]
+        else:
+            return 0.0
 
 
-async def get_eubucco_coverage_intersection(bpoly: Feature) -> Feature:
+async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature:
     """Get intersection geometry of AoI and coverage geometry."""
-    file_path = os.path.join(WORKING_DIR, "get_coverage_intersection.sql")
+    file_path = os.path.join(WORKING_DIR, "select_intersection.sql")
     with open(file_path, "r") as file:
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        result = await conn.fetch(query, geom)
-        bpoly["geometry"] = geojson.loads(result[0]["geom"])
-        return bpoly
+        result = await conn.fetch(query.format(table_name=table_name), geom)
+        if result:
+            return Feature(geometry=geojson.loads(result[0]["geom"]))
+        else:
+            return Feature(geometry=MultiPolygon(coordinates=[]))

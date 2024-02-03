@@ -1,5 +1,6 @@
 import logging
 import os
+from functools import cache
 from string import Template
 
 import geojson
@@ -8,7 +9,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature, MultiPolygon, Polygon
+from geojson import Feature
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -29,173 +30,261 @@ class BuildingComparison(BaseIndicator):
             topic=topic,
             feature=feature,
         )
-        self.area_osm: float | None = None
-        self.area_references: dict = {}
         # The result is the ratio of area within coverage (between 0-1) or an empty list
-        self.coverage: dict = {}
-
+        #
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
         self.above_one_th = 1.30
 
+        self.data_ref: dict[str, dict] = {}
+        self.area_osm: dict[str, float | None] = {}
+        self.area_ref: dict[str, float | None] = {}
+        self.area_cov: dict[str, float | None] = {}
+        self.ratio: dict[str, float | None] = {}
+        # self.data_ref: list = load_reference_datasets()  # reference datasets
+        for key, val in load_datasets_metadata().items():
+            self.data_ref[key] = val
+            self.area_osm[key] = None  # osm building area
+            self.area_ref[key] = None  # reference building area [sqkm]
+            self.area_cov[key] = None  # covered area [%]
+            self.ratio[key] = None
+
     @classmethod
-    async def coverage(cls, inverse=False) -> Polygon | MultiPolygon:
-        result = await db_client.get_eubucco_coverage(inverse)
-        return geojson.loads(result[0]["geom"])
+    async def coverage(cls, inverse=False) -> list[Feature]:
+        # TODO: could also return a Feature Collection
+        features = []
+        datasets = load_datasets_metadata()
+        for val in datasets.values():
+            if inverse:
+                table = val["coverage"]["inversed"]
+            else:
+                table = val["coverage"]["simple"]
+            feature_str = await db_client.get_reference_coverage(table)
+            geojson_dict = geojson.loads(feature_str)
+            feature = Feature(geometry=geojson_dict, properties={})
+            feature.properties.update({"refernce_dataset": val["name"]})
+            features.append(feature)
+            return features
 
     @classmethod
     def attribution(cls) -> str:
-        return get_attribution(["OSM", "EUBUCCO"])
+        return get_attribution(["OSM", "EUBUCCO", "Microsoft Buildings"])
 
     async def preprocess(self) -> None:
-        result = await db_client.get_eubucco_coverage_intersection_area(self.feature)
-        if result:
-            self.coverage["EUBUCCO"] = result[0]["area_ratio"]
-        else:
-            self.coverage["EUBUCCO"] = None
-            return
+        for key, val in self.data_ref.items():
+            # get coverage [%]
+            self.area_cov[key] = await db_client.get_intersection_area(
+                self.feature,
+                val["coverage"]["simple"],
+            )
 
-        edge_case = self.check_major_edge_cases()
-        if edge_case:
-            self.result.description = edge_case
-            return
+            if self.check_major_edge_cases(key):
+                continue
 
-        self.feature = await db_client.get_eubucco_coverage_intersection(self.feature)
-        db_query_result = await get_eubucco_building_area(geojson.dumps(self.feature))
-        self.area_references["EUBUCCO"] = db_query_result / (1000 * 1000)
-        osm_query_result = await ohsome_client.query(
-            self.topic,
-            self.feature,
-        )
-        raw = osm_query_result["result"][0]["value"] or 0  # if None
-        self.area_osm = raw / (1000 * 1000)
-        self.result.timestamp_osm = parser.isoparse(
-            osm_query_result["result"][0]["timestamp"]
-        )
+            # clip input geom with coverage of reference dataset
+            feature = await db_client.get_intersection_geom(
+                self.feature,
+                val["coverage"]["simple"],
+            )
+
+            # get reference building area
+            result = await get_reference_building_area(feature, key)
+            self.area_ref[key] = result / (1000 * 1000)
+
+            # get osm building area
+            result = await ohsome_client.query(self.topic, feature)
+            value = result["result"][0]["value"] or 0.0  # if None
+            self.area_osm[key] = value / (1000 * 1000)
+            timestamp = result["result"][0]["timestamp"]
+            self.result.timestamp_osm = parser.isoparse(timestamp)
 
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
-        if self.result.label == "undefined" and self.check_major_edge_cases():
-            return
-        if self.check_minor_edge_cases():
-            self.result.description = self.check_minor_edge_cases()
-        else:
-            self.result.description = ""
-
-        if all(v == 0 for v in self.area_references.values()):
-            self.result.description += "Warning: No reference data in this area. "
-            pass
-        else:
-            self.result.value = float(
-                mean(
-                    [self.area_osm / v for v in self.area_references.values() if v != 0]
-                )
-            )
-
-        if self.result.value is None:
-            return
-        elif self.above_one_th >= self.result.value >= self.th_high:
-            self.result.class_ = 5
-        elif self.th_high > self.result.value >= self.th_low:
-            self.result.class_ = 3
-        elif self.th_low > self.result.value >= 0:
-            self.result.class_ = 1
-        elif self.result.value > self.above_one_th:
-            # TODO: move this to edge_case functions
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        if all(edge_cases):
             self.result.description += (
-                "Warning: Because of a big difference between OSM and the reference "
-                + "data no quality estimation has been made. "
-                + "It could be that the reference data is outdated. "
+                " None of the reference datasets covers the area-of-interest."
+            )
+            return
+        self.result.description = "".join(edge_cases)
+
+        for key in self.data_ref.keys():
+            # if None in (self.ratio[key], self.area_cov[key], self.data_ref[key]):
+            if self.check_major_edge_cases(key):
+                continue
+
+            self.result.description += self.check_minor_edge_cases(key)
+            # TODO: check for None explicitly?
+            # TODO: add warning for user, that no buildings are present?
+            try:
+                self.ratio[key] = self.area_osm[key] / self.area_ref[key]
+            except ZeroDivisionError:
+                self.ratio[key] = 0.0
+
+            template = Template(self.metadata.result_description)
+            self.result.description += template.substitute(
+                ratio=round(self.ratio[key] * 100, 2),
+                coverage=round(self.area_cov[key] * 100, 2),
+                dataset=self.data_ref[key]["name"],
             )
 
-        template = Template(self.metadata.result_description)
-        self.result.description += template.substitute(
-            ratio=round(self.result.value * 100, 2),
-            coverage=round(self.coverage["EUBUCCO"] * 100, 2),
-        )
+        ratios = [v for v in self.ratio.values() if v is not None]
+        ratios = [v for v in ratios if v <= self.above_one_th]
+        if ratios:
+            self.result.value = float(mean(ratios))
+        else:
+            self.result.description += (
+                "Warning: OSM has substantivly more buildings mapped than the Reference"
+                + " datasets. No quality estimation has been made."
+            )
+
+        if self.result.value is not None:
+            if self.above_one_th >= self.result.value >= self.th_high:
+                self.result.class_ = 5
+            elif self.th_high > self.result.value >= self.th_low:
+                self.result.class_ = 3
+            elif self.th_low > self.result.value >= 0:
+                self.result.class_ = 1
+
         label_description = self.metadata.label_description[self.result.label]
         self.result.description += "\n" + label_description
 
     def create_figure(self) -> None:
-        if self.result.label == "undefined" and self.check_major_edge_cases():
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        if self.result.label == "undefined" and all(edge_cases):
             logging.info(
-                "Result is undefined and major edge case is present. "
-                + "Skipping figure creation."
+                "Result is undefined and major edge case is present."
+                " Skipping figure creation."
             )
             return
-        fig = pgo.Figure()
-        fig.add_trace(
-            pgo.Bar(
-                name="OSM",
-                x=["OSM" + f" ({self.result.timestamp_osm:%b %d, %Y})"],
-                y=[round(self.area_osm, 2)],
-                marker_color=Color.GREEN.value,
-            )
-        )
-        for name, area in self.area_references.items():
-            fig.add_trace(
+
+        ref_data = []
+        ref_x = []
+        ref_y = []
+        osm_x = []
+        osm_y = []
+        ref_hover = []
+        osm_hover = []
+        ref_color = []
+        osm_area = []
+        ref_area = []
+        for key, dataset in self.data_ref.items():
+            if None in (self.area_ref[key], self.area_osm[key]):
+                continue
+            ref_x.append(dataset["name"])
+            ref_y.append(round(self.area_ref[key], 2))
+            ref_data.append(dataset)
+            osm_x.append(dataset["name"])
+            osm_y.append(round(self.area_osm[key], 2))
+            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
+            osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
+            ref_color.append(Color[dataset["color"]].value)
+            osm_area.append(round(self.area_osm[key], 2))
+            ref_area.append(round(self.area_ref[key], 2))
+
+        fig = pgo.Figure(
+            data=[
                 pgo.Bar(
-                    name=name,
-                    x=[
-                        f"{name} ({load_source_data(name)['date']})"
-                        if load_source_data(name)["date"] is not None
-                        else name
-                    ],
-                    y=[round(area, 2)],
-                    marker_color=Color.PURPLE.value,
-                )
+                    name="OSM building area"
+                    + " ("
+                    + "km², ".join(map(str, osm_area))
+                    + "km²)",
+                    x=osm_x,
+                    y=osm_y,
+                    marker_color=Color.GREY.value,
+                    hovertext=osm_hover,
+                    hoverinfo="text",
+                ),
+                pgo.Bar(
+                    name=ref_x[0] + f" ({ref_area[0]} km²)",
+                    x=ref_x,
+                    y=ref_y,
+                    marker_color=ref_color,
+                    hovertext=ref_hover,
+                    hoverinfo="text",
+                    legendgroup="Reference",
+                ),
+            ]
+        )
+
+        # Put every reference dataset to legend by adding transparent shapes
+        for i, dataset in enumerate(list(self.data_ref.values())[1:]):
+            fig.add_shape(
+                name=dataset["name"] + f" ({ref_area[i+1]} km²)",
+                legendgroup="Reference",
+                showlegend=True,
+                type="rect",
+                layer="below",
+                line=dict(width=0),
+                fillcolor=Color[dataset["color"]].value,
+                x0=0,
+                y0=0,
+                x1=0,
+                y1=0,
             )
 
-        fig.update_layout(title_text=("Building Comparison"), showlegend=True)
-        fig.update_yaxes(title_text="Building Area [km²]")
-        fig.update_xaxes(
-            title_text="Reference Datasets ("
-            + get_sources(self.area_references.keys())
-            + ")"
-        )
+        layout = {
+            "title_text": "Building Comparison",
+            "showlegend": True,
+            "barmode": "group",
+            "yaxis_title": "Building Area [km²]",
+            "xaxis_title": f"Reference Datasets ({self.format_sources()})",
+        }
+        fig.update_layout(**layout)
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def check_major_edge_cases(self) -> str:
+    def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.coverage["EUBUCCO"]
+        coverage = self.area_cov[dataset]
         if coverage is None or coverage == 0.00:
-            return "Reference dataset does not cover area-of-interest."
+            return f"Reference dataset {dataset} does not cover area-of-interest. "
         elif coverage < 0.10:
             return (
                 "Only {:.2f}% of the area-of-interest is covered ".format(
                     coverage * 100
                 )
-                + "by the reference dataset (EUBUCCO). "
-                + "No quality estimation is possible."
+                + f"by the reference dataset ({dataset}). "
+                + f"No quality estimation with reference {dataset} is possible."
             )
         else:
             return ""
 
-    def check_minor_edge_cases(self) -> str:
+    def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.coverage["EUBUCCO"]
+        coverage = self.area_cov[dataset]
         if coverage < 0.95:
             return (
-                "Warning: Reference data does not cover the whole input geometry. "
-                + "Input geometry is clipped to the coverage. Result is only calculated"
+                f"Warning: Reference data {dataset} does "
+                f"not cover the whole input geometry. "
+                + "Input geometry is clipped to the coverage."
+                " Result is only calculated"
                 " for the intersection area. "
             )
         else:
             return ""
 
+    def format_sources(self):
+        sources = []
+        for dataset in self.data_ref.values():
+            if dataset["link"] is not None:
+                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
+            else:
+                sources.append(f"{dataset}")
+        result = ", ".join(sources)
+        return result
+
 
 @alru_cache
-async def get_eubucco_building_area(bpoly: str) -> float:
+async def get_reference_building_area(feature: Feature, table_name: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
-    bpoly = geojson.loads(bpoly)
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
     with open(file_path, "r") as file:
         query = file.read()
-    geom = str(bpoly.geometry)
     dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
         host=get_config_value("postgres_host"),
         port=get_config_value("postgres_port"),
@@ -203,31 +292,17 @@ async def get_eubucco_building_area(bpoly: str) -> float:
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
+    table_name = table_name.replace(" ", "_")
+    geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
-            await cur.execute(query, (geom,))
+            await cur.execute(query.format(table_name=table_name), (geom,))
             res = await cur.fetchone()
     return res[0] or 0.0
 
 
-def get_sources(reference_datasets):
-    sources = ""
-    for dataset in reference_datasets:
-        source_metadata = load_source_data(dataset)
-        if source_metadata["link"] is not None:
-            sources += f"<a href='{load_source_data(dataset)['link']}'>{dataset}</a>"
-        else:
-            sources += f"{dataset}"
-    return sources
-
-
-def load_source_data(reference_dataset) -> dict:
-    file_path = os.path.join(os.path.dirname(__file__), "sources.yaml")
-
+@cache
+def load_datasets_metadata() -> dict:
+    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
     with open(file_path, "r") as f:
-        raw = yaml.safe_load(f)
-
-    link = raw.get(reference_dataset, {}).get("link")
-    date = raw.get(reference_dataset, {}).get("date")
-
-    return {"link": link, "date": date}
+        return yaml.safe_load(f)

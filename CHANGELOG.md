@@ -1,5 +1,13 @@
 # Changelog
 
+## Current Main
+
+### New Features
+
+- building-comparison: support comparison with multiple datasets ([#768])
+
+[#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
+
 ## Release 1.2.0
 
 ### New Features

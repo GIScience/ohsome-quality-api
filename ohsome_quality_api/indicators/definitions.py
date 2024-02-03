@@ -1,6 +1,6 @@
 from enum import Enum
 
-from geojson import Feature, FeatureCollection
+from geojson import FeatureCollection
 
 from ohsome_quality_api.definitions import load_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata
@@ -29,9 +29,8 @@ def get_valid_indicators(topic_key: str) -> tuple:
 
 async def get_coverage(indicator_key: str, inverse: bool = False) -> FeatureCollection:
     indicator_class = get_class_from_key(class_type="indicator", key=indicator_key)
-    geometry = await indicator_class.coverage(inverse)
-    feature = Feature(geometry=geometry, properties={})
-    return FeatureCollection(features=[feature])
+    features = await indicator_class.coverage(inverse)
+    return FeatureCollection(features=features)
 
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_keys()})
