@@ -340,6 +340,7 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
+    @oqapi_vcr.use_cassette
     @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     def test_create_figure_manual(self, indicator):
         indicator.create_figure()
