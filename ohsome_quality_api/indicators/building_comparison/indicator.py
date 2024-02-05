@@ -63,7 +63,7 @@ class BuildingComparison(BaseIndicator):
             feature = await db_client.get_reference_coverage(table)
             feature.properties.update({"refernce_dataset": val["name"]})
             features.append(feature)
-            return features
+        return features
 
     @classmethod
     def attribution(cls) -> str:
