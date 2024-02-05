@@ -87,7 +87,7 @@ class BuildingComparison(BaseIndicator):
             )
 
             # get reference building area
-            result = await get_reference_building_area(feature, key)
+            result = await get_reference_building_area(geojson.dumps(feature), key)
             self.area_ref[key] = result / (1000 * 1000)
 
             # get osm building area
@@ -276,8 +276,9 @@ class BuildingComparison(BaseIndicator):
         return result
 
 
+# alru needs hashable type, therefore, use string instead of Feature
 @alru_cache
-async def get_reference_building_area(feature: Feature, table_name: str) -> float:
+async def get_reference_building_area(feature_str: str, table_name: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
@@ -290,6 +291,7 @@ async def get_reference_building_area(feature: Feature, table_name: str) -> floa
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
+    feature = geojson.loads(feature_str)
     table_name = table_name.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
