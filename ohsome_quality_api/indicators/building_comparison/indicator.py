@@ -119,15 +119,20 @@ class BuildingComparison(BaseIndicator):
             # TODO: add warning for user, that no buildings are present?
             try:
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
-            except ZeroDivisionError:
-                self.ratio[key] = 0.0
 
-            template = Template(self.metadata.result_description)
-            self.result.description += template.substitute(
-                ratio=round(self.ratio[key] * 100, 2),
-                coverage=round(self.area_cov[key] * 100, 2),
-                dataset=self.data_ref[key]["name"],
-            )
+                template = Template(self.metadata.result_description)
+                self.result.description += template.substitute(
+                    ratio=round(self.ratio[key] * 100, 2),
+                    coverage=round(self.area_cov[key] * 100, 2),
+                    dataset=self.data_ref[key]["name"],
+                )
+            except ZeroDivisionError:
+                self.ratio[key] = None
+                self.result.description += (
+                    f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
+                    f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
+                    "building area. No quality estimation with reference is possible. "
+                )
 
         ratios = [v for v in self.ratio.values() if v is not None]
         ratios = [v for v in ratios if v <= self.above_one_th]
