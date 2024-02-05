@@ -209,20 +209,22 @@ class BuildingComparison(BaseIndicator):
         )
 
         # Put every reference dataset to legend by adding transparent shapes
-        for i, dataset in enumerate(list(self.data_ref.values())[1:]):
-            fig.add_shape(
-                name=dataset["name"] + f" ({ref_area[i+1]} km²)",
-                legendgroup="Reference",
-                showlegend=True,
-                type="rect",
-                layer="below",
-                line=dict(width=0),
-                fillcolor=Color[dataset["color"]].value,
-                x0=0,
-                y0=0,
-                x1=0,
-                y1=0,
-            )
+        # do only if more than 1 reference data exists, so no edge_case
+        if not any(edge_cases):
+            for i, dataset in enumerate(list(self.data_ref.values())[1:]):
+                fig.add_shape(
+                    name=dataset["name"] + f" ({ref_area[i+1]} km²)",
+                    legendgroup="Reference",
+                    showlegend=True,
+                    type="rect",
+                    layer="below",
+                    line=dict(width=0),
+                    fillcolor=Color[dataset["color"]].value,
+                    x0=0,
+                    y0=0,
+                    x1=0,
+                    y1=0,
+                )
 
         layout = {
             "title_text": "Building Comparison",
