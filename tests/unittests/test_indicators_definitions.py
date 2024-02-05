@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 
 import geojson
 import pytest
-from geojson import Polygon
+from geojson import Feature, Polygon
 
 from ohsome_quality_api.indicators import definitions, models
 
@@ -11,19 +11,17 @@ from ohsome_quality_api.indicators import definitions, models
 @pytest.fixture(scope="class")
 def mock_get_reference_coverage(class_mocker):
     async_mock = AsyncMock(
-        return_value=str(
-            geojson.dumps(
-                Polygon(
-                    coordinates=[
-                        [
-                            (-180, 90),
-                            (-180, -90),
-                            (180, -90),
-                            (180, 90),
-                            (-180, 90),
-                        ]
+        return_value=Feature(
+            geometry=Polygon(
+                coordinates=[
+                    [
+                        (-180, 90),
+                        (-180, -90),
+                        (180, -90),
+                        (180, 90),
+                        (-180, 90),
                     ]
-                )
+                ]
             )
         )
     )

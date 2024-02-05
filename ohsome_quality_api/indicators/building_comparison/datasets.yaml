@@ -9,6 +9,7 @@ EUBUCCO:
   coverage:
     simple: eubucco_v0_1_coverage_simple
     inversed: eubucco_v0_1_coverage_inversed
+  table_name: eubucco
 
 Microsoft Buildings:
     name: Microsoft Building Footprints
@@ -21,3 +22,4 @@ Microsoft Buildings:
     coverage:
       simple: microsoft_buildings_coverage_simple
       inversed: microsoft_buildings_coverage_inversed
+    table_name: microsoft_buildings_2024_01_03

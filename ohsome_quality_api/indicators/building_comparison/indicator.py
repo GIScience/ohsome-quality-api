@@ -60,12 +60,10 @@ class BuildingComparison(BaseIndicator):
                 table = val["coverage"]["inversed"]
             else:
                 table = val["coverage"]["simple"]
-            feature_str = await db_client.get_reference_coverage(table)
-            geojson_dict = geojson.loads(feature_str)
-            feature = Feature(geometry=geojson_dict, properties={})
+            feature = await db_client.get_reference_coverage(table)
             feature.properties.update({"refernce_dataset": val["name"]})
             features.append(feature)
-            return features
+        return features
 
     @classmethod
     def attribution(cls) -> str:
@@ -89,7 +87,9 @@ class BuildingComparison(BaseIndicator):
             )
 
             # get reference building area
-            result = await get_reference_building_area(feature, key)
+            result = await get_reference_building_area(
+                geojson.dumps(feature), val["table_name"]
+            )
             self.area_ref[key] = result / (1000 * 1000)
 
             # get osm building area
@@ -119,15 +119,20 @@ class BuildingComparison(BaseIndicator):
             # TODO: add warning for user, that no buildings are present?
             try:
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
-            except ZeroDivisionError:
-                self.ratio[key] = 0.0
 
-            template = Template(self.metadata.result_description)
-            self.result.description += template.substitute(
-                ratio=round(self.ratio[key] * 100, 2),
-                coverage=round(self.area_cov[key] * 100, 2),
-                dataset=self.data_ref[key]["name"],
-            )
+                template = Template(self.metadata.result_description)
+                self.result.description += template.substitute(
+                    ratio=round(self.ratio[key] * 100, 2),
+                    coverage=round(self.area_cov[key] * 100, 2),
+                    dataset=self.data_ref[key]["name"],
+                )
+            except ZeroDivisionError:
+                self.ratio[key] = None
+                self.result.description += (
+                    f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
+                    f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
+                    "building area. No quality estimation with reference is possible. "
+                )
 
         ratios = [v for v in self.ratio.values() if v is not None]
         ratios = [v for v in ratios if v <= self.above_one_th]
@@ -208,16 +213,15 @@ class BuildingComparison(BaseIndicator):
             ]
         )
 
-        # Put every reference dataset to legend by adding transparent shapes
-        for i, dataset in enumerate(list(self.data_ref.values())[1:]):
+        for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
             fig.add_shape(
-                name=dataset["name"] + f" ({ref_area[i+1]} km²)",
+                name=name + f" ({area} km²)",
                 legendgroup="Reference",
                 showlegend=True,
                 type="rect",
                 layer="below",
                 line=dict(width=0),
-                fillcolor=Color[dataset["color"]].value,
+                fillcolor=color,
                 x0=0,
                 y0=0,
                 x1=0,
@@ -278,8 +282,9 @@ class BuildingComparison(BaseIndicator):
         return result
 
 
+# alru needs hashable type, therefore, use string instead of Feature
 @alru_cache
-async def get_reference_building_area(feature: Feature, table_name: str) -> float:
+async def get_reference_building_area(feature_str: str, table_name: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
@@ -292,6 +297,7 @@ async def get_reference_building_area(feature: Feature, table_name: str) -> floa
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
+    feature = geojson.loads(feature_str)
     table_name = table_name.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
