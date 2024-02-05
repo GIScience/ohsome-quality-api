@@ -87,7 +87,9 @@ class BuildingComparison(BaseIndicator):
             )
 
             # get reference building area
-            result = await get_reference_building_area(geojson.dumps(feature), key)
+            result = await get_reference_building_area(
+                geojson.dumps(feature), val["table_name"]
+            )
             self.area_ref[key] = result / (1000 * 1000)
 
             # get osm building area
