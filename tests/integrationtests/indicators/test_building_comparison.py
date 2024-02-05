@@ -208,7 +208,7 @@ class TestCalculate:
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        assert indicator.result.value == 0.0
+        assert indicator.result.value is None
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
