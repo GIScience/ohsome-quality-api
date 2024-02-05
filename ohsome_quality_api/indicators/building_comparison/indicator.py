@@ -60,9 +60,7 @@ class BuildingComparison(BaseIndicator):
                 table = val["coverage"]["inversed"]
             else:
                 table = val["coverage"]["simple"]
-            feature_str = await db_client.get_reference_coverage(table)
-            geojson_dict = geojson.loads(feature_str)
-            feature = Feature(geometry=geojson_dict, properties={})
+            feature = await db_client.get_reference_coverage(table)
             feature.properties.update({"refernce_dataset": val["name"]})
             features.append(feature)
             return features
