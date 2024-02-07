@@ -6,7 +6,12 @@
 
 - building-comparison: support comparison with multiple datasets ([#768])
 
+### Other Changes
+
+- build: update dependencies (`rpy2` and `fastapi`) ([#775])
+
 [#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
+[#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
 
 ## Release 1.2.0
 
