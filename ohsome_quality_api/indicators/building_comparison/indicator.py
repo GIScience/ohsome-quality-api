@@ -193,13 +193,15 @@ class BuildingComparison(BaseIndicator):
                 pgo.Bar(
                     name="OSM building area"
                     + " ("
-                    + "km², ".join(map(str, osm_area))
-                    + "km²)",
+                    + " km², ".join(map(str, osm_area))
+                    + " km²)",
                     x=osm_x,
                     y=osm_y,
                     marker_color=Color.GREY.value,
                     hovertext=osm_hover,
                     hoverinfo="text",
+                    text=[f"{area} km²" for area in osm_area],
+                    textposition="outside",
                 ),
                 pgo.Bar(
                     name=ref_x[0] + f" ({ref_area[0]} km²)",
@@ -209,6 +211,8 @@ class BuildingComparison(BaseIndicator):
                     hovertext=ref_hover,
                     hoverinfo="text",
                     legendgroup="Reference",
+                    text=[f"{area} km²" for area in ref_area],
+                    textposition="outside",
                 ),
             ]
         )
