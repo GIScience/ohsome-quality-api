@@ -10,11 +10,11 @@ building-comparison:
     reference data.
   label_description:
     red: >-
-      OSM has significant less building area than the reference data.
+      OSM has significant less building area than the reference data and is therefore of low completeness.
     yellow: >-
-      OSM has a bit less building area than the reference data.
+      OSM has a bit less building area than the reference data and is therefore of medium completeness.
     green: >-
-      OSM has almost the same, the same or even more building area than the reference data.
+      OSM has almost the same, the same or even more building area than the reference data and is therefore of high completeness.
     undefined: >-
       Comparison could not be made.
   result_description: >-

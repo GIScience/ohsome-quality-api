@@ -335,7 +335,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
-    #@pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     @pytest.mark.usefixtures(
         "mock_get_building_area",
         "mock_get_intersection_geom",

@@ -5,6 +5,7 @@
 ### New Features
 
 - building-comparison: support comparison with multiple datasets ([#768])
+- building-comparison: add more information to plot and improve result description ([#777])
 
 ### Other Changes
 
@@ -18,12 +19,13 @@
 ### New Features
 
 - api: add inverse parameter to coverage endpoint ([#762])
-- building-comparison: add caching of requests made to the database for EUBUCCO buidings ([#754])
+- building-comparison: add caching of requests made to the database for EUBUCCO buildings ([#754])
 - building-comparison: add indicator to the list of core indicators and as such make it available on the ohsome Dashboard ([#765])
 
 [#754]: https://github.com/GIScience/ohsome-quality-api/pull/754
 [#762]: https://github.com/GIScience/ohsome-quality-api/issues/762
 [#765]: https://github.com/GIScience/ohsome-quality-api/issues/765
+[#777]: https://github.com/GIScience/ohsome-quality-api/issues/777
 
 ## Release 1.1.1
 

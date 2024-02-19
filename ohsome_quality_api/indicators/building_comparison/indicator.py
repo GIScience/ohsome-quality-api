@@ -118,8 +118,6 @@ class BuildingComparison(BaseIndicator):
             self.warnings[key] += self.check_minor_edge_cases(key)
             # TODO: check for None explicitly?
             # TODO: add warning for user, that no buildings are present?
-            if self.warnings[key] != "":
-                self.warnings[key] += "\n"
             try:
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
 
@@ -138,8 +136,9 @@ class BuildingComparison(BaseIndicator):
                 )
             self.result.description += self.warnings[key] + "\n"
 
-        ratios = [v for v in self.ratio.values() if v is not None]
-        ratios = [v for v in ratios if v <= self.above_one_th]
+        ratios = [
+            v for v in self.ratio.values() if v is not None and v <= self.above_one_th
+        ]
         if ratios:
             self.result.value = float(mean(ratios))
         else:
@@ -155,7 +154,6 @@ class BuildingComparison(BaseIndicator):
                 self.result.class_ = 3
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
-
 
         label_description = self.metadata.label_description[self.result.label]
         self.result.description += label_description
@@ -221,8 +219,6 @@ class BuildingComparison(BaseIndicator):
                 ),
             ]
         )
-        raw = fig.to_dict()
-        print(raw)
         for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
             fig.add_shape(
                 name=name + f" ({area} km²)",
