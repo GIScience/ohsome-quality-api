@@ -42,6 +42,7 @@ class BuildingComparison(BaseIndicator):
         self.area_ref: dict[str, float | None] = {}
         self.area_cov: dict[str, float | None] = {}
         self.ratio: dict[str, float | None] = {}
+        self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
         for key, val in load_datasets_metadata().items():
             self.data_ref[key] = val
@@ -76,8 +77,8 @@ class BuildingComparison(BaseIndicator):
                 self.feature,
                 val["coverage"]["simple"],
             )
-
-            if self.check_major_edge_cases(key):
+            self.warnings[key] = self.check_major_edge_cases(key)
+            if self.warnings[key] != "":
                 continue
 
             # clip input geom with coverage of reference dataset
@@ -107,32 +108,35 @@ class BuildingComparison(BaseIndicator):
                 " None of the reference datasets covers the area-of-interest."
             )
             return
-        self.result.description = "".join(edge_cases)
-
+        self.result.description = ""
         for key in self.data_ref.keys():
             # if None in (self.ratio[key], self.area_cov[key], self.data_ref[key]):
-            if self.check_major_edge_cases(key):
+            if self.warnings[key] != "":
+                self.result.description += self.warnings[key] + "\n"
                 continue
 
-            self.result.description += self.check_minor_edge_cases(key)
+            self.warnings[key] += self.check_minor_edge_cases(key)
             # TODO: check for None explicitly?
             # TODO: add warning for user, that no buildings are present?
+            if self.warnings[key] != "":
+                self.warnings[key] += "\n"
             try:
                 self.ratio[key] = self.area_osm[key] / self.area_ref[key]
 
                 template = Template(self.metadata.result_description)
-                self.result.description += template.substitute(
+                self.warnings[key] += template.substitute(
                     ratio=round(self.ratio[key] * 100, 2),
                     coverage=round(self.area_cov[key] * 100, 2),
                     dataset=self.data_ref[key]["name"],
                 )
             except ZeroDivisionError:
                 self.ratio[key] = None
-                self.result.description += (
+                self.warnings[key] += (
                     f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
                     f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
                     "building area. No quality estimation with reference is possible. "
                 )
+            self.result.description += self.warnings[key] + "\n"
 
         ratios = [v for v in self.ratio.values() if v is not None]
         ratios = [v for v in ratios if v <= self.above_one_th]
@@ -152,8 +156,9 @@ class BuildingComparison(BaseIndicator):
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
 
+
         label_description = self.metadata.label_description[self.result.label]
-        self.result.description += "\n" + label_description
+        self.result.description += label_description
 
     def create_figure(self) -> None:
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
@@ -216,7 +221,8 @@ class BuildingComparison(BaseIndicator):
                 ),
             ]
         )
-
+        raw = fig.to_dict()
+        print(raw)
         for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
             fig.add_shape(
                 name=name + f" ({area} km²)",
