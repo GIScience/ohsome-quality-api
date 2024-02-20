@@ -1,0 +1,12 @@
+Microsoft Roads:
+    name: Microsoft Roads
+    link: https://github.com/microsoft/RoadDetections
+    date: July 5, 2022
+    description: >-
+        Microsoft Building Footprints is a dataset of building footprints for the world.
+        It is derived from satellite imagery.
+    color: ORANGE
+    coverage:
+      simple: microsoft_buildings_coverage_simple
+      inversed: microsoft_buildings_coverage_inversed
+    table_name: microsoft_buildings_2024_01_03
