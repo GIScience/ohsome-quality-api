@@ -11,16 +11,16 @@ from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture
-def mock_get_building_area(class_mocker):
+def mock_get_matched_roadlengths(class_mocker):
     async def side_effect_function(*args, **kwargs):
-        if args[1] == "EUBUCCO":
-            return 6000000.791645115
+        if args[1] == "Microsoft Roads":
+            return 25, 25
         else:
-            return 5000000.791645115
+            return 1, 1
 
     async_mock = AsyncMock(side_effect=side_effect_function)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.get_matched_roadlengths",
         side_effect=async_mock,
     )
 
@@ -29,7 +29,7 @@ def mock_get_building_area(class_mocker):
 def mock_get_building_area_low(class_mocker):
     async_mock = AsyncMock(return_value=1000000)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.get_matched_roadlengths",
         side_effect=async_mock,
     )
 
@@ -44,7 +44,7 @@ def mock_get_building_area_low_some(class_mocker):
 
     async_mock = AsyncMock(side_effect=side_effect_function)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
     )
 
@@ -53,7 +53,7 @@ def mock_get_building_area_low_some(class_mocker):
 def mock_get_building_area_empty(class_mocker):
     async_mock = AsyncMock(return_value=0)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_reference_building_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.get_reference_building_area",
         side_effect=async_mock,
     )
 
@@ -62,7 +62,7 @@ def mock_get_building_area_empty(class_mocker):
 def mock_get_intersection_geom(class_mocker, feature_malta):
     async_mock = AsyncMock(return_value=feature_malta)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_intersection_geom",
+        "ohsome_quality_api.indicators.road_comparison.indicator.db_client.get_intersection_geom",
         side_effect=async_mock,
     )
 
@@ -71,7 +71,7 @@ def mock_get_intersection_geom(class_mocker, feature_malta):
 def mock_get_intersection_area(class_mocker):
     async_mock = AsyncMock(return_value=1.0)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_intersection_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.db_client.get_intersection_area",
         side_effect=async_mock,
     )
 
@@ -80,7 +80,7 @@ def mock_get_intersection_area(class_mocker):
 def mock_get_intersection_area_none(class_mocker):
     async_mock = AsyncMock(return_value=0)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_intersection_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.db_client.get_intersection_area",
         side_effect=async_mock,
     )
 
@@ -95,7 +95,7 @@ def mock_get_intersection_area_some(class_mocker):
 
     async_mock = AsyncMock(side_effect=side_effect)
     class_mocker.patch(
-        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_intersection_area",
+        "ohsome_quality_api.indicators.road_comparison.indicator.db_client.get_intersection_area",
         side_effect=async_mock,
     )
 
@@ -125,10 +125,18 @@ class TestInit:
 class TestPreprocess:
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
+        "mock_get_matched_roadlengths",
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
-    def test_preprocess(self, topic_major_roads_length, feature_malta):
+    def test_preprocess(
+        self,
+        topic_major_roads_length,
+        feature_malta,
+        mock_get_matched_roadlengths,
+        mock_get_intersection_area,
+        mock_get_intersection_geom,
+    ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
         asyncio.run(indicator.preprocess())
 
@@ -141,7 +149,7 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     def test_preprocess_no_intersection(
         self,
-        mock_get_building_area,
+        mock_get_matched_roadlengths,
         topic_building_area,
         feature_germany_berlin,
         mock_get_intersection_area_none,
@@ -156,7 +164,7 @@ class TestPreprocess:
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
-        "mock_get_building_area",
+        "mock_get_building_area_low",
         "mock_get_intersection_geom",
         "mock_get_intersection_area_some",
     )
@@ -176,16 +184,15 @@ class TestPreprocess:
 class TestCalculate:
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
-        "mock_get_building_area",
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
     def test_calculate(
         self,
-        topic_building_area,
-        feature_germany_berlin,
+        topic_major_roads_length,
+        feature_malta,
     ):
-        indicator = RoadComparison(topic_building_area, feature_germany_berlin)
+        indicator = RoadComparison(topic_major_roads_length, feature_malta)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is not None
@@ -238,7 +245,7 @@ class TestCalculate:
         assert indicator.result.label == "undefined"
 
     @oqapi_vcr.use_cassette
-    @pytest.mark.usefixtures("mock_get_intersection_area_none")
+    @pytest.mark.usefixtures()
     def test_calculate_no_intersection(
         self,
         topic_building_area,
@@ -257,11 +264,7 @@ class TestCalculate:
         assert indicator.result.label == "undefined"
 
     @oqapi_vcr.use_cassette
-    @pytest.mark.usefixtures(
-        "mock_get_building_area",
-        "mock_get_intersection_geom",
-        "mock_get_intersection_area_some",
-    )
+    @pytest.mark.usefixtures()
     def test_calculate_some_intersection(
         self,
         topic_building_area,
