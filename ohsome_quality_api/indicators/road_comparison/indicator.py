@@ -89,15 +89,22 @@ class RoadComparison(BaseIndicator):
                 val["coverage"]["simple"],
             )
 
+            test = geojson.dumps(feature)
             # get matched ratio
-            self.ratio[key] = await get_matched_ratio(
-                geojson.dumps(feature), val["table_name"]
-            )
+            (
+                self.length_matched[key],
+                self.length_total[key],
+            ) = await get_matched_roadlengths(test, val["table_name"])
+            if self.length_total[key] is None:
+                self.length_total[key] = 0
+                self.length_matched[key] = 0
+            elif self.length_matched[key] is None:
+                self.length_matched[key] = 0
 
-            # get osm building area
+            # get osm road length
             result = await ohsome_client.query(self.topic, feature)
             value = result["result"][0]["value"] or 0.0  # if None
-            self.length_osm[key] = value / (1000 * 1000)
+            self.length_osm[key] = value
             timestamp = result["result"][0]["timestamp"]
             self.result.timestamp_osm = parser.isoparse(timestamp)
 
@@ -117,6 +124,15 @@ class RoadComparison(BaseIndicator):
                 continue
 
             self.warnings[key] += self.check_minor_edge_cases(key)
+            try:
+                self.ratio[key] = self.length_matched[key] / self.length_total[key]
+            except ZeroDivisionError:
+                self.ratio[key] = None
+                self.warnings[key] += (
+                    f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
+                    f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
+                    "road length. No quality estimation with reference is possible. "
+                )
 
             self.result.description += self.warnings[key] + "\n"
 
@@ -124,7 +140,10 @@ class RoadComparison(BaseIndicator):
         if ratios:
             self.result.value = float(mean(ratios))
         else:
-            self.result.description += "Warning: ..."
+            self.result.description += (
+                "Warning: None of the reference datasets has "
+                "roads mapped in this area. "
+            )
 
         if self.result.value is not None:
             if self.result.value >= self.th_high:
@@ -259,7 +278,9 @@ class RoadComparison(BaseIndicator):
 
 # alru needs hashable type, therefore, use string instead of Feature
 @alru_cache
-async def get_matched_ratio(feature_str: str, table_name: str) -> float:
+async def get_matched_roadlengths(
+    feature_str: str, table_name: str
+) -> tuple[float, float]:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "get_matched_roads.sql")
@@ -274,12 +295,12 @@ async def get_matched_ratio(feature_str: str, table_name: str) -> float:
     )
     feature = geojson.loads(feature_str)
     table_name = table_name.replace(" ", "_")
-    geojson.dumps(feature.geometry)
+    geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
-            await cur.execute(query)
+            await cur.execute(query.format(table_name=table_name), (geom,))
             res = await cur.fetchone()
-    return res[0] or 0.0
+    return res[0], res[1]
 
 
 @cache
