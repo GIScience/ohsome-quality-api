@@ -62,6 +62,11 @@ def topic_building_area() -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
+def topic_major_roads_length() -> TopicDefinition:
+    return get_topic_preset("major-roads-length")
+
+
+@pytest.fixture(scope="class")
 def metadata_topic_building_count(
     topic_key_building_count,
     topic_building_count,
