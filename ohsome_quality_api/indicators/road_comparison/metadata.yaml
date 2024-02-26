@@ -6,17 +6,17 @@ road-comparison:
     - core
   quality_dimension: completeness
   description: >-
-    Compare the building area of OSM buildings with the building area of
+    Compare the road length of OSM roads with the road length of
     reference data.
   label_description:
     red: >-
-      OSM has significant less building area than the reference data.
+      OSM has significant less road length than the reference data.
     yellow: >-
-      OSM has a bit less building area than the reference data.
+      OSM has a bit less road length than the reference data.
     green: >-
-      OSM has almost the same, the same or even more building area than the reference data.
+      OSM has almost the same, the same or even more road length than the reference data.
     undefined: >-
       Comparison could not be made.
   result_description: >-
     $coverage% of the area-of-interest is covered by the reference dataset $dataset.
-    The building area of OSM is $ratio% of that reference data.
+    The road length of OSM is $ratio% of that reference data.
