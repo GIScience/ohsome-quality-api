@@ -154,6 +154,16 @@ def feature_germany_berlin() -> Feature:
 
 
 @pytest.fixture(scope="class")
+def feature_malta() -> Feature:
+    path = os.path.join(
+        FIXTURE_DIR,
+        "feature-malta.geojson",
+    )
+    with open(path, "r") as f:
+        return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
 def feature(feature_germany_heidelberg) -> Feature:
     return feature_germany_heidelberg
 
