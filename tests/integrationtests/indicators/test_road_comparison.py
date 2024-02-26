@@ -59,8 +59,8 @@ def mock_get_building_area_empty(class_mocker):
 
 
 @pytest.fixture
-def mock_get_intersection_geom(class_mocker, feature_germany_berlin):
-    async_mock = AsyncMock(return_value=feature_germany_berlin)
+def mock_get_intersection_geom(class_mocker, feature_malta):
+    async_mock = AsyncMock(return_value=feature_malta)
     class_mocker.patch(
         "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_intersection_geom",
         side_effect=async_mock,
@@ -102,22 +102,22 @@ def mock_get_intersection_area_some(class_mocker):
 
 class TestInit:
     @oqapi_vcr.use_cassette
-    def test_init(self, topic_building_area, feature_germany_berlin):
-        indicator = RoadComparison(topic_building_area, feature_germany_berlin)
+    def test_init(self, topic_major_roads_length, feature_malta):
+        indicator = RoadComparison(topic_major_roads_length, feature_malta)
         assert indicator.th_high == 0.85
         assert indicator.th_low == 0.5
         assert isinstance(indicator.data_ref, dict)
 
-    def test_get_sources(self, topic_building_area, feature_germany_berlin):
-        indicator = RoadComparison(topic_building_area, feature_germany_berlin)
+    def test_get_sources(self, topic_major_roads_length, feature_malta):
+        indicator = RoadComparison(topic_major_roads_length, feature_malta)
         source = indicator.format_sources()
         assert (
             "<a href='https://github.com/microsoft/RoadDetections'>"
             "Microsoft Roads</a>"
         ) in source
 
-    def test_attribution(self, topic_building_area, feature_germany_berlin):
-        indicator = RoadComparison(topic_building_area, feature_germany_berlin)
+    def test_attribution(self, topic_major_roads_length, feature_malta):
+        indicator = RoadComparison(topic_major_roads_length, feature_malta)
         assert indicator.attribution is not None
         assert indicator.attribution != ""
 
@@ -125,12 +125,11 @@ class TestInit:
 class TestPreprocess:
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
-        "mock_get_building_area",
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
-    def test_preprocess(self, topic_building_area, feature_germany_berlin):
-        indicator = RoadComparison(topic_building_area, feature_germany_berlin)
+    def test_preprocess(self, topic_major_roads_length, feature_malta):
+        indicator = RoadComparison(topic_major_roads_length, feature_malta)
         asyncio.run(indicator.preprocess())
 
         for length in indicator.length_osm.values():
