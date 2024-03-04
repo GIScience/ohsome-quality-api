@@ -177,11 +177,6 @@ class RoadComparison(BaseIndicator):
             )
         )
 
-        # ratios = [v for v in self.ratio.values() if v is not None]
-        # ratio = 1 / (len(ratios) + 1)
-        # hole_list = [ratio * (i + 1) for i in range(len(ratios))]
-        # ratio_list = [v for v in self.ratio.values() if v is not None]
-
         ref_name = []
         ref_ratio = []
         ref_color = []
@@ -197,14 +192,14 @@ class RoadComparison(BaseIndicator):
             if isinstance(ratio, type(str)):
                 values = [1]
                 labels = [""]
-                marker_colors = ["white"]
+                marker_colors = ["#FFFFFF"]
             else:
                 values = [ratio, 1 - ratio]
                 labels = [
                     f"{name} <br> Ratio: {round(ratio, 2)}",
-                    "",
+                    " ",
                 ]
-                marker_colors = [{ref_color[i]}, "white"]
+                marker_colors = [ref_color[i], "#FFFFFF"]
 
             fig.add_trace(
                 pgo.Pie(
@@ -216,7 +211,6 @@ class RoadComparison(BaseIndicator):
                     textinfo="none",
                 )
             )
-        fig.show()
         fig.update_layout(
             title={
                 "text": "Ratio between all features and filtered ones",
