@@ -89,12 +89,11 @@ class RoadComparison(BaseIndicator):
                 val["coverage"]["simple"],
             )
 
-            test = geojson.dumps(feature)
             # get matched ratio
             (
                 self.length_matched[key],
                 self.length_total[key],
-            ) = await get_matched_roadlengths(test, val["table_name"])
+            ) = await get_matched_roadlengths(geojson.dumps(feature), val["table_name"])
             if self.length_total[key] is None:
                 self.length_total[key] = 0
                 self.length_matched[key] = 0
