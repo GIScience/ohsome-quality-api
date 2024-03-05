@@ -8,7 +8,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature
+from geojson import Feature, Polygon
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -55,17 +55,18 @@ class RoadComparison(BaseIndicator):
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
         # TODO: could also return a Feature Collection
-        features = []
-        datasets = load_datasets_metadata()
-        for val in datasets.values():
-            if inverse:
-                table = val["coverage"]["inversed"]
-            else:
-                table = val["coverage"]["simple"]
-            feature = await db_client.get_reference_coverage(table)
-            feature.properties.update({"refernce_dataset": val["name"]})
-            features.append(feature)
-        return features
+        # features = []
+        # datasets = load_datasets_metadata()
+        # for val in datasets.values():
+        #     if inverse:
+        #         table = val["coverage"]["inversed"]
+        #     else:
+        #         table = val["coverage"]["simple"]
+        #     feature = await db_client.get_reference_coverage(table)
+        #     feature.properties.update({"refernce_dataset": val["name"]})
+        #     features.append(feature)
+        # return features
+        return [Feature(Polygon(coordinates=[]))]
 
     @classmethod
     def attribution(cls) -> str:
@@ -75,19 +76,21 @@ class RoadComparison(BaseIndicator):
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage [%]
-            self.area_cov[key] = await db_client.get_intersection_area(
-                self.feature,
-                val["coverage"]["simple"],
-            )
+            # self.area_cov[key] = await db_client.get_intersection_area(
+            #     self.feature,
+            #     val["coverage"]["simple"],
+            # )
+            self.area_cov[key] = 1.0
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
                 continue
 
             # clip input geom with coverage of reference dataset
-            feature = await db_client.get_intersection_geom(
-                self.feature,
-                val["coverage"]["simple"],
-            )
+            # feature = await db_client.get_intersection_geom(
+            #     self.feature,
+            #     val["coverage"]["simple"],
+            # )
+            feature = self.feature
 
             # get matched ratio
             (
@@ -166,17 +169,6 @@ class RoadComparison(BaseIndicator):
 
         fig = pgo.Figure()
 
-        # Plot inner Pie (Traffic Light)
-        fig.add_trace(
-            pgo.Pie(
-                values=[self.th_low, self.th_high - self.th_low, 1 - self.th_high],
-                labels=["Bad", "Medium", "Good"],
-                marker_colors=["red", "yellow", "green"],
-                sort=False,
-                textinfo="none",
-            )
-        )
-
         ref_name = []
         ref_ratio = []
         ref_color = []
@@ -186,43 +178,36 @@ class RoadComparison(BaseIndicator):
             ref_name.append(self.data_ref[key]["name"])
             ref_color.append(Color[self.data_ref[key]["color"]].value)
             ref_ratio.append(val)
-        ratio = 1 / (len(ref_name) + 1)
-        hole_list = [ratio * (i + 1) for i in range(len(ref_name))]
-        for i, (name, ratio) in enumerate(zip(ref_name, ref_ratio)):
-            if isinstance(ratio, type(str)):
-                values = [1]
-                labels = [""]
-                marker_colors = ["#FFFFFF"]
-            else:
-                values = [ratio, 1 - ratio]
-                labels = [
-                    f"{name} <br> Ratio: {round(ratio, 2)}",
-                    " ",
-                ]
-                marker_colors = [ref_color[i], "#FFFFFF"]
 
+        for i, (name, ratio) in enumerate(zip(ref_name, ref_ratio)):
             fig.add_trace(
-                pgo.Pie(
-                    values=values,
-                    labels=labels,
-                    sort=False,
-                    hole=hole_list[i],
-                    marker_colors=marker_colors,
-                    textinfo="none",
+                pgo.Bar(
+                    x=[name],
+                    y=[ratio],
+                    name=f"{name} matched with OSM",
+                    marker=dict(color="black", line=dict(color="black", width=1)),
+                    width=0.4,
                 )
             )
-        fig.update_layout(
-            title={
-                "text": "Ratio between all features and filtered ones",
-                "y": 0.95,
-                "x": 0.5,
-                "yanchor": "top",
-            },
-            legend={
-                "y": 0.5,
-                "x": 0.75,
-            },
-        )
+            fig.add_trace(
+                pgo.Bar(
+                    x=[name],
+                    y=[1 - ratio],
+                    name=f"{name} not matched with OSM",
+                    marker=dict(
+                        color="rgba(0,0,0,0)", line=dict(color="black", width=1)
+                    ),
+                    width=0.4,
+                )
+            )
+
+            # Update layout
+            fig.update_layout(
+                barmode="stack",
+                title="Road Comparison",
+                xaxis=dict(title="Reference Dataset"),
+                yaxis=dict(title="Ratio of matched road length"),
+            )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
