@@ -10,13 +10,13 @@ road-comparison:
     reference data.
   label_description:
     red: >-
-      OSM has significant less road length than the reference data.
+      Only a few of the roads in the reference dataset are covered by OSM, so completeness is classified as low.
     yellow: >-
-      OSM has a bit less road length than the reference data.
+      Some of the roads in the reference dataset are not covered by OSM, so the completeness is rated as medium.
     green: >-
-      OSM has almost the same, the same or even more road length than the reference data.
+      Almost all or all roads of the reference data are covered by OSM, therefore the completeness can be classified as good.
     undefined: >-
       Comparison could not be made.
   result_description: >-
     $coverage% of the area-of-interest is covered by the reference dataset $dataset.
-    The road length of OSM is $ratio% of that reference data.
+    %ratio% of the road length of the reference dataset is covered by OSM.
