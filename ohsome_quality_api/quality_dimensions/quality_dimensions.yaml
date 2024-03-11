@@ -1,20 +1,24 @@
 ---
-# TODO description
 
 completeness:
   name: Completeness
   description: >-
-    something that is still a TODO
+    The degree to which subject data associated with an entity has values for all expected attributes
+    and related entity instances in a specific context of use.
+  source:
+    https://www.iso.org/standard/78900.html
 
 currentness:
   name: Currentness
   description: >-
-    something that is still a TODO
+    The degree to which data has attributes that are of the right age in a specific context of use.
+  source:
+    https://www.iso.org/standard/35736.html
 
 minimal:
   name: Minimal
   description: >-
-    something that is still a TODO
+    A minimal quality dimension definition for testing purposes.
 
 none:
   name: None
