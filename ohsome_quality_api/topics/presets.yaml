@@ -53,6 +53,7 @@ major-roads-length:
     unclassified, residential) and type:way and name=*
   indicators:
     - mapping-saturation
+    - road-comparison
     - attribute-completeness
     - currentness  # currentness always requests /contributions/latest/count [count!]
   projects:

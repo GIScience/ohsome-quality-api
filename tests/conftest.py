@@ -62,6 +62,11 @@ def topic_building_area() -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
+def topic_major_roads_length() -> TopicDefinition:
+    return get_topic_preset("major-roads-length")
+
+
+@pytest.fixture(scope="class")
 def metadata_topic_building_count(
     topic_key_building_count,
     topic_building_count,
@@ -148,6 +153,16 @@ def feature_germany_berlin() -> Feature:
     path = os.path.join(
         FIXTURE_DIR,
         "feature-germany-berlin-friedrichshain-kreuzberg.geojson",
+    )
+    with open(path, "r") as f:
+        return geojson.load(f)
+
+
+@pytest.fixture(scope="class")
+def feature_malta() -> Feature:
+    path = os.path.join(
+        FIXTURE_DIR,
+        "feature-malta.geojson",
     )
     with open(path, "r") as f:
         return geojson.load(f)

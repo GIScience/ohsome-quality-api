@@ -1,0 +1,116 @@
+interactions:
+- request:
+    body: filter=highway+in+%28motorway%2C+trunk%2C+motorway_link%2C+trunk_link%2C+primary%2C+primary_link%2C+secondary%2C+secondary_link%2C+tertiary%2C+tertiary_link%2C+unclassified%2C+residential%29+and+type%3Away&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B14.4016%2C+35.988543%5D%2C+%5B14.4016%2C+35.903331%5D%2C+%5B14.495721%2C+35.903331%5D%2C+%5B14.495721%2C+35.988543%5D%2C+%5B14.4016%2C+35.988543%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '589'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api/1.2.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/length
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.10.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2024-02-18T22:00:00Z\",\n
+      \   \"value\" : 401673.9\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Mon, 26 Feb 2024 16:26:40 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B14.4016%2C+35.988543%5D%2C+%5B14.4016%2C+35.903331%5D%2C+%5B14.495721%2C+35.903331%5D%2C+%5B14.495721%2C+35.988543%5D%2C+%5B14.4016%2C+35.988543%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '449'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api/1.2.1
+    method: POST
+    uri: https://api.ohsome.org/v1/elements/area
+  response:
+    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
+      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
+      \"1.10.2\",\n  \"result\" : [ {\n    \"timestamp\" : \"2024-02-18T22:00:00Z\",\n
+      \   \"value\" : 1774581.67\n  } ]\n}"
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Mon, 26 Feb 2024 16:26:48 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
