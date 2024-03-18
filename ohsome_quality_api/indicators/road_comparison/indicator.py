@@ -187,6 +187,8 @@ class RoadComparison(BaseIndicator):
                     name=f"{name} matched with OSM",
                     marker=dict(color="black", line=dict(color="black", width=1)),
                     width=0.4,
+                    hovertext=f"OSM ({self.result.timestamp_osm:%b %d, %Y})",
+                    hoverinfo="text",
                 )
             )
             fig.add_trace(
@@ -198,6 +200,8 @@ class RoadComparison(BaseIndicator):
                         color="rgba(0,0,0,0)", line=dict(color="black", width=1)
                     ),
                     width=0.4,
+                    text=[f"{round((ratio * 100), 2)} % of Roads covered by OSM"],
+                    textposition="outside",
                 )
             )
 
