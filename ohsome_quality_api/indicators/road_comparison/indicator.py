@@ -96,7 +96,11 @@ class RoadComparison(BaseIndicator):
             (
                 self.length_matched[key],
                 self.length_total[key],
-            ) = await get_matched_roadlengths(geojson.dumps(feature), val["table_name"])
+            ) = await get_matched_roadlengths(
+                geojson.dumps(feature),
+                val["table_name"]["stats"],
+                val["table_name"]["features"],
+            )
             if self.length_total[key] is None:
                 self.length_total[key] = 0
                 self.length_matched[key] = 0
@@ -261,7 +265,7 @@ class RoadComparison(BaseIndicator):
 # alru needs hashable type, therefore, use string instead of Feature
 @alru_cache
 async def get_matched_roadlengths(
-    feature_str: str, table_name: str
+    feature_str: str, table_name_stats: str, table_name_features: str
 ) -> tuple[float, float]:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
@@ -276,11 +280,18 @@ async def get_matched_roadlengths(
         password=get_config_value("postgres_password"),
     )
     feature = geojson.loads(feature_str)
-    table_name = table_name.replace(" ", "_")
+    table_name_stats = table_name_stats.replace(" ", "_")
+    table_name_features = table_name_features.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
-            await cur.execute(query.format(table_name=table_name), (geom,))
+            await cur.execute(
+                query.format(
+                    table_name_stats=table_name_stats,
+                    table_name_features=table_name_features,
+                ),
+                (geom,),
+            )
             res = await cur.fetchone()
     return res[0], res[1]
 

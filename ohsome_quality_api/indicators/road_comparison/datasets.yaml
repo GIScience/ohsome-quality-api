@@ -9,4 +9,6 @@ Microsoft Roads:
     coverage:
       simple: microsoft_buildings_coverage_simple #TODO: replace once coverage is added
       inversed: microsoft_buildings_coverage_inversed #TODO: replace once coverage is added
-    table_name: oqapi.microsoft_roads_europe_2022_06_08 #TODO: replace once imported
+    table_name:
+      stats: oqapi.microsoft_roads_coverage
+      features: oqapi.covered_road
