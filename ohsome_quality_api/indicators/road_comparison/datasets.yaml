@@ -11,4 +11,4 @@ Microsoft Roads:
       inversed: microsoft_buildings_coverage_inversed #TODO: replace once coverage is added
     table_name:
       stats: oqapi.microsoft_roads_coverage
-      features: oqapi.covered_road
+      features: oqapi.microsoft_roads
