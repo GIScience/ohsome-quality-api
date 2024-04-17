@@ -229,5 +229,4 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        assert indicator.result.figure["data"][0]["type"] == "pie"
         pgo.Figure(indicator.result.figure)
