@@ -7,8 +7,6 @@ Microsoft Roads:
         It is derived from satellite imagery.
     color: ORANGE
     coverage:
-      simple: microsoft_roadss_coverage_simple
-      inversed: microsoft_roadss_coverage_inversed
-    table_name:
-      stats: oqapi.microsoft_roads_coverage
-      features: oqapi.microsoft_roads
+      simple: microsoft_roads_coverage_simple
+      inversed: microsoft_roads_coverage_inversed
+    table_name: microsoft_roads_midpoint

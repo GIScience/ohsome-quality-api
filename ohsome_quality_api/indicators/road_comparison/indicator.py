@@ -8,7 +8,7 @@ import psycopg
 import yaml
 from async_lru import alru_cache
 from dateutil import parser
-from geojson import Feature, Polygon
+from geojson import Feature
 from numpy import mean
 
 from ohsome_quality_api.config import get_config_value
@@ -55,18 +55,17 @@ class RoadComparison(BaseIndicator):
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
         # TODO: could also return a Feature Collection
-        # features = []
-        # datasets = load_datasets_metadata()
-        # for val in datasets.values():
-        #     if inverse:
-        #         table = val["coverage"]["inversed"]
-        #     else:
-        #         table = val["coverage"]["simple"]
-        #     feature = await db_client.get_reference_coverage(table)
-        #     feature.properties.update({"refernce_dataset": val["name"]})
-        #     features.append(feature)
-        # return features
-        return [Feature(Polygon(coordinates=[]))]
+        features = []
+        datasets = load_datasets_metadata()
+        for val in datasets.values():
+            if inverse:
+                table = val["coverage"]["inversed"]
+            else:
+                table = val["coverage"]["simple"]
+            feature = await db_client.get_reference_coverage(table)
+            feature.properties.update({"refernce_dataset": val["name"]})
+            features.append(feature)
+        return features
 
     @classmethod
     def attribution(cls) -> str:
@@ -76,21 +75,19 @@ class RoadComparison(BaseIndicator):
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage [%]
-            # self.area_cov[key] = await db_client.get_intersection_area(
-            #     self.feature,
-            #     val["coverage"]["simple"],
-            # )
-            self.area_cov[key] = 1.0
+            self.area_cov[key] = await db_client.get_intersection_area(
+                self.feature,
+                val["coverage"]["simple"],
+            )
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
                 continue
 
             # clip input geom with coverage of reference dataset
-            # feature = await db_client.get_intersection_geom(
-            #     self.feature,
-            #     val["coverage"]["simple"],
-            # )
-            feature = self.feature
+            feature = await db_client.get_intersection_geom(
+                self.feature,
+                val["coverage"]["simple"],
+            )
 
             # get matched ratio
             (
@@ -98,8 +95,7 @@ class RoadComparison(BaseIndicator):
                 self.length_total[key],
             ) = await get_matched_roadlengths(
                 geojson.dumps(feature),
-                val["table_name"]["stats"],
-                val["table_name"]["features"],
+                val["table_name"],
             )
             if self.length_total[key] is None:
                 self.length_total[key] = 0
@@ -265,7 +261,8 @@ class RoadComparison(BaseIndicator):
 # alru needs hashable type, therefore, use string instead of Feature
 @alru_cache
 async def get_matched_roadlengths(
-    feature_str: str, table_name_stats: str, table_name_features: str
+    feature_str: str,
+    table_name: str,
 ) -> tuple[float, float]:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
@@ -280,15 +277,13 @@ async def get_matched_roadlengths(
         password=get_config_value("postgres_password"),
     )
     feature = geojson.loads(feature_str)
-    table_name_stats = table_name_stats.replace(" ", "_")
-    table_name_features = table_name_features.replace(" ", "_")
+    table_name = table_name.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
             await cur.execute(
                 query.format(
-                    table_name_stats=table_name_stats,
-                    table_name_features=table_name_features,
+                    table_name=table_name,
                 ),
                 (geom,),
             )
