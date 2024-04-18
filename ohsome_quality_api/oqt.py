@@ -39,6 +39,7 @@ async def create_indicator(
             "mapping-saturation",
             "currentness",
             "building-comparison",
+            "road-comparison",
         ]:
             validate_area(feature)
         tasks.append(_create_indicator(key, feature, topic, include_figure))
