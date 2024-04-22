@@ -7,7 +7,6 @@ import plotly.graph_objects as pgo
 import psycopg
 import yaml
 from async_lru import alru_cache
-from dateutil import parser
 from geojson import Feature
 from numpy import mean
 
@@ -15,7 +14,6 @@ from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic
 
 
@@ -103,13 +101,6 @@ class RoadComparison(BaseIndicator):
             elif self.length_matched[key] is None:
                 self.length_matched[key] = 0
 
-            # get osm road length
-            result = await ohsome_client.query(self.topic, feature)
-            value = result["result"][0]["value"] or 0.0  # if None
-            self.length_osm[key] = value
-            timestamp = result["result"][0]["timestamp"]
-            self.result.timestamp_osm = parser.isoparse(timestamp)
-
     def calculate(self) -> None:
         # TODO: put checks into check_corner_cases. Let result be undefined.
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
@@ -137,6 +128,12 @@ class RoadComparison(BaseIndicator):
                 )
 
             self.result.description += self.warnings[key] + "\n"
+            self.result.description += (
+                f"{self.data_ref[key]['name']} has a road length of "
+                f"{(self.length_total[key]/1000):.2f} km, of which "
+                f"{(self.length_matched[key]/1000):.2f} km are covered by roads in "
+                f"OSM. "
+            )
 
         ratios = [v for v in self.ratio.values() if v is not None]
         if ratios:
@@ -172,14 +169,18 @@ class RoadComparison(BaseIndicator):
         ref_name = []
         ref_ratio = []
         ref_color = []
+        ref_processingdate = []
         for key, val in self.ratio.items():
             if val is None:
                 continue
             ref_name.append(self.data_ref[key]["name"])
             ref_color.append(Color[self.data_ref[key]["color"]].value)
+            ref_processingdate.append(self.data_ref[key]["processing_date"])
             ref_ratio.append(val)
 
-        for i, (name, ratio) in enumerate(zip(ref_name, ref_ratio)):
+        for i, (name, ratio, date) in enumerate(
+            zip(ref_name, ref_ratio, ref_processingdate)
+        ):
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
@@ -187,10 +188,14 @@ class RoadComparison(BaseIndicator):
                     name=f"{name} matched with OSM",
                     marker=dict(color="black", line=dict(color="black", width=1)),
                     width=0.4,
-                    hovertext=f"OSM ({self.result.timestamp_osm:%b %d, %Y})",
+                    hovertext=f"OSM Covered: {(self.length_matched[name]/1000):.2f} km"
+                    f" ({date:%b %d, %Y})",
                     hoverinfo="text",
                 )
             )
+            length_difference_km = (
+                self.length_total[name] - self.length_matched[name]
+            ) / 1000
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
@@ -200,6 +205,9 @@ class RoadComparison(BaseIndicator):
                         color="rgba(0,0,0,0)", line=dict(color="black", width=1)
                     ),
                     width=0.4,
+                    hovertext=f"Not OSM Covered: {length_difference_km:.2f} km "
+                    f"({date:%b %d, %Y})",
+                    hoverinfo="text",
                     text=[f"{round((ratio * 100), 2)} % of Roads covered by OSM"],
                     textposition="outside",
                 )
