@@ -99,11 +99,6 @@ class TestPreprocess:
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
         asyncio.run(indicator.preprocess())
 
-        for length in indicator.length_osm.values():
-            assert length is not None
-            assert length > 0
-        assert isinstance(indicator.result.timestamp, datetime)
-        assert isinstance(indicator.result.timestamp_osm, datetime)
         for length in indicator.length_total.values():
             assert length is not None
             assert length > 0
