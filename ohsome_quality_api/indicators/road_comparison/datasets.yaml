@@ -10,3 +10,4 @@ Microsoft Roads:
       simple: microsoft_roads_coverage_simple
       inversed: microsoft_roads_coverage_inversed
     table_name: microsoft_roads_midpoint
+    processing_date: 2024-04-05
