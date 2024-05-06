@@ -28,6 +28,8 @@ class AttributeCompleteness(BaseIndicator):
 
     Premise: Every map feature of a given topic should have certain additional
         attributes.
+
+    Limitation: Limited to one attribute.
     """
 
     # TODO make attribute a list

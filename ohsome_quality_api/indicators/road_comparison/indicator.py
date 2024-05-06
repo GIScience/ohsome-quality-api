@@ -18,6 +18,12 @@ from ohsome_quality_api.topics.models import BaseTopic
 
 
 class RoadComparison(BaseIndicator):
+    """Comparison of OSM Roads with reference data.
+
+    Result is a ratio of the length of reference roads wich are covered by OSM roads
+    to the total length of reference roads.
+    """
+
     def __init__(
         self,
         topic: BaseTopic,
@@ -27,18 +33,16 @@ class RoadComparison(BaseIndicator):
             topic=topic,
             feature=feature,
         )
-        # The result is the ratio of area within coverage (between 0-1) or an empty list
-        #
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
 
         self.data_ref: dict[str, dict] = {}
         self.area_cov: dict[str, float | None] = {}
-        self.ratio: dict[str, float | None] = {}
         self.length_matched: dict[str, float | None] = {}
         self.length_total: dict[str, float | None] = {}
         self.length_osm: dict[str, float | None] = {}
+        self.ratio: dict[str, float | None] = {}
         self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
         for key, val in load_datasets_metadata().items():
@@ -46,9 +50,9 @@ class RoadComparison(BaseIndicator):
             self.area_cov[key] = None  # covered area [%]
             self.length_matched[key] = None
             self.length_total[key] = None
-            self.warnings[key] = None
             self.length_osm[key] = None
             self.ratio[key] = None
+            self.warnings[key] = None
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
@@ -72,7 +76,7 @@ class RoadComparison(BaseIndicator):
 
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
-            # get coverage [%]
+            # get area covered by reference dataset [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
                 val["coverage"]["simple"],
@@ -272,8 +276,6 @@ async def get_matched_roadlengths(
     feature_str: str,
     table_name: str,
 ) -> tuple[float, float]:
-    """Get the building area for a AoI from the EUBUCCO dataset."""
-    # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
     file_path = os.path.join(db_client.WORKING_DIR, "get_matched_roads.sql")
     with open(file_path, "r") as file:
         query = file.read()
@@ -290,9 +292,7 @@ async def get_matched_roadlengths(
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
             await cur.execute(
-                query.format(
-                    table_name=table_name,
-                ),
+                query.format(table_name=table_name),
                 (geom,),
             )
             res = await cur.fetchone()

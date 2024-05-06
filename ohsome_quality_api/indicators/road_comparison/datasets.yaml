@@ -3,7 +3,7 @@ Microsoft Roads:
     link: https://github.com/microsoft/RoadDetections
     date: February 27, 2023
     description: >-
-        Microsoft RoadDetections is a dataset of road footprints for the world.
+        Microsoft Road Detections is a dataset of road world-wide.
         It is derived from satellite imagery.
     color: ORANGE
     coverage:

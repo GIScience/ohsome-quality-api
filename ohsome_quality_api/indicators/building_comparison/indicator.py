@@ -304,7 +304,6 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
         password=get_config_value("postgres_password"),
     )
     feature = geojson.loads(feature_str)
-    table_name = table_name.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
