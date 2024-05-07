@@ -98,9 +98,6 @@ class RoadComparison(BaseIndicator):
                 geojson.dumps(feature),
                 val["table_name"],
             )
-            # TODO: Can this happen?
-            # In which case those above return none an not a number?
-            # Should 0 not be set in __init__?
             if self.length_total[key] is None:
                 self.length_total[key] = 0
                 self.length_matched[key] = 0
