@@ -7,7 +7,7 @@ from geojson import Feature
 
 import ohsome_quality_api.geodatabase.client as db_client
 
-pytestmark = pytest.mark.skip("dependency on database setup.")
+# pytestmark = pytest.mark.skip("dependency on database setup.")
 
 
 def test_get_connection():
