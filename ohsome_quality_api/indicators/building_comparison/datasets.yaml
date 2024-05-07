@@ -7,8 +7,8 @@ EUBUCCO:
         It is derived from administrative datasets.
   color: PURPLE
   coverage:
-    simple: eubucco_v0_1_coverage_simple
-    inversed: eubucco_v0_1_coverage_inversed
+    simple: eubucco_coverage_simple
+    inversed: eubucco_coverage_inversed
   table_name: eubucco
 
 Microsoft Buildings:
@@ -22,4 +22,4 @@ Microsoft Buildings:
     coverage:
       simple: microsoft_buildings_coverage_simple
       inversed: microsoft_buildings_coverage_inversed
-    table_name: microsoft_buildings_2024_01_03
+    table_name: microsoft_buildings

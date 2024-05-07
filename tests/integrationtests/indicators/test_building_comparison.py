@@ -369,7 +369,7 @@ class TestFigure:
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
-        "mock_get_building_area",
+        "mock_get_building_area_empty",
         "mock_get_intersection_geom",
         "mock_get_intersection_area",
     )
