@@ -14,7 +14,7 @@ road-comparison:
     yellow: >-
       Some of the roads in the reference dataset are not covered by OSM, so the completeness is rated as medium.
     green: >-
-      Almost all or all roads of the reference data are covered by OSM, therefore the completeness can be classified as good.
+      Almost all or all roads of the reference data are covered by OSM, therefore the completeness can be classified as high.
     undefined: >-
       Comparison could not be made.
   result_description: >-

@@ -1,6 +1,6 @@
 WITH bpoly AS (
     SELECT
-        ST_Setsrid (ST_GeomFromGeoJSON (% s), 4326) AS geom
+        ST_Setsrid (ST_GeomFromGeoJSON (%s), 4326) AS geom
 )
 SELECT
     SUM(cr.covered),

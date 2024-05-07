@@ -1,6 +1,5 @@
 import logging
 import os
-from functools import cache
 
 import geojson
 import plotly.graph_objects as pgo
@@ -91,7 +90,7 @@ class RoadComparison(BaseIndicator):
                 val["coverage"]["simple"],
             )
 
-            # get matched ratio
+            # get covered road length
             (
                 self.length_matched[key],
                 self.length_total[key],
@@ -99,6 +98,9 @@ class RoadComparison(BaseIndicator):
                 geojson.dumps(feature),
                 val["table_name"],
             )
+            # TODO: Can this happen?
+            # In which case those above return none an not a number?
+            # Should 0 not be set in __init__?
             if self.length_total[key] is None:
                 self.length_total[key] = 0
                 self.length_matched[key] = 0
@@ -115,8 +117,7 @@ class RoadComparison(BaseIndicator):
             return
         self.result.description = ""
         for key in self.data_ref.keys():
-            # if None in (self.ratio[key], self.area_cov[key], self.data_ref[key]):
-            if self.warnings[key] != "":
+            if self.warnings[key]:
                 self.result.description += self.warnings[key] + "\n"
                 continue
 
@@ -127,7 +128,7 @@ class RoadComparison(BaseIndicator):
                 self.ratio[key] = None
                 self.warnings[key] += (
                     f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
-                    f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
+                    f"AOI with {round(self.area_cov[key] * 100, 2)}%, but has no "
                     "road length. No quality estimation with reference is possible. "
                 )
 
@@ -292,14 +293,15 @@ async def get_matched_roadlengths(
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
             await cur.execute(
-                query.format(table_name=table_name),
+                query.format(
+                    table_name=table_name,
+                ),
                 (geom,),
             )
             res = await cur.fetchone()
     return res[0], res[1]
 
 
-@cache
 def load_datasets_metadata() -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
     with open(file_path, "r") as f:
