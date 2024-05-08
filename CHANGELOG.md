@@ -8,7 +8,7 @@
 
 ### New Features
 
-- road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778])
+- road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778, #787)
 - building-comparison: support comparison with multiple datasets ([#768])
 - building-comparison: add more information to plot and improve result description ([#777])
 
@@ -21,6 +21,7 @@
 [#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
 [#777]: https://github.com/GIScience/ohsome-quality-api/issues/777
 [#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
+[#787]: https://github.com/GIScience/ohsome-quality-api/issues/787
 
 ## Release 1.2.0
 
