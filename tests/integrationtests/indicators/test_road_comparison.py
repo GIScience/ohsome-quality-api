@@ -1,12 +1,17 @@
 import asyncio
+import json
 from datetime import datetime
 from unittest.mock import AsyncMock
 
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from geojson import Feature
 
-from ohsome_quality_api.indicators.road_comparison.indicator import RoadComparison
+from ohsome_quality_api.indicators.road_comparison.indicator import (
+    RoadComparison,
+    get_matched_roadlengths,
+)
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -197,7 +202,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
-    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     @pytest.mark.usefixtures(
         "mock_get_matched_roadlengths",
         "mock_get_intersection_geom",
@@ -227,5 +232,19 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)
 
 
+@pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
 def test_get_matched_roadlengths():
-    assert 1 == 0
+    """Test query for single polygon with a hole."""
+    polygon = Feature(
+        geometry={
+            "type": "Polygon",
+            "coordinates": [
+                [[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]],
+                [[20, 30], [35, 35], [30, 20], [20, 30]],
+            ],
+        }
+    )
+    # expetced values retrieved by running SQL query without ST_DUMPS
+    assert (1502620657, 1969546917) == asyncio.run(
+        get_matched_roadlengths(json.dumps(polygon), "microsoft_roads_midpoint")
+    )
