@@ -197,7 +197,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     @pytest.mark.usefixtures(
         "mock_get_matched_roadlengths",
         "mock_get_intersection_geom",
@@ -225,3 +225,7 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)
+
+
+def test_get_matched_roadlengths():
+    assert 1 == 0
