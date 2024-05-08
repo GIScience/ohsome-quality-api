@@ -9,4 +9,3 @@ SELECT
 FROM
     bpoly
     LEFT JOIN {table_name} cr ON ST_Intersects (cr.midpoint, bpoly.geom);
--- GROUP BY bpoly.geom;
