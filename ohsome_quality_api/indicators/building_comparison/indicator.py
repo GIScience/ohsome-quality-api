@@ -1,6 +1,5 @@
 import logging
 import os
-from functools import cache
 from string import Template
 
 import geojson
@@ -203,8 +202,6 @@ class BuildingComparison(BaseIndicator):
                     marker_color=Color.GREY.value,
                     hovertext=osm_hover,
                     hoverinfo="text",
-                    text=[f"{area} km²" for area in osm_area],
-                    textposition="outside",
                 ),
                 pgo.Bar(
                     name=ref_x[0] + f" ({ref_area[0]} km²)",
@@ -214,8 +211,6 @@ class BuildingComparison(BaseIndicator):
                     hovertext=ref_hover,
                     hoverinfo="text",
                     legendgroup="Reference",
-                    text=[f"{area} km²" for area in ref_area],
-                    textposition="outside",
                 ),
             ]
         )
@@ -240,6 +235,14 @@ class BuildingComparison(BaseIndicator):
             "barmode": "group",
             "yaxis_title": "Building Area [km²]",
             "xaxis_title": f"Reference Datasets ({self.format_sources()})",
+            "legend": dict(
+                orientation="h",
+                entrywidth=270,
+                yanchor="bottom",
+                y=1.02,
+                xanchor="center",
+                x=0.5,
+            ),
         }
         fig.update_layout(**layout)
 
@@ -312,7 +315,6 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
     return res[0] or 0.0
 
 
-@cache
 def load_datasets_metadata() -> dict:
     file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
     with open(file_path, "r") as f:
