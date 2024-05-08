@@ -15,11 +15,13 @@
 ### Other Changes
 
 - build: update dependencies (`rpy2` and `fastapi`) ([#775])
+- update dependencies ([#785])
 
 [#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
-[#778]: https://github.com/GIScience/ohsome-quality-api/issues/778
 [#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
 [#777]: https://github.com/GIScience/ohsome-quality-api/issues/777
+[#778]: https://github.com/GIScience/ohsome-quality-api/issues/778
+[#785]: https://github.com/GIScience/ohsome-quality-api/pull/785
 [#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
 [#787]: https://github.com/GIScience/ohsome-quality-api/issues/787
 
