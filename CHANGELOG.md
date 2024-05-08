@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- major-roads-length: rename to `roads` and chnage filter to `highway=* and type:way` ([#786])
+
 ### New Features
 
 - road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778])

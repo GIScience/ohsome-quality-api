@@ -31,7 +31,7 @@ class TestInit:
         """Test default thresholds setting after init of indicator."""
         indicator = Currentness(
             feature=feature_germany_heidelberg,
-            topic=get_topic_fixture("major-roads-length"),
+            topic=get_topic_fixture("roads"),
         )
         assert indicator.up_to_date == 48
         assert indicator.out_of_date == 96

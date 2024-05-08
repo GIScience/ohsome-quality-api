@@ -35,8 +35,8 @@ building-area:
     - core
     - bkg
 
-major-roads-length:
-  name: Major Roads Length
+roads:
+  name: Roads
   description: >-
     The road network defined by all objects which hold the principal tags for
     the road network and their link roads as defined in the OSM Wiki`:`
@@ -44,13 +44,10 @@ major-roads-length:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way
+    highway=* and type:way
   ratio_filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way and name=*
+    highway=* and type:way and name=*
+  source: https://wiki.openstreetmap.org/wiki/Key:highway
   indicators:
     - mapping-saturation
     - road-comparison
