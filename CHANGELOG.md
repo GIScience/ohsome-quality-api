@@ -20,6 +20,7 @@
 [#778]: https://github.com/GIScience/ohsome-quality-api/issues/778
 [#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
 [#777]: https://github.com/GIScience/ohsome-quality-api/issues/777
+[#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
 
 ## Release 1.2.0
 
