@@ -1,12 +1,7 @@
 ---
 # thresholds are age in number of months since latest timestamp (today)
-major-roads-count:
-    thresholds:
-      up_to_date: 48
-      out_of_date: 96
-    source: https://wiki.openstreetmap.org/wiki/StreetComplete/Quests
 
-major-roads-length:
+roads:
   thresholds:
       up_to_date: 48
       out_of_date: 96
