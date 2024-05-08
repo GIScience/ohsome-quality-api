@@ -187,7 +187,7 @@ class RoadComparison(BaseIndicator):
                 pgo.Bar(
                     x=[name],
                     y=[ratio],
-                    name=f"{name} matched with OSM",
+                    name=f"{round((ratio * 100), 1)}% of {name} are matched by OSM",
                     marker=dict(color="black", line=dict(color="black", width=1)),
                     width=0.4,
                     hovertext=f"OSM Covered: {(self.length_matched[name]/1000):.2f} km"
@@ -202,7 +202,10 @@ class RoadComparison(BaseIndicator):
                 pgo.Bar(
                     x=[name],
                     y=[1 - ratio],
-                    name=f"{name} not matched with OSM",
+                    name="{0}% of {1} are not matched by OSM".format(
+                        round((100 - ratio * 100), 1),
+                        name,
+                    ),
                     marker=dict(
                         color="rgba(0,0,0,0)", line=dict(color="black", width=1)
                     ),
@@ -210,18 +213,27 @@ class RoadComparison(BaseIndicator):
                     hovertext=f"Not OSM Covered: {length_difference_km:.2f} km "
                     f"({date:%b %d, %Y})",
                     hoverinfo="text",
-                    text=[f"{round((ratio * 100), 2)} % of Roads covered by OSM"],
                     textposition="outside",
                 )
             )
 
-            # Update layout
-            fig.update_layout(
-                barmode="stack",
-                title="Road Comparison",
-                xaxis=dict(title="Reference Dataset"),
-                yaxis=dict(title="Ratio of matched road length"),
+        fig.update_layout(
+            barmode="stack",
+            title="Road Comparison",
+            xaxis=dict(title="Reference Dataset"),
+            yaxis=dict(title="Ratio of matched road length"),
+        )
+
+        fig.update_layout(
+            legend=dict(
+                orientation="h",
+                entrywidth=270,
+                yanchor="bottom",
+                y=1.02,
+                xanchor="center",
+                x=0.5,
             )
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
