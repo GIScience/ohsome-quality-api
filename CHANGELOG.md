@@ -8,7 +8,7 @@
 
 ### New Features
 
-- road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778, #787, #788)
+- road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778, #787, #788])
 - building-comparison: support comparison with multiple datasets ([#768])
 - building-comparison: add more information to plot and improve result description ([#777])
 
@@ -16,6 +16,7 @@
 
 - build: update dependencies (`rpy2` and `fastapi`) ([#775])
 - update dependencies ([#785])
+- building-comparison: improve performance of request to database ([#790])
 
 [#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
 [#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
@@ -25,6 +26,7 @@
 [#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
 [#787]: https://github.com/GIScience/ohsome-quality-api/issues/787
 [#788]: https://github.com/GIScience/ohsome-quality-api/issues/788
+[#790]: https://github.com/GIScience/ohsome-quality-api/pull/790
 
 ## Release 1.2.0
 
