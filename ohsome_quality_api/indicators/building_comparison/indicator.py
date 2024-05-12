@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 from functools import cache
@@ -6,7 +7,6 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 import psycopg
-import yaml
 from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature
@@ -44,7 +44,11 @@ class BuildingComparison(BaseIndicator):
         self.ratio: dict[str, float | None] = {}
         self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
-        for key, val in load_datasets_metadata().items():
+        asyncio.run(self.init_async_data())
+
+    async def init_async_data(self):
+        datasets_metadata = await load_datasets_metadata()
+        for key, val in datasets_metadata.items():
             self.data_ref[key] = val
             self.area_osm[key] = None  # osm building area
             self.area_ref[key] = None  # reference building area [sqkm]
@@ -55,7 +59,7 @@ class BuildingComparison(BaseIndicator):
     async def coverage(cls, inverse=False) -> list[Feature]:
         # TODO: could also return a Feature Collection
         features = []
-        datasets = load_datasets_metadata()
+        datasets = await load_datasets_metadata()
         for val in datasets.values():
             if inverse:
                 table = val["coverage"]["inversed"]
@@ -279,11 +283,11 @@ class BuildingComparison(BaseIndicator):
 
     def format_sources(self):
         sources = []
-        for dataset in self.data_ref.values():
-            if dataset["link"] is not None:
-                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
+        for dataset_key, dataset_value in self.data_ref.items():
+            if dataset_value["link"] is not None:
+                sources.append(f"<a href='{dataset_value['link']}'>{dataset_key}</a>")
             else:
-                sources.append(f"{dataset}")
+                sources.append(dataset_key)
         result = ", ".join(sources)
         return result
 
@@ -313,7 +317,38 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
 
 
 @cache
-def load_datasets_metadata() -> dict:
-    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-    with open(file_path, "r") as f:
-        return yaml.safe_load(f)
+async def load_datasets_metadata() -> dict:
+    """Load dataset metadata from the database."""
+    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+
+    dataset_metadata = {}
+
+    async with await psycopg.AsyncConnection.connect(dns) as con:
+        async with con.cursor() as cur:
+            await cur.execute("SELECT * FROM building_comparison_metadata")
+            async for row in cur:
+                dataset_name = row[0]
+                link = row[1]
+                date = row[2].strftime("%Y-%m-%d")  # Convert date object to string
+                description = row[3]
+                color = row[4]
+                table_name = row[5]
+                coverage_simple = row[6]
+                coverage_inversed = row[7]
+                dataset_metadata[dataset_name] = {
+                    "link": link,
+                    "date": date,
+                    "description": description,
+                    "color": color,
+                    "table_name": table_name,
+                    "coverage_simple": coverage_simple,
+                    "coverage_inversed": coverage_inversed,
+                }
+
+    return dataset_metadata
