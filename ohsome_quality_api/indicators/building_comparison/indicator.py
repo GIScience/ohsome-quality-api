@@ -1,7 +1,5 @@
-import asyncio
 import logging
 import os
-from functools import cache
 from string import Template
 
 import geojson
@@ -11,6 +9,7 @@ from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature
 from numpy import mean
+from shapely import wkb
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
@@ -44,16 +43,6 @@ class BuildingComparison(BaseIndicator):
         self.ratio: dict[str, float | None] = {}
         self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
-        asyncio.run(self.init_async_data())
-
-    async def init_async_data(self):
-        datasets_metadata = await load_datasets_metadata()
-        for key, val in datasets_metadata.items():
-            self.data_ref[key] = val
-            self.area_osm[key] = None  # osm building area
-            self.area_ref[key] = None  # reference building area [sqkm]
-            self.area_cov[key] = None  # covered area [%]
-            self.ratio[key] = None
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
@@ -62,11 +51,11 @@ class BuildingComparison(BaseIndicator):
         datasets = await load_datasets_metadata()
         for val in datasets.values():
             if inverse:
-                table = val["coverage"]["inversed"]
+                table = val["coverage_inversed"]
             else:
-                table = val["coverage"]["simple"]
+                table = val["coverage_simple"]
             feature = await db_client.get_reference_coverage(table)
-            feature.properties.update({"refernce_dataset": val["name"]})
+            feature.properties.update({"refernce_dataset": val["table_name"]})
             features.append(feature)
         return features
 
@@ -74,12 +63,21 @@ class BuildingComparison(BaseIndicator):
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO", "Microsoft Buildings"])
 
+    async def init(self) -> None:
+        datasets_metadata = await load_datasets_metadata()
+        for key, val in datasets_metadata.items():
+            self.data_ref[key] = val
+            self.area_osm[key] = None  # osm building area
+            self.area_ref[key] = None  # reference building area [sqkm]
+            self.area_cov[key] = None  # covered area [%]
+            self.ratio[key] = None
+
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
-                val["coverage"]["simple"],
+                val["coverage_simple"],
             )
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
@@ -88,7 +86,7 @@ class BuildingComparison(BaseIndicator):
             # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
-                val["coverage"]["simple"],
+                val["coverage_simple"],
             )
 
             # get reference building area
@@ -129,14 +127,15 @@ class BuildingComparison(BaseIndicator):
                 self.warnings[key] += template.substitute(
                     ratio=round(self.ratio[key] * 100, 2),
                     coverage=round(self.area_cov[key] * 100, 2),
-                    dataset=self.data_ref[key]["name"],
+                    dataset=self.data_ref[key]["table_name"],
                 )
             except ZeroDivisionError:
                 self.ratio[key] = None
                 self.warnings[key] += (
-                    f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
-                    f"AoI with {round(self.area_cov[key] * 100, 2)}%, but has no "
-                    "building area. No quality estimation with reference is possible. "
+                    f"Warning: Reference dataset {self.data_ref[key]['table_name']}"
+                    f" covers AoI with {round(self.area_cov[key] * 100, 2)}%, but has"
+                    f" no building area. No quality estimation with reference "
+                    f"is possible. "
                 )
             self.result.description += self.warnings[key] + "\n"
 
@@ -184,12 +183,12 @@ class BuildingComparison(BaseIndicator):
         for key, dataset in self.data_ref.items():
             if None in (self.area_ref[key], self.area_osm[key]):
                 continue
-            ref_x.append(dataset["name"])
+            ref_x.append(dataset["table_name"])
             ref_y.append(round(self.area_ref[key], 2))
             ref_data.append(dataset)
-            osm_x.append(dataset["name"])
+            osm_x.append(dataset["table_name"])
             osm_y.append(round(self.area_osm[key], 2))
-            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
+            ref_hover.append(f"{dataset['table_name']} ({dataset['date']})")
             osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
             ref_color.append(Color[dataset["color"]].value)
             osm_area.append(round(self.area_osm[key], 2))
@@ -316,7 +315,6 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
     return res[0] or 0.0
 
 
-@cache
 async def load_datasets_metadata() -> dict:
     """Load dataset metadata from the database."""
     dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
@@ -339,8 +337,8 @@ async def load_datasets_metadata() -> dict:
                 description = row[3]
                 color = row[4]
                 table_name = row[5]
-                coverage_simple = row[6]
-                coverage_inversed = row[7]
+                coverage_simple = wkb.loads(bytes.fromhex(row[6]))
+                coverage_inversed = wkb.loads(bytes.fromhex(row[7]))
                 dataset_metadata[dataset_name] = {
                     "link": link,
                     "date": date,
