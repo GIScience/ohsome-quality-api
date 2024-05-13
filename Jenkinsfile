@@ -130,7 +130,7 @@ pipeline {
                 script {
                     docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
                         if (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX) {
-                            dockerImage = docker.build(DOCKER_REPOSITORY + ':main')
+                            dockerImage = docker.build(DOCKER_REPOSITORY + ':' + env.BRANCH_NAME)
                             dockerImage.push()
                         }
                         if (VERSION ==~ RELEASE_REGEX && env.TAG_NAME ==~ RELEASE_REGEX) {
