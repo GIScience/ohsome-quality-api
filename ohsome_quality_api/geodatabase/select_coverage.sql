@@ -1,4 +1,8 @@
 SELECT
-    ST_AsGeoJSON (ST_Transform (geom, 4326)) as geom
+    ST_AsGeoJSON (ST_Transform ($1, 4326)) as geom
 FROM
-    {table_name};
+    building_comparison_metadata
+WHERE
+    name like $2;
+
+

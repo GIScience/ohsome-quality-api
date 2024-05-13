@@ -51,10 +51,12 @@ class BuildingComparison(BaseIndicator):
         datasets = await load_datasets_metadata()
         for val in datasets.values():
             if inverse:
-                table = val["coverage_inversed"]
+                coverage_type = "coverage_inversed"
             else:
-                table = val["coverage_simple"]
-            feature = await db_client.get_reference_coverage(table)
+                coverage_type = "coverage_simple"
+            feature = await db_client.get_reference_coverage(
+                val["table_name"], coverage_type
+            )
             feature.properties.update({"refernce_dataset": val["table_name"]})
             features.append(feature)
         return features
@@ -77,7 +79,7 @@ class BuildingComparison(BaseIndicator):
             # get coverage [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
-                val["coverage_simple"],
+                val["table_name"],
             )
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
@@ -86,7 +88,7 @@ class BuildingComparison(BaseIndicator):
             # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
-                val["coverage_simple"],
+                val["table_name"],
             )
 
             # get reference building area
