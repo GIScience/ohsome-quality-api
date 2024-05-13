@@ -15,7 +15,8 @@ from tests.integrationtests.utils import oqapi_vcr
 @pytest.fixture
 def mock_get_building_area(class_mocker):
     async def side_effect_function(*args, **kwargs):
-        if args[1] == "EUBUCCO":
+        if not hasattr(side_effect_function, "called"):
+            side_effect_function.called = True
             return 6000000.791645115
         else:
             return 5000000.791645115
@@ -39,7 +40,8 @@ def mock_get_building_area_low(class_mocker):
 @pytest.fixture
 def mock_get_building_area_low_some(class_mocker):
     async def side_effect_function(*args, **kwargs):
-        if args[1] == "EUBUCCO":
+        if not hasattr(side_effect_function, "called"):
+            side_effect_function.called = True
             return 1
         else:
             return 6000000.791645115
@@ -90,7 +92,8 @@ def mock_get_intersection_area_none(class_mocker):
 @pytest.fixture
 def mock_get_intersection_area_some(class_mocker):
     async def side_effect(*args, **kwargs):
-        if "eubucco" in args[1]:
+        if not hasattr(side_effect, "called"):
+            side_effect.called = True
             return 0.0  # 0 %
         else:
             return 1.0  # 100 %
