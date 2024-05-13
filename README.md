@@ -2,6 +2,7 @@
 
 [![Build Status](https://jenkins.heigit.org/buildStatus/icon?job=OQAPI/main)](https://jenkins.heigit.org/job/OQAPI/job/main/)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-api)
+[![Docker Image Version](https://img.shields.io/docker/v/heigit/ohsome-quality-api)](https://hub.docker.com/r/heigit/ohsome-quality-api)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
 [![Dashboard](https://img.shields.io/website?url=https%3A%2F%2Fdashboard.ohsome.org&label=dashboard)](https://dashboard.ohsome.org/#backend=oqtApi)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
