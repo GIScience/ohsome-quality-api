@@ -21,6 +21,9 @@ pipeline {
         // POETRY_RUN = 'python -m poetry run --no-ansi --no-interaction'
         POETRY_RUN = 'python -m poetry run'
 
+        DOCKER_CREDENTIALS_ID = 'DockerHubHeiGITCredentials'
+        DOCKER_REPOSITORY = 'heigit/ohsome-quality-api'
+
         WORK_DIR = '/opt/oqapi'
         MODULE_DIR = '.'
 
@@ -118,6 +121,24 @@ pipeline {
             post {
                 failure {
                     rocket_basicsend("Checking for updates in *${REPO_NAME}*-build nr. ${env.BUILD_NUMBER} *failed* on Branch - ${env.BRANCH_NAME}  (<${env.BUILD_URL}|Open Build in Jenkins>). Latest commit from  ${LATEST_AUTHOR}.")
+                }
+            }
+        }
+
+        stage('Build and Deploy Image') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
+                        if (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX) {
+                            dockerImage = docker.build(DOCKER_REPOSITORY + ':main')
+                            dockerImage.push()
+                        }
+                        if (VERSION ==~ RELEASE_REGEX && env.TAG_NAME ==~ RELEASE_REGEX) {
+                            dockerImage = docker.build(DOCKER_REPOSITORY + ':' + VERSION)
+                            dockerImage.push()
+                            dockerImage.push('latest')
+                        }
+                    }
                 }
             }
         }
