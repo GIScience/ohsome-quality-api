@@ -47,6 +47,7 @@ geojson-pydantic = "^1.0.0"
 plotly = "^5.16.1"
 psycopg = {extras = ["binary"], version = "^3.1.13"}
 async-lru = "^2.0.4"
+approvaltests = "^12.1.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.2.1"
