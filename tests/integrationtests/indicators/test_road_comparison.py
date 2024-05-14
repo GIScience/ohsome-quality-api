@@ -81,6 +81,7 @@ class TestInit:
 
     def test_get_sources(self, topic_major_roads_length, feature_malta):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         source = indicator.format_sources()
         assert (
             "<a href='https://github.com/microsoft/RoadDetections'>"
@@ -102,6 +103,7 @@ class TestPreprocess:
     )
     def test_preprocess(self, topic_major_roads_length, feature_malta):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
 
         for length in indicator.length_total.values():
@@ -116,6 +118,7 @@ class TestPreprocess:
         mock_get_intersection_area_none,
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
 
         for area in indicator.area_cov.values():
@@ -137,6 +140,7 @@ class TestCalculate:
         feature_malta,
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is not None
@@ -156,6 +160,7 @@ class TestCalculate:
         feature_malta,
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is None
@@ -174,6 +179,7 @@ class TestCalculate:
         feature_malta,
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is None
@@ -195,6 +201,7 @@ class TestFigure:
     )
     def test_create_figure(self, topic_major_roads_length, feature_malta):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -210,6 +217,7 @@ class TestFigure:
     )
     def test_create_figure_manual(self, topic_major_roads_length, feature_malta):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -225,6 +233,7 @@ class TestFigure:
         self, topic_major_roads_length, feature_malta
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()

@@ -9,7 +9,6 @@ from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature
 from numpy import mean
-from shapely import wkb
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
@@ -331,7 +330,11 @@ async def load_datasets_metadata() -> dict:
 
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
-            await cur.execute("SELECT * FROM building_comparison_metadata")
+            await cur.execute(
+                "SELECT * "
+                "FROM building_comparison_metadata "
+                "WHERE indicator = 'building-comparison';"
+            )
             async for row in cur:
                 dataset_name = row[0]
                 link = row[1]
@@ -339,16 +342,12 @@ async def load_datasets_metadata() -> dict:
                 description = row[3]
                 color = row[4]
                 table_name = row[5]
-                coverage_simple = wkb.loads(bytes.fromhex(row[6]))
-                coverage_inversed = wkb.loads(bytes.fromhex(row[7]))
                 dataset_metadata[dataset_name] = {
                     "link": link,
                     "date": date,
                     "description": description,
                     "color": color,
                     "table_name": table_name,
-                    "coverage_simple": coverage_simple,
-                    "coverage_inversed": coverage_inversed,
                 }
 
     return dataset_metadata
