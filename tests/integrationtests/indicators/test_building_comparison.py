@@ -5,6 +5,7 @@ from unittest.mock import AsyncMock
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests.approvals import verify
 
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
@@ -231,12 +232,8 @@ class TestCalculate:
             assert v is not None
         for v in indicator.area_osm.values():
             assert v is not None
-        assert (
-            "Warning: OSM has substantivly more buildings mapped than the Reference "
-            "datasets. No quality estimation has been made."
-            in indicator.result.description
-        )
         assert indicator.result.label == "undefined"
+        verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures("mock_get_intersection_area_none")
@@ -251,11 +248,8 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.description is not None
-        assert (
-            "Comparison could not be made. None of the reference datasets covers the "
-            "area-of-interest." in indicator.result.description
-        )
         assert indicator.result.label == "undefined"
+        verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -277,14 +271,7 @@ class TestCalculate:
         assert indicator.result.class_ >= 0
         assert indicator.result.description is not None
         # major edge case description
-        assert (
-            "Reference dataset EUBUCCO does not cover area-of-interest."
-            in indicator.result.description
-        )
-        assert (
-            "of the area-of-interest is covered by the reference dataset"
-            in indicator.result.description
-        )
+        verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -307,16 +294,7 @@ class TestCalculate:
         assert indicator.result.class_ >= 0
         assert indicator.result.label != "undefined"
         assert indicator.result.description is not None
-        assert (
-            "of the area-of-interest is covered by the reference dataset"
-            in indicator.result.description
-        )
-        # TODO: should user be warned if a dataset was not fit for comparison?
-        # -> for ratio above self.above_one_th
-        # assert (
-        #     "this data is not considered in the overall result value."
-        #     in indicator.result.description
-        # )
+        verify(indicator.result.description)
 
 
 class TestFigure:
@@ -335,7 +313,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     @pytest.mark.usefixtures(
         "mock_get_building_area",
         "mock_get_intersection_geom",
