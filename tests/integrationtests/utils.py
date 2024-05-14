@@ -4,12 +4,44 @@ from unittest.mock import MagicMock
 
 import geojson
 import vcr
+from approvaltests import Namer
 
 from ohsome_quality_api.topics.definitions import get_topic_preset
 from ohsome_quality_api.topics.models import TopicDefinition
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures", "vcr_cassettes")
+FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures")
+VCR_DIR = os.path.join(FIXTURE_DIR, "vcr_cassettes")
+APPROVED_DIR = os.path.join(FIXTURE_DIR, "approved")
+
+
+class PytestNamer(Namer):
+    def __init__(self):
+        """Namer which includes fixture dir, dir, module, class and function in name.
+
+        This class utilizes the `PYTEST_CURRENT_TEST` environment variable, which
+        consist of the nodeid and the current stage:
+        `relative/path/to/test_file.py::TestClass::test_func[a] (call)`
+
+        For better readability this class formats the filename to something like:
+        `test_file-TestClass-test_func-a
+        """
+        nodeid = os.environ["PYTEST_CURRENT_TEST"]
+        nodeid_without_dir = nodeid.split("/")[-1]
+        parts = nodeid_without_dir.split("::")
+        raw = "-".join(parts)
+        self.name = (
+            raw.replace(".py", "")
+            .replace("[", "-")
+            .replace("]", "")
+            .replace(" (call)", "")
+        )
+
+    def get_received_filename(self) -> str:
+        return os.path.join(APPROVED_DIR, self.name + ".received" + ".txt")
+
+    def get_approved_filename(self) -> str:
+        return os.path.join(APPROVED_DIR, self.name + ".approved" + ".txt")
 
 
 class AsyncMock(MagicMock):
@@ -69,7 +101,7 @@ dummy_png = (
 )
 
 oqapi_vcr = vcr.VCR(
-    cassette_library_dir=FIXTURE_DIR,
+    cassette_library_dir=VCR_DIR,
     # details see https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
     record_mode=os.getenv("VCR_RECORD_MODE", default="new_episodes"),
     match_on=["method", "scheme", "host", "port", "path", "query", "body"],

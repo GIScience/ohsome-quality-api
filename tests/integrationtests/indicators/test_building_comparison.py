@@ -10,7 +10,7 @@ from approvaltests.approvals import verify
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
 )
-from tests.integrationtests.utils import oqapi_vcr
+from tests.integrationtests.utils import PytestNamer, oqapi_vcr
 
 
 @pytest.fixture
@@ -194,6 +194,7 @@ class TestCalculate:
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -233,7 +234,7 @@ class TestCalculate:
         for v in indicator.area_osm.values():
             assert v is not None
         assert indicator.result.label == "undefined"
-        verify(indicator.result.description)
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures("mock_get_intersection_area_none")
@@ -249,7 +250,7 @@ class TestCalculate:
         assert indicator.result.class_ is None
         assert indicator.result.description is not None
         assert indicator.result.label == "undefined"
-        verify(indicator.result.description)
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -271,7 +272,7 @@ class TestCalculate:
         assert indicator.result.class_ >= 0
         assert indicator.result.description is not None
         # major edge case description
-        verify(indicator.result.description)
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -294,7 +295,7 @@ class TestCalculate:
         assert indicator.result.class_ >= 0
         assert indicator.result.label != "undefined"
         assert indicator.result.description is not None
-        verify(indicator.result.description)
+        verify(indicator.result.description, namer=PytestNamer())
 
 
 class TestFigure:
@@ -313,7 +314,7 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
     @oqapi_vcr.use_cassette
-    # @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
+    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
     @pytest.mark.usefixtures(
         "mock_get_building_area",
         "mock_get_intersection_geom",
@@ -361,5 +362,5 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        assert indicator.result.figure["data"][0]["type"] == "bar"
+        assert indicator.result.figure["data"][0]["type"] == "pie"
         pgo.Figure(indicator.result.figure)
