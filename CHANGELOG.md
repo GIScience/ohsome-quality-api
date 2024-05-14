@@ -16,6 +16,7 @@
 
 - build: update dependencies (`rpy2` and `fastapi`) ([#775])
 - update dependencies ([#785])
+- test: use Approval Tests ([#789])
 
 [#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
 [#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
