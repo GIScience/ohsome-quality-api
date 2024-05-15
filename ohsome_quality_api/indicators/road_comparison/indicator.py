@@ -105,29 +105,18 @@ class RoadComparison(BaseIndicator):
                 self.length_matched[key] = 0
 
     def calculate(self) -> None:
-        # TODO: put checks into check_corner_cases. Let result be undefined.
-        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
-        if all(edge_cases):
-            self.result.description += (
-                " None of the reference datasets covers the area-of-interest."
-            )
-            return
         self.result.description = ""
         for key in self.data_ref.keys():
-            if self.warnings[key]:
-                self.result.description += self.warnings[key] + "\n"
+            # if major edge case present add to description
+            # and continue with next dataset
+            edge_case = self.check_major_edge_cases(key)
+            if edge_case != "":
+                self.result.description += edge_case + " "
                 continue
 
             self.warnings[key] += self.check_minor_edge_cases(key)
-            try:
-                self.ratio[key] = self.length_matched[key] / self.length_total[key]
-            except ZeroDivisionError:
-                self.ratio[key] = None
-                self.warnings[key] += (
-                    f"Warning: Reference dataset {self.data_ref[key]['name']} covers "
-                    f"AOI with {round(self.area_cov[key] * 100, 2)}%, but has no "
-                    "road length. No quality estimation with reference is possible. "
-                )
+            # ZeroDivisionError can not occur because of `check_major_edge_cases()`
+            self.ratio[key] = self.length_matched[key] / self.length_total[key]
 
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
@@ -140,11 +129,6 @@ class RoadComparison(BaseIndicator):
         ratios = [v for v in self.ratio.values() if v is not None]
         if ratios:
             self.result.value = float(mean(ratios))
-        else:
-            self.result.description += (
-                "Warning: None of the reference datasets has "
-                "roads mapped in this area. "
-            )
 
         if self.result.value is not None:
             if self.result.value >= self.th_high:
@@ -156,6 +140,8 @@ class RoadComparison(BaseIndicator):
 
         label_description = self.metadata.label_description[self.result.label]
         self.result.description += label_description
+        # remove double white spaces
+        self.result.description = " ".join(self.result.description.split())
 
     def create_figure(self) -> None:
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
@@ -186,7 +172,7 @@ class RoadComparison(BaseIndicator):
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
-                    y=[ratio],
+                    y=[ratio * 100],
                     name=f"{round((ratio * 100), 1)}% of {name} are matched by OSM",
                     marker=dict(color="black", line=dict(color="black", width=1)),
                     width=0.4,
@@ -220,19 +206,18 @@ class RoadComparison(BaseIndicator):
         fig.update_layout(
             barmode="stack",
             title="Road Comparison",
-            xaxis=dict(title="Reference Dataset"),
-            yaxis=dict(title="Ratio of matched road length"),
+            yaxis=dict(title="Matched road length [%]"),
         )
 
         fig.update_layout(
             legend=dict(
                 orientation="h",
                 entrywidth=270,
-                yanchor="bottom",
-                y=1.02,
+                yanchor="top",
+                y=-0.1,
                 xanchor="center",
                 x=0.5,
-            )
+            ),
         )
 
         raw = fig.to_dict()
@@ -241,30 +226,27 @@ class RoadComparison(BaseIndicator):
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset]
-        if coverage is None or coverage == 0.00:
+        coverage = self.area_cov[dataset] * 100
+        if coverage is None or coverage == 0:
             return f"Reference dataset {dataset} does not cover area-of-interest. "
-        elif coverage < 0.10:
+        elif coverage < 10:
             return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(
-                    coverage * 100
-                )
+                "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
                 + f"by the reference dataset ({dataset}). "
                 + f"No quality estimation with reference {dataset} is possible."
             )
+        elif self.length_total[dataset] == 0:
+            return f"{dataset} does not contain roads for your area-of-interest. "
         else:
             return ""
 
     def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset]
-        if coverage < 0.95:
+        coverage = self.area_cov[dataset] * 100
+        if coverage < 95:
             return (
-                f"Warning: Reference data {dataset} does "
-                f"not cover the whole input geometry. "
-                + "Input geometry is clipped to the coverage."
-                " Result is only calculated"
-                " for the intersection area. "
+                f"{dataset} does only cover {coverage:.2f}% of your area-of-interest. "
+                "Comparison is made for the intersection area."
             )
         else:
             return ""

@@ -16,6 +16,20 @@ dev = ["coveralls", "flake8", "pydocstyle"]
 test = ["pytest (>=4.6)", "pytest-cov"]
 
 [[package]]
+name = "allpairspy"
+version = "2.5.1"
+description = "Pairwise test combinations generator"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "allpairspy-2.5.1-py3-none-any.whl", hash = "sha256:3f97cbac2bbee86f4bfceffd0fd91dca740a120c78e9368af2bad81a2b3426e2"},
+    {file = "allpairspy-2.5.1.tar.gz", hash = "sha256:f69d31a3b56eee119d1ec6063e9c732dd44fbba352ef738cb22d9699fc4009fe"},
+]
+
+[package.extras]
+test = ["pytest (>=6.0.1)", "pytest-md-report (>=0.3)"]
+
+[[package]]
 name = "annotated-types"
 version = "0.6.0"
 description = "Reusable constraint types to use with typing.Annotated"
@@ -47,6 +61,40 @@ typing-extensions = {version = ">=4.1", markers = "python_version < \"3.11\""}
 doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
 test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
 trio = ["trio (>=0.23)"]
+
+[[package]]
+name = "approval-utilities"
+version = "12.1.0"
+description = "Utilities for your production code that work well with approvaltests"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "approval_utilities-12.1.0-py3-none-any.whl", hash = "sha256:cfec9d457174822cc6ae337d3eee5837382b2abb7d080e499d54911ce95e888d"},
+    {file = "approval_utilities-12.1.0.tar.gz", hash = "sha256:16569c771a33ce0e1cd9866227d02b93e2691c095f6e4387b4b936642b376e76"},
+]
+
+[[package]]
+name = "approvaltests"
+version = "12.1.0"
+description = "Assertion/verification library to aid testing"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "approvaltests-12.1.0-py3-none-any.whl", hash = "sha256:5874ffc5d46d6f1ce9921b628e62a2a80bdccf409fcd7550d7bcecd07994244c"},
+    {file = "approvaltests-12.1.0.tar.gz", hash = "sha256:dd23e0a64667f1fbdfdbdc90a78babaa687f2ab095a976cc171612df0cc8c8a5"},
+]
+
+[package.dependencies]
+allpairspy = ">=2.1.0"
+approval-utilities = "12.1.0"
+beautifulsoup4 = ">=4.4.0"
+empty-files = ">=0.0.3"
+mock = ">=5.1.0"
+mrjob = ">=0.7.4"
+pyperclip = ">=1.5.29"
+pytest = ">=4.0.0"
+testfixtures = ">=7.1.0"
+typing-extensions = ">=3.6.2"
 
 [[package]]
 name = "async-lru"
@@ -130,6 +178,27 @@ docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-
 tests = ["attrs[tests-no-zope]", "zope-interface"]
 tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
+
+[[package]]
+name = "beautifulsoup4"
+version = "4.12.3"
+description = "Screen-scraping library"
+optional = false
+python-versions = ">=3.6.0"
+files = [
+    {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
+    {file = "beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"},
+]
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+cchardet = ["cchardet"]
+chardet = ["chardet"]
+charset-normalizer = ["charset-normalizer"]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
 
 [[package]]
 name = "building-completeness-model"
@@ -473,6 +542,20 @@ files = [
 ]
 
 [[package]]
+name = "empty-files"
+version = "0.0.9"
+description = "Serves empty files of many types"
+optional = false
+python-versions = ">=3.7.1"
+files = [
+    {file = "empty-files-0.0.9.tar.gz", hash = "sha256:22e74de327271ef9592a661aaa53bb1d5fa6cfd539dac7315625c8b30b7292ae"},
+    {file = "empty_files-0.0.9-py3-none-any.whl", hash = "sha256:9af04feacd5858d1255a00e76926a2d760f6d05c3c5a8df58abd6be21da742c2"},
+]
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.1"
 description = "Backport of PEP 654 (exception groups)"
@@ -785,6 +868,43 @@ files = [
     {file = "MarkupSafe-2.1.5-cp39-cp39-win_amd64.whl", hash = "sha256:fa173ec60341d6bb97a89f5ea19c85c5643c1e7dedebc22f5181eb73573142c5"},
     {file = "MarkupSafe-2.1.5.tar.gz", hash = "sha256:d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"},
 ]
+
+[[package]]
+name = "mock"
+version = "5.1.0"
+description = "Rolling backport of unittest.mock for all Pythons"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "mock-5.1.0-py3-none-any.whl", hash = "sha256:18c694e5ae8a208cdb3d2c20a993ca1a7b0efa258c247a1e565150f477f83744"},
+    {file = "mock-5.1.0.tar.gz", hash = "sha256:5e96aad5ccda4718e0a229ed94b2024df75cc2d55575ba5762d31f5767b8767d"},
+]
+
+[package.extras]
+build = ["blurb", "twine", "wheel"]
+docs = ["sphinx"]
+test = ["pytest", "pytest-cov"]
+
+[[package]]
+name = "mrjob"
+version = "0.7.4"
+description = "Python MapReduce framework"
+optional = false
+python-versions = "*"
+files = [
+    {file = "mrjob-0.7.4-py2.py3-none-any.whl", hash = "sha256:d8fa1bafcada0ffe3e7166896a27e996815e2cb835088aec025e3dd12c7146ce"},
+    {file = "mrjob-0.7.4.tar.gz", hash = "sha256:2c8d8dc8aa4b354a97de18d0260f551f018693af74af104b3d41daf165eebdd4"},
+]
+
+[package.dependencies]
+PyYAML = ">=3.10"
+
+[package.extras]
+aws = ["boto3 (>=1.10.0)", "botocore (>=1.13.26)"]
+google = ["google-cloud-dataproc (>=0.3.0,<=1.1.0)", "google-cloud-logging (>=1.9.0)", "google-cloud-storage (>=1.13.1)"]
+rapidjson = ["python-rapidjson"]
+simplejson = ["simplejson"]
+ujson = ["ujson"]
 
 [[package]]
 name = "multidict"
@@ -1251,6 +1371,16 @@ files = [
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
+
+[[package]]
+name = "pyperclip"
+version = "1.8.2"
+description = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
+]
 
 [[package]]
 name = "pyproj"
@@ -1887,6 +2017,17 @@ pyparsing = ">=2.1.6"
 test = ["hypothesis", "pytest"]
 
 [[package]]
+name = "soupsieve"
+version = "2.5"
+description = "A modern CSS selector implementation for Beautiful Soup."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
+    {file = "soupsieve-2.5.tar.gz", hash = "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"},
+]
+
+[[package]]
 name = "starlette"
 version = "0.36.3"
 description = "The little ASGI library that shines."
@@ -1917,6 +2058,22 @@ files = [
 [package.extras]
 doc = ["reno", "sphinx"]
 test = ["pytest", "tornado (>=4.5)", "typeguard"]
+
+[[package]]
+name = "testfixtures"
+version = "8.2.0"
+description = "A collection of helpers and mock objects for unit tests and doc tests."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "testfixtures-8.2.0-py3-none-any.whl", hash = "sha256:2896b81ece2e30356baf8d76931a7bf4b8f0d58a707ea120dd5d021b20e7d5af"},
+    {file = "testfixtures-8.2.0.tar.gz", hash = "sha256:ef43b657134c87e8a3044f4b02a32ae2ebddf44b2b97bc7989a20116403988ee"},
+]
+
+[package.extras]
+build = ["setuptools-git", "twine", "wheel"]
+docs = ["django", "furo", "sphinx", "sybil (>=6)", "twisted"]
+test = ["django", "mypy", "pytest (>=7.1)", "pytest-cov", "pytest-django", "sybil (>=6)", "twisted"]
 
 [[package]]
 name = "threadpoolctl"
@@ -2247,4 +2404,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "6cb9ee41d03cf781fcc3e179fcfda1e32480f0a206ae654a929b59968b57664c"
+content-hash = "7b5fdc1ee180596ac3313d36575d9000c8b334affc6b02f327939c71c491db90"
