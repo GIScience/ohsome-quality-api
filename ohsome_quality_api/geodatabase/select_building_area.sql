@@ -1,6 +1,7 @@
 WITH bpoly AS (
     SELECT
-        ST_Setsrid (ST_GeomFromGeoJSON (%s), 4326) AS geom
+        -- split mutlipolygon into list of polygons for more efficient processing
+        (ST_DUMP (ST_Setsrid (ST_GeomFromGeoJSON (%s), 4326))).geom AS geom
 )
 SELECT
     SUM({table_name}.area) as area
