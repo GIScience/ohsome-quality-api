@@ -33,14 +33,10 @@ def validate_geojson(bpolys: GeoJSON):
         raise GeoJSONObjectTypeError()
 
     crs = bpolys.get("crs", None)
-    if crs is None:
-        pass
-    else:
+    if crs is not None:
         crs = CRS.from_string(crs.get("properties", {}).get("name", ""))
         crs_epsg = CRS.to_epsg(crs)
-        if crs_epsg == 4326:
-            pass
-        else:
+        if crs_epsg != 4326:
             raise InvalidCRSError()
 
 

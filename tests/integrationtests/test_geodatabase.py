@@ -81,7 +81,7 @@ def test_get_eubucco_coverage_intersection_area_none(
     result = asyncio.run(
         db_client.get_intersection_area(bpoly, "eubucco_coverage_simple")
     )
-    assert result == 0.0
+    assert result == pytest.approx(0.0)
 
 
 def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):

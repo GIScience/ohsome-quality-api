@@ -151,7 +151,7 @@ class TestPreprocess:
         asyncio.run(indicator.preprocess())
 
         for area in indicator.area_cov.values():
-            assert area == 0.0
+            assert area == pytest.approx(0.0)
         assert isinstance(indicator.result.timestamp, datetime)
         assert indicator.result.timestamp_osm is None
 
