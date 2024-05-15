@@ -26,7 +26,7 @@
 [#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
 [#787]: https://github.com/GIScience/ohsome-quality-api/issues/787
 [#788]: https://github.com/GIScience/ohsome-quality-api/issues/788
-[#789]: https://github.com/GIScience/ohsome-quality-api/issues/789
+[#789]: https://github.com/GIScience/ohsome-quality-api/pull/789
 
 ## Release 1.2.0
 
