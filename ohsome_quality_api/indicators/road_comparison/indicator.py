@@ -115,7 +115,7 @@ class RoadComparison(BaseIndicator):
                 continue
 
             self.warnings[key] += self.check_minor_edge_cases(key)
-            # ZeroDivisionError can not occur because of `check_edge_cases()`
+            # ZeroDivisionError can not occur because of `check_major_edge_cases()`
             self.ratio[key] = self.length_matched[key] / self.length_total[key]
 
             self.result.description += self.warnings[key] + "\n"

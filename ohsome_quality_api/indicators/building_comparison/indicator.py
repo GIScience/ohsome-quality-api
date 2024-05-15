@@ -109,7 +109,7 @@ class BuildingComparison(BaseIndicator):
                 major_edge_case = True
                 continue
             edge_case = self.check_minor_edge_cases(key)
-            # ZeroDivisionError can not occur because of `check_edge_cases()`
+            # ZeroDivisionError can not occur because of `check_major_edge_cases()`
             self.ratio[key] = self.area_osm[key] / self.area_ref[key]
             template = Template(self.metadata.result_description)
             description = template.substitute(
@@ -224,7 +224,6 @@ class BuildingComparison(BaseIndicator):
             "showlegend": True,
             "barmode": "group",
             "yaxis_title": "Building Area [km²]",
-            # "xaxis_title": f"Reference Datasets ({self.format_sources()})",
             "legend": dict(
                 orientation="h",
                 entrywidth=270,
