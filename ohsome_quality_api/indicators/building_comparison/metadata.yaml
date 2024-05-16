@@ -6,17 +6,15 @@ building-comparison:
     - core
   quality_dimension: completeness
   description: >-
-    Compare the building area of OSM buildings with the building area of
-    reference data.
+    Comparison of OSM buildings with the buildings of reference datasets.
   label_description:
     red: >-
-      OSM has significant less building area than the reference data and is therefore of low completeness.
+      The completeness of OSM buildings in your area-of-interest is low.
     yellow: >-
-      OSM has a bit less building area than the reference data and is therefore of medium completeness.
+      The completeness of OSM buildings in your area-of-interest is medium.
     green: >-
-      OSM has almost the same, the same or even more building area than the reference data and is therefore of high completeness.
+      The completeness of OSM buildings in your area-of-interest is high.
     undefined: >-
       Comparison could not be made.
   result_description: >-
-    $coverage% of the area-of-interest is covered by the reference dataset $dataset.
-    The building area of OSM is $ratio% of that reference data.
+    The completeness in comparison to $dataset is $ratio%.

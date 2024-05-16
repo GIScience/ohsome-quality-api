@@ -6,13 +6,14 @@ from unittest.mock import AsyncMock
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests.approvals import verify
 from geojson import Feature
 
 from ohsome_quality_api.indicators.road_comparison.indicator import (
     RoadComparison,
     get_matched_roadlengths,
 )
-from tests.integrationtests.utils import oqapi_vcr
+from tests.integrationtests.utils import PytestNamer, oqapi_vcr
 
 
 @pytest.fixture
@@ -147,6 +148,7 @@ class TestCalculate:
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -166,10 +168,7 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.label == "undefined"
-        assert (
-            ", but has no road length. No quality estimation with reference is "
-            "possible." in indicator.result.description
-        )
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures("mock_get_intersection_area_none")
@@ -184,12 +183,9 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
         assert indicator.result.class_ is None
-        assert indicator.result.description is not None
-        assert (
-            "Comparison could not be made. None of the reference datasets covers the "
-            "area-of-interest." in indicator.result.description
-        )
         assert indicator.result.label == "undefined"
+        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
 
 class TestFigure:

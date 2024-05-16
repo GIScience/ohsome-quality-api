@@ -40,7 +40,6 @@ class BuildingComparison(BaseIndicator):
         self.area_ref: dict[str, float | None] = {}
         self.area_cov: dict[str, float | None] = {}
         self.ratio: dict[str, float | None] = {}
-        self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
 
     @classmethod
@@ -80,8 +79,7 @@ class BuildingComparison(BaseIndicator):
                 self.feature,
                 val["table_name"],
             )
-            self.warnings[key] = self.check_major_edge_cases(key)
-            if self.warnings[key] != "":
+            if self.check_major_edge_cases(key) != "":
                 continue
 
             # clip input geom with coverage of reference dataset
@@ -104,70 +102,61 @@ class BuildingComparison(BaseIndicator):
             self.result.timestamp_osm = parser.isoparse(timestamp)
 
     def calculate(self) -> None:
-        # TODO: put checks into check_corner_cases. Let result be undefined.
-        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
-        if all(edge_cases):
-            self.result.description += (
-                " None of the reference datasets covers the area-of-interest."
-            )
-            return
-        self.result.description = ""
+        major_edge_case: bool = False
+        result_description: str = ""
         for key in self.data_ref.keys():
-            # if None in (self.ratio[key], self.area_cov[key], self.data_ref[key]):
-            if self.warnings[key] != "":
-                self.result.description += self.warnings[key] + "\n"
+            # if major edge case present add to description
+            # and continue with next dataset
+            edge_case = self.check_major_edge_cases(key)
+            if edge_case != "":
+                result_description = " ".join((result_description, edge_case))
+                major_edge_case = True
                 continue
-
-            self.warnings[key] += self.check_minor_edge_cases(key)
-            # TODO: check for None explicitly?
-            # TODO: add warning for user, that no buildings are present?
-            try:
-                self.ratio[key] = self.area_osm[key] / self.area_ref[key]
-
-                template = Template(self.metadata.result_description)
-                self.warnings[key] += template.substitute(
-                    ratio=round(self.ratio[key] * 100, 2),
-                    coverage=round(self.area_cov[key] * 100, 2),
-                    dataset=self.data_ref[key]["table_name"],
-                )
-            except ZeroDivisionError:
-                self.ratio[key] = None
-                self.warnings[key] += (
-                    f"Warning: Reference dataset {self.data_ref[key]['table_name']}"
-                    f" covers AoI with {round(self.area_cov[key] * 100, 2)}%, but has"
-                    f" no building area. No quality estimation with reference "
-                    f"is possible. "
-                )
-            self.result.description += self.warnings[key] + "\n"
+            edge_case = self.check_minor_edge_cases(key)
+            # ZeroDivisionError can not occur because of `check_major_edge_cases()`
+            self.ratio[key] = self.area_osm[key] / self.area_ref[key]
+            template = Template(self.metadata.result_description)
+            description = template.substitute(
+                ratio=round(self.ratio[key] * 100, 2),
+                coverage=round(self.area_cov[key] * 100, 2),
+                dataset=self.data_ref[key]["name"],
+            )
+            result_description = " ".join((result_description, edge_case, description))
 
         ratios = [
             v for v in self.ratio.values() if v is not None and v <= self.above_one_th
         ]
         if ratios:
             self.result.value = float(mean(ratios))
-        else:
-            self.result.description += (
-                "Warning: OSM has substantivly more buildings mapped than the Reference"
-                + " datasets. No quality estimation has been made."
-            )
-
-        if self.result.value is not None:
             if self.above_one_th >= self.result.value >= self.th_high:
                 self.result.class_ = 5
             elif self.th_high > self.result.value >= self.th_low:
                 self.result.class_ = 3
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
-
-        label_description = self.metadata.label_description[self.result.label]
-        self.result.description += label_description
+            label_description = self.metadata.label_description[self.result.label]
+            self.result.description = " ".join((label_description, result_description))
+        elif major_edge_case:
+            label_description = self.metadata.label_description[self.result.label]
+            self.result.description = " ".join((label_description, result_description))
+        else:
+            label_description = self.metadata.label_description[self.result.label]
+            edge_case = (
+                "OSM has substantivly more buildings than the reference datasets. The "
+                "reference dataset is likely to miss many buildings."
+            )
+            self.result.description = " ".join(
+                [label_description, edge_case, result_description]
+            )
+        # remove double white spaces
+        self.result.description = " ".join(self.result.description.split())
 
     def create_figure(self) -> None:
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
         if self.result.label == "undefined" and all(edge_cases):
             logging.info(
-                "Result is undefined and major edge case is present."
-                " Skipping figure creation."
+                "Result is undefined and major edge case is present. "
+                "Skipping figure creation."
             )
             return
 
@@ -207,8 +196,6 @@ class BuildingComparison(BaseIndicator):
                     marker_color=Color.GREY.value,
                     hovertext=osm_hover,
                     hoverinfo="text",
-                    text=[f"{area} km²" for area in osm_area],
-                    textposition="outside",
                 ),
                 pgo.Bar(
                     name=ref_x[0] + f" ({ref_area[0]} km²)",
@@ -218,8 +205,6 @@ class BuildingComparison(BaseIndicator):
                     hovertext=ref_hover,
                     hoverinfo="text",
                     legendgroup="Reference",
-                    text=[f"{area} km²" for area in ref_area],
-                    textposition="outside",
                 ),
             ]
         )
@@ -243,7 +228,14 @@ class BuildingComparison(BaseIndicator):
             "showlegend": True,
             "barmode": "group",
             "yaxis_title": "Building Area [km²]",
-            "xaxis_title": f"Reference Datasets ({self.format_sources()})",
+            "legend": dict(
+                orientation="h",
+                entrywidth=270,
+                yanchor="top",
+                y=-0.1,
+                xanchor="center",
+                x=0.5,
+            ),
         }
         fig.update_layout(**layout)
 
@@ -253,30 +245,26 @@ class BuildingComparison(BaseIndicator):
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset]
-        if coverage is None or coverage == 0.00:
-            return f"Reference dataset {dataset} does not cover area-of-interest. "
-        elif coverage < 0.10:
-            return (
-                "Only {:.2f}% of the area-of-interest is covered ".format(
-                    coverage * 100
-                )
-                + f"by the reference dataset ({dataset}). "
-                + f"No quality estimation with reference {dataset} is possible."
+        coverage = self.area_cov[dataset] * 100
+        if coverage is None or coverage == 0:
+            return "{} does not cover your area-of-interest.".format(dataset)
+        elif coverage < 10:
+            return "Only {:.2f}% of your area-of-interest is covered by {}".format(
+                coverage,
+                dataset,
             )
+        elif self.area_ref[dataset] == 0:
+            return f"{dataset} does not contain buildings for your area-of-interest."
         else:
             return ""
 
     def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset]
-        if coverage < 0.95:
+        coverage = self.area_cov[dataset] * 100
+        if coverage < 95:
             return (
-                f"Warning: Reference data {dataset} does "
-                f"not cover the whole input geometry. "
-                + "Input geometry is clipped to the coverage."
-                " Result is only calculated"
-                " for the intersection area. "
+                f"{dataset} does only cover {coverage:.2f}% of your area-of-interest. "
+                "Comparison is made for the intersection area."
             )
         else:
             return ""
