@@ -1,5 +1,17 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- road-comparison: change color of bar to grey ([#798])
+
+### Bug Fixes
+
+- road-comparison: bar for not covered roads is now shown in the plot ([#798])
+
+[#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
+
 ## Release 1.3.0
 
 ### Breaking Changes
