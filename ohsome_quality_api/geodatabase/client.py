@@ -74,10 +74,10 @@ async def get_reference_coverage(table_name: str, coverage_type: str) -> Feature
     """Get reference coverage for a bounding polygon."""
     file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
     with open(file_path, "r") as file:
-        query = file.read()
+        query = file.read().replace("{coverage_type}", coverage_type)
     async with get_connection() as conn:
-        result = await conn.fetchrow(query, coverage_type, table_name)
-    return Feature(geometry=geojson.loads(result[0]["geom"]))
+        result = await conn.fetchrow(query, table_name)
+    return Feature(geometry=geojson.loads(result["geom"]))
 
 
 async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
