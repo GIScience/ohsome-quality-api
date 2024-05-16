@@ -55,9 +55,11 @@ class RoadComparison(BaseIndicator):
             else:
                 coverage_type = "coverage_simple"
             feature = await db_client.get_reference_coverage(
-                val["table_name"], coverage_type
+                val["dataset_name_snake_case"], coverage_type
             )
-            feature.properties.update({"refernce_dataset": val["table_name"]})
+            feature.properties.update(
+                {"refernce_dataset": val["dataset_name_snake_case"]}
+            )
             features.append(feature)
         return features
 
@@ -82,7 +84,7 @@ class RoadComparison(BaseIndicator):
             # get area covered by reference dataset [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
-                val["table_name"],
+                val["dataset_name_snake_case"],
             )
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
@@ -91,7 +93,7 @@ class RoadComparison(BaseIndicator):
             # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
-                val["table_name"],
+                val["dataset_name_snake_case"],
             )
 
             # get covered road length
@@ -124,7 +126,7 @@ class RoadComparison(BaseIndicator):
 
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
-                f"{self.data_ref[key]['table_name']} has a road length of "
+                f"{self.data_ref[key]['dataset_name']} has a road length of "
                 f"{(self.length_total[key]/1000):.2f} km, of which "
                 f"{(self.length_matched[key]/1000):.2f} km are covered by roads in "
                 f"OSM. "
@@ -165,7 +167,7 @@ class RoadComparison(BaseIndicator):
         for key, val in self.ratio.items():
             if val is None:
                 continue
-            ref_name.append(self.data_ref[key]["table_name"])
+            ref_name.append(self.data_ref[key]["dataset_name"])
             ref_color.append(Color[self.data_ref[key]["color"]].value)
             ref_processingdate.append(self.data_ref[key]["date"])
             ref_ratio.append(val)
@@ -313,17 +315,20 @@ async def load_datasets_metadata() -> dict:
         async with con.cursor() as cur:
             await cur.execute(
                 "SELECT * "
-                "FROM building_comparison_metadata "
-                "WHERE indicator = 'road-comparison';"
+                "FROM comparison_indicators_metadata "
+                "WHERE indicator = 'road_comparison';"
             )
             async for row in cur:
                 dataset_name = row[0]
-                link = row[1]
-                date = row[2].strftime("%Y-%m-%d")  # Convert date object to string
-                description = row[3]
-                color = row[4]
-                table_name = row[5]
+                dataset_name_snake_case = row[1]
+                link = row[2]
+                date = row[3]  # Convert date object to string
+                description = row[4]
+                color = row[5]
+                table_name = row[6]
                 dataset_metadata[dataset_name] = {
+                    "dataset_name": dataset_name,
+                    "dataset_name_snake_case": dataset_name_snake_case,
                     "link": link,
                     "date": date,
                     "description": description,

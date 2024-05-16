@@ -1,8 +1,8 @@
 SELECT
     ST_AsGeoJSON (ST_Transform ($1, 4326)) as geom
 FROM
-    building_comparison_metadata
+    comparison_indicators_metadata
 WHERE
-    name like $2;
+    dataset_name_snake_case like $2;
 
 

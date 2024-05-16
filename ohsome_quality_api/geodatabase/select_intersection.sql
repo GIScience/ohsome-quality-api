@@ -4,8 +4,8 @@ WITH bpoly AS (
 ),
 selected_coverage AS (
     SELECT coverage_simple AS coverage
-    FROM building_comparison_metadata bcm
-    WHERE name LIKE $2
+    FROM comparison_indicators_metadata
+    WHERE dataset_name_snake_case LIKE $2
 )
 SELECT
     -- ratio of area within coverage (empty if outside, between 0-1 if intersection)
