@@ -1,10 +1,20 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+
+- road-comparison: covered Microsoft Roads are now calculated with tag `highway=* and type:way` ([#791])
+- comparison-indicators: now request metadata from database ([#791])
+
+
+[#791]: https://github.com/GIScience/ohsome-quality-api/pull/791
+
 ## Release 1.3.0
 
 ### Breaking Changes
 
-- major-roads-length: rename to `roads` and chnage filter to `highway=* and type:way` ([#786])
+- major-roads-length: rename to `roads` and change filter to `highway=* and type:way` ([#786])
 
 ### New Features
 
