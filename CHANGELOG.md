@@ -1,5 +1,18 @@
 # Changelog
 
+## Current Main
+
+### New Features
+
+- attribute-completeness: add workaround for attribute_key to use indicator in dashboard ([#800])
+
+### Bug Fixes
+
+- attribute-completeness: fix bugs in result figure ([#800])
+
+
+[#800]: https://github.com/GIScience/ohsome-quality-api/pull/800
+
 ## Release 1.3.0
 
 ### Breaking Changes
