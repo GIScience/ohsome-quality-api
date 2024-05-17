@@ -30,6 +30,8 @@ def get_attributes() -> dict[str, dict[str, Attribute]]:
 def get_attribute(topic_key, a_key: str) -> Attribute:
     attributes = get_attributes()
     try:
+        if a_key is None:
+            return next(iter(attributes[topic_key].values()))
         return attributes[topic_key][a_key]
     except KeyError as error:
         raise KeyError("Invalid topic or attribute key.") from error

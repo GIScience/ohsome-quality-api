@@ -33,7 +33,9 @@ class AttributeCompleteness(BaseIndicator):
     """
 
     # TODO make attribute a list
-    def __init__(self, topic: Topic, feature: Feature, attribute_key: str) -> None:
+    def __init__(
+        self, topic: Topic, feature: Feature, attribute_key: str = None
+    ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
@@ -97,7 +99,8 @@ class AttributeCompleteness(BaseIndicator):
             theta = ratio * pi
             c, s = np.cos(theta), np.sin(theta)
             r = np.array(((c, -s), (s, c)))
-            return np.matmul(r.T, (-1, 0)) + offset
+            rotated_list = np.matmul(r.T, (-1, 0)) + offset
+            return [float(np_float) for np_float in rotated_list]
 
         fig = go.Figure(
             go.Indicator(
@@ -107,7 +110,7 @@ class AttributeCompleteness(BaseIndicator):
                 type="indicator",
                 gauge={
                     "axis": {
-                        "range": [None, 100],
+                        "range": [0, 100],
                         "tickwidth": 1,
                         "tickcolor": "darkblue",
                         "ticksuffix": "%",
@@ -171,7 +174,6 @@ class AttributeCompleteness(BaseIndicator):
             y=-0.2,
             borderwidth=0,
         )
-
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
