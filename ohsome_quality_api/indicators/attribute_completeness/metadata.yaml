@@ -19,4 +19,4 @@ attribute-completeness:
       The quality level could not be calculated for this indicator.
   result_description: >-
     The ratio of the features (all: $all) compared to features with
-    expected tags (matched: $matched) is $result.
+    expected tags (matched: $matched) is $result. 
