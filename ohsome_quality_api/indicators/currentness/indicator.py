@@ -238,7 +238,6 @@ class Currentness(BaseIndicator):
         )
         fig.update_yaxes(
             title_text="Features [%]",
-            # tickformat=".1%",
             tickformatstops=[
                 dict(dtickrange=[None, 0.001], value=".2%"),
                 dict(dtickrange=[0.001, 0.01], value=".1%"),

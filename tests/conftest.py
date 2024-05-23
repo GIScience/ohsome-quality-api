@@ -23,9 +23,6 @@ from ohsome_quality_api.topics.definitions import (
     get_topic_preset,
     load_topic_presets,
 )
-
-# from ohsome_quality_api.indicators import MappingSaturation
-# from ohsome_quality_api.indicators.models import BaseIndicator as Indicator
 from ohsome_quality_api.topics.models import TopicDefinition
 
 FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")

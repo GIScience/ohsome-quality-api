@@ -76,8 +76,8 @@ class TestInit:
     @oqapi_vcr.use_cassette
     def test_init(self, topic_major_roads_length, feature_malta):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
-        assert indicator.th_high == 0.85
-        assert indicator.th_low == 0.5
+        assert indicator.th_high == pytest.approx(0.85)
+        assert indicator.th_low == pytest.approx(0.5)
         assert isinstance(indicator.data_ref, dict)
 
     def test_get_sources(self, topic_major_roads_length, feature_malta):
@@ -120,7 +120,7 @@ class TestPreprocess:
         asyncio.run(indicator.preprocess())
 
         for area in indicator.area_cov.values():
-            assert area == 0.0
+            assert area == pytest.approx(0.0)
         assert isinstance(indicator.result.timestamp, datetime)
         assert indicator.result.timestamp_osm is None
 

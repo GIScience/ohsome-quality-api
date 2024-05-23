@@ -269,7 +269,7 @@ class BuildingComparison(BaseIndicator):
         sources = []
         for dataset in self.data_ref.values():
             if dataset["link"] is not None:
-                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
+                sources.append(f"<a href='{dataset['link']}'>{dataset['name']}</a>")
             else:
                 sources.append(f"{dataset}")
         result = ", ".join(sources)
