@@ -14,8 +14,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # within docker container: run without root privileges
-RUN groupadd -g $gid oqapi
-RUN useradd -l -md /home/oqapi -u $uid -g $gid oqapi
+RUN groupadd -g "$gid" oqapi
+RUN useradd -l -md /home/oqapi -u "$uid" -g "$gid" oqapi
 WORKDIR /opt/oqapi
 RUN pip install --no-cache-dir poetry
 RUN chown oqapi:oqapi . -R

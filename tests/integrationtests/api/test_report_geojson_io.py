@@ -21,15 +21,11 @@ class TestApiReportIo(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.endpoint = "/reports/minimal"
-
         self.featurecollection = load_geojson_fixture(
             "feature-collection-germany-heidelberg.geojson"
         )
-
-        number_of_indicators = 2
-
         self.general_schema = get_general_schema()
-        self.feature_schema = get_report_feature_schema(number_of_indicators)
+        self.feature_schema = get_report_feature_schema()
         self.featurecollection_schema = get_featurecollection_schema()
 
     def run_tests(self, response) -> None:

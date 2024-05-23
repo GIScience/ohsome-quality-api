@@ -66,7 +66,6 @@ def test_project_all(
 def test_project_not_found_error(client):
     response = client.get("/metadata/indicators/?project=foo")
     assert response.status_code == 404  # Not Found
-    # content = response.json()
 
 
 def test_coverage_default(client):

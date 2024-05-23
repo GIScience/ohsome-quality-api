@@ -33,12 +33,12 @@ class TestBaseIndicator:
 
     def test_as_feature(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
-        feature = indicator.as_feature()
-        assert feature.is_valid
-        assert feature.geometry == feature.geometry
+        feature_indicator = indicator.as_feature()
+        assert feature_indicator.is_valid
+        assert feature_indicator.geometry == feature.geometry
         for prop in ("result", "metadata", "topic"):
-            assert prop in feature["properties"]
-        assert "data" not in feature["properties"]
+            assert prop in feature_indicator["properties"]
+        assert "data" not in feature_indicator["properties"]
 
     def test_as_feature_include_data(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)
