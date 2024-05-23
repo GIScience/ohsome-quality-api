@@ -27,4 +27,5 @@ class Minimal(BaseIndicator):
         self.result.description = description + self.metadata.label_description["green"]
 
     def create_figure(self) -> None:
-        pass
+        # Do nothing ...
+        return None
