@@ -8,7 +8,7 @@ def test_metadata(
     metadata_project_core,
     response_metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
-    metadata_quality_dimension_completeness,
+    metadata_quality_dimension,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -23,8 +23,7 @@ def test_metadata(
     )
     # check quality dimensions result
     assert (
-        metadata_quality_dimension_completeness["completeness"]
-        == result["qualityDimensions"]["completeness"]
+        metadata_quality_dimension["minimal"] == result["qualityDimensions"]["minimal"]
     )
     # check projects result
     assert metadata_project_core["core"] == result["projects"]["core"]
