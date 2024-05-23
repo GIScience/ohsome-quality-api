@@ -60,6 +60,9 @@ class Currentness(BaseIndicator):
         self.bin_in_between: Bin
         self.bin_out_of_date: Bin
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self):
         """Fetch all latest contributions in monthly buckets since 2008
 

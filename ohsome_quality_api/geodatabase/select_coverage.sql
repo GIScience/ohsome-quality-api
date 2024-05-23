@@ -1,4 +1,8 @@
 SELECT
-    ST_AsGeoJSON (ST_Transform (geom, 4326)) as geom
+    ST_AsGeoJSON (ST_Transform ({coverage_type}, 4326)) as geom
 FROM
-    {table_name};
+    comparison_indicators_metadata
+WHERE
+    dataset_name_snake_case like $1;
+
+

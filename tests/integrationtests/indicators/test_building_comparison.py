@@ -16,7 +16,8 @@ from tests.integrationtests.utils import PytestNamer, oqapi_vcr
 @pytest.fixture
 def mock_get_building_area(class_mocker):
     async def side_effect_function(*args, **kwargs):
-        if args[1] == "EUBUCCO":
+        if not hasattr(side_effect_function, "called"):
+            side_effect_function.called = True
             return 6000000.791645115
         else:
             return 5000000.791645115
@@ -40,7 +41,8 @@ def mock_get_building_area_low(class_mocker):
 @pytest.fixture
 def mock_get_building_area_low_some(class_mocker):
     async def side_effect_function(*args, **kwargs):
-        if args[1] == "EUBUCCO":
+        if not hasattr(side_effect_function, "called"):
+            side_effect_function.called = True
             return 1
         else:
             return 6000000.791645115
@@ -91,7 +93,8 @@ def mock_get_intersection_area_none(class_mocker):
 @pytest.fixture
 def mock_get_intersection_area_some(class_mocker):
     async def side_effect(*args, **kwargs):
-        if "eubucco" in args[1]:
+        if not hasattr(side_effect, "called"):
+            side_effect.called = True
             return 0.0  # 0 %
         else:
             return 1.0  # 100 %
@@ -113,6 +116,7 @@ class TestInit:
 
     def test_get_sources(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         source = indicator.format_sources()
         assert "<a href='https://docs.eubucco.com/'>EUBUCCO</a>" in source
 
@@ -131,6 +135,7 @@ class TestPreprocess:
     )
     def test_preprocess(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
 
         for area in indicator.area_osm.values():
@@ -148,6 +153,7 @@ class TestPreprocess:
         mock_get_intersection_area_none,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
 
         for area in indicator.area_cov.values():
@@ -167,6 +173,7 @@ class TestPreprocess:
         feature_germany_berlin,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
 
         assert 1.0 in list(indicator.area_cov.values())
@@ -188,6 +195,7 @@ class TestCalculate:
         feature_germany_berlin,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is not None
@@ -208,6 +216,7 @@ class TestCalculate:
         feature_germany_heidelberg,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is None
@@ -224,6 +233,7 @@ class TestCalculate:
         feature_germany_heidelberg,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is None
@@ -244,6 +254,7 @@ class TestCalculate:
         feature_germany_heidelberg,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is None
@@ -264,6 +275,7 @@ class TestCalculate:
         feature_germany_heidelberg,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is not None
@@ -287,6 +299,7 @@ class TestCalculate:
         feature_germany_heidelberg,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.result.value is not None
@@ -307,6 +320,7 @@ class TestFigure:
     )
     def test_create_figure(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -322,6 +336,7 @@ class TestFigure:
     )
     def test_create_figure_manual(self, topic_building_area, feature_germany_berlin):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -339,6 +354,7 @@ class TestFigure:
         feature_germany_berlin,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
@@ -358,6 +374,7 @@ class TestFigure:
         feature_germany_berlin,
     ):
         indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
+        asyncio.run(indicator.init())
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()

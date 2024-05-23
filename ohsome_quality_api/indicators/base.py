@@ -124,6 +124,14 @@ class BaseIndicator(metaclass=ABCMeta):
             return [Feature(Polygon(coordinates=[]))]
 
     @abstractmethod
+    async def init(self) -> None:
+        """Initialize the indicator.
+
+        This method should be used to initialize data.
+        """
+        pass
+
+    @abstractmethod
     async def preprocess(self) -> None:
         """Get fetch and preprocess data.
 

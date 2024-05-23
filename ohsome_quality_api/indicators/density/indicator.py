@@ -29,6 +29,9 @@ class Density(BaseIndicator):
     def yellow_threshold_function(self, area):
         return self.threshold_red * area
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self) -> None:
         query_results_count = await ohsome_client.query(self.topic, self.feature)
         self.area_sqkm = calculate_area(self.feature) / (1000 * 1000)

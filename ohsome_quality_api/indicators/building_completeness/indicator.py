@@ -78,6 +78,9 @@ class BuildingCompleteness(BaseIndicator):
         """Above or equal to this value label should be yellow."""
         return 0.2
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self) -> None:
         # Get hex-cells
         hex_cells: FeatureCollection = await get_hex_cells(self.feature)

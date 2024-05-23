@@ -70,14 +70,14 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
 
 
 # TODO: Check calls of the function
-async def get_reference_coverage(table_name: str) -> Feature:
+async def get_reference_coverage(table_name: str, coverage_type: str) -> Feature:
     """Get reference coverage for a bounding polygon."""
     file_path = os.path.join(WORKING_DIR, "select_coverage.sql")
     with open(file_path, "r") as file:
-        query = file.read()
+        query = file.read().replace("{coverage_type}", coverage_type)
     async with get_connection() as conn:
-        result = await conn.fetch(query.format(table_name=table_name))
-    return Feature(geometry=geojson.loads(result[0]["geom"]))
+        result = await conn.fetchrow(query, table_name)
+    return Feature(geometry=geojson.loads(result["geom"]))
 
 
 async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
@@ -91,7 +91,7 @@ async def get_intersection_area(bpoly: Feature, table_name: str) -> float:
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        result = await conn.fetch(query.format(table_name=table_name), geom)
+        result = await conn.fetch(query, geom, table_name)
         if result:
             return result[0]["area_ratio"]
         else:
@@ -105,7 +105,7 @@ async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature:
         query = file.read()
     geom = str(bpoly.geometry)
     async with get_connection() as conn:
-        result = await conn.fetch(query.format(table_name=table_name), geom)
+        result = await conn.fetch(query, geom, table_name)
         if result:
             return Feature(geometry=geojson.loads(result[0]["geom"]))
         else:

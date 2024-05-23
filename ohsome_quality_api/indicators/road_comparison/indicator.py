@@ -4,7 +4,6 @@ import os
 import geojson
 import plotly.graph_objects as pgo
 import psycopg
-import yaml
 from async_lru import alru_cache
 from geojson import Feature
 from numpy import mean
@@ -44,27 +43,23 @@ class RoadComparison(BaseIndicator):
         self.ratio: dict[str, float | None] = {}
         self.warnings: dict[str, str | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
-        for key, val in load_datasets_metadata().items():
-            self.data_ref[key] = val
-            self.area_cov[key] = None  # covered area [%]
-            self.length_matched[key] = None
-            self.length_total[key] = None
-            self.length_osm[key] = None
-            self.ratio[key] = None
-            self.warnings[key] = None
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
         # TODO: could also return a Feature Collection
         features = []
-        datasets = load_datasets_metadata()
+        datasets = await load_datasets_metadata()
         for val in datasets.values():
             if inverse:
-                table = val["coverage"]["inversed"]
+                coverage_type = "coverage_inversed"
             else:
-                table = val["coverage"]["simple"]
-            feature = await db_client.get_reference_coverage(table)
-            feature.properties.update({"refernce_dataset": val["name"]})
+                coverage_type = "coverage_simple"
+            feature = await db_client.get_reference_coverage(
+                val["dataset_name_snake_case"], coverage_type
+            )
+            feature.properties.update(
+                {"refernce_dataset": val["dataset_name_snake_case"]}
+            )
             features.append(feature)
         return features
 
@@ -73,12 +68,23 @@ class RoadComparison(BaseIndicator):
         # TODO: add attribution
         return get_attribution(["OSM"])
 
+    async def init(self) -> None:
+        dataset_metadata = await load_datasets_metadata()
+        for key, val in dataset_metadata.items():
+            self.data_ref[key] = val
+            self.area_cov[key] = None  # covered area [%]
+            self.length_matched[key] = None
+            self.length_total[key] = None
+            self.length_osm[key] = None
+            self.ratio[key] = None
+            self.warnings[key] = None
+
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get area covered by reference dataset [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
-                val["coverage"]["simple"],
+                val["dataset_name_snake_case"],
             )
             self.warnings[key] = self.check_major_edge_cases(key)
             if self.warnings[key] != "":
@@ -87,7 +93,7 @@ class RoadComparison(BaseIndicator):
             # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
-                val["coverage"]["simple"],
+                val["dataset_name_snake_case"],
             )
 
             # get covered road length
@@ -120,7 +126,7 @@ class RoadComparison(BaseIndicator):
 
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
-                f"{self.data_ref[key]['name']} has a road length of "
+                f"{self.data_ref[key]['dataset_name']} has a road length of "
                 f"{(self.length_total[key]/1000):.2f} km, of which "
                 f"{(self.length_matched[key]/1000):.2f} km are covered by roads in "
                 f"OSM. "
@@ -161,9 +167,9 @@ class RoadComparison(BaseIndicator):
         for key, val in self.ratio.items():
             if val is None:
                 continue
-            ref_name.append(self.data_ref[key]["name"])
+            ref_name.append(self.data_ref[key]["dataset_name"])
             ref_color.append(Color[self.data_ref[key]["color"]].value)
-            ref_processingdate.append(self.data_ref[key]["processing_date"])
+            ref_processingdate.append(self.data_ref[key]["date"])
             ref_ratio.append(val)
 
         for i, (name, ratio, date) in enumerate(
@@ -253,11 +259,11 @@ class RoadComparison(BaseIndicator):
 
     def format_sources(self):
         sources = []
-        for dataset in self.data_ref.values():
-            if dataset["link"] is not None:
-                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
+        for dataset_key, dataset_value in self.data_ref.items():
+            if dataset_value["link"] is not None:
+                sources.append(f"<a href='{dataset_value['link']}'>{dataset_key}</a>")
             else:
-                sources.append(f"{dataset}")
+                sources.append(dataset_key)
         result = ", ".join(sources)
         return result
 
@@ -293,7 +299,41 @@ async def get_matched_roadlengths(
     return res[0], res[1]
 
 
-def load_datasets_metadata() -> dict:
-    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-    with open(file_path, "r") as f:
-        return yaml.safe_load(f)
+async def load_datasets_metadata() -> dict:
+    """Load dataset metadata from the database."""
+    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+
+    dataset_metadata = {}
+
+    async with await psycopg.AsyncConnection.connect(dns) as con:
+        async with con.cursor() as cur:
+            await cur.execute(
+                "SELECT * "
+                "FROM comparison_indicators_metadata "
+                "WHERE indicator = 'road_comparison';"
+            )
+            async for row in cur:
+                dataset_name = row[0]
+                dataset_name_snake_case = row[1]
+                link = row[2]
+                date = row[3]  # Convert date object to string
+                description = row[4]
+                color = row[5]
+                table_name = row[6]
+                dataset_metadata[dataset_name] = {
+                    "dataset_name": dataset_name,
+                    "dataset_name_snake_case": dataset_name_snake_case,
+                    "link": link,
+                    "date": date,
+                    "description": description,
+                    "color": color,
+                    "table_name": table_name,
+                }
+
+    return dataset_metadata

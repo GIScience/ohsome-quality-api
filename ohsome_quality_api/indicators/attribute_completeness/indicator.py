@@ -41,6 +41,9 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self) -> None:
         attribute = get_attribute(self.topic.key, self.attribute_key)
         # Get attribute filter

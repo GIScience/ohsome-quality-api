@@ -14,6 +14,9 @@ class Minimal(BaseIndicator):
         super().__init__(topic=topic, feature=feature)
         self.count = 0
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(self.topic, self.feature)
         self.count = query_results["result"][0]["value"]

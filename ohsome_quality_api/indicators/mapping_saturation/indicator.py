@@ -63,6 +63,9 @@ class MappingSaturation(BaseIndicator):
         self.best_fit: models.BaseStatModel | None = None
         self.fitted_models: list[models.BaseStatModel] = []
 
+    async def init(self) -> None:
+        pass
+
     async def preprocess(self) -> None:
         query_results = await ohsome_client.query(
             self.topic,

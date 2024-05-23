@@ -5,7 +5,6 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 import psycopg
-import yaml
 from async_lru import alru_cache
 from dateutil import parser
 from geojson import Feature
@@ -42,25 +41,23 @@ class BuildingComparison(BaseIndicator):
         self.area_cov: dict[str, float | None] = {}
         self.ratio: dict[str, float | None] = {}
         # self.data_ref: list = load_reference_datasets()  # reference datasets
-        for key, val in load_datasets_metadata().items():
-            self.data_ref[key] = val
-            self.area_osm[key] = None  # osm building area
-            self.area_ref[key] = None  # reference building area [sqkm]
-            self.area_cov[key] = None  # covered area [%]
-            self.ratio[key] = None
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
         # TODO: could also return a Feature Collection
         features = []
-        datasets = load_datasets_metadata()
+        datasets = await load_datasets_metadata()
         for val in datasets.values():
             if inverse:
-                table = val["coverage"]["inversed"]
+                coverage_type = "coverage_inversed"
             else:
-                table = val["coverage"]["simple"]
-            feature = await db_client.get_reference_coverage(table)
-            feature.properties.update({"refernce_dataset": val["name"]})
+                coverage_type = "coverage_simple"
+            feature = await db_client.get_reference_coverage(
+                val["dataset_name_snake_case"], coverage_type
+            )
+            feature.properties.update(
+                {"refernce_dataset": val["dataset_name_snake_case"]}
+            )
             features.append(feature)
         return features
 
@@ -68,12 +65,21 @@ class BuildingComparison(BaseIndicator):
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO", "Microsoft Buildings"])
 
+    async def init(self) -> None:
+        datasets_metadata = await load_datasets_metadata()
+        for key, val in datasets_metadata.items():
+            self.data_ref[key] = val
+            self.area_osm[key] = None  # osm building area
+            self.area_ref[key] = None  # reference building area [sqkm]
+            self.area_cov[key] = None  # covered area [%]
+            self.ratio[key] = None
+
     async def preprocess(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage [%]
             self.area_cov[key] = await db_client.get_intersection_area(
                 self.feature,
-                val["coverage"]["simple"],
+                val["dataset_name_snake_case"],
             )
             if self.check_major_edge_cases(key) != "":
                 continue
@@ -81,12 +87,12 @@ class BuildingComparison(BaseIndicator):
             # clip input geom with coverage of reference dataset
             feature = await db_client.get_intersection_geom(
                 self.feature,
-                val["coverage"]["simple"],
+                val["dataset_name_snake_case"],
             )
 
             # get reference building area
             result = await get_reference_building_area(
-                geojson.dumps(feature), val["table_name"]
+                geojson.dumps(feature), val["dataset_name_snake_case"]
             )
             self.area_ref[key] = result / (1000 * 1000)
 
@@ -115,7 +121,7 @@ class BuildingComparison(BaseIndicator):
             description = template.substitute(
                 ratio=round(self.ratio[key] * 100, 2),
                 coverage=round(self.area_cov[key] * 100, 2),
-                dataset=self.data_ref[key]["name"],
+                dataset=self.data_ref[key]["dataset_name_snake_case"],
             )
             result_description = " ".join((result_description, edge_case, description))
 
@@ -169,12 +175,12 @@ class BuildingComparison(BaseIndicator):
         for key, dataset in self.data_ref.items():
             if None in (self.area_ref[key], self.area_osm[key]):
                 continue
-            ref_x.append(dataset["name"])
+            ref_x.append(dataset["dataset_name_snake_case"])
             ref_y.append(round(self.area_ref[key], 2))
             ref_data.append(dataset)
-            osm_x.append(dataset["name"])
+            osm_x.append(dataset["dataset_name_snake_case"])
             osm_y.append(round(self.area_osm[key], 2))
-            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
+            ref_hover.append(f"{dataset['table_name']} ({dataset['date']})")
             osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
             ref_color.append(Color[dataset["color"]].value)
             osm_area.append(round(self.area_osm[key], 2))
@@ -267,11 +273,11 @@ class BuildingComparison(BaseIndicator):
 
     def format_sources(self):
         sources = []
-        for dataset in self.data_ref.values():
-            if dataset["link"] is not None:
-                sources.append(f"<a href='{dataset['link']}'>" f"{dataset['name']}</a>")
+        for dataset_key, dataset_value in self.data_ref.items():
+            if dataset_value["link"] is not None:
+                sources.append(f"<a href='{dataset_value['link']}'>{dataset_key}</a>")
             else:
-                sources.append(f"{dataset}")
+                sources.append(dataset_key)
         result = ", ".join(sources)
         return result
 
@@ -300,7 +306,41 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
     return res[0] or 0.0
 
 
-def load_datasets_metadata() -> dict:
-    file_path = os.path.join(os.path.dirname(__file__), "datasets.yaml")
-    with open(file_path, "r") as f:
-        return yaml.safe_load(f)
+async def load_datasets_metadata() -> dict:
+    """Load dataset metadata from the database."""
+    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+
+    dataset_metadata = {}
+
+    async with await psycopg.AsyncConnection.connect(dns) as con:
+        async with con.cursor() as cur:
+            await cur.execute(
+                "SELECT * "
+                "FROM comparison_indicators_metadata "
+                "WHERE indicator = 'building_comparison';"
+            )
+            async for row in cur:
+                dataset_name = row[0]
+                dataset_name_snake_case = row[1]
+                link = row[2]
+                date = row[3].strftime("%Y-%m-%d")  # Convert date object to string
+                description = row[4]
+                color = row[5]
+                table_name = row[6]
+                dataset_metadata[dataset_name] = {
+                    "dataset_name": dataset_name,
+                    "dataset_name_snake_case": dataset_name_snake_case,
+                    "link": link,
+                    "date": date,
+                    "description": description,
+                    "color": color,
+                    "table_name": table_name,
+                }
+
+    return dataset_metadata
