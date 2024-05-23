@@ -1,4 +1,34 @@
+import asyncio
+from unittest.mock import AsyncMock
+
+import geojson
+import pytest
+from geojson import Feature, Polygon
+
 from ohsome_quality_api.indicators import definitions, models
+
+
+@pytest.fixture(scope="class")
+def mock_get_reference_coverage(class_mocker):
+    async_mock = AsyncMock(
+        return_value=Feature(
+            geometry=Polygon(
+                coordinates=[
+                    [
+                        (-180, 90),
+                        (-180, -90),
+                        (180, -90),
+                        (180, 90),
+                        (-180, 90),
+                    ]
+                ]
+            )
+        )
+    )
+    class_mocker.patch(
+        "ohsome_quality_api.indicators.building_comparison.indicator.db_client.get_reference_coverage",
+        side_effect=async_mock,
+    )
 
 
 def test_get_indicator_names():
@@ -24,3 +54,25 @@ def test_get_indicator_definitions_with_project():
     for indicator in indicators.values():
         assert isinstance(indicator, models.IndicatorMetadata)
         assert indicator.projects == ["core"]
+
+
+def test_get_coverage(mock_get_reference_coverage):
+    coverage = asyncio.run(
+        definitions.get_coverage("building-comparison", inverse=False)
+    )
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)
+
+    coverage = asyncio.run(definitions.get_coverage("building-comparison"))
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)
+
+    coverage = asyncio.run(
+        definitions.get_coverage("building-comparison", inverse=True)
+    )
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)
+
+    coverage = asyncio.run(definitions.get_coverage("mapping-saturation"))
+    assert coverage.is_valid
+    assert isinstance(coverage, geojson.FeatureCollection)

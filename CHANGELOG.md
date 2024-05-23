@@ -1,8 +1,105 @@
 # Changelog
 
+## Release 1.3.0
+
+### Breaking Changes
+
+- major-roads-length: rename to `roads` and chnage filter to `highway=* and type:way` ([#786])
+
+### New Features
+
+- road-comparison: add new indicator which compares OSM roads with a reference dataset ([#778, #787, #788])
+- building-comparison: support comparison with multiple datasets ([#768])
+- building-comparison: improve figure and result description by adding more information ([#777, #789])
+
+### Other Changes
+
+- build: update dependencies (`rpy2` and `fastapi`) ([#775])
+- update dependencies ([#785])
+- test: use Approval Tests ([#789])
+- building-comparison: improve performance of request to database ([#790])
+
+
+[#768]: https://github.com/GIScience/ohsome-quality-api/pull/768
+[#775]: https://github.com/GIScience/ohsome-quality-api/pull/775
+[#777]: https://github.com/GIScience/ohsome-quality-api/issues/777
+[#778]: https://github.com/GIScience/ohsome-quality-api/issues/778
+[#785]: https://github.com/GIScience/ohsome-quality-api/pull/785
+[#786]: https://github.com/GIScience/ohsome-quality-api/issues/786
+[#787]: https://github.com/GIScience/ohsome-quality-api/issues/787
+[#788]: https://github.com/GIScience/ohsome-quality-api/issues/788
+[#789]: https://github.com/GIScience/ohsome-quality-api/pull/789
+[#790]: https://github.com/GIScience/ohsome-quality-api/pull/790
+
+## Release 1.2.0
+
+### New Features
+
+- api: add inverse parameter to coverage endpoint ([#762])
+- building-comparison: add caching of requests made to the database for EUBUCCO buildings ([#754])
+- building-comparison: add indicator to the list of core indicators and as such make it available on the ohsome Dashboard ([#765])
+
+[#754]: https://github.com/GIScience/ohsome-quality-api/pull/754
+[#762]: https://github.com/GIScience/ohsome-quality-api/issues/762
+[#765]: https://github.com/GIScience/ohsome-quality-api/issues/765
+
+## Release 1.1.1
+
+### Bug Fixes
+
+- fix(building-comparison): Use psycopg AsyncConnection. Database connection was synchrone. ([ba279b2])
+
+[ba279b2]: https://github.com/GIScience/ohsome-quality-api/commit/ba279b23b82404d9f6c377e2a34683b159803359
+
+## Release 1.1.0
+
+### Bug Fixes
+
+- building-comparison: is calculated for coverage area only ([#739])
+- building-comparison: result description now shows correct coverage percentage ([#739])
+- mapping-saturation: estimated total line is now always plotted, f it is not more than five times as large as the highest value ([#723])
+
+### New Features
+
+- building-comparison: AOI is now clipped to the coverage area ([#739])
+- mapping-saturation: add hover info to estimated total data line ([#723])
+- building-comparison: now has link to reference datasets ([#741])
+- building-comparison: added publication date of reference dataset and OSM Timestamp([#750])
+
+### Other Changes
+
+- building-comparison: no quality estimation for areas with strong difference to reference data ([#739])
+- test(db): add missing mock for getting coverage from database in tests ([#739])
+- building-comparison: request EUBUCCO database is now much faster ([#743])
+
+[#723]: https://github.com/GIScience/ohsome-quality-api/pull/723
+[#739]: https://github.com/GIScience/ohsome-quality-api/pull/739
+[#741]: https://github.com/GIScience/ohsome-quality-api/pull/741
+[#743]: https://github.com/GIScience/ohsome-quality-api/pull/743
+
+
+## Release 1.0.2
+
+### Bug Fixes
+
+- crs validation now covers all valid cases ([#721])
+
+### New Features
+
+- feat(figures): colors based on semantic UI CSS ([#591])
+- feat(building-comparison): add comparison indicator ([#718])
+- feat(api): add endpoint to retrieve coverage ([#718])
+- feat(db): query building area and coverage from EUBUCCO ([#718])
+
+[#591]: https://github.com/GIScience/ohsome-quality-api/issues/591
+[#718]: https://github.com/GIScience/ohsome-quality-api/pull/718
+[#721]: https://github.com/GIScience/ohsome-quality-analyst/pull/721
+
 ## Release 1.0.1
 
 - refactor: rename "ohsome quality analyst" (OQT) to "ohsome quality API" (oqapi) ([#685])
+
+[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## Release 1.0.0
 
@@ -68,7 +165,6 @@ This release includes a well specified [API](https://oqt.ohsome.org/api/docs) an
 [#668]: https://github.com/GIScience/ohsome-quality-analyst/pull/668
 [#669]: https://github.com/GIScience/ohsome-quality-analyst/pull/669
 [#670]: https://github.com/GIScience/ohsome-quality-analyst/pull/670
-[#685]: https://github.com/GIScience/ohsome-quality-api/pull/685
 
 ## 0.15.0
 

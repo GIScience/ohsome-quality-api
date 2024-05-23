@@ -99,6 +99,13 @@ class IndicatorMetadataResponse(BaseResponse):
         return value
 
 
+class IndicatorMetadataCoverageResponse(
+    BaseResponse,
+    FeatureCollection[Feature[Polygon | MultiPolygon, dict]],
+):
+    model_config = ConfigDict(title="Indicator Coverage", extra="allow")
+
+
 class ReportMetadataResponse(BaseResponse):
     result: dict[str, ReportMetadata]
 

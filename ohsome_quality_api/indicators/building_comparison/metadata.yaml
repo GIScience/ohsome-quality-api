@@ -2,18 +2,19 @@
 building-comparison:
   name: Building Comparison
   projects:
-    - experimental
+    - bkg
+    - core
   quality_dimension: completeness
   description: >-
-    TODO
+    Comparison of OSM buildings with the buildings of reference datasets.
   label_description:
     red: >-
-      TODO
+      The completeness of OSM buildings in your area-of-interest is low.
     yellow: >-
-      TODO
+      The completeness of OSM buildings in your area-of-interest is medium.
     green: >-
-      TODO
+      The completeness of OSM buildings in your area-of-interest is high.
     undefined: >-
-      TODO
+      Comparison could not be made.
   result_description: >-
-    TODO
+    The completeness in comparison to $dataset is $ratio%.

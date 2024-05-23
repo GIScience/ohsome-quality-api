@@ -18,6 +18,7 @@ building-count:
     - attribute-completeness
   projects:
     - core
+    - bkg
 
 building-area:
   name: Building Area
@@ -29,11 +30,13 @@ building-area:
   indicators:
     - mapping-saturation
     - building-completeness
+    - building-comparison
   projects:
     - core
+    - bkg
 
-major-roads-length:
-  name: Major Roads Length
+roads:
+  name: Roads
   description: >-
     The road network defined by all objects which hold the principal tags for
     the road network and their link roads as defined in the OSM Wiki`:`
@@ -41,19 +44,18 @@ major-roads-length:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way
+    highway=* and type:way
   ratio_filter: >-
-    highway in (motorway, trunk, motorway_link, trunk_link, primary,
-    primary_link, secondary, secondary_link, tertiary, tertiary_link,
-    unclassified, residential) and type:way and name=*
+    highway=* and type:way and name=*
+  source: https://wiki.openstreetmap.org/wiki/Key:highway
   indicators:
     - mapping-saturation
+    - road-comparison
     - attribute-completeness
     - currentness  # currentness always requests /contributions/latest/count [count!]
   projects:
     - core
+    - bkg
 
 railway-length:
   name: Railways
@@ -68,6 +70,7 @@ railway-length:
     - currentness # currentness always requests /contributions/latest/count [count!]
   projects:
     - core
+    - bkg
 
 poi:
   name: POI
@@ -130,6 +133,7 @@ poi:
     - density
   projects:
     - core
+    - bkg
 
 schools:
   name: Schools
@@ -143,6 +147,7 @@ schools:
     - currentness
   projects:
     - core
+    - bkg
 
 kindergarten:
   name: Kindergarten
@@ -156,6 +161,7 @@ kindergarten:
     - currentness
   projects:
     - core
+    - bkg
 
 clinics:
   name: Clinics
@@ -169,6 +175,7 @@ clinics:
     - currentness
   projects:
     - core
+    - bkg
 
 doctors:
   name: Doctors
@@ -182,6 +189,7 @@ doctors:
     - currentness
   projects:
     - core
+    - bkg
 
 bus-stops:
   name: Bus Stops
@@ -195,6 +203,7 @@ bus-stops:
     - currentness
   projects:
     - core
+    - bkg
 
 tram-stops:
   name: Tram Stops
@@ -208,6 +217,7 @@ tram-stops:
     - currentness
   projects:
     - core
+    - bkg
 
 subway-stations:
   name: Subway Stations
@@ -221,6 +231,7 @@ subway-stations:
     - currentness
   projects:
     - core
+    - bkg
 
 supermarkets:
   name: Supermarkets
@@ -234,6 +245,7 @@ supermarkets:
     - currentness
   projects:
     - core
+    - bkg
 
 marketplaces:
   name: Marketplaces
@@ -247,6 +259,7 @@ marketplaces:
     - currentness
   projects:
     - core
+    - bkg
 
 parks:
   name: Parks
@@ -260,6 +273,7 @@ parks:
     - currentness
   projects:
     - core
+    - bkg
 
 forests:
   name: Forests
@@ -273,6 +287,33 @@ forests:
     - currentness
   projects:
     - core
+    - bkg
+
+industrial-landuse-count:
+  name: Industrial Landuse (count)
+  description: Industrial landsites
+  endpoint: elements
+  aggregation_type: count
+  filter: landuse=industrial and type:way
+  source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - experimental
+
+industrial-landuse-area:
+  name: Industrial Landuse (area)
+  description: Industrial areas
+  endpoint: elements
+  aggregation_type: area
+  filter: landuse=industrial and type:way
+  source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - experimental
 
 fitness-centres:
   name: Fitness Centres
@@ -286,6 +327,7 @@ fitness-centres:
     - currentness
   projects:
     - core
+    - bkg
 
 fire-stations:
   name: Fire Stations
@@ -299,6 +341,7 @@ fire-stations:
     - currentness
   projects:
     - core
+    - bkg
 
 hospitals:
   name: Hospitals
@@ -312,6 +355,7 @@ hospitals:
     - currentness
   projects:
     - core
+    - bkg
 
 ### SKETCHMAP PROJECT ###
 

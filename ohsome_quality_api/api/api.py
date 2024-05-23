@@ -32,6 +32,7 @@ from ohsome_quality_api.api.request_models import (
 from ohsome_quality_api.api.response_models import (
     IndicatorGeoJSONResponse,
     IndicatorJSONResponse,
+    IndicatorMetadataCoverageResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
     ProjectMetadataResponse,
@@ -46,6 +47,7 @@ from ohsome_quality_api.definitions import (
 )
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
+    get_coverage,
     get_indicator_metadata,
 )
 from ohsome_quality_api.projects.definitions import (
@@ -338,7 +340,7 @@ async def post_report(
 
 @app.get("/metadata", tags=["metadata"], response_model=MetadataResponse)
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
-    """Get topics."""
+    """All metadata."""
     if project == ProjectEnum.all:
         project = None
     return {
@@ -430,6 +432,19 @@ async def metadata_indicators_by_key(key: IndicatorEnum) -> Any:
     """Get metadata of an indicator by key."""
     metadata = get_metadata("indicators", hyphen_to_camel(key.value))
     return {"result": {key.value: metadata}}
+
+
+@app.get(
+    "/metadata/indicators/{key}/coverage",
+    tags=["metadata"],
+    response_model=IndicatorMetadataCoverageResponse,
+)
+async def metadata_indicators_coverage(
+    key: IndicatorEnum,
+    inverse: bool = False,
+) -> Any:
+    """Get coverage geometry of an indicator by key."""
+    return await get_coverage(key.value, inverse)
 
 
 @app.get(

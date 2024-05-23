@@ -1,3 +1,6 @@
+import json
+
+import geojson
 import pytest
 
 from ohsome_quality_api.indicators.definitions import IndicatorEnum
@@ -64,3 +67,29 @@ def test_project_not_found_error(client):
     response = client.get("/metadata/indicators/?project=foo")
     assert response.status_code == 404  # Not Found
     # content = response.json()
+
+
+def test_coverage_default(client):
+    response = client.get("metadata/indicators/mapping-saturation/coverage")
+    assert response.status_code == 200
+    assert response.json()["features"][0]["geometry"] == {
+        "coordinates": [
+            [
+                [-180, 90],
+                [-180, -90],
+                [180, -90],
+                [180, 90],
+                [-180, 90],
+            ]
+        ],
+        "type": "Polygon",
+    }
+
+
+@pytest.mark.skip(reason="Depends on database")
+def test_coverage(client):
+    response = client.get("metadata/indicators/building-comparison/coverage")
+    assert response.status_code == 200
+    result = geojson.loads(json.dumps(response.json()))
+    assert result.is_valid
+    assert isinstance(result, geojson.FeatureCollection)

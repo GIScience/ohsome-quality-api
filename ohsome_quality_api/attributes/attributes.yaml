@@ -14,7 +14,7 @@ clc-leaf-type:
     description: TODO
     filter: leaf_type in (broadleaved, needleleaved, mixed)
 
-major-roads-length:
+roads:
   name:
     name: Road Name
     description: TODO

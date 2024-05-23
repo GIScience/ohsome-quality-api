@@ -9,9 +9,9 @@ class RemoteMappingLevelOne(BaseReport):
                 # TODO: Uncomment once implemented
                 # IndicatorTopic("GufComparison"], "building-area"),
                 IndicatorTopic("MappingSaturation", "building-count"),
-                IndicatorTopic("MappingSaturation", "major-roads-length"),
+                IndicatorTopic("MappingSaturation", "roads"),
                 IndicatorTopic("Currentness", "building-count"),
-                IndicatorTopic("Currentness", "major-roads-count"),
+                IndicatorTopic("Currentness", "roads"),
             )
         )
 
