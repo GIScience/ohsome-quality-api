@@ -2,10 +2,6 @@
 
 ## Current Main
 
-### New Features
-
-- add source and description to quality dimensions ([#720])
-- 
 ### Other Changes
 
 - road-comparison: change color of bar to grey ([#798])
@@ -14,8 +10,6 @@
 
 - road-comparison: bar for not covered roads is now shown in the plot ([#798])
 
-
-[#720]: https://github.com/GIScience/ohsome-quality-api/pull/720
 [#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
 
 ## Release 1.3.0
