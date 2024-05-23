@@ -1,5 +1,14 @@
 # Changelog
 
+## Current Main
+
+### New Features
+
+- add source and description to quality dimensions ([#720])
+
+
+[#720]: https://github.com/GIScience/ohsome-quality-api/pull/720
+
 ## Release 1.3.0
 
 ### Breaking Changes
