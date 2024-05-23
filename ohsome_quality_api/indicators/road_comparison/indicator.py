@@ -174,7 +174,10 @@ class RoadComparison(BaseIndicator):
                     x=[name],
                     y=[ratio * 100],
                     name=f"{round((ratio * 100), 1)}% of {name} are matched by OSM",
-                    marker=dict(color="black", line=dict(color="black", width=1)),
+                    marker=dict(
+                        color=Color.GREY.value,
+                        line=dict(color=Color.GREY.value, width=1),
+                    ),
                     width=0.4,
                     hovertext=f"OSM Covered: {(self.length_matched[name]/1000):.2f} km"
                     f" ({date:%b %d, %Y})",
@@ -187,13 +190,14 @@ class RoadComparison(BaseIndicator):
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
-                    y=[1 - ratio],
+                    y=[100 - ratio * 100],
                     name="{0}% of {1} are not matched by OSM".format(
                         round((100 - ratio * 100), 1),
                         name,
                     ),
                     marker=dict(
-                        color="rgba(0,0,0,0)", line=dict(color="black", width=1)
+                        color="rgba(0,0,0,0)",
+                        line=dict(color=Color.GREY.value, width=1),
                     ),
                     width=0.4,
                     hovertext=f"Not OSM Covered: {length_difference_km:.2f} km "

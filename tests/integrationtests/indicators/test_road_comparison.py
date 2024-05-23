@@ -22,7 +22,7 @@ def mock_get_matched_roadlengths(class_mocker):
         if args[1] == "oqapi.microsoft_roads_europe_2022_06_08":
             return 364284, 368139
         else:
-            return 25, 25
+            return 20, 25  # matched, total
 
     async_mock = AsyncMock(side_effect=side_effect_function)
     class_mocker.patch(
