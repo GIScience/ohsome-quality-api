@@ -109,10 +109,18 @@ When writing tests for functions which are asynchronous (using the `async/await`
 the output.
 
 Its most useful in cases Agile development environments where frequent changes
-are expected and where the output is of complex nature but can be easily
-verified by humans using a diff tool on or visual representation of the output.
+are expected or where the output is of complex nature but can be easily
+verified by humans aided by a diff-tool or visual representation of the output.
 
 > A picture’s worth a 1000 tests.
+
+Once the output has been *approved* then as long as the output stays the same
+the test will pass. A test fails if the current output (*received*) is not
+identical to the approved output. In this case, the difference of the received
+and the approved output is reported. The representation of the report can take
+any form, for example opening a diff-tool to compare received and approved
+text or displaying an image. Thus, the test pattern is as follows:
+`Arrange, Act, Print, Verify`.
 
 A good introduction into approval tests gives [this video](https://www.youtube.com/watch?v=QEdpE0chA-s).
 
