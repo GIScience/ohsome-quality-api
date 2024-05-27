@@ -27,9 +27,11 @@ def get_attributes() -> dict[str, dict[str, Attribute]]:
     return load_attributes()
 
 
-def get_attribute(topic_key, a_key: str) -> Attribute:
+def get_attribute(topic_key, a_key: str | None) -> Attribute:
     attributes = get_attributes()
     try:
+        # TODO: Workaround to be able to display indicator in dashboard.
+        # Remove if dashboard handles attribution key selection.
         if a_key is None:
             return next(iter(attributes[topic_key].values()))
         return attributes[topic_key][a_key]

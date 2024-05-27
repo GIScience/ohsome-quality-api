@@ -34,7 +34,10 @@ class AttributeCompleteness(BaseIndicator):
 
     # TODO make attribute a list
     def __init__(
-        self, topic: Topic, feature: Feature, attribute_key: str = None
+        self,
+        topic: Topic,
+        feature: Feature,
+        attribute_key: str = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
@@ -95,7 +98,7 @@ class AttributeCompleteness(BaseIndicator):
         attribute(s).
         """
 
-        def rotate(ratio, offset=(0, 0)):
+        def rotate(ratio, offset=(0, 0)) -> list[float]:
             theta = ratio * pi
             c, s = np.cos(theta), np.sin(theta)
             r = np.array(((c, -s), (s, c)))
@@ -174,6 +177,7 @@ class AttributeCompleteness(BaseIndicator):
             y=-0.2,
             borderwidth=0,
         )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
