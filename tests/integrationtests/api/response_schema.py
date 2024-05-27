@@ -74,7 +74,7 @@ def get_indicator_feature_schema() -> Schema:
     )
 
 
-def get_report_feature_schema(number_of_indicators: int) -> Schema:
+def get_report_feature_schema() -> Schema:
     schema = Schema(
         {
             "type": "Feature",

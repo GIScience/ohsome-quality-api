@@ -8,9 +8,16 @@
 
 ### Bug Fixes
 
+- road-comparison: bar for not covered roads is now shown in the plot ([#798])
 - attribute-completeness: fix bugs in result figure ([#800])
 
 
+### Other Changes
+
+- road-comparison: change color of bar to grey ([#798])
+
+
+[#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
 [#800]: https://github.com/GIScience/ohsome-quality-api/pull/800
 
 ## Release 1.3.0
