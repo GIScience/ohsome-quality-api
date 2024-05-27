@@ -102,6 +102,26 @@ Good examples can be found in [test_oqt.py](/tests/integrationtests/test_oqt.py)
 
 When writing tests for functions which are asynchronous (using the `async/await` pattern) such as the `preprocess` functions of indicator classes, those functions should be called as follows: `asyncio.run(indicator.preprocess())`.
 
+### Approval Tests
+
+[Approval tests](https://approvaltests.com/resources/) capture the output
+(snapshot) of a program and compares it with a previously approved version of
+the output.
+
+Its most useful in cases Agile development environments where frequent changes
+are expected and where the output is of complex nature but can be easily
+verified by humans using a diff tool on or visual representation of the output.
+
+> A picture’s worth a 1000 tests.
+
+A good introduction into approval tests gives [this video](https://www.youtube.com/watch?v=QEdpE0chA-s).
+
+ohsome quality API uses approval tests to verify result descriptions.
+For comparison its recommended to have a diff tool installed on your system
+such as Meld or PyCharm. If changes in the code lead to a different output
+approval tests will show the difference to the previously approved version of
+the output using a diff tool. If it es as expected resolve the difference using
+the diff-tool save and rerun the tests.
 
 ## Logging
 
