@@ -64,7 +64,7 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             return
         description = Template(self.metadata.result_description).substitute(
-            result=round(self.result.value, 1),
+            result=round(self.result.value, 2),
             all=round(self.absolute_value_1, 1),
             matched=round(self.absolute_value_2, 1),
         )

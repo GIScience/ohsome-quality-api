@@ -40,6 +40,7 @@ async def create_indicator(
             "currentness",
             "building-comparison",
             "road-comparison",
+            "attribute-completeness",
         ]:
             validate_area(feature)
         tasks.append(_create_indicator(key, feature, topic, include_figure))
