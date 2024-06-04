@@ -1,4 +1,5 @@
 """Pydantic Models for Quality Dimensions."""
+
 from pydantic import BaseModel, ConfigDict
 
 
