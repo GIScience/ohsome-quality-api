@@ -13,6 +13,7 @@ On preventing SQL injections:
     If the query string is build from user input,
     please make sure no SQL injection attack is possible.
 """
+
 import os
 from contextlib import asynccontextmanager
 

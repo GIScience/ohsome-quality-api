@@ -1,4 +1,5 @@
 """Pydantic Models for Projects."""
+
 from pydantic import BaseModel, ConfigDict
 
 

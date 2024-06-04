@@ -1,4 +1,5 @@
 """Global Variables and Functions."""
+
 import glob
 import logging
 from enum import Enum

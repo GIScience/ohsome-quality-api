@@ -1,4 +1,5 @@
 """Custom exception classes."""
+
 from schema import SchemaError
 
 

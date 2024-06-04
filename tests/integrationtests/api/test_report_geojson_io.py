@@ -2,6 +2,7 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 """
+
 import unittest
 
 import geojson

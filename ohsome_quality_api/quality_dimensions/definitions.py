@@ -1,4 +1,5 @@
 """Global Variables and Functions."""
+
 import os
 from enum import Enum
 

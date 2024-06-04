@@ -3,7 +3,6 @@
 Validate the response from requests to the `/indicators` endpoint of the API.
 """
 
-
 import pytest
 from schema import Optional, Or, Schema
 

@@ -1,4 +1,5 @@
 """An Indicator for testing purposes."""
+
 from string import Template
 
 import dateutil.parser

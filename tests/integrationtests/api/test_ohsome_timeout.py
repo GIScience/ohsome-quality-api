@@ -7,6 +7,7 @@ Tests for the individual endpoints and using the `bpolys` parameter please see:
     - `test_api_indicator_geojson_io.py`
     - `test_api_report_geojson_io.py`
 """
+
 import os
 from unittest import mock
 

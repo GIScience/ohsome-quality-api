@@ -1,4 +1,5 @@
 """Pydantic Models for Attributes."""
+
 from pydantic import BaseModel
 
 
