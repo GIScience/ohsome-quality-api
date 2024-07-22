@@ -28,6 +28,19 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
+    def test_preprocess_multiple_attribute_keys(
+        self, topic_building_count, feature_germany_heidelberg, attribute_key_multiple
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_key_multiple,
+        )
+        asyncio.run(indicator.preprocess())
+        assert indicator.result.value is not None
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
 
 class TestCalculation:
     @pytest.fixture(scope="class")
@@ -70,7 +83,7 @@ class TestCalculation:
         indicator = AttributeCompleteness(
             topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
-            attribute_key="leaf_type",
+            attribute_key=["leaf_type"],
         )
         asyncio.run(indicator.preprocess())
         assert indicator.absolute_value_1 == 0

@@ -132,7 +132,12 @@ def attribute() -> Attribute:
 
 @pytest.fixture(scope="class")
 def attribute_key() -> str:
-    return "height"
+    return ["height"]
+
+
+@pytest.fixture(scope="class")
+def attribute_key_multiple() -> str:
+    return ["height", "house_number"]
 
 
 @pytest.fixture(scope="class")

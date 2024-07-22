@@ -1,12 +1,15 @@
 from math import pi
 from string import Template
+from typing import List
 
 import dateutil.parser
 import numpy as np
 import plotly.graph_objects as go
 from geojson import Feature
 
-from ohsome_quality_api.attributes.definitions import get_attribute
+from ohsome_quality_api.attributes.definitions import (
+    build_attribute_filter,
+)
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -37,7 +40,7 @@ class AttributeCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute_key: str = None,
+        attribute_key: str | List[str] = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
@@ -47,12 +50,12 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_2 = None
 
     async def preprocess(self) -> None:
-        attribute = get_attribute(self.topic.key, self.attribute_key)
+        attribute = build_attribute_filter(self.attribute_key, self.topic.key)
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
             self.feature,
-            attribute=attribute,
+            attribute_filter=attribute,
         )
         timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
