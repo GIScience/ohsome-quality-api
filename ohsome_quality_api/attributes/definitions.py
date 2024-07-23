@@ -2,7 +2,7 @@ import os
 from typing import List
 
 import yaml
-from topics.definitions import get_topic_preset
+from topics.definitions import get_topic_preset, load_topic_presets
 
 from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.utils.helper import get_module_dir
@@ -58,3 +58,15 @@ def get_attribute(topic_key, a_key: str | None) -> Attribute:
         return attributes[topic_key][a_key]
     except KeyError as error:
         raise KeyError("Invalid topic or attribute key(s).") from error
+
+
+def get_attribute_preset(topic_key: str) -> List[Attribute]:
+    """Get ohsome API parameters of a list of Attributes based on topic key."""
+    attributes = load_attributes()
+    try:
+        return attributes[topic_key]
+    except KeyError as error:
+        topics = load_topic_presets()
+        raise KeyError(
+            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
+        ) from error

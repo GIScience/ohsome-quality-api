@@ -55,6 +55,23 @@ class TopicMetadataResponse(BaseResponse):
         return value
 
 
+class AttributeMetadata(BaseConfig):
+    name: str
+    description: str
+    filter: str
+    model_config = ConfigDict(title="Attribute Metadata")
+
+
+class AttributeMetadataResponse(BaseResponse):
+    result: dict[str, AttributeMetadata]
+
+    @field_validator("result")
+    @classmethod
+    def check_topic_dict(cls, value):
+        assert len(value) > 0
+        return value
+
+
 class QualityDimensionMetadataResponse(BaseResponse):
     result: dict[str, QualityDimension]
 
