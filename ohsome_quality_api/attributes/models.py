@@ -1,14 +1,14 @@
 """Pydantic Models for Attributes."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class Attribute(BaseModel):
     filter: str
     name: str
     description: str
-
-    class Config:
-        title = "Attribute"
-        frozen = True
-        extra = "forbid"
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+        title="Attribute",
+    )

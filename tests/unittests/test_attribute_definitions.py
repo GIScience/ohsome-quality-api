@@ -45,3 +45,10 @@ def test_build_attribute_filter_multiple_attributes(
 def test_build_attribute_filter_wrong_key():
     with pytest.raises(KeyError):
         definitions.build_attribute_filter("foo", "bar")
+
+
+def test_get_attribute_preset(topic_key_building_count):
+    atb = definitions.get_attribute_preset(topic_key_building_count)
+    assert isinstance(atb, dict)
+    for key, value in atb.items():
+        assert isinstance(value, Attribute)
