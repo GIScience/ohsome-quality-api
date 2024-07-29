@@ -3,7 +3,6 @@ import logging
 import os
 from typing import Annotated, Any, Union
 
-from attributes.definitions import get_attribute_preset
 from fastapi import FastAPI, HTTPException, Path, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
@@ -42,6 +41,7 @@ from ohsome_quality_api.api.response_models import (
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
+from ohsome_quality_api.attributes.definitions import load_attributes
 from ohsome_quality_api.config import configure_logging
 from ohsome_quality_api.definitions import (
     ATTRIBUTION_URL,
@@ -369,13 +369,13 @@ async def metadata_topic_by_key(key: TopicEnum) -> Any:
 
 
 @app.get(
-    "/metadata/attributes/{key}",
+    "/metadata/attributes",
     tags=["metadata"],
     response_model=AttributeMetadataResponse,
 )
-async def metadata_attribute_by_topic_key(key: TopicEnum) -> Any:
-    """Get topic by key."""
-    return {"result": get_attribute_preset(key.value)}
+async def metadata_attribute() -> Any:
+    """Get all attributes."""
+    return {"result": load_attributes()}
 
 
 @app.get(
