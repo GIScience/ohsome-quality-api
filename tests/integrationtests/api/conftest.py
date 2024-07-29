@@ -148,3 +148,16 @@ def metadata_report_minimal():
             "projects": ["misc"],
         }
     }
+
+
+@pytest.fixture
+def response_metadata_attribute_clc_leaf_type():
+    return {
+        "clc-leaf-type": {
+            "leaf_type": {
+                "name": "Type of Leaves",
+                "description": "TODO",
+                "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
+            }
+        }
+    }
