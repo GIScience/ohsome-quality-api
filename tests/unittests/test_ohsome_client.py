@@ -6,10 +6,10 @@ from unittest.mock import MagicMock, patch
 import geojson
 import httpx
 import pytest
-from attributes.definitions import build_attribute_filter
 from geojson import FeatureCollection
 from schema import Schema
 
+from ohsome_quality_api.attributes.definitions import build_attribute_filter
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.exceptions import (
