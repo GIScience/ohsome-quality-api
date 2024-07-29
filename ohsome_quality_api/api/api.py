@@ -284,6 +284,7 @@ async def post_indicator(
         key=key.value,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
+        attribute_key=parameters.attribute_key,
         include_figure=parameters.include_figure,
     )
 

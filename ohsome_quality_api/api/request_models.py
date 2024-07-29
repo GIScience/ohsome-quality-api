@@ -59,6 +59,11 @@ class IndicatorRequest(BaseBpolys):
         title="Topic Key",
         alias="topic",
     )
+    attribute_key: str = Field(
+        ...,
+        title="Attribute Key",
+        alias="attribute",
+    )
     include_figure: bool = True
 
 
