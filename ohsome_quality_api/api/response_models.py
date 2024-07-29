@@ -56,14 +56,14 @@ class TopicMetadataResponse(BaseResponse):
 
 
 class AttributeMetadata(BaseConfig):
+    filter: str
     name: str
     description: str
-    filter: str
     model_config = ConfigDict(title="Attribute Metadata")
 
 
 class AttributeMetadataResponse(BaseResponse):
-    result: dict[str, AttributeMetadata]
+    result: dict[str, dict[str, AttributeMetadata]]
 
     @field_validator("result")
     @classmethod
