@@ -2,9 +2,9 @@ import os
 from typing import List
 
 import yaml
-from topics.definitions import get_topic_preset, load_topic_presets
 
 from ohsome_quality_api.attributes.models import Attribute
+from ohsome_quality_api.topics.definitions import get_topic_preset, load_topic_presets
 from ohsome_quality_api.utils.helper import get_module_dir
 
 
