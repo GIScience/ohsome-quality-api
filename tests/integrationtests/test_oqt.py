@@ -130,3 +130,32 @@ def test_create_indicator_size_limit_bpolys_data(bpolys):
         },
     )
     asyncio.run(oqt.create_indicator("mapping-saturation", bpolys, topic))
+
+
+@oqapi_vcr.use_cassette
+@pytest.mark.parametrize(
+    "indicator,topic, attribute_key",
+    [
+        ("mapping-saturation", "topic_building_count", "height"),
+        ("currentness", "topic_building_count", "height"),
+        ("attribute-completeness", "topic_building_count", "height"),
+    ],
+)
+def test_create_indicator_public_feature_collection_single_attribute_key(
+    bpolys,
+    indicator,
+    topic,
+    attribute_key,
+    request,
+):
+    """Test create indicators for a feature collection with one feature."""
+    topic = request.getfixturevalue(topic)
+    indicators = asyncio.run(
+        oqt.create_indicator(indicator, bpolys, topic, attribute_key)
+    )
+    assert len(indicators) == 1
+    for indicator in indicators:
+        assert indicator.result.label is not None
+        assert indicator.result.value is not None
+        assert indicator.result.description is not None
+        assert indicator.result.figure is not None
