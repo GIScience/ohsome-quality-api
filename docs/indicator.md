@@ -10,12 +10,12 @@ Each particular indicator class inherits from the `BaseIndicator` class of the `
 
 ### Metadata
 
-Metadada is automatically loaded from a `metadata.yaml` file found in the module of a particular indicator.
+Metadata is automatically loaded from a `metadata.yaml` file found in the module of a particular indicator.
 Metadata describes basic information about the indicator: The indicator name, for which projects the indicator can be used, the quality dimension, a short description of what it does and how it works, and a standardized interpretation of its possible results.
 
 ### Topic
 
-Please take a look at the [topic documentation](docs/topic.md).
+Please take a look at the [topic documentation](topic.md).
 
 ### Result
 
