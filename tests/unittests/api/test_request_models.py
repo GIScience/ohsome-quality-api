@@ -39,12 +39,16 @@ def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometr
         BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
+# TODO: would it be better to make the new parameter `attribute` optional?
 def test_indicator_request_minimal(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal)
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, attribute="height")
 
 
+# TODO: would it be better to make the new parameter `attribute` optional?
 def test_indicator_request_include_figure(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_figure=False)
+    IndicatorRequest(
+        bpolys=bpolys, topic=topic_key_minimal, include_figure=False, attribute="height"
+    )
 
 
 def test_indicator_request_invalid_topic(bpolys):
