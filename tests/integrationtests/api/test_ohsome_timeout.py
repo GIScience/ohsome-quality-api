@@ -16,6 +16,7 @@ import httpx
 from tests.integrationtests.utils import AsyncMock
 
 
+# TODO: could/should this be converted to a parameterized test?
 def test_ohsome_timeout(client, bpolys):
     path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
@@ -46,6 +47,8 @@ def test_ohsome_timeout(client, bpolys):
                 {
                     "bpolys": bpolys,
                     "topic": "minimal",
+                    # TODO: would it be better to make the following parameter optional?
+                    "attribute": "height",
                 },
             ),
         ):
