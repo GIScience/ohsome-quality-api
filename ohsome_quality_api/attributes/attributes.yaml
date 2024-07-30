@@ -7,6 +7,66 @@ building-count:
     name: House Number
     description: TODO
     filter: addr:housenumber=*
+  address_street:
+    name: Street Adress
+    description: TODO
+    filter: addr:street=*
+  address_city:
+    name: City Adress
+    description: TODO
+    filter: addr:city=*
+  address_postcode:
+    name: Postcode Adress
+    description: TODO
+    filter: addr:postcode=*
+  address_country:
+    name: Country Adress
+    description: TODO
+    filter: addr:country=*
+  address_state:
+    name: State Adress
+    description: TODO
+    filter: addr:state=*
+  address_suburb:
+    name: Suburb Adress
+    description: TODO
+    filter: addr:suburb=*
+  address_district:
+    name: District Adress
+    description: TODO
+    filter: addr:district=*
+  address_housenumber:
+    name: House Number Adress
+    description: TODO
+    filter: addr:housenumber=*
+  building_levels:
+    name: Levels of Buildings
+    description: TODO
+    filter: building:levels=*
+  roof_shape:
+    name: Shape of Roofs
+    description: TODO
+    filter: roof:shape=*
+  roof_levels:
+    name: Levels of Roofs
+    description: TODO
+    filter: roof:levels=*
+  building_material:
+    name: Material of Buildings
+    description: TODO
+    filter: building:material=*
+  roof_material:
+    name: Material of Roofs
+    description: TODO
+    filter: roof:material=*
+  roof:colour:
+    name: Colour of Roofs
+    description: TODO
+    filter: roof:colour=*
+  building:colour:
+    name: Colour of Buildings
+    description: TODO
+    filter: building:colour=*
 
 clc-leaf-type:
   leaf_type:
@@ -19,3 +79,39 @@ roads:
     name: Road Name
     description: TODO
     filter: name=*
+  sidewalk:
+    name: Sidewalk
+    description: TODO
+    filter: footway:sidewalk=*
+  crossing:
+    name: Crossing
+    description: TODO
+    filter: footway:crossing = *
+  cycleway_lane:
+    name: Cycleway Lane
+    description: TODO
+    filter: cycleway:lane=*
+  cycleway_share_busway:
+    name: Cycleway Share Busway
+    description: TODO
+    filter: cycleway:share_busway=*
+  parking:
+    name: Parking
+    description: TODO
+    filter: parking:left=* or parking:right=* or parking:both=*
+  maxspeed:
+    name: Maxspeed
+    description: TODO
+    filter: maxspeed=*
+  oneway:
+    name: Oneway
+    description: TODO
+    filter: oneway=*
+  surface:
+    name: Surface
+    description: TODO
+    filter: surface=*
+  highway:speed_camera:
+    name: Speed Camera
+    description: TODO
+    filter: highway:speed_camera=*
