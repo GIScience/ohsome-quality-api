@@ -28,6 +28,7 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
+    @oqapi_vcr.use_cassette
     def test_preprocess_multiple_attribute_keys(
         self, topic_building_count, feature_germany_heidelberg, attribute_key_multiple
     ):
