@@ -47,8 +47,6 @@ def test_ohsome_timeout(client, bpolys):
                 {
                     "bpolys": bpolys,
                     "topic": "minimal",
-                    # TODO: would it be better to make the following parameter optional?
-                    "attribute": "height",
                 },
             ),
         ):
