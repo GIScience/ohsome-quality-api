@@ -22,9 +22,15 @@ class MappingSaturation(BaseIndicator):
 
     Premise: Each aggregation of features (e.g. length of roads or count of building)
     has a maximum. After increased mapping activity saturation is reached near this
-    maximum.
 
     Different statistical models are used to find out if saturation is reached.
+    maximum.
+
+    Steps:
+    1. Get the temporal evolution of OSM data
+    2. Fit regression models using different logistic functions
+    3. Choose the best-fit-model
+    4. Estimate the total number (asymptote) based on the model parameters
 
     Reference Papers:
     - Gröchenig S et al. (2014): Digging into the history of VGI data-sets: results from
