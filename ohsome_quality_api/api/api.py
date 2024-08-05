@@ -25,6 +25,7 @@ from ohsome_quality_api import (
     oqt,
 )
 from ohsome_quality_api.api.request_models import (
+    AttributeCompletenessRequest,
     IndicatorDataRequest,
     IndicatorRequest,
     ReportRequest,
@@ -83,7 +84,10 @@ from ohsome_quality_api.utils.helper import (
     hyphen_to_camel,
     json_serialize,
 )
-from ohsome_quality_api.utils.validators import validate_indicator_topic_combination
+from ohsome_quality_api.utils.validators import (
+    validate_indicator_attribute_combination,
+    validate_indicator_topic_combination,
+)
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 MEDIA_TYPE_JSON = "application/json"
@@ -276,16 +280,19 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 async def post_indicator(
     request: Request,
     key: IndicatorEnum,
-    parameters: IndicatorRequest,
+    parameters: IndicatorRequest | AttributeCompletenessRequest,
 ) -> Any:
     """Request an indicator for your area of interest."""
     validate_indicator_topic_combination(key.value, parameters.topic_key.value)
+    validate_indicator_attribute_combination(
+        key.value, getattr(parameters, "attribute_key", None)
+    )
     indicators = await oqt.create_indicator(
         key=key.value,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
-        attribute_key=parameters.attribute_key,
         include_figure=parameters.include_figure,
+        attribute_key=getattr(parameters, "attribute_key", None),
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:

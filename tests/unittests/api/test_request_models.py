@@ -1,7 +1,11 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_api.api.request_models import BaseBpolys, IndicatorRequest
+from ohsome_quality_api.api.request_models import (
+    AttributeCompletenessRequest,
+    BaseBpolys,
+    IndicatorRequest,
+)
 from ohsome_quality_api.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
@@ -39,18 +43,32 @@ def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometr
         BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
-# TODO: would it be better to make the new parameter `attribute` optional?
 def test_indicator_request_minimal(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, attribute="height")
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal)
 
 
-# TODO: would it be better to make the new parameter `attribute` optional?
 def test_indicator_request_include_figure(bpolys, topic_key_minimal):
-    IndicatorRequest(
-        bpolys=bpolys, topic=topic_key_minimal, include_figure=False, attribute="height"
-    )
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_figure=False)
 
 
 def test_indicator_request_invalid_topic(bpolys):
     with pytest.raises(ValueError):
         IndicatorRequest(bpolys=bpolys, topic="foo")
+
+
+def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_count):
+    with pytest.raises(ValueError):
+        AttributeCompletenessRequest(bpolys=bpolys, topic=topic_key_building_count)
+
+
+def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
+    with pytest.raises(ValueError):
+        AttributeCompletenessRequest(
+            bpolys=bpolys, topic=topic_key_building_count, attribute="foo"
+        )
+
+
+def test_attribute_completeness(bpolys, topic_key_building_count, attribute_key_height):
+    AttributeCompletenessRequest(
+        bpolys=bpolys, topic=topic_key_building_count, attribute=attribute_key_height
+    )

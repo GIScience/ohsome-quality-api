@@ -115,11 +115,40 @@ def test_indicators(
     parameters = {
         "bpolys": bpolys,
         "topic": topic,
-        # TODO: would it be better to make the following parameter optional?
-        "attribute": "height",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "height"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_without_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "building-count",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "IndicatorAttributeCombinationError"
 
 
 @oqapi_vcr.use_cassette
@@ -134,8 +163,6 @@ def test_minimal_fc(
     parameters = {
         "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
         "topic": "minimal",
-        # TODO: would it be better to make the following parameter optional?
-        "attribute": "height",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
@@ -144,13 +171,7 @@ def test_minimal_fc(
 @oqapi_vcr.use_cassette
 def test_minimal_include_figure_true(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
-    parameters = {
-        "bpolys": bpolys,
-        "topic": "minimal",
-        "includeFigure": True,
-        # TODO: would it be better to make the following parameter optional?
-        "attribute": "height",
-    }
+    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": True}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -164,13 +185,7 @@ def test_minimal_include_figure_true(client, bpolys, headers, schema):
 @oqapi_vcr.use_cassette
 def test_minimal_include_figure_false(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
-    parameters = {
-        "bpolys": bpolys,
-        "topic": "minimal",
-        "includeFigure": False,
-        # TODO: would it be better to make the following parameter optional?
-        "attribute": "height",
-    }
+    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": False}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -181,13 +196,31 @@ def test_minimal_include_figure_false(client, bpolys, headers, schema):
         raise AssertionError()
 
 
+def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "foo"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    # TODO
+    assert content["type"] != "IndicatorAttributeCombinationError"
+
+
+@oqapi_vcr.use_cassette
+def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "height"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "IndicatorAttributeCombinationError"
+
+
 def test_bpolys_size_limit(client, europe, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {
         "bpolys": europe,
         "topic": "minimal",
-        # TODO: would it be better to make the following parameter optional?
-        "attribute": "height",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
