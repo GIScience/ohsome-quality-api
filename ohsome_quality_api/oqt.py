@@ -22,8 +22,8 @@ async def create_indicator(
     key: str,
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
-    attribute_key: str | None = None,
     include_figure: bool = True,
+    attribute_key: str | None = None,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
@@ -45,7 +45,7 @@ async def create_indicator(
         ]:
             validate_area(feature)
         tasks.append(
-            _create_indicator(key, feature, topic, attribute_key, include_figure)
+            _create_indicator(key, feature, topic, include_figure, attribute_key)
         )
     return await gather_with_semaphore(tasks)
 
@@ -70,8 +70,8 @@ async def _create_indicator(
     key: str,
     feature: Feature,
     topic: Topic,
-    attribute_key: str | None = None,
     include_figure: bool = True,
+    attribute_key: str | None = None,
 ) -> Indicator:
     """Create an indicator from scratch."""
 
