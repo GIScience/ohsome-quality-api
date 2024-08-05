@@ -15,7 +15,6 @@ class BuildingReport(BaseReport):
                 IndicatorTopic("mapping-saturation", "building-count"),
                 IndicatorTopic("currentness", "building-count"),
                 IndicatorTopic("attribute-completeness", "building-count"),
-                IndicatorTopic("building-completeness", "building-area"),
             ),
             feature=feature,
             blocking_red=blocking_red,
