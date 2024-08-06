@@ -140,6 +140,7 @@ class Metadata(BaseConfig):
     topics: dict[str, TopicMetadata]
     quality_dimensions: dict[str, QualityDimension]
     projects: dict[str, Project]
+    attributes: dict[str, dict[str, AttributeMetadata]]
     model_config = ConfigDict(title="Metadata")
 
 

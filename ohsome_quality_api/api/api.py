@@ -42,7 +42,7 @@ from ohsome_quality_api.api.response_models import (
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
-from ohsome_quality_api.attributes.definitions import load_attributes
+from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
 from ohsome_quality_api.config import configure_logging
 from ohsome_quality_api.definitions import (
     ATTRIBUTION_URL,
@@ -354,6 +354,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
             "projects": get_project_metadata(),
             "indicators": get_indicator_metadata(project=project),
             # "reports": get_report_metadata(project=project),
+            "attributes": get_attributes(),
         }
     }
 
