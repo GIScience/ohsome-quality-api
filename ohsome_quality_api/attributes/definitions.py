@@ -9,24 +9,46 @@ from ohsome_quality_api.utils.helper import get_module_dir
 
 
 def load_attributes() -> dict[str, dict[str, Attribute]]:
-    """Read definitions of attributes.
-    Returns:
-        A dict with all attributes included.
-    """
+    """Read attributes from YAML file."""
     directory = get_module_dir("ohsome_quality_api.attributes")
     file = os.path.join(directory, "attributes.yaml")
     with open(file, "r") as f:
         raw = yaml.safe_load(f)
     attributes = {}
-    for k, v in raw.items():
-        attributes[k] = {}
-        for sub_k, sub_v in v.items():
-            attributes[k][sub_k] = Attribute(**sub_v)
+    for topic_key, value in raw.items():
+        attributes[topic_key] = {}
+        for attribute_key, value_ in value.items():
+            attributes[topic_key][attribute_key] = Attribute(**value_)
     return attributes
 
 
 def get_attributes() -> dict[str, dict[str, Attribute]]:
     return load_attributes()
+
+
+def get_attribute(topic_key, a_key: str | None) -> Attribute:
+    attributes = get_attributes()
+    try:
+        # TODO: Workaround to be able to display indicator in dashboard.
+        # Remove if dashboard handles attribution key selection.
+        if a_key is None:
+            return next(iter(attributes[topic_key].values()))
+        return attributes[topic_key][a_key]
+    except KeyError as error:
+        raise KeyError("Invalid topic or attribute key(s).") from error
+
+
+# TODO: Remove since it is the same as above?
+def get_attribute_preset(topic_key: str) -> List[Attribute]:
+    """Get ohsome API parameters of a list of Attributes based on topic key."""
+    attributes = load_attributes()
+    try:
+        return attributes[topic_key]
+    except KeyError as error:
+        topics = load_topic_presets()
+        raise KeyError(
+            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
+        ) from error
 
 
 def build_attribute_filter(attribute_key: List[str], topic_key: str) -> str:
@@ -46,27 +68,3 @@ def build_attribute_filter(attribute_key: List[str], topic_key: str) -> str:
             return attribute_filter
     except KeyError as error:
         raise KeyError("Invalid topic or attribute key(s).") from error
-
-
-def get_attribute(topic_key, a_key: str | None) -> Attribute:
-    attributes = get_attributes()
-    try:
-        # TODO: Workaround to be able to display indicator in dashboard.
-        # Remove if dashboard handles attribution key selection.
-        if a_key is None:
-            return next(iter(attributes[topic_key].values()))
-        return attributes[topic_key][a_key]
-    except KeyError as error:
-        raise KeyError("Invalid topic or attribute key(s).") from error
-
-
-def get_attribute_preset(topic_key: str) -> List[Attribute]:
-    """Get ohsome API parameters of a list of Attributes based on topic key."""
-    attributes = load_attributes()
-    try:
-        return attributes[topic_key]
-    except KeyError as error:
-        topics = load_topic_presets()
-        raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
-        ) from error
