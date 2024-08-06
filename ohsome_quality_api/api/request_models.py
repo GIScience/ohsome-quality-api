@@ -62,6 +62,15 @@ class IndicatorRequest(BaseBpolys):
     include_figure: bool = True
 
 
+class AttributeCompletenessRequest(IndicatorRequest):
+    # TODO: Should be AttributeEnum
+    attribute_key: str = Field(
+        ...,
+        title="Attribute Key",
+        alias="attribute",
+    )
+
+
 class IndicatorDataRequest(BaseBpolys):
     """Model for the `/indicators/mapping-saturation/data` endpoint.
 

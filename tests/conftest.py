@@ -64,6 +64,11 @@ def topic_major_roads_length() -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
+def attribute_key_height() -> str:
+    return "height"
+
+
+@pytest.fixture(scope="class")
 def metadata_topic_building_count(
     topic_key_building_count,
     topic_building_count,
@@ -132,7 +137,12 @@ def attribute() -> Attribute:
 
 @pytest.fixture(scope="class")
 def attribute_key() -> str:
-    return "height"
+    return ["height"]
+
+
+@pytest.fixture(scope="class")
+def attribute_key_multiple() -> str:
+    return ["height", "house_number"]
 
 
 @pytest.fixture(scope="class")

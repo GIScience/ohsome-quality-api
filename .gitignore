@@ -108,10 +108,13 @@ celerybeat.pid
 .env
 .venv
 env/
-venv/
+venv*/
 ENV/
 env.bak/
 venv.bak/
+
+# pyenv config
+.python-version
 
 # Spyder project settings
 .spyderproject

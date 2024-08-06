@@ -122,6 +122,37 @@ def test_indicators(
 
 
 @oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "height"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_without_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "building-count",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "IndicatorAttributeCombinationError"
+
+
+@oqapi_vcr.use_cassette
 def test_minimal_fc(
     client,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
@@ -164,6 +195,26 @@ def test_minimal_include_figure_false(client, bpolys, headers, schema):
         assert content["features"][0]["properties"]["result"]["figure"] is None
     else:
         raise AssertionError()
+
+
+def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "foo"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    # TODO
+    assert content["type"] != "IndicatorAttributeCombinationError"
+
+
+@oqapi_vcr.use_cassette
+def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "height"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "IndicatorAttributeCombinationError"
 
 
 def test_bpolys_size_limit(client, europe, headers, schema):
