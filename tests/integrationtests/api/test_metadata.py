@@ -6,9 +6,10 @@ def test_metadata(
     client,
     response_template,
     metadata_project_core,
-    response_metadata_topic_building_count,
+    metadata_topic_building_count,
     metadata_indicator_mapping_saturation,
     metadata_quality_dimension,
+    metadata_attribute_clc_leaf_type,
 ):
     response = client.get("/metadata")
     assert response.status_code == 200
@@ -18,7 +19,7 @@ def test_metadata(
     assert content == response_template
     # check topics result
     assert (
-        response_metadata_topic_building_count["building-count"]
+        metadata_topic_building_count["building-count"]
         == result["topics"]["building-count"]
     )
     # check quality dimensions result
@@ -31,6 +32,10 @@ def test_metadata(
     assert (
         metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["indicators"]["mapping-saturation"]
+    )
+    assert (
+        metadata_attribute_clc_leaf_type["clc-leaf-type"]
+        == result["attributes"]["clc-leaf-type"]
     )
 
 
