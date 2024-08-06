@@ -24,7 +24,7 @@ def response_template():
 
 
 @pytest.fixture
-def response_metadata_topic_building_count():
+def metadata_topic_building_count():
     return {
         "building-count": {
             "name": "Building Count",
@@ -151,7 +151,7 @@ def metadata_report_minimal():
 
 
 @pytest.fixture
-def response_metadata_attribute_clc_leaf_type():
+def metadata_attribute_clc_leaf_type():
     return {
         "clc-leaf-type": {
             "leaf_type": {
