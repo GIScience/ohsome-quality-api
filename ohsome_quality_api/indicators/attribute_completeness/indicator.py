@@ -1,9 +1,7 @@
-from math import pi
 from string import Template
 from typing import List
 
 import dateutil.parser
-import numpy as np
 import plotly.graph_objects as go
 from geojson import Feature
 
@@ -101,18 +99,12 @@ class AttributeCompleteness(BaseIndicator):
         attribute(s).
         """
 
-        def rotate(ratio, offset=(0, 0)) -> list[float]:
-            theta = ratio * pi
-            c, s = np.cos(theta), np.sin(theta)
-            r = np.array(((c, -s), (s, c)))
-            rotated_list = np.matmul(r.T, (-1, 0)) + offset
-            return [float(np_float) for np_float in rotated_list]
-
         fig = go.Figure(
             go.Indicator(
                 domain={"x": [0, 1], "y": [0, 1]},
-                mode="gauge",
-                title={"text": "Attribute Completeness", "font": {"size": 40}},
+                mode="gauge+number",
+                value=self.result.value * 100,
+                number={"suffix": "%"},
                 type="indicator",
                 gauge={
                     "axis": {
@@ -122,7 +114,7 @@ class AttributeCompleteness(BaseIndicator):
                         "ticksuffix": "%",
                         "tickfont": dict(color="black", size=20),
                     },
-                    "bar": {"color": "rgba(0,0,0,0)"},
+                    "bar": {"color": "black"},
                     "steps": [
                         {"range": [0, self.threshold_red * 100], "color": "tomato"},
                         {
@@ -143,43 +135,14 @@ class AttributeCompleteness(BaseIndicator):
 
         fig.update_layout(
             font={"color": "black", "family": "Arial"},
-            xaxis={"showgrid": False, "range": [-1, 1]},
-            yaxis={"showgrid": False, "range": [0, 1]},
+            xaxis={"showgrid": False, "range": [-1, 1], "fixedrange": True},
+            yaxis={"showgrid": False, "range": [0, 1], "fixedrange": True},
             plot_bgcolor="rgba(0,0,0,0)",
             autosize=True,
         )
 
         fig.update_xaxes(visible=False)
         fig.update_yaxes(visible=False)
-
-        base = [0, 0]
-        # TODO: test if we can remove the base stuff
-        fig.add_annotation(
-            ax=base[0],
-            ay=base[1],
-            axref="x",
-            ayref="y",
-            x=rotate(ratio=self.result.value)[0],
-            y=rotate(ratio=self.result.value)[1],
-            xref="x",
-            yref="y",
-            showarrow=True,
-            arrowhead=0,
-            arrowsize=1,
-            arrowwidth=4,
-        )
-
-        fig.add_annotation(
-            text=f"{self.result.value * 100:.1f}%",
-            align="center",
-            font=dict(color="black", size=35),
-            showarrow=False,
-            xref="paper",
-            yref="paper",
-            x=0.5,
-            y=-0.2,
-            borderwidth=0,
-        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
