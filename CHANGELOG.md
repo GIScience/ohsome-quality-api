@@ -17,6 +17,7 @@
 - road-comparison: change color of bar to grey ([#798])
 - style: run ruff after version upgrade ([#806])
 - build: bump ruff version ([#806])
+- remove support for raster data from implementation and docs ([#815])
 
 
 [#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
