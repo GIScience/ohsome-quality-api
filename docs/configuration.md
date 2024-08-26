@@ -14,7 +14,6 @@ Below is a table listing all possible configuration variables.
 | Postgres User               | `POSTGRES_USER`                 | `postgres_user`           | `oqapi`                        | "                                                                           |
 | Postgres Password           | `POSTGRES_PASSWORD`             | `postgres_password`       | `oqapi`                        | "                                                                           |
 | Configuration File Path     | `OQAPI_CONFIG`                  | -                         | `config/config.yaml`           | Absolute path to the configuration file                                     |
-| Data Directory              | `OQAPI_DATA_DIR`                | `data_dir`                | `data`                         | Absolute path to the directory for raster files                             |
 | Geometry Size Limit (km²)   | `OQAPI_GEOM_SIZE_LIMIT`         | `geom_size_limit`         | `1000`                         | Area restriction of the input geometry                                      |
 | Python Log Level            | `OQAPI_LOG_LEVEL`               | `log_level`               | `INFO`                         | Python logging level                                                        |
 | Concurrent Computations     | `OQAPI_CONCURRENT_COMPUTATIONS` | `concurrent_computations` | `4`                            | Limit number of concurrent Indicator computations for one API request       |

@@ -5,9 +5,6 @@ postgres_port: 5445
 postgres_db: oqapi
 postgres_user: oqapi
 postgres_password: oqapi
-# Data directory for raster files
-# Default: repo-root/data
-data_dir: /some/absolute/path
 # Restrict size of input geometry
 geom_size_limit: 1000
 # Python logging level

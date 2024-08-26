@@ -22,7 +22,7 @@ For development setup please continue reading.
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
 
-For development a database and raster datasets on disk might not be needed. In case the database is needed start the database service defined in the docker compose file. If raster datasets are needed please refer to [/docs/raster_datasets.md](/docs/raster_datasets.md) for setting those up.
+For development a database might not be needed. In case the database is needed start the database service defined in the docker compose file. 
 
 
 ## Installation
