@@ -72,8 +72,6 @@ from ohsome_quality_api.topics.definitions import (
 from ohsome_quality_api.utils.exceptions import (
     HexCellsNotFoundError,
     OhsomeApiError,
-    RasterDatasetNotFoundError,
-    RasterDatasetUndefinedError,
     SizeRestrictionError,
     TopicDataSchemaError,
     ValidationError,
@@ -185,8 +183,6 @@ async def validation_exception_handler(
 @app.exception_handler(HexCellsNotFoundError)
 @app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
-@app.exception_handler(RasterDatasetNotFoundError)
-@app.exception_handler(RasterDatasetUndefinedError)
 @app.exception_handler(SizeRestrictionError)
 @app.exception_handler(ValidationError)
 async def custom_exception_handler(
@@ -194,8 +190,6 @@ async def custom_exception_handler(
     exception: HexCellsNotFoundError
     | TopicDataSchemaError
     | OhsomeApiError
-    | RasterDatasetNotFoundError
-    | RasterDatasetUndefinedError
     | SizeRestrictionError
     | ValidationError,
 ):

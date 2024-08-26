@@ -96,18 +96,6 @@ class HexCellsNotFoundError(DatabaseError):
         )
 
 
-class RasterDatasetNotFoundError(FileNotFoundError):
-    def __init__(self, raster):
-        self.name = "RasterDatasetNotFoundError"
-        self.message = "Raster dataset {0} has not been found.".format(raster.name)
-
-
-class RasterDatasetUndefinedError(ValueError):
-    def __init__(self, raster_name: str):
-        self.name = "RasterDatasetUndefinedError"
-        self.message = "Raster dataset {0} is not defined".format(raster_name)
-
-
 class TopicDataSchemaError(Exception):
     def __init__(self, message, schema_error: SchemaError):
         self.name = "TopicDataSchemaError"
