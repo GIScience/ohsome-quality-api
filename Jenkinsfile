@@ -15,11 +15,11 @@ pipeline {
         RELEASE_REGEX = /^([0-9]+(\.[0-9]+)*)(-(RC|beta-|alpha-)[0-9]+)?$/
         RELEASE_DEPLOY = false
         SNAPSHOT_DEPLOY = false
-        POETRY = 'python -m poetry'
+        POETRY = 'python3 -m poetry'
         POETRY_OPTIONS = '--no-ansi --no-interaction'
         // wait for an answer to https://github.com/python-poetry/poetry/issues/1567#issuecomment-800542938
         // POETRY_RUN = 'python -m poetry run --no-ansi --no-interaction'
-        POETRY_RUN = 'python -m poetry run'
+        POETRY_RUN = 'python3 -m poetry run'
 
         DOCKER_CREDENTIALS_ID = 'DockerHubHeiGITCredentials'
         DOCKER_REPOSITORY = 'heigit/ohsome-quality-api'
@@ -51,8 +51,7 @@ pipeline {
                     }
                 }
                 script {
-                    DOCKER_API = docker.build('oqapi-api', "--build-arg uid=${UID} --build-arg gid=${GID} ${MODULE_DIR}")
-                    DOCKER_API_CI = docker.build('oqapi-api-ci', "-f ${MODULE_DIR}/Dockerfile.continuous-integration ${MODULE_DIR}")
+                    sh '${POETRY} install ${POETRY_OPTIONS}'
                 }
             }
             post {
@@ -65,32 +64,28 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    DOCKER_API_CI.inside("""--add-host 'api.ohsome.org:127.0.3.4'  -v /jenkins/tools:/jenkins/tools:ro""") { // blacklist api.ohsome.org
-                        // run pytest
-                        sh 'cd ${WORK_DIR} && VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_api --cov-report=xml tests'
-                        // replace absolute dir in the coverage file with actually used dir for sonar-scanner
-                        sh "sed -i \"s#${WORK_DIR}#${WORKSPACE}/${MODULE_DIR}#g\" ${WORK_DIR}/coverage.xml"
-                        // run static analysis with sonar-scanner
-                        def scannerHome = tool 'SonarScanner 4'
-                        withSonarQubeEnv('sonarcloud GIScience/ohsome') {
-                            SONAR_CLI_PARAMETER =
-                                "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml " +
-                                "-Dsonar.projectVersion=${VERSION}"
-                            if (env.CHANGE_ID) {
-                                SONAR_CLI_PARAMETER += ' ' +
-                                    "-Dsonar.pullrequest.key=${env.CHANGE_ID} " +
-                                    "-Dsonar.pullrequest.branch=${env.CHANGE_BRANCH} " +
-                                    "-Dsonar.pullrequest.base=${env.CHANGE_TARGET}"
-                            } else {
-                                SONAR_CLI_PARAMETER += ' ' +
-                                    "-Dsonar.branch.name=${env.BRANCH_NAME}"
-                            }
-                            sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
+                    // run pytest
+                    sh 'VCR_RECORD_MODE=none ${POETRY_RUN} pytest --cov=ohsome_quality_api --cov-report=xml tests'
+                    // run static analysis with sonar-scanner
+                    def scannerHome = tool 'SonarScanner 4'
+                    withSonarQubeEnv('sonarcloud GIScience/ohsome') {
+                        SONAR_CLI_PARAMETER =
+                            "-Dsonar.python.coverage.reportPaths=${WORK_DIR}/coverage.xml " +
+                            "-Dsonar.projectVersion=${VERSION}"
+                        if (env.CHANGE_ID) {
+                            SONAR_CLI_PARAMETER += ' ' +
+                                "-Dsonar.pullrequest.key=${env.CHANGE_ID} " +
+                                "-Dsonar.pullrequest.branch=${env.CHANGE_BRANCH} " +
+                                "-Dsonar.pullrequest.base=${env.CHANGE_TARGET}"
+                        } else {
+                            SONAR_CLI_PARAMETER += ' ' +
+                                "-Dsonar.branch.name=${env.BRANCH_NAME}"
                         }
-                        // run other static code analysis
-                        sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff format --check --diff .'
-                        sh 'cd ${WORK_DIR} && ${POETRY_RUN} ruff .'
+                        sh "${scannerHome}/bin/sonar-scanner " + SONAR_CLI_PARAMETER
                     }
+                    // run other static code analysis
+                    sh '${POETRY_RUN} ruff format --check --diff .'
+                    sh '${POETRY_RUN} ruff .'
                 }
             }
             post {
@@ -107,14 +102,12 @@ pipeline {
                         return (((currentBuild.getStartTimeInMillis() - currentBuild.previousBuild.getStartTimeInMillis()) > 2592000000) && (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX)) //2592000000 30 days in milliseconds
                     }
                     return false
-                    }
+                }
             }
             steps {
                 script {
-                    DOCKER_API.inside {
-                        update_notify = sh(returnStdout: true, script: 'cd ${WORK_DIR} && ${POETRY} update ${POETRY_OPTIONS} --dry-run | tail -n +4 | grep -v ": Skipped " | sort -u').trim()
-                        echo update_notify
-                    }
+                    update_notify = sh(returnStdout: true, script: '${POETRY} update ${POETRY_OPTIONS} --dry-run | tail -n +4 | grep -v ": Skipped " | sort -u').trim()
+                    echo update_notify
                 }
                 rocket_basicsend("Check your dependencies in *${REPO_NAME}*. You might have updates: ${update_notify}")
             }
