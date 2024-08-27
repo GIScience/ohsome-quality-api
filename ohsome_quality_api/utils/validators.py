@@ -7,7 +7,6 @@ from ohsome_quality_api.utils.exceptions import (
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
-    IndicatorAttributeCombinationError,
     IndicatorTopicCombinationError,
     InvalidCRSError,
     SizeRestrictionError,
@@ -18,13 +17,6 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 def validate_indicator_topic_combination(indicator: str, topic: str):
     if indicator not in get_valid_indicators(topic):
         raise IndicatorTopicCombinationError(indicator, topic)
-
-
-def validate_indicator_attribute_combination(indicator: str, attribute: str | None):
-    if indicator == "attribute-completeness" and attribute is None:
-        raise IndicatorAttributeCombinationError(indicator, attribute)
-    elif indicator != "attribute-completeness" and attribute is not None:
-        raise IndicatorAttributeCombinationError(indicator, attribute)
 
 
 def validate_geojson(bpolys: GeoJSON):

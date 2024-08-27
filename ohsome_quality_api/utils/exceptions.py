@@ -58,19 +58,6 @@ class IndicatorTopicCombinationError(ValidationError):
         )
 
 
-class IndicatorAttributeCombinationError(ValidationError):
-    """Invalid indicator topic combination error."""
-
-    def __init__(self, indicator, attribute):
-        self.name = "IndicatorAttributeCombinationError"
-        self.message = (
-            "Invalid combination of indicator and attribute: {} and {}".format(
-                indicator,
-                attribute,
-            )
-        )
-
-
 class OhsomeApiError(Exception):
     """Request to ohsome API failed."""
 

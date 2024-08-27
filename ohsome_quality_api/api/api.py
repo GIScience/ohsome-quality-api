@@ -50,6 +50,7 @@ from ohsome_quality_api.definitions import (
 )
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
+    IndicatorEnumRequest,
     get_coverage,
     get_indicator_metadata,
 )
@@ -84,10 +85,7 @@ from ohsome_quality_api.utils.helper import (
     hyphen_to_camel,
     json_serialize,
 )
-from ohsome_quality_api.utils.validators import (
-    validate_indicator_attribute_combination,
-    validate_indicator_topic_combination,
-)
+from ohsome_quality_api.utils.validators import validate_indicator_topic_combination
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 MEDIA_TYPE_JSON = "application/json"
@@ -261,6 +259,31 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 
 
 @app.post(
+    "/indicators/attribute-completeness",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+)
+async def post_attribute_completeness(
+    request: Request,
+    parameters: AttributeCompletenessRequest,
+) -> Any:
+    """Request the Attribute Completeness indicator for your area of interest."""
+    return await _post_indicator(request, "attribute-completeness", parameters)
+
+
+@app.post(
     "/indicators/{key}",
     tags=["indicator"],
     response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
@@ -279,16 +302,19 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 )
 async def post_indicator(
     request: Request,
-    key: IndicatorEnum,
-    parameters: IndicatorRequest | AttributeCompletenessRequest,
+    key: IndicatorEnumRequest,
+    parameters: IndicatorRequest,
 ) -> Any:
     """Request an indicator for your area of interest."""
-    validate_indicator_topic_combination(key.value, parameters.topic_key.value)
-    validate_indicator_attribute_combination(
-        key.value, getattr(parameters, "attribute_key", None)
-    )
+    return await _post_indicator(request, key.value, parameters)
+
+
+async def _post_indicator(
+    request: Request, key: str, parameters: IndicatorRequest
+) -> Any:
+    validate_indicator_topic_combination(key, parameters.topic_key.value)
     indicators = await oqt.create_indicator(
-        key=key.value,
+        key=key,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,

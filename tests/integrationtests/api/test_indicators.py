@@ -148,7 +148,7 @@ def test_indicators_attribute_completeness_without_attribute(
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-    assert content["type"] == "IndicatorAttributeCombinationError"
+    assert content["type"] == "RequestValidationError"
 
 
 @oqapi_vcr.use_cassette
@@ -202,8 +202,7 @@ def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-    # TODO
-    assert content["type"] != "IndicatorAttributeCombinationError"
+    assert content["type"] == "RequestValidationError"
 
 
 @oqapi_vcr.use_cassette
@@ -213,7 +212,7 @@ def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema)
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-    assert content["type"] == "IndicatorAttributeCombinationError"
+    assert content["type"] == "RequestValidationError"
 
 
 def test_bpolys_size_limit(client, europe, headers, schema):
