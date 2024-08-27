@@ -313,12 +313,15 @@ async def _post_indicator(
     request: Request, key: str, parameters: IndicatorRequest
 ) -> Any:
     validate_indicator_topic_combination(key, parameters.topic_key.value)
+    attribute_key = getattr(parameters, "attribute_key", None)
+    if attribute_key:
+        attribute_key = attribute_key.value
     indicators = await oqt.create_indicator(
         key=key,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,
-        attribute_key=getattr(parameters, "attribute_key", None),
+        attribute_key=attribute_key,
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:

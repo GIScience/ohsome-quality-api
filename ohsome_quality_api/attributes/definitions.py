@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 from typing import List
 
 import yaml
@@ -68,3 +69,12 @@ def build_attribute_filter(attribute_key: List[str], topic_key: str) -> str:
             return attribute_filter
     except KeyError as error:
         raise KeyError("Invalid topic or attribute key(s).") from error
+
+
+attribute_keys = {
+    inner_key
+    for outer_dict in load_attributes().values()
+    for inner_key in outer_dict.keys()
+}
+
+AttributeEnum = Enum("AttributeEnum", {name: name for name in attribute_keys})
