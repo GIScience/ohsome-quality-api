@@ -167,6 +167,18 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
+
+    message = content["detail"][0]["msg"]
+    expected = (
+        "Invalid combination of attribute and topic: maxspeed and building-count. "
+        "Topic 'building-count' supports these attributes: "
+        "['height', 'house_number', 'address_street', 'address_city', "
+        "'address_postcode', "
+        "'address_country', 'address_state', 'address_suburb', 'address_district', "
+        "'address_housenumber', 'building_levels', 'roof_shape', 'roof_levels', "
+        "'building_material', 'roof_material', 'roof:colour', 'building:colour']"
+    )
+    assert message == expected
     assert content["type"] == "AttributeTopicCombinationError"
 
 

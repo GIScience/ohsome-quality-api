@@ -23,8 +23,12 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 def validate_attribute_topic_combination(attribute: AttributeEnum, topic: TopicEnum):
     valid_attributes_for_topic = get_attributes()[topic]
 
+    result = []
+    for current in valid_attributes_for_topic:
+        result.append(current)
+
     if attribute not in valid_attributes_for_topic:
-        raise AttributeTopicCombinationError(attribute, topic)
+        raise AttributeTopicCombinationError(attribute, topic, result)
 
 
 def validate_indicator_topic_combination(indicator: str, topic: str):
