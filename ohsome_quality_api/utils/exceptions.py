@@ -47,6 +47,17 @@ class InvalidCRSError(ValidationError):
         )
 
 
+class AttributeTopicCombinationError(ValidationError):
+    """Invalid attribute topic combination error."""
+
+    def __init__(self, attribute, topic):
+        self.name = "AttributeTopicCombinationError"
+        self.message = "Invalid combination of attribute and topic: {} and {}".format(
+            attribute,
+            topic,
+        )
+
+
 class IndicatorTopicCombinationError(ValidationError):
     """Invalid indicator topic combination error."""
 

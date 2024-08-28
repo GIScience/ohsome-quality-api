@@ -1,9 +1,15 @@
 from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
 from pyproj import CRS
 
+from ohsome_quality_api.attributes.definitions import (
+    AttributeEnum,
+    get_attributes,
+)
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
+from ohsome_quality_api.topics.definitions import TopicEnum
 from ohsome_quality_api.utils.exceptions import (
+    AttributeTopicCombinationError,
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
@@ -12,6 +18,13 @@ from ohsome_quality_api.utils.exceptions import (
     SizeRestrictionError,
 )
 from ohsome_quality_api.utils.helper_geo import calculate_area
+
+
+def validate_attribute_topic_combination(attribute: AttributeEnum, topic: TopicEnum):
+    valid_attributes_for_topic = get_attributes()[topic]
+
+    if attribute not in valid_attributes_for_topic:
+        raise AttributeTopicCombinationError(attribute, topic)
 
 
 def validate_indicator_topic_combination(indicator: str, topic: str):

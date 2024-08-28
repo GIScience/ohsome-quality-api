@@ -85,7 +85,10 @@ from ohsome_quality_api.utils.helper import (
     hyphen_to_camel,
     json_serialize,
 )
-from ohsome_quality_api.utils.validators import validate_indicator_topic_combination
+from ohsome_quality_api.utils.validators import (
+    validate_attribute_topic_combination,
+    validate_indicator_topic_combination,
+)
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 MEDIA_TYPE_JSON = "application/json"
@@ -280,6 +283,10 @@ async def post_attribute_completeness(
     parameters: AttributeCompletenessRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
+    validate_attribute_topic_combination(
+        parameters.attribute_key.value, parameters.topic_key.value
+    )
+
     return await _post_indicator(request, "attribute-completeness", parameters)
 
 

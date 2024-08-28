@@ -151,6 +151,25 @@ def test_indicators_attribute_completeness_without_attribute(
     assert content["type"] == "RequestValidationError"
 
 
+def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "building-count",
+        # the following attribute is not valid for topic 'building-count'
+        "attribute": "maxspeed",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "AttributeTopicCombinationError"
+
+
 @oqapi_vcr.use_cassette
 def test_minimal_fc(
     client,
