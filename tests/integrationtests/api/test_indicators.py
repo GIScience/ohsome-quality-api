@@ -6,6 +6,7 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 import pytest
 from schema import Optional, Or, Schema
 
+from ohsome_quality_api.attributes.definitions import get_attributes
 from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
@@ -169,15 +170,15 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     content = response.json()
 
     message = content["detail"][0]["msg"]
+    all_attributes_for_topic = [
+        attribute for attribute in (get_attributes()["building-count"])
+    ]
+
     expected = (
         "Invalid combination of attribute and topic: maxspeed and building-count. "
-        "Topic 'building-count' supports these attributes: "
-        "['height', 'house_number', 'address_street', 'address_city', "
-        "'address_postcode', "
-        "'address_country', 'address_state', 'address_suburb', 'address_district', "
-        "'address_housenumber', 'building_levels', 'roof_shape', 'roof_levels', "
-        "'building_material', 'roof_material', 'roof:colour', 'building:colour']"
-    )
+        "Topic 'building-count' supports these attributes: {}"
+    ).format(all_attributes_for_topic)
+
     assert message == expected
     assert content["type"] == "AttributeTopicCombinationError"
 
