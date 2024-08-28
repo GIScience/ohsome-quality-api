@@ -9,7 +9,6 @@ from ohsome_quality_api.api.response_models import (
     IndicatorMetadataResponse,
     ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
-    ReportMetadataResponse,
     TopicMetadata,
     TopicMetadataResponse,
 )
@@ -150,26 +149,3 @@ def test_indicator_metadata_response_fail(metadata_indicator_minimal):
 
 def test_indicator_metadata_coverage(bpolys):
     IndicatorMetadataCoverageResponse(**bpolys)
-
-
-def test_metadata_reports(metadata_report_minimal):
-    response = ReportMetadataResponse(result=metadata_report_minimal)
-    assert response.result == metadata_report_minimal
-
-
-def test_metadata_reports_fail(metadata_report_minimal):
-    with pytest.raises(ValidationError):
-        ReportMetadataResponse(result="")
-    with pytest.raises(ValidationError):
-        ReportMetadataResponse(result="bar")
-    with pytest.raises(ValidationError):
-        ReportMetadataResponse(result={})
-    with pytest.raises(ValidationError):
-        ReportMetadataResponse(result={"foo": "bar"})
-    with pytest.raises(ValidationError):
-        ReportMetadataResponse(result={"foo": metadata_report_minimal})
-
-
-def test_metadata_reports_list(reports_metadata):
-    response = ReportMetadataResponse(result=reports_metadata)
-    assert response.result == reports_metadata

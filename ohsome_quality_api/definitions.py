@@ -9,7 +9,6 @@ from typing import Iterable, Literal
 import yaml
 
 from ohsome_quality_api.indicators.models import IndicatorMetadata
-from ohsome_quality_api.reports.models import ReportMetadata
 from ohsome_quality_api.topics.definitions import load_topic_presets
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
@@ -52,7 +51,7 @@ class Color(Enum):
 
 def load_metadata(
     module_name: Literal["indicators", "reports"],
-) -> dict[str, IndicatorMetadata | ReportMetadata]:
+) -> dict[str, IndicatorMetadata]:
     """Read metadata of all indicators or reports from YAML files.
 
     Those text files are located in the directory of each indicator/report.
@@ -75,15 +74,12 @@ def load_metadata(
         case "indicators":
             for k, v in raw.items():
                 metadata[k] = IndicatorMetadata(**v)
-        case "reports":
-            for k, v in raw.items():
-                metadata[k] = ReportMetadata(**v)
     return metadata
 
 
 def get_metadata(
     module_name: Literal["indicators", "reports"], class_name: str
-) -> IndicatorMetadata | ReportMetadata:
+) -> IndicatorMetadata:
     """Get metadata of an indicator or report based on its class name.
 
     This is implemented outside the metadata class to be able to access metadata of all
