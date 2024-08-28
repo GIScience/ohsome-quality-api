@@ -35,22 +35,12 @@ def test_ohsome_timeout(client, bpolys):
             request=httpx.Request("POST", "https://www.example.org/"),
         )
 
-        for endpoint, parameters in (
-            (
-                "/reports/minimal",
-                {
-                    "bpolys": bpolys,
-                },
-            ),
-            (
-                "/indicators/minimal",
-                {
-                    "bpolys": bpolys,
-                    "topic": "minimal",
-                },
-            ),
-        ):
-            response = client.post(endpoint, json=parameters)
-            assert response.status_code == 422
-            content = response.json()
-            assert content["type"] == "OhsomeApiError"
+        endpoint = "/indicators/minimal"
+        parameters = {
+            "bpolys": bpolys,
+            "topic": "minimal",
+        }
+        response = client.post(endpoint, json=parameters)
+        assert response.status_code == 422
+        content = response.json()
+        assert content["type"] == "OhsomeApiError"
