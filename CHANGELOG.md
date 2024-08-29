@@ -2,12 +2,16 @@
 
 ## Current Main
 
+
+## Release 1.4.0
+
+
 ### New Features
 
 - attribute-completeness: add workaround for attribute_key to use indicator in dashboard ([#800])
-- attribute-completeness: add validation for attribute-topic combination
-- attribute-completeness: support for metadata and custom end-point
-- attribute-completeness: improve generation of openAPI documentation
+- attribute-completeness: add validation for attribute-topic combination ([#810])
+- attribute-completeness: support for metadata and custom end-point ([#810])
+- attribute-completeness: improve generation of openAPI documentation ([#810])
  
 
 ### Bug Fixes
@@ -26,6 +30,7 @@
 
 [#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
 [#800]: https://github.com/GIScience/ohsome-quality-api/pull/800
+[#815]: https://github.com/GIScience/ohsome-quality-api/issues/815
 
 ## Release 1.3.0
 
