@@ -3,6 +3,7 @@ from unittest import mock
 import pytest
 
 from ohsome_quality_api.utils.exceptions import (
+    AttributeTopicCombinationError,
     GeoJSONError,
     GeoJSONGeometryTypeError,
     GeoJSONObjectTypeError,
@@ -12,10 +13,27 @@ from ohsome_quality_api.utils.exceptions import (
 )
 from ohsome_quality_api.utils.validators import (
     validate_area,
+    validate_attribute_topic_combination,
     validate_geojson,
     validate_indicator_topic_combination,
 )
 from tests.unittests.utils import get_geojson_fixture
+
+
+def test_validate_attribute_topic_combination_with_valid_combination():
+    validate_attribute_topic_combination("maxspeed", "roads")
+
+
+def test_validate_attribute_topic_combination_with_invalid_topic():
+    """As the method under test requires individually valid arguments
+    the arguments given lead to a KeyError."""
+    with pytest.raises(KeyError):
+        validate_attribute_topic_combination("maxspeed", "xxxxx")
+
+
+def test_validate_attribute_topic_combination_with_invalid_combination():
+    with pytest.raises(AttributeTopicCombinationError):
+        validate_attribute_topic_combination("maxspeed", "building-count")
 
 
 def test_validate_geojson_feature_collection_single(
