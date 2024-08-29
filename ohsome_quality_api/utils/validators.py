@@ -21,6 +21,8 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 
 
 def validate_attribute_topic_combination(attribute: AttributeEnum, topic: TopicEnum):
+    """As attributes are only meaningful for a certain topic,
+    we need to check if the given combination is valid"""
     valid_attributes_for_topic = get_attributes()[topic]
     all_attributes = [attribute for attribute in valid_attributes_for_topic]
 
