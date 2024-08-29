@@ -134,7 +134,6 @@ def test_indicators_attribute_completeness(
     assert schema.is_valid(response.json())
 
 
-@oqapi_vcr.use_cassette
 def test_indicators_attribute_completeness_without_attribute(
     client,
     bpolys,
@@ -237,7 +236,6 @@ def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
     assert content["type"] == "RequestValidationError"
 
 
-@oqapi_vcr.use_cassette
 def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "height"}
