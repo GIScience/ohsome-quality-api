@@ -74,7 +74,6 @@ from ohsome_quality_api.topics.definitions import (
     get_topic_presets,
 )
 from ohsome_quality_api.utils.exceptions import (
-    HexCellsNotFoundError,
     OhsomeApiError,
     SizeRestrictionError,
     TopicDataSchemaError,
@@ -187,15 +186,13 @@ async def validation_exception_handler(
     )
 
 
-@app.exception_handler(HexCellsNotFoundError)
 @app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
 @app.exception_handler(ValidationError)
 async def custom_exception_handler(
     _: Request,
-    exception: HexCellsNotFoundError
-    | TopicDataSchemaError
+    exception: TopicDataSchemaError
     | OhsomeApiError
     | SizeRestrictionError
     | ValidationError,

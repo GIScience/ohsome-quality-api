@@ -98,15 +98,6 @@ class EmptyRecordError(DatabaseError):
         self.message = "Query returned no record."
 
 
-class HexCellsNotFoundError(DatabaseError):
-    def __init__(self):
-        self.name = "HexCellsNotFoundError"
-        self.message = (
-            "No hex-cells found for the given AOI. "
-            + "The AOI is probably outside Africa."
-        )
-
-
 class TopicDataSchemaError(Exception):
     def __init__(self, message, schema_error: SchemaError):
         self.name = "TopicDataSchemaError"
