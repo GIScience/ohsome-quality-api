@@ -8,16 +8,8 @@ from ohsome_quality_api.topics.models import TopicDefinition
 from ohsome_quality_api.utils.helper import get_module_dir
 
 
-def get_topic_keys() -> list[str]:
-    return [str(t) for t in load_topic_presets().keys()]
-
-
 def load_topic_presets() -> dict[str, TopicDefinition]:
-    """Read ohsome API parameters of all topic from YAML file.
-
-    Returns:
-        A dict with all topics included.
-    """
+    """Read ohsome API parameters of all topic from YAML file."""
     directory = get_module_dir("ohsome_quality_api.topics")
     file = os.path.join(directory, "presets.yaml")
     with open(file, "r") as f:
@@ -28,6 +20,10 @@ def load_topic_presets() -> dict[str, TopicDefinition]:
         v["key"] = k
         topics[k] = TopicDefinition(**v)
     return topics
+
+
+def get_topic_keys() -> list[str]:
+    return [str(t) for t in load_topic_presets().keys()]
 
 
 def get_topic_presets(project: ProjectEnum = None) -> dict[str, TopicDefinition]:

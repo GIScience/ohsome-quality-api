@@ -4,6 +4,7 @@ import geojson
 from geojson import FeatureCollection
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from ohsome_quality_api.attributes.definitions import AttributeEnum
 from ohsome_quality_api.topics.definitions import TopicEnum
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
@@ -60,6 +61,14 @@ class IndicatorRequest(BaseBpolys):
         alias="topic",
     )
     include_figure: bool = True
+
+
+class AttributeCompletenessRequest(IndicatorRequest):
+    attribute_key: AttributeEnum = Field(
+        ...,
+        title="Attribute Key",
+        alias="attribute",
+    )
 
 
 class IndicatorDataRequest(BaseBpolys):

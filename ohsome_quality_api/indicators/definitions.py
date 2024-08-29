@@ -34,3 +34,7 @@ async def get_coverage(indicator_key: str, inverse: bool = False) -> FeatureColl
 
 
 IndicatorEnum = Enum("IndicatorEnum", {name: name for name in get_indicator_keys()})
+IndicatorEnumRequest = Enum(
+    "IndicatorEnum",
+    {name: name for name in get_indicator_keys() if name != "attribute-completeness"},
+)

@@ -23,6 +23,7 @@ async def create_indicator(
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
+    attribute_key: str | None = None,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
@@ -43,7 +44,9 @@ async def create_indicator(
             "attribute-completeness",
         ]:
             validate_area(feature)
-        tasks.append(_create_indicator(key, feature, topic, include_figure))
+        tasks.append(
+            _create_indicator(key, feature, topic, include_figure, attribute_key)
+        )
     return await gather_with_semaphore(tasks)
 
 
@@ -68,6 +71,7 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
+    attribute_key: str | None = None,
 ) -> Indicator:
     """Create an indicator from scratch."""
 
@@ -76,7 +80,10 @@ async def _create_indicator(
     logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
-    indicator = indicator_class(topic, feature)
+    if key == "attribute-completeness":
+        indicator = indicator_class(topic, feature, attribute_key)
+    else:
+        indicator = indicator_class(topic, feature)
 
     logging.info("Run preprocessing")
     await indicator.preprocess()

@@ -24,7 +24,7 @@ def response_template():
 
 
 @pytest.fixture
-def response_metadata_topic_building_count():
+def metadata_topic_building_count():
     return {
         "building-count": {
             "name": "Building Count",
@@ -146,5 +146,18 @@ def metadata_report_minimal():
                 + "between database, api and dashboard."
             ),
             "projects": ["misc"],
+        }
+    }
+
+
+@pytest.fixture
+def metadata_attribute_clc_leaf_type():
+    return {
+        "clc-leaf-type": {
+            "leaf_type": {
+                "name": "Type of Leaves",
+                "description": "TODO",
+                "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
+            }
         }
     }

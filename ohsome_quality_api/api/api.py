@@ -25,11 +25,13 @@ from ohsome_quality_api import (
     oqt,
 )
 from ohsome_quality_api.api.request_models import (
+    AttributeCompletenessRequest,
     IndicatorDataRequest,
     IndicatorRequest,
     ReportRequest,
 )
 from ohsome_quality_api.api.response_models import (
+    AttributeMetadataResponse,
     IndicatorGeoJSONResponse,
     IndicatorJSONResponse,
     IndicatorMetadataCoverageResponse,
@@ -40,6 +42,7 @@ from ohsome_quality_api.api.response_models import (
     ReportMetadataResponse,
     TopicMetadataResponse,
 )
+from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
 from ohsome_quality_api.config import configure_logging
 from ohsome_quality_api.definitions import (
     ATTRIBUTION_URL,
@@ -47,6 +50,7 @@ from ohsome_quality_api.definitions import (
 )
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
+    IndicatorEnumRequest,
     get_coverage,
     get_indicator_metadata,
 )
@@ -81,7 +85,10 @@ from ohsome_quality_api.utils.helper import (
     hyphen_to_camel,
     json_serialize,
 )
-from ohsome_quality_api.utils.validators import validate_indicator_topic_combination
+from ohsome_quality_api.utils.validators import (
+    validate_attribute_topic_combination,
+    validate_indicator_topic_combination,
+)
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
 MEDIA_TYPE_JSON = "application/json"
@@ -255,6 +262,35 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 
 
 @app.post(
+    "/indicators/attribute-completeness",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+)
+async def post_attribute_completeness(
+    request: Request,
+    parameters: AttributeCompletenessRequest,
+) -> Any:
+    """Request the Attribute Completeness indicator for your area of interest."""
+    validate_attribute_topic_combination(
+        parameters.attribute_key.value, parameters.topic_key.value
+    )
+
+    return await _post_indicator(request, "attribute-completeness", parameters)
+
+
+@app.post(
     "/indicators/{key}",
     tags=["indicator"],
     response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
@@ -273,16 +309,26 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 )
 async def post_indicator(
     request: Request,
-    key: IndicatorEnum,
+    key: IndicatorEnumRequest,
     parameters: IndicatorRequest,
 ) -> Any:
     """Request an indicator for your area of interest."""
-    validate_indicator_topic_combination(key.value, parameters.topic_key.value)
+    return await _post_indicator(request, key.value, parameters)
+
+
+async def _post_indicator(
+    request: Request, key: str, parameters: IndicatorRequest
+) -> Any:
+    validate_indicator_topic_combination(key, parameters.topic_key.value)
+    attribute_key = getattr(parameters, "attribute_key", None)
+    if attribute_key:
+        attribute_key = attribute_key.value
     indicators = await oqt.create_indicator(
-        key=key.value,
+        key=key,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,
+        attribute_key=attribute_key,
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
@@ -344,6 +390,7 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
             "projects": get_project_metadata(),
             "indicators": get_indicator_metadata(project=project),
             # "reports": get_report_metadata(project=project),
+            "attributes": get_attributes(),
         }
     }
 
@@ -364,6 +411,16 @@ async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
 async def metadata_topic_by_key(key: TopicEnum) -> Any:
     """Get topic by key."""
     return {"result": {key.value: get_topic_preset(key.value)}}
+
+
+@app.get(
+    "/metadata/attributes",
+    tags=["metadata"],
+    response_model=AttributeMetadataResponse,
+)
+async def metadata_attribute() -> Any:
+    """Get all attributes."""
+    return {"result": load_attributes()}
 
 
 @app.get(

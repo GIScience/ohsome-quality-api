@@ -16,6 +16,7 @@ import httpx
 from tests.integrationtests.utils import AsyncMock
 
 
+# TODO: could/should this be converted to a parameterized test?
 def test_ohsome_timeout(client, bpolys):
     path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
