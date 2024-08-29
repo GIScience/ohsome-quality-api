@@ -5,6 +5,10 @@
 ### New Features
 
 - attribute-completeness: add workaround for attribute_key to use indicator in dashboard ([#800])
+- attribute-completeness: add validation for attribute-topic combination
+- attribute-completeness: support for metadata and custom end-point
+- attribute-completeness: improve generation of openAPI documentation
+ 
 
 ### Bug Fixes
 
