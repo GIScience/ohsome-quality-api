@@ -31,7 +31,7 @@
 
 ### Breaking Changes
 
-- major-roads-length: rename to `roads` and chnage filter to `highway=* and type:way` ([#786])
+- major-roads-length: rename to `roads` and change filter to `highway=* and type:way` ([#786])
 
 ### New Features
 
@@ -75,7 +75,7 @@
 
 ### Bug Fixes
 
-- fix(building-comparison): Use psycopg AsyncConnection. Database connection was synchrone. ([ba279b2])
+- fix(building-comparison): Use psycopg AsyncConnection. Database connection was synchronous. ([ba279b2])
 
 [ba279b2]: https://github.com/GIScience/ohsome-quality-api/commit/ba279b23b82404d9f6c377e2a34683b159803359
 
