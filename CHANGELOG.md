@@ -31,6 +31,7 @@
 [#798]: https://github.com/GIScience/ohsome-quality-api/pull/798
 [#800]: https://github.com/GIScience/ohsome-quality-api/pull/800
 [#815]: https://github.com/GIScience/ohsome-quality-api/issues/815
+[#810]: https://github.com/GIScience/ohsome-quality-api/pull/810
 
 ## Release 1.3.0
 
