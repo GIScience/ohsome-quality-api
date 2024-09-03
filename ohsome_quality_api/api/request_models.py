@@ -80,8 +80,3 @@ class IndicatorDataRequest(BaseBpolys):
     topic: TopicData = Field(..., title="Topic", alias="topic")
     include_figure: bool = True
     include_data: bool = False
-
-
-class ReportRequest(BaseBpolys):
-    pass
-    # include_data: bool = False

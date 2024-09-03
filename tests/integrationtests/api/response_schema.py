@@ -49,7 +49,7 @@ def get_general_schema() -> Schema:
 def get_result_schema() -> Schema:
     """Response schema for all endpoints.
 
-    Excluded are the endpoints `/indicator` and `/report`.
+    Excluded is the endpoint `/indicator`.
     """
     return Schema({"result": list}, ignore_extra_keys=True)
 

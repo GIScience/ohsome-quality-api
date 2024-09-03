@@ -17,7 +17,7 @@ from ohsome_quality_api.indicators.mapping_saturation.models import BaseStatMode
 
 
 def get_class_from_key(class_type: str, key: str):
-    """Convert indicator or report key to the class name."""
+    """Convert indicator key to the class name."""
     # Alternatives:
     # - Hard code import of classes
     # - Dynamically import all classes in package

@@ -50,19 +50,19 @@ class Color(Enum):
 
 
 def load_metadata(
-    module_name: Literal["indicators", "reports"],
+    module_name: Literal["indicators"],
 ) -> dict[str, IndicatorMetadata]:
-    """Read metadata of all indicators or reports from YAML files.
+    """Read metadata of all indicators from YAML files.
 
-    Those text files are located in the directory of each indicator/report.
+    Those text files are located in the directory of each indicator.
 
     Args:
-        module_name: Either indicators or reports.
+        module_name: indicators.
     Returns:
-        A Dict with the class names of the indicators/reports
+        A Dict with the class names of the indicators
         as keys and metadata as values.
     """
-    assert module_name == "indicators" or module_name == "reports"
+    assert module_name == "indicators"
     directory = get_module_dir("ohsome_quality_api.{}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     raw = {}
@@ -78,15 +78,15 @@ def load_metadata(
 
 
 def get_metadata(
-    module_name: Literal["indicators", "reports"], class_name: str
+    module_name: Literal["indicators"], class_name: str
 ) -> IndicatorMetadata:
-    """Get metadata of an indicator or report based on its class name.
+    """Get metadata of an indicator based on its class name.
 
     This is implemented outside the metadata class to be able to access metadata of all
-    indicators/reports without instantiating of those.
+    indicators without instantiating of those.
 
     Args:
-        module_name: Either indicators or reports.
+        module_name: indicators.
         class_name: Class name of an indicator (camel case).
     """
     metadata = load_metadata(module_name)

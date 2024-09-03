@@ -2,10 +2,9 @@
 Testing FastAPI Applications:
 https://fastapi.tiangolo.com/tutorial/testing/
 
-Shared tests for `/indicator` and `/report` endpoints using the `bpolys` parameter.
+Shared tests for `/indicator` endpoints using the `bpolys` parameter.
 Tests for the individual endpoints and using the `bpolys` parameter please see:
     - `test_api_indicator_geojson_io.py`
-    - `test_api_report_geojson_io.py`
 """
 
 import os
