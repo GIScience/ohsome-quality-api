@@ -72,29 +72,3 @@ def get_indicator_feature_schema() -> Schema:
         },
         ignore_extra_keys=True,
     )
-
-
-def get_report_feature_schema() -> Schema:
-    schema = Schema(
-        {
-            "type": "Feature",
-            "geometry": dict,
-            Opt("id"): Or(str, int),
-            "properties": {
-                "report": {
-                    "metadata": {
-                        "name": str,
-                        "description": str,
-                    },
-                    "result": {
-                        "class": Or(int, None),
-                        "label": str,
-                        "description": str,
-                    },
-                },
-                "indicators": [get_indicator_properties_template()],
-            },
-        },
-        ignore_extra_keys=True,
-    )
-    return schema
