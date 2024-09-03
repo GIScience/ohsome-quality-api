@@ -49,7 +49,7 @@ def get_general_schema() -> Schema:
 def get_result_schema() -> Schema:
     """Response schema for all endpoints.
 
-    Excluded are the endpoints `/indicator` and `/report`.
+    Excluded is the endpoint `/indicator`.
     """
     return Schema({"result": list}, ignore_extra_keys=True)
 
@@ -72,29 +72,3 @@ def get_indicator_feature_schema() -> Schema:
         },
         ignore_extra_keys=True,
     )
-
-
-def get_report_feature_schema() -> Schema:
-    schema = Schema(
-        {
-            "type": "Feature",
-            "geometry": dict,
-            Opt("id"): Or(str, int),
-            "properties": {
-                "report": {
-                    "metadata": {
-                        "name": str,
-                        "description": str,
-                    },
-                    "result": {
-                        "class": Or(int, None),
-                        "label": str,
-                        "description": str,
-                    },
-                },
-                "indicators": [get_indicator_properties_template()],
-            },
-        },
-        ignore_extra_keys=True,
-    )
-    return schema

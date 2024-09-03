@@ -2,6 +2,11 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- report endpoint: has been deleted ([#818])
+
+[#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 
 ## Release 1.4.0
 

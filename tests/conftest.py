@@ -18,7 +18,6 @@ from ohsome_quality_api.quality_dimensions.definitions import (
     load_quality_dimensions,
 )
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
-from ohsome_quality_api.reports.models import ReportMetadata
 from ohsome_quality_api.topics.definitions import (
     get_topic_preset,
     load_topic_presets,
@@ -248,13 +247,3 @@ def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
 @pytest.fixture
 def indicators_metadata() -> dict[str, IndicatorMetadata]:
     return load_metadata("indicators")
-
-
-@pytest.fixture
-def metadata_report_minimal() -> dict[str, ReportMetadata]:
-    return {"minimal": get_metadata("reports", "Minimal")}
-
-
-@pytest.fixture
-def reports_metadata() -> dict[str, ReportMetadata]:
-    return load_metadata("reports")

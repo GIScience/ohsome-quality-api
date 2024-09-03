@@ -68,22 +68,6 @@ def metadata_indicator_mapping_saturation():
 
 
 @pytest.fixture
-def metadata_report_multilevel_mapping_saturation():
-    return {
-        "multilevel-mapping-saturation": {
-            "name": "Multilevel Mapping Saturation",
-            "description": "This report shows the mapping saturation of four major "
-            + "Map Features (https://wiki.openstreetmap.org/wiki/Map_features): "
-            + "buildings, land-use/land-cover, points of interest and infrastructure. "
-            + "It evolved from the OSM Element Vectorisation tool (https://gitlab."
-            + "gistools.geog.uni-heidelberg.de/giscience/ideal-vgi/osm-element-"
-            + "vectorisation).",
-            "projects": ["core"],
-        }
-    }
-
-
-@pytest.fixture
 def metadata_quality_dimension():
     return {
         "minimal": {
@@ -131,21 +115,6 @@ def metadata_indicator_minimal():
             "description": "An minimal Indicator for testing purposes.",
             "projects": ["misc"],
             "qualityDimension": "minimal",
-        }
-    }
-
-
-@pytest.fixture
-def metadata_report_minimal():
-    return {
-        "minimal": {
-            "name": "Minimal",
-            "description": (
-                "This report shows the quality for two indicators: Mapping Saturation "
-                + "and Currentness. It's main function is to test the interactions "
-                + "between database, api and dashboard."
-            ),
-            "projects": ["misc"],
         }
     }
 

@@ -11,7 +11,6 @@ from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
 )
-from ohsome_quality_api.reports.minimal.report import Minimal as MinimalReport
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     flatten_sequence,
@@ -39,11 +38,6 @@ class TestHelper(unittest.TestCase):
         self.assertIs(
             get_class_from_key(class_type="indicator", key="minimal"),
             MinimalIndicator,
-        )
-
-        self.assertIs(
-            get_class_from_key(class_type="report", key="minimal"),
-            MinimalReport,
         )
 
         self.indicators = load_metadata("indicators")

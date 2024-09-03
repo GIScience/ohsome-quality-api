@@ -11,8 +11,6 @@ from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.projects.models import Project
 from ohsome_quality_api.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
-from ohsome_quality_api.reports.definitions import ReportEnum
-from ohsome_quality_api.reports.models import ReportMetadata
 from ohsome_quality_api.topics.definitions import TopicEnum
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
@@ -121,18 +119,6 @@ class IndicatorMetadataCoverageResponse(
     FeatureCollection[Feature[Polygon | MultiPolygon, dict]],
 ):
     model_config = ConfigDict(title="Indicator Coverage", extra="allow")
-
-
-class ReportMetadataResponse(BaseResponse):
-    result: dict[str, ReportMetadata]
-
-    @field_validator("result")
-    @classmethod
-    def check_report_dict(cls, value):
-        assert len(value) > 0
-        for key in value.keys():
-            ReportEnum(key)
-        return value
 
 
 class Metadata(BaseConfig):

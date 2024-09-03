@@ -87,15 +87,6 @@ def test_create_indicator_private_include_figure(bpolys, topic_minimal):
     assert indicator.result.figure is None
 
 
-@oqapi_vcr.use_cassette
-def test_create_report_private(feature):
-    """Minimal viable request for a single bpoly."""
-    report = asyncio.run(oqt._create_report("minimal", feature))
-    assert report.result.label is not None
-    assert report.result.class_ is not None
-    assert report.result.description is not None
-
-
 @mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
 @oqapi_vcr.use_cassette
 def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):

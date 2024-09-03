@@ -1,9 +1,9 @@
 import json
 import logging
 import os
-from typing import Annotated, Any, Union
+from typing import Any, Union
 
-from fastapi import FastAPI, HTTPException, Path, Request, status
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,7 +28,6 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessRequest,
     IndicatorDataRequest,
     IndicatorRequest,
-    ReportRequest,
 )
 from ohsome_quality_api.api.response_models import (
     AttributeMetadataResponse,
@@ -39,7 +38,6 @@ from ohsome_quality_api.api.response_models import (
     MetadataResponse,
     ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
-    ReportMetadataResponse,
     TopicMetadataResponse,
 )
 from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
@@ -63,10 +61,6 @@ from ohsome_quality_api.quality_dimensions.definitions import (
     QualityDimensionEnum,
     get_quality_dimension,
     get_quality_dimensions,
-)
-from ohsome_quality_api.reports.definitions import (
-    ReportEnum,
-    get_report_metadata,
 )
 from ohsome_quality_api.topics.definitions import (
     TopicEnum,
@@ -354,27 +348,6 @@ async def _post_indicator(
         )
 
 
-@app.post("/reports/{key}", include_in_schema=False)
-async def post_report(
-    key: Annotated[
-        ReportEnum,
-        Path(
-            title="Report Key",
-            example="building-report",
-        ),
-    ],
-    parameters: ReportRequest,
-) -> CustomJSONResponse:
-    geojson_object = await oqt.create_report(parameters, key=key.value)
-    response = empty_api_response()
-    response["attribution"]["text"] = get_class_from_key(
-        class_type="report",
-        key=key.value,
-    ).attribution()
-    response.update(geojson_object)
-    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_GEOJSON)
-
-
 @app.get("/metadata", tags=["metadata"], response_model=MetadataResponse)
 async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
     """All metadata."""
@@ -386,7 +359,6 @@ async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
             "quality_dimensions": get_quality_dimensions(),
             "projects": get_project_metadata(),
             "indicators": get_indicator_metadata(project=project),
-            # "reports": get_report_metadata(project=project),
             "attributes": get_attributes(),
         }
     }
@@ -493,35 +465,3 @@ async def metadata_indicators_coverage(
 ) -> Any:
     """Get coverage geometry of an indicator by key."""
     return await get_coverage(key.value, inverse)
-
-
-@app.get(
-    "/metadata/reports",
-    tags=["metadata"],
-    response_model_exclude={
-        "result": {k.value: {"label_description": True} for k in ReportEnum}
-    },
-    include_in_schema=False,
-)
-async def metadata_reports(
-    project: ProjectEnum = DEFAULT_PROJECT,
-) -> ReportMetadataResponse:
-    """Get metadata of all indicators."""
-    if project == ProjectEnum.all:
-        project = None
-    return ReportMetadataResponse(result=get_report_metadata(project=project))
-
-
-@app.get(
-    "/metadata/reports/{key}",
-    tags=["metadata"],
-    response_model_exclude={
-        "result": {k.value: {"label_description": True} for k in ReportEnum}
-    },
-    include_in_schema=False,
-)
-async def metadata_reports_by_key(key: ReportEnum) -> ReportMetadataResponse:
-    """Get metadata of an indicator by key."""
-    return ReportMetadataResponse(
-        result={key.value: get_metadata("reports", hyphen_to_camel(key.value))}
-    )
