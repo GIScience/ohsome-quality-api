@@ -2,7 +2,7 @@ POST https://api.quality.ohsome.org/v1-test/indicators/currentness
 accept: application/json
 [Options]
 verbose: true
-file,building_count_bbox.payload.json;
+file,buildingcount_bbox.json;
 
 HTTP *
 
