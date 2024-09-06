@@ -8,35 +8,35 @@ building-count:
     description: TODO
     filter: addr:housenumber=*
   address_street:
-    name: Street Adress
+    name: Street Address
     description: TODO
     filter: addr:street=*
   address_city:
-    name: City Adress
+    name: City Address
     description: TODO
     filter: addr:city=*
   address_postcode:
-    name: Postcode Adress
+    name: Postcode Address
     description: TODO
     filter: addr:postcode=*
   address_country:
-    name: Country Adress
+    name: Country Address
     description: TODO
     filter: addr:country=*
   address_state:
-    name: State Adress
+    name: State Address
     description: TODO
     filter: addr:state=*
   address_suburb:
-    name: Suburb Adress
+    name: Suburb Address
     description: TODO
     filter: addr:suburb=*
   address_district:
-    name: District Adress
+    name: District Address
     description: TODO
     filter: addr:district=*
   address_housenumber:
-    name: House Number Adress
+    name: House Number Address
     description: TODO
     filter: addr:housenumber=*
   building_levels:
