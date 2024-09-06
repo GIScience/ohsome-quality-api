@@ -2,7 +2,7 @@ POST https://api.quality.ohsome.org/v1-test/indicators/mapping-saturation
 accept: application/json
 [Options]
 verbose: true
-file,roads_polygon.payload.json;
+file,roads_polygon.json;
 
 HTTP *
 
