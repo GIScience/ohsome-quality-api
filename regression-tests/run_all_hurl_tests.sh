@@ -1,0 +1,1 @@
+hurl *.hurl   --report-html report
