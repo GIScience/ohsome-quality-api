@@ -3,4 +3,7 @@ mkdir report
 
 hurl *.hurl   --report-html report
 
-open report/index.html
+echo "hurl report: file://$PWD/report/index.html"
+
+# mac only:
+# open report/index.html
