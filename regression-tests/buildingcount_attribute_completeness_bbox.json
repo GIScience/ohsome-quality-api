@@ -1,0 +1,49 @@
+{
+  "topic": "building-count",
+  "attribute": "address_housenumber",
+  "bpolys": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "box 1",
+        "bbox": [
+          8.748488,
+          49.47397,
+          8.7532061,
+          49.4767595
+        ],
+        "properties": {
+          "id": "box 1"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                8.748488,
+                49.47397
+              ],
+              [
+                8.7532061,
+                49.47397
+              ],
+              [
+                8.7532061,
+                49.4767595
+              ],
+              [
+                8.748488,
+                49.4767595
+              ],
+              [
+                8.748488,
+                49.47397
+              ]
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}
