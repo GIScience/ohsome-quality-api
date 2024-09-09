@@ -8,8 +8,7 @@ HTTP *
 [Asserts]
 duration < 2000
 status == 200
-header "content-length" contains "27"
-
+bytes count > 27000
 
 jsonpath "$.result.indicators.mapping-saturation.description" contains "Calculate if mapping has saturated."
 jsonpath "$.result.indicators.currentness.description" contains "Estimate currentness of features"
