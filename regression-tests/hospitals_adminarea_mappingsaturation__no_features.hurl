@@ -9,8 +9,7 @@ HTTP *
 [Asserts]
 duration < 20000
 status == 200
-header "content-length" contains "16"
-
+bytes count > 1600
 
 jsonpath "$.result[0].topic.name" == "Hospitals"
 jsonpath "$.result[0].result.description" == "No features were mapped in this region."

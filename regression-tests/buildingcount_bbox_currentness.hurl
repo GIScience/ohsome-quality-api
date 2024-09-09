@@ -9,7 +9,7 @@ HTTP *
 [Asserts]
 duration < 20000
 status == 200
-header "content-length" contains "20"
+bytes count > 20000
 
 jsonpath "$.result[0].topic.name" == "Building Count"
 jsonpath "$.result[0].result.description" contains "In the area of interest 16% of the 67 features were edited"
