@@ -2,7 +2,7 @@ POST https://api.quality.ohsome.org/v1-test/indicators/attribute-completeness
 accept: application/json
 [Options]
 verbose: true
-file,buildingcount_attribute_completeness_bbox.json;
+file,buildingcount_bbox_housenumber.json;
 
 HTTP *
 
