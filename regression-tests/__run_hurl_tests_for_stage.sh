@@ -1,3 +1,5 @@
+# requires the env variable $HURL_base_url
+
 rm -rf report
 mkdir report
 
