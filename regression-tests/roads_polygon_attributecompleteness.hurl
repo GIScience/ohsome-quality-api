@@ -2,7 +2,7 @@ POST https://api.quality.ohsome.org/v1-test/indicators/attribute-completeness
 accept: application/json
 [Options]
 verbose: true
-file,roads_polygon_attribute_completeness_maxspeed.json;
+file,roads_polygon_maxspeed.json;
 
 HTTP *
 
