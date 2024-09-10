@@ -11,7 +11,7 @@ The tests can be run against the different stages using the following scripts:
 * [run_hurl_tests_TEST.sh](./run_hurl_tests_TEST.sh)
 * [run_hurl_tests_PROD.sh](./run_hurl_tests_PROD.sh)
 
-Please note that you may get different results depending on the supported endpoints on the stages.
+Please note that you may get different results depending on the supported endpoints and connected spatial database of the system running on a given stage.
 
 An HTML-report with the results is generated here:
 
