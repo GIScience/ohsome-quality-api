@@ -1,0 +1,39 @@
+{
+  "topic": "roads",
+  "attribute": "maxspeed",
+  "bpolys": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "area 1",
+        "properties": {
+          "id": "area 1"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                8.643064,
+                49.4412261
+              ],
+              [
+                8.6595344,
+                49.3665657
+              ],
+              [
+                8.790611,
+                49.4280458
+              ],
+              [
+                8.643064,
+                49.4412261
+              ]
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}
