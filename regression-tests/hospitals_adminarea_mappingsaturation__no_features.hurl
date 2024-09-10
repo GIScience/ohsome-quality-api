@@ -1,4 +1,4 @@
-POST https://api.quality.ohsome.org/v1-test/indicators/mapping-saturation
+POST {{base_url}}/indicators/mapping-saturation
 accept: application/json
 [Options]
 verbose: true

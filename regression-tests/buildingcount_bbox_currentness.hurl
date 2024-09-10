@@ -1,4 +1,4 @@
-POST https://api.quality.ohsome.org/v1-test/indicators/currentness
+POST {{base_url}}/indicators/currentness
 accept: application/json
 [Options]
 verbose: true

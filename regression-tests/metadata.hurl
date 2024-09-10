@@ -1,4 +1,4 @@
-GET https://api.quality.ohsome.org/v1-test/metadata?project=all
+GET {{base_url}}/metadata?project=all
 accept: application/json
 [Options]
 verbose: true
