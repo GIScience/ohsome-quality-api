@@ -1,4 +1,6 @@
-POST https://api.quality.ohsome.org/v1-test/indicators/building-comparison
+POST {{base_url}}/indicators/building-comparison
+
+
 accept: application/json
 [Options]
 verbose: true

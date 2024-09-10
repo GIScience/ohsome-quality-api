@@ -1,4 +1,4 @@
-POST https://api.quality.ohsome.org/v1-test/indicators/road-comparison
+POST {{base_url}}/indicators/road-comparison
 accept: application/json
 [Options]
 verbose: true

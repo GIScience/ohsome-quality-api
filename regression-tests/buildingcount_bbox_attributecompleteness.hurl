@@ -1,4 +1,4 @@
-POST https://api.quality.ohsome.org/v1-test/indicators/attribute-completeness
+POST {{base_url}}/indicators/attribute-completeness
 accept: application/json
 [Options]
 verbose: true
