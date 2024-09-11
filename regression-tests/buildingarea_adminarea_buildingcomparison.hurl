@@ -1,4 +1,4 @@
-POST {{base_url}}/indicators/building-comparison
+POST {{BASE_URL}}/indicators/building-comparison
 
 
 accept: application/json
