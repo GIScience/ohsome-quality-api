@@ -1,4 +1,4 @@
-GET {{base_url}}/metadata?project=all
+GET {{BASE_URL}}/metadata?project=all
 accept: application/json
 [Options]
 verbose: true

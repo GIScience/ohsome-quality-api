@@ -1,4 +1,4 @@
-POST {{base_url}}/indicators/road-comparison
+POST {{BASE_URL}}/indicators/road-comparison
 accept: application/json
 [Options]
 verbose: true

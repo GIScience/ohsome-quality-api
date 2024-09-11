@@ -1,4 +1,4 @@
-POST {{base_url}}/indicators/mapping-saturation
+POST {{BASE_URL}}/indicators/mapping-saturation
 accept: application/json
 [Options]
 verbose: true

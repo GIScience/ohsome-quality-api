@@ -5,8 +5,7 @@
 rm -rf report
 mkdir report
 
-hurl *.hurl   --report-html report
-
+hurl *.hurl --report-html report
 printf "\n\nhurl report: file://$PWD/report/index.html\n"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
