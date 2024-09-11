@@ -5,7 +5,12 @@ mkdir report
 
 hurl *.hurl   --report-html report
 
-echo "\n\nhurl report: file://$PWD/report/index.html"
+printf "\n\nhurl report: file://$PWD/report/index.html\n"
 
-# mac only:
-# open report/index.html
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  xdg-open report/index.html
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  open report/index.html
+else
+  printf "\nOS could not be detected. Please open report manually!\n"
+fi
