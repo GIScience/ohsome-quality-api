@@ -1,4 +1,4 @@
-POST {{base_url}}/indicators/attribute-completeness
+POST {{BASE_URL}}/indicators/attribute-completeness
 accept: application/json
 [Options]
 verbose: true
