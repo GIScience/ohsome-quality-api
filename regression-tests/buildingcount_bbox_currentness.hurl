@@ -1,4 +1,4 @@
-POST {{base_url}}/indicators/currentness
+POST {{BASE_URL}}/indicators/currentness
 accept: application/json
 [Options]
 verbose: true
