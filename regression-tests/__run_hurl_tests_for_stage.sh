@@ -1,4 +1,6 @@
-# requires the env variable $HURL_base_url
+#!/bin/bash
+
+# requires the env variable $HURL_BASE_URL
 
 rm -rf report
 mkdir report
