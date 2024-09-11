@@ -137,15 +137,14 @@ Unlike the above-mentioned unit and integration tests,
 regression tests do not primarily serve to guide and validate the development,
 but to check if an upcoming version caused bugs in the existing system.
 
-The regression tests are implemented in `hurl` 
-and can be run manually on the command line against any of the staging systems. 
-Please consider adding new `hurl` tests if you add new endpoints. 
-A `hurl` plugin for JetBrains IDEs (e.g. PyCharm, Intellij Idea etc.) 
+The regression tests are implemented in `hurl`
+and can be run manually on the command line against any of the staging systems.
+Please consider adding new `hurl` tests if you add new endpoints.
+A `hurl` plugin for JetBrains IDEs (e.g. PyCharm, Intellij Idea etc.)
 is available for syntax highlighting and execution within the IDE.
 
-For details, check the 
+For details, check the
  [regression test README](../regression-tests/README.md).
-
 
 ## Logging
 
