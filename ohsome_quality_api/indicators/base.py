@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 import yaml
 from geojson import Feature, Polygon
 
-from ohsome_quality_api.definitions import get_attribution, get_metadata
+from ohsome_quality_api.definitions import get_attribution
+from ohsome_quality_api.indicators.definitions import get_indicator
 from ohsome_quality_api.indicators.models import (
     IndicatorMetadata,
     IndicatorTemplates,
@@ -14,6 +15,7 @@ from ohsome_quality_api.indicators.models import (
 )
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 from ohsome_quality_api.utils.helper import (
+    camel_to_hyphen,
     camel_to_snake,
     get_module_dir,
     json_serialize,
@@ -28,8 +30,8 @@ class BaseIndicator(metaclass=ABCMeta):
         topic: Topic,
         feature: Feature,
     ) -> None:
-        self.metadata: IndicatorMetadata = get_metadata(
-            "indicators", type(self).__name__
+        self.metadata: IndicatorMetadata = get_indicator(
+            camel_to_hyphen(type(self).__name__)
         )
         self.templates: IndicatorTemplates = self.get_template()
         self.topic: Topic = topic

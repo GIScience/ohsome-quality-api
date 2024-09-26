@@ -1,9 +1,0 @@
----
-building-comparison:
-  name: Building Comparison
-  projects:
-    - bkg
-    - core
-  quality_dimension: completeness
-  description: >-
-    Comparison of OSM buildings with the buildings of reference datasets.

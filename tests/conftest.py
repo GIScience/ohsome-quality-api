@@ -6,9 +6,9 @@ import pytest
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
-from ohsome_quality_api.definitions import (
-    get_metadata,
-    load_metadata,
+from ohsome_quality_api.indicators.definitions import (
+    get_indicator,
+    get_indicator_metadata,
 )
 from ohsome_quality_api.indicators.models import IndicatorMetadata
 from ohsome_quality_api.projects.definitions import get_project, load_projects
@@ -241,9 +241,9 @@ def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
 
 @pytest.fixture
 def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
-    return {"minimal": get_metadata("indicators", "Minimal")}
+    return {"minimal": get_indicator("minimal")}
 
 
 @pytest.fixture
 def indicators_metadata() -> dict[str, IndicatorMetadata]:
-    return load_metadata("indicators")
+    return get_indicator_metadata()

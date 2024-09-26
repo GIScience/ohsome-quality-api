@@ -1,8 +1,0 @@
----
-minimal:
-  name: Minimal
-  projects:
-    - misc
-  quality_dimension: minimal
-  description: >-
-      An minimal Indicator for testing purposes.
