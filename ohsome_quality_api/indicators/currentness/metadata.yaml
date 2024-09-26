@@ -7,14 +7,3 @@ currentness:
   quality_dimension: currentness
   description: >-
     Estimate currentness of features by classifying contributions based on topic specific temporal thresholds into three groups: up-to-date, in-between and out-of-date.
-  label_description:
-    red: >-
-      Many features are out-of-date.
-    yellow: >-
-      Some features are up-to-date and some features are out-of-date.
-    green: >-
-      Most features are up-to-date.
-    undefined: >-
-      The quality level could not be calculated for this indicator.
-  result_description: >-
-      In the area of interest $up_to_date_contrib_rel% of the $num_of_elements features were edited (created or modified) for the last time in the period between $from_timestamp and $to_timestamp.
