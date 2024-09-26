@@ -6,15 +6,15 @@
 
 - report endpoint: has been deleted ([#818])
 
-
 ### Other Changes
 
 - a new regression test suite has been added to support safer deployments of new versions ([#820])
-
+- use Pydantic model from the `geojson-pydantic` library as request model for `bpolys` ([#824])
 
 
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
+[#824]: https://github.com/GIScience/ohsome-quality-api/issues/824
 
 
 ## Release 1.4.0
