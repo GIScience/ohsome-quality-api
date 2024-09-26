@@ -6,13 +6,13 @@
 
 - report endpoint: has been deleted ([#818])
 
-
 ### Other Changes
 
 - a new regression test suite has been added to support safer deployments of new versions ([#820])
+- refactor(indicators): separate templates from metadata and merge all metadata files ([#673])
 
 
-
+[#673]: https://github.com/GIScience/ohsome-quality-api/issues/673
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
 
