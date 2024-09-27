@@ -68,6 +68,93 @@ building-count:
     description: TODO
     filter: building:colour=*
 
+bus-stops:
+  public_transport:platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+  public_transport:stop_area:
+    name: Bus stop area
+    description: TODO
+    filter: public_transport=stop_area
+
+clinics:
+  healthcare:birthing_centre:
+    name: Birthing centres
+    description: TODO
+    filter: healthcare=birthing_centre
+  healthcare:blood_donation:
+    name: Blood donation
+    description: TODO
+    filter: healthcare=blood_donation
+  healthcare:rehabilitation:
+    name: Rehabilitation
+    description: TODO
+    filter: healthcare=rehabilitation
+  healthcare:vaccination_centre:
+    name: Vaccination centre
+    description: TODO
+    filter: healthcare=vaccination_centre
+fitness-centres:
+  sport:fitness:
+    name: Fitness
+    description: TODO
+    filter: sport = fitness
+  sport:swimming:
+    name: Swimming
+    description: TODO
+    filter: sport = swimming
+  sport:weightlifting:
+    name: Weightlifting
+    description: TODO
+    filter: sport = weightlifting
+Forests:
+  access:private: # this displays everything that has private access, not just in forests. access:official and highway:track have the same problem
+    name: Private Access
+    description: TODO
+    filter: access = private
+  access:official:
+    name: official Access
+    description: TODO
+    filter: access = official
+  access:forestry:
+    name: Forestry
+    description: TODO
+    filter: access = forestry
+  highway:track:
+    name: Track
+    description: TODO
+    filter: highway = track
+  boundary:forest:
+    name: a
+    description: TODO
+    filter: boundary = forest
+poi:
+  leisure:playground:
+    name: Playground
+    description: TODO
+    filter: leisure = playground
+  craft:bakery:
+    name: Bakery
+    description: TODO
+    filter: craft = bakery
+  craft:handicraft:
+    name: Handicraft
+    description: TODO
+    filter: craft = handicraft
+  craft:leather:
+    name: Leather craft
+    description: TODO
+    filter: craft = leather
+  craft:shoemaker:
+    name: Shoemaker
+    description: TODO
+    filter: craft = shoemaker
+  craft:winery:
+    name: Winery
+    description: TODO
+    filter: craft = winery
+
 clc-leaf-type:
   leaf_type:
     name: Type of Leaves
