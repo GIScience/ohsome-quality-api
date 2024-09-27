@@ -67,7 +67,7 @@ class AttributeCompleteness(BaseIndicator):
             self.result.value = None
         if self.result.value is None:
             return
-        description = Template(self.metadata.result_description).substitute(
+        description = Template(self.templates.result_description).substitute(
             result=round(self.result.value, 2),
             all=round(self.absolute_value_1, 1),
             matched=round(self.absolute_value_2, 1),
@@ -79,17 +79,17 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                description + self.metadata.label_description["green"]
+                description + self.templates.label_description["green"]
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                description + self.metadata.label_description["yellow"]
+                description + self.templates.label_description["yellow"]
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                description + self.metadata.label_description["red"]
+                description + self.templates.label_description["red"]
             )
 
     def create_figure(self) -> None:

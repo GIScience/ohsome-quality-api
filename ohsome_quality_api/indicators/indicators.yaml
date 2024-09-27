@@ -1,0 +1,69 @@
+---
+density:
+  name: Density
+  projects:
+    - experimental
+  quality_dimension: none
+  description: >-
+      The density of features.
+      It is calculated by the number of features
+      divided by the area in square-kilometers.
+minimal:
+  name: Minimal
+  projects:
+    - misc
+  quality_dimension: minimal
+  description: >-
+      An minimal Indicator for testing purposes.
+currentness:
+  name: Currentness
+  projects:
+    - core
+    - bkg
+  quality_dimension: currentness
+  description: >-
+    Estimate currentness of features by classifying contributions based on
+    topic specific temporal thresholds into three groups: up-to-date,
+    in-between and out-of-date.
+road-comparison:
+  name: Road Comparison
+  projects:
+    - bkg
+    - core
+  quality_dimension: completeness
+  description: >-
+    Compare the road length of OSM roads with the road length of
+    reference data.
+mapping-saturation:
+  name: Mapping Saturation
+  projects:
+    - core
+    - corine-land-cover
+    - expanse
+    - experimental
+    - idealvgi
+    - mapaction
+    - sketchmap
+    - bkg
+  quality_dimension: completeness
+  description: >-
+    Calculate if mapping has saturated.
+    High saturation has been reached if the growth of the fitted curve is
+    minimal.
+building-comparison:
+  name: Building Comparison
+  projects:
+    - bkg
+    - core
+  quality_dimension: completeness
+  description: >-
+    Comparison of OSM buildings with the buildings of reference datasets.
+attribute-completeness:
+  name: Attribute Completeness
+  projects:
+    - bkg
+  quality_dimension: completeness
+  description: >-
+      Derive the ratio of OSM features compared to features which
+      match additional expected tags (e.g. amenity=hospital vs
+      amenity=hospital and wheelchair=yes).

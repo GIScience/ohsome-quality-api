@@ -31,7 +31,7 @@ def mock_get_reference_coverage(class_mocker):
     )
 
 
-def test_get_indicator_names():
+def test_get_indicator_keys():
     names = definitions.get_indicator_keys()
     assert isinstance(names, list)
 
@@ -41,19 +41,24 @@ def test_get_valid_indicators():
     assert indicators == ("mapping-saturation", "currentness", "attribute-completeness")
 
 
-def test_get_indicator_definitions():
+def test_get_indicator_metadata():
     indicators = definitions.get_indicator_metadata()
     assert isinstance(indicators, dict)
     for indicator in indicators.values():
         assert isinstance(indicator, models.IndicatorMetadata)
 
 
-def test_get_indicator_definitions_with_project():
+def test_get_indicator_metadata_filtered_by_project():
     indicators = definitions.get_indicator_metadata("core")
     assert isinstance(indicators, dict)
     for indicator in indicators.values():
         assert isinstance(indicator, models.IndicatorMetadata)
         assert indicator.projects == ["core"]
+
+
+def test_get_indicator(metadata_indicator_minimal):
+    indicator = definitions.get_indicator("minimal")
+    assert indicator == metadata_indicator_minimal["minimal"]
 
 
 def test_get_coverage(mock_get_reference_coverage):

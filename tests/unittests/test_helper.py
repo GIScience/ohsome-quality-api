@@ -6,7 +6,7 @@ from pathlib import Path
 import geojson
 import numpy as np
 
-from ohsome_quality_api.definitions import load_metadata
+from ohsome_quality_api.indicators.definitions import get_indicator_metadata
 from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.indicators.minimal.indicator import (
     Minimal as MinimalIndicator,
@@ -40,7 +40,7 @@ class TestHelper(unittest.TestCase):
             MinimalIndicator,
         )
 
-        self.indicators = load_metadata("indicators")
+        self.indicators = get_indicator_metadata()
         for indicator_name in self.indicators.keys():
             self.assertIsNotNone(
                 get_class_from_key(class_type="indicator", key=indicator_name)
