@@ -10,11 +10,12 @@
 
 - a new regression test suite has been added to support safer deployments of new versions ([#820])
 - refactor(indicators): separate templates from metadata and merge all metadata files ([#673])
-
+- use Pydantic model from the `geojson-pydantic` library as request model for `bpolys` ([#824])
 
 [#673]: https://github.com/GIScience/ohsome-quality-api/issues/673
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
+[#824]: https://github.com/GIScience/ohsome-quality-api/issues/824
 
 
 ## Release 1.4.0
