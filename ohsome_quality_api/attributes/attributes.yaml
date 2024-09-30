@@ -110,7 +110,7 @@ fitness-centres:
     description: TODO
     filter: sport=weightlifting
 
-Forests:
+forests:
   access_private:
     name: Private Access
     description: TODO
@@ -132,13 +132,13 @@ Forests:
     description: TODO
     filter: boundary=forest
 
-Kindergarten:
+kindergarten:
   leisure_playground:
     name: Playground
     description: TODO
     filter: leisure=playground
 
-Marketplace:
+marketplace:
   craft_bakery:
     name: Bakery
     description: TODO
@@ -160,7 +160,7 @@ Marketplace:
     description: TODO
     filter: craft=winery
 
-  Parks:
+  parks:
     landuse_commercial:
       name: Commercial landuse
       description: TODO
