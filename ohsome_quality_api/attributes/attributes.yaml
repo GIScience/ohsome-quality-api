@@ -132,31 +132,33 @@ Forests:
     description: TODO
     filter: boundary=forest
 
-poi:
-  leisure:playground:
+Kindergarten:
+  leisure_playground:
     name: Playground
     description: TODO
-    filter: leisure = playground
-  craft:bakery:
+    filter: leisure=playground
+
+Marketplace:
+  craft_bakery:
     name: Bakery
     description: TODO
-    filter: craft = bakery
-  craft:handicraft:
+    filter: craft=bakery
+  craft_handicraft:
     name: Handicraft
     description: TODO
-    filter: craft = handicraft
-  craft:leather:
+    filter: craft=handicraft
+  craft_leather:
     name: Leather craft
     description: TODO
-    filter: craft = leather
-  craft:shoemaker:
+    filter: craft=leather
+  craft_shoemaker:
     name: Shoemaker
     description: TODO
-    filter: craft = shoemaker
-  craft:winery:
+    filter: craft=shoemaker
+  craft_winery:
     name: Winery
     description: TODO
-    filter: craft = winery
+    filter: craft=winery
 
 clc-leaf-type:
   leaf_type:
