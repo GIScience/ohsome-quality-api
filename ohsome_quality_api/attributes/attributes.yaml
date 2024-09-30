@@ -69,32 +69,33 @@ building-count:
     filter: building:colour=*
 
 bus-stops:
-  public_transport:platform:
+  public_transport_platform:
     name: Public transport platform
     description: TODO
     filter: public_transport=platform
-  public_transport:stop_area:
+  public_transport_stop_area:
     name: Bus stop area
     description: TODO
     filter: public_transport=stop_area
 
 clinics:
-  healthcare:birthing_centre:
-    name: Birthing centres
+  healthcare_birthing_centre:
+    name: Birthing centre
     description: TODO
     filter: healthcare=birthing_centre
-  healthcare:blood_donation:
+  healthcare_blood_donation:
     name: Blood donation
     description: TODO
     filter: healthcare=blood_donation
-  healthcare:rehabilitation:
+  healthcare_rehabilitation:
     name: Rehabilitation
     description: TODO
     filter: healthcare=rehabilitation
-  healthcare:vaccination_centre:
+  healthcare_vaccination_centre:
     name: Vaccination centre
     description: TODO
     filter: healthcare=vaccination_centre
+
 fitness-centres:
   sport:fitness:
     name: Fitness
