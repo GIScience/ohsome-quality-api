@@ -214,6 +214,38 @@ subway-stations:
     description: TODO
     filter: public_transport=platform
 
+supermarkets:
+  shop_convenience:
+    name: Convenience store
+    description: TODO
+    filter: shop=convenience
+  shop_beverages:
+    name: Beverages
+    description: TODO
+    filter: shop=beverages
+  amenity_bicycle_parking:
+    name: Bicycle Parking
+    description: TODO
+    filter: amenity=bicycle_parking
+  amenity_parking:
+    name: Parking
+    description: TODO
+    filter: amenity=parking
+  amenity_parking_entrance:
+    name: Parking entrance
+    description: TODO
+    filter: amenity=parking_entrance
+
+tram-stops:
+  public_transport_stop_area:
+    name: Tram stop area
+    description: TODO
+    filter: public_transport=stop_area
+  public_transport_platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+
 clc-leaf-type:
   leaf_type:
     name: Type of Leaves
