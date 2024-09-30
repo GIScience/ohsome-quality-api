@@ -1,6 +1,6 @@
 {
-  "topic": "building-count",
-  "attribute": "address_housenumber",
+  "topic": "roads",
+  "attribute": "highway_speed_camera",
   "bpolys": {
     "type": "FeatureCollection",
     "features": [
