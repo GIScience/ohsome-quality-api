@@ -59,11 +59,11 @@ building-count:
     name: Material of Roofs
     description: TODO
     filter: roof:material=*
-  roof:colour:
+  roof_colour:
     name: Colour of Roofs
     description: TODO
     filter: roof:colour=*
-  building:colour:
+  building_colour:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
@@ -198,7 +198,7 @@ roads:
     name: Surface
     description: TODO
     filter: surface=*
-  highway:speed_camera:
+  highway_speed_camera:
     name: Speed Camera
     description: TODO
     filter: highway:speed_camera=*
