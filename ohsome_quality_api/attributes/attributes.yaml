@@ -182,6 +182,38 @@ parks:
     description: TODO
     filter: leisure=playground
 
+schools:
+  leisure_playground:
+    name: Playground
+    description: TODO
+    filter: leisure=playground
+
+subway-stations:
+  railway_subway:
+    name: Subway
+    description: TODO
+    filter: railway=subway
+  tunnel_yes:
+    name: Tunnel
+    description: TODO
+    filter: tunnel=yes
+  railway_subway_entrance:
+    name: Subway entrance
+    description: TODO
+    filter: railway=subway_entrance
+  route_subway:
+    name: Subway route
+    description: TODO
+    filter: route=subway
+  public_transport_stop_area:
+    name: Subway stop area
+    description: TODO
+    filter: public_transport=stop_area
+  public_transport_platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+
 clc-leaf-type:
   leaf_type:
     name: Type of Leaves
