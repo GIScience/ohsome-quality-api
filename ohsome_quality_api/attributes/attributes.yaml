@@ -160,27 +160,27 @@ marketplace:
     description: TODO
     filter: craft=winery
 
-  parks:
-    landuse_commercial:
-      name: Commercial landuse
-      description: TODO
-      filter: landuse=commercial
-    leisure_dog_park:
-      name: Dog park
-      description: TODO
-      filter: leisure=dog_park
-    tourism_theme_park:
-      name: Theme park
-      description: TODO
-      filter: tourism=theme_park
-    landuse_greenfield:
-      name: Greenfield
-      description: TODO
-      filter: landuse=greenfield
-    leisure_playground:
-      name: Playground
-      description: TODO
-      filter: leisure=playground
+parks:
+  landuse_commercial:
+    name: Commercial landuse
+    description: TODO
+    filter: landuse=commercial
+  leisure_dog_park:
+    name: Dog park
+    description: TODO
+    filter: leisure=dog_park
+  tourism_theme_park:
+    name: Theme park
+    description: TODO
+    filter: tourism=theme_park
+  landuse_greenfield:
+    name: Greenfield
+    description: TODO
+    filter: landuse=greenfield
+  leisure_playground:
+    name: Playground
+    description: TODO
+    filter: leisure=playground
 
 clc-leaf-type:
   leaf_type:
