@@ -7,6 +7,11 @@
 - report endpoint: has been deleted ([#818])
 
 
+### New Features
+
+- attribute-completeness: new topic-specific attributes have been added ([#826])
+
+
 ### Other Changes
 
 - a new regression test suite has been added to support safer deployments of new versions ([#820])
@@ -15,6 +20,7 @@
 
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
+[#826]: https://github.com/GIScience/ohsome-quality-api/issues/826
 
 
 ## Release 1.4.0
