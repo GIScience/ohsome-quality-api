@@ -84,7 +84,7 @@ class TestCalculation:
         indicator = AttributeCompleteness(
             topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
-            attribute_key=["leaf_type"],
+            attribute_key=["leaf-type"],
         )
         asyncio.run(indicator.preprocess())
         assert indicator.absolute_value_1 == 0
