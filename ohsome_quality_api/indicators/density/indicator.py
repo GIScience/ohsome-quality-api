@@ -40,24 +40,24 @@ class Density(BaseIndicator):
         # TODO: we need to think about how we handle this
         #  if there are different topics
         self.result.value = self.count / self.area_sqkm  # density
-        description = Template(self.metadata.result_description).substitute(
+        description = Template(self.templates.result_description).substitute(
             result=f"{self.result.value:.2f}"
         )
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                description + self.metadata.label_description["green"]
+                description + self.templates.label_description["green"]
             )
         else:
             if self.result.value > self.threshold_red:
                 self.result.class_ = 3
                 self.result.description = (
-                    description + self.metadata.label_description["yellow"]
+                    description + self.templates.label_description["yellow"]
                 )
             else:
                 self.result.class_ = 1
                 self.result.description = (
-                    description + self.metadata.label_description["red"]
+                    description + self.templates.label_description["red"]
                 )
 
     def create_figure(self) -> None:

@@ -1,24 +1,49 @@
+import os
 from enum import Enum
 
+import yaml
 from geojson import FeatureCollection
 
-from ohsome_quality_api.definitions import load_metadata
 from ohsome_quality_api.indicators.models import IndicatorMetadata
 from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.topics.definitions import load_topic_presets
-from ohsome_quality_api.utils.helper import get_class_from_key
+from ohsome_quality_api.utils.helper import (
+    get_class_from_key,
+    get_module_dir,
+)
 
 
 def get_indicator_keys() -> list[str]:
-    return list(load_metadata("indicators").keys())
+    return [str(t) for t in load_indicators().keys()]
+
+
+def load_indicators() -> dict[str, IndicatorMetadata]:
+    directory = get_module_dir("ohsome_quality_api.indicators")
+    file = os.path.join(directory, "indicators.yaml")
+    with open(file, "r") as f:
+        raw = yaml.safe_load(f)
+    indicators = {}
+    for k, v in raw.items():
+        indicators[k] = IndicatorMetadata(**v)
+    return indicators
 
 
 def get_indicator_metadata(project: ProjectEnum = None) -> dict[str, IndicatorMetadata]:
-    indicators = load_metadata("indicators")
+    indicators = load_indicators()
     if project is not None:
         return {k: v for k, v in indicators.items() if project in v.projects}
     else:
         return indicators
+
+
+def get_indicator(indicator_key: str) -> IndicatorMetadata:
+    indicators = get_indicator_metadata()
+    try:
+        return indicators[indicator_key]
+    except KeyError as error:
+        raise KeyError(
+            "Invalid project key. Valid project keys are: " + str(indicators.keys())
+        ) from error
 
 
 def get_valid_indicators(topic_key: str) -> tuple:

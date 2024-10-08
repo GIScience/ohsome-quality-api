@@ -111,7 +111,7 @@ class BuildingComparison(BaseIndicator):
             edge_case = self.check_minor_edge_cases(key)
             # ZeroDivisionError can not occur because of `check_major_edge_cases()`
             self.ratio[key] = self.area_osm[key] / self.area_ref[key]
-            template = Template(self.metadata.result_description)
+            template = Template(self.templates.result_description)
             description = template.substitute(
                 ratio=round(self.ratio[key] * 100, 2),
                 coverage=round(self.area_cov[key] * 100, 2),
@@ -130,13 +130,13 @@ class BuildingComparison(BaseIndicator):
                 self.result.class_ = 3
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
-            label_description = self.metadata.label_description[self.result.label]
+            label_description = self.templates.label_description[self.result.label]
             self.result.description = " ".join((label_description, result_description))
         elif major_edge_case:
-            label_description = self.metadata.label_description[self.result.label]
+            label_description = self.templates.label_description[self.result.label]
             self.result.description = " ".join((label_description, result_description))
         else:
-            label_description = self.metadata.label_description[self.result.label]
+            label_description = self.templates.label_description[self.result.label]
             edge_case = (
                 "OSM has substantivly more buildings than the reference datasets. The "
                 "reference dataset is likely to miss many buildings."

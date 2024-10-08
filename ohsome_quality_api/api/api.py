@@ -42,14 +42,12 @@ from ohsome_quality_api.api.response_models import (
 )
 from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
 from ohsome_quality_api.config import configure_logging
-from ohsome_quality_api.definitions import (
-    ATTRIBUTION_URL,
-    get_metadata,
-)
+from ohsome_quality_api.definitions import ATTRIBUTION_URL
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
     IndicatorEnumRequest,
     get_coverage,
+    get_indicator,
     get_indicator_metadata,
 )
 from ohsome_quality_api.projects.definitions import (
@@ -75,7 +73,6 @@ from ohsome_quality_api.utils.exceptions import (
 )
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
-    hyphen_to_camel,
     json_serialize,
 )
 from ohsome_quality_api.utils.validators import (
@@ -450,7 +447,7 @@ async def metadata_indicators(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
 )
 async def metadata_indicators_by_key(key: IndicatorEnum) -> Any:
     """Get metadata of an indicator by key."""
-    metadata = get_metadata("indicators", hyphen_to_camel(key.value))
+    metadata = get_indicator(key.value)
     return {"result": {key.value: metadata}}
 
 

@@ -5,7 +5,10 @@ import pytest
 from geojson import Feature
 
 from ohsome_quality_api.indicators.minimal.indicator import Minimal
-from ohsome_quality_api.indicators.models import Result
+from ohsome_quality_api.indicators.models import (
+    IndicatorTemplates,
+    Result,
+)
 
 from .utils import get_geojson_fixture, get_topic_fixture
 
@@ -80,6 +83,12 @@ class TestBaseIndicator:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
         # comment out for manual test
         # pio.show(indicator.result.figure)
+
+    def test_get_template(self, feature, topic):
+        indicator = Minimal(feature=feature, topic=topic)
+        indicator.get_template()
+        assert isinstance(indicator.templates, IndicatorTemplates)
+        assert isinstance(indicator.result, Result)
 
 
 class TestBaseResult:

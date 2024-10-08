@@ -158,9 +158,9 @@ class Currentness(BaseIndicator):
         else:
             self.result.class_ = 1
 
-        label_description = self.metadata.label_description[self.result.label]
+        label_description = self.templates.label_description[self.result.label]
         self.result.description += Template(
-            self.metadata.result_description
+            self.templates.result_description
         ).substitute(
             up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
             num_of_elements=int(self.contrib_sum),

@@ -1,17 +1,14 @@
 """Global Variables and Functions."""
 
 import glob
-import logging
 from enum import Enum
 from types import MappingProxyType
-from typing import Iterable, Literal
+from typing import Literal
 
 import yaml
 
 from ohsome_quality_api.indicators.models import IndicatorMetadata
-from ohsome_quality_api.topics.definitions import load_topic_presets
 from ohsome_quality_api.utils.helper import (
-    camel_to_hyphen,
     get_module_dir,
 )
 
@@ -75,31 +72,6 @@ def load_metadata(
             for k, v in raw.items():
                 metadata[k] = IndicatorMetadata(**v)
     return metadata
-
-
-def get_metadata(
-    module_name: Literal["indicators"], class_name: str
-) -> IndicatorMetadata:
-    """Get metadata of an indicator based on its class name.
-
-    This is implemented outside the metadata class to be able to access metadata of all
-    indicators without instantiating of those.
-
-    Args:
-        module_name: indicators.
-        class_name: Class name of an indicator (camel case).
-    """
-    metadata = load_metadata(module_name)
-    try:
-        return metadata[camel_to_hyphen(class_name)]
-    except KeyError:
-        logging.error("Invalid class name: " + class_name)
-        raise
-
-
-# TODO: duplicate of func with the same name in projects/definition.py ?
-def get_project_keys() -> Iterable[str]:
-    return set(t.project for t in load_topic_presets().values())
 
 
 def get_attribution(data_keys: list) -> str:

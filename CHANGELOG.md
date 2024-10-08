@@ -21,8 +21,8 @@
 [#673]: https://github.com/GIScience/ohsome-quality-api/issues/673
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
-[#826]: https://github.com/GIScience/ohsome-quality-api/issues/826
 [#824]: https://github.com/GIScience/ohsome-quality-api/issues/824
+[#826]: https://github.com/GIScience/ohsome-quality-api/issues/826
 
 
 ## Release 1.4.0

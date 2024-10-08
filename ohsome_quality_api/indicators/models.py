@@ -13,8 +13,6 @@ class IndicatorMetadata(BaseModel):
 
     name: str
     description: str
-    label_description: dict
-    result_description: str
     projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
     model_config = ConfigDict(
@@ -24,6 +22,13 @@ class IndicatorMetadata(BaseModel):
         extra="forbid",
         populate_by_name=True,
     )
+
+
+class IndicatorTemplates(BaseModel):
+    """Result text templates of an indicator as defined in the templates.yaml file."""
+
+    label_description: dict[str, str]
+    result_description: str
 
 
 class Result(BaseModel):

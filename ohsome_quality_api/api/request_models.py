@@ -1,14 +1,13 @@
-import json
+from typing import Dict
 
 import geojson
-from geojson import FeatureCollection
+from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from ohsome_quality_api.attributes.definitions import AttributeEnum
 from ohsome_quality_api.topics.definitions import TopicEnum
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
-from ohsome_quality_api.utils.validators import validate_geojson
 
 
 class BaseConfig(BaseModel):
@@ -20,8 +19,11 @@ class BaseConfig(BaseModel):
     )
 
 
+FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, Dict]]
+
+
 class BaseBpolys(BaseConfig):
-    bpolys: dict = Field(
+    bpolys: FeatureCollection_ = Field(
         {
             "type": "FeatureCollection",
             "features": [
@@ -46,12 +48,11 @@ class BaseBpolys(BaseConfig):
 
     @field_validator("bpolys")
     @classmethod
-    def validate_bpolys(cls, value) -> FeatureCollection:
-        obj = geojson.loads(json.dumps(value))
-        if not isinstance(obj, FeatureCollection):
-            raise ValueError("must be of type FeatureCollection")
-        validate_geojson(obj)  # Check if exceptions are raised
-        return obj
+    def transform(cls, value) -> geojson.FeatureCollection:
+        # NOTE: `geojson_pydantic` library is used only for validation and openAPI-spec
+        # generation. To avoid refactoring all code the FeatureCollection object of
+        # the `geojson` library is still used every else.
+        return geojson.loads(value.model_dump_json())
 
 
 class IndicatorRequest(BaseBpolys):
