@@ -3,73 +3,251 @@ building-count:
     name: Height of Buildings
     description: TODO
     filter: height=* or building:levels=*
-  house_number:
+  house-number:
     name: House Number
     description: TODO
     filter: addr:housenumber=*
-  address_street:
+  address-street:
     name: Street Address
     description: TODO
     filter: addr:street=*
-  address_city:
+  address-city:
     name: City Address
     description: TODO
     filter: addr:city=*
-  address_postcode:
+  address-postcode:
     name: Postcode Address
     description: TODO
     filter: addr:postcode=*
-  address_country:
+  address-country:
     name: Country Address
     description: TODO
     filter: addr:country=*
-  address_state:
+  address-state:
     name: State Address
     description: TODO
     filter: addr:state=*
-  address_suburb:
+  address-suburb:
     name: Suburb Address
     description: TODO
     filter: addr:suburb=*
-  address_district:
+  address-district:
     name: District Address
     description: TODO
     filter: addr:district=*
-  address_housenumber:
+  address-housenumber:
     name: House Number Address
     description: TODO
     filter: addr:housenumber=*
-  building_levels:
+  building-levels:
     name: Levels of Buildings
     description: TODO
     filter: building:levels=*
-  roof_shape:
+  roof-shape:
     name: Shape of Roofs
     description: TODO
     filter: roof:shape=*
-  roof_levels:
+  roof-levels:
     name: Levels of Roofs
     description: TODO
     filter: roof:levels=*
-  building_material:
+  building-material:
     name: Material of Buildings
     description: TODO
     filter: building:material=*
-  roof_material:
+  roof-material:
     name: Material of Roofs
     description: TODO
     filter: roof:material=*
-  roof:colour:
+  roof-colour:
     name: Colour of Roofs
     description: TODO
     filter: roof:colour=*
-  building:colour:
+  building-colour:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
 
+bus-stops:
+  public-transport-platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+  public-transport-stop-area:
+    name: Bus stop area
+    description: TODO
+    filter: public_transport=stop_area
+
+clinics:
+  healthcare-birthing-centre:
+    name: Birthing centre
+    description: TODO
+    filter: healthcare=birthing_centre
+  healthcare-blood-donation:
+    name: Blood donation
+    description: TODO
+    filter: healthcare=blood_donation
+  healthcare-rehabilitation:
+    name: Rehabilitation
+    description: TODO
+    filter: healthcare=rehabilitation
+  healthcare-vaccination-centre:
+    name: Vaccination centre
+    description: TODO
+    filter: healthcare=vaccination_centre
+
+fitness-centres:
+  sport-fitness:
+    name: Fitness
+    description: TODO
+    filter: sport=fitness
+  sport-swimming:
+    name: Swimming
+    description: TODO
+    filter: sport=swimming
+  sport-weightlifting:
+    name: Weightlifting
+    description: TODO
+    filter: sport=weightlifting
+
+forests:
+  access-private:
+    name: Private Access
+    description: TODO
+    filter: access=private
+  access-official:
+    name: Official Access
+    description: TODO
+    filter: access=official
+  access-forestry:
+    name: Forestry
+    description: TODO
+    filter: access=forestry
+  highway-track:
+    name: Track
+    description: TODO
+    filter: highway=track
+  boundary-forest:
+    name: Forest boundary
+    description: TODO
+    filter: boundary=forest
+
+kindergarten:
+  leisure-playground:
+    name: Playground
+    description: TODO
+    filter: leisure=playground
+
+marketplaces:
+  craft-bakery:
+    name: Bakery
+    description: TODO
+    filter: craft=bakery
+  craft-handicraft:
+    name: Handicraft
+    description: TODO
+    filter: craft=handicraft
+  craft-leather:
+    name: Leather craft
+    description: TODO
+    filter: craft=leather
+  craft-shoemaker:
+    name: Shoemaker
+    description: TODO
+    filter: craft=shoemaker
+  craft-winery:
+    name: Winery
+    description: TODO
+    filter: craft=winery
+
+parks:
+  landuse-commercial:
+    name: Commercial landuse
+    description: TODO
+    filter: landuse=commercial
+  leisure-dog-park:
+    name: Dog park
+    description: TODO
+    filter: leisure=dog_park
+  tourism-theme-park:
+    name: Theme park
+    description: TODO
+    filter: tourism=theme_park
+  landuse-greenfield:
+    name: Greenfield
+    description: TODO
+    filter: landuse=greenfield
+  leisure-playground:
+    name: Playground
+    description: TODO
+    filter: leisure=playground
+
+schools:
+  leisure-playground:
+    name: Playground
+    description: TODO
+    filter: leisure=playground
+
+subway-stations:
+  railway-subway:
+    name: Subway
+    description: TODO
+    filter: railway=subway
+  tunnel-yes:
+    name: Tunnel
+    description: TODO
+    filter: tunnel=yes
+  railway-subway-entrance:
+    name: Subway entrance
+    description: TODO
+    filter: railway=subway_entrance
+  route-subway:
+    name: Subway route
+    description: TODO
+    filter: route=subway
+  public-transport-stop-area:
+    name: Subway stop area
+    description: TODO
+    filter: public_transport=stop_area
+  public-transport-platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+
+supermarkets:
+  shop-convenience:
+    name: Convenience store
+    description: TODO
+    filter: shop=convenience
+  shop-beverages:
+    name: Beverages
+    description: TODO
+    filter: shop=beverages
+  amenity-bicycle-parking:
+    name: Bicycle Parking
+    description: TODO
+    filter: amenity=bicycle_parking
+  amenity-parking:
+    name: Parking
+    description: TODO
+    filter: amenity=parking
+  amenity-parking-entrance:
+    name: Parking entrance
+    description: TODO
+    filter: amenity=parking_entrance
+
+tram-stops:
+  public-transport-stop-area:
+    name: Tram stop area
+    description: TODO
+    filter: public_transport=stop_area
+  public-transport-platform:
+    name: Public transport platform
+    description: TODO
+    filter: public_transport=platform
+
 clc-leaf-type:
-  leaf_type:
+  leaf-type:
     name: Type of Leaves
     description: TODO
     filter: leaf_type in (broadleaved, needleleaved, mixed)
@@ -87,11 +265,11 @@ roads:
     name: Crossing
     description: TODO
     filter: footway:crossing = *
-  cycleway_lane:
+  cycleway-lane:
     name: Cycleway Lane
     description: TODO
     filter: cycleway:lane=*
-  cycleway_share_busway:
+  cycleway-share-busway:
     name: Cycleway Share Busway
     description: TODO
     filter: cycleway:share_busway=*
@@ -111,7 +289,7 @@ roads:
     name: Surface
     description: TODO
     filter: surface=*
-  highway:speed_camera:
+  highway-speed-camera:
     name: Speed Camera
     description: TODO
     filter: highway:speed_camera=*

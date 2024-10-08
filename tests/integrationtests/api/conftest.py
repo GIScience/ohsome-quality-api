@@ -123,7 +123,7 @@ def metadata_indicator_minimal():
 def metadata_attribute_clc_leaf_type():
     return {
         "clc-leaf-type": {
-            "leaf_type": {
+            "leaf-type": {
                 "name": "Type of Leaves",
                 "description": "TODO",
                 "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
