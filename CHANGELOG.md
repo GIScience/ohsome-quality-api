@@ -2,6 +2,9 @@
 
 ## Current Main 
 
+### New Features
+- attribute-completeness: no figure creation if quality could not be calculated ([#830])
+
 ## Release  1.5.0
 
 ### Breaking Changes
@@ -13,7 +16,6 @@
 
 - attribute-completeness: new topic-specific attributes have been added ([#826])
 
-
 ### Other Changes
 
 - a new regression test suite has been added to support safer deployments of new versions ([#820])
@@ -24,7 +26,11 @@
 [#818]: https://github.com/GIScience/ohsome-quality-api/pull/818
 [#820]: https://github.com/GIScience/ohsome-quality-api/issues/820
 [#824]: https://github.com/GIScience/ohsome-quality-api/issues/824
+<<<<<<< HEAD
 [#826]: https://github.com/GIScience/ohsome-quality-api/issues/826
+=======
+[#830]: https://github.com/GIScience/ohsome-quality-api/pull/830
+>>>>>>> 76d10415 (chore: add changelog)
 
 
 ## Release 1.4.0
