@@ -158,6 +158,7 @@ kindergarten:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -172,6 +173,7 @@ clinics:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -200,6 +202,7 @@ bus-stops:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -214,6 +217,7 @@ tram-stops:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -228,6 +232,7 @@ subway-stations:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -242,6 +247,7 @@ supermarkets:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -256,6 +262,7 @@ marketplaces:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -270,6 +277,7 @@ parks:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -284,6 +292,7 @@ forests:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -324,6 +333,7 @@ fitness-centres:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
