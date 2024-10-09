@@ -366,6 +366,42 @@ hospitals:
     - core
     - bkg
 
+### UNICEF PROJECT ###
+
+roads-unicef:
+  name: UNICEF Roads
+  description: >-
+    The road network usable for routing as defined for the UNICEF Project.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    highway in (motorway, motorway_link, motorroad, trunk, trunk_link, primary, primary_link, secondary, secondary_link,
+    tertiary, tertiary_link, unclassified, residential, living_street, service, road, track)
+  ratio_filter: >-
+    (highway in (motorway, motorway_link, motorroad, trunk, trunk_link, primary, primary_link, secondary, 
+    secondary_link, tertiary, tertiary_link, unclassified, residential, living_street, service, road, track)) and name=*
+  source: https://heigit.atlassian.net/wiki/spaces/GIS/pages/756645935/2024-10-01+Unicef+education+access
+  indicators:
+    - mapping-saturation
+    - road-comparison
+    - attribute-completeness
+    - currentness  # currentness always requests /contributions/latest/count [count!]
+  projects:
+    - unicef
+
+healthcare-primary:
+  name: Primary Healthcare facilities for UNICEF Project
+  description: Count of hospitals.
+  endpoint: elements
+  aggregation_type: count
+  filter: amenity in (clinic, doctors, health_post) or healthcare in (clinic, doctors, doctor, midwife, nurse, center)
+  source: https://heigit.atlassian.net/wiki/spaces/GIS/pages/756645935/2024-10-01+Unicef+education+access
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - unicef
+
 ### SKETCHMAP PROJECT ###
 
 amenities:
