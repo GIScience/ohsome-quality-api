@@ -61,6 +61,7 @@ def metadata_indicator_mapping_saturation():
                 "mapaction",
                 "sketchmap",
                 "bkg",
+                "unicef",
             ],
             "qualityDimension": "completeness",
         }
