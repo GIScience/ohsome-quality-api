@@ -2,6 +2,11 @@
 
 ## Current Main 
 
+### New Features
+
+- New Topics and Project for UNICEF education access project have been added ([#832])
+
+
 ## Release  1.5.0
 
 ### Breaking Changes
