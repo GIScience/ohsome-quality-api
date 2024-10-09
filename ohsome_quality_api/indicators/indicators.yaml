@@ -20,6 +20,7 @@ currentness:
   projects:
     - core
     - bkg
+    - unicef
   quality_dimension: currentness
   description: >-
     Estimate currentness of features by classifying contributions based on
@@ -30,6 +31,7 @@ road-comparison:
   projects:
     - bkg
     - core
+    - unicef
   quality_dimension: completeness
   description: >-
     Compare the road length of OSM roads with the road length of
@@ -45,6 +47,7 @@ mapping-saturation:
     - mapaction
     - sketchmap
     - bkg
+    - unicef
   quality_dimension: completeness
   description: >-
     Calculate if mapping has saturated.
