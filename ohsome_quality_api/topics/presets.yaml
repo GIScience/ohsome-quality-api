@@ -147,6 +147,7 @@ schools:
   projects:
     - core
     - bkg
+    - unicef
 
 kindergarten:
   name: Kindergarten
@@ -365,6 +366,7 @@ hospitals:
   projects:
     - core
     - bkg
+    - unicef
 
 ### UNICEF PROJECT ###
 
