@@ -6,6 +6,12 @@
 
 - New Topics and Project for UNICEF education access project have been added ([#832])
 
+### Bug Fixes
+
+- fix: invalid example GeoJSON in swagger ([#831])
+
+[#831]: https://github.com/GIScience/ohsome-quality-api/issues/831
+
 
 ## Release  1.5.0
 
