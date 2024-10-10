@@ -10,7 +10,7 @@
 
 - fix: invalid example GeoJSON in swagger ([#831])
 - fix: global coverage is now returned correctly ([#821])
-- attribute-completeness: no figure creation if quality could not be calculated ([#830])
+- attribute-completeness: no figure creation if quality could not be calculated ([#829])
 
 
 [#821]: https://github.com/GIScience/ohsome-quality-api/issues/821
