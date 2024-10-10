@@ -2,6 +2,13 @@
 
 ## Current Main 
 
+### Bug Fixes
+
+- fixed invalid example GeoJSON in swagger ([#835])
+
+[#835]: https://github.com/GIScience/ohsome-quality-api/pull/835
+
+
 ## Release  1.5.0
 
 ### Breaking Changes
