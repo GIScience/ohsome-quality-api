@@ -10,6 +10,7 @@
 
 - fix: invalid example GeoJSON in swagger ([#831])
 
+
 [#831]: https://github.com/GIScience/ohsome-quality-api/issues/831
 
 
