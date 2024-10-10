@@ -10,9 +10,11 @@
 
 - fix: invalid example GeoJSON in swagger ([#831])
 - fix: global coverage is now returned correctly ([#821])
+- attribute-completeness: no figure creation if quality could not be calculated ([#829])
 
 
 [#821]: https://github.com/GIScience/ohsome-quality-api/issues/821
+[#829]: https://github.com/GIScience/ohsome-quality-api/issues/829
 [#831]: https://github.com/GIScience/ohsome-quality-api/issues/831
 [#832]: https://github.com/GIScience/ohsome-quality-api/issues/832
 
@@ -27,7 +29,6 @@
 ### New Features
 
 - attribute-completeness: new topic-specific attributes have been added ([#826])
-
 
 ### Other Changes
 

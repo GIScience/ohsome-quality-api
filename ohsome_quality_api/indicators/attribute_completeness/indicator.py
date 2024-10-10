@@ -1,3 +1,4 @@
+import logging
 from string import Template
 from typing import List
 
@@ -66,15 +67,13 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value == "NaN":
             self.result.value = None
         if self.result.value is None:
+            self.result.description += " No features in this region"
             return
         description = Template(self.templates.result_description).substitute(
             result=round(self.result.value, 2),
             all=round(self.absolute_value_1, 1),
             matched=round(self.absolute_value_2, 1),
         )
-        if self.absolute_value_1 == 0:
-            self.result.description = description + "No features in this region"
-            return
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
@@ -98,6 +97,9 @@ class AttributeCompleteness(BaseIndicator):
         The gauge chart shows the percentage of features having the requested
         attribute(s).
         """
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
 
         fig = go.Figure(
             go.Indicator(
