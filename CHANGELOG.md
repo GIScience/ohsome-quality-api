@@ -2,6 +2,8 @@
 
 ## Current Main 
 
+## Release  1.6.0 
+
 ### New Features
 
 - New Topics and Project for UNICEF education access project have been added ([#832])
