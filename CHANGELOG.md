@@ -6,6 +6,13 @@
 
 - New Topics and Project for UNICEF education access project have been added ([#832])
 
+### Bug Fixes
+
+- fix: global coverage is now returned correctly ([#821])
+
+
+[#821]: https://github.com/GIScience/ohsome-quality-api/issues/821
+
 
 ## Release  1.5.0
 
