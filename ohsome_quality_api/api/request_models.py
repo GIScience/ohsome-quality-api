@@ -41,7 +41,8 @@ class BaseBpolys(BaseConfig):
                             ]
                         ],
                     },
-                },
+                    "properties": {},
+                }
             ],
         }
     )
