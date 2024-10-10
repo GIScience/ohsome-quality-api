@@ -65,15 +65,18 @@ class TestBaseIndicator:
         for feature in coverage:
             assert isinstance(feature, Feature)
             assert feature.is_valid
+            assert feature["geometry"] is not None
         coverage_default = asyncio.run(Minimal.coverage())
         for feature in coverage_default:
             assert isinstance(feature, Feature)
             assert feature.is_valid
+            assert feature["geometry"] is not None
         assert coverage_default == coverage
         coverage_inversed = asyncio.run(Minimal.coverage(inverse=True))
         for feature in coverage_inversed:
             assert isinstance(feature, Feature)
             assert feature.is_valid
+            assert feature["geometry"] is not None
         assert coverage != coverage_inversed
         assert coverage_default != coverage_inversed
 

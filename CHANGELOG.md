@@ -9,9 +9,12 @@
 ### Bug Fixes
 
 - fix: invalid example GeoJSON in swagger ([#831])
+- fix: global coverage is now returned correctly ([#821])
 
 
+[#821]: https://github.com/GIScience/ohsome-quality-api/issues/821
 [#831]: https://github.com/GIScience/ohsome-quality-api/issues/831
+[#832]: https://github.com/GIScience/ohsome-quality-api/issues/832
 
 
 ## Release  1.5.0

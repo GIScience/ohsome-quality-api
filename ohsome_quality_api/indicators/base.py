@@ -132,7 +132,7 @@ class BaseIndicator(metaclass=ABCMeta):
                 )
             ]
         else:
-            return [Feature(Polygon(coordinates=[]))]
+            return [Feature(geometry=Polygon(coordinates=[]))]
 
     @abstractmethod
     async def preprocess(self) -> None:
