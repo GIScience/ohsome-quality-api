@@ -2,6 +2,16 @@
 
 ## Current Main 
 
+
+## Release  1.6.1 
+
+### Bug Fixes
+
+- fix inconsistency in docker image tags
+
+
+## Release 1.6.0
+
 ### New Features
 
 - New Topics and Project for UNICEF education access project have been added ([#832])
@@ -19,7 +29,7 @@
 [#832]: https://github.com/GIScience/ohsome-quality-api/issues/832
 
 
-## Release  1.5.0
+## Release 1.5.0
 
 ### Breaking Changes
 
