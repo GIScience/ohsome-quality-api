@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 import geojson
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -66,7 +66,7 @@ class IndicatorRequest(BaseBpolys):
 
 
 class AttributeCompletenessRequest(IndicatorRequest):
-    attribute_key: AttributeEnum = Field(
+    attribute_key: List[AttributeEnum] = Field(
         ...,
         title="Attribute Key",
         alias="attribute",

@@ -271,9 +271,10 @@ async def post_attribute_completeness(
     parameters: AttributeCompletenessRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    validate_attribute_topic_combination(
-        parameters.attribute_key.value, parameters.topic_key.value
-    )
+    for attribute in parameters.attribute_key:
+        validate_attribute_topic_combination(
+            attribute.value, parameters.topic_key.value
+        )
 
     return await _post_indicator(request, "attribute-completeness", parameters)
 
@@ -310,7 +311,7 @@ async def _post_indicator(
     validate_indicator_topic_combination(key, parameters.topic_key.value)
     attribute_key = getattr(parameters, "attribute_key", None)
     if attribute_key:
-        attribute_key = attribute_key.value
+        attribute_key = [attribute.value for attribute in attribute_key]
     indicators = await oqt.create_indicator(
         key=key,
         bpolys=parameters.bpolys,

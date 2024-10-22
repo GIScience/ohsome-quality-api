@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import geojson
 import pytest
@@ -63,8 +64,8 @@ def topic_major_roads_length() -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
-def attribute_key_height() -> str:
-    return "height"
+def attribute_key_height() -> List[str]:
+    return ["height"]
 
 
 @pytest.fixture(scope="class")
