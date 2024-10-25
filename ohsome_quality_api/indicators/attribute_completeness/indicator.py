@@ -70,13 +70,7 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             self.result.description += " No features in this region"
             return
-        self.description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value, 2),
-            all=round(self.absolute_value_1, 1),
-            matched=round(self.absolute_value_2, 1),
-            topic=self.topic.name,
-            tag=self.attribute_key[0],
-        )
+        self.create_description()
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
@@ -93,6 +87,15 @@ class AttributeCompleteness(BaseIndicator):
             self.result.description = (
                 self.description + self.templates.label_description["red"]
             )
+
+    def create_description(self):
+        self.description = Template(self.templates.result_description).substitute(
+            result=round(self.result.value, 2),
+            all=round(self.absolute_value_1, 1),
+            matched=round(self.absolute_value_2, 1),
+            topic=self.topic.name,
+            tag=self.attribute_key[0],
+        )
 
     def create_figure(self) -> None:
         """Create a gauge chart.
