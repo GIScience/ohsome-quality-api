@@ -10,4 +10,4 @@ label_description:
     The quality level could not be calculated for this indicator.
 result_description: >-
   The ratio of the topic $topic in the selected area (all: $all) compared to the topic $topic with the
-  expected tag "$tag" (matched: $matched) is $result. 
+  expected $tags (matched: $matched) is $result. 

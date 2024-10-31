@@ -110,14 +110,11 @@ class TestFigure:
         )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        assert (
-            indicator.description
-            == (
-                "The ratio of the topic Building Count in the "
-                "selected area (all: 29936.0) "
-                "compared to the topic Building Count with the "
-                'expected tag "height" (matched: 8702.0) is 0.29. '
-            )
+        assert indicator.description == (
+            "The ratio of the topic Building Count in the "
+            "selected area (all: 29936.0) "
+            "compared to the topic Building Count with the "
+            "expected tag height (matched: 8702.0) is 0.29. "
         )
         return indicator
 

@@ -94,7 +94,9 @@ class AttributeCompleteness(BaseIndicator):
             all=round(self.absolute_value_1, 1),
             matched=round(self.absolute_value_2, 1),
             topic=self.topic.name,
-            tag=self.attribute_key[0],
+            tags="tags " + ", ".join(self.attribute_key)
+            if len(self.attribute_key) > 1
+            else "tag " + self.attribute_key[0],
         )
 
     def create_figure(self) -> None:
