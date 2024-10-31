@@ -47,6 +47,7 @@ class AttributeCompleteness(BaseIndicator):
         self.attribute_key = attribute_key
         self.absolute_value_1 = None
         self.absolute_value_2 = None
+        self.description = None
 
     async def preprocess(self) -> None:
         attribute = build_attribute_filter(self.attribute_key, self.topic.key)
@@ -69,27 +70,34 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             self.result.description += " No features in this region"
             return
-        description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value, 2),
-            all=round(self.absolute_value_1, 1),
-            matched=round(self.absolute_value_2, 1),
-        )
+        self.create_description()
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                description + self.templates.label_description["green"]
+                self.description + self.templates.label_description["green"]
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                description + self.templates.label_description["yellow"]
+                self.description + self.templates.label_description["yellow"]
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                description + self.templates.label_description["red"]
+                self.description + self.templates.label_description["red"]
             )
+
+    def create_description(self):
+        self.description = Template(self.templates.result_description).substitute(
+            result=round(self.result.value, 2),
+            all=round(self.absolute_value_1, 1),
+            matched=round(self.absolute_value_2, 1),
+            topic=self.topic.name,
+            tags="tags " + ", ".join(self.attribute_key)
+            if len(self.attribute_key) > 1
+            else "tag " + self.attribute_key[0],
+        )
 
     def create_figure(self) -> None:
         """Create a gauge chart.
