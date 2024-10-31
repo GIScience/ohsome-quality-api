@@ -13,9 +13,7 @@ bytes count > 1700
 
 jsonpath "$.result[0].metadata.name" == "Attribute Completeness"
 jsonpath "$.result[0].topic.name" == "Building Count"
-jsonpath "$.result[0].result.description" contains "The ratio of the features (all: 6"
-jsonpath "$.result[0].result.description" contains ") compared to features with expected tags (matched: 5"
-jsonpath "$.result[0].result.description" contains ") is 0.8"
+jsonpath "$.result[0].result.description" matches /^The ratio of the features \(all: 6\d{1}\.0\) compared to features with expected tags \(matched: 5\d{1}\.0\) is 0\.8\d{1}\. More than 75% of the features match the expected tags\.$/
 jsonpath "$.result[0].result.figure.data[0].gauge.steps[0].color" == "tomato"
 jsonpath "$.result[0].result.label" == "green"
 
