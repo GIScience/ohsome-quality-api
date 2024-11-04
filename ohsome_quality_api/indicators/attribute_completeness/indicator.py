@@ -8,6 +8,7 @@ from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
+    get_attribute,
 )
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
@@ -89,14 +90,30 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     def create_description(self):
+        attribute_names = [
+            get_attribute(self.topic.key, attribute_key).name.lower()
+            for attribute_key in self.attribute_key
+        ]
+        if self.topic.endpoint == "elements":
+            all = f"{int(self.absolute_value_1)} elements"
+            matched = f"{int(self.absolute_value_2)} elements"
+        elif self.topic.endpoint == "area":
+            all = f"{round(self.absolute_value_1, 2)} m²"
+            matched = f"{int(self.absolute_value_2, 2)} m²"
+        elif self.topic.endpoint == "length":
+            all = f"{int(self.absolute_value_1, 2)} m"
+            matched = f"{int(self.absolute_value_2, 2)} m"
+        else:
+            raise ValueError("Invalid endpoint")
+
         self.description = Template(self.templates.result_description).substitute(
             result=round(self.result.value, 2),
-            all=round(self.absolute_value_1, 1),
-            matched=round(self.absolute_value_2, 1),
-            topic=self.topic.name,
-            tags="tags " + ", ".join(self.attribute_key)
-            if len(self.attribute_key) > 1
-            else "tag " + self.attribute_key[0],
+            all=all,
+            matched=matched,
+            topic=self.topic.name.lower(),
+            tags="attributes " + ", ".join(attribute_names)
+            if len(attribute_names) > 1
+            else "attribute " + attribute_names[0],
         )
 
     def create_figure(self) -> None:
