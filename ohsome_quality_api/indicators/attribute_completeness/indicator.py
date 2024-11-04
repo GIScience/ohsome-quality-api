@@ -94,17 +94,17 @@ class AttributeCompleteness(BaseIndicator):
             get_attribute(self.topic.key, attribute_key).name.lower()
             for attribute_key in self.attribute_key
         ]
-        if self.topic.endpoint == "elements":
+        if self.topic.aggregation_type == "count":
             all = f"{int(self.absolute_value_1)} elements"
             matched = f"{int(self.absolute_value_2)} elements"
-        elif self.topic.endpoint == "area":
+        elif self.topic.aggregation_type == "area":
             all = f"{round(self.absolute_value_1, 2)} m²"
             matched = f"{int(self.absolute_value_2, 2)} m²"
-        elif self.topic.endpoint == "length":
+        elif self.topic.aggregation_type == "length":
             all = f"{int(self.absolute_value_1, 2)} m"
             matched = f"{int(self.absolute_value_2, 2)} m"
         else:
-            raise ValueError("Invalid endpoint")
+            raise ValueError("Invalid aggregation_type")
 
         self.description = Template(self.templates.result_description).substitute(
             result=round(self.result.value, 2),
