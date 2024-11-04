@@ -6,10 +6,8 @@ import geojson
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from indicators.attribute_completeness.indicator import AttributeCompleteness
 
-from ohsome_quality_api.indicators.attribute_completeness.indicator import (
-    AttributeCompleteness,
-)
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -111,10 +109,10 @@ class TestFigure:
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.description == (
-            "The ratio of the topic Building Count in the "
-            "selected area (all: 29936.0) "
-            "compared to the topic Building Count with the "
-            "expected tag height (matched: 8702.0) is 0.29. "
+            "The ratio of the topic building count in the "
+            "selected area (all: 30237 elements) compared to"
+            " the topic building count with the expected attribute"
+            " height of buildings (matched: 11948 elements) is 0.4. "
         )
         return indicator
 
@@ -128,3 +126,67 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+
+
+def test_create_description():
+    indicator = AttributeCompleteness(
+        get_topic_fixture("building-count"),
+        "foo",
+        ["height"],
+    )
+    indicator.result.value = 0.2
+    indicator.absolute_value_1 = 10
+    indicator.absolute_value_2 = 2
+    indicator.create_description()
+    assert indicator.description == (
+        "The ratio of the topic building count in"
+        " the selected area (all: 10 elements) compared"
+        " to the topic building count with the expected "
+        "attribute height of buildings (matched: 2 elements) is 0.2. "
+    )
+
+
+def test_create_description_multiple_attributes():
+    indicator = AttributeCompleteness(
+        get_topic_fixture("building-count"),
+        "foo",
+        ["height", "house-number", "address-street"],
+    )
+    indicator.result.value = 0.2
+    indicator.absolute_value_1 = 10
+    indicator.absolute_value_2 = 2
+    indicator.create_description()
+    assert indicator.description == (
+        "The ratio of the topic building count in the selected area (all: 10 elements)"
+        " compared to the topic building count with the expected attributes height of"
+        " buildings, house number, street address (matched: 2 elements) is 0.2. "
+    )
+
+
+@pytest.mark.parametrize(
+    "topic_key, attribute_key, aggregation, "
+    "result_value, absolute_value_1, absolute_value_2",
+    [
+        ("building-count", "height", "elements", 0.2, 10, 2),
+        ("clc-leaf-type", "leaf-type", "m²", 0.2, 10.012, 2.012),
+        ("roads", "name", "m", 0.2, 10.012, 2.012),
+    ],
+)
+def test_create_description_multiple_aggregation_types(
+    topic_key,
+    attribute_key,
+    aggregation,
+    result_value,
+    absolute_value_1,
+    absolute_value_2,
+):
+    indicator = AttributeCompleteness(
+        get_topic_fixture(topic_key),
+        "foo",
+        [attribute_key],
+    )
+    indicator.result.value = result_value
+    indicator.absolute_value_1 = absolute_value_1
+    indicator.absolute_value_2 = absolute_value_2
+    indicator.create_description()
+    assert aggregation in indicator.description
