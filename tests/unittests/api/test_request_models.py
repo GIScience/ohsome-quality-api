@@ -72,3 +72,11 @@ def test_attribute_completeness(bpolys, topic_key_building_count, attribute_key_
     AttributeCompletenessRequest(
         bpolys=bpolys, topic=topic_key_building_count, attribute=attribute_key_height
     )
+
+
+def test_attribute_completeness_multiple_attributes(
+    bpolys, topic_key_building_count, attribute_key_multiple
+):
+    AttributeCompletenessRequest(
+        bpolys=bpolys, topic=topic_key_building_count, attribute=attribute_key_multiple
+    )
