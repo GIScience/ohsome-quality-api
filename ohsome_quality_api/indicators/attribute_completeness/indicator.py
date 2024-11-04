@@ -98,11 +98,11 @@ class AttributeCompleteness(BaseIndicator):
             all = f"{int(self.absolute_value_1)} elements"
             matched = f"{int(self.absolute_value_2)} elements"
         elif self.topic.aggregation_type == "area":
-            all = f"{round(self.absolute_value_1, 2)} m²"
-            matched = f"{int(self.absolute_value_2, 2)} m²"
+            all = f"{str(round(self.absolute_value_1, 2))} m²"
+            matched = f"{str(round(self.absolute_value_2, 2))} m²"
         elif self.topic.aggregation_type == "length":
-            all = f"{int(self.absolute_value_1, 2)} m"
-            matched = f"{int(self.absolute_value_2, 2)} m"
+            all = f"{str(round(self.absolute_value_1, 2))} m"
+            matched = f"{str(round(self.absolute_value_2, 2))} m"
         else:
             raise ValueError("Invalid aggregation_type")
 
