@@ -40,7 +40,7 @@ class AttributeCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute_key: str | List[str] = None,
+        attribute_key: List[str] = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75

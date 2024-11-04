@@ -125,14 +125,14 @@ def test_create_indicator_size_limit_bpolys_data(bpolys):
 
 @oqapi_vcr.use_cassette
 def test_create_indicator_public_feature_collection_single_attribute_completeness(
-    bpolys, topic_building_count
+    bpolys, topic_building_count, attribute_key
 ):
     indicators = asyncio.run(
         oqt.create_indicator(
             "attribute-completeness",
             bpolys,
             topic_building_count,
-            attribute_key="height",
+            attribute_key=attribute_key,
         )
     )
     assert len(indicators) == 1
@@ -147,6 +147,7 @@ def test_create_indicator_public_feature_collection_single_attribute_completenes
 def test_create_indicator_public_feature_collection_multi_attribute_completeness(
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
     topic_building_count,
+    attribute_key,
 ):
     """Test create indicators for a feature collection with multiple features."""
     indicators = asyncio.run(
@@ -154,7 +155,7 @@ def test_create_indicator_public_feature_collection_multi_attribute_completeness
             "attribute-completeness",
             feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
             topic_building_count,
-            attribute_key="height",
+            attribute_key=attribute_key,
         )
     )
     assert len(indicators) == 3
@@ -167,14 +168,14 @@ def test_create_indicator_public_feature_collection_multi_attribute_completeness
 
 @oqapi_vcr.use_cassette
 def test_create_indicator_private_feature_attribute_completeness(
-    feature, topic_building_count
+    feature, topic_building_count, attribute_key
 ):
     indicator = asyncio.run(
         oqt._create_indicator(
             "attribute-completeness",
             feature,
             topic_building_count,
-            attribute_key="height",
+            attribute_key=attribute_key,
         )
     )
     assert indicator.result.label is not None
