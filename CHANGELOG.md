@@ -2,8 +2,15 @@
 
 ## Current Main 
 
+### Breaking Changes
 
-## Release  1.6.1 
+- attribute-completeness: `attribute_key` parameter is now a list of attributes ([#819])
+
+
+[#819]: https://github.com/GIScience/ohsome-quality-api/issues/819
+
+
+## Release  1.6.1
 
 ### Bug Fixes
 
