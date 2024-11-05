@@ -6,8 +6,10 @@ import geojson
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
-from indicators.attribute_completeness.indicator import AttributeCompleteness
 
+from ohsome_quality_api.indicators.attribute_completeness.indicator import (
+    AttributeCompleteness,
+)
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
