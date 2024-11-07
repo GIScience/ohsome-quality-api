@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- attribute-completeness: `attribute_key` parameter is now a list of attributes ([#819])
+- attribute-completeness: `attribute` parameter is renamed to `attributes` and is now a list of attributes ([#819])
 
 
 [#819]: https://github.com/GIScience/ohsome-quality-api/issues/819
