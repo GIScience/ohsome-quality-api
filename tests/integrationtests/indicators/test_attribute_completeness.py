@@ -111,10 +111,9 @@ class TestFigure:
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.description == (
-            "The ratio of the topic building count in the "
-            "selected area (all: 30237 elements) compared to"
-            " the topic building count with the expected attribute"
-            " height of buildings (matched: 11948 elements) is 0.4. "
+            '39.51% of all "building count" features (all: 30237 elements) in your '
+            "area of interest have the selected additional attribute height of "
+            "buildings (matched: 11948 elements)."
         )
         return indicator
 
@@ -141,10 +140,9 @@ def test_create_description():
     indicator.absolute_value_2 = 2
     indicator.create_description()
     assert indicator.description == (
-        "The ratio of the topic building count in"
-        " the selected area (all: 10 elements) compared"
-        " to the topic building count with the expected "
-        "attribute height of buildings (matched: 2 elements) is 0.2. "
+        '20.0% of all "building count" features (all: 10 elements) in your area of '
+        "interest have the selected additional attribute height of buildings "
+        "(matched: 2 elements)."
     )
 
 
@@ -159,9 +157,9 @@ def test_create_description_multiple_attributes():
     indicator.absolute_value_2 = 2
     indicator.create_description()
     assert indicator.description == (
-        "The ratio of the topic building count in the selected area (all: 10 elements)"
-        " compared to the topic building count with the expected attributes height of"
-        " buildings, house number, street address (matched: 2 elements) is 0.2. "
+        '20.0% of all "building count" features (all: 10 elements) in your area of '
+        "interest have the selected additional attributes height of buildings, house "
+        "number, street address (matched: 2 elements)."
     )
 
 

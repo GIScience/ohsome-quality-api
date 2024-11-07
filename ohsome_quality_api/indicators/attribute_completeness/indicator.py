@@ -107,7 +107,7 @@ class AttributeCompleteness(BaseIndicator):
             raise ValueError("Invalid aggregation_type")
 
         self.description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value, 2),
+            result=round(self.result.value, 4) * 100,
             all=all,
             matched=matched,
             topic=self.topic.name.lower(),
