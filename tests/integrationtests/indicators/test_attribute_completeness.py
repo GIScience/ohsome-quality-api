@@ -84,7 +84,7 @@ class TestCalculation:
         indicator = AttributeCompleteness(
             topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
-            attribute_key=["leaf-type"],
+            attribute_keys=["leaf-type"],
         )
         asyncio.run(indicator.preprocess())
         assert indicator.absolute_value_1 == 0
@@ -111,9 +111,9 @@ class TestFigure:
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.description == (
-            '39.51% of all "building count" features (all: 30237 elements) in your '
-            "area of interest have the selected additional attribute height of "
-            "buildings (matched: 11948 elements)."
+            '28.83% of all "building count" features (all: 29936 elements)'
+            " in your area of interest have the selected additional attribute"
+            " height of buildings (matched: 8630 elements)."
         )
         return indicator
 

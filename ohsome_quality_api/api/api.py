@@ -271,7 +271,7 @@ async def post_attribute_completeness(
     parameters: AttributeCompletenessRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    for attribute in parameters.attribute_key:
+    for attribute in parameters.attribute_keys:
         validate_attribute_topic_combination(
             attribute.value, parameters.topic_key.value
         )
@@ -309,15 +309,15 @@ async def _post_indicator(
     request: Request, key: str, parameters: IndicatorRequest
 ) -> Any:
     validate_indicator_topic_combination(key, parameters.topic_key.value)
-    attribute_key = getattr(parameters, "attribute_key", None)
-    if attribute_key:
-        attribute_key = [attribute.value for attribute in attribute_key]
+    attribute_keys = getattr(parameters, "attribute_keys", None)
+    if attribute_keys:
+        attribute_keys = [attribute.value for attribute in attribute_keys]
     indicators = await oqt.create_indicator(
         key=key,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,
-        attribute_key=attribute_key,
+        attribute_keys=attribute_keys,
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:

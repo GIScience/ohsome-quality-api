@@ -66,7 +66,7 @@ def build_attribute_filter(attribute_key: List[str], topic_key: str) -> str:
             attribute_filter = get_topic_preset(topic_key).filter
             for key in attribute_key:
                 attribute_filter += " and (" + attributes[topic_key][key].filter + ")"
-            return get_topic_preset(topic_key).filter + " and " + attribute_filter
+            return attribute_filter
     except KeyError as error:
         raise KeyError("Invalid topic or attribute key(s).") from error
 
