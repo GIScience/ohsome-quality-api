@@ -66,10 +66,10 @@ class IndicatorRequest(BaseBpolys):
 
 
 class AttributeCompletenessRequest(IndicatorRequest):
-    attribute_key: List[AttributeEnum] = Field(
+    attribute_keys: List[AttributeEnum] = Field(
         ...,
-        title="Attribute Key",
-        alias="attribute",
+        title="Attribute Keys",
+        alias="attributes",
     )
 
 

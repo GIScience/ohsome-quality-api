@@ -64,13 +64,13 @@ def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_cou
 def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValueError):
         AttributeCompletenessRequest(
-            bpolys=bpolys, topic=topic_key_building_count, attribute="foo"
+            bpolys=bpolys, topic=topic_key_building_count, attributes="foo"
         )
 
 
 def test_attribute_completeness(bpolys, topic_key_building_count, attribute_key_height):
     AttributeCompletenessRequest(
-        bpolys=bpolys, topic=topic_key_building_count, attribute=attribute_key_height
+        bpolys=bpolys, topic=topic_key_building_count, attributes=attribute_key_height
     )
 
 
@@ -78,5 +78,5 @@ def test_attribute_completeness_multiple_attributes(
     bpolys, topic_key_building_count, attribute_key_multiple
 ):
     AttributeCompletenessRequest(
-        bpolys=bpolys, topic=topic_key_building_count, attribute=attribute_key_multiple
+        bpolys=bpolys, topic=topic_key_building_count, attributes=attribute_key_multiple
     )

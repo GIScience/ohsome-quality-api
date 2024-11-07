@@ -132,7 +132,7 @@ def test_create_indicator_public_feature_collection_single_attribute_completenes
             "attribute-completeness",
             bpolys,
             topic_building_count,
-            attribute_key=attribute_key,
+            attribute_keys=attribute_key,
         )
     )
     assert len(indicators) == 1
@@ -155,7 +155,7 @@ def test_create_indicator_public_feature_collection_multi_attribute_completeness
             "attribute-completeness",
             feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
             topic_building_count,
-            attribute_key=attribute_key,
+            attribute_keys=attribute_key,
         )
     )
     assert len(indicators) == 3
@@ -175,7 +175,7 @@ def test_create_indicator_private_feature_attribute_completeness(
             "attribute-completeness",
             feature,
             topic_building_count,
-            attribute_key=attribute_key,
+            attribute_keys=attribute_key,
         )
     )
     assert indicator.result.label is not None

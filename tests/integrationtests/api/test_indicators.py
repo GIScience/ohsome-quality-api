@@ -129,7 +129,7 @@ def test_indicators_attribute_completeness(
     schema,
 ):
     endpoint = ENDPOINT + "attribute-completeness"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": ["height"]}
+    parameters = {"bpolys": bpolys, "topic": "building-count", "attributes": ["height"]}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
@@ -162,7 +162,7 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
         "bpolys": bpolys,
         "topic": "building-count",
         # the following attribute is not valid for topic 'building-count'
-        "attribute": ["maxspeed"],
+        "attributes": ["maxspeed"],
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422

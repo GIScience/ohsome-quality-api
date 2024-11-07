@@ -40,18 +40,18 @@ class AttributeCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute_key: List[str] = None,
+        attribute_keys: List[str] = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.attribute_key = attribute_key
+        self.attribute_keys = attribute_keys
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
 
     async def preprocess(self) -> None:
-        attribute = build_attribute_filter(self.attribute_key, self.topic.key)
+        attribute = build_attribute_filter(self.attribute_keys, self.topic.key)
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
@@ -92,20 +92,9 @@ class AttributeCompleteness(BaseIndicator):
     def create_description(self):
         attribute_names = [
             get_attribute(self.topic.key, attribute_key).name.lower()
-            for attribute_key in self.attribute_key
+            for attribute_key in self.attribute_keys
         ]
-        if self.topic.aggregation_type == "count":
-            all = f"{int(self.absolute_value_1)} elements"
-            matched = f"{int(self.absolute_value_2)} elements"
-        elif self.topic.aggregation_type == "area":
-            all = f"{str(round(self.absolute_value_1, 2))} m²"
-            matched = f"{str(round(self.absolute_value_2, 2))} m²"
-        elif self.topic.aggregation_type == "length":
-            all = f"{str(round(self.absolute_value_1, 2))} m"
-            matched = f"{str(round(self.absolute_value_2, 2))} m"
-        else:
-            raise ValueError("Invalid aggregation_type")
-
+        all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=round(self.result.value, 4) * 100,
             all=all,
@@ -174,3 +163,17 @@ class AttributeCompleteness(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+    def compute_units_for_all_and_matched(self):
+        if self.topic.aggregation_type == "count":
+            all = f"{int(self.absolute_value_1)} elements"
+            matched = f"{int(self.absolute_value_2)} elements"
+        elif self.topic.aggregation_type == "area":
+            all = f"{str(round(self.absolute_value_1, 2))} m²"
+            matched = f"{str(round(self.absolute_value_2, 2))} m²"
+        elif self.topic.aggregation_type == "length":
+            all = f"{str(round(self.absolute_value_1, 2))} m"
+            matched = f"{str(round(self.absolute_value_2, 2))} m"
+        else:
+            raise ValueError("Invalid aggregation_type")
+        return all, matched
