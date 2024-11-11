@@ -111,9 +111,9 @@ class TestFigure:
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         assert indicator.description == (
-            '28.83% of all "building count" features (all: 29936 elements)'
+            '28.8% of all "building count" features (all: 29936 elements)'
             " in your area of interest have the selected additional attribute"
-            " height of buildings (matched: 8630 elements)."
+            " height of buildings (matched: 8630 elements). "
         )
         return indicator
 
@@ -142,7 +142,7 @@ def test_create_description():
     assert indicator.description == (
         '20.0% of all "building count" features (all: 10 elements) in your area of '
         "interest have the selected additional attribute height of buildings "
-        "(matched: 2 elements)."
+        "(matched: 2 elements). "
     )
 
 
@@ -159,7 +159,7 @@ def test_create_description_multiple_attributes():
     assert indicator.description == (
         '20.0% of all "building count" features (all: 10 elements) in your area of '
         "interest have the selected additional attributes height of buildings, house "
-        "number, street address (matched: 2 elements)."
+        "number, street address (matched: 2 elements). "
     )
 
 
