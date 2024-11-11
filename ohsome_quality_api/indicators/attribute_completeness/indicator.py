@@ -96,7 +96,7 @@ class AttributeCompleteness(BaseIndicator):
         ]
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value, 4) * 100,
+            result=round(self.result.value * 100, 1),
             all=all,
             matched=matched,
             topic=self.topic.name.lower(),
