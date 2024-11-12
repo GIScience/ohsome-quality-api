@@ -2,6 +2,9 @@
 
 ## Current Main 
 
+
+## Release  1.7.0
+
 ### Breaking Changes
 
 - attribute-completeness: `attribute` parameter is renamed to `attributes` and is now a list of attributes ([#819])
