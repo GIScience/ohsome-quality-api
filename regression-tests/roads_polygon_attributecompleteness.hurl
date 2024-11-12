@@ -13,7 +13,7 @@ bytes count > 1900
 
 jsonpath "$.result[0].metadata.name" == "Attribute Completeness"
 jsonpath "$.result[0].topic.name" == "Roads"
-jsonpath "$.result[0].result.description" contains "The ratio of the features (all: 1034408.4) compared to features with expected tags (matched: 278118.2) is 0.27. Around 25-75% of the features match the expected tags."
+jsonpath "$.result[0].result.description" matches /^26\.\d{1}% of all "roads" features \(all: 103\d{4}\.\d{2} m\) in your area of interest have the selected additional attribute maxspeed \(matched: 278\d{3}\.\d{2} m\)\. The attribute completeness is medium \(25%-75%\)\.$/
 jsonpath "$.result[0].result.figure.data[0].gauge.steps[0].color" == "tomato"
 jsonpath "$.result[0].result.label" == "yellow"
 
