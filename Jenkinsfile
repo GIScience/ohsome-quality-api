@@ -85,7 +85,7 @@ pipeline {
                     }
                     // run other static code analysis
                     sh '${POETRY_RUN} ruff format --check --diff .'
-                    sh '${POETRY_RUN} ruff .'
+                    sh '${POETRY_RUN} ruff check .'
                 }
             }
             post {
