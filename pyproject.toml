@@ -57,7 +57,7 @@ pytest-mock = "^3.11.1"
 "Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.4.7"
+ruff = "^0.7.3"
 
 [build-system]
 requires = ["poetry-core"]
