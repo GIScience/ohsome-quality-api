@@ -293,3 +293,11 @@ roads:
     name: Speed Camera
     description: TODO
     filter: highway:speed_camera=*
+  lit:
+    name: Lit
+    description: TODO
+    filter: lit=* and lit!=no and lit!=disused and lit!=yes
+  residential:
+    name: Residential road
+    description: Road in a residential area
+    filter: highway=residential

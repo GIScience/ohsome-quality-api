@@ -102,9 +102,10 @@ class TestFigure:
         topic_building_count,
         feature_germany_heidelberg,
         attribute_key,
+        topic_roads,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_roads,
             feature_germany_heidelberg,
             attribute_key,
         )
