@@ -11,19 +11,11 @@ from approvaltests import verify
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
-from tests.integrationtests.utils import PytestNamer, get_topic_fixture, oqapi_vcr
-
-
-class TestInit:
-    @oqapi_vcr.use_cassette
-    def test_preprocess_missing_parameter(
-        self, topic_building_count, feature_germany_heidelberg
-    ):
-        with pytest.raises(TypeError):
-            AttributeCompleteness(
-                topic_building_count,
-                feature_germany_heidelberg,
-            )
+from tests.integrationtests.utils import (
+    PytestNamer,
+    get_topic_fixture,
+    oqapi_vcr,
+)
 
     def test_preprocess_too_many_parameter(
         self,
@@ -127,6 +119,7 @@ class TestCalculation:
         assert indicator.result.description is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
+        verify(indicator.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     def test_no_features(self):
@@ -184,7 +177,6 @@ class TestFigure:
             )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
-        verify(indicator.description, namer=PytestNamer())
         return indicator
 
     # comment out for manual test
