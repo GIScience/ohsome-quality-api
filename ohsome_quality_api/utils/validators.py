@@ -28,7 +28,11 @@ def validate_attribute_topic_combination(attribute: AttributeEnum, topic: TopicE
     valid_attribute_names = [attribute for attribute in valid_attributes_for_topic]
 
     if attribute not in valid_attributes_for_topic:
-        raise AttributeTopicCombinationError(attribute, topic, valid_attribute_names)
+        raise AttributeTopicCombinationError(
+            attribute,
+            topic.key,
+            valid_attribute_names,
+        )
 
 
 def validate_indicator_topic_combination(indicator: str, topic: str):

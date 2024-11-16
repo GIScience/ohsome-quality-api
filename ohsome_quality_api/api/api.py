@@ -25,7 +25,8 @@ from ohsome_quality_api import (
     oqt,
 )
 from ohsome_quality_api.api.request_models import (
-    AttributeCompletenessRequest,
+    AttributeCompletenessFilterRequest,
+    AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
     IndicatorRequest,
 )
@@ -268,13 +269,14 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 )
 async def post_attribute_completeness(
     request: Request,
-    parameters: AttributeCompletenessRequest,
+    parameters: AttributeCompletenessKeyRequest | AttributeCompletenessFilterRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    for attribute in parameters.attribute_keys:
-        validate_attribute_topic_combination(
-            attribute.value, parameters.topic_key.value
-        )
+    if isinstance(parameters, AttributeCompletenessKeyRequest):
+        for attribute in parameters.attribute_keys:
+            validate_attribute_topic_combination(
+                attribute.value, parameters.topic_key.value
+            )
 
     return await _post_indicator(request, "attribute-completeness", parameters)
 
@@ -312,12 +314,16 @@ async def _post_indicator(
     attribute_keys = getattr(parameters, "attribute_keys", None)
     if attribute_keys:
         attribute_keys = [attribute.value for attribute in attribute_keys]
+    attribute_filter = getattr(parameters, "attribute_filter", None)
+    attribute_names = getattr(parameters, "attribute_names", None)
     indicators = await oqt.create_indicator(
         key=key,
         bpolys=parameters.bpolys,
         topic=get_topic_preset(parameters.topic_key.value),
         include_figure=parameters.include_figure,
         attribute_keys=attribute_keys,
+        attribute_filter=attribute_filter,
+        attribute_names=attribute_names,
     )
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:

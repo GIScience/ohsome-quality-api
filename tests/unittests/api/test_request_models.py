@@ -2,7 +2,8 @@ import pytest
 from pydantic import ValidationError
 
 from ohsome_quality_api.api.request_models import (
-    AttributeCompletenessRequest,
+    AttributeCompletenessFilterRequest,
+    AttributeCompletenessKeyRequest,
     BaseBpolys,
     IndicatorRequest,
 )
@@ -58,25 +59,49 @@ def test_indicator_request_invalid_topic(bpolys):
 
 def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValueError):
-        AttributeCompletenessRequest(bpolys=bpolys, topic=topic_key_building_count)
+        AttributeCompletenessKeyRequest(bpolys=bpolys, topic=topic_key_building_count)
 
 
 def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValueError):
-        AttributeCompletenessRequest(
+        AttributeCompletenessKeyRequest(
             bpolys=bpolys, topic=topic_key_building_count, attributes="foo"
         )
 
 
-def test_attribute_completeness(bpolys, topic_key_building_count, attribute_key_height):
-    AttributeCompletenessRequest(
-        bpolys=bpolys, topic=topic_key_building_count, attributes=attribute_key_height
+def test_attribute_completeness_single_attribute(
+    bpolys,
+    topic_key_building_count,
+    attribute_key_height,
+):
+    AttributeCompletenessKeyRequest(
+        bpolys=bpolys,
+        topic=topic_key_building_count,
+        attributes=attribute_key_height,
     )
 
 
 def test_attribute_completeness_multiple_attributes(
-    bpolys, topic_key_building_count, attribute_key_multiple
+    bpolys,
+    topic_key_building_count,
+    attribute_key_multiple,
 ):
-    AttributeCompletenessRequest(
-        bpolys=bpolys, topic=topic_key_building_count, attributes=attribute_key_multiple
+    AttributeCompletenessKeyRequest(
+        bpolys=bpolys,
+        topic=topic_key_building_count,
+        attributes=attribute_key_multiple,
+    )
+
+
+def test_attribute_completeness_attribute_filter(
+    bpolys,
+    topic_key_building_count,
+    attribute_filter,
+    attribute_names,
+):
+    AttributeCompletenessFilterRequest(
+        bpolys=bpolys,
+        topic=topic_key_building_count,
+        attribute_filter=attribute_filter,
+        attribute_names=attribute_names,
     )

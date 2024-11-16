@@ -65,11 +65,22 @@ class IndicatorRequest(BaseBpolys):
     include_figure: bool = True
 
 
-class AttributeCompletenessRequest(IndicatorRequest):
+class AttributeCompletenessKeyRequest(IndicatorRequest):
     attribute_keys: List[AttributeEnum] = Field(
         ...,
         title="Attribute Keys",
         alias="attributes",
+    )
+
+
+class AttributeCompletenessFilterRequest(IndicatorRequest):
+    attribute_filter: str = Field(
+        ...,
+        title="Attribute Filter",
+    )
+    attribute_names: List[str] = Field(
+        ...,
+        title="Attribute Names",
     )
 
 
