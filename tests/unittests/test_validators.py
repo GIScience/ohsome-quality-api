@@ -20,20 +20,17 @@ from ohsome_quality_api.utils.validators import (
 from tests.unittests.utils import get_geojson_fixture
 
 
-def test_validate_attribute_topic_combination_with_valid_combination():
-    validate_attribute_topic_combination("maxspeed", "roads")
+def test_validate_attribute_topic_combination_with_valid_combination(
+    topic_major_roads_length,
+):
+    validate_attribute_topic_combination("maxspeed", topic_major_roads_length)
 
 
-def test_validate_attribute_topic_combination_with_invalid_topic():
-    """As the method under test requires individually valid arguments
-    the arguments given lead to a KeyError."""
-    with pytest.raises(KeyError):
-        validate_attribute_topic_combination("maxspeed", "xxxxx")
-
-
-def test_validate_attribute_topic_combination_with_invalid_combination():
+def test_validate_attribute_topic_combination_with_invalid_combination(
+    topic_building_count,
+):
     with pytest.raises(AttributeTopicCombinationError):
-        validate_attribute_topic_combination("maxspeed", "building-count")
+        validate_attribute_topic_combination("maxspeed", topic_building_count)
 
 
 def test_validate_geojson_feature_collection_single(
@@ -77,13 +74,13 @@ def test_validate_geojson_unsupported_geometry_type(
         validate_geojson(feature_collection_unsupported_geometry_type)
 
 
-def test_validate_indicator_topic_combination():
-    validate_indicator_topic_combination("minimal", "minimal")
+def test_validate_indicator_topic_combination(topic_minimal):
+    validate_indicator_topic_combination("minimal", topic_minimal)
 
 
-def test_validate_indicator_topic_combination_invalid():
+def test_validate_indicator_topic_combination_invalid(topic_building_count):
     with pytest.raises(IndicatorTopicCombinationError):
-        validate_indicator_topic_combination("minimal", "building-count")
+        validate_indicator_topic_combination("minimal", topic_building_count)
 
 
 @mock.patch.dict(
