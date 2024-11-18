@@ -92,10 +92,12 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
     attribute_filter: str = Field(
         ...,
         title="Attribute Filter",
+        description="ohsome filter query representing custom attributes.",
     )
     attribute_names: List[str] = Field(
         ...,
         title="Attribute Names",
+        description="Names of the attributes represented by the Attribute Filter.",
     )
 
 

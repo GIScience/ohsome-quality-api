@@ -58,7 +58,7 @@ def test_indicators_attribute_completeness_without_attribute(
     client,
     bpolys,
     headers,
-    schema,
+    schema,  # pyright:ignore
 ):
     parameters = {
         "bpolys": bpolys,
@@ -74,7 +74,7 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     client,
     bpolys,
     headers,
-    schema,
+    schema,  # pyright: ignore
 ):
     parameters = {
         "bpolys": bpolys,
