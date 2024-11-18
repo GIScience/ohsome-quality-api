@@ -26,7 +26,8 @@ class AttributeCompleteness(BaseIndicator):
         attribute: Additional (expected) tag(s) describing a map feature.
             attribute_keys: a set of predefined attributes wich will be
                 translated to an ohsome filter
-            attribute_filter: a custom ohsome filter
+            attribute_filter: ohsome filter query representing custom attributes
+            attribute_names: Names of the attributed represented by the Attribute Filter
 
     Example: How many buildings (topic) have height information (attribute)?
 
@@ -54,16 +55,6 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        # fmt: off
-        # TODO: Remove once validated by pydantic request model
-        if (
-            all(v is None for v in (attribute_keys, attribute_filter)) or
-            all(v is not None for v in (attribute_keys, attribute_filter))
-        ):
-            raise TypeError(
-                "Either `attribute_keys` or `attribute_filter` needs to be given"
-            )
-        # fmt: on
         if self.attribute_keys:
             self.attribute_filter = build_attribute_filter(
                 self.attribute_keys,
@@ -113,15 +104,15 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     def create_description(self):
-        all, matched = self.compute_units_for_all_and_matched()
         if self.result.value is None:
-            raise TypeError("result value should not be None")
+            raise TypeError("Result value should not be None.")
         else:
             result = round(self.result.value * 100, 1)
-        if len(self.attribute_names) > 1:
-            tags = "attributes " + ", ".join(self.attribute_names)
+        if self.attribute_names is None:
+            raise TypeError("Attribute names should not be None.")
         else:
-            tags = "attribute " + self.attribute_names[0]
+            tags = "attributes " + ", ".join(self.attribute_names)
+        all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,
             all=all,

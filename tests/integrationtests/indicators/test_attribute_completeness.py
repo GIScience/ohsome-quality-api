@@ -17,21 +17,6 @@ from tests.integrationtests.utils import (
     oqapi_vcr,
 )
 
-    def test_preprocess_too_many_parameter(
-        self,
-        topic_building_count,
-        feature_germany_heidelberg,
-        attribute_key,
-        attribute_filter,
-    ):
-        with pytest.raises(TypeError):
-            AttributeCompleteness(
-                topic_building_count,
-                feature_germany_heidelberg,
-                attribute_key,
-                attribute_filter,
-            )
-
 
 class TestPreprocess:
     @oqapi_vcr.use_cassette
