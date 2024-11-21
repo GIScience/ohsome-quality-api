@@ -67,6 +67,14 @@ building-count:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
+  missing-wall:
+    name: Missing Wall
+    description: slight constructions like sheds or any construction with a roof and at least one side open or without foundations.
+    filter: wall=no
+  source:
+    name: Source
+    description: TODO
+    filter: source=*
 
 bus-stops:
   public-transport-platform:
@@ -77,6 +85,10 @@ bus-stops:
     name: Bus stop area
     description: TODO
     filter: public_transport=stop_area
+  shelter:
+    name: shelter
+    description: TODO
+    filter: shelter=*
 
 clinics:
   healthcare-birthing-centre:
@@ -131,6 +143,10 @@ forests:
     name: Forest boundary
     description: TODO
     filter: boundary=forest
+  leaf-type:
+    name: Leaf Type
+    description: TODO
+    filter: leaf_type=*
 
 kindergarten:
   leisure-playground:
@@ -159,6 +175,14 @@ marketplaces:
     name: Winery
     description: TODO
     filter: craft=winery
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  shop-name:
+    name: Shop Name
+    description: TODO
+    filter: name=*
 
 parks:
   landuse-commercial:
@@ -235,6 +259,14 @@ supermarkets:
     name: Parking entrance
     description: TODO
     filter: amenity=parking_entrance
+  brand:
+    name: Brand
+    description: TODO
+    filter: brand=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
 
 tram-stops:
   public-transport-stop-area:
@@ -296,7 +328,7 @@ roads:
   lit:
     name: Lit
     description: TODO
-    filter: lit=* and lit!=no and lit!=disused and lit!=yes
+    filter: lit=* and lit!=no and lit!=disused
   residential:
     name: Residential road
     description: Road in a residential area
