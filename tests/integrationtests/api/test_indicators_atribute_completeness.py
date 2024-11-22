@@ -107,13 +107,13 @@ def test_indicators_attribute_completeness_filter(
     headers,
     schema,
     attribute_filter,
-    attribute_names,
+    attribute_title,
 ):
     parameters = {
         "bpolys": bpolys,
         "topic": "building-count",
         "attribute_filter": attribute_filter,
-        "attribute_names": attribute_names,
+        "attribute_title": attribute_title,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
@@ -144,13 +144,13 @@ def test_indicators_attribute_completeness_filter_invalid(
     bpolys,
     headers,
     schema,  # pyright: ignore
-    attribute_names,
+    attribute_title,
 ):
     parameters = {
         "bpolys": bpolys,
         "topic": "building-count",
         "attribute_filter": "invalid filter",
-        "attribute_names": attribute_names,
+        "attribute_title": attribute_title,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 422

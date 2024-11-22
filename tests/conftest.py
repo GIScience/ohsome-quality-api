@@ -152,9 +152,9 @@ def attribute_filter() -> str:
 
 
 @pytest.fixture
-def attribute_names() -> list[str]:
-    """Attributes names belonging to custom attribute filter (`attribute_filter)`."""
-    return ["Height"]
+def attribute_title() -> str:
+    """Attributes title belonging to custom attribute filter (`attribute_filter)`."""
+    return "Height"
 
 
 @pytest.fixture(scope="class")

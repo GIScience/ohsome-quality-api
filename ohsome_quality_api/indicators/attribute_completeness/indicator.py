@@ -27,7 +27,8 @@ class AttributeCompleteness(BaseIndicator):
             attribute_keys: a set of predefined attributes wich will be
                 translated to an ohsome filter
             attribute_filter: ohsome filter query representing custom attributes
-            attribute_names: Names of the attributed represented by the Attribute Filter
+            attribute_title:  Title describing the attributes represented by
+                the Attribute Filter
 
     Example: How many buildings (topic) have height information (attribute)?
 
@@ -44,14 +45,14 @@ class AttributeCompleteness(BaseIndicator):
         feature: Feature,
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
-        attribute_names: list[str] | None = None,
+        attribute_title: str | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
         self.attribute_filter = attribute_filter
-        self.attribute_names = attribute_names
+        self.attribute_title = attribute_title
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
@@ -60,10 +61,12 @@ class AttributeCompleteness(BaseIndicator):
                 self.attribute_keys,
                 self.topic.key,
             )
-            self.attribute_names = [
-                get_attribute(self.topic.key, k).name.lower()
-                for k in self.attribute_keys
-            ]
+            self.attribute_title = ", ".join(
+                [
+                    get_attribute(self.topic.key, k).name.lower()
+                    for k in self.attribute_keys
+                ]
+            )
 
     async def preprocess(self) -> None:
         # Get attribute filter
@@ -108,10 +111,10 @@ class AttributeCompleteness(BaseIndicator):
             raise TypeError("Result value should not be None.")
         else:
             result = round(self.result.value * 100, 1)
-        if self.attribute_names is None:
+        if self.attribute_title is None:
             raise TypeError("Attribute names should not be None.")
         else:
-            tags = "attributes " + ", ".join(self.attribute_names)
+            tags = "attributes " + self.attribute_title
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,

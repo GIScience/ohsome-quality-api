@@ -53,13 +53,13 @@ class TestPreprocess:
         topic_building_count,
         feature_germany_heidelberg,
         attribute_filter,
-        attribute_names,
+        attribute_title,
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
             attribute_filter=attribute_filter,
-            attribute_names=attribute_names,
+            attribute_title=attribute_title,
         )
         asyncio.run(indicator.preprocess())
         assert indicator.result.value is not None
@@ -74,7 +74,7 @@ class TestCalculation:
             ["height"],
             {
                 "attribute_filter": "height=* or building:levels=*",
-                "attribute_names": ["Height"],
+                "attribute_title": "Height",
             },
         ),
     )
@@ -91,7 +91,7 @@ class TestCalculation:
                 topic_building_count,
                 feature_germany_heidelberg,
                 attribute_filter=request.param["attribute_filter"],
-                attribute_names=request.param["attribute_names"],
+                attribute_title=request.param["attribute_title"],
             )
         asyncio.run(i.preprocess())
         i.calculate()
@@ -138,7 +138,7 @@ class TestFigure:
             ["height"],
             {
                 "attribute_filter": "height=* or building:levels=*",
-                "attribute_names": ["Height"],
+                "attribute_title": "Height",
             },
         ),
     )
@@ -158,7 +158,7 @@ class TestFigure:
                 topic_building_count,
                 feature_germany_heidelberg,
                 attribute_filter=request.param["attribute_filter"],
-                attribute_names=request.param["attribute_names"],
+                attribute_title=request.param["attribute_title"],
             )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
@@ -202,12 +202,12 @@ def test_create_description_attribute_keys_multiple():
     verify(indicator.description, namer=PytestNamer())
 
 
-def test_create_description_attribute_filter(attribute_filter, attribute_names):
+def test_create_description_attribute_filter(attribute_filter, attribute_title):
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),
         "foo",
         attribute_filter=attribute_filter,
-        attribute_names=attribute_names,
+        attribute_title=attribute_title,
     )
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10

@@ -97,11 +97,11 @@ def test_attribute_completeness_attribute_filter(
     bpolys,
     topic_key_building_count,
     attribute_filter,
-    attribute_names,
+    attribute_title,
 ):
     AttributeCompletenessFilterRequest(
         bpolys=bpolys,
         topic=topic_key_building_count,
         attribute_filter=attribute_filter,
-        attribute_names=attribute_names,
+        attribute_title=attribute_title,
     )
