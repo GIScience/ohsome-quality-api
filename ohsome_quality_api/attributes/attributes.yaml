@@ -304,7 +304,7 @@ roads:
   cycleway-share-busway:
     name: Cycleway Share Busway
     description: TODO
-    filter: cycleway:share_busway=*
+    filter: cycleway=share_busway
   parking:
     name: Parking
     description: TODO
