@@ -107,6 +107,54 @@ clinics:
     name: Vaccination centre
     description: TODO
     filter: healthcare=vaccination_centre
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  specialty:
+    name: specialty
+    description: TODO
+    filter: healthcare:speciality=*
+
+doctors:
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  specialty:
+    name: Specialty
+    description: TODO
+    filter: healthcare:speciality=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  Website:
+    name: Website
+    description: TODO
+    filter: website=*
+
+hospitals:
+  emergency:
+    name: Emergency
+    description: TODO
+    filter: emergency=*
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  specialty:
+    name: Specialty
+    description: TODO
+    filter: healthcare:speciality=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
 
 fitness-centres:
   sport-fitness:
@@ -121,6 +169,14 @@ fitness-centres:
     name: Weightlifting
     description: TODO
     filter: sport=weightlifting
+  sport:
+    name: Sport
+    description: TODO
+    filter: sport=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
 
 forests:
   access-private:
@@ -153,6 +209,10 @@ kindergarten:
     name: Playground
     description: TODO
     filter: leisure=playground
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
 
 marketplaces:
   craft-bakery:
@@ -211,6 +271,18 @@ schools:
     name: Playground
     description: TODO
     filter: leisure=playground
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  website:
+    name: Website
+    description: TODO
+    filter: website=*
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
 
 subway-stations:
   railway-subway:
@@ -328,7 +400,7 @@ roads:
   lit:
     name: Lit
     description: TODO
-    filter: lit=* and lit!=no and lit!=disused
+    filter: lit=*
   residential:
     name: Residential road
     description: Road in a residential area
