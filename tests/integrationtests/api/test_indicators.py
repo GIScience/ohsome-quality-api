@@ -4,10 +4,10 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 """
 
 import pytest
+from approvaltests.approvals import verify
 from schema import Optional, Or, Schema
 
-from ohsome_quality_api.attributes.definitions import get_attributes
-from tests.integrationtests.utils import oqapi_vcr
+from tests.integrationtests.utils import PytestNamer, oqapi_vcr
 
 ENDPOINT = "/indicators/"
 
@@ -134,11 +134,11 @@ def test_indicators_attribute_completeness(
     assert schema.is_valid(response.json())
 
 
+@pytest.mark.usefixtures("schema")
 def test_indicators_attribute_completeness_without_attribute(
     client,
     bpolys,
     headers,
-    schema,
 ):
     endpoint = ENDPOINT + "attribute-completeness"
     parameters = {
@@ -151,11 +151,11 @@ def test_indicators_attribute_completeness_without_attribute(
     assert content["type"] == "RequestValidationError"
 
 
+@pytest.mark.usefixtures("schema")
 def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     client,
     bpolys,
     headers,
-    schema,
 ):
     endpoint = ENDPOINT + "attribute-completeness"
     parameters = {
@@ -167,19 +167,8 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-
-    message = content["detail"][0]["msg"]
-    all_attributes_for_topic = [
-        attribute for attribute in (get_attributes()["building-count"])
-    ]
-
-    expected = (
-        "Invalid combination of attribute and topic: maxspeed and building-count. "
-        "Topic 'building-count' supports these attributes: {}"
-    ).format(all_attributes_for_topic)
-
-    assert message == expected
-    assert content["type"] == "AttributeTopicCombinationError"
+    assert content["type"] == "RequestValidationError"
+    verify(content["detail"][0]["msg"], namer=PytestNamer())
 
 
 @oqapi_vcr.use_cassette

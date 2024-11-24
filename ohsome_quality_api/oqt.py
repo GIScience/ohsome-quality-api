@@ -30,7 +30,7 @@ async def create_indicator(
         if "id" not in feature.keys():
             feature["id"] = i
         # Only enforce size limit if ohsome API data is not provided
-        # Disable size limit for the Mapping Saturation indicator
+        # or for certain indicators
         if isinstance(topic, TopicDefinition) and key not in [
             "mapping-saturation",
             "currentness",

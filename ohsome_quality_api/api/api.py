@@ -1,9 +1,9 @@
 import json
 import logging
 import os
-from typing import Any, Union
+from typing import Annotated, Any, Union
 
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,6 +24,7 @@ from ohsome_quality_api import (
     __version__,
     oqt,
 )
+from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
     AttributeCompletenessRequest,
     IndicatorDataRequest,
@@ -69,15 +70,10 @@ from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
     SizeRestrictionError,
     TopicDataSchemaError,
-    ValidationError,
 )
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
     json_serialize,
-)
-from ohsome_quality_api.utils.validators import (
-    validate_attribute_topic_combination,
-    validate_indicator_topic_combination,
 )
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
@@ -123,6 +119,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+class CommonDepedencies:
+    RequestContext = Annotated[None, Depends(set_request_context)]
 
 
 @app.get("/docs", include_in_schema=False)
@@ -180,13 +180,8 @@ async def validation_exception_handler(
 @app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
-@app.exception_handler(ValidationError)
 async def custom_exception_handler(
-    _: Request,
-    exception: TopicDataSchemaError
-    | OhsomeApiError
-    | SizeRestrictionError
-    | ValidationError,
+    _: Request, exception: TopicDataSchemaError | OhsomeApiError | SizeRestrictionError
 ):
     """Exception handler for custom exceptions."""
     return JSONResponse(
@@ -229,7 +224,10 @@ def empty_api_response() -> dict:
 
 
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
-async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
+async def post_indicator_ms(
+    parameters: IndicatorDataRequest,
+    _: CommonDepedencies.RequestContext,
+) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
     indicators = await oqt.create_indicator(
         key="mapping-saturation",
@@ -269,13 +267,9 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 async def post_attribute_completeness(
     request: Request,
     parameters: AttributeCompletenessRequest,
+    _: CommonDepedencies.RequestContext,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    for attribute in parameters.attribute_keys:
-        validate_attribute_topic_combination(
-            attribute.value, parameters.topic_key.value
-        )
-
     return await _post_indicator(request, "attribute-completeness", parameters)
 
 
@@ -300,6 +294,7 @@ async def post_indicator(
     request: Request,
     key: IndicatorEnumRequest,
     parameters: IndicatorRequest,
+    _: CommonDepedencies.RequestContext,
 ) -> Any:
     """Request an indicator for your area of interest."""
     return await _post_indicator(request, key.value, parameters)
@@ -308,7 +303,6 @@ async def post_indicator(
 async def _post_indicator(
     request: Request, key: str, parameters: IndicatorRequest
 ) -> Any:
-    validate_indicator_topic_combination(key, parameters.topic_key.value)
     attribute_keys = getattr(parameters, "attribute_keys", None)
     if attribute_keys:
         attribute_keys = [attribute.value for attribute in attribute_keys]

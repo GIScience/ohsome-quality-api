@@ -3,6 +3,7 @@
 from schema import SchemaError
 
 
+# TODO: Remove this base class as soon as #851 has been merged
 class ValidationError(Exception):
     def __init__(self):
         self.name = ""
@@ -44,28 +45,6 @@ class InvalidCRSError(ValidationError):
         self.name = "InvalidCRSError"
         self.message = (
             "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
-        )
-
-
-class AttributeTopicCombinationError(ValidationError):
-    """Invalid attribute topic combination error."""
-
-    def __init__(self, attribute, topic, valid_attribute_names):
-        self.name = "AttributeTopicCombinationError"
-        self.message = (
-            "Invalid combination of attribute and topic: {} and {}. "
-            "Topic '{}' supports these attributes: {}"
-        ).format(attribute, topic, topic, valid_attribute_names)
-
-
-class IndicatorTopicCombinationError(ValidationError):
-    """Invalid indicator topic combination error."""
-
-    def __init__(self, indicator, topic):
-        self.name = "IndicatorTopicCombinationError"
-        self.message = "Invalid combination of indicator and topic: {} and {}".format(
-            indicator,
-            topic,
         )
 
 
