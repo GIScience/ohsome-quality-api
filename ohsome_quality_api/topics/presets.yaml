@@ -55,16 +55,16 @@ roads:
   projects:
     - core
     - bkg
+
 car-roads:
   name: Classified Roads
   description: roads excluding simple forest paths and other small/ unclassified roads
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway in (motorway, trunk, primary, tertiary, residential, service, living_street, trunk_link) and type:way
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link) and type:way
   indicators:
     - mapping-saturation
-    - road-comparison
     - attribute-completeness
     - currentness
   projects:
@@ -225,11 +225,25 @@ bus-stops:
 
 tram-stops:
   name: Tram Stops
-  description: Count of schools.
+  description: Count of tram stops.
   endpoint: elements
   aggregation_type: count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
+    - bkg
+
+public-transport-stops:
+  name: Public Transport Stops
+  description: Count of public transport stops.
+  endpoint: elements
+  aggregation_type: count
+  filter: public_transport=platform
   indicators:
     - mapping-saturation
     - currentness

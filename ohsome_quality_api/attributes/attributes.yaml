@@ -380,7 +380,7 @@ roads:
   parking:
     name: Parking
     description: TODO
-    filter: parking:left=* or parking:right=* or parking:both=*
+    filter: parking:left=* or parking:right=* or parking:both=* or parking=*
   maxspeed:
     name: Maxspeed
     description: TODO
@@ -401,6 +401,7 @@ roads:
     name: Residential road
     description: Road in a residential area
     filter: highway=residential
+
 car-roads:
   name:
     name: Road Name
@@ -417,7 +418,7 @@ car-roads:
   parking:
     name: Parking
     description: TODO
-    filter: parking:left=* or parking:right=* or parking:both=*
+    filter: parking:left=* or parking:right=* or parking:both=* or parking=*
   maxspeed:
     name: Maxspeed
     description: TODO
@@ -435,3 +436,32 @@ car-roads:
     description: TODO
     filter: lit=*
 
+public-transport-stops:
+  shelter:
+    name: Shelter
+    description: TODO
+    filter: shelter=*
+  bench:
+    name: Bench
+    description: TODO
+    filter: bench=*
+  trash-bin:
+    name: Trash Bin
+    description: TODO
+    filter: bin=*
+  tactile-paving:
+    name: Tactile Paving
+    description: TODO
+    filter: tactile_paving=*
+  wheelchair-accessibility:
+    name: Wheelchair Accessibility
+    description: TODO
+    filter: wheelchair=*
+  bus-lines:
+    name: Bus Lines
+    description: List of all bus lines stopping at a certain stop
+    filter: route_ref=*
+  departures-board:
+    name: Departures Board
+    description: TODO
+    filter: departures_board=*
