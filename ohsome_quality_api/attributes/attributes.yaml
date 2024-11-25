@@ -393,10 +393,6 @@ roads:
     name: Surface
     description: TODO
     filter: surface=*
-  highway-speed-camera:
-    name: Speed Camera
-    description: TODO
-    filter: highway:speed_camera=*
   lit:
     name: Lit
     description: TODO
@@ -405,3 +401,37 @@ roads:
     name: Residential road
     description: Road in a residential area
     filter: highway=residential
+car-roads:
+  name:
+    name: Road Name
+    description: TODO
+    filter: name=*
+  sidewalk:
+    name: Sidewalk
+    description: TODO
+    filter: sidewalk=*
+  lanes:
+    name: Lanes
+    description: TODO
+    filter: lanes=*
+  parking:
+    name: Parking
+    description: TODO
+    filter: parking:left=* or parking:right=* or parking:both=*
+  maxspeed:
+    name: Maxspeed
+    description: TODO
+    filter: maxspeed=*
+  oneway:
+    name: Oneway
+    description: TODO
+    filter: oneway=*
+  surface:
+    name: Surface
+    description: TODO
+    filter: surface=*
+  lit:
+    name: Lit
+    description: TODO
+    filter: lit=*
+

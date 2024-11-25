@@ -55,6 +55,21 @@ roads:
   projects:
     - core
     - bkg
+car-roads:
+  name: Classified Roads
+  description: roads excluding simple forest paths and other small/ unclassified roads
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    highway in (motorway, trunk, primary, tertiary, residential, service, living_street, trunk_link) and type:way
+  indicators:
+    - mapping-saturation
+    - road-comparison
+    - attribute-completeness
+    - currentness
+  projects:
+    - core
+    - bkg
 
 railway-length:
   name: Railways
