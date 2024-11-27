@@ -1,36 +1,10 @@
-from geojson import Feature, FeatureCollection, GeoJSON, MultiPolygon, Polygon
-from pyproj import CRS
+from geojson import Feature
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.utils.exceptions import (
-    GeoJSONError,
-    GeoJSONGeometryTypeError,
-    GeoJSONObjectTypeError,
-    InvalidCRSError,
     SizeRestrictionError,
 )
 from ohsome_quality_api.utils.helper_geo import calculate_area
-
-
-def validate_geojson(bpolys: GeoJSON):
-    """Validate GeoJSON object."""
-    if not bpolys.is_valid:
-        raise GeoJSONError(errors=bpolys.errors())
-    elif isinstance(bpolys, FeatureCollection):
-        for feature in bpolys["features"]:
-            if not isinstance(feature.geometry, (Polygon, MultiPolygon)):
-                raise GeoJSONGeometryTypeError()
-    elif isinstance(bpolys, Feature):
-        raise GeoJSONObjectTypeError()
-    else:
-        raise GeoJSONObjectTypeError()
-
-    crs = bpolys.get("crs", None)
-    if crs is not None:
-        crs = CRS.from_string(crs.get("properties", {}).get("name", ""))
-        crs_epsg = CRS.to_epsg(crs)
-        if crs_epsg != 4326:
-            raise InvalidCRSError()
 
 
 def validate_area(feature: Feature):

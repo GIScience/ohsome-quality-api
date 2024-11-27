@@ -9,11 +9,6 @@ from ohsome_quality_api.api.request_models import (
     BaseBpolys,
     IndicatorRequest,
 )
-from ohsome_quality_api.utils.exceptions import (
-    GeoJSONError,
-    GeoJSONGeometryTypeError,
-    GeoJSONObjectTypeError,
-)
 
 
 @pytest.fixture
@@ -49,22 +44,22 @@ def test_bpolys_valid(
 
 
 def test_bpolys_invalid(feature_collection_invalid):
-    with pytest.raises((GeoJSONError, ValidationError)):
+    with pytest.raises(ValidationError):
         BaseBpolys(bpolys=feature_collection_invalid)
 
 
 def test_bpolys_unsupported_object_type_feature(feature_germany_heidelberg):
-    with pytest.raises((GeoJSONObjectTypeError, ValidationError)):
+    with pytest.raises(ValidationError):
         BaseBpolys(bpolys=feature_germany_heidelberg)
 
 
 def test_bpolys_unsupported_object_type(geojson_unsupported_object_type):
-    with pytest.raises((GeoJSONObjectTypeError, ValidationError)):
+    with pytest.raises(ValidationError):
         BaseBpolys(bpolys=geojson_unsupported_object_type)
 
 
 def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometry_type):
-    with pytest.raises((GeoJSONGeometryTypeError, ValidationError)):
+    with pytest.raises(ValidationError):
         BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
