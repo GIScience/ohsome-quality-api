@@ -112,7 +112,7 @@ class AttributeCompleteness(BaseIndicator):
         else:
             result = round(self.result.value * 100, 1)
         if self.attribute_title is None:
-            raise TypeError("Attribute names should not be None.")
+            raise TypeError("Attribute title should not be None.")
         else:
             tags = "attributes " + self.attribute_title
         all, matched = self.compute_units_for_all_and_matched()
