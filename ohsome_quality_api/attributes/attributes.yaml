@@ -266,6 +266,24 @@ parks:
     description: TODO
     filter: leisure=playground
 
+sports-pitch:
+  sport:
+    name: Sport
+    description: TODO
+    filter: sport=*
+  lit:
+    name: Lit
+    description: TODO
+    filter: lit=*
+  surface:
+    name: Surface
+    description: TODO
+    filter: surface=*
+  access:
+    name: Access
+    description: TODO
+    filter: access=*
+
 schools:
   leisure-playground:
     name: Playground
