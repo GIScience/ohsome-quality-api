@@ -179,26 +179,6 @@ fitness-centres:
     filter: opening_hours=*
 
 forests:
-  access-private:
-    name: Private Access
-    description: TODO
-    filter: access=private
-  access-official:
-    name: Official Access
-    description: TODO
-    filter: access=official
-  access-forestry:
-    name: Forestry
-    description: TODO
-    filter: access=forestry
-  highway-track:
-    name: Track
-    description: TODO
-    filter: highway=track
-  boundary-forest:
-    name: Forest boundary
-    description: TODO
-    filter: boundary=forest
   leaf-type:
     name: Leaf Type
     description: TODO
@@ -215,22 +195,6 @@ kindergarten:
     filter: phone=*
 
 marketplaces:
-  craft-bakery:
-    name: Bakery
-    description: TODO
-    filter: craft=bakery
-  craft-handicraft:
-    name: Handicraft
-    description: TODO
-    filter: craft=handicraft
-  craft-leather:
-    name: Leather craft
-    description: TODO
-    filter: craft=leather
-  craft-shoemaker:
-    name: Shoemaker
-    description: TODO
-    filter: craft=shoemaker
   craft-winery:
     name: Winery
     description: TODO
@@ -245,26 +209,10 @@ marketplaces:
     filter: name=*
 
 parks:
-  landuse-commercial:
-    name: Commercial landuse
-    description: TODO
-    filter: landuse=commercial
-  leisure-dog-park:
-    name: Dog park
-    description: TODO
-    filter: leisure=dog_park
   tourism-theme-park:
     name: Theme park
     description: TODO
     filter: tourism=theme_park
-  landuse-greenfield:
-    name: Greenfield
-    description: TODO
-    filter: landuse=greenfield
-  leisure-playground:
-    name: Playground
-    description: TODO
-    filter: leisure=playground
 
 sports-pitch:
   sport:
@@ -303,22 +251,10 @@ schools:
     filter: phone=*
 
 subway-stations:
-  railway-subway:
-    name: Subway
-    description: TODO
-    filter: railway=subway
   tunnel-yes:
     name: Tunnel
     description: TODO
     filter: tunnel=yes
-  railway-subway-entrance:
-    name: Subway entrance
-    description: TODO
-    filter: railway=subway_entrance
-  route-subway:
-    name: Subway route
-    description: TODO
-    filter: route=subway
   public-transport-stop-area:
     name: Subway stop area
     description: TODO
@@ -329,26 +265,6 @@ subway-stations:
     filter: public_transport=platform
 
 supermarkets:
-  shop-convenience:
-    name: Convenience store
-    description: TODO
-    filter: shop=convenience
-  shop-beverages:
-    name: Beverages
-    description: TODO
-    filter: shop=beverages
-  amenity-bicycle-parking:
-    name: Bicycle Parking
-    description: TODO
-    filter: amenity=bicycle_parking
-  amenity-parking:
-    name: Parking
-    description: TODO
-    filter: amenity=parking
-  amenity-parking-entrance:
-    name: Parking entrance
-    description: TODO
-    filter: amenity=parking_entrance
   brand:
     name: Brand
     description: TODO
@@ -382,15 +298,15 @@ roads:
   sidewalk:
     name: Sidewalk
     description: TODO
-    filter: footway:sidewalk=*
+    filter: sidewalk=*
   crossing:
     name: Crossing
     description: TODO
-    filter: footway:crossing = *
-  cycleway-lane:
-    name: Cycleway Lane
+    filter: crossing=*
+  cycleway:
+    name: Cycleway
     description: TODO
-    filter: cycleway:lane=*
+    filter: cycleway=*
   cycleway-share-busway:
     name: Cycleway Share Busway
     description: TODO
