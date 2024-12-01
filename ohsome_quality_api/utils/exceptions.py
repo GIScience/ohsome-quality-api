@@ -3,13 +3,6 @@
 from schema import SchemaError
 
 
-# TODO: Remove this base class as soon as #851 has been merged
-class ValidationError(Exception):
-    def __init__(self):
-        self.name = ""
-        self.message = ""
-
-
 class OhsomeApiError(Exception):
     """Request to ohsome API failed."""
 
