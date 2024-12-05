@@ -44,6 +44,11 @@ def topic_key_building_count() -> str:
 
 
 @pytest.fixture(scope="class")
+def topic_roads() -> TopicDefinition:
+    return get_topic_preset("roads")
+
+
+@pytest.fixture(scope="class")
 def topic_minimal(topic_key_minimal) -> TopicDefinition:
     return get_topic_preset(topic_key_minimal)
 

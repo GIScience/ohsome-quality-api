@@ -56,6 +56,21 @@ roads:
     - core
     - bkg
 
+car-roads:
+  name: Classified Roads
+  description: roads excluding simple forest paths and other small/ unclassified roads
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link) and type:way
+  indicators:
+    - mapping-saturation
+    - attribute-completeness
+    - currentness
+  projects:
+    - core
+    - bkg
+
 railway-length:
   name: Railways
   description: >-
@@ -144,6 +159,7 @@ schools:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -189,6 +205,7 @@ doctors:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -210,11 +227,25 @@ bus-stops:
 
 tram-stops:
   name: Tram Stops
-  description: Count of schools.
+  description: Count of tram stops.
   endpoint: elements
   aggregation_type: count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
+    - bkg
+
+public-transport-stops:
+  name: Public Transport Stops
+  description: Count of public transport stops.
+  endpoint: elements
+  aggregation_type: count
+  filter: public_transport=platform
   indicators:
     - mapping-saturation
     - currentness
@@ -243,7 +274,7 @@ supermarkets:
   description: Count of supermarkets.
   endpoint: elements
   aggregation_type: count
-  filter: shop=supermarket
+  filter: shop=supermarket or shop=convenience
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
     - mapping-saturation
@@ -275,6 +306,21 @@ parks:
   aggregation_type: count
   filter: leisure=park
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
+    - bkg
+
+sports-pitch:
+  name: Sports Pitch
+  description: Count of sports pitches (an area designed for practising a particular sport)
+  endpoint: elements
+  aggregation_type: count
+  filter: leisure=pitch
+  source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch
   indicators:
     - mapping-saturation
     - currentness
@@ -363,6 +409,7 @@ hospitals:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
