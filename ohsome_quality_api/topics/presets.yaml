@@ -274,7 +274,7 @@ supermarkets:
   description: Count of supermarkets.
   endpoint: elements
   aggregation_type: count
-  filter: shop=supermarket
+  filter: shop=supermarket or shop=convenience
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
     - mapping-saturation
