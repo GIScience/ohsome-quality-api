@@ -2,6 +2,9 @@
 
 ## Current Main 
 
+- attribute completeness: improved figure description ([#828])
+- attribute completeness: fixed problem with an attribute filter ([#850])
+- attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes
 
 ## Release  1.7.0
 
