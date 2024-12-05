@@ -54,7 +54,7 @@ class BaseBpolys(BaseConfig):
 
     @field_validator("bpolys")
     @classmethod
-    def transform_bpolys(cls, value):
+    def transform_bpolys(cls, value) -> geojson.FeatureCollection:
         # NOTE: `geojson_pydantic` library is used only for validation and openAPI-spec
         # generation. To avoid refactoring all code the FeatureCollection object of
         # the `geojson` library is still used every else.
