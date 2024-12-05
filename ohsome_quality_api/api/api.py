@@ -25,7 +25,8 @@ from ohsome_quality_api import (
     oqt,
 )
 from ohsome_quality_api.api.request_models import (
-    AttributeCompletenessRequest,
+    AttributeCompletenessFilterRequest,
+    AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
     IndicatorRequest,
 )
@@ -268,13 +269,15 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
 )
 async def post_attribute_completeness(
     request: Request,
-    parameters: AttributeCompletenessRequest,
+    parameters: AttributeCompletenessKeyRequest | AttributeCompletenessFilterRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    for attribute in parameters.attribute_keys:
-        validate_attribute_topic_combination(
-            attribute.value, parameters.topic_key.value
-        )
+    if isinstance(parameters, AttributeCompletenessKeyRequest):
+        for attribute in parameters.attribute_keys:
+            validate_attribute_topic_combination(
+                attribute,
+                parameters.topic,
+            )
 
     return await _post_indicator(request, "attribute-completeness", parameters)
 
@@ -306,19 +309,12 @@ async def post_indicator(
 
 
 async def _post_indicator(
-    request: Request, key: str, parameters: IndicatorRequest
+    request: Request,
+    key: str,
+    parameters: IndicatorRequest,
 ) -> Any:
-    validate_indicator_topic_combination(key, parameters.topic_key.value)
-    attribute_keys = getattr(parameters, "attribute_keys", None)
-    if attribute_keys:
-        attribute_keys = [attribute.value for attribute in attribute_keys]
-    indicators = await oqt.create_indicator(
-        key=key,
-        bpolys=parameters.bpolys,
-        topic=get_topic_preset(parameters.topic_key.value),
-        include_figure=parameters.include_figure,
-        attribute_keys=attribute_keys,
-    )
+    validate_indicator_topic_combination(key, parameters.topic)
+    indicators = await oqt.create_indicator(key=key, **dict(parameters))
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         return {
@@ -339,10 +335,12 @@ async def _post_indicator(
         }
     else:
         detail = "Content-Type needs to be either {0} or {1}".format(
-            MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
+            MEDIA_TYPE_JSON,
+            MEDIA_TYPE_GEOJSON,
         )
         raise HTTPException(
-            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail=detail,
         )
 
 

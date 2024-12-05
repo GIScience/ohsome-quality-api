@@ -1,6 +1,5 @@
 import logging
 from string import Template
-from typing import List
 
 import dateutil.parser
 import plotly.graph_objects as go
@@ -24,8 +23,12 @@ class AttributeCompleteness(BaseIndicator):
 
     Terminology:
         topic: Category of map features. Translates to a ohsome filter.
-        attribute: Additional (expected) tag(s) describing a map feature. Translates to
-            a ohsome filter.
+        attribute: Additional (expected) tag(s) describing a map feature.
+            attribute_keys: a set of predefined attributes wich will be
+                translated to an ohsome filter
+            attribute_filter: ohsome filter query representing custom attributes
+            attribute_title:  Title describing the attributes represented by
+                the Attribute Filter
 
     Example: How many buildings (topic) have height information (attribute)?
 
@@ -40,23 +43,37 @@ class AttributeCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute_keys: List[str] = None,
+        attribute_keys: list[str] | None = None,
+        attribute_filter: str | None = None,
+        attribute_title: str | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
+        self.attribute_filter = attribute_filter
+        self.attribute_title = attribute_title
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
+        if self.attribute_keys:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_keys,
+                self.topic.key,
+            )
+            self.attribute_title = ", ".join(
+                [
+                    get_attribute(self.topic.key, k).name.lower()
+                    for k in self.attribute_keys
+                ]
+            )
 
     async def preprocess(self) -> None:
-        attribute = build_attribute_filter(self.attribute_keys, self.topic.key)
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
             self.feature,
-            attribute_filter=attribute,
+            attribute_filter=self.attribute_filter,
         )
         timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
@@ -90,19 +107,21 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     def create_description(self):
-        attribute_names = [
-            get_attribute(self.topic.key, attribute_key).name.lower()
-            for attribute_key in self.attribute_keys
-        ]
+        if self.result.value is None:
+            raise TypeError("Result value should not be None.")
+        else:
+            result = round(self.result.value * 100, 1)
+        if self.attribute_title is None:
+            raise TypeError("Attribute title should not be None.")
+        else:
+            tags = "attributes " + self.attribute_title
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value * 100, 1),
+            result=result,
             all=all,
             matched=matched,
             topic=self.topic.name.lower(),
-            tags="attributes " + ", ".join(attribute_names)
-            if len(attribute_names) > 1
-            else "attribute " + attribute_names[0],
+            tags=tags,
         )
 
     def create_figure(self) -> None:

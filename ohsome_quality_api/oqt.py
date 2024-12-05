@@ -1,7 +1,7 @@
 """Controller for computing Indicators."""
 
 import logging
-from typing import Coroutine, List
+from typing import Coroutine
 
 from geojson import Feature, FeatureCollection
 
@@ -18,7 +18,8 @@ async def create_indicator(
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
-    attribute_keys: List[str] = None,
+    *args,
+    **kwargs,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
 
@@ -40,7 +41,14 @@ async def create_indicator(
         ]:
             validate_area(feature)
         tasks.append(
-            _create_indicator(key, feature, topic, include_figure, attribute_keys)
+            _create_indicator(
+                key,
+                feature,
+                topic,
+                include_figure,
+                *args,
+                **kwargs,
+            )
         )
     return await gather_with_semaphore(tasks)
 
@@ -50,7 +58,8 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
-    attribute_keys: List[str] = None,
+    *args,
+    **kwargs,
 ) -> Indicator:
     """Create an indicator from scratch."""
 
@@ -59,13 +68,16 @@ async def _create_indicator(
     logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
-    if key == "attribute-completeness":
-        indicator = indicator_class(topic, feature, attribute_keys)
-    else:
-        indicator = indicator_class(topic, feature)
+    indicator = indicator_class(
+        topic,
+        feature,
+        *args,
+        **kwargs,
+    )
 
     logging.info("Run preprocessing")
     await indicator.preprocess()
+
     logging.info("Run calculation")
     indicator.calculate()
 
