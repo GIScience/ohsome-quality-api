@@ -26,7 +26,8 @@ from ohsome_quality_api import (
 )
 from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
-    AttributeCompletenessRequest,
+    AttributeCompletenessFilterRequest,
+    AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
     IndicatorRequest,
 )
@@ -266,7 +267,7 @@ async def post_indicator_ms(
 )
 async def post_attribute_completeness(
     request: Request,
-    parameters: AttributeCompletenessRequest,
+    parameters: AttributeCompletenessKeyRequest | AttributeCompletenessFilterRequest,
     _: CommonDepedencies.RequestContext,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
@@ -301,18 +302,11 @@ async def post_indicator(
 
 
 async def _post_indicator(
-    request: Request, key: str, parameters: IndicatorRequest
+    request: Request,
+    key: str,
+    parameters: IndicatorRequest,
 ) -> Any:
-    attribute_keys = getattr(parameters, "attribute_keys", None)
-    if attribute_keys:
-        attribute_keys = [attribute.value for attribute in attribute_keys]
-    indicators = await oqt.create_indicator(
-        key=key,
-        bpolys=parameters.bpolys,
-        topic=get_topic_preset(parameters.topic_key.value),
-        include_figure=parameters.include_figure,
-        attribute_keys=attribute_keys,
-    )
+    indicators = await oqt.create_indicator(key=key, **dict(parameters))
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         return {
@@ -333,10 +327,12 @@ async def _post_indicator(
         }
     else:
         detail = "Content-Type needs to be either {0} or {1}".format(
-            MEDIA_TYPE_JSON, MEDIA_TYPE_GEOJSON
+            MEDIA_TYPE_JSON,
+            MEDIA_TYPE_GEOJSON,
         )
         raise HTTPException(
-            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail=detail,
         )
 
 

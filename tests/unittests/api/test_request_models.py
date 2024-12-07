@@ -5,7 +5,8 @@ from pydantic import ValidationError
 
 from ohsome_quality_api.api.request_context import RequestContext
 from ohsome_quality_api.api.request_models import (
-    AttributeCompletenessRequest,
+    AttributeCompletenessFilterRequest,
+    AttributeCompletenessKeyRequest,
     BaseBpolys,
     IndicatorRequest,
 )
@@ -89,13 +90,13 @@ def test_indicator_request_invalid_topic(bpolys):
 @pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValidationError):
-        AttributeCompletenessRequest(bpolys=bpolys, topic=topic_key_building_count)
+        AttributeCompletenessKeyRequest(bpolys=bpolys, topic=topic_key_building_count)
 
 
 @pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValidationError):
-        AttributeCompletenessRequest(
+        AttributeCompletenessKeyRequest(
             bpolys=bpolys,
             topic=topic_key_building_count,
             attributes="roads",
@@ -107,7 +108,7 @@ def test_attribute_completeness_indicator_request_invalid_indicator_topic_combin
     bpolys, topic_key_minimal, attribute_key_height
 ):
     with pytest.raises(ValidationError):
-        AttributeCompletenessRequest(
+        AttributeCompletenessKeyRequest(
             bpolys=bpolys,
             topic=topic_key_minimal,
             attributes=attribute_key_height,
@@ -115,8 +116,19 @@ def test_attribute_completeness_indicator_request_invalid_indicator_topic_combin
 
 
 @pytest.mark.usefixtures("mock_request_context_attribute_completeness")
-def test_attribute_completeness(bpolys, topic_key_building_count, attribute_key_height):
-    AttributeCompletenessRequest(
+def test_attribute_completeness(bpolys, topic_key_building_count):
+    with pytest.raises(ValueError):
+        AttributeCompletenessKeyRequest(
+            bpolys=bpolys, topic=topic_key_building_count, attributes="foo"
+        )
+
+
+def test_attribute_completeness_single_attribute(
+    bpolys,
+    topic_key_building_count,
+    attribute_key_height,
+):
+    AttributeCompletenessKeyRequest(
         bpolys=bpolys,
         topic=topic_key_building_count,
         attributes=attribute_key_height,
@@ -129,8 +141,23 @@ def test_attribute_completeness_multiple_attributes(
     topic_key_building_count,
     attribute_key_multiple,
 ):
-    AttributeCompletenessRequest(
+    AttributeCompletenessKeyRequest(
         bpolys=bpolys,
         topic=topic_key_building_count,
         attributes=attribute_key_multiple,
+    )
+
+
+@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
+def test_attribute_completeness_attribute_filter(
+    bpolys,
+    topic_key_building_count,
+    attribute_filter,
+    attribute_title,
+):
+    AttributeCompletenessFilterRequest(
+        bpolys=bpolys,
+        topic=topic_key_building_count,
+        attribute_filter=attribute_filter,
+        attribute_title=attribute_title,
     )

@@ -2,6 +2,14 @@
 
 ## Current Main 
 
+## Release  1.8.0
+
+### New Features
+
+- Support custom attribute definition via ohsome filter query for the Attribute Completeness indicator ([#848])
+
+[#848]: https://github.com/GIScience/ohsome-quality-api/pull/848
+
 
 ## Release  1.7.0
 
