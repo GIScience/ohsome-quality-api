@@ -2,6 +2,10 @@
 
 ## Current Main 
 
+- attribute-completeness: indicator for `attribute-completeness` is now included in core profile ([#856])
+
+[#856]: https://github.com/GIScience/ohsome-quality-api/issues/856
+
 ## Release  1.8.0
 
 ### New Features
