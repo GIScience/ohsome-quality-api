@@ -1,3 +1,4 @@
+#!/bin/bash
 # based on docs here: https://heigit.atlassian.net/wiki/spaces/OQT/pages/3474149/Releases
 # requires local installation of `gh`, the github CLI: https://cli.github.com
 
@@ -9,14 +10,14 @@ export NEW_VERSION=1.8.1
 
 
 # exit immediately if a command exits with a non-zero status
-set -ex
+set -e
 
 
 # get the directory of the current script
 SCRIPT_DIR="$(dirname "$0")"
 
 # import user prompt
-source "$SCRIPT_DIR/prompt_user_exit_or_continue.sh"
+source "$SCRIPT_DIR/functions.sh"
 
 
 prompt_user "👉 did you adjust the values for old and new versions in the release script?"
@@ -26,7 +27,7 @@ prompt_user "👉 do you run this script in an active python env? if not run 'po
 
 
 # change to main directory
-cd ..
+cd $SCRIPT_DIR/..
 
 
 # get latest version of main and create new branch
@@ -56,14 +57,14 @@ export NEW="__version__ = \"$NEW_VERSION\""
 
 
 # might not work like this on linux
-sed -i .bak "s/$OLD/$NEW/g" ohsome_quality_api/__init__.py
+run_sed "s/$OLD/$NEW/g" ohsome_quality_api/__init__.py
 rm -rf ohsome_quality_api/__init__.py.bak
 echo "✅ updated __init__.py to $NEW_VERSION"
 
 
 # insert new sub-headline for new release
 prompt_user "👉 update CHANGELOG.md?"
-sed -i .bak "s/## Current Main/## Current Main \n\n## Release  $NEW_VERSION/g" CHANGELOG.md
+run_sed "s/## Current Main/## Current Main\n\n## Release  $NEW_VERSION/g" CHANGELOG.md
 rm -rf CHANGELOG.md.bak
 echo "✅ updated CHANGELOG.md"
 
@@ -108,4 +109,12 @@ echo "✅ created new github release and tag for version: $NEW_VERSION"
 
 
 
-echo "⚠️ Please start the Jenkins tag build here: https://jenkins.heigit.org/job/OQAPI/view/tags/job/$NEW_VERSION/"
+JENKINS_URL="https://jenkins.heigit.org/job/OQAPI/view/tags/job/${NEW_VERSION}/"
+echo "⚠️ Please start the Jenkins tag build here: ${JENKINS_URL}"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  xdg-open "$JENKINS_URL"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  open "$JENKINS_URL"
+else
+  printf "\nOS could not be detected. Please open report manually!\n"
+fi
