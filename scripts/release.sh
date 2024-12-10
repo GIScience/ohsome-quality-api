@@ -111,10 +111,4 @@ echo "✅ created new github release and tag for version: $NEW_VERSION"
 
 JENKINS_URL="https://jenkins.heigit.org/job/OQAPI/view/tags/job/${NEW_VERSION}/"
 echo "⚠️ Please start the Jenkins tag build here: ${JENKINS_URL}"
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  xdg-open "$JENKINS_URL"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  open "$JENKINS_URL"
-else
-  printf "\nOS could not be detected. Please open report manually!\n"
-fi
+run_open "$JENKINS_URL"
