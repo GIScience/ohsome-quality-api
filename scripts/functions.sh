@@ -22,13 +22,23 @@ prompt_user() {
 
 
 run_sed() {
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  sed --in-place=.bak "$1" "$2"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  sed -i .bak "$1" "$2"
-else
-  printf "\nOS could not be detected. Please open report manually!\n"
-fi
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sed --in-place=.bak "$1" "$2"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i .bak "$1" "$2"
+  else
+    printf "\nOS could not be detected. Please open report manually!\n"
+  fi
+}
+
+run_open() {
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    xdg-open "$1"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    open "$1"
+  else
+    printf "\nOS could not be detected. Please open URL manually!\n"
+  fi
 }
 
 # Example usage
