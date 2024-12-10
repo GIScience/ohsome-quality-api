@@ -20,6 +20,17 @@ prompt_user() {
     done
 }
 
+
+run_sed() {
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  sed --in-place=.bak "$1" "$2"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i .bak "$1" "$2"
+else
+  printf "\nOS could not be detected. Please open report manually!\n"
+fi
+}
+
 # Example usage
 #prompt_user "Do you want to continue?"
 
@@ -29,4 +40,4 @@ prompt_user() {
  #SCRIPT_DIR="$(dirname "$0")"
  #
  ## import user prompt
- #source "$SCRIPT_DIR/prompt_user_exit_or_continue.sh"
+ #source "$SCRIPT_DIR/functions.sh"
