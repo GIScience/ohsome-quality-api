@@ -2,6 +2,11 @@
 
 ## Current Main 
 
+- PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
+
+[#860]: https://github.com/GIScience/ohsome-quality-api/issues/860
+
+
 ## Release  1.8.1 
 
 - attribute-completeness: indicator for `attribute-completeness` is now included in core profile ([#856])
