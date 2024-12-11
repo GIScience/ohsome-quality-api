@@ -14,7 +14,7 @@ Closes #
 - [ ] My code follows the [style guide](https://github.com/GIScience/ohsome-quality-api/blob/main/CONTRIBUTING.md#style-guide) and was checked with [pre-commit](https://github.com/GIScience/ohsome-quality-api/blob/main/CONTRIBUTING.md#pre-commit) before committing
 - [ ] I have commented my code
 - [ ] I have added sufficient unit and integration [tests](https://github.com/GIScience/ohsome-quality-api/blob/main/docs/development_setup.md#tests)
-- [ ] I have added new Hurl regression tests and checked all existing [tests](../regression-tests/README.md)
+- [ ] I have added new Hurl regression tests and checked all existing [tests](https://github.com/GIScience/ohsome-quality-api/blob/main/regression-tests/README.md)
 - [ ] I have updated the [CHANGELOG.md](https://github.com/GIScience/ohsome-quality-api/blob/main/CHANGELOG.md)
 
 Please check all finished tasks. If some tasks do not apply to your PR, please cross their text out (by using `~...~`) and remove their checkboxes.
