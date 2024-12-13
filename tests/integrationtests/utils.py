@@ -21,27 +21,30 @@ class PytestNamer(NamerBase):
         """An approval tests Namer for naming approved and received text files.
 
         These files will get stored under:
-        `tests/approval/{module}/test_file.py::TestClass::test_func[a]`
+        `tests/approval/{module}/test_file.py--TestClass--test_func[a]`
 
         This class utilizes the `PYTEST_CURRENT_TEST` environment variable, which
         consist of the nodeid and the current stage:
         `relative/path/to/test_file.py::TestClass::test_func[a] (call)`
+
+        During a pytest test session stages can be setup, teardown or call.
+        Approval tests should only be used during the call stage and therefore
+        the ` (call)` postfix is removed.
+
+        To avoid forbidden characters in system paths `::` is replaced by `-`.
         """
-        self.nodeid = os.environ["PYTEST_CURRENT_TEST"]
+        self.nodeid: Path = Path(os.environ["PYTEST_CURRENT_TEST"])
         NamerBase.__init__(self, extension)
 
-    def get_file_name(self) -> str:
+    def get_file_name(self) -> Path:
         """File name is pytest nodeid w/out directory name and pytest stage."""
-        # During a pytest test session stages can be setup, teardown or call.
-        # Approval tests should only be used during the call stage and therefore
-        # we replace the ` (call)` postfix.
-        return self.nodeid.split("/")[-1].replace(" (call)", "")
+        return Path(str(self.nodeid.name).replace(" (call)", "").replace("::", "-"))
 
     def get_directory(self) -> Path:
         """Directory is `tests/approval/{module}`."""
-        parts = self.nodeid.split("/")[:-1]
-        directory = "/".join(parts)
-        return Path(APPROVED_DIR) / directory.replace("tests/integrationtests/", "")
+        parts = self.nodeid.parent.parts
+        raw = Path(*[p for p in parts if p not in ["tests", "integrationtests"]])
+        return Path(APPROVED_DIR) / raw
 
     def get_config(self) -> dict:
         return {}
