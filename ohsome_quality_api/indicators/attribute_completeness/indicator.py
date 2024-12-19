@@ -1,7 +1,9 @@
+import json
 import logging
+import os
 from string import Template
 
-import dateutil.parser
+import dateutil
 import plotly.graph_objects as go
 from geojson import Feature
 
@@ -12,6 +14,10 @@ from ohsome_quality_api.attributes.definitions import (
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.trino import client as trino_client
+from ohsome_quality_api.utils.helper_geo import get_bounding_box
+
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class AttributeCompleteness(BaseIndicator):
@@ -46,8 +52,10 @@ class AttributeCompleteness(BaseIndicator):
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
         attribute_title: str | None = None,
+        feature_flag_sql: bool = False,  # Feature flag to use SQL instead of ohsome API queries
     ) -> None:
         super().__init__(topic=topic, feature=feature)
+        self.feature_flag_sql = feature_flag_sql
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
@@ -56,7 +64,9 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        if self.attribute_keys:
+        if self.feature_flag_sql:
+            self.attribute_filter = attribute_filter
+        elif self.attribute_keys:
             self.attribute_filter = build_attribute_filter(
                 self.attribute_keys,
                 self.topic.key,
@@ -74,17 +84,50 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     async def preprocess(self) -> None:
-        # Get attribute filter
-        response = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            attribute_filter=self.attribute_filter,
-        )
-        timestamp = response["ratioResult"][0]["timestamp"]
-        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.result.value = response["ratioResult"][0]["ratio"]
-        self.absolute_value_1 = response["ratioResult"][0]["value"]
-        self.absolute_value_2 = response["ratioResult"][0]["value2"]
+        if self.feature_flag_sql:
+            filter = self.topic.sql_filter
+            file_path = os.path.join(WORKING_DIR, "query.sql")
+            with open(file_path, "r") as file:
+                template = file.read()
+
+            bounding_box = get_bounding_box(self.feature)
+            geometry = json.dumps(self.feature["geometry"])
+
+            sql = template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            # TODO: Check for None
+            self.absolute_value_1 = results[0][0]
+
+            filter = self.topic.sql_filter + " AND " + self.attribute_filter
+            sql = template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            self.absolute_value_2 = results[0][0]
+
+            # timestamp = response["ratioResult"][0]["timestamp"]
+            # self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+            self.result.value = self.absolute_value_2 / self.absolute_value_1
+        else:
+            # Get attribute filter
+            response = await ohsome_client.query(
+                self.topic,
+                self.feature,
+                attribute_filter=self.attribute_filter,
+            )
+            timestamp = response["ratioResult"][0]["timestamp"]
+            self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+            self.result.value = response["ratioResult"][0]["ratio"]
+            self.absolute_value_1 = response["ratioResult"][0]["value"]
+            self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
         # result (ratio) can be NaN if no features matching filter1

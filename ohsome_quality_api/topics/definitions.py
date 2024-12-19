@@ -16,7 +16,7 @@ def load_topic_presets() -> dict[str, TopicDefinition]:
         raw = yaml.safe_load(f)
     topics = {}
     for k, v in raw.items():
-        v["filter"] = v.pop("filter")
+        v["filter"] = v.pop("filter")  # TODO
         v["key"] = k
         topics[k] = TopicDefinition(**v)
     return topics

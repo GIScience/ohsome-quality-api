@@ -50,7 +50,10 @@ class BaseIndicator(metaclass=ABCMeta):
             "metadata": self.metadata.model_dump(by_alias=True),
             "topic": self.topic.model_dump(
                 by_alias=True,
-                exclude={"ratio_filter"},
+                exclude={
+                    "ratio_filter",
+                    "sql_filter",
+                },  # TODO: do not exclude SQL filter
             ),
             "result": result,
             **self.feature.properties,
