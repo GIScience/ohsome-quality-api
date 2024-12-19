@@ -4,6 +4,12 @@
 
 - PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
 
+### Bug Fixes
+
+- attribute-completeness: custom filters are now correctly combined with topic filter ([#865])
+
+[#865]: https://github.com/GIScience/ohsome-quality-api/pull/865
+
 [#860]: https://github.com/GIScience/ohsome-quality-api/issues/860
 
 

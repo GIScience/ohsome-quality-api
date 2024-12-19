@@ -52,16 +52,12 @@ def get_attribute_preset(topic_key: str) -> List[Attribute]:
         ) from error
 
 
-def build_attribute_filter(attribute_key: List[str], topic_key: str) -> str:
+def build_attribute_filter(attribute_key: List[str] | str, topic_key: str) -> str:
     """Build attribute filter for ohsome API query."""
     attributes = get_attributes()
     try:
         if isinstance(attribute_key, str):
-            return (
-                get_topic_preset(topic_key).filter
-                + " and "
-                + attributes[topic_key][attribute_key].filter
-            )
+            return get_topic_preset(topic_key).filter + " and (" + attribute_key + ")"
         else:
             attribute_filter = get_topic_preset(topic_key).filter
             for key in attribute_key:
