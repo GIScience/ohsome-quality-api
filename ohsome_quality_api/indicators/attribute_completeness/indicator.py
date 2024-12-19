@@ -67,6 +67,11 @@ class AttributeCompleteness(BaseIndicator):
                     for k in self.attribute_keys
                 ]
             )
+        else:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_filter,
+                self.topic.key,
+            )
 
     async def preprocess(self) -> None:
         # Get attribute filter
