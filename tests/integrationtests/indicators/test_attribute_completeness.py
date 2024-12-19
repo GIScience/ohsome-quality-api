@@ -7,6 +7,7 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 from approvaltests import verify
+from attributes.definitions import get_attributes
 
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
@@ -243,3 +244,25 @@ def test_create_description_multiple_aggregation_types(
     indicator.absolute_value_2 = absolute_value_2
     indicator.create_description()
     assert aggregation in indicator.description
+
+
+def test_filters_match(topic_key_building_count, attribute_key_height):
+    indicator_attribute_keys = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_keys=attribute_key_height,
+    )
+
+    attributes = get_attributes()
+    indicator_attribute_filter = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_filter=attributes[topic_key_building_count][
+            attribute_key_height[0]
+        ].filter,
+    )
+
+    assert (
+        indicator_attribute_filter.attribute_filter
+        == indicator_attribute_keys.attribute_filter
+    )
