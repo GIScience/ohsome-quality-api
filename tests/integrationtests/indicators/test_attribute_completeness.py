@@ -7,8 +7,8 @@ import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
 from approvaltests import verify
-from attributes.definitions import get_attributes
 
+from ohsome_quality_api.attributes.definitions import get_attributes
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
