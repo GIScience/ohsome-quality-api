@@ -112,7 +112,7 @@ clinics:
     description: TODO
     filter: opening_hours=*
   specialty:
-    name: specialty
+    name: Specialty
     description: TODO
     filter: healthcare:speciality=*
 
