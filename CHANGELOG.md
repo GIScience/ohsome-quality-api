@@ -2,9 +2,26 @@
 
 ## Current Main 
 
-- attribute completeness: improved figure description ([#828])
-- attribute completeness: fixed problem with an attribute filter ([#850])
-- attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes
+- PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
+- attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
+
+[#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
+[#860]: https://github.com/GIScience/ohsome-quality-api/issues/860
+
+
+## Release  1.8.1 
+
+- attribute-completeness: indicator for `attribute-completeness` is now included in core profile ([#856])
+
+[#856]: https://github.com/GIScience/ohsome-quality-api/issues/856
+
+## Release  1.8.0
+
+### New Features
+
+- Support custom attribute definition via ohsome filter query for the Attribute Completeness indicator ([#848])
+
+[#848]: https://github.com/GIScience/ohsome-quality-api/pull/848
 
 ## Release  1.7.0
 

@@ -9,44 +9,6 @@ class ValidationError(Exception):
         self.message = ""
 
 
-class GeoJSONError(ValidationError):
-    """Invalid GeoJSON object."""
-
-    def __init__(self, errors):
-        self.name = "GeoJSONError"
-        self.message = "Invalid GeoJSON object: {}".format(errors)
-
-
-class GeoJSONObjectTypeError(ValidationError):
-    """Invalid GeoJSON object type."""
-
-    def __init__(self):
-        self.name = "GeoJSONObjectTypeError"
-        self.message = (
-            "Unsupported GeoJSON object type. GeoJSON object has to be of type "
-            + "FeatureCollection or Feature."
-        )
-
-
-class GeoJSONGeometryTypeError(ValidationError):
-    """Invalid GeoJSON geometry type."""
-
-    def __init__(self):
-        self.name = "GeoJSONGeometryTypeError"
-        self.message = (
-            "Unsupported GeoJSON geometry type. GeoJSON geometry has to be of type "
-            + "Polygon or MultiPolygon"
-        )
-
-
-class InvalidCRSError(ValidationError):
-    def __init__(self):
-        self.name = "InvalidCRSError"
-        self.message = (
-            "Invalid CRS. The FeatureCollection must have the EPSG:4326 CRS or none."
-        )
-
-
 class AttributeTopicCombinationError(ValidationError):
     """Invalid attribute topic combination error."""
 

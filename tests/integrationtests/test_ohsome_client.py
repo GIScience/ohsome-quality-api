@@ -22,10 +22,10 @@ def test_query_ohsome_api_exceptions_404():
         asyncio.run(ohsome_client.query_ohsome_api(url, {}))
 
 
-@oqapi_vcr.use_cassette()
+@oqapi_vcr.use_cassette
 def test_query_ohsome_api_exceptions_400():
     url = "https://api.ohsome.org/v1/elements/length"
-    with pytest.raises(OhsomeApiError, match="Invalid filter syntax.*"):
+    with pytest.raises(OhsomeApiError, match="Invalid filter syntax."):
         asyncio.run(
             ohsome_client.query_ohsome_api(
                 url, {"bboxes": "8.67,49.39,8.71,49.42", "filter": "geometry:lie"}

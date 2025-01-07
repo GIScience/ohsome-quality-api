@@ -1,10 +1,11 @@
 import inspect
 import os
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import geojson
 import vcr
-from approvaltests import Namer
+from approvaltests.namer.namer_base import NamerBase
 
 from ohsome_quality_api.topics.definitions import get_topic_preset
 from ohsome_quality_api.topics.models import TopicDefinition
@@ -12,36 +13,41 @@ from ohsome_quality_api.topics.models import TopicDefinition
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures")
 VCR_DIR = os.path.join(FIXTURE_DIR, "vcr_cassettes")
-APPROVED_DIR = os.path.join(FIXTURE_DIR, "approved")
+APPROVED_DIR = os.path.join(TEST_DIR, "approved")
 
 
-class PytestNamer(Namer):
-    def __init__(self):
-        """Namer which includes fixture dir, dir, module, class and function in name.
+class PytestNamer(NamerBase):
+    def __init__(self, extension=None):
+        """An approval tests Namer for naming approved and received text files.
+
+        These files will get stored under:
+        `tests/approval/{module}/test_file.py--TestClass--test_func[a]`
 
         This class utilizes the `PYTEST_CURRENT_TEST` environment variable, which
         consist of the nodeid and the current stage:
         `relative/path/to/test_file.py::TestClass::test_func[a] (call)`
 
-        For better readability this class formats the filename to something like:
-        `test_file-TestClass-test_func-a
+        During a pytest test session stages can be setup, teardown or call.
+        Approval tests should only be used during the call stage and therefore
+        the ` (call)` postfix is removed.
+
+        To avoid forbidden characters in system paths `::` is replaced by `-`.
         """
-        nodeid = os.environ["PYTEST_CURRENT_TEST"]
-        nodeid_without_dir = nodeid.split("/")[-1]
-        parts = nodeid_without_dir.split("::")
-        raw = "-".join(parts)
-        self.name = (
-            raw.replace(".py", "")
-            .replace("[", "-")
-            .replace("]", "")
-            .replace(" (call)", "")
-        )
+        self.nodeid: Path = Path(os.environ["PYTEST_CURRENT_TEST"])
+        NamerBase.__init__(self, extension)
 
-    def get_received_filename(self) -> str:
-        return os.path.join(APPROVED_DIR, self.name + ".received" + ".txt")
+    def get_file_name(self) -> Path:
+        """File name is pytest nodeid w/out directory name and pytest stage."""
+        return Path(str(self.nodeid.name).replace(" (call)", "").replace("::", "-"))
 
-    def get_approved_filename(self) -> str:
-        return os.path.join(APPROVED_DIR, self.name + ".approved" + ".txt")
+    def get_directory(self) -> Path:
+        """Directory is `tests/approval/{module}`."""
+        parts = self.nodeid.parent.parts
+        raw = Path(*[p for p in parts if p not in ["tests", "integrationtests"]])
+        return Path(APPROVED_DIR) / raw
+
+    def get_config(self) -> dict:
+        return {}
 
 
 class AsyncMock(MagicMock):
