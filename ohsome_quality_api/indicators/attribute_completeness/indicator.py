@@ -114,10 +114,10 @@ class AttributeCompleteness(BaseIndicator):
         if self.attribute_title is None:
             raise TypeError("Attribute title should not be None.")
         else:
-            tags = (
+            tags = str(
                 "attributes " + self.attribute_title
                 if len(self.attribute_keys) > 1
-                else "attribute " + self.attribute_title,
+                else "attribute " + self.attribute_title
             )
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
