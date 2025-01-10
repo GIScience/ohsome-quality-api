@@ -1,6 +1,8 @@
 # Changelog
 
-## Current Main 
+## Current Main
+
+## Release  1.8.2 
 
 - PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
 
