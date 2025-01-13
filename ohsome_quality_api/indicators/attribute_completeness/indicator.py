@@ -116,7 +116,7 @@ class AttributeCompleteness(BaseIndicator):
         else:
             tags = str(
                 "attributes " + self.attribute_title
-                if len(self.attribute_keys) > 1
+                if self.attribute_keys and len(self.attribute_keys) > 1
                 else "attribute " + self.attribute_title
             )
         all, matched = self.compute_units_for_all_and_matched()
