@@ -1,6 +1,5 @@
 import logging
 from string import Template
-from typing import List
 
 import dateutil.parser
 import plotly.graph_objects as go
@@ -8,6 +7,7 @@ from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
+    get_attribute,
 )
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
@@ -23,8 +23,12 @@ class AttributeCompleteness(BaseIndicator):
 
     Terminology:
         topic: Category of map features. Translates to a ohsome filter.
-        attribute: Additional (expected) tag(s) describing a map feature. Translates to
-            a ohsome filter.
+        attribute: Additional (expected) tag(s) describing a map feature.
+            attribute_keys: a set of predefined attributes wich will be
+                translated to an ohsome filter
+            attribute_filter: ohsome filter query representing custom attributes
+            attribute_title:  Title describing the attributes represented by
+                the Attribute Filter
 
     Example: How many buildings (topic) have height information (attribute)?
 
@@ -39,22 +43,42 @@ class AttributeCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute_key: str | List[str] = None,
+        attribute_keys: list[str] | None = None,
+        attribute_filter: str | None = None,
+        attribute_title: str | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.attribute_key = attribute_key
+        self.attribute_keys = attribute_keys
+        self.attribute_filter = attribute_filter
+        self.attribute_title = attribute_title
         self.absolute_value_1 = None
         self.absolute_value_2 = None
+        self.description = None
+        if self.attribute_keys:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_keys,
+                self.topic.key,
+            )
+            self.attribute_title = ", ".join(
+                [
+                    get_attribute(self.topic.key, k).name.lower()
+                    for k in self.attribute_keys
+                ]
+            )
+        else:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_filter,
+                self.topic.key,
+            )
 
     async def preprocess(self) -> None:
-        attribute = build_attribute_filter(self.attribute_key, self.topic.key)
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
             self.feature,
-            attribute_filter=attribute,
+            attribute_filter=self.attribute_filter,
         )
         timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
@@ -69,27 +93,41 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             self.result.description += " No features in this region"
             return
-        description = Template(self.templates.result_description).substitute(
-            result=round(self.result.value, 2),
-            all=round(self.absolute_value_1, 1),
-            matched=round(self.absolute_value_2, 1),
-        )
+        self.create_description()
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                description + self.templates.label_description["green"]
+                self.description + self.templates.label_description["green"]
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                description + self.templates.label_description["yellow"]
+                self.description + self.templates.label_description["yellow"]
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                description + self.templates.label_description["red"]
+                self.description + self.templates.label_description["red"]
             )
+
+    def create_description(self):
+        if self.result.value is None:
+            raise TypeError("Result value should not be None.")
+        else:
+            result = round(self.result.value * 100, 1)
+        if self.attribute_title is None:
+            raise TypeError("Attribute title should not be None.")
+        else:
+            tags = "attributes " + self.attribute_title
+        all, matched = self.compute_units_for_all_and_matched()
+        self.description = Template(self.templates.result_description).substitute(
+            result=result,
+            all=all,
+            matched=matched,
+            topic=self.topic.name.lower(),
+            tags=tags,
+        )
 
     def create_figure(self) -> None:
         """Create a gauge chart.
@@ -149,3 +187,17 @@ class AttributeCompleteness(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+    def compute_units_for_all_and_matched(self):
+        if self.topic.aggregation_type == "count":
+            all = f"{int(self.absolute_value_1)} elements"
+            matched = f"{int(self.absolute_value_2)} elements"
+        elif self.topic.aggregation_type == "area":
+            all = f"{str(round(self.absolute_value_1, 2))} m²"
+            matched = f"{str(round(self.absolute_value_2, 2))} m²"
+        elif self.topic.aggregation_type == "length":
+            all = f"{str(round(self.absolute_value_1, 2))} m"
+            matched = f"{str(round(self.absolute_value_2, 2))} m"
+        else:
+            raise ValueError("Invalid aggregation_type")
+        return all, matched

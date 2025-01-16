@@ -67,6 +67,14 @@ building-count:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
+  missing-wall:
+    name: Missing Wall
+    description: slight constructions like sheds or any construction with a roof and at least one side open or without foundations.
+    filter: wall=no
+  source:
+    name: Source
+    description: TODO
+    filter: source=*
 
 bus-stops:
   public-transport-platform:
@@ -77,6 +85,10 @@ bus-stops:
     name: Bus stop area
     description: TODO
     filter: public_transport=stop_area
+  shelter:
+    name: shelter
+    description: TODO
+    filter: shelter=*
 
 clinics:
   healthcare-birthing-centre:
@@ -95,6 +107,54 @@ clinics:
     name: Vaccination centre
     description: TODO
     filter: healthcare=vaccination_centre
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  specialty:
+    name: Specialty
+    description: TODO
+    filter: healthcare:speciality=*
+
+doctors:
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  specialty:
+    name: Specialty
+    description: TODO
+    filter: healthcare:speciality=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  Website:
+    name: Website
+    description: TODO
+    filter: website=*
+
+hospitals:
+  emergency:
+    name: Emergency
+    description: TODO
+    filter: emergency=*
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  specialty:
+    name: Specialty
+    description: TODO
+    filter: healthcare:speciality=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
 
 fitness-centres:
   sport-fitness:
@@ -109,102 +169,92 @@ fitness-centres:
     name: Weightlifting
     description: TODO
     filter: sport=weightlifting
+  sport:
+    name: Sport
+    description: TODO
+    filter: sport=*
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
 
 forests:
-  access-private:
-    name: Private Access
+  leaf-type:
+    name: Leaf Type
     description: TODO
-    filter: access=private
-  access-official:
-    name: Official Access
-    description: TODO
-    filter: access=official
-  access-forestry:
-    name: Forestry
-    description: TODO
-    filter: access=forestry
-  highway-track:
-    name: Track
-    description: TODO
-    filter: highway=track
-  boundary-forest:
-    name: Forest boundary
-    description: TODO
-    filter: boundary=forest
+    filter: leaf_type=*
 
 kindergarten:
   leisure-playground:
     name: Playground
     description: TODO
     filter: leisure=playground
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
 
 marketplaces:
-  craft-bakery:
-    name: Bakery
-    description: TODO
-    filter: craft=bakery
-  craft-handicraft:
-    name: Handicraft
-    description: TODO
-    filter: craft=handicraft
-  craft-leather:
-    name: Leather craft
-    description: TODO
-    filter: craft=leather
-  craft-shoemaker:
-    name: Shoemaker
-    description: TODO
-    filter: craft=shoemaker
   craft-winery:
     name: Winery
     description: TODO
     filter: craft=winery
+  opening-hours:
+    name: Opening Hours
+    description: TODO
+    filter: opening_hours=*
+  shop-name:
+    name: Shop Name
+    description: TODO
+    filter: name=*
 
 parks:
-  landuse-commercial:
-    name: Commercial landuse
-    description: TODO
-    filter: landuse=commercial
-  leisure-dog-park:
-    name: Dog park
-    description: TODO
-    filter: leisure=dog_park
   tourism-theme-park:
     name: Theme park
     description: TODO
     filter: tourism=theme_park
-  landuse-greenfield:
-    name: Greenfield
+
+sports-pitch:
+  sport:
+    name: Sport
     description: TODO
-    filter: landuse=greenfield
-  leisure-playground:
-    name: Playground
+    filter: sport=*
+  lit:
+    name: Lit
     description: TODO
-    filter: leisure=playground
+    filter: lit=*
+  surface:
+    name: Surface
+    description: TODO
+    filter: surface=*
+  access:
+    name: Access
+    description: TODO
+    filter: access=*
 
 schools:
   leisure-playground:
     name: Playground
     description: TODO
     filter: leisure=playground
+  name:
+    name: Name
+    description: TODO
+    filter: name=*
+  website:
+    name: Website
+    description: TODO
+    filter: website=*
+  phone-number:
+    name: Phone Number
+    description: TODO
+    filter: phone=*
 
 subway-stations:
-  railway-subway:
-    name: Subway
-    description: TODO
-    filter: railway=subway
   tunnel-yes:
     name: Tunnel
     description: TODO
     filter: tunnel=yes
-  railway-subway-entrance:
-    name: Subway entrance
-    description: TODO
-    filter: railway=subway_entrance
-  route-subway:
-    name: Subway route
-    description: TODO
-    filter: route=subway
   public-transport-stop-area:
     name: Subway stop area
     description: TODO
@@ -215,26 +265,14 @@ subway-stations:
     filter: public_transport=platform
 
 supermarkets:
-  shop-convenience:
-    name: Convenience store
+  brand:
+    name: Brand
     description: TODO
-    filter: shop=convenience
-  shop-beverages:
-    name: Beverages
+    filter: brand=*
+  opening-hours:
+    name: Opening Hours
     description: TODO
-    filter: shop=beverages
-  amenity-bicycle-parking:
-    name: Bicycle Parking
-    description: TODO
-    filter: amenity=bicycle_parking
-  amenity-parking:
-    name: Parking
-    description: TODO
-    filter: amenity=parking
-  amenity-parking-entrance:
-    name: Parking entrance
-    description: TODO
-    filter: amenity=parking_entrance
+    filter: opening_hours=*
 
 tram-stops:
   public-transport-stop-area:
@@ -260,23 +298,23 @@ roads:
   sidewalk:
     name: Sidewalk
     description: TODO
-    filter: footway:sidewalk=*
+    filter: sidewalk=*
   crossing:
     name: Crossing
     description: TODO
-    filter: footway:crossing = *
-  cycleway-lane:
-    name: Cycleway Lane
+    filter: crossing=*
+  cycleway:
+    name: Cycleway
     description: TODO
-    filter: cycleway:lane=*
+    filter: cycleway=*
   cycleway-share-busway:
     name: Cycleway Share Busway
     description: TODO
-    filter: cycleway:share_busway=*
+    filter: cycleway=share_busway or cycleway:both=share_busway or cycleway:left=share_busway or cycleway:right=share_busway
   parking:
     name: Parking
     description: TODO
-    filter: parking:left=* or parking:right=* or parking:both=*
+    filter: parking:left=* or parking:right=* or parking:both=* or parking=*
   maxspeed:
     name: Maxspeed
     description: TODO
@@ -289,7 +327,75 @@ roads:
     name: Surface
     description: TODO
     filter: surface=*
-  highway-speed-camera:
-    name: Speed Camera
+  lit:
+    name: Lit
     description: TODO
-    filter: highway:speed_camera=*
+    filter: lit=*
+  residential:
+    name: Residential road
+    description: Road in a residential area
+    filter: highway=residential
+
+car-roads:
+  name:
+    name: Road Name
+    description: TODO
+    filter: name=*
+  sidewalk:
+    name: Sidewalk
+    description: TODO
+    filter: sidewalk=*
+  lanes:
+    name: Lanes
+    description: TODO
+    filter: lanes=*
+  parking:
+    name: Parking
+    description: TODO
+    filter: parking:left=* or parking:right=* or parking:both=* or parking=*
+  maxspeed:
+    name: Maxspeed
+    description: TODO
+    filter: maxspeed=*
+  oneway:
+    name: Oneway
+    description: TODO
+    filter: oneway=*
+  surface:
+    name: Surface
+    description: TODO
+    filter: surface=*
+  lit:
+    name: Lit
+    description: TODO
+    filter: lit=*
+
+public-transport-stops:
+  shelter:
+    name: Shelter
+    description: TODO
+    filter: shelter=*
+  bench:
+    name: Bench
+    description: TODO
+    filter: bench=*
+  trash-bin:
+    name: Trash Bin
+    description: TODO
+    filter: bin=*
+  tactile-paving:
+    name: Tactile Paving
+    description: TODO
+    filter: tactile_paving=*
+  wheelchair-accessibility:
+    name: Wheelchair Accessibility
+    description: TODO
+    filter: wheelchair=*
+  bus-lines:
+    name: Bus Lines
+    description: List of all bus lines stopping at a certain stop
+    filter: route_ref=*
+  departures-board:
+    name: Departures Board
+    description: TODO
+    filter: departures_board=*

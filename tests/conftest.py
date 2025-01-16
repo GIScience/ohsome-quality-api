@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import geojson
 import pytest
@@ -43,6 +44,11 @@ def topic_key_building_count() -> str:
 
 
 @pytest.fixture(scope="class")
+def topic_roads() -> TopicDefinition:
+    return get_topic_preset("roads")
+
+
+@pytest.fixture(scope="class")
 def topic_minimal(topic_key_minimal) -> TopicDefinition:
     return get_topic_preset(topic_key_minimal)
 
@@ -63,8 +69,8 @@ def topic_major_roads_length() -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
-def attribute_key_height() -> str:
-    return "height"
+def attribute_key_height() -> List[str]:
+    return ["height"]
 
 
 @pytest.fixture(scope="class")
@@ -135,13 +141,25 @@ def attribute() -> Attribute:
 
 
 @pytest.fixture(scope="class")
-def attribute_key() -> str:
+def attribute_key() -> list[str]:
     return ["height"]
 
 
 @pytest.fixture(scope="class")
-def attribute_key_multiple() -> str:
+def attribute_key_multiple() -> list[str]:
     return ["height", "house-number"]
+
+
+@pytest.fixture
+def attribute_filter() -> str:
+    """Custom attribute filter."""
+    return "height=* or building:levels=*"
+
+
+@pytest.fixture
+def attribute_title() -> str:
+    """Attributes title belonging to custom attribute filter (`attribute_filter)`."""
+    return "Height"
 
 
 @pytest.fixture(scope="class")

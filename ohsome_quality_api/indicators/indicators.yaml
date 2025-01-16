@@ -65,6 +65,7 @@ attribute-completeness:
   name: Attribute Completeness
   projects:
     - bkg
+    - core
   quality_dimension: completeness
   description: >-
       Derive the ratio of OSM features compared to features which

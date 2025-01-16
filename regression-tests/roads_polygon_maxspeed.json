@@ -1,6 +1,6 @@
 {
   "topic": "roads",
-  "attribute": "maxspeed",
+  "attributes": ["maxspeed"],
   "bpolys": {
     "type": "FeatureCollection",
     "features": [

@@ -6,22 +6,28 @@ import geojson
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests import verify
 
+from ohsome_quality_api.attributes.definitions import get_attributes
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
-from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
+from tests.integrationtests.utils import (
+    PytestNamer,
+    get_topic_fixture,
+    oqapi_vcr,
+)
 
 
 class TestPreprocess:
     @oqapi_vcr.use_cassette
-    def test_preprocess(
+    def test_preprocess_attribute_keys_single(
         self, topic_building_count, feature_germany_heidelberg, attribute_key
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
-            attribute_key,
+            attribute_keys=attribute_key,
         )
         asyncio.run(indicator.preprocess())
         assert indicator.result.value is not None
@@ -29,13 +35,32 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @oqapi_vcr.use_cassette
-    def test_preprocess_multiple_attribute_keys(
+    def test_preprocess_attribute_keys_multiple(
         self, topic_building_count, feature_germany_heidelberg, attribute_key_multiple
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
-            attribute_key_multiple,
+            attribute_keys=attribute_key_multiple,
+        )
+        asyncio.run(indicator.preprocess())
+        assert indicator.result.value is not None
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
+    @oqapi_vcr.use_cassette
+    def test_preprocess_attribute_filter(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_filter,
+        attribute_title,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_filter=attribute_filter,
+            attribute_title=attribute_title,
         )
         asyncio.run(indicator.preprocess())
         assert indicator.result.value is not None
@@ -44,19 +69,31 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @pytest.fixture(scope="class")
+    @pytest.fixture(
+        scope="class",
+        params=(
+            ["height"],
+            {
+                "attribute_filter": "height=* or building:levels=*",
+                "attribute_title": "Height",
+            },
+        ),
+    )
     @oqapi_vcr.use_cassette
-    def indicator(
-        self,
-        topic_building_count,
-        feature_germany_heidelberg,
-        attribute_key,
-    ):
-        i = AttributeCompleteness(
-            topic_building_count,
-            feature_germany_heidelberg,
-            attribute_key,
-        )
+    def indicator(self, request, topic_building_count, feature_germany_heidelberg):
+        if isinstance(request.param, list):
+            i = AttributeCompleteness(
+                topic_building_count,
+                feature_germany_heidelberg,
+                attribute_keys=request.param,
+            )
+        else:
+            i = AttributeCompleteness(
+                topic_building_count,
+                feature_germany_heidelberg,
+                attribute_filter=request.param["attribute_filter"],
+                attribute_title=request.param["attribute_title"],
+            )
         asyncio.run(i.preprocess())
         i.calculate()
         return i
@@ -68,9 +105,10 @@ class TestCalculation:
         assert indicator.result.description is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
+        verify(indicator.description, namer=PytestNamer())
 
-    @oqapi_vcr.use_cassette()
-    def test_no_features(self, attribute):
+    @oqapi_vcr.use_cassette
+    def test_no_features(self):
         """Test area with no features"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -84,7 +122,7 @@ class TestCalculation:
         indicator = AttributeCompleteness(
             topic=get_topic_fixture("clc-leaf-type"),
             feature=feature,
-            attribute_key=["leaf-type"],
+            attribute_keys=["leaf-type"],
         )
         asyncio.run(indicator.preprocess())
         assert indicator.absolute_value_1 == 0
@@ -95,19 +133,34 @@ class TestCalculation:
 
 
 class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.fixture(
+        scope="class",
+        params=(
+            ["height"],
+            {
+                "attribute_filter": "height=* or building:levels=*",
+                "attribute_title": "Height",
+            },
+        ),
+    )
     @oqapi_vcr.use_cassette
     def indicator(
         self,
+        request,
         topic_building_count,
         feature_germany_heidelberg,
-        attribute_key,
     ):
-        indicator = AttributeCompleteness(
-            topic_building_count,
-            feature_germany_heidelberg,
-            attribute_key,
-        )
+        if isinstance(request.param, list):
+            indicator = AttributeCompleteness(
+                topic_building_count, feature_germany_heidelberg, request.param
+            )
+        else:
+            indicator = AttributeCompleteness(
+                topic_building_count,
+                feature_germany_heidelberg,
+                attribute_filter=request.param["attribute_filter"],
+                attribute_title=request.param["attribute_title"],
+            )
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         return indicator
@@ -122,3 +175,94 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+
+
+def test_create_description_attribute_keys_single():
+    indicator = AttributeCompleteness(
+        get_topic_fixture("building-count"),
+        "foo",
+        ["height"],
+    )
+    indicator.result.value = 0.2
+    indicator.absolute_value_1 = 10
+    indicator.absolute_value_2 = 2
+    indicator.create_description()
+    verify(indicator.description, namer=PytestNamer())
+
+
+def test_create_description_attribute_keys_multiple():
+    indicator = AttributeCompleteness(
+        get_topic_fixture("building-count"),
+        "foo",
+        ["height", "house-number", "address-street"],
+    )
+    indicator.result.value = 0.2
+    indicator.absolute_value_1 = 10
+    indicator.absolute_value_2 = 2
+    indicator.create_description()
+    verify(indicator.description, namer=PytestNamer())
+
+
+def test_create_description_attribute_filter(attribute_filter, attribute_title):
+    indicator = AttributeCompleteness(
+        get_topic_fixture("building-count"),
+        "foo",
+        attribute_filter=attribute_filter,
+        attribute_title=attribute_title,
+    )
+    indicator.result.value = 0.2
+    indicator.absolute_value_1 = 10
+    indicator.absolute_value_2 = 2
+    indicator.create_description()
+    verify(indicator.description, namer=PytestNamer())
+
+
+@pytest.mark.parametrize(
+    "topic_key, attribute_key, aggregation, "
+    "result_value, absolute_value_1, absolute_value_2",
+    [
+        ("building-count", "height", "elements", 0.2, 10, 2),
+        ("clc-leaf-type", "leaf-type", "m²", 0.2, 10.012, 2.012),
+        ("roads", "name", "m", 0.2, 10.012, 2.012),
+    ],
+)
+def test_create_description_multiple_aggregation_types(
+    topic_key,
+    attribute_key,
+    aggregation,
+    result_value,
+    absolute_value_1,
+    absolute_value_2,
+):
+    indicator = AttributeCompleteness(
+        get_topic_fixture(topic_key),
+        "foo",
+        [attribute_key],
+    )
+    indicator.result.value = result_value
+    indicator.absolute_value_1 = absolute_value_1
+    indicator.absolute_value_2 = absolute_value_2
+    indicator.create_description()
+    assert aggregation in indicator.description
+
+
+def test_filters_match(topic_key_building_count, attribute_key_height):
+    indicator_attribute_keys = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_keys=attribute_key_height,
+    )
+
+    attributes = get_attributes()
+    indicator_attribute_filter = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_filter=attributes[topic_key_building_count][
+            attribute_key_height[0]
+        ].filter,
+    )
+
+    assert (
+        indicator_attribute_filter.attribute_filter
+        == indicator_attribute_keys.attribute_filter
+    )
