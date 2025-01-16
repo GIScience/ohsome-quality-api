@@ -1,12 +1,26 @@
 # Changelog
 
-## Current Main 
+## Current Main
 
-- PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
+### New Features
+
 - attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
 
+
 [#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
+
+
+## Release  1.8.2 
+
+- PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
+
+### Bug Fixes
+
+- attribute-completeness: custom filters are now correctly combined with topic filter ([#865])
+
+
 [#860]: https://github.com/GIScience/ohsome-quality-api/issues/860
+[#865]: https://github.com/GIScience/ohsome-quality-api/pull/865
 
 
 ## Release  1.8.1 
