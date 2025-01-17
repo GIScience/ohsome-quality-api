@@ -1,0 +1,1 @@
+CATALOG_NOT_FOUND: line 1:15: Catalog 'foobar' not found
