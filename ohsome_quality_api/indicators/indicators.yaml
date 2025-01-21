@@ -1,4 +1,21 @@
 ---
+mapping-saturation:
+  name: Mapping Saturation
+  projects:
+    - core
+    - corine-land-cover
+    - expanse
+    - experimental
+    - idealvgi
+    - mapaction
+    - sketchmap
+    - bkg
+    - unicef
+  quality_dimension: completeness
+  description: >-
+    Calculate if mapping has saturated.
+    High saturation has been reached if the growth of the fitted curve is
+    minimal.
 density:
   name: Density
   projects:
@@ -36,23 +53,6 @@ road-comparison:
   description: >-
     Compare the road length of OSM roads with the road length of
     reference data.
-mapping-saturation:
-  name: Mapping Saturation
-  projects:
-    - core
-    - corine-land-cover
-    - expanse
-    - experimental
-    - idealvgi
-    - mapaction
-    - sketchmap
-    - bkg
-    - unicef
-  quality_dimension: completeness
-  description: >-
-    Calculate if mapping has saturated.
-    High saturation has been reached if the growth of the fitted curve is
-    minimal.
 building-comparison:
   name: Building Comparison
   projects:

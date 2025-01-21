@@ -44,8 +44,9 @@ class Currentness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        trino: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, trino=trino)
         # thresholds for binning in months
         self.up_to_date, self.out_of_date, self.th_source = load_thresholds(
             self.topic.key

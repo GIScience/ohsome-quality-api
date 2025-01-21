@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ohsome_quality_api"
-version = "1.8.0"
+version = "1.8.2"
 description = "Data quality estimations for OpenStreetMap."
 authors = ["ohsome team <ohsome@heigit.org>"]
 homepage = "https://api.quality.ohsome.org"
@@ -49,7 +49,6 @@ approvaltests = "^12.1.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.2.1"
-pytest = "^7.2.2"
 pytest-cov = "^4.0.0"
 pytest-mock = "^3.11.1"
 
@@ -58,6 +57,8 @@ pytest-mock = "^3.11.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.3"
+pytest = "^8.3.4"
+pytest-asyncio = "^0.25.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -83,3 +84,4 @@ select = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 filterwarnings = ["ignore::DeprecationWarning"]
+asyncio_default_fixture_loop_scope = "function"

@@ -1,0 +1,1 @@
+MISSING_CATALOG_NAME: line 1:15: Catalog must be specified when session catalog is not set

@@ -1,0 +1,220 @@
+interactions:
+- request:
+    body: SELECT version()
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '16'
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: POST
+    uri: http://127.0.0.1:8084/v1/statement
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195808_00519_3gijq/y06361689388e2a7236eb747c62e90c44ba8ce587/1","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '320'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:08 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/queued/20250117_195808_00519_3gijq/y06361689388e2a7236eb747c62e90c44ba8ce587/1
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195808_00519_3gijq/y59f89628f5bff9c4363cb5c93dc4c5f1a6032561/2","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":1,"elapsedTimeMillis":2,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '328'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:10 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/queued/20250117_195808_00519_3gijq/y59f89628f5bff9c4363cb5c93dc4c5f1a6032561/2
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y0322ae69458590776af494e8e316d43fcd830012/0","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":1,"elapsedTimeMillis":2276,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '334'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:12 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y0322ae69458590776af494e8e316d43fcd830012/0
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","partialCancelUri":"http://127.0.0.1:8084/v1/statement/executing/partialCancel/20250117_195808_00519_3gijq/0/y587641876633b650fe6153b202536cacc1ce034b/1","nextUri":"http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y587641876633b650fe6153b202536cacc1ce034b/1","columns":[{"name":"_col0","type":"varchar","typeSignature":{"rawType":"varchar","arguments":[{"kind":"LONG","value":2147483647}]}}],"stats":{"state":"RUNNING","queued":false,"scheduled":true,"progressPercentage":100.0,"runningPercentage":0.0,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":1,"elapsedTimeMillis":4381,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":148,"spilledBytes":0,"rootStage":{"stageId":"0","state":"RUNNING","done":false,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"failedTasks":0,"coordinatorOnly":false,"subStages":[]}},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '513'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:14 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y587641876633b650fe6153b202536cacc1ce034b/1
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y6d268f9ec1ab47bf99cf73cf881e086ba1456652/2","columns":[{"name":"_col0","type":"varchar","typeSignature":{"rawType":"varchar","arguments":[{"kind":"LONG","value":2147483647}]}}],"data":[["467"]],"stats":{"state":"FINISHED","queued":false,"scheduled":true,"progressPercentage":100.0,"runningPercentage":0.0,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":1,"elapsedTimeMillis":6298,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":148,"spilledBytes":0,"rootStage":{"stageId":"0","state":"FINISHED","done":true,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"processedRows":1,"processedBytes":0,"physicalInputBytes":0,"failedTasks":0,"coordinatorOnly":false,"subStages":[]}},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '511'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:16 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/executing/20250117_195808_00519_3gijq/y6d268f9ec1ab47bf99cf73cf881e086ba1456652/2
+  response:
+    content: '{"id":"20250117_195808_00519_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195808_00519_3gijq","columns":[{"name":"_col0","type":"varchar","typeSignature":{"rawType":"varchar","arguments":[{"kind":"LONG","value":2147483647}]}}],"stats":{"state":"FINISHED","queued":false,"scheduled":true,"progressPercentage":100.0,"runningPercentage":0.0,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":1,"elapsedTimeMillis":6298,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":148,"spilledBytes":0,"rootStage":{"stageId":"0","state":"FINISHED","done":true,"nodes":1,"totalSplits":1,"queuedSplits":0,"runningSplits":0,"completedSplits":1,"cpuTimeMillis":0,"wallTimeMillis":0,"processedRows":1,"processedBytes":0,"physicalInputBytes":0,"failedTasks":0,"coordinatorOnly":false,"subStages":[]}},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '444'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:18 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

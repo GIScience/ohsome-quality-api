@@ -18,6 +18,7 @@ async def create_indicator(
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
+    trino: bool = False,
     *args,
     **kwargs,
 ) -> list[Indicator]:
@@ -46,6 +47,7 @@ async def create_indicator(
                 feature,
                 topic,
                 include_figure,
+                trino,
                 *args,
                 **kwargs,
             )
@@ -58,6 +60,7 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
+    trino: bool = False,
     *args,
     **kwargs,
 ) -> Indicator:
@@ -71,6 +74,7 @@ async def _create_indicator(
     indicator = indicator_class(
         topic,
         feature,
+        trino=trino,
         *args,
         **kwargs,
     )

@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: SELECT version()
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '16'
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: POST
+    uri: http://127.0.0.1:8084/v1/statement
+  response:
+    content: '{"id":"20250117_195807_00518_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195807_00518_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195807_00518_3gijq/yeb903a43ccbb8df810132539419566fe6ccdc7e2/1","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '321'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:07 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

@@ -8,6 +8,7 @@ import plotly.io as pio
 import pytest
 from approvaltests import verify
 
+from ohsome_quality_api.attributes.definitions import get_attributes
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
@@ -176,6 +177,24 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
 
+class TestFeatureFlagSql:
+    # TODO: use VCR cassette
+    def test_preprocess_attribute_sql_filter(
+        self,
+        topic_car_roads,
+        feature_germany_heidelberg,
+    ):
+        attribute_filter = "element_at (contributions.tags, 'name') IS NOT NULL"
+        indicator = AttributeCompleteness(
+            topic_car_roads,
+            feature_germany_heidelberg,
+            attribute_filter=attribute_filter,
+            trino=True,
+        )
+        asyncio.run(indicator.preprocess())
+        assert indicator.result.value is not None
+
+
 def test_create_description_attribute_keys_single():
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),
@@ -243,3 +262,25 @@ def test_create_description_multiple_aggregation_types(
     indicator.absolute_value_2 = absolute_value_2
     indicator.create_description()
     assert aggregation in indicator.description
+
+
+def test_filters_match(topic_key_building_count, attribute_key_height):
+    indicator_attribute_keys = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_keys=attribute_key_height,
+    )
+
+    attributes = get_attributes()
+    indicator_attribute_filter = AttributeCompleteness(
+        get_topic_fixture(topic_key_building_count),
+        "foo",
+        attribute_filter=attributes[topic_key_building_count][
+            attribute_key_height[0]
+        ].filter,
+    )
+
+    assert (
+        indicator_attribute_filter.attribute_filter
+        == indicator_attribute_keys.attribute_filter
+    )

@@ -1,19 +1,23 @@
+import json
 import logging
-import time
+import os
 from string import Template
 
+import dateutil
 import plotly.graph_objects as go
-import requests
 from geojson import Feature
-from shapely import to_wkt
-from shapely.geometry import shape
 
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
     get_attribute,
 )
 from ohsome_quality_api.indicators.base import BaseIndicator
+from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.trino import client as trino_client
+from ohsome_quality_api.utils.helper_geo import get_bounding_box
+
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class AttributeCompleteness(BaseIndicator):
@@ -48,8 +52,9 @@ class AttributeCompleteness(BaseIndicator):
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
         attribute_title: str | None = None,
+        trino: bool = False,  # Feature flag to use SQL instead of ohsome API queries
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, trino=trino)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
@@ -58,7 +63,9 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        if self.attribute_keys:
+        if self.trino:
+            self.attribute_filter = attribute_filter
+        elif self.attribute_keys:
             self.attribute_filter = build_attribute_filter(
                 self.attribute_keys,
                 self.topic.key,
@@ -69,145 +76,57 @@ class AttributeCompleteness(BaseIndicator):
                     for k in self.attribute_keys
                 ]
             )
+        else:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_filter,
+                self.topic.key,
+            )
 
     async def preprocess(self) -> None:
+        if self.trino:
+            filter = self.topic.sql_filter
+            file_path = os.path.join(WORKING_DIR, "query.sql")
+            with open(file_path, "r") as file:
+                template = file.read()
 
-        TRINO_HOST = ""
-        TRINO_PORT =
-        TRINO_USER = ""
-        TRINO_CATALOG = ""
-        TRINO_SCHEMA = ""
+            bounding_box = get_bounding_box(self.feature)
+            geometry = json.dumps(self.feature["geometry"])
 
-        URL = f"http://{TRINO_HOST}:{TRINO_PORT}/v1/statement"
+            sql = template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            # TODO: Check for None
+            self.absolute_value_1 = results[0][0]
 
-        HEADERS = {
-            "X-Trino-User": TRINO_USER,
-            "X-Trino-Catalog": TRINO_CATALOG,
-            "X-Trino-Schema": TRINO_SCHEMA,
-        }
+            filter = self.topic.sql_filter + " AND " + self.attribute_filter
+            sql = template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            self.absolute_value_2 = results[0][0]
 
-        AUTH = None
-
-        QUERY_TEMPLATE = """
-SELECT
-    SUM(
-        CASE
-            WHEN ST_Within(ST_GeometryFromText(a.geometry), b.geometry) THEN length
-            ELSE CAST(st_length(ST_Intersection(ST_GeometryFromText(a.geometry), b.geometry)) AS integer)
-        END
-    ) AS total_road_length,
-    
-    SUM(
-        CASE
-            WHEN element_at(tags, 'name') IS NULL THEN 0
-            WHEN ST_Within(ST_GeometryFromText(a.geometry), b.geometry) THEN length
-            ELSE CAST(st_length(ST_Intersection(ST_GeometryFromText(a.geometry), b.geometry)) AS integer)
-        END
-    ) AS total_road_length_with_name,
-
-    (
-        SUM(
-            CASE
-                WHEN element_at(tags, 'name') IS NULL THEN 0
-                WHEN ST_Within(ST_GeometryFromText(a.geometry), b.geometry) THEN length
-                ELSE CAST(st_length(ST_Intersection(ST_GeometryFromText(a.geometry), b.geometry)) AS integer)
-            END
-        )
-        /
-        SUM(
-            CASE
-                WHEN ST_Within(ST_GeometryFromText(a.geometry), b.geometry) THEN length
-                ELSE CAST(st_length(ST_Intersection(ST_GeometryFromText(a.geometry), b.geometry)) AS integer)
-            END
-        )
-    ) AS ratio
-
-FROM contributions a, (VALUES {aoi_values}) AS b(id, geometry)
-WHERE 'herfort' != 'kwakye'
-    AND status = 'latest'
-    AND element_at(a.tags, 'highway') IS NOT NULL
-    AND a.tags['highway'] IN (
-        'motorway', 'trunk', 'motorway_link', 'trunk_link', 'primary', 'primary_link',
-        'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential'
-    )
-    AND (bbox.xmax >= 8.629761 AND bbox.xmin <= 8.742371)
-    AND (bbox.ymax >= 49.379556 AND bbox.ymin <= 49.437890)
-    AND ST_Intersects(ST_GeometryFromText(a.geometry), b.geometry)
-GROUP BY b.id
-        """
-
-        def extract_geometry(feature):
-            geometry = feature.get("geometry")
-            if not geometry:
-                raise ValueError("Feature does not contain a geometry")
-            geom_shape = shape(geometry)
-            return to_wkt(geom_shape)
-
-        def format_aoi_values(geom_wkt):
-            return f"('AOI', ST_GeometryFromText('{geom_wkt}'))"
-
-        def execute_query(query):
-            try:
-                response = requests.post(URL, data=query, headers=HEADERS, auth=AUTH)
-                response.raise_for_status()
-                return response.json()
-            except requests.exceptions.RequestException as e:
-                print(f"Error submitting query: {e}")
-                return None
-
-        def poll_query(next_uri):
-            """Poll the query's nextUri until results are ready."""
-            results = []
-            while next_uri:
-                try:
-                    response = requests.get(next_uri, headers=HEADERS, auth=AUTH)
-                    response.raise_for_status()
-                    data = response.json()
-
-                    state = data["stats"]["state"]
-                    print(f"Query state: {state}")
-
-                    if state == "FINISHED":
-                        if "data" in data:
-                            results.extend(data["data"])
-                        print("Query completed successfully!")
-                        break
-                    elif state in {"FAILED", "CANCELLED"}:
-                        print(f"Query failed or was cancelled: {data}")
-                        break
-
-                    next_uri = data.get("nextUri")
-                except requests.exceptions.RequestException as e:
-                    print(f"Error polling query: {e}")
-                    break
-                time.sleep(1)
-
-            return results
-
-
-        geom_wkt = extract_geometry(self.feature)
-
-        aoi_values = format_aoi_values(geom_wkt)
-
-        query = QUERY_TEMPLATE.format(aoi_values=aoi_values)
-
-        initial_response = execute_query(query)
-        if not initial_response:
-            return
-        next_uri = initial_response.get("nextUri")
-        if not next_uri:
-            print("No nextUri found. Query might have failed immediately.")
-            print(initial_response)
-            return
-
-        response = poll_query(next_uri)
-
-
-        # timestamp = response["ratioResult"][0]["timestamp"]
-        # self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.absolute_value_1 = response[0][0]
-        self.absolute_value_2 = response[0][1]
-        self.result.value = self.absolute_value_2 / self.absolute_value_1
+            # timestamp = response["ratioResult"][0]["timestamp"]
+            # self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+            self.result.value = self.absolute_value_2 / self.absolute_value_1
+        else:
+            # Get attribute filter
+            response = await ohsome_client.query(
+                self.topic,
+                self.feature,
+                attribute_filter=self.attribute_filter,
+            )
+            timestamp = response["ratioResult"][0]["timestamp"]
+            self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+            self.result.value = response["ratioResult"][0]["ratio"]
+            self.absolute_value_1 = response["ratioResult"][0]["value"]
+            self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
         # result (ratio) can be NaN if no features matching filter1
@@ -242,7 +161,11 @@ GROUP BY b.id
         if self.attribute_title is None:
             raise TypeError("Attribute title should not be None.")
         else:
-            tags = "attributes " + self.attribute_title
+            tags = str(
+                "attributes " + self.attribute_title
+                if self.attribute_keys and len(self.attribute_keys) > 1
+                else "attribute " + self.attribute_title
+            )
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,
@@ -316,11 +239,11 @@ GROUP BY b.id
             all = f"{int(self.absolute_value_1)} elements"
             matched = f"{int(self.absolute_value_2)} elements"
         elif self.topic.aggregation_type == "area":
-            all = f"{str(round(self.absolute_value_1, 2))} m²"
-            matched = f"{str(round(self.absolute_value_2, 2))} m²"
+            all = f"{str(round(self.absolute_value_1/1000000, 2))} km²"
+            matched = f"{str(round(self.absolute_value_2/1000000, 2))} km²"
         elif self.topic.aggregation_type == "length":
-            all = f"{str(round(self.absolute_value_1, 2))} m"
-            matched = f"{str(round(self.absolute_value_2, 2))} m"
+            all = f"{str(round(self.absolute_value_1/1000, 2))} km"
+            matched = f"{str(round(self.absolute_value_2/1000, 2))} km"
         else:
             raise ValueError("Invalid aggregation_type")
         return all, matched
