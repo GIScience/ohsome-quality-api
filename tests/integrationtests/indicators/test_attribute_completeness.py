@@ -189,7 +189,7 @@ class TestFeatureFlagSql:
             topic_car_roads,
             feature_germany_heidelberg,
             attribute_filter=attribute_filter,
-            feature_flag_sql=True,
+            trino=True,
         )
         asyncio.run(indicator.preprocess())
         assert indicator.result.value is not None

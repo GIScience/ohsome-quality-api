@@ -52,10 +52,9 @@ class AttributeCompleteness(BaseIndicator):
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
         attribute_title: str | None = None,
-        feature_flag_sql: bool = False,  # Feature flag to use SQL instead of ohsome API queries
+        trino: bool = False,  # Feature flag to use SQL instead of ohsome API queries
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
-        self.feature_flag_sql = feature_flag_sql
+        super().__init__(topic=topic, feature=feature, trino=trino)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
@@ -64,7 +63,7 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        if self.feature_flag_sql:
+        if self.trino:
             self.attribute_filter = attribute_filter
         elif self.attribute_keys:
             self.attribute_filter = build_attribute_filter(
@@ -84,7 +83,7 @@ class AttributeCompleteness(BaseIndicator):
             )
 
     async def preprocess(self) -> None:
-        if self.feature_flag_sql:
+        if self.trino:
             filter = self.topic.sql_filter
             file_path = os.path.join(WORKING_DIR, "query.sql")
             with open(file_path, "r") as file:

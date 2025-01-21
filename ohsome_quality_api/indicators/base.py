@@ -29,6 +29,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         topic: Topic,
         feature: Feature,
+        trino: bool,
     ) -> None:
         self.metadata: IndicatorMetadata = get_indicator(
             camel_to_hyphen(type(self).__name__)
@@ -39,6 +40,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.result: Result = Result(
             description=self.templates.label_description["undefined"],
         )
+        self.trino: bool = False
         self._get_default_figure()
 
     def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
