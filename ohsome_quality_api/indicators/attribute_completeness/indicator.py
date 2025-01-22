@@ -6,6 +6,7 @@ from string import Template
 import dateutil
 import plotly.graph_objects as go
 from geojson import Feature
+from indicators.attribute_completeness.sql_filter_creator import translate_filter_to_sql
 
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
@@ -84,7 +85,7 @@ class AttributeCompleteness(BaseIndicator):
 
     async def preprocess(self) -> None:
         if self.trino:
-            filter = self.topic.sql_filter
+            filter = translate_filter_to_sql(self.topic.filter)
             file_path = os.path.join(WORKING_DIR, "query.sql")
             with open(file_path, "r") as file:
                 template = file.read()
