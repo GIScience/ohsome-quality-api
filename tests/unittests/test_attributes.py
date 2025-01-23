@@ -10,6 +10,15 @@ def test_attributes():
     )
 
 
+def test_attributes_sql_filter():
+    Attribute(
+        name="My fancy Attribute",
+        description="some description",
+        filter="testfilter",
+        filter_sql="testsqlfilter",
+    )
+
+
 def test_parameter_missing():
     with pytest.raises(ValidationError):
         Attribute(name="some name", description="some description")

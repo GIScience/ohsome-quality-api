@@ -156,3 +156,24 @@ def test_indicators_attribute_completeness_filter_invalid(
     assert response.status_code == 422
     content = response.json()
     verify(content["detail"][0]["msg"], namer=PytestNamer())
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_sql_filter(
+    client,
+    bpolys,
+    headers,
+    schema,
+    attribute_key,
+):
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "car-roads",
+        "attributes": "name",
+        "trino": True,
+    }
+    response = client.post(ENDPOINT, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+# attribute_filter = "element_at (contributions.tags, 'name') IS NOT NULL"
