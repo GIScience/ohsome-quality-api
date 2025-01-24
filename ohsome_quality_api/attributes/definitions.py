@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from functools import singledispatch
 from typing import List
 
 import yaml
@@ -52,19 +53,47 @@ def get_attribute_preset(topic_key: str) -> List[Attribute]:
         ) from error
 
 
-def build_attribute_filter(attribute_key: List[str] | str, topic_key: str) -> str:
-    """Build attribute filter for ohsome API query."""
-    attributes = get_attributes()
-    try:
-        if isinstance(attribute_key, str):
-            return get_topic_preset(topic_key).filter + " and (" + attribute_key + ")"
+@singledispatch
+def build_attribute_filter(attributes: str | list, topic_key: str, trino: bool) -> str:
+    raise NotImplementedError
+
+
+@build_attribute_filter.register
+def _(
+    attributes: list,
+    topic_key: str,
+    trino: bool = False,
+) -> str:
+    """Build attribute filter from attributes keys."""
+    if trino:
+        filter = get_topic_preset(topic_key).sql_filter
+    else:
+        filter = get_topic_preset(topic_key).filter
+
+    all_attributes = get_attributes()
+    for key in attributes:
+        if trino:
+            filter += " AND (" + all_attributes[topic_key][key].filter_sql + ")"
         else:
-            attribute_filter = get_topic_preset(topic_key).filter
-            for key in attribute_key:
-                attribute_filter += " and (" + attributes[topic_key][key].filter + ")"
-            return attribute_filter
-    except KeyError as error:
-        raise KeyError("Invalid topic or attribute key(s).") from error
+            filter += " and (" + all_attributes[topic_key][key].filter + ")"
+
+    return filter
+
+
+@build_attribute_filter.register
+def _(
+    attributes: str,
+    topic_key: str,
+    trino: bool = False,
+) -> str:
+    """Build attribute filter from user given attribute filter."""
+    if trino:
+        topic_filter = get_topic_preset(topic_key).sql_filter
+        filter = topic_filter + " AND (" + attributes + ")"
+    else:
+        topic_filter = get_topic_preset(topic_key).filter
+        filter = topic_filter + " and (" + attributes + ")"
+    return filter
 
 
 attribute_keys = {
