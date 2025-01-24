@@ -29,6 +29,7 @@ class BaseResponse(BaseConfig):
     attribution: dict[str, str] = {"url": ATTRIBUTION_URL}
 
 
+# TODO: add sql_filter
 class TopicMetadata(BaseConfig):
     name: str
     description: str

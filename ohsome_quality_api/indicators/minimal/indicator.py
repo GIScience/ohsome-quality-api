@@ -11,8 +11,8 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 
 class Minimal(BaseIndicator):
-    def __init__(self, topic: Topic, feature: Feature) -> None:
-        super().__init__(topic=topic, feature=feature)
+    def __init__(self, topic: Topic, feature: Feature, trino: bool = False) -> None:
+        super().__init__(topic=topic, feature=feature, trino=trino)
         self.count = 0
 
     async def preprocess(self) -> None:

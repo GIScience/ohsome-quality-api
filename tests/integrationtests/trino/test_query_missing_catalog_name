@@ -1,0 +1,115 @@
+interactions:
+- request:
+    body: SELECT * FROM bar.foo
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '21'
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: POST
+    uri: http://127.0.0.1:8084/v1/statement
+  response:
+    content: '{"id":"20250117_195845_00523_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195845_00523_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195845_00523_3gijq/y2dc2ce8a1b157a6a83dcfb6b192b6898a8efa3f8/1","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '322'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:45 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/queued/20250117_195845_00523_3gijq/y2dc2ce8a1b157a6a83dcfb6b192b6898a8efa3f8/1
+  response:
+    content: '{"id":"20250117_195845_00523_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195845_00523_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195845_00523_3gijq/yd910cf6ad6954a0236994933316894b250af8578/2","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '322'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:46 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/queued/20250117_195845_00523_3gijq/yd910cf6ad6954a0236994933316894b250af8578/2
+  response:
+    content: '{"id":"20250117_195845_00523_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195845_00523_3gijq","stats":{"state":"FAILED","queued":false,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":1,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"error":{"message":"line
+      1:15: Catalog must be specified when session catalog is not set","errorCode":56,"errorName":"MISSING_CATALOG_NAME","errorType":"USER_ERROR","errorLocation":{"lineNumber":1,"columnNumber":15},"failureInfo":{"type":"io.trino.spi.TrinoException","message":"line
+      1:15: Catalog must be specified when session catalog is not set","suppressed":[],"stack":["io.trino.sql.analyzer.SemanticExceptions.semanticException(SemanticExceptions.java:58)","io.trino.sql.analyzer.SemanticExceptions.semanticException(SemanticExceptions.java:52)","io.trino.metadata.MetadataUtil.lambda$createQualifiedObjectName$4(MetadataUtil.java:152)","java.base/java.util.Optional.orElseThrow(Optional.java:403)","io.trino.metadata.MetadataUtil.createQualifiedObjectName(MetadataUtil.java:151)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitTable(StatementAnalyzer.java:2264)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitTable(StatementAnalyzer.java:522)","io.trino.sql.tree.Table.accept(Table.java:60)","io.trino.sql.tree.AstVisitor.process(AstVisitor.java:27)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.process(StatementAnalyzer.java:541)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.analyzeFrom(StatementAnalyzer.java:4917)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitQuerySpecification(StatementAnalyzer.java:3093)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitQuerySpecification(StatementAnalyzer.java:522)","io.trino.sql.tree.QuerySpecification.accept(QuerySpecification.java:155)","io.trino.sql.tree.AstVisitor.process(AstVisitor.java:27)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.process(StatementAnalyzer.java:541)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.process(StatementAnalyzer.java:549)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitQuery(StatementAnalyzer.java:1564)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.visitQuery(StatementAnalyzer.java:522)","io.trino.sql.tree.Query.accept(Query.java:119)","io.trino.sql.tree.AstVisitor.process(AstVisitor.java:27)","io.trino.sql.analyzer.StatementAnalyzer$Visitor.process(StatementAnalyzer.java:541)","io.trino.sql.analyzer.StatementAnalyzer.analyze(StatementAnalyzer.java:501)","io.trino.sql.analyzer.StatementAnalyzer.analyze(StatementAnalyzer.java:490)","io.trino.sql.analyzer.Analyzer.analyze(Analyzer.java:98)","io.trino.sql.analyzer.Analyzer.analyze(Analyzer.java:87)","io.trino.execution.SqlQueryExecution.analyze(SqlQueryExecution.java:289)","io.trino.execution.SqlQueryExecution.<init>(SqlQueryExecution.java:222)","io.trino.execution.SqlQueryExecution$SqlQueryExecutionFactory.createQueryExecution(SqlQueryExecution.java:892)","io.trino.dispatcher.LocalDispatchQueryFactory.lambda$createDispatchQuery$0(LocalDispatchQueryFactory.java:153)","io.trino.$gen.Trino_467____20250108_120654_2.call(Unknown
+      Source)","com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask.runInterruptibly(TrustedListenableFutureTask.java:131)","com.google.common.util.concurrent.InterruptibleTask.run(InterruptibleTask.java:76)","com.google.common.util.concurrent.TrustedListenableFutureTask.run(TrustedListenableFutureTask.java:82)","java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)","java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)","java.base/java.lang.Thread.run(Thread.java:1575)"],"errorInfo":{"code":56,"name":"MISSING_CATALOG_NAME","type":"USER_ERROR"},"errorLocation":{"lineNumber":1,"columnNumber":15}}},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1061'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:48 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

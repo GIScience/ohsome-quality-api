@@ -177,6 +177,24 @@ class TestFigure:
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
 
 
+class TestFeatureFlagSql:
+    # TODO: use VCR cassette
+    def test_preprocess_attribute_sql_filter(
+        self,
+        topic_car_roads,
+        feature_germany_heidelberg,
+    ):
+        attribute_filter = "element_at (contributions.tags, 'name') IS NOT NULL"
+        indicator = AttributeCompleteness(
+            topic_car_roads,
+            feature_germany_heidelberg,
+            attribute_filter=attribute_filter,
+            trino=True,
+        )
+        asyncio.run(indicator.preprocess())
+        assert indicator.result.value is not None
+
+
 def test_create_description_attribute_keys_single():
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),

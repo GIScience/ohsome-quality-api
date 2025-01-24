@@ -24,11 +24,9 @@ class BuildingComparison(BaseIndicator):
         self,
         topic: BaseTopic,
         feature: Feature,
+        trino: bool = False,
     ) -> None:
-        super().__init__(
-            topic=topic,
-            feature=feature,
-        )
+        super().__init__(topic=topic, feature=feature, trino=trino)
         # The result is the ratio of area within coverage (between 0-1) or an empty list
         #
         # TODO: Evaluate thresholds

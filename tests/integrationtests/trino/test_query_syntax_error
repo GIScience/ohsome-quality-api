@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: SELECT * MORF foo
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '17'
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: POST
+    uri: http://127.0.0.1:8084/v1/statement
+  response:
+    content: '{"id":"20250117_195854_00525_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195854_00525_3gijq","nextUri":"http://127.0.0.1:8084/v1/statement/queued/20250117_195854_00525_3gijq/y178ecc42a7c09247a295377df1b776ac138cc63d/1","stats":{"state":"QUEUED","queued":true,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '321'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:54 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      host:
+      - 127.0.0.1:8084
+      user-agent:
+      - python-httpx/0.23.3
+      x-trino-user:
+      - mschaub
+    method: GET
+    uri: http://127.0.0.1:8084/v1/statement/queued/20250117_195854_00525_3gijq/y178ecc42a7c09247a295377df1b776ac138cc63d/1
+  response:
+    content: '{"id":"20250117_195854_00525_3gijq","infoUri":"http://127.0.0.1:8084/ui/query.html?20250117_195854_00525_3gijq","stats":{"state":"FAILED","queued":false,"scheduled":false,"nodes":0,"totalSplits":0,"queuedSplits":0,"runningSplits":0,"completedSplits":0,"cpuTimeMillis":0,"wallTimeMillis":0,"queuedTimeMillis":0,"elapsedTimeMillis":0,"processedRows":0,"processedBytes":0,"physicalInputBytes":0,"physicalWrittenBytes":0,"peakMemoryBytes":0,"spilledBytes":0},"error":{"message":"line
+      1:10: mismatched input ''MORF''. Expecting: '','', ''EXCEPT'', ''FETCH'', ''FROM'',
+      ''GROUP'', ''HAVING'', ''INTERSECT'', ''LIMIT'', ''OFFSET'', ''ORDER'', ''UNION'',
+      ''WHERE'', ''WINDOW'', <EOF>","errorCode":1,"errorName":"SYNTAX_ERROR","errorType":"USER_ERROR","errorLocation":{"lineNumber":1,"columnNumber":10},"failureInfo":{"type":"io.trino.sql.parser.ParsingException","message":"line
+      1:10: mismatched input ''MORF''. Expecting: '','', ''EXCEPT'', ''FETCH'', ''FROM'',
+      ''GROUP'', ''HAVING'', ''INTERSECT'', ''LIMIT'', ''OFFSET'', ''ORDER'', ''UNION'',
+      ''WHERE'', ''WINDOW'', <EOF>","cause":{"type":"org.antlr.v4.runtime.InputMismatchException","suppressed":[],"stack":["io.trino.sql.parser.SqlParser$2.recoverInline(SqlParser.java:147)","org.antlr.v4.runtime.Parser.match(Parser.java:208)","io.trino.grammar.sql.SqlBaseParser.singleStatement(SqlBaseParser.java:347)","io.trino.sql.parser.SqlParser.invokeParser(SqlParser.java:172)","io.trino.sql.parser.SqlParser.invokeParser(SqlParser.java:125)","io.trino.sql.parser.SqlParser.createStatement(SqlParser.java:90)","io.trino.execution.QueryPreparer.prepareQuery(QueryPreparer.java:54)","io.trino.dispatcher.DispatchManager.createQueryInternal(DispatchManager.java:224)","io.trino.dispatcher.DispatchManager.lambda$createQuery$1(DispatchManager.java:193)","io.opentelemetry.context.Context.lambda$wrap$1(Context.java:241)","io.airlift.concurrent.BoundedExecutor.drainQueue(BoundedExecutor.java:79)","io.trino.$gen.Trino_467____20250108_120654_2.run(Unknown
+      Source)","java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)","java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)","java.base/java.lang.Thread.run(Thread.java:1575)"],"errorInfo":{"code":65536,"name":"GENERIC_INTERNAL_ERROR","type":"INTERNAL_ERROR"}},"suppressed":[],"stack":["io.trino.sql.parser.ErrorHandler.syntaxError(ErrorHandler.java:108)","org.antlr.v4.runtime.ProxyErrorListener.syntaxError(ProxyErrorListener.java:41)","org.antlr.v4.runtime.Parser.notifyErrorListeners(Parser.java:544)","org.antlr.v4.runtime.DefaultErrorStrategy.reportInputMismatch(DefaultErrorStrategy.java:327)","org.antlr.v4.runtime.DefaultErrorStrategy.reportError(DefaultErrorStrategy.java:139)","io.trino.grammar.sql.SqlBaseParser.singleStatement(SqlBaseParser.java:352)","io.trino.sql.parser.SqlParser.invokeParser(SqlParser.java:172)","io.trino.sql.parser.SqlParser.invokeParser(SqlParser.java:125)","io.trino.sql.parser.SqlParser.createStatement(SqlParser.java:90)","io.trino.execution.QueryPreparer.prepareQuery(QueryPreparer.java:54)","io.trino.dispatcher.DispatchManager.createQueryInternal(DispatchManager.java:224)","io.trino.dispatcher.DispatchManager.lambda$createQuery$1(DispatchManager.java:193)","io.opentelemetry.context.Context.lambda$wrap$1(Context.java:241)","io.airlift.concurrent.BoundedExecutor.drainQueue(BoundedExecutor.java:79)","io.trino.$gen.Trino_467____20250108_120654_2.run(Unknown
+      Source)","java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)","java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)","java.base/java.lang.Thread.run(Thread.java:1575)"],"errorInfo":{"code":1,"name":"SYNTAX_ERROR","type":"USER_ERROR"},"errorLocation":{"lineNumber":1,"columnNumber":10}}},"warnings":[]}
+
+      '
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1080'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jan 2025 19:58:56 GMT
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

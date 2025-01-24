@@ -1,0 +1,1 @@
+SYNTAX_ERROR: line 1:10: mismatched input 'MORF'. Expecting: ',', 'EXCEPT', 'FETCH', 'FROM', 'GROUP', 'HAVING', 'INTERSECT', 'LIMIT', 'OFFSET', 'ORDER', 'UNION', 'WHERE', 'WINDOW', <EOF>

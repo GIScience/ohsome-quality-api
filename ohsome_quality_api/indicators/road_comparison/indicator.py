@@ -23,14 +23,11 @@ class RoadComparison(BaseIndicator):
     to the total length of reference roads.
     """
 
-    def __init__(
-        self,
-        topic: BaseTopic,
-        feature: Feature,
-    ) -> None:
+    def __init__(self, topic: BaseTopic, feature: Feature, trino: bool = False) -> None:
         super().__init__(
             topic=topic,
             feature=feature,
+            trino=trino,
         )
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green

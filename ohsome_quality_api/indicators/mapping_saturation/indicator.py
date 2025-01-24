@@ -48,9 +48,10 @@ class MappingSaturation(BaseIndicator):
         self,
         topic: BaseTopic,
         feature: Feature,
+        trino: bool = False,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, trino=trino)
 
         self.time_range: str = time_range
 

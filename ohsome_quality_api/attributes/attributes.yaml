@@ -341,6 +341,7 @@ car-roads:
     name: Road Name
     description: TODO
     filter: name=*
+    filter_sql: element_at (contributions.tags, 'name') IS NOT NULL
   sidewalk:
     name: Sidewalk
     description: TODO

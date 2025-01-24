@@ -8,6 +8,7 @@ from pydantic import (
     Field,
     field_validator,
 )
+from pydantic.json_schema import SkipJsonSchema
 
 from ohsome_quality_api.attributes.definitions import AttributeEnum
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
@@ -68,6 +69,8 @@ class IndicatorRequest(BaseBpolys):
         alias="topic",
     )
     include_figure: bool = True
+    # feature flag to use SQL queries against Trino instead of ohsome API
+    trino: SkipJsonSchema[bool] = False
 
     @field_validator("topic")
     @classmethod
