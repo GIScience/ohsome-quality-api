@@ -3,79 +3,98 @@ import re
 
 def translate_filter_to_sql(filter_str, tags_column="contributions.tags"):
     """
-    Translates a generic filter string into an SQL filter format dynamically.
+    Translates an ohsome filter string into an SQL filter format.
     """
+
+    parts = re.split(r"(\(|\))", filter_str)
+
+    result = []
+    for part in parts:
+        if part not in ("(", ")"):
+            split_part = re.split(r"\b(and|or)\b", part)
+            result.extend([p.strip() for p in split_part if p.strip()])
+        else:
+            result.append(part)
+
     sql_parts = []
+    for substring in result:
+        if substring in ("(", ")", "and", "or"):
+            sql_parts.append(substring)
+        else:
+            sql_parts.append(substring_converter(substring))
 
-    # Match value of geometry/type (assuming there can only be one type)
-    type_match = re.compile(r"type:([\w:]+)", re.IGNORECASE)
-    for match in type_match.finditer(filter_str):
-        key = match.groups()
-        sql_parts.append([f"osm_type={key}"])
-        sql_parts.append(" AND ")
-    geometry_match = re.compile(r"geometry:([\w:]+)", re.IGNORECASE)
-    for match in geometry_match.finditer(filter_str):
-        key = match.groups()
-        sql_parts.append(f"osm_type={key}")
-        sql_parts.append(" AND ")
+    for substring in sql_parts:
+        if "osm_type = " in substring:
+            sql_parts.remove(substring)
+            sql_parts.insert(0, substring)
 
-    # Match key IN (...) expressions
-    in_pattern = re.compile(
-        r"(\w+)\s+in\s+\(([^)]+)\)(?:\s+|\)\s+)?(\w+)?", re.IGNORECASE
-    )
-    for match in in_pattern.finditer(filter_str):
-        key, values = match.group(1), match.group(2)
-        values = values.replace(" ", "").replace(",", "', '")
-        sql_parts.append(f"element_at({tags_column},'{key}') IS NOT NULL")
-        sql_parts.append(" AND ")
-        sql_parts.append(f"{tags_column}['{key}'] IN ('{values}')")
+    if sql_parts[-1] in ("and", "or"):
+        sql_parts = sql_parts[:-1]
 
-        sql_parts.append(f"{match.group(3)}")
+    result_sql = " ".join(sql_parts)
+
+    return result_sql
+
+
+def substring_converter(substring, tags_column="contributions.tags"):
+    # TODO: for all re.compile check if last group can be removed (artifact)
+
+    # key IN
+    match = re.search(r"([\w\S]+)\s+in(?:\s|$)", substring)
+    if match:
+        key = match.group(1)
+        return (
+            f"element_at({tags_column},'{key}') IS NOT NULL AND "
+            f"{tags_column}['{key}'] IN "
+        )
+
+    type_match = re.search(r"type:([\w:]+)", substring)
+    if type_match:
+        key = type_match.group(1)
+        return f"osm_type = '{key}' AND "
+
+    geometry_match = re.search(r"geometry:([\w:]+)", substring)
+    if geometry_match:
+        key = geometry_match.group(1)
+        return f"osm_type={key} AND "
 
     # Match key=value expressions
     equal_pattern = re.compile(r"(\w+)=([\w:]+)(?:\s+|\)\s+)?(\w+)?", re.IGNORECASE)
-    for match in equal_pattern.finditer(filter_str):
+    for match in equal_pattern.finditer(substring):
         key, value = match.groups()
-        sql_parts.append(f"element_at({tags_column},'{key}') IS NOT NULL")
-        sql_parts.append(" AND ")
-        sql_parts.append(f"{tags_column}['{key}'] = '{value}'")
-
-        sql_parts.append(f"{match.group(3)}")
+        return (
+            f"element_at({tags_column},'{key}') IS NOT NULL AND "
+            f"{tags_column}['{key}'] = '{value}'"
+        )
 
     # Match key=*
     exists_pattern = re.compile(r"(\w+)=\*(?:\s+|\)\s+)?(\w+)?", re.IGNORECASE)
-    for match in exists_pattern.finditer(filter_str):
+    for match in exists_pattern.finditer(substring):
         key = match.group(1)
-        sql_parts.append(f"element_at({tags_column}, '{key}') IS NOT NULL")
-
-        sql_parts.append(f"{match.group(2)}")
+        return f"element_at({tags_column}, '{key}') IS NOT NULL "
 
     # Match key!=*
     not_exists_pattern = re.compile(r"(\w+)!=\*(?:\s+|\)\s+)?(\w+)?", re.IGNORECASE)
-    for match in not_exists_pattern.finditer(filter_str):
+    for match in not_exists_pattern.finditer(substring):
         key = match.group(1)
-        sql_parts.append(f"element_at({tags_column}, '{key}') IS NULL")
-
-        sql_parts.append(f"{match.group(2)}")
+        return f"element_at({tags_column}, '{key}') IS NULL"
 
     # Match key!=value expressions
     not_exists_pattern = re.compile(
         r"(\w+)!=([\w:]+)(?:\s+|\)\s+)?(\w+)?", re.IGNORECASE
     )
-    for match in not_exists_pattern.finditer(filter_str):
+    for match in not_exists_pattern.finditer(substring):
         key, value = match.groups()
-        sql_parts.append(f"{tags_column}['{key}'] != '{value}'")
-        sql_parts.append(f"{match.group(3)}")
+        return f"{tags_column}['{key}'] != '{value}'"
 
-    exceptions = [" AND ", "and", "or", "(", ")"]
+    # list of values for "key IN (...)"
+    if re.fullmatch(r"^[^,]+(?:\s*,\s*[^,]+)*$", substring):
+        formatted_string = ""
+        values = re.split(r",\s*", substring)
+        for value in values:
+            formatted_string = formatted_string + f"'{value}', "
+        # remove last ", "
+        return formatted_string[:-2]
 
-    # TODO: prevent "None" from happening
-    sql_parts = [
-        item
-        for item in sql_parts
-        if (sql_parts.count(item) == 1 or item in exceptions) and item != "None"
-    ]
-
-    result_sql = " ".join(sql_parts)
-
-    return result_sql
+    else:
+        raise (ValueError)
