@@ -121,8 +121,8 @@ class RoadComparison(BaseIndicator):
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
                 f"{self.data_ref[key]['name']} has a road length of "
-                f"{(self.length_total[key]/1000):.2f} km, of which "
-                f"{(self.length_matched[key]/1000):.2f} km are covered by roads in "
+                f"{(self.length_total[key] / 1000):.2f} km, of which "
+                f"{(self.length_matched[key] / 1000):.2f} km are covered by roads in "
                 f"OSM. "
             )
 
@@ -169,6 +169,10 @@ class RoadComparison(BaseIndicator):
         for i, (name, ratio, date) in enumerate(
             zip(ref_name, ref_ratio, ref_processingdate)
         ):
+            hovertext = (
+                f"OSM Covered: {(self.length_matched[name] / 1000):.2f} km "
+                + f"({date:%b %d, %Y})"
+            )
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
@@ -179,8 +183,7 @@ class RoadComparison(BaseIndicator):
                         line=dict(color=Color.GREY.value, width=1),
                     ),
                     width=0.4,
-                    hovertext=f"OSM Covered: {(self.length_matched[name]/1000):.2f} km"
-                    f" ({date:%b %d, %Y})",
+                    hovertext=hovertext,
                     hoverinfo="text",
                 )
             )

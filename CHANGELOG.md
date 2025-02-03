@@ -6,8 +6,13 @@
 
 - attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
 
+### Other Changes
+
+- build: update dependencies ([#873])
+
 
 [#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
+[#873]: https://github.com/GIScience/ohsome-quality-api/pull/873
 
 
 ## Release  1.8.2 
