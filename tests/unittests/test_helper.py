@@ -107,7 +107,4 @@ def test_hyphen_to_snake():
 
 
 def test_get_module_dir():
-    assert (
-        get_module_dir("ohsome_quality_api.definitions")
-        == "/home/matthias/work/projects/oqapi/ohsome_quality_api"
-    )
+    assert get_module_dir("tests.unittests") == str(Path(__file__).parent)
