@@ -15,6 +15,7 @@ from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     flatten_sequence,
     get_class_from_key,
+    get_module_dir,
     get_project_root,
     hyphen_to_camel,
     hyphen_to_snake,
@@ -103,6 +104,12 @@ class TestHelper(unittest.TestCase):
 
     def test_hyphen_to_snake(self):
         assert hyphen_to_snake("hyphen-case") == "hyphen_case"
+
+    def test_get_module_dir(self):
+        assert (
+            get_module_dir("ohsome_quality_api.definitions")
+            == "/home/matthias/work/projects/oqapi/ohsome_quality_api"
+        )
 
 
 if __name__ == "__main__":
