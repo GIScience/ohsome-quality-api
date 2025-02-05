@@ -277,7 +277,7 @@ class BuildingComparison(BaseIndicator):
 
 
 # alru needs hashable type, therefore, use string instead of Feature
-@alru_cache
+# @alru_cache
 async def get_reference_building_area(feature_str: str, table_name: str) -> float:
     """Get the building area for a AoI from the EUBUCCO dataset."""
     # TODO: https://github.com/GIScience/ohsome-quality-api/issues/746
@@ -295,9 +295,25 @@ async def get_reference_building_area(feature_str: str, table_name: str) -> floa
     geom = geojson.dumps(feature.geometry)
     async with await psycopg.AsyncConnection.connect(dns) as con:
         async with con.cursor() as cur:
-            await cur.execute(query.format(table_name=table_name), (geom,))
+            await cur.execute(query.format(table_name=table_name, geom=geom))
             res = await cur.fetchone()
     return res[0] or 0.0
+
+
+async def get_reference_building_area_asyncpg(
+    feature_str: str, table_name: str
+) -> float:
+    file_path = os.path.join(db_client.WORKING_DIR, "select_building_area.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    feature = geojson.loads(feature_str)
+    geom = geojson.dumps(feature.geometry)
+
+    from ohsome_quality_api.geodatabase.client import get_connection
+
+    async with get_connection() as conn:
+        result = await conn.fetchrow(query.format(table_name=table_name, geom=geom))
+    return result[0] or 0.0
 
 
 def load_datasets_metadata() -> dict:
