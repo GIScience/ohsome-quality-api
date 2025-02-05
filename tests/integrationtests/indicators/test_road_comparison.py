@@ -244,3 +244,34 @@ def test_get_matched_roadlengths():
     assert (1502620657, 1969546917) == asyncio.run(
         get_matched_roadlengths(json.dumps(polygon), "microsoft_roads_midpoint")
     )
+
+
+@pytest.mark.asyncio
+async def test_compare_database_libraries_execution_time(feature_germany_berlin):
+    import time
+    import geojson
+    from ohsome_quality_api.indicators.road_comparison.indicator import (
+        get_matched_roadlengths,
+        get_matched_roadlengths_asyncpg
+    )
+
+    start_psycopg = time.time()
+    result_psycopg = await get_matched_roadlengths(
+        geojson.dumps(feature_germany_berlin),
+        "microsoft_roads_midpoint",
+    )
+    end_psycopg = time.time()
+    time_psycopg = end_psycopg - start_psycopg
+    print(time_psycopg)  # ~4-5 sec
+
+    start_asyncpg = time.time()
+    result_asyncpg = await get_matched_roadlengths_asyncpg(
+        geojson.dumps(feature_germany_berlin),
+        "microsoft_roads_midpoint",
+    )
+    end_asyncpg = time.time()
+    time_asyncpg = end_asyncpg - start_asyncpg
+    print(time_asyncpg)  # ~4-5 sec
+
+    assert result_psycopg == result_asyncpg
+    assert time_psycopg == pytest.approx(time_asyncpg, abs=1)  # allow 1 seconds diff

@@ -267,7 +267,7 @@ class RoadComparison(BaseIndicator):
 
 
 # alru needs hashable type, therefore, use string instead of Feature
-@alru_cache
+# @alru_cache
 async def get_matched_roadlengths(
     feature_str: str,
     table_name: str,
@@ -290,11 +290,29 @@ async def get_matched_roadlengths(
             await cur.execute(
                 query.format(
                     table_name=table_name,
-                ),
-                (geom,),
+                    geom=geom,
+                )
             )
             res = await cur.fetchone()
     return res[0], res[1]
+
+
+async def get_matched_roadlengths_async(
+    feature_str: str,
+    table_name: str,
+) -> tuple[float, float]:
+    file_path = os.path.join(db_client.WORKING_DIR, "get_matched_roads.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    feature = geojson.loads(feature_str)
+    geom = geojson.dumps(feature.geometry)
+    table_name = table_name.replace(" ", "_")
+
+    from ohsome_quality_api.geodatabase.client import get_connection
+
+    async with get_connection() as conn:
+        result = await conn.fetchrow(query.format(table_name=table_name, geom=geom))
+    return result[0], result[1]
 
 
 def load_datasets_metadata() -> dict:
