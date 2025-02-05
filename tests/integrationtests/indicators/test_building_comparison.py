@@ -364,3 +364,35 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "pie"
         pgo.Figure(indicator.result.figure)
+
+
+@pytest.mark.asyncio
+async def test_compare_database_libraries_execution_time(feature_germany_berlin):
+    import time
+    import geojson
+    from ohsome_quality_api.indicators.building_comparison.indicator import (
+        get_reference_building_area,
+        get_reference_building_area_asyncpg,
+    )
+
+    for dataset in ("eubucco", "microsoft_buildings"):
+        start_psycopg = time.time()
+        result_psycopg = await get_reference_building_area(
+            geojson.dumps(feature_germany_berlin),
+            dataset,
+        )
+        end_psycopg = time.time()
+        time_psycopg = end_psycopg - start_psycopg
+        print(time_psycopg)  # ~4-5 sec
+
+        start_asyncpg = time.time()
+        result_asyncpg = await get_reference_building_area_asyncpg(
+            geojson.dumps(feature_germany_berlin),
+            dataset,
+        )
+        end_asyncpg = time.time()
+        time_asyncpg = end_asyncpg - start_asyncpg
+        print(time_asyncpg)  # ~4-5 sec
+
+        assert result_psycopg == result_asyncpg
+        assert time_psycopg == pytest.approx(time_asyncpg, abs=1)  # allow 1 seconds diff
