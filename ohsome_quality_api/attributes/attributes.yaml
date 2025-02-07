@@ -35,10 +35,6 @@ building-count:
     name: District Address
     description: TODO
     filter: addr:district=*
-  address-housenumber:
-    name: House Number Address
-    description: TODO
-    filter: addr:housenumber=*
   building-levels:
     name: Levels of Buildings
     description: TODO
