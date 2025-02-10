@@ -63,10 +63,6 @@ building-count:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
-  missing-wall:
-    name: Missing Wall
-    description: slight constructions like sheds or any construction with a roof and at least one side open or without foundations.
-    filter: wall=no
   source:
     name: Source
     description: TODO
@@ -327,10 +323,6 @@ roads:
     name: Lit
     description: TODO
     filter: lit=*
-  residential:
-    name: Residential road
-    description: Road in a residential area
-    filter: highway=residential
 
 car-roads:
   name:
