@@ -6,7 +6,7 @@
 ### CORE TOPICS ###
 
 building-count:
-  name: Building Count
+  name: Buildings (count)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements
@@ -21,7 +21,7 @@ building-count:
     - bkg
 
 building-area:
-  name: Building Area
+  name: Buildings (area)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements
@@ -166,7 +166,7 @@ schools:
     - unicef
 
 kindergarten:
-  name: Kindergarten
+  name: Kindergartens
   description: Count of kindergarten.
   endpoint: elements
   aggregation_type: count
@@ -315,7 +315,7 @@ parks:
     - bkg
 
 sports-pitch:
-  name: Sports Pitch
+  name: Sports Pitches
   description: Count of sports pitches (an area designed for practising a particular sport)
   endpoint: elements
   aggregation_type: count
