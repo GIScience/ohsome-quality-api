@@ -59,6 +59,11 @@ def topic_building_count(topic_key_building_count) -> TopicDefinition:
 
 
 @pytest.fixture(scope="class")
+def topic_car_roads() -> TopicDefinition:
+    return get_topic_preset("car-roads")
+
+
+@pytest.fixture(scope="class")
 def topic_building_area() -> TopicDefinition:
     return get_topic_preset("building-area")
 

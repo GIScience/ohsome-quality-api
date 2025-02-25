@@ -29,6 +29,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         topic: Topic,
         feature: Feature,
+        trino: bool = False,
     ) -> None:
         self.metadata: IndicatorMetadata = get_indicator(
             camel_to_hyphen(type(self).__name__)
@@ -39,6 +40,11 @@ class BaseIndicator(metaclass=ABCMeta):
         self.result: Result = Result(
             description=self.templates.label_description["undefined"],
         )
+        self.trino: bool = trino
+        if self.trino and self.topic.sql_filter is None:
+            raise ValueError(
+                "No SQL query found to run against Trino for topic: " + self.topic.name
+            )
         self._get_default_figure()
 
     def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
@@ -50,7 +56,10 @@ class BaseIndicator(metaclass=ABCMeta):
             "metadata": self.metadata.model_dump(by_alias=True),
             "topic": self.topic.model_dump(
                 by_alias=True,
-                exclude={"ratio_filter"},
+                exclude={
+                    "ratio_filter",
+                    "sql_filter",
+                },  # TODO: do not exclude SQL filter
             ),
             "result": result,
             **self.feature.properties,

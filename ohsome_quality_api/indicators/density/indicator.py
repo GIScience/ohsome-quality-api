@@ -16,8 +16,8 @@ from ohsome_quality_api.utils.helper_geo import calculate_area
 
 
 class Density(BaseIndicator):
-    def __init__(self, topic: Topic, feature: Feature) -> None:
-        super().__init__(topic=topic, feature=feature)
+    def __init__(self, topic: Topic, feature: Feature, trino: bool = False) -> None:
+        super().__init__(topic=topic, feature=feature, trino=trino)
         self.threshold_yellow = 30
         self.threshold_red = 10
         self.area_sqkm = None

@@ -36,6 +36,7 @@ class TopicDefinition(BaseTopic):
     projects: list[ProjectEnum]
     source: str | None = None
     ratio_filter: str | None = None
+    sql_filter: str | None = None
 
 
 class TopicData(BaseTopic):

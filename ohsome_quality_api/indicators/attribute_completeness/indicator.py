@@ -1,7 +1,10 @@
+import json
 import logging
+import os
+from datetime import datetime, timezone
 from string import Template
 
-import dateutil.parser
+import dateutil
 import plotly.graph_objects as go
 from geojson import Feature
 
@@ -11,7 +14,11 @@ from ohsome_quality_api.attributes.definitions import (
 )
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
-from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.topics.models import TopicDefinition as Topic
+from ohsome_quality_api.trino import client as trino_client
+from ohsome_quality_api.utils.helper_geo import get_bounding_box
+
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class AttributeCompleteness(BaseIndicator):
@@ -46,20 +53,22 @@ class AttributeCompleteness(BaseIndicator):
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
         attribute_title: str | None = None,
+        trino: bool = False,  # Feature flag to use SQL instead of ohsome API queries
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, trino=trino)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
         self.attribute_keys = attribute_keys
         self.attribute_filter = attribute_filter
         self.attribute_title = attribute_title
-        self.absolute_value_1 = None
-        self.absolute_value_2 = None
+        self.absolute_value_1: int | None = None
+        self.absolute_value_2: int | None = None
         self.description = None
         if self.attribute_keys:
             self.attribute_filter = build_attribute_filter(
                 self.attribute_keys,
                 self.topic.key,
+                self.trino,
             )
             self.attribute_title = ", ".join(
                 [
@@ -71,20 +80,60 @@ class AttributeCompleteness(BaseIndicator):
             self.attribute_filter = build_attribute_filter(
                 self.attribute_filter,
                 self.topic.key,
+                self.trino,
             )
 
     async def preprocess(self) -> None:
-        # Get attribute filter
-        response = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            attribute_filter=self.attribute_filter,
-        )
-        timestamp = response["ratioResult"][0]["timestamp"]
-        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.result.value = response["ratioResult"][0]["ratio"]
-        self.absolute_value_1 = response["ratioResult"][0]["value"]
-        self.absolute_value_2 = response["ratioResult"][0]["value2"]
+        if self.trino:
+            file_path = os.path.join(WORKING_DIR, "query.sql")
+            with open(file_path, "r") as file:
+                sql_template = file.read()
+
+            bounding_box = get_bounding_box(self.feature)
+            geometry = json.dumps(self.feature["geometry"])
+
+            sql = sql_template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=self.topic.sql_filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            # TODO: Check for None
+            self.absolute_value_1 = results[0][0]
+
+            sql = sql_template.format(
+                bounding_box=bounding_box,
+                geometry=geometry,
+                filter=self.attribute_filter,
+            )
+            query = await trino_client.query(sql)
+            results = await trino_client.fetch(query)
+            self.absolute_value_2 = results[0][0]
+
+            if self.absolute_value_1 is None and self.absolute_value_2 is None:
+                self.result.value = None
+            elif self.absolute_value_1 is None:
+                raise ValueError("Unreachable code.")
+            elif self.absolute_value_2 is None:
+                self.result.value = 0
+            else:
+                self.result.value = self.absolute_value_2 / self.absolute_value_1
+
+            # TODO: Query Trino for Timestamp
+            self.result.timestamp_osm = datetime.now(timezone.utc)
+        else:
+            # Get attribute filter
+            response = await ohsome_client.query(
+                self.topic,
+                self.feature,
+                attribute_filter=self.attribute_filter,
+            )
+            timestamp = response["ratioResult"][0]["timestamp"]
+            self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
+            self.result.value = response["ratioResult"][0]["ratio"]
+            self.absolute_value_1 = response["ratioResult"][0]["value"]
+            self.absolute_value_2 = response["ratioResult"][0]["value2"]
 
     def calculate(self) -> None:
         # result (ratio) can be NaN if no features matching filter1
