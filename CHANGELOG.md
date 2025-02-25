@@ -2,6 +2,17 @@
 
 ## Current Main
 
+### Bug Fixes
+
+- topics: rework road topics ([#878], [#880])
+- topics: remove covid19 related tags from topics ([#882])
+
+
+[#878]: https://github.com/GIScience/ohsome-quality-api/issues/878
+[#880]: https://github.com/GIScience/ohsome-quality-api/issues/880
+[#882]: https://github.com/GIScience/ohsome-quality-api/issues/882
+
+
 ## Release  1.8.3
 
 ### New Features
