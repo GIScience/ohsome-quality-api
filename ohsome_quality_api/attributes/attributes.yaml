@@ -35,10 +35,6 @@ building-count:
     name: District Address
     description: TODO
     filter: addr:district=*
-  address-housenumber:
-    name: House Number Address
-    description: TODO
-    filter: addr:housenumber=*
   building-levels:
     name: Levels of Buildings
     description: TODO
@@ -67,10 +63,6 @@ building-count:
     name: Colour of Buildings
     description: TODO
     filter: building:colour=*
-  missing-wall:
-    name: Missing Wall
-    description: slight constructions like sheds or any construction with a roof and at least one side open or without foundations.
-    filter: wall=no
   source:
     name: Source
     description: TODO
@@ -298,7 +290,7 @@ roads:
   sidewalk:
     name: Sidewalk
     description: TODO
-    filter: sidewalk=*
+    filter: sidewalk=* or sidewalk:right=* or sidewalk:left=* or sidewalk:both=*
   crossing:
     name: Crossing
     description: TODO
@@ -306,7 +298,7 @@ roads:
   cycleway:
     name: Cycleway
     description: TODO
-    filter: cycleway=*
+    filter: cycleway=* or cycleway:both=* or cycleway:right=* or cycleway:left=*
   cycleway-share-busway:
     name: Cycleway Share Busway
     description: TODO
@@ -331,10 +323,6 @@ roads:
     name: Lit
     description: TODO
     filter: lit=*
-  residential:
-    name: Residential road
-    description: Road in a residential area
-    filter: highway=residential
 
 car-roads:
   name:
@@ -344,7 +332,7 @@ car-roads:
   sidewalk:
     name: Sidewalk
     description: TODO
-    filter: sidewalk=*
+    filter: sidewalk=* or sidewalk:right=* or sidewalk:left=* or sidewalk:both=*
   lanes:
     name: Lanes
     description: TODO
