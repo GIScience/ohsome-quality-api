@@ -34,18 +34,19 @@ building-area:
     - core
     - bkg
 
-roads:
-  name: Roads
+roads-all-highways:
+  name: Roads (all highways)
   description: >-
-    The road network defined by all objects which hold the principal tags for
-    the road network and their link roads as defined in the OSM Wiki`:`
-    https://wiki.openstreetmap.org/wiki/Key:highway
+    All linear OSM features holding the prinicipal tag `highway=*`. The
+    road network defined by all objects which hold the principal tags
+    for the road network and their link roads as defined in the OSM
+    Wiki`:` https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway=* and type:way
+    highway=* and geometry:line
   ratio_filter: >-
-    highway=* and type:way and name=*
+    highway=* and geometry:line and name=*
   source: https://wiki.openstreetmap.org/wiki/Key:highway
   indicators:
     - mapping-saturation
@@ -56,13 +57,19 @@ roads:
     - core
     - bkg
 
-car-roads:
-  name: Classified Roads
-  description: roads excluding simple forest paths and other small/ unclassified roads
+roads:
+  name: Roads (cars)
+  description: >-
+    All linear OSM features referring to a road usable by vehicles
+    (i.e. cars). The road network defined by all objects which hold
+    the principal tags for the road network and their link roads as
+    defined in the OSM Wiki`:`
+    https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link) and type:way
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and geometry:line
+  source: https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
   indicators:
     - mapping-saturation
     - attribute-completeness
