@@ -2,12 +2,16 @@
 
 ## Current Main
 
+## Release  1.8.3
+
 ### New Features
 
-- attribute completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
+- attribute-completeness: added subkeys to filters for sidewalk and cycleway attributes ([#877])
+- attribute-completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
 
 
 [#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
+[#877]: https://github.com/GIScience/ohsome-quality-api/issue/877
 
 
 ## Release  1.8.2 
