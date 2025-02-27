@@ -2,6 +2,14 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- density: remove indicator and Sketch Map Tool related topics ([#883])
+
+
+[#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
+
+
 ## Release  1.8.3
 
 ### New Features

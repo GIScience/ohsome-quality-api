@@ -16,15 +16,6 @@ mapping-saturation:
     Calculate if mapping has saturated.
     High saturation has been reached if the growth of the fitted curve is
     minimal.
-density:
-  name: Density
-  projects:
-    - experimental
-  quality_dimension: none
-  description: >-
-      The density of features.
-      It is calculated by the number of features
-      divided by the area in square-kilometers.
 minimal:
   name: Minimal
   projects:

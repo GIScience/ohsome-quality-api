@@ -144,7 +144,6 @@ poi:
   indicators:
     - mapping-saturation
     - currentness
-    - density
   projects:
     - core
     - bkg
@@ -450,39 +449,6 @@ healthcare-primary:
     - currentness
   projects:
     - unicef
-
-### SKETCHMAP PROJECT ###
-
-amenities:
-  name: Amenities
-  description: All features with the amenities key.
-  endpoint: elements
-  aggregation_type: count
-  source: https://wiki.openstreetmap.org/wiki/Key:amenity
-  filter: amenity=*
-  indicators:
-    - mapping-saturation
-    - currentness
-  projects:
-    - sketchmap
-
-landmarks:
-  name: Landmarks for Orientation
-  description: >-
-    Landmarks for orientation in a city such as natural features, public transport stations and amenities.
-  endpoint: elements
-  aggregation_type: count
-  source: https://www.geog.uni-heidelberg.de/gis/sketchmaptool.html
-  filter: >-
-    natural=peak or leisure=park or boundary=national_park or
-    natural=water or waterway=* or highway=bus_stop or railway=station or
-    shop=* or tourism in (hotel, attraction) or
-    amenity in (fuel, pharmacy, hospital, school, college, university,
-    police, fire_station, restaurant, townhall)
-  indicators:
-    - density
-  projects:
-    - sketchmap
 
 ### MAPACTION PROJECT ###
 
