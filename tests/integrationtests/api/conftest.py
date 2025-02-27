@@ -27,7 +27,7 @@ def response_template():
 def metadata_topic_building_count():
     return {
         "building-count": {
-            "name": "Building Count",
+            "name": "Buildings (count)",
             "description": "All buildings as defined by all objects tagged with 'building=*'.",  # noqa
             "endpoint": "elements",
             "aggregationType": "count",
