@@ -324,7 +324,7 @@ roads:
     description: TODO
     filter: lit=*
 
-car-roads:
+roads-all-highways:
   name:
     name: Road Name
     description: TODO
