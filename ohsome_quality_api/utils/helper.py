@@ -3,10 +3,10 @@
 import importlib
 import logging
 import os
-import pkgutil
 import re
 from datetime import date, datetime
 from enum import Enum
+from importlib.util import find_spec
 from pathlib import Path
 
 import geojson
@@ -73,8 +73,8 @@ def snake_to_hyphen(snake: str) -> str:
 
 def get_module_dir(module_name: str) -> str:
     """Get directory of module name."""
-    module = pkgutil.get_loader(module_name)
-    return os.path.dirname(module.get_filename())
+    module = find_spec(module_name)
+    return os.path.dirname(module.loader.get_filename())
 
 
 def json_serialize(obj):
