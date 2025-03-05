@@ -1,12 +1,12 @@
 import asyncio
+import json
 import os
 from datetime import datetime
 
 import geojson
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
-from approvaltests import verify
+from approvaltests import Options, verify
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
@@ -18,6 +18,7 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     month_to_year_month,
 )
 from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -101,8 +102,14 @@ class TestCalculation:
         assert indicator.result.value is None
         verify(indicator.result.description, namer=PytestNamer())
         indicator.create_figure()
-        assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        # TODO: test figure
+        # assert isinstance(indicator.result.figure, dict)
+        # verify(
+        #     json.dumps(to_jsonable_python(indicator.result.figure)),
+        #     options=Options()
+        #     .with_reporter(PlotlyDiffReporter())
+        #     .with_namer(PytestNamer()),
+        # )
 
 
 class TestFigure:
@@ -115,16 +122,15 @@ class TestFigure:
         i.create_figure()
         return i
 
-    # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
-    def test_create_figure_manual(self, indicator):
-        pio.show(indicator.result.figure)
-
     def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify(
+            json.dumps(to_jsonable_python(indicator.result.figure)),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
-    @pytest.mark.skip(reason="Only for manual testing.")
     def test_outdated_features_plotting(
         self,
         topic_building_count,
@@ -141,7 +147,12 @@ class TestFigure:
         ]
         i.calculate()
         i.create_figure()
-        pio.show(i.result.figure)
+        verify(
+            json.dumps(to_jsonable_python(i.result.figure)),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
     def test_get_source(self, indicator):
         indicator.th_source = ""

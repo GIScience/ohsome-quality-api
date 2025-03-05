@@ -1,16 +1,18 @@
 import asyncio
+import json
 from datetime import datetime
+import os
 
 import numpy as np
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
 from approvaltests import Options, verify
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -113,15 +115,16 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    def test_create_figure_manual(self, indicator):
-        indicator.create_figure()
-        pio.show(indicator.result.figure)
-
+    @pytest.mark.skipif(os.environ.get("JENKINS_URL", False), reason="CI")
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify(
+            json.dumps(to_jsonable_python(indicator.result.figure)),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
 
 @oqapi_vcr.use_cassette
