@@ -5,10 +5,12 @@ import numpy as np
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests import Options, verify
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
+from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -79,7 +81,7 @@ class TestCalculation:
 
         assert indicator.result.value >= 0.0
         assert indicator.result.label in ["green", "yellow", "red", "undefined"]
-        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)

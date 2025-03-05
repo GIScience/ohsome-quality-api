@@ -6,6 +6,7 @@ import geojson
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests import verify
 
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
@@ -16,6 +17,7 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
+from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -64,17 +66,12 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
-        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
     def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
-
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that in the area of interest less than 25 "
-            "features of the selected topic are present today."
-        ) in indicator.result.description
+        verify(indicator.result.description, namer=PytestNamer())
 
     def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
@@ -82,11 +79,7 @@ class TestCalculation:
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
         ]
         indicator.calculate()
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that there was no mapping activity for"
-            in indicator.result.description
-        )
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     def test_no_amenities(self):
@@ -106,10 +99,7 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
-        assert indicator.result.description == (
-            "In the area of interest no features of the selected topic are present "
-            "today."
-        )
+        verify(indicator.result.description, namer=PytestNamer())
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure

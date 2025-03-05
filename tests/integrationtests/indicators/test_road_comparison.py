@@ -179,7 +179,6 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.label == "undefined"
-        assert indicator.result.description is not None
         verify(indicator.result.description, namer=PytestNamer())
 
 

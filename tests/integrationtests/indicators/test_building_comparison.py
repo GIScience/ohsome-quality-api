@@ -229,7 +229,6 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
         assert indicator.result.class_ is None
-        assert indicator.result.description is not None
         for v in indicator.area_ref.values():
             assert v is not None
         for v in indicator.area_osm.values():
@@ -249,7 +248,6 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
         assert indicator.result.class_ is None
-        assert indicator.result.description is not None
         assert indicator.result.label == "undefined"
         verify(indicator.result.description, namer=PytestNamer())
 
@@ -271,7 +269,6 @@ class TestCalculate:
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
-        assert indicator.result.description is not None
         # major edge case description
         verify(indicator.result.description, namer=PytestNamer())
 
@@ -295,7 +292,6 @@ class TestCalculate:
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
         assert indicator.result.label != "undefined"
-        assert indicator.result.description is not None
         verify(indicator.result.description, namer=PytestNamer())
 
 
