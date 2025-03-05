@@ -352,12 +352,12 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     if contrib_sum < 25:  # not enough data
         return (
             "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today."
+            "selected topic are present today. "
         )
     elif num_months >= 12:
         return (
             f"Please note that there was no mapping activity for {num_months} months "
-            "in this region."
+            "in this region. "
         )
     else:
         return ""
