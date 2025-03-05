@@ -10,7 +10,8 @@ from approvaltests.approvals import verify
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
 )
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture

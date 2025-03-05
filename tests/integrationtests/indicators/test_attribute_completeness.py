@@ -12,8 +12,8 @@ from ohsome_quality_api.attributes.definitions import get_attributes
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
+from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.utils import (
-    PytestNamer,
     get_topic_fixture,
     oqapi_vcr,
 )

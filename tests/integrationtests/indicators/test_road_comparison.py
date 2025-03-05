@@ -13,7 +13,8 @@ from ohsome_quality_api.indicators.road_comparison.indicator import (
     RoadComparison,
     get_matched_roadlengths,
 )
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture
