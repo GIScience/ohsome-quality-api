@@ -58,6 +58,7 @@ pytest-mock = "^3.11.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.3"
+babel = "^2.17.0"
 
 [build-system]
 requires = ["poetry-core"]
