@@ -1,0 +1,1025 @@
+# German translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-03-12 14:17+1300\n"
+"PO-Revision-Date: 2025-03-12 14:17+1300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Height of Buildings"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+#: ohsome_quality_api/projects/projects.yaml
+msgid "TODO"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "House Number"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Street Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "City Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Postcode Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Country Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "State Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Suburb Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "District Address"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Levels of Buildings"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Shape of Roofs"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Levels of Roofs"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Material of Buildings"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Material of Roofs"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Colour of Roofs"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Colour of Buildings"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Source"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Public transport platform"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Bus stop area"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "shelter"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Birthing centre"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Blood donation"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Rehabilitation"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Vaccination centre"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Opening Hours"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Specialty"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Phone Number"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Name"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Website"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Emergency"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Fitness"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Swimming"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Weightlifting"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Sport"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Leaf Type"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Playground"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Winery"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Shop Name"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Theme park"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Lit"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Surface"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Access"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Tunnel"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Subway stop area"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Brand"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Tram stop area"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Type of Leaves"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Road Name"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Sidewalk"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Crossing"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Cycleway"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Cycleway Share Busway"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Parking"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Maxspeed"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Oneway"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Lanes"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Shelter"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Bench"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Trash Bin"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Tactile Paving"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Wheelchair Accessibility"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Bus Lines"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "List of all bus lines stopping at a certain stop"
+msgstr ""
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Departures Board"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Mapping Saturation"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid ""
+"Calculate if mapping has saturated. High saturation has been reached if "
+"the growth of the fitted curve is minimal."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Density"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid ""
+"The density of features. It is calculated by the number of features "
+"divided by the area in square-kilometers."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Minimal"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "An minimal Indicator for testing purposes."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "Currentness"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid ""
+"Estimate currentness of features by classifying contributions based on "
+"topic specific temporal thresholds into three groups: up-to-date, in-"
+"between and out-of-date."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Road Comparison"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid ""
+"Compare the road length of OSM roads with the road length of reference "
+"data."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Building Comparison"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Comparison of OSM buildings with the buildings of reference datasets."
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid "Attribute Completeness"
+msgstr ""
+
+#: ohsome_quality_api/indicators/indicators.yaml
+msgid ""
+"Derive the ratio of OSM features compared to features which match "
+"additional expected tags (e.g. amenity=hospital vs amenity=hospital and "
+"wheelchair=yes)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
+msgid "The attribute completeness is low (<25%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
+#, python-format
+msgid "The attribute completeness is medium (25%-75%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
+msgid "The attribute completeness is high (>75%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
+#: ohsome_quality_api/indicators/currentness/templates.yaml
+#: ohsome_quality_api/indicators/density/templates.yaml
+#: ohsome_quality_api/indicators/minimal/templates.yaml
+msgid "The quality level could not be calculated for this indicator."
+msgstr ""
+
+#: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
+#, python-format
+msgid ""
+"$result% of all \"$topic\" features (all: $all) in your area of interest "
+"have the selected additional $tags (matched: $matched). "
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/datasets.yaml
+msgid "EUBUCCO"
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/datasets.yaml
+msgid ""
+"EUBUCCO is a dataset of building footprints for Europe. It is derived "
+"from administrative datasets."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/datasets.yaml
+msgid "Microsoft Building Footprints"
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/datasets.yaml
+msgid ""
+"Microsoft Building Footprints is a dataset of building footprints for the"
+" world. It is derived from satellite imagery."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/templates.yaml
+msgid "The completeness of OSM buildings in your area-of-interest is low."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/templates.yaml
+msgid "The completeness of OSM buildings in your area-of-interest is medium."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/templates.yaml
+msgid "The completeness of OSM buildings in your area-of-interest is high."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/templates.yaml
+#: ohsome_quality_api/indicators/road_comparison/templates.yaml
+msgid "Comparison could not be made."
+msgstr ""
+
+#: ohsome_quality_api/indicators/building_comparison/templates.yaml
+msgid "The completeness in comparison to $dataset is $ratio%."
+msgstr ""
+
+#: ohsome_quality_api/indicators/currentness/templates.yaml
+msgid "Many features are out-of-date."
+msgstr ""
+
+#: ohsome_quality_api/indicators/currentness/templates.yaml
+msgid "Some features are up-to-date and some features are out-of-date."
+msgstr ""
+
+#: ohsome_quality_api/indicators/currentness/templates.yaml
+msgid "Most features are up-to-date."
+msgstr ""
+
+#: ohsome_quality_api/indicators/currentness/templates.yaml
+#, python-format
+msgid ""
+"In the area of interest $up_to_date_contrib_rel% of the $num_of_elements "
+"features were edited (created or modified) for the last time in the "
+"period between $from_timestamp and $to_timestamp."
+msgstr ""
+
+#: ohsome_quality_api/indicators/density/templates.yaml
+msgid ""
+"It is probably hard to orientate on OSM-based sketchmaps of this region."
+"  There are just few orientation providing features available,  you "
+"should explore, if participants can orientate properly."
+msgstr ""
+
+#: ohsome_quality_api/indicators/density/templates.yaml
+msgid ""
+"It might be difficult to orientate on OSM-based sketchmaps of  this "
+"region. There are not many orientation providing features available,  you"
+" should explore, if participants can orientate properly."
+msgstr ""
+
+#: ohsome_quality_api/indicators/density/templates.yaml
+msgid "It is probably easy to orientate on OSM-based sketchmaps of this region."
+msgstr ""
+
+#: ohsome_quality_api/indicators/density/templates.yaml
+msgid ""
+"The density of landmarks  (points of reference, e.g. waterbodies, "
+"supermarkets, churches, bus stops)  is $result features per sqkm."
+msgstr ""
+
+#: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
+msgid "No saturation identified (Saturation ≤ 30%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
+msgid "Saturation is in progress (30% < Saturation ≤ 97%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
+msgid "High saturation has been reached (97% < Saturation ≤ 100%)."
+msgstr ""
+
+#: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
+msgid "Saturation could not be calculated."
+msgstr ""
+
+#: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
+msgid "The saturation of the last 3 years is $saturation%."
+msgstr ""
+
+#: ohsome_quality_api/indicators/minimal/templates.yaml
+msgid "Bad data quality."
+msgstr ""
+
+#: ohsome_quality_api/indicators/minimal/templates.yaml
+msgid "Medium data quality."
+msgstr ""
+
+#: ohsome_quality_api/indicators/minimal/templates.yaml
+msgid "Good data quality."
+msgstr ""
+
+#: ohsome_quality_api/indicators/minimal/templates.yaml
+msgid "Some description of the result."
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/datasets.yaml
+msgid "Microsoft Roads"
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/datasets.yaml
+msgid ""
+"Microsoft Road Detections is a dataset of road world-wide. It is derived "
+"from satellite imagery."
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/templates.yaml
+msgid "The completeness of OSM roads in your area-of-interest is low."
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/templates.yaml
+msgid "The completeness of OSM roads in your area-of-interest is medium."
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/templates.yaml
+msgid "The completeness of OSM roads in your area-of-interest is high."
+msgstr ""
+
+#: ohsome_quality_api/indicators/road_comparison/templates.yaml
+msgid ""
+"The completeness in comparison to $dataset is $ratio%. $dataset have a "
+"total length of $length_total. $length_matched of $dataset are covered by"
+" OSM roads."
+msgstr ""
+
+#: ohsome_quality_api/projects/projects.yaml
+msgid "something that is still a TODO"
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "Completeness"
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid ""
+"The degree to which subject data associated with an entity has values for"
+" all expected attributes and related entity instances in a specific "
+"context of use."
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid ""
+"The degree to which data has attributes that are of the right age in a "
+"specific context of use."
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "A minimal quality dimension definition for testing purposes."
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "None"
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "No specific quality dimension"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Buildings (count)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "All buildings as defined by all objects tagged with 'building=*'."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Buildings (area)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Roads (all highways)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"All linear OSM features holding the prinicipal tag `highway=*`. The road "
+"network defined by all objects which hold the principal tags for the road"
+" network and their link roads as defined in the OSM Wiki`:` "
+"https://wiki.openstreetmap.org/wiki/Key:highway"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Roads (cars)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"All linear OSM features referring to a road usable by vehicles (i.e. "
+"cars). The road network defined by all objects which hold the principal "
+"tags for the road network and their link roads as defined in the OSM "
+"Wiki`:` https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Railways"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Railway networks."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "POI"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Points of interest"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Schools"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of schools."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Kindergartens"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of kindergarten."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Clinics"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of clinics."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Doctors"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of doctors."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Bus Stops"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of bus stops."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Tram Stops"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of tram stops."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Public Transport Stops"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of public transport stops."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Subway Stations"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of subway stops."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Supermarkets"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of supermarkets."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Marketplaces"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of marketplaces."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Parks"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of parks."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Sports Pitches"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Count of sports pitches (an area designed for practising a particular "
+"sport)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Forests"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of forests."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Industrial Landuse (count)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Industrial landsites"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Industrial Landuse (area)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Industrial areas"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Fitness Centres"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of fitness centres."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Fire Stations"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of firestations."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Hospitals"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of hospitals."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "UNICEF Roads"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "The road network usable for routing as defined for the UNICEF Project."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Primary Healthcare facilities for UNICEF Project"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Amenities"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "All features with the amenities key."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Landmarks for Orientation"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Landmarks for orientation in a city such as natural features, public "
+"transport stations and amenities."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Settlements Count"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Number of settlements (cities)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Capital City Count"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Number of capital cities"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Rail Length"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Length of objects identified as rails (large railways)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Major Roads length"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Length of objects identified as major roads (primary, motorway and trunk)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Lakes Count"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Number of objects identified as lakes, lagoons and reservoirs"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Lakes Area"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Area of objects identified as lakes, lagoons and reservoirs"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "MapAction Rivers Length"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Length of objects identified as rivers (or riverbanks)"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Land Use and Land Cover"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Features related to land use and land cover. This definition includes "
+"well established tags for coherent areas at the most atomic level "
+"available. This definition therefore excludes areas with the keys "
+"aeroway, highway, leisure and tourism which can be found in other "
+"sources. For further details please contact us."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Local food shops"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of local food shops"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Fast food restaurants"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of fast food restaurants"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Restaurants"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of restaurants"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Convenience stores"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of convenience stores"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Pubs and biergartens"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of pubs and biergartens"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Alcohol and beverages"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of shops selling alcohol"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Sweets and pasteries"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Count of shops selling sweets and pasteries"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Arable Land CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Arable Land\" (level "
+"2) in Agriculture."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Permanent Crops CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Permanent Crops\" "
+"(level 2) in Agriculture."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Pastures CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Pastures\" (level 2) "
+"in Agriculture."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Forests CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Forests\" (level 2) in"
+" Seminatural Land."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Leaf Types of Forests CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"frequency of forests according to Corine Land Cover Category \"Forests\" "
+"(level 2) tagged with Leaf Type."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Shrubs CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Shrubs\" (level 2) in "
+"Seminatural Land."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Open Spaces CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Open Spaces\" (level "
+"2) in Seminatural Land."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Wetlands CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Selected features for Corine Land Cover Category \"Wetlands\" (level 1)."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Water CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Water\" (level 1), "
+"excluding waterways."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Waterways CLC"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid ""
+"Selected features for Corine Land Cover Category \"Waterways\" (level 2) "
+"in Water."
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "A minimal topic definition for testing purposes"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Infrastructure Lines"
+msgstr ""
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "Line objects related to infrastructure"
+msgstr ""
+
