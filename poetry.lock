@@ -583,6 +583,25 @@ typing-extensions = ">=4.8.0"
 all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)", "jinja2 (>=2.11.2)", "orjson (>=3.2.1)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.7)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "uvicorn[standard] (>=0.12.0)"]
 
 [[package]]
+name = "fastapi-i18n"
+version = "0.3.0"
+description = "Add your description here"
+optional = false
+python-versions = ">=3.10"
+files = []
+develop = false
+
+[package.dependencies]
+fastapi = ">=0.109.2"
+httpx = ">=0.23.0"
+
+[package.source]
+type = "git"
+url = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git"
+reference = "HEAD"
+resolved_reference = "65b3c608313528d67022da8898bf66ebd72610a1"
+
+[[package]]
 name = "filelock"
 version = "3.16.1"
 description = "A platform independent file lock."
@@ -2164,4 +2183,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "9028f765def6f92696d631ed226fb027223e4e0cc4efcb442ce8340ef5051103"
+content-hash = "ea14dea75d3fabfb6c858e7ba51b5431e4c7e68412a8162e9122d459fd57c0dc"
