@@ -4,6 +4,7 @@ from typing import List
 
 import geojson
 import pytest
+from fastapi_i18n.main import Translator, translator
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
@@ -265,3 +266,14 @@ def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
 @pytest.fixture
 def indicators_metadata() -> dict[str, IndicatorMetadata]:
     return get_indicator_metadata()
+
+
+@pytest.fixture
+def locale_de(monkeypatch):
+    monkeypatch.setenv(
+        "FASTAPI_I18N_LOCALE_DIR",
+        "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
+    )
+    token = translator.set(Translator(locale="de"))
+    yield
+    translator.reset(token)

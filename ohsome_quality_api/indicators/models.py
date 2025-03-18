@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, computed_field
+from fastapi_i18n import _
+from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 
 from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.quality_dimensions.definitions import QualityDimensionEnum
@@ -22,6 +23,11 @@ class IndicatorMetadata(BaseModel):
         extra="forbid",
         populate_by_name=True,
     )
+
+    @field_validator("name", "description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
 
 
 class LabelDescription(BaseModel):

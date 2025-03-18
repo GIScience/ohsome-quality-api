@@ -287,7 +287,7 @@ msgstr ""
 msgid ""
 "Calculate if mapping has saturated. High saturation has been reached if "
 "the growth of the fitted curve is minimal."
-msgstr ""
+msgstr "Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die Steigung der Kurve minimal."
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Density"
@@ -464,23 +464,23 @@ msgstr ""
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "No saturation identified (Saturation ≤ 30%)."
-msgstr ""
+msgstr "Kein Sättigung erkannt (Sättigung ≤ 30%)."
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "Saturation is in progress (30% < Saturation ≤ 97%)."
-msgstr ""
+msgstr "Sättigung fortschreitend (30% < Sättigung ≤ 97%)."
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "High saturation has been reached (97% < Saturation ≤ 100%)."
-msgstr ""
+msgstr "Hohe Sättigung ereicht (97% < Sättigung ≤ 100%)."
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "Saturation could not be calculated."
-msgstr ""
+msgstr "Sättigung konnte nicht berechnet werden."
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "The saturation of the last 3 years is $saturation%."
-msgstr ""
+msgstr "Die Sättigung der letzten 3 Jahre ist $saturation%."
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Bad data quality."
