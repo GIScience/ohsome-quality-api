@@ -98,17 +98,17 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                self.description + self.templates.label_description["green"]
+                self.description + self.templates.label_description.green
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                self.description + self.templates.label_description["yellow"]
+                self.description + self.templates.label_description.yellow
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                self.description + self.templates.label_description["red"]
+                self.description + self.templates.label_description.red
             )
 
     def create_description(self):

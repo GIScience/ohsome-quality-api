@@ -158,7 +158,7 @@ class Currentness(BaseIndicator):
         else:
             self.result.class_ = 1
 
-        label_description = self.templates.label_description[self.result.label]
+        label_description = getattr(self.templates.label_description, self.result.label)
         self.result.description += Template(
             self.templates.result_description
         ).substitute(

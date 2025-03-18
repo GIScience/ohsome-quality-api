@@ -24,11 +24,28 @@ class IndicatorMetadata(BaseModel):
     )
 
 
+class LabelDescription(BaseModel):
+    green: str
+    yellow: str
+    red: str
+    undefined: str
+
+    @field_validator("green", "yellow", "red", "undefined", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
+
+
 class IndicatorTemplates(BaseModel):
     """Result text templates of an indicator as defined in the templates.yaml file."""
 
-    label_description: dict[str, str]
+    label_description: LabelDescription
     result_description: str
+
+    @field_validator("result_description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
 
 
 class Result(BaseModel):
