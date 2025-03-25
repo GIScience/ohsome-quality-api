@@ -484,19 +484,19 @@ msgstr "Die Sättigung der letzten 3 Jahre ist $saturation%."
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Bad data quality."
-msgstr ""
+msgstr "Schlechte Datenqualität"
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Medium data quality."
-msgstr ""
+msgstr "Mittlere Datenqualität."
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Good data quality."
-msgstr ""
+msgstr "Gute Datenqualität."
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Some description of the result."
-msgstr ""
+msgstr "Eine Beschreibung der Ergebnisse."
 
 #: ohsome_quality_api/indicators/road_comparison/datasets.yaml
 msgid "Microsoft Roads"
