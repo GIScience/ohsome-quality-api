@@ -13,7 +13,6 @@ from ohsome_quality_api.indicators.minimal.indicator import (
 )
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
-    flatten_sequence,
     get_class_from_key,
     get_project_root,
     hyphen_to_camel,
@@ -45,18 +44,6 @@ class TestHelper(unittest.TestCase):
             self.assertIsNotNone(
                 get_class_from_key(class_type="indicator", key=indicator_name)
             )
-
-    # TODO: add tests for other input than dict
-    def test_flatten_seq(self):
-        input_seq = {
-            "regions": {"default": "ogc_fid"},
-            "gadm": {
-                "default": "uid",  # ISO 3166-1 alpha-3 country code
-                "other": (("name_1", "name_2"), ("id_1", "id_2")),
-            },
-        }
-        output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
-        self.assertListEqual(flatten_sequence(input_seq), output_seq)
 
     def test_json_serialize_valid_input_datetime(self):
         self.assertIsInstance(json_serialize(datetime.datetime.now()), str)

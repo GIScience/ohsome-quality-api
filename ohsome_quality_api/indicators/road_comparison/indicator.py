@@ -138,7 +138,7 @@ class RoadComparison(BaseIndicator):
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
 
-        label_description = self.templates.label_description[self.result.label]
+        label_description = getattr(self.templates.label_description, self.result.label)
         self.result.description += label_description
         # remove double white spaces
         self.result.description = " ".join(self.result.description.split())

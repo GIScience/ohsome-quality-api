@@ -37,7 +37,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.topic: Topic = topic
         self.feature: Feature = feature
         self.result: Result = Result(
-            description=self.templates.label_description["undefined"],
+            description=self.templates.label_description.undefined
         )
         self._get_default_figure()
 

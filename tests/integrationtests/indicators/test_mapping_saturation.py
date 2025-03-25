@@ -5,11 +5,12 @@ import numpy as np
 import plotly.graph_objects as pgo
 import plotly.io as pio
 import pytest
+from approvaltests import verify
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
-from tests.integrationtests.utils import oqapi_vcr
+from tests.integrationtests.utils import PytestNamer, oqapi_vcr
 
 
 class TestCheckEdgeCases:
@@ -61,9 +62,10 @@ class TestPreprocess:
 
 
 class TestCalculation:
+    # TODO: scope conflict
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    def indicator(self, topic_building_count, feature_germany_heidelberg, locale_de):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()
@@ -79,7 +81,7 @@ class TestCalculation:
 
         assert indicator.result.value >= 0.0
         assert indicator.result.label in ["green", "yellow", "red", "undefined"]
-        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)

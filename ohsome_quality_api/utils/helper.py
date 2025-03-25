@@ -118,22 +118,6 @@ def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> 
         logging.info("Output file written:\t" + str(outfile))
 
 
-def flatten_sequence(input_seq: dict | list | tuple | set) -> list:
-    """Returns the given input sequence as a list.
-
-    If the input is a dict, it returns all values.
-    """
-    output = []
-    if isinstance(input_seq, dict):
-        input_seq = input_seq.values()
-    for val in input_seq:
-        if isinstance(val, dict | list | tuple | set):
-            output += flatten_sequence(val)
-        else:
-            output.append(val)
-    return output
-
-
 def get_project_root() -> Path:
     """Get root of the Python project."""
     return Path(__file__).resolve().parent.parent.parent.resolve()
