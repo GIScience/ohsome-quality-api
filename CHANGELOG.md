@@ -1,10 +1,43 @@
 # Changelog
 
-## Current Main 
+## Current Main
+
+## Release  1.9.0
+
+### Bug Fixes
+
+- topics: rework road topics ([#878], [#880])
+- topics: remove covid19 related tags from topics ([#882])
+
+
+[#878]: https://github.com/GIScience/ohsome-quality-api/issues/878
+[#880]: https://github.com/GIScience/ohsome-quality-api/issues/880
+[#882]: https://github.com/GIScience/ohsome-quality-api/issues/882
+
+
+## Release  1.8.3
+
+### New Features
+
+- attribute-completeness: added subkeys to filters for sidewalk and cycleway attributes ([#877])
+- attribute-completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
+
+
+[#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
+[#877]: https://github.com/GIScience/ohsome-quality-api/issue/877
+
+
+## Release  1.8.2 
 
 - PR template: Hurl maintenance is mentioned and wording with respect to mergeability is clarified ([#860])
 
+### Bug Fixes
+
+- attribute-completeness: custom filters are now correctly combined with topic filter ([#865])
+
+
 [#860]: https://github.com/GIScience/ohsome-quality-api/issues/860
+[#865]: https://github.com/GIScience/ohsome-quality-api/pull/865
 
 
 ## Release  1.8.1 
@@ -20,7 +53,6 @@
 - Support custom attribute definition via ohsome filter query for the Attribute Completeness indicator ([#848])
 
 [#848]: https://github.com/GIScience/ohsome-quality-api/pull/848
-
 
 ## Release  1.7.0
 

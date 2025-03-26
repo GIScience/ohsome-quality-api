@@ -67,6 +67,11 @@ class AttributeCompleteness(BaseIndicator):
                     for k in self.attribute_keys
                 ]
             )
+        else:
+            self.attribute_filter = build_attribute_filter(
+                self.attribute_filter,
+                self.topic.key,
+            )
 
     async def preprocess(self) -> None:
         # Get attribute filter
@@ -114,7 +119,11 @@ class AttributeCompleteness(BaseIndicator):
         if self.attribute_title is None:
             raise TypeError("Attribute title should not be None.")
         else:
-            tags = "attributes " + self.attribute_title
+            tags = str(
+                "attributes " + self.attribute_title
+                if self.attribute_keys and len(self.attribute_keys) > 1
+                else "attribute " + self.attribute_title
+            )
         all, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,
@@ -188,11 +197,11 @@ class AttributeCompleteness(BaseIndicator):
             all = f"{int(self.absolute_value_1)} elements"
             matched = f"{int(self.absolute_value_2)} elements"
         elif self.topic.aggregation_type == "area":
-            all = f"{str(round(self.absolute_value_1, 2))} m²"
-            matched = f"{str(round(self.absolute_value_2, 2))} m²"
+            all = f"{str(round(self.absolute_value_1/1000000, 2))} km²"
+            matched = f"{str(round(self.absolute_value_2/1000000, 2))} km²"
         elif self.topic.aggregation_type == "length":
-            all = f"{str(round(self.absolute_value_1, 2))} m"
-            matched = f"{str(round(self.absolute_value_2, 2))} m"
+            all = f"{str(round(self.absolute_value_1/1000, 2))} km"
+            matched = f"{str(round(self.absolute_value_2/1000, 2))} km"
         else:
             raise ValueError("Invalid aggregation_type")
         return all, matched

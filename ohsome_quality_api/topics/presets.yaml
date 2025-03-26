@@ -6,7 +6,7 @@
 ### CORE TOPICS ###
 
 building-count:
-  name: Building Count
+  name: Buildings (count)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements
@@ -21,7 +21,7 @@ building-count:
     - bkg
 
 building-area:
-  name: Building Area
+  name: Buildings (area)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   endpoint: elements
@@ -34,24 +34,46 @@ building-area:
     - core
     - bkg
 
-roads:
-  name: Roads
+roads-all-highways:
+  name: Roads (all highways)
   description: >-
-    The road network defined by all objects which hold the principal tags for
-    the road network and their link roads as defined in the OSM Wiki`:`
-    https://wiki.openstreetmap.org/wiki/Key:highway
+    All linear OSM features holding the prinicipal tag `highway=*`. The
+    road network defined by all objects which hold the principal tags
+    for the road network and their link roads as defined in the OSM
+    Wiki`:` https://wiki.openstreetmap.org/wiki/Key:highway
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway=* and type:way
+    highway=* and geometry:line
   ratio_filter: >-
-    highway=* and type:way and name=*
+    highway=* and geometry:line and name=*
   source: https://wiki.openstreetmap.org/wiki/Key:highway
   indicators:
     - mapping-saturation
     - road-comparison
     - attribute-completeness
     - currentness  # currentness always requests /contributions/latest/count [count!]
+  projects:
+    - core
+    - bkg
+
+roads:
+  name: Roads (cars)
+  description: >-
+    All linear OSM features referring to a road usable by vehicles
+    (i.e. cars). The road network defined by all objects which hold
+    the principal tags for the road network and their link roads as
+    defined in the OSM Wiki`:`
+    https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and geometry:line
+  source: https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
+  indicators:
+    - mapping-saturation
+    - attribute-completeness
+    - currentness
   projects:
     - core
     - bkg
@@ -125,7 +147,6 @@ poi:
     or (tourism in (alpine_hut, apartment, aquarium, artwork, attraction, camp_site, caravan_site,
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
     wilderness_hut, zoo))
-    or (vaccination = covid19)
   indicators:
     - mapping-saturation
     - currentness
@@ -144,13 +165,14 @@ schools:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
     - unicef
 
 kindergarten:
-  name: Kindergarten
+  name: Kindergartens
   description: Count of kindergarten.
   endpoint: elements
   aggregation_type: count
@@ -189,6 +211,7 @@ doctors:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -210,11 +233,25 @@ bus-stops:
 
 tram-stops:
   name: Tram Stops
-  description: Count of schools.
+  description: Count of tram stops.
   endpoint: elements
   aggregation_type: count
   filter: railway=tram_stop
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
+    - bkg
+
+public-transport-stops:
+  name: Public Transport Stops
+  description: Count of public transport stops.
+  endpoint: elements
+  aggregation_type: count
+  filter: public_transport=platform
   indicators:
     - mapping-saturation
     - currentness
@@ -243,7 +280,7 @@ supermarkets:
   description: Count of supermarkets.
   endpoint: elements
   aggregation_type: count
-  filter: shop=supermarket
+  filter: shop=supermarket or shop=convenience
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
     - mapping-saturation
@@ -275,6 +312,21 @@ parks:
   aggregation_type: count
   filter: leisure=park
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
+  indicators:
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+  projects:
+    - core
+    - bkg
+
+sports-pitch:
+  name: Sports Pitches
+  description: Count of sports pitches (an area designed for practising a particular sport)
+  endpoint: elements
+  aggregation_type: count
+  filter: leisure=pitch
+  source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch
   indicators:
     - mapping-saturation
     - currentness
@@ -363,6 +415,7 @@ hospitals:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - core
     - bkg
