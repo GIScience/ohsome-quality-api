@@ -6,12 +6,12 @@ import shutil
 from pathlib import Path
 
 import plotly.graph_objects as pgo
-from approvaltests.reporters.clipboard_reporter import CommandLineReporter
 from approvaltests.reporters.first_working_reporter import FirstWorkingReporter
-from approvaltests.reporters.generic_diff_reporter import (
-    GenericDiffReporter,
+from approvaltests.reporters.generic_diff_reporter import GenericDiffReporter
+from approvaltests.reporters.generic_diff_reporter_config import (
     GenericDiffReporterConfig,
 )
+from approvaltests.reporters.python_native_reporter import PythonNativeReporter
 from approvaltests.reporters.report_with_vscode import ReportWithVSCodeMacOS
 
 
@@ -75,14 +75,12 @@ class PlotlyDiffReporter(FirstWorkingReporter):
             ReportWithPyCharmMacOS(),
             ReportWithVSCodeLinux(),
             ReportWithVSCodeMacOS(),
-            CommandLineReporter(),
         )
         super().__init__(*reporters)
 
     def report(self, received_path: str, approved_path: str) -> bool:
         approved_path_image = str(Path(approved_path).with_suffix(".png"))
         received_path_image = str(Path(received_path).with_suffix(".png"))
-
         if os.path.exists(approved_path):
             with open(approved_path, "r") as file:
                 raw = json.load(file)
@@ -97,6 +95,8 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         try:
             # Use first working diff tool as reporter
             success = super().report(received_path_image, approved_path_image)
+            if success is False:
+                return PythonNativeReporter().report(received_path, approved_path)
             # After diff tool is closed are the images the same?
             if filecmp.cmp(received_path_image, approved_path_image):
                 # The diff tools saves approved image but we also need to
