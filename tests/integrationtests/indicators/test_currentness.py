@@ -131,6 +131,7 @@ class TestFigure:
             .with_namer(PytestNamer()),
         )
 
+    @oqapi_vcr.use_cassette
     def test_outdated_features_plotting(
         self,
         topic_building_count,
