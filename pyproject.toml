@@ -25,40 +25,37 @@ priority = "supplemental"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-geojson = "^2.5.0"
-fastapi = "^0.109.2"
-requests = "^2.32.0"
+geojson = "^3.2.0"
+fastapi = "^0.115.8"
 PyYAML = "^6.0"
-toml = "^0.10.2"
-httpx = "^0.23.0"
+toml = "^0.10.2"  # NOTE: Remove this dep in favor of build-in tomllib in Python 3.11
+httpx = "^0.28.1"
 asyncpg = "^0.30"
-vcrpy = "^4.1.1"
 python-dateutil = "^2.8.2"
 scipy = "^1.9.3"
 rpy2 = "^3.5.15"
 click = "^8.1.2"
-uvicorn = "^0.20.0"
+uvicorn = "^0.34.0"
 schema = "^0.7.5"
-pyproj = "^3.6.0"
-pydantic = "^2.1.1"
-geojson-pydantic = "^1.0.0"
-plotly = "^5.16.1"
+pyproj = "^3.6"
+pydantic = "^2.10"
+geojson-pydantic = "^1.2"
+plotly = "^6.0.0"
 psycopg = {extras = ["binary"], version = "^3.1"}
 async-lru = "^2.0.4"
-approvaltests = "^12.1.0"
 
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.2.1"
-pytest = "^7.2.2"
-pytest-cov = "^4.0.0"
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.1.0"
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
 pytest-mock = "^3.11.1"
+vcrpy = "^7.0.0"
+approvaltests = "^14.3.0"
+ruff = "^0.9.4"
+kaleido = "0.2.1"
 
 [tool.poetry.urls]
 "Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.7.3"
-kaleido = "0.2.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -83,4 +80,3 @@ select = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-filterwarnings = ["ignore::DeprecationWarning"]

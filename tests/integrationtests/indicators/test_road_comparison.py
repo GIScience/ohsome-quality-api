@@ -85,8 +85,7 @@ class TestInit:
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
         source = indicator.format_sources()
         assert (
-            "<a href='https://github.com/microsoft/RoadDetections'>"
-            "Microsoft Roads</a>"
+            "<a href='https://github.com/microsoft/RoadDetections'>Microsoft Roads</a>"
         ) in source
 
     def test_attribution(self, topic_major_roads_length, feature_malta):
