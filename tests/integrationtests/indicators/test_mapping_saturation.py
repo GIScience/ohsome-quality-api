@@ -1,7 +1,6 @@
 import asyncio
 import json
 from datetime import datetime
-import os
 
 import numpy as np
 import pytest
@@ -115,7 +114,6 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skipif(os.environ.get("JENKINS_URL", False), reason="CI")
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
