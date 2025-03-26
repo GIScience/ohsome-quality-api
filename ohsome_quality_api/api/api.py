@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Annotated, Any, Union
+from typing import Any, Union
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
@@ -110,6 +110,7 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url=None,
     redoc_url=None,
+    dependencies=[Depends(set_request_context)],
 )
 
 app.add_middleware(
@@ -120,10 +121,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
-
-class CommonDepedencies:
-    RequestContext = Annotated[None, Depends(set_request_context)]
 
 
 @app.get("/docs", include_in_schema=False)
@@ -225,10 +222,7 @@ def empty_api_response() -> dict:
 
 
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
-async def post_indicator_ms(
-    parameters: IndicatorDataRequest,
-    _: CommonDepedencies.RequestContext,
-) -> CustomJSONResponse:
+async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
     indicators = await oqt.create_indicator(
         key="mapping-saturation",
@@ -268,7 +262,6 @@ async def post_indicator_ms(
 async def post_attribute_completeness(
     request: Request,
     parameters: AttributeCompletenessKeyRequest | AttributeCompletenessFilterRequest,
-    _: CommonDepedencies.RequestContext,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
     return await _post_indicator(request, "attribute-completeness", parameters)
@@ -292,10 +285,7 @@ async def post_attribute_completeness(
     },
 )
 async def post_indicator(
-    request: Request,
-    key: IndicatorEnumRequest,
-    parameters: IndicatorRequest,
-    _: CommonDepedencies.RequestContext,
+    request: Request, key: IndicatorEnumRequest, parameters: IndicatorRequest
 ) -> Any:
     """Request an indicator for your area of interest."""
     return await _post_indicator(request, key.value, parameters)
