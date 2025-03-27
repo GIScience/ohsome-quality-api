@@ -62,10 +62,9 @@ class ReportWithVSCodeLinux(GenericDiffReporter):
 class PlotlyDiffReporter(FirstWorkingReporter):
     """Report the image representation of Plotly figures using diff tools.
 
-    Plotly figures are compared using there JSON representation.
+    Plotly figures are compared using the JSON representation.
     This reporter reports the difference by showing the image representation of
-    these Plotly figures in a diff tool.
-    It creates additional approval files containing the image (.png).
+    the Plotly figures in a diff tool.
     """
 
     def __init__(self):
