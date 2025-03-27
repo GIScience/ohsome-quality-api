@@ -8,6 +8,7 @@ Abbreviations:
     th: Threshold
 """
 
+import locale
 import logging
 import os
 from dataclasses import dataclass
@@ -23,6 +24,14 @@ from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
+
+# set locale for datetime to string formatting
+try:
+    locale.setlocale(locale.LC_ALL, ["en_US", locale.getencoding()])
+except locale.Error:
+    logging.warn(
+        "Could not set locale to en_US. Output may be different than expected."
+    )
 
 
 @dataclass
