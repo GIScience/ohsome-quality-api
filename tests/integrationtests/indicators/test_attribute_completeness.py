@@ -106,8 +106,7 @@ class TestCalculation:
         assert indicator.result.description is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        # TODO: Why indicator.description?
-        verify(indicator.description, namer=PytestNamer())
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     def test_no_features(self):
