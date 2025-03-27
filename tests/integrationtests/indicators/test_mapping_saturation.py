@@ -1,6 +1,5 @@
 import asyncio
 import json
-import os
 from datetime import datetime
 
 import numpy as np
@@ -13,6 +12,7 @@ from ohsome_quality_api.indicators.mapping_saturation.indicator import (
 )
 from tests.approvaltests_namers import PytestNamer
 from tests.approvaltests_reporters import PlotlyDiffReporter
+from tests.approvaltests_scrubbers import scrub_mapping_saturation_figure
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -115,16 +115,13 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skipif(
-        os.getenv("JENKINS_URL", None) is not None,
-        reason="Skip because CI detected.",
-    )
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         verify(
             json.dumps(to_jsonable_python(indicator.result.figure)),
             options=Options()
+            .with_scrubber(scrub_mapping_saturation_figure)
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),
         )
