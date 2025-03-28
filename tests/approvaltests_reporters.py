@@ -1,8 +1,8 @@
-# TODO: support Windows
 import filecmp
 import json
 import os
 import shutil
+import subprocess
 from pathlib import Path
 
 import plotly.graph_objects as pgo
@@ -12,10 +12,15 @@ from approvaltests.reporters.generic_diff_reporter_config import (
     GenericDiffReporterConfig,
 )
 from approvaltests.reporters.python_native_reporter import PythonNativeReporter
-from approvaltests.reporters.report_with_vscode import ReportWithVSCodeMacOS
 
 
-class ReportWithPyCharmLinuxFlatpak(GenericDiffReporter):
+class BlockingGenericDiffReporter(GenericDiffReporter):
+    @staticmethod
+    def run_command(command_array: list[str]):
+        subprocess.run(command_array)
+
+
+class ReportWithPyCharmLinuxFlatpak(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
@@ -26,7 +31,7 @@ class ReportWithPyCharmLinuxFlatpak(GenericDiffReporter):
         )
 
 
-class ReportWithPyCharmLinux(GenericDiffReporter):
+class ReportWithPyCharmLinux(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
@@ -37,24 +42,60 @@ class ReportWithPyCharmLinux(GenericDiffReporter):
         )
 
 
-class ReportWithPyCharmMacOS(GenericDiffReporter):
+class ReportWithPyCharmProfessionalMacOS(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
-                name="ReportWithPyCharmMacOS",
-                path="/Applications/PyCharm CE.app/Contents/MacOS/pycharm",
-                extra_args=["diff"],
+                name="ReportWithPyCharmProfessionalMacOS",
+                path="open",
+                extra_args=[
+                    # -W: Wait until the application is closed
+                    "-W",
+                    # -a: application
+                    "-a",
+                    "/Applications/PyCharm Professional Edition.app/Contents/MacOS/pycharm",  # noqa
+                    "--args",
+                    "diff",
+                ],
             )
         )
 
 
-class ReportWithVSCodeLinux(GenericDiffReporter):
+class ReportWithPyCharmCommunityMacOS(BlockingGenericDiffReporter):
+    def __init__(self):
+        super().__init__(
+            config=GenericDiffReporterConfig(
+                name="ReportWithPyCharmCommunityMacOS",
+                path="open",
+                extra_args=[
+                    "-W",
+                    "-a",
+                    "/Applications/PyCharm CE.app/Contents/MacOS/pycharm",
+                    "--args",
+                    "diff",
+                ],
+            )
+        )
+
+
+class ReportWithVSCodeLinux(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
                 name="ReportWithVSCodeLinux",
                 path="code",
                 extra_args=["--diff"],
+            )
+        )
+
+
+class ReportWithVSCodeMacOS(BlockingGenericDiffReporter):
+    def __init__(self):
+        super().__init__(
+            config=GenericDiffReporterConfig(
+                name="ReportWithVSCode",
+                path="/Applications/Visual Studio Code.app/contents/Resources/app/bin/code",  # noqa
+                extra_args=["-d"],
             )
         )
 
@@ -71,7 +112,8 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         reporters = (
             ReportWithPyCharmLinux(),
             ReportWithPyCharmLinuxFlatpak(),
-            ReportWithPyCharmMacOS(),
+            # ReportWithPyCharmProfessionalMacOS(),
+            # ReportWithPyCharmCommunityMacOS(),
             ReportWithVSCodeLinux(),
             ReportWithVSCodeMacOS(),
         )
