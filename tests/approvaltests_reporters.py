@@ -1,4 +1,3 @@
-# TODO: On MacOS diff tool are not blocking. Fallback to PythonNativeReporter.
 import filecmp
 import json
 import os
@@ -13,12 +12,25 @@ from approvaltests.reporters.generic_diff_reporter_config import (
     GenericDiffReporterConfig,
 )
 from approvaltests.reporters.python_native_reporter import PythonNativeReporter
+from approvaltests.reporters.report_with_diff_command_line import (
+    ReportWithDiffCommandLine,
+)
 
 
 class BlockingGenericDiffReporter(GenericDiffReporter):
     @staticmethod
     def run_command(command_array: list[str]):
         subprocess.run(command_array)
+
+
+class ReportWithMeldLinux(BlockingGenericDiffReporter):
+    def __init__(self):
+        super().__init__(
+            config=GenericDiffReporterConfig(
+                name="ReportWithMeld",
+                path="meld",
+            )
+        )
 
 
 class ReportWithPyCharmLinuxFlatpak(BlockingGenericDiffReporter):
@@ -113,9 +125,10 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         reporters = (
             ReportWithPyCharmLinux(),
             ReportWithPyCharmLinuxFlatpak(),
+            ReportWithVSCodeLinux(),
+            # TODO: On MacOS diff tool are not blocking.
             # ReportWithPyCharmProfessionalMacOS(),
             # ReportWithPyCharmCommunityMacOS(),
-            ReportWithVSCodeLinux(),
             # ReportWithVSCodeMacOS(),
         )
         super().__init__(*reporters)
@@ -138,7 +151,18 @@ class PlotlyDiffReporter(FirstWorkingReporter):
             # Use first working diff tool as reporter
             success = super().report(received_path_image, approved_path_image)
             if success is False:
-                return PythonNativeReporter().report(received_path, approved_path)
+                # Fallback to reporting JSON difference
+                return FirstWorkingReporter(
+                    ReportWithMeldLinux(),
+                    ReportWithPyCharmLinux(),
+                    ReportWithPyCharmLinuxFlatpak(),
+                    ReportWithVSCodeLinux(),
+                    ReportWithPyCharmProfessionalMacOS(),
+                    ReportWithPyCharmCommunityMacOS(),
+                    ReportWithVSCodeMacOS(),
+                    ReportWithDiffCommandLine(),
+                    PythonNativeReporter(),
+                ).report(received_path, approved_path)
             # After diff tool is closed are the images the same?
             if filecmp.cmp(received_path_image, approved_path_image):
                 # The diff tools saves approved image but we also need to
@@ -146,8 +170,11 @@ class PlotlyDiffReporter(FirstWorkingReporter):
                 shutil.move(received_path, approved_path)
         finally:
             try:
-                os.remove(approved_path_image)
                 os.remove(received_path_image)
+            except FileNotFoundError:
+                pass
+            try:
+                os.remove(approved_path_image)
             except FileNotFoundError:
                 pass
         return success
