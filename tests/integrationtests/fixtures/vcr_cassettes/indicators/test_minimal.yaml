@@ -15,45 +15,48 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-api/1.9.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/count
   response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"result\" : [ {\n    \"timestamp\" : \"2023-08-10T20:00:00Z\",\n
-      \   \"value\" : 29936.0\n  } ]\n}"
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/zSOQQrCMBRE9z1FyLqmaasIvYO4UFwoLmL5tIG2CT8/opQeyGt4MtPUwmxmeMzM
+        mDDGFRHqhydtBs4qNoYspB672fGWyLoqy0zrTA/CYJPVxr5RNy05ni4wwYsi/f2wo4XhRAhAB2VZ
+        bYal3aDjAZ7SOGn1BdD9F3kucim2sYwjON/Fstt6hXQPjlRvI1zIYreRRdA5Lyopg67rj6fqPMxU
+        KctyL+Q8yO7J9AMAAP//AwDDJg8K6AAAAA==
     headers:
-      access-control-allow-credentials:
+      Access-Control-Allow-Credentials:
       - 'true'
-      access-control-allow-headers:
+      Access-Control-Allow-Headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
+      Access-Control-Allow-Methods:
       - POST, GET
-      access-control-allow-origin:
+      Access-Control-Allow-Origin:
       - '*'
-      access-control-max-age:
+      Access-Control-Max-Age:
       - '3600'
-      cache-control:
+      Cache-Control:
       - no-cache, no-store, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-encoding:
+      Content-Encoding:
       - gzip
-      content-type:
+      Content-Type:
       - application/json
-      date:
-      - Wed, 30 Aug 2023 12:21:49 GMT
-      keep-alive:
+      Date:
+      - Wed, 26 Mar 2025 15:27:02 GMT
+      Keep-Alive:
       - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
+      Server:
+      - Apache/2.4.58 (Ubuntu)
+      Strict-Transport-Security:
       - max-age=63072000; includeSubdomains;
-      transfer-encoding:
+      Transfer-Encoding:
       - chunked
       vary:
       - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: ''
 version: 1

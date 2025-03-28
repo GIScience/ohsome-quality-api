@@ -11,51 +11,52 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-api/1.9.0
     method: GET
     uri: https://api.ohsome.org/v1/metadata
   response:
-    content: "{\n  \"attribution\" : {\n    \"url\" : \"https://ohsome.org/copyrights\",\n
-      \   \"text\" : \"\xA9 OpenStreetMap contributors\"\n  },\n  \"apiVersion\" :
-      \"1.9.1\",\n  \"timeout\" : 600.0,\n  \"extractRegion\" : {\n    \"spatialExtent\"
-      : {\n      \"type\" : \"Polygon\",\n      \"coordinates\" : [ [ [ -180.0, -90.0
-      ], [ 180.0, -90.0 ], [ 180.0, 90.0 ], [ -180.0, 90.0 ], [ -180.0, -90.0 ] ]
-      ]\n    },\n    \"temporalExtent\" : {\n      \"fromTimestamp\" : \"2007-10-08T00:00:00Z\",\n
-      \     \"toTimestamp\" : \"2023-08-10T20:00Z\"\n    },\n    \"replicationSequenceNumber\"
-      : 95629\n  }\n}"
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3RRy07DMBC89yssn/NwIiht7hx5iFYcQBzcsKSWkqxZb6RWVT6I3+DLsN1C1Ypq
+        V7I8np3Z9e4mQkjNTGY1sMFeikrsPObRgdpwk2tm66o8x7XDDjKkJq/Rbsk0a3Yy2ZMZNhzZ31/i
+        wUK/YALgO21Fjf1eHclJTx6TaGnNM5A7OMoiK1R2FcUkmw5wiGpTpTIVQS9PuuYnaE6bdFaz0e3t
+        hqHnIx5kthai9iO228YXJb8vNSK9m14zuEB4jZEWs+Al0rk/xFvioYvIEUgvIoeqENF3/PuoziL9
+        2/EHYbf0wzvWnY2tl0rdpIVK1WypVBXz5TgH4zm7vE5V6XNZlJF64kxgW1PrsOUFfA7Q13A/dCug
+        UFyo2bSch/VMxh8AAAD//wMA3JMfTBQCAAA=
     headers:
-      access-control-allow-credentials:
+      Access-Control-Allow-Credentials:
       - 'true'
-      access-control-allow-headers:
+      Access-Control-Allow-Headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
+      Access-Control-Allow-Methods:
       - POST, GET
-      access-control-allow-origin:
+      Access-Control-Allow-Origin:
       - '*'
-      access-control-max-age:
+      Access-Control-Max-Age:
       - '3600'
-      cache-control:
+      Cache-Control:
       - no-cache, no-store, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-encoding:
+      Content-Encoding:
       - gzip
-      content-type:
+      Content-Type:
       - application/json
-      date:
-      - Wed, 30 Aug 2023 12:17:46 GMT
-      keep-alive:
+      Date:
+      - Wed, 26 Mar 2025 15:27:02 GMT
+      Keep-Alive:
       - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
+      Server:
+      - Apache/2.4.58 (Ubuntu)
+      Strict-Transport-Security:
       - max-age=63072000; includeSubdomains;
-      transfer-encoding:
+      Transfer-Encoding:
       - chunked
       vary:
       - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: ''
 - request:
     body: ''
     headers:
@@ -70,45 +71,49 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-api/1.9.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/lenght
   response:
-    content: "{\n  \"timestamp\" : \"2023-08-30T12:17:46.845+00:00\",\n  \"status\"
-      : 404,\n  \"error\" : \"Not Found\",\n  \"path\" : \"/elements/lenght\"\n}"
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/6rmUlBQKsnMTS0uScwtUFKwUlAyMjAy1TUw1jUyCzE0tTIytzIw1jOxNNY2MLAy
+        MFDSAWkAKi4pLQapNjEwAYukFhXlF4G1++WXKLjll+alQJQWJJZkgMX1U3NSc1PzSor1c1Lz0jNK
+        lLhqAQAAAP//AwBl+ilofQAAAA==
     headers:
-      access-control-allow-credentials:
+      Access-Control-Allow-Credentials:
       - 'true'
-      access-control-allow-headers:
+      Access-Control-Allow-Headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
+      Access-Control-Allow-Methods:
       - POST, GET
-      access-control-allow-origin:
+      Access-Control-Allow-Origin:
       - '*'
-      access-control-max-age:
+      Access-Control-Max-Age:
       - '3600'
-      cache-control:
+      Cache-Control:
       - no-cache, no-store, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-encoding:
+      Content-Encoding:
       - gzip
-      content-type:
+      Content-Type:
       - application/json
-      date:
-      - Wed, 30 Aug 2023 12:17:46 GMT
-      keep-alive:
+      Date:
+      - Wed, 26 Mar 2025 15:27:02 GMT
+      Keep-Alive:
       - timeout=5, max=100
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
+      Server:
+      - Apache/2.4.58 (Ubuntu)
+      Strict-Transport-Security:
       - max-age=63072000; includeSubdomains;
-      transfer-encoding:
+      Transfer-Encoding:
       - chunked
       vary:
       - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 404
+    status:
+      code: 404
+      message: ''
 - request:
     body: bboxes=8.67%2C49.39%2C8.71%2C49.42&filter=geometry%3Alie
     headers:
@@ -125,44 +130,48 @@ interactions:
       host:
       - api.ohsome.org
       user-agent:
-      - ohsome-quality-api/1.0.1
+      - ohsome-quality-api/1.9.0
     method: POST
     uri: https://api.ohsome.org/v1/elements/length
   response:
-    content: "{\n  \"timestamp\" : \"2023-08-30T12:17:46.88825385\",\n  \"status\"
-      : 400,\n  \"message\" : \"Invalid filter syntax. Please look at the additional
-      info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api.
-      Detailed error message: line 1, column 13: whitespaces, EQUALS (=), NOT_EQUALS
-      (!=) or in expected, EOF encountered.\",\n  \"requestUrl\" : \"https://api.ohsome.org/v1/elements/length\"\n}"
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/0yQTUvDQBCG7/0VY04W8rFJTNVAD4IKgljF9ixjdtosbnbj7qRWxP/uph/gbWZ4
+        5+Hh/ZkARKw68oxdH0ENUSGKKhFlUsyWeVUXl7Uo06q4ymeiEtdRPD6EMA9+TF8Isb8EgMcN7QEP
+        ZotaSVgrzeTAfxvGXQrPmtATaGs/ABm4JUApFStrUIMyawtoJNAuiGjygO92OMSOoB4ddjRO4b1l
+        7n2dZdI2PrWttx2l1m2yw5hgr1K4JUalKTCdsw6OjjVoZQjyGBqrh85AXtbw1Som32NDPoa7l9XN
+        4yucz6cxPC2Wb6f9bD6FwFEmSPbUMMmQXdwDmcYOJoiRTA8FOfocQqUrp/eNnGRHq3+u2zwjTR0Z
+        9pkms+E2mvz+AQAA//8DAHAd94eSAQAA
     headers:
-      access-control-allow-credentials:
+      Access-Control-Allow-Credentials:
       - 'true'
-      access-control-allow-headers:
+      Access-Control-Allow-Headers:
       - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
-      access-control-allow-methods:
+      Access-Control-Allow-Methods:
       - POST, GET
-      access-control-allow-origin:
+      Access-Control-Allow-Origin:
       - '*'
-      access-control-max-age:
+      Access-Control-Max-Age:
       - '3600'
-      cache-control:
+      Cache-Control:
       - no-cache, no-store, must-revalidate
-      connection:
+      Connection:
       - close
-      content-encoding:
+      Content-Encoding:
       - gzip
-      content-type:
+      Content-Type:
       - application/json
-      date:
-      - Wed, 30 Aug 2023 12:17:46 GMT
-      server:
-      - Apache/2.4.52 (Ubuntu)
-      strict-transport-security:
+      Date:
+      - Wed, 26 Mar 2025 15:27:02 GMT
+      Server:
+      - Apache/2.4.58 (Ubuntu)
+      Strict-Transport-Security:
       - max-age=63072000; includeSubdomains;
-      transfer-encoding:
+      Transfer-Encoding:
       - chunked
       vary:
       - accept-encoding
-    http_version: HTTP/1.1
-    status_code: 400
+    status:
+      code: 400
+      message: ''
 version: 1
