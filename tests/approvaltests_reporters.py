@@ -1,3 +1,4 @@
+# TODO: On MacOS diff tool are not blocking. Fallback to PythonNativeReporter.
 import filecmp
 import json
 import os
@@ -115,7 +116,7 @@ class PlotlyDiffReporter(FirstWorkingReporter):
             # ReportWithPyCharmProfessionalMacOS(),
             # ReportWithPyCharmCommunityMacOS(),
             ReportWithVSCodeLinux(),
-            ReportWithVSCodeMacOS(),
+            # ReportWithVSCodeMacOS(),
         )
         super().__init__(*reporters)
 
