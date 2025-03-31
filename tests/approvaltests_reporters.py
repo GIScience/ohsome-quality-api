@@ -1,6 +1,7 @@
 import filecmp
 import json
 import os
+import platform
 import shutil
 import subprocess
 from pathlib import Path
@@ -23,16 +24,6 @@ class BlockingGenericDiffReporter(GenericDiffReporter):
         subprocess.run(command_array)
 
 
-class ReportWithMeldLinux(BlockingGenericDiffReporter):
-    def __init__(self):
-        super().__init__(
-            config=GenericDiffReporterConfig(
-                name="ReportWithMeld",
-                path="meld",
-            )
-        )
-
-
 class ReportWithPyCharmLinuxFlatpak(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
@@ -48,9 +39,20 @@ class ReportWithPyCharmLinux(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
-                name="ReportWithPyCharm",
+                name="ReportWithPyCharmLinux",
                 path="pycharm",
                 extra_args=["diff"],
+            )
+        )
+
+
+class ReportWithVSCodeLinux(BlockingGenericDiffReporter):
+    def __init__(self):
+        super().__init__(
+            config=GenericDiffReporterConfig(
+                name="ReportWithVSCodeLinux",
+                path="/usr/bin/code",
+                extra_args=["--new-window", "--wait", "--diff"],
             )
         )
 
@@ -60,10 +62,13 @@ class ReportWithPyCharmProfessionalMacOS(BlockingGenericDiffReporter):
         super().__init__(
             config=GenericDiffReporterConfig(
                 name="ReportWithPyCharmProfessionalMacOS",
-                path="open",
+                # Use open to block Python until diff tool is closed again
+                path="/usr/bin/open",
                 extra_args=[
                     # -W: Wait until the application is closed
                     "-W",
+                    # -n: new instance
+                    "-n",
                     # -a: application
                     "-a",
                     "/Applications/PyCharm Professional Edition.app/Contents/MacOS/pycharm",  # noqa
@@ -79,9 +84,14 @@ class ReportWithPyCharmCommunityMacOS(BlockingGenericDiffReporter):
         super().__init__(
             config=GenericDiffReporterConfig(
                 name="ReportWithPyCharmCommunityMacOS",
-                path="open",
+                # Use open to block Python until diff tool is closed again
+                path="/usr/bin/open",
                 extra_args=[
+                    # -W: Wait until the application is closed
                     "-W",
+                    # -n: New instance
+                    "-n",
+                    # -a: Application
                     "-a",
                     "/Applications/PyCharm CE.app/Contents/MacOS/pycharm",
                     "--args",
@@ -91,24 +101,26 @@ class ReportWithPyCharmCommunityMacOS(BlockingGenericDiffReporter):
         )
 
 
-class ReportWithVSCodeLinux(BlockingGenericDiffReporter):
-    def __init__(self):
-        super().__init__(
-            config=GenericDiffReporterConfig(
-                name="ReportWithVSCodeLinux",
-                path="code",
-                extra_args=["--diff"],
-            )
-        )
-
-
 class ReportWithVSCodeMacOS(BlockingGenericDiffReporter):
     def __init__(self):
         super().__init__(
             config=GenericDiffReporterConfig(
-                name="ReportWithVSCode",
-                path="/Applications/Visual Studio Code.app/contents/Resources/app/bin/code",  # noqa
-                extra_args=["-d"],
+                name="ReportWithVSCodeMacOS",
+                # Use open to block Python until diff tool is closed again
+                path="/usr/bin/open",
+                extra_args=[
+                    # -W: Wait until the application is closed
+                    "-W",
+                    # -n: New instance
+                    "-n",
+                    # -a: Application
+                    "-a",
+                    "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",  # noqa
+                    "--args",
+                    "--new-window",
+                    "--wait",
+                    "--diff",
+                ],
             )
         )
 
@@ -122,16 +134,22 @@ class PlotlyDiffReporter(FirstWorkingReporter):
     """
 
     def __init__(self):
-        reporters = (
-            ReportWithPyCharmLinux(),
-            ReportWithPyCharmLinuxFlatpak(),
-            ReportWithVSCodeLinux(),
-            # TODO: On MacOS diff tool are not blocking.
-            # ReportWithPyCharmProfessionalMacOS(),
-            # ReportWithPyCharmCommunityMacOS(),
-            # ReportWithVSCodeMacOS(),
-        )
-        super().__init__(*reporters)
+        if platform.system() == "Linux":
+            self.reporters = (
+                ReportWithPyCharmLinux(),
+                # ReportWithPyCharmLinuxFlatpak(),
+                ReportWithVSCodeLinux(),
+            )
+        elif platform.system() == "Darwin":
+            self.reporters = (
+                ReportWithPyCharmProfessionalMacOS(),
+                ReportWithPyCharmCommunityMacOS(),
+                ReportWithVSCodeMacOS(),
+            )
+        else:
+            # Will return False for when calling report with FirstWorkingReporter
+            self.reporters = []
+        super().__init__(*self.reporters)
 
     def report(self, received_path: str, approved_path: str) -> bool:
         approved_path_image = str(Path(approved_path).with_suffix(".png"))
@@ -153,13 +171,8 @@ class PlotlyDiffReporter(FirstWorkingReporter):
             if success is False:
                 # Fallback to reporting JSON difference
                 return FirstWorkingReporter(
-                    ReportWithMeldLinux(),
-                    ReportWithPyCharmLinux(),
-                    ReportWithPyCharmLinuxFlatpak(),
-                    ReportWithVSCodeLinux(),
-                    ReportWithPyCharmProfessionalMacOS(),
-                    ReportWithPyCharmCommunityMacOS(),
-                    ReportWithVSCodeMacOS(),
+                    *self.reporters,
+                    # TODO: Use reporter configured by user
                     ReportWithDiffCommandLine(),
                     PythonNativeReporter(),
                 ).report(received_path, approved_path)
