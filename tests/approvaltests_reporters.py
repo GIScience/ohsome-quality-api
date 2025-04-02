@@ -137,7 +137,7 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         if platform.system() == "Linux":
             self.reporters = (
                 ReportWithPyCharmLinux(),
-                # ReportWithPyCharmLinuxFlatpak(),
+                ReportWithPyCharmLinuxFlatpak(),
                 ReportWithVSCodeLinux(),
             )
         elif platform.system() == "Darwin":
