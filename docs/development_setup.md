@@ -108,9 +108,9 @@ When writing tests for functions which are asynchronous (using the `async/await`
 (snapshot) of a program and compares it with a previously approved version of
 the output.
 
-Its most useful in cases Agile development environments where frequent changes
-are expected or where the output is of complex nature but can be easily
-verified by humans aided by a diff-tool or visual representation of the output.
+Its most useful in cases where frequent changes are expected or where the
+output is of complex nature but can be easily verified by humans aided by a
+diff-tool or visual representation of the output.
 
 > A picture’s worth a 1000 tests.
 
@@ -119,17 +119,14 @@ the test will pass. A test fails if the current output (*received*) is not
 identical to the approved output. In this case, the difference of the received
 and the approved output is reported. The representation of the report can take
 any form, for example opening a diff-tool to compare received and approved
-text or displaying an image. Thus, the test pattern is as follows:
-`Arrange, Act, Print, Verify`.
+text or displaying an image.
 
-A good introduction into approval tests gives [this video](https://www.youtube.com/watch?v=QEdpE0chA-s).
-
-ohsome quality API uses approval tests to verify result descriptions.
-For comparison its recommended to have a diff tool installed on your system
-such as Meld or PyCharm. If changes in the code lead to a different output
-approval tests will show the difference to the previously approved version of
-the output using a diff tool. If it es as expected resolve the difference using
-the diff-tool save and rerun the tests.
+The ohsome quality API uses approval tests to verify result descriptions and figures.
+For comparison, it is recommended to have a diff tool installed which can handle
+images such as PyCharm or Visual Studio Code. If changes in the code lead to a
+different output, approval tests will show the difference to the previously
+approved version of the output using afore-mentioned diff tool. If it is as
+expected, resolve the difference using the diff-tool save and rerun the tests.
 
 ### Regression Tests
 
@@ -143,8 +140,7 @@ Please consider adding new `hurl` tests if you add new endpoints.
 A `hurl` plugin for JetBrains IDEs (e.g. PyCharm, Intellij Idea etc.)
 is available for syntax highlighting and execution within the IDE.
 
-For details, check the
- [regression test README](../regression-tests/README.md).
+For details, check the [regression test README](../regression-tests/README.md).
 
 ## Logging
 
