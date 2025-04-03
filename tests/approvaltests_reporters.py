@@ -21,7 +21,16 @@ from approvaltests.reporters.report_with_diff_command_line import (
 class BlockingGenericDiffReporter(GenericDiffReporter):
     @staticmethod
     def run_command(command_array: list[str]):
+        # Use run instead of Popen which waits for process to finish
         subprocess.run(command_array)
+
+    def report(self, *args, **kwargs) -> bool:
+        # Wrap report func to catch failure of programs which open/start other
+        # programs like `open` on MacOS and `xdg-open` on Linux
+        try:
+            return super().report(*args, **kwargs)
+        except subprocess.CalledProcessError:
+            return False
 
 
 class ReportWithPyCharmLinuxFlatpak(BlockingGenericDiffReporter):
