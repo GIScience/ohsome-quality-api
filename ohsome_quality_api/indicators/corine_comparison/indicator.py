@@ -1,16 +1,17 @@
 from pathlib import Path
-import json
 
+from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 
 
 class CorineComparison(BaseIndicator):
     pass
 
-    def preprocess(self) -> None:
+    async def preprocess(self) -> None:
         with open(Path(__file__).parent / "query.sql", "r") as file:
-            query = file.read().format(geojson=json.dumps(self.feature["geometry"]))
-        self.areas = []
+            query = file.read()
+        results = await client.fetch(query, str(self.feature["geometry"]))
+        self.areas = [r[0] for r in results]
         self.clc_classes_corine = []
         self.clc_classes_osm = []
 
