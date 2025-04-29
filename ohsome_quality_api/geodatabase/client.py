@@ -44,6 +44,11 @@ async def get_connection():
         await conn.close()
 
 
+async def fetch(query: str, *args) -> list:
+    async with get_connection() as conn:
+        return await conn.fetch(query, *args)
+
+
 async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
     """Get Subnational Human Development Index (SHDI) for a bounding polygon.
 
