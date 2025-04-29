@@ -11,9 +11,9 @@ class CorineComparison(BaseIndicator):
         with open(Path(__file__).parent / "query.sql", "r") as file:
             query = file.read()
         results = await client.fetch(query, str(self.feature["geometry"]))
-        self.areas = [r[0] for r in results]
-        self.clc_classes_corine = []
-        self.clc_classes_osm = []
+        self.clc_classes_corine = [r[0] for r in results]
+        self.clc_classes_osm = [r[1] for r in results]
+        self.areas = [r[2] for r in results]
 
     def calculate(self) -> None:
         pass
