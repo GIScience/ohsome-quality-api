@@ -42,3 +42,14 @@ async def test_preprocess(feature):
         assert isinstance(area, float)
         assert isinstance(clc_class_corine, int)
         assert isinstance(clc_class_corine, int)
+
+
+@pytest.mark.asyncio
+async def test_calculate(feature):
+    topic = BaseTopic(key="forest", name="forest", description="forest")
+    indicator = CorineComparison(feature=feature, topic=topic)
+    await indicator.preprocess()
+    indicator.calculate()
+    assert indicator.confusion_matrix is not None
+    assert indicator.f1_score is not None
+    assert indicator.result.value is not None
