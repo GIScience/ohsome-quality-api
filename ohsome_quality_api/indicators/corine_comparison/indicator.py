@@ -9,8 +9,7 @@ class CorineComparison(BaseIndicator):
 
     def preprocess(self) -> None:
         with open(Path(__file__).parent / "query.sql", "r") as file:
-            query = file.read().format(json.dumps(self.feature["geometry"]))
-        breakpoint()
+            query = file.read().format(geojson=json.dumps(self.feature["geometry"]))
         self.areas = []
         self.clc_classes_corine = []
         self.clc_classes_osm = []
