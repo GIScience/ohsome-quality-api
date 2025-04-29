@@ -15,6 +15,13 @@ currentness:
   source:
     https://www.iso.org/standard/35736.html
 
+thematic-accuracy:
+  name: Thematic Accuracy
+  description: >-
+    TODO
+  source:
+    TODO
+
 minimal:
   name: Minimal
   description: >-

@@ -71,3 +71,10 @@ attribute-completeness:
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs
       amenity=hospital and wheelchair=yes).
+corine-comparison:
+  name: Corine Comparison
+  projects:
+    - bkg
+  quality_dimension: thematic-accuracy
+  description: >-
+    TODO
