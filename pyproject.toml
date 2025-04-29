@@ -43,6 +43,8 @@ geojson-pydantic = "^1.2"
 plotly = "^6.0.0"
 psycopg = {extras = ["binary"], version = "^3.1"}
 async-lru = "^2.0.4"
+scikit-learn = "^1.6.1"
+matplotlib = "^3.10.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.1.0"
