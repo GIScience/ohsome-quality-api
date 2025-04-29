@@ -34,5 +34,11 @@ async def test_preprocess(feature):
     assert isinstance(indicator.clc_classes_corine, list)
     assert isinstance(indicator.clc_classes_osm, list)
     assert len(indicator.areas) > 0
-    for area in indicator.areas:
+    assert len(indicator.clc_classes_corine) > 0
+    assert len(indicator.clc_classes_osm) > 0
+    for area, clc_class_corine, clc_class_corine in zip(
+        indicator.areas, indicator.clc_classes_corine, indicator.clc_classes_osm
+    ):
         assert isinstance(area, float)
+        assert isinstance(clc_class_corine, int)
+        assert isinstance(clc_class_corine, int)

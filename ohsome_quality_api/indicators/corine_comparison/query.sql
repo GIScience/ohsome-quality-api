@@ -4,6 +4,8 @@ WITH bpoly AS (
         (ST_Dump (ST_SetSRID (ST_GeomFromGeoJSON ($1), 4326))).geom AS geometry
 )
 SELECT
+    CLC_class as clc_class_corine,
+    osm_CLC_class as clc_class_osm,
     CASE WHEN ST_Within (o.geometry, b.geometry) THEN
         area
     ELSE
