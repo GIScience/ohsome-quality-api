@@ -172,6 +172,16 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         return self
 
 
+class CorineComparisonRequest(IndicatorRequest):
+    # TODO: possible input values restrict to actual classes (eg. 1 is
+    # invalid)
+    corine_class: int | None = Field(
+        default=None,
+        title="CORINE Land Cover class",
+        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
+    )
+
+
 class IndicatorDataRequest(BaseBpolys):
     """Model for the `/indicators/mapping-saturation/data` endpoint.
 
