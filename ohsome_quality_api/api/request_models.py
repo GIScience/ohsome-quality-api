@@ -172,7 +172,7 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         return self
 
 
-class CorineComparisonRequest(IndicatorRequest):
+class LandCoverThematicAccuracyRequest(IndicatorRequest):
     # TODO: possible input values restrict to actual classes (eg. 1 is
     # invalid)
     corine_class: int | None = Field(

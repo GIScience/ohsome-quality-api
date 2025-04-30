@@ -12,7 +12,7 @@ from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 
 
-class CorineComparison(BaseIndicator):
+class LandCoverThematicAccuracy(BaseIndicator):
     """
     Only shows class for which OSM has data.
 

@@ -8,8 +8,8 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
     BaseBpolys,
-    CorineComparisonRequest,
     IndicatorRequest,
+    LandCoverThematicAccuracyRequest,
 )
 
 
@@ -164,13 +164,13 @@ def test_attribute_completeness_attribute_filter(
     )
 
 
-def test_corine_comparison_request(bpolys):
+def test_land_cover_thematic_accuracy_request(bpolys):
     # corine class parameter is optional (default all corine classes)
-    CorineComparisonRequest(bpolys=bpolys, topic="lulc")
+    LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc")
 
 
-def test_corine_comparison_request_corine_class(bpolys):
+def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
     # Corine class 23 are Pastures
-    CorineComparisonRequest(bpolys=bpolys, topic="lulc", corine_class=23)
+    LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=23)
     with pytest.raises(Exception):
-        CorineComparisonRequest(bpolys=bpolys, topic="lulc", corine_class=1)
+        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=1)
