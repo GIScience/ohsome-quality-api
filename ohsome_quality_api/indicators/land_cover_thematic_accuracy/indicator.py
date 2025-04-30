@@ -1,8 +1,7 @@
+from datetime import datetime, timezone
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 from sklearn.metrics import (
-    ConfusionMatrixDisplay,
     classification_report,
     confusion_matrix,
     f1_score,
@@ -26,6 +25,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.clc_classes_corine = [r["clc_class_corine"] for r in results]
         self.clc_classes_osm = [r["clc_class_osm"] for r in results]
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
+        # TODO: take real timestamps from data
+        self.result.timestamp_osm = datetime.now(timezone.utc)
+        self.timestamp_coringe = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
         self.confusion_matrix = confusion_matrix(
@@ -52,6 +54,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         self.result.description = self.templates.label_description[self.result.label]
 
+        # TODO: UdefinedMetricWarning
+        # Recall is ill-defined and being set to 0.0 in labels with no
+        # true samples. Use `zero_division` parameter to control this
+        # behavior.
         self.report = classification_report(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -60,6 +66,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def create_figure(self) -> None:
         # TODO: remove matplotlib dep
-        ConfusionMatrixDisplay(self.confusion_matrix).plot()
-        plt.show()
+        # ConfusionMatrixDisplay(self.confusion_matrix).plot()
+        # plt.show()
         pass

@@ -169,6 +169,11 @@ def test_land_cover_thematic_accuracy_request(bpolys):
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc")
 
 
+def test_land_cover_thematic_accuracy_request_invalid_topic(bpolys):
+    with pytest.raises(ValidationError):
+        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
+
+
 def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
     # Corine class 23 are Pastures
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=23)
