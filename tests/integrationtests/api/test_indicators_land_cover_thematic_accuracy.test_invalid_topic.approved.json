@@ -1,0 +1,9 @@
+{
+    "apiVersion": "1.9.0",
+    "detail": [
+        {
+            "msg": "Invalid combination of indicator and topic: land-cover-thematic-accuracy and key='building-count' name='Buildings (count)' description=\"All buildings as defined by all objects tagged with 'building=*'.\" endpoint='elements' aggregation_type='count' filter='building=* and building!=no and geometry:polygon' indicators=['mapping-saturation', 'currentness', 'attribute-completeness'] projects=[<ProjectEnum.core: 'core'>, <ProjectEnum.bkg: 'bkg'>] source=None ratio_filter=None"
+        }
+    ],
+    "type": "IndicatorTopicCombinationError"
+}

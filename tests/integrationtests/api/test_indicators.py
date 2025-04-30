@@ -33,7 +33,7 @@ RESPONSE_SCHEMA_JSON = Schema(
                 },
                 "result": {
                     "timestamp": str,
-                    "timestampOSM": Or(str),
+                    "timestampOSM": str,
                     "value": Or(float, str, int, None),
                     "label": str,
                     "description": str,

@@ -30,8 +30,8 @@ async def create_indicator(
     for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
-        # Only enforce size limit if ohsome API data is not provided
-        # or for certain indicators
+        # Disable size limit for the Mapping Saturation indicator
+        # TODO: Remove size restriction
         if isinstance(topic, TopicDefinition) and key not in [
             "mapping-saturation",
             "currentness",
