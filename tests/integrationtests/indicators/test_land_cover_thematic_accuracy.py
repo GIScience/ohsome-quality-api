@@ -3,7 +3,9 @@ import json
 import pytest
 from approvaltests import verify
 
-from ohsome_quality_api.indicators.corine_comparison.indicator import CorineComparison
+from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
+    LandCoverThematicAccuracy,
+)
 from ohsome_quality_api.topics.models import BaseTopic
 from tests.approvaltests_namers import PytestNamer
 from tests.conftest import FIXTURE_DIR
@@ -33,11 +35,13 @@ def feature():
 @pytest.fixture
 def mock_db_fetch(monkeypatch):
     async def fetch(*_):
-        with open(FIXTURE_DIR / "corine-comparison-db-fetch-results.json", "r") as file:
+        with open(
+            FIXTURE_DIR / "land-cover-thematic-accuracy-db-fetch-results.json", "r"
+        ) as file:
             return json.load(file)
 
     monkeypatch.setattr(
-        "ohsome_quality_api.indicators.corine_comparison.indicator.client.fetch",
+        "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.client.fetch",
         fetch,
     )
 
@@ -45,7 +49,7 @@ def mock_db_fetch(monkeypatch):
 @pytest.mark.asyncio
 async def test_preprocess(feature, mock_db_fetch):
     topic = BaseTopic(key="forest", name="forest", description="forest")
-    indicator = CorineComparison(feature=feature, topic=topic)
+    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
     assert isinstance(indicator.clc_classes_corine, list)
@@ -66,7 +70,7 @@ async def test_preprocess(feature, mock_db_fetch):
 @pytest.mark.asyncio
 async def test_calculate(feature, mock_db_fetch):
     topic = BaseTopic(key="forest", name="forest", description="forest")
-    indicator = CorineComparison(feature=feature, topic=topic)
+    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
     assert indicator.confusion_matrix is not None
