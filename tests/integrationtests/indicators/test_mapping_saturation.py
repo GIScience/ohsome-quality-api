@@ -2,13 +2,16 @@ import asyncio
 from datetime import datetime
 
 import numpy as np
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
+from tests.approvaltests_scrubbers import scrub_mapping_saturation_figure
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -79,7 +82,7 @@ class TestCalculation:
 
         assert indicator.result.value >= 0.0
         assert indicator.result.label in ["green", "yellow", "red", "undefined"]
-        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
@@ -111,15 +114,16 @@ class TestFigure:
         i.calculate()
         return i
 
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    def test_create_figure_manual(self, indicator):
-        indicator.create_figure()
-        pio.show(indicator.result.figure)
-
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_scrubber(scrub_mapping_saturation_figure)
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
 
 @oqapi_vcr.use_cassette

@@ -8,6 +8,7 @@ Abbreviations:
     th: Threshold
 """
 
+import locale
 import logging
 import os
 from dataclasses import dataclass
@@ -23,6 +24,14 @@ from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
+
+# set locale for datetime to string formatting
+try:
+    locale.setlocale(locale.LC_ALL, ["en_US", locale.getencoding()])
+except locale.Error:
+    logging.warn(
+        "Could not set locale to en_US. Output may be different than expected."
+    )
 
 
 @dataclass
@@ -352,12 +361,12 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     if contrib_sum < 25:  # not enough data
         return (
             "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today."
+            "selected topic are present today. "
         )
     elif num_months >= 12:
         return (
             f"Please note that there was no mapping activity for {num_months} months "
-            "in this region."
+            "in this region. "
         )
     else:
         return ""
