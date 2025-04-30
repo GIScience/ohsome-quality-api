@@ -177,7 +177,13 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         try:
             # Use first working diff tool as reporter
             success = super().report(received_path_image, approved_path_image)
-            if success is False:
+            if success:
+                # After diff tool is closed are the images the same?
+                if filecmp.cmp(received_path_image, approved_path_image):
+                    # The diff tools saves approved image but we also need to
+                    # create approved file for the JSON representation
+                    shutil.move(received_path, approved_path)
+            else:
                 # Fallback to reporting JSON difference
                 return FirstWorkingReporter(
                     *self.reporters,
@@ -185,11 +191,6 @@ class PlotlyDiffReporter(FirstWorkingReporter):
                     ReportWithDiffCommandLine(),
                     PythonNativeReporter(),
                 ).report(received_path, approved_path)
-            # After diff tool is closed are the images the same?
-            if filecmp.cmp(received_path_image, approved_path_image):
-                # The diff tools saves approved image but we also need to
-                # create approved file for the JSON representation
-                shutil.move(received_path, approved_path)
         finally:
             try:
                 os.remove(received_path_image)

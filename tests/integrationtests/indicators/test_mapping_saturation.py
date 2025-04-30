@@ -1,10 +1,9 @@
 import asyncio
-import json
 from datetime import datetime
 
 import numpy as np
 import pytest
-from approvaltests import Options, verify
+from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
@@ -118,8 +117,8 @@ class TestFigure:
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_scrubber(scrub_mapping_saturation_figure)
             .with_reporter(PlotlyDiffReporter())

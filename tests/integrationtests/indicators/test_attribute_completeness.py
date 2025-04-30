@@ -1,11 +1,10 @@
 import asyncio
-import json
 import os
 from datetime import datetime
 
 import geojson
 import pytest
-from approvaltests import Options, verify
+from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.attributes.definitions import get_attributes
@@ -169,8 +168,8 @@ class TestFigure:
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),

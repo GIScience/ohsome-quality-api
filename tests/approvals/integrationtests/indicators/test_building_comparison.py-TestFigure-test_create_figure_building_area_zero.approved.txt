@@ -1,1 +1,0 @@
-{"data": [{"labels": ["The creation of the Indicator was unsuccessful."], "textposition": "inside", "texttemplate": "%{label}", "values": [1], "type": "pie", "marker": {"colors": ["rgba(0, 0, 0, 0)"]}, "hoverinfo": "none"}], "layout": {"title": {"text": "Building Comparison"}, "plot_bgcolor": "white", "paper_bgcolor": "white", "showlegend": false}}

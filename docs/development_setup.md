@@ -106,7 +106,7 @@ When writing tests for functions which are asynchronous (using the `async/await`
 
 [Approval tests](https://approvaltests.com/resources/) capture the output
 (snapshot) of a program and compares it with a previously approved version of
-the output.
+the output. Sometimes those tests are also called snapshot tests.
 
 Its most useful in cases where frequent changes are expected or where the
 output is of complex nature but can be easily verified by humans aided by a

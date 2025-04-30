@@ -5,7 +5,7 @@ from datetime import datetime
 
 import geojson
 import pytest
-from approvaltests import Options, verify
+from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.definitions import Color
@@ -104,8 +104,8 @@ class TestCalculation:
         indicator.create_figure()
         # TODO: test figure
         # assert isinstance(indicator.result.figure, dict)
-        # verify(
-        #     json.dumps(to_jsonable_python(indicator.result.figure)),
+        # verify_as_json(
+        #     to_jsonable_python(indicator.result.figure),
         #     options=Options()
         #     .with_reporter(PlotlyDiffReporter())
         #     .with_namer(PytestNamer()),
@@ -124,8 +124,8 @@ class TestFigure:
 
     def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),

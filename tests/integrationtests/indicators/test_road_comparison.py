@@ -4,7 +4,7 @@ from datetime import datetime
 from unittest.mock import AsyncMock
 
 import pytest
-from approvaltests import Options, verify
+from approvaltests import Options, verify, verify_as_json
 from geojson import Feature
 from pydantic_core import to_jsonable_python
 
@@ -194,8 +194,8 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),
@@ -217,8 +217,8 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),

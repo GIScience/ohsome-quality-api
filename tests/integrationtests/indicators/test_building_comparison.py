@@ -1,10 +1,9 @@
 import asyncio
-import json
 from datetime import datetime
 from unittest.mock import AsyncMock
 
 import pytest
-from approvaltests import Options, verify
+from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.building_comparison.indicator import (
@@ -309,8 +308,8 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),
@@ -333,8 +332,8 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "bar"
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),
@@ -357,8 +356,8 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "pie"
-        verify(
-            json.dumps(to_jsonable_python(indicator.result.figure)),
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
             options=Options()
             .with_reporter(PlotlyDiffReporter())
             .with_namer(PytestNamer()),
