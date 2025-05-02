@@ -1,11 +1,12 @@
 import pytest
 from approvaltests import verify
 
+from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.api.test_indicators import (
     RESPONSE_SCHEMA_GEOJSON,
     RESPONSE_SCHEMA_JSON,
 )
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/attribute-completeness"
 

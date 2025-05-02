@@ -7,7 +7,8 @@ import pytest
 from approvaltests.approvals import verify
 from schema import Optional, Or, Schema
 
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
 

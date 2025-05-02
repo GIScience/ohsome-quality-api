@@ -52,6 +52,7 @@ pytest-mock = "^3.11.1"
 vcrpy = "^7.0.0"
 approvaltests = "^14.3.0"
 ruff = "^0.9.4"
+kaleido = "0.2.1"
 
 [tool.poetry.urls]
 "Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
