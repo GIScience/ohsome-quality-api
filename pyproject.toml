@@ -84,3 +84,6 @@ select = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = [
+    'ignore:.*The configuration option "asyncio_default_fixture_loop_scope" is unset.*:DeprecationWarning:pytest_asyncio'
+]
