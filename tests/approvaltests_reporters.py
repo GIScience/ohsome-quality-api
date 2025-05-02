@@ -142,6 +142,10 @@ class PlotlyDiffReporter(FirstWorkingReporter):
     the Plotly figures in a diff tool.
     """
 
+    # TODO: Maybe it is better to open images in diff tools and afterwards the
+    # JSONs as well. Approval happens through diff tool show JSONs. This way no
+    # moving of files (approving) in the reporter class necessary.
+
     def __init__(self):
         if platform.system() == "Linux":
             self.reporters = (
@@ -156,7 +160,7 @@ class PlotlyDiffReporter(FirstWorkingReporter):
                 ReportWithVSCodeMacOS(),
             )
         else:
-            # Will return False for when calling report with FirstWorkingReporter
+            # Will return False for when calling `report`
             self.reporters = []
         super().__init__(*self.reporters)
 
@@ -175,22 +179,29 @@ class PlotlyDiffReporter(FirstWorkingReporter):
         received_figure.write_image(received_path_image)
 
         try:
-            # Use first working diff tool as reporter
-            success = super().report(received_path_image, approved_path_image)
-            if success:
-                # After diff tool is closed are the images the same?
-                if filecmp.cmp(received_path_image, approved_path_image):
-                    # The diff tools saves approved image but we also need to
-                    # create approved file for the JSON representation
-                    shutil.move(received_path, approved_path)
-            else:
-                # Fallback to reporting JSON difference
+            # If images are equal before opening diff tool, then difference is
+            # JSON specific and is not reflected in image representation.
+            if filecmp.cmp(received_path_image, approved_path_image):
                 return FirstWorkingReporter(
                     *self.reporters,
-                    # TODO: Use reporter configured by user
                     ReportWithDiffCommandLine(),
                     PythonNativeReporter(),
                 ).report(received_path, approved_path)
+            else:
+                success = super().report(received_path_image, approved_path_image)
+                if success:
+                    # After diff tool is closed are the images the same?
+                    if filecmp.cmp(received_path_image, approved_path_image):
+                        # The diff tools saves approved image but we also need to
+                        # create approved file for the JSON representation
+                        shutil.move(received_path, approved_path)
+                else:
+                    # Fallback to reporting JSON difference
+                    return FirstWorkingReporter(
+                        *self.reporters,
+                        ReportWithDiffCommandLine(),
+                        PythonNativeReporter(),
+                    ).report(received_path, approved_path)
         finally:
             try:
                 os.remove(received_path_image)
