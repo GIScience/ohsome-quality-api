@@ -2,6 +2,12 @@
 
 ## Current Main
 
+### Other Changes
+
+- api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
+
+[#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
+
 ## Release  1.9.0
 
 ### Bug Fixes

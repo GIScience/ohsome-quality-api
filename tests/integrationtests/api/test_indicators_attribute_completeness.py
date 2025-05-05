@@ -1,7 +1,6 @@
 import pytest
 from approvaltests import verify
 
-from ohsome_quality_api.attributes.definitions import get_attributes
 from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.api.test_indicators import (
     RESPONSE_SCHEMA_GEOJSON,
@@ -86,19 +85,8 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-
-    message = content["detail"][0]["msg"]
-    all_attributes_for_topic = [
-        attribute for attribute in (get_attributes()["building-count"])
-    ]
-
-    expected = (
-        "Invalid combination of attribute and topic: maxspeed and building-count. "
-        "Topic 'building-count' supports these attributes: {}"
-    ).format(all_attributes_for_topic)
-
-    assert message == expected
-    assert content["type"] == "AttributeTopicCombinationError"
+    assert content["type"] == "RequestValidationError"
+    verify(content["detail"][0]["msg"], namer=PytestNamer())
 
 
 @oqapi_vcr.use_cassette

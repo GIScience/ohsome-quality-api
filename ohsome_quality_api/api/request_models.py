@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Self
 
 import geojson
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -7,9 +7,12 @@ from pydantic import (
     ConfigDict,
     Field,
     field_validator,
+    model_validator,
 )
 
-from ohsome_quality_api.attributes.definitions import AttributeEnum
+from ohsome_quality_api.api.request_context import RequestContext, request_context
+from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
+from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
@@ -22,6 +25,12 @@ class BaseConfig(BaseModel):
         frozen=True,
         extra="forbid",
     )
+
+
+class BaseRequestContext(BaseModel):
+    @property
+    def request_context(self) -> RequestContext | None:
+        return request_context.get()
 
 
 FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, Dict]]
@@ -61,7 +70,7 @@ class BaseBpolys(BaseConfig):
         return geojson.loads(value.model_dump_json())
 
 
-class IndicatorRequest(BaseBpolys):
+class IndicatorRequest(BaseBpolys, BaseRequestContext):
     topic: TopicEnum = Field(
         ...,
         title="Topic Key",
@@ -73,6 +82,18 @@ class IndicatorRequest(BaseBpolys):
     @classmethod
     def transform_topic(cls, value) -> TopicDefinition:
         return get_topic_preset(value.value)
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self) -> Self:
+        indicator = self.request_context.path_parameters["key"]
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if indicator not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    indicator, self.topic.key
+                )
+            )
+        return self
 
 
 class AttributeCompletenessKeyRequest(IndicatorRequest):
@@ -86,6 +107,39 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
     @classmethod
     def transform_attributes(cls, value) -> list[str]:
         return [attribute.value for attribute in value]
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self) -> Self:
+        # NOTE: overrides parent validator. That is because endpoint of
+        # indicator/attribute-completeness is fixed and therefore path parameters of
+        # request context empty
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if "attribute-completeness" not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "attribute-completeness",
+                    self.topic.key,
+                )
+            )
+        return self
+
+    @model_validator(mode="after")
+    def validate_attributes(self) -> Self:
+        valid_attributes = tuple(get_attributes()[self.topic.key].keys())
+        for attribute in self.attribute_keys:
+            if attribute not in valid_attributes:
+                raise ValueError(
+                    (
+                        "Invalid combination of attribute {} and topic {}. "
+                        "Topic {} supports these attributes: {}"
+                    ).format(
+                        attribute,
+                        self.topic.key,
+                        self.topic.key,
+                        ", ".join(valid_attributes),
+                    )
+                )
+        return self
 
 
 class AttributeCompletenessFilterRequest(IndicatorRequest):
@@ -101,6 +155,21 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
             "Title describing the attributes represented by the Attribute Filter."
         ),
     )
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self) -> Self:
+        # NOTE: overrides parent validator. That is because endpoint of
+        # indicator/attribute-completeness is fixed and therefore path parameters of
+        # request context empty
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if "attribute-completeness" not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "attribute-completeness",
+                    self.topic.key,
+                )
+            )
+        return self
 
 
 class IndicatorDataRequest(BaseBpolys):
