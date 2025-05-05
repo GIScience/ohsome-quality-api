@@ -80,7 +80,5 @@ async def test_calculate(feature, mock_db_fetch):
     assert indicator.result.value is not None
     assert indicator.result.class_ == 5
     assert indicator.result.label == "green"
-    # TODO: make pytestnamer take arguments to make it possible to call
-    # verify twice in one test func
-    # verify(indicator.result.description, namer=PytestNamer())
-    verify(indicator.report, namer=PytestNamer())
+    verify(indicator.result.description, namer=PytestNamer(postfix="description"))
+    verify(indicator.report, namer=PytestNamer(postfix="report"))
