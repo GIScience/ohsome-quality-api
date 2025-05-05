@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Dict, List, Self
 
 import geojson
@@ -170,6 +171,24 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
                 )
             )
         return self
+
+
+class CorineClass(Enum):
+    elven = 11
+    twelve = 12
+    thirteen = 13
+    fourteen = 14
+    twentyone = 21
+    twentytwo = 22
+    twentythree = 23
+    twentyfour = 24
+    thirtyone = 31
+    thirtytwo = 32
+    thirtythree = 33
+    fourtyone = 41
+    fourtytwo = 42
+    fiftyone = 51
+    fiftytwo = 52
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):

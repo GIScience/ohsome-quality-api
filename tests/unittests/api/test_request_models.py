@@ -24,6 +24,18 @@ def mock_request_context_minimal(monkeypatch):
 
 
 @pytest.fixture
+def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
+    """Mock request context for /indicators/minimal."""
+    request_context: ContextVar[RequestContext] = ContextVar("request_context")
+    request_context.set(
+        RequestContext(path_parameters={"key": "land-cover-thematic-accuracy"})
+    )
+    monkeypatch.setattr(
+        "ohsome_quality_api.api.request_models.request_context", request_context
+    )
+
+
+@pytest.fixture
 def mock_request_context_attribute_completeness(monkeypatch):
     """Mock request context for /indicators/attribute-completeness."""
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
@@ -164,17 +176,23 @@ def test_attribute_completeness_attribute_filter(
     )
 
 
-def test_land_cover_thematic_accuracy_request(bpolys):
+def test_land_cover_thematic_accuracy_request(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
     # corine class parameter is optional (default all corine classes)
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc")
 
 
-def test_land_cover_thematic_accuracy_request_invalid_topic(bpolys):
+def test_land_cover_thematic_accuracy_request_invalid_topic(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
     with pytest.raises(ValidationError):
         LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
 
 
-def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
+def test_land_cover_thematic_accuracy_request_corine_class(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
     # Corine class 23 are Pastures
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=23)
     with pytest.raises(Exception):
