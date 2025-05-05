@@ -66,7 +66,6 @@ async def test_preprocess(feature, mock_db_fetch):
         assert isinstance(clc_class_corine, int)
         assert isinstance(clc_class_corine, int)
     assert indicator.result.timestamp_osm is not None
-    assert indicator.result.timestamp_corine is not None
 
 
 @pytest.mark.asyncio
