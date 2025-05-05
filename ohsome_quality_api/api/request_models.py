@@ -85,11 +85,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self) -> Self:
-        if self.request_context is not None:
-            indicator = self.request_context.path_parameters["key"]
-        else:
-            raise TypeError("Request context for /indicators should never be None.")
-
+        indicator = self.request_context.path_parameters["key"]
         valid_indicators = get_valid_indicators(self.topic.key)
         if indicator not in valid_indicators:
             raise ValueError(
