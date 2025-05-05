@@ -46,7 +46,7 @@ async-lru = "^2.0.4"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.1.0"
-pytest = "^8.3.4"
+pytest = {extras = ["pygments"], version = "^8.3.5"}
 pytest-cov = "^6.0.0"
 pytest-mock = "^3.11.1"
 vcrpy = "^7.0.0"
@@ -54,6 +54,7 @@ approvaltests = "^14.3.0"
 ruff = "^0.9.4"
 kaleido = "0.2.1"
 fastapi = {extras = ["standard"], version = "^0.115.8"}
+pygments = "^2.19.1"  # add syntax highlighting to pytest output
 
 [tool.poetry.urls]
 "Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
