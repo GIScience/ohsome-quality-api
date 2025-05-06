@@ -3,10 +3,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import plotly.graph_objects as pgo
+from api.request_models import CorineClass
 from geojson import Feature
 from sklearn.metrics import (
     classification_report,
-    confusion_matrix,
     f1_score,
 )
 
@@ -47,12 +47,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
-        self.confusion_matrix = confusion_matrix(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            sample_weight=self.areas,
-            normalize="all",
-        )
+        self.labels = set(self.clc_classes_corine)
 
         self.f1_score = f1_score(
             self.clc_classes_corine,
@@ -62,6 +57,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         self.result.value = self.f1_score
 
+        self.f1_scores = f1_score(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            average=None,  # for each
+            sample_weight=self.areas,
+            labels=list(self.labels),
+        )
         if self.f1_score > 0.8:
             self.result.class_ = 5
         elif self.f1_score > 0.5:
@@ -82,28 +84,28 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        import matplotlib.pyplot as plt
-        from sklearn.metrics import ConfusionMatrixDisplay
-
-        ConfusionMatrixDisplay(self.confusion_matrix).plot()
-        plt.show()
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
-        fig = pgo.Figure(
-            data=pgo.Heatmap(
-                z=self.confusion_matrix,
-                text=self.confusion_matrix,
-                texttemplate="%{text:.2f}",
-                # TODO: How to choose the biggest/best working one without
-                # committing to hardcoded value
-                textfont={"size": 12},
-            )
-        )
-        fig.update_yaxes(title_text="Corine Land Cover Class")
-        fig.update_xaxes(title_text="Corine Land Cover Class")
-        # TODO add legend with corine land cover classes mapped to meaningful titles?
 
+        value_to_label = {
+            cls.value: cls.name.replace("_", " ").title() for cls in CorineClass
+        }
+        class_labels = [value_to_label.get(v, str(v)) for v in self.labels]
+
+        fig = pgo.Figure(
+            data=[
+                pgo.Bar(
+                    name="OSM building area",
+                    x=class_labels,
+                    y=self.f1_scores,
+                    title="F1-Score of each class",
+                )
+            ]
+        )
+
+        # TODO add legend with corine land cover classes mapped to meaningful titles?
+        fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
