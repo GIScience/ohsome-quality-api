@@ -1,6 +1,8 @@
+import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
+import plotly.graph_objects as pgo
 from geojson import Feature
 from sklearn.metrics import (
     classification_report,
@@ -72,7 +74,28 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        # TODO: remove matplotlib dep
-        # ConfusionMatrixDisplay(self.confusion_matrix).plot()
-        # plt.show()
-        pass
+        import matplotlib.pyplot as plt
+        from sklearn.metrics import ConfusionMatrixDisplay
+
+        ConfusionMatrixDisplay(self.confusion_matrix).plot()
+        plt.show()
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+        fig = pgo.Figure(
+            data=pgo.Heatmap(
+                z=self.confusion_matrix,
+                text=self.confusion_matrix,
+                texttemplate="%{text:.2f}",
+                # TODO: How to choose the biggest/best working one without
+                # committing to hardcoded value
+                textfont={"size": 12},
+            )
+        )
+        fig.update_yaxes(title_text="Corine Land Cover Class")
+        fig.update_xaxes(title_text="Corine Land Cover Class")
+        # TODO add legend with corine land cover classes mapped to meaningful titles?
+
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
