@@ -1,13 +1,16 @@
 import json
 
 import pytest
-from approvaltests import verify
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
 )
-from ohsome_quality_api.topics.models import BaseTopic
+from ohsome_quality_api.topics.definitions import get_topic_preset
+from ohsome_quality_api.topics.models import TopicDefinition
 from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.conftest import FIXTURE_DIR
 
 
@@ -33,6 +36,11 @@ def feature():
 
 
 @pytest.fixture
+def topic() -> TopicDefinition:
+    return get_topic_preset("lulc")
+
+
+@pytest.fixture
 def mock_db_fetch(monkeypatch):
     async def fetch(*_):
         with open(
@@ -46,9 +54,11 @@ def mock_db_fetch(monkeypatch):
     )
 
 
+# TODO: Support singe corine class
+
+
 @pytest.mark.asyncio
-async def test_preprocess(feature, mock_db_fetch):
-    topic = BaseTopic(key="forest", name="forest", description="forest")
+async def test_preprocess(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
@@ -69,8 +79,7 @@ async def test_preprocess(feature, mock_db_fetch):
 
 
 @pytest.mark.asyncio
-async def test_calculate(feature, mock_db_fetch):
-    topic = BaseTopic(key="forest", name="forest", description="forest")
+async def test_calculate(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
@@ -81,3 +90,16 @@ async def test_calculate(feature, mock_db_fetch):
     assert indicator.result.label == "green"
     verify(indicator.result.description, namer=PytestNamer(postfix="description"))
     verify(indicator.report, namer=PytestNamer(postfix="report"))
+
+
+@pytest.mark.asyncio
+async def test_figure(feature, topic, mock_db_fetch):
+    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
+    await indicator.preprocess()
+    indicator.calculate()
+    indicator.create_figure()
+    assert isinstance(indicator.result.figure, dict)
+    verify_as_json(
+        to_jsonable_python(indicator.result.figure),
+        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
+    )

@@ -15,6 +15,8 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 class LandCoverThematicAccuracy(BaseIndicator):
     """
+    TODO
+
     Only shows class for which OSM has data.
 
     Ergänzend zu dem Corine Completeness Indicator
@@ -32,7 +34,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
         # TODO: take real timestamps from data
         self.result.timestamp_osm = datetime.now(timezone.utc)
-        self.timestamp_coringe = datetime.now(timezone.utc)
+        self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
         self.confusion_matrix = confusion_matrix(
