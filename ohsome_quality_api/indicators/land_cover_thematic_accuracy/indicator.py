@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
+from geojson import Feature
 from sklearn.metrics import (
     classification_report,
     confusion_matrix,
@@ -9,6 +10,7 @@ from sklearn.metrics import (
 
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
+from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 
 class LandCoverThematicAccuracy(BaseIndicator):
@@ -17,6 +19,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     Ergänzend zu dem Corine Completeness Indicator
     """
+
+    def __init__(self, topic: Topic, feature: Feature, corine_class=None) -> None:
+        super().__init__(topic=topic, feature=feature)
 
     async def preprocess(self) -> None:
         with open(Path(__file__).parent / "query.sql", "r") as file:
