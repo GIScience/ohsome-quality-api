@@ -26,11 +26,19 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def __init__(self, topic: Topic, feature: Feature, corine_class=None) -> None:
         super().__init__(topic=topic, feature=feature)
+        self.corine_class = corine_class
 
     async def preprocess(self) -> None:
-        with open(Path(__file__).parent / "query.sql", "r") as file:
-            query = file.read()
-        results = await client.fetch(query, str(self.feature["geometry"]))
+        if self.corine_class:
+            with open(Path(__file__).parent / "single_class_query.sql", "r") as file:
+                query = file.read()
+            results = await client.fetch(
+                query, str(self.feature["geometry"]), self.corine_class
+            )
+        else:
+            with open(Path(__file__).parent / "query.sql", "r") as file:
+                query = file.read()
+            results = await client.fetch(query, str(self.feature["geometry"]))
         self.clc_classes_corine = [r["clc_class_corine"] for r in results]
         self.clc_classes_osm = [r["clc_class_osm"] for r in results]
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm

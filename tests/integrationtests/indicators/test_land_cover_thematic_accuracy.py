@@ -93,7 +93,7 @@ async def test_calculate(feature, topic, mock_db_fetch):
 
 
 @pytest.mark.asyncio
-async def test_figure(feature, topic, mock_db_fetch):
+async def test_figure(feature, topic):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
