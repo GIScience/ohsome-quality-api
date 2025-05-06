@@ -193,7 +193,8 @@ def test_land_cover_thematic_accuracy_request_invalid_topic(
 def test_land_cover_thematic_accuracy_request_corine_class(
     bpolys, mock_request_context_land_cover_thematic_accuracy
 ):
-    # Corine class 23 are Pastures
+    # Corine class 23 represents Pastures
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=23)
     with pytest.raises(Exception):
+        # Corine class 1 is invalid
         LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class=1)

@@ -174,6 +174,7 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
 
 
 class CorineClass(Enum):
+    # TODO: Use more descriptive names
     elven = 11
     twelve = 12
     thirteen = 13
@@ -192,13 +193,28 @@ class CorineClass(Enum):
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
-    # TODO: possible input values restrict to actual classes (eg. 1 is
-    # invalid)
-    corine_class: int | None = Field(
+    corine_class: CorineClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
-        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
+        description=(
+            "CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
+        ),
     )
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self) -> Self:
+        # NOTE: overrides parent validator. That is because endpoint of
+        # indicator/land-cover-thematic-accuracy is fixed and therefore path
+        # parameters of request context empty
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if "land-cover-thematic-accuracy" not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "land-cover-thematic-accuracy",
+                    self.topic.key,
+                )
+            )
+        return self
 
 
 class IndicatorDataRequest(BaseBpolys):
