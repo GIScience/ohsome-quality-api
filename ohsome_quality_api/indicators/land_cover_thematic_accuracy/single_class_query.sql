@@ -1,3 +1,4 @@
+-- TODO: will index on classes make this query faster?
 WITH bpoly AS (
     SELECT
         (ST_Dump(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))).geom AS geometry
@@ -10,7 +11,7 @@ SELECT
         ELSE ST_Area(ST_Intersection(o.geometry, b.geometry)::geography)
     END AS area
 FROM
-    osm_corine_intersection o,
+    osm_corine_2021_deu_intersection o,
     bpoly b
 WHERE
     ST_Intersects(o.geometry, b.geometry)
