@@ -158,7 +158,7 @@ async def test_calculate_single_class(
 
 
 @pytest.mark.asyncio
-async def test_figure(feature, topic):
+async def test_figure(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
@@ -171,7 +171,7 @@ async def test_figure(feature, topic):
 
 
 @pytest.mark.asyncio
-async def test_figure_single_class(feature, topic, corine_class):
+async def test_figure_single_class(feature, topic, corine_class, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(
         feature=feature, topic=topic, corine_class=corine_class
     )
