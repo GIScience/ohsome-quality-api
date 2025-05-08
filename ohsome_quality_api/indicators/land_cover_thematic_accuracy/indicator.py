@@ -57,14 +57,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
             normalize="all",
         )
         self.result.value = self.f1_score
-
-        # self.f1_scores = f1_score(
-        #     self.clc_classes_corine,
-        #     self.clc_classes_osm,
-        #     average=None,  # for each
-        #     sample_weight=self.areas,
-        #     labels=set(self.clc_classes_corine),
-        # )
         if self.f1_score > 0.8:
             self.result.class_ = 5
         elif self.f1_score > 0.5:
@@ -90,45 +82,54 @@ class LandCoverThematicAccuracy(BaseIndicator):
             return
 
         if self.corine_class:
-            self._create_figure_for_single_class()
+            self._create_figure_single_class()
         else:
-            self._create_figure_for_all_classes()
+            self._create_figure_multi_class()
 
-    def _create_figure_for_single_class(self):
-        value_to_label = {
-            cls.value: cls.name.replace("_", " ").title() for cls in CorineClass
-        }
+    def _create_figure_single_class(self):
+        self.f1_score = f1_score(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            average=None,  # for each
+            sample_weight=self.areas,
+            labels=set(self.clc_classes_corine),
+        )
         class_labels = [
-            value_to_label.get(v, str(v)) for v in set(self.clc_classes_corine)
+            CorineClass(c).name.title() for c in set(self.clc_classes_corine)
         ]
-
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
                     name="OSM building area",
                     x=class_labels,
-                    y=self.f1_score,
-                    title="F1-Score of each class",
+                    y=[self.f1_score],
                 )
             ]
         )
 
-        # TODO add legend with corine land cover classes mapped to meaningful titles?
-        fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def _create_figure_for_all_classes(self):
+    def _create_figure_multi_class(self):
         fig = pgo.Figure(
             data=pgo.Heatmap(
                 z=self.confusion_matrix,
                 text=self.confusion_matrix,
                 texttemplate="%{text:.2f}",
-                # TODO: How to choose the biggest/best working one without
-                # committing to hardcoded value
-                textfont={"size": 12},
-            )
+            ),
+            # layout=pgo.Layout(
+            #     title={
+            #         "subtitle": {
+            #             "text": ", ".join(
+            #                 [
+            #                     CorineClass(c).name.title()
+            #                     for c in set(self.clc_classes_corine)
+            #                 ]
+            #             )
+            #         }
+            #     }
+            # ),
         )
         fig.update_yaxes(title_text="Corine Land Cover Class")
         fig.update_xaxes(title_text="Corine Land Cover Class")
@@ -136,4 +137,4 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
-        return raw
+        self.result.figure = raw
