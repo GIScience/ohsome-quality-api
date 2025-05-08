@@ -1,10 +1,10 @@
 import json
 
 import pytest
-from api.request_models import CorineClass
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
+from ohsome_quality_api.api.request_models import CorineClass
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
 )
