@@ -175,21 +175,21 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
 
 class CorineClass(Enum):
     # TODO: Use more descriptive names
-    elven = 11
-    twelve = 12
-    thirteen = 13
-    fourteen = 14
-    twentyone = 21
-    twentytwo = 22
-    twentythree = 23
-    twentyfour = 24
-    thirtyone = 31
-    thirtytwo = 32
-    thirtythree = 33
-    fourtyone = 41
-    fourtytwo = 42
-    fiftyone = 51
-    fiftytwo = 52
+    ARTIFICIAL_AREAS_1 = 11
+    ARTIFICIAL_AREAS_2 = 12
+    ARTIFICIAL_AREAS_3 = 13
+    ARTIFICIAL_AREAS_4 = 14
+    AGRICULTURAL_AREAS_1 = 21
+    AGRICULTURAL_AREAS_2 = 22
+    AGRICULTURAL_AREAS_3 = 23
+    AGRICULTURAL_AREAS_4 = 24
+    FOREST_AND_SEMINATURAL_AREAS_1 = 31
+    FOREST_AND_SEMINATURAL_AREAS_2 = 32
+    FOREST_AND_SEMINATURAL_AREAS_3 = 33
+    WETLANDS_1 = 41
+    WETLANDS_2 = 42
+    WATER_BODIES_1 = 51
+    WATER_BODIES_2 = 52
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
