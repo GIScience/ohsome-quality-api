@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
+from string import Template
 
 import plotly.graph_objects as pgo
 from geojson import Feature
@@ -98,8 +99,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
         else:
             self.result.class_ = 1
 
-        self.result.description = self.templates.label_description[self.result.label]
-        self.result.description = self.templates.result_description
+        template = Template(self.templates.result_description)
+        description = template.substitute(
+            score=round(self.f1_score * 100, 2),
+        )
+        self.result.description = " ".join(
+            (description, self.templates.label_description[self.result.label])
+        )
 
         # TODO: UdefinedMetricWarning
         # Recall is ill-defined and being set to 0.0 in labels with no
@@ -167,8 +173,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
             ),
             # layout=pgo.Layout(title={"subtitle": {"text": ", ".join(class_labels)}}),
         )
-        fig.update_yaxes(title_text="Corine Land Cover Class")
-        fig.update_xaxes(title_text="Corine Land Cover Class")
+        fig.update_yaxes(title_text="Corine Land Cover Class in OSM")
+        fig.update_xaxes(title_text="Corine Land Cover Class (actual)")
         # TODO add legend with corine land cover classes mapped to meaningful titles?
 
         raw = fig.to_dict()
