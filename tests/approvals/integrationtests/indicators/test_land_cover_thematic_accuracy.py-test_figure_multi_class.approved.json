@@ -1,30 +1,116 @@
 {
     "data": [
         {
-            "text": {
-                "bdata": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACmkcRV06BLP0olMWoR3ss/zA77glzegj+68uxgogBAP4KPMWEu0H0/jcaPPOkDRj+wjp+FKhZOP7e7rkPZoGU/AAAAAAAAAACg0r+jRsN9P2y9msjY3HM/AAAAAAAAAAAAAAAAAAAAAGkp7/zD01c/y9aEqJJzcT/Sg2p30eqzP/xKvKwRWjw/5PUwxSRAPz/eBzutwn9SPwAAAAAAAAAA33AI47KiYz8AAAAAAAAAAKei4PDAglU/PcVg4fcvOD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABw2dd23WPIPjGBkIUroBI/2x41JhKNST/diKFDvTRCPxZZYwCYtmY//WuO3sRSOj8AAAAAAAAAAOfn1XNKRCE/AAAAAAAAAADF3J1c8TZMPzNvYwZEv1E/AAAAAAAAAAAAAAAAAAAAAC/k8cPG2VE/VRljeTDYbj9WWkLCC4lxP4FCspdAMEk/n9g4mM2EYj+iYGrw5qPQP/iDYXwQ7U0/+//TkdAYgj8AAAAAAAAAAKv/U61Um2w//Pb9pP09OD/FCaYwZJ4SPwAAAAAAAAAAAAAAAAAAAACW7aDjqrJDPwAAAAAAAAAA63/MlfmiwT6f/ajsEoRmP+LF2907xTA/C7C73mCMoD8KgI2//JpLPwAAAAAAAAAALJSVDFPOdj8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8HRiR/K3LPiAuu/iZCWE/nqAn33CaUD8AAAAAAAAAAIBsb8eGCm0/6eC9PTQeoj+yhKMvUOqDP8p1ys9TpKs/AAAAAAAAAACULDbIXMiRP9BhfnZLNz8/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY1Eig2VEPD8AAAAAAAAAAAAAAAAAAAAA0imRmR100T4AAAAAAAAAAMZK02mtGDo/AAAAAAAAAAAAAAAAAAAAAEES9Sua9Uc/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByIN4Ng89iP6Nlcc+mrAM/yRyFBX0GID/DFUPToExiPw+y6Qo+wG8/veueQYiWaz94zzbw/AFpPwAAAAAAAAAAxkr8IfTMxj+yCkOYxDfxPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBtoKg8Vz4/AAAAAAAAAAAAAAAAAAAAAGkYRQyndRg/AAAAAAAAAACP0JXlWthlPwjf/IfV9UA/AAAAAAAAAACOPIPvqmtQPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAURFiycyNT8AAAAAAAAAAPG1UCgMocA+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwUGmvihMj8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-                "dtype": "f8",
-                "shape": "13, 13"
-            },
-            "texttemplate": "%{text:.2f}",
-            "type": "heatmap",
-            "z": {
-                "bdata": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACmkcRV06BLP0olMWoR3ss/zA77glzegj+68uxgogBAP4KPMWEu0H0/jcaPPOkDRj+wjp+FKhZOP7e7rkPZoGU/AAAAAAAAAACg0r+jRsN9P2y9msjY3HM/AAAAAAAAAAAAAAAAAAAAAGkp7/zD01c/y9aEqJJzcT/Sg2p30eqzP/xKvKwRWjw/5PUwxSRAPz/eBzutwn9SPwAAAAAAAAAA33AI47KiYz8AAAAAAAAAAKei4PDAglU/PcVg4fcvOD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABw2dd23WPIPjGBkIUroBI/2x41JhKNST/diKFDvTRCPxZZYwCYtmY//WuO3sRSOj8AAAAAAAAAAOfn1XNKRCE/AAAAAAAAAADF3J1c8TZMPzNvYwZEv1E/AAAAAAAAAAAAAAAAAAAAAC/k8cPG2VE/VRljeTDYbj9WWkLCC4lxP4FCspdAMEk/n9g4mM2EYj+iYGrw5qPQP/iDYXwQ7U0/+//TkdAYgj8AAAAAAAAAAKv/U61Um2w//Pb9pP09OD/FCaYwZJ4SPwAAAAAAAAAAAAAAAAAAAACW7aDjqrJDPwAAAAAAAAAA63/MlfmiwT6f/ajsEoRmP+LF2907xTA/C7C73mCMoD8KgI2//JpLPwAAAAAAAAAALJSVDFPOdj8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8HRiR/K3LPiAuu/iZCWE/nqAn33CaUD8AAAAAAAAAAIBsb8eGCm0/6eC9PTQeoj+yhKMvUOqDP8p1ys9TpKs/AAAAAAAAAACULDbIXMiRP9BhfnZLNz8/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY1Eig2VEPD8AAAAAAAAAAAAAAAAAAAAA0imRmR100T4AAAAAAAAAAMZK02mtGDo/AAAAAAAAAAAAAAAAAAAAAEES9Sua9Uc/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAByIN4Ng89iP6Nlcc+mrAM/yRyFBX0GID/DFUPToExiPw+y6Qo+wG8/veueQYiWaz94zzbw/AFpPwAAAAAAAAAAxkr8IfTMxj+yCkOYxDfxPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBtoKg8Vz4/AAAAAAAAAAAAAAAAAAAAAGkYRQyndRg/AAAAAAAAAACP0JXlWthlPwjf/IfV9UA/AAAAAAAAAACOPIPvqmtQPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAURFiycyNT8AAAAAAAAAAPG1UCgMocA+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHwUGmvihMj8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-                "dtype": "f8",
-                "shape": "13, 13"
-            }
+            "name": "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",
+            "type": "bar",
+            "x": [
+                "32"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "name": "Artificial areas: Urban fabric",
+            "type": "bar",
+            "x": [
+                "11"
+            ],
+            "y": [
+                90.04534466333342
+            ]
+        },
+        {
+            "name": "Artificial areas: Industrial, commercial and transport units",
+            "type": "bar",
+            "x": [
+                "12"
+            ],
+            "y": [
+                85.14053055717963
+            ]
+        },
+        {
+            "name": "Artificial areas: Artificial non-agricultural vegetated areas",
+            "type": "bar",
+            "x": [
+                "14"
+            ],
+            "y": [
+                19.75282490077088
+            ]
+        },
+        {
+            "name": "Water bodies: Inland waters",
+            "type": "bar",
+            "x": [
+                "51"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "name": "Agricultural areas: Arable land",
+            "type": "bar",
+            "x": [
+                "21"
+            ],
+            "y": [
+                88.50013049187115
+            ]
+        },
+        {
+            "name": "Agricultural areas: Permanetn crops",
+            "type": "bar",
+            "x": [
+                "22"
+            ],
+            "y": [
+                69.77146880873775
+            ]
+        },
+        {
+            "name": "Agricultural areas: Pastures",
+            "type": "bar",
+            "x": [
+                "23"
+            ],
+            "y": [
+                55.093034384370334
+            ]
+        },
+        {
+            "name": "Agricultural areas: Heterogeneous agricultural areas",
+            "type": "bar",
+            "x": [
+                "24"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "name": "Forest and semi-natural areas: Forest",
+            "type": "bar",
+            "x": [
+                "31"
+            ],
+            "y": [
+                87.07398289897031
+            ]
         }
     ],
     "layout": {
+        "showlegend": true,
         "xaxis": {
-            "title": {
-                "text": "Corine Land Cover Class"
-            }
+            "dtick": 1
         },
         "yaxis": {
-            "title": {
-                "text": "Corine Land Cover Class"
-            }
+            "range": [
+                0,
+                100
+            ]
         }
     }
 }

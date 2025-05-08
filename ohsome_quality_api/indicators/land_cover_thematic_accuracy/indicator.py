@@ -11,6 +11,29 @@ from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+# Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
+corine_classes = {
+    CorineClass(11): "Artificial areas: Urban fabric",
+    CorineClass(12): "Artificial areas: Industrial, commercial and transport units",
+    CorineClass(13): "Artificial areas: Mine, dump and construction sites",
+    CorineClass(14): "Artificial areas: Artificial non-agricultural vegetated areas",
+    CorineClass(21): "Agricultural areas: Arable land",
+    CorineClass(22): "Agricultural areas: Permanetn crops",
+    CorineClass(23): "Agricultural areas: Pastures",
+    CorineClass(24): "Agricultural areas: Heterogeneous agricultural areas",
+    CorineClass(31): "Forest and semi-natural areas: Forest",
+    CorineClass(
+        32
+    ): "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",
+    CorineClass(
+        33
+    ): "Forest and semi-natural areas: Open spaces with little or no vegetation",
+    CorineClass(41): "Wetlands: Inland wetlands",
+    CorineClass(42): "Wetlands: Coastal wetlands",
+    CorineClass(51): "Water bodies: Inland waters",
+    CorineClass(52): "Water bodies: Marine waters",
+}
+
 
 class LandCoverThematicAccuracy(BaseIndicator):
     """
@@ -98,19 +121,24 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         class_labels = []
         for c in self.clc_classes_corine:
-            parts = CorineClass(c).name.split("_")
-            title = " ".join(parts).lower().title()
-            class_labels.append(title)
+            class_labels.append(corine_classes[CorineClass(c)])
+
+        bars = []
+
+        names = [corine_classes[CorineClass(c)] for c in set(self.clc_classes_corine)]
+        x_list = [str(i) for i in list(set(self.clc_classes_corine))]
+        y_list = [v * 100 for v in self.f1_scores]
+        for name, x, y in zip(names, x_list, y_list):
+            bars.append(pgo.Bar(name=name, x=[x], y=[y]))
         fig = pgo.Figure(
-            data=[
-                pgo.Bar(
-                    name="OSM building area",
-                    x=list(set(class_labels)),
-                    # x=self.f1_scores,
-                    y=[v * 100 for v in self.f1_scores],
-                )
-            ],
-            layout=pgo.Layout({"yaxis_range": [0, 100]}),
+            data=bars,
+            layout=pgo.Layout(
+                {
+                    "yaxis_range": [0, 100],
+                    "xaxis_dtick": 1,
+                },
+                showlegend=True,
+            ),
         )
 
         raw = fig.to_dict()
