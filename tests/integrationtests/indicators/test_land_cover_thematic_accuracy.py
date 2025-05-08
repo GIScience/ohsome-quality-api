@@ -80,7 +80,7 @@ def mock_db_fetch_single_class(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_preprocess(feature, topic, mock_db_fetch):
+async def test_preprocess_multi_class(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
@@ -126,7 +126,7 @@ async def test_preprocess_single_class(
 
 
 @pytest.mark.asyncio
-async def test_calculate(feature, topic, mock_db_fetch):
+async def test_calculate_multi_class(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
@@ -158,7 +158,7 @@ async def test_calculate_single_class(
 
 
 @pytest.mark.asyncio
-async def test_figure(feature, topic, mock_db_fetch):
+async def test_figure_multi_class(feature, topic, mock_db_fetch):
     indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
     await indicator.preprocess()
     indicator.calculate()
