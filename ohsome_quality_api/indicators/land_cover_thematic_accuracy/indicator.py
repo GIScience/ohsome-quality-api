@@ -24,7 +24,7 @@ corine_classes = {
     CorineClass(31): "Forest and semi-natural areas: Forest",
     CorineClass(
         32
-    ): "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",
+    ): "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",  # noqa
     CorineClass(
         33
     ): "Forest and semi-natural areas: Open spaces with little or no vegetation",
@@ -67,6 +67,16 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
+        if self.corine_class:
+            self.clc_classes_osm = [
+                1 if clc_class == CorineClass(self.corine_class).value else 0
+                for clc_class in self.clc_classes_osm
+            ]
+            self.clc_classes_corine = [
+                1 if clc_class == CorineClass(self.corine_class).value else 0
+                for clc_class in self.clc_classes_corine
+            ]
+
         self.f1_score = f1_score(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -146,11 +156,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
     def _create_figure_single_class(self):
-        class_labels = []
-        for c in self.clc_classes_corine:
-            parts = CorineClass(c).name.split("_")
-            title = " ".join(parts).lower().title()
-            class_labels.append(title)
+        class_labels = ["Other classes", CorineClass(self.corine_class).name]
         fig = pgo.Figure(
             data=pgo.Heatmap(
                 z=self.confusion_matrix,

@@ -43,7 +43,7 @@ def topic() -> TopicDefinition:
 
 @pytest.fixture
 def corine_class() -> CorineClass:
-    return CorineClass.twentythree.value
+    return CorineClass.AGRICULTURAL_AREAS_3.value
 
 
 @pytest.fixture
@@ -171,7 +171,9 @@ async def test_figure_multi_class(feature, topic, mock_db_fetch):
 
 
 @pytest.mark.asyncio
-async def test_figure_single_class(feature, topic, corine_class, mock_db_fetch):
+async def test_figure_single_class(
+    feature, topic, corine_class, mock_db_fetch_single_class
+):
     indicator = LandCoverThematicAccuracy(
         feature=feature, topic=topic, corine_class=corine_class
     )
