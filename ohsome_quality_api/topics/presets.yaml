@@ -604,7 +604,7 @@ lulc:
     - land-cover-thematic-accuracy
   projects:
     - idealvgi
-    - bicycle_parking
+    - bkg
 
 ### EXPANSE PROJECT ###
 
