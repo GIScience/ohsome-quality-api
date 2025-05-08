@@ -77,4 +77,4 @@ land-cover-thematic-accuracy:
     - bkg
   quality_dimension: thematic-accuracy
   description: >-
-    Thematic Accuracy of Land Cover in Open Street Map comared to refrence data.
+    Thematic Accuracy of Land Cover in Open Street Map compared to refrence data.
