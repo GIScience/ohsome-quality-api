@@ -601,8 +601,10 @@ lulc:
   indicators:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
+    - land-cover-thematic-accuracy
   projects:
     - idealvgi
+    - bkg
 
 ### EXPANSE PROJECT ###
 

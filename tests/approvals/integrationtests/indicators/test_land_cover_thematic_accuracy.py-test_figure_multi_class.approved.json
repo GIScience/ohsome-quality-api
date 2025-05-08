@@ -1,0 +1,163 @@
+{
+    "data": [
+        {
+            "legendgroup": "Forest and seminatural areas",
+            "legendgrouptitle": {
+                "text": "Forest and seminatural areas"
+            },
+            "name": "Shrubs and/or herbaceous vegetation associations",
+            "type": "bar",
+            "x": [
+                "32"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Urban fabric",
+            "type": "bar",
+            "x": [
+                "11"
+            ],
+            "y": [
+                90.04534466333342
+            ]
+        },
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Industrial, commercial and transport units",
+            "type": "bar",
+            "x": [
+                "12"
+            ],
+            "y": [
+                85.14053055717963
+            ]
+        },
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Artificial non-agricultural vegetated areas",
+            "type": "bar",
+            "x": [
+                "14"
+            ],
+            "y": [
+                19.75282490077088
+            ]
+        },
+        {
+            "legendgroup": "Water bodies",
+            "legendgrouptitle": {
+                "text": "Water bodies"
+            },
+            "name": "Inland waters",
+            "type": "bar",
+            "x": [
+                "51"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Arable land",
+            "type": "bar",
+            "x": [
+                "21"
+            ],
+            "y": [
+                88.50013049187115
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Permanetn crops",
+            "type": "bar",
+            "x": [
+                "22"
+            ],
+            "y": [
+                69.77146880873775
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Pastures",
+            "type": "bar",
+            "x": [
+                "23"
+            ],
+            "y": [
+                55.093034384370334
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Heterogeneous agricultural areas",
+            "type": "bar",
+            "x": [
+                "24"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Forest and seminatural areas",
+            "legendgrouptitle": {
+                "text": "Forest and seminatural areas"
+            },
+            "name": "Forest",
+            "type": "bar",
+            "x": [
+                "31"
+            ],
+            "y": [
+                87.07398289897031
+            ]
+        }
+    ],
+    "layout": {
+        "autotypenumbers": "strict",
+        "legend": {
+            "orientation": "h",
+            "x": 0,
+            "y": -0.1,
+            "yanchor": "top"
+        },
+        "showlegend": true,
+        "xaxis": {
+            "dtick": 1
+        },
+        "yaxis": {
+            "range": [
+                0,
+                100
+            ]
+        }
+    }
+}

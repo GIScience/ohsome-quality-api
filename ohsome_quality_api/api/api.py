@@ -30,6 +30,7 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
     IndicatorRequest,
+    LandCoverThematicAccuracyRequest,
 )
 from ohsome_quality_api.api.response_models import (
     AttributeMetadataResponse,
@@ -265,6 +266,30 @@ async def post_attribute_completeness(
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
     return await _post_indicator(request, "attribute-completeness", parameters)
+
+
+@app.post(
+    "/indicators/land-cover-thematic-accuracy",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+)
+async def post_land_cover_thematic_accuracy(
+    request: Request, parameters: LandCoverThematicAccuracyRequest
+) -> Any:
+    """Request the Land Cover Thematic Accuracy indicator for your area of interest."""
+    return await _post_indicator(request, "land-cover-thematic-accuracy", parameters)
 
 
 @app.post(

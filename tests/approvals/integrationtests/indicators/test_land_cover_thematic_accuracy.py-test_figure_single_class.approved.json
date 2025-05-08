@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+            "name": "OSM building area",
+            "type": "bar",
+            "x": [
+                "Thirtytwo",
+                "Elven",
+                "Twelve",
+                "Fourteen",
+                "Fiftyone",
+                "Twentyone",
+                "Twentytwo",
+                "Twentythree",
+                "Twentyfour",
+                "Thirtyone"
+            ],
+            "y": [
+                0.8232127037091783
+            ]
+        }
+    ],
+    "layout": {}
+}

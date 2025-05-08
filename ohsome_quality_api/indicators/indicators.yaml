@@ -71,3 +71,10 @@ attribute-completeness:
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs
       amenity=hospital and wheelchair=yes).
+land-cover-thematic-accuracy:
+  name: Land Cover Thematic Accuracy
+  projects:
+    - bkg
+  quality_dimension: thematic-accuracy
+  description: >-
+    Thematic Accuracy of Land Cover in Open Street Map compared to refrence data.
