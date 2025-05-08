@@ -3,13 +3,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import plotly.graph_objects as pgo
-from api.request_models import CorineClass
 from geojson import Feature
 from sklearn.metrics import (
     classification_report,
     f1_score,
 )
 
+from ohsome_quality_api.api.request_models import CorineClass
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
