@@ -173,7 +173,17 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         return self
 
 
-class CorineClass(Enum):
+class CorineLandCoverClassLevel1(Enum):
+    ARTIFICIAL_AREAS = 1
+    AGRICULTURAL_AREAS = 2
+    FOREST_AND_SEMINATURAL_AREAS = 3
+    WETLANDS = 4
+    WATER_BODIES = 5
+
+
+class CorineLandCoverClass(Enum):
+    """Corine Land Cover Class Level 2."""
+
     # TODO: Use more descriptive names
     ARTIFICIAL_AREAS_1 = 11
     ARTIFICIAL_AREAS_2 = 12
@@ -193,7 +203,7 @@ class CorineClass(Enum):
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
-    corine_class: CorineClass | None = Field(
+    corine_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
         description=(

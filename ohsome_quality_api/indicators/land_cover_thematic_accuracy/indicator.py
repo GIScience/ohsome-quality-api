@@ -7,32 +7,38 @@ import plotly.graph_objects as pgo
 from geojson import Feature
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-from ohsome_quality_api.api.request_models import CorineClass
+from ohsome_quality_api.api.request_models import (
+    CorineLandCoverClass,
+    CorineLandCoverClassLevel1,
+)
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
 corine_classes = {
-    CorineClass(11): "Artificial areas: Urban fabric",
-    CorineClass(12): "Artificial areas: Industrial, commercial and transport units",
-    CorineClass(13): "Artificial areas: Mine, dump and construction sites",
-    CorineClass(14): "Artificial areas: Artificial non-agricultural vegetated areas",
-    CorineClass(21): "Agricultural areas: Arable land",
-    CorineClass(22): "Agricultural areas: Permanetn crops",
-    CorineClass(23): "Agricultural areas: Pastures",
-    CorineClass(24): "Agricultural areas: Heterogeneous agricultural areas",
-    CorineClass(31): "Forest and semi-natural areas: Forest",
-    CorineClass(
-        32
-    ): "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",  # noqa
-    CorineClass(
-        33
-    ): "Forest and semi-natural areas: Open spaces with little or no vegetation",
-    CorineClass(41): "Wetlands: Inland wetlands",
-    CorineClass(42): "Wetlands: Coastal wetlands",
-    CorineClass(51): "Water bodies: Inland waters",
-    CorineClass(52): "Water bodies: Marine waters",
+    CorineLandCoverClass(11): "Urban fabric",
+    CorineLandCoverClass(12): "Industrial, commercial and transport units",
+    CorineLandCoverClass(13): "Mine, dump and construction sites",
+    CorineLandCoverClass(14): "Artificial non-agricultural vegetated areas",
+    CorineLandCoverClass(21): "Arable land",
+    CorineLandCoverClass(22): "Permanetn crops",
+    CorineLandCoverClass(23): "Pastures",
+    CorineLandCoverClass(24): "Heterogeneous agricultural areas",
+    CorineLandCoverClass(31): "Forest",
+    CorineLandCoverClass(32): "Shrubs and/or herbaceous vegetation associations",
+    CorineLandCoverClass(33): "Open spaces with little or no vegetation",
+    CorineLandCoverClass(41): "Inland wetlands",
+    CorineLandCoverClass(42): "Coastal wetlands",
+    CorineLandCoverClass(51): "Inland waters",
+    CorineLandCoverClass(52): "Marine waters",
+}
+corine_top_level_class = {
+    1: "Artificial areas",
+    2: "Agricultural areas",
+    3: "Forest and semi-natural areas",
+    4: "Wetlands",
+    5: "Water bodies",
 }
 
 
@@ -137,24 +143,63 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         class_labels = []
         for c in self.clc_classes_corine:
-            class_labels.append(corine_classes[CorineClass(c)])
+            class_labels.append(corine_classes[CorineLandCoverClass(c)])
 
         bars = []
 
-        names = [corine_classes[CorineClass(c)] for c in set(self.clc_classes_corine)]
+        clc_class_names_level_1 = [
+            " ".join(
+                CorineLandCoverClassLevel1(int(str(c)[0])).name.split("_")
+            ).capitalize()
+            for c in set(self.clc_classes_corine)
+        ]
+        clc_class_names_level_2 = [
+            corine_classes[CorineLandCoverClass(c)]
+            for c in set(self.clc_classes_corine)
+        ]
         x_list = [str(i) for i in list(set(self.clc_classes_corine))]
         y_list = [v * 100 for v in self.f1_scores]
-        for name, x, y in zip(names, x_list, y_list):
-            bars.append(pgo.Bar(name=name, x=[x], y=[y]))
+        for name_level_1, name_level_2, x, y in zip(
+            clc_class_names_level_1, clc_class_names_level_2, x_list, y_list
+        ):
+            bars.append(
+                pgo.Bar(
+                    name=name_level_2,
+                    x=[x],
+                    y=[y],
+                    legendgroup=name_level_1,
+                    legendgrouptitle_text=name_level_1,
+                )
+            )
         fig = pgo.Figure(
             data=bars,
             layout=pgo.Layout(
                 {
                     "yaxis_range": [0, 100],
                     "xaxis_dtick": 1,
+                    "autotypenumbers": "strict",
+                    "legend": {
+                        "yanchor": "top",
+                        "x": 0,
+                        "y": -0.1,
+                        "orientation": "h",
+                    },
                 },
                 showlegend=True,
             ),
+            # updatemenus=[
+            #     {
+            #         "type": "buttons",
+            #         "buttons": [
+            #             {
+            #                 "label": "≡",
+            #                 "method": "relayout",
+            #                 "args": ["showlegend", False],
+            #                 "args2": ["showlegend", True],
+            #             }
+            #         ],
+            #     }
+            # ],
         )
 
         raw = fig.to_dict()
