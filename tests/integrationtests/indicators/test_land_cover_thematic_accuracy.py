@@ -4,7 +4,7 @@ import pytest
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
-from ohsome_quality_api.api.request_models import CorineClass
+from ohsome_quality_api.api.request_models import CorineLandCoverClass
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
 )
@@ -42,8 +42,8 @@ def topic() -> TopicDefinition:
 
 
 @pytest.fixture
-def corine_class() -> CorineClass:
-    return CorineClass.AGRICULTURAL_AREAS_3.value
+def corine_class() -> CorineLandCoverClass:
+    return CorineLandCoverClass.AGRICULTURAL_AREAS_3.value
 
 
 @pytest.fixture

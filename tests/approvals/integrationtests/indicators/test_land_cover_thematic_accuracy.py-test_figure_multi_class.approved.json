@@ -1,7 +1,11 @@
 {
     "data": [
         {
-            "name": "Forest and semi-natural areas: Shrubs and/or herbaceous vegetation associations",
+            "legendgroup": "Forest and seminatural areas",
+            "legendgrouptitle": {
+                "text": "Forest and seminatural areas"
+            },
+            "name": "Shrubs and/or herbaceous vegetation associations",
             "type": "bar",
             "x": [
                 "32"
@@ -11,7 +15,11 @@
             ]
         },
         {
-            "name": "Artificial areas: Urban fabric",
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Urban fabric",
             "type": "bar",
             "x": [
                 "11"
@@ -21,7 +29,11 @@
             ]
         },
         {
-            "name": "Artificial areas: Industrial, commercial and transport units",
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Industrial, commercial and transport units",
             "type": "bar",
             "x": [
                 "12"
@@ -31,7 +43,11 @@
             ]
         },
         {
-            "name": "Artificial areas: Artificial non-agricultural vegetated areas",
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "name": "Artificial non-agricultural vegetated areas",
             "type": "bar",
             "x": [
                 "14"
@@ -41,7 +57,11 @@
             ]
         },
         {
-            "name": "Water bodies: Inland waters",
+            "legendgroup": "Water bodies",
+            "legendgrouptitle": {
+                "text": "Water bodies"
+            },
+            "name": "Inland waters",
             "type": "bar",
             "x": [
                 "51"
@@ -51,7 +71,11 @@
             ]
         },
         {
-            "name": "Agricultural areas: Arable land",
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Arable land",
             "type": "bar",
             "x": [
                 "21"
@@ -61,7 +85,11 @@
             ]
         },
         {
-            "name": "Agricultural areas: Permanetn crops",
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Permanetn crops",
             "type": "bar",
             "x": [
                 "22"
@@ -71,7 +99,11 @@
             ]
         },
         {
-            "name": "Agricultural areas: Pastures",
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Pastures",
             "type": "bar",
             "x": [
                 "23"
@@ -81,7 +113,11 @@
             ]
         },
         {
-            "name": "Agricultural areas: Heterogeneous agricultural areas",
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "name": "Heterogeneous agricultural areas",
             "type": "bar",
             "x": [
                 "24"
@@ -91,7 +127,11 @@
             ]
         },
         {
-            "name": "Forest and semi-natural areas: Forest",
+            "legendgroup": "Forest and seminatural areas",
+            "legendgrouptitle": {
+                "text": "Forest and seminatural areas"
+            },
+            "name": "Forest",
             "type": "bar",
             "x": [
                 "31"
@@ -102,6 +142,13 @@
         }
     ],
     "layout": {
+        "autotypenumbers": "strict",
+        "legend": {
+            "orientation": "h",
+            "x": 0,
+            "y": -0.1,
+            "yanchor": "top"
+        },
         "showlegend": true,
         "xaxis": {
             "dtick": 1
