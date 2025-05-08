@@ -1,12 +1,15 @@
 ---
 label_description:
   red: >-
-    TODO
+    The agreement between OSM land use data and CORINE land cover is low in your area-of-interest. This indicates poor classification quality or incomplete land use tagging in OSM.
   yellow: >-
-    TODO
+    The agreement between OSM land use data and CORINE land cover is moderate in your area-of-interest. OSM data captures some land use categories but may lack detail or accuracy.
   green: >-
-    TODO
+    The agreement between OSM land use data and CORINE land cover is high in your area-of-interest. This suggests that OSM provides a reliable representation of land use.
   undefined: >-
-    TODO
+    The F1-score could not be calculated, possibly due to missing or incompatible data in the selected region.
 result_description: >-
-  A desciption of the results.
+  The current match quality between OSM land use data and official land cover data from CORINE
+  in the area-of-interest is $score %. The match is assessed using a statistical metric (F1-Score) that considers both 
+  the correctness and completeness of the land use categories. A higher score means OSM land use closely reflects the
+  official data. 
