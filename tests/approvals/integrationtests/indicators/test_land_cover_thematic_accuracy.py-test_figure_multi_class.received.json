@@ -16,6 +16,11 @@
         }
     ],
     "layout": {
+        "title": {
+            "subtitle": {
+                "text": "Thirtytwo, Elven, Twelve, Fourteen, Fiftyone, Twentyone, Twentytwo, Twentythree, Twentyfour, Thirtyone"
+            }
+        },
         "xaxis": {
             "title": {
                 "text": "Corine Land Cover Class"
