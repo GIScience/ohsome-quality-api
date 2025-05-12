@@ -51,7 +51,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
     Ergänzend zu dem Corine Completeness Indicator
     """
 
-    def __init__(self, topic: Topic, feature: Feature, corine_class=None) -> None:
+    def __init__(
+        self,
+        topic: Topic,
+        feature: Feature,
+        corine_class: CorineLandCoverClass | None = None,
+    ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.corine_class = corine_class
 
@@ -76,11 +81,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         if self.corine_class:
             self.clc_classes_osm = [
-                1 if clc_class == CorineClass(self.corine_class).value else 0
+                1 if clc_class == self.corine_class.value else 0
                 for clc_class in self.clc_classes_osm
             ]
             self.clc_classes_corine = [
-                1 if clc_class == CorineClass(self.corine_class).value else 0
+                1 if clc_class == self.corine_class.value else 0
                 for clc_class in self.clc_classes_corine
             ]
 
@@ -105,12 +110,16 @@ class LandCoverThematicAccuracy(BaseIndicator):
         else:
             self.result.class_ = 1
 
-        template = Template(self.templates.result_description)
-        description = template.substitute(
-            score=round(self.f1_score * 100, 2),
+        template = Template(self.templates.label_description[self.result.label])
+        if self.corine_class is None:
+            clc_class = "all CLC classes"
+        else:
+            clc_class = "CLC class " + corine_classes[self.corine_class]
+        label_description = template.safe_substitute(
+            {"f1_score": round(self.f1_score * 100, 2), "clc_class": clc_class}
         )
         self.result.description = " ".join(
-            (description, self.templates.label_description[self.result.label])
+            (self.templates.result_description, label_description)
         )
 
         # TODO: UdefinedMetricWarning
@@ -207,7 +216,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
     def _create_figure_single_class(self):
-        class_labels = ["Other classes", CorineClass(self.corine_class).name]
+        class_labels = ["Other classes", self.corine_class.name]
         fig = pgo.Figure(
             data=pgo.Heatmap(
                 z=self.confusion_matrix,

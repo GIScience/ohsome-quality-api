@@ -1,1 +1,1 @@
-TODO
+The thematic accuracy of OpenStreetMap (OSM) land cover data is determined in comparison to the CORINE Land Cover (CLC) data. The comparison uses a statistical metric (F1-Score) which considers both the correctness and completeness of the land cover categories. A higher score means OSM land cover data closely reflects that of the reference dataset (CORINE). In your area-of-interes the thematic accuracy of CLC class Pastures is 47.95 % (low agreement between OSM and CORINE). This suggests that OSM has a poor classification quality or incomplete land cover data.

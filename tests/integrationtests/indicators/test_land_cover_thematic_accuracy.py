@@ -43,7 +43,7 @@ def topic() -> TopicDefinition:
 
 @pytest.fixture
 def corine_class() -> CorineLandCoverClass:
-    return CorineLandCoverClass.AGRICULTURAL_AREAS_3.value
+    return CorineLandCoverClass.AGRICULTURAL_AREAS_3
 
 
 @pytest.fixture
