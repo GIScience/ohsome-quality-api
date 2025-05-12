@@ -17,13 +17,13 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
-corine_classes = {
+clc_classes_level_2 = {
     CorineLandCoverClass(11): "Urban fabric",
     CorineLandCoverClass(12): "Industrial, commercial and transport units",
     CorineLandCoverClass(13): "Mine, dump and construction sites",
     CorineLandCoverClass(14): "Artificial non-agricultural vegetated areas",
     CorineLandCoverClass(21): "Arable land",
-    CorineLandCoverClass(22): "Permanetn crops",
+    CorineLandCoverClass(22): "Permanent crops",
     CorineLandCoverClass(23): "Pastures",
     CorineLandCoverClass(24): "Heterogeneous agricultural areas",
     CorineLandCoverClass(31): "Forest",
@@ -34,12 +34,18 @@ corine_classes = {
     CorineLandCoverClass(51): "Inland waters",
     CorineLandCoverClass(52): "Marine waters",
 }
-corine_top_level_class = {
-    1: {"name": "Artificial areas", "color": Color["GREY"]},
-    2: {"name": "Agricultural areas", "color": Color["YELLOW"]},
-    3: {"name": "Forest and semi-natural areas", "color": Color["GREEN"]},
-    4: {"name": "Wetlands", "color": Color["VIOLET"]},
-    5: {"name": "Water bodies", "color": Color["BLUE"]},
+clc_classes_level_1 = {
+    CorineLandCoverClassLevel1(1): {"name": "Artificial areas", "color": Color["GREY"]},
+    CorineLandCoverClassLevel1(2): {
+        "name": "Agricultural areas",
+        "color": Color["YELLOW"],
+    },
+    CorineLandCoverClassLevel1(3): {
+        "name": "Forest and semi-natural areas",
+        "color": Color["GREEN"],
+    },
+    CorineLandCoverClassLevel1(4): {"name": "Wetlands", "color": Color["VIOLET"]},
+    CorineLandCoverClassLevel1(5): {"name": "Water bodies", "color": Color["BLUE"]},
 }
 
 
@@ -115,7 +121,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         if self.corine_class is None:
             clc_class = "all CLC classes"
         else:
-            clc_class = "CLC class " + corine_classes[self.corine_class]
+            clc_class = "CLC class " + clc_classes_level_2[self.corine_class]
         label_description = template.safe_substitute(
             {"f1_score": round(self.f1_score * 100, 2), "clc_class": clc_class}
         )
@@ -153,39 +159,17 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         class_labels = []
         for c in self.clc_classes_corine:
-            class_labels.append(corine_classes[CorineLandCoverClass(c)])
+            class_labels.append(clc_classes_level_2[CorineLandCoverClass(c)])
 
         bars = []
 
-        clc_classes_level_1 = [
-            CorineLandCoverClassLevel1(int(str(c)[0]))
-            for c in set(self.clc_classes_corine)
-        ]
-        clc_class_names_level_1 = [
-            " ".join(c.name.split("_")).capitalize() for c in clc_classes_level_1
-        ]
-        clc_class_names_level_2 = [
-            corine_classes[CorineLandCoverClass(c)]
-            for c in set(self.clc_classes_corine)
-        ]
-        colors = [
-            corine_top_level_class[c.value]["color"].value for c in clc_classes_level_1
-        ]
-        x_list = [str(i) for i in list(set(self.clc_classes_corine))]
-        y_list = [v * 100 for v in self.f1_scores]
-        for (
-            name_level_1,
-            name_level_2,
-            x,
-            y,
-            color,
-        ) in zip(
-            clc_class_names_level_1,
-            clc_class_names_level_2,
-            x_list,
-            y_list,
-            colors,
-        ):
+        for i, clc_class in enumerate(list(set(self.clc_classes_corine))):
+            clc_class_level_1 = CorineLandCoverClassLevel1(int(str(clc_class)[0]))
+            color = clc_classes_level_1[clc_class_level_1]["color"].value
+            name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
+            name_level_2 = clc_classes_level_2[CorineLandCoverClass(clc_class)]
+            x = str(clc_class)
+            y = self.f1_scores[i] * 100
             bars.append(
                 pgo.Bar(
                     name=name_level_2,

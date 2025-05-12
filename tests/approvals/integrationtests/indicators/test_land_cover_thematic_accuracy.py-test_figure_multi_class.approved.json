@@ -1,9 +1,9 @@
 {
     "data": [
         {
-            "legendgroup": "Forest and seminatural areas",
+            "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
-                "text": "Forest and seminatural areas"
+                "text": "Forest and semi-natural areas"
             },
             "marker": {
                 "color": "#21BA45"
@@ -110,7 +110,7 @@
             "marker": {
                 "color": "#FBBD08"
             },
-            "name": "Permanetn crops",
+            "name": "Permanent crops",
             "type": "bar",
             "x": [
                 "22"
@@ -154,9 +154,9 @@
             ]
         },
         {
-            "legendgroup": "Forest and seminatural areas",
+            "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
-                "text": "Forest and seminatural areas"
+                "text": "Forest and semi-natural areas"
             },
             "marker": {
                 "color": "#21BA45"

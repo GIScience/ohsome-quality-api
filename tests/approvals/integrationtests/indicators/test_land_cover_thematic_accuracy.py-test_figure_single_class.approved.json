@@ -1,24 +1,38 @@
 {
     "data": [
         {
-            "name": "OSM building area",
-            "type": "bar",
+            "text": {
+                "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
+                "dtype": "f8",
+                "shape": "2, 2"
+            },
+            "texttemplate": "%{text:.2f}",
+            "type": "heatmap",
             "x": [
-                "Thirtytwo",
-                "Elven",
-                "Twelve",
-                "Fourteen",
-                "Fiftyone",
-                "Twentyone",
-                "Twentytwo",
-                "Twentythree",
-                "Twentyfour",
-                "Thirtyone"
+                "Other classes",
+                "AGRICULTURAL_AREAS_3"
             ],
             "y": [
-                0.8232127037091783
-            ]
+                "Other classes",
+                "AGRICULTURAL_AREAS_3"
+            ],
+            "z": {
+                "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
+                "dtype": "f8",
+                "shape": "2, 2"
+            }
         }
     ],
-    "layout": {}
+    "layout": {
+        "xaxis": {
+            "title": {
+                "text": "Corine Land Cover Class (actual)"
+            }
+        },
+        "yaxis": {
+            "title": {
+                "text": "Corine Land Cover Class in OSM"
+            }
+        }
+    }
 }
