@@ -1,23 +1,6 @@
 {
     "data": [
         {
-            "legendgroup": "Forest and semi-natural areas",
-            "legendgrouptitle": {
-                "text": "Forest and semi-natural areas"
-            },
-            "marker": {
-                "color": "#21BA45"
-            },
-            "name": "Shrubs and/or herbaceous vegetation associations",
-            "type": "bar",
-            "x": [
-                "32"
-            ],
-            "y": [
-                0.0
-            ]
-        },
-        {
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -25,7 +8,7 @@
             "marker": {
                 "color": "#767676"
             },
-            "name": "Urban fabric",
+            "name": "11 Urban fabric",
             "type": "bar",
             "x": [
                 "11"
@@ -42,7 +25,7 @@
             "marker": {
                 "color": "#767676"
             },
-            "name": "Industrial, commercial and transport units",
+            "name": "12 Industrial, commercial and transport units",
             "type": "bar",
             "x": [
                 "12"
@@ -59,30 +42,13 @@
             "marker": {
                 "color": "#767676"
             },
-            "name": "Artificial non-agricultural vegetated areas",
+            "name": "14 Artificial non-agricultural vegetated areas",
             "type": "bar",
             "x": [
                 "14"
             ],
             "y": [
                 19.75282490077088
-            ]
-        },
-        {
-            "legendgroup": "Water bodies",
-            "legendgrouptitle": {
-                "text": "Water bodies"
-            },
-            "marker": {
-                "color": "#2185D0"
-            },
-            "name": "Inland waters",
-            "type": "bar",
-            "x": [
-                "51"
-            ],
-            "y": [
-                0.0
             ]
         },
         {
@@ -93,7 +59,7 @@
             "marker": {
                 "color": "#FBBD08"
             },
-            "name": "Arable land",
+            "name": "21 Arable land",
             "type": "bar",
             "x": [
                 "21"
@@ -110,7 +76,7 @@
             "marker": {
                 "color": "#FBBD08"
             },
-            "name": "Permanent crops",
+            "name": "22 Permanent crops",
             "type": "bar",
             "x": [
                 "22"
@@ -127,7 +93,7 @@
             "marker": {
                 "color": "#FBBD08"
             },
-            "name": "Pastures",
+            "name": "23 Pastures",
             "type": "bar",
             "x": [
                 "23"
@@ -144,7 +110,7 @@
             "marker": {
                 "color": "#FBBD08"
             },
-            "name": "Heterogeneous agricultural areas",
+            "name": "24 Heterogeneous agricultural areas",
             "type": "bar",
             "x": [
                 "24"
@@ -161,13 +127,47 @@
             "marker": {
                 "color": "#21BA45"
             },
-            "name": "Forest",
+            "name": "31 Forest",
             "type": "bar",
             "x": [
                 "31"
             ],
             "y": [
                 87.07398289897031
+            ]
+        },
+        {
+            "legendgroup": "Forest and semi-natural areas",
+            "legendgrouptitle": {
+                "text": "Forest and semi-natural areas"
+            },
+            "marker": {
+                "color": "#21BA45"
+            },
+            "name": "32 Shrubs and/or herbaceous vegetation associations",
+            "type": "bar",
+            "x": [
+                "32"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Water bodies",
+            "legendgrouptitle": {
+                "text": "Water bodies"
+            },
+            "marker": {
+                "color": "#2185D0"
+            },
+            "name": "51 Inland waters",
+            "type": "bar",
+            "x": [
+                "51"
+            ],
+            "y": [
+                0.0
             ]
         }
     ],
@@ -176,18 +176,24 @@
         "legend": {
             "orientation": "h",
             "x": 0,
-            "y": -0.1,
+            "y": -0.5,
             "yanchor": "top"
         },
         "showlegend": true,
         "xaxis": {
-            "dtick": 1
+            "dtick": 1,
+            "title": {
+                "text": "CORINE Land Cover Class"
+            }
         },
         "yaxis": {
             "range": [
                 0,
                 100
-            ]
+            ],
+            "title": {
+                "text": "F1-Score [%]"
+            }
         }
     }
 }

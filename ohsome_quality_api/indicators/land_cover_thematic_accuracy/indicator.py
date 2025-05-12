@@ -155,7 +155,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             self.clc_classes_osm,
             average=None,  # for each
             sample_weight=self.areas,
-            labels=list(set(self.clc_classes_corine)),
+            labels=list(sorted(set(self.clc_classes_corine))),
         )
         class_labels = []
         for c in self.clc_classes_corine:
@@ -163,11 +163,16 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         bars = []
 
-        for i, clc_class in enumerate(list(set(self.clc_classes_corine))):
+        for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
             clc_class_level_1 = CorineLandCoverClassLevel1(int(str(clc_class)[0]))
             color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
-            name_level_2 = clc_classes_level_2[CorineLandCoverClass(clc_class)]
+            number_level_2 = CorineLandCoverClass(clc_class).value
+            name_level_2 = (
+                str(number_level_2)
+                + " "
+                + clc_classes_level_2[CorineLandCoverClass(clc_class)]
+            )
             x = str(clc_class)
             y = self.f1_scores[i] * 100
             bars.append(
@@ -184,15 +189,18 @@ class LandCoverThematicAccuracy(BaseIndicator):
             data=bars,
             layout=pgo.Layout(
                 {
-                    "yaxis_range": [0, 100],
-                    "xaxis_dtick": 1,
                     "autotypenumbers": "strict",
                     "legend": {
                         "yanchor": "top",
                         "x": 0,
-                        "y": -0.1,
+                        "y": -0.5,
                         "orientation": "h",
                     },
+                    "xaxis": {
+                        "title": {"text": "CORINE Land Cover Class"},
+                        "dtick": 1,
+                    },
+                    "yaxis": {"title": {"text": "F1-Score [%]"}, "range": [0, 100]},
                 },
                 showlegend=True,
             ),
