@@ -11,6 +11,7 @@ from ohsome_quality_api.api.request_models import (
     CorineLandCoverClass,
     CorineLandCoverClassLevel1,
 )
+from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -34,11 +35,11 @@ corine_classes = {
     CorineLandCoverClass(52): "Marine waters",
 }
 corine_top_level_class = {
-    1: "Artificial areas",
-    2: "Agricultural areas",
-    3: "Forest and semi-natural areas",
-    4: "Wetlands",
-    5: "Water bodies",
+    1: {"name": "Artificial areas", "color": Color["GREY"]},
+    2: {"name": "Agricultural areas", "color": Color["YELLOW"]},
+    3: {"name": "Forest and semi-natural areas", "color": Color["GREEN"]},
+    4: {"name": "Wetlands", "color": Color["VIOLET"]},
+    5: {"name": "Water bodies", "color": Color["BLUE"]},
 }
 
 
@@ -156,20 +157,34 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         bars = []
 
-        clc_class_names_level_1 = [
-            " ".join(
-                CorineLandCoverClassLevel1(int(str(c)[0])).name.split("_")
-            ).capitalize()
+        clc_classes_level_1 = [
+            CorineLandCoverClassLevel1(int(str(c)[0]))
             for c in set(self.clc_classes_corine)
+        ]
+        clc_class_names_level_1 = [
+            " ".join(c.name.split("_")).capitalize() for c in clc_classes_level_1
         ]
         clc_class_names_level_2 = [
             corine_classes[CorineLandCoverClass(c)]
             for c in set(self.clc_classes_corine)
         ]
+        colors = [
+            corine_top_level_class[c.value]["color"].value for c in clc_classes_level_1
+        ]
         x_list = [str(i) for i in list(set(self.clc_classes_corine))]
         y_list = [v * 100 for v in self.f1_scores]
-        for name_level_1, name_level_2, x, y in zip(
-            clc_class_names_level_1, clc_class_names_level_2, x_list, y_list
+        for (
+            name_level_1,
+            name_level_2,
+            x,
+            y,
+            color,
+        ) in zip(
+            clc_class_names_level_1,
+            clc_class_names_level_2,
+            x_list,
+            y_list,
+            colors,
         ):
             bars.append(
                 pgo.Bar(
@@ -178,6 +193,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     y=[y],
                     legendgroup=name_level_1,
                     legendgrouptitle_text=name_level_1,
+                    marker_color=color,
                 )
             )
         fig = pgo.Figure(

@@ -5,6 +5,9 @@
             "legendgrouptitle": {
                 "text": "Forest and seminatural areas"
             },
+            "marker": {
+                "color": "#21BA45"
+            },
             "name": "Shrubs and/or herbaceous vegetation associations",
             "type": "bar",
             "x": [
@@ -18,6 +21,9 @@
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
+            },
+            "marker": {
+                "color": "#767676"
             },
             "name": "Urban fabric",
             "type": "bar",
@@ -33,6 +39,9 @@
             "legendgrouptitle": {
                 "text": "Artificial areas"
             },
+            "marker": {
+                "color": "#767676"
+            },
             "name": "Industrial, commercial and transport units",
             "type": "bar",
             "x": [
@@ -46,6 +55,9 @@
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
+            },
+            "marker": {
+                "color": "#767676"
             },
             "name": "Artificial non-agricultural vegetated areas",
             "type": "bar",
@@ -61,6 +73,9 @@
             "legendgrouptitle": {
                 "text": "Water bodies"
             },
+            "marker": {
+                "color": "#2185D0"
+            },
             "name": "Inland waters",
             "type": "bar",
             "x": [
@@ -74,6 +89,9 @@
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
             },
             "name": "Arable land",
             "type": "bar",
@@ -89,6 +107,9 @@
             "legendgrouptitle": {
                 "text": "Agricultural areas"
             },
+            "marker": {
+                "color": "#FBBD08"
+            },
             "name": "Permanetn crops",
             "type": "bar",
             "x": [
@@ -102,6 +123,9 @@
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
             },
             "name": "Pastures",
             "type": "bar",
@@ -117,6 +141,9 @@
             "legendgrouptitle": {
                 "text": "Agricultural areas"
             },
+            "marker": {
+                "color": "#FBBD08"
+            },
             "name": "Heterogeneous agricultural areas",
             "type": "bar",
             "x": [
@@ -130,6 +157,9 @@
             "legendgroup": "Forest and seminatural areas",
             "legendgrouptitle": {
                 "text": "Forest and seminatural areas"
+            },
+            "marker": {
+                "color": "#21BA45"
             },
             "name": "Forest",
             "type": "bar",
