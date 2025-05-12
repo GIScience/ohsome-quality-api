@@ -18,21 +18,21 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
 clc_classes_level_2 = {
-    CorineLandCoverClass(11): "Urban fabric",
-    CorineLandCoverClass(12): "Industrial, commercial and transport units",
-    CorineLandCoverClass(13): "Mine, dump and construction sites",
-    CorineLandCoverClass(14): "Artificial non-agricultural vegetated areas",
-    CorineLandCoverClass(21): "Arable land",
-    CorineLandCoverClass(22): "Permanent crops",
-    CorineLandCoverClass(23): "Pastures",
-    CorineLandCoverClass(24): "Heterogeneous agricultural areas",
-    CorineLandCoverClass(31): "Forest",
-    CorineLandCoverClass(32): "Shrubs and/or herbaceous vegetation associations",
-    CorineLandCoverClass(33): "Open spaces with little or no vegetation",
-    CorineLandCoverClass(41): "Inland wetlands",
-    CorineLandCoverClass(42): "Coastal wetlands",
-    CorineLandCoverClass(51): "Inland waters",
-    CorineLandCoverClass(52): "Marine waters",
+    CorineLandCoverClass("11"): "Urban fabric",
+    CorineLandCoverClass("12"): "Industrial, commercial and transport units",
+    CorineLandCoverClass("13"): "Mine, dump and construction sites",
+    CorineLandCoverClass("14"): "Artificial non-agricultural vegetated areas",
+    CorineLandCoverClass("21"): "Arable land",
+    CorineLandCoverClass("22"): "Permanent crops",
+    CorineLandCoverClass("23"): "Pastures",
+    CorineLandCoverClass("24"): "Heterogeneous agricultural areas",
+    CorineLandCoverClass("31"): "Forest",
+    CorineLandCoverClass("32"): "Shrubs and/or herbaceous vegetation associations",
+    CorineLandCoverClass("33"): "Open spaces with little or no vegetation",
+    CorineLandCoverClass("41"): "Inland wetlands",
+    CorineLandCoverClass("42"): "Coastal wetlands",
+    CorineLandCoverClass("51"): "Inland waters",
+    CorineLandCoverClass("52"): "Marine waters",
 }
 clc_classes_level_1 = {
     CorineLandCoverClassLevel1(1): {"name": "Artificial areas", "color": Color["GREY"]},
@@ -65,14 +65,18 @@ class LandCoverThematicAccuracy(BaseIndicator):
         corine_class: CorineLandCoverClass | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        self.corine_class = corine_class
+        if corine_class:
+            self.corine_class = corine_class
+            self.corine_class_value = int(corine_class.value)
+        else:
+            self.corine_class = corine_class
 
     async def preprocess(self) -> None:
         if self.corine_class:
             with open(Path(__file__).parent / "query-single-class.sql", "r") as file:
                 query = file.read()
             results = await client.fetch(
-                query, str(self.feature["geometry"]), self.corine_class
+                query, str(self.feature["geometry"]), self.corine_class_value
             )
         else:
             with open(Path(__file__).parent / "query-all-classes.sql", "r") as file:
@@ -88,11 +92,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         if self.corine_class:
             self.clc_classes_osm = [
-                1 if clc_class == self.corine_class.value else 0
+                1 if clc_class == self.corine_class_value else 0
                 for clc_class in self.clc_classes_osm
             ]
             self.clc_classes_corine = [
-                1 if clc_class == self.corine_class.value else 0
+                1 if clc_class == self.corine_class_value else 0
                 for clc_class in self.clc_classes_corine
             ]
 
@@ -159,7 +163,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         class_labels = []
         for c in self.clc_classes_corine:
-            class_labels.append(clc_classes_level_2[CorineLandCoverClass(c)])
+            class_labels.append(clc_classes_level_2[CorineLandCoverClass(str(c))])
 
         bars = []
 
@@ -167,11 +171,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
             clc_class_level_1 = CorineLandCoverClassLevel1(int(str(clc_class)[0]))
             color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
-            number_level_2 = CorineLandCoverClass(clc_class).value
+            number_level_2 = CorineLandCoverClass(str(clc_class)).value
             name_level_2 = (
                 str(number_level_2)
                 + " "
-                + clc_classes_level_2[CorineLandCoverClass(clc_class)]
+                + clc_classes_level_2[CorineLandCoverClass(str(clc_class))]
             )
             x = str(clc_class)
             y = self.f1_scores[i] * 100

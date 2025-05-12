@@ -185,31 +185,43 @@ class CorineLandCoverClass(Enum):
     """Corine Land Cover Class Level 2."""
 
     # TODO: Use more descriptive names
-    ARTIFICIAL_AREAS_1 = 11
-    ARTIFICIAL_AREAS_2 = 12
-    ARTIFICIAL_AREAS_3 = 13
-    ARTIFICIAL_AREAS_4 = 14
-    AGRICULTURAL_AREAS_1 = 21
-    AGRICULTURAL_AREAS_2 = 22
-    AGRICULTURAL_AREAS_3 = 23
-    AGRICULTURAL_AREAS_4 = 24
-    FOREST_AND_SEMINATURAL_AREAS_1 = 31
-    FOREST_AND_SEMINATURAL_AREAS_2 = 32
-    FOREST_AND_SEMINATURAL_AREAS_3 = 33
-    WETLANDS_1 = 41
-    WETLANDS_2 = 42
-    WATER_BODIES_1 = 51
-    WATER_BODIES_2 = 52
+    ARTIFICIAL_AREAS_1 = "11"
+    ARTIFICIAL_AREAS_2 = "12"
+    ARTIFICIAL_AREAS_3 = "13"
+    ARTIFICIAL_AREAS_4 = "14"
+    AGRICULTURAL_AREAS_1 = "21"
+    AGRICULTURAL_AREAS_2 = "22"
+    AGRICULTURAL_AREAS_3 = "23"
+    AGRICULTURAL_AREAS_4 = "24"
+    FOREST_AND_SEMINATURAL_AREAS_1 = "31"
+    FOREST_AND_SEMINATURAL_AREAS_2 = "32"
+    FOREST_AND_SEMINATURAL_AREAS_3 = "33"
+    WETLANDS_1 = "41"
+    WETLANDS_2 = "42"
+    WATER_BODIES_1 = "51"
+    WATER_BODIES_2 = "52"
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
-    corine_class: CorineLandCoverClass | None = Field(
+    corine_class: CorineLandCoverClass | str | None = Field(
         default=None,
         title="CORINE Land Cover class",
         description=(
             "CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
         ),
     )
+
+    @field_validator("corine_class")
+    @classmethod
+    def transform_corine_class(cls, value):
+        if value == "":
+            return None
+        if isinstance(value, str):
+            try:
+                return CorineLandCoverClass(value)
+            except ValueError:
+                raise ValueError(f"Invalid CorineLandCoverClass: {value}")
+        return value
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self) -> Self:
