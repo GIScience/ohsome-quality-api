@@ -18,7 +18,6 @@ async def create_indicator(
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
-    *args,
     **kwargs,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
@@ -47,7 +46,6 @@ async def create_indicator(
                 feature,
                 topic,
                 include_figure,
-                *args,
                 **kwargs,
             )
         )
@@ -59,7 +57,6 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
-    *args,
     **kwargs,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -72,7 +69,6 @@ async def _create_indicator(
     indicator = indicator_class(
         topic,
         feature,
-        *args,
         **kwargs,
     )
 
