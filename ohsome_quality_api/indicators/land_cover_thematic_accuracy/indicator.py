@@ -53,14 +53,6 @@ clc_classes_level_1 = {
 
 
 class LandCoverThematicAccuracy(BaseIndicator):
-    """
-    TODO
-
-    Only shows class for which OSM has data.
-
-    Ergänzend zu dem Corine Completeness Indicator
-    """
-
     def __init__(
         self,
         topic: Topic,
@@ -185,6 +177,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 )
             )
         fig = pgo.Figure(
+            # TODO: add precision/recall as hover interaction
+            # TODO: use semantic UI colors
             data=bars,
             layout=pgo.Layout(
                 {
@@ -218,6 +212,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         class_name = name_level_1 + " <br> " + name_level_2
         class_labels = ["Other classes", class_name]
         fig = pgo.Figure(
+            # TODO: remove or grey out other_class x ohter_classes since its always 0%
             data=pgo.Heatmap(
                 z=self.confusion_matrix,
                 x=class_labels,
@@ -241,8 +236,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 ticktext=class_labels,
             ),
         )
-        # TODO add legend with corine land cover classes mapped to meaningful titles?
-
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw

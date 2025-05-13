@@ -206,9 +206,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
     corine_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
-        description=(
-            "CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
-        ),
+        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
     )
 
     @field_validator("corine_class", mode="before")
