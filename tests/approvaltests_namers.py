@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Dict
 
 from approvaltests.namer.namer_base import NamerBase
 
@@ -37,13 +38,10 @@ class PytestNamer(NamerBase):
 
     def get_directory(self) -> Path:
         """Directory is `tests/approval/{module}` derived from pytest nodeid."""
+        base_dir = Path(__file__).parent / "approvals"
         parts = self.nodeid.parent.parts
         directory = Path(*[p for p in parts if p not in ["tests"]])
-        config = self.get_config()
-        if "directory" in config.keys():
-            return Path(config["directory"]) / directory
-        else:
-            return directory
+        return base_dir / directory
 
-    def config_directory(self) -> str:
-        return Path(__file__).parent.parent
+    def get_config(self) -> Dict[str, str]:
+        return {}
