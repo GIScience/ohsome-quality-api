@@ -129,7 +129,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             {"f1_score": round(self.f1_score * 100, 2), "clc_class": clc_class}
         )
         self.result.description = " ".join(
-            (self.templates.result_description, label_description)
+            (label_description, self.templates.result_description)
         )
 
         # TODO: UdefinedMetricWarning
@@ -160,12 +160,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
             sample_weight=self.areas,
             labels=list(sorted(set(self.clc_classes_corine))),
         )
-        class_labels = []
-        for c in self.clc_classes_corine:
-            class_labels.append(clc_classes_level_2[CorineLandCoverClass(c)])
 
         bars = []
-
         for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
             clc_class_level_1 = CorineLandCoverClassLevel1(clc_class[0])
             color = clc_classes_level_1[clc_class_level_1]["color"].value
@@ -200,26 +196,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         "orientation": "h",
                     },
                     "xaxis": {
-                        "title": {"text": "CORINE Land Cover Class"},
+                        "title": {"text": "CORINE Land Cover Class (CLC Class)"},
                         "dtick": 1,
                     },
                     "yaxis": {"title": {"text": "F1-Score [%]"}, "range": [0, 100]},
                 },
                 showlegend=True,
             ),
-            # updatemenus=[
-            #     {
-            #         "type": "buttons",
-            #         "buttons": [
-            #             {
-            #                 "label": "≡",
-            #                 "method": "relayout",
-            #                 "args": ["showlegend", False],
-            #                 "args2": ["showlegend", True],
-            #             }
-            #         ],
-            #     }
-            # ],
         )
 
         raw = fig.to_dict()

@@ -77,4 +77,6 @@ land-cover-thematic-accuracy:
     - bkg
   quality_dimension: thematic-accuracy
   description: >-
-    Thematic Accuracy of Land Cover in Open Street Map compared to refrence data.
+    Thematic accuracy Open Street Map land cover data in comparison to the <a
+    href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
+    Cover (CLC)</a> dataset.
