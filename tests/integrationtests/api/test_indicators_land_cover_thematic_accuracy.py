@@ -36,7 +36,7 @@ def mock_db_fetch(monkeypatch):
         ({"accept": "application/geo+json"}, RESPONSE_SCHEMA_GEOJSON),
     ],
 )
-def test_all_corine_classes(client, bpolys, headers, schema, mock_db_fetch):
+def test_multi_class(client, bpolys, headers, schema, mock_db_fetch):
     # corine class parameter is optional (default all corine classes)
     parameters = {"bpolys": bpolys, "topic": "lulc"}
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -52,7 +52,7 @@ def test_all_corine_classes(client, bpolys, headers, schema, mock_db_fetch):
         ({"accept": "application/geo+json"}, RESPONSE_SCHEMA_GEOJSON),
     ],
 )
-def test_single_corine_class(client, bpolys, headers, schema, mock_db_fetch):
+def test_single_class(client, bpolys, headers, schema, mock_db_fetch):
     # Corine class 23 are Pastures
     parameters = {"bpolys": bpolys, "topic": "lulc", "corineClass": "23"}
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -67,7 +67,7 @@ def test_invalid_topic(client, bpolys):
     verify_as_json(response.json(), options=Options().with_namer(PytestNamer()))
 
 
-def test_invalid_corine_class(client, bpolys):
+def test_invalid_class(client, bpolys):
     parameters = {"bpolys": bpolys, "topic": "lulc", "corineClass": "1"}
     response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422

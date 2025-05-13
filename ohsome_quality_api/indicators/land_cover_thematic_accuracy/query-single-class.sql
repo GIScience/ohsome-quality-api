@@ -1,6 +1,7 @@
 -- TODO: will index on classes make this query faster?
 WITH bpoly AS (
     SELECT
+        -- split mutlipolygon into list of polygons for more efficient processing
         (ST_Dump(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))).geom AS geometry
 )
 SELECT

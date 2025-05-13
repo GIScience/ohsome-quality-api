@@ -183,7 +183,7 @@
         "xaxis": {
             "dtick": 1,
             "title": {
-                "text": "CORINE Land Cover Class"
+                "text": "CORINE Land Cover Class (CLC Class)"
             }
         },
         "yaxis": {
