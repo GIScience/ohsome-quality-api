@@ -228,19 +228,37 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
     def _create_figure_single_class(self):
-        class_labels = ["Other classes", self.corine_class.name]
+        clc_class_level_1 = CorineLandCoverClassLevel1(int(self.corine_class.value[0]))
+        name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
+        name_level_2 = clc_classes_level_2[
+            CorineLandCoverClass(self.corine_class.value)
+        ]
+        class_name = name_level_1 + " <br> " + name_level_2
+        class_labels = ["Other classes", class_name]
         fig = pgo.Figure(
             data=pgo.Heatmap(
                 z=self.confusion_matrix,
                 x=class_labels,
                 y=class_labels,
                 text=self.confusion_matrix,
-                texttemplate="%{text:.2f}",
-            ),
-            # layout=pgo.Layout(title={"subtitle": {"text": ", ".join(class_labels)}}),
+                texttemplate="%{text:.2%}",
+                colorscale="Viridis",
+                colorbar=dict(title="Proportion"),
+                hovertemplate="Predicted: %{x}<br>Actual: %{y}<br>"
+                "Value: %{z:.2%}<extra></extra>",
+            )
         )
-        fig.update_yaxes(title_text="Corine Land Cover Class in OSM")
-        fig.update_xaxes(title_text="Corine Land Cover Class (actual)")
+
+        fig.update_layout(
+            xaxis=dict(
+                title="Corine Land Cover Class in OSM",
+                ticktext=class_labels,
+            ),
+            yaxis=dict(
+                title="Corine Land Cover Class (actual)",
+                ticktext=class_labels,
+            ),
+        )
         # TODO add legend with corine land cover classes mapped to meaningful titles?
 
         raw = fig.to_dict()
