@@ -203,7 +203,7 @@ class CorineLandCoverClass(Enum):
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
-    corine_class: CorineLandCoverClass | str | None = Field(
+    corine_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
         description=(
@@ -211,16 +211,11 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         ),
     )
 
-    @field_validator("corine_class")
+    @field_validator("corine_class", mode="before")
     @classmethod
     def transform_corine_class(cls, value):
         if value == "":
             return None
-        if isinstance(value, str):
-            try:
-                return CorineLandCoverClass(value)
-            except ValueError:
-                raise ValueError(f"Invalid CorineLandCoverClass: {value}")
         return value
 
     @model_validator(mode="after")
