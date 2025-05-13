@@ -35,17 +35,20 @@ clc_classes_level_2 = {
     CorineLandCoverClass("52"): "Marine waters",
 }
 clc_classes_level_1 = {
-    CorineLandCoverClassLevel1(1): {"name": "Artificial areas", "color": Color["GREY"]},
-    CorineLandCoverClassLevel1(2): {
+    CorineLandCoverClassLevel1("1"): {
+        "name": "Artificial areas",
+        "color": Color["GREY"],
+    },
+    CorineLandCoverClassLevel1("2"): {
         "name": "Agricultural areas",
         "color": Color["YELLOW"],
     },
-    CorineLandCoverClassLevel1(3): {
+    CorineLandCoverClassLevel1("3"): {
         "name": "Forest and semi-natural areas",
         "color": Color["GREEN"],
     },
-    CorineLandCoverClassLevel1(4): {"name": "Wetlands", "color": Color["VIOLET"]},
-    CorineLandCoverClassLevel1(5): {"name": "Water bodies", "color": Color["BLUE"]},
+    CorineLandCoverClassLevel1("4"): {"name": "Wetlands", "color": Color["VIOLET"]},
+    CorineLandCoverClassLevel1("5"): {"name": "Water bodies", "color": Color["BLUE"]},
 }
 
 
@@ -65,25 +68,21 @@ class LandCoverThematicAccuracy(BaseIndicator):
         corine_class: CorineLandCoverClass | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        if corine_class:
-            self.corine_class = corine_class
-            self.corine_class_value = int(corine_class.value)
-        else:
-            self.corine_class = corine_class
+        self.corine_class = corine_class
 
     async def preprocess(self) -> None:
         if self.corine_class:
             with open(Path(__file__).parent / "query-single-class.sql", "r") as file:
                 query = file.read()
             results = await client.fetch(
-                query, str(self.feature["geometry"]), self.corine_class_value
+                query, str(self.feature["geometry"]), int(self.corine_class.value)
             )
         else:
             with open(Path(__file__).parent / "query-all-classes.sql", "r") as file:
                 query = file.read()
             results = await client.fetch(query, str(self.feature["geometry"]))
-        self.clc_classes_corine = [r["clc_class_corine"] for r in results]
-        self.clc_classes_osm = [r["clc_class_osm"] for r in results]
+        self.clc_classes_corine = [str(r["clc_class_corine"]) for r in results]
+        self.clc_classes_osm = [str(r["clc_class_osm"]) for r in results]
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
         # TODO: take real timestamps from data
         self.result.timestamp_osm = datetime.now(timezone.utc)
@@ -92,12 +91,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         if self.corine_class:
             self.clc_classes_osm = [
-                1 if clc_class == self.corine_class_value else 0
-                for clc_class in self.clc_classes_osm
+                "1" if clc_class_osm == self.corine_class.value else "0"
+                for clc_class_osm in self.clc_classes_osm
             ]
             self.clc_classes_corine = [
-                1 if clc_class == self.corine_class_value else 0
-                for clc_class in self.clc_classes_corine
+                "1" if clc_class_corine == self.corine_class.value else "0"
+                for clc_class_corine in self.clc_classes_corine
             ]
 
         self.f1_score = f1_score(
@@ -163,21 +162,21 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         class_labels = []
         for c in self.clc_classes_corine:
-            class_labels.append(clc_classes_level_2[CorineLandCoverClass(str(c))])
+            class_labels.append(clc_classes_level_2[CorineLandCoverClass(c)])
 
         bars = []
 
         for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
-            clc_class_level_1 = CorineLandCoverClassLevel1(int(str(clc_class)[0]))
+            clc_class_level_1 = CorineLandCoverClassLevel1(clc_class[0])
             color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
-            number_level_2 = CorineLandCoverClass(str(clc_class)).value
+            number_level_2 = CorineLandCoverClass(clc_class).value
             name_level_2 = (
-                str(number_level_2)
+                number_level_2
                 + " "
-                + clc_classes_level_2[CorineLandCoverClass(str(clc_class))]
+                + clc_classes_level_2[CorineLandCoverClass(clc_class)]
             )
-            x = str(clc_class)
+            x = clc_class
             y = self.f1_scores[i] * 100
             bars.append(
                 pgo.Bar(
@@ -228,7 +227,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
     def _create_figure_single_class(self):
-        clc_class_level_1 = CorineLandCoverClassLevel1(int(self.corine_class.value[0]))
+        clc_class_level_1 = CorineLandCoverClassLevel1(self.corine_class.value[0])
         name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
         name_level_2 = clc_classes_level_2[
             CorineLandCoverClass(self.corine_class.value)

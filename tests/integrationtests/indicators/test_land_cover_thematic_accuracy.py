@@ -95,8 +95,8 @@ async def test_preprocess_multi_class(feature, topic, mock_db_fetch):
         indicator.clc_classes_osm,
     ):
         assert isinstance(area, float)
-        assert isinstance(clc_class_corine, int)
-        assert isinstance(clc_class_corine, int)
+        assert isinstance(clc_class_corine, str)
+        assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
 
 
@@ -120,8 +120,8 @@ async def test_preprocess_single_class(
         indicator.clc_classes_osm,
     ):
         assert isinstance(area, float)
-        assert isinstance(clc_class_corine, int)
-        assert isinstance(clc_class_corine, int)
+        assert isinstance(clc_class_corine, str)
+        assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
 
 

@@ -174,11 +174,11 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
 
 
 class CorineLandCoverClassLevel1(Enum):
-    ARTIFICIAL_AREAS = 1
-    AGRICULTURAL_AREAS = 2
-    FOREST_AND_SEMINATURAL_AREAS = 3
-    WETLANDS = 4
-    WATER_BODIES = 5
+    ARTIFICIAL_AREAS = "1"
+    AGRICULTURAL_AREAS = "2"
+    FOREST_AND_SEMINATURAL_AREAS = "3"
+    WETLANDS = "4"
+    WATER_BODIES = "5"
 
 
 class CorineLandCoverClass(Enum):
@@ -213,7 +213,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
 
     @field_validator("corine_class", mode="before")
     @classmethod
-    def transform_corine_class(cls, value):
+    def empty_string_to_none(cls, value):
         if value == "":
             return None
         return value

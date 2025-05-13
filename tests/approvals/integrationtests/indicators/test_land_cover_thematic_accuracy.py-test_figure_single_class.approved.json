@@ -1,20 +1,68 @@
 {
     "data": [
         {
+            "colorbar": {
+                "title": {
+                    "text": "Proportion"
+                }
+            },
+            "colorscale": [
+                [
+                    0.0,
+                    "#440154"
+                ],
+                [
+                    0.1111111111111111,
+                    "#482878"
+                ],
+                [
+                    0.2222222222222222,
+                    "#3e4989"
+                ],
+                [
+                    0.3333333333333333,
+                    "#31688e"
+                ],
+                [
+                    0.4444444444444444,
+                    "#26828e"
+                ],
+                [
+                    0.5555555555555556,
+                    "#1f9e89"
+                ],
+                [
+                    0.6666666666666666,
+                    "#35b779"
+                ],
+                [
+                    0.7777777777777778,
+                    "#6ece58"
+                ],
+                [
+                    0.8888888888888888,
+                    "#b5de2b"
+                ],
+                [
+                    1.0,
+                    "#fde725"
+                ]
+            ],
+            "hovertemplate": "Predicted: %{x}<br>Actual: %{y}<br>Value: %{z:.2%}<extra></extra>",
             "text": {
                 "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
                 "dtype": "f8",
                 "shape": "2, 2"
             },
-            "texttemplate": "%{text:.2f}",
+            "texttemplate": "%{text:.2%}",
             "type": "heatmap",
             "x": [
                 "Other classes",
-                "AGRICULTURAL_AREAS_3"
+                "Agricultural areas <br> Pastures"
             ],
             "y": [
                 "Other classes",
-                "AGRICULTURAL_AREAS_3"
+                "Agricultural areas <br> Pastures"
             ],
             "z": {
                 "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
@@ -25,13 +73,21 @@
     ],
     "layout": {
         "xaxis": {
+            "ticktext": [
+                "Other classes",
+                "Agricultural areas <br> Pastures"
+            ],
             "title": {
-                "text": "Corine Land Cover Class (actual)"
+                "text": "Corine Land Cover Class in OSM"
             }
         },
         "yaxis": {
+            "ticktext": [
+                "Other classes",
+                "Agricultural areas <br> Pastures"
+            ],
             "title": {
-                "text": "Corine Land Cover Class in OSM"
+                "text": "Corine Land Cover Class (actual)"
             }
         }
     }
