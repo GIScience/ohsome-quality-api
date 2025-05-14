@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Dict, List, Self
 
 import geojson
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
@@ -34,7 +33,7 @@ class BaseRequestContext(BaseModel):
         return request_context.get()
 
 
-FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, Dict]]
+FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, dict]]
 
 
 class BaseBpolys(BaseConfig):
@@ -85,7 +84,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         return get_topic_preset(value.value)
 
     @model_validator(mode="after")
-    def validate_indicator_topic_combination(self) -> Self:
+    def validate_indicator_topic_combination(self):
         indicator = self.request_context.path_parameters["key"]
         valid_indicators = get_valid_indicators(self.topic.key)
         if indicator not in valid_indicators:
@@ -98,7 +97,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
 
 
 class AttributeCompletenessKeyRequest(IndicatorRequest):
-    attribute_keys: List[AttributeEnum] = Field(
+    attribute_keys: list[AttributeEnum] = Field(
         ...,
         title="Attribute Keys",
         alias="attributes",
@@ -110,7 +109,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         return [attribute.value for attribute in value]
 
     @model_validator(mode="after")
-    def validate_indicator_topic_combination(self) -> Self:
+    def validate_indicator_topic_combination(self):
         # NOTE: overrides parent validator. That is because endpoint of
         # indicator/attribute-completeness is fixed and therefore path parameters of
         # request context empty
@@ -125,7 +124,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         return self
 
     @model_validator(mode="after")
-    def validate_attributes(self) -> Self:
+    def validate_attributes(self):
         valid_attributes = tuple(get_attributes()[self.topic.key].keys())
         for attribute in self.attribute_keys:
             if attribute not in valid_attributes:
@@ -158,7 +157,7 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
     )
 
     @model_validator(mode="after")
-    def validate_indicator_topic_combination(self) -> Self:
+    def validate_indicator_topic_combination(self):
         # NOTE: overrides parent validator. That is because endpoint of
         # indicator/attribute-completeness is fixed and therefore path parameters of
         # request context empty
@@ -217,7 +216,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         return value
 
     @model_validator(mode="after")
-    def validate_indicator_topic_combination(self) -> Self:
+    def validate_indicator_topic_combination(self):
         # NOTE: overrides parent validator. That is because endpoint of
         # indicator/land-cover-thematic-accuracy is fixed and therefore path
         # parameters of request context are empty
