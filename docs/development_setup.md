@@ -1,38 +1,29 @@
 # Development Setup
 
-To run simply run the ohsome quality API and the database the provided Docker setup can be used.
+Run the ohsome quality API as Docker container:
 
 ```bash
 docker compose up --detach
 ```
-
-After all services are up they are available under:
-
-- API: [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
-- Database: `host=localhost port=5445 dbname=oqapi user=oqapi password=oqapi`
+After the ohsome quality API service is up the API documentation is served to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs).
 
 For development setup please continue reading.
 
-
 ## Requirements
 
-- Python: ≥ 3.10
-- Poetry: ≥ 1.5
+- Python: ≥ 3.12
+- Poetry: ≥ 2
 - R: ≥ 4.0
 
 This project uses [Poetry](https://python-poetry.org/docs/) for packaging and dependencies management. Please make sure it is installed on your system.
-
-For development a database might not be needed. In case the database is needed start the database service defined in the docker compose file. 
 
 
 ## Installation
 
 ```bash
 poetry install
-poetry shell  # Spawns a shell within the virtual environment.
-pre-commit install  # Install pre-commit hooks.
-# Hack away
-pytest  # Run all tests
+poetry shell
+pre-commit install
 ```
 
 
@@ -40,13 +31,13 @@ pytest  # Run all tests
 
 For all possible configuration parameter please refer to the [configuration documentation](/docs/configuration.md).
 
-For local development no custom configuration is required.
+For local development no custom configuration is required, except for the work on indicators which need access to our database.
 
 
 ## Usage
 
 ```bash
-python scripts/start_api.py
+poetry run python scripts/start_api.py
 ```
 
 Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
@@ -54,8 +45,7 @@ Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the
 Default host is 127.0.0.1 and port is 8080. To change this, provide the corresponding parameter:
 
 ```bash
-$ cd scripts
-$ python start_api.py --help
+poetry run python script/start_api.py --help
 Usage: start_api.py [OPTIONS]
 
 Options:
@@ -67,8 +57,7 @@ Options:
 
 ## Tests
 
-All relevant components should be tested. Please write tests for newly integrated
-functionality.
+All relevant components should be tested. Please write tests for newly integrated functionality.
 
 The test framework is [pytest](https://docs.pytest.org/en/stable/).
 
