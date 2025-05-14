@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 from typing import List
 
 import geojson
@@ -25,7 +26,7 @@ from ohsome_quality_api.topics.definitions import (
 )
 from ohsome_quality_api.topics.models import TopicDefinition
 
-FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
+FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
 # TODO: Workaround to avoid cluttering of stdout because of
 # https://github.com/pytest-dev/pytest/issues/5502
@@ -66,6 +67,11 @@ def topic_building_area() -> TopicDefinition:
 @pytest.fixture(scope="class")
 def topic_major_roads_length() -> TopicDefinition:
     return get_topic_preset("roads")
+
+
+@pytest.fixture
+def topic_lulc() -> TopicDefinition:
+    return get_topic_preset("lulc")
 
 
 @pytest.fixture(scope="class")

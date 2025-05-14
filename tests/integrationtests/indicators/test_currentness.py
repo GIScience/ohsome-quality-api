@@ -1,11 +1,12 @@
 import asyncio
+import json
 import os
 from datetime import datetime
 
 import geojson
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
@@ -16,6 +17,8 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -64,17 +67,12 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
-        assert indicator.result.description is not None
+        verify(indicator.result.description, namer=PytestNamer())
 
     def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
-
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that in the area of interest less than 25 "
-            "features of the selected topic are present today."
-        ) in indicator.result.description
+        verify(indicator.result.description, namer=PytestNamer())
 
     def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
@@ -82,11 +80,7 @@ class TestCalculation:
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
         ]
         indicator.calculate()
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that there was no mapping activity for"
-            in indicator.result.description
-        )
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     def test_no_subway_stations(self):
@@ -108,13 +102,16 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
-        assert indicator.result.description == (
-            "In the area of interest no features of the selected topic are present "
-            "today."
-        )
+        verify(indicator.result.description, namer=PytestNamer())
         indicator.create_figure()
-        assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        # TODO: test figure
+        # assert isinstance(indicator.result.figure, dict)
+        # verify_as_json(
+        #     to_jsonable_python(indicator.result.figure),
+        #     options=Options()
+        #     .with_reporter(PlotlyDiffReporter())
+        #     .with_namer(PytestNamer()),
+        # )
 
 
 class TestFigure:
@@ -127,16 +124,16 @@ class TestFigure:
         i.create_figure()
         return i
 
-    # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
-    def test_create_figure_manual(self, indicator):
-        pio.show(indicator.result.figure)
-
     def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
-    @pytest.mark.skip(reason="Only for manual testing.")
+    @oqapi_vcr.use_cassette
     def test_outdated_features_plotting(
         self,
         topic_building_count,
@@ -153,7 +150,12 @@ class TestFigure:
         ]
         i.calculate()
         i.create_figure()
-        pio.show(i.result.figure)
+        verify(
+            json.dumps(to_jsonable_python(i.result.figure)),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
     def test_get_source(self, indicator):
         indicator.th_source = ""

@@ -1,0 +1,199 @@
+{
+    "data": [
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "marker": {
+                "color": "#767676"
+            },
+            "name": "11 Urban fabric",
+            "type": "bar",
+            "x": [
+                "11"
+            ],
+            "y": [
+                90.04534466333342
+            ]
+        },
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "marker": {
+                "color": "#767676"
+            },
+            "name": "12 Industrial, commercial and transport units",
+            "type": "bar",
+            "x": [
+                "12"
+            ],
+            "y": [
+                85.14053055717963
+            ]
+        },
+        {
+            "legendgroup": "Artificial areas",
+            "legendgrouptitle": {
+                "text": "Artificial areas"
+            },
+            "marker": {
+                "color": "#767676"
+            },
+            "name": "14 Artificial non-agricultural vegetated areas",
+            "type": "bar",
+            "x": [
+                "14"
+            ],
+            "y": [
+                19.75282490077088
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
+            },
+            "name": "21 Arable land",
+            "type": "bar",
+            "x": [
+                "21"
+            ],
+            "y": [
+                88.50013049187115
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
+            },
+            "name": "22 Permanent crops",
+            "type": "bar",
+            "x": [
+                "22"
+            ],
+            "y": [
+                69.77146880873775
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
+            },
+            "name": "23 Pastures",
+            "type": "bar",
+            "x": [
+                "23"
+            ],
+            "y": [
+                55.093034384370334
+            ]
+        },
+        {
+            "legendgroup": "Agricultural areas",
+            "legendgrouptitle": {
+                "text": "Agricultural areas"
+            },
+            "marker": {
+                "color": "#FBBD08"
+            },
+            "name": "24 Heterogeneous agricultural areas",
+            "type": "bar",
+            "x": [
+                "24"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Forest and semi-natural areas",
+            "legendgrouptitle": {
+                "text": "Forest and semi-natural areas"
+            },
+            "marker": {
+                "color": "#21BA45"
+            },
+            "name": "31 Forest",
+            "type": "bar",
+            "x": [
+                "31"
+            ],
+            "y": [
+                87.07398289897031
+            ]
+        },
+        {
+            "legendgroup": "Forest and semi-natural areas",
+            "legendgrouptitle": {
+                "text": "Forest and semi-natural areas"
+            },
+            "marker": {
+                "color": "#21BA45"
+            },
+            "name": "32 Shrubs and/or herbaceous vegetation associations",
+            "type": "bar",
+            "x": [
+                "32"
+            ],
+            "y": [
+                0.0
+            ]
+        },
+        {
+            "legendgroup": "Water bodies",
+            "legendgrouptitle": {
+                "text": "Water bodies"
+            },
+            "marker": {
+                "color": "#2185D0"
+            },
+            "name": "51 Inland waters",
+            "type": "bar",
+            "x": [
+                "51"
+            ],
+            "y": [
+                0.0
+            ]
+        }
+    ],
+    "layout": {
+        "autotypenumbers": "strict",
+        "legend": {
+            "orientation": "h",
+            "x": 0,
+            "y": -0.5,
+            "yanchor": "top"
+        },
+        "showlegend": true,
+        "xaxis": {
+            "dtick": 1,
+            "title": {
+                "text": "CORINE Land Cover Class (CLC Class)"
+            }
+        },
+        "yaxis": {
+            "range": [
+                0,
+                100
+            ],
+            "title": {
+                "text": "F1-Score [%]"
+            }
+        }
+    }
+}

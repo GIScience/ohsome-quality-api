@@ -2,12 +2,38 @@
 
 ## Current Main
 
+### New Feature
+
+- new indicator about thematic accuracy of land cover data in OSM ([#893])
+
 ### Breaking Changes
 
-- density: remove indicator and Sketch Map Tool related topics ([#883])
+- remove indicator and Sketch Map Tool related topics ([#883])
 
+### Other Changes
 
+- api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
+- build: add scikit-learn and pytest-asyncio dependencies ([#893])
+
+[#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
+[#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
+
+## Release  1.9.0
+
+### Bug Fixes
+
+- topics: rework road topics ([#878], [#880])
+- topics: remove covid19 related tags from topics ([#882])
+
+### Other Changes
+
+- build: update dependencies ([#873])
+
+[#873]: https://github.com/GIScience/ohsome-quality-api/pull/873
+[#878]: https://github.com/GIScience/ohsome-quality-api/issues/878
+[#880]: https://github.com/GIScience/ohsome-quality-api/issues/880
+[#882]: https://github.com/GIScience/ohsome-quality-api/issues/882
 
 
 ## Release  1.8.3
@@ -16,7 +42,6 @@
 
 - attribute-completeness: added subkeys to filters for sidewalk and cycleway attributes ([#877])
 - attribute-completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
-
 
 [#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
 [#877]: https://github.com/GIScience/ohsome-quality-api/issue/877
