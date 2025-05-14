@@ -57,6 +57,8 @@ ruff = "^0.9.4"
 kaleido = "0.2.1"
 fastapi = {extras = ["standard"], version = "^0.115.8"}
 pygments = "^2.19.1"  # add syntax highlighting to pytest output
+pytest-sugar = "^1.0.0"
+pytest-xdist = "^3.6.1"
 
 [tool.poetry.urls]
 "Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
@@ -84,4 +86,5 @@ select = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--numprocesses=auto"  # send tests to multiple CPUs
 asyncio_default_fixture_loop_scope = "function"
