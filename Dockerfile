@@ -1,6 +1,6 @@
 # based on Debian
 # we have to use bullseye, because bookworm doesn't work with older Docker versions which are still in use
-FROM python:3.10-bullseye
+FROM python:3.13-bullseye
 
 # Allow to set custom uid and gid values (i.e. for CI)
 ARG uid=1000
