@@ -76,6 +76,7 @@ oqapi_vcr = vcr.VCR(
     match_on=["method", "scheme", "host", "port", "path", "query", "body"],
     func_path_generator=filename_generator,
     before_record_response=replace_body(["image/png"], dummy_png),
-    ignore_hosts=["testserver"],
+    # ignore github.com. ApprovalTests
+    ignore_hosts=["testserver", "github"],
     ignore_localhost=True,  # do not record HTTP requests to local FastAPI test instance
 )

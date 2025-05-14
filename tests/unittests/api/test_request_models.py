@@ -9,6 +9,7 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessKeyRequest,
     BaseBpolys,
     IndicatorRequest,
+    LandCoverThematicAccuracyRequest,
 )
 
 
@@ -17,6 +18,18 @@ def mock_request_context_minimal(monkeypatch):
     """Mock request context for /indicators/minimal."""
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
     request_context.set(RequestContext(path_parameters={"key": "minimal"}))
+    monkeypatch.setattr(
+        "ohsome_quality_api.api.request_models.request_context", request_context
+    )
+
+
+@pytest.fixture
+def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
+    """Mock request context for /indicators/minimal."""
+    request_context: ContextVar[RequestContext] = ContextVar("request_context")
+    request_context.set(
+        RequestContext(path_parameters={"key": "land-cover-thematic-accuracy"})
+    )
     monkeypatch.setattr(
         "ohsome_quality_api.api.request_models.request_context", request_context
     )
@@ -161,3 +174,27 @@ def test_attribute_completeness_attribute_filter(
         attribute_filter=attribute_filter,
         attribute_title=attribute_title,
     )
+
+
+def test_land_cover_thematic_accuracy_request(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
+    # corine class parameter is optional (default all corine classes)
+    LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc")
+
+
+def test_land_cover_thematic_accuracy_request_invalid_topic(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
+    with pytest.raises(ValidationError):
+        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
+
+
+def test_land_cover_thematic_accuracy_request_corine_class(
+    bpolys, mock_request_context_land_cover_thematic_accuracy
+):
+    # Corine class 23 represents Pastures
+    LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class="23")
+    with pytest.raises(Exception):
+        # Corine class 1 is invalid
+        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="lulc", corine_class="1")

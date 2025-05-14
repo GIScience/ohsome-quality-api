@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Dict, List, Self
 
 import geojson
@@ -166,6 +167,65 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
             raise ValueError(
                 "Invalid combination of indicator and topic: {} and {}".format(
                     "attribute-completeness",
+                    self.topic.key,
+                )
+            )
+        return self
+
+
+class CorineLandCoverClassLevel1(Enum):
+    ARTIFICIAL_AREAS = "1"
+    AGRICULTURAL_AREAS = "2"
+    FOREST_AND_SEMINATURAL_AREAS = "3"
+    WETLANDS = "4"
+    WATER_BODIES = "5"
+
+
+class CorineLandCoverClass(Enum):
+    """Corine Land Cover Class Level 2."""
+
+    # TODO: Use more descriptive names
+    ARTIFICIAL_AREAS_1 = "11"
+    ARTIFICIAL_AREAS_2 = "12"
+    ARTIFICIAL_AREAS_3 = "13"
+    ARTIFICIAL_AREAS_4 = "14"
+    AGRICULTURAL_AREAS_1 = "21"
+    AGRICULTURAL_AREAS_2 = "22"
+    AGRICULTURAL_AREAS_3 = "23"
+    AGRICULTURAL_AREAS_4 = "24"
+    FOREST_AND_SEMINATURAL_AREAS_1 = "31"
+    FOREST_AND_SEMINATURAL_AREAS_2 = "32"
+    FOREST_AND_SEMINATURAL_AREAS_3 = "33"
+    WETLANDS_1 = "41"
+    WETLANDS_2 = "42"
+    WATER_BODIES_1 = "51"
+    WATER_BODIES_2 = "52"
+
+
+class LandCoverThematicAccuracyRequest(IndicatorRequest):
+    corine_class: CorineLandCoverClass | None = Field(
+        default=None,
+        title="CORINE Land Cover class",
+        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes.",  # noqa
+    )
+
+    @field_validator("corine_class", mode="before")
+    @classmethod
+    def empty_string_to_none(cls, value):
+        if value == "":
+            return None
+        return value
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self) -> Self:
+        # NOTE: overrides parent validator. That is because endpoint of
+        # indicator/land-cover-thematic-accuracy is fixed and therefore path
+        # parameters of request context are empty
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if "land-cover-thematic-accuracy" not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "land-cover-thematic-accuracy",
                     self.topic.key,
                 )
             )
