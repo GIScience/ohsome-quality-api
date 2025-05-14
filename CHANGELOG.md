@@ -6,12 +6,17 @@
 
 - new indicator about thematic accuracy of land cover data in OSM ([#893])
 
+### Breaking Changes
+
+- remove indicator and Sketch Map Tool related topics ([#883])
+
 ### Other Changes
 
 - api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
 - build: add scikit-learn and pytest-asyncio dependencies ([#893])
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
+[#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
 [#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
 
 ## Release  1.9.0

@@ -83,8 +83,8 @@ class TestCalculation:
         verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
-    def test_no_amenities(self):
-        """Test area with no amenities"""
+    def test_no_subway_stations(self):
+        """Test area with no subway stations"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "../fixtures",
@@ -93,7 +93,9 @@ class TestCalculation:
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
+        indicator = Currentness(
+            feature=feature, topic=get_topic_fixture("subway-stations")
+        )
         asyncio.run(indicator.preprocess())
         assert indicator.contrib_sum == 0
 
