@@ -16,7 +16,6 @@ from approvaltests.reporters.python_native_reporter import PythonNativeReporter
 from approvaltests.reporters.report_with_diff_command_line import (
     ReportWithDiffCommandLine,
 )
-from PIL import Image
 
 
 class BlockingGenericDiffReporter(GenericDiffReporter):
@@ -174,8 +173,10 @@ class PlotlyDiffReporter(FirstWorkingReporter):
             approved_figure = pgo.Figure(raw)
             approved_figure.write_image(approved_path_image)
         else:
-            image = Image.new("RGB", (1, 1))
-            image.save(approved_path_image, "PNG")
+            shutil.copyfile(
+                Path(__file__).parent / "fixtures" / "empty.png",
+                approved_path_image,
+            )
 
         with open(received_path, "r") as file:
             raw = json.load(file)
