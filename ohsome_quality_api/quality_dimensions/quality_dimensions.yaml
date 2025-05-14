@@ -18,9 +18,9 @@ currentness:
 thematic-accuracy:
   name: Thematic Accuracy
   description: >-
-    TODO
+    The degree to which attributes of data are correct (agree with "truth" of the reference dataset).
   source:
-    TODO
+    https://onlinelibrary.wiley.com/doi/full/10.1155/2014/372349
 
 minimal:
   name: Minimal

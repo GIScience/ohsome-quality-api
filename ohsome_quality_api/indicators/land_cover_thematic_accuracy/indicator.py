@@ -70,7 +70,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 query, str(self.feature["geometry"]), int(self.corine_class.value)
             )
         else:
-            with open(Path(__file__).parent / "query-all-classes.sql", "r") as file:
+            with open(Path(__file__).parent / "query-multi-classes.sql", "r") as file:
                 query = file.read()
             results = await client.fetch(query, str(self.feature["geometry"]))
         self.clc_classes_corine = [str(r["clc_class_corine"]) for r in results]
@@ -90,7 +90,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "1" if clc_class_corine == self.corine_class.value else "0"
                 for clc_class_corine in self.clc_classes_corine
             ]
-
         self.f1_score = f1_score(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -98,6 +97,14 @@ class LandCoverThematicAccuracy(BaseIndicator):
             sample_weight=self.areas,
             labels=list(set(self.clc_classes_corine)),
         )
+        self.f1_scores = f1_score(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            average=None,  # for each
+            sample_weight=self.areas,
+            labels=list(sorted(set(self.clc_classes_corine))),
+        )
+
         self.confusion_matrix = confusion_matrix(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -105,6 +112,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             normalize="all",
         )
         self.result.value = self.f1_score
+        # TODO: re-evaluate thresholds
         if self.f1_score > 0.8:
             self.result.class_ = 5
         elif self.f1_score > 0.5:
@@ -116,18 +124,24 @@ class LandCoverThematicAccuracy(BaseIndicator):
         if self.corine_class is None:
             clc_class = "all CLC classes"
         else:
-            clc_class = "CLC class " + clc_classes_level_2[self.corine_class]
+            clc_class = f"CLC class <em>{0}</em>".format(
+                clc_classes_level_2[self.corine_class]
+            )
         label_description = template.safe_substitute(
-            {"f1_score": round(self.f1_score * 100, 2), "clc_class": clc_class}
+            {
+                "f1_score": round(self.f1_score * 100, 2),
+                "clc_class": clc_class,
+            }
         )
-        self.result.description = " ".join(
-            (label_description, self.templates.result_description)
+        self.result.description = (
+            f"{label_description} {self.templates.result_description}"
         )
 
         # TODO: UdefinedMetricWarning
         # Recall is ill-defined and being set to 0.0 in labels with no
         # true samples. Use `zero_division` parameter to control this
         # behavior.
+        # NOTE: For introspection/testing only
         self.report = classification_report(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -145,24 +159,15 @@ class LandCoverThematicAccuracy(BaseIndicator):
             self._create_figure_multi_class()
 
     def _create_figure_multi_class(self):
-        self.f1_scores = f1_score(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            average=None,  # for each
-            sample_weight=self.areas,
-            labels=list(sorted(set(self.clc_classes_corine))),
-        )
-
         bars = []
         for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
             clc_class_level_1 = CorineLandCoverClassLevel1(clc_class[0])
             color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
             number_level_2 = CorineLandCoverClass(clc_class).value
-            name_level_2 = (
-                number_level_2
-                + " "
-                + clc_classes_level_2[CorineLandCoverClass(clc_class)]
+            name_level_2 = f"{0} {1}".format(
+                number_level_2,
+                clc_classes_level_2[CorineLandCoverClass(clc_class)],
             )
             x = clc_class
             y = self.f1_scores[i] * 100
@@ -212,7 +217,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         class_name = name_level_1 + " <br> " + name_level_2
         class_labels = ["Other classes", class_name]
         fig = pgo.Figure(
-            # TODO: remove or grey out other_class x ohter_classes since its always 0%
+            # TODO: remove or grey out other_class x other_classes since its always 0%
             data=pgo.Heatmap(
                 z=self.confusion_matrix,
                 x=class_labels,

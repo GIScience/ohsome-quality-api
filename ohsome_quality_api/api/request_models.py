@@ -206,7 +206,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
     corine_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
-        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes",  # noqa
+        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes.",  # noqa
     )
 
     @field_validator("corine_class", mode="before")
@@ -220,7 +220,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
     def validate_indicator_topic_combination(self) -> Self:
         # NOTE: overrides parent validator. That is because endpoint of
         # indicator/land-cover-thematic-accuracy is fixed and therefore path
-        # parameters of request context empty
+        # parameters of request context are empty
         valid_indicators = get_valid_indicators(self.topic.key)
         if "land-cover-thematic-accuracy" not in valid_indicators:
             raise ValueError(
