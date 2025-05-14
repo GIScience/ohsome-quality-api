@@ -57,17 +57,17 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        corine_class: CorineLandCoverClass | None = None,
+        corine_land_cover_class: CorineLandCoverClass | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        self.corine_class = corine_class
+        self.clc_class = corine_land_cover_class
 
     async def preprocess(self) -> None:
-        if self.corine_class:
+        if self.clc_class:
             with open(Path(__file__).parent / "query-single-class.sql", "r") as file:
                 query = file.read()
             results = await client.fetch(
-                query, str(self.feature["geometry"]), int(self.corine_class.value)
+                query, str(self.feature["geometry"]), int(self.clc_class.value)
             )
         else:
             with open(Path(__file__).parent / "query-multi-classes.sql", "r") as file:
@@ -81,13 +81,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
-        if self.corine_class:
+        if self.clc_class:
             self.clc_classes_osm = [
-                "1" if clc_class_osm == self.corine_class.value else "0"
+                "1" if clc_class_osm == self.clc_class.value else "0"
                 for clc_class_osm in self.clc_classes_osm
             ]
             self.clc_classes_corine = [
-                "1" if clc_class_corine == self.corine_class.value else "0"
+                "1" if clc_class_corine == self.clc_class.value else "0"
                 for clc_class_corine in self.clc_classes_corine
             ]
         self.f1_score = f1_score(
@@ -121,11 +121,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
             self.result.class_ = 1
 
         template = Template(self.templates.label_description[self.result.label])
-        if self.corine_class is None:
+        if self.clc_class is None:
             clc_class = "all CLC classes"
         else:
             clc_class = "CLC class <em>{0}</em>".format(
-                clc_classes_level_2[self.corine_class]
+                clc_classes_level_2[self.clc_class]
             )
         label_description = template.safe_substitute(
             {
@@ -153,7 +153,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             logging.info("Result is undefined. Skipping figure creation.")
             return
 
-        if self.corine_class:
+        if self.clc_class:
             self._create_figure_single_class()
         else:
             self._create_figure_multi_class()
@@ -209,11 +209,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
     def _create_figure_single_class(self):
-        clc_class_level_1 = CorineLandCoverClassLevel1(self.corine_class.value[0])
+        clc_class_level_1 = CorineLandCoverClassLevel1(self.clc_class.value[0])
         name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
-        name_level_2 = clc_classes_level_2[
-            CorineLandCoverClass(self.corine_class.value)
-        ]
+        name_level_2 = clc_classes_level_2[CorineLandCoverClass(self.clc_class.value)]
         class_name = name_level_1 + " <br> " + name_level_2
         class_labels = ["Other classes", class_name]
         fig = pgo.Figure(

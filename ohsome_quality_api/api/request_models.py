@@ -203,13 +203,13 @@ class CorineLandCoverClass(Enum):
 
 
 class LandCoverThematicAccuracyRequest(IndicatorRequest):
-    corine_class: CorineLandCoverClass | None = Field(
+    corine_land_cover_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
         description="CORINE Land Cover is a pan-European land cover inventory with thematic classes.",  # noqa
     )
 
-    @field_validator("corine_class", mode="before")
+    @field_validator("corine_land_cover_class", mode="before")
     @classmethod
     def empty_string_to_none(cls, value):
         if value == "":

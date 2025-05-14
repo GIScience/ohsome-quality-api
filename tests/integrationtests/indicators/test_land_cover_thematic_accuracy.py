@@ -105,7 +105,7 @@ async def test_preprocess_single_class(
     feature, topic, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_class=corine_class
+        feature=feature, topic=topic, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
@@ -144,7 +144,7 @@ async def test_calculate_single_class(
     feature, topic, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_class=corine_class
+        feature=feature, topic=topic, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     indicator.calculate()
@@ -175,7 +175,7 @@ async def test_figure_single_class(
     feature, topic, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_class=corine_class
+        feature=feature, topic=topic, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     indicator.calculate()

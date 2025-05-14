@@ -54,7 +54,7 @@ def test_multi_class(client, bpolys, headers, schema, mock_db_fetch):
 )
 def test_single_class(client, bpolys, headers, schema, mock_db_fetch):
     # Corine class 23 are Pastures
-    parameters = {"bpolys": bpolys, "topic": "lulc", "corineClass": "23"}
+    parameters = {"bpolys": bpolys, "topic": "lulc", "corineLandCoverClass": "23"}
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 200
     assert schema.is_valid(response.json())
@@ -68,7 +68,7 @@ def test_invalid_topic(client, bpolys):
 
 
 def test_invalid_class(client, bpolys):
-    parameters = {"bpolys": bpolys, "topic": "lulc", "corineClass": "1"}
+    parameters = {"bpolys": bpolys, "topic": "lulc", "corineLandCoverClass": "1"}
     response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422
     verify_as_json(response.json(), options=Options().with_namer(PytestNamer()))
