@@ -124,7 +124,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         if self.corine_class is None:
             clc_class = "all CLC classes"
         else:
-            clc_class = f"CLC class <em>{0}</em>".format(
+            clc_class = "CLC class <em>{0}</em>".format(
                 clc_classes_level_2[self.corine_class]
             )
         label_description = template.safe_substitute(
@@ -165,7 +165,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
             number_level_2 = CorineLandCoverClass(clc_class).value
-            name_level_2 = f"{0} {1}".format(
+            name_level_2 = "{0} {1}".format(
                 number_level_2,
                 clc_classes_level_2[CorineLandCoverClass(clc_class)],
             )
