@@ -14,6 +14,9 @@
 
 - api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
 - build: add scikit-learn and pytest-asyncio dependencies ([#893])
+- build: use uv instead of poetry as package and project manager ([])
+- build: bump geojson-pydantic version from 1.x to 2.x
+- build: remove scipy and toml dependencies
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
