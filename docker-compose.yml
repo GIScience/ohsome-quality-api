@@ -4,7 +4,7 @@ services:
     build: .
     environment:
       OQAPI_CONFIG: /config/config.yaml
-    command: poetry run python scripts/start_api.py --host 0.0.0.0
+    command: uv run python scripts/start_api.py --host 0.0.0.0
     volumes:
       - ./config:/config
     ports:
