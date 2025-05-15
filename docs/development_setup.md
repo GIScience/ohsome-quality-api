@@ -24,6 +24,19 @@ uv sync
 uv run pre-commit install
 ```
 
+### Building fails with CompileError
+
+In case of a CompileError (see below) try running `CC=gcc uv sync`.
+
+```
+Resolved 85 packages in 33ms
+  × Failed to build `rpy2==3.5.17`
+  ├─▶ The build backend returned an error
+  ╰─▶ Call to `setuptools.build_meta.build_wheel` failed (exit status: 1)
+      [...]
+      distutils.compilers.C.errors.CompileError: command 'clang' failed: No such file or directory
+```
+
 
 ## Configuration
 
