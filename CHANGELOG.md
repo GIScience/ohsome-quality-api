@@ -21,6 +21,7 @@
 - test(hurl): simplify hurl file and make bpolys bigger ([#876])
 - refactor: use asyncpg instead of psycopg ([#876])
 - build: remove psycopg ([#876])
+- feat(land-cover-thematic-accuracy): add precision and recall for each class to result figure
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
