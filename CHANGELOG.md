@@ -14,10 +14,12 @@
 
 - api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
 - build: add scikit-learn and pytest-asyncio dependencies ([#893])
+- topics: `lulc` topic renamed to `land-cover` and has a new filter ([#898])
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
 [#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
+[#898]: https://github.com/GIScience/ohsome-quality-api/issues/898
 
 ## Release  1.9.0
 

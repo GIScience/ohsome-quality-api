@@ -69,11 +69,6 @@ def topic_major_roads_length() -> TopicDefinition:
     return get_topic_preset("roads")
 
 
-@pytest.fixture
-def topic_lulc() -> TopicDefinition:
-    return get_topic_preset("lulc")
-
-
 @pytest.fixture(scope="class")
 def attribute_key_height() -> List[str]:
     return ["height"]
