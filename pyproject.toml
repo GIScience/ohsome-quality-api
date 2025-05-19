@@ -11,7 +11,6 @@ keywords = [
   "ohsome",
   "quality",
   ]
-readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "async-lru>=2.0.5",
@@ -54,8 +53,11 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.7.5"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
 
 [tool.ruff.lint]
 select = [
