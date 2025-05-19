@@ -1,6 +1,7 @@
 {
     "data": [
         {
+            "hovertemplate": "Precision: 0.94<br>Recall: 0.86",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -18,6 +19,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.84<br>Recall: 0.87",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -35,6 +37,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.13<br>Recall: 0.42",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -52,6 +55,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.86<br>Recall: 0.91",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -69,6 +73,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.64<br>Recall: 0.76",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -86,6 +91,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.75<br>Recall: 0.44",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -103,6 +109,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -120,6 +127,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.82<br>Recall: 0.92",
             "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
                 "text": "Forest and semi-natural areas"
@@ -137,6 +145,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00",
             "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
                 "text": "Forest and semi-natural areas"
@@ -154,6 +163,7 @@
             ]
         },
         {
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00",
             "legendgroup": "Water bodies",
             "legendgrouptitle": {
                 "text": "Water bodies"
