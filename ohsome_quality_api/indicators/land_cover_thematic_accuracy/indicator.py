@@ -5,7 +5,13 @@ from string import Template
 
 import plotly.graph_objects as pgo
 from geojson import Feature
-from sklearn.metrics import classification_report, confusion_matrix, f1_score
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 
 from ohsome_quality_api.api.request_models import (
     CorineLandCoverClass,
@@ -105,6 +111,22 @@ class LandCoverThematicAccuracy(BaseIndicator):
             labels=list(sorted(set(self.clc_classes_corine))),
         )
 
+        self.precision_scores = precision_score(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            average=None,  # for each
+            sample_weight=self.areas,
+            labels=list(sorted(set(self.clc_classes_corine))),
+        )
+
+        self.recall_scores = recall_score(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            average=None,  # for each
+            sample_weight=self.areas,
+            labels=list(sorted(set(self.clc_classes_corine))),
+        )
+
         self.confusion_matrix = confusion_matrix(
             self.clc_classes_corine,
             self.clc_classes_osm,
@@ -179,6 +201,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     legendgroup=name_level_1,
                     legendgrouptitle_text=name_level_1,
                     marker_color=color,
+                    hovertemplate=(
+                        f"Precision: {self.precision_scores[i]:.2f} <br>"
+                        f"Recall: {self.recall_scores[i]:.2f}"
+                    ),
                 )
             )
         fig = pgo.Figure(
@@ -204,6 +230,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             ),
         )
 
+        fig.show()
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
