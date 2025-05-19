@@ -78,6 +78,5 @@ select = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--numprocesses=auto"  # send tests to multiple CPUs
 asyncio_default_fixture_loop_scope = "function"
 
