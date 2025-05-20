@@ -19,6 +19,7 @@
 - build: remove scipy and toml dependencies
 - test(hurl): simplify hurl file and make bpolys bigger ([#876])
 - refactor: use asyncpg instead of psycopg ([#876])
+- build: remove psycopg ([#876])
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
