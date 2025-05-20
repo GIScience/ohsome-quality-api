@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from pathlib import Path
@@ -277,7 +278,7 @@ def indicators_metadata() -> dict[str, IndicatorMetadata]:
 
 @pytest.fixture
 def feature_land_cover():
-    return {
+    gj_dict = {
         "type": "Feature",
         "geometry": {
             "type": "Polygon",
@@ -294,6 +295,10 @@ def feature_land_cover():
             ],
         },
     }
+
+    gj = json.dumps(gj_dict)
+
+    return geojson.loads(gj)
 
 
 @pytest.fixture

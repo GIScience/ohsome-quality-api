@@ -555,7 +555,7 @@ lulc:
     This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
     For further details please contact us.
   endpoint: elements
-  aggregation_type: area
+  aggregation_type: area/density
   filter: >-
     (landuse=allotments or landuse=animal_keeping or landuse=basin or landuse=brownfield or landuse=cemetery or landuse=churchyard or landuse=civic_admin or landuse=commercial or landuse=construction or landuse=depot or landuse=education or landuse=farmland or landuse=farmyard or landuse=forest or landuse=garages or landuse=grass or landuse=greenfield or landuse=greenhouse_horticulture or landuse=harbour or landuse=industrial or landuse=landfill or landuse=logging or landuse=meadow or landuse=military or landuse=orchard or landuse=plant_nursery or landuse=port or landuse=quarry or landuse=railway or landuse=recreation_ground or landuse=religious or landuse=reservoir or landuse=residential or landuse=retail or landuse=salt_pond or landuse=village_green or landuse=vineyard or natural=bare_rock or natural=beach or natural=dune or natural=fell or natural=glacier or natural=grassland or natural=heath or natural=landslide or natural=mud or natural=rock or natural=sand or natural=scree or natural=scrub or natural=shingle or natural=water or natural=wetland or natural=wood or waterway=boatyard or waterway=dam or waterway=dock or waterway=riverbank) and geometry:polygon
   source: >-
@@ -568,6 +568,7 @@ lulc:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
     - land-cover-thematic-accuracy
+    - land-cover-completeness
   projects:
     - idealvgi
     - bkg
