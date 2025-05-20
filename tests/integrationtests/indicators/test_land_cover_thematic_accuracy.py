@@ -4,41 +4,14 @@ import pytest
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
+from conftest import feature_land_cover, topic_land_cover
 from ohsome_quality_api.api.request_models import CorineLandCoverClass
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
 )
-from ohsome_quality_api.topics.definitions import get_topic_preset
-from ohsome_quality_api.topics.models import TopicDefinition
 from tests.approvaltests_namers import PytestNamer
 from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.conftest import FIXTURE_DIR
-
-
-@pytest.fixture
-def feature():
-    return {
-        "type": "Feature",
-        "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-                [
-                    [8.63552791262136, 49.711771844660191],
-                    [8.57181432038835, 49.710072815533977],
-                    [8.545479368932039, 49.624271844660186],
-                    [8.685649271844662, 49.642111650485433],
-                    [8.685649271844662, 49.642111650485433],
-                    [8.685649271844662, 49.642111650485433],
-                    [8.63552791262136, 49.711771844660191],
-                ]
-            ],
-        },
-    }
-
-
-@pytest.fixture
-def topic() -> TopicDefinition:
-    return get_topic_preset("land-cover")
 
 
 @pytest.fixture
@@ -80,8 +53,8 @@ def mock_db_fetch_single_class(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_preprocess_multi_class(feature, topic, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
+async def test_preprocess_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
+    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
     assert isinstance(indicator.clc_classes_corine, list)
@@ -102,10 +75,10 @@ async def test_preprocess_multi_class(feature, topic, mock_db_fetch):
 
 @pytest.mark.asyncio
 async def test_preprocess_single_class(
-    feature, topic, corine_class, mock_db_fetch_single_class
+        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_land_cover_class=corine_class
+        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
@@ -126,8 +99,8 @@ async def test_preprocess_single_class(
 
 
 @pytest.mark.asyncio
-async def test_calculate_multi_class(feature, topic, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
+async def test_calculate_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
+    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
     await indicator.preprocess()
     indicator.calculate()
     assert indicator.confusion_matrix is not None
@@ -141,10 +114,10 @@ async def test_calculate_multi_class(feature, topic, mock_db_fetch):
 
 @pytest.mark.asyncio
 async def test_calculate_single_class(
-    feature, topic, corine_class, mock_db_fetch_single_class
+        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_land_cover_class=corine_class
+        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     indicator.calculate()
@@ -158,8 +131,8 @@ async def test_calculate_single_class(
 
 
 @pytest.mark.asyncio
-async def test_figure_multi_class(feature, topic, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature, topic=topic)
+async def test_figure_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
+    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
@@ -172,10 +145,10 @@ async def test_figure_multi_class(feature, topic, mock_db_fetch):
 
 @pytest.mark.asyncio
 async def test_figure_single_class(
-    feature, topic, corine_class, mock_db_fetch_single_class
+        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature, topic=topic, corine_land_cover_class=corine_class
+        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
     )
     await indicator.preprocess()
     indicator.calculate()

@@ -25,6 +25,8 @@ from ohsome_quality_api.topics.definitions import (
     load_topic_presets,
 )
 from ohsome_quality_api.topics.models import TopicDefinition
+from topics.definitions import get_topic_preset
+from topics.models import TopicDefinition
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
@@ -266,3 +268,29 @@ def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
 @pytest.fixture
 def indicators_metadata() -> dict[str, IndicatorMetadata]:
     return get_indicator_metadata()
+
+
+@pytest.fixture
+def feature_land_cover():
+    return {
+        "type": "Feature",
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [8.63552791262136, 49.711771844660191],
+                    [8.57181432038835, 49.710072815533977],
+                    [8.545479368932039, 49.624271844660186],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.63552791262136, 49.711771844660191],
+                ]
+            ],
+        },
+    }
+
+
+@pytest.fixture
+def topic_land_cover() -> TopicDefinition:
+    return get_topic_preset("lulc")
