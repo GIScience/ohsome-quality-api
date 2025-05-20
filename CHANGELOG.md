@@ -14,13 +14,17 @@
 
 - api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
 - build: add scikit-learn and pytest-asyncio dependencies ([#893])
-- build: use uv instead of poetry as package and project manager ([])
+- build: use uv instead of poetry for package and project management ([#904])
 - build: bump geojson-pydantic version from 1.x to 2.x
 - build: remove scipy and toml dependencies
+- test(hurl): simplify hurl file and make bpolys bigger ([#876])
+- refactor: use asyncpg instead of psycopg ([#876])
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
+[#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
 [#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
 [#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
+[#904]: https://github.com/GIScience/ohsome-quality-api/pull/904
 
 ## Release  1.9.0
 
