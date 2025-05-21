@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
 
+import numpy
 import plotly.graph_objects as pgo
 from geojson import Feature
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
@@ -137,15 +138,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
             f"{label_description} {self.templates.result_description}"
         )
 
-        # TODO: UdefinedMetricWarning
-        # Recall is ill-defined and being set to 0.0 in labels with no
-        # true samples. Use `zero_division` parameter to control this
-        # behavior.
         # NOTE: For introspection/testing only
         self.report = classification_report(
             self.clc_classes_corine,
             self.clc_classes_osm,
             sample_weight=self.areas,
+            zero_division=numpy.nan,
         )
 
     def create_figure(self) -> None:
