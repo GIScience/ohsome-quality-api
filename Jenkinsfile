@@ -105,6 +105,19 @@ pipeline {
             }
         }
 
+        stage('(Re)Deploy Test API') {
+            when {
+                expression {
+                    return env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX
+                }
+            }
+            steps {
+                script {
+                    build job: 'oqapi Deployment/main', wait: false
+                }
+            }
+        }
+
         stage('Wrapping Up') {
             steps {
                 encourage()
