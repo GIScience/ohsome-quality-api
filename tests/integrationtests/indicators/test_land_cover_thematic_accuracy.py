@@ -38,7 +38,7 @@ def feature():
 
 @pytest.fixture
 def topic() -> TopicDefinition:
-    return get_topic_preset("lulc")
+    return get_topic_preset("land-cover")
 
 
 @pytest.fixture

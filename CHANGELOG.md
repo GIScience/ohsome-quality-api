@@ -14,6 +14,7 @@
 
 - api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
 - build: add scikit-learn and pytest-asyncio dependencies ([#893])
+- topics: `lulc` topic renamed to `land-cover` and has a new filter ([#898])
 - build: use uv instead of poetry for package and project management ([#904])
 - build: bump geojson-pydantic version from 1.x to 2.x
 - build: remove scipy and toml dependencies
@@ -25,6 +26,7 @@
 [#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
 [#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
 [#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
+[#898]: https://github.com/GIScience/ohsome-quality-api/issues/898
 [#904]: https://github.com/GIScience/ohsome-quality-api/pull/904
 
 ## Release  1.9.0
