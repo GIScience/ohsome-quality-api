@@ -30,7 +30,7 @@ class TopicDefinition(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: Literal["elements"]
-    aggregation_type: Literal["area", "count", "length", "perimeter"]
+    aggregation_type: Literal["area", "count", "length", "perimeter", "area/density"]
     filter: str
     indicators: list[str]
     projects: list[ProjectEnum]

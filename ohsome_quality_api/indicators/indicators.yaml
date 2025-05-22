@@ -71,3 +71,12 @@ land-cover-thematic-accuracy:
     Thematic accuracy Open Street Map land cover data in comparison to the <a
     href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
     Cover (CLC)</a> dataset.
+land-cover-completeness:
+  name: Land Cover Completeness
+  projects:
+    - bkg
+  quality_dimension: completeness
+  description: >-
+    Completeness of Open Street Map land cover data in comparison to the <a
+    href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
+    Cover (CLC)</a> dataset.
