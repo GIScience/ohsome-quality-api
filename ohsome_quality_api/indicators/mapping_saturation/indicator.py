@@ -152,7 +152,7 @@ class MappingSaturation(BaseIndicator):
             saturation=round(self.result.value * 100, 2)
         )
         self.result.description = (
-            description + self.templates.label_description[self.result.label]
+            description + " " + self.templates.label_description[self.result.label]
         )
 
     def create_figure(self) -> None:

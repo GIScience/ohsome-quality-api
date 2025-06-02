@@ -39,8 +39,7 @@ roads-all-highways:
   description: >-
     All linear OSM features holding the prinicipal tag `highway=*`. The
     road network defined by all objects which hold the principal tags
-    for the road network and their link roads as defined in the OSM
-    Wiki`:` https://wiki.openstreetmap.org/wiki/Key:highway
+    for the road network and their link roads as defined in the <a href="https://wiki.openstreetmap.org/wiki/Key:highway">OSM Wiki</a>
   endpoint: elements
   aggregation_type: length
   filter: >-
@@ -63,8 +62,7 @@ roads:
     All linear OSM features referring to a road usable by vehicles
     (i.e. cars). The road network defined by all objects which hold
     the principal tags for the road network and their link roads as
-    defined in the OSM Wiki`:`
-    https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
+    defined in the <a href="https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks">OSM Wiki</a>
   endpoint: elements
   aggregation_type: length
   filter: >-
@@ -172,7 +170,7 @@ schools:
 
 kindergarten:
   name: Kindergartens
-  description: Count of kindergarten.
+  description: Count of kindergartens.
   endpoint: elements
   aggregation_type: count
   filter: amenity=kindergarten
@@ -321,7 +319,7 @@ parks:
 
 sports-pitch:
   name: Sports Pitches
-  description: Count of sports pitches (an area designed for practising a particular sport)
+  description: Count of sports pitches (an area designed for practising a particular sport).
   endpoint: elements
   aggregation_type: count
   filter: leisure=pitch
