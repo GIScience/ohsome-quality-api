@@ -298,4 +298,4 @@ def feature_land_cover():
 
 @pytest.fixture
 def topic_land_cover() -> TopicDefinition:
-    return get_topic_preset("lulc")
+    return get_topic_preset("land-cover")
