@@ -1,15 +1,15 @@
 ---
 label_description:
   red: >-
-    In your area-of-interes the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
     (low agreement between OSM and CORINE). This suggests that OSM has a poor
     classification quality or incomplete land cover data.
   yellow: >-
-    In your area-of-interes the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
     (medium agreement between OSM and CORINE). This suggests that OSM does
     capture some land cover categories but may lack detail or accuracy.
   green: >-
-    In your area-of-interes the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
     (high agreement between OSM and CORINE). This suggests that OSM provides a
     reliable representation of land cover.
   undefined: >-

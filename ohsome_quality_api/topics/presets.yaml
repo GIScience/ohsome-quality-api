@@ -550,13 +550,14 @@ land-cover:
   description: >-
     Features related to land use and land cover.
   endpoint: elements
-  aggregation_type: area
+  aggregation_type: area/density
   filter: >-
    (landuse=* and landuse!=no) or natural=water and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
     - land-cover-thematic-accuracy
+    - land-cover-completeness
   projects:
     - idealvgi
     - bkg
