@@ -182,8 +182,8 @@ class BaseIndicator(metaclass=ABCMeta):
     def get_template(self) -> IndicatorTemplates:
         """Get template for indicator."""
         indicator_key = camel_to_snake(type(self).__name__)
-        dir = get_module_dir(f"ohsome_quality_api.indicators.{indicator_key}")
-        file = os.path.join(dir, "templates.yaml")
+        directory = get_module_dir(f"ohsome_quality_api.indicators.{indicator_key}")
+        file = os.path.join(directory, "templates.yaml")
         with open(file, "r") as file:
             raw = yaml.safe_load(file)
         templates = IndicatorTemplates(**raw)
