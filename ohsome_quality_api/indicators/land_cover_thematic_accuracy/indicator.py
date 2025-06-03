@@ -136,9 +136,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         self.result.value = self.f1_score
         # TODO: re-evaluate thresholds
-        if self.f1_score > 0.8:
+        if self.f1_score > 0.9:
             self.result.class_ = 5
-        elif self.f1_score > 0.5:
+        elif self.f1_score > 0.6:
             self.result.class_ = 3
         else:
             self.result.class_ = 1
