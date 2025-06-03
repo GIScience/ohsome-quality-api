@@ -1,3 +1,4 @@
+import plotly.graph_objects as pgo
 from dateutil import parser
 from geojson import Feature
 from indicators.base import BaseIndicator
@@ -40,4 +41,8 @@ class LandCoverCompleteness(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        pass
+        fig = pgo.Figure()
+        fig.add_trace(pgo.Bar(x=["name"], y=[self.osm_area_ratio * 100]))
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
