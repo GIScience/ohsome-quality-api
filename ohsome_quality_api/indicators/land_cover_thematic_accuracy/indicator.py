@@ -18,44 +18,58 @@ from ohsome_quality_api.api.request_models import (
     CorineLandCoverClass,
     CorineLandCoverClassLevel1,
 )
-from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
+# https://wiki.openstreetmap.org/wiki/Corine_Land_Cover
+# Original colors of level 3 are mixed to get colors for level 2
+# https://gradients.app/de/mix
 clc_classes_level_2 = {
-    CorineLandCoverClass("11"): "Urban fabric",
-    CorineLandCoverClass("12"): "Industrial, commercial and transport units",
-    CorineLandCoverClass("13"): "Mine, dump and construction sites",
-    CorineLandCoverClass("14"): "Artificial non-agricultural vegetated areas",
-    CorineLandCoverClass("21"): "Arable land",
-    CorineLandCoverClass("22"): "Permanent crops",
-    CorineLandCoverClass("23"): "Pastures",
-    CorineLandCoverClass("24"): "Heterogeneous agricultural areas",
-    CorineLandCoverClass("31"): "Forest",
-    CorineLandCoverClass("32"): "Shrubs and/or herbaceous vegetation associations",
-    CorineLandCoverClass("33"): "Open spaces with little or no vegetation",
-    CorineLandCoverClass("41"): "Inland wetlands",
-    CorineLandCoverClass("42"): "Coastal wetlands",
-    CorineLandCoverClass("51"): "Inland waters",
-    CorineLandCoverClass("52"): "Marine waters",
+    CorineLandCoverClass("11"): {
+        "name": "Urban fabric",
+        "color": "#f30027",
+    },
+    CorineLandCoverClass("12"): {
+        "name": "Industrial, commercial and transport units",
+        "color": "#d979a9",
+    },
+    CorineLandCoverClass("13"): {
+        "name": "Mine, dump and construction sites",
+        "color": "#c43399",
+    },
+    CorineLandCoverClass("14"): {
+        "name": "Artificial non-agricultural vegetated areas",
+        "color": "#ffc6ff",
+    },
+    CorineLandCoverClass("21"): {"name": "Arable land", "color": "#f7f738"},
+    CorineLandCoverClass("22"): {"name": "Permanent crops", "color": "#ea991a"},
+    CorineLandCoverClass("23"): {"name": "Pastures", "color": "#e6e64d"},
+    CorineLandCoverClass("24"): {
+        "name": "Heterogeneous agricultural areas",
+        "color": "#f6d97a",
+    },
+    CorineLandCoverClass("31"): {"name": "Forest", "color": "#44e100"},
+    CorineLandCoverClass("32"): {
+        "name": "Shrubs and/or herbaceous vegetation associations",
+        "color": "#b0f247",
+    },
+    CorineLandCoverClass("33"): {
+        "name": "Open spaces with little or no vegetation",
+        "color": "#a1b8a8",
+    },
+    CorineLandCoverClass("41"): {"name": "Inland wetlands", "color": "#7a7aff"},
+    CorineLandCoverClass("42"): {"name": "Coastal wetlands", "color": "#c8c8f7"},
+    CorineLandCoverClass("51"): {"name": "Inland waters", "color": "#40dfec"},
+    CorineLandCoverClass("52"): {"name": "Marine waters", "color": "#84fbd9"},
 }
 clc_classes_level_1 = {
-    CorineLandCoverClassLevel1("1"): {
-        "name": "Artificial areas",
-        "color": Color["GREY"],
-    },
-    CorineLandCoverClassLevel1("2"): {
-        "name": "Agricultural areas",
-        "color": Color["YELLOW"],
-    },
-    CorineLandCoverClassLevel1("3"): {
-        "name": "Forest and semi-natural areas",
-        "color": Color["GREEN"],
-    },
-    CorineLandCoverClassLevel1("4"): {"name": "Wetlands", "color": Color["VIOLET"]},
-    CorineLandCoverClassLevel1("5"): {"name": "Water bodies", "color": Color["BLUE"]},
+    CorineLandCoverClassLevel1("1"): {"name": "Artificial areas"},
+    CorineLandCoverClassLevel1("2"): {"name": "Agricultural areas"},
+    CorineLandCoverClassLevel1("3"): {"name": "Forest and semi-natural areas"},
+    CorineLandCoverClassLevel1("4"): {"name": "Wetlands"},
+    CorineLandCoverClassLevel1("5"): {"name": "Water bodies"},
 }
 
 
@@ -148,7 +162,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             clc_class = "all CLC classes"
         else:
             clc_class = "CLC class <em>{0}</em>".format(
-                clc_classes_level_2[self.clc_class]
+                clc_classes_level_2[self.clc_class]["name"]
             )
         label_description = template.safe_substitute(
             {
@@ -182,13 +196,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
         bars = []
         for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
             clc_class_level_1 = CorineLandCoverClassLevel1(clc_class[0])
-            color = clc_classes_level_1[clc_class_level_1]["color"].value
             name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
             number_level_2 = CorineLandCoverClass(clc_class).value
             name_level_2 = "{0} {1}".format(
                 number_level_2,
-                clc_classes_level_2[CorineLandCoverClass(clc_class)],
+                clc_classes_level_2[CorineLandCoverClass(clc_class)]["name"],
             )
+            color = (clc_classes_level_2[CorineLandCoverClass(clc_class)]["color"],)
             x = clc_class
             y = self.f1_scores[i] * 100
             bars.append(
@@ -235,7 +249,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
     def _create_figure_single_class(self):
         clc_class_level_1 = CorineLandCoverClassLevel1(self.clc_class.value[0])
         name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
-        name_level_2 = clc_classes_level_2[CorineLandCoverClass(self.clc_class.value)]
+        name_level_2 = clc_classes_level_2[CorineLandCoverClass(self.clc_class.value)][
+            "name"
+        ]
         class_name = name_level_1 + " <br> " + name_level_2
         class_labels = ["Other classes", class_name]
         fig = pgo.Figure(

@@ -7,7 +7,9 @@
                 "text": "Artificial areas"
             },
             "marker": {
-                "color": "#767676"
+                "color": [
+                    "#f30027"
+                ]
             },
             "name": "11 Urban fabric",
             "type": "bar",
@@ -25,7 +27,9 @@
                 "text": "Artificial areas"
             },
             "marker": {
-                "color": "#767676"
+                "color": [
+                    "#d979a9"
+                ]
             },
             "name": "12 Industrial, commercial and transport units",
             "type": "bar",
@@ -43,7 +47,9 @@
                 "text": "Artificial areas"
             },
             "marker": {
-                "color": "#767676"
+                "color": [
+                    "#ffc6ff"
+                ]
             },
             "name": "14 Artificial non-agricultural vegetated areas",
             "type": "bar",
@@ -61,7 +67,9 @@
                 "text": "Agricultural areas"
             },
             "marker": {
-                "color": "#FBBD08"
+                "color": [
+                    "#f7f738"
+                ]
             },
             "name": "21 Arable land",
             "type": "bar",
@@ -79,7 +87,9 @@
                 "text": "Agricultural areas"
             },
             "marker": {
-                "color": "#FBBD08"
+                "color": [
+                    "#ea991a"
+                ]
             },
             "name": "22 Permanent crops",
             "type": "bar",
@@ -97,7 +107,9 @@
                 "text": "Agricultural areas"
             },
             "marker": {
-                "color": "#FBBD08"
+                "color": [
+                    "#e6e64d"
+                ]
             },
             "name": "23 Pastures",
             "type": "bar",
@@ -115,7 +127,9 @@
                 "text": "Agricultural areas"
             },
             "marker": {
-                "color": "#FBBD08"
+                "color": [
+                    "#f6d97a"
+                ]
             },
             "name": "24 Heterogeneous agricultural areas",
             "type": "bar",
@@ -133,7 +147,9 @@
                 "text": "Forest and semi-natural areas"
             },
             "marker": {
-                "color": "#21BA45"
+                "color": [
+                    "#44e100"
+                ]
             },
             "name": "31 Forest",
             "type": "bar",
@@ -151,7 +167,9 @@
                 "text": "Forest and semi-natural areas"
             },
             "marker": {
-                "color": "#21BA45"
+                "color": [
+                    "#b0f247"
+                ]
             },
             "name": "32 Shrubs and/or herbaceous vegetation associations",
             "type": "bar",
@@ -169,7 +187,9 @@
                 "text": "Water bodies"
             },
             "marker": {
-                "color": "#2185D0"
+                "color": [
+                    "#40dfec"
+                ]
             },
             "name": "51 Inland waters",
             "type": "bar",
