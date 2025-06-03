@@ -48,21 +48,7 @@ For local development no custom configuration is required, except for the work o
 ## Usage
 
 ```bash
-uv run python scripts/start_api.py
-```
-
-Go to [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) and check out the endpoints.
-
-Default host is 127.0.0.1 and port is 8080. To change this, provide the corresponding parameter:
-
-```bash
-uv run python script/start_api.py --help
-Usage: start_api.py [OPTIONS]
-
-Options:
-  --host TEXT     [default: 127.0.0.1]
-  --port INTEGER  [default: 8080]
-  --help          Show this message and exit.
+uv run fastapi dev ohsome_quality_api/api/api.py
 ```
 
 
