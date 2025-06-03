@@ -1,12 +1,12 @@
 ---
 label_description:
   red: >-
-    TODO
+    Your area of interest has a low completeness of land cover data.
   yellow: >-
-    TODO
+    Your area of interest has a mediocre completeness of land cover data.
   green: >-
-    TODO
+    Your area of interest has a high completeness of land cover data.
   undefined: >-
-    TODO
+    The quality level could not be calculated for this indicator.
 result_description: >-
     TODO
