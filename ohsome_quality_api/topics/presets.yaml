@@ -551,15 +551,10 @@ land-cover:
   name: Land Use and Land Cover
   description: >-
     Features related to land use and land cover.
-    This definition includes well established tags for coherent areas at the most atomic level available.
-    This definition therefore excludes areas with the keys aeroway, highway, leisure and tourism which can be found in other sources.
-    For further details please contact us.
   endpoint: elements
   aggregation_type: area
   filter: >-
    (landuse=* and landuse!=no) or natural=water and geometry:polygon
-  source: >-
-    TODO
   indicators:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
