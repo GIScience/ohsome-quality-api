@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-editable --no-dev
 
 # add project files and install the project
-ADD ohsome_quality_api ohsome_quality_api
+COPY ohsome_quality_api ohsome_quality_api
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
