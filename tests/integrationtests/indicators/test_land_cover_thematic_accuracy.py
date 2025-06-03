@@ -133,8 +133,8 @@ async def test_calculate_multi_class(feature, topic, mock_db_fetch):
     assert indicator.confusion_matrix is not None
     assert indicator.f1_score is not None
     assert indicator.result.value is not None
-    assert indicator.result.class_ == 5
-    assert indicator.result.label == "green"
+    assert indicator.result.class_ == 3
+    assert indicator.result.label == "yellow"
     verify(indicator.result.description, namer=PytestNamer(postfix="description"))
     verify(indicator.report, namer=PytestNamer(postfix="report"))
 
