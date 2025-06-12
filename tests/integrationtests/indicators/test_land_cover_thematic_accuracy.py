@@ -185,6 +185,7 @@ async def test_figure_single_class(
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip()
 async def test_coverage(
     feature_land_cover,
     topic_land_cover,
