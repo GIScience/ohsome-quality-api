@@ -1,8 +1,8 @@
 import plotly.graph_objects as pgo
 from dateutil import parser
 from geojson import Feature
-from indicators.base import BaseIndicator
 
+from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 

@@ -26,8 +26,6 @@ from ohsome_quality_api.topics.definitions import (
     load_topic_presets,
 )
 from ohsome_quality_api.topics.models import TopicDefinition
-from topics.definitions import get_topic_preset
-from topics.models import TopicDefinition
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 

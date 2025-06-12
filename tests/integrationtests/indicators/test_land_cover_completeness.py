@@ -1,12 +1,12 @@
 import pytest
 from approvaltests import Options, verify, verify_as_json
-from approvaltests_namers import PytestNamer
-from approvaltests_reporters import PlotlyDiffReporter
 from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.land_cover_completeness.indicator import (
     LandCoverCompleteness,
 )
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 
 
 @pytest.mark.asyncio

@@ -4,7 +4,6 @@ import pytest
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
-from conftest import feature_land_cover, topic_land_cover
 from ohsome_quality_api.api.request_models import CorineLandCoverClass
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
@@ -53,8 +52,14 @@ def mock_db_fetch_single_class(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_preprocess_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
+async def test_preprocess_multi_class(
+    feature_land_cover,
+    topic_land_cover,
+    mock_db_fetch,
+):
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_land_cover, topic=topic_land_cover
+    )
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
     assert isinstance(indicator.clc_classes_corine, list)
@@ -75,10 +80,12 @@ async def test_preprocess_multi_class(feature_land_cover, topic_land_cover, mock
 
 @pytest.mark.asyncio
 async def test_preprocess_single_class(
-        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
+    feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
+        feature=feature_land_cover,
+        topic=topic_land_cover,
+        corine_land_cover_class=corine_class,
     )
     await indicator.preprocess()
     assert isinstance(indicator.areas, list)
@@ -99,8 +106,14 @@ async def test_preprocess_single_class(
 
 
 @pytest.mark.asyncio
-async def test_calculate_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
+async def test_calculate_multi_class(
+    feature_land_cover,
+    topic_land_cover,
+    mock_db_fetch,
+):
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_land_cover, topic=topic_land_cover
+    )
     await indicator.preprocess()
     indicator.calculate()
     assert indicator.confusion_matrix is not None
@@ -114,10 +127,12 @@ async def test_calculate_multi_class(feature_land_cover, topic_land_cover, mock_
 
 @pytest.mark.asyncio
 async def test_calculate_single_class(
-        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
+    feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
+        feature=feature_land_cover,
+        topic=topic_land_cover,
+        corine_land_cover_class=corine_class,
     )
     await indicator.preprocess()
     indicator.calculate()
@@ -132,7 +147,10 @@ async def test_calculate_single_class(
 
 @pytest.mark.asyncio
 async def test_figure_multi_class(feature_land_cover, topic_land_cover, mock_db_fetch):
-    indicator = LandCoverThematicAccuracy(feature=feature_land_cover, topic=topic_land_cover)
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_land_cover,
+        topic=topic_land_cover,
+    )
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
@@ -145,10 +163,15 @@ async def test_figure_multi_class(feature_land_cover, topic_land_cover, mock_db_
 
 @pytest.mark.asyncio
 async def test_figure_single_class(
-        feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
+    feature_land_cover,
+    topic_land_cover,
+    corine_class,
+    mock_db_fetch_single_class,
 ):
     indicator = LandCoverThematicAccuracy(
-        feature=feature_land_cover, topic=topic_land_cover, corine_land_cover_class=corine_class
+        feature=feature_land_cover,
+        topic=topic_land_cover,
+        corine_land_cover_class=corine_class,
     )
     await indicator.preprocess()
     indicator.calculate()
