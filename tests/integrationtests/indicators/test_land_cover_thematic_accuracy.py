@@ -1,5 +1,6 @@
 import json
 
+import geojson
 import pytest
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
@@ -181,3 +182,22 @@ async def test_figure_single_class(
         to_jsonable_python(indicator.result.figure),
         options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
     )
+
+
+@pytest.mark.asyncio
+async def test_coverage(
+    feature_land_cover,
+    topic_land_cover,
+):
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_land_cover,
+        topic=topic_land_cover,
+    )
+
+    result = await indicator.coverage()
+    geojson_object = geojson.loads(result[0])
+    assert geojson_object.is_valid
+
+    result = await indicator.coverage(inverse=True)
+    geojson_object = geojson.loads(result[0])
+    assert geojson_object.is_valid

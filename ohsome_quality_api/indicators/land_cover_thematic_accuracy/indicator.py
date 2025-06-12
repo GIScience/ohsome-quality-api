@@ -83,6 +83,17 @@ class LandCoverThematicAccuracy(BaseIndicator):
         super().__init__(topic=topic, feature=feature)
         self.clc_class = corine_land_cover_class
 
+    @classmethod
+    async def coverage(cls, inverse=False) -> list[Feature]:
+        if inverse:
+            query = (
+                "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"  # noqa
+            )
+        else:
+            query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
+        result = await client.fetch(query)
+        return [result[0][0]]
+
     async def preprocess(self) -> None:
         if self.clc_class:
             with open(Path(__file__).parent / "query-single-class.sql", "r") as file:
