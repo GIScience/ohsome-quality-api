@@ -12,7 +12,7 @@ SELECT
         ELSE ST_Area(ST_Intersection(o.geometry, b.geometry)::geography)
     END AS area
 FROM
-    osm_corine_2021_deu_intersection o,
+    osm_corine_intersection o,
     bpoly b
 WHERE
     ST_Intersects(o.geometry, b.geometry)
