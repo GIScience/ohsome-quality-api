@@ -5,6 +5,7 @@
 ### New Feature
 
 - new indicator about thematic accuracy of land cover data in OSM ([#893])
+- add land-cover-completeness indicator ([#910])
 
 ### Breaking Changes
 
@@ -29,6 +30,7 @@
 [#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
 [#898]: https://github.com/GIScience/ohsome-quality-api/issues/898
 [#904]: https://github.com/GIScience/ohsome-quality-api/pull/904
+[#910]: https://github.com/GIScience/ohsome-quality-api/pull/910
 
 ## Release  1.9.0
 
