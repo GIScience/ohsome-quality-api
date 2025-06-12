@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
 
+import geojson
 import numpy
 import plotly.graph_objects as pgo
 from geojson import Feature
@@ -92,7 +93,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         else:
             query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
         result = await client.fetch(query)
-        return [result[0][0]]
+        return [Feature(geometry=geojson.loads(result[0][0]))]
 
     async def preprocess(self) -> None:
         if self.clc_class:
