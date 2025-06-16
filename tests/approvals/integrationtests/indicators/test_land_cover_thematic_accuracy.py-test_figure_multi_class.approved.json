@@ -1,222 +1,200 @@
 {
     "data": [
         {
-            "hovertemplate": "Precision: 0.94<br>Recall: 0.86<br>Area [km<sup>2</sup>]: 13.68<br>Area [%]: 25.19",
-            "legendgroup": "Artificial areas",
-            "legendgrouptitle": {
-                "text": "Artificial areas"
-            },
-            "marker": {
-                "color": [
-                    "#f30027"
-                ]
-            },
-            "name": "11 Urban fabric",
-            "type": "bar",
-            "x": [
-                "11"
-            ],
-            "y": [
-                90.04534466333342
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.84<br>Recall: 0.87<br>Area [km<sup>2</sup>]: 4.87<br>Area [%]: 8.96",
-            "legendgroup": "Artificial areas",
-            "legendgrouptitle": {
-                "text": "Artificial areas"
-            },
-            "marker": {
-                "color": [
-                    "#d979a9"
-                ]
-            },
-            "name": "12 Industrial, commercial and transport units",
-            "type": "bar",
-            "x": [
-                "12"
-            ],
-            "y": [
-                85.14053055717963
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.13<br>Recall: 0.42<br>Area [km<sup>2</sup>]: 0.36<br>Area [%]: 0.67",
-            "legendgroup": "Artificial areas",
-            "legendgrouptitle": {
-                "text": "Artificial areas"
-            },
-            "marker": {
-                "color": [
-                    "#ffc6ff"
-                ]
-            },
-            "name": "14 Artificial non-agricultural vegetated areas",
-            "type": "bar",
-            "x": [
-                "14"
-            ],
-            "y": [
-                19.75282490077088
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.86<br>Recall: 0.91<br>Area [km<sup>2</sup>]: 15.53<br>Area [%]: 28.59",
-            "legendgroup": "Agricultural areas",
-            "legendgrouptitle": {
-                "text": "Agricultural areas"
-            },
-            "marker": {
-                "color": [
-                    "#f7f738"
-                ]
-            },
-            "name": "21 Arable land",
-            "type": "bar",
-            "x": [
-                "21"
-            ],
-            "y": [
-                88.50013049187115
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.64<br>Recall: 0.76<br>Area [km<sup>2</sup>]: 2.30<br>Area [%]: 4.23",
-            "legendgroup": "Agricultural areas",
-            "legendgrouptitle": {
-                "text": "Agricultural areas"
-            },
-            "marker": {
-                "color": [
-                    "#ea991a"
-                ]
-            },
-            "name": "22 Permanent crops",
-            "type": "bar",
-            "x": [
-                "22"
-            ],
-            "y": [
-                69.77146880873775
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.75<br>Recall: 0.44<br>Area [km<sup>2</sup>]: 6.71<br>Area [%]: 12.36",
-            "legendgroup": "Agricultural areas",
-            "legendgrouptitle": {
-                "text": "Agricultural areas"
-            },
-            "marker": {
-                "color": [
-                    "#e6e64d"
-                ]
-            },
-            "name": "23 Pastures",
-            "type": "bar",
-            "x": [
-                "23"
-            ],
-            "y": [
-                55.093034384370334
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.08<br>Area [%]: 0.16",
-            "legendgroup": "Agricultural areas",
-            "legendgrouptitle": {
-                "text": "Agricultural areas"
-            },
-            "marker": {
-                "color": [
-                    "#f6d97a"
-                ]
-            },
-            "name": "24 Heterogeneous agricultural areas",
-            "type": "bar",
-            "x": [
-                "24"
-            ],
-            "y": [
-                0.0
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.82<br>Recall: 0.92<br>Area [km<sup>2</sup>]: 10.49<br>Area [%]: 19.31",
-            "legendgroup": "Forest and semi-natural areas",
-            "legendgrouptitle": {
-                "text": "Forest and semi-natural areas"
-            },
-            "marker": {
-                "color": [
-                    "#44e100"
-                ]
-            },
-            "name": "31 Forest",
-            "type": "bar",
-            "x": [
-                "31"
-            ],
-            "y": [
-                87.07398289897031
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.26<br>Area [%]: 0.47",
-            "legendgroup": "Forest and semi-natural areas",
-            "legendgrouptitle": {
-                "text": "Forest and semi-natural areas"
-            },
-            "marker": {
-                "color": [
-                    "#b0f247"
-                ]
-            },
-            "name": "32 Shrubs and/or herbaceous vegetation associations",
-            "type": "bar",
-            "x": [
-                "32"
-            ],
-            "y": [
-                0.0
-            ]
-        },
-        {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.03<br>Area [%]: 0.06",
-            "legendgroup": "Water bodies",
-            "legendgrouptitle": {
-                "text": "Water bodies"
-            },
+            "hovertemplate": "Precision [%]: 93.97<br>Recall [%]: 86.43<br>Area [km<sup>2</sup>]: 13.68<br>Area [%]: 25.19",
             "marker": {
                 "color": [
                     "#40dfec"
                 ]
             },
-            "name": "51 Inland waters",
+            "name": "",
+            "orientation": "h",
+            "text": "90.05",
+            "textposition": "auto",
             "type": "bar",
             "x": [
-                "51"
+                90.04534466333342
             ],
             "y": [
+                "5.1 Inland waters "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 83.54<br>Recall [%]: 86.80<br>Area [km<sup>2</sup>]: 4.87<br>Area [%]: 8.96",
+            "marker": {
+                "color": [
+                    "#b0f247"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "85.14",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                85.14053055717963
+            ],
+            "y": [
+                "3.2 Shrubs and/or herbaceous vegetation associations "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 12.95<br>Recall [%]: 41.63<br>Area [km<sup>2</sup>]: 0.36<br>Area [%]: 0.67",
+            "marker": {
+                "color": [
+                    "#44e100"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "19.75",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                19.75282490077088
+            ],
+            "y": [
+                "3.1 Forest "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 86.17<br>Recall [%]: 90.96<br>Area [km<sup>2</sup>]: 15.53<br>Area [%]: 28.59",
+            "marker": {
+                "color": [
+                    "#f6d97a"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "88.50",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                88.50013049187115
+            ],
+            "y": [
+                "2.4 Heterogeneous agricultural areas "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 64.24<br>Recall [%]: 76.34<br>Area [km<sup>2</sup>]: 2.30<br>Area [%]: 4.23",
+            "marker": {
+                "color": [
+                    "#e6e64d"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "69.77",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                69.77146880873775
+            ],
+            "y": [
+                "2.3 Pastures "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 74.56<br>Recall [%]: 43.69<br>Area [km<sup>2</sup>]: 6.71<br>Area [%]: 12.36",
+            "marker": {
+                "color": [
+                    "#ea991a"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "55.09",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                55.093034384370334
+            ],
+            "y": [
+                "2.2 Permanent crops "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.08<br>Area [%]: 0.16",
+            "marker": {
+                "color": [
+                    "#f7f738"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "0.00",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
                 0.0
+            ],
+            "y": [
+                "2.1 Arable land "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 82.46<br>Recall [%]: 92.23<br>Area [km<sup>2</sup>]: 10.49<br>Area [%]: 19.31",
+            "marker": {
+                "color": [
+                    "#ffc6ff"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "87.07",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                87.07398289897031
+            ],
+            "y": [
+                "1.4 Artificial non-agricultural vegetated areas "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.26<br>Area [%]: 0.47",
+            "marker": {
+                "color": [
+                    "#d979a9"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "0.00",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                0.0
+            ],
+            "y": [
+                "1.2 Industrial, commercial and transport units "
+            ]
+        },
+        {
+            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.03<br>Area [%]: 0.06",
+            "marker": {
+                "color": [
+                    "#f30027"
+                ]
+            },
+            "name": "",
+            "orientation": "h",
+            "text": "0.00",
+            "textposition": "auto",
+            "type": "bar",
+            "x": [
+                0.0
+            ],
+            "y": [
+                "1.1 Urban fabric "
             ]
         }
     ],
     "layout": {
         "autotypenumbers": "strict",
-        "legend": {
-            "orientation": "h",
-            "x": 0,
-            "y": -0.5,
-            "yanchor": "top"
-        },
-        "showlegend": true,
+        "showlegend": false,
         "xaxis": {
-            "dtick": 1,
-            "title": {
-                "text": "CORINE Land Cover Class (CLC Class)"
-            }
-        },
-        "yaxis": {
             "range": [
                 0,
                 100
