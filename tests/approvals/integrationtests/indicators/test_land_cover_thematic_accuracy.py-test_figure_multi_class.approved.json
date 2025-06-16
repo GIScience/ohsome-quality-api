@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "hovertemplate": "Precision: 0.94<br>Recall: 0.86<br>Area: 0.19%",
+            "hovertemplate": "Precision: 0.94<br>Recall: 0.86<br>Area [km<sup>2</sup>]: 13.68<br>Area [%]: 25.19",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -21,7 +21,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.84<br>Recall: 0.87<br>Area: 0.60%",
+            "hovertemplate": "Precision: 0.84<br>Recall: 0.87<br>Area [km<sup>2</sup>]: 4.87<br>Area [%]: 8.96",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -41,7 +41,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.13<br>Recall: 0.42<br>Area: 3.78%",
+            "hovertemplate": "Precision: 0.13<br>Recall: 0.42<br>Area [km<sup>2</sup>]: 0.36<br>Area [%]: 0.67",
             "legendgroup": "Artificial areas",
             "legendgrouptitle": {
                 "text": "Artificial areas"
@@ -61,7 +61,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.86<br>Recall: 0.91<br>Area: 0.70%",
+            "hovertemplate": "Precision: 0.86<br>Recall: 0.91<br>Area [km<sup>2</sup>]: 15.53<br>Area [%]: 28.59",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -81,7 +81,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.64<br>Recall: 0.76<br>Area: 0.04%",
+            "hovertemplate": "Precision: 0.64<br>Recall: 0.76<br>Area [km<sup>2</sup>]: 2.30<br>Area [%]: 4.23",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -101,7 +101,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.75<br>Recall: 0.44<br>Area: 0.00%",
+            "hovertemplate": "Precision: 0.75<br>Recall: 0.44<br>Area [km<sup>2</sup>]: 6.71<br>Area [%]: 12.36",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -121,7 +121,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area: 4.08%",
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.08<br>Area [%]: 0.16",
             "legendgroup": "Agricultural areas",
             "legendgrouptitle": {
                 "text": "Agricultural areas"
@@ -141,7 +141,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.82<br>Recall: 0.92<br>Area: 2.10%",
+            "hovertemplate": "Precision: 0.82<br>Recall: 0.92<br>Area [km<sup>2</sup>]: 10.49<br>Area [%]: 19.31",
             "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
                 "text": "Forest and semi-natural areas"
@@ -161,7 +161,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area: 0.06%",
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.26<br>Area [%]: 0.47",
             "legendgroup": "Forest and semi-natural areas",
             "legendgrouptitle": {
                 "text": "Forest and semi-natural areas"
@@ -181,7 +181,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area: 8.09%",
+            "hovertemplate": "Precision: 0.00<br>Recall: 0.00<br>Area [km<sup>2</sup>]: 0.03<br>Area [%]: 0.06",
             "legendgroup": "Water bodies",
             "legendgrouptitle": {
                 "text": "Water bodies"

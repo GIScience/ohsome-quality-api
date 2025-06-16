@@ -11,8 +11,7 @@ from sklearn.metrics import (
     classification_report,
     confusion_matrix,
     f1_score,
-    precision_score,
-    recall_score,
+    precision_recall_fscore_support,
 )
 
 from ohsome_quality_api.api.request_models import (
@@ -130,23 +129,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
             sample_weight=self.areas,
             labels=list(set(self.clc_classes_corine)),
         )
-        self.f1_scores = f1_score(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            average=None,  # for each
-            sample_weight=self.areas,
-            labels=list(sorted(set(self.clc_classes_corine))),
-        )
 
-        self.precision_scores = precision_score(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            average=None,  # for each
-            sample_weight=self.areas,
-            labels=list(sorted(set(self.clc_classes_corine))),
-        )
-
-        self.recall_scores = recall_score(
+        (
+            self.precision_scores,
+            self.recall_scores,
+            self.f1_scores,
+            self.support_scores,
+        ) = precision_recall_fscore_support(
             self.clc_classes_corine,
             self.clc_classes_osm,
             average=None,  # for each
@@ -160,6 +149,14 @@ class LandCoverThematicAccuracy(BaseIndicator):
             sample_weight=self.areas,
             normalize="all",
         )
+        # NOTE: For introspection/testing only
+        self.report = classification_report(
+            self.clc_classes_corine,
+            self.clc_classes_osm,
+            sample_weight=self.areas,
+            zero_division=numpy.nan,
+        )
+
         self.result.value = self.f1_score
         # TODO: re-evaluate thresholds
         if self.f1_score > 0.9:
@@ -186,14 +183,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
             f"{label_description} {self.templates.result_description}"
         )
 
-        # NOTE: For introspection/testing only
-        self.report = classification_report(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            sample_weight=self.areas,
-            zero_division=numpy.nan,
-        )
-
     def create_figure(self) -> None:
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
@@ -217,7 +206,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             color = (clc_classes_level_2[CorineLandCoverClass(clc_class)]["color"],)
             x = clc_class
             y = self.f1_scores[i] * 100
-            area = self.areas[i] * 100 / sum(self.areas)
+            area_percentage = self.support_scores[i] * 100 / sum(self.support_scores)
             bars.append(
                 pgo.Bar(
                     name=name_level_2,
@@ -229,7 +218,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     hovertemplate=(
                         f"Precision: {self.precision_scores[i]:.2f}<br>"
                         f"Recall: {self.recall_scores[i]:.2f}<br>"
-                        f"Area: {area:.2%}"
+                        f"Area [km<sup>2</sup>]: {self.support_scores[i]:.2f}<br>"
+                        f"Area [%]: {(area_percentage):.2f}"
                     ),
                 )
             )
