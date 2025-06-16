@@ -217,6 +217,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             color = (clc_classes_level_2[CorineLandCoverClass(clc_class)]["color"],)
             x = clc_class
             y = self.f1_scores[i] * 100
+            area = self.areas[i] * 100 / sum(self.areas)
             bars.append(
                 pgo.Bar(
                     name=name_level_2,
@@ -227,7 +228,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     marker_color=color,
                     hovertemplate=(
                         f"Precision: {self.precision_scores[i]:.2f}<br>"
-                        f"Recall: {self.recall_scores[i]:.2f}"
+                        f"Recall: {self.recall_scores[i]:.2f}<br>"
+                        f"Area: {area:.2%}"
                     ),
                 )
             )
