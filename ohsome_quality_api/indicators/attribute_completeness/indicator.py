@@ -188,9 +188,25 @@ class AttributeCompleteness(BaseIndicator):
         fig.update_xaxes(visible=False)
         fig.update_yaxes(visible=False)
 
+        fig.add_layout_image(
+            dict(
+                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                xref="paper",
+                yref="paper",
+                x=0.42,
+                y=0.65,
+                sizex=0.3,
+                sizey=0.3,
+                sizing="contain",
+                opacity=0.3,
+                layer="above",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+        fig.show()
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
