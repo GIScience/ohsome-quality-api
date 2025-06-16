@@ -1,1 +1,1 @@
-Your area of interest has a high completeness of land cover data.This indicator measures the proportion of the total area that is covered by land cover data mapped in OSM. It reflects the percentage of the region of interest that has been assigned a land cover classification  (e.g., forest, water, urban fabric, agriculture) by OSM contributors.
+In your area-of-interest the completeness of OSM land cover data is high. 92.0 % of the total area are covered by OSM land cover data.

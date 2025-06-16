@@ -44,6 +44,24 @@ async def test_create_land_cover_completeness_calculate(
 
 @pytest.mark.asyncio
 @oqapi_vcr.use_cassette
+async def test_create_land_cover_completeness_calculate_above_100(
+    topic_land_cover, feature_land_cover
+):
+    indicator = LandCoverCompleteness(
+        topic=topic_land_cover,
+        feature=feature_land_cover,
+    )
+    await indicator.preprocess()
+    indicator.osm_area_ratio = 1300000
+    indicator.calculate()
+    assert indicator.result.label == "green"
+    verify(
+        indicator.result.description, namer=PytestNamer(postfix="description_above_100")
+    )
+
+
+@pytest.mark.asyncio
+@oqapi_vcr.use_cassette
 async def test_create_figure(topic_land_cover, feature_land_cover):
     indicator = LandCoverCompleteness(
         topic=topic_land_cover,

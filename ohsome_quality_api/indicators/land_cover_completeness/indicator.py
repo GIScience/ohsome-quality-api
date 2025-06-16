@@ -1,4 +1,5 @@
 import logging
+from string import Template
 
 import plotly.graph_objects as pgo
 from dateutil import parser
@@ -37,15 +38,23 @@ class LandCoverCompleteness(BaseIndicator):
             self.result.class_ = 3
         elif self.th_low > self.result.value >= 0:
             self.result.class_ = 1
+
+        template = Template(self.templates.result_description)
+        result_description = template.safe_substitute(
+            {
+                "value": round(self.result.value * 100, 2),
+            }
+        )
         self.result.description = (
             self.templates.label_description[self.result.label]
-            + self.templates.result_description
+            + " "
+            + result_description
         )
 
         if self.result.value > 1:
             self.result.description += (
-                "WARNING: Some mapped land cover areas in the AOI overlap, "
-                "thus the completeness exceeds 100%."
+                " WARNING: The completeness exceeds 100 %. "
+                "This is likely due to overlapping OSM land cover polygons."
             )
 
     def create_figure(self) -> None:

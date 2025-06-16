@@ -1,14 +1,89 @@
 {
     "data": [
         {
-            "type": "bar",
-            "x": [
-                "name"
-            ],
-            "y": [
-                92.31059900000001
-            ]
+            "domain": {
+                "x": [
+                    0,
+                    1
+                ],
+                "y": [
+                    0,
+                    1
+                ]
+            },
+            "gauge": {
+                "axis": {
+                    "range": [
+                        0,
+                        100
+                    ],
+                    "tickcolor": "darkblue",
+                    "tickfont": {
+                        "color": "black",
+                        "size": 20
+                    },
+                    "ticksuffix": "%",
+                    "tickwidth": 1
+                },
+                "bar": {
+                    "color": "black"
+                },
+                "steps": [
+                    {
+                        "color": "tomato",
+                        "range": [
+                            0,
+                            50.0
+                        ]
+                    },
+                    {
+                        "color": "gold",
+                        "range": [
+                            50.0,
+                            85.0
+                        ]
+                    },
+                    {
+                        "color": "darkseagreen",
+                        "range": [
+                            85.0,
+                            100
+                        ]
+                    }
+                ]
+            },
+            "mode": "gauge+number",
+            "number": {
+                "suffix": "%"
+            },
+            "type": "indicator",
+            "value": 92.0
         }
     ],
-    "layout": {}
+    "layout": {
+        "autosize": true,
+        "font": {
+            "color": "black",
+            "family": "Arial"
+        },
+        "plot_bgcolor": "rgba(0,0,0,0)",
+        "xaxis": {
+            "fixedrange": true,
+            "range": [
+                -1,
+                1
+            ],
+            "showgrid": false,
+            "visible": false
+        },
+        "yaxis": {
+            "fixedrange": true,
+            "range": [
+                0,
+                1
+            ],
+            "showgrid": false,
+            "visible": false
+        }
+    }
 }
