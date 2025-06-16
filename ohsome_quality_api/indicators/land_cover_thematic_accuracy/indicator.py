@@ -254,9 +254,25 @@ class LandCoverThematicAccuracy(BaseIndicator):
             ),
         )
 
+        fig.add_layout_image(
+            dict(
+                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                xref="paper",
+                yref="paper",
+                x=0.92,
+                y=1,
+                sizex=0.3,
+                sizey=0.3,
+                sizing="contain",
+                opacity=0.3,
+                layer="above",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+        fig.show()
 
     def _create_figure_single_class(self):
         clc_class_level_1 = CorineLandCoverClassLevel1(self.clc_class.value[0])
@@ -291,6 +307,23 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 ticktext=class_labels,
             ),
         )
+
+        fig.add_layout_image(
+            dict(
+                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                xref="paper",
+                yref="paper",
+                x=0.92,
+                y=0.02,
+                sizex=0.3,
+                sizey=0.3,
+                sizing="contain",
+                opacity=0.3,
+                layer="below",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+        fig.show()

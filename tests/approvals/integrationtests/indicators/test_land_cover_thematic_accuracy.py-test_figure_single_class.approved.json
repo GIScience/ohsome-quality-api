@@ -72,6 +72,20 @@
         }
     ],
     "layout": {
+        "images": [
+            {
+                "layer": "below",
+                "opacity": 0.3,
+                "sizex": 0.3,
+                "sizey": 0.3,
+                "sizing": "contain",
+                "source": "https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                "x": 0.92,
+                "xref": "paper",
+                "y": 0.02,
+                "yref": "paper"
+            }
+        ],
         "xaxis": {
             "ticktext": [
                 "Other classes",
