@@ -269,9 +269,25 @@ class Currentness(BaseIndicator):
             bgcolor="rgba(255,255,255,0.66)",
         )
 
+        fig.add_layout_image(
+            dict(
+                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                xref="paper",
+                yref="paper",
+                x=0.759,
+                y=1,
+                sizex=0.3,
+                sizey=0.3,
+                sizing="contain",
+                opacity=0.3,
+                layer="above",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+        fig.show()
 
     def get_threshold_text(self, color: Color) -> str:
         up_to_date_str = month_to_year_month(self.up_to_date)
