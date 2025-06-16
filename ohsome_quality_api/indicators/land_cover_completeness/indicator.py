@@ -1,3 +1,5 @@
+import logging
+
 import plotly.graph_objects as pgo
 from dateutil import parser
 from geojson import Feature
@@ -40,9 +42,62 @@ class LandCoverCompleteness(BaseIndicator):
             + self.templates.result_description
         )
 
+        if self.result.value > 1:
+            self.result.description += (
+                "WARNING: Some mapped land cover areas in the AOI overlap, "
+                "thus the completeness exceeds 100%."
+            )
+
     def create_figure(self) -> None:
-        fig = pgo.Figure()
-        fig.add_trace(pgo.Bar(x=["name"], y=[self.osm_area_ratio * 100]))
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
+
+        fig = pgo.Figure(
+            pgo.Indicator(
+                domain={"x": [0, 1], "y": [0, 1]},
+                mode="gauge+number",
+                value=self.result.value * 100,
+                number={"suffix": "%"},
+                type="indicator",
+                gauge={
+                    "axis": {
+                        "range": [0, 100],
+                        "tickwidth": 1,
+                        "tickcolor": "darkblue",
+                        "ticksuffix": "%",
+                        "tickfont": dict(color="black", size=20),
+                    },
+                    "bar": {"color": "black"},
+                    "steps": [
+                        {"range": [0, self.th_low * 100], "color": "tomato"},
+                        {
+                            "range": [
+                                self.th_low * 100,
+                                self.th_high * 100,
+                            ],
+                            "color": "gold",
+                        },
+                        {
+                            "range": [self.th_high * 100, 100],
+                            "color": "darkseagreen",
+                        },
+                    ],
+                },
+            )
+        )
+
+        fig.update_layout(
+            font={"color": "black", "family": "Arial"},
+            xaxis={"showgrid": False, "range": [-1, 1], "fixedrange": True},
+            yaxis={"showgrid": False, "range": [0, 1], "fixedrange": True},
+            plot_bgcolor="rgba(0,0,0,0)",
+            autosize=True,
+        )
+
+        fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
