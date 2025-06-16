@@ -9,4 +9,7 @@ label_description:
   undefined: >-
     The quality level could not be calculated for this indicator.
 result_description: >-
-    TODO
+  This indicator measures the proportion of the total area that is covered by
+  land cover data mapped in OSM. It reflects the percentage of
+  the region of interest that has been assigned a land cover classification 
+  (e.g., forest, water, urban fabric, agriculture) by OSM contributors.
