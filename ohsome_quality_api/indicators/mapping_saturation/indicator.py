@@ -210,13 +210,13 @@ class MappingSaturation(BaseIndicator):
 
         fig.add_layout_image(
             dict(
-                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
                 xref="paper",
                 yref="paper",
-                x=0.815,
-                y=0.24,
-                sizex=0.3,
-                sizey=0.3,
+                x=0.75,
+                y=0.15,
+                sizex=0.2,
+                sizey=0.2,
                 sizing="contain",
                 opacity=0.3,
                 layer="above",
@@ -226,7 +226,6 @@ class MappingSaturation(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-        fig.show()
 
     def check_edge_cases(self) -> str:
         """Check edge cases.

@@ -271,13 +271,13 @@ class Currentness(BaseIndicator):
 
         fig.add_layout_image(
             dict(
-                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
                 xref="paper",
                 yref="paper",
-                x=0.759,
-                y=1,
-                sizex=0.3,
-                sizey=0.3,
+                x=0.02,
+                y=0.15,
+                sizex=0.15,
+                sizey=0.15,
                 sizing="contain",
                 opacity=0.3,
                 layer="above",
@@ -287,7 +287,6 @@ class Currentness(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-        fig.show()
 
     def get_threshold_text(self, color: Color) -> str:
         up_to_date_str = month_to_year_month(self.up_to_date)

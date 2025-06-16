@@ -235,13 +235,13 @@ class BuildingComparison(BaseIndicator):
 
         fig.add_layout_image(
             dict(
-                source="https://media.licdn.com/dms/image/v2/D560BAQE9rkvB7vB_cg/company-logo_200_200/company-logo_200_200/0/1711546373172/heigit_logo?e=2147483647&v=beta&t=pWdgVEOkz7VBhH2WbM5_DJeTs7RsdVXbolKU3ftS1iY",
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
                 xref="paper",
                 yref="paper",
                 x=0.8,
-                y=-0.052,
-                sizex=0.25,
-                sizey=0.3,
+                y=-0.15,
+                sizex=0.2,
+                sizey=0.2,
                 sizing="contain",
                 opacity=0.3,
                 layer="above",
@@ -251,7 +251,6 @@ class BuildingComparison(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
-        fig.show()
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
