@@ -168,9 +168,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         template = Template(self.templates.label_description[self.result.label])
         if self.clc_class is None:
-            clc_class = "all CLC classes"
+            clc_class = "all CORINE Land Cover (CLC) classes"
         else:
-            clc_class = "CLC class <em>{0}</em>".format(
+            clc_class = "CORINE Land Cover (CLC) class <em>{0}</em>".format(
                 clc_classes_level_2[self.clc_class]["name"]
             )
         label_description = template.safe_substitute(
@@ -195,32 +195,33 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def _create_figure_multi_class(self):
         bars = []
-        for i, clc_class in enumerate(list(sorted(set(self.clc_classes_corine)))):
-            clc_class_level_1 = CorineLandCoverClassLevel1(clc_class[0])
-            name_level_1 = clc_classes_level_1[clc_class_level_1]["name"]
+        for i, clc_class in enumerate(
+            list(sorted(set(self.clc_classes_corine), reverse=True))
+        ):
             number_level_2 = CorineLandCoverClass(clc_class).value
             name_level_2 = "{0} {1}".format(
-                number_level_2,
+                f"{number_level_2[0]}.{number_level_2[1]}",
                 clc_classes_level_2[CorineLandCoverClass(clc_class)]["name"],
             )
             color = (clc_classes_level_2[CorineLandCoverClass(clc_class)]["color"],)
-            x = clc_class
-            y = self.f1_scores[i] * 100
+            x = self.f1_scores[i] * 100
+            y = name_level_2 + " "  # TODO: look at axis setting to create space
             area_percentage = self.support_scores[i] * 100 / sum(self.support_scores)
             bars.append(
                 pgo.Bar(
-                    name=name_level_2,
+                    name="",
                     x=[x],
                     y=[y],
-                    legendgroup=name_level_1,
-                    legendgrouptitle_text=name_level_1,
+                    orientation="h",
                     marker_color=color,
                     hovertemplate=(
-                        f"Precision: {self.precision_scores[i]:.2f}<br>"
-                        f"Recall: {self.recall_scores[i]:.2f}<br>"
+                        f"Precision [%]: {(self.precision_scores[i] * 100):.2f}<br>"
+                        f"Recall [%]: {(self.recall_scores[i] * 100):.2f}<br>"
                         f"Area [km<sup>2</sup>]: {self.support_scores[i]:.2f}<br>"
                         f"Area [%]: {(area_percentage):.2f}"
                     ),
+                    text=f"{x:.2f}",
+                    textposition="auto",
                 )
             )
         fig = pgo.Figure(
@@ -230,19 +231,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
             layout=pgo.Layout(
                 {
                     "autotypenumbers": "strict",
-                    "legend": {
-                        "yanchor": "top",
-                        "x": 0,
-                        "y": -0.5,
-                        "orientation": "h",
-                    },
-                    "xaxis": {
-                        "title": {"text": "CORINE Land Cover Class (CLC Class)"},
-                        "dtick": 1,
-                    },
-                    "yaxis": {"title": {"text": "F1-Score [%]"}, "range": [0, 100]},
+                    "xaxis": {"title": {"text": "F1-Score [%]"}, "range": [0, 100]},
                 },
-                showlegend=True,
+                showlegend=False,
             ),
         )
 
