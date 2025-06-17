@@ -260,10 +260,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     width=[0.5],
                     orientation="h",
                     name="False Negative",  # e.g corine = forest | osm = other
-                    marker_color=Color.RED.value,
+                    marker_color="lightgrey",
                     texttemplate=f"{self.confusion_matrix_normalized[1][0]:.2%}",
                     textposition="inside",
-                    textfont_color="black",
                     hovertemplate=(
                         f"CORINE class: {name_level_2}<br>"
                         f"OSM class: Other<br>"
@@ -280,7 +279,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     marker_color=Color.GREEN.value,
                     texttemplate=f"{self.confusion_matrix_normalized[1][1]:.2%}",
                     textposition="inside",
-                    textfont_color="black",
+                    # textfont_color="black",
                     hovertemplate=(
                         f"CORINE class: {name_level_2}<br>"
                         f"OSM class: {name_level_2}<br>"
@@ -293,8 +292,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     x=[self.confusion_matrix_normalized[0][1]],
                     width=[0.5],
                     orientation="h",
-                    name="False Positive",  # e.g. corine = other | osm = other
-                    marker_color=Color.YELLOW.value,
+                    name="False Positive",  # e.g. corine = other | osm = forest
+                    marker_color=Color.GREY.value,
                     texttemplate=f"{self.confusion_matrix_normalized[0][1]:.2%}",
                     textposition="inside",
                     hovertemplate=(

@@ -3,13 +3,10 @@
         {
             "hovertemplate": "CORINE class: Pastures<br>OSM class: Other<br>Area [km<sup>2</sup>]: 3.7802111655478488<br>Area [%]: 49.01%",
             "marker": {
-                "color": "#DB2828"
+                "color": "lightgrey"
             },
             "name": "False Negative",
             "orientation": "h",
-            "textfont": {
-                "color": "black"
-            },
             "textposition": "inside",
             "texttemplate": "49.01%",
             "type": "bar",
@@ -30,9 +27,6 @@
             },
             "name": "True Positive",
             "orientation": "h",
-            "textfont": {
-                "color": "black"
-            },
             "textposition": "inside",
             "texttemplate": "38.02%",
             "type": "bar",
@@ -49,7 +43,7 @@
         {
             "hovertemplate": "CORINE class: Other<br>OSM class: Pastures<br>Area [km<sup>2</sup>]: 1.000418439925055<br>Area [%]: 12.97%",
             "marker": {
-                "color": "#FBBD08"
+                "color": "#767676"
             },
             "name": "False Positive",
             "orientation": "h",
