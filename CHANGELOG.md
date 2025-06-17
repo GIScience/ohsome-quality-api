@@ -23,6 +23,8 @@
 - refactor: use asyncpg instead of psycopg ([#876])
 - build: remove psycopg ([#876])
 - feat(land-cover-thematic-accuracy): add precision and recall for each class to result figure
+- make land-cover topic filter more precise to include more natural and leisure tags ([#920])
+- use gauge plot for land-cover-completeness result figure ([#921])
 
 [#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
 [#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
@@ -31,6 +33,8 @@
 [#898]: https://github.com/GIScience/ohsome-quality-api/issues/898
 [#904]: https://github.com/GIScience/ohsome-quality-api/pull/904
 [#910]: https://github.com/GIScience/ohsome-quality-api/pull/910
+[#920]: https://github.com/GIScience/ohsome-quality-api/pull/920
+[#921]: https://github.com/GIScience/ohsome-quality-api/pull/921
 
 ## Release  1.9.0
 
