@@ -117,7 +117,7 @@ async def test_calculate_multi_class(
     )
     await indicator.preprocess()
     indicator.calculate()
-    assert indicator.confusion_matrix is not None
+    assert indicator.confusion_matrix_normalized is not None
     assert indicator.f1_score is not None
     assert indicator.result.value is not None
     assert indicator.result.class_ == 3
@@ -137,7 +137,7 @@ async def test_calculate_single_class(
     )
     await indicator.preprocess()
     indicator.calculate()
-    assert indicator.confusion_matrix is not None
+    assert indicator.confusion_matrix_normalized is not None
     assert indicator.f1_score is not None
     assert indicator.result.value is not None
     assert indicator.result.class_ == 1
