@@ -91,6 +91,32 @@ railway-length:
     - core
     - bkg
 
+bridges:
+  name: Bridges
+  description: >-
+    All linear OSM features referring to a bridge usable by vehicles (cars, bikes, etc.) and pedestrians.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    bridge=* and type=bridge and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+
+cycleway:
+  name: Cycleway
+  description: >-
+      All linear OSM features referring to a bikeway. Includes exclusive bikeways and bike lanes on the side of streets.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    cycleway=* !!!(außer no) and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+
 poi:
   name: POI
   description: Points of interest
