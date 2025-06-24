@@ -276,6 +276,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][0]}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[1][0]:.2%}"
                     ),
+                    legendrank=3,
                 ),
                 pgo.Bar(
                     y=[1],
@@ -293,6 +294,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][1]}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[1][1]:.2%}"
                     ),
+                    legendrank=2,
                 ),
                 pgo.Bar(
                     y=[1],
@@ -309,14 +311,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"Area [km<sup>2</sup>]: {self.confusion_matrix[0][1]}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[0][1]:.2%}"
                     ),
+                    legendrank=1,
                 ),
             ]
         )
 
-        fig.update_layout(
-            barmode="stack",
-            plot_bgcolor="rgba(0, 0, 0, 0)",
-        )
         fig.update_layout(
             {
                 "legend": {
@@ -326,6 +325,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     "orientation": "h",
                 }
             }
+        )
+        fig.update_layout(
+            barmode="stack",
+            plot_bgcolor="rgba(0, 0, 0, 0)",
         )
         fig.update_xaxes(visible=False)
         fig.update_yaxes(visible=False)
