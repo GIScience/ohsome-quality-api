@@ -47,7 +47,7 @@ This indicator can be calculated for multiple or a single CLC class(es).
 ### Methods and Data
 - Extrinsic approach.
 
-### CORINE Land Cover
+#### CORINE Land Cover
 In its current form, the CORINE Land Cover (CLC) product offers a pan-European land cover and land use
 inventory with 44 thematic classes, ranging from broad forested areas to individual vineyards.
 CORINE uses a 3-level nomenclature for land cover classes.
@@ -55,7 +55,7 @@ Here, we use the "CORINE Land Cover 5 ha, Stand 2021 (CLC5-2021)"
 provided by the German Federal Agency for Cartography and Geodesy and
 level 2 of the nomenclature (e.g. 1.1 Urban Fabric, 1.2 Industrial, commercial and transport units).
 
-### Preprocessing:
+#### Preprocessing:
 
 OSM features are assigned a CLC class based on their tags as specified below. 
 We calculate the intersection of OSM land cover polygons and CORINE land cover polygons.
@@ -81,9 +81,9 @@ The resulting polygons contain both the OSM CLC class and the CORINE class.
 
 
 
-### Indicator Calculation:
+#### Indicator Calculation:
 
-For the area-of-interest we fetch and clip and polygons from the preprocessing step.
+For the area-of-interest we fetch and clip polygons from the preprocessing step.
 Next, we create confusion matrix between OSM and CORINE CLS classes.
 This is the basis for calculating precision, recall and F1 score.
 These calculations consider the area / size of the land cover polygons.
@@ -92,3 +92,14 @@ These calculations consider the area / size of the land cover polygons.
 ### References
 
 - Schultz, Michael, Janek Voss, Michael Auer, Sarah Carter, and Alexander Zipf. 2017. “Open Land Cover from OpenStreetMap and Remote Sensing.” International Journal of Applied Earth Observation and Geoinformation 63 (May): 206–13. https://doi.org/10.1016/j.jag.2017.07.014.
+
+
+## Land Cover Completeness
+
+Percentage of total area that is covered by OpenStreetMap land cover data.
+
+
+### Methods and Data
+- Intrinsic approach.
+
+The ratio is computed by dividing the total area of the area of interest by the sum of the areas of all land cover polygons it contains.
