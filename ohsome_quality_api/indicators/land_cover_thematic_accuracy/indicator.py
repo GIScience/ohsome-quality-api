@@ -275,7 +275,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     hovertemplate=(
                         f"CORINE class: {name_level_2}<br>"
                         f"OSM class: Other<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][0]}<br>"
+                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][0]:.2f}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[1][0]:.2%}"
                     ),
                     legendrank=3,
@@ -293,7 +293,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     hovertemplate=(
                         f"CORINE class: {name_level_2}<br>"
                         f"OSM class: {name_level_2}<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][1]}<br>"
+                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][1]:.2f}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[1][1]:.2%}"
                     ),
                     legendrank=2,
@@ -310,7 +310,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     hovertemplate=(
                         f"CORINE class: Other<br>"
                         f"OSM class: {name_level_2}<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[0][1]}<br>"
+                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[0][1]:.2f}<br>"
                         f"Area [%]: {self.confusion_matrix_normalized[0][1]:.2%}"
                     ),
                     legendrank=1,
