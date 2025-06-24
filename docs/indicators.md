@@ -48,7 +48,7 @@ This indicator can be calculated for multiple or a single CLC class(es).
 - Extrinsic approach.
 
 #### CORINE Land Cover
-In its current form, the CORINE Land Cover (CLC) product offers a pan-European land cover and land use
+In its current form, the [CORINE Land Cover (CLC)](https://land.copernicus.eu/en/products/corine-land-cover) product offers a pan-European land cover and land use
 inventory with 44 thematic classes, ranging from broad forested areas to individual vineyards.
 CORINE uses a 3-level nomenclature for land cover classes.
 Here, we use the "CORINE Land Cover 5 ha, Stand 2021 (CLC5-2021)"
