@@ -21,6 +21,5 @@ WHERE
         osm_CLC_class != 0
         OR osm_CLC_class != NULL
     )
-    --AND osm_CLC_class != 50
     GROUP BY 1,2
 ;

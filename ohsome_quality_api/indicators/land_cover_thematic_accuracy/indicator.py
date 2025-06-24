@@ -4,11 +4,9 @@ from pathlib import Path
 from string import Template
 
 import geojson
-import numpy
 import plotly.graph_objects as pgo
 from geojson import Feature
 from sklearn.metrics import (
-    classification_report,
     confusion_matrix,
     f1_score,
     precision_recall_fscore_support,
@@ -115,6 +113,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def calculate(self) -> None:
         if self.clc_class:
+            # single class
             self.clc_classes_osm = [
                 "1" if clc_class_osm == self.clc_class.value else "0"
                 for clc_class_osm in self.clc_classes_osm
@@ -123,49 +122,57 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "1" if clc_class_corine == self.clc_class.value else "0"
                 for clc_class_corine in self.clc_classes_corine
             ]
-        self.f1_score = f1_score(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            average="weighted",
-            sample_weight=self.areas,
-            labels=list(set(self.clc_classes_corine)),
-        )
+            self.f1_score = f1_score(
+                self.clc_classes_corine,
+                self.clc_classes_osm,
+                average="binary",
+                sample_weight=self.areas,
+                labels=list(set(self.clc_classes_corine)),
+                pos_label="1",
+            )
+            self.confusion_matrix_normalized = confusion_matrix(
+                self.clc_classes_corine,
+                self.clc_classes_osm,
+                sample_weight=self.areas,
+                normalize="all",
+            ).tolist()
+            self.confusion_matrix = confusion_matrix(
+                self.clc_classes_corine,
+                self.clc_classes_osm,
+                sample_weight=self.areas,
+            ).tolist()
+        else:
+            # multi/all classes
+            self.f1_score = f1_score(
+                self.clc_classes_corine,
+                self.clc_classes_osm,
+                average="micro",
+                sample_weight=self.areas,
+                labels=list(set(self.clc_classes_corine)),
+            )
+            (
+                self.precision_scores,
+                self.recall_scores,
+                self.f1_scores,
+                self.support_scores,
+            ) = precision_recall_fscore_support(
+                self.clc_classes_corine,
+                self.clc_classes_osm,
+                average=None,  # for each
+                sample_weight=self.areas,
+                # reverse for result figure
+                labels=list(sorted(set(self.clc_classes_corine), reverse=True)),
+            )
 
-        (
-            self.precision_scores,
-            self.recall_scores,
-            self.f1_scores,
-            self.support_scores,
-        ) = precision_recall_fscore_support(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            average=None,  # for each
-            sample_weight=self.areas,
-            # reverse for result figure
-            labels=list(sorted(set(self.clc_classes_corine), reverse=True)),
-        )
-
-        self.confusion_matrix_normalized = confusion_matrix(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            sample_weight=self.areas,
-            normalize="all",
-        ).tolist()
-        self.confusion_matrix = confusion_matrix(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            sample_weight=self.areas,
-        ).tolist()
         # NOTE: For introspection/testing only
-        self.report = classification_report(
-            self.clc_classes_corine,
-            self.clc_classes_osm,
-            sample_weight=self.areas,
-            zero_division=numpy.nan,
-        )
+        # self.report = classification_report(
+        #     self.clc_classes_corine,
+        #     self.clc_classes_osm,
+        #     sample_weight=self.areas,
+        #     zero_division=numpy.nan,
+        # )
 
         self.result.value = self.f1_score
-        # TODO: re-evaluate thresholds
         if self.f1_score > 0.9:
             self.result.class_ = 5
         elif self.f1_score > 0.6:
