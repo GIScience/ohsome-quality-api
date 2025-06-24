@@ -49,6 +49,17 @@ def mock_db_fetch_single_class(monkeypatch):
     )
 
 
+@pytest.fixture
+def mock_db_fetch_no_data(monkeypatch):
+    async def fetch(*_):
+        return []
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.client.fetch",
+        fetch,
+    )
+
+
 # TODO: Support singe corine class
 
 
@@ -104,6 +115,22 @@ async def test_preprocess_single_class(
         assert isinstance(clc_class_corine, str)
         assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
+
+
+@pytest.mark.asyncio
+async def test_calculate_no_data(
+    feature_malta,
+    topic_land_cover,
+    corine_class,
+    mock_db_fetch_no_data,
+):
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_malta,
+        topic=topic_land_cover,
+        corine_land_cover_class=corine_class,
+    )
+    await indicator.preprocess()
+    assert indicator.areas == []
 
 
 @pytest.mark.asyncio
