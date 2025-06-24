@@ -91,14 +91,40 @@ railway-length:
     - core
     - bkg
 
-bridges:
-  name: Bridges
+bridges_cars:
+  name: Bridges cars
   description: >-
-    All linear OSM features referring to a bridge usable by vehicles (cars, bikes, etc.) and pedestrians.
+    All linear OSM features referring to a bridge usable by vehicles.
   endpoint: elements
   aggregation_type: length
   filter: >-
-    bridge=* and type=bridge and geometry:line
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and bridge=* and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+
+bridges_all_ways:
+  name: Bridges all ways
+  description: >-
+    All linear OSM features referring to a bridge including footpaths only.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    bridge=* and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+
+bridges_count:
+  name: Bridges count
+  description: >-
+    Count of all polygons labelled as bridge
+  endpoint: elements
+  aggregation_type: polygon
+  filter: >-
+    man_made=bridge and geometry:polygone
   indicators:
     - mapping-saturation
     - currentness
