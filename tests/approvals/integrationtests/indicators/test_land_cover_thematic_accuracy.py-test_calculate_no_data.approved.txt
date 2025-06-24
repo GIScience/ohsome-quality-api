@@ -1,0 +1,1 @@
+The F1-score could not be calculated, possibly due to missing or incompatible data in the selected region.
