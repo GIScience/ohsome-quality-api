@@ -131,6 +131,11 @@ async def test_calculate_no_data(
     )
     await indicator.preprocess()
     assert indicator.areas == []
+    indicator.calculate()
+    assert indicator.result.label == "undefined"
+    assert indicator.result.value is None
+    verify(indicator.result.description, namer=PytestNamer())
+    indicator.create_figure()  # should raise no error
 
 
 @pytest.mark.asyncio

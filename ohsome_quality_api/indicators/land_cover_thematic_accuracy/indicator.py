@@ -112,6 +112,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
+        if self.areas == []:
+            return
         if self.clc_class:
             # single class
             self.clc_classes_osm = [
