@@ -2,6 +2,7 @@
     "data": [
         {
             "hovertemplate": "CORINE class: Pastures<br>OSM class: Other<br>Area [km<sup>2</sup>]: 3.7802111655478488<br>Area [%]: 49.01%",
+            "legendrank": 3,
             "marker": {
                 "color": "lightgrey"
             },
@@ -22,6 +23,7 @@
         },
         {
             "hovertemplate": "CORINE class: Pastures<br>OSM class: Pastures<br>Area [km<sup>2</sup>]: 2.9325004219566955<br>Area [%]: 38.02%",
+            "legendrank": 2,
             "marker": {
                 "color": "#21BA45"
             },
@@ -42,6 +44,7 @@
         },
         {
             "hovertemplate": "CORINE class: Other<br>OSM class: Pastures<br>Area [km<sup>2</sup>]: 1.000418439925055<br>Area [%]: 12.97%",
+            "legendrank": 1,
             "marker": {
                 "color": "#767676"
             },
