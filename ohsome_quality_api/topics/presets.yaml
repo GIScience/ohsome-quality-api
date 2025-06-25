@@ -133,11 +133,24 @@ bridges_count:
 cycleway:
   name: Cycleway
   description: >-
-      All linear OSM features referring to a bikeway. Includes exclusive bikeways and bike lanes on the side of streets.
+      All linear OSM features referring to a cycleway. Includes exclusive cycleways and cycleways on the side of streets.
   endpoint: elements
   aggregation_type: length
   filter: >-
-    cycleway=* !!!(außer no) and geometry:line
+    (cycleway=* and cycleway!=no) 
+    or (cycleway:both=*)
+    or (cycleway:right=*)
+    or (cycleway:left=*)
+    or (cycleway:right:lane=*)
+    or (cycleway:both:lane=*)
+    or (cycleway:left:lane=*)
+    or (cycleway:left:oneway=*)
+    or (cycleway:right:oneway=*)
+    or (highway=cycleway)
+    or (highway=path and bicycle=designated)
+    or (bicycle_road=yes)
+    or (cyclestreet=yes)
+    and geometry:line
   indicators:
     - mapping-saturation
     - currentness
