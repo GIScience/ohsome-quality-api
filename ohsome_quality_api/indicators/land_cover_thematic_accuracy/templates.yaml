@@ -13,7 +13,8 @@ label_description:
     (high agreement between OSM and CORINE). This suggests that OSM provides a
     reliable representation of land cover.
   undefined: >-
-    The F1-score could not be calculated, possibly due to missing or incompatible data in the selected region.
+    The F1-score could not be calculated, possibly due to missing data or the
+    CLC class not being present in the selected region.
 result_description: >-
   The <a href="https://en.wikipedia.org/wiki/F-score">F1-Score</a> is used as
   statistical metric which considers both the correctness and completeness of

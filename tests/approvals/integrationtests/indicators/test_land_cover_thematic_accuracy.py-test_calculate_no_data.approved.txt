@@ -1,1 +1,1 @@
-The F1-score could not be calculated, possibly due to missing or incompatible data in the selected region.
+The F1-score could not be calculated, possibly due to missing data or the CLC class not being present in the selected region.
