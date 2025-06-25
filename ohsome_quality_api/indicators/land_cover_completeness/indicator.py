@@ -1,3 +1,6 @@
+import logging
+from string import Template
+
 import plotly.graph_objects as pgo
 from dateutil import parser
 from geojson import Feature
@@ -35,14 +38,29 @@ class LandCoverCompleteness(BaseIndicator):
             self.result.class_ = 3
         elif self.th_low > self.result.value >= 0:
             self.result.class_ = 1
+
+        template = Template(self.templates.result_description)
+        result_description = template.safe_substitute(
+            {
+                "value": round(self.result.value * 100, 2),
+            }
+        )
         self.result.description = (
             self.templates.label_description[self.result.label]
-            + self.templates.result_description
+            + " "
+            + result_description
         )
 
+        if self.result.value > 1:
+            self.result.description += (
+                " WARNING: The completeness exceeds 100 %. "
+                "This is likely due to overlapping OSM land cover polygons."
+            )
+
     def create_figure(self) -> None:
-        self.threshold_yellow = 0.75
-        self.threshold_red = 0.25
+        if self.result.label == "undefined":
+            logging.info("Result is undefined. Skipping figure creation.")
+            return
 
         fig = pgo.Figure(
             pgo.Indicator(
@@ -61,16 +79,16 @@ class LandCoverCompleteness(BaseIndicator):
                     },
                     "bar": {"color": "black"},
                     "steps": [
-                        {"range": [0, self.threshold_red * 100], "color": "tomato"},
+                        {"range": [0, self.th_low * 100], "color": "tomato"},
                         {
                             "range": [
-                                self.threshold_red * 100,
-                                self.threshold_yellow * 100,
+                                self.th_low * 100,
+                                self.th_high * 100,
                             ],
                             "color": "gold",
                         },
                         {
-                            "range": [self.threshold_yellow * 100, 100],
+                            "range": [self.th_high * 100, 100],
                             "color": "darkseagreen",
                         },
                     ],

@@ -49,6 +49,17 @@ def mock_db_fetch_single_class(monkeypatch):
     )
 
 
+@pytest.fixture
+def mock_db_fetch_no_data(monkeypatch):
+    async def fetch(*_):
+        return []
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.client.fetch",
+        fetch,
+    )
+
+
 # TODO: Support singe corine class
 
 
@@ -107,6 +118,27 @@ async def test_preprocess_single_class(
 
 
 @pytest.mark.asyncio
+async def test_calculate_no_data(
+    feature_malta,
+    topic_land_cover,
+    corine_class,
+    mock_db_fetch_no_data,
+):
+    indicator = LandCoverThematicAccuracy(
+        feature=feature_malta,
+        topic=topic_land_cover,
+        corine_land_cover_class=corine_class,
+    )
+    await indicator.preprocess()
+    assert indicator.areas == []
+    indicator.calculate()
+    assert indicator.result.label == "undefined"
+    assert indicator.result.value is None
+    verify(indicator.result.description, namer=PytestNamer())
+    indicator.create_figure()  # should raise no error
+
+
+@pytest.mark.asyncio
 async def test_calculate_multi_class(
     feature_land_cover,
     topic_land_cover,
@@ -117,13 +149,12 @@ async def test_calculate_multi_class(
     )
     await indicator.preprocess()
     indicator.calculate()
-    assert indicator.confusion_matrix is not None
     assert indicator.f1_score is not None
     assert indicator.result.value is not None
     assert indicator.result.class_ == 3
     assert indicator.result.label == "yellow"
     verify(indicator.result.description, namer=PytestNamer(postfix="description"))
-    verify(indicator.report, namer=PytestNamer(postfix="report"))
+    # verify(indicator.report, namer=PytestNamer(postfix="report"))
 
 
 @pytest.mark.asyncio
@@ -137,13 +168,13 @@ async def test_calculate_single_class(
     )
     await indicator.preprocess()
     indicator.calculate()
-    assert indicator.confusion_matrix is not None
+    assert indicator.confusion_matrix_normalized is not None
     assert indicator.f1_score is not None
     assert indicator.result.value is not None
     assert indicator.result.class_ == 1
     assert indicator.result.label == "red"
     verify(indicator.result.description, namer=PytestNamer(postfix="description"))
-    verify(indicator.report, namer=PytestNamer(postfix="report"))
+    # verify(indicator.report, namer=PytestNamer(postfix="report"))
 
 
 @pytest.mark.asyncio

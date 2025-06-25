@@ -1,1 +1,1 @@
-Your area of interest has a high completeness of land cover data.TODO
+In your area-of-interest the completeness of OSM land cover data is high. 92.0 % of the total area are covered by OSM land cover data.

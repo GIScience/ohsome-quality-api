@@ -1,12 +1,12 @@
 ---
 label_description:
   red: >-
-    Your area of interest has a low completeness of land cover data.
+    In your area-of-interest the completeness of OSM land cover data is low.
   yellow: >-
-    Your area of interest has a mediocre completeness of land cover data.
+    In your area-of-interest the completeness of OSM land cover data is mediocre.
   green: >-
-    Your area of interest has a high completeness of land cover data.
+    In your area-of-interest the completeness of OSM land cover data is high.
   undefined: >-
     The quality level could not be calculated for this indicator.
 result_description: >-
-    TODO
+     $value % of the total area are covered by OSM land cover data.

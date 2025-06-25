@@ -38,6 +38,7 @@ async def create_indicator(
             "road-comparison",
             "attribute-completeness",
             "land-cover-thematic-accuracy",
+            "land-cover-completeness",
         ]:
             validate_area(feature)
         tasks.append(

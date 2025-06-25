@@ -68,7 +68,7 @@ land-cover-thematic-accuracy:
     - bkg
   quality_dimension: thematic-accuracy
   description: >-
-    Thematic accuracy Open Street Map land cover data in comparison to the <a
+    Thematic accuracy OpenStreetMap land cover data in comparison to the <a
     href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
     Cover (CLC)</a> dataset.
 land-cover-completeness:
@@ -77,6 +77,4 @@ land-cover-completeness:
     - bkg
   quality_dimension: completeness
   description: >-
-    Completeness of Open Street Map land cover data in comparison to the <a
-    href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
-    Cover (CLC)</a> dataset.
+    Percentage of the area of interest that is covered by OpenStreetMap land cover data.
