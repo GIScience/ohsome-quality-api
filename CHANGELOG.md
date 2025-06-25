@@ -1,11 +1,11 @@
 # Changelog
 
-## Current Main
+## Release 1.10
 
 ### New Feature
 
 - new indicator about thematic accuracy of land cover data in OSM ([#893])
-- add land-cover-completeness indicator ([#910])
+- new indicator about land cover completeness ([#910])
 
 ### Breaking Changes
 
