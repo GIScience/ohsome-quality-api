@@ -17,7 +17,9 @@ FROM
     bpoly b
 WHERE
     ST_Intersects (o.geometry, b.geometry)
-    --AND osm_CLC_class != 0
-    --AND osm_CLC_class != 50
+    AND (
+        osm_CLC_class != 0
+        OR osm_CLC_class != NULL
+    )
     GROUP BY 1,2
 ;
