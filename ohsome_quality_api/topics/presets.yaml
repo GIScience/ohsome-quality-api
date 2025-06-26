@@ -92,7 +92,7 @@ railway-length:
     - bkg
 
 bridges_cars:
-  name: Bridges cars
+  name: Bridges (cars)
   description: >-
     All linear OSM features referring to a bridge usable by vehicles.
   endpoint: elements
@@ -103,9 +103,11 @@ bridges_cars:
     - mapping-saturation
     - currentness
   projects:
+    - core
+    - bkg
 
 bridges_all_ways:
-  name: Bridges all ways
+  name: Bridges (all ways)
   description: >-
     All linear OSM features referring to a bridge including footpaths only.
   endpoint: elements
@@ -116,19 +118,23 @@ bridges_all_ways:
     - mapping-saturation
     - currentness
   projects:
+    - core
+    - bkg
 
 bridges_count:
-  name: Bridges count
+  name: Bridges (count)
   description: >-
     Count of all polygons labelled as bridge
   endpoint: elements
-  aggregation_type: polygon
+  aggregation_type: count
   filter: >-
-    man_made=bridge and geometry:polygone
+    man_made=bridge and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness
   projects:
+    - core
+    - bkg
 
 cycleway:
   name: Cycleway
@@ -155,6 +161,8 @@ cycleway:
     - mapping-saturation
     - currentness
   projects:
+    - core
+    - bkg
 
 poi:
   name: POI
