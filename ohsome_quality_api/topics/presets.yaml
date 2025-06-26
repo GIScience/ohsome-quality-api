@@ -91,6 +91,79 @@ railway-length:
     - core
     - bkg
 
+bridges_cars:
+  name: Bridges (cars)
+  description: >-
+    All linear OSM features referring to a bridge usable by vehicles.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and bridge=* and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - core
+    - bkg
+
+bridges_all_ways:
+  name: Bridges (all ways)
+  description: >-
+    All linear OSM features referring to a bridge including footpaths only.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    bridge=* and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - core
+    - bkg
+
+bridges_count:
+  name: Bridges (count)
+  description: >-
+    Count of all polygons labelled as bridge
+  endpoint: elements
+  aggregation_type: count
+  filter: >-
+    man_made=bridge and geometry:polygon
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - core
+    - bkg
+
+cycleway:
+  name: Cycleway
+  description: >-
+      All linear OSM features referring to a cycleway. Includes exclusive cycleways and cycleways on the side of streets.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    (cycleway=* and cycleway!=no) 
+    or (cycleway:both=*)
+    or (cycleway:right=*)
+    or (cycleway:left=*)
+    or (cycleway:right:lane=*)
+    or (cycleway:both:lane=*)
+    or (cycleway:left:lane=*)
+    or (cycleway:left:oneway=*)
+    or (cycleway:right:oneway=*)
+    or (highway=cycleway)
+    or (highway=path and bicycle=designated)
+    or (bicycle_road=yes)
+    or (cyclestreet=yes)
+    and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - core
+    - bkg
+
 poi:
   name: POI
   description: Points of interest
