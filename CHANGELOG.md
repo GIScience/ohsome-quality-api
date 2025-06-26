@@ -1,5 +1,13 @@
 # Changelog
 
+## Current Main
+
+### New Features
+
+- new topics about cycleways and bridges ([#928])
+
+[#928]: https://github.com/GIScience/ohsome-quality-api/pull/928
+
 ## Release 1.10
 
 ### New Feature
