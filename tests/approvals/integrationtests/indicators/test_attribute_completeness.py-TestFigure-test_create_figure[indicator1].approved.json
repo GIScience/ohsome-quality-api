@@ -66,20 +66,6 @@
             "color": "black",
             "family": "Arial"
         },
-        "images": [
-            {
-                "layer": "above",
-                "opacity": 0.3,
-                "sizex": 0.2,
-                "sizey": 0.2,
-                "sizing": "contain",
-                "source": "https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
-                "x": 0.41,
-                "xref": "paper",
-                "y": 0.55,
-                "yref": "paper"
-            }
-        ],
         "plot_bgcolor": "rgba(0,0,0,0)",
         "xaxis": {
             "fixedrange": true,

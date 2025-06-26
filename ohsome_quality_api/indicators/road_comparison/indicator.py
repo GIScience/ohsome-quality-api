@@ -226,21 +226,6 @@ class RoadComparison(BaseIndicator):
             ),
         )
 
-        fig.add_layout_image(
-            dict(
-                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
-                xref="paper",
-                yref="paper",
-                x=0.78,
-                y=0.98,
-                sizex=0.2,
-                sizey=0.2,
-                sizing="contain",
-                opacity=0.3,
-                layer="above",
-            )
-        )
-
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw

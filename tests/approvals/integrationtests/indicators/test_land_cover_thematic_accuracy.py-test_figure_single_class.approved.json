@@ -1,108 +1,83 @@
 {
     "data": [
         {
-            "colorbar": {
-                "title": {
-                    "text": "Proportion"
-                }
+            "hovertemplate": "CORINE class: Pastures<br>OSM class: Other<br>Area [km<sup>2</sup>]: 3.78<br>Area [%]: 49.01%",
+            "legendrank": 3,
+            "marker": {
+                "color": "lightgrey"
             },
-            "colorscale": [
-                [
-                    0.0,
-                    "#440154"
-                ],
-                [
-                    0.1111111111111111,
-                    "#482878"
-                ],
-                [
-                    0.2222222222222222,
-                    "#3e4989"
-                ],
-                [
-                    0.3333333333333333,
-                    "#31688e"
-                ],
-                [
-                    0.4444444444444444,
-                    "#26828e"
-                ],
-                [
-                    0.5555555555555556,
-                    "#1f9e89"
-                ],
-                [
-                    0.6666666666666666,
-                    "#35b779"
-                ],
-                [
-                    0.7777777777777778,
-                    "#6ece58"
-                ],
-                [
-                    0.8888888888888888,
-                    "#b5de2b"
-                ],
-                [
-                    1.0,
-                    "#fde725"
-                ]
+            "name": "False Negative",
+            "orientation": "h",
+            "textposition": "inside",
+            "texttemplate": "49.01%",
+            "type": "bar",
+            "width": [
+                0.5
             ],
-            "hovertemplate": "Predicted: %{x}<br>Actual: %{y}<br>Value: %{z:.2%}<extra></extra>",
-            "text": {
-                "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
-                "dtype": "f8",
-                "shape": "2, 2"
-            },
-            "texttemplate": "%{text:.2%}",
-            "type": "heatmap",
             "x": [
-                "Other classes",
-                "Agricultural areas <br> Pastures"
+                0.49010079592909495
             ],
             "y": [
-                "Other classes",
-                "Agricultural areas <br> Pastures"
+                1
+            ]
+        },
+        {
+            "hovertemplate": "CORINE class: Pastures<br>OSM class: Pastures<br>Area [km<sup>2</sup>]: 2.93<br>Area [%]: 38.02%",
+            "legendrank": 2,
+            "marker": {
+                "color": "#21BA45"
+            },
+            "name": "True Positive",
+            "orientation": "h",
+            "textposition": "inside",
+            "texttemplate": "38.02%",
+            "type": "bar",
+            "width": [
+                0.5
             ],
-            "z": {
-                "bdata": "AAAAAAAAAADkP/opHprAP/6TkLrPXd8/D0xyMCFV2D8=",
-                "dtype": "f8",
-                "shape": "2, 2"
-            }
+            "x": [
+                0.3801959012136544
+            ],
+            "y": [
+                1
+            ]
+        },
+        {
+            "hovertemplate": "CORINE class: Other<br>OSM class: Pastures<br>Area [km<sup>2</sup>]: 1.00<br>Area [%]: 12.97%",
+            "legendrank": 1,
+            "marker": {
+                "color": "#767676"
+            },
+            "name": "False Positive",
+            "orientation": "h",
+            "textposition": "inside",
+            "texttemplate": "12.97%",
+            "type": "bar",
+            "width": [
+                0.5
+            ],
+            "x": [
+                0.12970330285725062
+            ],
+            "y": [
+                1
+            ]
         }
     ],
     "layout": {
-        "images": [
-            {
-                "layer": "below",
-                "opacity": 0.3,
-                "sizex": 0.2,
-                "sizey": 0.2,
-                "sizing": "contain",
-                "source": "https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
-                "x": 0.9,
-                "xref": "paper",
-                "y": -0.06,
-                "yref": "paper"
-            }
-        ],
+        "barmode": "stack",
+        "legend": {
+            "orientation": "h",
+            "x": 0,
+            "y": 0.2,
+            "yanchor": "top"
+        },
+        "plot_bgcolor": "rgba(0, 0, 0, 0)",
         "xaxis": {
-            "ticktext": [
-                "Other classes",
-                "Agricultural areas <br> Pastures"
-            ],
-            "title": {
-                "text": "Corine Land Cover Class in OSM"
-            }
+            "visible": false
         },
         "yaxis": {
-            "ticktext": [
-                "Other classes",
-                "Agricultural areas <br> Pastures"
-            ],
-            "title": {
-                "text": "Corine Land Cover Class (actual)"
-            }
+            "visible": false
         }
     }
 }
