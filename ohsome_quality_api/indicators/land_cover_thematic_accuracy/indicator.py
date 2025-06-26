@@ -195,8 +195,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "clc_class": clc_class,
             }
         )
+        note = (
+            "Please take the Land Cover Completeness indicator into account for "
+            + "interpretation of these results."
+        )
         self.result.description = (
-            f"{label_description} {self.templates.result_description}"
+            f"{label_description} {self.templates.result_description} {note}"
         )
 
     def create_figure(self) -> None:
