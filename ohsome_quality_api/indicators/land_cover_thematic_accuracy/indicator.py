@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
 
+import json
 import geojson
 import plotly.graph_objects as pgo
 from geojson import Feature
@@ -110,6 +111,8 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
         # TODO: take real timestamps from data
         self.result.timestamp_osm = datetime.now(timezone.utc)
+        self.coverage_percent = await self.get_covered_area()
+
 
     def calculate(self) -> None:
         if self.areas == []:
@@ -341,3 +344,18 @@ class LandCoverThematicAccuracy(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+
+    async def get_covered_area(self) -> list[Feature]:
+        query = (
+            """SELECT 100.0 * ST_Area(ST_Intersection(simple, ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))) / NULLIF(
+                    ST_Area(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326)), 0) AS
+                          coverage_percent
+    
+               FROM osm_corine_intersection_coverage
+               WHERE ST_Intersects(simple, ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))
+            """
+        )
+        feature_geojson_str = json.dumps(self.feature["geometry"])
+        result = await client.fetch(query, feature_geojson_str)
+        return result[0][0]
