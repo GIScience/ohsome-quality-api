@@ -1,5 +1,12 @@
 # Changelog
 
+## Current Main
+
+### Other Changes
+- add heigit logo as water sign to all figures ([#925])
+
+[#925]: https://github.com/GIScience/ohsome-quality-api/pull/925
+
 ## Release 1.10
 
 ### New Feature

@@ -256,6 +256,21 @@ class LandCoverThematicAccuracy(BaseIndicator):
             ),
         )
 
+        fig.add_layout_image(
+            dict(
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
+                xref="paper",
+                yref="paper",
+                x=0.85,
+                y=0.99,
+                sizex=0.2,
+                sizey=0.2,
+                sizing="contain",
+                opacity=0.3,
+                layer="above",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
@@ -336,8 +351,25 @@ class LandCoverThematicAccuracy(BaseIndicator):
             barmode="stack",
             plot_bgcolor="rgba(0, 0, 0, 0)",
         )
+
         fig.update_xaxes(visible=False)
         fig.update_yaxes(visible=False)
+
+        fig.add_layout_image(
+            dict(
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
+                xref="paper",
+                yref="paper",
+                x=0.9,
+                y=-0.06,
+                sizex=0.2,
+                sizey=0.2,
+                sizing="contain",
+                opacity=0.3,
+                layer="below",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw

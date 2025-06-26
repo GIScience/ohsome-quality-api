@@ -208,6 +208,21 @@ class MappingSaturation(BaseIndicator):
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(x=0.02, y=0.85, bgcolor="rgba(255,255,255,0.66)")
 
+        fig.add_layout_image(
+            dict(
+                source="https://raw.githubusercontent.com/GIScience/ohsome-quality-api/refs/heads/figure_background_logo/ohsome_quality_api/indicators/heigit_logo.png",
+                xref="paper",
+                yref="paper",
+                x=0.75,
+                y=0.15,
+                sizex=0.2,
+                sizey=0.2,
+                sizing="contain",
+                opacity=0.3,
+                layer="above",
+            )
+        )
+
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
