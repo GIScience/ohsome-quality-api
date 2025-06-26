@@ -60,6 +60,26 @@ def mock_db_fetch_no_data(monkeypatch):
     )
 
 
+@pytest.fixture
+def mock_cov_geom(monkeypatch):
+    async def fake_coverage(cls, inverse=False):
+        from shapely.geometry import Polygon
+        # Germany's bounding box in WGS84
+        polygon = Polygon([
+            (5.8663, 47.2701),  # SW
+            (15.0419, 47.2701),  # SE
+            (15.0419, 55.0581),  # NE
+            (5.8663, 55.0581),  # NW
+            (5.8663, 47.2701)  # close
+        ])
+        return [Feature(geometry=polygon.__geo_interface__)]
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.get_covered_area",
+        classmethod(fake_coverage),
+    )
+
+
 # TODO: Support singe corine class
 
 
@@ -68,6 +88,7 @@ async def test_preprocess_multi_class(
     feature_land_cover,
     topic_land_cover,
     mock_db_fetch,
+    mock_cov_geom,
 ):
     indicator = LandCoverThematicAccuracy(
         feature=feature_land_cover, topic=topic_land_cover
@@ -88,11 +109,12 @@ async def test_preprocess_multi_class(
         assert isinstance(clc_class_corine, str)
         assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
+    assert indicator.coverage_percent == 100
 
 
 @pytest.mark.asyncio
 async def test_preprocess_single_class(
-    feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
+    feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class, mock_cov_geom
 ):
     indicator = LandCoverThematicAccuracy(
         feature=feature_land_cover,
@@ -115,6 +137,7 @@ async def test_preprocess_single_class(
         assert isinstance(clc_class_corine, str)
         assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
+    assert indicator.coverage_percent == 100
 
 
 @pytest.mark.asyncio
@@ -123,6 +146,7 @@ async def test_calculate_no_data(
     topic_land_cover,
     corine_class,
     mock_db_fetch_no_data,
+    mock_cov_geom,
 ):
     indicator = LandCoverThematicAccuracy(
         feature=feature_malta,
@@ -143,6 +167,7 @@ async def test_calculate_multi_class(
     feature_land_cover,
     topic_land_cover,
     mock_db_fetch,
+    mock_cov_geom,
 ):
     indicator = LandCoverThematicAccuracy(
         feature=feature_land_cover, topic=topic_land_cover
@@ -159,7 +184,7 @@ async def test_calculate_multi_class(
 
 @pytest.mark.asyncio
 async def test_calculate_single_class(
-    feature_land_cover, topic_land_cover, corine_class, mock_db_fetch_single_class
+    feature_land_cover, topic_land_cover, corine_class
 ):
     indicator = LandCoverThematicAccuracy(
         feature=feature_land_cover,
