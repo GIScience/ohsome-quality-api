@@ -103,3 +103,7 @@ Percentage of total area that is covered by OpenStreetMap land cover data.
 - Intrinsic approach.
 
 The ratio is computed by dividing the total area of the area of interest by the sum of the areas of all land cover polygons it contains.
+
+### Limitations
+
+The are of overlapping OSM land cover polygons will be counted multiple times.

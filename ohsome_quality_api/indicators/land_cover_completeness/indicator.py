@@ -51,10 +51,10 @@ class LandCoverCompleteness(BaseIndicator):
             + result_description
         )
 
-        if self.result.value > 1:
+        if self.result.label != "undefined":
             self.result.description += (
-                " WARNING: The completeness exceeds 100 %. "
-                "This is likely due to overlapping OSM land cover polygons."
+                " Note that the area of overlapping OSM land cover polygons "
+                + "will be counted multiple times."
             )
 
     def create_figure(self) -> None:
