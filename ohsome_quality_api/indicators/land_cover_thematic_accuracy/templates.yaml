@@ -1,15 +1,15 @@
 ---
 label_description:
   red: >-
-    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest, the thematic accuracy of $clc_class is $f1_score%
     (low agreement between OSM and CORINE). This suggests that OSM has a poor
     classification quality or incomplete land cover data.
   yellow: >-
-    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest, the thematic accuracy of $clc_class is $f1_score%
     (medium agreement between OSM and CORINE). This suggests that OSM does
     capture some land cover categories but may lack detail or accuracy.
   green: >-
-    In your area-of-interest the thematic accuracy of $clc_class is $f1_score %
+    In your area-of-interest, the thematic accuracy of $clc_class is $f1_score%
     (high agreement between OSM and CORINE). This suggests that OSM provides a
     reliable representation of land cover.
   undefined: >-
@@ -17,5 +17,5 @@ label_description:
     CLC class not being present in the selected region.
 result_description: >-
   The <a href="https://en.wikipedia.org/wiki/F-score">F1-Score</a> is used as
-  statistical metric which considers both the correctness and completeness of
-  the land cover categories.
+  a statistical metric that considers both the correctness and completeness of
+  the land cover categories as well as the area.

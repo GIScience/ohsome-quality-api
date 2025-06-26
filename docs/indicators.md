@@ -8,7 +8,6 @@ Time interval is one month since 2008.
 
 Different statistical models are used to find out if saturation is reached.
 
-
 ### Methods and Data
 
 - Intrinsic approach.
@@ -21,8 +20,6 @@ number of mapped objects converges against the (unknown) true number of objects.
 Each aggregation of features (e.g. length of roads or count of building)
 has a maximum. After increased mapping activity saturation is reached near this
 maximum.
-
-
 
 ### References
 
@@ -37,12 +34,25 @@ maximum.
     (https://doi.org/10.5194/agile-giss-2-20-2021)
 
 
+## Land Cover Completeness
+
+Percentage of total area that is covered by OpenStreetMap land cover data.
+
+### Methods and Data
+- Intrinsic approach.
+
+The ratio is computed by dividing the total area of the area of interest by the sum of the areas of all land cover polygons it contains.
+
+### Limitations
+
+The are of overlapping OSM land cover polygons will be counted multiple times.
+
+
 
 ## Land Cover Thematic Accuracy
 
 Thematic accuracy of OpenStreetMap land cover data in comparison to the CORINE Land Cover (CLC) dataset.
 This indicator can be calculated for multiple or a single CLC class(es).
-
 
 ### Methods and Data
 - Extrinsic approach.
@@ -79,8 +89,6 @@ The resulting polygons contain both the OSM CLC class and the CORINE class.
 | 5.1 	Inland waters                                   | `natural in (water, pond) or landuse in (basin, reservoir)`                                                                                                                             |
 | 5.2 	Marine waters                                   | *Marine waters are not mapped in OSM. Therefore class 5.2 is never assigned.*                                                                                                           |
 
-
-
 #### Indicator Calculation:
 
 For the area-of-interest we fetch and clip polygons from the preprocessing step.
@@ -88,18 +96,6 @@ Next, we create confusion matrix between OSM and CORINE CLS classes.
 This is the basis for calculating precision, recall and F1 score.
 These calculations consider the area / size of the land cover polygons.
 
-
 ### References
 
 - Schultz, Michael, Janek Voss, Michael Auer, Sarah Carter, and Alexander Zipf. 2017. “Open Land Cover from OpenStreetMap and Remote Sensing.” International Journal of Applied Earth Observation and Geoinformation 63 (May): 206–13. https://doi.org/10.1016/j.jag.2017.07.014.
-
-
-## Land Cover Completeness
-
-Percentage of total area that is covered by OpenStreetMap land cover data.
-
-
-### Methods and Data
-- Intrinsic approach.
-
-The ratio is computed by dividing the total area of the area of interest by the sum of the areas of all land cover polygons it contains.

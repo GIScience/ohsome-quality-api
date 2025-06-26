@@ -81,6 +81,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.clc_class = corine_land_cover_class
+        self.timestamp_corine = datetime(2021, 1, 1, tzinfo=timezone.utc)
 
     @classmethod
     async def coverage(cls, inverse=False) -> list[Feature]:
@@ -109,7 +110,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
         # TODO: take real timestamps from data
         self.result.timestamp_osm = datetime.now(timezone.utc)
-        self.timestamp_corine = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
         if self.areas == []:
@@ -195,8 +195,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "clc_class": clc_class,
             }
         )
+        note = (
+            "Please take the Land Cover Completeness indicator into account for "
+            + "interpretation of these results."
+        )
         self.result.description = (
-            f"{label_description} {self.templates.result_description}"
+            f"{label_description} {self.templates.result_description} {note}"
         )
 
     def create_figure(self) -> None:
