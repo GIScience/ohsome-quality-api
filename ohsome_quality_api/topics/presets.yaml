@@ -617,7 +617,13 @@ land-cover:
   endpoint: elements
   aggregation_type: area/density
   filter: >-
-   (landuse=* and landuse!=no) or natural=water and geometry:polygon
+    (landuse=* and landuse!=no) or natural in (wood, 
+    grassland, scrub, heath, fell, beach, sand, scree, 
+    shingle, bare_rock, glacier, mud, rock, cliff, fill,
+    wetland, water, pond) or leisure in (marina, park, 
+    garden, pitch, golf_course, playground, stadium, 
+    recreation_ground, common, dog_park)
+    and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
