@@ -225,7 +225,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
     def _create_figure_multi_class(self):
         bars = []
         for i, clc_class in enumerate(
-            # reverse for result figure
             list(sorted(set(self.clc_classes_corine), reverse=True))
         ):
             number_level_2 = CorineLandCoverClass(clc_class).value
@@ -235,7 +234,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             )
             color = (clc_classes_level_2[CorineLandCoverClass(clc_class)]["color"],)
             x = self.f1_scores[i] * 100
-            y = name_level_2 + " "  # TODO: look at axis setting to create space
+            y = name_level_2 + " "
             area_percentage = self.support_scores[i] * 100 / sum(self.support_scores)
             bars.append(
                 pgo.Bar(
@@ -254,12 +253,28 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     textposition="auto",
                 )
             )
+
+        corine_timestamp_str = self.timestamp_corine.strftime("%Y-%m-%d")
+        osm_timestamp_str = self.result.timestamp_osm.strftime("%Y-%m-%d")
+
         fig = pgo.Figure(
             data=bars,
             layout=pgo.Layout(
-                {
-                    "autotypenumbers": "strict",
-                    "xaxis": {"title": {"text": "F1-Score [%]"}, "range": [0, 100]},
+                autotypenumbers="strict",
+                xaxis={
+                    "title": {
+                        "text": f"F1-Score [%]"
+                        f"<br>"
+                        f"<span style='font-size:10px'>"
+                        f"CORINE data from: {corine_timestamp_str}"
+                        f"</span>"
+                        f"<br>"
+                        f"<span style='font-size:10px'>"
+                        f"OSM data from: {osm_timestamp_str}"
+                        f"</span>",
+                        "standoff": 15,
+                    },
+                    "range": [0, 100],
                 },
                 showlegend=False,
             ),
@@ -273,6 +288,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
         name_level_2 = clc_classes_level_2[CorineLandCoverClass(self.clc_class.value)][
             "name"
         ]
+
+        corine_timestamp_str = self.timestamp_corine.strftime("%Y-%m-%d")
+        osm_timestamp_str = self.result.timestamp_osm.strftime("%Y-%m-%d")
+
         fig = pgo.Figure(
             # TODO: remove or grey out other_class x other_classes since its always 0%
             data=[
@@ -338,7 +357,20 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     "x": 0,
                     "y": 0.2,
                     "orientation": "h",
-                }
+                },
+                "annotations": [
+                    {
+                        "text": f"CORINE data from: {corine_timestamp_str}"
+                        f"<br>OSM data from: {osm_timestamp_str}",
+                        "xref": "paper",
+                        "yref": "paper",
+                        "x": 0,
+                        "y": 0,
+                        "showarrow": False,
+                        "font": {"size": 10, "color": "grey"},
+                        "align": "right",
+                    }
+                ],
             }
         )
         fig.update_layout(
