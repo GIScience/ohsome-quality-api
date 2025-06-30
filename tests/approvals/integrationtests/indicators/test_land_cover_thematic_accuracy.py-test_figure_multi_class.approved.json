@@ -200,7 +200,8 @@
                 100
             ],
             "title": {
-                "text": "F1-Score [%]"
+                "standoff": 15,
+                "text": "F1-Score [%]<br><span style='font-size:10px'>CORINE data from: 2021-01-01</span><br><span style='font-size:10px'>OSM data from: 2025-06-30</span>"
             }
         }
     }
