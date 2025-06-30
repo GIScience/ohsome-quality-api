@@ -5,8 +5,10 @@
 ### New Features
 
 - new topics about cycleways and bridges ([#928])
+- land-cover-thematic-accuracy: add warning if AOI is not completely covered by the comparison data ([#930])
 
 [#928]: https://github.com/GIScience/ohsome-quality-api/pull/928
+[#930]: https://github.com/GIScience/ohsome-quality-api/pull/930
 
 ## Release 1.10
 

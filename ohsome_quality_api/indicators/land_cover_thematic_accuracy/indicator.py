@@ -1,3 +1,4 @@
+import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
@@ -110,6 +111,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         self.areas = [r["area"] / 1_000_000 for r in results]  # sqkm
         # TODO: take real timestamps from data
         self.result.timestamp_osm = datetime.now(timezone.utc)
+        self.coverage_percent = await get_covered_area(self.feature)
 
     def calculate(self) -> None:
         if self.areas == []:
@@ -195,7 +197,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "clc_class": clc_class,
             }
         )
-        note = (
+        note = ""
+        if self.coverage_percent != 100:
+            note += (
+                f"Warning: There is only {self.coverage_percent}% "
+                f"coverage with the comparison data. "
+            )
+        note += (
             "Please take the Land Cover Completeness indicator into account for "
             + "interpretation of these results."
         )
@@ -341,3 +349,18 @@ class LandCoverThematicAccuracy(BaseIndicator):
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
+
+
+async def get_covered_area(feature) -> float:
+    query = """SELECT 100.0 * ST_Area(
+            ST_Intersection(simple, ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))
+                              ) / NULLIF(
+                ST_Area(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326)), 0) AS
+                      coverage_percent
+
+           FROM osm_corine_intersection_coverage
+           WHERE ST_Intersects(simple, ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))
+        """
+    feature_geojson_str = json.dumps(feature["geometry"])
+    result = await client.fetch(query, feature_geojson_str)
+    return result[0][0]

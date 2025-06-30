@@ -28,6 +28,17 @@ def mock_db_fetch(monkeypatch):
     )
 
 
+@pytest.fixture
+def mock_cov_geom(monkeypatch):
+    async def fake_coverage(cls, inverse=False):
+        return 100
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.get_covered_area",
+        fake_coverage,
+    )
+
+
 @oqapi_vcr.use_cassette
 @pytest.mark.parametrize(
     "headers,schema",
@@ -36,7 +47,7 @@ def mock_db_fetch(monkeypatch):
         ({"accept": "application/geo+json"}, RESPONSE_SCHEMA_GEOJSON),
     ],
 )
-def test_multi_class(client, bpolys, headers, schema, mock_db_fetch):
+def test_multi_class(client, bpolys, headers, schema, mock_db_fetch, mock_cov_geom):
     # corine class parameter is optional (default all corine classes)
     parameters = {"bpolys": bpolys, "topic": "land-cover"}
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -52,7 +63,7 @@ def test_multi_class(client, bpolys, headers, schema, mock_db_fetch):
         ({"accept": "application/geo+json"}, RESPONSE_SCHEMA_GEOJSON),
     ],
 )
-def test_single_class(client, bpolys, headers, schema, mock_db_fetch):
+def test_single_class(client, bpolys, headers, schema, mock_db_fetch, mock_cov_geom):
     # Corine class 23 are Pastures
     parameters = {"bpolys": bpolys, "topic": "land-cover", "corineLandCoverClass": "23"}
     response = client.post(ENDPOINT, json=parameters, headers=headers)
