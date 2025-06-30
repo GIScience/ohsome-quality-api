@@ -1,5 +1,11 @@
 # Changelog
 
+## Current Main
+
+- land-cover-thematic-accuracy: add timestamp of datasets ([#931])
+
+[#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
+
 ## Release  1.11.2
 
 - add land cover indicators and topic to core project ([e977c36c8bc63f8142e94460e5835c3668d94ec6])
