@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.11
 
 ### New Features
 
