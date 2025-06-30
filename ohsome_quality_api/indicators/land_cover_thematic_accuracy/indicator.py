@@ -198,9 +198,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
             }
         )
         note = ""
-        if self.coverage_percent != 100:
+        if self.coverage_percent != 1:
             note += (
-                f"Warning: There is only {self.coverage_percent}% "
+                f"Warning: There is only {self.coverage_percent:.0%} "
                 f"coverage with the comparison data. "
             )
         note += (
@@ -352,7 +352,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
 
 async def get_covered_area(feature) -> float:
-    query = """SELECT 100.0 * ST_Area(
+    query = """SELECT ST_Area(
             ST_Intersection(simple, ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))
                               ) / NULLIF(
                 ST_Area(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326)), 0) AS

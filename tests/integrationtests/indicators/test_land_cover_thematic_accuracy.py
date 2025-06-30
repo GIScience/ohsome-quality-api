@@ -63,7 +63,7 @@ def mock_db_fetch_no_data(monkeypatch):
 @pytest.fixture
 def mock_cov(monkeypatch):
     async def fake_coverage(cls, inverse=False):
-        return 100
+        return 1
 
     monkeypatch.setattr(
         "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.get_covered_area",
@@ -74,7 +74,7 @@ def mock_cov(monkeypatch):
 @pytest.fixture
 def mock_low_cov(monkeypatch):
     async def fake_coverage(cls, inverse=False):
-        return 30
+        return 0.3
 
     monkeypatch.setattr(
         "ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator.get_covered_area",
@@ -111,7 +111,7 @@ async def test_preprocess_multi_class(
         assert isinstance(clc_class_corine, str)
         assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
-    assert indicator.coverage_percent == 100
+    assert indicator.coverage_percent == 1
 
 
 @pytest.mark.asyncio
@@ -143,7 +143,7 @@ async def test_preprocess_single_class(
         assert isinstance(clc_class_corine, str)
         assert isinstance(clc_class_corine, str)
     assert indicator.result.timestamp_osm is not None
-    assert indicator.coverage_percent == 100
+    assert indicator.coverage_percent == 1
 
 
 @pytest.mark.asyncio
