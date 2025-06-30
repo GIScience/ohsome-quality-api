@@ -197,7 +197,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 "clc_class": clc_class,
             }
         )
-        note = (
+        note = ""
+        if self.coverage_percent != 100:
+            note += (
+                f"Warning: There is only {self.coverage_percent}% "
+                f"coverage with the comparison data. "
+            )
+        note += (
             "Please take the Land Cover Completeness indicator into account for "
             + "interpretation of these results."
         )
