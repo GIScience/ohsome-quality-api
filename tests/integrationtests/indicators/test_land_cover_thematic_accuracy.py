@@ -63,7 +63,6 @@ def mock_db_fetch_no_data(monkeypatch):
 @pytest.fixture
 def mock_cov(monkeypatch):
     async def fake_coverage(cls, inverse=False):
-        # Germany's bounding box in WGS84
         return 100
 
     monkeypatch.setattr(
@@ -75,7 +74,6 @@ def mock_cov(monkeypatch):
 @pytest.fixture
 def mock_low_cov(monkeypatch):
     async def fake_coverage(cls, inverse=False):
-        # Germany's bounding box in WGS84
         return 30
 
     monkeypatch.setattr(
