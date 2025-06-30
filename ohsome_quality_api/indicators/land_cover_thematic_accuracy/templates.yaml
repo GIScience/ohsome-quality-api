@@ -17,5 +17,5 @@ label_description:
     CLC class not being present in the selected region.
 result_description: >-
   The <a href="https://en.wikipedia.org/wiki/F-score">F1-Score</a> is used as
-  a statistical metric that considers both the correctness and completeness of
-  the land cover categories as well as the area.
+  a statistical metric that considers both the correctness and completeness of 
+  the land cover categories weighted by area.
