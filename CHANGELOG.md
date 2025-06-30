@@ -5,8 +5,10 @@
 ### New Features
 
 - new topics about cycleways and bridges ([#928])
+- land-cover-thematic-accuracy: add timestamp of datasets ([#931])
 
 [#928]: https://github.com/GIScience/ohsome-quality-api/pull/928
+[#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
 
 ## Release 1.10
 
