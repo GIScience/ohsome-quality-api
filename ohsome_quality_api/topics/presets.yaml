@@ -45,7 +45,9 @@ roads-all-highways:
   filter: >-
     highway=* and geometry:line
   ratio_filter: >-
-    highway=* and geometry:line and name=*
+    (highway=*)
+    or (ref=*)
+    and geometry:line and name=*
   source: https://wiki.openstreetmap.org/wiki/Key:highway
   indicators:
     - mapping-saturation
@@ -66,7 +68,9 @@ roads:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and geometry:line
+    (highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified))
+    or (ref=*)
+    and geometry:line
   source: https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks
   indicators:
     - mapping-saturation
