@@ -1,5 +1,13 @@
 # Changelog
 
+## Current Main
+
+### Bug Fixes
+
+-land-cover-thematic-accuracy: fix bug that coverage warning is hown when coverage is 100% ([#934])
+
+[#934]: https://github.com/GIScience/ohsome-quality-api/pull/934
+
 ## Release 1.11
 
 ### New Features
