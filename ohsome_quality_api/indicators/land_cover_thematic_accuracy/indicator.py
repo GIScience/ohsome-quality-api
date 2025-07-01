@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
@@ -198,7 +199,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
             }
         )
         note = ""
-        if self.coverage_percent != 1:
+        if not math.isclose(self.coverage_percent, 1):
             note += (
                 f"Warning: There is only {self.coverage_percent:.0%} "
                 f"coverage with the comparison data. "
