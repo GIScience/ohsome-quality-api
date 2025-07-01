@@ -5,6 +5,9 @@ Hurl is an HTTP command line client and HTTP test tool:
 https://hurl.dev
 
 In order to run the HTTP tests in this directory, `hurl` must be installed.
+
+## Usage
+
 The tests can be run against the different stages using the following scripts:
 
 * [run_hurl_tests_DEV.sh](./run_hurl_tests_DEV.sh)
@@ -18,3 +21,15 @@ An HTML-report with the results is generated here:
 [report/index.html](./report/index.html)
 
 
+## Benchmarking
+
+```sh
+hurl --test --jobs 1 --repeat 1 --variable BASE_URL="https://api.quality.ohsome.org/v1-test/" land-cover-thematic-accuracy.hurl
+```
+
+### Release 1.10
+
+| indicator                    | `--jobs=1 --repeat 1` | `--jobs 15 --repeat 10` | `--jobs 15 --repeat 100` |
+| ---                          | ---                   | ---                     | ---                      |
+| land-cover-thematic-accuracy | 15547 ms              | 18217 ms                | 134782 ms                |
+| land-cover-completeness      | 29146 ms              | 45915 ms                | 386117 ms                |
