@@ -64,6 +64,12 @@ To run all tests just execute `pytest`:
 uv run pytest
 ```
 
+To run them all in parallel execute `pytest -n auto`:
+
+```bash
+uv run pytest -n auto
+```
+
 ### VCR for Tests
 
 All tests that are calling function, which are dependent on external network resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
