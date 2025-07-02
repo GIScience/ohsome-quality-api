@@ -638,8 +638,7 @@ land-cover:
     - land-cover-thematic-accuracy
     - land-cover-completeness
   projects:
-    - idealvgi
-    - bkg
+    - core
 
 ### EXPANSE PROJECT ###
 

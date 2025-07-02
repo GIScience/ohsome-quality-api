@@ -65,7 +65,7 @@ attribute-completeness:
 land-cover-thematic-accuracy:
   name: Land Cover Thematic Accuracy
   projects:
-    - bkg
+    - core
   quality_dimension: thematic-accuracy
   description: >-
     Thematic accuracy OpenStreetMap land cover data in comparison to the <a
@@ -74,7 +74,7 @@ land-cover-thematic-accuracy:
 land-cover-completeness:
   name: Land Cover Completeness
   projects:
-    - bkg
+    - core
   quality_dimension: completeness
   description: >-
     Percentage of the area of interest that is covered by OpenStreetMap land cover data.
