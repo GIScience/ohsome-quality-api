@@ -30,10 +30,10 @@ hurl --test --jobs 1 --repeat 1 --variable BASE_URL="https://api.quality.ohsome.
 ### Release 1.10
 
 | indicator                      | `--jobs=1 --repeat 1` | `--jobs 15 --repeat 10` | `--jobs 15 --repeat 100` |
-|--------------------------------| ---                   |-------------------------|--------------------------|
+|--------------------------------|-----------------------|-------------------------|--------------------------|
 | land-cover-thematic-accuracy   | 15547 ms              | 18217 ms                | 134782 ms                |
 | land-cover-completeness        | 29146 ms              | 45915 ms                | 386117 ms                |
-| currentness roads-all-highways | 187723 ms             |                         |                          |
+| currentness roads-all-highways | 187723 ms /72201 ms   |                         |                          |
 
 
 
