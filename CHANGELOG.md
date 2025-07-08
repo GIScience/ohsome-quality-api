@@ -1,5 +1,9 @@
 # Changelog
 
+## Release  1.11.2
+
+- add land cover indicators and topic to core project ([e977c36c8bc63f8142e94460e5835c3668d94ec6])
+
 ## Release  1.11.1
 
 ### Bug Fixes
