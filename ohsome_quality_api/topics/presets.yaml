@@ -164,6 +164,26 @@ cycleway:
     - core
     - bkg
 
+power_lines:
+  name: power_lines
+  description: >-
+      All linear OSM features referring to power lines.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+  indicators:
+  projects: ohmygrid
+
+power_nodes:
+  name: power_nodes
+  description: >-
+      Count of point elements referring to power towers, poles, portals and generators.
+  endpoint: elements
+  aggregation_type: count
+  filter: >-
+  indicators:
+  projects: ohmygrid
+
 poi:
   name: POI
   description: Points of interest
