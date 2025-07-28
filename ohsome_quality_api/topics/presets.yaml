@@ -173,7 +173,9 @@ power_lines:
   filter: >-
     power=lines and geometry:line
   indicators:
-    - attribute_completeness
+    - attribute-completeness
+    - mapping-saturation
+    - currentness
   projects:
     - ohmygrid
 
@@ -186,7 +188,9 @@ power_substation:
   filter: >-
     power=substation and geometry:point
   indicators:
-    - attribute_completeness
+    - attribute-completeness
+    - mapping-saturation
+    - currentness
   projects:
     - ohmygrid
 
