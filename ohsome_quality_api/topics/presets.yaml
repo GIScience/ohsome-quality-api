@@ -171,18 +171,24 @@ power_lines:
   endpoint: elements
   aggregation_type: length
   filter: >-
+    power=lines and geometry:line
   indicators:
-  projects: ohmygrid
+    - attribute_completeness
+  projects:
+    - ohmygrid
 
-power_nodes:
-  name: power_nodes
+power_substation:
+  name: power_substation
   description: >-
-      Count of point elements referring to power towers, poles, portals and generators.
+      A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators
   endpoint: elements
   aggregation_type: count
   filter: >-
+    power=substation and geometry:point
   indicators:
-  projects: ohmygrid
+    - attribute_completeness
+  projects:
+    - ohmygrid
 
 poi:
   name: POI
