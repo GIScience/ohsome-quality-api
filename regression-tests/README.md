@@ -33,7 +33,7 @@ hurl --test --jobs 1 --repeat 1 --variable BASE_URL="https://api.quality.ohsome.
 |--------------------------------|-----------------------|-------------------------|-----------------------------------|
 | land-cover-thematic-accuracy   | 15547 ms              | 18217 ms                | 134782 ms                         |
 | land-cover-completeness        | 29146 ms              | 45915 ms                | 386117 ms                         |
-| currentness roads-all-highways | 251577 ms             | 129851 ms               | 1375128 ms (not fully successful) |
+| currentness roads-all-highways | 251577 ms             | 129851 ms               | 1375128 ms (some requests run in ohsome API timeout) |
 | currentness roads (cars)       | 51694 ms              | 129010 ms               | 608232 ms                         |
 | currentness building-count     | 41324 ms              | 88242 ms                | 461576 ms                         |
 
