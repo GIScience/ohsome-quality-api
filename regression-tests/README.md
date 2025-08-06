@@ -29,13 +29,13 @@ hurl --test --jobs 1 --repeat 1 --variable BASE_URL="https://api.quality.ohsome.
 
 ### Release 1.10
 
-| indicator                      | `--jobs=1 --repeat 1` | `--jobs 15 --repeat 10` | `--jobs 15 --repeat 100`          |
-|--------------------------------|-----------------------|-------------------------|-----------------------------------|
-| land-cover-thematic-accuracy   | 15547 ms              | 18217 ms                | 134782 ms                         |
-| land-cover-completeness        | 29146 ms              | 45915 ms                | 386117 ms                         |
-| currentness roads-all-highways | 251577 ms             | 129851 ms               | 1375128 ms (some requests run in ohsome API timeout) |
-| currentness roads (cars)       | 51694 ms              | 129010 ms               | 608232 ms                         |
-| currentness building-count     | 41324 ms              | 88242 ms                | 461576 ms                         |
+| indicator                      | `--jobs=1 --repeat 1` | `--jobs 15 --repeat 10` | `--jobs 15 --repeat 100`                          |
+|--------------------------------|-----------------------|-------------------------|---------------------------------------------------|
+| land-cover-thematic-accuracy   | 15.547 s              | 18.217 s                | 134.782 s                                         |
+| land-cover-completeness        | 29.146 s              | 45.915 s                | 386.117 s                                         |
+| currentness roads-all-highways | 251.577 s             | 129.851 s               | 1375.128 s (some requests run in ohsome API timeout) |
+| currentness roads (cars)       | 51.694 s              | 129.010 s               | 608.232 s                                         |
+| currentness building-count     | 41.324 s              | 88.242 s                | 461.576 s                                         |
 
 
 
