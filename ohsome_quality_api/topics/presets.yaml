@@ -188,6 +188,7 @@ footpath:
     - currentness
   projects:
     - silverways
+    - core
 
 poi:
   name: POI
