@@ -171,7 +171,9 @@ power_lines:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    power=lines and geometry:line
+    (power=line) 
+    or (power=minor_line)
+    and geometry:line
   indicators:
     - attribute-completeness
     - mapping-saturation
@@ -186,7 +188,7 @@ power_substation:
   endpoint: elements
   aggregation_type: count
   filter: >-
-    power=substation and geometry:point
+    power=substation
   indicators:
     - attribute-completeness
     - mapping-saturation
