@@ -68,15 +68,11 @@
         "annotations": [
             {
                 "align": "right",
-                "font": {
-                    "color": "grey",
-                    "size": 10
-                },
                 "showarrow": false,
-                "text": "CORINE data from: 2021-01-01<br>OSM data from: 2025-06-30",
-                "x": 0,
+                "text": "<span style='font-size:smaller'>CORINE data from 2021</span><br><span style='font-size:smaller'>OSM data from 2025</span>",
+                "x": 0.0,
                 "xref": "paper",
-                "y": 0,
+                "y": 0.0,
                 "yref": "paper"
             }
         ],

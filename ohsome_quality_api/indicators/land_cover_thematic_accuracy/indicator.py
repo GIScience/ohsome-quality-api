@@ -253,26 +253,23 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     textposition="auto",
                 )
             )
-
-        corine_timestamp_str = self.timestamp_corine.strftime("%Y-%m-%d")
-        osm_timestamp_str = self.result.timestamp_osm.strftime("%Y-%m-%d")
-
         fig = pgo.Figure(
             data=bars,
             layout=pgo.Layout(
                 autotypenumbers="strict",
                 xaxis={
                     "title": {
-                        "text": f"F1-Score [%]"
-                        f"<br>"
-                        f"<span style='font-size:10px'>"
-                        f"CORINE data from: {corine_timestamp_str}"
-                        f"</span>"
-                        f"<br>"
-                        f"<span style='font-size:10px'>"
-                        f"OSM data from: {osm_timestamp_str}"
-                        f"</span>",
-                        "standoff": 15,
+                        "text": (
+                            f"F1-Score [%]"
+                            f"<br>"
+                            f"<span style='font-size:smaller'>"
+                            f"CORINE data from {self.timestamp_corine.strftime('%Y')}"
+                            f"</span>"
+                            f"<br>"
+                            f"<span style='font-size:smaller'>"
+                            f"OSM data from {self.result.timestamp_osm.strftime('%Y')}"
+                            f"</span>"
+                        ),
                     },
                     "range": [0, 100],
                 },
@@ -288,10 +285,6 @@ class LandCoverThematicAccuracy(BaseIndicator):
         name_level_2 = clc_classes_level_2[CorineLandCoverClass(self.clc_class.value)][
             "name"
         ]
-
-        corine_timestamp_str = self.timestamp_corine.strftime("%Y-%m-%d")
-        osm_timestamp_str = self.result.timestamp_osm.strftime("%Y-%m-%d")
-
         fig = pgo.Figure(
             # TODO: remove or grey out other_class x other_classes since its always 0%
             data=[
@@ -360,14 +353,20 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 },
                 "annotations": [
                     {
-                        "text": f"CORINE data from: {corine_timestamp_str}"
-                        f"<br>OSM data from: {osm_timestamp_str}",
+                        "text": (
+                            f"<span style='font-size:smaller'>"
+                            f"CORINE data from {self.timestamp_corine.strftime('%Y')}"
+                            f"</span>"
+                            f"<br>"
+                            f"<span style='font-size:smaller'>"
+                            f"OSM data from {self.result.timestamp_osm.strftime('%Y')}"
+                            f"</span>"
+                        ),
                         "xref": "paper",
                         "yref": "paper",
-                        "x": 0,
-                        "y": 0,
+                        "x": 0.0,
+                        "y": 0.0,
                         "showarrow": False,
-                        "font": {"size": 10, "color": "grey"},
                         "align": "right",
                     }
                 ],
