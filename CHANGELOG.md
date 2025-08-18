@@ -2,7 +2,7 @@
 
 ## Current Main
 
-- land-cover-thematic-accuracy: add timestamp of datasets ([#931])
+- land-cover-thematic-accuracy: add date of datasets ([#931])
 
 [#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
 
