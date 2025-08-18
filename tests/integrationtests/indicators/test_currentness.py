@@ -45,10 +45,16 @@ class TestInit:
 
 
 class TestPreprocess:
+    @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+    def test_preprocess(
+        self,
+        ohsomedb,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+        asyncio.run(indicator.preprocess(ohsomedb=ohsomedb))
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
         assert isinstance(indicator.result.timestamp, datetime)
@@ -56,14 +62,14 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="class", params=[False, True])
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    def indicator(self, topic_building_count, feature_germany_heidelberg, request):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        asyncio.run(i.preprocess(ohsomedb=request.param))
         return i
 
-    def test_calculate(self, indicator):
+    def test_calculate(self, indicator, request):
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
@@ -82,8 +88,9 @@ class TestCalculation:
         indicator.calculate()
         verify(indicator.result.description, namer=PytestNamer())
 
+    @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
-    def test_no_subway_stations(self):
+    def test_no_subway_stations(self, ohsomedb):
         """Test area with no subway stations"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -96,7 +103,7 @@ class TestCalculation:
         indicator = Currentness(
             feature=feature, topic=get_topic_fixture("subway-stations")
         )
-        asyncio.run(indicator.preprocess())
+        asyncio.run(indicator.preprocess(ohsomedb=ohsomedb))
         assert indicator.contrib_sum == 0
 
         indicator.calculate()
@@ -115,7 +122,7 @@ class TestCalculation:
 
 
 class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="class", params=[False, True])
     @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
@@ -133,15 +140,17 @@ class TestFigure:
             .with_namer(PytestNamer()),
         )
 
+    @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
     def test_outdated_features_plotting(
         self,
+        ohsomedb,
         topic_building_count,
         feature_germany_heidelberg,
     ):
         """Create a figure with features in the out-of-date category only"""
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        asyncio.run(i.preprocess(ohsomedb=ohsomedb))
         len_contribs = len(i.bin_total.contrib_abs) - 84
         i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
         new_total = sum(i.bin_total.contrib_abs)
@@ -171,6 +180,39 @@ class TestFigure:
             indicator.get_threshold_text(Color.YELLOW) == "between 3 years and 8 years"
         )
         assert indicator.get_threshold_text(Color.GREEN) == "younger than 3 years"
+
+
+class TestOhsomeAPIOhsomeDBComparison:
+    @oqapi_vcr.use_cassette
+    def test_indicator(self, topic_building_count, feature_germany_heidelberg):
+        i_api = Currentness(
+            topic_building_count,
+            feature_germany_heidelberg,
+        )
+        asyncio.run(i_api.preprocess())
+        i_api.calculate()
+        i_api.create_figure()
+
+        i_db = Currentness(
+            topic_building_count,
+            feature_germany_heidelberg,
+        )
+        asyncio.run(i_db.preprocess())
+        i_db.calculate()
+        i_db.create_figure()
+
+        verify_as_json(
+            to_jsonable_python(i_api.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer(postfix="api")),
+        )
+        verify_as_json(
+            to_jsonable_python(i_db.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer(postfix="db")),
+        )
 
 
 def test_get_last_edited_year():
