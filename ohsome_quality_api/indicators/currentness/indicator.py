@@ -8,19 +8,23 @@ Abbreviations:
     th: Threshold
 """
 
+import json
 import locale
 import logging
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from string import Template
 
 import plotly.graph_objects as pgo
 import yaml
 from dateutil.parser import isoparse
 from geojson import Feature
+from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
 
 from ohsome_quality_api.definitions import Color
+from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -29,7 +33,7 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 try:
     locale.setlocale(locale.LC_ALL, ["en_US", locale.getencoding()])
 except locale.Error:
-    logging.warn(
+    logging.warning(
         "Could not set locale to en_US. Output may be different than expected."
     )
 
@@ -69,7 +73,13 @@ class Currentness(BaseIndicator):
         self.bin_in_between: Bin
         self.bin_out_of_date: Bin
 
-    async def preprocess(self):
+    async def preprocess(self, ohsomedb: bool = False):
+        if ohsomedb:
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomeapi(self):
         """Fetch all latest contributions in monthly buckets since 2008
 
         Beside the creation, latest contribution includes also the change to the
@@ -100,6 +110,46 @@ class Currentness(BaseIndicator):
             timestamps.append(ts)
             contrib_abs.append(c["value"])
             contrib_sum += c["value"]
+        if contrib_sum == 0:
+            contrib_rel = [0 for _ in contrib_abs]
+        else:
+            contrib_rel = [c / contrib_sum for c in contrib_abs]
+        self.bin_total = Bin(
+            contrib_abs,
+            contrib_rel,
+            to_timestamps,
+            from_timestamps,
+            timestamps,
+        )
+        self.contrib_sum = contrib_sum
+        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
+
+    async def preprocess_ohsomedb(self):
+        where = ohsome_filter_to_sql(self.topic.filter)
+        with open(Path(__file__).parent / "query.sql", "r") as file:
+            template = file.read()
+        query = Template(template).substitute(
+            {
+                "aoi": json.dumps(self.feature["geometry"]),
+                "filter": where,
+            }
+        )
+        results = await client.fetch(query)
+        if len(results) == 0:
+            # no data
+            self.contrib_sum = 0
+            return
+        to_timestamps = []
+        from_timestamps = []
+        timestamps = []
+        contrib_abs = []
+        contrib_sum = 0
+        for r in reversed(results):  # latest contributions first
+            to_timestamps.append(r[0])
+            from_timestamps.append(r[0])
+            timestamps.append(r[0])
+            contrib_abs.append(r[1])
+            contrib_sum += r[1]
         if contrib_sum == 0:
             contrib_rel = [0 for _ in contrib_abs]
         else:
