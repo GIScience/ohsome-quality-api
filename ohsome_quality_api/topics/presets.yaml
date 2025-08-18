@@ -187,6 +187,7 @@ footpath:
     - mapping-saturation
     - currentness
   projects:
+    - bkg
     - silverways
 
 poi:
@@ -664,6 +665,7 @@ land-cover:
     - land-cover-completeness
   projects:
     - core
+    - bkg
 
 ### EXPANSE PROJECT ###
 
