@@ -180,6 +180,7 @@ power_lines:
     - currentness
   projects:
     - ohmygrid
+    - core
 
 power_substations:
   name: power_substation
