@@ -181,7 +181,7 @@ power_lines:
   projects:
     - ohmygrid
 
-power_substation:
+power_substations:
   name: power_substation
   description: >-
       A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators
