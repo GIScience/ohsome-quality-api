@@ -381,7 +381,7 @@ public-transport-stops:
     filter: wheelchair=*
   bus-lines:
     name: Bus Lines
-    description: List of all bus lines stopping at a certain stop
+    description: List of all bus lines stopping at a certain stop.
     filter: route_ref=*
   departures-board:
     name: Departures Board
@@ -391,31 +391,31 @@ public-transport-stops:
 power_lines:
   voltage:
     name: Voltage
-    description: describing the voltage of power lines
+    description: Describing the voltage of power lines.
     filter: voltage=*
   cable:
     name: Cable
-    description: Number of electrically separated, individual or bundled, power-carrying conductors in a power line or cable
+    description: Number of electrically separated, individual or bundled, power-carrying conductors in a power line or cable.
     filter: cable=*
   frequency:
     name: Frequency
-    description: describes the frequency of power infrastructure in the unit herz
+    description: Describes the frequency of power infrastructure in the unit herz.
     filter: frequency=*
   operator:
     name: Operator
-    description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object
+    description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object.
     filter: operator=*
 
 power_substation:
   voltage:
     name: Voltage
-    description: For describing the voltage of substations
+    description: For describing the voltage of substations.
     filter: voltage=*
   operator:
     name: Operator
-    description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object
+    description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object.
     filter: operator=*
   location:
     name: Location
-    description: To define the location of a feature which may be above or under ground or in relation to objects such as roofs, bridges or buildings
+    description: To define the location of a feature which may be above or under ground or in relation to objects such as roofs, bridges or buildings.
     filter: location=*
