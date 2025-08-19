@@ -9,6 +9,11 @@ from ohsome_quality_api import config
 class TestConfig(unittest.TestCase):
     def setUp(self):
         self.keys = {
+            "ohsomedb_host",
+            "ohsomedb_port",
+            "ohsomedb_db",
+            "ohsomedb_user",
+            "ohsomedb_password",
             "postgres_host",
             "postgres_port",
             "postgres_db",
@@ -46,7 +51,7 @@ class TestConfig(unittest.TestCase):
     def test_config_default(self):
         cfg = config.load_config_default()
         self.assertIsInstance(cfg, dict)
-        self.assertEqual(self.keys, cfg.keys())
+        self.assertEqual(list(self.keys).sort(), list(cfg.keys()).sort())
 
     @mock.patch.dict(
         "os.environ",
@@ -89,7 +94,7 @@ class TestConfig(unittest.TestCase):
     def test_get_config(self):
         cfg = config.get_config()
         self.assertIsInstance(cfg, MappingProxyType)
-        self.assertEqual(self.keys, cfg.keys())
+        self.assertEqual(list(self.keys).sort(), list(cfg.keys()).sort())
 
     @mock.patch.dict("os.environ", {}, clear=True)
     def test_get_config_value(self):
@@ -105,7 +110,7 @@ class TestConfig(unittest.TestCase):
     def test_get_config_env_empty_str(self):
         cfg = config.get_config()
         self.assertIsInstance(cfg, MappingProxyType)
-        self.assertEqual(self.keys, cfg.keys())
+        self.assertEqual(list(self.keys).sort(), list(cfg.keys()).sort())
 
     @mock.patch.dict("os.environ", {}, clear=True)
     def test_get_data_dir_unset_env(self):
