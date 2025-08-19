@@ -185,7 +185,7 @@ power_lines:
 power_substations:
   name: power_substation
   description: >-
-      A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators
+      A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators.
   endpoint: elements
   aggregation_type: count
   filter: >-
