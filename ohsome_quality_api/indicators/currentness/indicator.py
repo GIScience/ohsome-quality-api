@@ -134,7 +134,7 @@ class Currentness(BaseIndicator):
                 "filter": where,
             }
         )
-        results = await client.fetch(query)
+        results = await client.fetch(query, database="ohsomedb")
         if len(results) == 0:
             # no data
             self.contrib_sum = 0
