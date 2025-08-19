@@ -168,7 +168,8 @@ footpath:
   name: Footpath
   description: >-
     All linear OSM features commonly used for walking, including dedicated pedestrian paths,
-    shared-use paths and roads where foot traffic is allowed or sidewalks exist.
+    shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
+
   endpoint: elements
   aggregation_type: length
   filter: >-
@@ -666,6 +667,7 @@ land-cover:
     - land-cover-completeness
   projects:
     - core
+    - bkg
 
 ### EXPANSE PROJECT ###
 
