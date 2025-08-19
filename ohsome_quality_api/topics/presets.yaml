@@ -196,6 +196,7 @@ power_substations:
     - currentness
   projects:
     - ohmygrid
+    - core
 
 footpath:
   name: Footpath
