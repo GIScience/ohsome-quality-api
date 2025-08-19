@@ -1,5 +1,10 @@
 ---
 # Database connection parameters;
+ohsomedb_host: localhost
+ohsomedb_port: 5432
+ohsomedb_db: postgres
+ohsomedb_user: postgres
+ohsomedb_password: mylocalpassword
 postgres_host: localhost
 postgres_port: 5445
 postgres_db: oqapi
