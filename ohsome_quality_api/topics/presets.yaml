@@ -196,6 +196,34 @@ power_substation:
   projects:
     - ohmygrid
 
+footpath:
+  name: Footpath
+  description: >-
+    All linear OSM features commonly used for walking, including dedicated pedestrian paths,
+    shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
+
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    (
+      (highway=footway)
+      or (highway=path and (foot=designated or foot=yes))
+      or (highway=pedestrian)
+      or (highway=steps)
+      or (highway=cycleway and foot=yes)
+      or (sidewalk=* and highway!=motorway)
+      or (foot=yes)
+    )
+    and geometry:line
+  source: https://wiki.openstreetmap.org/wiki/Key:foot
+  indicators:
+    - mapping-saturation
+    - currentness
+  projects:
+    - silverways
+    - core
+    - bkg
+
 poi:
   name: POI
   description: Points of interest
@@ -671,6 +699,7 @@ land-cover:
     - land-cover-completeness
   projects:
     - core
+    - bkg
 
 ### EXPANSE PROJECT ###
 
