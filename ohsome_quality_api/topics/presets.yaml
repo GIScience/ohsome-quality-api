@@ -180,6 +180,7 @@ power_lines:
     - currentness
   projects:
     - ohmygrid
+    - core
 
 power_substations:
   name: power_substation
@@ -195,6 +196,7 @@ power_substations:
     - currentness
   projects:
     - ohmygrid
+    - core
 
 footpath:
   name: Footpath
