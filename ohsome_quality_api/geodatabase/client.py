@@ -16,6 +16,7 @@ On preventing SQL injections:
 
 import os
 from contextlib import asynccontextmanager
+from typing import Literal
 
 import asyncpg
 import geojson
@@ -28,15 +29,27 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 @asynccontextmanager
-async def get_connection():
+async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
     # DNS in libpq connection URI format
-    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-        host=get_config_value("postgres_host"),
-        port=get_config_value("postgres_port"),
-        database=get_config_value("postgres_db"),
-        user=get_config_value("postgres_user"),
-        password=get_config_value("postgres_password"),
-    )
+    match database:
+        case "oqapidb":
+            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+                host=get_config_value("postgres_host"),
+                port=get_config_value("postgres_port"),
+                database=get_config_value("postgres_db"),
+                user=get_config_value("postgres_user"),
+                password=get_config_value("postgres_password"),
+            )
+        case "ohsomedb":
+            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+                host=get_config_value("ohsomedb_host"),
+                port=get_config_value("ohsomedb_port"),
+                database=get_config_value("ohsomedb_db"),
+                user=get_config_value("ohsomedb_user"),
+                password=get_config_value("ohsomedb_password"),
+            )
+        case _:
+            raise ValueError()
     conn = await asyncpg.connect(dns)
     try:
         yield conn
@@ -44,8 +57,12 @@ async def get_connection():
         await conn.close()
 
 
-async def fetch(query: str, *args) -> list:
-    async with get_connection() as conn:
+async def fetch(
+    query: str,
+    *args,
+    database: Literal["oqapidb", "ohsomedb"] = "oqapidb",
+) -> list:
+    async with get_connection(database) as conn:
         return await conn.fetch(query, *args)
 
 
