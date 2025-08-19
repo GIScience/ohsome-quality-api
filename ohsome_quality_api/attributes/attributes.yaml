@@ -286,7 +286,7 @@ roads:
   name:
     name: Road Name
     description: TODO
-    filter: name=*
+    filter: name=* or ref=*
   sidewalk:
     name: Sidewalk
     description: TODO
