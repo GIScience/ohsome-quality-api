@@ -169,6 +169,7 @@ footpath:
   description: >-
     All linear OSM features commonly used for walking, including dedicated pedestrian paths,
     shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
+
   endpoint: elements
   aggregation_type: length
   filter: >-
@@ -187,8 +188,9 @@ footpath:
     - mapping-saturation
     - currentness
   projects:
-    - bkg
     - silverways
+    - core
+    - bkg
 
 poi:
   name: POI
