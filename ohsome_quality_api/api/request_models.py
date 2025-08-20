@@ -77,11 +77,23 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         alias="topic",
     )
     include_figure: bool = True
+    ohsomedb: bool | str = False
 
     @field_validator("topic")
     @classmethod
     def transform_topic(cls, value) -> TopicDefinition:
         return get_topic_preset(value.value)
+
+    @field_validator("ohsomedb")
+    @classmethod
+    def transform_ohsomedb(cls, value) -> bool:
+        if isinstance(value, str):
+            if value == "true":
+                return True
+            else:
+                return False
+        else:
+            return value
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self):

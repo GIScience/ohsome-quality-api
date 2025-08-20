@@ -19,6 +19,13 @@ def test_get_connection():
     assert result[0] == 1
 
 
+@pytest.mark.asyncio
+async def test_get_connection_ohsomedb():
+    async with db_client.get_connection() as conn:
+        result = await conn.fetchrow("SELECT 1")
+    assert result[0] == 1
+
+
 def test_get_shdi_single_intersection_feature(feature):
     """Input geometry intersects only with one SHDI region."""
     result = asyncio.run(db_client.get_shdi(feature))
