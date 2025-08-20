@@ -51,6 +51,10 @@ bkg:
   description: >-
     something that is still a TODO
 
+ohmygrid:
+  name: ohmygrid
+  description: >-
+    https://mapyourgrid.org/
 silverways:
   name: Silver Ways
   description: >-
