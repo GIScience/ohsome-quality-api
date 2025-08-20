@@ -58,6 +58,7 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
+    ohsomedb: bool = False,
     **kwargs,
 ) -> Indicator:
     """Create an indicator from scratch."""
