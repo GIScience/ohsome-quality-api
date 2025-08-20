@@ -8,7 +8,12 @@ Below is a table listing all possible configuration variables.
 
 | Configuration Variable Name | Environment Variable Name       | Configuration File Name   | Default Value                  | Description                                                                 |
 | --------------------------- | ------------------------------- | ------------------------- | ------------------------------ | --------------------------------------------------------------------------- |
-| Postgres Host               | `POSTGRES_HOST`                 | `postgres_host`           | `localhost`                    | Database connection parameter                                               |
+| ohsomeDB Host               | `OHSOMEDB_HOST`                 | `ohsomedb_host`           | `localhost`                    | ohsomeDB database connection parameter                                      |
+| ohsomeDB Port               | `OHSOMEDB_PORT`                 | `ohsomedb_port`           | `5432`                         | "                                                                           |
+| ohsomeDB Database           | `OHSOMEDB_DB`                   | `ohsomedb_db`             | `postgres`                     | "                                                                           |
+| ohsomeDB User               | `OHSOMEDB_USER`                 | `ohsomedb_user`           | `postgres`                     | "                                                                           |
+| ohsomeDB Password           | `OHSOMEDB_PASSWORD`             | `ohsomedb_password`       | `mylocalpassword`              | "                                                                           |
+| Postgres Host               | `POSTGRES_HOST`                 | `postgres_host`           | `localhost`                    | Postgres database connection parameter                                      |
 | Postgres Port               | `POSTGRES_PORT`                 | `postgres_port`           | `5445`                         | "                                                                           |
 | Postgres Database           | `POSTGRES_DB`                   | `postgres_db`             | `oqapi`                        | "                                                                           |
 | Postgres User               | `POSTGRES_USER`                 | `postgres_user`           | `oqapi`                        | "                                                                           |

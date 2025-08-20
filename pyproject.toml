@@ -20,6 +20,7 @@ dependencies = [
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
     "kaleido==0.2.1",
+    "ohsome-filter-to-sql",
     "plotly>=6.0.1",
     "pydantic>=2.11.4",
     "pyproj>=3.7.1",
@@ -57,6 +58,9 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-root = ""
+
+[tool.uv.sources]
+ohsome-filter-to-sql = { git = "https://gitlab.heigit.org/giscience/big-data/ohsome/libs/ohsome-filter-to-sql" }
 
 [tool.ruff.lint]
 select = [

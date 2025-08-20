@@ -24,6 +24,11 @@ def get_config_path() -> str:
 
 def load_config_default() -> dict:
     return {
+        "ohsomdb_host": "localhost",
+        "ohsomdb_port": 5432,
+        "ohsomdb_db": "postgres",
+        "ohsomdb_user": "postgres",
+        "ohsomdb_password": "mylocalpassword",
         "postgres_host": "localhost",
         "postgres_port": 5445,
         "postgres_db": "oqapi",
@@ -56,6 +61,11 @@ def load_config_from_file(path: str) -> dict:
 def load_config_from_env() -> dict:
     """Load configuration from environment variables."""
     cfg = {
+        "ohsomedb_host": os.getenv("OHSOMEDB_HOST"),
+        "ohsomedb_port": os.getenv("OHSOMEDB_PORT"),
+        "ohsomedb_db": os.getenv("OHSOMEDB_DB"),
+        "ohsomedb_user": os.getenv("OHSOMEDB_USER"),
+        "ohsomedb_password": os.getenv("OHSOMEDB_PASSWORD"),
         "postgres_host": os.getenv("POSTGRES_HOST"),
         "postgres_port": os.getenv("POSTGRES_PORT"),
         "postgres_db": os.getenv("POSTGRES_DB"),
