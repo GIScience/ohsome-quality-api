@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.12.0
 
 - land-cover-thematic-accuracy: add date of datasets ([#931])
 - add new topics and attributes:
