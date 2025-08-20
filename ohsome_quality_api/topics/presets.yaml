@@ -165,7 +165,7 @@ cycleway:
     - bkg
 
 power_lines:
-  name: power_lines
+  name: Power Lines
   description: >-
       All linear OSM features referring to power lines.
   endpoint: elements
@@ -183,7 +183,7 @@ power_lines:
     - core
 
 power_substations:
-  name: power_substation
+  name: Power Substation
   description: >-
       A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators.
   endpoint: elements
