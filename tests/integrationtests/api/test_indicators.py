@@ -123,6 +123,20 @@ def test_indicators(
 
 
 @oqapi_vcr.use_cassette
+def test_indicators_currentness(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    """Minimal viable request for a single bpoly."""
+    endpoint = ENDPOINT + "currentness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "ohsomedb": True}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@oqapi_vcr.use_cassette
 def test_indicators_attribute_completeness(
     client,
     bpolys,
