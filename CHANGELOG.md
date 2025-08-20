@@ -3,8 +3,15 @@
 ## Current Main
 
 - land-cover-thematic-accuracy: add date of datasets ([#931])
+- add new topics and attributes:
+  - power lines and substations (#942)
+  - footpath (#937)
+- update roads topic attributes to look for `ref=*` in addition to `name=*` (#945)
 
 [#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
+[#937]: https://github.com/GIScience/ohsome-quality-api/pull/937
+[#942]: https://github.com/GIScience/ohsome-quality-api/pull/942
+[#945]: https://github.com/GIScience/ohsome-quality-api/pull/945
 
 ## Release  1.11.2
 
