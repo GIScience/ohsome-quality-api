@@ -1,10 +1,11 @@
-import asyncio
 import json
 import os
 from datetime import datetime
 
+import asyncpg_recorder
 import geojson
 import pytest
+import pytest_asyncio
 from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
 
@@ -44,43 +45,49 @@ class TestInit:
         )
 
 
+@pytest.mark.asyncio(loop_scope="class")
 class TestPreprocess:
     @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
-    def test_preprocess(
+    @asyncpg_recorder.use_cassette
+    async def test_preprocess(
         self,
         ohsomedb,
         topic_building_count,
         feature_germany_heidelberg,
     ):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess(ohsomedb=ohsomedb))
+        await indicator.preprocess(ohsomedb=ohsomedb)
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
+@pytest.mark.asyncio()
 class TestCalculation:
-    @pytest.fixture(scope="class", params=[False, True])
+    @pytest_asyncio.fixture(params=[False, True])
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg, request):
+    @asyncpg_recorder.use_cassette
+    async def indicator(
+        self, topic_building_count, feature_germany_heidelberg, request
+    ):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess(ohsomedb=request.param))
+        await i.preprocess(ohsomedb=request.param)
         return i
 
-    def test_calculate(self, indicator, request):
+    async def test_calculate(self, indicator):
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
         verify(indicator.result.description, namer=PytestNamer())
 
-    def test_low_contributions(self, indicator):
+    async def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
         verify(indicator.result.description, namer=PytestNamer())
 
-    def test_months_without_edit(self, indicator):
+    async def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
         indicator.bin_total.contrib_abs = [
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
@@ -90,7 +97,8 @@ class TestCalculation:
 
     @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
-    def test_no_subway_stations(self, ohsomedb):
+    @asyncpg_recorder.use_cassette
+    async def test_no_subway_stations(self, ohsomedb):
         """Test area with no subway stations"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -103,7 +111,7 @@ class TestCalculation:
         indicator = Currentness(
             feature=feature, topic=get_topic_fixture("subway-stations")
         )
-        asyncio.run(indicator.preprocess(ohsomedb=ohsomedb))
+        await indicator.preprocess(ohsomedb=ohsomedb)
         assert indicator.contrib_sum == 0
 
         indicator.calculate()
@@ -121,17 +129,19 @@ class TestCalculation:
         # )
 
 
+@pytest.mark.asyncio
 class TestFigure:
-    @pytest.fixture(scope="class", params=[False, True])
+    @pytest_asyncio.fixture(params=[False, True])
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    @asyncpg_recorder.use_cassette
+    async def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        await i.preprocess()
         i.calculate()
         i.create_figure()
         return i
 
-    def test_create_figure(self, indicator):
+    async def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
         verify_as_json(
             to_jsonable_python(indicator.result.figure),
@@ -142,7 +152,8 @@ class TestFigure:
 
     @pytest.mark.parametrize("ohsomedb", [True, False])
     @oqapi_vcr.use_cassette
-    def test_outdated_features_plotting(
+    @asyncpg_recorder.use_cassette
+    async def test_outdated_features_plotting(
         self,
         ohsomedb,
         topic_building_count,
@@ -150,7 +161,7 @@ class TestFigure:
     ):
         """Create a figure with features in the out-of-date category only"""
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess(ohsomedb=ohsomedb))
+        await i.preprocess(ohsomedb=ohsomedb)
         len_contribs = len(i.bin_total.contrib_abs) - 84
         i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
         new_total = sum(i.bin_total.contrib_abs)
@@ -166,7 +177,7 @@ class TestFigure:
             .with_namer(PytestNamer()),
         )
 
-    def test_get_source(self, indicator):
+    async def test_get_source(self, indicator):
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
         indicator.th_source = "www.foo.org"
@@ -174,7 +185,7 @@ class TestFigure:
             indicator.get_source_text() == "<a href='www.foo.org' target='_blank'>*</a>"
         )
 
-    def test_get_threshold_text(self, indicator):
+    async def test_get_threshold_text(self, indicator):
         assert indicator.get_threshold_text(Color.RED) == "older than 8 years"
         assert (
             indicator.get_threshold_text(Color.YELLOW) == "between 3 years and 8 years"
@@ -182,14 +193,16 @@ class TestFigure:
         assert indicator.get_threshold_text(Color.GREEN) == "younger than 3 years"
 
 
+@pytest.mark.asyncio
 class TestOhsomeAPIOhsomeDBComparison:
     @oqapi_vcr.use_cassette
-    def test_indicator(self, topic_building_count, feature_germany_heidelberg):
+    @asyncpg_recorder.use_cassette
+    async def test_indicator(self, topic_building_count, feature_germany_heidelberg):
         i_api = Currentness(
             topic_building_count,
             feature_germany_heidelberg,
         )
-        asyncio.run(i_api.preprocess())
+        await i_api.preprocess()
         i_api.calculate()
         i_api.create_figure()
 
@@ -197,7 +210,7 @@ class TestOhsomeAPIOhsomeDBComparison:
             topic_building_count,
             feature_germany_heidelberg,
         )
-        asyncio.run(i_db.preprocess())
+        await i_db.preprocess()
         i_db.calculate()
         i_db.create_figure()
 
