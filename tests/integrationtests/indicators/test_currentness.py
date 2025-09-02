@@ -48,8 +48,8 @@ class TestInit:
 @pytest.mark.asyncio(loop_scope="class")
 class TestPreprocess:
     @pytest.mark.parametrize("ohsomedb", [True, False])
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_preprocess(
         self,
         ohsomedb,
@@ -67,8 +67,8 @@ class TestPreprocess:
 @pytest.mark.asyncio()
 class TestCalculation:
     @pytest_asyncio.fixture(params=[False, True])
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def indicator(
         self, topic_building_count, feature_germany_heidelberg, request
     ):
@@ -96,8 +96,8 @@ class TestCalculation:
         verify(indicator.result.description, namer=PytestNamer())
 
     @pytest.mark.parametrize("ohsomedb", [True, False])
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_no_subway_stations(self, ohsomedb):
         """Test area with no subway stations"""
         infile = os.path.join(
@@ -132,8 +132,8 @@ class TestCalculation:
 @pytest.mark.asyncio
 class TestFigure:
     @pytest_asyncio.fixture(params=[False, True])
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
         await i.preprocess()
@@ -151,8 +151,8 @@ class TestFigure:
         )
 
     @pytest.mark.parametrize("ohsomedb", [True, False])
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_outdated_features_plotting(
         self,
         ohsomedb,
@@ -195,8 +195,8 @@ class TestFigure:
 
 @pytest.mark.asyncio
 class TestOhsomeAPIOhsomeDBComparison:
-    @oqapi_vcr.use_cassette
     @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_indicator(self, topic_building_count, feature_germany_heidelberg):
         i_api = Currentness(
             topic_building_count,
