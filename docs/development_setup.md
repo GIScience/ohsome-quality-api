@@ -38,6 +38,14 @@ Resolved 85 packages in 33ms
 ```
 
 
+## ohsomeDB
+
+For some experimental development work a local setup of the ohsomeDB is needed.
+Currently, ohsomeDB is under active development.
+You can find up-to-date setup instruction on [HeiGIT's GitLab](https://gitlab.heigit.org/giscience/big-data/ohsome/ohsomedb/ohsomedb/-/tree/main/local_setup).
+If you run a local ohsomeDB make sure to set the appropriate configuration variables (see next section).
+
+
 ## Configuration
 
 For all possible configuration parameter please refer to the [configuration documentation](/docs/configuration.md).
