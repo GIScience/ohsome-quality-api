@@ -3,6 +3,7 @@
 Validate the response from requests to the `/indicators` endpoint of the API.
 """
 
+import asyncpg_recorder
 import pytest
 from approvaltests.approvals import verify
 from schema import Optional, Or, Schema
@@ -122,14 +123,14 @@ def test_indicators(
     assert schema.is_valid(response.json())
 
 
-@oqapi_vcr.use_cassette
-def test_indicators_currentness(
+@pytest.mark.asyncio
+@asyncpg_recorder.use_cassette
+async def test_indicators_currentness_ohsomedb(
     client,
     bpolys,
     headers,
     schema,
 ):
-    """Minimal viable request for a single bpoly."""
     endpoint = ENDPOINT + "currentness"
     parameters = {"bpolys": bpolys, "topic": "building-count", "ohsomedb": True}
     response = client.post(endpoint, json=parameters, headers=headers)
