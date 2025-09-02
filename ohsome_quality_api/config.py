@@ -24,11 +24,11 @@ def get_config_path() -> str:
 
 def load_config_default() -> dict:
     return {
-        "ohsomdb_host": "localhost",
-        "ohsomdb_port": 5432,
-        "ohsomdb_db": "postgres",
-        "ohsomdb_user": "postgres",
-        "ohsomdb_password": "mylocalpassword",
+        "ohsomedb_host": "localhost",
+        "ohsomedb_port": 5432,
+        "ohsomedb_db": "postgres",
+        "ohsomedb_user": "postgres",
+        "ohsomedb_password": "mylocalpassword",
         "postgres_host": "localhost",
         "postgres_port": 5445,
         "postgres_db": "oqapi",
