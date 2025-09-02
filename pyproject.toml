@@ -15,7 +15,6 @@ requires-python = ">=3.12"
 dependencies = [
     "async-lru>=2.0.5",
     "asyncpg>=0.30.0",
-    "asyncpg-recorder>=2025.8.28",
     "fastapi>=0.115.12",
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
@@ -38,7 +37,7 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "asyncpg-recorder",
+    "asyncpg-recorder>=2025.9.2",
     "approvaltests>=14.5.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",

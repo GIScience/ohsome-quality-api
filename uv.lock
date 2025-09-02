@@ -750,7 +750,6 @@ source = { editable = "." }
 dependencies = [
     { name = "async-lru" },
     { name = "asyncpg" },
-    { name = "asyncpg-recorder" },
     { name = "fastapi" },
     { name = "geojson" },
     { name = "geojson-pydantic" },
@@ -790,7 +789,6 @@ dev = [
 requires-dist = [
     { name = "async-lru", specifier = ">=2.0.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "asyncpg-recorder", git = "https://github.com/GIScience/asyncpg-recorder.git" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "geojson", specifier = ">=3.2.0" },
     { name = "geojson-pydantic", specifier = ">=2.0.0" },
