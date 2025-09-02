@@ -112,8 +112,8 @@ wheels = [
 
 [[package]]
 name = "asyncpg-recorder"
-version = "2025.9.2"
-source = { git = "https://github.com/GIScience/asyncpg-recorder.git#591ad35241f9a67d9ed4b9aa92102c8de395ba58" }
+version = "2025.9.2.1"
+source = { git = "https://github.com/GIScience/asyncpg-recorder.git#49dd984db63a4f688c563db86003ddb80e4c1a54" }
 dependencies = [
     { name = "asyncpg" },
     { name = "testcontainers" },

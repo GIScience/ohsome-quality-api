@@ -34,6 +34,8 @@ FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fix
 logger = logging.getLogger("rpy2")
 logger.propagate = False
 
+asyncpg_recorder_logger = logging.getLogger("asyncpg-recorder")
+
 
 @pytest.fixture(scope="class")
 def topic_key_minimal() -> str:
