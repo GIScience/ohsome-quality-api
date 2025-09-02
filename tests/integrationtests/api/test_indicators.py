@@ -123,7 +123,7 @@ def test_indicators(
     assert schema.is_valid(response.json())
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="module")
 @asyncpg_recorder.use_cassette
 async def test_indicators_currentness_ohsomedb(
     client,
