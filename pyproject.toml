@@ -37,19 +37,19 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "asyncpg-recorder>=2025.9.2",
     "approvaltests>=14.5.0",
+    "asyncpg-recorder",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "pre-commit>=4.2.0",
-    "pygments>=2.19.1",  # add syntax highlighting to pytest
+    "pygments>=2.19.1", # add syntax highlighting to pytest
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14.0",
     "pytest-sugar>=1.0.0",
     "pytest-xdist>=3.6.1",
-    "ruff==0.11.9",  # fixed because of pre-commit
+    "ruff==0.11.9", # fixed because of pre-commit
     "vcrpy>=7.0.0",
 ]
 
@@ -61,8 +61,8 @@ build-backend = "uv_build"
 module-root = ""
 
 [tool.uv.sources]
-asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
 ohsome-filter-to-sql = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git" }
+asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
 
 [tool.ruff.lint]
 select = [
