@@ -179,6 +179,7 @@ class TestFigure:
 
     async def test_get_source(self, indicator):
         indicator.th_source = ""
+        indicator.th_source = ""
         assert indicator.get_source_text() == ""
         indicator.th_source = "www.foo.org"
         assert (
