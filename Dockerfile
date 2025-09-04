@@ -12,6 +12,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt update \
     && apt install -y --no-upgrade --no-install-recommends \
       r-base-dev \
+      git \
       build-essential
 
 ENV UV_LINK_MODE=copy \
