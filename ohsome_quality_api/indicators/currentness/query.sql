@@ -6,7 +6,7 @@ SELECT
     Date_trunc('month', valid_from) AS month,
     Count(*)
 FROM
-    contributions c,
+    $contributions_table c,
     bpoly b
 WHERE
     ST_Intersects (c.geom, b.geom)

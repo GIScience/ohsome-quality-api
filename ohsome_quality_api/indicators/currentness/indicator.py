@@ -23,6 +23,7 @@ from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -132,6 +133,7 @@ class Currentness(BaseIndicator):
             {
                 "aoi": json.dumps(self.feature["geometry"]),
                 "filter": where,
+                "contributions_table": get_config_value("ohsomedb_contributions_table"),
             }
         )
         results = await client.fetch(query, database="ohsomedb")
