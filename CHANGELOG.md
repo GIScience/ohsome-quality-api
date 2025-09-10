@@ -2,9 +2,10 @@
 
 ## Current Main
 
-- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944])
+- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
 
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
+[#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
 
 ## Release 1.12.0
 

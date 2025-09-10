@@ -18,6 +18,7 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
+from ohsome_quality_api.topics.definitions import get_topic_preset
 from tests.approvaltests_namers import PytestNamer
 from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
@@ -58,6 +59,26 @@ class TestPreprocess:
     ):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         await indicator.preprocess(ohsomedb=ohsomedb)
+        assert len(indicator.bin_total.contrib_abs) > 0
+        assert indicator.contrib_sum > 0
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_preprocess_aggregation_types(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess(ohsomedb=True)
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
         assert isinstance(indicator.result.timestamp, datetime)
