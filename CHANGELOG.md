@@ -2,9 +2,13 @@
 
 ## Current Main
 
+### New Features
+
 - currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944])
+- user-activity: add new no-quality indicator about user-activity ([#950])
 
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
+[#950]: https://github.com/GIScience/ohsome-quality-api/pull/950
 
 ## Release 1.12.0
 
