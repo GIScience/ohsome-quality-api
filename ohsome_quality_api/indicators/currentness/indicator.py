@@ -129,14 +129,47 @@ class Currentness(BaseIndicator):
         where = ohsome_filter_to_sql(self.topic.filter)
         with open(Path(__file__).parent / "query.sql", "r") as file:
             template = file.read()
+
+        match self.topic.aggregation_type:
+            case "count":
+                aggregation = "COUNT(*)"
+            case "length":
+                aggregation = """
+                    SUM(
+                        CASE
+                            WHEN ST_Within(c.geom, b.geom)
+                                THEN c.length
+                            ELSE ST_Length(ST_Intersection(c.geom, b.geom)::geography)
+                        END
+                    )::BIGINT AS total_length
+                """
+            case "area" | r"area\density":
+                aggregation = """
+                    SUM(
+                        CASE
+                            WHEN ST_Within(c.geom, b.geom)
+                                THEN c.area
+                            ELSE ST_Area(ST_Intersection(c.geom, b.geom)::geography)
+                        END
+                    )::BIGINT AS total_area
+                """
+            case _:
+                raise ValueError(
+                    f"Unknown aggregation_type: {self.topic.aggregation_type}"
+                )
+
         query = Template(template).substitute(
             {
-                "aoi": json.dumps(self.feature["geometry"]),
+                "aggregation": aggregation,
                 "filter": where,
                 "contributions_table": get_config_value("ohsomedb_contributions_table"),
             }
         )
-        results = await client.fetch(query, database="ohsomedb")
+        results = await client.fetch(
+            query,
+            json.dumps(self.feature["geometry"]),
+            database="ohsomedb",
+        )
         if len(results) == 0:
             # no data
             self.contrib_sum = 0
