@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+
+  yellow: >-
+
+  green: >-
+
+  undefined: >-
+    This is a no-quality indicator. No quality estimation will be calculated.
+result_description: >-
+    In the area of interest $up_to_date_contrib_rel% of the $num_of_elements features were edited (created or modified) for the last time in the period between $from_timestamp and $to_timestamp.
