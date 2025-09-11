@@ -36,6 +36,7 @@ def metadata_topic_building_count():
                 "mapping-saturation",
                 "currentness",
                 "attribute-completeness",
+                "user-activity",
             ],
             "projects": ["core", "bkg"],
             "source": None,
