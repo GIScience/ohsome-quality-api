@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from string import Template
 
+import numpy as np
 import plotly.graph_objects as pgo
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
@@ -79,8 +80,35 @@ class UserActivity(BaseIndicator):
 
     def create_figure(self):
         fig = pgo.Figure()
-
         bucket = self.bin_total
+
+        values = bucket.contrib_abs
+        timestamps = bucket.timestamps
+
+        window = 12
+        weights = np.arange(1, window + 1)
+        weighted_avg = []
+
+        for i in range(len(values)):
+            start = max(0, i - window + 1)
+            window_vals = values[start : i + 1]
+            window_weights = weights[-len(window_vals) :]
+            avg = np.dot(window_vals, window_weights) / window_weights.sum()
+            weighted_avg.append(avg)
+
+        # regression trend line for the last 36 months
+        if len(values) >= 36:
+            x = np.arange(len(values))
+            x_last = x[:36]
+            y_last = np.array(values[:36])
+
+            coeffs = np.polyfit(x_last, y_last, 1)
+            trend_y = np.polyval(coeffs, x_last)
+
+            trend_timestamps = timestamps[:36]
+        else:
+            trend_timestamps = []
+            trend_y = []
 
         customdata = list(
             zip(
@@ -99,22 +127,54 @@ class UserActivity(BaseIndicator):
 
         fig.add_trace(
             pgo.Bar(
-                name="Features [%]",
-                x=bucket.timestamps,
-                y=bucket.contrib_abs,
-                marker_color="steelblue",
+                name="Users per Month",
+                x=timestamps,
+                y=values,
+                marker_color="lightgrey",
                 customdata=customdata,
                 hovertemplate=hovertemplate,
             )
         )
 
+        fig.add_trace(
+            pgo.Scatter(
+                name="12-Month Weighted Avg",
+                x=timestamps,
+                y=weighted_avg,
+                mode="lines",
+                line=dict(color="steelblue", width=3),
+                hovertemplate="Weighted Avg: %{y:.0f} Users<extra></extra>",
+            )
+        )
+
+        if len(trend_timestamps) > 0:
+            fig.add_trace(
+                pgo.Scatter(
+                    name="Last 36M Trend",
+                    x=trend_timestamps,
+                    y=trend_y,
+                    mode="lines",
+                    line=dict(color="red", width=4, dash="dash"),
+                    hovertemplate="Trend: %{y:.0f} Users<extra></extra>",
+                )
+            )
+
         fig.update_layout(
-            title_text="User Activity",
+            title=dict(
+                text="User Activity",
+                x=0.5,
+                xanchor="center",
+                font=dict(size=22),
+            ),
+            plot_bgcolor="white",
             legend=dict(
                 x=0.02,
                 y=0.95,
                 bgcolor="rgba(255,255,255,0.66)",
+                bordercolor="rgba(0,0,0,0.1)",
+                borderwidth=1,
             ),
+            margin=dict(l=60, r=30, t=60, b=60),
         )
 
         fig.update_xaxes(
@@ -128,10 +188,15 @@ class UserActivity(BaseIndicator):
             tickformat="%b %Y",
             ticks="outside",
             tick0=bucket.to_timestamps[-1],
+            showgrid=True,
+            gridcolor="rgba(200,200,200,0.3)",
         )
 
         fig.update_yaxes(
             title_text="Active Users [#]",
+            showgrid=True,
+            gridcolor="rgba(200,200,200,0.3)",
+            zeroline=False,
         )
 
         raw = fig.to_dict()
