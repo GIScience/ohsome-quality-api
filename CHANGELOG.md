@@ -2,10 +2,18 @@
 
 ## Current Main
 
+### New Feature
+
 - currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
+
+### Bug Fixes
+
+- fix(currentness): make monthly buckets starting at beginning of a month ([#953])
 
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
+[#953]: https://github.com/GIScience/ohsome-quality-api/pull/953
+
 
 ## Release 1.12.0
 

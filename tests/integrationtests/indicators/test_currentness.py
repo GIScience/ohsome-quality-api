@@ -101,6 +101,7 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
+        assert len(indicator.bin_up_to_date.timestamps) == indicator.up_to_date
         verify(indicator.result.description, namer=PytestNamer())
 
     async def test_low_contributions(self, indicator):
@@ -285,20 +286,6 @@ def test_month_to_year_month():
 def test_create_bin():
     contrib_abs = [10, 20, 30, 40, 50]
     contrib_rel = [0.1, 0.2, 0.3, 0.4, 0.5]
-    to_timestamps = [
-        "2023-01-01",
-        "2023-02-01",
-        "2023-03-01",
-        "2023-04-01",
-        "2023-05-01",
-    ]
-    from_timestamps = [
-        "2023-01-01",
-        "2023-02-01",
-        "2023-03-01",
-        "2023-04-01",
-        "2023-05-01",
-    ]
     timestamps = [
         "2023-01-15",
         "2023-02-15",
@@ -310,8 +297,6 @@ def test_create_bin():
     bin_total = Bin(
         contrib_abs,
         contrib_rel,
-        to_timestamps,
-        from_timestamps,
         timestamps,
     )
 
@@ -322,14 +307,8 @@ def test_create_bin():
 
     assert new_bin.contrib_abs == [20, 30, 40]
     assert new_bin.contrib_rel == [0.2, 0.3, 0.4]
-    assert new_bin.to_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
-    assert new_bin.from_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
     assert new_bin.timestamps == ["2023-02-15", "2023-03-15", "2023-04-15"]
 
     assert (
-        len(new_bin.contrib_abs)
-        == len(new_bin.contrib_rel)
-        == len(new_bin.from_timestamps)
-        == len(new_bin.to_timestamps)
-        == len(new_bin.timestamps)
+        len(new_bin.contrib_abs) == len(new_bin.contrib_rel) == len(new_bin.timestamps)
     )

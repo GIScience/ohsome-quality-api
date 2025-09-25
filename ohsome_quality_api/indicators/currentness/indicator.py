@@ -48,8 +48,6 @@ class Bin:
 
     contrib_abs: list
     contrib_rel: list
-    to_timestamps: list
-    from_timestamps: list
     timestamps: list  # middle of time period
 
 
@@ -65,9 +63,6 @@ class Currentness(BaseIndicator):
             self.topic.key
         )
         # thresholds for determining result class based on share of features in bins
-        self.th1 = 0.75  # [%]
-        self.th2 = 0.5
-        self.th3 = 0.3
         self.contrib_sum = 0
         self.bin_total: Bin
         self.bin_up_to_date: Bin
@@ -87,7 +82,7 @@ class Currentness(BaseIndicator):
         geometry and the tag. It excludes deletion.
         """
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        end = latest_ohsome_stamp.strftime("%Y-%m-%d")
+        end = latest_ohsome_stamp.strftime("%Y-%m-01")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
         interval = "{}/{}/{}".format(start, end, "P1M")  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         response = await ohsome_client.query(
@@ -97,18 +92,11 @@ class Currentness(BaseIndicator):
             count_latest_contributions=True,
             contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
         )
-        to_timestamps = []
-        from_timestamps = []
         timestamps = []
         contrib_abs = []
         contrib_sum = 0
         for c in reversed(response["result"]):  # latest contributions first
-            to_ts = isoparse(c["toTimestamp"])
-            from_ts = isoparse(c["fromTimestamp"])
-            ts = from_ts + (to_ts - from_ts) / 2
-            to_timestamps.append(to_ts)
-            from_timestamps.append(from_ts)
-            timestamps.append(ts)
+            timestamps.append(isoparse(c["toTimestamp"]))
             contrib_abs.append(c["value"])
             contrib_sum += c["value"]
         if contrib_sum == 0:
@@ -118,12 +106,10 @@ class Currentness(BaseIndicator):
         self.bin_total = Bin(
             contrib_abs,
             contrib_rel,
-            to_timestamps,
-            from_timestamps,
             timestamps,
         )
         self.contrib_sum = contrib_sum
-        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
+        self.result.timestamp_osm = timestamps[0]
 
     async def preprocess_ohsomedb(self):
         where = ohsome_filter_to_sql(self.topic.filter)
@@ -174,14 +160,10 @@ class Currentness(BaseIndicator):
             # no data
             self.contrib_sum = 0
             return
-        to_timestamps = []
-        from_timestamps = []
         timestamps = []
         contrib_abs = []
         contrib_sum = 0
         for r in reversed(results):  # latest contributions first
-            to_timestamps.append(r[0])
-            from_timestamps.append(r[0])
             timestamps.append(r[0])
             contrib_abs.append(r[1])
             contrib_sum += r[1]
@@ -192,12 +174,10 @@ class Currentness(BaseIndicator):
         self.bin_total = Bin(
             contrib_abs,
             contrib_rel,
-            to_timestamps,
-            from_timestamps,
             timestamps,
         )
         self.contrib_sum = contrib_sum
-        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
+        self.result.timestamp_osm = self.bin_total.timestamps[0]
 
     def calculate(self):
         """Determine up-to-date, in-between and out-of-date contributions.
@@ -228,25 +208,25 @@ class Currentness(BaseIndicator):
         self.bin_out_of_date = create_bin(
             self.bin_total,
             self.out_of_date,
-            len(self.bin_total.timestamps),
+            -1,
         )
 
         self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
-        if sum(self.bin_out_of_date.contrib_rel) >= self.th3:
+        if sum(self.bin_out_of_date.contrib_rel) >= 0.3:  # [%]
             self.result.class_ = 1
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.th1:
+        elif sum(self.bin_up_to_date.contrib_rel) >= 0.75:
             self.result.class_ = 5
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.th2:
+        elif sum(self.bin_up_to_date.contrib_rel) >= 0.5:
             self.result.class_ = 4
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.th1
+            >= 0.75
         ):
             self.result.class_ = 3
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.th2
+            >= 0.5
         ):
             self.result.class_ = 2
         else:
@@ -258,8 +238,8 @@ class Currentness(BaseIndicator):
         ).substitute(
             up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
             num_of_elements=int(self.contrib_sum),
-            from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%d %b %Y"),
-            to_timestamp=self.bin_total.to_timestamps[0].strftime("%d %b %Y"),
+            from_timestamp=self.bin_up_to_date.timestamps[-1].strftime("%b %Y"),
+            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
         )
         self.result.description += "\n" + label_description
 
@@ -275,30 +255,13 @@ class Currentness(BaseIndicator):
             customdata = list(
                 zip(
                     bucket.contrib_abs,
-                    [ts.strftime("%d %b %Y") for ts in bucket.to_timestamps],
-                    [ts.strftime("%d %b %Y") for ts in bucket.from_timestamps],
+                    [ts.strftime("%b %Y") for ts in bucket.timestamps],
                 )
             )
             hovertemplate = (
                 "%{y} of features (%{customdata[0]}) "
-                "were last modified in the period from "
-                "%{customdata[2]} to %{customdata[1]}"
+                "were last modified in %{customdata[1]}"
                 "<extra></extra>"
-            )
-
-            # trace for relative contributions
-            fig.add_trace(
-                pgo.Bar(
-                    name="{:.1%} {}".format(
-                        sum(bucket.contrib_rel),
-                        self.get_threshold_text(color),
-                    ),
-                    x=bucket.timestamps,
-                    y=bucket.contrib_rel,
-                    marker_color=color.value,
-                    customdata=customdata,
-                    hovertemplate=hovertemplate,
-                )
             )
 
             # mock trace for absolute contributions to get second y-axis
@@ -311,24 +274,41 @@ class Currentness(BaseIndicator):
                     showlegend=False,
                     hovertemplate=None,
                     hoverinfo="skip",
+                    xperiod="M1",
+                    xperiodalignment="middle",
                 ),
                 secondary_y=True,
+            )
+            # trace for relative contributions
+            fig.add_trace(
+                pgo.Bar(
+                    name="{:.1%} {}".format(
+                        sum(bucket.contrib_rel),
+                        self.get_threshold_text(color),
+                    ),
+                    x=bucket.timestamps,
+                    y=bucket.contrib_rel,
+                    marker_color=color.value,
+                    customdata=customdata,
+                    hovertemplate=hovertemplate,
+                    xperiod="M1",
+                    xperiodalignment="middle",
+                    xhoverformat="%b %Y",
+                )
             )
 
         fig.update_layout(
             title_text=("Currentness"),
+            barmode="relative",
+            hovermode="x unified",
         )
         fig.update_xaxes(
             title_text="Date of Last Edit",
+            type="date",
             ticklabelmode="period",
-            minor=dict(
-                ticks="inside",
-                dtick="M1",
-                tickcolor="rgba(128,128,128,0.66)",
-            ),
-            tickformat="%b %Y",
+            tickformat="%b\n%Y",
             ticks="outside",
-            tick0=self.bin_total.to_timestamps[-1],
+            tick0=self.bin_total.timestamps[-1],
         )
         fig.update_yaxes(
             title_text="Features [%]",
@@ -417,8 +397,6 @@ def create_bin(b: Bin, i: int, j: int) -> Bin:
     return Bin(
         contrib_abs=b.contrib_abs[i:j],
         contrib_rel=b.contrib_rel[i:j],
-        to_timestamps=b.to_timestamps[i:j],
-        from_timestamps=b.from_timestamps[i:j],
         timestamps=b.timestamps[i:j],
     )
 
