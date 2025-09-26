@@ -121,7 +121,7 @@ class Currentness(BaseIndicator):
                 aggregation = "COUNT(*)"
             case "length":
                 aggregation = """
-        SUM(
+        0.001 * SUM(
             CASE
                 WHEN ST_Within(
                     c.geom,
@@ -139,7 +139,7 @@ class Currentness(BaseIndicator):
                 """
             case "area" | r"area\density":
                 aggregation = """
-        SUM(
+        0.001 * 0.001 * SUM(
             CASE
                 WHEN ST_Within(
                     c.geom,
@@ -248,12 +248,24 @@ class Currentness(BaseIndicator):
         else:
             self.result.class_ = 1
 
+        match self.topic.aggregation_type:
+            case "count":
+                unit = ""
+                aggregation = self.contrib_sum
+            case "length":
+                unit = " km"
+                aggregation = f"{self.contrib_sum:.1f}"
+            case "area":
+                unit = " km<sup>2</sup>"
+                aggregation = f"{self.contrib_sum:.1f}"
+
         label_description = self.templates.label_description[self.result.label]
         self.result.description += Template(
             self.templates.result_description
         ).substitute(
             up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
-            num_of_elements=int(self.contrib_sum),
+            aggregation=aggregation,
+            unit=unit,
             from_timestamp=self.bin_up_to_date.timestamps[-1].strftime("%b %Y"),
             to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
         )
@@ -263,20 +275,29 @@ class Currentness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
+
+        match self.topic.aggregation_type:
+            case "count":
+                unit = ""
+            case "length":
+                unit = " km"
+            case "area":
+                unit = " km<sup>2</sup>"
+            case _:
+                ValueError()
+
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         for bucket, color in zip(
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
-            customdata = list(
-                zip(
-                    bucket.contrib_abs,
-                    [ts.strftime("%b %Y") for ts in bucket.timestamps],
-                )
-            )
+            contrib_abs_text = [f"{c:.2f}{unit}" for c in bucket.contrib_abs]
+            contrib_rel_text = [f"{c:.2f}%" for c in bucket.contrib_rel]
+            timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
+            customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
             hovertemplate = (
-                "%{y} of features (%{customdata[0]}) "
-                "were last modified in %{customdata[1]}"
+                "%{customdata[0]} of features (%{customdata[1]}) "
+                "were last modified in %{customdata[2]}"
                 "<extra></extra>"
             )
 

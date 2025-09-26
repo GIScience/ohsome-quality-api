@@ -150,6 +150,24 @@ class TestCalculation:
         #     .with_namer(PytestNamer()),
         # )
 
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_calculate_aggregation_types(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess(ohsomedb=True)
+        indicator.calculate()
+        verify(indicator.result.description, namer=PytestNamer())
+
 
 @pytest.mark.asyncio
 class TestFigure:
