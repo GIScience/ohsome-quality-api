@@ -121,23 +121,39 @@ class Currentness(BaseIndicator):
                 aggregation = "COUNT(*)"
             case "length":
                 aggregation = """
-                    SUM(
-                        CASE
-                            WHEN ST_Within(c.geom, b.geom)
-                                THEN c.length
-                            ELSE ST_Length(ST_Intersection(c.geom, b.geom)::geography)
-                        END
-                    )::BIGINT AS total_length
+        SUM(
+            CASE
+                WHEN ST_Within(
+                    c.geom,
+                    ST_GeomFromGeoJSON($1)
+                )
+                THEN c.length -- Use precomputed area from ohsome-planet
+                ELSE ST_Length(
+                      ST_Intersection(
+                        c.geom,
+                        ST_GeomFromGeoJSON($1)
+                      )::geography
+                )
+            END
+        )::BIGINT
                 """
             case "area" | r"area\density":
                 aggregation = """
-                    SUM(
-                        CASE
-                            WHEN ST_Within(c.geom, b.geom)
-                                THEN c.area
-                            ELSE ST_Area(ST_Intersection(c.geom, b.geom)::geography)
-                        END
-                    )::BIGINT AS total_area
+        SUM(
+            CASE
+                WHEN ST_Within(
+                    c.geom,
+                    ST_GeomFromGeoJSON($1)
+                )
+                THEN c.area -- Use precomputed area from ohsome-planet
+                ELSE ST_Area(
+                      ST_Intersection(
+                        c.geom,
+                        ST_GeomFromGeoJSON($1)
+                      )::geography
+                )
+            END
+        )::BIGINT
                 """
             case _:
                 raise ValueError(
@@ -163,7 +179,7 @@ class Currentness(BaseIndicator):
         timestamps = []
         contrib_abs = []
         contrib_sum = 0
-        for r in reversed(results):  # latest contributions first
+        for r in reversed(results[0:]):  # latest contributions first
             timestamps.append(r[0])
             contrib_abs.append(r[1])
             contrib_sum += r[1]
