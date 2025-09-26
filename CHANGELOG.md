@@ -9,6 +9,7 @@
 ### Bug Fixes
 
 - fix(currentness): make monthly buckets starting at beginning of a month ([#953])
+- fix(currentness): fill data gaps (months without any contributions ([9b928796])
 
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
