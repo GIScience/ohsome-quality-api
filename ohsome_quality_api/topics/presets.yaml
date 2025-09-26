@@ -29,6 +29,7 @@ building-area:
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - mapping-saturation
+    - currentness
     - building-comparison
   projects:
     - core
@@ -612,7 +613,9 @@ mapaction-capital-city-count:
   endpoint: elements
   aggregation_type: count
   filter: place=city and (is_capital=country or admin_level=2 or capital=yes) and type:node
-  indicators: []
+  indicators:
+    - mapping-saturation
+    - currentness
   projects:
     - mapaction
 
@@ -663,6 +666,7 @@ mapaction-lakes-area:
   filter: (water in (lagoon,lake,reservoir) or landuse=reservoir) and type:way
   indicators:
     - mapping-saturation
+    - currentness
   projects:
     - mapaction
 
