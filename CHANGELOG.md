@@ -10,6 +10,9 @@
 
 - fix(currentness): make monthly buckets starting at beginning of a month ([#953])
 - fix(currentness): fill data gaps (months without any contributions ([9b928796])
+- fix: change aggregation of land-cover from area/density to area ([1892c3fc])
+  - Only the land cover completeness indicator will request area/density for
+land-cover
 
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
