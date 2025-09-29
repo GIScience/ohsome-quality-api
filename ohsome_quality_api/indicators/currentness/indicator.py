@@ -292,7 +292,7 @@ class Currentness(BaseIndicator):
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
             contrib_abs_text = [f"{c:.2f}{unit}" for c in bucket.contrib_abs]
-            contrib_rel_text = [f"{c:.2f}%" for c in bucket.contrib_rel]
+            contrib_rel_text = [f"{c * 100:.2f}%" for c in bucket.contrib_rel]
             timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
             customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
             hovertemplate = (
