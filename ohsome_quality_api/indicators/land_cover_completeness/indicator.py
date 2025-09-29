@@ -24,7 +24,7 @@ class LandCoverCompleteness(BaseIndicator):
     async def preprocess(self):
         # get osm building area
 
-        result = await ohsome_client.query(self.topic, self.feature)
+        result = await ohsome_client.query(self.topic, self.feature, density=True)
         self.osm_area_ratio = result["result"][0]["value"] or 0.0  # if None
         timestamp = result["result"][0]["timestamp"]
         self.result.timestamp_osm = parser.isoparse(timestamp)

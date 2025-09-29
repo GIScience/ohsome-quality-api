@@ -36,6 +36,7 @@ async def _(
     attribute_filter: str | None = None,
     group_by_boundary: bool | None = False,
     count_latest_contributions: bool | None = False,
+    density: bool | None = False,
     contribution_type: str | None = None,
 ) -> dict:
     """Query ohsome API with given Topic definition and arguments.
@@ -55,7 +56,11 @@ async def _(
             ‘deletion’, ‘tagChange’, ‘geometryChange’ or a combination of them.
     """
     url = build_url(
-        topic, attribute_filter, group_by_boundary, count_latest_contributions
+        topic,
+        attribute_filter,
+        group_by_boundary,
+        count_latest_contributions,
+        density,
     )
     data = build_data_dict(topic, bpolys, time, attribute_filter, contribution_type)
     response = await query_ohsome_api(url, data)
@@ -140,11 +145,14 @@ def build_url(
     attribute_filter: str = None,
     group_by_boundary: bool = False,
     count_latest_contributions: bool = False,
+    density: bool = False,
 ):
     base_url = get_config_value("ohsome_api").rstrip("/")
     if count_latest_contributions:
         return base_url + "/contributions/latest/count"
     url = base_url + "/" + topic.endpoint + "/" + topic.aggregation_type
+    if density:
+        url += "/density"
     if attribute_filter:
         url += "/ratio"
     if group_by_boundary:

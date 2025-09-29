@@ -690,7 +690,7 @@ land-cover:
   description: >-
     Features related to land use and land cover.
   endpoint: elements
-  aggregation_type: area/density
+  aggregation_type: area
   filter: >-
     (landuse=* and landuse!=no) or natural in (wood, 
     grassland, scrub, heath, fell, beach, sand, scree, 
