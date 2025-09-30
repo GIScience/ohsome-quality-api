@@ -94,12 +94,15 @@ class UserActivity(BaseIndicator):
         weights = np.arange(1, window + 1)
         weighted_avg = []
 
-        for i in range(len(values)):
+        values_for_mean = values[1:]
+        for i in range(len(values_for_mean) + 1):
+            if i == 0:
+                continue
             if i == 0:
                 weighted_avg.append(None)
                 continue
             start = max(1, i - window + 1)
-            window_vals = values[start : i + 1]
+            window_vals = values_for_mean[start : i + 1]
             window_weights = weights[-len(window_vals) :]
             avg = np.dot(window_vals, window_weights) / window_weights.sum()
             weighted_avg.append(avg)
