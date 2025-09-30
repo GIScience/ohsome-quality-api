@@ -9,13 +9,11 @@ from pydantic_core import to_jsonable_python
 from ohsome_quality_api.indicators.user_activity.indicator import UserActivity
 from tests.approvaltests_namers import PytestNamer
 from tests.approvaltests_reporters import PlotlyDiffReporter
-from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.mark.asyncio(loop_scope="class")
 class TestPreprocess:
     @asyncpg_recorder.use_cassette
-    @oqapi_vcr.use_cassette
     async def test_preprocess(
         self,
         topic_building_count,
@@ -32,7 +30,6 @@ class TestPreprocess:
 class TestFigure:
     @pytest_asyncio.fixture(params=[False, True])
     @asyncpg_recorder.use_cassette
-    @oqapi_vcr.use_cassette
     async def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = UserActivity(topic_building_count, feature_germany_heidelberg)
         await i.preprocess()
