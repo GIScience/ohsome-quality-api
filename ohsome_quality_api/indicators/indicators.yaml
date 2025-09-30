@@ -78,3 +78,10 @@ land-cover-completeness:
   quality_dimension: completeness
   description: >-
     Percentage of the area of interest that is covered by OpenStreetMap land cover data.
+user-activity:
+  name: User Activity
+  projects:
+    - bkg
+  quality_dimension: none
+  description: >-
+    User activity over time.

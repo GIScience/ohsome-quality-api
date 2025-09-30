@@ -2,10 +2,6 @@
 
 ## Current Main
 
-### New Feature
-
-- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
-
 ### Bug Fixes
 
 - fix(currentness): make monthly buckets starting at beginning of a month ([#953])
@@ -14,10 +10,15 @@
   - Only the land cover completeness indicator will request area/density for
 land-cover
 
+### New Features
+
+- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
+- user-activity: add new no-quality indicator about user-activity ([#950])
+
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
 [#953]: https://github.com/GIScience/ohsome-quality-api/pull/953
-
+[#950]: https://github.com/GIScience/ohsome-quality-api/pull/950
 
 ## Release 1.12.0
 
