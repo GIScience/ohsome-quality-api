@@ -23,7 +23,7 @@ class TestPreprocess:
     ):
         indicator = UserActivity(topic_building_count, feature_germany_heidelberg)
         await indicator.preprocess()
-        assert len(indicator.bin_total.contrib_abs) > 0
+        assert len(indicator.bin_total.users_abs) > 0
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 

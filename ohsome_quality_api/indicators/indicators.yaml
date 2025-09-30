@@ -81,7 +81,7 @@ land-cover-completeness:
 user-activity:
   name: User Activity
   projects:
-    - core
+    - bkg
   quality_dimension: none
   description: >-
     User activity over time.

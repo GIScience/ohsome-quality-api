@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from statistics import median
 from string import Template
 
 import numpy as np
@@ -16,12 +17,12 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 
 @dataclass
 class Bin:
-    """Bin or bucket of contributions.
+    """Bin or bucket of users.
 
     Indices denote years since latest timestamp.
     """
 
-    contrib_abs: list
+    users_abs: list
     to_timestamps: list
     from_timestamps: list
     timestamps: list  # middle of time period
@@ -53,14 +54,14 @@ class UserActivity(BaseIndicator):
         to_timestamps = []
         from_timestamps = []
         timestamps = []
-        contrib_abs = []
-        for r in reversed(results):  # latest contributions first
+        users_abs = []
+        for r in reversed(results):
             to_timestamps.append(r[0])
             from_timestamps.append(r[0])
             timestamps.append(r[0])
-            contrib_abs.append(r[1])
+            users_abs.append(r[1])
         self.bin_total = Bin(
-            contrib_abs,
+            users_abs,
             to_timestamps,
             from_timestamps,
             timestamps,
@@ -68,21 +69,27 @@ class UserActivity(BaseIndicator):
         self.result.timestamp_osm = self.bin_total.to_timestamps[0]
 
     def calculate(self):
-        contrib_sum = sum(self.bin_total.contrib_abs)
-        edge_cases = check_major_edge_cases(contrib_sum)
+        edge_cases = check_major_edge_cases(sum(self.bin_total.users_abs))
         if edge_cases:
             self.result.description = edge_cases
             return
-        self.result.description = check_minor_edge_cases(
-            contrib_sum,
-            self.bin_total,
+        else:
+            self.result.description = ""
+        label_description = self.templates.label_description[self.result.label]
+        self.result.description += Template(
+            self.templates.result_description
+        ).substitute(
+            median_users=f"{int(median(self.bin_total.users_abs))}",
+            from_timestamp=self.bin_total.timestamps[-1].strftime("%b %Y"),
+            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
         )
+        self.result.description += "\n" + label_description
 
     def create_figure(self):
         fig = pgo.Figure()
         bucket = self.bin_total
 
-        values = bucket.contrib_abs
+        values = bucket.users_abs
         timestamps = bucket.timestamps
 
         window = 12
@@ -104,7 +111,7 @@ class UserActivity(BaseIndicator):
 
             coeffs = np.polyfit(x_last, y_last, 1)
             trend_y = np.polyval(coeffs, x_last)
-
+            breakpoint()
             trend_timestamps = timestamps[:36]
         else:
             trend_timestamps = []
@@ -112,7 +119,7 @@ class UserActivity(BaseIndicator):
 
         customdata = list(
             zip(
-                bucket.contrib_abs,
+                bucket.users_abs,
                 [ts.strftime("%d %b %Y") for ts in bucket.to_timestamps],
                 [ts.strftime("%d %b %Y") for ts in bucket.from_timestamps],
             )
@@ -204,51 +211,12 @@ class UserActivity(BaseIndicator):
         self.result.figure = raw
 
 
-def check_major_edge_cases(contrib_sum) -> str:
+def check_major_edge_cases(users_sum) -> str:
     """Check edge cases and return description.
 
     Major edge cases should lead to cancellation of calculation.
     """
-    if contrib_sum == 0:  # no data
-        return (
-            "In the area of interest no features of the selected topic are present "
-            "today."
-        )
+    if users_sum == 0:  # no data
+        return "In this region no user activity was recorded. "
     else:
         return ""
-
-
-def check_minor_edge_cases(contrib_sum, bin_total) -> str:
-    """Check edge cases and return description.
-
-    Minor edge cases should *not* lead to cancellation of calculation.
-    """
-    num_months = get_num_months_last_contrib(bin_total.contrib_abs)
-    if contrib_sum < 25:  # not enough data
-        return (
-            "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today. "
-        )
-    elif num_months >= 12:
-        return (
-            f"Please note that there was no mapping activity for {num_months} months "
-            "in this region. "
-        )
-    else:
-        return ""
-
-
-def get_num_months_last_contrib(contrib: list) -> int:
-    """Get the number of months since today when the last contribution has been made."""
-    for month, contrib in enumerate(contrib):  # latest contribution first
-        if contrib != 0:
-            return month
-
-
-def get_median_month(contrib_rel: list) -> int:
-    """Get the number of months since today when 50% of contributions have been made."""
-    contrib_rel_cum = 0
-    for month, contrib in enumerate(contrib_rel):  # latest contribution first
-        contrib_rel_cum += contrib
-        if contrib_rel_cum >= 0.5:
-            return month
