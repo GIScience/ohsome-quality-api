@@ -23,8 +23,6 @@ class Bin:
     """
 
     users_abs: list
-    to_timestamps: list
-    from_timestamps: list
     timestamps: list  # middle of time period
 
 
@@ -43,30 +41,25 @@ class UserActivity(BaseIndicator):
             template = file.read()
         query = Template(template).substitute(
             {
-                "aoi": json.dumps(self.feature["geometry"]),
                 "filter": where,
                 "contributions_table": get_config_value("ohsomedb_contributions_table"),
             }
         )
-        results = await client.fetch(query, database="ohsomedb")
+        results = await client.fetch(
+            query, json.dumps(self.feature["geometry"]), database="ohsomedb"
+        )
         if len(results) == 0:
             return
-        to_timestamps = []
-        from_timestamps = []
         timestamps = []
         users_abs = []
         for r in reversed(results):
-            to_timestamps.append(r[0])
-            from_timestamps.append(r[0])
             timestamps.append(r[0])
             users_abs.append(r[1])
         self.bin_total = Bin(
             users_abs,
-            to_timestamps,
-            from_timestamps,
             timestamps,
         )
-        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
+        self.result.timestamp_osm = timestamps[0]
 
     def calculate(self):
         edge_cases = check_major_edge_cases(sum(self.bin_total.users_abs))
@@ -111,18 +104,13 @@ class UserActivity(BaseIndicator):
 
             coeffs = np.polyfit(x_last, y_last, 1)
             trend_y = np.polyval(coeffs, x_last)
-            breakpoint()
             trend_timestamps = timestamps[:36]
         else:
             trend_timestamps = []
             trend_y = []
 
         customdata = list(
-            zip(
-                bucket.users_abs,
-                [ts.strftime("%d %b %Y") for ts in bucket.to_timestamps],
-                [ts.strftime("%d %b %Y") for ts in bucket.from_timestamps],
-            )
+            zip(bucket.users_abs, [ts.strftime("%b %Y") for ts in bucket.timestamps])
         )
 
         hovertemplate = (
@@ -194,7 +182,7 @@ class UserActivity(BaseIndicator):
             ),
             tickformat="%b %Y",
             ticks="outside",
-            tick0=bucket.to_timestamps[-1],
+            tick0=bucket.timestamps[-1],
             showgrid=True,
             gridcolor="rgba(200,200,200,0.3)",
         )
