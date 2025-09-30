@@ -28,7 +28,7 @@ class TestPreprocess:
 
 @pytest.mark.asyncio
 class TestFigure:
-    @pytest_asyncio.fixture(params=[False, True])
+    @pytest_asyncio.fixture()
     @asyncpg_recorder.use_cassette
     async def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = UserActivity(topic_building_count, feature_germany_heidelberg)
