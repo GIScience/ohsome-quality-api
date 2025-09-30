@@ -40,6 +40,7 @@ async def create_indicator(
             "attribute-completeness",
             "land-cover-thematic-accuracy",
             "land-cover-completeness",
+            "user-activity",
         ]:
             validate_area(feature)
         tasks.append(

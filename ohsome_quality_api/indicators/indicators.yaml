@@ -84,4 +84,4 @@ user-activity:
     - bkg
   quality_dimension: none
   description: >-
-    User activity over time.
+    Shows the count of unique mappers per month for the selected topic. None-quality indicator.
