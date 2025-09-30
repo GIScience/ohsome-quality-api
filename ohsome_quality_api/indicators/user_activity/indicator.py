@@ -1,4 +1,5 @@
 import json
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import median
@@ -79,6 +80,9 @@ class UserActivity(BaseIndicator):
         self.result.description += "\n" + label_description
 
     def create_figure(self):
+        if check_major_edge_cases(sum(self.bin_total.users_abs)):
+            logging.info("No user activity. Skipping figure creation.")
+            return
         fig = pgo.Figure()
         bucket = self.bin_total
 
@@ -113,12 +117,7 @@ class UserActivity(BaseIndicator):
             zip(bucket.users_abs, [ts.strftime("%b %Y") for ts in bucket.timestamps])
         )
 
-        hovertemplate = (
-            "%{y} Users "
-            "were modifying in the period from "
-            "%{customdata[2]} to %{customdata[1]}"
-            "<extra></extra>"
-        )
+        hovertemplate = "%{y} Users were modifying in %{customdata[1]}<extra></extra>"
 
         fig.add_trace(
             pgo.Bar(
