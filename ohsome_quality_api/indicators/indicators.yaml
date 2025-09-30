@@ -82,6 +82,6 @@ user-activity:
   name: User Activity
   projects:
     - bkg
-  quality_dimension: none
+  quality_dimension: no-quality
   description: >-
-    User activity over time.
+    Shows the count of unique mappers per month for the selected topic. None-quality indicator.
