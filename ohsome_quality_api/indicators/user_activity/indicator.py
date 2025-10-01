@@ -97,8 +97,6 @@ class UserActivity(BaseIndicator):
         values_for_mean = values[1:]
         for i in range(len(values_for_mean) + 1):
             if i == 0:
-                continue
-            if i == 0:
                 weighted_avg.append(None)
                 continue
             start = max(1, i - window + 1)
