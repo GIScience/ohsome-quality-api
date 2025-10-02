@@ -69,13 +69,14 @@ class UserActivity(BaseIndicator):
             return
         else:
             self.result.description = ""
+        self.result.value = int(median(self.bin_total.users_abs[1:37]))
         label_description = self.templates.label_description[self.result.label]
         self.result.description += Template(
             self.templates.result_description
         ).substitute(
-            median_users=f"{int(median(self.bin_total.users_abs))}",
-            from_timestamp=self.bin_total.timestamps[-1].strftime("%b %Y"),
-            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
+            median_users=self.result.value,
+            from_timestamp=self.bin_total.timestamps[37].strftime("%b %Y"),
+            to_timestamp=self.bin_total.timestamps[1].strftime("%b %Y"),
         )
         self.result.description += "\n" + label_description
 
@@ -96,22 +97,23 @@ class UserActivity(BaseIndicator):
         values_for_mean = values[1:]
         for i in range(len(values_for_mean) + 1):
             if i == 0:
+                weighted_avg.append(None)
                 continue
-            start = max(0, i - window + 1)
+            start = max(1, i - window + 1)
             window_vals = values_for_mean[start : i + 1]
             window_weights = weights[-len(window_vals) :]
             avg = np.dot(window_vals, window_weights) / window_weights.sum()
             weighted_avg.append(avg)
 
         # regression trend line for the last 36 months
-        if len(values) >= 36:
-            x = np.arange(len(values))
-            x_last = x[:36]
-            y_last = np.array(values[:36])
+        if len(weighted_avg) >= 36:
+            x = np.arange(len(weighted_avg))
+            x_last = x[1:37]
+            y_last = np.array(weighted_avg[1:37])
 
             coeffs = np.polyfit(x_last, y_last, 1)
             trend_y = np.polyval(coeffs, x_last)
-            trend_timestamps = timestamps[:36]
+            trend_timestamps = timestamps[1:37]
         else:
             trend_timestamps = []
             trend_y = []
