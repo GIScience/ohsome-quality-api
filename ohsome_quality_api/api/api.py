@@ -76,6 +76,7 @@ from ohsome_quality_api.utils.exceptions import (
 )
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
+    get_project_root,
     json_serialize,
 )
 
@@ -100,6 +101,10 @@ Data quality estimations for OpenStreetMap.
 
 [Homepage](https://api.quality.ohsome.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqapi)
 """
+
+os.environ["FASTAPI_I18N_LOCALE_DIR"] = os.path.join(
+    get_project_root(), "ohsome_quality_api/locale"
+)
 
 app = FastAPI(
     title=__title__,
