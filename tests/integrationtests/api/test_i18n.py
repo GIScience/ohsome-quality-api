@@ -1,8 +1,10 @@
+import os
+
 import pytest
 from approvaltests import verify
 
+from ohsome_quality_api.utils.helper import get_project_root
 from tests.approvaltests_namers import PytestNamer
-from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
 
@@ -10,11 +12,10 @@ ENDPOINT = "/indicators/"
 
 
 @pytest.fixture
-@oqapi_vcr.use_cassette
 def indicator(client, bpolys, monkeypatch):
     monkeypatch.setenv(
         "FASTAPI_I18N_LOCALE_DIR",
-        "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
+        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     endpoint = "/indicators/mapping-saturation"
     parameters = {

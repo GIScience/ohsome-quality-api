@@ -28,6 +28,7 @@ from ohsome_quality_api.topics.definitions import (
     load_topic_presets,
 )
 from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.utils.helper import get_project_root
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
@@ -305,7 +306,7 @@ def topic_land_cover() -> TopicDefinition:
 def locale_de(monkeypatch):
     monkeypatch.setenv(
         "FASTAPI_I18N_LOCALE_DIR",
-        "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
+        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     token = translator.set(Translator(locale="de"))
     yield
@@ -323,7 +324,7 @@ def monkeysession(request):
 def locale_de_class(monkeysession):
     monkeysession.setenv(
         "FASTAPI_I18N_LOCALE_DIR",
-        "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
+        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     token = translator.set(Translator(locale="de"))
     yield
