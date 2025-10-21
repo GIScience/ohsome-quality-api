@@ -152,7 +152,7 @@ cycleway:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    (cycleway=* and cycleway!=no) 
+    ((cycleway=* and cycleway!=no) 
     or (cycleway:both=*)
     or (cycleway:right=*)
     or (cycleway:left=*)
@@ -164,7 +164,7 @@ cycleway:
     or (highway=cycleway)
     or (highway=path and bicycle=designated)
     or (bicycle_road=yes)
-    or (cyclestreet=yes)
+    or (cyclestreet=yes))
     and geometry:line
   indicators:
     - mapping-saturation
@@ -181,8 +181,8 @@ power_lines:
   endpoint: elements
   aggregation_type: length
   filter: >-
-    (power=line) 
-    or (power=minor_line)
+    ((power=line) 
+    or (power=minor_line))
     and geometry:line
   indicators:
     - attribute-completeness
@@ -200,7 +200,7 @@ power_substations:
   endpoint: elements
   aggregation_type: count
   filter: >-
-    power=substation
+    power=substation and (type:way or type:node)
   indicators:
     - attribute-completeness
     - mapping-saturation
@@ -215,7 +215,6 @@ footpath:
   description: >-
     All linear OSM features commonly used for walking, including dedicated pedestrian paths,
     shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
-
   endpoint: elements
   aggregation_type: length
   filter: >-
@@ -307,7 +306,7 @@ schools:
   description: Count of schools.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=school
+  filter: amenity=school and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
   indicators:
     - mapping-saturation
@@ -324,7 +323,7 @@ kindergarten:
   description: Count of kindergartens.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=kindergarten
+  filter: amenity=kindergarten and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
   indicators:
     - mapping-saturation
@@ -340,7 +339,7 @@ clinics:
   description: Count of clinics.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=clinic or healthcare=clinic
+  filter: (amenity=clinic or healthcare=clinic) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
@@ -356,7 +355,7 @@ doctors:
   description: Count of doctors.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=doctors or healthcare=doctor
+  filter: (amenity=doctors or healthcare=doctor) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
@@ -372,7 +371,7 @@ bus-stops:
   description: Count of bus stops.
   endpoint: elements
   aggregation_type: count
-  filter: highway=bus_stop
+  filter: highway=bus_stop and type:node
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
   indicators:
     - mapping-saturation
@@ -388,7 +387,7 @@ tram-stops:
   description: Count of tram stops.
   endpoint: elements
   aggregation_type: count
-  filter: railway=tram_stop
+  filter: railway=tram_stop and type:node
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
   indicators:
     - mapping-saturation
@@ -404,7 +403,7 @@ public-transport-stops:
   description: Count of public transport stops.
   endpoint: elements
   aggregation_type: count
-  filter: public_transport=platform
+  filter: public_transport=platform and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -419,7 +418,7 @@ subway-stations:
   description: Count of subway stops.
   endpoint: elements
   aggregation_type: count
-  filter: station=subway
+  filter: station=subway and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
   indicators:
     - mapping-saturation
@@ -435,7 +434,7 @@ supermarkets:
   description: Count of supermarkets.
   endpoint: elements
   aggregation_type: count
-  filter: shop=supermarket or shop=convenience
+  filter: (shop=supermarket or shop=convenience) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
     - mapping-saturation
@@ -451,7 +450,7 @@ marketplaces:
   description: Count of marketplaces.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=marketplace
+  filter: amenity=marketplace and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
   indicators:
     - mapping-saturation
@@ -467,7 +466,7 @@ parks:
   description: Count of parks.
   endpoint: elements
   aggregation_type: count
-  filter: leisure=park
+  filter: leisure=park and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
   indicators:
     - mapping-saturation
@@ -483,7 +482,7 @@ sports-pitch:
   description: Count of sports pitches (an area designed for practising a particular sport).
   endpoint: elements
   aggregation_type: count
-  filter: leisure=pitch
+  filter: leisure=pitch and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch
   indicators:
     - mapping-saturation
@@ -499,7 +498,7 @@ forests:
   description: Count of forests.
   endpoint: elements
   aggregation_type: count
-  filter: landuse=forest
+  filter: landuse=forest and geometry:polygon
   source: https://wiki.openstreetmap.org/wiki/Forest
   indicators:
     - mapping-saturation
@@ -543,7 +542,7 @@ fitness-centres:
   description: Count of fitness centres.
   endpoint: elements
   aggregation_type: count
-  filter: leisure in (fitness_centre, sports_centre)
+  filter: leisure in (fitness_centre, sports_centre) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
   indicators:
     - mapping-saturation
@@ -559,7 +558,7 @@ fire-stations:
   description: Count of firestations.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=fire_station
+  filter: amenity=fire_station and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
   indicators:
     - mapping-saturation
@@ -574,7 +573,7 @@ hospitals:
   description: Count of hospitals.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=hospital or healthcare=hospital
+  filter: (amenity=hospital or healthcare=hospital) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   indicators:
     - mapping-saturation
@@ -596,10 +595,10 @@ roads-unicef:
   aggregation_type: length
   filter: >-
     highway in (motorway, motorway_link, motorroad, trunk, trunk_link, primary, primary_link, secondary, secondary_link,
-    tertiary, tertiary_link, unclassified, residential, living_street, service, road, track)
+    tertiary, tertiary_link, unclassified, residential, living_street, service, road, track) and geometry:line
   ratio_filter: >-
     (highway in (motorway, motorway_link, motorroad, trunk, trunk_link, primary, primary_link, secondary, 
-    secondary_link, tertiary, tertiary_link, unclassified, residential, living_street, service, road, track)) and name=*
+    secondary_link, tertiary, tertiary_link, unclassified, residential, living_street, service, road, track)) and name=* and geometry:line
   source: https://heigit.atlassian.net/wiki/spaces/GIS/pages/756645935/2024-10-01+Unicef+education+access
   indicators:
     - mapping-saturation
@@ -615,7 +614,7 @@ healthcare-primary:
   description: Count of hospitals.
   endpoint: elements
   aggregation_type: count
-  filter: amenity in (clinic, doctors, health_post) or healthcare in (clinic, doctors, doctor, midwife, nurse, center)
+  filter: (amenity in (clinic, doctors, health_post) or healthcare in (clinic, doctors, doctor, midwife, nurse, center)) and (type:way or type:node)
   source: https://heigit.atlassian.net/wiki/spaces/GIS/pages/756645935/2024-10-01+Unicef+education+access
   indicators:
     - mapping-saturation
@@ -755,7 +754,7 @@ local-food-shops:
   description: Count of local food shops.
   endpoint: elements
   aggregation_type: count
-  filter: shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy
+  filter: (shop=bakery or shop=butcher or shop=greengrocer or shop=seafood or shop=cheese or shop=dairy) and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -768,7 +767,7 @@ fast-food-restaurants:
   description: Count of fast food restaurants.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=fast_food
+  filter: amenity=fast_food and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -781,7 +780,7 @@ restaurants:
   description: Count of restaurants.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=restaurant or amenity=cafe
+  filter: (amenity=restaurant or amenity=cafe) and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -794,7 +793,7 @@ convenience-stores:
   description: Count of convenience stores.
   endpoint: elements
   aggregation_type: count
-  filter: shop=convenience
+  filter: shop=convenience and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -807,7 +806,7 @@ pubs-and-biergartens:
   description: Count of pubs and biergartens.
   endpoint: elements
   aggregation_type: count
-  filter: amenity=pub or amenity=biergarten or amenity=bar
+  filter: (amenity=pub or amenity=biergarten or amenity=bar) and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -820,7 +819,7 @@ alcohol-and-beverages:
   description: Count of shops selling alcohol.
   endpoint: elements
   aggregation_type: count
-  filter: shop=alcohol or shop=beverages
+  filter: (shop=alcohol or shop=beverages) and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
@@ -833,7 +832,7 @@ sweets-and-pasteries:
   description: Count of shops selling sweets and pastries.
   endpoint: elements
   aggregation_type: count
-  filter: shop=pastry or amenity=ice_cream or shop=confectionery
+  filter: (shop=pastry or amenity=ice_cream or shop=confectionery) and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
