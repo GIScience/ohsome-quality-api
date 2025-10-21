@@ -1,6 +1,6 @@
 {
   "name": "Mapping Saturation",
-  "description": "Calculate if mapping has saturated. High saturation has been reached if the growth of the fitted curve is minimal.",
+  "description": "Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die Steigung der Kurve minimal.",
   "projects": [
     "core",
     "corine-land-cover",
