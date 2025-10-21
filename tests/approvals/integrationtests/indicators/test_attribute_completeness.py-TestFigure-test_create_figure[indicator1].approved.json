@@ -1,0 +1,89 @@
+{
+    "data": [
+        {
+            "domain": {
+                "x": [
+                    0,
+                    1
+                ],
+                "y": [
+                    0,
+                    1
+                ]
+            },
+            "gauge": {
+                "axis": {
+                    "range": [
+                        0,
+                        100
+                    ],
+                    "tickcolor": "darkblue",
+                    "tickfont": {
+                        "color": "black",
+                        "size": 20
+                    },
+                    "ticksuffix": "%",
+                    "tickwidth": 1
+                },
+                "bar": {
+                    "color": "black"
+                },
+                "steps": [
+                    {
+                        "color": "tomato",
+                        "range": [
+                            0,
+                            25.0
+                        ]
+                    },
+                    {
+                        "color": "gold",
+                        "range": [
+                            25.0,
+                            75.0
+                        ]
+                    },
+                    {
+                        "color": "darkseagreen",
+                        "range": [
+                            75.0,
+                            100
+                        ]
+                    }
+                ]
+            },
+            "mode": "gauge+number",
+            "number": {
+                "suffix": "%"
+            },
+            "type": "indicator",
+            "value": 39.8293
+        }
+    ],
+    "layout": {
+        "autosize": true,
+        "font": {
+            "color": "black",
+            "family": "Arial"
+        },
+        "plot_bgcolor": "rgba(0,0,0,0)",
+        "xaxis": {
+            "fixedrange": true,
+            "range": [
+                -1,
+                1
+            ],
+            "showgrid": false,
+            "visible": false
+        },
+        "yaxis": {
+            "fixedrange": true,
+            "range": [
+                0,
+                1
+            ],
+            "showgrid": false,
+            "visible": false
+        }
+    }
+}

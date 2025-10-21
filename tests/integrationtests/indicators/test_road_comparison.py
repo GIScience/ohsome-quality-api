@@ -3,17 +3,18 @@ import json
 from datetime import datetime
 from unittest.mock import AsyncMock
 
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
-from approvaltests.approvals import verify
+from approvaltests import Options, verify, verify_as_json
 from geojson import Feature
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.road_comparison.indicator import (
     RoadComparison,
     get_matched_roadlengths,
 )
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
+from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture
@@ -84,8 +85,7 @@ class TestInit:
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
         source = indicator.format_sources()
         assert (
-            "<a href='https://github.com/microsoft/RoadDetections'>"
-            "Microsoft Roads</a>"
+            "<a href='https://github.com/microsoft/RoadDetections'>Microsoft Roads</a>"
         ) in source
 
     def test_attribution(self, topic_major_roads_length, feature_malta):
@@ -178,7 +178,6 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.label == "undefined"
-        assert indicator.result.description is not None
         verify(indicator.result.description, namer=PytestNamer())
 
 
@@ -195,21 +194,12 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
-
-    @oqapi_vcr.use_cassette
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    @pytest.mark.usefixtures(
-        "mock_get_matched_roadlengths",
-        "mock_get_intersection_geom",
-        "mock_get_intersection_area",
-    )
-    def test_create_figure_manual(self, topic_major_roads_length, feature_malta):
-        indicator = RoadComparison(topic_major_roads_length, feature_malta)
-        asyncio.run(indicator.preprocess())
-        indicator.calculate()
-        indicator.create_figure()
-        pio.show(indicator.result.figure)
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -218,14 +208,21 @@ class TestFigure:
         "mock_get_intersection_area",
     )
     def test_create_figure_building_area_zero(
-        self, topic_major_roads_length, feature_malta
+        self,
+        topic_major_roads_length,
+        feature_malta,
     ):
         indicator = RoadComparison(topic_major_roads_length, feature_malta)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
 
 @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test

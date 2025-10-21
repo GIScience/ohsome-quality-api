@@ -1,15 +1,14 @@
 import logging
 import os
+from pathlib import Path
 
 import geojson
 import plotly.graph_objects as pgo
-import psycopg
 import yaml
 from async_lru import alru_cache
 from geojson import Feature
 from numpy import mean
 
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -121,8 +120,8 @@ class RoadComparison(BaseIndicator):
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
                 f"{self.data_ref[key]['name']} has a road length of "
-                f"{(self.length_total[key]/1000):.2f} km, of which "
-                f"{(self.length_matched[key]/1000):.2f} km are covered by roads in "
+                f"{(self.length_total[key] / 1000):.2f} km, of which "
+                f"{(self.length_matched[key] / 1000):.2f} km are covered by roads in "
                 f"OSM. "
             )
 
@@ -169,6 +168,10 @@ class RoadComparison(BaseIndicator):
         for i, (name, ratio, date) in enumerate(
             zip(ref_name, ref_ratio, ref_processingdate)
         ):
+            hovertext = (
+                f"OSM Covered: {(self.length_matched[name] / 1000):.2f} km "
+                + f"({date:%b %d, %Y})"
+            )
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
@@ -179,8 +182,7 @@ class RoadComparison(BaseIndicator):
                         line=dict(color=Color.GREY.value, width=1),
                     ),
                     width=0.4,
-                    hovertext=f"OSM Covered: {(self.length_matched[name]/1000):.2f} km"
-                    f" ({date:%b %d, %Y})",
+                    hovertext=hovertext,
                     hoverinfo="text",
                 )
             )
@@ -272,29 +274,17 @@ async def get_matched_roadlengths(
     feature_str: str,
     table_name: str,
 ) -> tuple[float, float]:
-    file_path = os.path.join(db_client.WORKING_DIR, "get_matched_roads.sql")
+    file_path = Path(__file__).parent / "query.sql"
     with open(file_path, "r") as file:
         query = file.read()
-    dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-        host=get_config_value("postgres_host"),
-        port=get_config_value("postgres_port"),
-        database=get_config_value("postgres_db"),
-        user=get_config_value("postgres_user"),
-        password=get_config_value("postgres_password"),
-    )
     feature = geojson.loads(feature_str)
     table_name = table_name.replace(" ", "_")
     geom = geojson.dumps(feature.geometry)
-    async with await psycopg.AsyncConnection.connect(dns) as con:
-        async with con.cursor() as cur:
-            await cur.execute(
-                query.format(
-                    table_name=table_name,
-                ),
-                (geom,),
-            )
-            res = await cur.fetchone()
-    return res[0], res[1]
+    results = await db_client.fetch(
+        query.format(table_name=table_name),
+        geom,
+    )
+    return results[0][0], results[0][1]
 
 
 def load_datasets_metadata() -> dict:

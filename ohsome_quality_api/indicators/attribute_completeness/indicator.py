@@ -124,10 +124,10 @@ class AttributeCompleteness(BaseIndicator):
                 if self.attribute_keys and len(self.attribute_keys) > 1
                 else "attribute " + self.attribute_title
             )
-        all, matched = self.compute_units_for_all_and_matched()
+        all_, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,
-            all=all,
+            all=all_,
             matched=matched,
             topic=self.topic.name.lower(),
             tags=tags,
@@ -194,14 +194,14 @@ class AttributeCompleteness(BaseIndicator):
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
-            all = f"{int(self.absolute_value_1)} elements"
+            all_ = f"{int(self.absolute_value_1)} elements"
             matched = f"{int(self.absolute_value_2)} elements"
         elif self.topic.aggregation_type == "area":
-            all = f"{str(round(self.absolute_value_1/1000000, 2))} km²"
-            matched = f"{str(round(self.absolute_value_2/1000000, 2))} km²"
+            all_ = f"{str(round(self.absolute_value_1 / 1000000, 2))} km²"
+            matched = f"{str(round(self.absolute_value_2 / 1000000, 2))} km²"
         elif self.topic.aggregation_type == "length":
-            all = f"{str(round(self.absolute_value_1/1000, 2))} km"
-            matched = f"{str(round(self.absolute_value_2/1000, 2))} km"
+            all_ = f"{str(round(self.absolute_value_1 / 1000, 2))} km"
+            matched = f"{str(round(self.absolute_value_2 / 1000, 2))} km"
         else:
             raise ValueError("Invalid aggregation_type")
-        return all, matched
+        return all_, matched

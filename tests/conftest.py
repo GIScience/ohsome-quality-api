@@ -1,9 +1,12 @@
+import json
 import logging
 import os
+from pathlib import Path
 from typing import List
 
 import geojson
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 from fastapi_i18n.main import Translator, translator
 from geojson import Feature, FeatureCollection, Polygon
 
@@ -26,7 +29,7 @@ from ohsome_quality_api.topics.definitions import (
 )
 from ohsome_quality_api.topics.models import TopicDefinition
 
-FIXTURE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
+FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
 # TODO: Workaround to avoid cluttering of stdout because of
 # https://github.com/pytest-dev/pytest/issues/5502
@@ -269,8 +272,56 @@ def indicators_metadata() -> dict[str, IndicatorMetadata]:
 
 
 @pytest.fixture
+def feature_land_cover():
+    gj_dict = {
+        "type": "Feature",
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [8.63552791262136, 49.711771844660191],
+                    [8.57181432038835, 49.710072815533977],
+                    [8.545479368932039, 49.624271844660186],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.685649271844662, 49.642111650485433],
+                    [8.63552791262136, 49.711771844660191],
+                ]
+            ],
+        },
+    }
+
+    gj = json.dumps(gj_dict)
+
+    return geojson.loads(gj)
+
+
+@pytest.fixture
+def topic_land_cover() -> TopicDefinition:
+    return get_topic_preset("land-cover")
+
+
+@pytest.fixture
 def locale_de(monkeypatch):
     monkeypatch.setenv(
+        "FASTAPI_I18N_LOCALE_DIR",
+        "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
+    )
+    token = translator.set(Translator(locale="de"))
+    yield
+    translator.reset(token)
+
+
+@pytest.fixture(scope="class")
+def monkeysession(request):
+    mpatch = MonkeyPatch()
+    yield mpatch
+    mpatch.undo()
+
+
+@pytest.fixture(scope="class")
+def locale_de_class(monkeysession):
+    monkeysession.setenv(
         "FASTAPI_I18N_LOCALE_DIR",
         "/home/matthias/work/projects/oqapi/ohsome_quality_api/locale",
     )

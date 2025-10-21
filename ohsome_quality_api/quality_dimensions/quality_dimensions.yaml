@@ -15,6 +15,13 @@ currentness:
   source:
     https://www.iso.org/standard/35736.html
 
+thematic-accuracy:
+  name: Thematic Accuracy
+  description: >-
+    The degree to which attributes of data are correct (agree with "truth" of the reference dataset).
+  source:
+    https://onlinelibrary.wiley.com/doi/full/10.1155/2014/372349
+
 minimal:
   name: Minimal
   description: >-

@@ -6,6 +6,7 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_api.indicators.base import BaseIndicator as Indicator
+from ohsome_quality_api.indicators.currentness.indicator import Currentness
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
 from ohsome_quality_api.utils.helper import get_class_from_key
@@ -18,7 +19,6 @@ async def create_indicator(
     bpolys: FeatureCollection,
     topic: TopicData | TopicDefinition,
     include_figure: bool = True,
-    *args,
     **kwargs,
 ) -> list[Indicator]:
     """Create indicator(s) for features of a GeoJSON FeatureCollection.
@@ -30,14 +30,17 @@ async def create_indicator(
     for i, feature in enumerate(bpolys.features):
         if "id" not in feature.keys():
             feature["id"] = i
-        # Only enforce size limit if ohsome API data is not provided
         # Disable size limit for the Mapping Saturation indicator
+        # TODO: Remove size restriction
         if isinstance(topic, TopicDefinition) and key not in [
             "mapping-saturation",
             "currentness",
             "building-comparison",
             "road-comparison",
             "attribute-completeness",
+            "land-cover-thematic-accuracy",
+            "land-cover-completeness",
+            "user-activity",
         ]:
             validate_area(feature)
         tasks.append(
@@ -46,7 +49,6 @@ async def create_indicator(
                 feature,
                 topic,
                 include_figure,
-                *args,
                 **kwargs,
             )
         )
@@ -58,7 +60,7 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
-    *args,
+    ohsomedb: bool = False,
     **kwargs,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -71,12 +73,14 @@ async def _create_indicator(
     indicator = indicator_class(
         topic,
         feature,
-        *args,
         **kwargs,
     )
 
     logging.info("Run preprocessing")
-    await indicator.preprocess()
+    if isinstance(indicator, Currentness):
+        await indicator.preprocess(ohsomedb=ohsomedb)
+    else:
+        await indicator.preprocess()
 
     logging.info("Run calculation")
     indicator.calculate()

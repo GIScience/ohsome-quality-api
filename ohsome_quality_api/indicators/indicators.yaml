@@ -16,15 +16,6 @@ mapping-saturation:
     Calculate if mapping has saturated.
     High saturation has been reached if the growth of the fitted curve is
     minimal.
-density:
-  name: Density
-  projects:
-    - experimental
-  quality_dimension: none
-  description: >-
-      The density of features.
-      It is calculated by the number of features
-      divided by the area in square-kilometers.
 minimal:
   name: Minimal
   projects:
@@ -71,3 +62,26 @@ attribute-completeness:
       Derive the ratio of OSM features compared to features which
       match additional expected tags (e.g. amenity=hospital vs
       amenity=hospital and wheelchair=yes).
+land-cover-thematic-accuracy:
+  name: Land Cover Thematic Accuracy
+  projects:
+    - core
+  quality_dimension: thematic-accuracy
+  description: >-
+    Thematic accuracy OpenStreetMap land cover data in comparison to the <a
+    href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
+    Cover (CLC)</a> dataset.
+land-cover-completeness:
+  name: Land Cover Completeness
+  projects:
+    - core
+  quality_dimension: completeness
+  description: >-
+    Percentage of the area of interest that is covered by OpenStreetMap land cover data.
+user-activity:
+  name: User Activity
+  projects:
+    - bkg
+  quality_dimension: none
+  description: >-
+    Shows the count of unique mappers per month for the selected topic. None-quality indicator.

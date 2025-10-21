@@ -2,6 +2,96 @@
 
 ## Current Main
 
+### Bug Fixes
+
+- fix(currentness): make monthly buckets starting at beginning of a month ([#953])
+- fix(currentness): fill data gaps (months without any contributions ([9b928796])
+- fix: change aggregation of land-cover from area/density to area ([1892c3fc])
+  - Only the land cover completeness indicator will request area/density for
+land-cover
+
+### New Features
+
+- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
+- user-activity: add new no-quality indicator about user-activity ([#950])
+
+[#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
+[#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
+[#953]: https://github.com/GIScience/ohsome-quality-api/pull/953
+[#950]: https://github.com/GIScience/ohsome-quality-api/pull/950
+
+## Release 1.12.0
+
+- land-cover-thematic-accuracy: add date of datasets ([#931])
+- add new topics and attributes:
+  - power lines and substations ([#942])
+  - footpath ([#937])
+- update roads topic attributes to look for `ref=*` in addition to `name=*` ([#945])
+
+[#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
+[#937]: https://github.com/GIScience/ohsome-quality-api/pull/937
+[#942]: https://github.com/GIScience/ohsome-quality-api/pull/942
+[#945]: https://github.com/GIScience/ohsome-quality-api/pull/945
+[#931]: https://github.com/GIScience/ohsome-quality-api/pull/931
+
+## Release  1.11.2
+
+- add land cover indicators and topic to core project ([e977c36c8bc63f8142e94460e5835c3668d94ec6])
+
+## Release  1.11.1
+
+### Bug Fixes
+
+- land-cover-thematic-accuracy: fix bug that coverage warning is shown even though coverage is 100% ([#934])
+
+[#934]: https://github.com/GIScience/ohsome-quality-api/pull/934
+
+## Release 1.11
+
+### New Features
+
+- new topics about cycleways and bridges ([#928])
+- land-cover-thematic-accuracy: add warning if AOI is not completely covered by the comparison data ([#930])
+
+[#928]: https://github.com/GIScience/ohsome-quality-api/pull/928
+[#930]: https://github.com/GIScience/ohsome-quality-api/pull/930
+
+## Release 1.10
+
+### New Feature
+
+- new indicator about thematic accuracy of land cover data in OSM ([#893])
+- new indicator about land cover completeness ([#910])
+
+### Breaking Changes
+
+- remove indicator and Sketch Map Tool related topics ([#883])
+
+### Other Changes
+
+- api: move all request validation to Pydantic request models with the help of ContextVars (make request path parameters available to request models) ([#852])
+- build: add scikit-learn and pytest-asyncio dependencies ([#893])
+- topics: `lulc` topic renamed to `land-cover` and has a new filter ([#898])
+- build: use uv instead of poetry for package and project management ([#904])
+- build: bump geojson-pydantic version from 1.x to 2.x
+- build: remove scipy and toml dependencies
+- test(hurl): simplify hurl file and make bpolys bigger ([#876])
+- refactor: use asyncpg instead of psycopg ([#876])
+- build: remove psycopg ([#876])
+- feat(land-cover-thematic-accuracy): add precision and recall for each class to result figure
+- make land-cover topic filter more precise to include more natural and leisure tags ([#920])
+- use gauge plot for land-cover-completeness result figure ([#921])
+
+[#852]: https://github.com/GIScience/ohsome-quality-api/pull/852
+[#876]: https://github.com/GIScience/ohsome-quality-api/pull/876
+[#883]: https://github.com/GIScience/ohsome-quality-api/issues/883
+[#893]: https://github.com/GIScience/ohsome-quality-api/pull/893
+[#898]: https://github.com/GIScience/ohsome-quality-api/issues/898
+[#904]: https://github.com/GIScience/ohsome-quality-api/pull/904
+[#910]: https://github.com/GIScience/ohsome-quality-api/pull/910
+[#920]: https://github.com/GIScience/ohsome-quality-api/pull/920
+[#921]: https://github.com/GIScience/ohsome-quality-api/pull/921
+
 ## Release  1.9.0
 
 ### Bug Fixes
@@ -9,7 +99,11 @@
 - topics: rework road topics ([#878], [#880])
 - topics: remove covid19 related tags from topics ([#882])
 
+### Other Changes
 
+- build: update dependencies ([#873])
+
+[#873]: https://github.com/GIScience/ohsome-quality-api/pull/873
 [#878]: https://github.com/GIScience/ohsome-quality-api/issues/878
 [#880]: https://github.com/GIScience/ohsome-quality-api/issues/880
 [#882]: https://github.com/GIScience/ohsome-quality-api/issues/882
@@ -21,7 +115,6 @@
 
 - attribute-completeness: added subkeys to filters for sidewalk and cycleway attributes ([#877])
 - attribute-completeness: added new topic and topic - specific attributes and deleted non-functional attributes ([#850])
-
 
 [#850]: https://github.com/GIScience/ohsome-quality-api/issue/850
 [#877]: https://github.com/GIScience/ohsome-quality-api/issue/877

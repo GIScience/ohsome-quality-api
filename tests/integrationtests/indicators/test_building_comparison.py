@@ -2,15 +2,16 @@ import asyncio
 from datetime import datetime
 from unittest.mock import AsyncMock
 
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
-from approvaltests.approvals import verify
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
 )
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
+from tests.integrationtests.utils import oqapi_vcr
 
 
 @pytest.fixture
@@ -228,7 +229,6 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
         assert indicator.result.class_ is None
-        assert indicator.result.description is not None
         for v in indicator.area_ref.values():
             assert v is not None
         for v in indicator.area_osm.values():
@@ -248,7 +248,6 @@ class TestCalculate:
         indicator.calculate()
         assert indicator.result.value is None
         assert indicator.result.class_ is None
-        assert indicator.result.description is not None
         assert indicator.result.label == "undefined"
         verify(indicator.result.description, namer=PytestNamer())
 
@@ -270,7 +269,6 @@ class TestCalculate:
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
-        assert indicator.result.description is not None
         # major edge case description
         verify(indicator.result.description, namer=PytestNamer())
 
@@ -294,7 +292,6 @@ class TestCalculate:
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
         assert indicator.result.label != "undefined"
-        assert indicator.result.description is not None
         verify(indicator.result.description, namer=PytestNamer())
 
 
@@ -311,21 +308,12 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
-
-    @oqapi_vcr.use_cassette
-    @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test
-    @pytest.mark.usefixtures(
-        "mock_get_building_area",
-        "mock_get_intersection_geom",
-        "mock_get_intersection_area",
-    )
-    def test_create_figure_manual(self, topic_building_area, feature_germany_berlin):
-        indicator = BuildingComparison(topic_building_area, feature_germany_berlin)
-        asyncio.run(indicator.preprocess())
-        indicator.calculate()
-        indicator.create_figure()
-        pio.show(indicator.result.figure)
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -344,7 +332,12 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "bar"
-        pgo.Figure(indicator.result.figure)
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -363,4 +356,9 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert indicator.result.figure["data"][0]["type"] == "pie"
-        pgo.Figure(indicator.result.figure)
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )

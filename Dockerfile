@@ -1,38 +1,57 @@
-# based on Debian
-# we have to use bullseye, because bookworm doesn't work with older Docker versions which are still in use
-FROM python:3.10-bullseye
+# build python app
+FROM python:3.13-slim AS builder
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Allow to set custom uid and gid values (i.e. for CI)
-ARG uid=1000
-ARG gid=1000
+WORKDIR /app
 
-# install R
-# to avoid caching issues combine apt-get update and install in one RUN statement.
-# to reduce image size, clean up the apt cache by removing /var/lib/apt/lists.
-RUN apt-get update && \
-    apt-get install -y r-base && \
-    rm -rf /var/lib/apt/lists/*
+# install R (with build dependencies)
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt update \
+    && apt install -y --no-upgrade --no-install-recommends \
+      r-base-dev \
+      git \
+      build-essential
 
-# within docker container: run without root privileges
-RUN groupadd -g "$gid" oqapi
-RUN useradd -l -md /home/oqapi -u "$uid" -g "$gid" oqapi
-WORKDIR /opt/oqapi
-RUN pip install --no-cache-dir poetry
-RUN chown oqapi:oqapi . -R
-USER oqapi:oqapi
-
-# make poetry binaries available to the docker container user
-ENV PATH=$PATH:/home/oqapi/.local/bin
+ENV UV_LINK_MODE=copy \
+    UV_HTTP_TIMEOUT=300
 
 # install only the dependencies
-COPY --chown=oqapi:oqapi pyproject.toml pyproject.toml
-COPY --chown=oqapi:oqapi poetry.lock poetry.lock
-RUN python -m poetry install --no-ansi --no-interaction --no-root
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --no-editable --no-dev
 
-# copy all the other files and install the project
-COPY --chown=oqapi:oqapi ohsome_quality_api ohsome_quality_api
-COPY --chown=oqapi:oqapi tests tests
-COPY --chown=oqapi:oqapi scripts/start_api.py scripts/start_api.py
-COPY --chown=oqapi:oqapi config/logging.yaml config/logging.yaml
-RUN python -m poetry install --no-ansi --no-interaction
+# add project files and install the project
+COPY ohsome_quality_api ohsome_quality_api
 
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-editable --no-dev
+
+FROM python:3.13-slim
+
+WORKDIR /app
+
+ENV VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH"
+
+# install R (without build dependencies)
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt update \
+    && apt install -y --no-upgrade --no-install-recommends \
+      r-base
+
+# copy environment but not the source code
+COPY --from=builder --chown=app:app $VIRTUAL_ENV $VIRTUAL_ENV
+
+EXPOSE 8000/tcp
+
+# run the application
+CMD ["/app/.venv/bin/uvicorn","ohsome_quality_api.api.api:app","--host","0.0.0.0"]

@@ -92,3 +92,12 @@ def test_coverage(client):
     result = geojson.loads(json.dumps(response.json()))
     assert result.is_valid
     assert isinstance(result, geojson.FeatureCollection)
+
+
+@pytest.mark.skip(reason="Depends on database")
+def test_coverage_land_cover_thematic_accuracy(client):
+    response = client.get("metadata/indicators/land-cover-thematic-accuracy/coverage")
+    assert response.status_code == 200
+    result = geojson.loads(json.dumps(response.json()))
+    assert result.is_valid
+    assert isinstance(result, geojson.FeatureCollection)

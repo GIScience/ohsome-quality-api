@@ -25,11 +25,13 @@ from ohsome_quality_api import (
     __version__,
     oqt,
 )
+from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
     IndicatorRequest,
+    LandCoverThematicAccuracyRequest,
 )
 from ohsome_quality_api.api.response_models import (
     AttributeMetadataResponse,
@@ -71,15 +73,10 @@ from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
     SizeRestrictionError,
     TopicDataSchemaError,
-    ValidationError,
 )
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
     json_serialize,
-)
-from ohsome_quality_api.utils.validators import (
-    validate_attribute_topic_combination,
-    validate_indicator_topic_combination,
 )
 
 MEDIA_TYPE_GEOJSON = "application/geo+json"
@@ -115,7 +112,7 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url=None,
     redoc_url=None,
-    dependencies=[Depends(i18n)],
+    dependencies=[Depends(set_request_context), Depends(i18n)],
 )
 
 app.add_middleware(
@@ -183,13 +180,8 @@ async def validation_exception_handler(
 @app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
-@app.exception_handler(ValidationError)
 async def custom_exception_handler(
-    _: Request,
-    exception: TopicDataSchemaError
-    | OhsomeApiError
-    | SizeRestrictionError
-    | ValidationError,
+    _: Request, exception: TopicDataSchemaError | OhsomeApiError | SizeRestrictionError
 ):
     """Exception handler for custom exceptions."""
     return JSONResponse(
@@ -274,14 +266,31 @@ async def post_attribute_completeness(
     parameters: AttributeCompletenessKeyRequest | AttributeCompletenessFilterRequest,
 ) -> Any:
     """Request the Attribute Completeness indicator for your area of interest."""
-    if isinstance(parameters, AttributeCompletenessKeyRequest):
-        for attribute in parameters.attribute_keys:
-            validate_attribute_topic_combination(
-                attribute,
-                parameters.topic,
-            )
-
     return await _post_indicator(request, "attribute-completeness", parameters)
+
+
+@app.post(
+    "/indicators/land-cover-thematic-accuracy",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+)
+async def post_land_cover_thematic_accuracy(
+    request: Request, parameters: LandCoverThematicAccuracyRequest
+) -> Any:
+    """Request the Land Cover Thematic Accuracy indicator for your area of interest."""
+    return await _post_indicator(request, "land-cover-thematic-accuracy", parameters)
 
 
 @app.post(
@@ -302,9 +311,7 @@ async def post_attribute_completeness(
     },
 )
 async def post_indicator(
-    request: Request,
-    key: IndicatorEnumRequest,
-    parameters: IndicatorRequest,
+    request: Request, key: IndicatorEnumRequest, parameters: IndicatorRequest
 ) -> Any:
     """Request an indicator for your area of interest."""
     return await _post_indicator(request, key.value, parameters)
@@ -315,7 +322,6 @@ async def _post_indicator(
     key: str,
     parameters: IndicatorRequest,
 ) -> Any:
-    validate_indicator_topic_combination(key, parameters.topic)
     indicators = await oqt.create_indicator(key=key, **dict(parameters))
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:

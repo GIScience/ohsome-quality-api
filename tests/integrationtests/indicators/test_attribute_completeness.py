@@ -3,17 +3,17 @@ import os
 from datetime import datetime
 
 import geojson
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
-from approvaltests import verify
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.attributes.definitions import get_attributes
 from ohsome_quality_api.indicators.attribute_completeness.indicator import (
     AttributeCompleteness,
 )
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import (
-    PytestNamer,
     get_topic_fixture,
     oqapi_vcr,
 )
@@ -105,7 +105,7 @@ class TestCalculation:
         assert indicator.result.description is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
-        verify(indicator.description, namer=PytestNamer())
+        verify(indicator.result.description, namer=PytestNamer())
 
     @oqapi_vcr.use_cassette
     def test_no_features(self):
@@ -165,16 +165,15 @@ class TestFigure:
         indicator.calculate()
         return indicator
 
-    # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
-    def test_create_figure_manual(self, indicator):
-        indicator.create_figure()
-        pio.show(indicator.result.figure)
-
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
 
 def test_create_description_attribute_keys_single():

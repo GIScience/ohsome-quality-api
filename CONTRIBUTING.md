@@ -53,8 +53,8 @@ This project uses [`ruff`](https://github.com/astral-sh/ruff) to ensure consiste
 #### A Note on the Configuration
 
 ```bash
-poetry run ruff format .
-poetry run ruff .
+uv run ruff format .
+uv run ruff check --fix .
 ```
 
 
@@ -70,5 +70,4 @@ Please provide [tests](/docs/development_setup.md#tests).
 
 ## Miscellaneous
 
-- Troubleshooting -> [docs/troubleshooting.md](/docs/troubleshooting.md)
 - How are indicators structured? -> [docs/indicator.md](/docs/indicator.md).

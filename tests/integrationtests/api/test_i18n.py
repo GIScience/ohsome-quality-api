@@ -1,7 +1,8 @@
 import pytest
 from approvaltests import verify
 
-from tests.integrationtests.utils import PytestNamer, oqapi_vcr
+from tests.approvaltests_namers import PytestNamer
+from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
 

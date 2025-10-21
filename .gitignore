@@ -150,6 +150,5 @@ cython_debug/
 /data/*
 /config/*
 !/config/sample.config.yaml
-!/config/logging.yaml
 /tests/*/fixtures/approved/*.received.txt
 /regression-tests/report/

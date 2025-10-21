@@ -1,19 +1,17 @@
 import datetime
-import os
-import unittest
 from pathlib import Path
 
-import geojson
 import numpy as np
+import pytest
 
+from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.definitions import get_indicator_metadata
 from ohsome_quality_api.indicators.mapping_saturation import models
-from ohsome_quality_api.indicators.minimal.indicator import (
-    Minimal as MinimalIndicator,
-)
+from ohsome_quality_api.indicators.minimal.indicator import Minimal
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     get_class_from_key,
+    get_module_dir,
     get_project_root,
     hyphen_to_camel,
     hyphen_to_snake,
@@ -22,75 +20,93 @@ from ohsome_quality_api.utils.helper import (
     snake_to_hyphen,
     snake_to_lower_camel,
 )
+from ohsome_quality_api.utils.pybabel_yaml_extractor import flatten_sequence
 
 from .mapping_saturation import fixtures
 
 
-def get_fixture(name):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", name)
-    with open(path, "r") as file:
-        return geojson.load(file)
+def test_name_to_class():
+    assert get_class_from_key(class_type="indicator", key="minimal") == Minimal
 
-
-class TestHelper(unittest.TestCase):
-    def test_name_to_class(self):
-        self.assertIs(
-            get_class_from_key(class_type="indicator", key="minimal"),
-            MinimalIndicator,
+    indicators = get_indicator_metadata()
+    for indicator_name in indicators.keys():
+        assert issubclass(
+            get_class_from_key(class_type="indicator", key=indicator_name),
+            BaseIndicator,
         )
 
-        self.indicators = get_indicator_metadata()
-        for indicator_name in self.indicators.keys():
-            self.assertIsNotNone(
-                get_class_from_key(class_type="indicator", key=indicator_name)
-            )
 
-    def test_json_serialize_valid_input_datetime(self):
-        self.assertIsInstance(json_serialize(datetime.datetime.now()), str)
-
-    def test_json_serialize_valid_input_date(self):
-        self.assertIsInstance(json_serialize(datetime.date.today()), str)
-
-    def test_json_serialize_valid_input_np_float(self):
-        np_float = np.array([1.1])[0]
-        self.assertIsInstance(json_serialize(np_float), float)
-
-    def test_json_serialize_valid_input_np_int(self):
-        np_int = np.array([1])[0]
-        self.assertIsInstance(json_serialize(np_int), int)
-
-    def test_json_serialize_valid_input_fit(self):
-        ydata = fixtures.VALUES_1
-        xdata = np.array(range(len(ydata)))
-        self.assertIsInstance(json_serialize(models.SSlogis(xdata, ydata)), dict)
-
-    def test_json_serialize_invalid_input(self):
-        with self.assertRaises(TypeError):
-            json_serialize("foo")
-
-    def test_get_project_root(self):
-        expected = Path(__file__).resolve().parent.parent.parent.resolve()
-        result = get_project_root()
-        self.assertEqual(expected, result)
-
-    def test_camel_to_hyphen(self):
-        assert camel_to_hyphen("CamelCase") == "camel-case"
-
-    def test_snake_to_camel(self):
-        assert snake_to_camel("snake_case") == "SnakeCase"
-
-    def test_snake_to_lower_camel(self):
-        assert snake_to_lower_camel("snake_case") == "snakeCase"
-
-    def test_snake_to_hyphen(self):
-        assert snake_to_hyphen("snake_case") == "snake-case"
-
-    def test_hyphen_to_camel(self):
-        assert hyphen_to_camel("hyphen-case") == "HyphenCase"
-
-    def test_hyphen_to_snake(self):
-        assert hyphen_to_snake("hyphen-case") == "hyphen_case"
+# TODO: add tests for other input than dict
+def test_flatten_seq():
+    input_seq = {
+        "regions": {"default": "ogc_fid"},
+        "gadm": {
+            "default": "uid",  # ISO 3166-1 alpha-3 country code
+            "other": (("name_1", "name_2"), ("id_1", "id_2")),
+        },
+    }
+    output_seq = ["ogc_fid", "uid", "name_1", "name_2", "id_1", "id_2"]
+    assert flatten_sequence(input_seq) == output_seq
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_json_serialize_valid_input_datetime():
+    assert isinstance(json_serialize(datetime.datetime.now()), str)
+
+
+def test_json_serialize_valid_input_date():
+    assert isinstance(json_serialize(datetime.date.today()), str)
+
+
+def test_json_serialize_valid_input_np_float():
+    np_float = np.array([1.1])[0]
+    assert isinstance(json_serialize(np_float), float)
+
+
+def test_json_serialize_valid_input_np_int():
+    np_int = np.array([1])[0]
+    assert isinstance(json_serialize(np_int), int)
+
+
+def test_json_serialize_valid_input_fit():
+    ydata = fixtures.VALUES_1
+    xdata = np.array(range(len(ydata)))
+    assert isinstance(json_serialize(models.SSlogis(xdata, ydata)), dict)
+
+
+def test_json_serialize_invalid_input():
+    with pytest.raises(TypeError):
+        json_serialize("foo")
+
+
+def test_get_project_root():
+    expected = Path(__file__).resolve().parent.parent.parent.resolve()
+    result = get_project_root()
+    assert expected == result
+
+
+def test_camel_to_hyphen():
+    assert camel_to_hyphen("CamelCase") == "camel-case"
+
+
+def test_snake_to_camel():
+    assert snake_to_camel("snake_case") == "SnakeCase"
+
+
+def test_snake_to_lower_camel():
+    assert snake_to_lower_camel("snake_case") == "snakeCase"
+
+
+def test_snake_to_hyphen():
+    assert snake_to_hyphen("snake_case") == "snake-case"
+
+
+def test_hyphen_to_camel():
+    assert hyphen_to_camel("hyphen-case") == "HyphenCase"
+
+
+def test_hyphen_to_snake():
+    assert hyphen_to_snake("hyphen-case") == "hyphen_case"
+
+
+def test_get_module_dir():
+    assert get_module_dir("tests.unittests") == str(Path(__file__).parent)

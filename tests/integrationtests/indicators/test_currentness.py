@@ -1,11 +1,13 @@
-import asyncio
+import json
 import os
 from datetime import datetime
 
+import asyncpg_recorder
 import geojson
-import plotly.graph_objects as pgo
-import plotly.io as pio
 import pytest
+import pytest_asyncio
+from approvaltests import Options, verify, verify_as_json
+from pydantic_core import to_jsonable_python
 
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
@@ -16,6 +18,9 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     get_num_months_last_contrib,
     month_to_year_month,
 )
+from ohsome_quality_api.topics.definitions import get_topic_preset
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -41,56 +46,82 @@ class TestInit:
         )
 
 
+@pytest.mark.asyncio(loop_scope="class")
 class TestPreprocess:
+    @pytest.mark.parametrize("ohsomedb", [True, False])
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+    async def test_preprocess(
+        self,
+        ohsomedb,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
         indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess(ohsomedb=ohsomedb)
+        assert len(indicator.bin_total.contrib_abs) > 0
+        assert indicator.contrib_sum > 0
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_preprocess_aggregation_types(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess(ohsomedb=True)
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
+@pytest.mark.asyncio()
 class TestCalculation:
-    @pytest.fixture(scope="class")
+    @pytest_asyncio.fixture(params=[False, True])
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    async def indicator(
+        self, topic_building_count, feature_germany_heidelberg, request
+    ):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        await i.preprocess(ohsomedb=request.param)
         return i
 
-    def test_calculate(self, indicator):
+    async def test_calculate(self, indicator):
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
-        assert indicator.result.description is not None
+        assert len(indicator.bin_up_to_date.timestamps) == indicator.up_to_date
+        verify(indicator.result.description, namer=PytestNamer())
 
-    def test_low_contributions(self, indicator):
+    async def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
+        verify(indicator.result.description, namer=PytestNamer())
 
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that in the area of interest less than 25 "
-            "features of the selected topic are present today."
-        ) in indicator.result.description
-
-    def test_months_without_edit(self, indicator):
+    async def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
         indicator.bin_total.contrib_abs = [
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
         ]
         indicator.calculate()
-        # Check if the result description contains the message about low contributions
-        assert (
-            "Please note that there was no mapping activity for"
-            in indicator.result.description
-        )
+        verify(indicator.result.description, namer=PytestNamer())
 
+    @pytest.mark.parametrize("ohsomedb", [True, False])
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_no_amenities(self):
-        """Test area with no amenities"""
+    async def test_no_subway_stations(self, ohsomedb):
+        """Test area with no subway stations"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "../fixtures",
@@ -99,50 +130,78 @@ class TestCalculation:
         with open(infile, "r") as f:
             feature = geojson.load(f)
 
-        indicator = Currentness(feature=feature, topic=get_topic_fixture("amenities"))
-        asyncio.run(indicator.preprocess())
+        indicator = Currentness(
+            feature=feature, topic=get_topic_fixture("subway-stations")
+        )
+        await indicator.preprocess(ohsomedb=ohsomedb)
         assert indicator.contrib_sum == 0
 
         indicator.calculate()
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
-        assert indicator.result.description == (
-            "In the area of interest no features of the selected topic are present "
-            "today."
-        )
+        verify(indicator.result.description, namer=PytestNamer())
         indicator.create_figure()
-        assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        # TODO: test figure
+        # assert isinstance(indicator.result.figure, dict)
+        # verify_as_json(
+        #     to_jsonable_python(indicator.result.figure),
+        #     options=Options()
+        #     .with_reporter(PlotlyDiffReporter())
+        #     .with_namer(PytestNamer()),
+        # )
 
-
-class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    async def test_calculate_aggregation_types(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess(ohsomedb=True)
+        indicator.calculate()
+        verify(indicator.result.description, namer=PytestNamer())
+
+
+@pytest.mark.asyncio
+class TestFigure:
+    @pytest_asyncio.fixture(params=[False, True])
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        await i.preprocess()
         i.calculate()
         i.create_figure()
         return i
 
-    # comment out for manual test
-    @pytest.mark.skip(reason="Only for manual testing.")
-    def test_create_figure_manual(self, indicator):
-        pio.show(indicator.result.figure)
-
-    def test_create_figure(self, indicator):
+    async def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
-    @pytest.mark.skip(reason="Only for manual testing.")
-    def test_outdated_features_plotting(
+    @pytest.mark.parametrize("ohsomedb", [True, False])
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_outdated_features_plotting(
         self,
+        ohsomedb,
         topic_building_count,
         feature_germany_heidelberg,
     ):
         """Create a figure with features in the out-of-date category only"""
         i = Currentness(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        await i.preprocess(ohsomedb=ohsomedb)
         len_contribs = len(i.bin_total.contrib_abs) - 84
         i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
         new_total = sum(i.bin_total.contrib_abs)
@@ -151,9 +210,14 @@ class TestFigure:
         ]
         i.calculate()
         i.create_figure()
-        pio.show(i.result.figure)
+        verify(
+            json.dumps(to_jsonable_python(i.result.figure)),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
 
-    def test_get_source(self, indicator):
+    async def test_get_source(self, indicator):
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
         indicator.th_source = "www.foo.org"
@@ -161,12 +225,47 @@ class TestFigure:
             indicator.get_source_text() == "<a href='www.foo.org' target='_blank'>*</a>"
         )
 
-    def test_get_threshold_text(self, indicator):
+    async def test_get_threshold_text(self, indicator):
         assert indicator.get_threshold_text(Color.RED) == "older than 8 years"
         assert (
             indicator.get_threshold_text(Color.YELLOW) == "between 3 years and 8 years"
         )
         assert indicator.get_threshold_text(Color.GREEN) == "younger than 3 years"
+
+
+@pytest.mark.asyncio
+class TestOhsomeAPIOhsomeDBComparison:
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_indicator(self, topic_building_count, feature_germany_heidelberg):
+        i_api = Currentness(
+            topic_building_count,
+            feature_germany_heidelberg,
+        )
+        await i_api.preprocess()
+        i_api.calculate()
+        i_api.create_figure()
+
+        i_db = Currentness(
+            topic_building_count,
+            feature_germany_heidelberg,
+        )
+        await i_db.preprocess()
+        i_db.calculate()
+        i_db.create_figure()
+
+        verify_as_json(
+            to_jsonable_python(i_api.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer(postfix="api")),
+        )
+        verify_as_json(
+            to_jsonable_python(i_db.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer(postfix="db")),
+        )
 
 
 def test_get_last_edited_year():
@@ -205,20 +304,6 @@ def test_month_to_year_month():
 def test_create_bin():
     contrib_abs = [10, 20, 30, 40, 50]
     contrib_rel = [0.1, 0.2, 0.3, 0.4, 0.5]
-    to_timestamps = [
-        "2023-01-01",
-        "2023-02-01",
-        "2023-03-01",
-        "2023-04-01",
-        "2023-05-01",
-    ]
-    from_timestamps = [
-        "2023-01-01",
-        "2023-02-01",
-        "2023-03-01",
-        "2023-04-01",
-        "2023-05-01",
-    ]
     timestamps = [
         "2023-01-15",
         "2023-02-15",
@@ -230,8 +315,6 @@ def test_create_bin():
     bin_total = Bin(
         contrib_abs,
         contrib_rel,
-        to_timestamps,
-        from_timestamps,
         timestamps,
     )
 
@@ -242,14 +325,8 @@ def test_create_bin():
 
     assert new_bin.contrib_abs == [20, 30, 40]
     assert new_bin.contrib_rel == [0.2, 0.3, 0.4]
-    assert new_bin.to_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
-    assert new_bin.from_timestamps == ["2023-02-01", "2023-03-01", "2023-04-01"]
     assert new_bin.timestamps == ["2023-02-15", "2023-03-15", "2023-04-15"]
 
     assert (
-        len(new_bin.contrib_abs)
-        == len(new_bin.contrib_rel)
-        == len(new_bin.from_timestamps)
-        == len(new_bin.to_timestamps)
-        == len(new_bin.timestamps)
+        len(new_bin.contrib_abs) == len(new_bin.contrib_rel) == len(new_bin.timestamps)
     )

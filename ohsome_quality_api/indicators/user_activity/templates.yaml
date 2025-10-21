@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+
+  yellow: >-
+
+  green: >-
+
+  undefined: >-
+    This is a no-quality indicator. No quality estimation will be calculated.
+result_description: >-
+    In the period between $from_timestamp and $to_timestamp a median of $median_users users added or edited objects of the selected topic in this region.

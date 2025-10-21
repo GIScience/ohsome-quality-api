@@ -1,0 +1,9 @@
+{
+  "label_description": {
+    "green": "Good data quality.",
+    "yellow": "Medium data quality.",
+    "red": "Bad data quality.",
+    "undefined": "The quality level could not be calculated for this indicator."
+  },
+  "result_description": "Some description of the result."
+}

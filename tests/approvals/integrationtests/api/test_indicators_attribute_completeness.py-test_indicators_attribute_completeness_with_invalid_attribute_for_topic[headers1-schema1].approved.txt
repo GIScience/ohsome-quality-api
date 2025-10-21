@@ -1,0 +1,1 @@
+Value error, Invalid combination of attribute maxspeed and topic building-count. Topic building-count supports these attributes: height, house-number, address-street, address-city, address-postcode, address-country, address-state, address-suburb, address-district, building-levels, roof-shape, roof-levels, building-material, roof-material, roof-colour, building-colour, source

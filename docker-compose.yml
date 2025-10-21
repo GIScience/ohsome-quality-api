@@ -4,27 +4,8 @@ services:
     build: .
     environment:
       OQAPI_CONFIG: /config/config.yaml
-      POSTGRES_HOST: oqapi-database
-      POSTGRES_PORT: 5432
-    command: poetry run python scripts/start_api.py --host 0.0.0.0
+    command: uv run python scripts/start_api.py --host 0.0.0.0
     volumes:
-      - ./data:/data
       - ./config:/config
     ports:
       - "127.0.0.1:8080:8080"
-    depends_on:
-      - database
-
-  database:
-    build: database/
-    environment:
-      POSTGRES_DB: oqapi
-      POSTGRES_USER: oqapi
-      POSTGRES_PASSWORD: oqapi
-    ports:
-      - "5445:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:

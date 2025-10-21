@@ -8,21 +8,35 @@ Abbreviations:
     th: Threshold
 """
 
+import json
+import locale
 import logging
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from string import Template
 
 import plotly.graph_objects as pgo
 import yaml
 from dateutil.parser import isoparse
 from geojson import Feature
+from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
+from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
+
+# set locale for datetime to string formatting
+try:
+    locale.setlocale(locale.LC_ALL, ["en_US", locale.getencoding()])
+except locale.Error:
+    logging.warning(
+        "Could not set locale to en_US. Output may be different than expected."
+    )
 
 
 @dataclass
@@ -34,8 +48,6 @@ class Bin:
 
     contrib_abs: list
     contrib_rel: list
-    to_timestamps: list
-    from_timestamps: list
     timestamps: list  # middle of time period
 
 
@@ -51,23 +63,26 @@ class Currentness(BaseIndicator):
             self.topic.key
         )
         # thresholds for determining result class based on share of features in bins
-        self.th1 = 0.75  # [%]
-        self.th2 = 0.5
-        self.th3 = 0.3
         self.contrib_sum = 0
         self.bin_total: Bin
         self.bin_up_to_date: Bin
         self.bin_in_between: Bin
         self.bin_out_of_date: Bin
 
-    async def preprocess(self):
+    async def preprocess(self, ohsomedb: bool = False):
+        if ohsomedb:
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomeapi(self):
         """Fetch all latest contributions in monthly buckets since 2008
 
         Beside the creation, latest contribution includes also the change to the
         geometry and the tag. It excludes deletion.
         """
         latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        end = latest_ohsome_stamp.strftime("%Y-%m-%d")
+        end = latest_ohsome_stamp.strftime("%Y-%m-01")
         start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
         interval = "{}/{}/{}".format(start, end, "P1M")  # YYYY-MM-DD/YYYY-MM-DD/P1Y
         response = await ohsome_client.query(
@@ -77,18 +92,11 @@ class Currentness(BaseIndicator):
             count_latest_contributions=True,
             contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
         )
-        to_timestamps = []
-        from_timestamps = []
         timestamps = []
         contrib_abs = []
         contrib_sum = 0
         for c in reversed(response["result"]):  # latest contributions first
-            to_ts = isoparse(c["toTimestamp"])
-            from_ts = isoparse(c["fromTimestamp"])
-            ts = from_ts + (to_ts - from_ts) / 2
-            to_timestamps.append(to_ts)
-            from_timestamps.append(from_ts)
-            timestamps.append(ts)
+            timestamps.append(isoparse(c["toTimestamp"]))
             contrib_abs.append(c["value"])
             contrib_sum += c["value"]
         if contrib_sum == 0:
@@ -98,12 +106,94 @@ class Currentness(BaseIndicator):
         self.bin_total = Bin(
             contrib_abs,
             contrib_rel,
-            to_timestamps,
-            from_timestamps,
             timestamps,
         )
         self.contrib_sum = contrib_sum
-        self.result.timestamp_osm = self.bin_total.to_timestamps[0]
+        self.result.timestamp_osm = timestamps[0]
+
+    async def preprocess_ohsomedb(self):
+        where = ohsome_filter_to_sql(self.topic.filter)
+        with open(Path(__file__).parent / "query.sql", "r") as file:
+            template = file.read()
+
+        match self.topic.aggregation_type:
+            case "count":
+                aggregation = "COUNT(*)"
+            case "length":
+                aggregation = """
+        0.001 * SUM(
+            CASE
+                WHEN ST_Within(
+                    c.geom,
+                    ST_GeomFromGeoJSON($1)
+                )
+                THEN c.length -- Use precomputed area from ohsome-planet
+                ELSE ST_Length(
+                      ST_Intersection(
+                        c.geom,
+                        ST_GeomFromGeoJSON($1)
+                      )::geography
+                )
+            END
+        )::BIGINT
+                """
+            case "area" | r"area\density":
+                aggregation = """
+        0.001 * 0.001 * SUM(
+            CASE
+                WHEN ST_Within(
+                    c.geom,
+                    ST_GeomFromGeoJSON($1)
+                )
+                THEN c.area -- Use precomputed area from ohsome-planet
+                ELSE ST_Area(
+                      ST_Intersection(
+                        c.geom,
+                        ST_GeomFromGeoJSON($1)
+                      )::geography
+                )
+            END
+        )::BIGINT
+                """
+            case _:
+                raise ValueError(
+                    f"Unknown aggregation_type: {self.topic.aggregation_type}"
+                )
+
+        query = Template(template).substitute(
+            {
+                "aggregation": aggregation,
+                "filter": where,
+                "contributions_table": get_config_value("ohsomedb_contributions_table"),
+            }
+        )
+        results = await client.fetch(
+            query,
+            json.dumps(self.feature["geometry"]),
+            database="ohsomedb",
+        )
+        if len(results) == 0:
+            # no data
+            self.contrib_sum = 0
+            return
+        timestamps = []
+        contrib_abs = []
+        contrib_sum = 0
+        for r in reversed(results[0:]):  # latest contributions first
+            timestamps.append(r[0])
+            contrib_abs.append(r[1])
+            contrib_sum += r[1]
+        if contrib_sum == 0:
+            contrib_rel = [0 for _ in contrib_abs]
+        else:
+            contrib_rel = [c / contrib_sum for c in contrib_abs]
+        self.bin_total = Bin(
+            contrib_abs,
+            contrib_rel,
+            timestamps,
+        )
+        self.contrib_sum = contrib_sum
+        self.result.timestamp_osm = self.bin_total.timestamps[0]
 
     def calculate(self):
         """Determine up-to-date, in-between and out-of-date contributions.
@@ -134,38 +224,50 @@ class Currentness(BaseIndicator):
         self.bin_out_of_date = create_bin(
             self.bin_total,
             self.out_of_date,
-            len(self.bin_total.timestamps),
+            -1,
         )
 
         self.result.value = sum(self.bin_up_to_date.contrib_rel)
 
-        if sum(self.bin_out_of_date.contrib_rel) >= self.th3:
+        if sum(self.bin_out_of_date.contrib_rel) >= 0.3:  # [%]
             self.result.class_ = 1
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.th1:
+        elif sum(self.bin_up_to_date.contrib_rel) >= 0.75:
             self.result.class_ = 5
-        elif sum(self.bin_up_to_date.contrib_rel) >= self.th2:
+        elif sum(self.bin_up_to_date.contrib_rel) >= 0.5:
             self.result.class_ = 4
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.th1
+            >= 0.75
         ):
             self.result.class_ = 3
         elif (
             sum(self.bin_up_to_date.contrib_rel) + sum(self.bin_in_between.contrib_rel)
-            >= self.th2
+            >= 0.5
         ):
             self.result.class_ = 2
         else:
             self.result.class_ = 1
+
+        match self.topic.aggregation_type:
+            case "count":
+                unit = ""
+                aggregation = self.contrib_sum
+            case "length":
+                unit = " km"
+                aggregation = f"{self.contrib_sum:.1f}"
+            case "area":
+                unit = " km<sup>2</sup>"
+                aggregation = f"{self.contrib_sum:.1f}"
 
         label_description = getattr(self.templates.label_description, self.result.label)
         self.result.description += Template(
             self.templates.result_description
         ).substitute(
             up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
-            num_of_elements=int(self.contrib_sum),
-            from_timestamp=self.bin_up_to_date.from_timestamps[-1].strftime("%d %b %Y"),
-            to_timestamp=self.bin_total.to_timestamps[0].strftime("%d %b %Y"),
+            aggregation=aggregation,
+            unit=unit,
+            from_timestamp=self.bin_up_to_date.timestamps[-1].strftime("%b %Y"),
+            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
         )
         self.result.description += "\n" + label_description
 
@@ -173,38 +275,30 @@ class Currentness(BaseIndicator):
         if self.result.label == "undefined":
             logging.info("Result is undefined. Skipping figure creation.")
             return
+
+        match self.topic.aggregation_type:
+            case "count":
+                unit = ""
+            case "length":
+                unit = " km"
+            case "area":
+                unit = " km<sup>2</sup>"
+            case _:
+                ValueError()
+
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         for bucket, color in zip(
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
-            customdata = list(
-                zip(
-                    bucket.contrib_abs,
-                    [ts.strftime("%d %b %Y") for ts in bucket.to_timestamps],
-                    [ts.strftime("%d %b %Y") for ts in bucket.from_timestamps],
-                )
-            )
+            contrib_abs_text = [f"{c:.2f}{unit}" for c in bucket.contrib_abs]
+            contrib_rel_text = [f"{c * 100:.2f}%" for c in bucket.contrib_rel]
+            timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
+            customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
             hovertemplate = (
-                "%{y} of features (%{customdata[0]}) "
-                "were last modified in the period from "
-                "%{customdata[2]} to %{customdata[1]}"
+                "%{customdata[0]} of features (%{customdata[1]}) "
+                "were last modified in %{customdata[2]}"
                 "<extra></extra>"
-            )
-
-            # trace for relative contributions
-            fig.add_trace(
-                pgo.Bar(
-                    name="{:.1%} {}".format(
-                        sum(bucket.contrib_rel),
-                        self.get_threshold_text(color),
-                    ),
-                    x=bucket.timestamps,
-                    y=bucket.contrib_rel,
-                    marker_color=color.value,
-                    customdata=customdata,
-                    hovertemplate=hovertemplate,
-                )
             )
 
             # mock trace for absolute contributions to get second y-axis
@@ -217,24 +311,41 @@ class Currentness(BaseIndicator):
                     showlegend=False,
                     hovertemplate=None,
                     hoverinfo="skip",
+                    xperiod="M1",
+                    xperiodalignment="middle",
                 ),
                 secondary_y=True,
+            )
+            # trace for relative contributions
+            fig.add_trace(
+                pgo.Bar(
+                    name="{:.1%} {}".format(
+                        sum(bucket.contrib_rel),
+                        self.get_threshold_text(color),
+                    ),
+                    x=bucket.timestamps,
+                    y=bucket.contrib_rel,
+                    marker_color=color.value,
+                    customdata=customdata,
+                    hovertemplate=hovertemplate,
+                    xperiod="M1",
+                    xperiodalignment="middle",
+                    xhoverformat="%b %Y",
+                )
             )
 
         fig.update_layout(
             title_text=("Currentness"),
+            barmode="relative",
+            hovermode="x unified",
         )
         fig.update_xaxes(
             title_text="Date of Last Edit",
+            type="date",
             ticklabelmode="period",
-            minor=dict(
-                ticks="inside",
-                dtick="M1",
-                tickcolor="rgba(128,128,128,0.66)",
-            ),
-            tickformat="%b %Y",
+            tickformat="%b\n%Y",
             ticks="outside",
-            tick0=self.bin_total.to_timestamps[-1],
+            tick0=self.bin_total.timestamps[-1],
         )
         fig.update_yaxes(
             title_text="Features [%]",
@@ -323,8 +434,6 @@ def create_bin(b: Bin, i: int, j: int) -> Bin:
     return Bin(
         contrib_abs=b.contrib_abs[i:j],
         contrib_rel=b.contrib_rel[i:j],
-        to_timestamps=b.to_timestamps[i:j],
-        from_timestamps=b.from_timestamps[i:j],
         timestamps=b.timestamps[i:j],
     )
 
@@ -352,12 +461,12 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     if contrib_sum < 25:  # not enough data
         return (
             "Please note that in the area of interest less than 25 features of the "
-            "selected topic are present today."
+            "selected topic are present today. "
         )
     elif num_months >= 12:
         return (
             f"Please note that there was no mapping activity for {num_months} months "
-            "in this region."
+            "in this region. "
         )
     else:
         return ""

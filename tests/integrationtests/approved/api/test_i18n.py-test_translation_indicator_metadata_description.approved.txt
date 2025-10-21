@@ -1,1 +1,0 @@
-Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die Steigung der Kurve minimal.

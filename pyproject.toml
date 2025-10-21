@@ -1,10 +1,8 @@
-[tool.poetry]
-name = "ohsome_quality_api"
-version = "1.9.0"
+[project]
+name = "ohsome-quality-api"
+version = "1.12.0"
 description = "Data quality estimations for OpenStreetMap."
-authors = ["ohsome team <ohsome@heigit.org>"]
-homepage = "https://api.quality.ohsome.org"
-repository = "https://github.com/GIScience/ohsome-quality-api"
+authors = [{email="ohsome@heigit.org"}]
 keywords = [
   "osm",
   "gis",
@@ -13,57 +11,61 @@ keywords = [
   "ohsome",
   "quality",
   ]
+requires-python = ">=3.12"
+dependencies = [
+    "async-lru>=2.0.5",
+    "asyncpg>=0.30.0",
+    "fastapi>=0.115.12",
+    "fastapi-i18n",
+    "geojson>=3.2.0",
+    "geojson-pydantic>=2.0.0",
+    "httpx>=0.28.1",
+    "kaleido==0.2.1",
+    "ohsome-filter-to-sql",
+    "plotly>=6.0.1",
+    "pydantic>=2.11.4",
+    "pyproj>=3.7.1",
+    "python-dateutil>=2.9.0.post0",
+    "pyyaml>=6.0.2",
+    "rpy2>=3.5.17",
+    "schema>=0.7.7",
+    "scikit-learn>=1.6.1",
+    "uvicorn>=0.34.2",
+]
+[project.urls]
+Homepage = "https://api.quality.ohsome.org"
+Repository = "https://github.com/GIScience/ohsome-quality-api"
 
-[[tool.poetry.source]]
-name = "PyPI"
-priority = "primary"
-
-[[tool.poetry.source]]
-name = "gistools-ohsome-machine-learning-models"
-url = "https://gitlab.gistools.geog.uni-heidelberg.de/api/v4/groups/277/-/packages/pypi/simple"
-priority = "supplemental"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-geojson = "^2.5.0"
-fastapi = "^0.109.2"
-requests = "^2.32.0"
-PyYAML = "^6.0"
-toml = "^0.10.2"
-httpx = "^0.23.0"
-asyncpg = "^0.30"
-vcrpy = "^4.1.1"
-python-dateutil = "^2.8.2"
-scipy = "^1.9.3"
-rpy2 = "^3.5.15"
-click = "^8.1.2"
-uvicorn = "^0.20.0"
-schema = "^0.7.5"
-pyproj = "^3.6.0"
-pydantic = "^2.1.1"
-geojson-pydantic = "^1.0.0"
-plotly = "^5.16.1"
-psycopg = {extras = ["binary"], version = "^3.1"}
-async-lru = "^2.0.4"
-approvaltests = "^12.1.0"
-fastapi-i18n = {git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git"}
-
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.2.1"
-pytest = "^7.2.2"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.11.1"
-
-[tool.poetry.urls]
-"Issues" = "https://github.com/GIScience/ohsome-quality-api/issues"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.7.3"
-babel = "^2.17.0"
+[dependency-groups]
+dev = [
+    "asyncpg-recorder>=2025.9.2",
+    "approvaltests>=14.5.0",
+    "click>=8.2.0",
+    "fastapi[standard]>=0.115.12",
+    "pre-commit>=4.2.0",
+    "pygments>=2.19.1", # add syntax highlighting to pytest
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.1",
+    "pytest-mock>=3.14.0",
+    "pytest-sugar>=1.0.0",
+    "pytest-xdist>=3.6.1",
+    "ruff==0.11.9", # fixed because of pre-commit
+    "vcrpy>=7.0.0",
+    "babel>=2.17.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.7.5"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
+[tool.uv.sources]
+asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
+ohsome-filter-to-sql = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git" }
+fastapi-i18n = { git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git" }
 
 [tool.ruff.lint]
 select = [
@@ -84,4 +86,4 @@ select = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-filterwarnings = ["ignore::DeprecationWarning"]
+asyncio_default_fixture_loop_scope = "function"

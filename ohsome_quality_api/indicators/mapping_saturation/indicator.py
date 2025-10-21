@@ -151,8 +151,10 @@ class MappingSaturation(BaseIndicator):
         description = Template(self.templates.result_description).substitute(
             saturation=round(self.result.value * 100, 2)
         )
-        self.result.description = description + getattr(
-            self.templates.label_description, self.result.label
+        self.result.description = (
+            description
+            + " "
+            + getattr(self.templates.label_description, self.result.label)
         )
 
     def create_figure(self) -> None:

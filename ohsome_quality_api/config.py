@@ -24,6 +24,12 @@ def get_config_path() -> str:
 
 def load_config_default() -> dict:
     return {
+        "ohsomedb_host": "localhost",
+        "ohsomedb_port": 5432,
+        "ohsomedb_db": "postgres",
+        "ohsomedb_user": "postgres",
+        "ohsomedb_password": "mylocalpassword",
+        "ohsomedb_contributions_table": "contributions",
         "postgres_host": "localhost",
         "postgres_port": 5445,
         "postgres_db": "oqapi",
@@ -56,6 +62,12 @@ def load_config_from_file(path: str) -> dict:
 def load_config_from_env() -> dict:
     """Load configuration from environment variables."""
     cfg = {
+        "ohsomedb_host": os.getenv("OHSOMEDB_HOST"),
+        "ohsomedb_port": os.getenv("OHSOMEDB_PORT"),
+        "ohsomedb_db": os.getenv("OHSOMEDB_DB"),
+        "ohsomedb_user": os.getenv("OHSOMEDB_USER"),
+        "ohsomedb_password": os.getenv("OHSOMEDB_PASSWORD"),
+        "ohsomedb_contributions_table": os.getenv("OHSOMEDB_CONTRIBUTIONS_TABLE"),
         "postgres_host": os.getenv("POSTGRES_HOST"),
         "postgres_port": os.getenv("POSTGRES_PORT"),
         "postgres_db": os.getenv("POSTGRES_DB"),
@@ -95,18 +107,24 @@ def get_default_data_dir() -> str:
 
 
 def load_logging_config():
-    """Read logging configuration from configuration file."""
-    path = os.path.join(
-        os.path.dirname(
-            os.path.abspath(__file__),
-        ),
-        "..",
-        "config",
-        "logging.yaml",
-    )
+    config = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "default": {
+                "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa
+            }
+        },
+        "handlers": {
+            "default": {
+                "formatter": "default",
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+            }
+        },
+        "root": {"handlers": ["default"], "level": "INFO"},
+    }
     level = get_log_level()
-    with open(path, "r") as f:
-        config = yaml.safe_load(f)
     config["root"]["level"] = getattr(logging, level.upper())
     return config
 

@@ -33,7 +33,7 @@ class TopicMetadata(BaseConfig):
     name: str
     description: str
     endpoint: Literal["elements"]
-    aggregation_type: Literal["area", "count", "length", "perimeter"]
+    aggregation_type: Literal["area", "count", "length", "perimeter", "area/density"]
     filter: str
     indicators: list[str]
     projects: list[ProjectEnum]
