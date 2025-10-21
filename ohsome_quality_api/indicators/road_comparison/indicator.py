@@ -6,6 +6,7 @@ import geojson
 import plotly.graph_objects as pgo
 import yaml
 from async_lru import alru_cache
+from fastapi_i18n import _
 from geojson import Feature
 from numpy import mean
 
@@ -119,9 +120,10 @@ class RoadComparison(BaseIndicator):
 
             self.result.description += self.warnings[key] + "\n"
             self.result.description += (
-                f"{self.data_ref[key]['name']} has a road length of "
-                f"{(self.length_total[key] / 1000):.2f} km, of which "
-                f"{(self.length_matched[key] / 1000):.2f} km are covered by roads in "
+                f"{self.data_ref[key]['name']} {_('has a road length of')} "
+                f"{(self.length_total[key] / 1000):.2f} {_('km, of which')} "
+                f"{(self.length_matched[key] / 1000):.2f}"
+                f" {_('km are covered by roads in')} "
                 f"OSM. "
             )
 
@@ -169,14 +171,14 @@ class RoadComparison(BaseIndicator):
             zip(ref_name, ref_ratio, ref_processingdate)
         ):
             hovertext = (
-                f"OSM Covered: {(self.length_matched[name] / 1000):.2f} km "
+                f"{_('OSM Covered:')} {(self.length_matched[name] / 1000):.2f} km "
                 + f"({date:%b %d, %Y})"
             )
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
                     y=[ratio * 100],
-                    name=f"{round((ratio * 100), 1)}% of {name} are matched by OSM",
+                    name=_(f"{round((ratio * 100), 1)}% 'of {name} are matched by OSM"),
                     marker=dict(
                         color=Color.GREY.value,
                         line=dict(color=Color.GREY.value, width=1),
@@ -193,7 +195,7 @@ class RoadComparison(BaseIndicator):
                 pgo.Bar(
                     x=[name],
                     y=[100 - ratio * 100],
-                    name="{0}% of {1} are not matched by OSM".format(
+                    name=_("{0}% of {1} are not matched by OSM").format(
                         round((100 - ratio * 100), 1),
                         name,
                     ),
@@ -202,7 +204,7 @@ class RoadComparison(BaseIndicator):
                         line=dict(color=Color.GREY.value, width=1),
                     ),
                     width=0.4,
-                    hovertext=f"Not OSM Covered: {length_difference_km:.2f} km "
+                    hovertext=f"{_('Not OSM Covered:')} {length_difference_km:.2f} km "
                     f"({date:%b %d, %Y})",
                     hoverinfo="text",
                     textposition="outside",
@@ -212,7 +214,7 @@ class RoadComparison(BaseIndicator):
         fig.update_layout(
             barmode="stack",
             title="Road Comparison",
-            yaxis=dict(title="Matched road length [%]"),
+            yaxis=dict(title=_("Matched road length [%]")),
         )
 
         fig.update_layout(
@@ -234,15 +236,15 @@ class RoadComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage is None or coverage == 0:
-            return f"Reference dataset {dataset} does not cover area-of-interest. "
+            return _(f"Reference dataset {dataset} does not cover area-of-interest. ")
         elif coverage < 10:
-            return (
+            return _(
                 "Only {:.2f}% of the area-of-interest is covered ".format(coverage)
                 + f"by the reference dataset ({dataset}). "
                 + f"No quality estimation with reference {dataset} is possible."
             )
         elif self.length_total[dataset] == 0:
-            return f"{dataset} does not contain roads for your area-of-interest. "
+            return _(f"{dataset} does not contain roads for your area-of-interest. ")
         else:
             return ""
 
@@ -250,7 +252,7 @@ class RoadComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
-            return (
+            return _(
                 f"{dataset} does only cover {coverage:.2f}% of your area-of-interest. "
                 "Comparison is made for the intersection area."
             )

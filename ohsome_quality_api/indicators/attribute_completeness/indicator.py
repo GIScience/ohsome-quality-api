@@ -3,6 +3,7 @@ from string import Template
 
 import dateutil.parser
 import plotly.graph_objects as go
+from fastapi_i18n import _
 from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
@@ -91,7 +92,7 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value == "NaN":
             self.result.value = None
         if self.result.value is None:
-            self.result.description += " No features in this region"
+            self.result.description += _(" No features in this region")
             return
         self.create_description()
 
@@ -113,16 +114,16 @@ class AttributeCompleteness(BaseIndicator):
 
     def create_description(self):
         if self.result.value is None:
-            raise TypeError("Result value should not be None.")
+            raise TypeError(_("Result value should not be None."))
         else:
             result = round(self.result.value * 100, 1)
         if self.attribute_title is None:
-            raise TypeError("Attribute title should not be None.")
+            raise TypeError(_("Attribute title should not be None."))
         else:
             tags = str(
-                "attributes " + self.attribute_title
+                _("attributes ") + self.attribute_title
                 if self.attribute_keys and len(self.attribute_keys) > 1
-                else "attribute " + self.attribute_title
+                else _("attribute ") + self.attribute_title
             )
         all_, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
@@ -140,7 +141,7 @@ class AttributeCompleteness(BaseIndicator):
         attribute(s).
         """
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(_("Result is undefined. Skipping figure creation."))
             return
 
         fig = go.Figure(
@@ -194,8 +195,8 @@ class AttributeCompleteness(BaseIndicator):
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
-            all_ = f"{int(self.absolute_value_1)} elements"
-            matched = f"{int(self.absolute_value_2)} elements"
+            all_ = f"{int(self.absolute_value_1)} {_('elements')}"
+            matched = f"{int(self.absolute_value_2)} {_('elements')}"
         elif self.topic.aggregation_type == "area":
             all_ = f"{str(round(self.absolute_value_1 / 1000000, 2))} km²"
             matched = f"{str(round(self.absolute_value_2 / 1000000, 2))} km²"
@@ -203,5 +204,5 @@ class AttributeCompleteness(BaseIndicator):
             all_ = f"{str(round(self.absolute_value_1 / 1000, 2))} km"
             matched = f"{str(round(self.absolute_value_2 / 1000, 2))} km"
         else:
-            raise ValueError("Invalid aggregation_type")
+            raise ValueError(_("Invalid aggregation_type"))
         return all_, matched

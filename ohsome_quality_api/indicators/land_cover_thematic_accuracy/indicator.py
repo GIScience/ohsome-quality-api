@@ -7,6 +7,7 @@ from string import Template
 
 import geojson
 import plotly.graph_objects as pgo
+from fastapi_i18n import _
 from geojson import Feature
 from sklearn.metrics import (
     confusion_matrix,
@@ -29,48 +30,49 @@ from ohsome_quality_api.topics.models import BaseTopic as Topic
 # https://gradients.app/de/mix
 clc_classes_level_2 = {
     CorineLandCoverClass("11"): {
-        "name": "Urban fabric",
+        "name": _("Urban fabric"),
         "color": "#f30027",
     },
     CorineLandCoverClass("12"): {
-        "name": "Industrial, commercial and transport units",
+        "name": _("Industrial, commercial and transport units"),
         "color": "#d979a9",
     },
     CorineLandCoverClass("13"): {
-        "name": "Mine, dump and construction sites",
+        "name": _("Mine, dump and construction sites"),
         "color": "#c43399",
     },
     CorineLandCoverClass("14"): {
-        "name": "Artificial non-agricultural vegetated areas",
+        "name": _("Artificial non-agricultural vegetated areas"),
         "color": "#ffc6ff",
     },
-    CorineLandCoverClass("21"): {"name": "Arable land", "color": "#f7f738"},
-    CorineLandCoverClass("22"): {"name": "Permanent crops", "color": "#ea991a"},
-    CorineLandCoverClass("23"): {"name": "Pastures", "color": "#e6e64d"},
+    CorineLandCoverClass("21"): {"name": _("Arable land"), "color": "#f7f738"},
+    CorineLandCoverClass("22"): {"name": _("Permanent crops"), "color": "#ea991a"},
+    CorineLandCoverClass("23"): {"name": _("Pastures"), "color": "#e6e64d"},
     CorineLandCoverClass("24"): {
-        "name": "Heterogeneous agricultural areas",
+        "name": _("Heterogeneous agricultural areas"),
         "color": "#f6d97a",
     },
-    CorineLandCoverClass("31"): {"name": "Forest", "color": "#44e100"},
+    CorineLandCoverClass("31"): {"name": _("Forest"), "color": "#44e100"},
     CorineLandCoverClass("32"): {
-        "name": "Shrubs and/or herbaceous vegetation associations",
+        "name": _("Shrubs and/or herbaceous vegetation associations"),
         "color": "#b0f247",
     },
     CorineLandCoverClass("33"): {
-        "name": "Open spaces with little or no vegetation",
+        "name": _("Open spaces with little or no vegetation"),
         "color": "#a1b8a8",
     },
-    CorineLandCoverClass("41"): {"name": "Inland wetlands", "color": "#7a7aff"},
-    CorineLandCoverClass("42"): {"name": "Coastal wetlands", "color": "#c8c8f7"},
-    CorineLandCoverClass("51"): {"name": "Inland waters", "color": "#40dfec"},
-    CorineLandCoverClass("52"): {"name": "Marine waters", "color": "#84fbd9"},
+    CorineLandCoverClass("41"): {"name": _("Inland wetlands"), "color": "#7a7aff"},
+    CorineLandCoverClass("42"): {"name": _("Coastal wetlands"), "color": "#c8c8f7"},
+    CorineLandCoverClass("51"): {"name": _("Inland waters"), "color": "#40dfec"},
+    CorineLandCoverClass("52"): {"name": _("Marine waters"), "color": "#84fbd9"},
 }
+
 clc_classes_level_1 = {
-    CorineLandCoverClassLevel1("1"): {"name": "Artificial areas"},
-    CorineLandCoverClassLevel1("2"): {"name": "Agricultural areas"},
-    CorineLandCoverClassLevel1("3"): {"name": "Forest and semi-natural areas"},
-    CorineLandCoverClassLevel1("4"): {"name": "Wetlands"},
-    CorineLandCoverClassLevel1("5"): {"name": "Water bodies"},
+    CorineLandCoverClassLevel1("1"): {"name": _("Artificial areas")},
+    CorineLandCoverClassLevel1("2"): {"name": _("Agricultural areas")},
+    CorineLandCoverClassLevel1("3"): {"name": _("Forest and semi-natural areas")},
+    CorineLandCoverClassLevel1("4"): {"name": _("Wetlands")},
+    CorineLandCoverClassLevel1("5"): {"name": _("Water bodies")},
 }
 
 
@@ -189,11 +191,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
             getattr(self.templates.label_description, self.result.label)
         )
         if self.clc_class is None:
-            clc_class = "all CORINE Land Cover (CLC) classes"
+            clc_class = _("all CORINE Land Cover (CLC) classes")
         else:
-            clc_class = "CORINE Land Cover (CLC) class <em>{0}</em>".format(
-                clc_classes_level_2[self.clc_class]["name"]
+            clc_class = (
+                f"{_('CORINE Land Cover (CLC) class')} <em>"
+                f"{clc_classes_level_2[self.clc_class]['name']}</em>"
             )
+
         label_description = template.safe_substitute(
             {
                 "f1_score": round(self.f1_score * 100, 2),
@@ -202,11 +206,11 @@ class LandCoverThematicAccuracy(BaseIndicator):
         )
         note = ""
         if not math.isclose(self.coverage_percent, 1):
-            note += (
+            note += _(
                 f"Warning: There is only {self.coverage_percent:.0%} "
                 f"coverage with the comparison data. "
             )
-        note += (
+        note += _(
             "Please take the Land Cover Completeness indicator into account for "
             + "interpretation of these results."
         )
@@ -216,7 +220,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(_("Result is undefined. Skipping figure creation."))
             return
 
         if self.clc_class:
@@ -246,10 +250,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     orientation="h",
                     marker_color=color,
                     hovertemplate=(
-                        f"Precision [%]: {(self.precision_scores[i] * 100):.2f}<br>"
-                        f"Recall [%]: {(self.recall_scores[i] * 100):.2f}<br>"
-                        f"Area [km<sup>2</sup>]: {self.support_scores[i]:.2f}<br>"
-                        f"Area [%]: {(area_percentage):.2f}"
+                        f"{_('Precision [%]:')} "
+                        f"{(self.precision_scores[i] * 100):.2f}<br>"
+                        f"{_('Recall [%]:')} "
+                        f"{(self.recall_scores[i] * 100):.2f}<br>"
+                        f"{_('Area [km<sup>2</sup>]:')} "
+                        f"{self.support_scores[i]:.2f}<br>"
+                        f"{_('Area [%]:')} {(area_percentage):.2f}"
                     ),
                     text=f"{x:.2f}",
                     textposition="auto",
@@ -262,14 +269,16 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 xaxis={
                     "title": {
                         "text": (
-                            f"F1-Score [%]"
+                            f"{_('F1-Score [%]')}"
                             f"<br>"
                             f"<span style='font-size:smaller'>"
-                            f"CORINE data from {self.timestamp_corine.strftime('%Y')}"
+                            f"{_('CORINE data from')} "
+                            f"{self.timestamp_corine.strftime('%Y')}"
                             f"</span>"
                             f"<br>"
                             f"<span style='font-size:smaller'>"
-                            f"OSM data from {self.result.timestamp_osm.strftime('%Y')}"
+                            f"{_('OSM data from')} "
+                            f"{self.result.timestamp_osm.strftime('%Y')}"
                             f"</span>"
                         ),
                     },
@@ -295,15 +304,17 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     x=[self.confusion_matrix_normalized[1][0]],
                     width=[0.5],
                     orientation="h",
-                    name="False Negative",  # e.g corine = forest | osm = other
+                    name=_("False Negative"),  # e.g corine = forest | osm = other
                     marker_color="lightgrey",
                     texttemplate=f"{self.confusion_matrix_normalized[1][0]:.2%}",
                     textposition="inside",
                     hovertemplate=(
-                        f"CORINE class: {name_level_2}<br>"
-                        f"OSM class: Other<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][0]:.2f}<br>"
-                        f"Area [%]: {self.confusion_matrix_normalized[1][0]:.2%}"
+                        f"{_('CORINE class:')} {name_level_2}<br>"
+                        f"{_('OSM class:')} Other<br>"
+                        f"{_('Area [km<sup>2</sup>]:')} "
+                        f"{self.confusion_matrix[1][0]:.2f}<br>"
+                        f"{_('Area [%]:')} "
+                        f"{self.confusion_matrix_normalized[1][0]:.2%}"
                     ),
                     legendrank=3,
                 ),
@@ -312,16 +323,18 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     x=[self.confusion_matrix_normalized[1][1]],
                     width=[0.5],
                     orientation="h",
-                    name="True Positive",  # e.g. corine = forest | osm = forest
+                    name=_("True Positive"),  # e.g. corine = forest | osm = forest
                     marker_color=Color.GREEN.value,
                     texttemplate=f"{self.confusion_matrix_normalized[1][1]:.2%}",
                     textposition="inside",
                     # textfont_color="black",
                     hovertemplate=(
-                        f"CORINE class: {name_level_2}<br>"
-                        f"OSM class: {name_level_2}<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[1][1]:.2f}<br>"
-                        f"Area [%]: {self.confusion_matrix_normalized[1][1]:.2%}"
+                        f"{_('CORINE class:')} {name_level_2}<br>"
+                        f"{_('OSM class:')} {name_level_2}<br>"
+                        f"{_('Area [km<sup>2</sup>]:')} "
+                        f"{self.confusion_matrix[1][1]:.2f}<br>"
+                        f"{_('Area [%]:')} "
+                        f"{self.confusion_matrix_normalized[1][1]:.2%}"
                     ),
                     legendrank=2,
                 ),
@@ -330,15 +343,17 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     x=[self.confusion_matrix_normalized[0][1]],
                     width=[0.5],
                     orientation="h",
-                    name="False Positive",  # e.g. corine = other | osm = forest
+                    name=_("False Positive"),  # e.g. corine = other | osm = forest
                     marker_color=Color.GREY.value,
                     texttemplate=f"{self.confusion_matrix_normalized[0][1]:.2%}",
                     textposition="inside",
                     hovertemplate=(
-                        f"CORINE class: Other<br>"
-                        f"OSM class: {name_level_2}<br>"
-                        f"Area [km<sup>2</sup>]: {self.confusion_matrix[0][1]:.2f}<br>"
-                        f"Area [%]: {self.confusion_matrix_normalized[0][1]:.2%}"
+                        f"{_('CORINE class:')} Other<br>"
+                        f"{_('OSM class:')} {name_level_2}<br>"
+                        f"{_('Area [km<sup>2</sup>]:')} "
+                        f"{self.confusion_matrix[0][1]:.2f}<br>"
+                        f"{_('Area [%]:')} "
+                        f"{self.confusion_matrix_normalized[0][1]:.2%}"
                     ),
                     legendrank=1,
                 ),
@@ -357,11 +372,13 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     {
                         "text": (
                             f"<span style='font-size:smaller'>"
-                            f"CORINE data from {self.timestamp_corine.strftime('%Y')}"
+                            f"{_('CORINE data from')} "
+                            f"{self.timestamp_corine.strftime('%Y')}"
                             f"</span>"
                             f"<br>"
                             f"<span style='font-size:smaller'>"
-                            f"OSM data from {self.result.timestamp_osm.strftime('%Y')}"
+                            f"{_('OSM data from')} "
+                            f"{self.result.timestamp_osm.strftime('%Y')}"
                             f"</span>"
                         ),
                         "xref": "paper",

@@ -178,7 +178,7 @@ def build_data_dict(
     elif isinstance(bpolys, FeatureCollection):
         data["bpolys"] = json.dumps(bpolys)
     else:
-        raise TypeError("Parameter 'bpolys' does not have expected type.")
+        raise TypeError(_("Parameter 'bpolys' does not have expected type."))
     if time is not None:
         data["time"] = time
     if attribute_filter:

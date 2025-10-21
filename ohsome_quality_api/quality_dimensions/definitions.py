@@ -4,6 +4,7 @@ import os
 from enum import Enum
 
 import yaml
+from fastapi_i18n import _
 
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
 from ohsome_quality_api.utils.helper import get_module_dir
@@ -35,7 +36,7 @@ def get_quality_dimension(qd_key: str) -> QualityDimension:
         return quality_dimensions[qd_key]
     except KeyError as error:
         raise KeyError(
-            "Invalid quality dimension key. Valid quality dimension keys are: "
+            _("Invalid quality dimension key. Valid quality dimension keys are: ")
             + str(quality_dimensions.keys())
         ) from error
 

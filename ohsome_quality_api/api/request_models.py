@@ -1,6 +1,7 @@
 from enum import Enum
 
 import geojson
+from fastapi_i18n import _
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
 from pydantic import (
     BaseModel,
@@ -101,7 +102,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         valid_indicators = get_valid_indicators(self.topic.key)
         if indicator not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
+                _("Invalid combination of indicator and topic: {} and {}").format(
                     indicator, self.topic.key
                 )
             )
@@ -128,7 +129,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "attribute-completeness" not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
+                _("Invalid combination of indicator and topic: {} and {}").format(
                     "attribute-completeness",
                     self.topic.key,
                 )
@@ -141,7 +142,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         for attribute in self.attribute_keys:
             if attribute not in valid_attributes:
                 raise ValueError(
-                    (
+                    _(
                         "Invalid combination of attribute {} and topic {}. "
                         "Topic {} supports these attributes: {}"
                     ).format(
@@ -158,13 +159,13 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
     attribute_filter: str = Field(
         ...,
         title="Attribute Filter",
-        description="ohsome filter query representing custom attributes.",
+        description=_("ohsome filter query representing custom attributes."),
     )
     attribute_title: str = Field(
         ...,
         title="Attribute Title",
         description=(
-            "Title describing the attributes represented by the Attribute Filter."
+            _("Title describing the attributes represented by the Attribute Filter.")
         ),
     )
 
@@ -176,7 +177,7 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "attribute-completeness" not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
+                _("Invalid combination of indicator and topic: {} and {}").format(
                     "attribute-completeness",
                     self.topic.key,
                 )
@@ -217,7 +218,10 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
     corine_land_cover_class: CorineLandCoverClass | None = Field(
         default=None,
         title="CORINE Land Cover class",
-        description="CORINE Land Cover is a pan-European land cover inventory with thematic classes.",  # noqa
+        description=_(
+            "CORINE Land Cover is a pan-European land cover"
+            " inventory with thematic classes."
+        ),  # noqa
     )
 
     @field_validator("corine_land_cover_class", mode="before")
@@ -235,7 +239,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "land-cover-thematic-accuracy" not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
+                _("Invalid combination of indicator and topic: {} and {}").format(
                     "land-cover-thematic-accuracy",
                     self.topic.key,
                 )

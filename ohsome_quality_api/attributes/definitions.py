@@ -3,6 +3,7 @@ from enum import Enum
 from typing import List
 
 import yaml
+from fastapi_i18n import _
 
 from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.topics.definitions import get_topic_preset, load_topic_presets
@@ -36,7 +37,7 @@ def get_attribute(topic_key, a_key: str | None) -> Attribute:
             return next(iter(attributes[topic_key].values()))
         return attributes[topic_key][a_key]
     except KeyError as error:
-        raise KeyError("Invalid topic or attribute key(s).") from error
+        raise KeyError(_("Invalid topic or attribute key(s).")) from error
 
 
 # TODO: Remove since it is the same as above?
@@ -48,7 +49,7 @@ def get_attribute_preset(topic_key: str) -> List[Attribute]:
     except KeyError as error:
         topics = load_topic_presets()
         raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
+            _("Invalid topic key. Valid topic keys are: ") + str(topics.keys())
         ) from error
 
 
@@ -64,7 +65,7 @@ def build_attribute_filter(attribute_key: List[str] | str, topic_key: str) -> st
                 attribute_filter += " and (" + attributes[topic_key][key].filter + ")"
             return attribute_filter
     except KeyError as error:
-        raise KeyError("Invalid topic or attribute key(s).") from error
+        raise KeyError(_("Invalid topic or attribute key(s).")) from error
 
 
 attribute_keys = {

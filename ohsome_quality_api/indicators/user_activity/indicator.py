@@ -7,6 +7,7 @@ from string import Template
 
 import numpy as np
 import plotly.graph_objects as pgo
+from fastapi_i18n import _
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 
@@ -122,11 +123,13 @@ class UserActivity(BaseIndicator):
             zip(bucket.users_abs, [ts.strftime("%b %Y") for ts in bucket.timestamps])
         )
 
-        hovertemplate = "%{y} Users were modifying in %{customdata[1]}<extra></extra>"
+        hovertemplate = _(
+            "%{y} Users were modifying in %{customdata[1]}<extra></extra>"
+        )
 
         fig.add_trace(
             pgo.Bar(
-                name="Users per Month",
+                name=_("Users per Month"),
                 x=timestamps,
                 y=values,
                 marker_color="lightgrey",
@@ -137,30 +140,30 @@ class UserActivity(BaseIndicator):
 
         fig.add_trace(
             pgo.Scatter(
-                name="12-Month Weighted Avg",
+                name=_("12-Month Weighted Avg"),
                 x=timestamps,
                 y=weighted_avg,
                 mode="lines",
                 line=dict(color="steelblue", width=3),
-                hovertemplate="Weighted Avg: %{y:.0f} Users<extra></extra>",
+                hovertemplate=_("Weighted Avg: %{y:.0f} Users<extra></extra>"),
             )
         )
 
         if len(trend_timestamps) > 0:
             fig.add_trace(
                 pgo.Scatter(
-                    name="Last 36M Trend",
+                    name=_("Last 36M Trend"),
                     x=trend_timestamps,
                     y=trend_y,
                     mode="lines",
                     line=dict(color="red", width=4, dash="dash"),
-                    hovertemplate="Trend: %{y:.0f} Users<extra></extra>",
+                    hovertemplate=_("Trend: %{y:.0f} Users<extra></extra>"),
                 )
             )
 
         fig.update_layout(
             title=dict(
-                text="User Activity",
+                text=_("User Activity"),
                 x=0.5,
                 xanchor="center",
                 font=dict(size=22),
@@ -177,7 +180,7 @@ class UserActivity(BaseIndicator):
         )
 
         fig.update_xaxes(
-            title_text="Date",
+            title_text=_("Date"),
             ticklabelmode="period",
             minor=dict(
                 ticks="inside",
@@ -192,7 +195,7 @@ class UserActivity(BaseIndicator):
         )
 
         fig.update_yaxes(
-            title_text="Active Users [#]",
+            title_text=_("Active Users [#]"),
             showgrid=True,
             gridcolor="rgba(200,200,200,0.3)",
             zeroline=False,
@@ -209,6 +212,6 @@ def check_major_edge_cases(users_sum) -> str:
     Major edge cases should lead to cancellation of calculation.
     """
     if users_sum == 0:  # no data
-        return "In this region no user activity was recorded. "
+        return _("In this region no user activity was recorded. ")
     else:
         return ""

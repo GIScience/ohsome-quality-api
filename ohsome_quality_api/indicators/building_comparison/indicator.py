@@ -7,6 +7,7 @@ import geojson
 import plotly.graph_objects as pgo
 import yaml
 from dateutil import parser
+from fastapi_i18n import _
 from geojson import Feature
 from numpy import mean
 
@@ -141,7 +142,7 @@ class BuildingComparison(BaseIndicator):
             label_description = getattr(
                 self.templates.label_description, self.result.label
             )
-            edge_case = (
+            edge_case = _(
                 "OSM has substantivly more buildings than the reference datasets. The "
                 "reference dataset is likely to miss many buildings."
             )
@@ -155,8 +156,10 @@ class BuildingComparison(BaseIndicator):
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
         if self.result.label == "undefined" and all(edge_cases):
             logging.info(
-                "Result is undefined and major edge case is present. "
-                "Skipping figure creation."
+                _(
+                    "Result is undefined and major edge case is present. "
+                    "Skipping figure creation."
+                )
             )
             return
 
@@ -187,7 +190,7 @@ class BuildingComparison(BaseIndicator):
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
-                    name="OSM building area"
+                    name=_("OSM building area")
                     + " ("
                     + " km², ".join(map(str, osm_area))
                     + " km²)",
@@ -204,14 +207,14 @@ class BuildingComparison(BaseIndicator):
                     marker_color=ref_color,
                     hovertext=ref_hover,
                     hoverinfo="text",
-                    legendgroup="Reference",
+                    legendgroup=_("Reference"),
                 ),
             ]
         )
         for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
             fig.add_shape(
                 name=name + f" ({area} km²)",
-                legendgroup="Reference",
+                legendgroup=_("Reference"),
                 showlegend=True,
                 type="rect",
                 layer="below",
@@ -227,7 +230,7 @@ class BuildingComparison(BaseIndicator):
             "title_text": "Building Comparison",
             "showlegend": True,
             "barmode": "group",
-            "yaxis_title": "Building Area [km²]",
+            "yaxis_title": _("Building Area [km²]"),
             "legend": dict(
                 orientation="h",
                 entrywidth=270,
@@ -247,14 +250,17 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage is None or coverage == 0:
-            return "{} does not cover your area-of-interest.".format(dataset)
+            return _("{} does not cover your area-of-interest.").format(dataset)
         elif coverage < 10:
-            return "Only {:.2f}% of your area-of-interest is covered by {}".format(
+            return _("Only {:.2f}% of your area-of-interest is covered by {}").format(
                 coverage,
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
-            return f"{dataset} does not contain buildings for your area-of-interest."
+            return (
+                f"{dataset} "
+                f"{_('does not contain buildings for your area-of-interest.')}"
+            )
         else:
             return ""
 
@@ -262,10 +268,12 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
-            return (
-                f"{dataset} does only cover {coverage:.2f}% of your area-of-interest. "
-                "Comparison is made for the intersection area."
-            )
+            return f"{dataset} {_('does only cover')} {coverage:.2f}% {
+                _(
+                    'of your area-of-interest. '
+                    'Comparison is made for the intersection area.'
+                )
+            }"
         else:
             return ""
 

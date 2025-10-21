@@ -19,6 +19,7 @@ from string import Template
 import plotly.graph_objects as pgo
 import yaml
 from dateutil.parser import isoparse
+from fastapi_i18n import _
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
@@ -273,7 +274,7 @@ class Currentness(BaseIndicator):
 
     def create_figure(self):
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(_("Result is undefined. Skipping figure creation."))
             return
 
         match self.topic.aggregation_type:
@@ -295,7 +296,7 @@ class Currentness(BaseIndicator):
             contrib_rel_text = [f"{c * 100:.2f}%" for c in bucket.contrib_rel]
             timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
             customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
-            hovertemplate = (
+            hovertemplate = _(
                 "%{customdata[0]} of features (%{customdata[1]}) "
                 "were last modified in %{customdata[2]}"
                 "<extra></extra>"
@@ -340,7 +341,7 @@ class Currentness(BaseIndicator):
             hovermode="x unified",
         )
         fig.update_xaxes(
-            title_text="Date of Last Edit",
+            title_text=_("Date of Last Edit"),
             type="date",
             ticklabelmode="period",
             tickformat="%b\n%Y",
@@ -348,7 +349,7 @@ class Currentness(BaseIndicator):
             tick0=self.bin_total.timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Features [%]",
+            title_text=_("Features [%]"),
             tickformatstops=[
                 dict(dtickrange=[None, 0.001], value=".2%"),
                 dict(dtickrange=[0.001, 0.01], value=".1%"),
@@ -358,14 +359,14 @@ class Currentness(BaseIndicator):
             secondary_y=False,
         )
         fig.update_yaxes(
-            title_text="Features [#]",
+            title_text=_("Features [#]"),
             tickformat=".",
             secondary_y=True,
             griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Last Edit to a Feature{}".format(self.get_source_text()),
+            title=_("Last Edit to a Feature{}").format(self.get_source_text()),
             x=0.02,
             y=0.95,
             bgcolor="rgba(255,255,255,0.66)",
@@ -380,11 +381,11 @@ class Currentness(BaseIndicator):
         out_of_date_str = month_to_year_month(self.out_of_date)
         match color:
             case color.GREEN:
-                return f"younger than {up_to_date_str}"
+                return f"{_('younger than')} {up_to_date_str}"
             case color.YELLOW:
-                return f"between {up_to_date_str} and {out_of_date_str}"
+                return f"{_('between')} {up_to_date_str} {_('and')} {out_of_date_str}"
             case color.RED:
-                return f"older than {out_of_date_str}"
+                return f"{_('older than')} {out_of_date_str}"
             case _:
                 raise ValueError()
 
@@ -398,9 +399,15 @@ def month_to_year_month(months: int):
     years, months = divmod(months, 12)
     years_str = months_str = ""
     if years != 0:
-        years_str = f"{years} year" + ("s" if years > 1 else "")
+        if years == 1:
+            years_str = f"{years} {_('year')}"
+        else:
+            years_str = f"{years} {_('years')}"
     if months != 0:
-        months_str = f"{months} month" + ("s" if months > 1 else "")
+        if months == 1:
+            months_str = f"{months} {_('month')}"
+        else:
+            months_str = f"{months} {_('months')}"
     return " ".join([years_str, months_str]).strip()
 
 
@@ -444,7 +451,7 @@ def check_major_edge_cases(contrib_sum) -> str:
     Major edge cases should lead to cancellation of calculation.
     """
     if contrib_sum == 0:  # no data
-        return (
+        return _(
             "In the area of interest no features of the selected topic are present "
             "today."
         )
@@ -459,12 +466,12 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
     """
     num_months = get_num_months_last_contrib(bin_total.contrib_abs)
     if contrib_sum < 25:  # not enough data
-        return (
+        return _(
             "Please note that in the area of interest less than 25 features of the "
             "selected topic are present today. "
         )
     elif num_months >= 12:
-        return (
+        return _(
             f"Please note that there was no mapping activity for {num_months} months "
             "in this region. "
         )

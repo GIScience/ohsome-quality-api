@@ -4,6 +4,7 @@ from string import Template
 import numpy as np
 import plotly.graph_objects as pgo
 from dateutil.parser import isoparse
+from fastapi_i18n import _
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
@@ -144,7 +145,7 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 1
         else:
             raise ValueError(
-                "Result value (saturation) is an unexpected value: {}".format(
+                _("Result value (saturation) is an unexpected value: {}").format(
                     self.result.value
                 )
             )
@@ -159,7 +160,7 @@ class MappingSaturation(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(_("Result is undefined. Skipping figure creation."))
             return
 
         fig = pgo.Figure()
@@ -167,7 +168,7 @@ class MappingSaturation(BaseIndicator):
             pgo.Scatter(
                 x=self.timestamps,
                 y=self.values,
-                name="OSM data",
+                name=_("OSM data"),
                 line=dict(color=Color.BLUE.value),
             ),
         )
@@ -175,17 +176,17 @@ class MappingSaturation(BaseIndicator):
             pgo.Scatter(
                 x=self.timestamps,
                 y=self.best_fit.fitted_values.tolist(),
-                name="Modelled saturation curve",
+                name=_("Modelled saturation curve"),
                 line=dict(color=Color.RED.value),
             ),
         )
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(
-            title_text="Date",
+            title_text=_("Date"),
             ticks="outside",
         )
         if isinstance(self.topic, TopicData):
-            fig.update_yaxes(title_text="Value")
+            fig.update_yaxes(title_text=_("Value"))
         else:
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
@@ -197,10 +198,10 @@ class MappingSaturation(BaseIndicator):
                 pgo.Scatter(
                     x=self.timestamps,
                     y=asymptote_line_values,
-                    name="Estimated total data",
+                    name=_("Estimated total data"),
                     showlegend=True,
                     line=dict(color=Color.RED.value, dash="dash"),
-                    hovertext=f"Estimated total data: {asymptote}",
+                    hovertext=f"{_('Estimated total data:')} {asymptote}",
                 )
             )
             y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)
@@ -221,18 +222,18 @@ class MappingSaturation(BaseIndicator):
             str: Returns description of edge case. Empty string if no edge is present.
         """
         if max(self.values) == 0:  # no data
-            return "No features were mapped in this region."
+            return _("No features were mapped in this region.")
         # TODO: Decide on the minimal number/length/area of features have to be present
         # to run models (#511).
         elif np.sum(self.values) < 10:  # not enough data
-            return "Not enough data in total available in this region."
+            return _("Not enough data in total available in this region.")
         elif len(self.values) < 36:  # not enough data points
-            return (
+            return _(
                 "Not enough data points available in this regions. "
                 + "The Mapping Saturation indicator needs data for at least 36 months."
             )
         elif self.values[-1] == 0:  # data deleted
-            return "All mapped features in this region have been deleted."
+            return _("All mapped features in this region have been deleted.")
         return ""
 
     def select_models(self, fitted_models) -> list:
