@@ -16,6 +16,7 @@ dependencies = [
     "async-lru>=2.0.5",
     "asyncpg>=0.30.0",
     "fastapi>=0.115.12",
+    "fastapi-i18n",
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
@@ -42,15 +43,16 @@ dev = [
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "pre-commit>=4.2.0",
-    "pygments>=2.19.1",  # add syntax highlighting to pytest
+    "pygments>=2.19.1", # add syntax highlighting to pytest
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14.0",
     "pytest-sugar>=1.0.0",
     "pytest-xdist>=3.6.1",
-    "ruff==0.11.9",  # fixed because of pre-commit
+    "ruff==0.11.9", # fixed because of pre-commit
     "vcrpy>=7.0.0",
+    "babel>=2.17.0",
 ]
 
 [build-system]
@@ -63,6 +65,7 @@ module-root = ""
 [tool.uv.sources]
 asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
 ohsome-filter-to-sql = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git" }
+fastapi-i18n = { git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git" }
 
 [tool.ruff.lint]
 select = [
@@ -84,4 +87,3 @@ select = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_default_fixture_loop_scope = "function"
-

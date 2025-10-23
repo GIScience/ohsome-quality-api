@@ -10,7 +10,6 @@ from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.indicators.minimal.indicator import Minimal
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
-    flatten_sequence,
     get_class_from_key,
     get_module_dir,
     get_project_root,
@@ -21,6 +20,7 @@ from ohsome_quality_api.utils.helper import (
     snake_to_hyphen,
     snake_to_lower_camel,
 )
+from ohsome_quality_api.utils.pybabel_yaml_extractor import flatten_sequence
 
 from .mapping_saturation import fixtures
 

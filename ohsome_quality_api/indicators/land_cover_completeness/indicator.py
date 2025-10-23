@@ -3,6 +3,7 @@ from string import Template
 
 import plotly.graph_objects as pgo
 from dateutil import parser
+from fastapi_i18n import _
 from geojson import Feature
 
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -46,20 +47,20 @@ class LandCoverCompleteness(BaseIndicator):
             }
         )
         self.result.description = (
-            self.templates.label_description[self.result.label]
+            getattr(self.templates.label_description, self.result.label)
             + " "
             + result_description
         )
 
         if self.result.label != "undefined":
-            self.result.description += (
+            self.result.description += _(
                 " Note that the area of overlapping OSM land cover polygons "
                 + "will be counted multiple times."
             )
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logging.info(_("Result is undefined. Skipping figure creation."))
             return
 
         fig = pgo.Figure(

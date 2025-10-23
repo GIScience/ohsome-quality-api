@@ -120,6 +120,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "babel"
+version = "2.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/6b/d52e42361e1aa00709585ecc30b3f9684b3ab62530771402248b1b1d6240/babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d", size = 9951852, upload-time = "2025-02-01T15:17:41.026Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/b8/3fe70c75fe32afc4bb507f75563d39bc5642255d1d94f1f23604725780bf/babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2", size = 10182537, upload-time = "2025-02-01T15:17:37.39Z" },
+]
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.13.4"
 source = { registry = "https://pypi.org/simple" }
@@ -386,6 +395,15 @@ wheels = [
 [package.optional-dependencies]
 standard = [
     { name = "uvicorn", extra = ["standard"] },
+]
+
+[[package]]
+name = "fastapi-i18n"
+version = "0.3.0"
+source = { git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git#65b3c608313528d67022da8898bf66ebd72610a1" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "httpx" },
 ]
 
 [[package]]
@@ -750,6 +768,7 @@ dependencies = [
     { name = "async-lru" },
     { name = "asyncpg" },
     { name = "fastapi" },
+    { name = "fastapi-i18n" },
     { name = "geojson" },
     { name = "geojson-pydantic" },
     { name = "httpx" },
@@ -770,6 +789,7 @@ dependencies = [
 dev = [
     { name = "approvaltests" },
     { name = "asyncpg-recorder" },
+    { name = "babel" },
     { name = "click" },
     { name = "fastapi", extra = ["standard"] },
     { name = "pre-commit" },
@@ -789,6 +809,7 @@ requires-dist = [
     { name = "async-lru", specifier = ">=2.0.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
+    { name = "fastapi-i18n", git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git" },
     { name = "geojson", specifier = ">=3.2.0" },
     { name = "geojson-pydantic", specifier = ">=2.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -809,6 +830,7 @@ requires-dist = [
 dev = [
     { name = "approvaltests", specifier = ">=14.5.0" },
     { name = "asyncpg-recorder", git = "https://github.com/GIScience/asyncpg-recorder.git" },
+    { name = "babel", specifier = ">=2.17.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
     { name = "pre-commit", specifier = ">=4.2.0" },

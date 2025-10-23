@@ -1,5 +1,6 @@
 """Custom exception classes."""
 
+from fastapi_i18n import _
 from schema import SchemaError
 
 
@@ -16,7 +17,7 @@ class SizeRestrictionError(ValueError):
 
     def __init__(self, geom_size_limit, geom_size):
         self.name = "SizeRestrictionError"
-        self.message = (
+        self.message = _(
             f"Input GeoJSON Geometry is too big ({geom_size} km²). "
             f"The area should be less than {geom_size_limit} km²."
         )
@@ -29,7 +30,7 @@ class DatabaseError(Exception):
 class EmptyRecordError(DatabaseError):
     def __init__(self):
         self.name = "EmptyRecordError"
-        self.message = "Query returned no record."
+        self.message = _("Query returned no record.")
 
 
 class TopicDataSchemaError(Exception):

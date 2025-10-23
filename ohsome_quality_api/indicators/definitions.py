@@ -2,6 +2,7 @@ import os
 from enum import Enum
 
 import yaml
+from fastapi_i18n import _
 from geojson import FeatureCollection
 
 from ohsome_quality_api.indicators.models import IndicatorMetadata
@@ -42,7 +43,7 @@ def get_indicator(indicator_key: str) -> IndicatorMetadata:
         return indicators[indicator_key]
     except KeyError as error:
         raise KeyError(
-            "Invalid project key. Valid project keys are: " + str(indicators.keys())
+            _("Invalid project key. Valid project keys are: ") + str(indicators.keys())
         ) from error
 
 

@@ -21,6 +21,7 @@ from typing import Literal
 import asyncpg
 import geojson
 from asyncpg import Record
+from fastapi_i18n import _
 from geojson import Feature, FeatureCollection, MultiPolygon
 
 from ohsome_quality_api.config import get_config_value
@@ -84,9 +85,9 @@ async def get_shdi(bpoly: Feature | FeatureCollection) -> list[Record]:
         geom = [str(feature.geometry) for feature in bpoly.features]
     else:
         raise TypeError(
-            "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead.".format(
-                type(bpoly)
-            )
+            _(
+                "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead."
+            ).format(type(bpoly))
         )
     async with get_connection() as conn:
         return await conn.fetch(query, geom)
