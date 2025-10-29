@@ -6,7 +6,10 @@ import geojson
 import plotly.graph_objects as pgo
 import yaml
 from async_lru import alru_cache
+from babel.dates import format_date
+from babel.numbers import format_decimal
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 from numpy import mean
 
@@ -127,8 +130,12 @@ class RoadComparison(BaseIndicator):
                 "OSM. "
             ).format(
                 name=self.data_ref[key]["name"],
-                total_length=round(self.length_total[key] / 1000, 2),
-                matched_length=round(self.length_matched[key] / 1000, 2),
+                total_length=format_decimal(
+                    round(self.length_total[key] / 1000, 2), locale=i18n_locale.get()
+                ),
+                matched_length=format_decimal(
+                    round(self.length_matched[key] / 1000, 2), locale=i18n_locale.get()
+                ),
             )
 
         ratios = [v for v in self.ratio.values() if v is not None]
@@ -175,15 +182,20 @@ class RoadComparison(BaseIndicator):
             zip(ref_name, ref_ratio, ref_processingdate)
         ):
             hovertext = _("OSM Covered: {length_matched} km ({date})").format(
-                length_matched=round(self.length_matched[name] / 1000, 2),
-                date=date.strftime("%b %d, %Y"),
+                length_matched=format_decimal(
+                    round(self.length_matched[name] / 1000, 2), locale=i18n_locale.get()
+                ),
+                date=format_date(date, format="MMM yyyy", locale=i18n_locale.get()),
             )
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
                     y=[ratio * 100],
                     name=_("{matched_percentage}% of {name} are matched by OSM").format(
-                        matched_percentage=round((ratio * 100), 1), name=name
+                        matched_percentage=format_decimal(
+                            round((ratio * 100), 1), locale=i18n_locale.get()
+                        ),
+                        name=name,
                     ),
                     marker=dict(
                         color=Color.GREY.value,
@@ -204,7 +216,10 @@ class RoadComparison(BaseIndicator):
                     name=_(
                         "{not_matched_percentage}% of {name} are not matched by OSM"
                     ).format(
-                        not_matched_percentage=round((100 - ratio * 100), 1), name=name
+                        not_matched_percentage=format_decimal(
+                            round((100 - ratio * 100), 1), locale=i18n_locale.get()
+                        ),
+                        name=name,
                     ),
                     marker=dict(
                         color="rgba(0,0,0,0)",
@@ -214,8 +229,12 @@ class RoadComparison(BaseIndicator):
                     hovertext=_(
                         "Not OSM Covered: {length_difference_km} km " + "({date})"
                     ).format(
-                        length_difference_km=round(length_difference_km, 2),
-                        date=date.strftime("%b %d, %Y"),
+                        length_difference_km=format_decimal(
+                            round(length_difference_km, 2), locale=i18n_locale.get()
+                        ),
+                        date=format_decimal(
+                            round((ratio * 100), 1), locale=i18n_locale.get()
+                        ),
                     ),
                     hoverinfo="text",
                     textposition="outside",
@@ -224,7 +243,7 @@ class RoadComparison(BaseIndicator):
 
         fig.update_layout(
             barmode="stack",
-            title="Road Comparison",
+            title=_("Road Comparison"),
             yaxis=dict(title=_("Matched road length [%]")),
         )
 
@@ -255,7 +274,11 @@ class RoadComparison(BaseIndicator):
                 "Only {a}%% of the area-of-interest is covered "
                 + "by the reference dataset ({b}). "
                 + "No quality estimation with reference {c} is possible."
-            ).format(a=round(coverage, 2), b=dataset, c=dataset)
+            ).format(
+                a=format_decimal(round(coverage, 2), locale=i18n_locale.get()),
+                b=dataset,
+                c=dataset,
+            )
         elif self.length_total[dataset] == 0:
             return _(
                 "{dataset} does not contain roads for your area-of-interest. "
@@ -270,7 +293,10 @@ class RoadComparison(BaseIndicator):
             return _(
                 "{dataset} does only cover {coverage}% of your area-of-interest. "
                 "Comparison is made for the intersection area."
-            ).format(dataset=dataset, coverage=round(coverage, 2))
+            ).format(
+                dataset=dataset,
+                coverage=format_decimal(round(coverage, 2), locale=i18n_locale.get()),
+            )
         else:
             return ""
 

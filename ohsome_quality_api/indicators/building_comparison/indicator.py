@@ -1,4 +1,3 @@
-import locale
 import logging
 import os
 from pathlib import Path
@@ -8,8 +7,10 @@ import geojson
 import plotly.graph_objects as pgo
 import yaml
 from babel.dates import format_date
+from babel.numbers import format_decimal
 from dateutil import parser
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 from numpy import mean
 
@@ -114,8 +115,12 @@ class BuildingComparison(BaseIndicator):
             self.ratio[key] = self.area_osm[key] / self.area_ref[key]
             template = Template(self.templates.result_description)
             description = template.substitute(
-                ratio=round(self.ratio[key] * 100, 2),
-                coverage=round(self.area_cov[key] * 100, 2),
+                ratio=format_decimal(
+                    round(self.ratio[key] * 100, 2), locale=i18n_locale.get()
+                ),
+                coverage=format_decimal(
+                    round(self.area_cov[key] * 100, 2), locale=i18n_locale.get()
+                ),
                 dataset=self.data_ref[key]["name"],
             )
             result_description = " ".join((result_description, edge_case, description))
@@ -179,19 +184,31 @@ class BuildingComparison(BaseIndicator):
             if None in (self.area_ref[key], self.area_osm[key]):
                 continue
             ref_x.append(dataset["name"])
-            ref_y.append(round(self.area_ref[key], 2))
+            ref_y.append(
+                format_decimal(round(self.area_ref[key], 2), locale=i18n_locale.get())
+            )
             ref_data.append(dataset)
             osm_x.append(dataset["name"])
-            osm_y.append(round(self.area_osm[key], 2))
+            osm_y.append(
+                format_decimal(round(self.area_osm[key], 2), locale=i18n_locale.get())
+            )
             parsed_date = parser.parse(dataset["date"])
             ref_hover.append(
                 f"{dataset['name']} ("
-                f"{format_date(parsed_date, locale=locale.getlocale())})"
+                f"{format_date(parsed_date, locale=i18n_locale.get())})"
             )
-            osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
+            osm_hover.append(
+                f"OSM ({
+                    format_date(self.result.timestamp_osm, locale=i18n_locale.get())
+                })"
+            )
             ref_color.append(Color[dataset["color"]].value)
-            osm_area.append(round(self.area_osm[key], 2))
-            ref_area.append(round(self.area_ref[key], 2))
+            osm_area.append(
+                format_decimal(round(self.area_osm[key], 2), locale=i18n_locale.get())
+            )
+            ref_area.append(
+                format_decimal(round(self.area_ref[key], 2), locale=i18n_locale.get())
+            )
 
         fig = pgo.Figure(
             data=[

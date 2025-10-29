@@ -2,8 +2,10 @@ import logging
 from string import Template
 
 import plotly.graph_objects as pgo
+from babel.numbers import format_decimal
 from dateutil import parser
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -43,7 +45,9 @@ class LandCoverCompleteness(BaseIndicator):
         template = Template(self.templates.result_description)
         result_description = template.safe_substitute(
             {
-                "value": round(self.result.value * 100, 2),
+                "value": format_decimal(
+                    round(self.result.value * 100, 2), locale=i18n_locale.get()
+                ),
             }
         )
         self.result.description = (

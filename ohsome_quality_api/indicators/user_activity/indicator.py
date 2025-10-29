@@ -7,7 +7,9 @@ from string import Template
 
 import numpy as np
 import plotly.graph_objects as pgo
+from babel.dates import format_date
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 
@@ -76,8 +78,16 @@ class UserActivity(BaseIndicator):
             self.templates.result_description
         ).substitute(
             median_users=self.result.value,
-            from_timestamp=self.bin_total.timestamps[37].strftime("%b %Y"),
-            to_timestamp=self.bin_total.timestamps[1].strftime("%b %Y"),
+            from_timestamp=format_date(
+                self.bin_total.timestamps[37],
+                format="MMM yyyy",
+                locale=i18n_locale.get(),
+            ),
+            to_timestamp=format_date(
+                self.bin_total.timestamps[1],
+                format="MMM yyyy",
+                locale=i18n_locale.get(),
+            ),
         )
         self.result.description += "\n" + label_description
 
@@ -120,7 +130,13 @@ class UserActivity(BaseIndicator):
             trend_y = []
 
         customdata = list(
-            zip(bucket.users_abs, [ts.strftime("%b %Y") for ts in bucket.timestamps])
+            zip(
+                bucket.users_abs,
+                [
+                    format_date(ts, format="MMM yyyy", locale=i18n_locale.get())
+                    for ts in bucket.timestamps
+                ],
+            )
         )
 
         hovertemplate = _(

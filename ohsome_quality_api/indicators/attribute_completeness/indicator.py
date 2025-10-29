@@ -3,7 +3,9 @@ from string import Template
 
 import dateutil.parser
 import plotly.graph_objects as go
+from babel.numbers import format_decimal
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
@@ -116,7 +118,9 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             raise TypeError(_("Result value should not be None."))
         else:
-            result = round(self.result.value * 100, 1)
+            result = format_decimal(
+                round(self.result.value * 100, 1), locale=i18n_locale.get()
+            )
         if self.attribute_title is None:
             raise TypeError(_("Attribute title should not be None."))
         else:
@@ -130,7 +134,7 @@ class AttributeCompleteness(BaseIndicator):
             result=result,
             all=all_,
             matched=matched,
-            topic=self.topic.name.lower(),
+            topic=self.topic.name,
             tags=tags,
         )
 
@@ -195,14 +199,32 @@ class AttributeCompleteness(BaseIndicator):
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
-            all_ = _("{int(absolute_value} elements").format(self.absolute_value_1)
+            all_ = _("{absolute_value} elements").format(
+                absolute_value=int(self.absolute_value_1)
+            )
             matched = f"{int(self.absolute_value_2)} {_('elements')}"
         elif self.topic.aggregation_type == "area":
-            all_ = f"{str(round(self.absolute_value_1 / 1000000, 2))} km²"
-            matched = f"{str(round(self.absolute_value_2 / 1000000, 2))} km²"
+            all_ = f"{
+                format_decimal(
+                    round(self.absolute_value_1 / 1000000, 2), locale=i18n_locale.get()
+                )
+            } km²"
+            matched = f"{
+                format_decimal(
+                    round(self.absolute_value_2 / 1000000, 2), locale=i18n_locale.get()
+                )
+            } km²"
         elif self.topic.aggregation_type == "length":
-            all_ = f"{str(round(self.absolute_value_1 / 1000, 2))} km"
-            matched = f"{str(round(self.absolute_value_2 / 1000, 2))} km"
+            all_ = f"{
+                format_decimal(
+                    round(self.absolute_value_1 / 1000, 2), locale=i18n_locale.get()
+                )
+            } km"
+            matched = f"{
+                format_decimal(
+                    round(self.absolute_value_2 / 1000, 2), locale=i18n_locale.get()
+                )
+            } km"
         else:
             raise ValueError(_("Invalid aggregation_type"))
         return all_, matched

@@ -18,8 +18,11 @@ from string import Template
 
 import plotly.graph_objects as pgo
 import yaml
+from babel.dates import format_date
+from babel.numbers import format_decimal
 from dateutil.parser import isoparse
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
@@ -269,8 +272,16 @@ class Currentness(BaseIndicator):
             up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
             aggregation=aggregation,
             unit=unit,
-            from_timestamp=self.bin_up_to_date.timestamps[-1].strftime("%b %Y"),
-            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
+            from_timestamp=format_date(
+                self.bin_up_to_date.timestamps[-1],
+                format="MMM yyyy",
+                locale=i18n_locale.get(),
+            ),
+            to_timestamp=format_date(
+                self.bin_up_to_date.timestamps[0],
+                format="MMM yyyy",
+                locale=i18n_locale.get(),
+            ),
         )
         self.result.description += "\n" + label_description
 
@@ -294,9 +305,18 @@ class Currentness(BaseIndicator):
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
-            contrib_abs_text = [f"{c:.2f}{unit}" for c in bucket.contrib_abs]
-            contrib_rel_text = [f"{c * 100:.2f}%" for c in bucket.contrib_rel]
-            timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
+            contrib_abs_text = [
+                f"{format_decimal(round(c, 2), locale=i18n_locale.get())}{unit}"
+                for c in bucket.contrib_abs
+            ]
+            contrib_rel_text = [
+                f"{format_decimal(round(c * 100, 2), locale=i18n_locale.get())}%"
+                for c in bucket.contrib_rel
+            ]
+            timestamps_text = [
+                format_date(ts, format="MMM yyyy", locale=i18n_locale.get())
+                for ts in bucket.timestamps
+            ]
             customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
             hovertemplate = _(
                 "%{customdata[0]} of features (%{customdata[1]}) "
@@ -338,7 +358,7 @@ class Currentness(BaseIndicator):
             )
 
         fig.update_layout(
-            title_text=("Currentness"),
+            title_text=_("Currentness"),
             barmode="relative",
             hovermode="x unified",
         )

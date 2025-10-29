@@ -3,8 +3,10 @@ from string import Template
 
 import numpy as np
 import plotly.graph_objects as pgo
+from babel.numbers import format_decimal
 from dateutil.parser import isoparse
 from fastapi_i18n import _
+from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
@@ -150,7 +152,9 @@ class MappingSaturation(BaseIndicator):
                 )
             )
         description = Template(self.templates.result_description).substitute(
-            saturation=round(self.result.value * 100, 2)
+            saturation=format_decimal(
+                round(self.result.value * 100, 2), locale=i18n_locale.get()
+            )
         )
         self.result.description = (
             description
