@@ -1,0 +1,20 @@
+---
+label_description:
+  red: >-
+    Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% in 
+    Ihrem Interessensgebiet (geringe Übereinstimmung zwischen OSM und CORINE). 
+    Dies deutet darauf hin, dass OSM eine schlechte Klassifizierungsqualität 
+    oder unvollständige Landbedeckungsdaten aufweist.
+  green: >-
+    Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% in 
+    Ihrem Interessensgebiet (mittelmäßige Übereinstimmung zwische OSM und CORINE).
+    In your area-of-interest, the thematic accuracy of $clc_class is $f1_score%
+    (high agreement between OSM and CORINE). Dies deutet darauf hin, dass OSM eine
+    zuverlässige Darstellung der Landbedeckung bietet.
+  undefined: >-
+    Der F1-Score konnte nicht berechnet werden, möglicherweise aufgrund fehlender 
+    Daten oder weil die CLC-Klasse in der ausgewählten Region nicht vorhanden ist.
+result_description: >-
+  Der <a href="https://en.wikipedia.org/wiki/F-score">F1-Score</a> wird als statistische 
+  Kennzahl verwendet, die sowohl die Richtigkeit als auch die Vollständigkeit der 
+  Landbedeckungskategorien unter Gewichtung nach Fläche berücksichtigt.

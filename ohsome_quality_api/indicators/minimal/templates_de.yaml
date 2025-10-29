@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+    Niedrige Datenqualität.
+  yellow: >-
+    Mittelmäßige Datenqualität.
+  green: >-
+    Hohe Datenqualität.
+  undefined: >-
+    Das Qualitätslevel konnte für diesen Indicator nicht berechnet werden.
+result_description: >-
+  Some description of the result.

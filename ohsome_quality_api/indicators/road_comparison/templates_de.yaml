@@ -1,0 +1,15 @@
+---
+label_description:
+  red: >-
+    Die Vollständigkeit der OSM Straßen in Ihrem Interessensgebiet ist niedrig.
+  yellow: >-
+    Die Vollständigkeit der OSM Straßen in Ihrem Interessensgebiet ist mittelmäßig.
+  green: >-
+    Die Vollständigkeit der OSM Straßen in Ihrem Interessensgebiet ist hoch.
+
+  undefined: >-
+    Es konnte kein Vergleich durchgeführt werden.
+result_description: >-
+  Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%.
+  $dataset hat eine Gesamtlänge von $length_total.
+  $length_matched von $dataset werden von OSM Straßen abgedeckt.

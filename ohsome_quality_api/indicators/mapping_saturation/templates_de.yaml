@@ -1,0 +1,13 @@
+---
+label_description:
+  red: >-
+    Keine Sättigung in Ihrem Interessensgebiet (Sättigung ≤ 30%).
+    No saturation identified (Saturation ≤ 30%).
+  yellow: >-
+    Die Sättigung in Ihrem Interessensgebiet ist im Gange (30% < Sättigung ≤ 97%).
+  green: >-
+    Eine hohe Sättigung wurde in Ihrem Interessensgebiet erreicht (97% < Sättigung ≤ 100%).
+  undefined: >-
+    Die Sättigung konnte nicht berechnet werden.
+result_description: >-
+  Die Sättigung der letzten drei Jahre beträgt $saturation%.

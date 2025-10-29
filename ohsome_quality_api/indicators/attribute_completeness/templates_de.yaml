@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+    Die Attribut Vollständigkeit ist niedrig (<25%).
+  yellow: >-
+    Die Attribut Vollständigkeit ist mittelmäßig (25%-75%).
+  green: >-
+    Die Attribut Vollständigkeit ist hoch (>75%).
+  undefined: >-
+    Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden.
+result_description: >-
+  $result% aller "$topic" features (all: $all) in Ihrem Interessengebiet haben die ausgewählten zusätzlichen $tags (matched: $matched). 

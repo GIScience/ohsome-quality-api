@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+    Die Vollständigkeit der Landbedeckung in Ihrem Interessensgebiet ist niedrig.
+  yellow: >-
+    Die Vollständigkeit der Landbedeckung in Ihrem Interessensgebiet ist mittelmäßig.
+  green: >-
+    Die Vollständigkeit der Landbedeckung in Ihrem Interessensgebiet ist hoch.
+  undefined: >-
+    Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden.
+result_description: >-
+     $value% des gesamten Gebietes ist von OSM Landbedeckungsdaten abgedeckt.

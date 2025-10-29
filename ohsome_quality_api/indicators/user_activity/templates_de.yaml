@@ -1,0 +1,13 @@
+---
+label_description:
+  red: >-
+
+  yellow: >-
+
+  green: >-
+
+  undefined: >-
+    Dies ist kein Qualtiätsindikator. Es wird keine Qualitätsbewertung berechnet.
+result_description: >-
+  Im Zeitraum zwischen $from_timestamp und $to_timestamp haben durchschnittlich $median_users 
+  Benutzer Objekte zum ausgewählten Thema in dieser Region hinzugefügt oder bearbeitet.

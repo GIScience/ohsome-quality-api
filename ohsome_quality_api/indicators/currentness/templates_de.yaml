@@ -1,0 +1,13 @@
+---
+label_description:
+  red: >-
+    Viele Features sind out-of-date.
+  yellow: >-
+    Einige Features sind up-to-date, einige Features sind out-of-date.
+  green: >-
+    Die meisten Features sind up-to-date.
+  undefined: >-
+    Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden.
+result_description: >-
+    In Ihrem Interessensgebiet wurden $up_to_date_contrib_rel% der Merkmale ($aggregation$unit) 
+    zum letzten Mal im Zeitraum zwischen $from_timestamp und $to_timestamp bearbeitet (erstellt oder geändert).

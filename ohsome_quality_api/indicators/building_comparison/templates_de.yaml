@@ -1,0 +1,12 @@
+---
+label_description:
+  red: >-
+    Die Vollständigkeit der OSM Gebäude in Ihrem Interessensgebiet ist niedrig.
+  yellow: >-
+    Die Vollständigkeit der OSM Gebäude in Ihrem Interessensgebiet ist mittelmäßig.
+  green: >-
+    Die Vollständigkeit der OSM Gebäude in Ihrem Interessensgebiet ist hoch.
+  undefined: >-
+    Vergleich der Gebäude konnte nicht durchgeführt werden.
+result_description: >-
+  Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%.
