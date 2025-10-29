@@ -195,7 +195,7 @@ class AttributeCompleteness(BaseIndicator):
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
-            all_ = f"{int(self.absolute_value_1)} {_('elements')}"
+            all_ = _("{int(absolute_value} elements").format(self.absolute_value_1)
             matched = f"{int(self.absolute_value_2)} {_('elements')}"
         elif self.topic.aggregation_type == "area":
             all_ = f"{str(round(self.absolute_value_1 / 1000000, 2))} km²"

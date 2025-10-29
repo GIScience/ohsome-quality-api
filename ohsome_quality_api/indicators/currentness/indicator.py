@@ -158,7 +158,9 @@ class Currentness(BaseIndicator):
                 """
             case _:
                 raise ValueError(
-                    f"Unknown aggregation_type: {self.topic.aggregation_type}"
+                    _("Unknown aggregation_type: {aggregation_type}").format(
+                        aggregation_type=self.topic.aggregation_type
+                    )
                 )
 
         query = Template(template).substitute(
@@ -381,11 +383,17 @@ class Currentness(BaseIndicator):
         out_of_date_str = month_to_year_month(self.out_of_date)
         match color:
             case color.GREEN:
-                return f"{_('younger than')} {up_to_date_str}"
+                return _("younger than {up_to_date_str}").format(
+                    up_to_date_str=up_to_date_str
+                )
             case color.YELLOW:
-                return f"{_('between')} {up_to_date_str} {_('and')} {out_of_date_str}"
+                return _("between {up_to_date_str} and {out_of_date_str}").format(
+                    up_to_date_str=up_to_date_str, out_of_date_str=out_of_date_str
+                )
             case color.RED:
-                return f"{_('older than')} {out_of_date_str}"
+                return _("older than {out_of_date_str}").format(
+                    out_of_date_str=out_of_date_str
+                )
             case _:
                 raise ValueError()
 
@@ -400,14 +408,14 @@ def month_to_year_month(months: int):
     years_str = months_str = ""
     if years != 0:
         if years == 1:
-            years_str = f"{years} {_('year')}"
+            years_str = _("{years} year").format(years=years)
         else:
-            years_str = f"{years} {_('years')}"
+            years_str = _("{years} years").format(years=years)
     if months != 0:
         if months == 1:
-            months_str = f"{months} {_('month')}"
+            months_str = _("{months} month").format(months=months)
         else:
-            months_str = f"{months} {_('months')}"
+            months_str = _("{months} months").format(months=months)
     return " ".join([years_str, months_str]).strip()
 
 
@@ -472,9 +480,9 @@ def check_minor_edge_cases(contrib_sum, bin_total) -> str:
         )
     elif num_months >= 12:
         return _(
-            f"Please note that there was no mapping activity for {num_months} months "
+            "Please note that there was no mapping activity for {num_months} months "
             "in this region. "
-        )
+        ).format(num_months=num_months)
     else:
         return ""
 

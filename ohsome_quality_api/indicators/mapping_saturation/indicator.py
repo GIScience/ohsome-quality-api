@@ -193,6 +193,9 @@ class MappingSaturation(BaseIndicator):
         # plot asymptote
         asymptote = self.data["best_fit"]["asymptote"]
         if asymptote < max(self.values) * 5:
+            hovertext = _("Estimated total data: {asymptote}").format(
+                asymptote=asymptote
+            )
             asymptote_line_values = [asymptote for _ in self.values]
             fig.add_trace(
                 pgo.Scatter(
@@ -201,7 +204,7 @@ class MappingSaturation(BaseIndicator):
                     name=_("Estimated total data"),
                     showlegend=True,
                     line=dict(color=Color.RED.value, dash="dash"),
-                    hovertext=f"{_('Estimated total data:')} {asymptote}",
+                    hovertext=hovertext,
                 )
             )
             y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)

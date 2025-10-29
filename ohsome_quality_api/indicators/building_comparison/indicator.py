@@ -1,3 +1,4 @@
+import locale
 import logging
 import os
 from pathlib import Path
@@ -6,6 +7,7 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 import yaml
+from babel.dates import format_date
 from dateutil import parser
 from fastapi_i18n import _
 from geojson import Feature
@@ -181,7 +183,11 @@ class BuildingComparison(BaseIndicator):
             ref_data.append(dataset)
             osm_x.append(dataset["name"])
             osm_y.append(round(self.area_osm[key], 2))
-            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
+            parsed_date = parser.parse(dataset["date"])
+            ref_hover.append(
+                f"{dataset['name']} ("
+                f"{format_date(parsed_date, locale=locale.getlocale())})"
+            )
             osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
             ref_color.append(Color[dataset["color"]].value)
             osm_area.append(round(self.area_osm[key], 2))
@@ -257,10 +263,9 @@ class BuildingComparison(BaseIndicator):
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
-            return (
-                f"{dataset} "
-                f"{_('does not contain buildings for your area-of-interest.')}"
-            )
+            return _(
+                "{dataset} does not contain buildings for your area-of-interest."
+            ).format(dataset=dataset)
         else:
             return ""
 
@@ -268,12 +273,11 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
-            return f"{dataset} {_('does only cover')} {coverage:.2f}% {
-                _(
-                    'of your area-of-interest. '
-                    'Comparison is made for the intersection area.'
-                )
-            }"
+            return _(
+                "{dataset} does only cover {coverage}% "
+                "of your area-of-interest. "
+                "Comparison is made for the intersection area."
+            ).format(dataset=dataset, coverage=round(coverage, 2))
         else:
             return ""
 
