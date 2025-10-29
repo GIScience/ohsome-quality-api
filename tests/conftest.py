@@ -9,6 +9,7 @@ import pytest
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
+from ohsome_quality_api.indicators.currentness.indicator import Bin
 from ohsome_quality_api.indicators.definitions import (
     get_indicator,
     get_indicator_metadata,
@@ -297,3 +298,11 @@ def feature_land_cover():
 @pytest.fixture
 def topic_land_cover() -> TopicDefinition:
     return get_topic_preset("land-cover")
+
+
+@pytest.fixture
+def bin_total_factory():
+    def _factory(contrib_abs=[], contrib_rel=[], timestamps=[]):
+        return Bin(contrib_abs, contrib_rel, timestamps)
+
+    return _factory

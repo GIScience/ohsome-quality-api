@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from unittest.mock import patch
 
 import asyncpg_recorder
 import geojson
@@ -13,6 +14,8 @@ from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
     Currentness,
+    check_major_edge_cases,
+    check_minor_edge_cases,
     create_bin,
     get_median_month,
     get_num_months_last_contrib,
@@ -330,3 +333,53 @@ def test_create_bin():
     assert (
         len(new_bin.contrib_abs) == len(new_bin.contrib_rel) == len(new_bin.timestamps)
     )
+
+
+def test_check_major_edge_cases_no_data():
+    result = check_major_edge_cases(0)
+    assert "no features of the selected topic" in result
+
+
+def test_check_major_edge_cases_has_data():
+    result = check_major_edge_cases(10)
+    assert result == ""
+
+
+def test_check_minor_edge_cases_low_data(bin_total_factory):
+    bin_total = bin_total_factory(contrib_abs=10)
+    with patch(
+        "ohsome_quality_api.indicators.currentness.indicator.get_num_months_last_contrib",
+        return_value=0,
+    ):
+        result = check_minor_edge_cases(10, bin_total, "count")
+    assert "less than 25" in result
+
+
+def test_check_minor_edge_cases_inactivity(bin_total_factory):
+    bin_total = bin_total_factory(contrib_abs=100)
+    with patch(
+        "ohsome_quality_api.indicators.currentness.indicator.get_num_months_last_contrib",
+        return_value=12,
+    ):
+        result = check_minor_edge_cases(100, bin_total, "count")
+    assert "no mapping activity for 12 months" in result
+
+
+def test_check_minor_edge_cases_area_more_than_25(bin_total_factory):
+    bin_total = bin_total_factory(contrib_abs=100)
+    with patch(
+        "ohsome_quality_api.indicators.currentness.indicator.get_num_months_last_contrib",
+        return_value=5,
+    ):
+        result = check_minor_edge_cases(100, bin_total, "area")
+    assert result == ""
+
+
+def test_check_minor_edge_cases_area_less_than_25(bin_total_factory):
+    bin_total = bin_total_factory(contrib_abs=10)
+    with patch(
+        "ohsome_quality_api.indicators.currentness.indicator.get_num_months_last_contrib",
+        return_value=5,
+    ):
+        result = check_minor_edge_cases(10, bin_total, "area")
+    assert result == ""
