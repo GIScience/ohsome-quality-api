@@ -1,6 +1,7 @@
 """Pydantic Models for Projects."""
 
-from pydantic import BaseModel, ConfigDict
+from fastapi_i18n import _
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 class Project(BaseModel):
@@ -12,3 +13,8 @@ class Project(BaseModel):
         extra="forbid",
         populate_by_name=True,
     )
+
+    @field_validator("name", "description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
