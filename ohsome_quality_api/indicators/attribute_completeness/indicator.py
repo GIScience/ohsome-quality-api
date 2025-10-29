@@ -3,7 +3,7 @@ from string import Template
 
 import dateutil.parser
 import plotly.graph_objects as go
-from babel.numbers import format_decimal
+from babel.numbers import format_decimal, format_percent
 from fastapi_i18n import _
 from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
@@ -118,8 +118,8 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             raise TypeError(_("Result value should not be None."))
         else:
-            result = format_decimal(
-                round(self.result.value * 100, 1), locale=i18n_locale.get()
+            result = format_percent(
+                round(self.result.value, 1), locale=i18n_locale.get()
             )
         if self.attribute_title is None:
             raise TypeError(_("Attribute title should not be None."))

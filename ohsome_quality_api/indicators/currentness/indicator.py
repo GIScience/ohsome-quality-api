@@ -19,7 +19,7 @@ from string import Template
 import plotly.graph_objects as pgo
 import yaml
 from babel.dates import format_date
-from babel.numbers import format_decimal
+from babel.numbers import format_decimal, format_percent
 from dateutil.parser import isoparse
 from fastapi_i18n import _
 from fastapi_i18n import locale as i18n_locale
@@ -269,7 +269,12 @@ class Currentness(BaseIndicator):
         self.result.description += Template(
             self.templates.result_description
         ).substitute(
-            up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
+            up_to_date_contrib_rel=f"{
+                format_percent(
+                    round(sum(self.bin_up_to_date.contrib_rel), 0),
+                    locale=i18n_locale.get(),
+                )
+            }",
             aggregation=aggregation,
             unit=unit,
             from_timestamp=format_date(

@@ -7,7 +7,7 @@ import plotly.graph_objects as pgo
 import yaml
 from async_lru import alru_cache
 from babel.dates import format_date
-from babel.numbers import format_decimal
+from babel.numbers import format_decimal, format_percent
 from fastapi_i18n import _
 from fastapi_i18n import locale as i18n_locale
 from geojson import Feature
@@ -191,9 +191,9 @@ class RoadComparison(BaseIndicator):
                 pgo.Bar(
                     x=[name],
                     y=[ratio * 100],
-                    name=_("{matched_percentage}% of {name} are matched by OSM").format(
-                        matched_percentage=format_decimal(
-                            round((ratio * 100), 1), locale=i18n_locale.get()
+                    name=_("{matched_percentage} of {name} are matched by OSM").format(
+                        matched_percentage=format_percent(
+                            round((ratio), 1), locale=i18n_locale.get()
                         ),
                         name=name,
                     ),
@@ -214,10 +214,10 @@ class RoadComparison(BaseIndicator):
                     x=[name],
                     y=[100 - ratio * 100],
                     name=_(
-                        "{not_matched_percentage}% of {name} are not matched by OSM"
+                        "{not_matched_percentage} of {name} are not matched by OSM"
                     ).format(
-                        not_matched_percentage=format_decimal(
-                            round((100 - ratio * 100), 1), locale=i18n_locale.get()
+                        not_matched_percentage=format_percent(
+                            round((1 - ratio), 1), locale=i18n_locale.get()
                         ),
                         name=name,
                     ),
@@ -291,11 +291,13 @@ class RoadComparison(BaseIndicator):
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
             return _(
-                "{dataset} does only cover {coverage}% of your area-of-interest. "
+                "{dataset} does only cover {coverage} of your area-of-interest. "
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
-                coverage=format_decimal(round(coverage, 2), locale=i18n_locale.get()),
+                coverage=format_percent(
+                    round(coverage / 100, 2), locale=i18n_locale.get()
+                ),
             )
         else:
             return ""

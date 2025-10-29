@@ -9,4 +9,4 @@ label_description:
   undefined: >-
     The quality level could not be calculated for this indicator.
 result_description: >-
-  $result% of all "$topic" features (all: $all) in your area of interest have the selected additional $tags (matched: $matched). 
+  $result of all "$topic" features (all: $all) in your area of interest have the selected additional $tags (matched: $matched). 

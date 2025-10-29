@@ -7,7 +7,7 @@ import geojson
 import plotly.graph_objects as pgo
 import yaml
 from babel.dates import format_date
-from babel.numbers import format_decimal
+from babel.numbers import format_decimal, format_percent
 from dateutil import parser
 from fastapi_i18n import _
 from fastapi_i18n import locale as i18n_locale
@@ -275,8 +275,8 @@ class BuildingComparison(BaseIndicator):
         if coverage is None or coverage == 0:
             return _("{} does not cover your area-of-interest.").format(dataset)
         elif coverage < 10:
-            return _("Only {:.2f}% of your area-of-interest is covered by {}").format(
-                coverage,
+            return _("Only {} of your area-of-interest is covered by {}").format(
+                format_percent(coverage / 100, locale=i18n_locale.get()),
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
@@ -291,10 +291,15 @@ class BuildingComparison(BaseIndicator):
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
             return _(
-                "{dataset} does only cover {coverage}% "
+                "{dataset} does only cover {coverage} "
                 "of your area-of-interest. "
                 "Comparison is made for the intersection area."
-            ).format(dataset=dataset, coverage=round(coverage, 2))
+            ).format(
+                dataset=dataset,
+                coverage=format_percent(
+                    round(coverage / 100, 2), locale=i18n_locale.get()
+                ),
+            )
         else:
             return ""
 

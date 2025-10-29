@@ -2,7 +2,7 @@ import logging
 from string import Template
 
 import plotly.graph_objects as pgo
-from babel.numbers import format_decimal
+from babel.numbers import format_percent
 from dateutil import parser
 from fastapi_i18n import _
 from fastapi_i18n import locale as i18n_locale
@@ -45,8 +45,8 @@ class LandCoverCompleteness(BaseIndicator):
         template = Template(self.templates.result_description)
         result_description = template.safe_substitute(
             {
-                "value": format_decimal(
-                    round(self.result.value * 100, 2), locale=i18n_locale.get()
+                "value": format_percent(
+                    round(self.result.value, 2), locale=i18n_locale.get()
                 ),
             }
         )

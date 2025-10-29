@@ -9,4 +9,4 @@ label_description:
   undefined: >-
     The quality level could not be calculated for this indicator.
 result_description: >-
-     $value% of the total area is covered by OSM land cover data.
+     $value of the total area is covered by OSM land cover data.
