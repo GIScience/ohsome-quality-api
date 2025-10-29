@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-29 09:20+0100\n"
+"POT-Creation-Date: 2025-10-29 15:51+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -400,7 +400,7 @@ msgstr "Ungültiger Projektschlüssel. Gültige Projektschlüssel sind: "
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Mapping Saturation"
-msgstr ""
+msgstr "Kartierungssättigung"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
@@ -418,12 +418,13 @@ msgstr ""
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "An minimal Indicator for testing purposes."
-msgstr ""
+msgstr "Ein minimaler Indikator zum Testen."
 
+#: ohsome_quality_api/indicators/currentness/indicator.py:369
 #: ohsome_quality_api/indicators/indicators.yaml
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "Currentness"
-msgstr ""
+msgstr "Aktualität"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
@@ -431,28 +432,34 @@ msgid ""
 "topic specific temporal thresholds into three groups: up-to-date, in-"
 "between and out-of-date."
 msgstr ""
+"Schätzung der Aktualität von Merkmalen durch Klassifizierung der Beiträge"
+" anhand themenspezifischer zeitlicher Schwellenwerte in drei Gruppen: "
+"aktuell, dazwischen und veraltet."
 
 #: ohsome_quality_api/indicators/indicators.yaml
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:246
 msgid "Road Comparison"
-msgstr ""
+msgstr "Straßenvergleich"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
 "Compare the road length of OSM roads with the road length of reference "
 "data."
 msgstr ""
+"Verleich der Straßenlänge in OSM mit der Straßenlänge in einem "
+"Referenzdatensatz."
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Building Comparison"
-msgstr ""
+msgstr "Gebäudevergleich"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Comparison of OSM buildings with the buildings of reference datasets."
-msgstr ""
+msgstr "Vergleich der Gebäude in OSM mit den Gebäuden in einem Referenzdatensatz."
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Attribute Completeness"
-msgstr ""
+msgstr "Attributvollständigkeit"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
@@ -460,10 +467,12 @@ msgid ""
 "additional expected tags (e.g. amenity=hospital vs amenity=hospital and "
 "wheelchair=yes)."
 msgstr ""
+"Berechne das Verhältnis von OSM-Features im Vergleich zu Features, die "
+"mitzusätzlichen erwarteten Tags übereinstimmen."
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Land Cover Thematic Accuracy"
-msgstr ""
+msgstr "Thematische Genauigkeit für Landbedeckung"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
@@ -471,95 +480,104 @@ msgid ""
 "href=\"https://land.copernicus.eu/en/products/corine-land-cover\">CORINE "
 "Land Cover (CLC)</a> dataset."
 msgstr ""
+"Thematische Genauigkeit für OpenStreetMap Landbedeckungsdaten im "
+"Vergleich zu  <a href=\"https://land.copernicus.eu/en/products/corine-"
+"land-cover\">CORINE Land Cover (CLC)</a> Datensatz."
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Land Cover Completeness"
-msgstr ""
+msgstr "Landbedeckungsvollständigkeit"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
 "Percentage of the area of interest that is covered by OpenStreetMap land "
 "cover data."
 msgstr ""
+"Prozentualer Anteil der Fläche des Untersuchungsgebiets, der durch "
+"OpenStreetMap-Landbedeckungsdaten abgedeckt ist."
 
 #: ohsome_quality_api/indicators/indicators.yaml
-#: ohsome_quality_api/indicators/user_activity/indicator.py:166
+#: ohsome_quality_api/indicators/user_activity/indicator.py:182
 msgid "User Activity"
-msgstr ""
+msgstr "Nutzeraktivität"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
 "Shows the count of unique mappers per month for the selected topic. None-"
 "quality indicator."
 msgstr ""
+"Zeigt die Anzahl der individuellen Mapper pro Monat für das ausgewählte "
+"Thema an. KeinQualitätsindikator."
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:95
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:97
 msgid " No features in this region"
 msgstr " Keine Features in dieser Region"
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:117
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:119
 msgid "Result value should not be None."
 msgstr "Der Ergebniswert darf nicht „None“ sein."
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:121
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:125
 msgid "Attribute title should not be None."
 msgstr "Der Attributtitel darf nicht „None“ sein."
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:124
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:128
 msgid "attributes "
 msgstr "Attribute "
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:126
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:130
 msgid "attribute "
 msgstr "Attribut "
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:144
-#: ohsome_quality_api/indicators/currentness/indicator.py:279
-#: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:63
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:223
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:163
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:148
+#: ohsome_quality_api/indicators/currentness/indicator.py:298
+#: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:67
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:226
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:167
 msgid "Result is undefined. Skipping figure creation."
 msgstr "Ergebnis ist undefiniert. Diagrammerstellung wird übersprungen."
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:198
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:202
 #, python-brace-format
-msgid "{int(absolute_value} elements"
-msgstr ""
+msgid "{absolute_value} elements"
+msgstr "{absolute_value} Elemente"
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:199
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:205
 msgid "elements"
 msgstr "Elemente"
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:207
+#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:229
 msgid "Invalid aggregation_type"
 msgstr "Ungültiger Aggregationstyp"
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 msgid "The attribute completeness is low (<25%)."
-msgstr ""
+msgstr "Die Attributvollständigkeit ist niedrig (<25%)."
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 #, python-format
 msgid "The attribute completeness is medium (25%-75%)."
-msgstr ""
+msgstr "Die Attributvollständigkeit ist mittelmäßig (25%-75%)."
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 msgid "The attribute completeness is high (>75%)."
-msgstr ""
+msgstr "Die Attributvollständigkeit ist hoch (>75%)."
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 #: ohsome_quality_api/indicators/currentness/templates.yaml
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "The quality level could not be calculated for this indicator."
-msgstr ""
+msgstr "Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden."
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
-#, python-format
+#, fuzzy
 msgid ""
-"$result% of all \"$topic\" features (all: $all) in your area of interest "
+"$result of all \"$topic\" features (all: $all) in your area of interest "
 "have the selected additional $tags (matched: $matched). "
 msgstr ""
+"$result% aller \"$topic\" Features (alle: $all) im Untersuchungsgebiet "
+"haben die ausgewählten zusätzlichen $tags (übereinstimmend: $matched). "
 
 #: ohsome_quality_api/indicators/building_comparison/datasets.yaml
 msgid "EUBUCCO"
@@ -581,7 +599,7 @@ msgid ""
 " world. It is derived from satellite imagery."
 msgstr ""
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:148
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:153
 msgid ""
 "OSM has substantivly more buildings than the reference datasets. The "
 "reference dataset is likely to miss many buildings."
@@ -589,7 +607,7 @@ msgstr ""
 "OSM enthält deutlich mehr Gebäude als die Referenzdatensätze. Im "
 "Referenzdatensatz fehlen wahrscheinlich viele Gebäude."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:162
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:167
 msgid ""
 "Result is undefined and major edge case is present. Skipping figure "
 "creation."
@@ -597,69 +615,73 @@ msgstr ""
 "Ergebnis ist undefiniert und ein Sonderfall ist vorhanden. "
 "Diagrammerstellung wird übersprungen."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:199
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:216
 msgid "OSM building area"
 msgstr "OSM-Gebäudefläche"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:216
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:223
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:233
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:240
 msgid "Reference"
 msgstr "Referenz"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:239
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:256
 msgid "Building Area [km²]"
 msgstr "Gebäudefläche [km²]"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:259
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:276
 #, python-brace-format
 msgid "{} does not cover your area-of-interest."
-msgstr "{} decken das Untersuchungsgebiet nicht ab."
+msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:261
-#, python-brace-format, python-format
-msgid "Only {:.2f}% of your area-of-interest is covered by {}"
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:278
+#, fuzzy, python-brace-format
+msgid "Only {} of your area-of-interest is covered by {}"
 msgstr "Nur {:.2f}% des Untersuchungsgebiets sind von  {} bedeckt"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:267
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:284
 #, fuzzy, python-brace-format
 msgid "{dataset} does not contain buildings for your area-of-interest."
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:277
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:271
-#, fuzzy, python-brace-format, python-format
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:294
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:294
+#, fuzzy, python-brace-format
 msgid ""
-"{dataset} does only cover {coverage}% of your area-of-interest. "
-"Comparison is made for the intersection area."
-msgstr "des Untersuchungsgebiets. Der Vergleich erfolgt für die Schnittfläche."
+"{dataset} does only cover {coverage} of your area-of-interest. Comparison"
+" is made for the intersection area."
+msgstr ""
+"{dataset} deckt nur {coverage} des Untersuchungsgebiets ab. Der Vergleich"
+" erfolgt für die Schnittfläche."
 
 #: ohsome_quality_api/indicators/building_comparison/templates.yaml
 msgid "The completeness of OSM buildings in your area-of-interest is low."
-msgstr ""
+msgstr "Die Vollständigkeit der OSM Gebäude im Untersuchungssgebiet ist niedrig."
 
 #: ohsome_quality_api/indicators/building_comparison/templates.yaml
 msgid "The completeness of OSM buildings in your area-of-interest is medium."
 msgstr ""
+"Die Vollständigkeit der OSM Gebäude im Untersuchungsgebiet ist "
+"mittelmäßig."
 
 #: ohsome_quality_api/indicators/building_comparison/templates.yaml
 msgid "The completeness of OSM buildings in your area-of-interest is high."
-msgstr ""
+msgstr "Die Vollständigkeit der OSM Gebäude im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/building_comparison/templates.yaml
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "Comparison could not be made."
-msgstr ""
+msgstr "Vergleich konnte nicht durchgeführt werden."
 
 #: ohsome_quality_api/indicators/building_comparison/templates.yaml
 msgid "The completeness in comparison to $dataset is $ratio%."
-msgstr ""
+msgstr "Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:161
+#: ohsome_quality_api/indicators/currentness/indicator.py:164
 #, python-brace-format
 msgid "Unknown aggregation_type: {aggregation_type}"
-msgstr ""
+msgstr "Unbekannter Aggregationstyp: {aggregation_type}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:302
+#: ohsome_quality_api/indicators/currentness/indicator.py:330
 #, python-brace-format
 msgid ""
 "%{customdata[0]} of features (%{customdata[1]}) were last modified in "
@@ -668,59 +690,59 @@ msgstr ""
 "%{customdata[0]} der Objekte (%{customdata[1]}) wurden zuletzt geändert "
 "im %{customdata[2]}<extra></extra>"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:346
+#: ohsome_quality_api/indicators/currentness/indicator.py:374
 msgid "Date of Last Edit"
 msgstr "Datum der letzten Änderung"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:354
+#: ohsome_quality_api/indicators/currentness/indicator.py:382
 msgid "Features [%]"
 msgstr "Features [%]"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:364
+#: ohsome_quality_api/indicators/currentness/indicator.py:392
 msgid "Features [#]"
 msgstr "Features [#]"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:371
+#: ohsome_quality_api/indicators/currentness/indicator.py:399
 #, python-brace-format
 msgid "Last Edit to a Feature{}"
 msgstr "Letzte Änderung an einem Objekt{}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:386
+#: ohsome_quality_api/indicators/currentness/indicator.py:414
 #, python-brace-format
 msgid "younger than {up_to_date_str}"
-msgstr ""
-
-#: ohsome_quality_api/indicators/currentness/indicator.py:390
-#, python-brace-format
-msgid "between {up_to_date_str} and {out_of_date_str}"
-msgstr ""
-
-#: ohsome_quality_api/indicators/currentness/indicator.py:394
-#, python-brace-format
-msgid "older than {out_of_date_str}"
-msgstr ""
-
-#: ohsome_quality_api/indicators/currentness/indicator.py:411
-#, python-brace-format
-msgid "{years} year"
-msgstr ""
-
-#: ohsome_quality_api/indicators/currentness/indicator.py:413
-#, python-brace-format
-msgid "{years} years"
-msgstr ""
-
-#: ohsome_quality_api/indicators/currentness/indicator.py:416
-#, fuzzy, python-brace-format
-msgid "{months} month"
-msgstr "Monate"
+msgstr "jünger als {up_to_date_str}"
 
 #: ohsome_quality_api/indicators/currentness/indicator.py:418
 #, python-brace-format
-msgid "{months} months"
-msgstr ""
+msgid "between {up_to_date_str} and {out_of_date_str}"
+msgstr "zwischen {up_to_date_str} und {out_of_date_str}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:463
+#: ohsome_quality_api/indicators/currentness/indicator.py:422
+#, python-brace-format
+msgid "older than {out_of_date_str}"
+msgstr "älter als {out_of_date_str}"
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:439
+#, python-brace-format
+msgid "{years} year"
+msgstr "{years} Jahr"
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:441
+#, python-brace-format
+msgid "{years} years"
+msgstr "{years} Jahre"
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:444
+#, fuzzy, python-brace-format
+msgid "{months} month"
+msgstr "{months} Monat"
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:446
+#, python-brace-format
+msgid "{months} months"
+msgstr "{months} Monate"
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:491
 msgid ""
 "In the area of interest no features of the selected topic are present "
 "today."
@@ -728,7 +750,7 @@ msgstr ""
 "Im Untersuchungsgebiet sind heute keine Objekte des ausgewählten Themas "
 "vorhanden."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:478
+#: ohsome_quality_api/indicators/currentness/indicator.py:506
 msgid ""
 "Please note that in the area of interest less than 25 features of the "
 "selected topic are present today. "
@@ -736,151 +758,161 @@ msgstr ""
 "Bitte beachte, dass im Interessensgebiet heute weniger als 25 Objekte des"
 " ausgewählten Themas vorhanden sind."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:483
+#: ohsome_quality_api/indicators/currentness/indicator.py:511
 #, python-brace-format
 msgid ""
 "Please note that there was no mapping activity for {num_months} months in"
 " this region. "
 msgstr ""
+"Bitte achte darauf, dass seit {num_months} Monaten keine "
+"Kartierungsaktivität in dieser Region stattgefundne hat."
 
 #: ohsome_quality_api/indicators/currentness/templates.yaml
 msgid "Many features are out-of-date."
-msgstr ""
+msgstr "Viele Features sind veraltet."
 
 #: ohsome_quality_api/indicators/currentness/templates.yaml
 msgid "Some features are up-to-date and some features are out-of-date."
-msgstr ""
+msgstr "Einige Features sind aktuell und einige Features sind veraltet."
 
 #: ohsome_quality_api/indicators/currentness/templates.yaml
 msgid "Most features are up-to-date."
-msgstr ""
+msgstr "Die meisten Features sind aktuell."
 
 #: ohsome_quality_api/indicators/currentness/templates.yaml
-#, python-format
+#, fuzzy
 msgid ""
-"In the area of interest $up_to_date_contrib_rel% of the features "
+"In the area of interest $up_to_date_contrib_rel of the features "
 "($aggregation$unit) were edited (created or modified) for the last time "
 "in the period between $from_timestamp and $to_timestamp."
 msgstr ""
+"In Ihrem Interessensgebiet wurden $up_to_date_contrib_rel% der Merkmale "
+"($aggregation$unit) zum letzten Mal im Zeitraum zwischen $from_timestamp "
+"und $to_timestamp bearbeitet (erstellt oder geändert)."
 
-#: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:57
+#: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:61
 msgid ""
 " Note that the area of overlapping OSM land cover polygons will be "
 "counted multiple times."
 msgstr ""
+"Beachte, dass überlappende OSM-Landbedeckungsdatenflächen mehrfach "
+"gezählt werden."
 
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
 msgid "In your area-of-interest, the completeness of OSM land cover data is low."
-msgstr ""
+msgstr "Die Vollständigkeit der Landbedeckung im Untersuchungsgebiet ist niedrig."
 
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
 msgid ""
 "In your area-of-interest, the completeness of OSM land cover data is "
 "mediocre."
 msgstr ""
+"Die Vollständigkeit der Landbedeckung im Untersuchungsgebiet ist "
+"mittelmäßig."
 
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
 msgid "In your area-of-interest, the completeness of OSM land cover data is high."
-msgstr ""
+msgstr "Die Vollständigkeit der Landbedeckung im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
-#, python-format
-msgid "$value% of the total area is covered by OSM land cover data."
-msgstr ""
+#, fuzzy
+msgid "$value of the total area is covered by OSM land cover data."
+msgstr "$value% des gesamten Gebietes ist von OSM Landbedeckungsdaten abgedeckt."
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:33
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:35
 msgid "Urban fabric"
 msgstr "Städtische Siedlungsgebiete"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:37
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:39
 msgid "Industrial, commercial and transport units"
 msgstr "Industrie-, Gewerbe- und Transportgebiete"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:41
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:43
 msgid "Mine, dump and construction sites"
 msgstr "Bergbau-, Deponie- und Baustellen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:45
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:47
 msgid "Artificial non-agricultural vegetated areas"
 msgstr "Künstliche nicht-landwirtschaftlich genutzte Grünflächen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:48
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:50
 msgid "Arable land"
 msgstr "Ackerland"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:49
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:51
 msgid "Permanent crops"
 msgstr "Dauerhafte Kulturen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:50
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:52
 msgid "Pastures"
 msgstr "Weiden"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:52
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:54
 msgid "Heterogeneous agricultural areas"
 msgstr "Heterogene landwirtschaftliche Flächen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:55
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:57
 msgid "Forest"
 msgstr "Wald"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:57
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:59
 msgid "Shrubs and/or herbaceous vegetation associations"
 msgstr "Sträucher und/oder krautige Vegetation"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:61
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:63
 msgid "Open spaces with little or no vegetation"
 msgstr "Offene Flächen mit wenig oder keiner Vegetation"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:64
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:66
 msgid "Inland wetlands"
 msgstr "Binnenfeuchtgebiete"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:65
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:67
 msgid "Coastal wetlands"
 msgstr "Küstenfeuchtgebiete"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:66
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:68
 msgid "Inland waters"
 msgstr "Binnengewässer"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:67
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:69
 msgid "Marine waters"
 msgstr "Meeresgewässer"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:71
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:73
 msgid "Artificial areas"
 msgstr "Künstliche Flächen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:72
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:74
 msgid "Agricultural areas"
 msgstr "Landwirtschaftliche Flächen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:73
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:75
 msgid "Forest and semi-natural areas"
 msgstr "Wald- und halbnatürliche Flächen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:74
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:76
 msgid "Wetlands"
 msgstr "Feuchtgebiete"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:75
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:77
 msgid "Water bodies"
 msgstr "Gewässer"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:194
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:196
 msgid "all CORINE Land Cover (CLC) classes"
 msgstr "Alle CORINE Land Cover (CLC)-Klassen"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:197
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:199
 msgid "CORINE Land Cover (CLC) class"
 msgstr "CORINE Land Cover (CLC)-Klasse"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:210
-msgid "coverage with the comparison data. "
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:214
+#, fuzzy, python-brace-format
+msgid "Warning: There is only {coverage} coverage with the comparison data. "
 msgstr "Abdeckung mit den Vergleichsdaten."
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:214
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:217
 msgid ""
 "Please take the Land Cover Completeness indicator into account for "
 "interpretation of these results."
@@ -888,65 +920,65 @@ msgstr ""
 "Bitte berücksichtige den Land Cover Completeness-Indikator bei der "
 "Interpretation dieser Ergebnisse."
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:253
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:256
 msgid "Precision [%]:"
 msgstr "Präzision [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:255
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:263
 msgid "Recall [%]:"
 msgstr "Recall [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:257
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:314
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:334
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:353
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:270
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:336
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:366
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:400
 msgid "Area [km<sup>2</sup>]:"
 msgstr "Fläche [km<sup>2</sup>]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:259
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:316
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:336
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:355
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:272
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:343
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:373
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:407
 msgid "Area [%]:"
 msgstr "Fläche [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:272
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:289
 msgid "F1-Score [%]"
 msgstr "F1-Score [%]"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:275
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:375
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:292
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:432
 msgid "CORINE data from"
 msgstr "CORINE-Daten von"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:280
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:380
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:297
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:437
 msgid "OSM data from"
 msgstr "OSM-Daten von"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:307
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:324
 msgid "False Negative"
-msgstr "Falsch Negativ"
+msgstr "Falsch-Negativ"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:312
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:332
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:351
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:334
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:364
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:398
 msgid "CORINE class:"
 msgstr "CORINE-Klasse:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:313
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:333
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:352
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:335
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:365
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:399
 msgid "OSM class:"
 msgstr "OSM-Klasse:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:326
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:353
 msgid "True Positive"
-msgstr "Richtig Positiv"
+msgstr "Richtig-Positiv"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:346
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:388
 msgid "False Positive"
-msgstr "Falsch Positiv"
+msgstr "Falsch-Positiv"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
@@ -954,6 +986,10 @@ msgid ""
 "$f1_score% (low agreement between OSM and CORINE). This suggests that OSM"
 " has a poor classification quality or incomplete land cover data."
 msgstr ""
+" Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
+"Interessensgebiet (geringe Übereinstimmung zwischen OSM und CORINE). Dies"
+" deutet darauf hin, dass OSM eine schlechte Klassifizierungsqualität oder"
+" unvollständige Landbedeckungsdaten aufweist."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
@@ -962,6 +998,10 @@ msgid ""
 "OSM does capture some land cover categories but may lack detail or "
 "accuracy."
 msgstr ""
+"Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
+"Interessensgebiet (mittelmäßige Übereinstimmung zwische OSM und "
+"CORINE).Dies deutet darauf hin, dass OSM einige Landbedeckungsklassen gut"
+" erfasst, es jedoch an Details oder Genauigkeit mangelt."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
@@ -969,12 +1009,19 @@ msgid ""
 "$f1_score% (high agreement between OSM and CORINE). This suggests that "
 "OSM provides a reliable representation of land cover."
 msgstr ""
+"Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
+"Interessensgebiet (hohe Übereinstimmung zwische OSM und CORINE).Dies "
+"deutet darauf hin, dass OSM eine zuverlässige Darstellung der "
+"Landbedeckung bietet."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
 "The F1-score could not be calculated, possibly due to missing data or the"
 " CLC class not being present in the selected region."
 msgstr ""
+"Der F1-Score konnte nicht berechnet werden, möglicherweise aufgrund "
+"fehlender Daten oder weil die CLC-Klasse in der ausgewählten Region nicht"
+" vorhanden ist."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
@@ -982,47 +1029,51 @@ msgid ""
 "used as a statistical metric that considers both the correctness and "
 "completeness of  the land cover categories weighted by area."
 msgstr ""
+"Der <a href=\"https://en.wikipedia.org/wiki/F-score\">F1-Score</a> wird "
+"als statistische Kennzahl verwendet, die sowohl die Richtigkeit als auch "
+"die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
+"Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:148
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:150
 #, python-brace-format
 msgid "Result value (saturation) is an unexpected value: {}"
 msgstr "Ergebniswert (Sättigung) ist ein unerwarteter Wert: {}"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:171
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:175
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:179
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:185
-#: ohsome_quality_api/indicators/user_activity/indicator.py:183
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:189
+#: ohsome_quality_api/indicators/user_activity/indicator.py:199
 msgid "Date"
 msgstr "Datum"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:189
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:193
 msgid "Value"
 msgstr "Wert"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:196
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:200
 #, fuzzy, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:204
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:208
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:228
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:236
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:235
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:239
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1030,7 +1081,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:239
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:243
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1079,44 +1130,48 @@ msgid ""
 "Microsoft Road Detections is a dataset of road world-wide. It is derived "
 "from satellite imagery."
 msgstr ""
+"Microsoft Road Detections ist ein weltweiter Datensatz von Straßen. Er "
+"wurdeaus Satellitenbildern erstellt."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:123
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:126
 #, python-brace-format
 msgid ""
 "{name} has a road length of {total_length} km, of which {matched_length} "
 "km are covered by roads in OSM. "
 msgstr ""
+"{name} hat eine Straßenlänge von {total_length} km, von denen "
+"{matched_length}km von den Straßen in OSM gedeckt sind."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:177
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:184
 #, python-brace-format
 msgid "OSM Covered: {length_matched} km ({date})"
-msgstr ""
+msgstr "von OSM abgedeckt: {length_matched} km {date}"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:185
-#, python-brace-format, python-format
-msgid "{matched_percentage}% of {name} are matched by OSM"
-msgstr ""
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:194
+#, fuzzy, python-brace-format
+msgid "{matched_percentage} of {name} are matched by OSM"
+msgstr "{matched_percentage}% von {name} sind von OSM abgedeckt"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:205
-#, python-brace-format, python-format
-msgid "{not_matched_percentage}% of {name} are not matched by OSM"
-msgstr ""
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:217
+#, fuzzy, python-brace-format
+msgid "{not_matched_percentage} of {name} are not matched by OSM"
+msgstr "{not_matched_percentage}% von {name} sind nicht von OSM abgedeckt"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:215
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:230
 #, python-brace-format
 msgid "Not OSM Covered: {length_difference_km} km ({date})"
-msgstr ""
+msgstr "Nicht von OSM abgedeckt: {length_difference_km} km ({date})"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:228
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:247
 msgid "Matched road length [%]"
 msgstr "Abgeglichene Straßenlänge [%]"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:251
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:270
 #, fuzzy, python-brace-format
 msgid "Reference dataset {dataset} does not cover area-of-interest. "
-msgstr "{} decken das Untersuchungsgebiet nicht ab."
+msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:255
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:274
 #, fuzzy, python-brace-format, python-format
 msgid ""
 "Only {a}%% of the area-of-interest is covered by the reference dataset "
@@ -1125,22 +1180,24 @@ msgstr ""
 "Nur {a}%% des Untersuchungsgebiets sind vom Referenzdatensatz ({b}) "
 "abgedecktKeine Qualitätsabschätzung mit Referenz {c} ist möglich."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:261
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:284
 #, fuzzy, python-brace-format
 msgid "{dataset} does not contain roads for your area-of-interest. "
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "The completeness of OSM roads in your area-of-interest is low."
-msgstr ""
+msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist niedrig."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "The completeness of OSM roads in your area-of-interest is medium."
 msgstr ""
+"Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist "
+"mittelmäßig."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "The completeness of OSM roads in your area-of-interest is high."
-msgstr ""
+msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid ""
@@ -1148,45 +1205,50 @@ msgid ""
 "total length of $length_total. $length_matched of $dataset are covered by"
 " OSM roads."
 msgstr ""
+"Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%.$dataset hat"
+" eine Gesamtlänge von $length_total.$length_matched von $dataset werden "
+"von OSM-Straßen abgedeckt."
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:127
+#: ohsome_quality_api/indicators/user_activity/indicator.py:143
 #, python-brace-format
 msgid "%{y} Users were modifying in %{customdata[1]}<extra></extra>"
 msgstr "%{y} Nutzer waren in %{customdata[1]} aktiv<extra></extra>"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:132
+#: ohsome_quality_api/indicators/user_activity/indicator.py:148
 msgid "Users per Month"
 msgstr "Nutzer pro Monat"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:143
+#: ohsome_quality_api/indicators/user_activity/indicator.py:159
 msgid "12-Month Weighted Avg"
 msgstr "12-Monatsdurchschnitt"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:148
+#: ohsome_quality_api/indicators/user_activity/indicator.py:164
 #, python-brace-format
 msgid "Weighted Avg: %{y:.0f} Users<extra></extra>"
 msgstr "Gewichteter Durchschnitt: %{y:.0f} Nutzer<extra></extra>"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:155
+#: ohsome_quality_api/indicators/user_activity/indicator.py:171
 msgid "Last 36M Trend"
 msgstr "Trend der letzten 36 Monate"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:160
+#: ohsome_quality_api/indicators/user_activity/indicator.py:176
 #, python-brace-format
 msgid "Trend: %{y:.0f} Users<extra></extra>"
 msgstr "Trend: %{y:.0f} Nutzer<extra></extra>"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:198
+#: ohsome_quality_api/indicators/user_activity/indicator.py:214
 msgid "Active Users [#]"
 msgstr "Aktive Nutzer [#]"
 
-#: ohsome_quality_api/indicators/user_activity/indicator.py:215
+#: ohsome_quality_api/indicators/user_activity/indicator.py:231
 msgid "In this region no user activity was recorded. "
 msgstr "In dieser Region wurde keine Nutzeraktivität aufgezeichnet."
 
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
 msgid "This is a no-quality indicator. No quality estimation will be calculated."
 msgstr ""
+"Dies ist ein Nicht-Qualitäts-Indikator. Keine Qualitätseinschätzung wird "
+"berechnet."
 
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
 msgid ""
@@ -1194,14 +1256,17 @@ msgid ""
 "$median_users users added or edited objects of the selected topic in this"
 " region."
 msgstr ""
+"Im Zeitraum zwischen $from_timestamp und $to_timestamp haben "
+"durchschnittlich $median_users Benutzer Objekte zum ausgewählten Thema in"
+" dieser Region hinzugefügt oder bearbeitet."
 
 #: ohsome_quality_api/ohsome/client.py:181
 msgid "Parameter 'bpolys' does not have expected type."
-msgstr ""
+msgstr "Parameter 'bpolys' hat nicht den erwarteten Typ."
 
 #: ohsome_quality_api/projects/projects.yaml
 msgid "something that is still a TODO"
-msgstr ""
+msgstr "etwas ist immernoch ein TODO"
 
 #: ohsome_quality_api/projects/projects.yaml
 msgid "ohmygrid"
@@ -1227,7 +1292,7 @@ msgstr ""
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "Completeness"
-msgstr ""
+msgstr "Vollständigkeit"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid ""
@@ -1235,34 +1300,41 @@ msgid ""
 " all expected attributes and related entity instances in a specific "
 "context of use."
 msgstr ""
+"Der Grad, in dem mit einer Entität verbundene Fachdaten Werte für alle "
+"erwarteten Attribute und zugehörige Entitätsinstanzen in einem bestimmten"
+" Verwendungskontext aufweisen."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid ""
 "The degree to which data has attributes that are of the right age in a "
 "specific context of use."
 msgstr ""
+"Der Grad, in dem Daten Attribute aufweisen, die für einen bestimmten "
+"Verwendungskontext das richtige Alter haben."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "Thematic Accuracy"
-msgstr ""
+msgstr "Thematische Genauigkeit"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid ""
 "The degree to which attributes of data are correct (agree with \"truth\" "
 "of the reference dataset)."
 msgstr ""
+"Der Grad, in dem die Attribute von Daten korrekt sind (mit der "
+"\"Wahrheit\"des Referenzdatensatzes übereinstimmen)."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "A minimal quality dimension definition for testing purposes."
-msgstr ""
+msgstr "Eine minimale Qualitätsdimension zum Testen."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "No specific quality dimension"
-msgstr ""
+msgstr "Keine spezifische Qualitätsdimension"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Buildings (count)"
@@ -1270,15 +1342,15 @@ msgstr "Gebäude (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All buildings as defined by all objects tagged with 'building=*'."
-msgstr ""
+msgstr "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Buildings (area)"
-msgstr ""
+msgstr "Gebäude (Fläche)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Roads (all highways)"
-msgstr ""
+msgstr "Straßen (alle highways)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
@@ -1287,10 +1359,15 @@ msgid ""
 " network and their link roads as defined in the <a "
 "href=\"https://wiki.openstreetmap.org/wiki/Key:highway\">OSM Wiki</a>"
 msgstr ""
+"Alle linearen OSM-Objekte mit dem Haupt-Tag `highway=*`. Das Straßennetz,"
+" definiert durch alle Objekte, die die Haupt-Tags für das Straßennetz und"
+" ihre Verbindungsstraßen tragen, wie im <a "
+"href=\"https://wiki.openstreetmap.org/wiki/Key:highway\">OSM-Wiki</a> "
+"definiert."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Roads (cars)"
-msgstr ""
+msgstr "Straßen (Autos)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
@@ -1300,66 +1377,80 @@ msgid ""
 "href=\"https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks\">OSM"
 " Wiki</a>"
 msgstr ""
+"Alle linearen OSM-Objekte, die sich auf Straßen beziehen, die von "
+"Fahrzeugen (z. B. Autos) genutzt werden können. Das Straßennetz, "
+"definiert durch alle Objekte, die die Haupt-Tags für das Straßennetz und "
+"ihre Verbindungsstraßen tragen, wie im <a "
+"href=\"https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks"
+"\">OSM-Wiki</a> definiert."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Railways"
-msgstr ""
+msgstr "Eisenbahnen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Railway networks."
-msgstr ""
+msgstr "Eisenbahnnetze."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Bridges (cars)"
-msgstr ""
+msgstr "Brücken (Autos)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All linear OSM features referring to a bridge usable by vehicles."
 msgstr ""
+"Alle linearen OSM-Objekte, die sich auf von Fahrzeugen nutzbare Brücken "
+"beziehen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Bridges (all ways)"
-msgstr ""
+msgstr "Brücken (alle Wege)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All linear OSM features referring to a bridge including footpaths only."
 msgstr ""
+"Alle linearen OSM-Objekte, die sich auf Brücken beziehen, einschließlich "
+"reiner Fußwege."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Bridges (count)"
-msgstr ""
+msgstr "Brücken (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of all polygons labelled as bridge."
-msgstr ""
+msgstr "Anzahl aller als Brücke gekennzeichneten Polygone."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "All linear OSM features referring to a cycleway. Includes exclusive "
 "cycleways and cycleways on the side of streets."
 msgstr ""
+"Alle linearen OSM-Objekte, die sich auf Radwege beziehen. Beinhaltet "
+"exklusive Radwege sowie Radwege entlang von Straßen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Power Lines"
-msgstr ""
+msgstr "Stromleitungen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All linear OSM features referring to power lines."
-msgstr ""
+msgstr "Alle linearen OSM-Objekte, die sich auf Stromleitungen beziehen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Power Substation"
-msgstr ""
+msgstr "Umspannwerk"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "A facility which controls the flow of electricity in a power network with"
 " transformers, switchgear or compensators."
 msgstr ""
+"Eine Anlage, die den Stromfluss in einem Stromnetz mit Transformatoren, "
+"Schaltanlagen oder Kompensatoren steuert."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Footpath"
-msgstr ""
+msgstr "Fußweg"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
@@ -1367,406 +1458,435 @@ msgid ""
 "pedestrian paths, shared-use paths, and roads where foot traffic is "
 "allowed or sidewalks exist."
 msgstr ""
+"Alle linearen OSM-Objekte, die üblicherweise zum Gehen genutzt werden, "
+"einschließlich ausgewiesener Fußwege, gemeinsamer Nutzungspfade sowie "
+"Straßen, auf denen Fußverkehr erlaubt ist oder Gehwege existieren."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "POI"
-msgstr ""
+msgstr "POI"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Points of interest."
-msgstr ""
+msgstr "Points of Interest (Orte von Interesse)."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Schools"
-msgstr ""
+msgstr "Schulen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of schools."
-msgstr ""
+msgstr "Anzahl der Schulen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Kindergartens"
-msgstr ""
+msgstr "Kindergärten"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of kindergartens."
-msgstr ""
+msgstr "Anzahl der Kindergärten."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Clinics"
-msgstr ""
+msgstr "Kliniken"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of clinics."
-msgstr ""
+msgstr "Anzahl der Kliniken."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Doctors"
-msgstr ""
+msgstr "Ärzte"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of doctors."
-msgstr ""
+msgstr "Anzahl der Ärzte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Bus Stops"
-msgstr ""
+msgstr "Bushaltestellen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of bus stops."
-msgstr ""
+msgstr "Anzahl der Bushaltestellen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Tram Stops"
-msgstr ""
+msgstr "Straßenbahnhaltestellen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of tram stops."
-msgstr ""
+msgstr "Anzahl der Straßenbahnhaltestellen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Public Transport Stops"
-msgstr ""
+msgstr "ÖPNV-Haltestellen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of public transport stops."
-msgstr ""
+msgstr "Anzahl der ÖPNV-Haltestellen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Subway Stations"
-msgstr ""
+msgstr "U-Bahn-Stationen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of subway stops."
-msgstr ""
+msgstr "Anzahl der U-Bahn-Haltestellen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Supermarkets"
-msgstr ""
+msgstr "Supermärkte"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of supermarkets."
-msgstr ""
+msgstr "Anzahl der Supermärkte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Marketplaces"
-msgstr ""
+msgstr "Marktplätze"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of marketplaces."
-msgstr ""
+msgstr "Anzahl der Marktplätze."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Parks"
-msgstr ""
+msgstr "Parks"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of parks."
-msgstr ""
+msgstr "Anzahl der Parks."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Sports Pitches"
-msgstr ""
+msgstr "Sportplätze"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Count of sports pitches (an area designed for practising a particular "
 "sport)."
 msgstr ""
+"Anzahl der Sportplätze (ein Bereich, der für die Ausübung einer "
+"bestimmten Sportart vorgesehen ist)."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Forests"
-msgstr ""
+msgstr "Wälder"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of forests."
-msgstr ""
+msgstr "Anzahl der Wälder."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial Landuse (count)"
-msgstr ""
+msgstr "Gewerbegebiets-Nutzung (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial landsites."
-msgstr ""
+msgstr "Gewerbegebiete."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial Landuse (area)"
-msgstr ""
+msgstr "Gewerbegebiets-Nutzung (Fläche)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial areas."
-msgstr ""
+msgstr "Gewerbeflächen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Fitness Centres"
-msgstr ""
+msgstr "Fitnesszentren"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of fitness centres."
-msgstr ""
+msgstr "Anzahl der Fitnesszentren."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Fire Stations"
-msgstr ""
+msgstr "Feuerwachen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of firestations."
-msgstr ""
+msgstr "Anzahl der Feuerwachen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Hospitals"
-msgstr ""
+msgstr "Krankenhäuser"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of hospitals."
-msgstr ""
+msgstr "Anzahl der Krankenhäuser."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "UNICEF Roads"
-msgstr ""
+msgstr "UNICEF-Straßen"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "The road network usable for routing as defined for the UNICEF Project."
 msgstr ""
+"Das für Routing nutzbare Straßennetz, wie für das UNICEF-Projekt "
+"definiert."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Primary Healthcare facilities for UNICEF Project"
-msgstr ""
+msgstr "Primäre Gesundheitseinrichtungen für das UNICEF-Projekt"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Settlements Count"
-msgstr ""
+msgstr "MapAction Siedlungen (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Number of settlements (cities)."
-msgstr ""
+msgstr "Anzahl der Siedlungen (Städte)."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Capital City Count"
-msgstr ""
+msgstr "MapAction Hauptstädte (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Number of capital cities."
-msgstr ""
+msgstr "Anzahl der Hauptstädte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Rail Length"
-msgstr ""
+msgstr "MapAction Eisenbahnnetz (Länge)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Length of objects identified as rails (large railways)."
-msgstr ""
+msgstr "Länge der als Eisenbahnstrecken identifizierten Objekte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Major Roads length"
-msgstr ""
+msgstr "MapAction Hauptstraßen (Länge)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Length of objects identified as major roads (primary, motorway and trunk)."
 msgstr ""
+"Länge der als Hauptstraßen identifizierten Objekte (primary, motorway und"
+" trunk)."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Lakes Count"
-msgstr ""
+msgstr "MapAction Seen (Anzahl)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Number of objects identified as lakes, lagoons and reservoirs."
-msgstr ""
+msgstr "Anzahl der als Seen, Lagunen und Stauseen identifizierten Objekte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Lakes Area"
-msgstr ""
+msgstr "MapAction Seen (Fläche)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Area of objects identified as lakes, lagoons and reservoirs."
-msgstr ""
+msgstr "Fläche der als Seen, Lagunen und Stauseen identifizierten Objekte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "MapAction Rivers Length"
-msgstr ""
+msgstr "MapAction Flüsse (Länge)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Length of objects identified as rivers (or riverbanks)."
-msgstr ""
+msgstr "Länge der als Flüsse (oder Flussufer) identifizierten Objekte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Land Use and Land Cover"
-msgstr ""
+msgstr "Landnutzung und Landbedeckung"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Features related to land use and land cover."
-msgstr ""
+msgstr "Objekte im Zusammenhang mit Landnutzung und Landbedeckung."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Local food shops"
-msgstr ""
+msgstr "Lokale Lebensmittelgeschäfte"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of local food shops."
-msgstr ""
+msgstr "Anzahl der lokalen Lebensmittelgeschäfte."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Fast food restaurants"
-msgstr ""
+msgstr "Fast-Food-Restaurants"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of fast food restaurants."
-msgstr ""
+msgstr "Anzahl der Fast-Food-Restaurants."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Restaurants"
-msgstr ""
+msgstr "Restaurants"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of restaurants."
-msgstr ""
+msgstr "Anzahl der Restaurants."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Convenience stores"
-msgstr ""
+msgstr "Convenience Stores"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of convenience stores."
-msgstr ""
+msgstr "Anzahl der Convenience Stores."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Pubs and biergartens"
-msgstr ""
+msgstr "Pubs und Biergärten"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of pubs and biergartens."
-msgstr ""
+msgstr "Anzahl der Pubs und Biergärten."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Alcohol and beverages"
-msgstr ""
+msgstr "Alkohol- und Getränkegeschäfte"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of shops selling alcohol."
-msgstr ""
+msgstr "Anzahl der Geschäfte, die Alkohol verkaufen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Sweets and pastries"
-msgstr ""
+msgstr "Süßwaren- und Backwarengeschäfte"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Count of shops selling sweets and pastries."
-msgstr ""
+msgstr "Anzahl der Geschäfte, die Süßwaren und Backwaren verkaufen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Arable Land CLC"
-msgstr ""
+msgstr "Ackerland CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Arable Land\" (level "
 "2) in Agriculture."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Ackerland“ "
+"(Stufe 2) in Landwirtschaft."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Permanent Crops CLC"
-msgstr ""
+msgstr "Dauerkulturen CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Permanent Crops\" "
 "(level 2) in Agriculture."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Dauerkulturen“ "
+"(Stufe 2) in Landwirtschaft."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Pastures CLC"
-msgstr ""
+msgstr "Weideland CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Pastures\" (level 2) "
 "in Agriculture."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Weideland“ "
+"(Stufe 2) in Landwirtschaft."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Forests CLC"
-msgstr ""
+msgstr "Wälder CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Forests\" (level 2) in"
 " Seminatural Land."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wälder“ (Stufe "
+"2) im Bereich „Halbnatürliche Flächen“."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Leaf Types of Forests CLC"
-msgstr ""
+msgstr "Blatttypen der Wälder CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Frequency of forests according to Corine Land Cover Category \"Forests\" "
 "(level 2) tagged with Leaf Type."
 msgstr ""
+"Häufigkeit von Wäldern gemäß der Corine-Land-Cover-Kategorie „Wälder“ "
+"(Stufe 2), gekennzeichnet mit Blatttyp."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Shrubs CLC"
-msgstr ""
+msgstr "Strauchvegetation CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Shrubs\" (level 2) in "
 "Seminatural Land."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie "
+"„Strauchvegetation“ (Stufe 2) im Bereich „Halbnatürliche Flächen“."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Open Spaces CLC"
-msgstr ""
+msgstr "Offene Räume CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Open Spaces\" (level "
 "2) in Seminatural Land."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Offene Räume“ "
+"(Stufe 2) im Bereich „Halbnatürliche Flächen“."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Wetlands CLC"
-msgstr ""
+msgstr "Feuchtgebiete CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Selected features for Corine Land Cover Category \"Wetlands\" (level 1)."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Feuchtgebiete“ "
+"(Stufe 1)."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Water CLC"
-msgstr ""
+msgstr "Wasserflächen CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Water\" (level 1), "
 "excluding waterways."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wasserflächen“ "
+"(Stufe 1), ohne Wasserstraßen."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Waterways CLC"
-msgstr ""
+msgstr "Wasserstraßen CLC"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
 "Selected features for Corine Land Cover Category \"Waterways\" (level 2) "
 "in Water."
 msgstr ""
+"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wasserstraßen“ "
+"(Stufe 2) im Bereich „Wasser“."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "A minimal topic definition for testing purposes."
-msgstr ""
+msgstr "Eine minimale Themen-Definition zu Testzwecken."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Infrastructure Lines"
-msgstr ""
+msgstr "Infrastrukturlinien"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Line objects related to infrastructure."
-msgstr ""
+msgstr "Linienobjekte im Zusammenhang mit Infrastruktur."
 
 #: ohsome_quality_api/utils/exceptions.py:33
 msgid "Query returned no record."
-msgstr ""
+msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "List of all bus lines stopping at a certain stop"
 #~ msgstr ""
@@ -1999,4 +2119,16 @@ msgstr ""
 
 #~ msgid "Comparison is made for the intersection area."
 #~ msgstr "Der Vergleich erfolgt für die Schnittfläche."
+
+#~ msgid "{int(absolute_value} elements"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "{dataset} does only cover {coverage}% of"
+#~ " your area-of-interest. Comparison is"
+#~ " made for the intersection area."
+#~ msgstr ""
+#~ "{dataset} deckt nur {coverage} des "
+#~ "Untersuchungsgebiets ab. Der Vergleich erfolgt"
+#~ " für die Schnittfläche."
 
