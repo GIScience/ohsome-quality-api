@@ -399,11 +399,15 @@ standard = [
 
 [[package]]
 name = "fastapi-i18n"
-version = "0.3.0"
-source = { git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git#65b3c608313528d67022da8898bf66ebd72610a1" }
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9b/03/54c7568afbccfca87c534ab6f33e0fb511bd4c014f3aa090a1b4a8db06d7/fastapi_i18n-0.4.0.tar.gz", hash = "sha256:ba1397795732f95cfb56b1bdf1fb74930f8982c9048400c49d78932815635d84", size = 18672, upload-time = "2025-11-05T15:54:32.725Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/f2/8a6f45ab82f021db06bdf6f90d5e790698e033e6eb614ffefa9f062e5f5d/fastapi_i18n-0.4.0-py3-none-any.whl", hash = "sha256:2c6115add91048099d38784056c1d4b45c16e2372009934ef3af96a2ae74dc72", size = 19049, upload-time = "2025-11-05T15:54:31.37Z" },
 ]
 
 [[package]]
@@ -809,7 +813,7 @@ requires-dist = [
     { name = "async-lru", specifier = ">=2.0.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
-    { name = "fastapi-i18n", git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git" },
+    { name = "fastapi-i18n", specifier = ">=0.4.0" },
     { name = "geojson", specifier = ">=3.2.0" },
     { name = "geojson-pydantic", specifier = ">=2.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },

@@ -16,7 +16,7 @@ dependencies = [
     "async-lru>=2.0.5",
     "asyncpg>=0.30.0",
     "fastapi>=0.115.12",
-    "fastapi-i18n",
+    "fastapi-i18n>=0.4.0",
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
@@ -65,7 +65,6 @@ module-root = ""
 [tool.uv.sources]
 asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
 ohsome-filter-to-sql = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git" }
-fastapi-i18n = { git = "https://gitlab.heigit.org/mschaub/fastapi-i18n.git" }
 
 [tool.ruff.lint]
 select = [
