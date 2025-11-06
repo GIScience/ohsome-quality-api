@@ -25,7 +25,7 @@ Check out the interactive [Swagger API documentation](https://api.quality.ohsome
 
 ## About
 
-On our [website](https://api.quality.ohsome.org) you can find more details about the ohsome quality API. If you want to read up on the history of ohsome quality API, which was named ohsome quality analyst (OQT) in the past, take a look at our [blog posts]([https://heigit.org/tag/ohsome-quality-api-en](https://web.archive.org/web/20241112220936/https://heigit.org/tag/ohsome-quality-api-en/)).
+On our [website](https://api.quality.ohsome.org) you can find more details about the ohsome quality API. If you want to read up on the history of ohsome quality API, which was named ohsome quality analyst (OQT) in the past, take a look at our [blog posts](https://heigit.org/tag/ohsome-quality-api/).
 
 ## Contributing
 
