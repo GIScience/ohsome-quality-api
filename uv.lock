@@ -112,11 +112,15 @@ wheels = [
 
 [[package]]
 name = "asyncpg-recorder"
-version = "2025.9.1.3"
-source = { git = "https://github.com/GIScience/asyncpg-recorder.git#cf80d70978f8f4f174124542363937b3cfee7a2c" }
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncpg" },
     { name = "testcontainers" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/18/22/9c2566d08617fa996d99e9b95113a7c9a86d8e3efb068fabc7d9bd94179d/asyncpg_recorder-0.1.0.tar.gz", hash = "sha256:a6f151bf41e03c36d677a82d4d2d1b7658860930c423a908a96405ebda00960d", size = 20254, upload-time = "2025-10-27T13:04:38.38Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f1/07/b6a82701b9ca7e5980a276d1f24b0aa5138df0b1e345240387771a28aae6/asyncpg_recorder-0.1.0-py3-none-any.whl", hash = "sha256:4a6ca4f12b475f6814af78c9d7ad1367e60db0b834d490795e8a0fd6a86c8de7", size = 21686, upload-time = "2025-10-27T13:04:36.912Z" },
 ]
 
 [[package]]
@@ -737,9 +741,13 @@ wheels = [
 [[package]]
 name = "ohsome-filter-to-sql"
 version = "0.1.0"
-source = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git#84a44a6ed8ba940dd4de10c736ccb2aeb3f99ad8" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "antlr4-python3-runtime" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ae/a0/8e0fe168fc3c56fc4dc8e6f5a685a4c87ea826e149449e52eeeea8c41058/ohsome_filter_to_sql-0.1.0.tar.gz", hash = "sha256:652d7fe4ae9d47711a3c38159d78a6fc7062890aa170bfff009f1c2eab9dc4ac", size = 37105, upload-time = "2025-10-27T10:30:51.94Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/15/b4fe8473351d8f4c414b4355eb29ca9441cab03f99f35ad545d687139f73/ohsome_filter_to_sql-0.1.0-py3-none-any.whl", hash = "sha256:524c1498066c6a15666bb400856376f637e56069d09573491dcd02aafe70bcf4", size = 38677, upload-time = "2025-10-27T10:30:50.359Z" },
 ]
 
 [[package]]
@@ -793,7 +801,7 @@ requires-dist = [
     { name = "geojson-pydantic", specifier = ">=2.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "kaleido", specifier = "==0.2.1" },
-    { name = "ohsome-filter-to-sql", git = "https://github.com/GIScience/ohsome-filter-to-sql.git" },
+    { name = "ohsome-filter-to-sql", specifier = ">=0.1.0" },
     { name = "plotly", specifier = ">=6.0.1" },
     { name = "pydantic", specifier = ">=2.11.4" },
     { name = "pyproj", specifier = ">=3.7.1" },
@@ -808,7 +816,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "approvaltests", specifier = ">=14.5.0" },
-    { name = "asyncpg-recorder", git = "https://github.com/GIScience/asyncpg-recorder.git" },
+    { name = "asyncpg-recorder", specifier = ">=0.1.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
     { name = "pre-commit", specifier = ">=4.2.0" },
@@ -1409,7 +1417,7 @@ wheels = [
 
 [[package]]
 name = "testcontainers"
-version = "4.12.0"
+version = "4.13.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docker" },
@@ -1419,9 +1427,9 @@ dependencies = [
     { name = "urllib3", version = "2.4.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_python_implementation != 'PyPy'" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d3/62/01d9f648e9b943175e0dcddf749cf31c769665d8ba08df1e989427163f33/testcontainers-4.12.0.tar.gz", hash = "sha256:13ee89cae995e643f225665aad8b200b25c4f219944a6f9c0b03249ec3f31b8d", size = 66631, upload-time = "2025-07-21T20:32:26.37Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/51/edac83edab339d8b4dce9a7b659163afb1ea7e011bfed1d5573d495a4485/testcontainers-4.13.2.tar.gz", hash = "sha256:2315f1e21b059427a9d11e8921f85fef322fbe0d50749bcca4eaa11271708ba4", size = 78692, upload-time = "2025-10-07T21:53:07.531Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/e8/9e2c392e5d671afda47b917597cac8fde6a452f5776c4c9ceb93fbd2889f/testcontainers-4.12.0-py3-none-any.whl", hash = "sha256:26caef57e642d5e8c5fcc593881cf7df3ab0f0dc9170fad22765b184e226ab15", size = 111791, upload-time = "2025-07-21T20:32:25.038Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/5e/73aa94770f1df0595364aed526f31d54440db5492911e2857318ed326e51/testcontainers-4.13.2-py3-none-any.whl", hash = "sha256:0209baf8f4274b568cde95bef2cadf7b1d33b375321f793790462e235cd684ee", size = 124771, upload-time = "2025-10-07T21:53:05.937Z" },
 ]
 
 [[package]]
