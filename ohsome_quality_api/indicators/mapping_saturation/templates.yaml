@@ -9,4 +9,4 @@ label_description:
   undefined: >-
     Saturation could not be calculated.
 result_description: >-
-  The saturation of the last 3 years is $saturation%.
+  The saturation of the last 3 years is $saturation.

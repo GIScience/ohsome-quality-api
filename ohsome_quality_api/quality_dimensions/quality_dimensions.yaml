@@ -1,7 +1,7 @@
 ---
 
 completeness:
-  name: Completeness
+  name: completeness
   description: >-
     The degree to which subject data associated with an entity has values for all expected attributes
     and related entity instances in a specific context of use.
@@ -9,25 +9,25 @@ completeness:
     https://www.iso.org/standard/78900.html
 
 currentness:
-  name: Currentness
+  name: currentness
   description: >-
     The degree to which data has attributes that are of the right age in a specific context of use.
   source:
     https://www.iso.org/standard/35736.html
 
 thematic-accuracy:
-  name: Thematic Accuracy
+  name: thematic accuracy
   description: >-
     The degree to which attributes of data are correct (agree with "truth" of the reference dataset).
   source:
     https://onlinelibrary.wiley.com/doi/full/10.1155/2014/372349
 
 minimal:
-  name: Minimal
+  name: minimal
   description: >-
     A minimal quality dimension definition for testing purposes.
 
 none:
-  name: None
+  name: none
   description: >-
     No specific quality dimension

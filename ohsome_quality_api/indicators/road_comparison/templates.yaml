@@ -10,6 +10,6 @@ label_description:
   undefined: >-
     Comparison could not be made.
 result_description: >-
-    The completeness in comparison to $dataset is $ratio%.
+    The completeness in comparison to $dataset is $ratio.
     $dataset have a total length of $length_total.
     $length_matched of $dataset are covered by OSM roads.

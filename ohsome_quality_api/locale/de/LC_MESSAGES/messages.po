@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-29 15:51+0100\n"
+"POT-Creation-Date: 2025-11-05 14:20+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -411,7 +411,6 @@ msgstr ""
 "Steigung der Kurve minimal."
 
 #: ohsome_quality_api/indicators/indicators.yaml
-#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Minimal"
 msgstr ""
@@ -420,9 +419,8 @@ msgstr ""
 msgid "An minimal Indicator for testing purposes."
 msgstr "Ein minimaler Indikator zum Testen."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:369
+#: ohsome_quality_api/indicators/currentness/indicator.py:366
 #: ohsome_quality_api/indicators/indicators.yaml
-#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "Currentness"
 msgstr "Aktualität"
 
@@ -530,7 +528,7 @@ msgid "attribute "
 msgstr "Attribut "
 
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:148
-#: ohsome_quality_api/indicators/currentness/indicator.py:298
+#: ohsome_quality_api/indicators/currentness/indicator.py:295
 #: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:67
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:226
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:167
@@ -571,7 +569,6 @@ msgid "The quality level could not be calculated for this indicator."
 msgstr "Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden."
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
-#, fuzzy
 msgid ""
 "$result of all \"$topic\" features (all: $all) in your area of interest "
 "have the selected additional $tags (matched: $matched). "
@@ -634,18 +631,18 @@ msgid "{} does not cover your area-of-interest."
 msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:278
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Only {} of your area-of-interest is covered by {}"
 msgstr "Nur {:.2f}% des Untersuchungsgebiets sind von  {} bedeckt"
 
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:284
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{dataset} does not contain buildings for your area-of-interest."
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:294
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:294
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "{dataset} does only cover {coverage} of your area-of-interest. Comparison"
 " is made for the intersection area."
@@ -681,7 +678,7 @@ msgstr "Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%."
 msgid "Unknown aggregation_type: {aggregation_type}"
 msgstr "Unbekannter Aggregationstyp: {aggregation_type}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:330
+#: ohsome_quality_api/indicators/currentness/indicator.py:327
 #, python-brace-format
 msgid ""
 "%{customdata[0]} of features (%{customdata[1]}) were last modified in "
@@ -690,59 +687,59 @@ msgstr ""
 "%{customdata[0]} der Objekte (%{customdata[1]}) wurden zuletzt geändert "
 "im %{customdata[2]}<extra></extra>"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:374
+#: ohsome_quality_api/indicators/currentness/indicator.py:371
 msgid "Date of Last Edit"
 msgstr "Datum der letzten Änderung"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:382
+#: ohsome_quality_api/indicators/currentness/indicator.py:379
 msgid "Features [%]"
 msgstr "Features [%]"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:392
+#: ohsome_quality_api/indicators/currentness/indicator.py:389
 msgid "Features [#]"
 msgstr "Features [#]"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:399
+#: ohsome_quality_api/indicators/currentness/indicator.py:396
 #, python-brace-format
 msgid "Last Edit to a Feature{}"
 msgstr "Letzte Änderung an einem Objekt{}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:414
+#: ohsome_quality_api/indicators/currentness/indicator.py:411
 #, python-brace-format
 msgid "younger than {up_to_date_str}"
 msgstr "jünger als {up_to_date_str}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:418
+#: ohsome_quality_api/indicators/currentness/indicator.py:415
 #, python-brace-format
 msgid "between {up_to_date_str} and {out_of_date_str}"
 msgstr "zwischen {up_to_date_str} und {out_of_date_str}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:422
+#: ohsome_quality_api/indicators/currentness/indicator.py:419
 #, python-brace-format
 msgid "older than {out_of_date_str}"
 msgstr "älter als {out_of_date_str}"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:439
+#: ohsome_quality_api/indicators/currentness/indicator.py:436
 #, python-brace-format
 msgid "{years} year"
 msgstr "{years} Jahr"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:441
+#: ohsome_quality_api/indicators/currentness/indicator.py:438
 #, python-brace-format
 msgid "{years} years"
 msgstr "{years} Jahre"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:444
-#, fuzzy, python-brace-format
+#: ohsome_quality_api/indicators/currentness/indicator.py:441
+#, python-brace-format
 msgid "{months} month"
 msgstr "{months} Monat"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:446
+#: ohsome_quality_api/indicators/currentness/indicator.py:443
 #, python-brace-format
 msgid "{months} months"
 msgstr "{months} Monate"
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:491
+#: ohsome_quality_api/indicators/currentness/indicator.py:488
 msgid ""
 "In the area of interest no features of the selected topic are present "
 "today."
@@ -750,15 +747,15 @@ msgstr ""
 "Im Untersuchungsgebiet sind heute keine Objekte des ausgewählten Themas "
 "vorhanden."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:506
+#: ohsome_quality_api/indicators/currentness/indicator.py:503
 msgid ""
 "Please note that in the area of interest less than 25 features of the "
 "selected topic are present today. "
 msgstr ""
-"Bitte beachte, dass im Interessensgebiet heute weniger als 25 Objekte des"
-" ausgewählten Themas vorhanden sind."
+"Bitte beachte, dass im Untersuchungsgebiet heute weniger als 25 Objekte "
+"des ausgewählten Themas vorhanden sind."
 
-#: ohsome_quality_api/indicators/currentness/indicator.py:511
+#: ohsome_quality_api/indicators/currentness/indicator.py:508
 #, python-brace-format
 msgid ""
 "Please note that there was no mapping activity for {num_months} months in"
@@ -780,13 +777,12 @@ msgid "Most features are up-to-date."
 msgstr "Die meisten Features sind aktuell."
 
 #: ohsome_quality_api/indicators/currentness/templates.yaml
-#, fuzzy
 msgid ""
 "In the area of interest $up_to_date_contrib_rel of the features "
 "($aggregation$unit) were edited (created or modified) for the last time "
 "in the period between $from_timestamp and $to_timestamp."
 msgstr ""
-"In Ihrem Interessensgebiet wurden $up_to_date_contrib_rel% der Merkmale "
+"Im Untersuchungsgebiet wurden $up_to_date_contrib_rel der Merkmale "
 "($aggregation$unit) zum letzten Mal im Zeitraum zwischen $from_timestamp "
 "und $to_timestamp bearbeitet (erstellt oder geändert)."
 
@@ -815,7 +811,6 @@ msgid "In your area-of-interest, the completeness of OSM land cover data is high
 msgstr "Die Vollständigkeit der Landbedeckung im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
-#, fuzzy
 msgid "$value of the total area is covered by OSM land cover data."
 msgstr "$value% des gesamten Gebietes ist von OSM Landbedeckungsdaten abgedeckt."
 
@@ -908,7 +903,7 @@ msgid "CORINE Land Cover (CLC) class"
 msgstr "CORINE Land Cover (CLC)-Klasse"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:214
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Warning: There is only {coverage} coverage with the comparison data. "
 msgstr "Abdeckung mit den Vergleichsdaten."
 
@@ -983,34 +978,34 @@ msgstr "Falsch-Positiv"
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
 "In your area-of-interest, the thematic accuracy of $clc_class is "
-"$f1_score% (low agreement between OSM and CORINE). This suggests that OSM"
-" has a poor classification quality or incomplete land cover data."
+"$f1_score (low agreement between OSM and CORINE). This suggests that OSM "
+"has a poor classification quality or incomplete land cover data."
 msgstr ""
-" Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
-"Interessensgebiet (geringe Übereinstimmung zwischen OSM und CORINE). Dies"
-" deutet darauf hin, dass OSM eine schlechte Klassifizierungsqualität oder"
-" unvollständige Landbedeckungsdaten aufweist."
+" Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score im "
+"Untersuchungsgebiet (geringe Übereinstimmung zwischen OSM und CORINE). "
+"Dies deutet darauf hin, dass OSM eine schlechte Klassifizierungsqualität "
+"oder unvollständige Landbedeckungsdaten aufweist."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
 "In your area-of-interest, the thematic accuracy of $clc_class is "
-"$f1_score% (medium agreement between OSM and CORINE). This suggests that "
+"$f1_score (medium agreement between OSM and CORINE). This suggests that "
 "OSM does capture some land cover categories but may lack detail or "
 "accuracy."
 msgstr ""
 "Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
-"Interessensgebiet (mittelmäßige Übereinstimmung zwische OSM und "
+"Untersuchungsgebiet (mittelmäßige Übereinstimmung zwische OSM und "
 "CORINE).Dies deutet darauf hin, dass OSM einige Landbedeckungsklassen gut"
 " erfasst, es jedoch an Details oder Genauigkeit mangelt."
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/templates.yaml
 msgid ""
 "In your area-of-interest, the thematic accuracy of $clc_class is "
-"$f1_score% (high agreement between OSM and CORINE). This suggests that "
-"OSM provides a reliable representation of land cover."
+"$f1_score (high agreement between OSM and CORINE). This suggests that OSM"
+" provides a reliable representation of land cover."
 msgstr ""
 "Die thematische Genauigkeit der Klasse $clc_class beträgt $f1_score% im "
-"Interessensgebiet (hohe Übereinstimmung zwische OSM und CORINE).Dies "
+"Untersuchungsgebiet (hohe Übereinstimmung zwische OSM und CORINE).Dies "
 "deutet darauf hin, dass OSM eine zuverlässige Darstellung der "
 "Landbedeckung bietet."
 
@@ -1057,7 +1052,7 @@ msgid "Value"
 msgstr "Wert"
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:200
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
@@ -1102,8 +1097,8 @@ msgid "Saturation could not be calculated."
 msgstr "Sättigung konnte nicht berechnet werden."
 
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
-msgid "The saturation of the last 3 years is $saturation%."
-msgstr "Die Sättigung der letzten 3 Jahre ist $saturation%."
+msgid "The saturation of the last 3 years is $saturation."
+msgstr "Die Sättigung der letzten 3 Jahre ist $saturation."
 
 #: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "Bad data quality."
@@ -1148,12 +1143,12 @@ msgid "OSM Covered: {length_matched} km ({date})"
 msgstr "von OSM abgedeckt: {length_matched} km {date}"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:194
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{matched_percentage} of {name} are matched by OSM"
-msgstr "{matched_percentage}% von {name} sind von OSM abgedeckt"
+msgstr "{matched_percentage} von {name} sind von OSM abgedeckt"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:217
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{not_matched_percentage} of {name} are not matched by OSM"
 msgstr "{not_matched_percentage}% von {name} sind nicht von OSM abgedeckt"
 
@@ -1167,21 +1162,21 @@ msgid "Matched road length [%]"
 msgstr "Abgeglichene Straßenlänge [%]"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:270
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Reference dataset {dataset} does not cover area-of-interest. "
 msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:274
-#, fuzzy, python-brace-format, python-format
+#, python-brace-format, python-format
 msgid ""
-"Only {a}%% of the area-of-interest is covered by the reference dataset "
+"Only {a} of the area-of-interest is covered by the reference dataset "
 "({b}). No quality estimation with reference {c} is possible."
 msgstr ""
-"Nur {a}%% des Untersuchungsgebiets sind vom Referenzdatensatz ({b}) "
+"Nur {a} des Untersuchungsgebiets sind vom Referenzdatensatz ({b}) "
 "abgedecktKeine Qualitätsabschätzung mit Referenz {c} ist möglich."
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:284
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{dataset} does not contain roads for your area-of-interest. "
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
@@ -1201,7 +1196,7 @@ msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid ""
-"The completeness in comparison to $dataset is $ratio%. $dataset have a "
+"The completeness in comparison to $dataset is $ratio. $dataset have a "
 "total length of $length_total. $length_matched of $dataset are covered by"
 " OSM roads."
 msgstr ""
@@ -1291,7 +1286,7 @@ msgstr ""
 "Qualitätsdimensionen sind: "
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
-msgid "Completeness"
+msgid "completeness"
 msgstr "Vollständigkeit"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
@@ -1305,6 +1300,10 @@ msgstr ""
 " Verwendungskontext aufweisen."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "currentness"
+msgstr "Aktualität"
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid ""
 "The degree to which data has attributes that are of the right age in a "
 "specific context of use."
@@ -1313,7 +1312,7 @@ msgstr ""
 "Verwendungskontext das richtige Alter haben."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
-msgid "Thematic Accuracy"
+msgid "thematic accuracy"
 msgstr "Thematische Genauigkeit"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
@@ -1325,11 +1324,15 @@ msgstr ""
 "\"Wahrheit\"des Referenzdatensatzes übereinstimmen)."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
+msgid "minimal"
+msgstr ""
+
+#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "A minimal quality dimension definition for testing purposes."
 msgstr "Eine minimale Qualitätsdimension zum Testen."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
-msgid "None"
+msgid "none"
 msgstr "Keine"
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
@@ -2131,4 +2134,13 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ "{dataset} deckt nur {coverage} des "
 #~ "Untersuchungsgebiets ab. Der Vergleich erfolgt"
 #~ " für die Schnittfläche."
+
+#~ msgid "currentness1"
+#~ msgstr "Aktualität"
+
+#~ msgid "currentness"
+#~ msgstr "Aktualität"
+
+#~ msgid "minimal"
+#~ msgstr "Minimal"
 
