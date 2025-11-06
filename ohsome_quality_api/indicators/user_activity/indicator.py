@@ -8,8 +8,7 @@ from string import Template
 import numpy as np
 import plotly.graph_objects as pgo
 from babel.dates import format_date
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 
@@ -81,12 +80,12 @@ class UserActivity(BaseIndicator):
             from_timestamp=format_date(
                 self.bin_total.timestamps[37],
                 format="MMM yyyy",
-                locale=i18n_locale.get(),
+                locale=get_locale(),
             ),
             to_timestamp=format_date(
                 self.bin_total.timestamps[1],
                 format="MMM yyyy",
-                locale=i18n_locale.get(),
+                locale=get_locale(),
             ),
         )
         self.result.description += "\n" + label_description
@@ -133,7 +132,7 @@ class UserActivity(BaseIndicator):
             zip(
                 bucket.users_abs,
                 [
-                    format_date(ts, format="MMM yyyy", locale=i18n_locale.get())
+                    format_date(ts, format="MMM yyyy", locale=get_locale())
                     for ts in bucket.timestamps
                 ],
             )
