@@ -8,8 +8,7 @@ import yaml
 from async_lru import alru_cache
 from babel.dates import format_date
 from babel.numbers import format_decimal, format_percent
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from numpy import mean
 
@@ -131,10 +130,10 @@ class RoadComparison(BaseIndicator):
             ).format(
                 name=self.data_ref[key]["name"],
                 total_length=format_decimal(
-                    round(self.length_total[key] / 1000, 2), locale=i18n_locale.get()
+                    round(self.length_total[key] / 1000, 2), locale=get_locale()
                 ),
                 matched_length=format_decimal(
-                    round(self.length_matched[key] / 1000, 2), locale=i18n_locale.get()
+                    round(self.length_matched[key] / 1000, 2), locale=get_locale()
                 ),
             )
 
@@ -183,9 +182,9 @@ class RoadComparison(BaseIndicator):
         ):
             hovertext = _("OSM Covered: {length_matched} km ({date})").format(
                 length_matched=format_decimal(
-                    round(self.length_matched[name] / 1000, 2), locale=i18n_locale.get()
+                    round(self.length_matched[name] / 1000, 2), locale=get_locale()
                 ),
-                date=format_date(date, format="MMM yyyy", locale=i18n_locale.get()),
+                date=format_date(date, format="MMM yyyy", locale=get_locale()),
             )
             fig.add_trace(
                 pgo.Bar(
@@ -193,7 +192,7 @@ class RoadComparison(BaseIndicator):
                     y=[ratio * 100],
                     name=_("{matched_percentage} of {name} are matched by OSM").format(
                         matched_percentage=format_percent(
-                            round((ratio), 1), locale=i18n_locale.get()
+                            round((ratio), 1), locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -217,7 +216,7 @@ class RoadComparison(BaseIndicator):
                         "{not_matched_percentage} of {name} are not matched by OSM"
                     ).format(
                         not_matched_percentage=format_percent(
-                            round((1 - ratio), 1), locale=i18n_locale.get()
+                            round((1 - ratio), 1), locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -230,10 +229,10 @@ class RoadComparison(BaseIndicator):
                         "Not OSM Covered: {length_difference_km} km " + "({date})"
                     ).format(
                         length_difference_km=format_decimal(
-                            round(length_difference_km, 2), locale=i18n_locale.get()
+                            round(length_difference_km, 2), locale=get_locale()
                         ),
                         date=format_decimal(
-                            round((ratio * 100), 1), locale=i18n_locale.get()
+                            round((ratio * 100), 1), locale=get_locale()
                         ),
                     ),
                     hoverinfo="text",
@@ -271,11 +270,11 @@ class RoadComparison(BaseIndicator):
             ).format(dataset=dataset)
         elif coverage < 10:
             return _(
-                "Only {a}%% of the area-of-interest is covered "
+                "Only {a} of the area-of-interest is covered "
                 + "by the reference dataset ({b}). "
                 + "No quality estimation with reference {c} is possible."
             ).format(
-                a=format_decimal(round(coverage, 2), locale=i18n_locale.get()),
+                a=format_decimal(round(coverage, 2), locale=get_locale()),
                 b=dataset,
                 c=dataset,
             )
@@ -295,9 +294,7 @@ class RoadComparison(BaseIndicator):
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
-                coverage=format_percent(
-                    round(coverage / 100, 2), locale=i18n_locale.get()
-                ),
+                coverage=format_percent(round(coverage / 100, 2), locale=get_locale()),
             )
         else:
             return ""

@@ -4,8 +4,7 @@ from string import Template
 import dateutil.parser
 import plotly.graph_objects as go
 from babel.numbers import format_decimal, format_percent
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
@@ -118,9 +117,7 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             raise TypeError(_("Result value should not be None."))
         else:
-            result = format_percent(
-                round(self.result.value, 1), locale=i18n_locale.get()
-            )
+            result = format_percent(round(self.result.value, 1), locale=get_locale())
         if self.attribute_title is None:
             raise TypeError(_("Attribute title should not be None."))
         else:
@@ -206,23 +203,23 @@ class AttributeCompleteness(BaseIndicator):
         elif self.topic.aggregation_type == "area":
             all_ = f"{
                 format_decimal(
-                    round(self.absolute_value_1 / 1000000, 2), locale=i18n_locale.get()
+                    round(self.absolute_value_1 / 1000000, 2), locale=get_locale()
                 )
             } km²"
             matched = f"{
                 format_decimal(
-                    round(self.absolute_value_2 / 1000000, 2), locale=i18n_locale.get()
+                    round(self.absolute_value_2 / 1000000, 2), locale=get_locale()
                 )
             } km²"
         elif self.topic.aggregation_type == "length":
             all_ = f"{
                 format_decimal(
-                    round(self.absolute_value_1 / 1000, 2), locale=i18n_locale.get()
+                    round(self.absolute_value_1 / 1000, 2), locale=get_locale()
                 )
             } km"
             matched = f"{
                 format_decimal(
-                    round(self.absolute_value_2 / 1000, 2), locale=i18n_locale.get()
+                    round(self.absolute_value_2 / 1000, 2), locale=get_locale()
                 )
             } km"
         else:

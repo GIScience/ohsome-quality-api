@@ -9,8 +9,7 @@ import yaml
 from babel.dates import format_date
 from babel.numbers import format_decimal, format_percent
 from dateutil import parser
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from numpy import mean
 
@@ -116,10 +115,10 @@ class BuildingComparison(BaseIndicator):
             template = Template(self.templates.result_description)
             description = template.substitute(
                 ratio=format_decimal(
-                    round(self.ratio[key] * 100, 2), locale=i18n_locale.get()
+                    round(self.ratio[key] * 100, 2), locale=get_locale()
                 ),
                 coverage=format_decimal(
-                    round(self.area_cov[key] * 100, 2), locale=i18n_locale.get()
+                    round(self.area_cov[key] * 100, 2), locale=get_locale()
                 ),
                 dataset=self.data_ref[key]["name"],
             )
@@ -185,29 +184,26 @@ class BuildingComparison(BaseIndicator):
                 continue
             ref_x.append(dataset["name"])
             ref_y.append(
-                format_decimal(round(self.area_ref[key], 2), locale=i18n_locale.get())
+                format_decimal(round(self.area_ref[key], 2), locale=get_locale())
             )
             ref_data.append(dataset)
             osm_x.append(dataset["name"])
             osm_y.append(
-                format_decimal(round(self.area_osm[key], 2), locale=i18n_locale.get())
+                format_decimal(round(self.area_osm[key], 2), locale=get_locale())
             )
             parsed_date = parser.parse(dataset["date"])
             ref_hover.append(
-                f"{dataset['name']} ("
-                f"{format_date(parsed_date, locale=i18n_locale.get())})"
+                f"{dataset['name']} ({format_date(parsed_date, locale=get_locale())})"
             )
             osm_hover.append(
-                f"OSM ({
-                    format_date(self.result.timestamp_osm, locale=i18n_locale.get())
-                })"
+                f"OSM ({format_date(self.result.timestamp_osm, locale=get_locale())})"
             )
             ref_color.append(Color[dataset["color"]].value)
             osm_area.append(
-                format_decimal(round(self.area_osm[key], 2), locale=i18n_locale.get())
+                format_decimal(round(self.area_osm[key], 2), locale=get_locale())
             )
             ref_area.append(
-                format_decimal(round(self.area_ref[key], 2), locale=i18n_locale.get())
+                format_decimal(round(self.area_ref[key], 2), locale=get_locale())
             )
 
         fig = pgo.Figure(
@@ -276,7 +272,7 @@ class BuildingComparison(BaseIndicator):
             return _("{} does not cover your area-of-interest.").format(dataset)
         elif coverage < 10:
             return _("Only {} of your area-of-interest is covered by {}").format(
-                format_percent(coverage / 100, locale=i18n_locale.get()),
+                format_percent(coverage / 100, locale=get_locale()),
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
@@ -296,9 +292,7 @@ class BuildingComparison(BaseIndicator):
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
-                coverage=format_percent(
-                    round(coverage / 100, 2), locale=i18n_locale.get()
-                ),
+                coverage=format_percent(round(coverage / 100, 2), locale=get_locale()),
             )
         else:
             return ""

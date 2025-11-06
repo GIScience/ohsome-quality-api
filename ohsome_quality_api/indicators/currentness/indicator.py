@@ -21,8 +21,7 @@ import yaml
 from babel.dates import format_date
 from babel.numbers import format_decimal, format_percent
 from dateutil.parser import isoparse
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
@@ -272,20 +271,20 @@ class Currentness(BaseIndicator):
             up_to_date_contrib_rel=f"{
                 format_percent(
                     round(sum(self.bin_up_to_date.contrib_rel), 0),
-                    locale=i18n_locale.get(),
+                    locale=get_locale(),
                 )
             }",
-            aggregation=aggregation,
+            aggregation=int(aggregation),
             unit=unit,
             from_timestamp=format_date(
                 self.bin_up_to_date.timestamps[-1],
                 format="MMM yyyy",
-                locale=i18n_locale.get(),
+                locale=get_locale(),
             ),
             to_timestamp=format_date(
                 self.bin_up_to_date.timestamps[0],
                 format="MMM yyyy",
-                locale=i18n_locale.get(),
+                locale=get_locale(),
             ),
         )
         self.result.description += "\n" + label_description
@@ -311,15 +310,15 @@ class Currentness(BaseIndicator):
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
             contrib_abs_text = [
-                f"{format_decimal(round(c, 2), locale=i18n_locale.get())}{unit}"
+                f"{format_decimal(round(c, 2), locale=get_locale())}{unit}"
                 for c in bucket.contrib_abs
             ]
             contrib_rel_text = [
-                f"{format_decimal(round(c * 100, 2), locale=i18n_locale.get())}%"
+                f"{format_decimal(round(c * 100, 2), locale=get_locale())}%"
                 for c in bucket.contrib_rel
             ]
             timestamps_text = [
-                format_date(ts, format="MMM yyyy", locale=i18n_locale.get())
+                format_date(ts, format="MMM yyyy", locale=get_locale())
                 for ts in bucket.timestamps
             ]
             customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))

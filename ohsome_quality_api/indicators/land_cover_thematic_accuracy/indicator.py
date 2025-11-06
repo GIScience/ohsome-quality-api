@@ -8,8 +8,7 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 from babel.numbers import format_decimal
-from fastapi_i18n import _
-from fastapi_i18n import locale as i18n_locale
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from sklearn.metrics import (
     confusion_matrix,
@@ -203,7 +202,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
         label_description = template.safe_substitute(
             {
                 "f1_score": format_decimal(
-                    round(self.f1_score * 100, 2), locale=i18n_locale.get()
+                    round(self.f1_score * 100, 2), locale=get_locale()
                 ),
                 "clc_class": clc_class,
             }
@@ -257,21 +256,21 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"{
                             format_decimal(
                                 round(self.precision_scores[i] * 100, 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                         f"{_('Recall [%]:')} "
                         f"{
                             format_decimal(
                                 round(self.recall_scores[i] * 100, 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                         f"{_('Area [km<sup>2</sup>]:')} "
                         f"{self.support_scores[i]:.2f}<br>"
                         f"{_('Area [%]:')} {
                             format_decimal(
-                                round(area_percentage, 2), locale=i18n_locale.get()
+                                round(area_percentage, 2), locale=get_locale()
                             )
                         }<br>"
                     ),
@@ -326,7 +325,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     texttemplate=f"{
                         format_decimal(
                             round(self.confusion_matrix_normalized[1][0], 2),
-                            locale=i18n_locale.get(),
+                            locale=get_locale(),
                         )
                     }<br>",
                     textposition="inside",
@@ -337,7 +336,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"{
                             format_decimal(
                                 round(self.confusion_matrix[1][0], 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                         f"{_('Area [%]:')} "
@@ -355,7 +354,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     texttemplate=f"{
                         format_decimal(
                             round(self.confusion_matrix_normalized[1][1], 2),
-                            locale=i18n_locale.get(),
+                            locale=get_locale(),
                         )
                     }<br>",
                     textposition="inside",
@@ -367,14 +366,14 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"{
                             format_decimal(
                                 round(self.confusion_matrix[1][1], 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                         f"{_('Area [%]:')} "
                         f"{
                             format_decimal(
                                 round(self.confusion_matrix_normalized[1][1], 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                     ),
@@ -390,7 +389,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     texttemplate=f"{
                         format_decimal(
                             round(self.confusion_matrix_normalized[0][1], 2),
-                            locale=i18n_locale.get(),
+                            locale=get_locale(),
                         )
                     }<br>",
                     textposition="inside",
@@ -401,14 +400,14 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"{
                             format_decimal(
                                 round(self.confusion_matrix[0][1], 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                         f"{_('Area [%]:')} "
                         f"{
                             format_decimal(
                                 round(self.confusion_matrix_normalized[0][1], 2),
-                                locale=i18n_locale.get(),
+                                locale=get_locale(),
                             )
                         }<br>"
                     ),
