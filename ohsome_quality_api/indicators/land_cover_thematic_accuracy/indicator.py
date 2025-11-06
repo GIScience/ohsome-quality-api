@@ -7,7 +7,7 @@ from string import Template
 
 import geojson
 import plotly.graph_objects as pgo
-from babel.numbers import format_decimal
+from babel.numbers import format_decimal, format_percent
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 from sklearn.metrics import (
@@ -201,8 +201,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
         label_description = template.safe_substitute(
             {
-                "f1_score": format_decimal(
-                    round(self.f1_score * 100, 2), locale=get_locale()
+                "f1_score": format_percent(
+                    round(self.f1_score, 4),
+                    locale=get_locale(),
+                    decimal_quantization=False,
                 ),
                 "clc_class": clc_class,
             }
@@ -270,9 +272,10 @@ class LandCoverThematicAccuracy(BaseIndicator):
                         f"{self.support_scores[i]:.2f}<br>"
                         f"{_('Area [%]:')} {
                             format_decimal(
-                                round(area_percentage, 2), locale=get_locale()
+                                round(area_percentage, 2),
+                                locale=get_locale(),
                             )
-                        }<br>"
+                        }"
                     ),
                     text=f"{x:.2f}",
                     textposition="auto",
@@ -323,11 +326,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     name=_("False Negative"),  # e.g corine = forest | osm = other
                     marker_color="lightgrey",
                     texttemplate=f"{
-                        format_decimal(
-                            round(self.confusion_matrix_normalized[1][0], 2),
+                        format_percent(
+                            round(self.confusion_matrix_normalized[1][0], 4),
                             locale=get_locale(),
+                            decimal_quantization=False,
                         )
-                    }<br>",
+                    }",
                     textposition="inside",
                     hovertemplate=(
                         f"{_('CORINE class:')} {name_level_2}<br>"
@@ -337,6 +341,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                             format_decimal(
                                 round(self.confusion_matrix[1][0], 2),
                                 locale=get_locale(),
+                                decimal_quantization=False,
                             )
                         }<br>"
                         f"{_('Area [%]:')} "
@@ -352,11 +357,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     name=_("True Positive"),  # e.g. corine = forest | osm = forest
                     marker_color=Color.GREEN.value,
                     texttemplate=f"{
-                        format_decimal(
-                            round(self.confusion_matrix_normalized[1][1], 2),
+                        format_percent(
+                            round(self.confusion_matrix_normalized[1][1], 4),
                             locale=get_locale(),
+                            decimal_quantization=False,
                         )
-                    }<br>",
+                    }",
                     textposition="inside",
                     # textfont_color="black",
                     hovertemplate=(
@@ -375,7 +381,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                                 round(self.confusion_matrix_normalized[1][1], 2),
                                 locale=get_locale(),
                             )
-                        }<br>"
+                        }"
                     ),
                     legendrank=2,
                 ),
@@ -387,11 +393,12 @@ class LandCoverThematicAccuracy(BaseIndicator):
                     name=_("False Positive"),  # e.g. corine = other | osm = forest
                     marker_color=Color.GREY.value,
                     texttemplate=f"{
-                        format_decimal(
-                            round(self.confusion_matrix_normalized[0][1], 2),
+                        format_percent(
+                            round(self.confusion_matrix_normalized[0][1], 4),
                             locale=get_locale(),
+                            decimal_quantization=False,
                         )
-                    }<br>",
+                    }",
                     textposition="inside",
                     hovertemplate=(
                         f"{_('CORINE class:')} Other<br>"
@@ -409,7 +416,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                                 round(self.confusion_matrix_normalized[0][1], 2),
                                 locale=get_locale(),
                             )
-                        }<br>"
+                        }"
                     ),
                     legendrank=1,
                 ),

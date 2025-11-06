@@ -160,7 +160,7 @@ class Currentness(BaseIndicator):
                 """
             case _:
                 raise ValueError(
-                    _("Unknown aggregation_type: {aggregation_type}").format(
+                    "Unknown aggregation_type: {aggregation_type}".format(
                         aggregation_type=self.topic.aggregation_type
                     )
                 )
@@ -270,7 +270,7 @@ class Currentness(BaseIndicator):
         ).substitute(
             up_to_date_contrib_rel=f"{
                 format_percent(
-                    round(sum(self.bin_up_to_date.contrib_rel), 0),
+                    round(sum(self.bin_up_to_date.contrib_rel), 4),
                     locale=get_locale(),
                 )
             }",

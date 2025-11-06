@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.03<br>Area [%]: 0.06",
+            "hovertemplate": "Precision [%]: 0<br>Recall [%]: 0<br>Area [km<sup>2</sup>]: 0.03<br>Area [%]: 0.06",
             "marker": {
                 "color": [
                     "#40dfec"
@@ -20,7 +20,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.26<br>Area [%]: 0.47",
+            "hovertemplate": "Precision [%]: 0<br>Recall [%]: 0<br>Area [km<sup>2</sup>]: 0.26<br>Area [%]: 0.47",
             "marker": {
                 "color": [
                     "#b0f247"
@@ -58,7 +58,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision [%]: 0.00<br>Recall [%]: 0.00<br>Area [km<sup>2</sup>]: 0.08<br>Area [%]: 0.16",
+            "hovertemplate": "Precision [%]: 0<br>Recall [%]: 0<br>Area [km<sup>2</sup>]: 0.08<br>Area [%]: 0.16",
             "marker": {
                 "color": [
                     "#f6d97a"
@@ -153,7 +153,7 @@
             ]
         },
         {
-            "hovertemplate": "Precision [%]: 83.54<br>Recall [%]: 86.80<br>Area [km<sup>2</sup>]: 4.87<br>Area [%]: 8.96",
+            "hovertemplate": "Precision [%]: 83.54<br>Recall [%]: 86.8<br>Area [km<sup>2</sup>]: 4.87<br>Area [%]: 8.96",
             "marker": {
                 "color": [
                     "#d979a9"
