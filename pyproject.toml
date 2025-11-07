@@ -21,7 +21,7 @@ dependencies = [
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
     "kaleido==0.2.1",
-    "ohsome-filter-to-sql",
+    "ohsome-filter-to-sql>=0.1.0",
     "plotly>=6.0.1",
     "pydantic>=2.11.4",
     "pyproj>=3.7.1",
@@ -38,8 +38,8 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "asyncpg-recorder>=2025.9.2",
     "approvaltests>=14.5.0",
+    "asyncpg-recorder>=0.1.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "pre-commit>=4.2.0",
@@ -61,10 +61,6 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-root = ""
-
-[tool.uv.sources]
-asyncpg-recorder = { git = "https://github.com/GIScience/asyncpg-recorder.git" }
-ohsome-filter-to-sql = { git = "https://github.com/GIScience/ohsome-filter-to-sql.git" }
 
 [tool.ruff.lint]
 select = [

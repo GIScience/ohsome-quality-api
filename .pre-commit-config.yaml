@@ -13,3 +13,9 @@ repos:
     hooks:
     -   id: check-added-large-files
         args: ["--maxkb=1024"]
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.9.5
+    hooks:
+      - id: uv-lock
+
