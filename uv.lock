@@ -512,15 +512,15 @@ wheels = [
 
 [[package]]
 name = "fastapi-i18n"
-version = "0.4.0"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9b/03/54c7568afbccfca87c534ab6f33e0fb511bd4c014f3aa090a1b4a8db06d7/fastapi_i18n-0.4.0.tar.gz", hash = "sha256:ba1397795732f95cfb56b1bdf1fb74930f8982c9048400c49d78932815635d84", size = 18672, upload-time = "2025-11-05T15:54:32.725Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c5/a6/8c0ac0043db7cee7eeeba05c094ceb2e8b937caa46e814dbf0a8efe426a2/fastapi_i18n-0.5.1.tar.gz", hash = "sha256:d9760dc273fe5ad7a525af24cae875182817b4354c2e1b177608cbc785a0da1b", size = 18669, upload-time = "2025-11-07T07:05:27.331Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/f2/8a6f45ab82f021db06bdf6f90d5e790698e033e6eb614ffefa9f062e5f5d/fastapi_i18n-0.4.0-py3-none-any.whl", hash = "sha256:2c6115add91048099d38784056c1d4b45c16e2372009934ef3af96a2ae74dc72", size = 19049, upload-time = "2025-11-05T15:54:31.37Z" },
+    { url = "https://files.pythonhosted.org/packages/95/ba/91173a29c77f389aecc6f8c7ad8e2800a4c371f9b0d47a5c407194b0de12/fastapi_i18n-0.5.1-py3-none-any.whl", hash = "sha256:abbb697e6b5ecbbd8e2e030d192c99dc64a70860d447d2a3200e3f402be48111", size = 19047, upload-time = "2025-11-07T07:05:26.358Z" },
 ]
 
 [[package]]
@@ -1014,7 +1014,7 @@ requires-dist = [
     { name = "async-lru", specifier = ">=2.0.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
-    { name = "fastapi-i18n", specifier = ">=0.4.0" },
+    { name = "fastapi-i18n", specifier = ">=0.5.1" },
     { name = "geojson", specifier = ">=3.2.0" },
     { name = "geojson-pydantic", specifier = ">=2.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
