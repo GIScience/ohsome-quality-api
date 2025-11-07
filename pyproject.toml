@@ -19,7 +19,6 @@ dependencies = [
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
-    "kaleido==0.2.1",
     "ohsome-filter-to-sql>=0.1.0",
     "plotly>=6.0.1",
     "pydantic>=2.11.4",
@@ -41,6 +40,7 @@ dev = [
     "asyncpg-recorder>=0.1.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
+    "kaleido>=1.2.0",
     "pre-commit>=4.2.0",
     "pygments>=2.19.1", # add syntax highlighting to pytest
     "pytest>=8.3.5",
