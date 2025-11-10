@@ -103,8 +103,8 @@ clinics:
     name: Opening Hours
     description: TODO
     filter: opening_hours=*
-  specialty:
-    name: Specialty
+  speciality:
+    name: Speciality
     description: TODO
     filter: healthcare:speciality=*
 
@@ -117,8 +117,8 @@ doctors:
     name: Name
     description: TODO
     filter: name=*
-  specialty:
-    name: Specialty
+  speciality:
+    name: Speciality
     description: TODO
     filter: healthcare:speciality=*
   opening-hours:
@@ -139,8 +139,8 @@ hospitals:
     name: Name
     description: TODO
     filter: name=*
-  specialty:
-    name: Specialty
+  speciality:
+    name: Speciality
     description: TODO
     filter: healthcare:speciality=*
   opening-hours:
