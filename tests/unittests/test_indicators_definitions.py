@@ -74,6 +74,11 @@ def test_get_indicator_de():
     verify(indicator.model_dump_json(indent=2), namer=PytestNamer())
 
 
+def test_get_not_existing_indicator():
+    with pytest.raises(KeyError):
+        definitions.get_indicator("foo")
+
+
 def test_get_coverage(mock_get_reference_coverage):
     coverage = asyncio.run(
         definitions.get_coverage("building-comparison", inverse=False)

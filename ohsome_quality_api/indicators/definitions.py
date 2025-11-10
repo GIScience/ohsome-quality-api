@@ -41,8 +41,8 @@ def get_indicator(indicator_key: str) -> IndicatorMetadata:
     try:
         return indicators[indicator_key]
     except KeyError as error:
-        raise KeyError("Invalid project key. Valid project keys are: ") + str(
-            indicators.keys()
+        raise KeyError(
+            "Invalid project key. Valid project keys are: " + str(indicators.keys())
         ) from error
 
 
