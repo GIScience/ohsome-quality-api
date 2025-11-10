@@ -2,6 +2,10 @@
 
 ## Current Main
 
+### Breaking Changes
+
+- refactor!: rename attribute key and name from specialty to speciality ([672eb089])
+
 ### Bug Fixes
 
 - fix(currentness): make monthly buckets starting at beginning of a month ([#953])
