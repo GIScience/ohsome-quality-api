@@ -2,7 +2,6 @@ import os
 from enum import Enum
 
 import yaml
-from fastapi_i18n import _
 
 from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.topics.models import TopicDefinition
@@ -41,8 +40,8 @@ def get_topic_preset(topic_key: str) -> TopicDefinition:
     try:
         return topics[topic_key]
     except KeyError as error:
-        raise KeyError(
-            _("Invalid topic key. Valid topic keys are: ") + str(topics.keys())
+        raise KeyError("Invalid topic key. Valid topic keys are: ") + str(
+            topics.keys()
         ) from error
 
 

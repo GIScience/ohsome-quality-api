@@ -4,7 +4,6 @@ import os
 from enum import Enum
 
 import yaml
-from fastapi_i18n import _
 
 from ohsome_quality_api.projects.models import Project
 from ohsome_quality_api.utils.helper import get_module_dir
@@ -40,8 +39,8 @@ def get_project(project_key: str) -> Project:
     try:
         return projects[project_key]
     except KeyError as error:
-        raise KeyError(
-            _("Invalid project key. Valid project keys are: ") + str(projects.keys())
+        raise KeyError("Invalid project key. Valid project keys are: ") + str(
+            projects.keys()
         ) from error
 
 

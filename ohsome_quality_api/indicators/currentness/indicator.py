@@ -293,7 +293,7 @@ class Currentness(BaseIndicator):
 
     def create_figure(self):
         if self.result.label == "undefined":
-            logging.info(_("Result is undefined. Skipping figure creation."))
+            logging.info("Result is undefined. Skipping figure creation.")
             return
 
         match self.topic.aggregation_type:

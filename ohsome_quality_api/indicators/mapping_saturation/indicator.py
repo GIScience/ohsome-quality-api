@@ -146,7 +146,7 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 1
         else:
             raise ValueError(
-                _("Result value (saturation) is an unexpected value: {}").format(
+                "Result value (saturation) is an unexpected value: {}".format(
                     self.result.value
                 )
             )

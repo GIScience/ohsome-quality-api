@@ -102,10 +102,8 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         valid_indicators = get_valid_indicators(self.topic.key)
         if indicator not in valid_indicators:
             raise ValueError(
-                _("Invalid combination of indicator and topic: {} and {}").format(
-                    indicator, self.topic.key
-                )
-            )
+                "Invalid combination of indicator and topic: {} and {}"
+            ).format(indicator, self.topic.key)
         return self
 
 
@@ -129,7 +127,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "attribute-completeness" not in valid_indicators:
             raise ValueError(
-                _("Invalid combination of indicator and topic: {} and {}").format(
+                "Invalid combination of indicator and topic: {} and {}".format(
                     "attribute-completeness",
                     self.topic.key,
                 )
@@ -142,10 +140,8 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         for attribute in self.attribute_keys:
             if attribute not in valid_attributes:
                 raise ValueError(
-                    _(
-                        "Invalid combination of attribute {} and topic {}. "
-                        "Topic {} supports these attributes: {}"
-                    ).format(
+                    "Invalid combination of attribute {} and topic {}. "
+                    "Topic {} supports these attributes: {}".format(
                         attribute,
                         self.topic.key,
                         self.topic.key,
@@ -177,10 +173,10 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "attribute-completeness" not in valid_indicators:
             raise ValueError(
-                _("Invalid combination of indicator and topic: {} and {}").format(
-                    "attribute-completeness",
-                    self.topic.key,
-                )
+                "Invalid combination of indicator and topic: {} and {}"
+            ).format(
+                "attribute-completeness",
+                self.topic.key,
             )
         return self
 
@@ -239,10 +235,10 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "land-cover-thematic-accuracy" not in valid_indicators:
             raise ValueError(
-                _("Invalid combination of indicator and topic: {} and {}").format(
-                    "land-cover-thematic-accuracy",
-                    self.topic.key,
-                )
+                "Invalid combination of indicator and topic: {} and {}"
+            ).format(
+                "land-cover-thematic-accuracy",
+                self.topic.key,
             )
         return self
 

@@ -63,7 +63,7 @@ class LandCoverCompleteness(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info(_("Result is undefined. Skipping figure creation."))
+            logging.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = pgo.Figure(

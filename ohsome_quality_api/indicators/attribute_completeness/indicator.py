@@ -115,11 +115,11 @@ class AttributeCompleteness(BaseIndicator):
 
     def create_description(self):
         if self.result.value is None:
-            raise TypeError(_("Result value should not be None."))
+            raise TypeError("Result value should not be None.")
         else:
             result = format_percent(self.result.value, format="0%", locale=get_locale())
         if self.attribute_title is None:
-            raise TypeError(_("Attribute title should not be None."))
+            raise TypeError("Attribute title should not be None.")
         else:
             tags = str(
                 _("attributes ") + self.attribute_title
@@ -142,7 +142,7 @@ class AttributeCompleteness(BaseIndicator):
         attribute(s).
         """
         if self.result.label == "undefined":
-            logging.info(_("Result is undefined. Skipping figure creation."))
+            logging.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = go.Figure(
@@ -223,5 +223,5 @@ class AttributeCompleteness(BaseIndicator):
                 )
             } km"
         else:
-            raise ValueError(_("Invalid aggregation_type"))
+            raise ValueError("Invalid aggregation_type")
         return all_, matched
