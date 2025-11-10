@@ -73,7 +73,7 @@ def metadata_indicator_mapping_saturation():
 def metadata_quality_dimension():
     return {
         "minimal": {
-            "name": "Minimal",
+            "name": "minimal",
             "description": "A minimal quality dimension"
             " definition for testing purposes.",
             "source": None,

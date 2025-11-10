@@ -257,7 +257,7 @@ class Currentness(BaseIndicator):
         match self.topic.aggregation_type:
             case "count":
                 unit = ""
-                aggregation = self.contrib_sum
+                aggregation = int(self.contrib_sum)
             case "length":
                 unit = " km"
                 aggregation = f"{self.contrib_sum:.1f}"
@@ -276,7 +276,7 @@ class Currentness(BaseIndicator):
                     locale=get_locale(),
                 )
             }",
-            aggregation=int(aggregation),
+            aggregation=aggregation,
             unit=unit,
             from_timestamp=format_date(
                 self.bin_up_to_date.timestamps[-1],
