@@ -64,7 +64,6 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    # TODO: scope conflict
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
     def indicator(
