@@ -2823,4 +2823,84 @@ interactions:
     status:
       code: 404
       message: Not Found
+- request:
+    body: filter=station%3Dsubway+and+%28type%3Away+or+type%3Anode%29&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22MultiPolygon%22%2C+%22coordinates%22%3A+%5B%5B%5B%5B7.818124%2C+13.859122%5D%2C+%5B7.835312%2C+13.859122%5D%2C+%5B7.835312%2C+13.872538%5D%2C+%5B7.818124%2C+13.872538%5D%2C+%5B7.818124%2C+13.859122%5D%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%7D%7D%5D%7D&time=2008-08-20%2F2025-08-01%2FP1M&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '545'
+      content-type:
+      - application/x-www-form-urlencoded
+      host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api/1.12.0
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/6yby04UURgG9z7FZNZcug834R2MC4kLjQs0rUwC9KSnMRrCA/kaPpnDoG6sL56T
+        VDIbyKFqfha1+x5eLBbLq3meVh/v59V4t1xcLB62v9v+9n66efppeT3P683F4eF4vRlvh4Nx+nL4
+        aVx/n1ZfrufNcu/58Tx8m3evf/5YvF4Pd2/maRjmV1frxafx7pk+Tpvl9vHj3k65Xr0dps1v47I/
+        6LuD4x1sOQ2b+5sd7P2fr/J5Gm8vV7fDZr66Xe/+oHTdy/3tp3SXXXex+7z7+11GenuOb79e3dwP
+        T6+6g2735f6nZAwq+05RBgwre0fJGFYWR8kYUJ7vd8aVEcNK48qIYeWRo2QMK48dJWNYeeIoGcPK
+        U0fJGFaeOUrGsJLj2Kysbuy509iIQaXS2IhhpVOf+saeO42NmH+V23+H0diMYaVwZcawUmhsxrBS
+        aGzGsFJobMawUmhsxrBSaGzGsFJobMawUmhsxqDSaGzGsNKpT3Vjn9469alvbO80NmJYaVwZMaw0
+        GhsxrDQaGzGsNBobMaw0GhsxrDQaGzGsNBobMaw0GhsxqFQaGzGsdOpT39jeaWzEgLI4jY0YVhpX
+        RgwrjcZGDCuNxkYMK43GRgwrjcZGDCuNxkYMK43GRgwrjcZGDCqVxkYMK5361De2OI2NGFAeOY2N
+        GFYaV0YMK43GRgwrjcZGDCuNxkYMK43GRgwrjcZGDCuNxkYMK43GRgwqlcZGDCud+tQ39shpbMSA
+        8thpbMSw0rgyYlhpNDZiWGk0NmJYaTQ2YlhpNDZiWGk0NmJYaTQ2YlhpNDZiUKk0NmJY6dSnvrHH
+        TmMjBpQnTmMjhpXGlRHDSqOxEcNKo7ERw0qjsRHDSqOxEcNKo7ERw0qjsRHDSqOxEYNKpbERw0qn
+        PvWNPXEaGzGgPHUaGzGsNK6MGFYajY0YVhqNjRhWGo2NGFYajY0YVhqNjRhWGo2NGFYajY0YVCqN
+        jRhWOvWpb+yp09iIAeWZ09iIYaVxZcSw0mhsxLDSaGzEsNJobMSw0mhsxLDSaGzEsNJobMSw0mhs
+        xKBSaWzEsNKpT31jz5zGRgwoXzqNjRhWGldGDCuNxkYMK43GRgwrjcZGDCuNxkYMK43GRgwrjcY2
+        7Lx6Z+eVMahUGtuw8+qdnVfGsNKpT31jnZ1XxrDSuLJh59U7O6+MYaXR2IadV+/svDKGlUZjG3Ze
+        vbPzyhhWGo1t2Hn1zs4rY1CpNLZh59U7O6+MYaVTn+rGFmfnlTGsFK7MGFYKjc0YVgqNzRhWCo3N
+        GFYKjc0YVgqNzRhWCo3NGFYKjc0YVBqNzRhWOvWpbmxxdl4ZA0pn55UxrDSubNh5FWfnlTGsNBrb
+        sPMqzs4rY1hpNLZh51WcnVfGsNJobMPOqzg7r4xBpdLYhp1XcXZeGcNKpz71jXV2XhnDSuPKhp1X
+        cXZeGcNKo7ENO6/i7LwyhpVGYxt2XsXZeWUMK43GNuy8irPzyhhUKo1t2HkVZ+eVMax06lPfWGfn
+        lTGsNK5s2HkVZ+eVMaw0Gtuw8yrOzitjWGk0tmHnVZydV8aw0mhsw86rODuvjEGl0tiGnVdxdl4Z
+        w0qnPvWNdXZeGcNK48qGnVdxdl4Zw0qjsQ07r+LsvDKGlUZjG3Zexdl5ZQwrjcY27LyKs/PKGFQq
+        jW3YeRVn55UxrHTqU99YZ+eVMaw0rmzYeRVn55UxrDQa27DzKs7OK2NYaTS2YedVqndeiw8vHn8B
+        AAD//wMAQUyMudJbAAA=
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Mon, 10 Nov 2025 09:17:49 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
 version: 1
