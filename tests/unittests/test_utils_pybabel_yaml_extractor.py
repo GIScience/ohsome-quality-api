@@ -21,14 +21,14 @@ def test_flatten_seq():
 
 
 def test_filter_dictonary_by_keys():
-    input = {
+    input_seq = {
         "regions": {"default": "ogc_fid"},
         "gadm": {
             "default": "uid",  # ISO 3166-1 alpha-3 country code
             "other": (("name_1", "name_2"), ("id_1", "id_2")),
         },
     }
-    output = filter_dictonary_by_keys(input, ["other"])
+    output = filter_dictonary_by_keys(input_seq, ["other"])
     assert output == {"gadm": {"other": (("name_1", "name_2"), ("id_1", "id_2"))}}
 
 

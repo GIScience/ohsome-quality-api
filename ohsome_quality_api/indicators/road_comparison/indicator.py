@@ -17,6 +17,8 @@ from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic
 
+percent_format = "##0.##%"
+
 
 class RoadComparison(BaseIndicator):
     """Comparison of OSM Roads with reference data.
@@ -192,7 +194,7 @@ class RoadComparison(BaseIndicator):
                     y=[ratio * 100],
                     name=_("{matched_percentage} of {name} are matched by OSM").format(
                         matched_percentage=format_percent(
-                            ratio, format="##0.##%", locale=get_locale()
+                            ratio, format=percent_format, locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -216,7 +218,7 @@ class RoadComparison(BaseIndicator):
                         "{not_matched_percentage} of {name} are not matched by OSM"
                     ).format(
                         not_matched_percentage=format_percent(
-                            1 - ratio, format="##0.##%", locale=get_locale()
+                            1 - ratio, format=percent_format, locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -295,7 +297,7 @@ class RoadComparison(BaseIndicator):
             ).format(
                 dataset=dataset,
                 coverage=format_percent(
-                    coverage / 100, format="##0.##%", locale=get_locale()
+                    coverage / 100, format=percent_format, locale=get_locale()
                 ),
             )
         else:
