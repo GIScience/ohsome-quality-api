@@ -214,6 +214,7 @@ class Currentness(BaseIndicator):
         self.result.description = check_minor_edge_cases(
             self.contrib_sum,
             self.bin_total,
+            self.topic.aggregation_type,
         )
 
         self.bin_up_to_date = create_bin(
@@ -491,13 +492,13 @@ def check_major_edge_cases(contrib_sum) -> str:
         return ""
 
 
-def check_minor_edge_cases(contrib_sum, bin_total) -> str:
+def check_minor_edge_cases(contrib_sum, bin_total, aggregation_type) -> str:
     """Check edge cases and return description.
 
     Minor edge cases should *not* lead to cancellation of calculation.
     """
     num_months = get_num_months_last_contrib(bin_total.contrib_abs)
-    if contrib_sum < 25:  # not enough data
+    if contrib_sum < 25 and aggregation_type == "count":  # not enough data
         return _(
             "Please note that in the area of interest less than 25 features of the "
             "selected topic are present today. "
