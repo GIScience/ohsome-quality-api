@@ -162,10 +162,8 @@ class BuildingComparison(BaseIndicator):
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
         if self.result.label == "undefined" and all(edge_cases):
             logging.info(
-                _(
-                    "Result is undefined and major edge case is present. "
-                    "Skipping figure creation."
-                )
+                "Result is undefined and major edge case is present. "
+                "Skipping figure creation."
             )
             return
 
@@ -183,14 +181,10 @@ class BuildingComparison(BaseIndicator):
             if None in (self.area_ref[key], self.area_osm[key]):
                 continue
             ref_x.append(dataset["name"])
-            ref_y.append(
-                format_decimal(round(self.area_ref[key], 2), locale=get_locale())
-            )
+            ref_y.append(round(self.area_ref[key], 2))
             ref_data.append(dataset)
             osm_x.append(dataset["name"])
-            osm_y.append(
-                format_decimal(round(self.area_osm[key], 2), locale=get_locale())
-            )
+            osm_y.append(round(self.area_osm[key], 2))
             parsed_date = parser.parse(dataset["date"])
             ref_hover.append(
                 f"{dataset['name']} ({format_date(parsed_date, locale=get_locale())})"
@@ -209,7 +203,7 @@ class BuildingComparison(BaseIndicator):
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
-                    name=_("OSM building area")
+                    name="OSM building area"
                     + " ("
                     + " km², ".join(map(str, osm_area))
                     + " km²)",
@@ -246,7 +240,7 @@ class BuildingComparison(BaseIndicator):
             )
 
         layout = {
-            "title_text": "Building Comparison",
+            "title_text": _("Building Comparison"),
             "showlegend": True,
             "barmode": "group",
             "yaxis_title": _("Building Area [km²]"),
@@ -272,7 +266,7 @@ class BuildingComparison(BaseIndicator):
             return _("{} does not cover your area-of-interest.").format(dataset)
         elif coverage < 10:
             return _("Only {} of your area-of-interest is covered by {}").format(
-                format_percent(coverage / 100, locale=get_locale()),
+                format_percent(coverage / 100, format="##0.##%", locale=get_locale()),
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
@@ -292,7 +286,9 @@ class BuildingComparison(BaseIndicator):
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
-                coverage=format_percent(round(coverage / 100, 2), locale=get_locale()),
+                coverage=format_percent(
+                    coverage / 100, format="##0.##%", locale=get_locale()
+                ),
             )
         else:
             return ""

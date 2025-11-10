@@ -2,7 +2,7 @@
     "data": [
         {
             "hoverinfo": "text",
-            "hovertext": "OSM Covered: 0.02 km (Apr 05, 2024)",
+            "hovertext": "OSM Covered: 0.02 km (Apr 2024)",
             "marker": {
                 "color": "#767676",
                 "line": {
@@ -10,7 +10,7 @@
                     "width": 1
                 }
             },
-            "name": "80.0% 'of Microsoft Roads are matched by OSM",
+            "name": "80% of Microsoft Roads are matched by OSM",
             "type": "bar",
             "width": 0.4,
             "x": [
@@ -22,7 +22,7 @@
         },
         {
             "hoverinfo": "text",
-            "hovertext": "Not OSM Covered: 0.01 km (Apr 05, 2024)",
+            "hovertext": "Not OSM Covered: 0.01 km (80)",
             "marker": {
                 "color": "rgba(0,0,0,0)",
                 "line": {
@@ -30,7 +30,7 @@
                     "width": 1
                 }
             },
-            "name": "20.0% of Microsoft Roads are not matched by OSM",
+            "name": "20% of Microsoft Roads are not matched by OSM",
             "textposition": "outside",
             "type": "bar",
             "width": 0.4,

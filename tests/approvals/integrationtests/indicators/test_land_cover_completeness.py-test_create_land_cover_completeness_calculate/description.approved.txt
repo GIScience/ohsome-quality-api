@@ -1,1 +1,1 @@
-In your area-of-interest, the completeness of OSM land cover data is high. 92.0% of the total area is covered by OSM land cover data. Note that the area of overlapping OSM land cover polygons will be counted multiple times.
+In your area-of-interest, the completeness of OSM land cover data is high. 92% of the total area is covered by OSM land cover data. Note that the area of overlapping OSM land cover polygons will be counted multiple times.

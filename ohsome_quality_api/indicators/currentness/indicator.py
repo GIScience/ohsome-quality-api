@@ -271,7 +271,8 @@ class Currentness(BaseIndicator):
         ).substitute(
             up_to_date_contrib_rel=f"{
                 format_percent(
-                    round(sum(self.bin_up_to_date.contrib_rel), 4),
+                    sum(self.bin_up_to_date.contrib_rel),
+                    format='0%',
                     locale=get_locale(),
                 )
             }",

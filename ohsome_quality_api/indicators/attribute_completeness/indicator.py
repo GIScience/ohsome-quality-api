@@ -117,7 +117,7 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value is None:
             raise TypeError(_("Result value should not be None."))
         else:
-            result = format_percent(round(self.result.value, 1), locale=get_locale())
+            result = format_percent(self.result.value, format="0%", locale=get_locale())
         if self.attribute_title is None:
             raise TypeError(_("Attribute title should not be None."))
         else:

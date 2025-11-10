@@ -192,7 +192,7 @@ class RoadComparison(BaseIndicator):
                     y=[ratio * 100],
                     name=_("{matched_percentage} of {name} are matched by OSM").format(
                         matched_percentage=format_percent(
-                            round((ratio), 1), locale=get_locale()
+                            ratio, format="##0.##%", locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -216,7 +216,7 @@ class RoadComparison(BaseIndicator):
                         "{not_matched_percentage} of {name} are not matched by OSM"
                     ).format(
                         not_matched_percentage=format_percent(
-                            round((1 - ratio), 1), locale=get_locale()
+                            1 - ratio, format="##0.##%", locale=get_locale()
                         ),
                         name=name,
                     ),
@@ -294,7 +294,9 @@ class RoadComparison(BaseIndicator):
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
-                coverage=format_percent(round(coverage / 100, 2), locale=get_locale()),
+                coverage=format_percent(
+                    coverage / 100, format="##0.##%", locale=get_locale()
+                ),
             )
         else:
             return ""

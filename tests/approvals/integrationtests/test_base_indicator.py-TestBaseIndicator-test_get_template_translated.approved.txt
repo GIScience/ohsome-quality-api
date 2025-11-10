@@ -3,7 +3,7 @@
     "green": "Gute Datenqualität.",
     "yellow": "Mittlere Datenqualität.",
     "red": "Schlechte Datenqualität",
-    "undefined": "The quality level could not be calculated for this indicator."
+    "undefined": "Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden."
   },
   "result_description": "Eine Beschreibung der Ergebnisse."
 }

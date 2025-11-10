@@ -45,7 +45,7 @@ class LandCoverCompleteness(BaseIndicator):
         result_description = template.safe_substitute(
             {
                 "value": format_percent(
-                    round(self.result.value, 2), locale=get_locale()
+                    self.result.value, format="##0.##%", locale=get_locale()
                 ),
             }
         )

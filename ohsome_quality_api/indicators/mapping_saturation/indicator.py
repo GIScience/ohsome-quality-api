@@ -3,7 +3,7 @@ from string import Template
 
 import numpy as np
 import plotly.graph_objects as pgo
-from babel.numbers import format_decimal
+from babel.numbers import format_percent
 from dateutil.parser import isoparse
 from fastapi_i18n import _, get_locale
 from geojson import Feature
@@ -151,8 +151,8 @@ class MappingSaturation(BaseIndicator):
                 )
             )
         description = Template(self.templates.result_description).substitute(
-            saturation=format_decimal(
-                round(self.result.value * 100, 2), locale=get_locale()
+            saturation=format_percent(
+                self.result.value, format="##0.##%", locale=get_locale()
             )
         )
         self.result.description = (
@@ -163,7 +163,7 @@ class MappingSaturation(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info(_("Result is undefined. Skipping figure creation."))
+            logging.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = pgo.Figure()
