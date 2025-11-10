@@ -246,7 +246,7 @@ poi:
   aggregation_type: count
   source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
   filter: >-
-    (aeroway in (aerodrome, helipad, heliport))
+    ((aeroway in (aerodrome, helipad, heliport))
     or (amenity in (animal_boarding, animal_shelter, arts_centre, atm, baby_hatch, bank, bar, bbq, bench,
     bicycle_parking, bicycle_rental, bicycle_repair_station, biergarten, boat_sharing, brothel, bureau_de_change,
     bus_station, bus_stop, cafe, car_sharing, car_wash, casino, charging_station, cinema, clinic, clock, college,
@@ -292,7 +292,8 @@ poi:
     tyres, variety_store, video, video_games, watches, weapons, wine, pet))
     or (tourism in (alpine_hut, apartment, aquarium, artwork, attraction, camp_site, caravan_site,
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
-    wilderness_hut, zoo))
+    wilderness_hut, zoo)))
+    and (type:way or type:node)
   indicators:
     - mapping-saturation
     - currentness
