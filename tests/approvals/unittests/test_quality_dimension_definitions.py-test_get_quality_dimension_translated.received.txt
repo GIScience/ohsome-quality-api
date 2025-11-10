@@ -1,0 +1,5 @@
+{
+  "name": "minimal",
+  "description": "Eine minimale Qualitätsdimension zum Testen.",
+  "source": null
+}

@@ -1,0 +1,5 @@
+{
+  "filter": "height=* or building:levels=*",
+  "name": "Gebäudehöhe",
+  "description": "TODO"
+}
