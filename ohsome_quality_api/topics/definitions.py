@@ -40,8 +40,8 @@ def get_topic_preset(topic_key: str) -> TopicDefinition:
     try:
         return topics[topic_key]
     except KeyError as error:
-        raise KeyError("Invalid topic key. Valid topic keys are: ") + str(
-            topics.keys()
+        raise KeyError(
+            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
         ) from error
 
 

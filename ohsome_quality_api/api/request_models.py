@@ -102,8 +102,10 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         valid_indicators = get_valid_indicators(self.topic.key)
         if indicator not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}"
-            ).format(indicator, self.topic.key)
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    indicator, self.topic.key
+                )
+            )
         return self
 
 
@@ -235,10 +237,10 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "land-cover-thematic-accuracy" not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}"
-            ).format(
-                "land-cover-thematic-accuracy",
-                self.topic.key,
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "land-cover-thematic-accuracy",
+                    self.topic.key,
+                )
             )
         return self
 

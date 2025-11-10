@@ -5,13 +5,13 @@ from approvaltests import verify
 
 from ohsome_quality_api.utils.helper import get_project_root
 from tests.approvaltests_namers import PytestNamer
+from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
 
-# TODO: Remove and recreate VCR cassette for this test
-
 
 @pytest.fixture
+@oqapi_vcr.use_cassette
 def indicator(client, bpolys, monkeypatch):
     monkeypatch.setenv(
         "FASTAPI_I18N_LOCALE_DIR",

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-10 11:20+0100\n"
+"POT-Creation-Date: 2025-11-10 12:58+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,34 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ohsome_quality_api/api/request_models.py:105
-#: ohsome_quality_api/api/request_models.py:132
-#: ohsome_quality_api/api/request_models.py:180
-#: ohsome_quality_api/api/request_models.py:242
-#, python-brace-format
-msgid "Invalid combination of indicator and topic: {} and {}"
-msgstr ""
-
-#: ohsome_quality_api/api/request_models.py:146
-#, python-brace-format
-msgid ""
-"Invalid combination of attribute {} and topic {}. Topic {} supports these"
-" attributes: {}"
-msgstr ""
-"Ungültige Kombination aus Attribut {} und Thema {}. Thema {} unterstützt "
-"diese Attribute: {}"
-
-#: ohsome_quality_api/api/request_models.py:162
+#: ohsome_quality_api/api/request_models.py:158
 msgid "ohsome filter query representing custom attributes."
 msgstr "ohsome-Filterabfrage, die benutzerdefinierte Attribute darstellt."
 
-#: ohsome_quality_api/api/request_models.py:168
+#: ohsome_quality_api/api/request_models.py:164
 msgid "Title describing the attributes represented by the Attribute Filter."
 msgstr ""
 "Titel, der die durch den Attributfilter dargestellten Attribute "
 "beschreibt."
 
-#: ohsome_quality_api/api/request_models.py:222
+#: ohsome_quality_api/api/request_models.py:218
 msgid ""
 "CORINE Land Cover is a pan-European land cover inventory with thematic "
 "classes."
@@ -372,31 +355,9 @@ msgstr ""
 "Erde oder in Bezug auf andere Objekte wie Dächer, Brücken oder Gebäude "
 "befinden kann."
 
-#: ohsome_quality_api/attributes/definitions.py:40
-#: ohsome_quality_api/attributes/definitions.py:68
-msgid "Invalid topic or attribute key(s)."
-msgstr "Ungültiger Themen- oder Attributschlüssel."
-
-#: ohsome_quality_api/attributes/definitions.py:52
-#: ohsome_quality_api/topics/definitions.py:45
-msgid "Invalid topic key. Valid topic keys are: "
-msgstr "Ungültiger Themaschlüssel. Gültige Themaschlüssel sind: "
-
-#: ohsome_quality_api/geodatabase/client.py:89
-#, python-brace-format
-msgid "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead."
-msgstr ""
-"Erwarteter Typ „Feature“ oder „FeatureCollection“. Stattdessen wurde "
-"„{0}“ erhalten."
-
 #: ohsome_quality_api/indicators/base.py:163
 msgid "The creation of the Indicator was unsuccessful."
 msgstr "Die Erstellung des Indikators war nicht erfolgreich."
-
-#: ohsome_quality_api/indicators/definitions.py:46
-#: ohsome_quality_api/projects/definitions.py:44
-msgid "Invalid project key. Valid project keys are: "
-msgstr "Ungültiger Projektschlüssel. Gültige Projektschlüssel sind: "
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Mapping Saturation"
@@ -512,14 +473,6 @@ msgstr ""
 msgid " No features in this region"
 msgstr " Keine Features in dieser Region"
 
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:118
-msgid "Result value should not be None."
-msgstr "Der Ergebniswert darf nicht „None“ sein."
-
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:122
-msgid "Attribute title should not be None."
-msgstr "Der Attributtitel darf nicht „None“ sein."
-
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:125
 msgid "attributes "
 msgstr "Attribute "
@@ -527,13 +480,6 @@ msgstr "Attribute "
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:127
 msgid "attribute "
 msgstr "Attribut "
-
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:145
-#: ohsome_quality_api/indicators/currentness/indicator.py:296
-#: ohsome_quality_api/indicators/land_cover_completeness/indicator.py:66
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:227
-msgid "Result is undefined. Skipping figure creation."
-msgstr "Ergebnis ist undefiniert. Diagrammerstellung wird übersprungen."
 
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:199
 #, python-brace-format
@@ -543,10 +489,6 @@ msgstr "{absolute_value} Elemente"
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:202
 msgid "elements"
 msgstr "Elemente"
-
-#: ohsome_quality_api/indicators/attribute_completeness/indicator.py:226
-msgid "Invalid aggregation_type"
-msgstr "Ungültiger Aggregationstyp"
 
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 msgid "The attribute completeness is low (<25%)."
@@ -1014,11 +956,6 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:149
-#, python-brace-format
-msgid "Result value (saturation) is an unexpected value: {}"
-msgstr "Ergebniswert (Sättigung) ist ein unerwarteter Wert: {}"
-
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:174
 msgid "OSM data"
 msgstr "OSM-Daten"
@@ -1240,10 +1177,6 @@ msgstr ""
 "durchschnittlich $median_users Benutzer Objekte zum ausgewählten Thema in"
 " dieser Region hinzugefügt oder bearbeitet."
 
-#: ohsome_quality_api/ohsome/client.py:181
-msgid "Parameter 'bpolys' does not have expected type."
-msgstr "Parameter 'bpolys' hat nicht den erwarteten Typ."
-
 #: ohsome_quality_api/projects/projects.yaml
 msgid "something that is still a TODO"
 msgstr "etwas ist immernoch ein TODO"
@@ -1263,12 +1196,6 @@ msgstr ""
 #: ohsome_quality_api/projects/projects.yaml
 msgid "https://heigit.org/silver-ways/"
 msgstr ""
-
-#: ohsome_quality_api/quality_dimensions/definitions.py:39
-msgid "Invalid quality dimension key. Valid quality dimension keys are: "
-msgstr ""
-"Ungültiger Schlüssel für die Qualitätsdimension. Gültige Schlüssel für "
-"Qualitätsdimensionen sind: "
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "completeness"
@@ -2143,4 +2070,55 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "Unknown aggregation_type: {aggregation_type}"
 #~ msgstr "Unbekannter Aggregationstyp: {aggregation_type}"
+
+#~ msgid "Invalid combination of indicator and topic: {} and {}"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Invalid combination of attribute {} and"
+#~ " topic {}. Topic {} supports these"
+#~ " attributes: {}"
+#~ msgstr ""
+#~ "Ungültige Kombination aus Attribut {} "
+#~ "und Thema {}. Thema {} unterstützt "
+#~ "diese Attribute: {}"
+
+#~ msgid "Invalid topic or attribute key(s)."
+#~ msgstr "Ungültiger Themen- oder Attributschlüssel."
+
+#~ msgid "Invalid topic key. Valid topic keys are: "
+#~ msgstr "Ungültiger Themaschlüssel. Gültige Themaschlüssel sind: "
+
+#~ msgid "Expected type `Feature` or `FeatureCollection`. Got `{0}` instead."
+#~ msgstr ""
+#~ "Erwarteter Typ „Feature“ oder "
+#~ "„FeatureCollection“. Stattdessen wurde „{0}“ "
+#~ "erhalten."
+
+#~ msgid "Invalid project key. Valid project keys are: "
+#~ msgstr "Ungültiger Projektschlüssel. Gültige Projektschlüssel sind: "
+
+#~ msgid "Result value should not be None."
+#~ msgstr "Der Ergebniswert darf nicht „None“ sein."
+
+#~ msgid "Attribute title should not be None."
+#~ msgstr "Der Attributtitel darf nicht „None“ sein."
+
+#~ msgid "Result is undefined. Skipping figure creation."
+#~ msgstr "Ergebnis ist undefiniert. Diagrammerstellung wird übersprungen."
+
+#~ msgid "Invalid aggregation_type"
+#~ msgstr "Ungültiger Aggregationstyp"
+
+#~ msgid "Result value (saturation) is an unexpected value: {}"
+#~ msgstr "Ergebniswert (Sättigung) ist ein unerwarteter Wert: {}"
+
+#~ msgid "Parameter 'bpolys' does not have expected type."
+#~ msgstr "Parameter 'bpolys' hat nicht den erwarteten Typ."
+
+#~ msgid "Invalid quality dimension key. Valid quality dimension keys are: "
+#~ msgstr ""
+#~ "Ungültiger Schlüssel für die "
+#~ "Qualitätsdimension. Gültige Schlüssel für "
+#~ "Qualitätsdimensionen sind: "
 
