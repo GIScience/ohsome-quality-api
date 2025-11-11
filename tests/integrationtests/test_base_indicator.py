@@ -2,6 +2,7 @@ import asyncio
 
 import plotly.graph_objects as pgo
 import pytest
+from approvaltests import verify
 from geojson import Feature
 
 from ohsome_quality_api.indicators.minimal.indicator import Minimal
@@ -9,6 +10,7 @@ from ohsome_quality_api.indicators.models import (
     IndicatorTemplates,
     Result,
 )
+from tests.approvaltests_namers import PytestNamer
 
 from .utils import get_geojson_fixture, get_topic_fixture
 
@@ -92,6 +94,13 @@ class TestBaseIndicator:
         indicator.get_template()
         assert isinstance(indicator.templates, IndicatorTemplates)
         assert isinstance(indicator.result, Result)
+
+    def test_get_template_translated(self, feature, topic, locale_de):
+        indicator = Minimal(feature=feature, topic=topic)
+        indicator.get_template()
+        assert isinstance(indicator.templates, IndicatorTemplates)
+        assert isinstance(indicator.result, Result)
+        verify(indicator.templates.model_dump_json(indent=2), namer=PytestNamer())
 
 
 class TestBaseResult:

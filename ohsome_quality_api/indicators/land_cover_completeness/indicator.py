@@ -2,7 +2,9 @@ import logging
 from string import Template
 
 import plotly.graph_objects as pgo
+from babel.numbers import format_percent
 from dateutil import parser
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -42,17 +44,19 @@ class LandCoverCompleteness(BaseIndicator):
         template = Template(self.templates.result_description)
         result_description = template.safe_substitute(
             {
-                "value": round(self.result.value * 100, 2),
+                "value": format_percent(
+                    self.result.value, format="##0.##%", locale=get_locale()
+                ),
             }
         )
         self.result.description = (
-            self.templates.label_description[self.result.label]
+            getattr(self.templates.label_description, self.result.label)
             + " "
             + result_description
         )
 
         if self.result.label != "undefined":
-            self.result.description += (
+            self.result.description += _(
                 " Note that the area of overlapping OSM land cover polygons "
                 + "will be counted multiple times."
             )

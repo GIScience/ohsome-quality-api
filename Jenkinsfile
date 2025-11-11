@@ -40,6 +40,7 @@ pipeline {
                 }
                 script {
                     sh 'uv sync --locked --no-editable'
+                    sh 'uv run pybabel compile -d ohsome_quality_api/locale'
                 }
             }
             post {

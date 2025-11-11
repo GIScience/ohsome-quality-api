@@ -16,6 +16,7 @@ dependencies = [
     "async-lru>=2.0.5",
     "asyncpg>=0.30.0",
     "fastapi>=0.115.12",
+    "fastapi-i18n>=0.5.1",
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
@@ -51,6 +52,7 @@ dev = [
     "pytest-xdist>=3.6.1",
     "ruff==0.11.9", # fixed because of pre-commit
     "vcrpy>=7.0.0",
+    "babel>=2.17.0",
 ]
 
 [build-system]
@@ -80,4 +82,3 @@ select = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_default_fixture_loop_scope = "function"
-

@@ -6,6 +6,8 @@ from typing import List
 
 import geojson
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
+from fastapi_i18n.main import Translator, translator
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
@@ -27,6 +29,7 @@ from ohsome_quality_api.topics.definitions import (
     load_topic_presets,
 )
 from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.utils.helper import get_project_root
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
@@ -306,3 +309,32 @@ def bin_total_factory():
         return Bin(contrib_abs, contrib_rel, timestamps)
 
     return _factory
+
+
+@pytest.fixture
+def locale_de(monkeypatch):
+    monkeypatch.setenv(
+        "FASTAPI_I18N_LOCALE_DIR",
+        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
+    )
+    token = translator.set(Translator(locale="de"))
+    yield
+    translator.reset(token)
+
+
+@pytest.fixture(scope="class")
+def monkeysession(request):
+    mpatch = MonkeyPatch()
+    yield mpatch
+    mpatch.undo()
+
+
+@pytest.fixture(scope="class")
+def locale_de_class(monkeysession):
+    monkeysession.setenv(
+        "FASTAPI_I18N_LOCALE_DIR",
+        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
+    )
+    token = translator.set(Translator(locale="de"))
+    yield
+    translator.reset(token)

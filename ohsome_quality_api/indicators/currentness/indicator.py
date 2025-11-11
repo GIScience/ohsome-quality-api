@@ -18,7 +18,10 @@ from string import Template
 
 import plotly.graph_objects as pgo
 import yaml
+from babel.dates import format_date
+from babel.numbers import format_decimal, format_percent
 from dateutil.parser import isoparse
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
@@ -157,7 +160,9 @@ class Currentness(BaseIndicator):
                 """
             case _:
                 raise ValueError(
-                    f"Unknown aggregation_type: {self.topic.aggregation_type}"
+                    "Unknown aggregation_type: {aggregation_type}".format(
+                        aggregation_type=self.topic.aggregation_type
+                    )
                 )
 
         query = Template(template).substitute(
@@ -252,7 +257,7 @@ class Currentness(BaseIndicator):
         match self.topic.aggregation_type:
             case "count":
                 unit = ""
-                aggregation = self.contrib_sum
+                aggregation = int(self.contrib_sum)
             case "length":
                 unit = " km"
                 aggregation = f"{self.contrib_sum:.1f}"
@@ -260,15 +265,29 @@ class Currentness(BaseIndicator):
                 unit = " km<sup>2</sup>"
                 aggregation = f"{self.contrib_sum:.1f}"
 
-        label_description = self.templates.label_description[self.result.label]
+        label_description = getattr(self.templates.label_description, self.result.label)
         self.result.description += Template(
             self.templates.result_description
         ).substitute(
-            up_to_date_contrib_rel=f"{sum(self.bin_up_to_date.contrib_rel) * 100:.0f}",
+            up_to_date_contrib_rel=f"{
+                format_percent(
+                    sum(self.bin_up_to_date.contrib_rel),
+                    format='0%',
+                    locale=get_locale(),
+                )
+            }",
             aggregation=aggregation,
             unit=unit,
-            from_timestamp=self.bin_up_to_date.timestamps[-1].strftime("%b %Y"),
-            to_timestamp=self.bin_total.timestamps[0].strftime("%b %Y"),
+            from_timestamp=format_date(
+                self.bin_up_to_date.timestamps[-1],
+                format="MMM yyyy",
+                locale=get_locale(),
+            ),
+            to_timestamp=format_date(
+                self.bin_up_to_date.timestamps[0],
+                format="MMM yyyy",
+                locale=get_locale(),
+            ),
         )
         self.result.description += "\n" + label_description
 
@@ -292,11 +311,20 @@ class Currentness(BaseIndicator):
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             (Color.GREEN, Color.YELLOW, Color.RED),
         ):
-            contrib_abs_text = [f"{c:.2f}{unit}" for c in bucket.contrib_abs]
-            contrib_rel_text = [f"{c * 100:.2f}%" for c in bucket.contrib_rel]
-            timestamps_text = [ts.strftime("%b %Y") for ts in bucket.timestamps]
+            contrib_abs_text = [
+                f"{format_decimal(round(c, 2), locale=get_locale())}{unit}"
+                for c in bucket.contrib_abs
+            ]
+            contrib_rel_text = [
+                f"{format_decimal(round(c * 100, 2), locale=get_locale())}%"
+                for c in bucket.contrib_rel
+            ]
+            timestamps_text = [
+                format_date(ts, format="MMM yyyy", locale=get_locale())
+                for ts in bucket.timestamps
+            ]
             customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
-            hovertemplate = (
+            hovertemplate = _(
                 "%{customdata[0]} of features (%{customdata[1]}) "
                 "were last modified in %{customdata[2]}"
                 "<extra></extra>"
@@ -336,12 +364,12 @@ class Currentness(BaseIndicator):
             )
 
         fig.update_layout(
-            title_text=("Currentness"),
+            title_text=_("Currentness"),
             barmode="relative",
             hovermode="x unified",
         )
         fig.update_xaxes(
-            title_text="Date of Last Edit",
+            title_text=_("Date of Last Edit"),
             type="date",
             ticklabelmode="period",
             tickformat="%b\n%Y",
@@ -349,7 +377,7 @@ class Currentness(BaseIndicator):
             tick0=self.bin_total.timestamps[-1],
         )
         fig.update_yaxes(
-            title_text="Features [%]",
+            title_text=_("Features [%]"),
             tickformatstops=[
                 dict(dtickrange=[None, 0.001], value=".2%"),
                 dict(dtickrange=[0.001, 0.01], value=".1%"),
@@ -359,14 +387,14 @@ class Currentness(BaseIndicator):
             secondary_y=False,
         )
         fig.update_yaxes(
-            title_text="Features [#]",
+            title_text=_("Features [#]"),
             tickformat=".",
             secondary_y=True,
             griddash="dash",
         )
         # fixed legend, because we do not expect high contributions in 2008
         fig.update_legends(
-            title="Last Edit to a Feature{}".format(self.get_source_text()),
+            title=_("Last Edit to a Feature{}").format(self.get_source_text()),
             x=0.02,
             y=0.95,
             bgcolor="rgba(255,255,255,0.66)",
@@ -381,11 +409,17 @@ class Currentness(BaseIndicator):
         out_of_date_str = month_to_year_month(self.out_of_date)
         match color:
             case color.GREEN:
-                return f"younger than {up_to_date_str}"
+                return _("younger than {up_to_date_str}").format(
+                    up_to_date_str=up_to_date_str
+                )
             case color.YELLOW:
-                return f"between {up_to_date_str} and {out_of_date_str}"
+                return _("between {up_to_date_str} and {out_of_date_str}").format(
+                    up_to_date_str=up_to_date_str, out_of_date_str=out_of_date_str
+                )
             case color.RED:
-                return f"older than {out_of_date_str}"
+                return _("older than {out_of_date_str}").format(
+                    out_of_date_str=out_of_date_str
+                )
             case _:
                 raise ValueError()
 
@@ -399,9 +433,15 @@ def month_to_year_month(months: int):
     years, months = divmod(months, 12)
     years_str = months_str = ""
     if years != 0:
-        years_str = f"{years} year" + ("s" if years > 1 else "")
+        if years == 1:
+            years_str = _("{years} year").format(years=years)
+        else:
+            years_str = _("{years} years").format(years=years)
     if months != 0:
-        months_str = f"{months} month" + ("s" if months > 1 else "")
+        if months == 1:
+            months_str = _("{months} month").format(months=months)
+        else:
+            months_str = _("{months} months").format(months=months)
     return " ".join([years_str, months_str]).strip()
 
 
@@ -445,7 +485,7 @@ def check_major_edge_cases(contrib_sum) -> str:
     Major edge cases should lead to cancellation of calculation.
     """
     if contrib_sum == 0:  # no data
-        return (
+        return _(
             "In the area of interest no features of the selected topic are present "
             "today."
         )
@@ -460,15 +500,15 @@ def check_minor_edge_cases(contrib_sum, bin_total, aggregation_type) -> str:
     """
     num_months = get_num_months_last_contrib(bin_total.contrib_abs)
     if contrib_sum < 25 and aggregation_type == "count":  # not enough data
-        return (
+        return _(
             "Please note that in the area of interest less than 25 features of the "
             "selected topic are present today. "
         )
     elif num_months >= 12:
-        return (
-            f"Please note that there was no mapping activity for {num_months} months "
+        return _(
+            "Please note that there was no mapping activity for {num_months} months "
             "in this region. "
-        )
+        ).format(num_months=num_months)
     else:
         return ""
 

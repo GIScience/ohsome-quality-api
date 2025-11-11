@@ -1,1 +1,1 @@
-20.0% of all "buildings (count)" features (all: 10 elements) in your area of interest have the selected additional attributes height of buildings, house number, street address (matched: 2 elements). 
+20% of all "Buildings (count)" features (all: 10 elements) in your area of interest have the selected additional attributes height of buildings, house number, street address (matched: 2 elements). 

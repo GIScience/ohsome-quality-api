@@ -13,6 +13,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from fastapi.responses import JSONResponse
+from fastapi_i18n import i18n
 from geojson import FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
@@ -75,6 +76,7 @@ from ohsome_quality_api.utils.exceptions import (
 )
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
+    get_project_root,
     json_serialize,
 )
 
@@ -100,6 +102,11 @@ Data quality estimations for OpenStreetMap.
 [Homepage](https://api.quality.ohsome.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqapi)
 """
 
+if "FASTAPI_I18N_LOCALE_DIR" not in os.environ:
+    os.environ["FASTAPI_I18N_LOCALE_DIR"] = os.path.join(
+        get_project_root(), "ohsome_quality_api/locale"
+    )
+
 app = FastAPI(
     title=__title__,
     description=description,
@@ -111,7 +118,7 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url=None,
     redoc_url=None,
-    dependencies=[Depends(set_request_context)],
+    dependencies=[Depends(set_request_context), Depends(i18n)],
 )
 
 app.add_middleware(

@@ -14,7 +14,9 @@ land-cover
 
 - currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
 - user-activity: add new no-quality indicator about user-activity ([#950])
+- i18n: support i18n and add german translations OQAPI ([#892])
 
+[#892]: https://github.com/GIScience/ohsome-quality-api/pull/892
 [#944]: https://github.com/GIScience/ohsome-quality-api/pull/944
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
 [#953]: https://github.com/GIScience/ohsome-quality-api/pull/953

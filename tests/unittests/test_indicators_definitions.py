@@ -3,9 +3,11 @@ from unittest.mock import AsyncMock
 
 import geojson
 import pytest
+from approvaltests import verify
 from geojson import Feature, Polygon
 
 from ohsome_quality_api.indicators import definitions, models
+from tests.approvaltests_namers import PytestNamer
 
 
 @pytest.fixture(scope="class")
@@ -64,6 +66,17 @@ def test_get_indicator_metadata_filtered_by_project():
 def test_get_indicator(metadata_indicator_minimal):
     indicator = definitions.get_indicator("minimal")
     assert indicator == metadata_indicator_minimal["minimal"]
+
+
+@pytest.mark.usefixtures("locale_de")
+def test_get_indicator_de():
+    indicator = definitions.get_indicator("mapping-saturation")
+    verify(indicator.model_dump_json(indent=2), namer=PytestNamer())
+
+
+def test_get_not_existing_indicator():
+    with pytest.raises(KeyError):
+        definitions.get_indicator("foo")
 
 
 def test_get_coverage(mock_get_reference_coverage):

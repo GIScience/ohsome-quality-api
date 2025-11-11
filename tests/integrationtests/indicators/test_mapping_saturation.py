@@ -66,7 +66,9 @@ class TestPreprocess:
 class TestCalculation:
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
+    def indicator(
+        self, topic_building_count, feature_germany_heidelberg, locale_de_class
+    ):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
         asyncio.run(i.preprocess())
         i.calculate()

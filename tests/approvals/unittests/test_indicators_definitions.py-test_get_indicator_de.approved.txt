@@ -1,0 +1,16 @@
+{
+  "name": "Kartierungssättigung",
+  "description": "Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die Steigung der Kurve minimal.",
+  "projects": [
+    "core",
+    "corine-land-cover",
+    "expanse",
+    "experimental",
+    "idealvgi",
+    "mapaction",
+    "sketchmap",
+    "bkg",
+    "unicef"
+  ],
+  "quality_dimension": "completeness"
+}

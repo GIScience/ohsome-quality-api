@@ -3,6 +3,8 @@ from string import Template
 
 import dateutil.parser
 import plotly.graph_objects as go
+from babel.numbers import format_decimal, format_percent
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 
 from ohsome_quality_api.attributes.definitions import (
@@ -91,45 +93,45 @@ class AttributeCompleteness(BaseIndicator):
         if self.result.value == "NaN":
             self.result.value = None
         if self.result.value is None:
-            self.result.description += " No features in this region"
+            self.result.description += _(" No features in this region")
             return
         self.create_description()
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                self.description + self.templates.label_description["green"]
+                self.description + self.templates.label_description.green
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                self.description + self.templates.label_description["yellow"]
+                self.description + self.templates.label_description.yellow
             )
         else:
             self.result.class_ = 1
             self.result.description = (
-                self.description + self.templates.label_description["red"]
+                self.description + self.templates.label_description.red
             )
 
     def create_description(self):
         if self.result.value is None:
             raise TypeError("Result value should not be None.")
         else:
-            result = round(self.result.value * 100, 1)
+            result = format_percent(self.result.value, format="0%", locale=get_locale())
         if self.attribute_title is None:
             raise TypeError("Attribute title should not be None.")
         else:
             tags = str(
-                "attributes " + self.attribute_title
+                _("attributes ") + self.attribute_title
                 if self.attribute_keys and len(self.attribute_keys) > 1
-                else "attribute " + self.attribute_title
+                else _("attribute ") + self.attribute_title
             )
         all_, matched = self.compute_units_for_all_and_matched()
         self.description = Template(self.templates.result_description).substitute(
             result=result,
             all=all_,
             matched=matched,
-            topic=self.topic.name.lower(),
+            topic=self.topic.name,
             tags=tags,
         )
 
@@ -194,14 +196,32 @@ class AttributeCompleteness(BaseIndicator):
 
     def compute_units_for_all_and_matched(self):
         if self.topic.aggregation_type == "count":
-            all_ = f"{int(self.absolute_value_1)} elements"
-            matched = f"{int(self.absolute_value_2)} elements"
+            all_ = _("{absolute_value} elements").format(
+                absolute_value=int(self.absolute_value_1)
+            )
+            matched = f"{int(self.absolute_value_2)} {_('elements')}"
         elif self.topic.aggregation_type == "area":
-            all_ = f"{str(round(self.absolute_value_1 / 1000000, 2))} km²"
-            matched = f"{str(round(self.absolute_value_2 / 1000000, 2))} km²"
+            all_ = f"{
+                format_decimal(
+                    round(self.absolute_value_1 / 1000000, 2), locale=get_locale()
+                )
+            } km²"
+            matched = f"{
+                format_decimal(
+                    round(self.absolute_value_2 / 1000000, 2), locale=get_locale()
+                )
+            } km²"
         elif self.topic.aggregation_type == "length":
-            all_ = f"{str(round(self.absolute_value_1 / 1000, 2))} km"
-            matched = f"{str(round(self.absolute_value_2 / 1000, 2))} km"
+            all_ = f"{
+                format_decimal(
+                    round(self.absolute_value_1 / 1000, 2), locale=get_locale()
+                )
+            } km"
+            matched = f"{
+                format_decimal(
+                    round(self.absolute_value_2 / 1000, 2), locale=get_locale()
+                )
+            } km"
         else:
             raise ValueError("Invalid aggregation_type")
         return all_, matched

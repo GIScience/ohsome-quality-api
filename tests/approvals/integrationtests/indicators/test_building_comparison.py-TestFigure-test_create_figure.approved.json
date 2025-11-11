@@ -3,8 +3,8 @@
         {
             "hoverinfo": "text",
             "hovertext": [
-                "OSM (Feb 02, 2025)",
-                "OSM (Feb 02, 2025)"
+                "OSM (Feb 2, 2025)",
+                "OSM (Feb 2, 2025)"
             ],
             "marker": {
                 "color": "#767676"
@@ -24,7 +24,7 @@
             "hoverinfo": "text",
             "hovertext": [
                 "EUBUCCO (Nov 3, 2022)",
-                "Microsoft Building Footprints (July 5, 2022)"
+                "Microsoft Building Footprints (Jul 5, 2022)"
             ],
             "legendgroup": "Reference",
             "marker": {
@@ -33,7 +33,7 @@
                     "#F2711C"
                 ]
             },
-            "name": "EUBUCCO (5.0 km\u00b2)",
+            "name": "EUBUCCO (5 km\u00b2)",
             "type": "bar",
             "x": [
                 "EUBUCCO",
@@ -63,7 +63,7 @@
                 "line": {
                     "width": 0
                 },
-                "name": "Microsoft Building Footprints (5.0 km\u00b2)",
+                "name": "Microsoft Building Footprints (5 km\u00b2)",
                 "showlegend": true,
                 "type": "rect",
                 "x0": 0,

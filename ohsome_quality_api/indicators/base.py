@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 import plotly.graph_objects as go
 import yaml
+from fastapi_i18n import _
 from geojson import Feature, Polygon
 
 from ohsome_quality_api.definitions import get_attribution
@@ -37,7 +38,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.topic: Topic = topic
         self.feature: Feature = feature
         self.result: Result = Result(
-            description=self.templates.label_description["undefined"],
+            description=self.templates.label_description.undefined
         )
         self._get_default_figure()
 
@@ -159,7 +160,7 @@ class BaseIndicator(metaclass=ABCMeta):
         fig = go.Figure(
             go.Pie(
                 values=[1],
-                labels=["The creation of the Indicator was unsuccessful."],
+                labels=[_("The creation of the Indicator was unsuccessful.")],
                 texttemplate="%{label}",
                 textposition="inside",
             ),

@@ -6,7 +6,10 @@ from string import Template
 import geojson
 import plotly.graph_objects as pgo
 import yaml
+from babel.dates import format_date
+from babel.numbers import format_decimal, format_percent
 from dateutil import parser
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from numpy import mean
 
@@ -111,8 +114,12 @@ class BuildingComparison(BaseIndicator):
             self.ratio[key] = self.area_osm[key] / self.area_ref[key]
             template = Template(self.templates.result_description)
             description = template.substitute(
-                ratio=round(self.ratio[key] * 100, 2),
-                coverage=round(self.area_cov[key] * 100, 2),
+                ratio=format_decimal(
+                    round(self.ratio[key] * 100, 2), locale=get_locale()
+                ),
+                coverage=format_decimal(
+                    round(self.area_cov[key] * 100, 2), locale=get_locale()
+                ),
                 dataset=self.data_ref[key]["name"],
             )
             result_description = " ".join((result_description, edge_case, description))
@@ -128,14 +135,20 @@ class BuildingComparison(BaseIndicator):
                 self.result.class_ = 3
             elif self.th_low > self.result.value >= 0:
                 self.result.class_ = 1
-            label_description = self.templates.label_description[self.result.label]
+            label_description = getattr(
+                self.templates.label_description, self.result.label
+            )
             self.result.description = " ".join((label_description, result_description))
         elif major_edge_case:
-            label_description = self.templates.label_description[self.result.label]
+            label_description = getattr(
+                self.templates.label_description, self.result.label
+            )
             self.result.description = " ".join((label_description, result_description))
         else:
-            label_description = self.templates.label_description[self.result.label]
-            edge_case = (
+            label_description = getattr(
+                self.templates.label_description, self.result.label
+            )
+            edge_case = _(
                 "OSM has substantivly more buildings than the reference datasets. The "
                 "reference dataset is likely to miss many buildings."
             )
@@ -172,11 +185,20 @@ class BuildingComparison(BaseIndicator):
             ref_data.append(dataset)
             osm_x.append(dataset["name"])
             osm_y.append(round(self.area_osm[key], 2))
-            ref_hover.append(f"{dataset['name']} ({dataset['date']})")
-            osm_hover.append(f"OSM ({self.result.timestamp_osm:%b %d, %Y})")
+            parsed_date = parser.parse(dataset["date"])
+            ref_hover.append(
+                f"{dataset['name']} ({format_date(parsed_date, locale=get_locale())})"
+            )
+            osm_hover.append(
+                f"OSM ({format_date(self.result.timestamp_osm, locale=get_locale())})"
+            )
             ref_color.append(Color[dataset["color"]].value)
-            osm_area.append(round(self.area_osm[key], 2))
-            ref_area.append(round(self.area_ref[key], 2))
+            osm_area.append(
+                format_decimal(round(self.area_osm[key], 2), locale=get_locale())
+            )
+            ref_area.append(
+                format_decimal(round(self.area_ref[key], 2), locale=get_locale())
+            )
 
         fig = pgo.Figure(
             data=[
@@ -198,14 +220,14 @@ class BuildingComparison(BaseIndicator):
                     marker_color=ref_color,
                     hovertext=ref_hover,
                     hoverinfo="text",
-                    legendgroup="Reference",
+                    legendgroup=_("Reference"),
                 ),
             ]
         )
         for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
             fig.add_shape(
                 name=name + f" ({area} km²)",
-                legendgroup="Reference",
+                legendgroup=_("Reference"),
                 showlegend=True,
                 type="rect",
                 layer="below",
@@ -218,10 +240,10 @@ class BuildingComparison(BaseIndicator):
             )
 
         layout = {
-            "title_text": "Building Comparison",
+            "title_text": _("Building Comparison"),
             "showlegend": True,
             "barmode": "group",
-            "yaxis_title": "Building Area [km²]",
+            "yaxis_title": _("Building Area [km²]"),
             "legend": dict(
                 orientation="h",
                 entrywidth=270,
@@ -241,14 +263,16 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage is None or coverage == 0:
-            return "{} does not cover your area-of-interest.".format(dataset)
+            return _("{} does not cover your area-of-interest.").format(dataset)
         elif coverage < 10:
-            return "Only {:.2f}% of your area-of-interest is covered by {}".format(
-                coverage,
+            return _("Only {} of your area-of-interest is covered by {}").format(
+                format_percent(coverage / 100, format="##0.##%", locale=get_locale()),
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
-            return f"{dataset} does not contain buildings for your area-of-interest."
+            return _(
+                "{dataset} does not contain buildings for your area-of-interest."
+            ).format(dataset=dataset)
         else:
             return ""
 
@@ -256,9 +280,15 @@ class BuildingComparison(BaseIndicator):
         """If edge case is present return description if not return empty string."""
         coverage = self.area_cov[dataset] * 100
         if coverage < 95:
-            return (
-                f"{dataset} does only cover {coverage:.2f}% of your area-of-interest. "
+            return _(
+                "{dataset} does only cover {coverage} "
+                "of your area-of-interest. "
                 "Comparison is made for the intersection area."
+            ).format(
+                dataset=dataset,
+                coverage=format_percent(
+                    coverage / 100, format="##0.##%", locale=get_locale()
+                ),
             )
         else:
             return ""

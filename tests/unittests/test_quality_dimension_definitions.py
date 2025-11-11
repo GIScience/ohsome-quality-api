@@ -1,7 +1,9 @@
 import pytest
+from approvaltests import verify
 
 from ohsome_quality_api.quality_dimensions import definitions
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
+from tests.approvaltests_namers import PytestNamer
 
 
 @pytest.fixture(params=["minimal", "completeness", "currentness"])
@@ -37,3 +39,8 @@ def test_get_quality_dimension_keys_type():
 def test_get_quality_dimension_keys_valid(valid_quality_dimension_keys):
     keys = definitions.get_quality_dimension_keys()
     assert valid_quality_dimension_keys in keys
+
+
+def test_get_quality_dimension_translated(locale_de):
+    qd = definitions.get_quality_dimension("minimal")
+    verify(qd.model_dump_json(indent=2), namer=PytestNamer())

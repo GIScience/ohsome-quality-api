@@ -9,4 +9,4 @@ label_description:
   undefined: >-
     The quality level could not be calculated for this indicator.
 result_description: >-
-    In the area of interest $up_to_date_contrib_rel% of the features ($aggregation$unit) were edited (created or modified) for the last time in the period between $from_timestamp and $to_timestamp.
+    In the area of interest $up_to_date_contrib_rel of the features ($aggregation$unit) were edited (created or modified) for the last time in the period between $from_timestamp and $to_timestamp.
