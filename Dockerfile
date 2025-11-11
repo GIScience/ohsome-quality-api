@@ -32,6 +32,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-editable --no-dev
 
+RUN uv run pybabel compile -d ohsome_quality_api/locale
+
 FROM python:3.13-slim
 
 WORKDIR /app
