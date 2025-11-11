@@ -997,6 +997,7 @@ source = { editable = "." }
 dependencies = [
     { name = "async-lru" },
     { name = "asyncpg" },
+    { name = "babel" },
     { name = "fastapi" },
     { name = "fastapi-i18n" },
     { name = "geojson" },
@@ -1038,6 +1039,7 @@ dev = [
 requires-dist = [
     { name = "async-lru", specifier = ">=2.0.5" },
     { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "babel", specifier = ">=2.17.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "fastapi-i18n", specifier = ">=0.5.1" },
     { name = "geojson", specifier = ">=3.2.0" },
