@@ -314,7 +314,7 @@ def bin_total_factory():
 @pytest.fixture
 def locale_de(monkeypatch):
     monkeypatch.setenv(
-        "FASTAPI_I18N_LOCALE_DIR",
+        "FASTAPI_I18N__LOCALE_DIR",
         os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     token = translator.set(Translator(locale="de"))
@@ -332,7 +332,7 @@ def monkeysession(request):
 @pytest.fixture(scope="class")
 def locale_de_class(monkeysession):
     monkeysession.setenv(
-        "FASTAPI_I18N_LOCALE_DIR",
+        "FASTAPI_I18N__LOCALE_DIR",
         os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     token = translator.set(Translator(locale="de"))

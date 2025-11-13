@@ -102,8 +102,8 @@ Data quality estimations for OpenStreetMap.
 [Homepage](https://api.quality.ohsome.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqapi)
 """
 
-if "FASTAPI_I18N_LOCALE_DIR" not in os.environ:
-    os.environ["FASTAPI_I18N_LOCALE_DIR"] = os.path.join(
+if "FASTAPI_I18N__LOCALE_DIR" not in os.environ:
+    os.environ["FASTAPI_I18N__LOCALE_DIR"] = os.path.join(
         get_project_root(), "ohsome_quality_api/locale"
     )
 

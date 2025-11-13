@@ -525,16 +525,16 @@ wheels = [
 
 [[package]]
 name = "fastapi-i18n"
-version = "0.8.0"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
     { name = "fastapi" },
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9f/f7/1b18dfd693921286d84f81ab3152762fcda985fe46e640f94e5c04336cc7/fastapi_i18n-0.8.0.tar.gz", hash = "sha256:f9c2c36e9f5cb326049bd26894e611bf8c607d1b253761bc6e279172195fc9b3", size = 19089, upload-time = "2025-11-13T09:53:32.496Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/bb/da93ac13a585f0e15a5f0bc3cc8aece9a2dd425b7e40d79f6e86b442205b/fastapi_i18n-0.9.0.tar.gz", hash = "sha256:abc2d58cf46ac73c7d4b1d37a413e61bf0f2d93584b94e52c5b9ca538c500c40", size = 19150, upload-time = "2025-11-13T10:23:38.168Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/35/14/c22b438c1d7eb1dba17c71b8d88beffc56a9c1c4fc71ab20edb519208a84/fastapi_i18n-0.8.0-py3-none-any.whl", hash = "sha256:43bc7e110155223356a0c4e276039b7b4ab25c926cbe737ff7a307482ec309da", size = 19443, upload-time = "2025-11-13T09:53:31.432Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/bb/39f7b7b45188687dca512333214dfe574e6ab6c452bda22780646be989f8/fastapi_i18n-0.9.0-py3-none-any.whl", hash = "sha256:ffcf792598b2ebbb6e3a54d3031c6b65a00d96697920224e670042566f1af0e5", size = 19482, upload-time = "2025-11-13T10:23:37.074Z" },
 ]
 
 [[package]]

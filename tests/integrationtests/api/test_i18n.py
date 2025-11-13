@@ -14,7 +14,7 @@ ENDPOINT = "/indicators/"
 @oqapi_vcr.use_cassette
 def indicator(client, bpolys, monkeypatch):
     monkeypatch.setenv(
-        "FASTAPI_I18N_LOCALE_DIR",
+        "FASTAPI_I18N__LOCALE_DIR",
         os.path.join(get_project_root(), "ohsome_quality_api/locale"),
     )
     endpoint = "/indicators/mapping-saturation"
