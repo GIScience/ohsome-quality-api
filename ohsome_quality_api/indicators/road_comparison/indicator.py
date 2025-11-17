@@ -263,18 +263,18 @@ class RoadComparison(BaseIndicator):
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset] * 100
+        coverage = self.area_cov[dataset]
         if coverage is None or coverage == 0:
             return _(
                 "Reference dataset {dataset} does not cover area-of-interest. "
             ).format(dataset=dataset)
-        elif coverage < 10:
+        elif coverage < 0.1:
             return _(
                 "Only {a} of the area-of-interest is covered "
                 + "by the reference dataset ({b}). "
                 + "No quality estimation with reference {c} is possible."
             ).format(
-                a=format_decimal(round(coverage, 2), locale=get_locale()),
+                a=format_decimal(round(coverage * 100, 2), locale=get_locale()),
                 b=dataset,
                 c=dataset,
             )
@@ -287,15 +287,15 @@ class RoadComparison(BaseIndicator):
 
     def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset] * 100
-        if coverage < 95:
+        coverage = self.area_cov[dataset]
+        if coverage < 0.95:
             return _(
                 "{dataset} does only cover {coverage} of your area-of-interest. "
                 "Comparison is made for the intersection area."
             ).format(
                 dataset=dataset,
                 coverage=format_percent(
-                    coverage / 100, format="##0.##%", locale=get_locale()
+                    coverage, format="##0.##%", locale=get_locale()
                 ),
             )
         else:
