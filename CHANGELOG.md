@@ -13,10 +13,13 @@
 - fix: change aggregation of land-cover from area/density to area ([1892c3fc])
   - Only the land cover completeness indicator will request area/density for
 land-cover
+- fix(topics): add a geometry or type filter to all topic filters ([#482bbf96])
+- fix(topics): apply geometry or type filter to the whole filter and not just a part of it ([#482bbf96])
 
 ### New Features
 
-- currentness: Optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
+- currentness: optionally use ohsomeDB to compute Currentness indicator ([#944] [#949])
+- currentness: make Currentness indicator available for all topics (#bbc3fde0)
 - user-activity: add new no-quality indicator about user-activity ([#950])
 - i18n: support i18n and add german translations OQAPI ([#892])
 
@@ -25,6 +28,8 @@ land-cover
 [#949]: https://github.com/GIScience/ohsome-quality-api/pull/949
 [#953]: https://github.com/GIScience/ohsome-quality-api/pull/953
 [#950]: https://github.com/GIScience/ohsome-quality-api/pull/950
+[#bbc3fde0]: https://github.com/GIScience/ohsome-quality-api/commit/bbc3fde0
+[#482bbf96]: https://github.com/GIScience/ohsome-quality-api/commit/482bbf96
 
 ## Release 1.12.0
 
