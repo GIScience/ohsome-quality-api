@@ -1,9 +1,9 @@
 import json
 import logging
 import os
-from typing import Any, Union
+from typing import Annotated, Any, Union
 
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +27,7 @@ from ohsome_quality_api import (
 )
 from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
+    AcceptLanguageHeader,
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
     IndicatorDataRequest,
@@ -107,6 +108,16 @@ if "FASTAPI_I18N__LOCALE_DIR" not in os.environ:
         get_project_root(), "ohsome_quality_api/locale"
     )
 
+
+async def accept_language(
+    accept_language: Annotated[
+        str,
+        Header(title="Accept-Language", alias="Accept-Language"),
+    ] = "en",
+) -> AcceptLanguageHeader:
+    return AcceptLanguageHeader(accept_language=accept_language)
+
+
 app = FastAPI(
     title=__title__,
     description=description,
@@ -118,7 +129,11 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url=None,
     redoc_url=None,
-    dependencies=[Depends(set_request_context), Depends(i18n)],
+    dependencies=[
+        Depends(set_request_context),
+        Depends(i18n),
+        Depends(accept_language),
+    ],
 )
 
 app.add_middleware(

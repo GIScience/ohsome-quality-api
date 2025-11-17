@@ -34,6 +34,14 @@ class BaseRequestContext(BaseModel):
         return request_context.get()
 
 
+class AcceptLanguageHeader(BaseModel):
+    accept_language: str | None = Field(
+        default="en",
+        title="Accept-Language",
+        alias="accept_language",
+    )
+
+
 FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, dict]]
 
 
