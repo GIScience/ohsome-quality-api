@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.13.0
 
 ### Breaking Changes
 
