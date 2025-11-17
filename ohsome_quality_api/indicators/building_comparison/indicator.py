@@ -278,8 +278,8 @@ class BuildingComparison(BaseIndicator):
 
     def check_minor_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset] * 100
-        if coverage < 95:
+        coverage = self.area_cov[dataset]
+        if coverage < 0.95:
             return _(
                 "{dataset} does only cover {coverage} "
                 "of your area-of-interest. "
@@ -287,7 +287,7 @@ class BuildingComparison(BaseIndicator):
             ).format(
                 dataset=dataset,
                 coverage=format_percent(
-                    coverage / 100, format="##0.##%", locale=get_locale()
+                    coverage, format="##0.##%", locale=get_locale()
                 ),
             )
         else:
