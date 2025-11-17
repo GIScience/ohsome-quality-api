@@ -196,10 +196,10 @@ class RoadComparison(BaseIndicator):
                         ),
                         name=name,
                     ),
-                    marker=dict(
-                        color=Color.GREY.value,
-                        line=dict(color=Color.GREY.value, width=1),
-                    ),
+                    marker={
+                        "color": Color.GREY.value,
+                        "line": {"color": Color.GREY.value, "width": 1},
+                    },
                     width=0.4,
                     hovertext=hovertext,
                     hoverinfo="text",
@@ -220,10 +220,10 @@ class RoadComparison(BaseIndicator):
                         ),
                         name=name,
                     ),
-                    marker=dict(
-                        color="rgba(0,0,0,0)",
-                        line=dict(color=Color.GREY.value, width=1),
-                    ),
+                    marker={
+                        "color": "rgba(0,0,0,0)",
+                        "line": {"color": Color.GREY.value, "width": 1},
+                    },
                     width=0.4,
                     hovertext=_(
                         "Not OSM Covered: {length_difference_km} km " + "({date})"
@@ -243,18 +243,18 @@ class RoadComparison(BaseIndicator):
         fig.update_layout(
             barmode="stack",
             title=_("Road Comparison"),
-            yaxis=dict(title=_("Matched road length [%]")),
+            yaxis={"title": _("Matched road length [%]")},
         )
 
         fig.update_layout(
-            legend=dict(
-                orientation="h",
-                entrywidth=270,
-                yanchor="top",
-                y=-0.1,
-                xanchor="center",
-                x=0.5,
-            ),
+            legend={
+                "orientation": "h",
+                "entrywidth": 270,
+                "yanchor": "top",
+                "y": -0.1,
+                "xanchor": "center",
+                "x": 0.5,
+            },
         )
 
         raw = fig.to_dict()
