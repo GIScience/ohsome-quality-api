@@ -304,7 +304,7 @@ class Currentness(BaseIndicator):
             case "area":
                 unit = " km<sup>2</sup>"
             case _:
-                ValueError()
+                raise ValueError()
 
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         for bucket, color in zip(
