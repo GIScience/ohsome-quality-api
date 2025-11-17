@@ -261,12 +261,12 @@ class BuildingComparison(BaseIndicator):
 
     def check_major_edge_cases(self, dataset: str) -> str:
         """If edge case is present return description if not return empty string."""
-        coverage = self.area_cov[dataset] * 100
+        coverage = self.area_cov[dataset]
         if coverage is None or coverage == 0:
             return _("{} does not cover your area-of-interest.").format(dataset)
-        elif coverage < 10:
+        elif coverage < 0.1:
             return _("Only {} of your area-of-interest is covered by {}").format(
-                format_percent(coverage / 100, format="##0.##%", locale=get_locale()),
+                format_percent(coverage, format="##0.##%", locale=get_locale()),
                 dataset,
             )
         elif self.area_ref[dataset] == 0:
