@@ -13,6 +13,7 @@ from pydantic import (
 
 from ohsome_quality_api.api.request_context import RequestContext, request_context
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
@@ -88,6 +89,10 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     @field_validator("ohsomedb")
     @classmethod
     def transform_ohsomedb(cls, value) -> bool:
+        # TODO: Feature Flag
+        if get_config_value("ohsomedb_enabled") is False:
+            return False
+
         if isinstance(value, str):
             if value == "true":
                 return True
