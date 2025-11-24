@@ -208,3 +208,22 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         LandCoverThematicAccuracyRequest(
             bpolys=bpolys, topic="land-cover", corine_land_cover_class="1"
         )
+
+
+# TODO: Feature Flag
+@pytest.mark.usefixtures("mock_request_context_minimal")
+def test_indicator_request_ohsomedb_feature_flag_disabled(bpolys, topic_key_minimal):
+    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
+    assert model.ohsomedb is False
+
+
+# TODO: Feature Flag
+@pytest.mark.usefixtures("mock_request_context_minimal")
+def test_indicator_request_ohsomedb_feature_flag_enabled(
+    bpolys, topic_key_minimal, monkeypatch
+):
+    monkeypatch.setenv("OQAPI_OHSOMEDB_ENABLED", "true")
+    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=False)
+    assert model.ohsomedb is False
+    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
+    assert model.ohsomedb is True

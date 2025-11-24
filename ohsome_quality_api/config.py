@@ -24,6 +24,7 @@ def get_config_path() -> str:
 
 def load_config_default() -> dict:
     return {
+        "ohsomedb_enabled": False,
         "ohsomedb_host": "localhost",
         "ohsomedb_port": 5432,
         "ohsomedb_db": "postgres",
@@ -62,6 +63,7 @@ def load_config_from_file(path: str) -> dict:
 def load_config_from_env() -> dict:
     """Load configuration from environment variables."""
     cfg = {
+        "ohsomedb_enabled": os.getenv("OQAPI_OHSOMEDB_ENABLED"),
         "ohsomedb_host": os.getenv("OHSOMEDB_HOST"),
         "ohsomedb_port": os.getenv("OHSOMEDB_PORT"),
         "ohsomedb_db": os.getenv("OHSOMEDB_DB"),
