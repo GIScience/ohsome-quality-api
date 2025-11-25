@@ -1,5 +1,11 @@
 # Changelog
 
+## Current Main
+
+- refactor: put ohsomedb feature behind a feature flag ([#970])
+
+[#970]: https://github.com/GIScience/ohsome-quality-api/pull/970
+
 ## Release 1.13.0
 
 ### Breaking Changes
