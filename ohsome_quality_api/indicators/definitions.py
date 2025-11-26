@@ -4,6 +4,7 @@ from enum import Enum
 import yaml
 from geojson import FeatureCollection
 
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.models import IndicatorMetadata
 from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.topics.definitions import load_topic_presets
@@ -24,6 +25,8 @@ def load_indicators() -> dict[str, IndicatorMetadata]:
         raw = yaml.safe_load(f)
     indicators = {}
     for k, v in raw.items():
+        if k == "user-activity" and get_config_value("ohsomedb_enabled") is False:
+            continue
         indicators[k] = IndicatorMetadata(**v)
     return indicators
 

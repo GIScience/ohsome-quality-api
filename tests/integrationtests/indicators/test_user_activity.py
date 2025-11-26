@@ -18,7 +18,10 @@ class TestPreprocess:
         self,
         topic_building_count,
         feature_germany_heidelberg,
+        monkeypatch,
     ):
+        # TODO(feature-flag): remove once once ohsome db is in production
+        monkeypatch.setenv("OQAPI_OHSOMEDB_ENABLED", "true")
         indicator = UserActivity(topic_building_count, feature_germany_heidelberg)
         await indicator.preprocess()
         assert len(indicator.bin_total.users_abs) > 0
@@ -30,7 +33,11 @@ class TestPreprocess:
 class TestFigure:
     @pytest_asyncio.fixture()
     @asyncpg_recorder.use_cassette
-    async def indicator(self, topic_building_count, feature_germany_heidelberg):
+    async def indicator(
+        self, topic_building_count, feature_germany_heidelberg, monkeypatch
+    ):
+        # TODO(feature-flag): remove once once ohsome db is in production
+        monkeypatch.setenv("OQAPI_OHSOMEDB_ENABLED", "true")
         i = UserActivity(topic_building_count, feature_germany_heidelberg)
         await i.preprocess()
         i.calculate()
