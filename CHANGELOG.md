@@ -3,8 +3,10 @@
 ## Current Main
 
 - refactor: put ohsomedb feature behind a feature flag ([#970])
+- refactor: disable user-activity indicators if ohsomedb is disabled ([bb3d9e45])
 
 [#970]: https://github.com/GIScience/ohsome-quality-api/pull/970
+[bb3d9e45]: https://github.com/GIScience/ohsome-quality-api/commit/bb3d9e45
 
 ## Release 1.13.0
 
