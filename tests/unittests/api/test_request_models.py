@@ -210,14 +210,14 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         )
 
 
-# TODO: Feature Flag
+# TODO(feature-flag): remove once once ohsome db is in production
 @pytest.mark.usefixtures("mock_request_context_minimal")
 def test_indicator_request_ohsomedb_feature_flag_disabled(bpolys, topic_key_minimal):
     model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
     assert model.ohsomedb is False
 
 
-# TODO: Feature Flag
+# TODO(feature-flag): remove once once ohsome db is in production
 @pytest.mark.usefixtures("mock_request_context_minimal")
 def test_indicator_request_ohsomedb_feature_flag_enabled(
     bpolys, topic_key_minimal, monkeypatch

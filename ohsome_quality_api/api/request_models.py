@@ -89,7 +89,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     @field_validator("ohsomedb")
     @classmethod
     def transform_ohsomedb(cls, value) -> bool:
-        # TODO: Feature Flag
+        # TODO(feature-flag): remove once once ohsome db is in production
         if get_config_value("ohsomedb_enabled") is False:
             return False
 
