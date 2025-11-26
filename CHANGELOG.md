@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.14.0
 
 - refactor: put ohsomedb feature behind a feature flag ([#970])
 - refactor: disable user-activity indicators if ohsomedb is disabled ([bb3d9e45])
