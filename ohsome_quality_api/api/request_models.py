@@ -13,7 +13,6 @@ from pydantic import (
 
 from ohsome_quality_api.api.request_context import RequestContext, request_context
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
@@ -79,27 +78,11 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         alias="topic",
     )
     include_figure: bool = True
-    ohsomedb: bool | str = False
 
     @field_validator("topic")
     @classmethod
     def transform_topic(cls, value) -> TopicDefinition:
         return get_topic_preset(value.value)
-
-    @field_validator("ohsomedb")
-    @classmethod
-    def transform_ohsomedb(cls, value) -> bool:
-        # TODO(feature-flag): remove once once ohsome db is in production
-        if get_config_value("ohsomedb_enabled") is False:
-            return False
-
-        if isinstance(value, str):
-            if value == "true":
-                return True
-            else:
-                return False
-        else:
-            return value
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self):

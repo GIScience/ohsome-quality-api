@@ -72,8 +72,9 @@ class Currentness(BaseIndicator):
         self.bin_in_between: Bin
         self.bin_out_of_date: Bin
 
-    async def preprocess(self, ohsomedb: bool = False):
-        if ohsomedb:
+    async def preprocess(self):
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
             await self.preprocess_ohsomedb()
         else:
             await self.preprocess_ohsomeapi()

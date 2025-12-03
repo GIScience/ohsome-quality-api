@@ -95,12 +95,6 @@ def test_indicator_request_include_figure(bpolys, topic_key_minimal):
     IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_figure=False)
 
 
-@pytest.mark.usefixtures("mock_request_context_minimal")
-def test_indicator_request_ohsomedb(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=False)
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
-
-
 def test_indicator_request_invalid_topic(bpolys):
     with pytest.raises(ValidationError):
         IndicatorRequest(bpolys=bpolys, topic="foo")
@@ -208,22 +202,3 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         LandCoverThematicAccuracyRequest(
             bpolys=bpolys, topic="land-cover", corine_land_cover_class="1"
         )
-
-
-# TODO(feature-flag): remove once once ohsome db is in production
-@pytest.mark.usefixtures("mock_request_context_minimal")
-def test_indicator_request_ohsomedb_feature_flag_disabled(bpolys, topic_key_minimal):
-    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
-    assert model.ohsomedb is False
-
-
-# TODO(feature-flag): remove once once ohsome db is in production
-@pytest.mark.usefixtures("mock_request_context_minimal")
-def test_indicator_request_ohsomedb_feature_flag_enabled(
-    bpolys, topic_key_minimal, monkeypatch
-):
-    monkeypatch.setenv("OQAPI_OHSOMEDB_ENABLED", "true")
-    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=False)
-    assert model.ohsomedb is False
-    model = IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, ohsomedb=True)
-    assert model.ohsomedb is True

@@ -1,5 +1,11 @@
 # Changelog
 
+## Current Main
+
+- refactor: remove ohsomedb api parameter ([#974])
+
+[#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
+
 ## Release 1.14.0
 
 - refactor: put ohsomedb feature behind a feature flag ([#970])

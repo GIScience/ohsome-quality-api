@@ -6,7 +6,6 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_api.indicators.base import BaseIndicator as Indicator
-from ohsome_quality_api.indicators.currentness.indicator import Currentness
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 from ohsome_quality_api.topics.models import TopicData, TopicDefinition
 from ohsome_quality_api.utils.helper import get_class_from_key
@@ -60,7 +59,6 @@ async def _create_indicator(
     feature: Feature,
     topic: Topic,
     include_figure: bool = True,
-    ohsomedb: bool = False,
     **kwargs,
 ) -> Indicator:
     """Create an indicator from scratch."""
@@ -77,10 +75,7 @@ async def _create_indicator(
     )
 
     logging.info("Run preprocessing")
-    if isinstance(indicator, Currentness):
-        await indicator.preprocess(ohsomedb=ohsomedb)
-    else:
-        await indicator.preprocess()
+    await indicator.preprocess()
 
     logging.info("Run calculation")
     indicator.calculate()
