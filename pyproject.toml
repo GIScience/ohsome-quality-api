@@ -72,6 +72,7 @@ select = [
     "Q",    # flake8-quotes
     "W",    # pycodestyle Warning
     "C90",  # mccabe
+    "FURB", # refurb
     "FAST", # FastAPI
     "INT",  # flake8-gettext
 ]
