@@ -72,6 +72,8 @@ select = [
     "Q",    # flake8-quotes
     "W",    # pycodestyle Warning
     "C90",  # mccabe
+    "FAST", # FastAPI
+    "INT",  # flake8-gettext
 ]
 
 [tool.ruff.lint.per-file-ignores]
