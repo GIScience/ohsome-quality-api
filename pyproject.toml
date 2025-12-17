@@ -76,6 +76,7 @@ select = [
     "FURB", # refurb
     "FAST", # FastAPI
     "INT",  # flake8-gettext
+    "LOG",  # flake8-logging
 ]
 
 [tool.ruff.lint.per-file-ignores]
