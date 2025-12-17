@@ -20,7 +20,7 @@ user_count AS (
         -- AND status_geom_type = ANY(ARRAY[('latest', 'Polygon'), ('latest', 'MultiPolygon')]::_status_geom_type_type)
         -- ohsome-filter-to-sql generated clause
         AND ($filter)
-        AND ST_Intersects(c.geom, ST_GeomFromGeoJSON($$1))
+        AND ST_Intersects(c.geom, ST_GeomFromGeoJSON($geom))
     GROUP BY
         month
 )

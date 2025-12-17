@@ -4,6 +4,14 @@
             "customdata": [
                 [
                     0,
+                    "Dec 2025"
+                ],
+                [
+                    0,
+                    "Nov 2025"
+                ],
+                [
+                    0,
                     "Oct 2025"
                 ],
                 [
@@ -878,6 +886,8 @@
             "name": "Users per Month",
             "type": "bar",
             "x": [
+                "2025-12-01T00:00:00Z",
+                "2025-11-01T00:00:00Z",
                 "2025-10-01T00:00:00Z",
                 "2025-09-01T00:00:00Z",
                 "2025-08-01T00:00:00Z",
@@ -1097,6 +1107,8 @@
                 "2007-10-01T00:00:00Z"
             ],
             "y": [
+                0,
+                0,
                 0,
                 0,
                 20,
@@ -1326,6 +1338,8 @@
             "name": "12-Month Weighted Avg",
             "type": "scatter",
             "x": [
+                "2025-12-01T00:00:00Z",
+                "2025-11-01T00:00:00Z",
                 "2025-10-01T00:00:00Z",
                 "2025-09-01T00:00:00Z",
                 "2025-08-01T00:00:00Z",
@@ -1546,17 +1560,19 @@
             ],
             "y": [
                 null,
-                20.0,
-                20.52173913043478,
-                18.87878787878788,
-                22.333333333333332,
-                21.8,
-                20.596491228070175,
-                19.904761904761905,
-                19.36764705882353,
-                19.59722222222222,
-                19.466666666666665,
-                19.974025974025974,
+                0.0,
+                0.0,
+                7.2727272727272725,
+                11.238095238095237,
+                12.46,
+                16.45614035087719,
+                17.3015873015873,
+                17.264705882352942,
+                17.416666666666668,
+                17.56,
+                18.324675324675326,
+                18.71794871794872,
+                19.71794871794872,
                 20.115384615384617,
                 21.166666666666668,
                 21.358974358974358,
@@ -1775,6 +1791,8 @@
             "name": "Last 36M Trend",
             "type": "scatter",
             "x": [
+                "2025-11-01T00:00:00Z",
+                "2025-10-01T00:00:00Z",
                 "2025-09-01T00:00:00Z",
                 "2025-08-01T00:00:00Z",
                 "2025-07-01T00:00:00Z",
@@ -1808,12 +1826,10 @@
                 "2023-03-01T00:00:00Z",
                 "2023-02-01T00:00:00Z",
                 "2023-01-01T00:00:00Z",
-                "2022-12-01T00:00:00Z",
-                "2022-11-01T00:00:00Z",
-                "2022-10-01T00:00:00Z"
+                "2022-12-01T00:00:00Z"
             ],
             "y": {
-                "bdata": "9I414T0CM0AMyyZ6aUAzQCQHGBOVfjNAPEMJrMC8M0BUf/pE7PozQGy7690XOTRAhPfcdkN3NECcM84Pb7U0QLRvv6ia8zRAzKuwQcYxNUDk56Ha8W81QPwjk3MdrjVAFGCEDEnsNUAsnHWldCo2QETYZj6gaDZAXBRY18umNkB0UElw9+Q2QIyMOgkjIzdApMgrok5hN0C8BB07ep83QNVADtSl3TdA7Xz/bNEbOEAFufAF/Vk4QB314Z4omDhANTHTN1TWOEBNbcTQfxQ5QGWptWmrUjlAfeWmAteQOUCVIZibAs85QK1diTQuDTpAxZl6zVlLOkDd1WtmhYk6QPURXf+wxzpADU5OmNwFO0Alij8xCEQ7QD3GMMozgjtA",
+                "bdata": "TSjHb/0pJED88Kq+J1wlQKq5jg1SjiZAWIJyXHzAJ0AGS1arpvIoQLQTOvrQJCpAY9wdSftWK0ARpQGYJYksQL9t5eZPuy1AbjbJNXrtLkCOf1ZC0g8wQOVjyGnnqDBAPEg6kfxBMUCULKy4EdsxQOoQHuAmdDJAQvWPBzwNM0CY2QEvUaYzQPC9c1ZmPzRAR6LlfXvYNECehlelkHE1QPVqycylCjZATE879LqjNkCkM60b0Dw3QPoXH0Pl1TdAUvyQavpuOECo4AKSDwg5QADFdLkkoTlAWKnm4Dk6OkCujVgIT9M6QAZyyi9kbDtAXFY8V3kFPEC0Oq5+jp48QAofIKajNz1AYgOSzbjQPUC45wP1zWk+QBDMdRzjAj9A",
                 "dtype": "f8"
             }
         }

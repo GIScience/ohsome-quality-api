@@ -39,17 +39,21 @@ class UserActivity(BaseIndicator):
         self.bin_total = None
 
     async def preprocess(self) -> None:
-        where = ohsome_filter_to_sql(self.topic.filter)
+        where, query_args = ohsome_filter_to_sql(self.topic.filter)
         with open(Path(__file__).parent / "query.sql", "r") as file:
             template = file.read()
         query = Template(template).substitute(
             {
                 "filter": where,
                 "contributions_table": get_config_value("ohsomedb_contributions_table"),
+                "geom": "${}".format(len(query_args) + 1),
             }
         )
         results = await client.fetch(
-            query, json.dumps(self.feature["geometry"]), database="ohsomedb"
+            query,
+            *query_args,
+            json.dumps(self.feature["geometry"]),
+            database="ohsomedb",
         )
         if len(results) == 0:
             return

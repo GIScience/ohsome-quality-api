@@ -116,7 +116,7 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = timestamps[0]
 
     async def preprocess_ohsomedb(self):
-        where = ohsome_filter_to_sql(self.topic.filter)
+        where, query_args = ohsome_filter_to_sql(self.topic.filter)
         with open(Path(__file__).parent / "query.sql", "r") as file:
             template = file.read()
 
@@ -129,36 +129,36 @@ class Currentness(BaseIndicator):
             CASE
                 WHEN ST_Within(
                     c.geom,
-                    ST_GeomFromGeoJSON($1)
+                    ST_GeomFromGeoJSON(${})
                 )
                 THEN c.length -- Use precomputed area from ohsome-planet
                 ELSE ST_Length(
                       ST_Intersection(
                         c.geom,
-                        ST_GeomFromGeoJSON($1)
+                        ST_GeomFromGeoJSON(${})
                       )::geography
                 )
             END
         )::BIGINT
-                """
+                """.format(len(query_args) + 1, len(query_args) + 1)
             case "area" | r"area\density":
                 aggregation = """
         0.001 * 0.001 * SUM(
             CASE
                 WHEN ST_Within(
                     c.geom,
-                    ST_GeomFromGeoJSON($1)
+                    ST_GeomFromGeoJSON(${})
                 )
                 THEN c.area -- Use precomputed area from ohsome-planet
                 ELSE ST_Area(
                       ST_Intersection(
                         c.geom,
-                        ST_GeomFromGeoJSON($1)
+                        ST_GeomFromGeoJSON(${})
                       )::geography
                 )
             END
         )::BIGINT
-                """
+                """.format(len(query_args) + 1, len(query_args) + 1)
             case _:
                 raise ValueError(
                     "Unknown aggregation_type: {aggregation_type}".format(
@@ -171,10 +171,12 @@ class Currentness(BaseIndicator):
                 "aggregation": aggregation,
                 "filter": where,
                 "contributions_table": get_config_value("ohsomedb_contributions_table"),
+                "geom": "$" + str(len(query_args) + 1),
             }
         )
         results = await client.fetch(
             query,
+            *query_args,
             json.dumps(self.feature["geometry"]),
             database="ohsomedb",
         )
