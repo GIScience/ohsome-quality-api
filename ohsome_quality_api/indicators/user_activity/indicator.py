@@ -17,6 +17,8 @@ from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class Bin:
@@ -96,7 +98,7 @@ class UserActivity(BaseIndicator):
 
     def create_figure(self):
         if check_major_edge_cases(sum(self.bin_total.users_abs)):
-            logging.info("No user activity. Skipping figure creation.")
+            logger.info("No user activity. Skipping figure creation.")
             return
         fig = pgo.Figure()
         bucket = self.bin_total

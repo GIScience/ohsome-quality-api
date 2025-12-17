@@ -33,11 +33,13 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+logger = logging.getLogger(__name__)
+
 # set locale for datetime to string formatting
 try:
     locale.setlocale(locale.LC_ALL, ["en_US", locale.getencoding()])
 except locale.Error:
-    logging.warning(
+    logger.warning(
         "Could not set locale to en_US. Output may be different than expected."
     )
 
@@ -296,7 +298,7 @@ class Currentness(BaseIndicator):
 
     def create_figure(self):
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logger.info("Result is undefined. Skipping figure creation.")
             return
 
         match self.topic.aggregation_type:

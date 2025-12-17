@@ -12,6 +12,8 @@ from ohsome_quality_api.utils.helper import get_class_from_key
 from ohsome_quality_api.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_api.utils.validators import validate_area
 
+logger = logging.getLogger(__name__)
+
 
 async def create_indicator(
     key: str,
@@ -63,9 +65,9 @@ async def _create_indicator(
 ) -> Indicator:
     """Create an indicator from scratch."""
 
-    logging.info("Indicator key:  {0:4}".format(key))
-    logging.info("Topic key:     {0:4}".format(topic.key))
-    logging.info("Feature id:     {0:4}".format(feature.get("id", "None")))
+    logger.info("Indicator key:  {0:4}".format(key))
+    logger.info("Topic key:     {0:4}".format(topic.key))
+    logger.info("Feature id:     {0:4}".format(feature.get("id", "None")))
 
     indicator_class = get_class_from_key(class_type="indicator", key=key)
     indicator = indicator_class(
@@ -74,14 +76,14 @@ async def _create_indicator(
         **kwargs,
     )
 
-    logging.info("Run preprocessing")
+    logger.info("Run preprocessing")
     await indicator.preprocess()
 
-    logging.info("Run calculation")
+    logger.info("Run calculation")
     indicator.calculate()
 
     if include_figure:
-        logging.info("Run figure creation")
+        logger.info("Run figure creation")
         indicator.create_figure()
     else:
         indicator.result.figure = None

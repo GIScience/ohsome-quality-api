@@ -11,6 +11,8 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+logger = logging.getLogger(__name__)
+
 
 class LandCoverCompleteness(BaseIndicator):
     def __init__(
@@ -63,7 +65,7 @@ class LandCoverCompleteness(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logger.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = pgo.Figure(

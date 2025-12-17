@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from typing import Any, Union
 
@@ -45,7 +44,6 @@ from ohsome_quality_api.api.response_models import (
     TopicMetadataResponse,
 )
 from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
-from ohsome_quality_api.config import configure_logging
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
@@ -92,9 +90,6 @@ TAGS_METADATA = [
 # TODO: to be replaced by config
 DEFAULT_PROJECT = ProjectEnum.core
 
-configure_logging()
-logging.info("Logging enabled")
-logging.debug("Debugging output enabled")
 
 description = """
 Data quality estimations for OpenStreetMap.

@@ -25,6 +25,7 @@ from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+logger = logging.getLogger(__name__)
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf
 # https://wiki.openstreetmap.org/wiki/Corine_Land_Cover
 # Original colors of level 3 are mixed to get colors for level 2
@@ -224,7 +225,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logger.info("Result is undefined. Skipping figure creation.")
             return
 
         if self.clc_class:

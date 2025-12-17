@@ -15,6 +15,8 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
+logger = logging.getLogger(__name__)
+
 
 class AttributeCompleteness(BaseIndicator):
     """
@@ -142,7 +144,7 @@ class AttributeCompleteness(BaseIndicator):
         attribute(s).
         """
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logger.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = go.Figure(

@@ -15,6 +15,8 @@ from geojson import Feature, FeatureCollection
 
 from ohsome_quality_api.indicators.mapping_saturation.models import BaseStatModel
 
+logger = logging.getLogger(__name__)
+
 
 def get_class_from_key(class_type: str, key: str):
     """Convert indicator key to the class name."""
@@ -115,7 +117,7 @@ def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> 
             default=json_serialize,
             allow_nan=True,
         )
-        logging.info("Output file written:\t" + str(outfile))
+        logger.info("Output file written:\t" + str(outfile))
 
 
 def get_project_root() -> Path:

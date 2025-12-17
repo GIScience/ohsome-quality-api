@@ -15,6 +15,8 @@ from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic, TopicData
 
+logger = logging.getLogger(__name__)
+
 
 class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator.
@@ -86,7 +88,7 @@ class MappingSaturation(BaseIndicator):
         self.result.timestamp_osm = self.timestamps[-1]
         edge_case_description = self.check_edge_cases()
         if edge_case_description:
-            logging.info("Edge case is present. Skipping indicator calculation.")
+            logger.info("Edge case is present. Skipping indicator calculation.")
             self.result.description = edge_case_description
             return
         xdata = np.array(range(len(self.timestamps)))
@@ -99,12 +101,12 @@ class MappingSaturation(BaseIndicator):
             models.SSasymp,
             models.SSmicmen,
         ):
-            logging.info("Run {}".format(model.name))
+            logger.info("Run {}".format(model.name))
             try:
                 fitted_models.append(model(xdata=xdata, ydata=np.array(self.values)))
             # RRuntimeError can occur if data can not be modeled by the R model
             except RRuntimeError as error:
-                logging.info(
+                logger.info(
                     'Skipping model "{0}" due to RRuntimeError: {1}'.format(
                         model.name, str(error).strip()
                     )
@@ -112,7 +114,7 @@ class MappingSaturation(BaseIndicator):
                 continue
             # RuntimeError can occur if data could not be modeled by `curve_fit` (scipy)
             except RuntimeError as error:
-                logging.info(
+                logger.info(
                     'Skipping model "{0}" due to RuntimeError: {1}'.format(
                         model.name, str(error).strip()
                     )
@@ -120,10 +122,10 @@ class MappingSaturation(BaseIndicator):
                 continue
         self.fitted_models = self.select_models(fitted_models)
         if not self.fitted_models:
-            logging.info("No model has been run successfully.")
+            logger.info("No model has been run successfully.")
             return
         self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
-        logging.info("Best fitting model: " + self.best_fit.name)
+        logger.info("Best fitting model: " + self.best_fit.name)
         # Saturation of the last 3 years of the fitted curve
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
@@ -163,7 +165,7 @@ class MappingSaturation(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logging.info("Result is undefined. Skipping figure creation.")
+            logger.info("Result is undefined. Skipping figure creation.")
             return
 
         fig = pgo.Figure()

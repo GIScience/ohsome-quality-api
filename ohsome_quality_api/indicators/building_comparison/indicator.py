@@ -19,6 +19,8 @@ from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic
 
+logger = logging.getLogger(__name__)
+
 
 class BuildingComparison(BaseIndicator):
     def __init__(
@@ -161,7 +163,7 @@ class BuildingComparison(BaseIndicator):
     def create_figure(self) -> None:
         edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
         if self.result.label == "undefined" and all(edge_cases):
-            logging.info(
+            logger.info(
                 "Result is undefined and major edge case is present. "
                 "Skipping figure creation."
             )

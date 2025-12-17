@@ -1,12 +1,8 @@
 """Load configuration from environment variables or configuration file on disk."""
 
-import logging
-import logging.config
 import os
-import sys
 from types import MappingProxyType
 
-import rpy2.rinterface_lib.callbacks
 import yaml
 
 from ohsome_quality_api import __version__
@@ -106,49 +102,3 @@ def get_config_value(key: str) -> str | int | dict:
 
 def get_default_data_dir() -> str:
     return str(get_project_root() / "data")
-
-
-def load_logging_config():
-    config = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "default": {
-                "format": "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s"  # noqa
-            }
-        },
-        "handlers": {
-            "default": {
-                "formatter": "default",
-                "class": "logging.StreamHandler",
-                "stream": "ext://sys.stdout",
-            }
-        },
-        "root": {"handlers": ["default"], "level": "INFO"},
-    }
-    level = get_log_level()
-    config["root"]["level"] = getattr(logging, level.upper())
-    return config
-
-
-def get_log_level():
-    if "pydevd" in sys.modules or "pdb" in sys.modules:
-        default_level = "DEBUG"
-    else:
-        default_level = "INFO"
-    return os.getenv("OQAPI_LOG_LEVEL", default=default_level)
-
-
-def configure_logging() -> None:
-    """Configure logging level and format."""
-
-    class RPY2LoggingFilter(logging.Filter):  # Sensitive
-        def filter(self, record):
-            return " library ‘/usr/share/R/library’ contains no packages" in record.msg
-
-    # Avoid R library contains no packages WARNING logs.
-    # OQAPI has no dependencies on additional R libraries.
-    rpy2.rinterface_lib.callbacks.logger.addFilter(RPY2LoggingFilter())
-    # Avoid a huge amount of DEBUG logs from matplotlib font_manager.py
-    logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
-    logging.config.dictConfig(load_logging_config())

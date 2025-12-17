@@ -79,6 +79,12 @@ To run them all in parallel execute `pytest -n auto`:
 uv run pytest -n auto
 ```
 
+To run tests with log level DEBUG:
+
+```bash
+OQAPI_LOG_LEVEL=DEBGU uv run pytest
+```
+
 ### VCR for Tests
 
 All tests that are calling function, which are dependent on external network resources (e.g. ohsome API) have to use the [VCR.py](https://vcrpy.readthedocs.io) module: "VCR.py records all HTTP interactions that take place […]."
@@ -153,24 +159,16 @@ For details, check the [regression test README](../regression-tests/README.md).
 
 ## Logging
 
-Logging is enabled by default.
-
-`ohsome_quality_api` uses the [logging module](https://docs.python.org/3/library/logging.html).
-
-### Configuration
-
-The logging module is configured in `config.py`. Both entry-points to
-`ohsome_quality_api`, the `api.py`, will call the configuration
-function defined in `definitions.py`. The default log level is `INFO`. This can be
-overwritten by setting the environment variable `OQAPI_LOG_LEVEL` (See also the
-[configuration documentation](docs/configuration.md)).
+The default log level is `INFO`.
+This can be overwritten by setting the environment variable `OQAPI_LOG_LEVEL`.
 
 ### Usage
 
 ```python
 import logging
 
-logging.info("Logging message")
+logger = logging.getLogger(__name__)
+logger.info("Logging message")
 ```
 
 
