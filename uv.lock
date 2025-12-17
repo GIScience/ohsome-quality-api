@@ -981,14 +981,15 @@ wheels = [
 
 [[package]]
 name = "ohsome-filter-to-sql"
-version = "0.1.0"
+version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "antlr4-python3-runtime" },
+    { name = "pytest-sugar" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ae/a0/8e0fe168fc3c56fc4dc8e6f5a685a4c87ea826e149449e52eeeea8c41058/ohsome_filter_to_sql-0.1.0.tar.gz", hash = "sha256:652d7fe4ae9d47711a3c38159d78a6fc7062890aa170bfff009f1c2eab9dc4ac", size = 37105, upload-time = "2025-10-27T10:30:51.94Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a0/cb/bdeab6ff3b8bfbe6858a1ec786063dc1d261c5ce80fef8105d4deb722ab0/ohsome_filter_to_sql-0.2.0.tar.gz", hash = "sha256:9ea74de51de3018ed61bc8e56b7af66e7d13cea31ebeaf7229e0468b3a59ea61", size = 37385, upload-time = "2025-12-16T12:24:13.359Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/15/b4fe8473351d8f4c414b4355eb29ca9441cab03f99f35ad545d687139f73/ohsome_filter_to_sql-0.1.0-py3-none-any.whl", hash = "sha256:524c1498066c6a15666bb400856376f637e56069d09573491dcd02aafe70bcf4", size = 38677, upload-time = "2025-10-27T10:30:50.359Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/3f/54be03cc4eea728c61a2b6f07dd42f2b1d7dc34cc1aa4858e284b524c643/ohsome_filter_to_sql-0.2.0-py3-none-any.whl", hash = "sha256:6dc4fc1af3fd96c4535148fb8a1995d1940a7d80be96546d50a4da71619492a1", size = 38935, upload-time = "2025-12-16T12:24:12.308Z" },
 ]
 
 [[package]]
