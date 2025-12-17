@@ -120,15 +120,15 @@ wheels = [
 
 [[package]]
 name = "asyncpg-recorder"
-version = "0.1.0"
+version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncpg" },
     { name = "testcontainers" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/18/22/9c2566d08617fa996d99e9b95113a7c9a86d8e3efb068fabc7d9bd94179d/asyncpg_recorder-0.1.0.tar.gz", hash = "sha256:a6f151bf41e03c36d677a82d4d2d1b7658860930c423a908a96405ebda00960d", size = 20254, upload-time = "2025-10-27T13:04:38.38Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/fe/0545cdb3531506ba1d662456f113120a5032238bcd7063f3d2121ee93df4/asyncpg_recorder-0.2.0.tar.gz", hash = "sha256:e35d2534162521a49057fef57a98be782dd8df3a88438e9c9edd7af493e96c2a", size = 20403, upload-time = "2025-12-17T10:45:26.464Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/07/b6a82701b9ca7e5980a276d1f24b0aa5138df0b1e345240387771a28aae6/asyncpg_recorder-0.1.0-py3-none-any.whl", hash = "sha256:4a6ca4f12b475f6814af78c9d7ad1367e60db0b834d490795e8a0fd6a86c8de7", size = 21686, upload-time = "2025-10-27T13:04:36.912Z" },
+    { url = "https://files.pythonhosted.org/packages/df/1e/cbfb70485ed888658a89fb42cb2dc238eeaec7c66cb39582d9d1143b2e23/asyncpg_recorder-0.2.0-py3-none-any.whl", hash = "sha256:4db85fce593b3f6d9bbc526b70b6b840fbd8a6f8ace7e99754df261e746d54ce", size = 21844, upload-time = "2025-12-17T10:45:25.457Z" },
 ]
 
 [[package]]
