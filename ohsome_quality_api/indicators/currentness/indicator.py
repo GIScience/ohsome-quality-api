@@ -8,12 +8,10 @@ Abbreviations:
     th: Threshold
 """
 
-import json
 import locale
 import logging
 import os
 from dataclasses import dataclass
-from pathlib import Path
 from string import Template
 
 import plotly.graph_objects as pgo
@@ -23,12 +21,11 @@ from babel.numbers import format_decimal, format_percent
 from dateutil.parser import isoparse
 from fastapi_i18n import _, get_locale
 from geojson import Feature
-from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
-from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import BaseTopic as Topic
@@ -118,70 +115,12 @@ class Currentness(BaseIndicator):
         self.result.timestamp_osm = timestamps[0]
 
     async def preprocess_ohsomedb(self):
-        where, query_args = ohsome_filter_to_sql(self.topic.filter)
-        with open(Path(__file__).parent / "query.sql", "r") as file:
-            template = file.read()
-
-        match self.topic.aggregation_type:
-            case "count":
-                aggregation = "COUNT(*)"
-            case "length":
-                aggregation = """
-        0.001 * SUM(
-            CASE
-                WHEN ST_Within(
-                    c.geom,
-                    ST_GeomFromGeoJSON(${})
-                )
-                THEN c.length -- Use precomputed area from ohsome-planet
-                ELSE ST_Length(
-                      ST_Intersection(
-                        c.geom,
-                        ST_GeomFromGeoJSON(${})
-                      )::geography
-                )
-            END
-        )::BIGINT
-                """.format(len(query_args) + 1, len(query_args) + 1)
-            case "area" | r"area\density":
-                aggregation = """
-        0.001 * 0.001 * SUM(
-            CASE
-                WHEN ST_Within(
-                    c.geom,
-                    ST_GeomFromGeoJSON(${})
-                )
-                THEN c.area -- Use precomputed area from ohsome-planet
-                ELSE ST_Area(
-                      ST_Intersection(
-                        c.geom,
-                        ST_GeomFromGeoJSON(${})
-                      )::geography
-                )
-            END
-        )::BIGINT
-                """.format(len(query_args) + 1, len(query_args) + 1)
-            case _:
-                raise ValueError(
-                    "Unknown aggregation_type: {aggregation_type}".format(
-                        aggregation_type=self.topic.aggregation_type
-                    )
-                )
-
-        query = Template(template).substitute(
-            {
-                "aggregation": aggregation,
-                "filter": where,
-                "contributions_table": get_config_value("ohsomedb_contributions_table"),
-                "geom": "$" + str(len(query_args) + 1),
-            }
+        results = await ohsomedb.contributions(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
         )
-        results = await client.fetch(
-            query,
-            *query_args,
-            json.dumps(self.feature["geometry"]),
-            database="ohsomedb",
-        )
+
         if len(results) == 0:
             # no data
             self.contrib_sum = 0

@@ -1,7 +1,5 @@
-import json
 import logging
 from dataclasses import dataclass
-from pathlib import Path
 from statistics import median
 from string import Template
 
@@ -10,10 +8,8 @@ import plotly.graph_objects as pgo
 from babel.dates import format_date
 from fastapi_i18n import _, get_locale
 from geojson import Feature
-from ohsome_filter_to_sql.main import ohsome_filter_to_sql
 
-from ohsome_quality_api.config import get_config_value
-from ohsome_quality_api.geodatabase import client
+from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import BaseTopic as Topic
 
@@ -41,21 +37,9 @@ class UserActivity(BaseIndicator):
         self.bin_total = None
 
     async def preprocess(self) -> None:
-        where, query_args = ohsome_filter_to_sql(self.topic.filter)
-        with open(Path(__file__).parent / "query.sql", "r") as file:
-            template = file.read()
-        query = Template(template).substitute(
-            {
-                "filter": where,
-                "contributions_table": get_config_value("ohsomedb_contributions_table"),
-                "geom": "${}".format(len(query_args) + 1),
-            }
-        )
-        results = await client.fetch(
-            query,
-            *query_args,
-            json.dumps(self.feature["geometry"]),
-            database="ohsomedb",
+        results = await ohsomedb.users(
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
         )
         if len(results) == 0:
             return

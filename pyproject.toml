@@ -92,3 +92,6 @@ ignore = ["TRY003"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.asyncpg-recorder]
+"cassettes-dir"="tests/asyncpg_recorder_cassettes"
