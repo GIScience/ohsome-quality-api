@@ -3,8 +3,10 @@
 ## Current Main
 
 - refactor: remove ohsomedb api parameter ([#974])
+- refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
+[c33c1d43]: https://github.com/GIScience/ohsome-quality-api/commit/c33c1d43
 
 ## Release 1.14.0
 
