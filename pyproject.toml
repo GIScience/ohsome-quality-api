@@ -73,11 +73,15 @@ select = [
     "Q",    # flake8-quotes
     "W",    # pycodestyle Warning
     "C90",  # mccabe
+    "TRY",  # tryceratops
+    # "RUF",  # ruff-specific rules
     "FURB", # refurb
     "FAST", # FastAPI
     "INT",  # flake8-gettext
     "LOG",  # flake8-logging
 ]
+ignore = ["TRY003"]
+
 
 [tool.ruff.lint.per-file-ignores]
 "ohsome_quality_api/indicators/mapping_saturation/models.py" = [
