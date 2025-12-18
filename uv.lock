@@ -981,15 +981,15 @@ wheels = [
 
 [[package]]
 name = "ohsome-filter-to-sql"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "antlr4-python3-runtime" },
-    { name = "pytest-sugar" },
+    { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a0/cb/bdeab6ff3b8bfbe6858a1ec786063dc1d261c5ce80fef8105d4deb722ab0/ohsome_filter_to_sql-0.2.0.tar.gz", hash = "sha256:9ea74de51de3018ed61bc8e56b7af66e7d13cea31ebeaf7229e0468b3a59ea61", size = 37385, upload-time = "2025-12-16T12:24:13.359Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/8a/1e2fba0107002963c0d532b1adc10316bbddceeefa015095c696a3cb873b/ohsome_filter_to_sql-0.3.0.tar.gz", hash = "sha256:c21f059217f651c052fee992d6579d447f7f8360266b624094b426db9d651507", size = 37495, upload-time = "2025-12-18T13:40:42.458Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6d/3f/54be03cc4eea728c61a2b6f07dd42f2b1d7dc34cc1aa4858e284b524c643/ohsome_filter_to_sql-0.2.0-py3-none-any.whl", hash = "sha256:6dc4fc1af3fd96c4535148fb8a1995d1940a7d80be96546d50a4da71619492a1", size = 38935, upload-time = "2025-12-16T12:24:12.308Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/e3/9f56139a062081cf597d2996f12b8f90425ef1afc2cb9f99bad31922267f/ohsome_filter_to_sql-0.3.0-py3-none-any.whl", hash = "sha256:acd0bc5f1d9de659946efc3807916c5e9e23c60cdce768052c13bda273deda4a", size = 39036, upload-time = "2025-12-18T13:40:41.429Z" },
 ]
 
 [[package]]
@@ -1283,7 +1283,7 @@ wheels = [
 
 [[package]]
 name = "pydantic"
-version = "2.12.4"
+version = "2.12.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-types" },
@@ -1291,9 +1291,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/96/ad/a17bc283d7d81837c061c49e3eaa27a45991759a1b7eae1031921c6bd924/pydantic-2.12.4.tar.gz", hash = "sha256:0f8cb9555000a4b5b617f66bfd2566264c4984b27589d3b845685983e8ea85ac", size = 821038, upload-time = "2025-11-05T10:50:08.59Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/69/44/36f1a6e523abc58ae5f928898e4aca2e0ea509b5aa6f6f392a5d882be928/pydantic-2.12.5.tar.gz", hash = "sha256:4d351024c75c0f085a9febbb665ce8c0c6ec5d30e903bdb6394b7ede26aebb49", size = 821591, upload-time = "2025-11-26T15:11:46.471Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/2f/e68750da9b04856e2a7ec56fc6f034a5a79775e9b9a81882252789873798/pydantic-2.12.4-py3-none-any.whl", hash = "sha256:92d3d202a745d46f9be6df459ac5a064fdaa3c1c4cd8adcfa332ccf3c05f871e", size = 463400, upload-time = "2025-11-05T10:50:06.732Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/87/b70ad306ebb6f9b585f114d0ac2137d792b48be34d732d60e597c2f8465a/pydantic-2.12.5-py3-none-any.whl", hash = "sha256:e561593fccf61e8a20fc46dfc2dfe075b8be7d0188df33f221ad1f0139180f9d", size = 463580, upload-time = "2025-11-26T15:11:44.605Z" },
 ]
 
 [package.optional-dependencies]
