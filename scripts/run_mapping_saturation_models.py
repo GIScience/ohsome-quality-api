@@ -81,11 +81,11 @@ def run_all_models(list_of_values):
             models.SSasymp,
             models.SSmicmen,
         ):
-            logging.info("Run {}".format(model.name))
+            logging.info("Run {}".format(model.name))  # noqa
             try:
                 fm = model(xdata=xdata, ydata=ydata)
             except RRuntimeError as error:
-                logging.warning(
+                logging.warning(  # noqa
                     "Could not run model {0} due to RRuntimeError: {1}".format(
                         model.name, error
                     )
