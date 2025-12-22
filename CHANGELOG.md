@@ -6,11 +6,15 @@
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
 refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
 - refactor: move ohsomedb interactions to own module ([#976])
+- refactor: rename oqt.py to main.py ([d757b9b8])
+- refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
 [c33c1d43]: https://github.com/GIScience/ohsome-quality-api/commit/c33c1d43
 [f592cebc]: https://github.com/GIScience/ohsome-quality-api/commit/f592cebc
 [#976]: https://github.com/GIScience/ohsome-quality-api/pull/976
+[d757b9b8]: https://github.com/GIScience/ohsome-quality-api/commit/d757b9b8
+[2b333562]: https://github.com/GIScience/ohsome-quality-api/commit/2b333562
 
 ## Release 1.14.0
 
