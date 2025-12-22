@@ -5,7 +5,7 @@ import geojson
 from ohsome_quality_api.attributes.definitions import get_attribute
 from ohsome_quality_api.attributes.models import Attribute
 from ohsome_quality_api.topics.definitions import get_topic_preset
-from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.topics.models import Topic
 
 
 def get_geojson_fixture(name):
@@ -14,7 +14,7 @@ def get_geojson_fixture(name):
         return geojson.load(f)
 
 
-def get_topic_fixture(name: str) -> TopicDefinition:
+def get_topic_fixture(name: str) -> Topic:
     return get_topic_preset(name)
 
 

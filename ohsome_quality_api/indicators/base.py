@@ -14,7 +14,7 @@ from ohsome_quality_api.indicators.models import (
     IndicatorTemplates,
     Result,
 )
-from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     camel_to_snake,

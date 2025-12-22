@@ -28,7 +28,7 @@ from ohsome_quality_api.topics.definitions import (
     get_topic_preset,
     load_topic_presets,
 )
-from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.helper import get_project_root
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
@@ -50,27 +50,27 @@ def topic_key_building_count() -> str:
 
 
 @pytest.fixture(scope="class")
-def topic_roads() -> TopicDefinition:
+def topic_roads() -> Topic:
     return get_topic_preset("roads")
 
 
 @pytest.fixture(scope="class")
-def topic_minimal(topic_key_minimal) -> TopicDefinition:
+def topic_minimal(topic_key_minimal) -> Topic:
     return get_topic_preset(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
-def topic_building_count(topic_key_building_count) -> TopicDefinition:
+def topic_building_count(topic_key_building_count) -> Topic:
     return get_topic_preset(topic_key_building_count)
 
 
 @pytest.fixture(scope="class")
-def topic_building_area() -> TopicDefinition:
+def topic_building_area() -> Topic:
     return get_topic_preset("building-area")
 
 
 @pytest.fixture(scope="class")
-def topic_major_roads_length() -> TopicDefinition:
+def topic_major_roads_length() -> Topic:
     return get_topic_preset("roads")
 
 
@@ -83,12 +83,12 @@ def attribute_key_height() -> List[str]:
 def metadata_topic_building_count(
     topic_key_building_count,
     topic_building_count,
-) -> dict[str, TopicDefinition]:
+) -> dict[str, Topic]:
     return {topic_key_building_count: topic_building_count}
 
 
 @pytest.fixture()
-def topic_definitions() -> dict[str, TopicDefinition]:
+def topic_definitions() -> dict[str, Topic]:
     return load_topic_presets()
 
 
@@ -299,7 +299,7 @@ def feature_land_cover():
 
 
 @pytest.fixture
-def topic_land_cover() -> TopicDefinition:
+def topic_land_cover() -> Topic:
     return get_topic_preset("land-cover")
 
 

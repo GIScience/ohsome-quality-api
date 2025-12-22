@@ -11,7 +11,7 @@ from geojson import Feature
 
 from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
 

@@ -15,7 +15,7 @@ from numpy import mean
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.topics.models import BaseTopic
+from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class RoadComparison(BaseIndicator):
 
     def __init__(
         self,
-        topic: BaseTopic,
+        topic: Topic,
         feature: Feature,
     ) -> None:
         super().__init__(

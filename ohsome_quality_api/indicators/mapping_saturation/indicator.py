@@ -13,7 +13,7 @@ from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.ohsome import client as ohsome_client
-from ohsome_quality_api.topics.models import BaseTopic, TopicData
+from ohsome_quality_api.topics.models import Topic, TopicData
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        topic: BaseTopic,
+        topic: Topic | TopicData,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:

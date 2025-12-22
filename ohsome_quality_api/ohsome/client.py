@@ -15,8 +15,7 @@ except ImportError:
     from json import JSONDecodeError
 
 from ohsome_quality_api.config import get_config_value
-from ohsome_quality_api.topics.models import BaseTopic as Topic
-from ohsome_quality_api.topics.models import TopicData, TopicDefinition
+from ohsome_quality_api.topics.models import Topic, TopicData
 from ohsome_quality_api.utils.exceptions import OhsomeApiError, TopicDataSchemaError
 
 
@@ -30,7 +29,7 @@ async def query(topic) -> dict:
 
 @query.register
 async def _(
-    topic: TopicDefinition,
+    topic: Topic,
     bpolys: Feature | FeatureCollection,
     time: str | None = None,
     attribute_filter: str | None = None,

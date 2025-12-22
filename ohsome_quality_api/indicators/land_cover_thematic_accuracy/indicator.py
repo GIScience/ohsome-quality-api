@@ -23,7 +23,7 @@ from ohsome_quality_api.api.request_models import (
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.topics.models import BaseTopic as Topic
+from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
 # Source: https://land.copernicus.eu/content/corine-land-cover-nomenclature-guidelines/docs/pdf/CLC2018_Nomenclature_illustrated_guide_20190510.pdf

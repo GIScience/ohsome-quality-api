@@ -6,8 +6,7 @@ from typing import Coroutine
 from geojson import Feature, FeatureCollection
 
 from ohsome_quality_api.indicators.base import BaseIndicator as Indicator
-from ohsome_quality_api.topics.models import BaseTopic as Topic
-from ohsome_quality_api.topics.models import TopicData, TopicDefinition
+from ohsome_quality_api.topics.models import Topic, TopicData
 from ohsome_quality_api.utils.helper import get_class_from_key
 from ohsome_quality_api.utils.helper_asyncio import gather_with_semaphore
 from ohsome_quality_api.utils.validators import validate_area
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 async def create_indicator(
     key: str,
     bpolys: FeatureCollection,
-    topic: TopicData | TopicDefinition,
+    topic: TopicData | Topic,
     include_figure: bool = True,
     **kwargs,
 ) -> list[Indicator]:
@@ -33,7 +32,7 @@ async def create_indicator(
             feature["id"] = i
         # Disable size limit for the Mapping Saturation indicator
         # TODO: Remove size restriction
-        if isinstance(topic, TopicDefinition) and key not in [
+        if isinstance(topic, Topic) and key not in [
             "mapping-saturation",
             "currentness",
             "building-comparison",

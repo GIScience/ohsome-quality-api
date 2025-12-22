@@ -32,7 +32,7 @@ class BaseTopic(BaseModel):
         return _(value)
 
 
-class TopicDefinition(BaseTopic):
+class Topic(BaseTopic):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: Literal["elements"]

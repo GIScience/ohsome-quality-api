@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ohsome_quality_api.topics.models import BaseTopic, TopicData, TopicDefinition
+from ohsome_quality_api.topics.models import BaseTopic, Topic, TopicData
 
 
 def test_base_topic():
@@ -21,7 +21,7 @@ def test_base_topic_extra():
 
 
 def test_topic_definition():
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -31,7 +31,7 @@ def test_topic_definition():
         aggregation_type="count",
         filter="filter",
     )
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -42,7 +42,7 @@ def test_topic_definition():
         filter="filter",
         source="source",
     )
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -53,7 +53,7 @@ def test_topic_definition():
         filter="filter",
         source="source",
     )
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -64,7 +64,7 @@ def test_topic_definition():
         filter="filter",
         source="source",
     )
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -75,7 +75,7 @@ def test_topic_definition():
         filter="filter",
         source="source",
     )
-    TopicDefinition(
+    Topic(
         key="key",
         name="name",
         description="description",
@@ -91,12 +91,12 @@ def test_topic_definition():
 
 def test_topic_definition_missing():
     with pytest.raises(ValidationError):
-        TopicDefinition(key="key", name="name", description="description")
+        Topic(key="key", name="name", description="description")
 
 
 def test_topic_definition_extra():
     with pytest.raises(ValidationError):
-        TopicDefinition(
+        Topic(
             key="key",
             name="name",
             description="description",

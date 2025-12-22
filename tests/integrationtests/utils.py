@@ -6,7 +6,7 @@ import geojson
 import vcr
 
 from ohsome_quality_api.topics.definitions import get_topic_preset
-from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.topics.models import Topic
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURE_DIR = os.path.join(TEST_DIR, "fixtures")
@@ -41,7 +41,7 @@ def get_geojson_fixture(name):
         return geojson.load(f)
 
 
-def get_topic_fixture(name: str) -> TopicDefinition:
+def get_topic_fixture(name: str) -> Topic:
     return get_topic_preset(name)
 
 

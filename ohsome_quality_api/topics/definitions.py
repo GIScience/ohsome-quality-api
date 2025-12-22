@@ -4,11 +4,11 @@ from enum import Enum
 import yaml
 
 from ohsome_quality_api.projects.definitions import ProjectEnum
-from ohsome_quality_api.topics.models import TopicDefinition
+from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.helper import get_module_dir
 
 
-def load_topic_presets() -> dict[str, TopicDefinition]:
+def load_topic_presets() -> dict[str, Topic]:
     """Read ohsome API parameters of all topic from YAML file."""
     directory = get_module_dir("ohsome_quality_api.topics")
     file = os.path.join(directory, "presets.yaml")
@@ -18,7 +18,7 @@ def load_topic_presets() -> dict[str, TopicDefinition]:
     for k, v in raw.items():
         v["filter"] = v.pop("filter")
         v["key"] = k
-        topics[k] = TopicDefinition(**v)
+        topics[k] = Topic(**v)
     return topics
 
 
@@ -26,7 +26,7 @@ def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_presets().keys()]
 
 
-def get_topic_presets(project: ProjectEnum = None) -> dict[str, TopicDefinition]:
+def get_topic_presets(project: ProjectEnum = None) -> dict[str, Topic]:
     topics = load_topic_presets()
     if project is not None:
         return {k: v for k, v in topics.items() if project in v.projects}
@@ -34,7 +34,7 @@ def get_topic_presets(project: ProjectEnum = None) -> dict[str, TopicDefinition]
         return topics
 
 
-def get_topic_preset(topic_key: str) -> TopicDefinition:
+def get_topic_preset(topic_key: str) -> Topic:
     """Get ohsome API parameters of a single topic based on topic key."""
     topics = load_topic_presets()
     try:

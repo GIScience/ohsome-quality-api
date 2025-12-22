@@ -15,7 +15,7 @@ from ohsome_quality_api.api.request_context import RequestContext, request_conte
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
-from ohsome_quality_api.topics.models import TopicData, TopicDefinition
+from ohsome_quality_api.topics.models import Topic, TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
 
@@ -81,7 +81,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
 
     @field_validator("topic")
     @classmethod
-    def transform_topic(cls, value) -> TopicDefinition:
+    def transform_topic(cls, value) -> Topic:
         return get_topic_preset(value.value)
 
     @model_validator(mode="after")
