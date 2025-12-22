@@ -6,6 +6,7 @@ from types import MappingProxyType
 from typing import Literal
 
 import yaml
+from pydantic import validate_call
 
 from ohsome_quality_api.indicators.models import IndicatorMetadata
 from ohsome_quality_api.utils.helper import (
@@ -46,6 +47,7 @@ class Color(Enum):
     BLACK = "#1B1C1D"
 
 
+@validate_call
 def load_metadata(
     module_name: Literal["indicators"],
 ) -> dict[str, IndicatorMetadata]:
@@ -59,7 +61,6 @@ def load_metadata(
         A Dict with the class names of the indicators
         as keys and metadata as values.
     """
-    assert module_name == "indicators"
     directory = get_module_dir("ohsome_quality_api.{}".format(module_name))
     files = glob.glob(directory + "/**/metadata.yaml", recursive=True)
     raw = {}
@@ -76,6 +77,7 @@ def load_metadata(
 
 def get_attribution(data_keys: list) -> str:
     """Return attribution text. Individual attributions are separated by semicolons."""
-    assert set(data_keys) <= {"OSM", "GHSL", "VNL", "EUBUCCO", "Microsoft Buildings"}
+    if not set(data_keys) <= {"OSM", "GHSL", "VNL", "EUBUCCO", "Microsoft Buildings"}:
+        raise ValueError()
     filtered = dict(filter(lambda d: d[0] in data_keys, ATTRIBUTION_TEXTS.items()))
     return "; ".join([str(v) for v in filtered.values()])

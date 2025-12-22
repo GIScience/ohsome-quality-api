@@ -22,7 +22,7 @@ class BlockingGenericDiffReporter(GenericDiffReporter):
     @staticmethod
     def run_command(command_array: list[str]):
         # Use run instead of Popen which waits for process to finish
-        subprocess.run(command_array)
+        subprocess.run(command_array)  # noqa: S603
 
     def report(self, *args, **kwargs) -> bool:
         # Wrap report func to catch failure of programs which open/start other

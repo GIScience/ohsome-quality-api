@@ -21,4 +21,4 @@ class TestDefinitions(unittest.TestCase):
             ),
         )
 
-        self.assertRaises(AssertionError, definitions.get_attribution, ["MSO"])
+        self.assertRaises(ValueError, definitions.get_attribution, ["MSO"])

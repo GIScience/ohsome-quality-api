@@ -63,6 +63,9 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-root = ""
 
+[tool.ruff]
+extend-exclude = ["scripts"]
+
 [tool.ruff.lint]
 select = [
     "A",    # flake8-builtins
@@ -79,15 +82,14 @@ select = [
     "FAST", # FastAPI
     "INT",  # flake8-gettext
     "LOG",  # flake8-logging
+    "S",    # bandit
 ]
 ignore = ["TRY003"]
 
-
 [tool.ruff.lint.per-file-ignores]
-"ohsome_quality_api/indicators/mapping_saturation/models.py" = [
-    "N803",
-    "N806",
-]
+"ohsome_quality_api/indicators/mapping_saturation/models.py" = ["N803", "N806"]
+"tests/*" = ["S101", "S608"]  # S101 usage of asserts; S608 possible SQL injection
+"ohsome_quality_api/api/response_models.py" = ["S101"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

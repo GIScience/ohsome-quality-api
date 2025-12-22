@@ -28,7 +28,7 @@ class BaseStatModel(ABC):
     """Base Statistical Model"""
 
     def __init__(self, xdata: ArrayLike, ydata: ArrayLike):
-        assert np.shape(xdata) == np.shape(ydata)
+        assert np.shape(xdata) == np.shape(ydata)  # noqa
         self.xdata = xdata
         self.ydata = ydata
         self.coefficients = {}
