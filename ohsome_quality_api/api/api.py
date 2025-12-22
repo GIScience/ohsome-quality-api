@@ -22,7 +22,7 @@ from ohsome_quality_api import (
     __email__,
     __title__,
     __version__,
-    oqt,
+    main,
 )
 from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
@@ -231,7 +231,7 @@ def empty_api_response() -> dict:
 @app.post("/indicators/mapping-saturation/data", include_in_schema=False)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
-    indicators = await oqt.create_indicator(
+    indicators = await main.create_indicator(
         key="mapping-saturation",
         bpolys=parameters.bpolys,
         topic=parameters.topic,
@@ -327,7 +327,7 @@ async def _post_indicator(
     key: str,
     parameters: IndicatorRequest,
 ) -> Any:
-    indicators = await oqt.create_indicator(key=key, **dict(parameters))
+    indicators = await main.create_indicator(key=key, **dict(parameters))
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         return {

@@ -104,7 +104,7 @@ def test_something(self):
     oqapi.do_something(…)
 ```
 
-Good examples can be found in [test_oqt.py](/tests/integrationtests/test_oqt.py).
+Good examples can be found in [test_main.py](/tests/integrationtests/test_main.py).
 
 ### Asynchronous functions
 
