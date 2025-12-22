@@ -254,6 +254,7 @@ class Currentness(BaseIndicator):
         for bucket, color in zip(
             (self.bin_up_to_date, self.bin_in_between, self.bin_out_of_date),
             (Color.GREEN, Color.YELLOW, Color.RED),
+            strict=False,
         ):
             contrib_abs_text = [
                 f"{format_decimal(round(c, 2), locale=get_locale())}{unit}"
@@ -267,7 +268,9 @@ class Currentness(BaseIndicator):
                 format_date(ts, format="MMM yyyy", locale=get_locale())
                 for ts in bucket.timestamps
             ]
-            customdata = list(zip(contrib_rel_text, contrib_abs_text, timestamps_text))
+            customdata = list(
+                zip(contrib_rel_text, contrib_abs_text, timestamps_text, strict=False)
+            )
             hovertemplate = _(
                 "%{customdata[0]} of features (%{customdata[1]}) "
                 "were last modified in %{customdata[2]}"
@@ -457,9 +460,9 @@ def check_minor_edge_cases(contrib_sum, bin_total, aggregation_type) -> str:
         return ""
 
 
-def get_num_months_last_contrib(contrib: list) -> int:
+def get_num_months_last_contrib(contributions: list) -> int:
     """Get the number of months since today when the last contribution has been made."""
-    for month, contrib in enumerate(contrib):  # latest contribution first
+    for month, contrib in enumerate(contributions):  # latest contribution first
         if contrib != 0:
             return month
 

@@ -163,10 +163,10 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         valid_indicators = get_valid_indicators(self.topic.key)
         if "attribute-completeness" not in valid_indicators:
             raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}"
-            ).format(
-                "attribute-completeness",
-                self.topic.key,
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "attribute-completeness",
+                    self.topic.key,
+                )
             )
         return self
 

@@ -83,6 +83,7 @@ select = [
     "INT",  # flake8-gettext
     "LOG",  # flake8-logging
     "S",    # bandit
+    "B",    # bugbear
 ]
 ignore = ["TRY003"]
 

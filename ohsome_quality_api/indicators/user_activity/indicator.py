@@ -125,6 +125,7 @@ class UserActivity(BaseIndicator):
                     format_date(ts, format="MMM yyyy", locale=get_locale())
                     for ts in bucket.timestamps
                 ],
+                strict=False,
             )
         )
 

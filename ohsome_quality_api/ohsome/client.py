@@ -92,7 +92,7 @@ async def _(
         raise TopicDataSchemaError(
             "Invalid Topic data input to the Mapping Saturation Indicator.",
             error,
-        )
+        ) from error
 
 
 async def query_ohsome_api(url: str, data: dict) -> dict:

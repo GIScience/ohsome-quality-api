@@ -197,7 +197,7 @@ def test_land_cover_thematic_accuracy_request_corine_class(
     LandCoverThematicAccuracyRequest(
         bpolys=bpolys, topic="land-cover", corine_land_cover_class="23"
     )
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa
         # Corine class 1 is invalid
         LandCoverThematicAccuracyRequest(
             bpolys=bpolys, topic="land-cover", corine_land_cover_class="1"

@@ -305,8 +305,8 @@ def topic_land_cover() -> Topic:
 
 @pytest.fixture
 def bin_total_factory():
-    def _factory(contrib_abs=[], contrib_rel=[], timestamps=[]):
-        return Bin(contrib_abs, contrib_rel, timestamps)
+    def _factory(contrib_abs):
+        return Bin(contrib_abs, [], [])
 
     return _factory
 

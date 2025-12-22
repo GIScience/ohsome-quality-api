@@ -226,7 +226,9 @@ class BuildingComparison(BaseIndicator):
                 ),
             ]
         )
-        for name, area, color in zip(ref_x[1:], ref_area[1:], ref_color[1:]):
+        for name, area, color in zip(
+            ref_x[1:], ref_area[1:], ref_color[1:], strict=False
+        ):
             fig.add_shape(
                 name=name + f" ({area} km²)",
                 legendgroup=_("Reference"),

@@ -179,8 +179,8 @@ class RoadComparison(BaseIndicator):
             ref_processingdate.append(self.data_ref[key]["processing_date"])
             ref_ratio.append(val)
 
-        for i, (name, ratio, date) in enumerate(
-            zip(ref_name, ref_ratio, ref_processingdate)
+        for name, ratio, date in zip(
+            ref_name, ref_ratio, ref_processingdate, strict=False
         ):
             hovertext = _("OSM Covered: {length_matched} km ({date})").format(
                 length_matched=format_decimal(

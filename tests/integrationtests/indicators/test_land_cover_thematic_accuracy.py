@@ -106,6 +106,7 @@ async def test_preprocess_multi_class(
         indicator.areas,
         indicator.clc_classes_corine,
         indicator.clc_classes_osm,
+        strict=False,
     ):
         assert isinstance(area, float)
         assert isinstance(clc_class_corine, str)
@@ -138,6 +139,7 @@ async def test_preprocess_single_class(
         indicator.areas,
         indicator.clc_classes_corine,
         indicator.clc_classes_osm,
+        strict=False,
     ):
         assert isinstance(area, float)
         assert isinstance(clc_class_corine, str)

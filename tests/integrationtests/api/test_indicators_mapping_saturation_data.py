@@ -59,7 +59,7 @@ def test_mapping_saturation_data(client, bpolys):
             "data": {
                 "result": [
                     {"value": v, "timestamp": t}
-                    for v, t in zip(DATA, timestamp_iso_string)
+                    for v, t in zip(DATA, timestamp_iso_string, strict=False)
                 ]
             },
         },
