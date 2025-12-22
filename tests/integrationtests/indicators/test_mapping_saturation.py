@@ -149,10 +149,10 @@ def test_immutable_attribute(
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         for fm in indicator.fitted_models:
-            fitted_values.append(list(fm.fitted_values))
+            fitted_values.extend(list(fm.fitted_values))
         indicators.append(indicator)
     fitted_values_2 = []
     for indicator in indicators:
         for fm in indicator.fitted_models:
-            fitted_values_2.append(list(fm.fitted_values))
+            fitted_values_2.extend(list(fm.fitted_values))
     assert fitted_values == fitted_values_2

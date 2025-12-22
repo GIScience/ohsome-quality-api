@@ -74,8 +74,8 @@ select = [
     "W",    # pycodestyle Warning
     "C90",  # mccabe
     "TRY",  # tryceratops
-    # "RUF",  # ruff-specific rules
     "FURB", # refurb
+    "PERF", # perflint
     "FAST", # FastAPI
     "INT",  # flake8-gettext
     "LOG",  # flake8-logging

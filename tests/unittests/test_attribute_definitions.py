@@ -14,7 +14,7 @@ def attribute_key_string():
 def test_get_attributes():
     attributes = definitions.get_attributes()
     assert isinstance(attributes, dict)
-    for key, value in attributes.items():
+    for value in attributes.values():
         for k, v in value.items():
             assert isinstance(k, str)
             assert isinstance(v, Attribute)
@@ -60,7 +60,7 @@ def test_build_attribute_filter_wrong_key():
 def test_get_attribute_preset(topic_key_building_count):
     attribute = definitions.get_attribute_preset(topic_key_building_count)
     assert isinstance(attribute, dict)
-    for key, value in attribute.items():
+    for value in attribute.values():
         assert isinstance(value, Attribute)
 
 

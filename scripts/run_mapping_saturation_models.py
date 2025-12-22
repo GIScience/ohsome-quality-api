@@ -53,17 +53,12 @@ async def query_ohsome_api(features, topics) -> list:
 
 
 def get_topics(topic_keys) -> list:
-    topics = []
-    for topic_key in topic_keys:
-        topics.append(get_topic_preset(topic_key))
-    return topics
+    return [get_topic_preset(t) for t in topic_keys]
 
 
 async def get_features() -> list:
     fids = await db_client.get_feature_ids("regions")
-    features = []
-    for fid in fids:
-        features.append(await db_client.get_feature_from_db("regions", fid))
+    features = [await db_client.get_feature_from_db("regions", fid) for fid in fids]
     return features
 
 
