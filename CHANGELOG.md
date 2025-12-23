@@ -4,7 +4,7 @@
 
 - refactor: remove ohsomedb api parameter ([#974])
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
-refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
+- refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
 - refactor: move ohsomedb interactions to own module ([#976])
 - refactor: rename oqt.py to main.py ([d757b9b8])
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
