@@ -7,7 +7,8 @@ Note:
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from fastapi_i18n import _
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
@@ -24,6 +25,11 @@ class BaseTopic(BaseModel):
         populate_by_name=True,
         title="Topic",
     )
+
+    @field_validator("name", "description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
 
 
 class Topic(BaseTopic):

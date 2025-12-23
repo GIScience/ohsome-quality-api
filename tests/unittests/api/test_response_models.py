@@ -1,5 +1,4 @@
 import pytest
-from approvaltests import verify
 from pydantic import ValidationError
 
 from ohsome_quality_api import __version__
@@ -14,8 +13,6 @@ from ohsome_quality_api.api.response_models import (
     TopicMetadataResponse,
 )
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
-from ohsome_quality_api.topics.definitions import get_topic_preset
-from tests.approvaltests_namers import PytestNamer
 
 
 def test_base():
@@ -65,15 +62,6 @@ def test_topic_metadata_response_fail(topic_building_count):
         TopicMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         TopicMetadataResponse(result={"foo": topic_building_count})
-
-
-def test_topic_metadata_translated(locale_de):
-    topic = get_topic_preset("building-count")
-    topic = topic.model_dump()
-    topic.pop("key")
-    topic.pop("ratio_filter")
-    topic = TopicMetadata(**topic)
-    verify(topic.model_dump_json(indent=2), namer=PytestNamer())
 
 
 def test_metadata_quality_dimensions(metadata_quality_dimension_completeness):

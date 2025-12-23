@@ -1,6 +1,5 @@
 from typing import Literal
 
-from fastapi_i18n import _
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
 from pydantic import BaseModel, ConfigDict, field_validator
 
@@ -40,11 +39,6 @@ class TopicMetadata(BaseConfig):
     projects: list[ProjectEnum]
     source: str | None = None
     model_config = ConfigDict(title="Topic Metadata")
-
-    @field_validator("name", "description", mode="before")
-    @classmethod
-    def translate(cls, value: str) -> str:
-        return _(value)
 
 
 class TopicMetadataResponse(BaseResponse):
