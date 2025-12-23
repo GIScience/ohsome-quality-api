@@ -238,6 +238,6 @@ def test_get_matched_roadlengths():
         }
     )
     # expetced values retrieved by running SQL query without ST_DUMPS
-    assert (1502620657, 1969546917) == asyncio.run(
+    assert asyncio.run(
         get_matched_roadlengths(json.dumps(polygon), "microsoft_roads_midpoint")
-    )
+    ) == (1502620657, 1969546917)

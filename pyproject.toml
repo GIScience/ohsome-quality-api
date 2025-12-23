@@ -84,6 +84,8 @@ select = [
     "LOG",  # flake8-logging
     "S",    # bandit
     "B",    # bugbear
+    "SIM",  # simplify
+    # "RUF",  # ruff-specific rules
 ]
 ignore = ["TRY003"]
 

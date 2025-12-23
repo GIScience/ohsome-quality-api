@@ -103,7 +103,7 @@ class BuildingComparison(BaseIndicator):
     def calculate(self) -> None:
         major_edge_case: bool = False
         result_description: str = ""
-        for key in self.data_ref.keys():
+        for key in self.data_ref:
             # if major edge case present add to description
             # and continue with next dataset
             edge_case = self.check_major_edge_cases(key)
@@ -161,7 +161,7 @@ class BuildingComparison(BaseIndicator):
         self.result.description = " ".join(self.result.description.split())
 
     def create_figure(self) -> None:
-        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref.keys()]
+        edge_cases = [self.check_major_edge_cases(k) for k in self.data_ref]
         if self.result.label == "undefined" and all(edge_cases):
             logger.info(
                 "Result is undefined and major edge case is present. "

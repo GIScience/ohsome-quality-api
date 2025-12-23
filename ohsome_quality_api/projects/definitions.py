@@ -10,7 +10,7 @@ from ohsome_quality_api.utils.helper import get_module_dir
 
 
 def get_project_keys() -> list[str]:
-    return [str(t) for t in load_projects().keys()]
+    return [str(t) for t in load_projects()]
 
 
 def load_projects() -> dict[str, Project]:

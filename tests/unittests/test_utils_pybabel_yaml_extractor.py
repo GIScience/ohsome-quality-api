@@ -45,9 +45,8 @@ def test_no_keys(tmp_path):
             )
         )
     options = {}
-    with open(path, "r") as file:
-        with pytest.raises(ValueError):
-            list(pybabel_yaml_extractor(file, None, None, options))
+    with open(path, "r") as file, pytest.raises(ValueError):
+        list(pybabel_yaml_extractor(file, None, None, options))
 
 
 def test_flat(tmp_path):

@@ -41,7 +41,7 @@ def get_quality_dimension(qd_key: str) -> QualityDimension:
 
 
 def get_quality_dimension_keys() -> list[str]:
-    return [str(t) for t in load_quality_dimensions().keys()]
+    return [str(t) for t in load_quality_dimensions()]
 
 
 QualityDimensionEnum = Enum(

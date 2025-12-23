@@ -28,7 +28,7 @@ class TestBaseIndicator:
         indicator = Minimal(feature=feature, topic=topic)
         d = indicator.as_dict()
         assert set(("result", "metadata", "topic")) <= set(d.keys())  # subset
-        assert "data" not in d.keys()
+        assert "data" not in d
 
     def test_as_dict_include_data(self, feature, topic):
         indicator = Minimal(feature=feature, topic=topic)

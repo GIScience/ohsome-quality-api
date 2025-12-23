@@ -68,9 +68,7 @@ def build_attribute_filter(attribute_key: List[str] | str, topic_key: str) -> st
 
 
 attribute_keys = {
-    inner_key
-    for outer_dict in load_attributes().values()
-    for inner_key in outer_dict.keys()
+    inner_key for outer_dict in load_attributes().values() for inner_key in outer_dict
 }
 
 AttributeEnum = Enum("AttributeEnum", {name: name for name in attribute_keys})

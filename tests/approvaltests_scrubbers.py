@@ -19,7 +19,7 @@ def round_axis_range(figure: dict) -> dict:
 
 def replace_float_in_hovertext(figure: dict) -> dict:
     for data in figure["data"]:
-        if "hovertext" in data.keys():
+        if "hovertext" in data:
             data["hovertext"] = re.sub(
                 "[+-]?([0-9]*[.])?[0-9]+",
                 "scrubbed",

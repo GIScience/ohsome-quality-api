@@ -13,7 +13,7 @@ def test_metadata_topic(
     result = content.pop("result")
     assert content == response_template
     assert metadata_topic_building_count["building-count"] == result["building-count"]
-    assert "minimal" not in result.keys()
+    assert "minimal" not in result
 
 
 def test_metadata_topic_project_core(
@@ -28,7 +28,7 @@ def test_metadata_topic_project_core(
     result = content.pop("result")
     assert content == response_template
     assert metadata_topic_building_count["building-count"] == result["building-count"]
-    assert "minimal" not in result.keys()
+    assert "minimal" not in result
 
 
 def test_metadata_topic_project_experimental(client, response_template):
@@ -38,8 +38,8 @@ def test_metadata_topic_project_experimental(client, response_template):
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert "building-count" not in result.keys()
-    assert "minimal" not in result.keys()
+    assert "building-count" not in result
+    assert "minimal" not in result
 
 
 def test_project_all(

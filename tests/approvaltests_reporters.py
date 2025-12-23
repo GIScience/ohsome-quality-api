@@ -1,3 +1,4 @@
+import contextlib
 import filecmp
 import json
 import os
@@ -208,12 +209,8 @@ class PlotlyDiffReporter(FirstWorkingReporter):
                         PythonNativeReporter(),
                     ).report(received_path, approved_path)
         finally:
-            try:
+            with contextlib.suppress(FileNotFoundError):
                 os.remove(received_path_image)
-            except FileNotFoundError:
-                pass
-            try:
+            with contextlib.suppress(FileNotFoundError):
                 os.remove(approved_path_image)
-            except FileNotFoundError:
-                pass
         return success

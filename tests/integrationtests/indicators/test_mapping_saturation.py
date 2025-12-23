@@ -95,7 +95,7 @@ class TestCalculation:
         assert properties["result"]["value"] >= 0.0
         assert properties["result"]["label"] in ["green", "yellow", "red", "undefined"]
         assert properties["result"]["description"] is not None
-        assert "data" not in properties.keys()
+        assert "data" not in properties
 
     def test_as_feature_data(self, indicator):
         indicator_feature = indicator.as_feature(include_data=True)

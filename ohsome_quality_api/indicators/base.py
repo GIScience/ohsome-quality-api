@@ -58,7 +58,7 @@ class BaseIndicator(metaclass=ABCMeta):
         }
         if include_data:
             raw_dict["data"] = self.data
-        if "id" in self.feature.keys():
+        if "id" in self.feature:
             raw_dict["id"] = self.feature.id
         return raw_dict
 
@@ -72,7 +72,7 @@ class BaseIndicator(metaclass=ABCMeta):
             include_data (bool): If true include additional data in the properties.
         """
         properties = self.as_dict(include_data, exclude_label)
-        if "id" in self.feature.keys():
+        if "id" in self.feature:
             return Feature(
                 id=self.feature.id,
                 geometry=self.feature.geometry,

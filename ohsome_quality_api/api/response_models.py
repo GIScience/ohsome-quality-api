@@ -48,7 +48,7 @@ class TopicMetadataResponse(BaseResponse):
     @classmethod
     def check_topic_dict(cls, value):
         assert len(value) > 0
-        for key in value.keys():
+        for key in value:
             TopicEnum(key)
         return value
 
@@ -77,7 +77,7 @@ class QualityDimensionMetadataResponse(BaseResponse):
     @classmethod
     def check_quality_dimension_dict(cls, values):
         assert len(values) > 0
-        for key in values.keys():
+        for key in values:
             QualityDimensionEnum(key)
         return values
 
@@ -89,7 +89,7 @@ class ProjectMetadataResponse(BaseResponse):
     @classmethod
     def check_project_dict(cls, value):
         assert len(value) > 0
-        for key in value.keys():
+        for key in value:
             ProjectEnum(key)
         return value
 
@@ -109,7 +109,7 @@ class IndicatorMetadataResponse(BaseResponse):
     @classmethod
     def check_indicator_dict(cls, value):
         assert len(value) > 0
-        for key in value.keys():
+        for key in value:
             IndicatorEnum(key)
         return value
 
