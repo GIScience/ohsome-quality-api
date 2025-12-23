@@ -1,0 +1,13 @@
+{
+  "api_version": "1.14.0",
+  "attribution": {
+    "url": "https://github.com/GIScience/ohsome-quality-api/blob/main/COPYRIGHTS.md"
+  },
+  "result": {
+    "minimal": {
+      "name": "minimal",
+      "description": "A minimal quality dimension definition for testing purposes.",
+      "source": null
+    }
+  }
+}

@@ -81,8 +81,19 @@ class AttributeMetadataResponse(BaseResponse):
         return value
 
 
+class QualityDimensionMetadata(BaseConfig):
+    name: str
+    description: str
+    source: str | None = None
+
+    @field_validator("name", "description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
+
+
 class QualityDimensionMetadataResponse(BaseResponse):
-    result: dict[str, QualityDimension]
+    result: dict[str, QualityDimensionMetadata]
 
     @field_validator("result")
     @classmethod
@@ -93,7 +104,7 @@ class QualityDimensionMetadataResponse(BaseResponse):
         return values
 
 
-class ProjectMetadata(BaseConfig, Project):
+class ProjectMetadata(BaseConfig):
     name: str
     description: str
 

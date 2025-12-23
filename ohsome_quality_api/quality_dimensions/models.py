@@ -1,7 +1,6 @@
 """Pydantic Models for Quality Dimensions."""
 
-from fastapi_i18n import _
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict
 
 
 class QualityDimension(BaseModel):
@@ -14,8 +13,3 @@ class QualityDimension(BaseModel):
         extra="forbid",
         populate_by_name=True,
     )
-
-    @field_validator("name", "description", mode="before")
-    @classmethod
-    def translate(cls, value: str) -> str:
-        return _(value)
