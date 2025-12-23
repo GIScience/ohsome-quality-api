@@ -88,18 +88,8 @@ class QualityDimensionMetadataResponse(BaseResponse):
         return values
 
 
-class ProjectMetadata(BaseConfig, Project):
-    name: str
-    description: str
-
-    @field_validator("name", "description", mode="before")
-    @classmethod
-    def translate(cls, value: str) -> str:
-        return _(value)
-
-
 class ProjectMetadataResponse(BaseResponse):
-    result: dict[str, ProjectMetadata]
+    result: dict[str, Project]
 
     @field_validator("result")
     @classmethod

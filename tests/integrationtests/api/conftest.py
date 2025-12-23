@@ -85,7 +85,7 @@ def metadata_quality_dimension():
 def metadata_project_core():
     return {
         "core": {
-            "name": "Core",
+            "name": "TODO",
             "description": "something that is still a TODO",
         }
     }
