@@ -13,7 +13,6 @@ from fastapi.openapi.docs import (
 )
 from fastapi.responses import JSONResponse
 from fastapi_i18n import i18n
-from geojson import FeatureCollection
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -28,7 +27,6 @@ from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
-    IndicatorDataRequest,
     IndicatorRequest,
     LandCoverThematicAccuracyRequest,
 )
@@ -70,10 +68,8 @@ from ohsome_quality_api.topics.definitions import (
 from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
     SizeRestrictionError,
-    TopicDataSchemaError,
 )
 from ohsome_quality_api.utils.helper import (
-    get_class_from_key,
     get_project_root,
     json_serialize,
 )
@@ -182,11 +178,10 @@ async def validation_exception_handler(
     )
 
 
-@app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
 @app.exception_handler(SizeRestrictionError)
 async def custom_exception_handler(
-    _: Request, exception: TopicDataSchemaError | OhsomeApiError | SizeRestrictionError
+    _: Request, exception: OhsomeApiError | SizeRestrictionError
 ):
     """Exception handler for custom exceptions."""
     return JSONResponse(
@@ -226,27 +221,6 @@ def empty_api_response() -> dict:
             "url": ATTRIBUTION_URL,
         },
     }
-
-
-@app.post("/indicators/mapping-saturation/data", include_in_schema=False)
-async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
-    """Legacy support for computing the Mapping Saturation indicator for given data."""
-    indicators = await main.create_indicator(
-        key="mapping-saturation",
-        bpolys=parameters.bpolys,
-        topic=parameters.topic,
-        include_figure=parameters.include_figure,
-    )
-    geojson_object = FeatureCollection(
-        features=[i.as_feature(parameters.include_data) for i in indicators]
-    )
-    response = empty_api_response()
-    response["attribution"]["text"] = get_class_from_key(
-        class_type="indicator",
-        key="mapping-saturation",
-    ).attribution()
-    response["result"] = [feature.properties for feature in geojson_object.features]
-    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
 
 @app.post(

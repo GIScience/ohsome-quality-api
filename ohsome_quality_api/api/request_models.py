@@ -15,7 +15,7 @@ from ohsome_quality_api.api.request_context import RequestContext, request_conte
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
-from ohsome_quality_api.topics.models import Topic, TopicData
+from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
 
@@ -231,14 +231,3 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
                 )
             )
         return self
-
-
-class IndicatorDataRequest(BaseBpolys):
-    """Model for the `/indicators/mapping-saturation/data` endpoint.
-
-    The Topic consists of name, description and data.
-    """
-
-    topic: TopicData = Field(..., title="Topic", alias="topic")
-    include_figure: bool = True
-    include_data: bool = False
