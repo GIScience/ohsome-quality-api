@@ -4,6 +4,7 @@ from pydantic import ValidationError
 
 from ohsome_quality_api import __version__
 from ohsome_quality_api.api.response_models import (
+    AttributeMetadataResponse,
     BaseResponse,
     IndicatorMetadata,
     IndicatorMetadataCoverageResponse,
@@ -130,6 +131,21 @@ def test_metadata_projects_fail(project_core):
         ProjectMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         ProjectMetadataResponse(result={"foo": project_core})
+
+
+def test_metadata_attributes(locale_de):
+    response = AttributeMetadataResponse(
+        result={
+            "clc-leaf-type": {
+                "leaf-type": {
+                    "name": "Type of Leaves",
+                    "description": "TODO",
+                    "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
+                }
+            }
+        }
+    )
+    verify(response.model_dump_json(indent=2), namer=PytestNamer())
 
 
 def test_indicator_metadata():

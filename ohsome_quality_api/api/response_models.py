@@ -65,6 +65,11 @@ class AttributeMetadata(BaseConfig):
     description: str
     model_config = ConfigDict(title="Attribute Metadata")
 
+    @field_validator("name", "description", mode="before")
+    @classmethod
+    def translate(cls, value: str) -> str:
+        return _(value)
+
 
 class AttributeMetadataResponse(BaseResponse):
     result: dict[str, dict[str, AttributeMetadata]]

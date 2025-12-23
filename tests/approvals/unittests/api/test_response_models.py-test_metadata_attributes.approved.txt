@@ -1,0 +1,15 @@
+{
+  "api_version": "1.14.0",
+  "attribution": {
+    "url": "https://github.com/GIScience/ohsome-quality-api/blob/main/COPYRIGHTS.md"
+  },
+  "result": {
+    "clc-leaf-type": {
+      "leaf-type": {
+        "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
+        "name": "Blattart",
+        "description": "TODO"
+      }
+    }
+  }
+}

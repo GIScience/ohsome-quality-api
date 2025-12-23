@@ -1,9 +1,7 @@
 import pytest
-from approvaltests import verify
 
 from ohsome_quality_api.attributes import definitions
 from ohsome_quality_api.attributes.models import Attribute
-from tests.approvaltests_namers import PytestNamer
 
 
 @pytest.fixture()
@@ -62,12 +60,3 @@ def test_get_attribute_preset(topic_key_building_count):
     assert isinstance(attribute, dict)
     for value in attribute.values():
         assert isinstance(value, Attribute)
-
-
-def test_get_attribute_translated(
-    topic_key_building_count, attribute_key_string, locale_de
-):
-    attribute = definitions.get_attribute(
-        topic_key_building_count, attribute_key_string
-    )
-    verify(attribute.model_dump_json(indent=2), namer=PytestNamer())
