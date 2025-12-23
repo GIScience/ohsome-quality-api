@@ -13,7 +13,7 @@ from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
 from ohsome_quality_api.ohsome import client as ohsome_client
-from ohsome_quality_api.topics.models import Topic, TopicData
+from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ class MappingSaturation(BaseIndicator):
 
     def __init__(
         self,
-        topic: Topic | TopicData,
+        topic: Topic,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
     ) -> None:
@@ -190,10 +190,7 @@ class MappingSaturation(BaseIndicator):
             title_text=_("Date"),
             ticks="outside",
         )
-        if isinstance(self.topic, TopicData):
-            fig.update_yaxes(title_text=_("Value"))
-        else:
-            fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
+        fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
         # plot asymptote
         asymptote = self.data["best_fit"]["asymptote"]

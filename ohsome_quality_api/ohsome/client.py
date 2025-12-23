@@ -1,6 +1,5 @@
 import datetime
 import json
-from functools import singledispatch
 
 import geojson
 import httpx
@@ -15,20 +14,11 @@ except ImportError:
     from json import JSONDecodeError
 
 from ohsome_quality_api.config import get_config_value
-from ohsome_quality_api.topics.models import Topic, TopicData
-from ohsome_quality_api.utils.exceptions import OhsomeApiError, TopicDataSchemaError
+from ohsome_quality_api.topics.models import Topic
+from ohsome_quality_api.utils.exceptions import OhsomeApiError
 
 
-@singledispatch
-async def query(topic) -> dict:
-    """Query ohsome API."""
-    raise NotImplementedError(
-        "Cannot query ohsome API for Topic of type: " + str(type(topic))
-    )
-
-
-@query.register
-async def _(
+async def query(
     topic: Topic,
     bpolys: Feature | FeatureCollection,
     time: str | None = None,
@@ -64,35 +54,6 @@ async def _(
     data = build_data_dict(topic, bpolys, time, attribute_filter, contribution_type)
     response = await query_ohsome_api(url, data)
     return validate_query_results(response, attribute_filter, group_by_boundary)
-
-
-@query.register
-async def _(
-    topic: TopicData,
-    bpolys: Feature | FeatureCollection,
-    attribute_filter: str | None = False,
-    group_by_boundary: bool | None = False,
-    **_kargs,
-) -> dict:
-    """Validate data attached to the Topic object and return data.
-
-    Data will only be validated and returned immediately.
-    The ohsome API will not be queried.
-
-    Args:
-        topic: Topic with name, description and data attached to it.
-        bpolys: Feature for a single bounding (multi)polygon.
-            FeatureCollection for "group by boundaries" queries. In this case the
-            argument 'group_by' needs to be set to 'True'.
-        group_by: Group by boundary.
-    """
-    try:
-        return validate_query_results(topic.data, attribute_filter, group_by_boundary)
-    except SchemaError as error:
-        raise TopicDataSchemaError(
-            "Invalid Topic data input to the Mapping Saturation Indicator.",
-            error,
-        ) from error
 
 
 async def query_ohsome_api(url: str, data: dict) -> dict:

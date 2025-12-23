@@ -4,7 +4,6 @@ from unittest import mock
 import pytest
 
 from ohsome_quality_api import main
-from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -101,26 +100,6 @@ def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
     asyncio.run(
         main.create_indicator("mapping-saturation", bpolys, topic_building_count)
     )
-
-
-@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqapi_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_data(bpolys):
-    # Size limit is disabled for request with custom data.
-    topic = TopicData(
-        key="key",
-        name="name",
-        description="description",
-        data={
-            "result": [
-                {
-                    "value": 1.0,
-                    "timestamp": "2020-03-20T01:30:08.180856",
-                }
-            ]
-        },
-    )
-    asyncio.run(main.create_indicator("mapping-saturation", bpolys, topic))
 
 
 @oqapi_vcr.use_cassette
