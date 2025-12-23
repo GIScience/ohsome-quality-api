@@ -9,6 +9,8 @@ refactor: set default logging level to info & use module level loggers as well a
 - refactor: rename oqt.py to main.py ([d757b9b8])
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
 - refactor: move translation of topic model to response model ([64e90c31])
+- refactor: move translation of project model to response model ([32b16c37])
+- refactor: move translation of attribute model to response model ([c2079b0a])
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
 [c33c1d43]: https://github.com/GIScience/ohsome-quality-api/commit/c33c1d43
@@ -17,6 +19,8 @@ refactor: set default logging level to info & use module level loggers as well a
 [d757b9b8]: https://github.com/GIScience/ohsome-quality-api/commit/d757b9b8
 [2b333562]: https://github.com/GIScience/ohsome-quality-api/commit/2b333562
 [64e90c31]: https://github.com/GIScience/ohsome-quality-api/commit/64e90c31
+[32b16c37]: https://github.com/GIScience/ohsome-quality-api/commit/32b16c37
+[c2079b0a]: https://github.com/GIScience/ohsome-quality-api/commit/c2079b0a
 
 ## Release 1.14.0
 
