@@ -43,7 +43,7 @@ from ohsome_quality_api.api.response_models import (
     QualityDimensionMetadataResponse,
     TopicMetadataResponse,
 )
-from ohsome_quality_api.attributes.definitions import get_attributes
+from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
@@ -398,7 +398,7 @@ async def metadata_topic_by_key(key: TopicEnum) -> Any:
 )
 async def metadata_attribute() -> Any:
     """Get all attributes."""
-    return {"result": get_attributes()}
+    return {"result": load_attributes()}
 
 
 @app.get(
@@ -407,7 +407,7 @@ async def metadata_attribute() -> Any:
 )
 async def metadata_quality_dimensions() -> QualityDimensionMetadataResponse:
     """Get quality dimensions."""
-    return {"result": get_quality_dimensions()}
+    return QualityDimensionMetadataResponse(result=get_quality_dimensions())
 
 
 @app.get("/metadata/quality-dimensions/{key}", tags=["metadata"])
@@ -415,7 +415,9 @@ async def metadata_quality_dimension_by_key(
     key: QualityDimensionEnum,
 ) -> QualityDimensionMetadataResponse:
     """Get quality dimension by key."""
-    return {"result": {key.value: get_quality_dimension(key.value)}}
+    return QualityDimensionMetadataResponse(
+        result={key.value: get_quality_dimension(key.value)}
+    )
 
 
 @app.get(

@@ -77,32 +77,11 @@ def test_topic_metadata_translated(locale_de):
     verify(topic.model_dump_json(indent=2), namer=PytestNamer())
 
 
-def test_metadata_quality_dimensions():
+def test_metadata_quality_dimensions(metadata_quality_dimension_completeness):
     response = QualityDimensionMetadataResponse(
-        result={
-            "minimal": {
-                "name": "minimal",
-                "description": (
-                    "A minimal quality dimension definition for testing purposes."
-                ),
-            }
-        }
+        result=metadata_quality_dimension_completeness
     )
-    verify(response.model_dump_json(indent=2), namer=PytestNamer())
-
-
-def test_metadata_quality_dimensions_translated(locale_de):
-    response = QualityDimensionMetadataResponse(
-        result={
-            "minimal": {
-                "name": "minimal",
-                "description": (
-                    "A minimal quality dimension definition for testing purposes."
-                ),
-            }
-        }
-    )
-    verify(response.model_dump_json(indent=2), namer=PytestNamer())
+    assert response.result == metadata_quality_dimension_completeness
 
 
 def test_metadata_quality_dimensions_fail(quality_dimension_completeness):
@@ -116,6 +95,11 @@ def test_metadata_quality_dimensions_fail(quality_dimension_completeness):
         QualityDimensionMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         QualityDimensionMetadataResponse(result={"foo": quality_dimension_completeness})
+
+
+def test_metadata_quality_dimensions_list(quality_dimensions):
+    response = QualityDimensionMetadataResponse(result=quality_dimensions)
+    assert response.result == quality_dimensions
 
 
 def test_metadata_projects():
