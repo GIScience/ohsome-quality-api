@@ -1,9 +1,7 @@
 import pytest
-from approvaltests import verify
 
 from ohsome_quality_api.projects import definitions
 from ohsome_quality_api.projects.models import Project
-from tests.approvaltests_namers import PytestNamer
 
 
 @pytest.fixture(params=["misc", "core", "experimental"])
@@ -39,8 +37,3 @@ def test_get_project_keys_type():
 def test_get_project_keys_valid(valid_project_keys):
     keys = definitions.get_project_keys()
     assert valid_project_keys in keys
-
-
-def test_get_project_translated(locale_de):
-    project = definitions.get_project("core")
-    verify(project.model_dump_json(indent=2), namer=PytestNamer())

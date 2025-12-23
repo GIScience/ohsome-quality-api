@@ -426,7 +426,7 @@ async def metadata_quality_dimension_by_key(
 )
 async def metadata_projects() -> ProjectMetadataResponse:
     """Get projects."""
-    return ProjectMetadataResponse(result=get_project_metadata())
+    return {"result": get_project_metadata()}
 
 
 @app.get(
@@ -437,7 +437,7 @@ async def metadata_project_by_key(
     key: ProjectEnum,
 ) -> ProjectMetadataResponse:
     """Get project by key."""
-    return ProjectMetadataResponse(result={key.value: get_project(key.value)})
+    return {"result": {key.value: get_project(key.value)}}
 
 
 @app.get(

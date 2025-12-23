@@ -101,9 +101,22 @@ def test_metadata_quality_dimensions_list(quality_dimensions):
     assert response.result == quality_dimensions
 
 
-def test_metadata_projects(metadata_project_core):
-    response = ProjectMetadataResponse(result=metadata_project_core)
-    assert response.result == metadata_project_core
+def test_metadata_projects():
+    response = ProjectMetadataResponse(
+        result={
+            "core": {"name": "Core", "description": "something that is still a TODO"}
+        }
+    )
+    verify(response.model_dump_json(indent=2), namer=PytestNamer())
+
+
+def test_metadata_projects_translated(locale_de):
+    response = ProjectMetadataResponse(
+        result={
+            "core": {"name": "Core", "description": "something that is still a TODO"}
+        }
+    )
+    verify(response.model_dump_json(indent=2), namer=PytestNamer())
 
 
 def test_metadata_projects_fail(project_core):
@@ -117,11 +130,6 @@ def test_metadata_projects_fail(project_core):
         ProjectMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
         ProjectMetadataResponse(result={"foo": project_core})
-
-
-def test_metadata_projects_list(projects):
-    response = ProjectMetadataResponse(result=projects)
-    assert response.result == projects
 
 
 def test_indicator_metadata():

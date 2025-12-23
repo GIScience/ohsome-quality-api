@@ -1,4 +1,0 @@
-{
-  "name": "TODO",
-  "description": "etwas ist immernoch ein TODO"
-}
