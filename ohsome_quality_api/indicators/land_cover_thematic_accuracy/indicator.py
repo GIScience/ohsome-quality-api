@@ -93,7 +93,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
     async def coverage(cls, inverse=False) -> list[Feature]:
         if inverse:
             query = (
-                "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"  # noqa
+                "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"
             )
         else:
             query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"

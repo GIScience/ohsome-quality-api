@@ -207,7 +207,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         description=_(
             "CORINE Land Cover is a pan-European land cover"
             " inventory with thematic classes."
-        ),  # noqa
+        ),
     )
 
     @field_validator("corine_land_cover_class", mode="before")

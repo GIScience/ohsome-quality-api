@@ -44,4 +44,4 @@ def get_project(project_key: str) -> Project:
         ) from error
 
 
-ProjectEnum = Enum("ProjectEnum", {key: key for key in get_project_keys() + ["all"]})
+ProjectEnum = Enum("ProjectEnum", {key: key for key in [*get_project_keys(), "all"]})

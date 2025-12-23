@@ -141,7 +141,7 @@ async def get_latest_ohsome_timestamp() -> datetime.datetime:
 
 def build_url(
     topic: Topic,
-    attribute_filter: str = None,
+    attribute_filter: str | None = None,
     group_by_boundary: bool = False,
     count_latest_contributions: bool = False,
     density: bool = False,
@@ -189,7 +189,7 @@ def build_data_dict(
 
 def validate_query_results(
     response: dict,
-    attribute_filter: str = None,
+    attribute_filter: str | None = None,
     group_by_boundary: bool = False,
 ) -> dict:
     """Validate query results.

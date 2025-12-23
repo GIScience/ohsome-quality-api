@@ -85,9 +85,9 @@ select = [
     "S",    # bandit
     "B",    # bugbear
     "SIM",  # simplify
-    # "RUF",  # ruff-specific rules
+    "RUF",  # ruff-specific rules
 ]
-ignore = ["TRY003"]
+ignore = ["TRY003", "RUF001", "RUF002"]
 
 [tool.ruff.lint.per-file-ignores]
 "ohsome_quality_api/indicators/mapping_saturation/models.py" = ["N803", "N806"]
