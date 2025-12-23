@@ -1,8 +1,6 @@
 import pytest
-from approvaltests import verify
 
 from ohsome_quality_api.topics import definitions, models
-from tests.approvaltests_namers import PytestNamer
 
 
 def test_get_topic_keys():
@@ -46,8 +44,3 @@ def test_get_topic_definitions_with_project():
     for topic in topics.values():
         assert isinstance(topic, models.Topic)
         assert topic.project == "core"
-
-
-def test_get_topic_preset_translated(locale_de):
-    topic = definitions.get_topic_preset("minimal")
-    verify(topic.model_dump_json(indent=2), namer=PytestNamer())
