@@ -85,3 +85,10 @@ user-activity:
   quality_dimension: none
   description: >-
     Shows the count of unique mappers per month for the selected topic. None-quality indicator.
+road-accuracy:
+  name: Road Accuracy
+  projects:
+    - bkg
+  quality_dimension: none
+  description: >-
+    TODO

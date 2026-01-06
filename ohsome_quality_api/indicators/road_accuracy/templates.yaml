@@ -1,0 +1,15 @@
+---
+label_description:
+  red: >-
+    The completeness of OSM roads in your area-of-interest is low.
+  yellow: >-
+    The completeness of OSM roads in your area-of-interest is medium.
+  green: >-
+    The completeness of OSM roads in your area-of-interest is high.
+
+  undefined: >-
+    Comparison could not be made.
+result_description: >-
+    The completeness in comparison to $dataset is $ratio.
+    $dataset have a total length of $length_total.
+    $length_matched of $dataset are covered by OSM roads.
