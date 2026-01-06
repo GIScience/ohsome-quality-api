@@ -1,11 +1,46 @@
 import logging
+from dataclasses import dataclass
 
+import plotly.graph_objects as pgo
 from geojson import Feature
+from plotly.subplots import make_subplots
 
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class MatchedData:
+    total_dlm: int
+    both: int
+    only_dlm: int
+    only_osm: int
+    missing_both: int
+    same_value: int
+    different_value: int
+
+
+def get_data(feature):
+    response = [
+        1000,
+        950,
+        30,
+        10,
+        10,
+        5,
+        4,
+    ]  # total_dlm, both, only_dlm, only_osm, missing_both, same_value, different_value
+    return MatchedData(
+        total_dlm=response[0],
+        both=response[1],
+        only_dlm=response[2],
+        only_osm=response[3],
+        missing_both=response[4],
+        same_value=response[5],
+        different_value=response[6],
+    )
 
 
 class RoadAccuracy(BaseIndicator):
@@ -20,10 +55,61 @@ class RoadAccuracy(BaseIndicator):
         )
 
     def preprocess(self) -> None:
-        pass
+        self.matched_data = get_data(self.feature)
+        # TODO: get timestamps
 
     def calculate(self) -> None:
-        pass
+        self.result.value = None  # TODO: do we want a result value
+        label_description = getattr(self.templates.label_description, self.result.label)
+        self.result.description += "\n" + label_description
 
     def create_figure(self) -> None:
-        pass
+        fig = make_subplots(
+            rows=1, cols=2, subplot_titles=("Presence (DLM vs OSM)", "Value Comparison")
+        )
+
+        fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
+        fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
+
+        fig.show()
+
+        raw = fig.to_dict()
+        raw["layout"].pop("template")  # remove boilerplate
+        self.result.figure = raw
+
+
+def plot_presence(result: MatchedData) -> pgo.Bar:
+    """
+    Return a Plotly Bar trace for presence comparison.
+    """
+    labels = ["Both", "Only DLM", "Only OSM", "Missing both"]
+    values = [result.both, result.only_dlm, result.only_osm, result.missing_both]
+    total = sum(values)
+    text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
+
+    bar = pgo.Bar(
+        x=labels,
+        y=values,
+        text=text,
+        textposition="auto",
+        marker_color="skyblue",
+        name="Presence",
+    )
+    return bar
+
+
+def plot_value_comparison(result: MatchedData) -> pgo.Bar:
+    labels = ["Same value", "Different value"]
+    values = [result.same_value, result.different_value]
+    total = sum(values)
+    text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
+
+    bar = pgo.Bar(
+        x=labels,
+        y=values,
+        text=text,
+        textposition="auto",
+        marker_color="salmon",
+        name="Value",
+    )
+    return bar
