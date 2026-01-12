@@ -1,10 +1,12 @@
 import logging
 from dataclasses import dataclass
+from pathlib import Path
 
 import plotly.graph_objects as pgo
 from geojson import Feature
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
 
@@ -54,8 +56,19 @@ class RoadAccuracy(BaseIndicator):
             feature=feature,
         )
 
-    def preprocess(self) -> None:
-        self.matched_data = get_data(self.feature)
+    async def preprocess(self) -> None:
+        with open(Path(__file__).parent / "name.sql", "r") as file:
+            query = file.read()
+        response = await client.fetch(query, str(self.feature["geometry"]))
+        self.matched_data = MatchedData(
+            total_dlm=response[0][0],
+            both=response[0][1],
+            only_dlm=response[0][2],
+            only_osm=response[0][3],
+            missing_both=response[0][4],
+            same_value=response[0][5],
+            different_value=response[0][6],
+        )
         # TODO: get timestamps
 
     def calculate(self) -> None:

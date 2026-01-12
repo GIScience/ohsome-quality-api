@@ -233,6 +233,41 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         return self
 
 
+class RoadAccuracyAttribute(Enum):
+    SURFACE = "0"
+    ONEWAY = "1"
+    LANES = "2"
+    NAME = "3"
+    WIDTH = "4"
+
+
+class RoadAccuracyRequest(IndicatorRequest):
+    road_accuracy_attribute: RoadAccuracyAttribute | None = Field(
+        default=None,
+        title="Road Accuracy Attribute",
+        description=_("Attribute to compare between DLM and OSM."),
+    )
+
+    @field_validator("road_accuracy_attribute", mode="before")
+    @classmethod
+    def empty_string_to_none(cls, value):
+        if value == "":
+            return None
+        return value
+
+    @model_validator(mode="after")
+    def validate_indicator_topic_combination(self):
+        valid_indicators = get_valid_indicators(self.topic.key)
+        if "road-accuracy" not in valid_indicators:
+            raise ValueError(
+                "Invalid combination of indicator and topic: {} and {}".format(
+                    "road-accuracy",
+                    self.topic.key,
+                )
+            )
+        return self
+
+
 class IndicatorDataRequest(BaseBpolys):
     """Model for the `/indicators/mapping-saturation/data` endpoint.
 
