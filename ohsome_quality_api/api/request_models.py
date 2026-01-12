@@ -233,7 +233,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         return self
 
 
-class RoadAccuracyAttribute(Enum):
+class RoadsThematicAccuracyAttribute(Enum):
     SURFACE = "0"
     ONEWAY = "1"
     LANES = "2"
@@ -241,14 +241,14 @@ class RoadAccuracyAttribute(Enum):
     WIDTH = "4"
 
 
-class RoadAccuracyRequest(IndicatorRequest):
-    road_accuracy_attribute: RoadAccuracyAttribute | None = Field(
+class RoadSThematicAccuracyRequest(IndicatorRequest):
+    roads_thematic_accuracy_attribute: RoadsThematicAccuracyAttribute | None = Field(
         default=None,
-        title="Road Accuracy Attribute",
+        title="Roads Thematic Accuracy Attribute",
         description=_("Attribute to compare between DLM and OSM."),
     )
 
-    @field_validator("road_accuracy_attribute", mode="before")
+    @field_validator("roads_thematic_accuracy_attribute", mode="before")
     @classmethod
     def empty_string_to_none(cls, value):
         if value == "":
@@ -258,10 +258,10 @@ class RoadAccuracyRequest(IndicatorRequest):
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self):
         valid_indicators = get_valid_indicators(self.topic.key)
-        if "road-accuracy" not in valid_indicators:
+        if "roads-thematic-accuracy" not in valid_indicators:
             raise ValueError(
                 "Invalid combination of indicator and topic: {} and {}".format(
-                    "road-accuracy",
+                    "roads-thematic-accuracy",
                     self.topic.key,
                 )
             )

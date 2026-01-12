@@ -45,7 +45,7 @@ def get_data(feature):
     )
 
 
-class RoadAccuracy(BaseIndicator):
+class RoadsThematicAccuracy(BaseIndicator):
     def __init__(
         self,
         topic: Topic,
@@ -74,7 +74,7 @@ class RoadAccuracy(BaseIndicator):
     def calculate(self) -> None:
         self.result.value = None  # TODO: do we want a result value
         label_description = getattr(self.templates.label_description, self.result.label)
-        self.result.description += "\n" + label_description
+        self.result.description = "\n" + label_description
 
     def create_figure(self) -> None:
         fig = make_subplots(

@@ -1,6 +1,6 @@
 import pytest
 
-from ohsome_quality_api.indicators.road_accuracy.indicator import RoadAccuracy
+from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import RoadAccuracy
 
 
 @pytest.mark.asyncio
