@@ -8,7 +8,7 @@ select
     COUNT(*) as total_dlm,
     SUM(
         CASE
-            WHEN (name is not NULL or "ref" is not null) AND "NAM" is not NULL THEN 1
+            WHEN (name is not NULL OR "ref" is not NULL) AND "NAM" is not NULL THEN 1
             ELSE 0
         END
     ) AS present_in_both,
