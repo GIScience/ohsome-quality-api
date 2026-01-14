@@ -1,5 +1,6 @@
 import pytest
 from approvaltests import verify
+from ohsome_filter_to_sql.main import validate_filter
 
 from ohsome_quality_api.topics import definitions, models
 from tests.approvaltests_namers import PytestNamer
@@ -17,8 +18,9 @@ def test_get_valid_topics():
 
 def test_load_topic_definition():
     topics = definitions.load_topic_presets()
-    for topic in topics:
-        assert isinstance(topics[topic], models.Topic)
+    for topic in topics.values():
+        assert isinstance(topic, models.Topic)
+        assert validate_filter(topic.filter)
 
 
 def test_get_topic_definition():
