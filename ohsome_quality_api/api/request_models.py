@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Literal
 
 import geojson
 from fastapi_i18n import _
@@ -233,16 +234,8 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         return self
 
 
-class RoadsThematicAccuracyAttribute(Enum):
-    SURFACE = "0"
-    ONEWAY = "1"
-    LANES = "2"
-    NAME = "3"
-    WIDTH = "4"
-
-
 class RoadsThematicAccuracyRequest(IndicatorRequest):
-    attribute: RoadsThematicAccuracyAttribute | None = Field(
+    attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = Field(
         default=None,
         title="Roads Thematic Accuracy Attribute",
         description=_("Attribute to compare between DLM and OSM."),

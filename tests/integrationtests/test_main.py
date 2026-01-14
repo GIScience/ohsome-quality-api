@@ -10,22 +10,28 @@ from tests.integrationtests.utils import oqapi_vcr
 
 @oqapi_vcr.use_cassette
 @pytest.mark.parametrize(
-    "indicator,topic",
+    "indicator,topic,kwargs",
     [
-        ("minimal", "topic_minimal"),
-        ("mapping-saturation", "topic_building_count"),
-        ("currentness", "topic_building_count"),
+        ("minimal", "topic_minimal", {}),
+        ("mapping-saturation", "topic_building_count", {}),
+        ("currentness", "topic_building_count", {}),
+        (
+            "attribute-completeness",
+            "topic_building_count",
+            {"attribute_keys": ["height"]},
+        ),
     ],
 )
 def test_create_indicator_public_feature_collection_single(
     bpolys,
     indicator,
     topic,
+    kwargs,
     request,
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    indicators = asyncio.run(main.create_indicator(indicator, bpolys, topic))
+    indicators = asyncio.run(main.create_indicator(indicator, bpolys, topic, **kwargs))
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None

@@ -26,7 +26,7 @@ def mock_request_context_minimal(monkeypatch):
 
 @pytest.fixture
 def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
-    """Mock request context for /indicators/minimal."""
+    """Mock request context for /indicators/land-cover-thematic-accuracy."""
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
     request_context.set(
         RequestContext(path_parameters={"key": "land-cover-thematic-accuracy"})
@@ -38,7 +38,7 @@ def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
 
 @pytest.fixture
 def mock_request_context_roads_thematic_accuracy(monkeypatch):
-    """Mock request context for /indicators/minimal."""
+    """Mock request context for /indicators/roads-thematic-accuracy."""
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
     request_context.set(
         RequestContext(path_parameters={"key": "roads-thematic-accuracy"})
@@ -217,8 +217,24 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         )
 
 
-def test_roads_thematic_accuracy_request(
-    bpolys, mock_request_context_roads_thematic_accuracy
+def test_roads_thematic_accuracy_request_all_attributes(
+    bpolys,
+    mock_request_context_roads_thematic_accuracy,
 ):
     # attribute parameter is optional (default all attributes)
     RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads")
+
+
+def test_roads_thematic_accuracy_request_specific_attribute(
+    bpolys,
+    mock_request_context_roads_thematic_accuracy,
+):
+    RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="surface")
+
+
+def test_roads_thematic_accuracy_request_specific_attribute_invalid(
+    bpolys,
+    mock_request_context_roads_thematic_accuracy,
+):
+    with pytest.raises(ValueError):
+        RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="foo")

@@ -6,7 +6,6 @@ import plotly.graph_objects as pgo
 from geojson import Feature
 from plotly.subplots import make_subplots
 
-from ohsome_quality_api.api.request_models import RoadsThematicAccuracyAttribute
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
@@ -25,21 +24,13 @@ class MatchedData:
     different_value: int
 
 
-attribute_mapping = {
-    RoadsThematicAccuracyAttribute.ONEWAY: "oneway",
-    RoadsThematicAccuracyAttribute.LANES: "lanes",
-    RoadsThematicAccuracyAttribute.SURFACE: "surface",
-    RoadsThematicAccuracyAttribute.NAME: "name",
-    RoadsThematicAccuracyAttribute.WIDTH: "width",
-}
-
-
 class RoadsThematicAccuracy(BaseIndicator):
     def __init__(
         self,
         topic: Topic,
         feature: Feature,
-        attribute: RoadsThematicAccuracyAttribute | None = None,
+        # TODO: make literal
+        attribute: str | None = None,
     ) -> None:
         super().__init__(
             topic=topic,
@@ -49,9 +40,7 @@ class RoadsThematicAccuracy(BaseIndicator):
 
     async def preprocess(self) -> None:
         if self.attribute is not None:
-            with open(
-                Path(__file__).parent / f"{attribute_mapping[self.attribute]}.sql", "r"
-            ) as file:
+            with open(Path(__file__).parent / f"{self.attribute}.sql", "r") as file:
                 query = file.read()
         else:
             with open(Path(__file__).parent / "all_attributes.sql", "r") as file:
