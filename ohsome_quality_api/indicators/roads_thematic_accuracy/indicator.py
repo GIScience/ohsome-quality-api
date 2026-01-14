@@ -36,7 +36,8 @@ class RoadsThematicAccuracy(BaseIndicator):
             topic=topic,
             feature=feature,
         )
-        self.attribute = attribute
+        self.attribute: str = attribute
+        self.matched_data: MatchedData | None = None
 
     async def preprocess(self) -> None:
         if self.attribute is not None:

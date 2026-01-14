@@ -1,6 +1,7 @@
 import asyncio
 from unittest import mock
 
+import asyncpg_recorder
 import pytest
 
 from ohsome_quality_api import main
@@ -9,6 +10,8 @@ from tests.integrationtests.utils import oqapi_vcr
 
 
 @oqapi_vcr.use_cassette
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "indicator,topic,kwargs",
     [
@@ -25,9 +28,15 @@ from tests.integrationtests.utils import oqapi_vcr
             "topic_building_count",
             {"attribute_keys": ["height", "house-number"]},
         ),
+        ("roads-thematic-accuracy", "topic_roads", {}),
+        (
+            "roads-thematic-accuracy",
+            "topic_roads",
+            {"attribute": "surface"},
+        ),
     ],
 )
-def test_create_indicator_public_feature_collection_single(
+async def test_create_indicator_public_feature_collection_single(
     bpolys,
     indicator,
     topic,
@@ -36,7 +45,7 @@ def test_create_indicator_public_feature_collection_single(
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    indicators = asyncio.run(main.create_indicator(indicator, bpolys, topic, **kwargs))
+    indicators = await main.create_indicator(indicator, bpolys, topic, **kwargs)
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
@@ -67,6 +76,8 @@ def test_create_indicator_public_feature_collection_multi(
 
 
 @oqapi_vcr.use_cassette
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "indicator,topic,kwargs",
     [
@@ -83,12 +94,20 @@ def test_create_indicator_public_feature_collection_multi(
             "topic_building_count",
             {"attribute_keys": ["height", "house-number"]},
         ),
+        ("roads-thematic-accuracy", "topic_roads", {}),
+        (
+            "roads-thematic-accuracy",
+            "topic_roads",
+            {"attribute": "surface"},
+        ),
     ],
 )
-def test_create_indicator_private_feature(feature, indicator, topic, kwargs, request):
+async def test_create_indicator_private_feature(
+    feature, indicator, topic, kwargs, request
+):
     """Test private method to create a single indicator for a single feature."""
     topic = request.getfixturevalue(topic)
-    indicator = asyncio.run(main._create_indicator(indicator, feature, topic, **kwargs))
+    indicator = await main._create_indicator(indicator, feature, topic, **kwargs)
     assert indicator.result.label is not None
     assert indicator.result.value is not None
     assert indicator.result.description is not None

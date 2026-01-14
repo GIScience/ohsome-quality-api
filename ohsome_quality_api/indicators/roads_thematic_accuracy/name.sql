@@ -46,6 +46,6 @@ select
             ELSE 0
         END
     ) AS present_in_both_not_agree
-FROM oqapi_road_accuracy as ora, bpoly b
+FROM road_accuracy as ora, bpoly b
 WHERE
     ST_Intersects(ora.geom, b.geometry);

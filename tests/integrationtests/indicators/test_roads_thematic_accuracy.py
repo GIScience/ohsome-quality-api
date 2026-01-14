@@ -1,25 +1,51 @@
+import geojson
 import pytest
 
-from ohsome_quality_api.api.request_models import RoadsThematicAccuracyAttribute
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
 )
 
 
 @pytest.fixture
-def roads_thematic_accuracy_attribute() -> RoadsThematicAccuracyAttribute:
-    return RoadsThematicAccuracyAttribute.SURFACE
+def feature():
+    return geojson.Feature(
+        **{
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "coordinates": [
+                    [
+                        [6.965326376011092, 49.255222737173],
+                        [6.965326376011092, 49.22127641767389],
+                        [7.019481207402663, 49.22127641767389],
+                        [7.019481207402663, 49.255222737173],
+                        [6.965326376011092, 49.255222737173],
+                    ]
+                ],
+                "type": "Polygon",
+            },
+        }
+    )
 
 
+# @asyncpg_recorder.use_cassette
+@pytest.mark.parametrize(
+    "attribute",
+    (
+        "surface",
+        # "oneway",
+        # "lanes",
+        # "name",
+        # "width",
+        # None,
+    ),
+)
 @pytest.mark.asyncio
-async def test_preprocess_multi_class(
-    topic_major_roads_length, feature_malta, roads_thematic_accuracy_attribute
-):
+async def test_preprocess(feature, topic_roads, attribute):
     indicator = RoadsThematicAccuracy(
-        feature=feature_malta,
-        topic=topic_major_roads_length,
-        attribute=roads_thematic_accuracy_attribute,
+        feature=feature,
+        topic=topic_roads,
+        attribute=attribute,
     )
     await indicator.preprocess()
-    indicator.calculate()
-    indicator.create_figure()
+    assert indicator.matched_data is not None
