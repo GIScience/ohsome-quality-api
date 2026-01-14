@@ -242,13 +242,13 @@ class RoadsThematicAccuracyAttribute(Enum):
 
 
 class RoadsThematicAccuracyRequest(IndicatorRequest):
-    roads_thematic_accuracy_attribute: RoadsThematicAccuracyAttribute | None = Field(
+    attribute: RoadsThematicAccuracyAttribute | None = Field(
         default=None,
         title="Roads Thematic Accuracy Attribute",
         description=_("Attribute to compare between DLM and OSM."),
     )
 
-    @field_validator("roads_thematic_accuracy_attribute", mode="before")
+    @field_validator("attribute", mode="before")
     @classmethod
     def empty_string_to_none(cls, value):
         if value == "":

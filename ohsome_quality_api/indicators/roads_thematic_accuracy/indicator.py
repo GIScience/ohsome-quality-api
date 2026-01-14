@@ -25,25 +25,13 @@ class MatchedData:
     different_value: int
 
 
-def get_data(feature):
-    response = [
-        1000,
-        950,
-        30,
-        10,
-        10,
-        5,
-        4,
-    ]  # total_dlm, both, only_dlm, only_osm, missing_both, same_value, different_value
-    return MatchedData(
-        total_dlm=response[0],
-        both=response[1],
-        only_dlm=response[2],
-        only_osm=response[3],
-        missing_both=response[4],
-        same_value=response[5],
-        different_value=response[6],
-    )
+attribute_mapping = {
+    RoadsThematicAccuracyAttribute.ONEWAY: "oneway",
+    RoadsThematicAccuracyAttribute.LANES: "lanes",
+    RoadsThematicAccuracyAttribute.SURFACE: "surface",
+    RoadsThematicAccuracyAttribute.NAME: "name",
+    RoadsThematicAccuracyAttribute.WIDTH: "width",
+}
 
 
 class RoadsThematicAccuracy(BaseIndicator):
@@ -51,17 +39,23 @@ class RoadsThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        roads_thematic_accuracy_attribute: RoadsThematicAccuracyAttribute | None = None,
+        attribute: RoadsThematicAccuracyAttribute | None = None,
     ) -> None:
         super().__init__(
             topic=topic,
             feature=feature,
         )
-        self.attribute = roads_thematic_accuracy_attribute
+        self.attribute = attribute
 
     async def preprocess(self) -> None:
-        with open(Path(__file__).parent / "surface.sql", "r") as file:
-            query = file.read()
+        if self.attribute is not None:
+            with open(
+                Path(__file__).parent / f"{attribute_mapping[self.attribute]}.sql", "r"
+            ) as file:
+                query = file.read()
+        else:
+            with open(Path(__file__).parent / "all_attributes.sql", "r") as file:
+                query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
             total_dlm=response[0][0],
@@ -80,6 +74,8 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.description = "\n" + label_description
 
     def create_figure(self) -> None:
+        if self.matched_data.total_dlm == 0:
+            return
         fig = make_subplots(
             rows=1, cols=2, subplot_titles=("Presence (DLM vs OSM)", "Value Comparison")
         )
