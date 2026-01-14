@@ -241,7 +241,7 @@ class RoadsThematicAccuracyAttribute(Enum):
     WIDTH = "4"
 
 
-class RoadSThematicAccuracyRequest(IndicatorRequest):
+class RoadsThematicAccuracyRequest(IndicatorRequest):
     roads_thematic_accuracy_attribute: RoadsThematicAccuracyAttribute | None = Field(
         default=None,
         title="Roads Thematic Accuracy Attribute",

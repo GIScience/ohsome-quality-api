@@ -10,6 +10,7 @@ from ohsome_quality_api.api.request_models import (
     BaseBpolys,
     IndicatorRequest,
     LandCoverThematicAccuracyRequest,
+    RoadsThematicAccuracyRequest,
 )
 
 
@@ -29,6 +30,18 @@ def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
     request_context.set(
         RequestContext(path_parameters={"key": "land-cover-thematic-accuracy"})
+    )
+    monkeypatch.setattr(
+        "ohsome_quality_api.api.request_models.request_context", request_context
+    )
+
+
+@pytest.fixture
+def mock_request_context_roads_thematic_accuracy(monkeypatch):
+    """Mock request context for /indicators/minimal."""
+    request_context: ContextVar[RequestContext] = ContextVar("request_context")
+    request_context.set(
+        RequestContext(path_parameters={"key": "roads-thematic-accuracy"})
     )
     monkeypatch.setattr(
         "ohsome_quality_api.api.request_models.request_context", request_context
@@ -202,3 +215,10 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         LandCoverThematicAccuracyRequest(
             bpolys=bpolys, topic="land-cover", corine_land_cover_class="1"
         )
+
+
+def test_roads_thematic_accuracy_request(
+    bpolys, mock_request_context_roads_thematic_accuracy
+):
+    # attribute parameter is optional (default all attributes)
+    RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads")

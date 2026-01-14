@@ -77,7 +77,7 @@ roads:
     - attribute-completeness
     - currentness
     - user-activity
-    - road-accuracy
+    - roads-thematic-accuracy
   projects:
     - core
     - bkg

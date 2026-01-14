@@ -6,6 +6,7 @@ import plotly.graph_objects as pgo
 from geojson import Feature
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.api.request_models import RoadsThematicAccuracyAttribute
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
@@ -50,14 +51,16 @@ class RoadsThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        roads_thematic_accuracy_attribute: RoadsThematicAccuracyAttribute | None = None,
     ) -> None:
         super().__init__(
             topic=topic,
             feature=feature,
         )
+        self.attribute = roads_thematic_accuracy_attribute
 
     async def preprocess(self) -> None:
-        with open(Path(__file__).parent / "name.sql", "r") as file:
+        with open(Path(__file__).parent / "surface.sql", "r") as file:
             query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
@@ -83,8 +86,6 @@ class RoadsThematicAccuracy(BaseIndicator):
 
         fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
         fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
-
-        fig.show()
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
