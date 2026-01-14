@@ -20,8 +20,8 @@ class MatchedData:
     only_dlm: int
     only_osm: int
     missing_both: int
-    same_value: int
-    different_value: int
+    present_in_both_agree: int
+    present_in_both_not_agree: int
 
 
 class RoadsThematicAccuracy(BaseIndicator):
@@ -48,13 +48,13 @@ class RoadsThematicAccuracy(BaseIndicator):
                 query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=response[0][0],
-            both=response[0][1],
-            only_dlm=response[0][2],
-            only_osm=response[0][3],
-            missing_both=response[0][4],
-            same_value=response[0][5],
-            different_value=response[0][6],
+            total_dlm=response[0]["total_dlm"],
+            both=response[0]["present_in_both"],
+            only_dlm=response[0]["only_dlm"],
+            only_osm=response[0]["only_osm"],
+            missing_both=response[0]["missing_both"],
+            present_in_both_agree=response[0]["present_in_both_agree"],
+            present_in_both_not_agree=response[0]["present_in_both_not_agree"],
         )
         # TODO: get timestamps
 
@@ -103,7 +103,7 @@ def plot_presence(result: MatchedData) -> pgo.Bar:
 
 def plot_value_comparison(result: MatchedData) -> pgo.Bar:
     labels = ["Same value", "Different value"]
-    values = [result.same_value, result.different_value]
+    values = [result.present_in_both_agree, result.present_in_both_not_agree]
     total = sum(values)
     text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
 

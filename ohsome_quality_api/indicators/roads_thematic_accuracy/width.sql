@@ -8,44 +8,44 @@ select
     COUNT(*) as total_dlm,
         SUM(
                 CASE
-                    WHEN width is not NULL AND "BRF" is not NULL THEN 1
+                    WHEN width is not NULL AND brf is not NULL THEN 1
                     ELSE 0
                 END
             ) AS present_in_both,
         SUM(
             CASE
-                WHEN width is not NULL AND "BRF" is NULL THEN 1
+                WHEN width is not NULL AND brf is NULL THEN 1
                 ELSE 0
             END
-        ) AS osm_only,
+        ) AS only_osm,
         SUM(
                 CASE
-                    WHEN width IS NULL AND "BRF" IS NOT NULL THEN 1
+                    WHEN width IS NULL AND brf IS NOT NULL THEN 1
                     ELSE 0
                 end
-            ) AS bkg_only,
+            ) AS only_dlm,
         SUM(
             CASE
-                WHEN width is NULL AND "BRF" is NULL THEN 1
+                WHEN width is NULL AND brf is NULL THEN 1
                 ELSE 0
             END
         ) AS missing_both,
         SUM(
             CASE
                 WHEN width is not NULL
-                     AND "BRF" is not NULL
-                     AND abs(width - "BRF") > 1 THEN 1
+                     AND brf is not NULL
+                     AND abs(width - brf) > 1 THEN 1
                 ELSE 0
             END
         ) AS present_in_both_agree,
         SUM(
             CASE
                 WHEN width is not NULL
-                     AND "BRF" is not NULL
-                     AND abs(width - "BRF") <= 1 THEN 1
+                     AND brf is not NULL
+                     AND abs(width - brf) <= 1 THEN 1
                 ELSE 0
             END
         ) AS present_in_both_not_agree
-FROM road_accuracy as ora, bpoly b
+FROM road_thematic_accuracy as ora, bpoly b
 WHERE
     ST_Intersects(ora.geom, b.geometry);

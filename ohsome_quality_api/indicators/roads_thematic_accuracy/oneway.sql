@@ -8,33 +8,33 @@ select
     COUNT(*) as total_dlm,
         SUM(
             CASE
-                WHEN oneway is not NULL AND "FAR" is not NULL THEN 1
+                WHEN oneway is not NULL AND far is not NULL THEN 1
                 ELSE 0
             END
         ) AS present_in_both,
         SUM(
         CASE
-            WHEN oneway is not NULL AND "FAR" is NULL THEN 1
+            WHEN oneway is not NULL AND far is NULL THEN 1
             ELSE 0
         END
-    ) AS osm_only,
+    ) AS only_osm,
 		SUM(
 			CASE
-				WHEN oneway IS NULL AND "FAR" IS NOT NULL THEN 1
+				WHEN oneway IS NULL AND far IS NOT NULL THEN 1
 				ELSE 0
 			end
-		) AS bkg_only,
+		) AS only_dlm,
         SUM(
         CASE
-            WHEN oneway is NULL AND "FAR" is NULL THEN 1
+            WHEN oneway is NULL AND far is NULL THEN 1
             ELSE 0
         END
         ) AS missing_both,
         SUM(
             CASE
                 WHEN oneway is not NULL
-                     AND "FAR" is not NULL
-                     AND oneway = "FAR"
+                     AND far is not NULL
+                     AND oneway = far
                      AND ((angle_osm > 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm < 0)) THEN 1
                 ELSE 0
             END
@@ -42,13 +42,13 @@ select
             SUM(
             CASE
                 WHEN oneway is not NULL
-                     AND "FAR" is not NULL
-                     AND (oneway != "FAR"
+                     AND far is not NULL
+                     AND (oneway != far
                      OR ((angle_osm < 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm > 0))
                      ) THEN 1
                 ELSE 0
             END
         ) AS present_in_both_not_agree
-FROM road_accuracy rta, bpoly b
+FROM road_thematic_accuracy rta, bpoly b
 WHERE
     ST_Intersects(rta.geom, b.geometry);
