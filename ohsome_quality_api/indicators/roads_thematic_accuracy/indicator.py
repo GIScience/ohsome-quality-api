@@ -70,7 +70,10 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
 
         fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
-        fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
+
+        # TODO: create plot if both is 0
+        if self.matched_data.both > 0:
+            fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
