@@ -102,7 +102,11 @@ def plot_value_comparison(result: MatchedData) -> pgo.Bar:
     labels = ["Same value", "Different value"]
     values = [result.present_in_both_agree, result.present_in_both_not_agree]
     total = sum(values)
-    text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
+    if total > 0:
+        text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
+    else:
+        # TODO: handle case
+        text = ""
 
     bar = pgo.Bar(
         x=labels,

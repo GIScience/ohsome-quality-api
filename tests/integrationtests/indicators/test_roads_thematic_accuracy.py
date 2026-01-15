@@ -1,9 +1,11 @@
+import json
 from dataclasses import asdict
 
 import asyncpg_recorder
 import geojson
+import plotly.io as pio
 import pytest
-from pytest_approval import verify, verify_json
+from pytest_approval import verify, verify_image, verify_json
 
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
@@ -58,16 +60,6 @@ async def test_preprocess(feature, topic_roads, attribute):
 
 
 @asyncpg_recorder.use_cassette
-@pytest.mark.asyncio
-async def test_preprocess_all_attributes(feature, topic_roads):
-    indicator = RoadsThematicAccuracy(feature=feature, topic=topic_roads)
-    assert indicator.attribute is None
-    await indicator.preprocess()
-    assert indicator.matched_data is not None
-    verify_json(asdict(indicator.matched_data))
-
-
-@asyncpg_recorder.use_cassette
 @pytest.mark.parametrize(
     "attribute",
     (
@@ -80,7 +72,7 @@ async def test_preprocess_all_attributes(feature, topic_roads):
     ),
 )
 @pytest.mark.asyncio
-async def test_calculate_all_attributes(feature, topic_roads, attribute):
+async def test_calculate(feature, topic_roads, attribute):
     indicator = RoadsThematicAccuracy(
         feature=feature,
         topic=topic_roads,
@@ -91,3 +83,29 @@ async def test_calculate_all_attributes(feature, topic_roads, attribute):
     # non-quality indicator does not have result value
     assert indicator.result.value is None
     verify(indicator.result.description)
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.parametrize(
+    "attribute",
+    (
+        # "surface",
+        # "oneway",
+        # "lanes",
+        # "name",
+        # "width",
+        None,
+    ),
+)
+@pytest.mark.asyncio
+async def test_create_figure(feature, topic_roads, attribute):
+    indicator = RoadsThematicAccuracy(
+        feature=feature,
+        topic=topic_roads,
+        attribute=attribute,
+    )
+    await indicator.preprocess()
+    indicator.calculate()
+    indicator.create_figure()
+    fig = pio.from_json(json.dumps(indicator.result.figure))
+    verify_image(fig.to_image(format="png"), extension=".png")
