@@ -3,7 +3,7 @@ from dataclasses import asdict
 import asyncpg_recorder
 import geojson
 import pytest
-from pytest_approval import verify_json
+from pytest_approval import verify, verify_json
 
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
@@ -65,3 +65,29 @@ async def test_preprocess_all_attributes(feature, topic_roads):
     await indicator.preprocess()
     assert indicator.matched_data is not None
     verify_json(asdict(indicator.matched_data))
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.parametrize(
+    "attribute",
+    (
+        "surface",
+        "oneway",
+        "lanes",
+        "name",
+        "width",
+        None,
+    ),
+)
+@pytest.mark.asyncio
+async def test_calculate_all_attributes(feature, topic_roads, attribute):
+    indicator = RoadsThematicAccuracy(
+        feature=feature,
+        topic=topic_roads,
+        attribute=attribute,
+    )
+    await indicator.preprocess()
+    indicator.calculate()
+    # non-quality indicator does not have result value
+    assert indicator.result.value is None
+    verify(indicator.result.description)

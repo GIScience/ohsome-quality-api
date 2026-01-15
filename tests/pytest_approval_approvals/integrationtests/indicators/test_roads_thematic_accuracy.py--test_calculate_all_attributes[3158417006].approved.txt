@@ -1,0 +1,2 @@
+
+This is a no-quality indicator. No quality estimation will be calculated.
