@@ -41,6 +41,7 @@ async def create_indicator(
             "land-cover-thematic-accuracy",
             "land-cover-completeness",
             "user-activity",
+            "roads-thematic-accuracy",
         ]:
             validate_area(feature)
         tasks.append(
