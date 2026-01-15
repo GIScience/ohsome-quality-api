@@ -1028,6 +1028,7 @@ dev = [
     { name = "pre-commit" },
     { name = "pygments" },
     { name = "pytest" },
+    { name = "pytest-approval" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-mock" },
@@ -1070,6 +1071,7 @@ dev = [
     { name = "pre-commit", specifier = ">=4.2.0" },
     { name = "pygments", specifier = ">=2.19.1" },
     { name = "pytest", specifier = ">=8.3.5" },
+    { name = "pytest-approval", specifier = ">=0.7.0" },
     { name = "pytest-asyncio", specifier = ">=0.26.0" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
@@ -1460,6 +1462,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a3/5c/00a0e072241553e1a7496d638deababa67c5058571567b92a7eaa258397c/pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01", size = 1519618, upload-time = "2025-09-04T14:34:22.711Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/a4/20da314d277121d6534b3a980b29035dcd51e6744bd79075a6ce8fa4eb8d/pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79", size = 365750, upload-time = "2025-09-04T14:34:20.226Z" },
+]
+
+[[package]]
+name = "pytest-approval"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/92/01/e6bc46b0ae132f3e25a90d9cdad4433c1c952646f5a8a426bcce3b6ca267/pytest_approval-0.7.0.tar.gz", hash = "sha256:2b5cd674e0adb28ac6d1f0ec6085a0eade0b02de394a75a053f9e6f648b50ed0", size = 60921, upload-time = "2026-01-11T16:20:38.245Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/40/5a/9cbef47d65a1354b38e8b2ae383b8917c6addced82e81ad53565e254b836/pytest_approval-0.7.0-py3-none-any.whl", hash = "sha256:f9306fcaa9d8c2214837092251508ec4836de375bd87c90d99a46876d9da15f4", size = 72545, upload-time = "2026-01-11T16:20:39.439Z" },
 ]
 
 [[package]]
