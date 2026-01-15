@@ -80,7 +80,7 @@ select
                 ELSE 0
             END
         ) AS present_in_both_agree,
-            SUM(
+        SUM(
             CASE
                 WHEN lanes is not NULL
                      AND fsz is not NULL
@@ -97,7 +97,14 @@ select
                      THEN 1
                 ELSE 0
             END
-        ) AS present_in_both_not_agree
+        ) AS present_in_both_not_agree,
+        SUM(
+            CASE
+                WHEN osm_id IS NULL THEN dlm_length
+                ELSE 0
+            END
+        ) AS not_matched
+
 FROM road_thematic_accuracy as ora, bpoly b
 WHERE
     ST_Intersects(ora.geom, b.geometry);

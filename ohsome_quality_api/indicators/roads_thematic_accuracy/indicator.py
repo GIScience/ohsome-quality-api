@@ -24,6 +24,7 @@ class MatchedData:
     missing_both: int
     present_in_both_agree: int
     present_in_both_not_agree: int
+    not_matched: float
 
 
 class RoadsThematicAccuracy(BaseIndicator):
@@ -53,6 +54,7 @@ class RoadsThematicAccuracy(BaseIndicator):
             missing_both=response[0]["missing_both"],
             present_in_both_agree=response[0]["present_in_both_agree"],
             present_in_both_not_agree=response[0]["present_in_both_not_agree"],
+            not_matched=response[0]["not_matched"],
         )
         # TODO: get timestamps
 
@@ -64,7 +66,8 @@ class RoadsThematicAccuracy(BaseIndicator):
             {
                 "attribute": f"'{self.attribute.capitalize()}'"
                 if self.attribute is not None
-                else "'All attributes'"
+                else "'All attributes'",
+                "percent": self.matched_data.not_matched,
             }
         )
 
