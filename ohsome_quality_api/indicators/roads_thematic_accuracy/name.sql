@@ -5,28 +5,28 @@ WITH bpoly AS (
 )
 
 select
-    COUNT(*) as total_dlm,
+    SUM(dlm_length) as total_dlm,
     SUM(
         CASE
-            WHEN (name is not NULL OR ref is not NULL) AND nam is not NULL THEN 1
+            WHEN (name is not NULL OR ref is not NULL) AND nam is not NULL THEN dlm_length
             ELSE 0
         END
     ) AS present_in_both,
         SUM(
         CASE
-            WHEN (name is not NULL OR ref is not NULL) AND nam is NULL THEN 1
+            WHEN (name is not NULL OR ref is not NULL) AND nam is NULL THEN dlm_length
             ELSE 0
         END
     ) AS only_osm,
 		SUM(
 			CASE
-				WHEN name IS NULL AND ref IS NULL AND nam IS NOT NULL THEN 1
+				WHEN name IS NULL AND ref IS NULL AND nam IS NOT NULL THEN dlm_length
 				ELSE 0
 			end
 		) AS only_dlm,
         SUM(
         CASE
-            WHEN name is NULL AND ref is NULL AND nam is NULL THEN 1
+            WHEN name is NULL AND ref is NULL AND nam is NULL THEN dlm_length
             ELSE 0
         END
     ) AS missing_both,
@@ -34,7 +34,7 @@ select
 		CASE
 		    WHEN (name is not NULL OR ref is not NULL)
 		         AND nam is not NULL
-		         AND lev_ratio >= 0.8 THEN 1
+		         AND lev_ratio >= 0.8 THEN dlm_length
 		    ELSE 0
 		END
 	) AS present_in_both_agree,
@@ -42,7 +42,7 @@ select
         CASE
             WHEN (name is not NULL OR ref is not NULL)
                  AND nam is not NULL
-                 AND lev_ratio < 0.8 THEN 1
+                 AND lev_ratio < 0.8 THEN dlm_length
             ELSE 0
         END
     ) AS present_in_both_not_agree,

@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class MatchedData:
-    total_dlm: int
-    both: int
-    only_dlm: int
-    only_osm: int
-    missing_both: int
-    present_in_both_agree: int
-    present_in_both_not_agree: int
+    total_dlm: float
+    both: float
+    only_dlm: float
+    only_osm: float
+    missing_both: float
+    present_in_both_agree: float
+    present_in_both_not_agree: float
     not_matched: float
 
 
@@ -35,7 +35,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        self.attribute: str = attribute
+        self.attribute: str | None = attribute
         self.matched_data: MatchedData | None = None
 
     async def preprocess(self) -> None:
@@ -67,7 +67,8 @@ class RoadsThematicAccuracy(BaseIndicator):
                 "attribute": f"'{self.attribute.capitalize()}'"
                 if self.attribute is not None
                 else "'All attributes'",
-                "percent": self.matched_data.not_matched,
+                "percent": 100
+                - (self.matched_data.not_matched / self.matched_data.total_dlm * 100),
             }
         )
 

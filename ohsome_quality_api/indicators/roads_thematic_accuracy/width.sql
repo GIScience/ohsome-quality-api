@@ -5,28 +5,28 @@ WITH bpoly AS (
 )
 
 select
-    COUNT(*) as total_dlm,
+    SUM(dlm_length) as total_dlm,
         SUM(
                 CASE
-                    WHEN width is not NULL AND brf is not NULL THEN 1
+                    WHEN width is not NULL AND brf is not NULL THEN dlm_length
                     ELSE 0
                 END
             ) AS present_in_both,
         SUM(
             CASE
-                WHEN width is not NULL AND brf is NULL THEN 1
+                WHEN width is not NULL AND brf is NULL THEN dlm_length
                 ELSE 0
             END
         ) AS only_osm,
         SUM(
                 CASE
-                    WHEN width IS NULL AND brf IS NOT NULL THEN 1
+                    WHEN width IS NULL AND brf IS NOT NULL THEN dlm_length
                     ELSE 0
                 end
             ) AS only_dlm,
         SUM(
             CASE
-                WHEN width is NULL AND brf is NULL THEN 1
+                WHEN width is NULL AND brf is NULL THEN dlm_length
                 ELSE 0
             END
         ) AS missing_both,
@@ -34,7 +34,7 @@ select
             CASE
                 WHEN width is not NULL
                      AND brf is not NULL
-                     AND abs(width - brf) > 1 THEN 1
+                     AND abs(width - brf) > 1 THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_agree,
@@ -42,7 +42,7 @@ select
             CASE
                 WHEN width is not NULL
                      AND brf is not NULL
-                     AND abs(width - brf) <= 1 THEN 1
+                     AND abs(width - brf) <= 1 THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_not_agree,

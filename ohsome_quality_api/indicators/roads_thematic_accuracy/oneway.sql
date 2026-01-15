@@ -5,28 +5,28 @@ WITH bpoly AS (
 )
 
 select
-    COUNT(*) as total_dlm,
+    SUM(dlm_length) as total_dlm,
         SUM(
             CASE
-                WHEN oneway is not NULL AND far is not NULL THEN 1
+                WHEN oneway is not NULL AND far is not NULL THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both,
         SUM(
         CASE
-            WHEN oneway is not NULL AND far is NULL THEN 1
+            WHEN oneway is not NULL AND far is NULL THEN dlm_length
             ELSE 0
         END
     ) AS only_osm,
 		SUM(
 			CASE
-				WHEN oneway IS NULL AND far IS NOT NULL THEN 1
+				WHEN oneway IS NULL AND far IS NOT NULL THEN dlm_length
 				ELSE 0
 			end
 		) AS only_dlm,
         SUM(
         CASE
-            WHEN oneway is NULL AND far is NULL THEN 1
+            WHEN oneway is NULL AND far is NULL THEN dlm_length
             ELSE 0
         END
         ) AS missing_both,
@@ -35,7 +35,7 @@ select
                 WHEN oneway is not NULL
                      AND far is not NULL
                      AND oneway = far
-                     AND ((angle_osm > 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm < 0)) THEN 1
+                     AND ((angle_osm > 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm < 0)) THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_agree,
@@ -45,7 +45,7 @@ select
                      AND far is not NULL
                      AND (oneway != far
                      OR ((angle_osm < 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm > 0))
-                     ) THEN 1
+                     ) THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_not_agree,

@@ -5,28 +5,28 @@ WITH bpoly AS (
 )
 
 select
-    COUNT(*) as total_dlm,
+        SUM(dlm_length) as total_dlm,
         SUM(
             CASE
-                WHEN lanes is not NULL AND fsz is not NULL THEN 1
+                WHEN lanes is not NULL AND fsz is not NULL THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both,
         SUM(
         CASE
-            WHEN lanes is not NULL AND fsz is NULL THEN 1
+            WHEN lanes is not NULL AND fsz is NULL THEN dlm_length
             ELSE 0
         END
     ) AS only_osm,
 		SUM(
 			CASE
-				WHEN lanes IS NULL AND fsz IS NOT NULL THEN 1
+				WHEN lanes IS NULL AND fsz IS NOT NULL THEN dlm_length
 				ELSE 0
 			end
 		) AS only_dlm,
         SUM(
         CASE
-            WHEN lanes is NULL AND fsz is NULL THEN 1
+            WHEN lanes is NULL AND fsz is NULL THEN dlm_length
             ELSE 0
         END
         ) AS missing_both,
@@ -34,7 +34,7 @@ select
             CASE
                 WHEN lanes is not NULL
                      AND fsz is not NULL
-                     AND lanes = fsz THEN 1
+                     AND lanes = fsz THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_agree,
@@ -42,7 +42,7 @@ select
             CASE
                 WHEN lanes is not NULL
                      AND fsz is not NULL
-                     AND lanes != fsz THEN 1
+                     AND lanes != fsz THEN dlm_length
                 ELSE 0
             END
         ) AS present_in_both_not_agree,
