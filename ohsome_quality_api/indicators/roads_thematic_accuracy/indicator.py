@@ -42,10 +42,14 @@ class RoadsThematicAccuracy(BaseIndicator):
 
     async def preprocess(self) -> None:
         if self.attribute is not None:
-            with open(Path(__file__).parent / f"{self.attribute}.sql", "r") as file:
+            with open(
+                Path(__file__).parent / "queries" / f"{self.attribute}.sql", "r"
+            ) as file:
                 query = file.read()
         else:
-            with open(Path(__file__).parent / "all_attributes.sql", "r") as file:
+            with open(
+                Path(__file__).parent / "queries" / "all_attributes.sql", "r"
+            ) as file:
                 query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
