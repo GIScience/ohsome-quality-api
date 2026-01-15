@@ -6,6 +6,7 @@ from string import Template
 from typing import Literal
 
 import plotly.graph_objects as pgo
+from fastapi_i18n import _
 from geojson import Feature
 from plotly.subplots import make_subplots
 
@@ -87,6 +88,35 @@ class RoadsThematicAccuracy(BaseIndicator):
         # TODO: create plot if both is 0
         if self.matched_data.both > 0:
             fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
+
+        fig.update_layout(
+            {
+                "annotations": [
+                    {
+                        "text": (
+                            f"<span style='font-size:smaller'>"
+                            f"{_('DLM data from')} "
+                            f"<br>"
+                            f"{self.dlm_timestamp.strftime('%Y')}"
+                            f"</span>"
+                            f"<br>"
+                            f"<span style='font-size:smaller'>"
+                            f"{_('OSM data from')} "
+                            f"<br>"
+                            f"{self.result.timestamp_osm.strftime('%Y')}"
+                            f"</span>"
+                        ),
+                        "xref": "paper",
+                        "yref": "paper",
+                        "x": 1.1,
+                        "y": 0.8,
+                        "yanchor": "top",
+                        "showarrow": False,
+                        "align": "left",
+                    }
+                ],
+            }
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
