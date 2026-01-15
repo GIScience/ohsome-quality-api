@@ -109,3 +109,19 @@ async def test_create_figure(feature, topic_roads, attribute):
     indicator.create_figure()
     fig = pio.from_json(json.dumps(indicator.result.figure))
     verify_image(fig.to_image(format="png"), extension=".png")
+
+
+@pytest.mark.asyncio
+@pytest.mark.skip()
+async def test_coverage(feature, topic_roads, attribute):
+    indicator = RoadsThematicAccuracy(
+        feature=feature,
+        topic=topic_roads,
+        attribute=attribute,
+    )
+
+    result = await indicator.coverage()
+    assert result[0].is_valid
+
+    result = await indicator.coverage(inverse=True)
+    assert result[0].is_valid
