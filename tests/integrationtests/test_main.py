@@ -2,6 +2,7 @@ import asyncio
 from unittest import mock
 
 import asyncpg_recorder
+import geojson
 import pytest
 
 from ohsome_quality_api import main
@@ -9,11 +10,38 @@ from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqapi_vcr
 
 
+# TODO: remove once road thematic accuracy data is available for Heidelberg
+@pytest.fixture
+def feature_for_roads_thematic_accuracy():
+    return geojson.FeatureCollection(
+        features=[
+            geojson.Feature(
+                **{
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [6.965326376011092, 49.255222737173],
+                                [6.965326376011092, 49.22127641767389],
+                                [7.019481207402663, 49.22127641767389],
+                                [7.019481207402663, 49.255222737173],
+                                [6.965326376011092, 49.255222737173],
+                            ]
+                        ],
+                        "type": "Polygon",
+                    },
+                }
+            )
+        ]
+    )
+
+
 @oqapi_vcr.use_cassette
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "indicator,topic,kwargs",
+    "indicator_key,topic,kwargs",
     [
         ("minimal", "topic_minimal", {}),
         ("mapping-saturation", "topic_building_count", {}),
@@ -38,18 +66,25 @@ from tests.integrationtests.utils import oqapi_vcr
 )
 async def test_create_indicator_public_feature_collection_single(
     bpolys,
-    indicator,
+    feature_for_roads_thematic_accuracy,
+    indicator_key,
     topic,
     kwargs,
     request,
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    indicators = await main.create_indicator(indicator, bpolys, topic, **kwargs)
+    # TODO: remove once road thematic accuracy data is available for Heidelberg
+    if indicator_key == "roads-thematic-accuracy":
+        bpolys = feature_for_roads_thematic_accuracy
+    indicators = await main.create_indicator(indicator_key, bpolys, topic, **kwargs)
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
-        assert indicator.result.value is not None
+        if indicator_key == "roads-thematic-accuracy":
+            assert indicator.result.value is None
+        else:
+            assert indicator.result.value is not None
         assert indicator.result.description is not None
         assert indicator.result.figure is not None
 
@@ -79,7 +114,7 @@ def test_create_indicator_public_feature_collection_multi(
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "indicator,topic,kwargs",
+    "indicator_key,topic,kwargs",
     [
         ("minimal", "topic_minimal", {}),
         ("mapping-saturation", "topic_building_count", {}),
@@ -103,13 +138,19 @@ def test_create_indicator_public_feature_collection_multi(
     ],
 )
 async def test_create_indicator_private_feature(
-    feature, indicator, topic, kwargs, request
+    feature, indicator_key, topic, kwargs, request, feature_for_roads_thematic_accuracy
 ):
     """Test private method to create a single indicator for a single feature."""
     topic = request.getfixturevalue(topic)
-    indicator = await main._create_indicator(indicator, feature, topic, **kwargs)
+    # TODO: remove once road thematic accuracy data is available for Heidelberg
+    if indicator_key == "roads-thematic-accuracy":
+        feature = feature_for_roads_thematic_accuracy.features[0]
+    indicator = await main._create_indicator(indicator_key, feature, topic, **kwargs)
     assert indicator.result.label is not None
-    assert indicator.result.value is not None
+    if indicator_key == "roads-thematic-accuracy":
+        assert indicator.result.value is None
+    else:
+        assert indicator.result.value is not None
     assert indicator.result.description is not None
     assert indicator.result.figure is not None
 
