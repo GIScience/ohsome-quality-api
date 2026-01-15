@@ -89,11 +89,11 @@ async def test_calculate(feature, topic_roads, attribute):
 @pytest.mark.parametrize(
     "attribute",
     (
-        # "surface",
-        # "oneway",
-        # "lanes",
-        # "name",
-        # "width",
+        "surface",
+        "oneway",
+        "lanes",
+        "name",
+        "width",
         None,
     ),
 )

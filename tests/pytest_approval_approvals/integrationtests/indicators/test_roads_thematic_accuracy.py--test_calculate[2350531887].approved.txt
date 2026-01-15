@@ -1,2 +1,1 @@
-
-This is a no-quality indicator. No quality estimation will be calculated.
+The graph shows the alignment between OSM and the DLM data for the attribute 'Width'. OSM roads were matched on the DLM data using the Markov Decision Process algorithm and 94.9% of all DLM roads in the area of interest were matched to OSM roads. The graph on the left shows information for the presence of attributes  in the two datasets. The right graphs shows the agreement for all elements that contain the selected attribute(s) in both datasets.

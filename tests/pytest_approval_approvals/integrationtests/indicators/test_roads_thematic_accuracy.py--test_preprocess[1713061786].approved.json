@@ -1,9 +1,10 @@
 {
- "total_dlm": 3615,
- "both": 1132,
- "only_dlm": 2483,
- "only_osm": 0,
- "missing_both": 0,
- "present_in_both_agree": 0,
- "present_in_both_not_agree": 1132
+ "total_dlm": 4.72,
+ "both": 0.0,
+ "only_dlm": 0.0,
+ "only_osm": 4.47,
+ "missing_both": 0.25,
+ "present_in_both_agree": 0.0,
+ "present_in_both_not_agree": 0.0,
+ "not_matched": 0.24
 }
