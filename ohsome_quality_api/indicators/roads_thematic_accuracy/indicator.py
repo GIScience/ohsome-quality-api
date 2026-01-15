@@ -6,7 +6,8 @@ from string import Template
 from typing import Literal
 
 import plotly.graph_objects as pgo
-from fastapi_i18n import _
+from babel.numbers import format_percent
+from fastapi_i18n import _, get_locale
 from geojson import Feature
 from plotly.subplots import make_subplots
 
@@ -53,14 +54,16 @@ class RoadsThematicAccuracy(BaseIndicator):
                 query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=response[0]["total_dlm"],
-            both=response[0]["present_in_both"],
-            only_dlm=response[0]["only_dlm"],
-            only_osm=response[0]["only_osm"],
-            missing_both=response[0]["missing_both"],
-            present_in_both_agree=response[0]["present_in_both_agree"],
-            present_in_both_not_agree=response[0]["present_in_both_not_agree"],
-            not_matched=response[0]["not_matched"],
+            total_dlm=round(response[0]["total_dlm"], 2),
+            both=round(response[0]["present_in_both"], 2),
+            only_dlm=round(response[0]["only_dlm"], 2),
+            only_osm=round(response[0]["only_osm"], 2),
+            missing_both=round(response[0]["missing_both"], 2),
+            present_in_both_agree=round(response[0]["present_in_both_agree"], 2),
+            present_in_both_not_agree=round(
+                response[0]["present_in_both_not_agree"], 2
+            ),
+            not_matched=round(response[0]["not_matched"], 2),
         )
         # TODO: take real timestamps from data
         self.dlm_timestamp = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -74,9 +77,12 @@ class RoadsThematicAccuracy(BaseIndicator):
             {
                 "attribute": f"'{self.attribute.capitalize()}'"
                 if self.attribute is not None
-                else "'All attributes'",
-                "percent": 100
-                - (self.matched_data.not_matched / self.matched_data.total_dlm * 100),
+                else _("'All attributes'"),
+                "percent": format_percent(
+                    1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
+                    format="##0.#%",
+                    locale=get_locale(),
+                ),
             }
         )
 
@@ -84,7 +90,8 @@ class RoadsThematicAccuracy(BaseIndicator):
         if self.matched_data.total_dlm == 0:
             return
         fig = make_subplots(
-            rows=1, cols=2, subplot_titles=("Presence (DLM vs OSM)", "Value Comparison")
+            rows=1,
+            cols=2,
         )
 
         fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
@@ -100,13 +107,11 @@ class RoadsThematicAccuracy(BaseIndicator):
                         "text": (
                             f"<span style='font-size:smaller'>"
                             f"{_('DLM data from')} "
-                            f"<br>"
                             f"{self.dlm_timestamp.strftime('%Y')}"
                             f"</span>"
                             f"<br>"
                             f"<span style='font-size:smaller'>"
                             f"{_('OSM data from')} "
-                            f"<br>"
                             f"{self.result.timestamp_osm.strftime('%Y')}"
                             f"</span>"
                         ),
@@ -128,13 +133,13 @@ class RoadsThematicAccuracy(BaseIndicator):
 
 
 def plot_presence(result: MatchedData) -> pgo.Bar:
-    """
-    Return a Plotly Bar trace for presence comparison.
-    """
-    labels = ["Both", "Only DLM", "Only OSM", "Missing both"]
+    labels = [_("Both"), _("Only DLM"), _("Only OSM"), _("Missing both")]
     values = [result.both, result.only_dlm, result.only_osm, result.missing_both]
     total = sum(values)
-    text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
+    text = [
+        f"{v} ({format_percent(v / total, format='##0.#%', locale=get_locale())})"
+        for v in values
+    ]
 
     bar = pgo.Bar(
         x=labels,
@@ -142,16 +147,23 @@ def plot_presence(result: MatchedData) -> pgo.Bar:
         text=text,
         textposition="auto",
         marker_color="skyblue",
-        name="Presence",
+        name=_("Presence"),
     )
     return bar
 
 
 def plot_value_comparison(result: MatchedData) -> pgo.Bar:
-    labels = ["Same value", "Different value"]
+    labels = [_("Same value"), _("Different value")]
     values = [result.present_in_both_agree, result.present_in_both_not_agree]
     total = sum(values)
-    text = [f"{v} ({v / total * 100:.1f}%)" for v in values] if total > 0 else ""
+    text = (
+        [
+            f"{v} ({format_percent(v / total, format='##0.#%', locale=get_locale())})"
+            for v in values
+        ]
+        if total > 0
+        else ""
+    )
 
     bar = pgo.Bar(
         x=labels,
@@ -159,6 +171,6 @@ def plot_value_comparison(result: MatchedData) -> pgo.Bar:
         text=text,
         textposition="auto",
         marker_color="salmon",
-        name="Value",
+        name=_("Value"),
     )
     return bar
