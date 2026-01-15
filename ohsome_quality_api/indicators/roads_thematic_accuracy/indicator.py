@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass
 from pathlib import Path
+from string import Template
 from typing import Literal
 
 import plotly.graph_objects as pgo
@@ -57,8 +58,15 @@ class RoadsThematicAccuracy(BaseIndicator):
 
     def calculate(self) -> None:
         self.result.value = None  # TODO: do we want a result value
-        label_description = getattr(self.templates.label_description, self.result.label)
-        self.result.description = "\n" + label_description
+        self.result.description = Template(
+            self.templates.result_description
+        ).safe_substitute(
+            {
+                "attribute": f"'{self.attribute.capitalize()}'"
+                if self.attribute is not None
+                else "'All attributes'"
+            }
+        )
 
     def create_figure(self) -> None:
         if self.matched_data.total_dlm == 0:
@@ -102,11 +110,7 @@ def plot_value_comparison(result: MatchedData) -> pgo.Bar:
     labels = ["Same value", "Different value"]
     values = [result.present_in_both_agree, result.present_in_both_not_agree]
     total = sum(values)
-    if total > 0:
-        text = [f"{v} ({v / total * 100:.1f}%)" for v in values]
-    else:
-        # TODO: handle case
-        text = ""
+    text = [f"{v} ({v / total * 100:.1f}%)" for v in values] if total > 0 else ""
 
     bar = pgo.Bar(
         x=labels,

@@ -9,4 +9,6 @@ label_description:
   undefined: >-
     This is a no-quality indicator. No quality estimation will be calculated.
 result_description: >-
-    TODO
+    The graph shows the alignment between OSM and the DLM data for the attribute $attribute. OSM roads were matched on the DLM data
+    using the Markov Decision Process algorithm. The graph on the left shows information for the presence of attributes 
+    in the two datasets. The right graphs shows the agreement for all elements that contain the selected attribute(s) in both datasets.
