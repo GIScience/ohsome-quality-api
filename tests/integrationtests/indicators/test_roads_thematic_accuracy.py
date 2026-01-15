@@ -1,5 +1,9 @@
+from dataclasses import asdict
+
+import asyncpg_recorder
 import geojson
 import pytest
+from pytest_approval import verify_json
 
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
@@ -28,16 +32,16 @@ def feature():
     )
 
 
-# @asyncpg_recorder.use_cassette
+@asyncpg_recorder.use_cassette
 @pytest.mark.parametrize(
     "attribute",
     (
         "surface",
-        # "oneway",
-        # "lanes",
-        # "name",
-        # "width",
-        # None,
+        "oneway",
+        "lanes",
+        "name",
+        "width",
+        None,
     ),
 )
 @pytest.mark.asyncio
@@ -47,5 +51,17 @@ async def test_preprocess(feature, topic_roads, attribute):
         topic=topic_roads,
         attribute=attribute,
     )
+    assert indicator.attribute == attribute
     await indicator.preprocess()
     assert indicator.matched_data is not None
+    verify_json(asdict(indicator.matched_data))
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_preprocess_all_attributes(feature, topic_roads):
+    indicator = RoadsThematicAccuracy(feature=feature, topic=topic_roads)
+    assert indicator.attribute is None
+    await indicator.preprocess()
+    assert indicator.matched_data is not None
+    verify_json(asdict(indicator.matched_data))

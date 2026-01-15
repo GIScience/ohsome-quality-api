@@ -1,0 +1,9 @@
+{
+ "total_dlm": 3615,
+ "both": 3057,
+ "only_dlm": 558,
+ "only_osm": 0,
+ "missing_both": 0,
+ "present_in_both_agree": 2076,
+ "present_in_both_not_agree": 981
+}

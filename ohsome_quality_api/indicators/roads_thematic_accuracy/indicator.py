@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 
 import plotly.graph_objects as pgo
 from geojson import Feature
@@ -29,13 +30,9 @@ class RoadsThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        # TODO: make literal
-        attribute: str | None = None,
+        attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = None,
     ) -> None:
-        super().__init__(
-            topic=topic,
-            feature=feature,
-        )
+        super().__init__(topic=topic, feature=feature)
         self.attribute: str = attribute
         self.matched_data: MatchedData | None = None
 
