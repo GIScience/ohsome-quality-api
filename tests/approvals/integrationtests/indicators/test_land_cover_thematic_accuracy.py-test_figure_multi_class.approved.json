@@ -200,7 +200,7 @@
                 100
             ],
             "title": {
-                "text": "F1-Score [%]<br><span style='font-size:smaller'>CORINE data from 2021</span><br><span style='font-size:smaller'>OSM data from 2025</span>"
+                "text": "F1-Score [%]<br><span style='font-size:smaller'>CORINE data from 2021</span><br><span style='font-size:smaller'>OSM data from 2026</span>"
             }
         }
     }
