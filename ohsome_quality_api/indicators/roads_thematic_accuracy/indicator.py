@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
 from typing import Literal
@@ -56,7 +57,9 @@ class RoadsThematicAccuracy(BaseIndicator):
             present_in_both_not_agree=response[0]["present_in_both_not_agree"],
             not_matched=response[0]["not_matched"],
         )
-        # TODO: get timestamps
+        # TODO: take real timestamps from data
+        self.dlm_timestamp = datetime(2021, 1, 1, tzinfo=timezone.utc)
+        self.result.timestamp_osm = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
         self.result.value = None  # TODO: do we want a result value
