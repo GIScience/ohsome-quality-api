@@ -103,4 +103,4 @@ asyncio_default_fixture_loop_scope = "function"
 "cassettes-dir"="tests/asyncpg_recorder_cassettes"
 
 [tool.pytest-approval]
-"approvals-dir"="tests/pytest_approvals_approvals"
+"approvals-dir"="tests/pytest_approval_approvals"
