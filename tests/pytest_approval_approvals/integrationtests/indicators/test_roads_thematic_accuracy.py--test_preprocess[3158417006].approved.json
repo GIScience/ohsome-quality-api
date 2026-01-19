@@ -1,6 +1,6 @@
 {
  "total_dlm": 4.72,
- "both": 1.61,
+ "present_in_both": 1.61,
  "only_dlm": 0.05,
  "only_osm": 2.83,
  "missing_both": 0.23,

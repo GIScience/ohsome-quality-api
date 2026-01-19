@@ -34,7 +34,6 @@ def feature():
     )
 
 
-@pytest.fixture
 def mock_response(
     total_dlm=0,
     present_in_both=0,
@@ -116,11 +115,9 @@ async def test_calculate(feature, topic_roads, attribute):
 
 
 @pytest.mark.asyncio
-async def test_calculate_no_data(
-    feature, topic_roads, mock_attribute, mock_response, monkeypatch
-):
+async def test_calculate_no_data(feature, topic_roads, mock_attribute, monkeypatch):
     async def mock_fetch(*args, **kwargs):
-        return mock_response
+        return mock_response()
 
     monkeypatch.setattr(
         "ohsome_quality_api.indicators.roads_thematic_accuracy.indicator.client.fetch",
@@ -136,6 +133,30 @@ async def test_calculate_no_data(
     indicator.create_figure()
     verify(indicator.result.description)
     indicator.create_figure()  # should raise no error
+
+
+@pytest.mark.asyncio
+async def test_calculate_no_shared_attribute(
+    feature, topic_roads, mock_attribute, monkeypatch
+):
+    async def mock_fetch(*args, **kwargs):
+        return mock_response(total_dlm=10, only_dlm=4, only_osm=5, missing_both=1)
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.roads_thematic_accuracy.indicator.client.fetch",
+        mock_fetch,
+    )
+    indicator = RoadsThematicAccuracy(
+        feature=feature,
+        topic=topic_roads,
+        attribute=mock_attribute,
+    )
+    await indicator.preprocess()
+    indicator.calculate()
+    indicator.create_figure()
+    verify(indicator.result.description)
+    fig = pio.from_json(json.dumps(indicator.result.figure))
+    verify_image(fig.to_image(format="png"), extension=".png")
 
 
 @asyncpg_recorder.use_cassette

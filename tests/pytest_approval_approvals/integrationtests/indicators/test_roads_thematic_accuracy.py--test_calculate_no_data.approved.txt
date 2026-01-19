@@ -1,0 +1,1 @@
+The indicator shows the alignment between OSM and the DLM data for the attribute 'Surface'. 0% of all DLM roads in the area of interest could be matched to OSM roads.

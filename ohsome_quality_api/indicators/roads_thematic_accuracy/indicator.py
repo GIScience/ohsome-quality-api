@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class MatchedData:
     total_dlm: float
-    both: float
+    present_in_both: float
     only_dlm: float
     only_osm: float
     missing_both: float
@@ -68,7 +68,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
             total_dlm=round(response[0]["total_dlm"], 2),
-            both=round(response[0]["present_in_both"], 2),
+            present_in_both=round(response[0]["present_in_both"], 2),
             only_dlm=round(response[0]["only_dlm"], 2),
             only_osm=round(response[0]["only_osm"], 2),
             missing_both=round(response[0]["missing_both"], 2),
@@ -95,7 +95,7 @@ class RoadsThematicAccuracy(BaseIndicator):
                 " The graph on the left shows information for the presence "
                 "of attributes in the two datasets."
             )
-            if self.matched_data.both > 0:
+            if self.matched_data.present_in_both > 0:
                 description += (
                     " The right graphs shows the agreement for all "
                     "elements that contain the selected attribute(s) "
@@ -132,7 +132,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
 
         # TODO: create plot if both is 0
-        if self.matched_data.both > 0:
+        if self.matched_data.present_in_both > 0:
             fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
 
         fig.update_layout(
@@ -169,7 +169,12 @@ class RoadsThematicAccuracy(BaseIndicator):
 
 def plot_presence(result: MatchedData) -> pgo.Bar:
     labels = [_("Both"), _("Only DLM"), _("Only OSM"), _("Missing both")]
-    values = [result.both, result.only_dlm, result.only_osm, result.missing_both]
+    values = [
+        result.present_in_both,
+        result.only_dlm,
+        result.only_osm,
+        result.missing_both,
+    ]
     total = sum(values)
     text = [
         f"{v} ({format_percent(v / total, format='##0.#%', locale=get_locale())})"
