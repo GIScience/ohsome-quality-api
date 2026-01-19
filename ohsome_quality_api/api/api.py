@@ -88,7 +88,6 @@ TAGS_METADATA = [
     {"name": "metadata", "description": "Request Metadata"},
 ]
 
-# TODO: to be replaced by config
 DEFAULT_PROJECT = ProjectEnum.core
 
 

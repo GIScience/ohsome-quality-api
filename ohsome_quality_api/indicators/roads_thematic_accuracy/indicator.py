@@ -5,7 +5,6 @@ from pathlib import Path
 from string import Template
 from typing import Literal
 
-import geojson
 import plotly.graph_objects as pgo
 from babel.numbers import format_percent
 from fastapi_i18n import _, get_locale
@@ -42,18 +41,18 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.attribute: str | None = attribute
         self.matched_data: MatchedData | None = None
 
-    @classmethod
-    async def coverage(cls, inverse=False) -> list[Feature]:
-        # TODO: do we want two separate coverages for Germany?
-        if inverse:
-            query = (
-                "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"
-            )
-        else:
-            query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
-        result = await client.fetch(query)
-        return [Feature(geometry=geojson.loads(result[0][0]))]
-
+    # @classmethod
+    # async def coverage(cls, inverse=False) -> list[Feature]:
+    #     # TODO: do we want two separate coverages for Germany?
+    #     if inverse:
+    #         query = (
+    #             "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"
+    #         )
+    #     else:
+    #         query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
+    #     result = await client.fetch(query)
+    #     return [Feature(geometry=geojson.loads(result[0][0]))]
+    #
     async def preprocess(self) -> None:
         if self.attribute is not None:
             with open(
@@ -177,7 +176,6 @@ def plot_value_comparison(result: MatchedData) -> pgo.Bar:
         if total > 0
         else ""
     )
-
     bar = pgo.Bar(
         x=labels,
         y=values,
