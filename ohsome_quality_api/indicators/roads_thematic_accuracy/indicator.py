@@ -93,18 +93,18 @@ class RoadsThematicAccuracy(BaseIndicator):
                 format="##0.#%",
                 locale=get_locale(),
             )
-            description += (
+            description += _(
                 " The graph on the left shows information for the presence "
                 "of attributes in the two datasets."
             )
             if self.matched_data.present_in_both > 0:
-                description += (
+                description += _(
                     " The right graphs shows the agreement for all "
                     "elements that contain the selected attribute(s) "
                     "in both datasets."
                 )
             else:
-                description += (
+                description += _(
                     " There are no matched roads where the"
                     " selected attribute(s) are present in both datasets"
                 )
