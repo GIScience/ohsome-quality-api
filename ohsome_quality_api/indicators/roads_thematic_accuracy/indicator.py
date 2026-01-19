@@ -66,17 +66,16 @@ class RoadsThematicAccuracy(BaseIndicator):
             ) as file:
                 query = file.read()
         response = await client.fetch(query, str(self.feature["geometry"]))
+        # TODO: check if response is not none
         self.matched_data = MatchedData(
-            total_dlm=round(response[0]["total_dlm"], 2),
-            present_in_both=round(response[0]["present_in_both"], 2),
-            only_dlm=round(response[0]["only_dlm"], 2),
-            only_osm=round(response[0]["only_osm"], 2),
-            missing_both=round(response[0]["missing_both"], 2),
-            present_in_both_agree=round(response[0]["present_in_both_agree"], 2),
-            present_in_both_not_agree=round(
-                response[0]["present_in_both_not_agree"], 2
-            ),
-            not_matched=round(response[0]["not_matched"], 2),
+            total_dlm=response[0]["total_dlm"],
+            present_in_both=response[0]["present_in_both"],
+            only_dlm=response[0]["only_dlm"],
+            only_osm=response[0]["only_osm"],
+            missing_both=response[0]["missing_both"],
+            present_in_both_agree=response[0]["present_in_both_agree"],
+            present_in_both_not_agree=response[0]["present_in_both_not_agree"],
+            not_matched=response[0]["not_matched"],
         )
         # TODO: take real timestamps from data
         self.dlm_timestamp = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -85,6 +84,9 @@ class RoadsThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         self.result.value = None  # TODO: do we want a result value
         description = ""
+        if self.matched_data.total_dlm is None:
+            self.result.description = "No data in the area of interest."
+            return
         if self.matched_data.total_dlm > 0:
             percentage = format_percent(
                 1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
@@ -122,8 +124,9 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        if self.matched_data.total_dlm == 0:
+        if self.matched_data.total_dlm is None or self.matched_data.total_dlm == 0:
             return
+
         fig = make_subplots(
             rows=1,
             cols=2,
@@ -170,10 +173,10 @@ class RoadsThematicAccuracy(BaseIndicator):
 def plot_presence(result: MatchedData) -> pgo.Bar:
     labels = [_("Both"), _("Only DLM"), _("Only OSM"), _("Missing both")]
     values = [
-        result.present_in_both,
-        result.only_dlm,
-        result.only_osm,
-        result.missing_both,
+        round(result.present_in_both, 2),
+        round(result.only_dlm, 2),
+        round(result.only_osm, 2),
+        round(result.missing_both, 2),
     ]
     total = sum(values)
     text = [
@@ -194,7 +197,10 @@ def plot_presence(result: MatchedData) -> pgo.Bar:
 
 def plot_value_comparison(result: MatchedData) -> pgo.Bar:
     labels = [_("Same value"), _("Different value")]
-    values = [result.present_in_both_agree, result.present_in_both_not_agree]
+    values = [
+        round(result.present_in_both_agree, 2),
+        round(result.present_in_both_not_agree, 2),
+    ]
     total = sum(values)
     text = (
         [
