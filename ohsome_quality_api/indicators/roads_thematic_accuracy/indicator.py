@@ -164,6 +164,8 @@ class RoadsThematicAccuracy(BaseIndicator):
                 ],
             }
         )
+        fig.update_yaxes(rangemode="nonnegative")
+        fig.update_xaxes(rangemode="nonnegative")
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
