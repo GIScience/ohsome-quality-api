@@ -111,14 +111,10 @@ async def test_create_figure(feature, topic_roads, attribute):
     verify_image(fig.to_image(format="png"), extension=".png")
 
 
+@asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
-@pytest.mark.skip()
-async def test_coverage(feature, topic_roads, attribute):
-    indicator = RoadsThematicAccuracy(
-        feature=feature,
-        topic=topic_roads,
-        attribute=attribute,
-    )
+async def test_coverage(feature, topic_roads):
+    indicator = RoadsThematicAccuracy(feature=feature, topic=topic_roads)
 
     result = await indicator.coverage()
     assert result[0].is_valid
