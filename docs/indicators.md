@@ -65,7 +65,7 @@ Here, we use the "CORINE Land Cover 5 ha, Stand 2021 (CLC5-2021)"
 provided by the German Federal Agency for Cartography and Geodesy and
 level 2 of the nomenclature (e.g. 1.1 Urban Fabric, 1.2 Industrial, commercial and transport units).
 
-#### Preprocessing:
+### Preprocessing:
 
 OSM features are assigned a CLC class based on their tags as specified below. 
 We calculate the intersection of OSM land cover polygons and CORINE land cover polygons.
@@ -99,3 +99,59 @@ These calculations consider the area / size of the land cover polygons.
 ### References
 
 - Schultz, Michael, Janek Voss, Michael Auer, Sarah Carter, and Alexander Zipf. 2017. “Open Land Cover from OpenStreetMap and Remote Sensing.” International Journal of Applied Earth Observation and Geoinformation 63 (May): 206–13. https://doi.org/10.1016/j.jag.2017.07.014.
+
+
+## Road Thematic Accuracy
+
+### Methods and Data
+- Extrinsic approach.
+
+#### Basis-DLM
+
+The Basic DLM is published by the German Federal Agency for Cartography and Geodesy and describes the topographical
+objects of the landscape and the relief of the Earth's surface in vector format. The objects are defined by their spatial
+location, geometric type, descriptive attributes, and relationships to other objects. Each object has a unique 
+identification number throughout Germany. The roads from this dataset are used for this indicator.
+
+| Attribute | OSM tags  | DLM attribute | Description                                      | 
+|-----------|-----------|---------------|--------------------------------------------------|
+ | name      | name, ref | NAM           | The name or reference of a road.                 |
+ | surface   | surface   | OFM           | The material the surface of the road is made of. |
+ | lanes     | lanes     | FSZ           | The amount of lanes on this road segment.        |
+ | width     | width     | BRF           | The width of the road.                           |
+ | oneway    | oneway    | FAR           | The direction of oneway streets.                 |
+
+### Processing
+
+OSM roads and DLM roads are matched using [map-matching-2](https://github.com/addy90/map-matching-2) with a Markov decision process–based model.
+For the matched roads first the presence of each attribute in both datasets is checked. If they are present in both,
+the values are compared. By default, the values are compared directly, but there are some exceptions:
+
+#### Name
+
+For the name, the [Lhevenstein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) was calculated. The names
+were counted as a match when their Levensthein ratio was above 0.85.
+
+#### Surface
+
+For surface, OSM tags and DLM tags are matched. All OSM tags that are not in the following table, were counted as not matching.
+
+| DLM value        | OSM tags                                                  |
+|------------------|-----------------------------------------------------------|
+| concrete         | concrete                                                  |
+| bitumen, asphalt | asphalt                                                   |
+| pavemed          | paving_stones, sett, brick, cobblestone, unhewn_cobblestone |
+| rock, fragmented | fine_gravel, gravel, sand, compacted, pebblestone         |
+
+#### Width
+
+For the width, a tolerance of 1 m was applied.
+
+#### Oneway
+
+To check the direction of the road, the vector of both geometries is calculated. If both have the same sign it is counted as a match.
+
+
+### References
+
+- A. Wöltche, "Open source map matching with Markov decision processes: A new method and a detailed benchmark with existing approaches", Transactions in GIS, vol. 27, no. 7, pp. 1959–1991, Oct. 2023, doi: [10.1111/tgis.13107](https://onlinelibrary.wiley.com/doi/full/10.1111/tgis.13107).
