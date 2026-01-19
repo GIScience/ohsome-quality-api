@@ -5,6 +5,7 @@ from pathlib import Path
 from string import Template
 from typing import Literal
 
+import geojson
 import plotly.graph_objects as pgo
 from babel.numbers import format_percent
 from fastapi_i18n import _, get_locale
@@ -41,18 +42,18 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.attribute: str | None = attribute
         self.matched_data: MatchedData | None = None
 
-    # @classmethod
-    # async def coverage(cls, inverse=False) -> list[Feature]:
-    #     # TODO: do we want two separate coverages for Germany?
-    #     if inverse:
-    #         query = (
-    #             "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"
-    #         )
-    #     else:
-    #         query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
-    #     result = await client.fetch(query)
-    #     return [Feature(geometry=geojson.loads(result[0][0]))]
-    #
+    @classmethod
+    async def coverage(cls, inverse=False) -> list[Feature]:
+        # TODO: do we want two separate coverages for Germany?
+        if inverse:
+            query = (
+                "SELECT ST_AsGeoJSON(inversed) FROM osm_corine_intersection_coverage"
+            )
+        else:
+            query = "SELECT ST_AsGeoJSON(simple) FROM osm_corine_intersection_coverage"
+        result = await client.fetch(query)
+        return [Feature(geometry=geojson.loads(result[0][0]))]
+
     async def preprocess(self) -> None:
         if self.attribute is not None:
             with open(
@@ -83,19 +84,41 @@ class RoadsThematicAccuracy(BaseIndicator):
 
     def calculate(self) -> None:
         self.result.value = None  # TODO: do we want a result value
-        self.result.description = Template(
-            self.templates.result_description
-        ).safe_substitute(
-            {
-                "attribute": f"'{self.attribute.capitalize()}'"
-                if self.attribute is not None
-                else _("'All attributes'"),
-                "percent": format_percent(
-                    1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
-                    format="##0.#%",
-                    locale=get_locale(),
-                ),
-            }
+        description = ""
+        if self.matched_data.total_dlm > 0:
+            percentage = format_percent(
+                1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
+                format="##0.#%",
+                locale=get_locale(),
+            )
+            description += (
+                " The graph on the left shows information for the presence "
+                "of attributes in the two datasets."
+            )
+            if self.matched_data.both > 0:
+                description += (
+                    " The right graphs shows the agreement for all "
+                    "elements that contain the selected attribute(s) "
+                    "in both datasets."
+                )
+            else:
+                description += (
+                    " There are no matched roads where the"
+                    " selected attribute(s) are present in both datasets"
+                )
+
+        else:
+            percentage = format_percent(0, locale=get_locale())
+        self.result.description = (
+            Template(self.templates.result_description).safe_substitute(
+                {
+                    "attribute": f"'{self.attribute.capitalize()}'"
+                    if self.attribute is not None
+                    else _("'All attributes'"),
+                    "percent": percentage,
+                }
+            )
+            + description
         )
 
     def create_figure(self) -> None:
