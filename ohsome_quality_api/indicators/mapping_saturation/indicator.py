@@ -9,6 +9,8 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
+from ohsome_quality_api import ohsomedb
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
@@ -73,7 +75,14 @@ class MappingSaturation(BaseIndicator):
         self.best_fit: models.BaseStatModel | None = None
         self.fitted_models: list[models.BaseStatModel] = []
 
-    async def preprocess(self) -> None:
+    async def preprocess(self):
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomeapi(self) -> None:
         query_results = await ohsome_client.query(
             self.topic,
             self.feature,
@@ -82,6 +91,16 @@ class MappingSaturation(BaseIndicator):
         for item in query_results["result"]:
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
+
+    async def preprocess_ohsomedb(self) -> None:
+        results = await ohsomedb.saturation(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
+        )
+        for item in results:
+            self.values.append(float(item["value"]))
+            self.timestamps.append(item["timestamp"])
 
     def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results
