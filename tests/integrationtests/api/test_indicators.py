@@ -278,3 +278,31 @@ async def test_indicators_roads_thematic_accuracy_all_attributes(
     parameters = {"bpolys": bpolys, "topic": "roads"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_invalid_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "roads", "attribute": "foo"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_invalid_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "building-count"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
