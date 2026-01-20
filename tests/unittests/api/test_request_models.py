@@ -238,3 +238,15 @@ def test_roads_thematic_accuracy_request_specific_attribute_invalid(
 ):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="foo")
+
+
+def test_roads_thematic_accuracy_request_invalid_topic(
+    bpolys,
+    mock_request_context_roads_thematic_accuracy,
+):
+    with pytest.raises(ValueError):
+        RoadsThematicAccuracyRequest(
+            bpolys=bpolys,
+            topic="building-count",
+            attribute="surface",
+        )

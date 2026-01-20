@@ -237,7 +237,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
 class RoadsThematicAccuracyRequest(IndicatorRequest):
     attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = Field(
         default=None,
-        title="Roads Thematic Accuracy Attribute",
+        title="Attribute",
         description=_("Attribute to compare between DLM and OSM."),
     )
 
@@ -247,18 +247,6 @@ class RoadsThematicAccuracyRequest(IndicatorRequest):
         if value == "":
             return None
         return value
-
-    @model_validator(mode="after")
-    def validate_indicator_topic_combination(self):
-        valid_indicators = get_valid_indicators(self.topic.key)
-        if "roads-thematic-accuracy" not in valid_indicators:
-            raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
-                    "roads-thematic-accuracy",
-                    self.topic.key,
-                )
-            )
-        return self
 
 
 class IndicatorDataRequest(BaseBpolys):
