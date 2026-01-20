@@ -24,42 +24,6 @@ def mock_request_context_minimal(monkeypatch):
     )
 
 
-@pytest.fixture
-def mock_request_context_land_cover_thematic_accuracy(monkeypatch):
-    """Mock request context for /indicators/land-cover-thematic-accuracy."""
-    request_context: ContextVar[RequestContext] = ContextVar("request_context")
-    request_context.set(
-        RequestContext(path_parameters={"key": "land-cover-thematic-accuracy"})
-    )
-    monkeypatch.setattr(
-        "ohsome_quality_api.api.request_models.request_context", request_context
-    )
-
-
-@pytest.fixture
-def mock_request_context_roads_thematic_accuracy(monkeypatch):
-    """Mock request context for /indicators/roads-thematic-accuracy."""
-    request_context: ContextVar[RequestContext] = ContextVar("request_context")
-    request_context.set(
-        RequestContext(path_parameters={"key": "roads-thematic-accuracy"})
-    )
-    monkeypatch.setattr(
-        "ohsome_quality_api.api.request_models.request_context", request_context
-    )
-
-
-@pytest.fixture
-def mock_request_context_attribute_completeness(monkeypatch):
-    """Mock request context for /indicators/attribute-completeness."""
-    request_context: ContextVar[RequestContext] = ContextVar("request_context")
-    request_context.set(
-        RequestContext(path_parameters={"key": "attribute-completeness"})
-    )
-    monkeypatch.setattr(
-        "ohsome_quality_api.api.request_models.request_context", request_context
-    )
-
-
 def test_bpolys_valid(
     feature_collection_germany_heidelberg,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
@@ -113,13 +77,11 @@ def test_indicator_request_invalid_topic(bpolys):
         IndicatorRequest(bpolys=bpolys, topic="foo")
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValidationError):
         AttributeCompletenessKeyRequest(bpolys=bpolys, topic=topic_key_building_count)
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
     with pytest.raises(ValidationError):
         AttributeCompletenessKeyRequest(
@@ -129,7 +91,6 @@ def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_cou
         )
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_indicator_request_invalid_indicator_topic_combination(
     bpolys, topic_key_minimal, attribute_key_height
 ):
@@ -141,7 +102,6 @@ def test_attribute_completeness_indicator_request_invalid_indicator_topic_combin
         )
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness(bpolys, topic_key_building_count):
     with pytest.raises(ValueError):
         AttributeCompletenessKeyRequest(
@@ -161,7 +121,6 @@ def test_attribute_completeness_single_attribute(
     )
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_multiple_attributes(
     bpolys,
     topic_key_building_count,
@@ -174,7 +133,6 @@ def test_attribute_completeness_multiple_attributes(
     )
 
 
-@pytest.mark.usefixtures("mock_request_context_attribute_completeness")
 def test_attribute_completeness_attribute_filter(
     bpolys,
     topic_key_building_count,
@@ -190,21 +148,21 @@ def test_attribute_completeness_attribute_filter(
 
 
 def test_land_cover_thematic_accuracy_request(
-    bpolys, mock_request_context_land_cover_thematic_accuracy
+    bpolys,
 ):
     # corine class parameter is optional (default all corine classes)
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="land-cover")
 
 
 def test_land_cover_thematic_accuracy_request_invalid_topic(
-    bpolys, mock_request_context_land_cover_thematic_accuracy
+    bpolys,
 ):
     with pytest.raises(ValidationError):
         LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
 
 
 def test_land_cover_thematic_accuracy_request_corine_class(
-    bpolys, mock_request_context_land_cover_thematic_accuracy
+    bpolys,
 ):
     # Corine class 23 represents Pastures
     LandCoverThematicAccuracyRequest(
@@ -219,7 +177,6 @@ def test_land_cover_thematic_accuracy_request_corine_class(
 
 def test_roads_thematic_accuracy_request_all_attributes(
     bpolys,
-    mock_request_context_roads_thematic_accuracy,
 ):
     # attribute parameter is optional (default all attributes)
     RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads")
@@ -227,14 +184,12 @@ def test_roads_thematic_accuracy_request_all_attributes(
 
 def test_roads_thematic_accuracy_request_specific_attribute(
     bpolys,
-    mock_request_context_roads_thematic_accuracy,
 ):
     RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="surface")
 
 
 def test_roads_thematic_accuracy_request_specific_attribute_invalid(
     bpolys,
-    mock_request_context_roads_thematic_accuracy,
 ):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="foo")
@@ -242,7 +197,6 @@ def test_roads_thematic_accuracy_request_specific_attribute_invalid(
 
 def test_roads_thematic_accuracy_request_invalid_topic(
     bpolys,
-    mock_request_context_roads_thematic_accuracy,
 ):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(
