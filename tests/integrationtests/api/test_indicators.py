@@ -248,46 +248,17 @@ def test_bpolys_size_limit(client, europe, headers, schema):
     assert content["type"] == "SizeRestrictionError"
 
 
-# TODO: remove once road thematic accuracy data is available for Heidelberg
-@pytest.fixture
-def bpolys_for_roads_thematic_accuracy():
-    import geojson
-
-    return geojson.FeatureCollection(
-        features=[
-            geojson.Feature(
-                **{
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "coordinates": [
-                            [
-                                [6.965326376011092, 49.255222737173],
-                                [6.965326376011092, 49.22127641767389],
-                                [7.019481207402663, 49.22127641767389],
-                                [7.019481207402663, 49.255222737173],
-                                [6.965326376011092, 49.255222737173],
-                            ]
-                        ],
-                        "type": "Polygon",
-                    },
-                }
-            )
-        ]
-    )
-
-
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
 async def test_indicators_roads_thematic_accuracy_specific_attribute(
     client,
-    bpolys_for_roads_thematic_accuracy,
+    bpolys,
     headers,
     schema,
 ):
     endpoint = ENDPOINT + "roads-thematic-accuracy"
     parameters = {
-        "bpolys": bpolys_for_roads_thematic_accuracy,
+        "bpolys": bpolys,
         "topic": "roads",
         "attribute": "surface",
     }
@@ -299,11 +270,11 @@ async def test_indicators_roads_thematic_accuracy_specific_attribute(
 @pytest.mark.asyncio
 async def test_indicators_roads_thematic_accuracy_all_attributes(
     client,
-    bpolys_for_roads_thematic_accuracy,
+    bpolys,
     headers,
     schema,
 ):
     endpoint = ENDPOINT + "roads-thematic-accuracy"
-    parameters = {"bpolys": bpolys_for_roads_thematic_accuracy, "topic": "roads"}
+    parameters = {"bpolys": bpolys, "topic": "roads"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())

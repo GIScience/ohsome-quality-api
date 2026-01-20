@@ -2,7 +2,6 @@ import json
 from dataclasses import asdict
 
 import asyncpg_recorder
-import geojson
 import plotly.io as pio
 import pytest
 from pytest_approval import verify, verify_image, verify_json
@@ -10,28 +9,6 @@ from pytest_approval import verify, verify_image, verify_json
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
 )
-
-
-@pytest.fixture
-def feature():
-    return geojson.Feature(
-        **{
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "coordinates": [
-                    [
-                        [6.965326376011092, 49.255222737173],
-                        [6.965326376011092, 49.22127641767389],
-                        [7.019481207402663, 49.22127641767389],
-                        [7.019481207402663, 49.255222737173],
-                        [6.965326376011092, 49.255222737173],
-                    ]
-                ],
-                "type": "Polygon",
-            },
-        }
-    )
 
 
 def mock_response(
