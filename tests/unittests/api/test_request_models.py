@@ -92,7 +92,9 @@ def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_cou
 
 
 def test_attribute_completeness_indicator_request_invalid_indicator_topic_combination(
-    bpolys, topic_key_minimal, attribute_key_height
+    bpolys,
+    topic_key_minimal,
+    attribute_key_height,
 ):
     with pytest.raises(ValidationError):
         AttributeCompletenessKeyRequest(
@@ -105,7 +107,9 @@ def test_attribute_completeness_indicator_request_invalid_indicator_topic_combin
 def test_attribute_completeness(bpolys, topic_key_building_count):
     with pytest.raises(ValueError):
         AttributeCompletenessKeyRequest(
-            bpolys=bpolys, topic=topic_key_building_count, attributes="foo"
+            bpolys=bpolys,
+            topic=topic_key_building_count,
+            attributes="foo",
         )
 
 
@@ -147,23 +151,17 @@ def test_attribute_completeness_attribute_filter(
     )
 
 
-def test_land_cover_thematic_accuracy_request(
-    bpolys,
-):
+def test_land_cover_thematic_accuracy_request(bpolys):
     # corine class parameter is optional (default all corine classes)
     LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="land-cover")
 
 
-def test_land_cover_thematic_accuracy_request_invalid_topic(
-    bpolys,
-):
+def test_land_cover_thematic_accuracy_request_invalid_topic(bpolys):
     with pytest.raises(ValidationError):
         LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
 
 
-def test_land_cover_thematic_accuracy_request_corine_class(
-    bpolys,
-):
+def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
     # Corine class 23 represents Pastures
     LandCoverThematicAccuracyRequest(
         bpolys=bpolys, topic="land-cover", corine_land_cover_class="23"
@@ -175,29 +173,21 @@ def test_land_cover_thematic_accuracy_request_corine_class(
         )
 
 
-def test_roads_thematic_accuracy_request_all_attributes(
-    bpolys,
-):
+def test_roads_thematic_accuracy_request_all_attributes(bpolys):
     # attribute parameter is optional (default all attributes)
     RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads")
 
 
-def test_roads_thematic_accuracy_request_specific_attribute(
-    bpolys,
-):
+def test_roads_thematic_accuracy_request_specific_attribute(bpolys):
     RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="surface")
 
 
-def test_roads_thematic_accuracy_request_specific_attribute_invalid(
-    bpolys,
-):
+def test_roads_thematic_accuracy_request_specific_attribute_invalid(bpolys):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(bpolys=bpolys, topic="roads", attribute="foo")
 
 
-def test_roads_thematic_accuracy_request_invalid_topic(
-    bpolys,
-):
+def test_roads_thematic_accuracy_request_invalid_topic(bpolys):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(
             bpolys=bpolys,
