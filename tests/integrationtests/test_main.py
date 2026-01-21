@@ -9,7 +9,6 @@ from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqapi_vcr
 
 
-@oqapi_vcr.use_cassette
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
@@ -36,6 +35,7 @@ from tests.integrationtests.utils import oqapi_vcr
         ),
     ],
 )
+@oqapi_vcr.use_cassette
 async def test_create_indicator_public_feature_collection_single(
     bpolys,
     indicator_key,
@@ -78,7 +78,6 @@ def test_create_indicator_public_feature_collection_multi(
         assert indicator.result.figure is not None
 
 
-@oqapi_vcr.use_cassette
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
@@ -105,6 +104,7 @@ def test_create_indicator_public_feature_collection_multi(
         ),
     ],
 )
+@oqapi_vcr.use_cassette
 async def test_create_indicator_private_feature(
     feature,
     indicator_key,
