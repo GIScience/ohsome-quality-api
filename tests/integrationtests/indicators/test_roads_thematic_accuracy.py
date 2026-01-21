@@ -1,15 +1,17 @@
-import json
 from dataclasses import asdict
 from datetime import datetime
 
 import asyncpg_recorder
-import plotly.io as pio
 import pytest
-from pytest_approval import verify, verify_image, verify_json
+from approvaltests import Options, verify_as_json
+from pydantic_core import to_jsonable_python
+from pytest_approval import verify, verify_json
 
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
 )
+from tests.approvaltests_namers import PytestNamer
+from tests.approvaltests_reporters import PlotlyDiffReporter
 
 
 def mock_response(
@@ -113,8 +115,10 @@ async def test_calculate_no_data(feature, topic_roads, mock_attribute, monkeypat
     indicator.create_figure()
     verify(indicator.result.description)
     indicator.create_figure()  # should raise no error
-    fig = pio.from_json(json.dumps(indicator.result.figure))
-    verify_image(fig.to_image(format="png"), extension=".png")
+    verify_as_json(
+        to_jsonable_python(indicator.result.figure),
+        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
+    )
 
 
 @pytest.mark.asyncio
@@ -137,8 +141,10 @@ async def test_calculate_no_shared_attribute(
     indicator.calculate()
     indicator.create_figure()
     verify(indicator.result.description)
-    fig = pio.from_json(json.dumps(indicator.result.figure))
-    verify_image(fig.to_image(format="png"), extension=".png")
+    verify_as_json(
+        to_jsonable_python(indicator.result.figure),
+        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
+    )
 
 
 @asyncpg_recorder.use_cassette
@@ -163,8 +169,10 @@ async def test_create_figure(feature, topic_roads, attribute):
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
-    fig = pio.from_json(json.dumps(indicator.result.figure))
-    verify_image(fig.to_image(format="png"), extension=".png")
+    verify_as_json(
+        to_jsonable_python(indicator.result.figure),
+        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
+    )
 
 
 @asyncpg_recorder.use_cassette

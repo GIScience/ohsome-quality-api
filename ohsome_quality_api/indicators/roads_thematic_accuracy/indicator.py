@@ -12,6 +12,7 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from plotly.subplots import make_subplots
 
+from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.geodatabase import client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
@@ -79,7 +80,6 @@ class RoadsThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         if self.matched_data is None:
             raise ValueError("Expected matched data to be present (not None).")
-
         if self.matched_data.total_dlm is None:
             self.result.description = "No data in the area of interest."
             return
@@ -125,6 +125,10 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.description = result_description + description
 
     def create_figure(self) -> None:
+        # TODO: Why is there no legend if only left plot has been plotted.
+        # TODO: Make sure there is always a legend!
+        if self.matched_data is None:
+            raise ValueError("Expected matched data to be present (not None).")
         if self.matched_data.total_dlm is None or self.matched_data.total_dlm == 0:
             return
 
@@ -133,11 +137,19 @@ class RoadsThematicAccuracy(BaseIndicator):
             cols=2,
         )
 
-        fig.add_trace(plot_presence(self.matched_data), row=1, col=1)
+        fig.add_trace(
+            plot_presence(self.matched_data, self.attribute),
+            row=1,
+            col=1,
+        )
 
         # TODO: create plot if both is 0
         if self.matched_data.present_in_both > 0:
-            fig.add_trace(plot_value_comparison(self.matched_data), row=1, col=2)
+            fig.add_trace(
+                plot_value_comparison(self.matched_data, self.attribute),
+                row=1,
+                col=2,
+            )
 
         fig.update_layout(
             {
@@ -173,8 +185,21 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
 
-def plot_presence(result: MatchedData) -> pgo.Bar:
-    labels = [_("Both"), _("Only DLM"), _("Only OSM"), _("Missing both")]
+def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
+    if attribute is None:
+        labels = [
+            _("Attributes are present in both"),
+            _("Attributes are present only in DLM"),
+            _("Attributes are present only in OSM"),
+            _("Attributes are missing both"),
+        ]
+    else:
+        labels = [
+            _("Attribute is present in both"),
+            _("Attribute is present only in DLM"),
+            _("Attribute is present only in OSM"),
+            _("Attribute is missing both"),
+        ]
     values = [
         round(result.present_in_both, 2),
         round(result.only_dlm, 2),
@@ -182,43 +207,56 @@ def plot_presence(result: MatchedData) -> pgo.Bar:
         round(result.missing_both, 2),
     ]
     total = sum(values)
-    text = [
-        f"{v} ({format_percent(v / total, format='##0.#%', locale=get_locale())})"
-        for v in values
-    ]
-
+    text = []
+    for value in values:
+        value_formatted = format_percent(
+            value / total,
+            format="##0.#%",
+            locale=get_locale(),
+        )
+        text.append(f"{value} ({value_formatted})")
     bar = pgo.Bar(
         x=labels,
         y=values,
         text=text,
         textposition="auto",
-        marker_color="skyblue",
-        name=_("Presence"),
+        marker_color=Color.BLUE.value,
+        name=_("Attribute Presence [# (%)]"),
     )
     return bar
 
 
-def plot_value_comparison(result: MatchedData) -> pgo.Bar:
-    labels = [_("Same value"), _("Different value")]
+def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar:
+    if attribute is None:
+        labels = [
+            _("Attributes are the same"),
+            _("Attributes are different"),
+        ]
+    else:
+        labels = [
+            _("Attribute is the same"),
+            _("Attribute is different"),
+        ]
     values = [
         round(result.present_in_both_agree, 2),
         round(result.present_in_both_not_agree, 2),
     ]
     total = sum(values)
-    text = (
-        [
-            f"{v} ({format_percent(v / total, format='##0.#%', locale=get_locale())})"
-            for v in values
-        ]
-        if total > 0
-        else ""
-    )
+    text = []
+    if total > 0:
+        for value in values:
+            value_formatted = format_percent(
+                value / total,
+                format="##0.#%",
+                locale=get_locale(),
+            )
+            text.append(f"{value} ({value_formatted})")
     bar = pgo.Bar(
         x=labels,
         y=values,
         text=text,
         textposition="auto",
-        marker_color="salmon",
-        name=_("Value"),
+        marker_color=Color.PURPLE.value,
+        name=_("Attribute Alignment [# (%)]"),
     )
     return bar
