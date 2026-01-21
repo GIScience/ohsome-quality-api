@@ -1028,6 +1028,7 @@ dev = [
     { name = "pre-commit" },
     { name = "pygments" },
     { name = "pytest" },
+    { name = "pytest-approval" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-mock" },
@@ -1070,6 +1071,7 @@ dev = [
     { name = "pre-commit", specifier = ">=4.2.0" },
     { name = "pygments", specifier = ">=2.19.1" },
     { name = "pytest", specifier = ">=8.3.5" },
+    { name = "pytest-approval", specifier = ">=0.7.0" },
     { name = "pytest-asyncio", specifier = ">=0.26.0" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
@@ -1460,6 +1462,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a3/5c/00a0e072241553e1a7496d638deababa67c5058571567b92a7eaa258397c/pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01", size = 1519618, upload-time = "2025-09-04T14:34:22.711Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/a4/20da314d277121d6534b3a980b29035dcd51e6744bd79075a6ce8fa4eb8d/pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79", size = 365750, upload-time = "2025-09-04T14:34:20.226Z" },
+]
+
+[[package]]
+name = "pytest-approval"
+version = "0.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6b/24/514af6e09d59b18c3052c23f699bfc339f393ff451ce639350b6a9463a56/pytest_approval-0.10.0.tar.gz", hash = "sha256:2e9a0404ac6716d527e1b4fcea872400bf4cd69e45cc5a6fecb17e178897e4c3", size = 60935, upload-time = "2026-01-19T11:17:56.251Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9b/72/9953f7a37f03cf50469d7015533c9ee59fbe17147fd85a75d4d0b912c903/pytest_approval-0.10.0-py3-none-any.whl", hash = "sha256:aa979fe3768535c893e9a89d12995b8f7847213c337eb57047f20d02d0f368c0", size = 72627, upload-time = "2026-01-19T11:17:54.462Z" },
 ]
 
 [[package]]

@@ -54,6 +54,7 @@ dev = [
     "ruff==0.11.9", # fixed because of pre-commit
     "vcrpy>=7.0.0",
     "babel>=2.17.0",
+    "pytest-approval>=0.7.0",
 ]
 
 [build-system]
@@ -100,3 +101,6 @@ asyncio_default_fixture_loop_scope = "function"
 
 [tool.asyncpg-recorder]
 "cassettes-dir"="tests/asyncpg_recorder_cassettes"
+
+[tool.pytest-approval]
+"approvals-dir"="tests/pytest_approval_approvals"

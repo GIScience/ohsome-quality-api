@@ -31,6 +31,7 @@ from ohsome_quality_api.api.request_models import (
     IndicatorDataRequest,
     IndicatorRequest,
     LandCoverThematicAccuracyRequest,
+    RoadsThematicAccuracyRequest,
 )
 from ohsome_quality_api.api.response_models import (
     AttributeMetadataResponse,
@@ -87,7 +88,6 @@ TAGS_METADATA = [
     {"name": "metadata", "description": "Request Metadata"},
 ]
 
-# TODO: to be replaced by config
 DEFAULT_PROJECT = ProjectEnum.core
 
 
@@ -296,6 +296,30 @@ async def post_land_cover_thematic_accuracy(
 ) -> Any:
     """Request the Land Cover Thematic Accuracy indicator for your area of interest."""
     return await _post_indicator(request, "land-cover-thematic-accuracy", parameters)
+
+
+@app.post(
+    "/indicators/roads-thematic-accuracy",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+)
+async def post_roads_thematic_accuracy(
+    request: Request, parameters: RoadsThematicAccuracyRequest
+) -> Any:
+    """Request the Roads Thematic Accuracy indicator for your area of interest."""
+    return await _post_indicator(request, "roads-thematic-accuracy", parameters)
 
 
 @app.post(

@@ -3,6 +3,7 @@
 Validate the response from requests to the `/indicators` endpoint of the API.
 """
 
+import asyncpg_recorder
 import pytest
 from approvaltests.approvals import verify
 from schema import Optional, Or, Schema
@@ -245,3 +246,63 @@ def test_bpolys_size_limit(client, europe, headers, schema):
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "SizeRestrictionError"
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_specific_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "roads",
+        "attribute": "surface",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_all_attributes(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "roads"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_invalid_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "roads", "attribute": "foo"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_roads_thematic_accuracy_invalid_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "roads-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "building-count"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422

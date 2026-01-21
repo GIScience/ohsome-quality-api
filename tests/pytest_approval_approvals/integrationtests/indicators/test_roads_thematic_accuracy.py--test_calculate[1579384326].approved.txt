@@ -1,0 +1,1 @@
+The indicator shows the alignment between OSM and the DLM data for the attribute 'Name'. 95.2% of all DLM roads in the area of interest could be matched to OSM roads. The graph on the left shows information for the presence of attributes in the two datasets. The right graphs shows the agreement for all elements that contain the selected attribute(s) in both datasets.

@@ -85,3 +85,11 @@ user-activity:
   quality_dimension: none
   description: >-
     Shows the count of unique mappers per month for the selected topic. None-quality indicator.
+roads-thematic-accuracy:
+  name: Road Accuracy
+  projects:
+    - bkg
+  quality_dimension: none
+  description: >-
+    Comparison of OSM road attributes with the attributes from the <a
+    href="https://www.adv-online.de/AdV-Produkte/Geotopographie/Digitale-Landschaftsmodelle/Basis-DLM/">Digitales Landschaftsmodell (DLM) </a> dataset.
