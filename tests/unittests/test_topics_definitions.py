@@ -17,8 +17,8 @@ def test_get_valid_topics():
 
 def test_load_topic_definition():
     topics = definitions.load_topic_presets()
-    for topic in topics:
-        assert isinstance(topics[topic], models.Topic)
+    for topic in topics.values():
+        assert isinstance(topic, models.Topic)
 
 
 def test_get_topic_definition():
