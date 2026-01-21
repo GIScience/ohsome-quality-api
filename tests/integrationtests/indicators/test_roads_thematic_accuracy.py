@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict
+from datetime import datetime
 
 import asyncpg_recorder
 import plotly.io as pio
@@ -63,6 +64,8 @@ async def test_preprocess(feature, topic_roads, attribute):
     await indicator.preprocess()
     assert indicator.matched_data is not None
     verify_json(asdict(indicator.matched_data))
+    assert isinstance(indicator.result.timestamp_osm, datetime)
+    assert isinstance(indicator.timestamp_dlm, datetime)
 
 
 @asyncpg_recorder.use_cassette
@@ -110,6 +113,8 @@ async def test_calculate_no_data(feature, topic_roads, mock_attribute, monkeypat
     indicator.create_figure()
     verify(indicator.result.description)
     indicator.create_figure()  # should raise no error
+    fig = pio.from_json(json.dumps(indicator.result.figure))
+    verify_image(fig.to_image(format="png"), extension=".png")
 
 
 @pytest.mark.asyncio

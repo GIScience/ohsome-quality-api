@@ -18,6 +18,8 @@ from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
 
+QUERIES_DIR = Path(__file__).parent / "queries"
+
 
 @dataclass
 class MatchedData:
@@ -56,17 +58,10 @@ class RoadsThematicAccuracy(BaseIndicator):
 
     async def preprocess(self) -> None:
         if self.attribute is not None:
-            with open(
-                Path(__file__).parent / "queries" / f"{self.attribute}.sql", "r"
-            ) as file:
-                query = file.read()
+            query = Path(QUERIES_DIR / f"{self.attribute}.sql").read_text()
         else:
-            with open(
-                Path(__file__).parent / "queries" / "all_attributes.sql", "r"
-            ) as file:
-                query = file.read()
+            query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
-        # TODO: check if response is not none
         self.matched_data = MatchedData(
             total_dlm=response[0]["total_dlm"],
             present_in_both=response[0]["present_in_both"],
@@ -78,22 +73,24 @@ class RoadsThematicAccuracy(BaseIndicator):
             not_matched=response[0]["not_matched"],
         )
         # TODO: take real timestamps from data
-        self.dlm_timestamp = datetime(2021, 1, 1, tzinfo=timezone.utc)
+        self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
         self.result.timestamp_osm = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
-        self.result.value = None  # TODO: do we want a result value
-        description = ""
+        if self.matched_data is None:
+            raise ValueError("Expected matched data to be present (not None).")
+
         if self.matched_data.total_dlm is None:
             self.result.description = "No data in the area of interest."
             return
+
         if self.matched_data.total_dlm > 0:
             percentage = format_percent(
                 1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
                 format="##0.#%",
                 locale=get_locale(),
             )
-            description += _(
+            description = _(
                 " The graph on the left shows information for the presence "
                 "of attributes in the two datasets."
             )
@@ -105,23 +102,27 @@ class RoadsThematicAccuracy(BaseIndicator):
                 )
             else:
                 description += _(
-                    " There are no matched roads where the"
-                    " selected attribute(s) are present in both datasets"
+                    " There are no matched roads where the "
+                    "selected attribute(s) are present in both datasets"
                 )
-
         else:
             percentage = format_percent(0, locale=get_locale())
-        self.result.description = (
-            Template(self.templates.result_description).safe_substitute(
-                {
-                    "attribute": f"'{self.attribute.capitalize()}'"
-                    if self.attribute is not None
-                    else _("'All attributes'"),
-                    "percent": percentage,
-                }
+            description = ""
+
+        if self.attribute is not None:
+            attribute_text = (
+                f"'{self.attribute.capitalize()}'"  # Is this already translated?
             )
-            + description
+        else:
+            attribute_text = _("'All attributes'")
+        raw = Template(self.templates.result_description)
+        result_description = raw.safe_substitute(
+            {
+                "attribute": attribute_text,
+                "percent": percentage,
+            }
         )
+        self.result.description = result_description + description
 
     def create_figure(self) -> None:
         if self.matched_data.total_dlm is None or self.matched_data.total_dlm == 0:
@@ -145,7 +146,7 @@ class RoadsThematicAccuracy(BaseIndicator):
                         "text": (
                             f"<span style='font-size:smaller'>"
                             f"{_('DLM data from')} "
-                            f"{self.dlm_timestamp.strftime('%Y')}"
+                            f"{self.timestamp_dlm.strftime('%Y')}"
                             f"</span>"
                             f"<br>"
                             f"<span style='font-size:smaller'>"
