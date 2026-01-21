@@ -8,6 +8,7 @@ Note:
 from typing import Literal
 
 from fastapi_i18n import _
+from ohsome_filter_to_sql.main import OhsomeFilter
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from ohsome_quality_api.projects.definitions import ProjectEnum
@@ -37,7 +38,7 @@ class Topic(BaseTopic):
 
     endpoint: Literal["elements"]
     aggregation_type: Literal["area", "count", "length", "perimeter", "area/density"]
-    filter: str
+    filter: OhsomeFilter
     indicators: list[str]
     projects: list[ProjectEnum]
     source: str | None = None

@@ -33,6 +33,19 @@ def test_topic_filter_validation():
         )
 
 
+def test_topic_filter_validation_geom_type():
+    with pytest.raises(ValidationError):
+        Topic(
+            endpoint="elements",
+            aggregation_type=["area", "count", "length", "perimeter", "area/density"],
+            filter="building=yes",
+            indicators=["indicators"],
+            projects=["projects"],
+            source="source",
+            ratio_filter="ratio_filter",
+        )
+
+
 def test_topic_definition():
     Topic(
         key="key",
@@ -42,7 +55,7 @@ def test_topic_definition():
         projects=["core"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="building=yes and geometry:polygon",
     )
     Topic(
         key="key",
@@ -52,7 +65,7 @@ def test_topic_definition():
         projects=["core"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="building=yes and geometry:polygon",
         source="source",
     )
     Topic(
@@ -63,7 +76,7 @@ def test_topic_definition():
         projects=["core"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="type:way and highway=residential",
         source="source",
     )
     Topic(
@@ -74,7 +87,7 @@ def test_topic_definition():
         projects=["core", "experimental"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="geometry:polygon and building=*",
         source="source",
     )
     Topic(
@@ -85,7 +98,7 @@ def test_topic_definition():
         projects=["core"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="geometry:polygon and building=*",
         source="source",
     )
     Topic(
@@ -96,7 +109,7 @@ def test_topic_definition():
         projects=["core"],
         endpoint="elements",
         aggregation_type="count",
-        filter="geometry",
+        filter="type:way and highway=residential",
         source="source",
         ratio_filter="ration_filter",
     )
