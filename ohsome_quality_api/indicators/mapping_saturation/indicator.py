@@ -93,7 +93,7 @@ class MappingSaturation(BaseIndicator):
             self.timestamps.append(isoparse(item["timestamp"]))
 
     async def preprocess_ohsomedb(self) -> None:
-        results = await ohsomedb.saturation(
+        results = await ohsomedb.elements(
             aggregation=self.topic.aggregation_type,
             bpolys=self.feature.geometry,
             filter_=self.topic.filter,
