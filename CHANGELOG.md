@@ -8,7 +8,8 @@
 - refactor: move ohsomedb interactions to own module ([#976])
 - refactor: rename oqt.py to main.py ([d757b9b8])
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
-feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
+- feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
+- build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -18,6 +19,7 @@ feat: add thematic accuracy indicator for road attributes (roads-thematic-accura
 [d757b9b8]: https://github.com/GIScience/ohsome-quality-api/commit/d757b9b8
 [2b333562]: https://github.com/GIScience/ohsome-quality-api/commit/2b333562
 [#980]: https://github.com/GIScience/ohsome-quality-api/pull/980
+[2987bc5f]: https://github.com/GIScience/ohsome-quality-api/commit/2987bc5f
 
 ## Release 1.14.0
 
