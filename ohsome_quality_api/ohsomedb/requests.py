@@ -66,14 +66,14 @@ async def users(
 
 
 @validate_call
-async def saturation(
+async def elements(
     *,
     aggregation: Literal["count", "length", "area"],
     bpolys: Polygon | MultiPolygon,
     filter_: OhsomeFilter,
 ):
     sql_filter, sql_filter_args = ohsome_filter_to_sql(filter_)
-    template = ENV.get_template("saturation.sql")
+    template = ENV.get_template("elements.sql")
     query = template.render(
         **{
             "aggregation": aggregation,
