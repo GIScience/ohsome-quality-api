@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-19 17:41+0100\n"
+"POT-Creation-Date: 2026-01-26 16:06+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ohsome_quality_api/api/request_models.py:149
+#: ohsome_quality_api/api/request_models.py:145
 msgid "ohsome filter query representing custom attributes."
 msgstr "ohsome-Filterabfrage, die benutzerdefinierte Attribute darstellt."
 
-#: ohsome_quality_api/api/request_models.py:155
+#: ohsome_quality_api/api/request_models.py:151
 msgid "Title describing the attributes represented by the Attribute Filter."
 msgstr ""
 "Titel, der die durch den Attributfilter dargestellten Attribute "
 "beschreibt."
 
-#: ohsome_quality_api/api/request_models.py:209
+#: ohsome_quality_api/api/request_models.py:195
 msgid ""
 "CORINE Land Cover is a pan-European land cover inventory with thematic "
 "classes."
@@ -36,7 +36,7 @@ msgstr ""
 "CORINE Land Cover ist eine paneuropäische Bodenbedeckungsdatenbank mit "
 "thematischen Klassen."
 
-#: ohsome_quality_api/api/request_models.py:241
+#: ohsome_quality_api/api/request_models.py:217
 #, fuzzy
 msgid "Attribute to compare between DLM and OSM."
 msgstr "Attributvollständigkeit"
@@ -567,6 +567,11 @@ msgstr ""
 "OSM enthält deutlich mehr Gebäude als die Referenzdatensätze. Im "
 "Referenzdatensatz fehlen wahrscheinlich viele Gebäude."
 
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:208
+#, fuzzy
+msgid "OSM building area"
+msgstr "OSM-Gebäudefläche"
+
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:225
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:234
 msgid "Reference"
@@ -894,7 +899,7 @@ msgstr "CORINE-Daten von"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:300
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:444
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:152
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:165
 msgid "OSM data from"
 msgstr "OSM-Daten von"
 
@@ -990,7 +995,6 @@ msgid "Date"
 msgstr "Datum"
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:194
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:221
 msgid "Value"
 msgstr "Wert"
 
@@ -1147,69 +1151,103 @@ msgstr ""
 " eine Gesamtlänge von $length_total.$length_matched von $dataset werden "
 "von OSM-Straßen abgedeckt."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:97
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:94
 msgid ""
 " The graph on the left shows information for the presence of attributes "
 "in the two datasets."
 msgstr ""
-" Die Grafik auf der linken Seite zeigt Informationen zum Vorhandensein von "
-"Attributen in den beiden Datensätzen."
+" Die Grafik auf der linken Seite zeigt Informationen zum Vorhandensein "
+"von Attributen in den beiden Datensätzen."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:102
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:99
 msgid ""
 " The right graphs shows the agreement for all elements that contain the "
 "selected attribute(s) in both datasets."
 msgstr ""
-" Die rechte Grafik zeigt die Übereinstimmung für alle Elemente, die das/die "
-"ausgewählte(n) Attribut(e) in beiden Datensätzen enthalten."
+" Die rechte Grafik zeigt die Übereinstimmung für alle Elemente, die "
+"das/die ausgewählte(n) Attribut(e) in beiden Datensätzen enthalten."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:108
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:105
 msgid ""
 " There are no matched roads where the selected attribute(s) are present "
 "in both datasets"
 msgstr ""
-" Es gibt keine übereinstimmenden Straßen, bei denen das/die ausgewählte(n) "
-"Attribut(e) in beiden Datensätzen vorhanden ist/sind."
+" Es gibt keine übereinstimmenden Straßen, bei denen das/die "
+"ausgewählte(n) Attribut(e) in beiden Datensätzen vorhanden ist/sind."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:119
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:117
 #, fuzzy
 msgid "'All attributes'"
 msgstr "'Alle Attribute'"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:147
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:160
 #, fuzzy
 msgid "DLM data from"
 msgstr "OSM-Daten von"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Both"
-msgstr "Beide"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:191
+msgid "Attributes are present in both"
+msgstr ""
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Only DLM"
-msgstr "Nur DLM"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:192
+msgid "Attributes are present only in DLM"
+msgstr ""
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Only OSM"
-msgstr "Nur OSM"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:193
+#, fuzzy
+msgid "Attributes are present only in OSM"
+msgstr "Attributvollständigkeit"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Missing both"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:194
+#, fuzzy
+msgid "Attributes are missing both"
 msgstr "Fehlt in beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:195
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:198
+msgid "Attribute is present in both"
+msgstr ""
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:199
+msgid "Attribute is present only in DLM"
+msgstr ""
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:200
 #, fuzzy
-msgid "Presence"
-msgstr "Referenz"
+msgid "Attribute is present only in OSM"
+msgstr "Attributvollständigkeit"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:201
 #, fuzzy
-msgid "Same value"
-msgstr "Selber Wert"
+msgid "Attribute is missing both"
+msgstr "Fehlt in beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:201
-msgid "Different value"
-msgstr "Unterschiedliche Werte"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:224
+#, fuzzy
+msgid "Attribute Presence [# (%)]"
+msgstr "Attributvollständigkeit"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:232
+#, fuzzy
+msgid "Attributes are the same"
+msgstr "Attribute "
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:233
+msgid "Attributes are different"
+msgstr ""
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:237
+#, fuzzy
+msgid "Attribute is the same"
+msgstr "Attribute "
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:238
+#, fuzzy
+msgid "Attribute is different"
+msgstr "Attribute "
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:260
+msgid "Attribute Alignment [# (%)]"
+msgstr ""
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/templates.yaml
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
@@ -2224,4 +2262,22 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ "Ungültiger Schlüssel für die "
 #~ "Qualitätsdimension. Gültige Schlüssel für "
 #~ "Qualitätsdimensionen sind: "
+
+#~ msgid "Both"
+#~ msgstr "Beide"
+
+#~ msgid "Only DLM"
+#~ msgstr "Nur DLM"
+
+#~ msgid "Only OSM"
+#~ msgstr "Nur OSM"
+
+#~ msgid "Presence"
+#~ msgstr "Referenz"
+
+#~ msgid "Same value"
+#~ msgstr "Selber Wert"
+
+#~ msgid "Different value"
+#~ msgstr "Unterschiedliche Werte"
 
