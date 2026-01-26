@@ -1,0 +1,9 @@
+{
+  "label_description": {
+    "green": "Gute Datenqualität.",
+    "yellow": "Mittlere Datenqualität.",
+    "red": "Schlechte Datenqualität",
+    "undefined": "Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden."
+  },
+  "result_description": "Eine Beschreibung der Ergebnisse."
+}

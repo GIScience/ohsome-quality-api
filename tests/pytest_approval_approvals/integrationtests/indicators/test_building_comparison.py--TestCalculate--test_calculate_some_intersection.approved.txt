@@ -1,0 +1,1 @@
+The completeness of OSM buildings in your area-of-interest is high. EUBUCCO does not cover your area-of-interest. The completeness in comparison to Microsoft Building Footprints is 101.04%.

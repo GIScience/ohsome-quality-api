@@ -4,16 +4,13 @@ from datetime import datetime
 from unittest.mock import AsyncMock
 
 import pytest
-from approvaltests import Options, verify, verify_as_json
 from geojson import Feature
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.indicators.road_comparison.indicator import (
     RoadComparison,
     get_matched_roadlengths,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -144,7 +141,7 @@ class TestCalculate:
         assert indicator.result.value > 0
         assert indicator.result.class_ is not None
         assert indicator.result.class_ >= 0
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -163,7 +160,7 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.label == "undefined"
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures("mock_get_intersection_area_none")
@@ -178,7 +175,7 @@ class TestCalculate:
         assert indicator.result.value is None
         assert indicator.result.class_ is None
         assert indicator.result.label == "undefined"
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
 
 class TestFigure:
@@ -194,12 +191,7 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
 
     @oqapi_vcr.use_cassette
     @pytest.mark.usefixtures(
@@ -217,12 +209,7 @@ class TestFigure:
         indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
 
 
 @pytest.mark.skip(reason="Only for manual testing.")  # comment for manual test

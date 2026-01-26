@@ -1,0 +1,1 @@
+Querying the ohsome API failed! Invalid filter syntax. Please look at the additional info and examples about the filter parameter at https://docs.ohsome.org/ohsome-api. Detailed error message: line 1, column 63: whitespaces, EQUALS (=), NOT_EQUALS (!=) or in expected, f encountered.
