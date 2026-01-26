@@ -127,6 +127,22 @@ class TestFigure:
             .with_namer(PytestNamer()),
         )
 
+    def test_create_figure_no_fitted_model(self, indicator):
+        indicator.result.class_ = None
+        indicator.fitted_models = []
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert (
+            indicator.result.description == "No model has been run successfully."
+            " Saturation could not be determined."
+        )
+        verify_as_json(
+            to_jsonable_python(indicator.result.figure),
+            options=Options()
+            .with_reporter(PlotlyDiffReporter())
+            .with_namer(PytestNamer()),
+        )
+
 
 @oqapi_vcr.use_cassette
 def test_immutable_attribute(
