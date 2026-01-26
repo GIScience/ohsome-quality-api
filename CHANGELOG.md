@@ -13,6 +13,7 @@
 - build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
 * build: migrate pre-commit hooks to prek ([a3edf214])
 * tests: migrate from approvaltests to pytest_approval ([#997])
+- feat: get data for the Mapping Saturation indicator from ohsomeDB ([])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
