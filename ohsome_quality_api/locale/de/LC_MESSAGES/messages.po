@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-26 16:26+0100\n"
+"POT-Creation-Date: 2026-01-26 16:40+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -707,6 +707,24 @@ msgstr ""
 "des ausgewählten Themas vorhanden sind."
 
 #: ohsome_quality_api/indicators/currentness/indicator.py:456
+#, fuzzy
+msgid ""
+"Please note that in the area of interest less than 1 km of the selected "
+"topic are present today. "
+msgstr ""
+"Bitte beachte, dass im Untersuchungsgebiet heute weniger als 1 km "
+"des ausgewählten Themas vorhanden sind."
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:461
+#, fuzzy
+msgid ""
+"Please note that in the area of interest less than 1 km² of the selected "
+"topic are present today. "
+msgstr ""
+"Bitte beachte, dass im Untersuchungsgebiet heute weniger als 1 km² "
+"des ausgewählten Themas vorhanden sind."
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:466
 #, python-brace-format
 msgid ""
 "Please note that there was no mapping activity for {num_months} months in"
