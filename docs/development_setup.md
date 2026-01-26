@@ -21,7 +21,7 @@ This project uses [`uv`](https://docs.astral.sh/uv/getting-started/installation/
 
 ```bash
 uv sync
-uv run pre-commit install
+uv run prek install  # pre-commit hooks
 uv run pybabel compile -d ohsome_quality_api/locale
 ```
 
