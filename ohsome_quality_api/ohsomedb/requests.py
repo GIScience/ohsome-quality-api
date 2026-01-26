@@ -169,4 +169,3 @@ async def density(
         bpolys.model_dump_json(),
         database="ohsomedb",
     )
->>>>>>> 2c4df07e (feat: add functionality to run LandCoverCompleteness and BuildingComparison via the ohsomedb)
