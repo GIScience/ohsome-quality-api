@@ -10,6 +10,7 @@
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
 - feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
 - build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
+- feat: get data for the Mapping Saturation indicator from ohsomeDB ([])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
