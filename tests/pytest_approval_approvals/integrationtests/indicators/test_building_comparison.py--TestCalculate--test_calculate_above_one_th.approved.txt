@@ -1,1 +1,0 @@
-Comparison could not be made. OSM has substantivly more buildings than the reference datasets. The reference dataset is likely to miss many buildings. The completeness in comparison to EUBUCCO is 505.21%. The completeness in comparison to Microsoft Building Footprints is 505.21%.
