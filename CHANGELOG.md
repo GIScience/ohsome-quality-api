@@ -11,7 +11,8 @@
 - feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
 - build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
 - build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
-* build: migrate pre-commit hooks to prek ([a3edf214])
+- build: migrate pre-commit hooks to prek ([a3edf214])
+- i18n: add some missing translations to german ([#996])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -24,6 +25,7 @@
 [2987bc5f]: https://github.com/GIScience/ohsome-quality-api/commit/2987bc5f
 [e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 [a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
+[#996]: https://github.com/GIScience/ohsome-quality-api/pull/996
 
 ## Release 1.14.0
 

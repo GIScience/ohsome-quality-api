@@ -193,7 +193,17 @@ class MappingSaturation(BaseIndicator):
         if isinstance(self.topic, TopicData):
             fig.update_yaxes(title_text=_("Value"))
         else:
-            fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
+            aggregation_type_mapping = {
+                "area": _("Area"),
+                "count": _("Count"),
+                "length": _("Lenght"),
+                "perimeter": _("Perimeter"),
+                "area/density": _("Density"),
+            }
+
+            fig.update_yaxes(
+                title_text=aggregation_type_mapping[self.topic.aggregation_type]
+            )
 
         # plot asymptote
         asymptote = self.data["best_fit"]["asymptote"]

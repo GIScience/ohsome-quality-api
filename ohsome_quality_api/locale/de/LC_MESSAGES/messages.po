@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-26 16:06+0100\n"
+"POT-Creation-Date: 2026-01-26 16:26+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -998,24 +998,45 @@ msgstr "Datum"
 msgid "Value"
 msgstr "Wert"
 
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:197
+#, fuzzy
+msgid "Area"
+msgstr "Fläche"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:198
+msgid "Count"
+msgstr "Anzahl"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:199
+msgid "Lenght"
+msgstr "Länge"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:200
+msgid "Perimeter"
+msgstr "Durchmesser"
+
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:201
+msgid "Density"
+msgstr "Dichte"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:211
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:209
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:219
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:233
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:243
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:237
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:247
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:240
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:250
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1023,7 +1044,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:244
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:254
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
