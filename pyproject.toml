@@ -55,6 +55,7 @@ dev = [
     "vcrpy>=7.0.0",
     "babel>=2.17.0",
     "pytest-approval>=0.7.0",
+    "pytest-randomly>=4.0.1",
 ]
 
 [build-system]

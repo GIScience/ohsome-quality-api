@@ -967,6 +967,7 @@ dependencies = [
     { name = "antlr4-python3-runtime" },
     { name = "pydantic" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/b2/4a/9f5d6ae3d20a3e90daa17da01be1c49f86dde42119f931af4364ba5743f7/ohsome_filter_to_sql-0.7.0.tar.gz", hash = "sha256:fe0b6e7b2f0d54349df4116faa9c0cd43574b8d0c8114930e8a192f54792906b", size = 37769, upload-time = "2026-01-23T10:37:39.932Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/db/e9/4d0a60d818a20130d792819966b6d1e503e20a370b8fbe172b5d0f2f2bb6/ohsome_filter_to_sql-0.7.0-py3-none-any.whl", hash = "sha256:94a8f6e616c5ec0bb9d6bdd2f1afead3ca0d05d9505fb1984e130d5eb9582a1d", size = 39365, upload-time = "2026-01-23T10:37:38.353Z" },
 ]
@@ -1011,6 +1012,7 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-mock" },
+    { name = "pytest-randomly" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
     { name = "ruff" },
@@ -1054,6 +1056,7 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.26.0" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
+    { name = "pytest-randomly", specifier = ">=4.0.1" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "ruff", specifier = "==0.11.9" },
@@ -1435,6 +1438,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/68/14/eb014d26be205d38ad5ad20d9a80f7d201472e08167f0bb4361e251084a9/pytest_mock-3.15.1.tar.gz", hash = "sha256:1849a238f6f396da19762269de72cb1814ab44416fa73a8686deac10b0d87a0f", size = 34036, upload-time = "2025-09-16T16:37:27.081Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5a/cc/06253936f4a7fa2e0f48dfe6d851d9c56df896a9ab09ac019d70b760619c/pytest_mock-3.15.1-py3-none-any.whl", hash = "sha256:0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d", size = 10095, upload-time = "2025-09-16T16:37:25.734Z" },
+]
+
+[[package]]
+name = "pytest-randomly"
+version = "4.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c4/1d/258a4bf1109258c00c35043f40433be5c16647387b6e7cd5582d638c116b/pytest_randomly-4.0.1.tar.gz", hash = "sha256:174e57bb12ac2c26f3578188490bd333f0e80620c3f47340158a86eca0593cd8", size = 14130, upload-time = "2025-09-12T15:23:00.085Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/3e/a4a9227807b56869790aad3e24472a554b585974fe7e551ea350f50897ae/pytest_randomly-4.0.1-py3-none-any.whl", hash = "sha256:e0dfad2fd4f35e07beff1e47c17fbafcf98f9bf4531fd369d9260e2f858bfcb7", size = 8304, upload-time = "2025-09-12T15:22:58.946Z" },
 ]
 
 [[package]]
