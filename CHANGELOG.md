@@ -14,6 +14,7 @@
 - build: migrate pre-commit hooks to prek ([a3edf214])
 - i18n: add some missing translations to german ([#996])
 - currentness: add minor edge cases for length and area aggregation type ([#996]) 
+- mapping-saturation: create plot when no model could be fitted ([#996]) 
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
