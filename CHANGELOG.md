@@ -10,6 +10,7 @@
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
 - feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
 - build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
+- build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -20,6 +21,7 @@
 [2b333562]: https://github.com/GIScience/ohsome-quality-api/commit/2b333562
 [#980]: https://github.com/GIScience/ohsome-quality-api/pull/980
 [2987bc5f]: https://github.com/GIScience/ohsome-quality-api/commit/2987bc5f
+[e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 
 ## Release 1.14.0
 
