@@ -1,9 +1,8 @@
 import json
 
 import pytest
-from approvaltests import Options, verify_as_json
+from pytest_approval.main import verify_json
 
-from tests.approvaltests_namers import PytestNamer
 from tests.conftest import FIXTURE_DIR
 from tests.integrationtests.api.test_indicators import (
     RESPONSE_SCHEMA_GEOJSON,
@@ -75,11 +74,11 @@ def test_invalid_topic(client, bpolys):
     parameters = {"bpolys": bpolys, "topic": "building-count"}
     response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422
-    verify_as_json(response.json(), options=Options().with_namer(PytestNamer()))
+    assert verify_json(response.json())
 
 
 def test_invalid_class(client, bpolys):
     parameters = {"bpolys": bpolys, "topic": "land-cover", "corineLandCoverClass": "1"}
     response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422
-    verify_as_json(response.json(), options=Options().with_namer(PytestNamer()))
+    assert verify_json(response.json())

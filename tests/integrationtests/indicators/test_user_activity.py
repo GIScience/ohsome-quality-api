@@ -3,12 +3,9 @@ from datetime import datetime
 import asyncpg_recorder
 import pytest
 import pytest_asyncio
-from approvaltests import Options, verify_as_json
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify_plotly
 
 from ohsome_quality_api.indicators.user_activity.indicator import UserActivity
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 
 
 @pytest.mark.asyncio(loop_scope="class")
@@ -46,9 +43,4 @@ class TestFigure:
 
     async def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)

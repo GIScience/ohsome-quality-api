@@ -38,7 +38,6 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "approvaltests>=14.5.0",
     "asyncpg-recorder>=0.1.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
@@ -104,4 +103,4 @@ asyncio_default_fixture_loop_scope = "function"
 "cassettes-dir"="tests/asyncpg_recorder_cassettes"
 
 [tool.pytest-approval]
-"approvals-dir"="tests/pytest_approval_approvals"
+"approvals-dir"="tests/approvals"

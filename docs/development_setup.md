@@ -119,29 +119,10 @@ def test_something(self):
 
 ### Approval Tests
 
-[Approval tests](https://approvaltests.com/resources/) capture the output
-(snapshot) of a program and compares it with a previously approved version of
-the output. Sometimes those tests are also called snapshot tests.
-
-Its most useful in cases where frequent changes are expected or where the
-output is of complex nature but can be easily verified by humans aided by a
-diff-tool or visual representation of the output.
-
-> A picture’s worth a 1000 tests.
-
-Once the output has been *approved* then as long as the output stays the same
-the test will pass. A test fails if the current output (*received*) is not
-identical to the approved output. In this case, the difference of the received
-and the approved output is reported. The representation of the report can take
-any form, for example opening a diff-tool to compare received and approved
-text or displaying an image.
-
-The ohsome quality API uses approval tests to verify result descriptions and figures.
-For comparison, it is recommended to have a diff tool installed which can handle
-images such as PyCharm or Visual Studio Code. If changes in the code lead to a
-different output, approval tests will show the difference to the previously
-approved version of the output using afore-mentioned diff tool. If it is as
-expected, resolve the difference using the diff-tool save and rerun the tests.
+`ohsome-quality-api` uses approval/snapshot testing to verify among other
+things indicator result description and figures. To read more about approval
+tests read the [about section](https://github.com/GIScience/pytest-approval?tab=readme-ov-file#about)
+of `pytest-approval`, the library which `ohsome-quality-api` uses.
 
 ### Regression Tests
 

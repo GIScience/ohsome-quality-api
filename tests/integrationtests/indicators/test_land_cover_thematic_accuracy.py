@@ -2,15 +2,12 @@ import json
 
 import asyncpg_recorder
 import pytest
-from approvaltests import Options, verify, verify_as_json
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.api.request_models import CorineLandCoverClass
 from ohsome_quality_api.indicators.land_cover_thematic_accuracy.indicator import (
     LandCoverThematicAccuracy,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.conftest import FIXTURE_DIR
 
 
@@ -166,7 +163,7 @@ async def test_calculate_no_data(
     indicator.calculate()
     assert indicator.result.label == "undefined"
     assert indicator.result.value is None
-    verify(indicator.result.description, namer=PytestNamer())
+    assert verify(indicator.result.description)
     indicator.create_figure()  # should raise no error
 
 
@@ -186,8 +183,8 @@ async def test_calculate_multi_class(
     assert indicator.result.value is not None
     assert indicator.result.class_ == 3
     assert indicator.result.label == "yellow"
-    verify(indicator.result.description, namer=PytestNamer(postfix="description"))
-    # verify(indicator.report, namer=PytestNamer(postfix="report"))
+    assert verify(indicator.result.description)
+    # assert verify(indicator.report)
 
 
 @pytest.mark.asyncio
@@ -206,7 +203,7 @@ async def test_calculate_low_coverage(
     assert indicator.result.value is not None
     assert indicator.result.class_ == 3
     assert indicator.result.label == "yellow"
-    verify(indicator.result.description, namer=PytestNamer(postfix="description"))
+    assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio
@@ -229,8 +226,8 @@ async def test_calculate_single_class(
     assert indicator.result.value is not None
     assert indicator.result.class_ == 1
     assert indicator.result.label == "red"
-    verify(indicator.result.description, namer=PytestNamer(postfix="description"))
-    # verify(indicator.report, namer=PytestNamer(postfix="report"))
+    assert verify(indicator.result.description)
+    # assert verify(indicator.report)
 
 
 @pytest.mark.asyncio
@@ -245,10 +242,7 @@ async def test_figure_multi_class(
     indicator.calculate()
     indicator.create_figure()
     assert isinstance(indicator.result.figure, dict)
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify_plotly(indicator.result.figure)
 
 
 @pytest.mark.asyncio
@@ -268,10 +262,7 @@ async def test_figure_single_class(
     indicator.calculate()
     indicator.create_figure()
     assert isinstance(indicator.result.figure, dict)
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify_plotly(indicator.result.figure)
 
 
 @pytest.mark.asyncio
