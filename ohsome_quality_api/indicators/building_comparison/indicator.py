@@ -13,6 +13,8 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from numpy import mean
 
+from ohsome_quality_api import ohsomedb
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
@@ -71,7 +73,14 @@ class BuildingComparison(BaseIndicator):
     def attribution(cls) -> str:
         return get_attribution(["OSM", "EUBUCCO", "Microsoft Buildings"])
 
-    async def preprocess(self) -> None:
+    async def preprocess(self):
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomeapi(self) -> None:
         for key, val in self.data_ref.items():
             # get coverage [%]
             self.area_cov[key] = await db_client.get_intersection_area(
@@ -99,6 +108,38 @@ class BuildingComparison(BaseIndicator):
             self.area_osm[key] = value / (1000 * 1000)
             timestamp = result["result"][0]["timestamp"]
             self.result.timestamp_osm = parser.isoparse(timestamp)
+
+    async def preprocess_ohsomedb(self) -> None:
+        for key, val in self.data_ref.items():
+            # get coverage [%]
+            self.area_cov[key] = await db_client.get_intersection_area(
+                self.feature,
+                val["coverage"]["simple"],
+            )
+            if self.check_major_edge_cases(key) != "":
+                continue
+
+            # clip input geom with coverage of reference dataset
+            feature = await db_client.get_intersection_geom(
+                self.feature,
+                val["coverage"]["simple"],
+            )
+
+            # get reference building area
+            result = await get_reference_building_area(
+                geojson.dumps(feature), val["table_name"]
+            )
+            self.area_ref[key] = result / (1000 * 1000)
+
+            # get osm building area
+            result = await ohsomedb.single_snapshot_aggregation(
+                aggregation=self.topic.aggregation_type,
+                bpolys=self.feature.geometry,
+                filter_=self.topic.filter,
+            )
+            value = float(result[0]["value"]) or 0.0  # if None
+            self.area_osm[key] = value / (1000 * 1000)
+            self.result.timestamp_osm = result[0]["snapshot_ts"]
 
     def calculate(self) -> None:
         major_edge_case: bool = False

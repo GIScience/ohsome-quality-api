@@ -7,6 +7,8 @@ from dateutil import parser
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
+from ohsome_quality_api import ohsomedb
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
@@ -26,15 +28,31 @@ class LandCoverCompleteness(BaseIndicator):
         self.th_low = 0.50  # Above or equal to this value label should be yellow
 
     async def preprocess(self):
-        # get osm building area
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
 
+    async def preprocess_ohsomeapi(self):
         result = await ohsome_client.query(self.topic, self.feature, density=True)
         self.osm_area_ratio = result["result"][0]["value"] or 0.0  # if None
         timestamp = result["result"][0]["timestamp"]
         self.result.timestamp_osm = parser.isoparse(timestamp)
 
+    async def preprocess_ohsomedb(self):
+        # get osm building area
+
+        result = await ohsomedb.density(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
+        )
+        self.osm_area_ratio = result[0]["value"] or 0.0  # if None
+        self.result.timestamp_osm = result[0]["snapshot_ts"]
+
     def calculate(self):
-        self.osm_area_ratio /= 1000000
+        #        self.osm_area_ratio /= 1000000
         self.result.value = round(self.osm_area_ratio, 2)
         if self.result.value >= self.th_high:
             self.result.class_ = 5

@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 from string import Template
 
 import dateutil.parser
@@ -7,10 +8,13 @@ from babel.numbers import format_decimal, format_percent
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
+from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.attributes.definitions import (
-    build_attribute_filter,
+    build_attribute_filter_ohsomeapi,
+    build_attribute_filter_ohsomedb,
     get_attribute,
 )
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
@@ -60,24 +64,60 @@ class AttributeCompleteness(BaseIndicator):
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        if self.attribute_keys:
-            self.attribute_filter = build_attribute_filter(
-                self.attribute_keys,
-                self.topic.key,
-            )
-            self.attribute_title = ", ".join(
-                [
-                    get_attribute(self.topic.key, k).name.lower()
-                    for k in self.attribute_keys
-                ]
-            )
-        else:
-            self.attribute_filter = build_attribute_filter(
-                self.attribute_filter,
-                self.topic.key,
-            )
 
-    async def preprocess(self) -> None:
+    async def preprocess(self):
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+            if self.attribute_keys:
+                self.attribute_filter = build_attribute_filter_ohsomedb(
+                    self.attribute_keys,
+                    self.topic.key,
+                )
+                self.attribute_title = ", ".join(
+                    [
+                        get_attribute(self.topic.key, k).name.lower()
+                        for k in self.attribute_keys
+                    ]
+                )
+            else:
+                self.attribute_filter = build_attribute_filter_ohsomedb(
+                    self.attribute_filter,
+                    self.topic.key,
+                )
+            await self.preprocess_ohsomedb()
+        else:
+            if self.attribute_keys:
+                self.attribute_filter = build_attribute_filter_ohsomeapi(
+                    self.attribute_keys,
+                    self.topic.key,
+                )
+                self.attribute_title = ", ".join(
+                    [
+                        get_attribute(self.topic.key, k).name.lower()
+                        for k in self.attribute_keys
+                    ]
+                )
+            else:
+                self.attribute_filter = build_attribute_filter_ohsomeapi(
+                    self.attribute_filter,
+                    self.topic.key,
+                )
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomedb(self) -> None:
+        # Get attribute filter
+        result = await ohsomedb.attribute_completeness(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
+            attribute_filter_=self.attribute_filter,
+        )
+        self.result.timestamp_osm = datetime.now(timezone.utc)
+        self.result.value = result[0]["attribute_completeness"]
+        self.absolute_value_1 = result[0]["total_aggregation"]
+        self.absolute_value_2 = result[0]["aggregation_with_attribute"]
+
+    async def preprocess_ohsomeapi(self) -> None:
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
