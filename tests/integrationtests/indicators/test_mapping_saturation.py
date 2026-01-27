@@ -3,15 +3,11 @@ from datetime import datetime
 
 import numpy as np
 import pytest
-from approvaltests import Options, verify, verify_as_json
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
-from tests.approvaltests_scrubbers import scrub_mapping_saturation_figure
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -84,7 +80,7 @@ class TestCalculation:
 
         assert indicator.result.value >= 0.0
         assert indicator.result.label in ["green", "yellow", "red", "undefined"]
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
@@ -119,13 +115,7 @@ class TestFigure:
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_scrubber(scrub_mapping_saturation_figure)
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
 
     def test_create_figure_no_fitted_model(self, indicator):
         indicator.result.class_ = None
@@ -136,12 +126,7 @@ class TestFigure:
             indicator.result.description == "No model has been run successfully."
             " Saturation could not be determined."
         )
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
 
 
 @oqapi_vcr.use_cassette

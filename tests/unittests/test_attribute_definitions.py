@@ -1,9 +1,8 @@
 import pytest
-from approvaltests import verify
+from pytest_approval.main import verify
 
 from ohsome_quality_api.attributes import definitions
 from ohsome_quality_api.attributes.models import Attribute
-from tests.approvaltests_namers import PytestNamer
 
 
 @pytest.fixture()
@@ -70,4 +69,4 @@ def test_get_attribute_translated(
     attribute = definitions.get_attribute(
         topic_key_building_count, attribute_key_string
     )
-    verify(attribute.model_dump_json(indent=2), namer=PytestNamer())
+    assert verify(attribute.model_dump_json(indent=2))

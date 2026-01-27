@@ -3,15 +3,11 @@ from datetime import datetime
 
 import asyncpg_recorder
 import pytest
-from approvaltests import Options, verify_as_json
-from pydantic_core import to_jsonable_python
-from pytest_approval import verify, verify_json
+from pytest_approval.main import verify, verify_json, verify_plotly
 
 from ohsome_quality_api.indicators.roads_thematic_accuracy.indicator import (
     RoadsThematicAccuracy,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 
 
 def mock_response(
@@ -65,7 +61,7 @@ async def test_preprocess(feature, topic_roads, attribute):
     assert indicator.attribute == attribute
     await indicator.preprocess()
     assert indicator.matched_data is not None
-    verify_json(asdict(indicator.matched_data))
+    assert verify_json(asdict(indicator.matched_data))
     assert isinstance(indicator.result.timestamp_osm, datetime)
     assert isinstance(indicator.timestamp_dlm, datetime)
 
@@ -93,7 +89,7 @@ async def test_calculate(feature, topic_roads, attribute):
     indicator.calculate()
     # non-quality indicator does not have result value
     assert indicator.result.value is None
-    verify(indicator.result.description)
+    assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio
@@ -113,12 +109,9 @@ async def test_calculate_no_data(feature, topic_roads, mock_attribute, monkeypat
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
-    verify(indicator.result.description)
+    assert verify(indicator.result.description)
     indicator.create_figure()  # should raise no error
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify_plotly(indicator.result.figure)
 
 
 @pytest.mark.asyncio
@@ -140,11 +133,8 @@ async def test_calculate_no_shared_attribute(
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
-    verify(indicator.result.description)
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify(indicator.result.description)
+    assert verify_plotly(indicator.result.figure)
 
 
 @asyncpg_recorder.use_cassette
@@ -169,10 +159,7 @@ async def test_create_figure(feature, topic_roads, attribute):
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify_plotly(indicator.result.figure)
 
 
 @asyncpg_recorder.use_cassette

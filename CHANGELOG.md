@@ -8,9 +8,11 @@
 - refactor: move ohsomedb interactions to own module ([#976])
 - refactor: rename oqt.py to main.py ([d757b9b8])
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
-- feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([980])
+- feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([#980])
 - build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
 - build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
+* build: migrate pre-commit hooks to prek ([a3edf214])
+* tests: migrate from approvaltests to pytest_approval ([#997])
 - build: migrate pre-commit hooks to prek ([a3edf214])
 - i18n: add some missing translations to german ([#996])
 - currentness: add minor edge cases for length and area aggregation type ([#996]) 
@@ -27,6 +29,7 @@
 [2987bc5f]: https://github.com/GIScience/ohsome-quality-api/commit/2987bc5f
 [e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 [a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
+[#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
 [#996]: https://github.com/GIScience/ohsome-quality-api/pull/996
 
 ## Release 1.14.0

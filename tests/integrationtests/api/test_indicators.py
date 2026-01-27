@@ -5,10 +5,9 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 
 import asyncpg_recorder
 import pytest
-from approvaltests.approvals import verify
+from pytest_approval.main import verify
 from schema import Optional, Or, Schema
 
-from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
@@ -170,7 +169,7 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "RequestValidationError"
-    verify(content["detail"][0]["msg"], namer=PytestNamer())
+    assert verify(content["detail"][0]["msg"])
 
 
 @oqapi_vcr.use_cassette
