@@ -180,23 +180,23 @@ class TestCalculation:
         indicator.calculate()
         assert verify(indicator.result.description)
 
-        @pytest.mark.parametrize(
-            "topic_key",
-            # three different aggregation types: count, area and length
-            ["building-count", "building-area", "roads"],
-        )
-        @asyncpg_recorder.use_cassette
-        @oqapi_vcr.use_cassette
-        async def test_calculate_aggregation_types(
-            self,
-            topic_key,
-            feature_germany_heidelberg,
-        ):
-            topic = get_topic_preset(topic_key)
-            indicator = Currentness(topic, feature_germany_heidelberg)
-            await indicator.preprocess()
-            indicator.calculate()
-            assert verify(indicator.result.description)
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_calculate_aggregation_types(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+        assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio(scope="class")
