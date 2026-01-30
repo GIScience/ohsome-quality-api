@@ -66,3 +66,17 @@ async def test_users_count(
         filter_=filter_highways,
     )
     assert sum([r["user"] for r in results]) > 0
+
+
+@asyncpg_recorder.use_cassette
+async def test_elements_count(
+    feature_germany_heidelberg: Feature,
+    filter_buildings: str,
+):
+    results = await ohsomedb.elements(
+        aggregation="count",
+        bpolys=feature_germany_heidelberg["geometry"],
+        filter_=filter_buildings,
+    )
+    raw = [r["element"] for r in results]
+    assert sum(raw) > 0
