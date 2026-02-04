@@ -7,8 +7,8 @@ import asyncpg_recorder
 import geojson
 import pytest
 import pytest_asyncio
-from approvaltests import Options, verify, verify_as_json
 from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
@@ -23,8 +23,6 @@ from ohsome_quality_api.indicators.currentness.indicator import (
     month_to_year_month,
 )
 from ohsome_quality_api.topics.definitions import get_topic_preset
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
@@ -118,12 +116,12 @@ class TestCalculation:
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
         assert len(indicator.bin_up_to_date.timestamps) == indicator.up_to_date
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
     async def test_low_contributions(self, indicator):
         indicator.contrib_sum = 20
         indicator.calculate()
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
     async def test_months_without_edit(self, indicator):
         indicator.contrib_sum = 30
@@ -131,7 +129,7 @@ class TestCalculation:
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
         ]
         indicator.calculate()
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
     @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
@@ -154,16 +152,11 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.label == "undefined"
         assert indicator.result.value is None
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
         indicator.create_figure()
         # TODO: test figure
         # assert isinstance(indicator.result.figure, dict)
-        # verify_as_json(
-        #     to_jsonable_python(indicator.result.figure),
-        #     options=Options()
-        #     .with_reporter(PlotlyDiffReporter())
-        #     .with_namer(PytestNamer()),
-        # )
+        # assert verify_plotly(indicator.result.figure)
 
     @pytest.mark.parametrize(
         "topic_key",
@@ -181,7 +174,7 @@ class TestCalculation:
         indicator = Currentness(topic, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio(scope="class")
@@ -198,12 +191,7 @@ class TestFigure:
 
     async def test_create_figure(self, indicator):
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
 
     @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
@@ -223,12 +211,7 @@ class TestFigure:
         ]
         i.calculate()
         i.create_figure()
-        verify(
-            json.dumps(to_jsonable_python(i.result.figure)),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify(json.dumps(to_jsonable_python(i.result.figure)))
 
     async def test_get_source(self, indicator):
         indicator.th_source = ""
@@ -267,18 +250,8 @@ class TestOhsomeAPIOhsomeDBComparison:
         i_db.calculate()
         i_db.create_figure()
 
-        verify_as_json(
-            to_jsonable_python(i_api.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer(postfix="api")),
-        )
-        verify_as_json(
-            to_jsonable_python(i_db.result.figure),
-            options=Options()
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer(postfix="db")),
-        )
+        assert verify_plotly(i_api.result.figure)
+        assert verify_plotly(i_db.result.figure)
 
 
 def test_get_last_edited_year():

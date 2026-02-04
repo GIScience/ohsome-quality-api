@@ -38,12 +38,10 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "approvaltests>=14.5.0",
     "asyncpg-recorder>=0.1.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "kaleido>=1.2.0",
-    "pre-commit>=4.2.0",
     "pygments>=2.19.1", # add syntax highlighting to pytest
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
@@ -55,6 +53,8 @@ dev = [
     "vcrpy>=7.0.0",
     "babel>=2.17.0",
     "pytest-approval>=0.7.0",
+    "pytest-randomly>=4.0.1",
+    "prek>=0.3.0",
 ]
 
 [build-system]
@@ -103,4 +103,4 @@ asyncio_default_fixture_loop_scope = "function"
 "cassettes-dir"="tests/asyncpg_recorder_cassettes"
 
 [tool.pytest-approval]
-"approvals-dir"="tests/pytest_approval_approvals"
+"approvals-dir"="tests/approvals"
