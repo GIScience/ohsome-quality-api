@@ -21,6 +21,12 @@ Each aggregation of features (e.g. length of roads or count of building)
 has a maximum. After increased mapping activity saturation is reached near this
 maximum.
 
+### Limitations
+- different meaningful for different indicators
+  - better for small/ punctual object (houses)
+  - worse for big polygons (land use -> one abrupt mapping step -> low completeness)
+  - 
+
 ### References
 
 - Gröchenig S et al. (2014): Digging into the history of VGI data-sets: results from
@@ -45,7 +51,7 @@ The ratio is computed by dividing the total area of the area of interest by the 
 
 ### Limitations
 
-The are of overlapping OSM land cover polygons will be counted multiple times.
+Overlapping OSM land cover polygons will be counted multiple times and falsely improve the land cover completeness ratio.
 
 
 
@@ -155,3 +161,66 @@ To check the direction of the road, the vector of both geometries is calculated.
 ### References
 
 - A. Wöltche, "Open source map matching with Markov decision processes: A new method and a detailed benchmark with existing approaches", Transactions in GIS, vol. 27, no. 7, pp. 1959–1991, Oct. 2023, doi: [10.1111/tgis.13107](https://onlinelibrary.wiley.com/doi/full/10.1111/tgis.13107).
+
+
+## Attribute Completeness
+Derive the ratio of OSM features with present attributes.
+
+### Methods and Data
+- intrinsic method
+
+Calculates the percentage of features that contain a certain attribute.
+
+### Limitation
+Limited to one attribute.
+
+## Building Comparison
+Compares the total building area of OSM with the building area of two reference datasets.
+
+### Methods and Data
+- extrinsic method
+
+The result is the ratio of the total area of buildings in OSM devided by the total area of buildings in the reference dataset.
+
+Reference datasets:
+- [EUBUCCO](https://docs.eubucco.com/): Europe wide building footprints, derived from administrative datasets.
+- [Microsoft Buildings](https://planetarycomputer.microsoft.com/dataset/ms-buildings): Worldwide building footprints, derived from satellite imagery.
+
+### Limitations
+Compares only the overall square meters of building polygons of OSM and reference dataset, not the actual overlap.
+
+## Currentness
+Estimate currentness of features by classifying contributions based on topic specific temporal thresholds into three groups: up-to-date, in-between and out-of-date.
+Estimate currentness of features by analyzing the distribution of their most recent contributions
+- Determine up-to-date, in-between and out-of-date contributions.
+- Classified into up-to-date, medium, outdated -> Features are considered up-to-date if
+their last edit falls within a predefined short time window.
+- Put contributions into three bins: (1) up-to-date (2) in-between and (3)
+        out-of-date. The range of those bins are based on the topic.
+        After binning determine the result class based on share of features in each bin.
+
+## Road Comparison
+Result is a ratio of the length of reference roads which are covered by OSM roads to the total length of reference roads.
+
+### Methods and Data
+- extrinsic method
+
+Identifies corresponding road geometries in OSM and the reference dataset to calculate the ratio of matched road length.
+
+
+Reference dataset: 
+- [Microsoft Roads](https://github.com/microsoft/RoadDetections): Worldwide dataset of roads, derived from satellite imagery.
+
+
+## User Activity
+Calculates how many unique users contributed to a specific topic, grouped by month.
+
+
+### Methods and Data
+- intrinsic method
+
+Monthly amount of unique users who edited a specific topic in the area of interest are derived for the entire time range of OSM.
+Additionally, the median for the last 3 years are calculated as well as a regression line to see the current tendency of user activity.
+
+### Limitations
+Does not give information about data quality on its own but can be used additionally to other indicators.
