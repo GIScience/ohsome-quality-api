@@ -78,6 +78,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.timestamp_osm = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
+        breakpoint()
         if self.matched_data is None:
             raise ValueError("Expected matched data to be present (not None).")
         if self.matched_data.total_dlm is None:
@@ -177,7 +178,7 @@ class RoadsThematicAccuracy(BaseIndicator):
                 ],
             }
         )
-        fig.update_yaxes(rangemode="nonnegative")
+        fig.update_yaxes(rangemode="nonnegative", title_text=_("Length (in km)"))
         fig.update_xaxes(rangemode="nonnegative")
 
         raw = fig.to_dict()
