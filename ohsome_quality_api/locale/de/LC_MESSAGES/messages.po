@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 11:10+0100\n"
+"POT-Creation-Date: 2026-02-12 11:35+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -483,9 +483,9 @@ msgstr "Thematische Genauigkeit"
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
 "Comparison of OSM road attributes with the attributes from the <a "
-"href=\"https://www.adv-online.de/AdV-Produkte/Geotopographie/Digitale-"
-"Landschaftsmodelle/Basis-DLM/\">Digitales Landschaftsmodell (DLM) </a> "
-"dataset."
+"target=\"_blank\" "
+"href=\"https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851\">Digitales"
+" Landschaftsmodell (DLM) </a> dataset."
 msgstr ""
 
 #: ohsome_quality_api/indicators/attribute_completeness/indicator.py:98
@@ -1184,69 +1184,50 @@ msgstr "OSM-Daten von"
 msgid "Length (in km)"
 msgstr "Länge (in km)"
 
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:190
+msgid "In both"
+msgstr "In beiden"
+
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:191
-msgid "Attributes are present in both"
-msgstr ""
+msgid "Only in DLM"
+msgstr "Nur im DLM"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:192
-msgid "Attributes are present only in DLM"
-msgstr ""
+msgid "Only in OSM"
+msgstr "Nur in OSM"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:193
 #, fuzzy
-msgid "Attributes are present only in OSM"
-msgstr "Attributvollständigkeit"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:194
-#, fuzzy
-msgid "Attributes are missing both"
+msgid "Missing in both"
 msgstr "Fehlt in beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:198
-msgid "Attribute is present in both"
-msgstr ""
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:199
-msgid "Attribute is present only in DLM"
-msgstr ""
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:200
-#, fuzzy
-msgid "Attribute is present only in OSM"
-msgstr "Attributvollständigkeit"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:201
-#, fuzzy
-msgid "Attribute is missing both"
-msgstr "Fehlt in beiden"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:224
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:217
 #, fuzzy
 msgid "Attribute Presence [# (%)]"
 msgstr "Attributvollständigkeit"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:232
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:225
 #, fuzzy
 msgid "Attributes are the same"
-msgstr "Attribute "
+msgstr "Attribute sind gleich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:233
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:226
 msgid "Attributes are different"
-msgstr ""
+msgstr "Attribute sind unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:237
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:230
 #, fuzzy
 msgid "Attribute is the same"
-msgstr "Attribute "
+msgstr "Attribut ist gleich "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:238
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:231
 #, fuzzy
 msgid "Attribute is different"
-msgstr "Attribute "
+msgstr "Attribut is unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:260
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:253
 msgid "Attribute Alignment [# (%)]"
-msgstr ""
+msgstr "Attributzuweisung [# (%)]"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/templates.yaml
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
@@ -2279,4 +2260,34 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "Different value"
 #~ msgstr "Unterschiedliche Werte"
+
+#~ msgid ""
+#~ "Comparison of OSM road attributes with"
+#~ " the attributes from the <a "
+#~ "href=\"https://www.adv-online.de/AdV-"
+#~ "Produkte/Geotopographie/Digitale-Landschaftsmodelle/Basis-"
+#~ "DLM/\">Digitales Landschaftsmodell (DLM) </a> "
+#~ "dataset."
+#~ msgstr ""
+
+#~ msgid "Attributes are present in both"
+#~ msgstr ""
+
+#~ msgid "Attributes are present only in DLM"
+#~ msgstr ""
+
+#~ msgid "Attributes are present only in OSM"
+#~ msgstr "Attributvollständigkeit"
+
+#~ msgid "Attributes are missing both"
+#~ msgstr "Fehlt in beiden"
+
+#~ msgid "Attribute is present in both"
+#~ msgstr ""
+
+#~ msgid "Attribute is present only in DLM"
+#~ msgstr ""
+
+#~ msgid "Attribute is present only in OSM"
+#~ msgstr "Attributvollständigkeit"
 
