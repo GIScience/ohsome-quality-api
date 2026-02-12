@@ -478,7 +478,7 @@ msgstr ""
 #: ohsome_quality_api/indicators/indicators.yaml
 #, fuzzy
 msgid "Road Accuracy"
-msgstr "Thematische Genauigkeit"
+msgstr "Thematische Genauigkeit für Straßen"
 
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid ""
@@ -1204,7 +1204,7 @@ msgstr "Fehlt in beiden"
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:217
 #, fuzzy
 msgid "Attribute Presence [# (%)]"
-msgstr "Attributvollständigkeit"
+msgstr "Attributvorhandensein [# (%)]"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:225
 #, fuzzy
