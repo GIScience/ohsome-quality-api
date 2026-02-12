@@ -64,14 +64,14 @@ class RoadsThematicAccuracy(BaseIndicator):
             query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=response[0]["total_dlm"],
-            present_in_both=response[0]["present_in_both"],
-            only_dlm=response[0]["only_dlm"],
-            only_osm=response[0]["only_osm"],
-            missing_both=response[0]["missing_both"],
-            present_in_both_agree=response[0]["present_in_both_agree"],
-            present_in_both_not_agree=response[0]["present_in_both_not_agree"],
-            not_matched=response[0]["not_matched"],
+            total_dlm=response[0]["total_dlm"] / 1000,
+            present_in_both=response[0]["present_in_both"] / 1000,
+            only_dlm=response[0]["only_dlm"] / 1000,
+            only_osm=response[0]["only_osm"] / 1000,
+            missing_both=response[0]["missing_both"] / 1000,
+            present_in_both_agree=response[0]["present_in_both_agree"] / 1000,
+            present_in_both_not_agree=response[0]["present_in_both_not_agree"] / 1000,
+            not_matched=response[0]["not_matched"] / 1000,
         )
         # TODO: take real timestamps from data
         self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -152,31 +152,30 @@ class RoadsThematicAccuracy(BaseIndicator):
             )
 
         fig.update_layout(
-            {
-                "annotations": [
-                    {
-                        "text": (
-                            f"<span style='font-size:smaller'>"
-                            f"{_('DLM data from')} "
-                            f"{self.timestamp_dlm.strftime('%Y')}"
-                            f"</span>"
-                            f"<br>"
-                            f"<span style='font-size:smaller'>"
-                            f"{_('OSM data from')} "
-                            f"{self.result.timestamp_osm.strftime('%Y')}"
-                            f"</span>"
-                        ),
-                        "xref": "paper",
-                        "yref": "paper",
-                        "x": 1.1,
-                        "y": 0.8,
-                        "yanchor": "top",
-                        "showarrow": False,
-                        "align": "left",
-                    }
-                ],
-            }
+            annotations=[
+                dict(
+                    text=(
+                        f"<span style='font-size:smaller'>"
+                        f"{_('DLM data from')} {self.timestamp_dlm.strftime('%Y')}"
+                        f"</span><br>"
+                        f"<span style='font-size:smaller'>"
+                        f"{_('OSM data from')} "
+                        f"{self.result.timestamp_osm.strftime('%Y')}"
+                        f"</span>"
+                    ),
+                    xref="paper",
+                    yref="paper",
+                    x=0.5,
+                    y=-0.13,
+                    xanchor="center",
+                    yanchor="top",
+                    showarrow=False,
+                    align="center",
+                )
+            ],
+            margin=dict(b=110),
         )
+
         fig.update_yaxes(rangemode="nonnegative", title_text=_("Length (in km)"))
         fig.update_xaxes(rangemode="nonnegative")
 
