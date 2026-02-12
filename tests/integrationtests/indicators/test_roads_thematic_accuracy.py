@@ -150,11 +150,28 @@ async def test_calculate_no_shared_attribute(
     ),
 )
 @pytest.mark.asyncio
-async def test_create_figure(feature, topic_roads, attribute):
+async def test_create_figure(feature, topic_roads, attribute, monkeypatch):
     indicator = RoadsThematicAccuracy(
         feature=feature,
         topic=topic_roads,
         attribute=attribute,
+    )
+
+    async def mock_fetch(*args, **kwargs):
+        return mock_response(
+            total_dlm=12000,
+            only_dlm=4000,
+            only_osm=5000,
+            missing_both=1000,
+            present_in_both=2000,
+            present_in_both_agree=1000,
+            present_in_both_not_agree=1000,
+            not_matched=0,
+        )
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.roads_thematic_accuracy.indicator.client.fetch",
+        mock_fetch,
     )
     await indicator.preprocess()
     indicator.calculate()
