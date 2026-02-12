@@ -112,7 +112,7 @@ These calculations consider the area / size of the land cover polygons.
 
 #### Basis-DLM
 
-The [Basis-DLM](https://gdz.bkg.bund.de/index.php/default/digitales-basis-landschaftsmodell-ebenen-basis-dlm-ebenen.html) 
+The [Basis-DLM](https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851) 
 is published by the German Federal Agency for Cartography and Geodesy and describes the topographical
 objects of the landscape and the relief of the Earth's surface in vector format. The objects are defined by their spatial
 location, geometric type, descriptive attributes, and relationships to other objects. Each object has a unique 

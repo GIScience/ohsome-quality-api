@@ -115,7 +115,7 @@ Diese Berechnungen berücksichtigen die Fläche/Größe der Landbedeckungspolygo
 
 #### Basis-DLM
 
-Das [Basis-DLM](https://gdz.bkg.bund.de/index.php/default/digitales-basis-landschaftsmodell-ebenen-basis-dlm-ebenen.html) wird vom Bundesamt für Kartographie und Geodäsie (BKG) veröffentlicht und beschreibt die topographischen
+Das [Basis-DLM](https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851) wird vom Bundesamt für Kartographie und Geodäsie (BKG) veröffentlicht und beschreibt die topographischen
 Objekte der Landschaft und das Relief der Erdoberfläche in Vektorform. Die Objekte sind durch ihre räumliche Lage,
 geometrischen Typ, beschreibende Attribute und Beziehungen zu anderen Objekten definiert.
 Jedes Objekt besitzt eine bundesweit eindeutige Identifikationsnummer.
