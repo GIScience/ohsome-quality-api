@@ -22,10 +22,8 @@ has a maximum. After increased mapping activity saturation is reached near this
 maximum.
 
 ### Limitations
-- different meaningful for different indicators
-  - better for small/ punctual object (houses)
-  - worse for big polygons (land use -> one abrupt mapping step -> low completeness)
-  - 
+Informativeness varies across topics: performs better for small, discrete objects (e.g., houses) but worse for large 
+polygons (e.g., land use), where a single abrupt mapping step can lead to low completeness.
 
 ### References
 
@@ -169,10 +167,14 @@ Derive the ratio of OSM features with present attributes.
 ### Methods and Data
 - intrinsic method
 
-Calculates the percentage of features that contain a certain attribute.
+Calculates the percentage of features that contain a certain attribute filter. There are predefined
+attributes, but you can also define your own.
 
-### Limitation
-Limited to one attribute.
+### Limitations
+Only explicitly tagged attributes are considered. Implicit attributes like the speed limit on paths are not considered. 
+This indicator has the same threshold for all attributes and expects an optimal ratio of 100% of elements to have the specified 
+attributes, which may be not the case for some indicators.
+
 
 ## Building Comparison
 Compares the total building area of OSM with the building area of two reference datasets.
@@ -180,27 +182,49 @@ Compares the total building area of OSM with the building area of two reference 
 ### Methods and Data
 - extrinsic method
 
-The result is the ratio of the total area of buildings in OSM devided by the total area of buildings in the reference dataset.
+The result is the ratio of the total area of buildings in OSM divided by the total area of buildings in the reference dataset.
 
 Reference datasets:
-- [EUBUCCO](https://docs.eubucco.com/): Europe wide building footprints, derived from administrative datasets.
-- [Microsoft Buildings](https://planetarycomputer.microsoft.com/dataset/ms-buildings): Worldwide building footprints, derived from satellite imagery.
+- [EUBUCCO](https://docs.eubucco.com/): Europe wide building footprints, derived from administrative datasets
+- [Microsoft Buildings](https://planetarycomputer.microsoft.com/dataset/ms-buildings): Worldwide building footprints, derived from satellite imagery using machine learning
 
 ### Limitations
-Compares only the overall square meters of building polygons of OSM and reference dataset, not the actual overlap.
+- Compares only the overall square meters of building polygons of OSM and reference dataset, not the actual overlap
+- No quality assessment of reference dataset. OSM may represent the real world more accurate than the reference data
 
-## Currentness
-Estimate currentness of features by classifying contributions based on topic specific temporal thresholds into three groups: up-to-date, in-between and out-of-date.
-Estimate currentness of features by analyzing the distribution of their most recent contributions
-- Determine up-to-date, in-between and out-of-date contributions.
-- Classified into up-to-date, medium, outdated -> Features are considered up-to-date if
-their last edit falls within a predefined short time window.
-- Put contributions into three bins: (1) up-to-date (2) in-between and (3)
-        out-of-date. The range of those bins are based on the topic.
-        After binning determine the result class based on share of features in each bin.
+
+## Currentness Indicator
+
+The Currentness Indicator measures how up-to-date OpenStreetMap (OSM) elements are by analyzing the distribution of 
+their most recent contributions. It evaluates the recency of geometry and tag edits (excluding deletions) and classifies
+features into quality levels based on the time since their last update.
+All contributions since 2008 are considered and aggregated in monthly intervals. Each feature is assigned to a quality 
+class depending on how recently it was last edited. Thresholds are defined in months relative to the current date and 
+are used to distinguish between highly current, intermediate, and outdated features.
+For each feature class, the relative share of contributions falling into these recency classes is calculated. Based on 
+these shares, an overall currentness class is assigned.
+
+### Methods and Data
+- intrinsic approach.
+
+
+Premise:
+The timestamp of the most recent edit reflects how well a feature represents current real-world conditions. Features 
+updated recently are more likely to be accurate and up-to-date, while features not edited for a long period have a higher probability of being outdated.
+Quality classification is performed using predefined recency thresholds expressed in months since the current date. 
+Contributions are grouped into three recency bins (up-to-date, in-between and out-of-date), which are then used to derive the final indicator class.
+
+### Limitations
+
+- Recency of edits does not necessarily guarantee correctness or thematic accuracy
+- Some features may be correct but unchanged for long periods and therefore classified as outdated
+- Mapping activity varies strongly between feature classes and regions
+- The choice of time thresholds influences class assignment and comparability
+
 
 ## Road Comparison
-Result is a ratio of the length of reference roads which are covered by OSM roads to the total length of reference roads.
+Compare the road network of OSM with that of a reference dataset.
+The result is a ratio of the length of reference roads which are covered by OSM roads to the total length of reference roads.
 
 ### Methods and Data
 - extrinsic method
@@ -209,7 +233,10 @@ Identifies corresponding road geometries in OSM and the reference dataset to cal
 
 
 Reference dataset: 
-- [Microsoft Roads](https://github.com/microsoft/RoadDetections): Worldwide dataset of roads, derived from satellite imagery.
+- [Microsoft Roads](https://github.com/microsoft/RoadDetections): Worldwide dataset of roads, derived from satellite imagery using machine learning.
+
+### Limitation
+- No quality assessment of reference dataset. OSM may represent the real world more accurate than the reference data
 
 
 ## User Activity
@@ -223,4 +250,4 @@ Monthly amount of unique users who edited a specific topic in the area of intere
 Additionally, the median for the last 3 years are calculated as well as a regression line to see the current tendency of user activity.
 
 ### Limitations
-Does not give information about data quality on its own but can be used additionally to other indicators.
+- Does not give information about data quality on its own but can be used additionally to other indicators
