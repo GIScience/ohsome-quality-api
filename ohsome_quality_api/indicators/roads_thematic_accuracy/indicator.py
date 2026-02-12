@@ -78,7 +78,6 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.timestamp_osm = datetime.now(timezone.utc)
 
     def calculate(self) -> None:
-        breakpoint()
         if self.matched_data is None:
             raise ValueError("Expected matched data to be present (not None).")
         if self.matched_data.total_dlm is None:
@@ -187,20 +186,13 @@ class RoadsThematicAccuracy(BaseIndicator):
 
 
 def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
-    if attribute is None:
-        labels = [
-            _("Attributes are present in both"),
-            _("Attributes are present only in DLM"),
-            _("Attributes are present only in OSM"),
-            _("Attributes are missing both"),
-        ]
-    else:
-        labels = [
-            _("Attribute is present in both"),
-            _("Attribute is present only in DLM"),
-            _("Attribute is present only in OSM"),
-            _("Attribute is missing both"),
-        ]
+    labels = [
+        _("In both"),
+        _("Only in DLM"),
+        _("Only in OSM"),
+        _("Missing in both"),
+    ]
+
     values = [
         round(result.present_in_both, 2),
         round(result.only_dlm, 2),
