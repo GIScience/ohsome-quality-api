@@ -125,6 +125,13 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
         self.result.description = result_description + description
 
+        self.result.description += (
+            _(" The DLM data is from")
+            + f"{self.timestamp_dlm.strftime('%Y')}"
+            + _(" and the OSM data is from ")
+            + f"{self.result.timestamp_osm.strftime('%Y')}."
+        )
+
     def create_figure(self) -> None:
         # TODO: Why is there no legend if only left plot has been plotted.
         # TODO: Make sure there is always a legend!
@@ -152,33 +159,18 @@ class RoadsThematicAccuracy(BaseIndicator):
                 col=2,
             )
 
-        fig.update_layout(
-            annotations=[
-                dict(
-                    text=(
-                        f"<span style='font-size:smaller'>"
-                        f"{_('DLM data from')} {self.timestamp_dlm.strftime('%Y')}"
-                        f"</span><br>"
-                        f"<span style='font-size:smaller'>"
-                        f"{_('OSM data from')} "
-                        f"{self.result.timestamp_osm.strftime('%Y')}"
-                        f"</span>"
-                    ),
-                    xref="paper",
-                    yref="paper",
-                    x=0.5,
-                    y=-0.18,
-                    xanchor="center",
-                    yanchor="top",
-                    showarrow=False,
-                    align="center",
-                )
-            ],
-            margin=dict(b=120),
-        )
-
         fig.update_yaxes(rangemode="nonnegative", title_text=_("Length (in km)"))
         fig.update_xaxes(rangemode="nonnegative")
+
+        fig.update_layout(
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.25,
+                xanchor="center",
+                x=0.5,
+            ),
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
