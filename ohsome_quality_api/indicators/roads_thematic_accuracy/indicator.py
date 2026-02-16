@@ -64,18 +64,15 @@ class RoadsThematicAccuracy(BaseIndicator):
             query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=(response[0].get("total_dlm") or 0) / 1000,
-            present_in_both=(response[0].get("present_in_both") or 0) / 1000,
-            only_dlm=(response[0].get("only_dlm") or 0) / 1000,
-            only_osm=(response[0].get("only_osm") or 0) / 1000,
-            missing_both=(response[0].get("missing_both") or 0) / 1000,
-            present_in_both_agree=(response[0].get("present_in_both_agree") or 0)
+            total_dlm=response[0].get("total_dlm", 0) / 1000,
+            present_in_both=response[0].get("present_in_both", 0) / 1000,
+            only_dlm=response[0].get("only_dlm", 0) / 1000,
+            only_osm=response[0].get("only_osm", 0) / 1000,
+            missing_both=response[0].get("missing_both", 0) / 1000,
+            present_in_both_agree=response[0].get("present_in_both_agree", 0) / 1000,
+            present_in_both_not_agree=response[0].get("present_in_both_not_agree", 0)
             / 1000,
-            present_in_both_not_agree=(
-                response[0].get("present_in_both_not_agree") or 0
-            )
-            / 1000,
-            not_matched=(response[0].get("not_matched") or 0) / 1000,
+            not_matched=response[0].get("not_matched", 0) / 1000,
         )
         # TODO: take real timestamps from data
         self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
