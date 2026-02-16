@@ -197,7 +197,7 @@ class MappingSaturation(BaseIndicator):
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
         # plot asymptote
-        asymptote = self.data["best_fit"]["asymptote"]
+        asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
         if asymptote < max(self.values) * 5:
             hovertext = _("Estimated total data: {asymptote}").format(
                 asymptote=asymptote
