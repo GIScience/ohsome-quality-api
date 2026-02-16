@@ -64,15 +64,18 @@ class RoadsThematicAccuracy(BaseIndicator):
             query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=response[0].get("total_dlm", 0) / 1000,
-            present_in_both=response[0].get("present_in_both", 0) / 1000,
-            only_dlm=response[0].get("only_dlm", 0) / 1000,
-            only_osm=response[0].get("only_osm", 0) / 1000,
-            missing_both=response[0].get("missing_both", 0) / 1000,
-            present_in_both_agree=response[0].get("present_in_both_agree", 0) / 1000,
-            present_in_both_not_agree=response[0].get("present_in_both_not_agree", 0)
+            total_dlm=(response[0].get("total_dlm") or 0) / 1000,
+            present_in_both=(response[0].get("present_in_both") or 0) / 1000,
+            only_dlm=(response[0].get("only_dlm") or 0) / 1000,
+            only_osm=(response[0].get("only_osm") or 0) / 1000,
+            missing_both=(response[0].get("missing_both") or 0) / 1000,
+            present_in_both_agree=(response[0].get("present_in_both_agree") or 0)
             / 1000,
-            not_matched=response[0].get("not_matched", 0) / 1000,
+            present_in_both_not_agree=(
+                response[0].get("present_in_both_not_agree") or 0
+            )
+            / 1000,
+            not_matched=(response[0].get("not_matched") or 0) / 1000,
         )
         # TODO: take real timestamps from data
         self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -126,7 +129,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.description = result_description + description
 
         self.result.description += (
-            _(" The DLM data is from")
+            _(" The DLM data is from ")
             + f"{self.timestamp_dlm.strftime('%Y')}"
             + _(" and the OSM data is from ")
             + f"{self.result.timestamp_osm.strftime('%Y')}."
@@ -186,20 +189,23 @@ def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
     ]
 
     values = [
-        round(result.present_in_both, 2),
-        round(result.only_dlm, 2),
-        round(result.only_osm, 2),
-        round(result.missing_both, 2),
+        result.present_in_both,
+        result.only_dlm,
+        result.only_osm,
+        result.missing_both,
     ]
     total = sum(values)
     text = []
+
     for value in values:
         value_formatted = format_percent(
             value / total,
             format="##0.#%",
             locale=get_locale(),
         )
-        text.append(f"{value} ({value_formatted})")
+        text.append(
+            f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
+        )
     bar = pgo.Bar(
         x=labels,
         y=values,
@@ -223,8 +229,8 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
             _("Attribute is different"),
         ]
     values = [
-        round(result.present_in_both_agree, 2),
-        round(result.present_in_both_not_agree, 2),
+        result.present_in_both_agree,
+        result.present_in_both_not_agree,
     ]
     total = sum(values)
     text = []
@@ -235,7 +241,9 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
                 format="##0.#%",
                 locale=get_locale(),
             )
-            text.append(f"{value} ({value_formatted})")
+            text.append(
+                f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
+            )
     bar = pgo.Bar(
         x=labels,
         y=values,
