@@ -125,6 +125,7 @@ class MappingSaturation(BaseIndicator):
             logger.info("No model has been run successfully.")
             return
         self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
+        self.best_fit.fitted_values = np.round(self.best_fit.fitted_values, 2)
         logger.info("Best fitting model: " + self.best_fit.name)
         # Saturation of the last 3 years of the fitted curve
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
@@ -196,7 +197,7 @@ class MappingSaturation(BaseIndicator):
             fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
         # plot asymptote
-        asymptote = self.data["best_fit"]["asymptote"]
+        asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
         if asymptote < max(self.values) * 5:
             hovertext = _("Estimated total data: {asymptote}").format(
                 asymptote=asymptote

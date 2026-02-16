@@ -13,6 +13,8 @@
 - build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
 * build: migrate pre-commit hooks to prek ([a3edf214])
 * tests: migrate from approvaltests to pytest_approval ([#997])
+* round asymptote and fitted values to second decimal place ([55174400] [87c47075])
+* fix: wrap rpy2 calls in rpy2 default_converter context manager ([74a64e6c])
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -26,6 +28,8 @@
 [e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 [a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
 [#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
+[87c47075]: https://github.com/GIScience/ohsome-quality-api/commit/87c47075
+[74a64e6c]: https://github.com/GIScience/ohsome-quality-api/commit/74a64e6c
 
 ## Release 1.14.0
 
