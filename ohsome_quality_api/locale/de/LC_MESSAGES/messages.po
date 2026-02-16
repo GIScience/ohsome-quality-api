@@ -1176,8 +1176,8 @@ msgstr "'Alle Attribute'"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:130
 #, fuzzy
-msgid " The DLM data is from"
-msgstr "Die DLM-Daten sind von"
+msgid " The DLM data is from "
+msgstr "Die DLM-Daten sind von "
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:131
 #, fuzzy
