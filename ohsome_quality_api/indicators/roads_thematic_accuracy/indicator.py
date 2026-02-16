@@ -64,14 +64,18 @@ class RoadsThematicAccuracy(BaseIndicator):
             query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=response[0]["total_dlm"],
-            present_in_both=response[0]["present_in_both"],
-            only_dlm=response[0]["only_dlm"],
-            only_osm=response[0]["only_osm"],
-            missing_both=response[0]["missing_both"],
-            present_in_both_agree=response[0]["present_in_both_agree"],
-            present_in_both_not_agree=response[0]["present_in_both_not_agree"],
-            not_matched=response[0]["not_matched"],
+            total_dlm=(response[0].get("total_dlm") or 0) / 1000,
+            present_in_both=(response[0].get("present_in_both") or 0) / 1000,
+            only_dlm=(response[0].get("only_dlm") or 0) / 1000,
+            only_osm=(response[0].get("only_osm") or 0) / 1000,
+            missing_both=(response[0].get("missing_both") or 0) / 1000,
+            present_in_both_agree=(response[0].get("present_in_both_agree") or 0)
+            / 1000,
+            present_in_both_not_agree=(
+                response[0].get("present_in_both_not_agree") or 0
+            )
+            / 1000,
+            not_matched=(response[0].get("not_matched") or 0) / 1000,
         )
         # TODO: take real timestamps from data
         self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -124,6 +128,13 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
         self.result.description = result_description + description
 
+        self.result.description += (
+            _(" The DLM data is from ")
+            + f"{self.timestamp_dlm.strftime('%Y')}"
+            + _(" and the OSM data is from ")
+            + f"{self.result.timestamp_osm.strftime('%Y')}."
+        )
+
     def create_figure(self) -> None:
         # TODO: Why is there no legend if only left plot has been plotted.
         # TODO: Make sure there is always a legend!
@@ -151,34 +162,18 @@ class RoadsThematicAccuracy(BaseIndicator):
                 col=2,
             )
 
-        fig.update_layout(
-            {
-                "annotations": [
-                    {
-                        "text": (
-                            f"<span style='font-size:smaller'>"
-                            f"{_('DLM data from')} "
-                            f"{self.timestamp_dlm.strftime('%Y')}"
-                            f"</span>"
-                            f"<br>"
-                            f"<span style='font-size:smaller'>"
-                            f"{_('OSM data from')} "
-                            f"{self.result.timestamp_osm.strftime('%Y')}"
-                            f"</span>"
-                        ),
-                        "xref": "paper",
-                        "yref": "paper",
-                        "x": 1.1,
-                        "y": 0.8,
-                        "yanchor": "top",
-                        "showarrow": False,
-                        "align": "left",
-                    }
-                ],
-            }
-        )
-        fig.update_yaxes(rangemode="nonnegative")
+        fig.update_yaxes(rangemode="nonnegative", title_text=_("Length (in km)"))
         fig.update_xaxes(rangemode="nonnegative")
+
+        fig.update_layout(
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.25,
+                xanchor="center",
+                x=0.5,
+            ),
+        )
 
         raw = fig.to_dict()
         raw["layout"].pop("template")  # remove boilerplate
@@ -186,35 +181,31 @@ class RoadsThematicAccuracy(BaseIndicator):
 
 
 def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
-    if attribute is None:
-        labels = [
-            _("Attributes are present in both"),
-            _("Attributes are present only in DLM"),
-            _("Attributes are present only in OSM"),
-            _("Attributes are missing both"),
-        ]
-    else:
-        labels = [
-            _("Attribute is present in both"),
-            _("Attribute is present only in DLM"),
-            _("Attribute is present only in OSM"),
-            _("Attribute is missing both"),
-        ]
+    labels = [
+        _("In both"),
+        _("Only in DLM"),
+        _("Only in OSM"),
+        _("Missing in both"),
+    ]
+
     values = [
-        round(result.present_in_both, 2),
-        round(result.only_dlm, 2),
-        round(result.only_osm, 2),
-        round(result.missing_both, 2),
+        result.present_in_both,
+        result.only_dlm,
+        result.only_osm,
+        result.missing_both,
     ]
     total = sum(values)
     text = []
+
     for value in values:
         value_formatted = format_percent(
             value / total,
             format="##0.#%",
             locale=get_locale(),
         )
-        text.append(f"{value} ({value_formatted})")
+        text.append(
+            f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
+        )
     bar = pgo.Bar(
         x=labels,
         y=values,
@@ -238,8 +229,8 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
             _("Attribute is different"),
         ]
     values = [
-        round(result.present_in_both_agree, 2),
-        round(result.present_in_both_not_agree, 2),
+        result.present_in_both_agree,
+        result.present_in_both_not_agree,
     ]
     total = sum(values)
     text = []
@@ -250,7 +241,9 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
                 format="##0.#%",
                 locale=get_locale(),
             )
-            text.append(f"{value} ({value_formatted})")
+            text.append(
+                f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
+            )
     bar = pgo.Bar(
         x=labels,
         y=values,
