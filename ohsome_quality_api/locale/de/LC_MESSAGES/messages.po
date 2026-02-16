@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-16 14:05+0100\n"
+"POT-Creation-Date: 2026-02-16 14:09+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -999,10 +999,11 @@ msgstr ""
 "Fläche berücksichtigt."
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:171
-msgid "No model has been run successfully. Saturation could not be determined."
-msgstr ""
-"Es wurde kein Modell erfolgreich ausgeführt. Die Sättigung konnte nicht "
-"bestimmt werden."
+msgid ""
+"We could not fit any saturation curve onto the data, therefore we could "
+"not determine any saturation level."
+msgstr "Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten wir "
+"keinen Sättigungsgrad bestimmen."
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
 msgid "OSM data"
@@ -2311,4 +2312,10 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "Different value"
 #~ msgstr "Unterschiedliche Werte"
+
+#~ msgid "No model has been run successfully. Saturation could not be determined."
+#~ msgstr ""
+#~ "Es wurde kein Modell erfolgreich "
+#~ "ausgeführt. Die Sättigung konnte nicht "
+#~ "bestimmt werden."
 

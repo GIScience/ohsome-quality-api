@@ -123,8 +123,9 @@ class TestFigure:
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert (
-            indicator.result.description == "No model has been run successfully."
-            " Saturation could not be determined."
+            indicator.result.description
+            == "We could not fit any saturation curve onto the data, "
+            "therefore we could not determine any saturation level."
         )
         assert verify_plotly(indicator.result.figure)
 

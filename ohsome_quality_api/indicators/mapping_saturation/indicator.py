@@ -168,8 +168,8 @@ class MappingSaturation(BaseIndicator):
         if self.result.label == "undefined":
             if not self.fitted_models and self.check_edge_cases() == "":
                 self.result.description = _(
-                    "No model has been run successfully. "
-                    "Saturation could not be determined."
+                    "We could not fit any saturation curve onto the data, "
+                    "therefore we could not determine any saturation level."
                 )
             else:
                 logger.info("Result is undefined. Skipping figure creation.")
