@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-16 11:22+0100\n"
+"POT-Creation-Date: 2026-02-16 14:05+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ohsome_quality_api/api/request_models.py:145
 msgid "ohsome filter query representing custom attributes."
@@ -917,7 +917,6 @@ msgstr "CORINE-Daten von"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:300
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:444
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:152
 msgid "OSM data from"
 msgstr "OSM-Daten von"
 
@@ -999,78 +998,68 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:169
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:171
 msgid "No model has been run successfully. Saturation could not be determined."
 msgstr ""
 "Es wurde kein Modell erfolgreich ausgeführt. Die Sättigung konnte nicht "
 "bestimmt werden."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:179
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:188
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:192
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:190
-#: ohsome_quality_api/indicators/user_activity/indicator.py:189
-msgid "Date"
-msgstr "Datum"
-
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:194
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:221
-msgid "Value"
-msgstr "Wert"
-
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:201
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:199
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:203
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:207
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:214
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:220
 #: ohsome_quality_api/indicators/user_activity/indicator.py:189
 msgid "Date"
 msgstr "Datum"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:218
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:224
 msgid "Value"
 msgstr "Wert"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:221
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:227
 #, fuzzy
 msgid "Area"
 msgstr "Fläche"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:222
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:228
 msgid "Count"
 msgstr "Anzahl"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:223
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:229
 msgid "Lenght"
 msgstr "Länge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:224
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:230
 msgid "Perimeter"
 msgstr "Durchmesser"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:225
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:231
 msgid "Density"
 msgstr "Dichte"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:248
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:253
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:252
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:257
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:255
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1078,7 +1067,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:259
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1206,7 +1195,7 @@ msgstr ""
 " eine Gesamtlänge von $length_total.$length_matched von $dataset werden "
 "von OSM-Straßen abgedeckt."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:97
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:98
 msgid ""
 " The graph on the left shows information for the presence of attributes "
 "in the two datasets."
@@ -1214,7 +1203,7 @@ msgstr ""
 " Die Grafik auf der linken Seite zeigt Informationen zum Vorhandensein "
 "von Attributen in den beiden Datensätzen."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:102
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:103
 msgid ""
 " The right graphs shows the agreement for all elements that contain the "
 "selected attribute(s) in both datasets."
@@ -1222,7 +1211,7 @@ msgstr ""
 " Die rechte Grafik zeigt die Übereinstimmung für alle Elemente, die "
 "das/die ausgewählte(n) Attribut(e) in beiden Datensätzen enthalten."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:108
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:109
 msgid ""
 " There are no matched roads where the selected attribute(s) are present "
 "in both datasets"
@@ -1230,59 +1219,72 @@ msgstr ""
 " Es gibt keine übereinstimmenden Straßen, bei denen das/die "
 "ausgewählte(n) Attribut(e) in beiden Datensätzen vorhanden ist/sind."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:119
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:121
 #, fuzzy
 msgid "'All attributes'"
 msgstr "'Alle Attribute'"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:147
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:132
 #, fuzzy
 msgid " The DLM data is from "
 msgstr "Die DLM-Daten sind von "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:131
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:134
 #, fuzzy
 msgid " and the OSM data is from "
 msgstr " und die OSM-Daten sind von "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Both"
-msgstr "Beide"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:165
+msgid "Length (in km)"
+msgstr ""
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Only DLM"
-msgstr "Nur DLM"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Only OSM"
-msgstr "Nur OSM"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:176
-msgid "Missing both"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:185
+#, fuzzy
+msgid "In both"
 msgstr "Fehlt in beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:195
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:186
 #, fuzzy
-msgid "Presence"
-msgstr "Referenz"
+msgid "Only in DLM"
+msgstr "Nur DLM"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:218
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:187
+#, fuzzy
+msgid "Only in OSM"
+msgstr "Nur OSM"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:188
+#, fuzzy
+msgid "Missing in both"
+msgstr "Fehlt in beiden"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:215
+#, fuzzy
+msgid "Attribute Presence [# (%)]"
+msgstr "Attributvollständigkeit"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:223
+#, fuzzy
+msgid "Attributes are the same"
+msgstr "Attribut ist gleich "
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:224
 msgid "Attributes are different"
 msgstr "Attribute sind unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:222
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:228
 #, fuzzy
 msgid "Attribute is the same"
 msgstr "Attribut ist gleich "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:223
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:229
 #, fuzzy
-msgid "Same value"
-msgstr "Selber Wert"
+msgid "Attribute is different"
+msgstr "Attribute sind unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:201
-msgid "Different value"
-msgstr "Unterschiedliche Werte"
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:253
+msgid "Attribute Alignment [# (%)]"
+msgstr ""
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/templates.yaml
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
@@ -2297,4 +2299,16 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ "Ungültiger Schlüssel für die "
 #~ "Qualitätsdimension. Gültige Schlüssel für "
 #~ "Qualitätsdimensionen sind: "
+
+#~ msgid "Both"
+#~ msgstr "Beide"
+
+#~ msgid "Presence"
+#~ msgstr "Referenz"
+
+#~ msgid "Same value"
+#~ msgstr "Selber Wert"
+
+#~ msgid "Different value"
+#~ msgstr "Unterschiedliche Werte"
 
