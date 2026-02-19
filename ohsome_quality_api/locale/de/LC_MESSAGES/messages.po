@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-16 14:09+0100\n"
+"POT-Creation-Date: 2026-02-19 15:56+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -1002,8 +1002,9 @@ msgstr ""
 msgid ""
 "We could not fit any saturation curve onto the data, therefore we could "
 "not determine any saturation level."
-msgstr "Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten wir "
-"keinen Sättigungsgrad bestimmen."
+msgstr ""
+"Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten "
+"wir keinen Sättigungsgrad bestimmen."
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
 msgid "OSM data"
@@ -1237,22 +1238,22 @@ msgstr " und die OSM-Daten sind von "
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:165
 msgid "Length (in km)"
-msgstr ""
+msgstr "Länge (in km)"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:185
 #, fuzzy
 msgid "In both"
-msgstr "Fehlt in beiden"
+msgstr "In beiden"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:186
 #, fuzzy
 msgid "Only in DLM"
-msgstr "Nur DLM"
+msgstr "Nur im DLM"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:187
 #, fuzzy
 msgid "Only in OSM"
-msgstr "Nur OSM"
+msgstr "Nur in OSM"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:188
 #, fuzzy
