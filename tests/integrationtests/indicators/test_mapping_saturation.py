@@ -115,7 +115,7 @@ class TestFigure:
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        assert verify_plotly(indicator.result.figure, report_always=True)
+        assert verify_plotly(indicator.result.figure)
 
     def test_create_figure_no_fitted_model(self, indicator):
         indicator.result.class_ = None
