@@ -104,7 +104,7 @@ class TestCalculation:
 
 
 class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -117,16 +117,7 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure, report_always=True)
 
-    @pytest.mark.asyncio
-    @oqapi_vcr.use_cassette
-    async def test_create_figure_no_fitted_model(
-        self,
-        topic_building_count,
-        feature_germany_heidelberg,
-    ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        await indicator.preprocess()
-        indicator.calculate()
+    def test_create_figure_no_fitted_model(self, indicator):
         indicator.result.class_ = None
         indicator.fitted_models = []
         indicator.create_figure()
