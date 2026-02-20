@@ -15,6 +15,10 @@
 * tests: migrate from approvaltests to pytest_approval ([#997])
 * round asymptote and fitted values to second decimal place ([55174400] [87c47075])
 * fix: wrap rpy2 calls in rpy2 default_converter context manager ([74a64e6c])
+- build: migrate pre-commit hooks to prek ([a3edf214])
+- i18n: add some missing translations to german ([#996])
+- currentness: add minor edge cases for length and area aggregation type ([#996]) 
+- mapping-saturation: create plot when no model could be fitted ([#996]) 
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -30,6 +34,7 @@
 [#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
 [87c47075]: https://github.com/GIScience/ohsome-quality-api/commit/87c47075
 [74a64e6c]: https://github.com/GIScience/ohsome-quality-api/commit/74a64e6c
+[#996]: https://github.com/GIScience/ohsome-quality-api/pull/996
 
 ## Release 1.14.0
 

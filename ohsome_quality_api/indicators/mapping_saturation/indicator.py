@@ -166,8 +166,14 @@ class MappingSaturation(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logger.info("Result is undefined. Skipping figure creation.")
-            return
+            if not self.fitted_models and self.check_edge_cases() == "":
+                self.result.description = _(
+                    "We could not fit any saturation curve onto the data, "
+                    "therefore we could not determine any saturation level."
+                )
+            else:
+                logger.info("Result is undefined. Skipping figure creation.")
+                return
 
         fig = pgo.Figure()
         fig.add_trace(
@@ -178,14 +184,37 @@ class MappingSaturation(BaseIndicator):
                 line=dict(color=Color.BLUE.value),
             ),
         )
-        fig.add_trace(
-            pgo.Scatter(
-                x=self.timestamps,
-                y=self.best_fit.fitted_values.tolist(),
-                name=_("Modelled saturation curve"),
-                line=dict(color=Color.RED.value),
-            ),
-        )
+        if self.fitted_models:
+            fig.add_trace(
+                pgo.Scatter(
+                    x=self.timestamps,
+                    y=self.best_fit.fitted_values.tolist(),
+                    name=_("Modelled saturation curve"),
+                    line=dict(color=Color.RED.value),
+                ),
+            )
+            # plot asymptote
+            asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
+            if asymptote < max(self.values) * 5:
+                hovertext = _("Estimated total data: {asymptote}").format(
+                    asymptote=asymptote
+                )
+                asymptote_line_values = [asymptote for _ in self.values]
+                fig.add_trace(
+                    pgo.Scatter(
+                        x=self.timestamps,
+                        y=asymptote_line_values,
+                        name=_("Estimated total data"),
+                        showlegend=True,
+                        line=dict(color=Color.RED.value, dash="dash"),
+                        hovertext=hovertext,
+                    )
+                )
+                y_max = max(
+                    max(self.values), max(self.best_fit.fitted_values), asymptote
+                )
+                fig.update_yaxes(range=[min(self.values), y_max * 1.05])
+
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(
             title_text=_("Date"),
@@ -194,27 +223,17 @@ class MappingSaturation(BaseIndicator):
         if isinstance(self.topic, TopicData):
             fig.update_yaxes(title_text=_("Value"))
         else:
-            fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
+            aggregation_type_mapping = {
+                "area": _("Area"),
+                "count": _("Count"),
+                "length": _("Lenght"),
+                "perimeter": _("Perimeter"),
+                "area/density": _("Density"),
+            }
 
-        # plot asymptote
-        asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
-        if asymptote < max(self.values) * 5:
-            hovertext = _("Estimated total data: {asymptote}").format(
-                asymptote=asymptote
+            fig.update_yaxes(
+                title_text=aggregation_type_mapping[self.topic.aggregation_type]
             )
-            asymptote_line_values = [asymptote for _ in self.values]
-            fig.add_trace(
-                pgo.Scatter(
-                    x=self.timestamps,
-                    y=asymptote_line_values,
-                    name=_("Estimated total data"),
-                    showlegend=True,
-                    line=dict(color=Color.RED.value, dash="dash"),
-                    hovertext=hovertext,
-                )
-            )
-            y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)
-            fig.update_yaxes(range=[min(self.values), y_max * 1.05])
 
         fig.update_layout(showlegend=True)
         # fixed legend, because we do not expect high contributions in 2008

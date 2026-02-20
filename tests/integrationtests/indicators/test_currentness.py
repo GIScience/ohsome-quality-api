@@ -165,6 +165,28 @@ class TestCalculation:
     )
     @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
+    async def test_calculate_aggregation_types_no_data(
+        self,
+        topic_key,
+        feature_germany_heidelberg,
+    ):
+        topic = get_topic_preset(topic_key)
+        indicator = Currentness(topic, feature_germany_heidelberg)
+        await indicator.preprocess()
+        if topic_key == "building-count":
+            indicator.contrib_sum = 1
+        else:
+            indicator.contrib_sum = 0.5
+        indicator.calculate()
+        assert verify(indicator.result.description)
+
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types: count, area and length
+        ["building-count", "building-area", "roads"],
+    )
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types(
         self,
         topic_key,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-18 11:35+0100\n"
+"POT-Creation-Date: 2026-02-19 15:56+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -567,6 +567,11 @@ msgstr ""
 "OSM enthält deutlich mehr Gebäude als die Referenzdatensätze. Im "
 "Referenzdatensatz fehlen wahrscheinlich viele Gebäude."
 
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:208
+#, fuzzy
+msgid "OSM building area"
+msgstr "OSM-Gebäudefläche"
+
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:225
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:234
 msgid "Reference"
@@ -702,6 +707,24 @@ msgstr ""
 "des ausgewählten Themas vorhanden sind."
 
 #: ohsome_quality_api/indicators/currentness/indicator.py:456
+#, fuzzy
+msgid ""
+"Please note that in the area of interest less than 1 km of the selected "
+"topic are present today. "
+msgstr ""
+"Bitte beachte, dass im Untersuchungsgebiet heute weniger als 1 km des "
+"ausgewählten Themas vorhanden sind."
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:461
+#, fuzzy
+msgid ""
+"Please note that in the area of interest less than 1 km² of the selected "
+"topic are present today. "
+msgstr ""
+"Bitte beachte, dass im Untersuchungsgebiet heute weniger als 1 km² des "
+"ausgewählten Themas vorhanden sind."
+
+#: ohsome_quality_api/indicators/currentness/indicator.py:466
 #, python-brace-format
 msgid ""
 "Please note that there was no mapping activity for {num_months} months in"
@@ -975,41 +998,70 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:177
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:171
+msgid ""
+"We could not fit any saturation curve onto the data, therefore we could "
+"not determine any saturation level."
+msgstr ""
+"Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten "
+"wir keinen Sättigungsgrad bestimmen."
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:185
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:192
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:191
-#: ohsome_quality_api/indicators/user_activity/indicator.py:189
-msgid "Date"
-msgstr "Datum"
-
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:195
-msgid "Value"
-msgstr "Wert"
-
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:202
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:199
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:210
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:207
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:234
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:220
+#: ohsome_quality_api/indicators/user_activity/indicator.py:189
+msgid "Date"
+msgstr "Datum"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:224
+msgid "Value"
+msgstr "Wert"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:227
+#, fuzzy
+msgid "Area"
+msgstr "Fläche"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:228
+msgid "Count"
+msgstr "Anzahl"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:229
+msgid "Lenght"
+msgstr "Länge"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:230
+msgid "Perimeter"
+msgstr "Durchmesser"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:231
+msgid "Density"
+msgstr "Dichte"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:253
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:238
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:257
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:241
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1017,7 +1069,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:245
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1189,14 +1241,17 @@ msgid "Length (in km)"
 msgstr "Länge (in km)"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:185
+#, fuzzy
 msgid "In both"
 msgstr "In beiden"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:186
+#, fuzzy
 msgid "Only in DLM"
 msgstr "Nur im DLM"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:187
+#, fuzzy
 msgid "Only in OSM"
 msgstr "Nur in OSM"
 
@@ -1208,12 +1263,12 @@ msgstr "Fehlt in beiden"
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:215
 #, fuzzy
 msgid "Attribute Presence [# (%)]"
-msgstr "Attributvorhandensein [# (%)]"
+msgstr "Attributvollständigkeit"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:223
 #, fuzzy
 msgid "Attributes are the same"
-msgstr "Attribute sind gleich"
+msgstr "Attribut ist gleich "
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:224
 msgid "Attributes are different"
@@ -1227,11 +1282,11 @@ msgstr "Attribut ist gleich "
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:229
 #, fuzzy
 msgid "Attribute is different"
-msgstr "Attribut is unterschiedlich"
+msgstr "Attribute sind unterschiedlich"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:253
 msgid "Attribute Alignment [# (%)]"
-msgstr "Attributzuweisung [# (%)]"
+msgstr ""
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/templates.yaml
 #: ohsome_quality_api/indicators/user_activity/templates.yaml
@@ -2250,12 +2305,6 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ msgid "Both"
 #~ msgstr "Beide"
 
-#~ msgid "Only DLM"
-#~ msgstr "Nur DLM"
-
-#~ msgid "Only OSM"
-#~ msgstr "Nur OSM"
-
 #~ msgid "Presence"
 #~ msgstr "Referenz"
 
@@ -2265,36 +2314,9 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ msgid "Different value"
 #~ msgstr "Unterschiedliche Werte"
 
-#~ msgid ""
-#~ "Comparison of OSM road attributes with"
-#~ " the attributes from the <a "
-#~ "href=\"https://www.adv-online.de/AdV-"
-#~ "Produkte/Geotopographie/Digitale-Landschaftsmodelle/Basis-"
-#~ "DLM/\">Digitales Landschaftsmodell (DLM) </a> "
-#~ "dataset."
+#~ msgid "No model has been run successfully. Saturation could not be determined."
 #~ msgstr ""
-
-#~ msgid "Attributes are present in both"
-#~ msgstr ""
-
-#~ msgid "Attributes are present only in DLM"
-#~ msgstr ""
-
-#~ msgid "Attributes are present only in OSM"
-#~ msgstr "Attributvollständigkeit"
-
-#~ msgid "Attributes are missing both"
-#~ msgstr "Fehlt in beiden"
-
-#~ msgid "Attribute is present in both"
-#~ msgstr ""
-
-#~ msgid "Attribute is present only in DLM"
-#~ msgstr ""
-
-#~ msgid "Attribute is present only in OSM"
-#~ msgstr "Attributvollständigkeit"
-
-#~ msgid "DLM data from"
-#~ msgstr "OSM-Daten von"
+#~ "Es wurde kein Modell erfolgreich "
+#~ "ausgeführt. Die Sättigung konnte nicht "
+#~ "bestimmt werden."
 

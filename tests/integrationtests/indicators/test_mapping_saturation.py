@@ -117,6 +117,18 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
+    def test_create_figure_no_fitted_model(self, indicator):
+        indicator.result.class_ = None
+        indicator.fitted_models = []
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert (
+            indicator.result.description
+            == "We could not fit any saturation curve onto the data, "
+            "therefore we could not determine any saturation level."
+        )
+        assert verify_plotly(indicator.result.figure)
+
 
 @oqapi_vcr.use_cassette
 def test_immutable_attribute(
