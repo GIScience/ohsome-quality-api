@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.15
 
 - refactor: remove ohsomedb api parameter ([#974])
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
