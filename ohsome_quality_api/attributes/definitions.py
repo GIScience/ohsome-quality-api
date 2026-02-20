@@ -52,7 +52,31 @@ def get_attribute_preset(topic_key: str) -> List[Attribute]:
         ) from error
 
 
-def build_attribute_filter(attribute_key: List[str] | str, topic_key: str) -> str:
+def build_attribute_filter_ohsomedb(
+    attribute_key: List[str] | str, topic_key: str
+) -> str:
+    """Build attribute filter for ohsome API query."""
+    attributes = get_attributes()
+    try:
+        if isinstance(attribute_key, str):
+            return attribute_key
+        else:
+            attribute_filter = ""
+            for i, key in enumerate(attribute_key):
+                if i == 0:
+                    attribute_filter = "(" + attributes[topic_key][key].filter + ")"
+                else:
+                    attribute_filter += (
+                        " and (" + attributes[topic_key][key].filter + ")"
+                    )
+            return attribute_filter
+    except KeyError as error:
+        raise KeyError("Invalid topic or attribute key(s).") from error
+
+
+def build_attribute_filter_ohsomeapi(
+    attribute_key: List[str] | str, topic_key: str
+) -> str:
     """Build attribute filter for ohsome API query."""
     attributes = get_attributes()
     try:
