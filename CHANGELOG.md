@@ -1,6 +1,10 @@
 # Changelog
 
-## Release 1.15
+## Release 1.16.0
+
+- feat: make thematic accuracy indicator for road attributes available in production by marking it as core (roads-thematic-accuracy) ([f454a7a2])
+
+## Release 1.15.0
 
 - refactor: remove ohsomedb api parameter ([#974])
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
@@ -35,6 +39,7 @@
 [87c47075]: https://github.com/GIScience/ohsome-quality-api/commit/87c47075
 [74a64e6c]: https://github.com/GIScience/ohsome-quality-api/commit/74a64e6c
 [#996]: https://github.com/GIScience/ohsome-quality-api/pull/996
+[f454a7a2]: https://github.com/GIScience/ohsome-quality-api/commit/f454a7a2
 
 ## Release 1.14.0
 
