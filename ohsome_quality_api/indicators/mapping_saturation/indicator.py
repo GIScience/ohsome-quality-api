@@ -147,6 +147,8 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.result.value > self.above_one_upper_threshold:
             self.result.class_ = 1
+        elif self.result.value == 0:
+            self.result.class_ = None
         else:
             raise ValueError(
                 "Result value (saturation) is an unexpected value: {}".format(
