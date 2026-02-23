@@ -89,6 +89,7 @@ roads-thematic-accuracy:
   name: Road Accuracy
   projects:
     - bkg
+    - core
   quality_dimension: none
   description: >-
     Comparison of OSM road attributes with the attributes from the <a target="_blank"
