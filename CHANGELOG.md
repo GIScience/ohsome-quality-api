@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 1.16.1
+
+- fix: mapping-saturation does not fail if result value is 0
+
 ## Release 1.16.0
 
 - feat: make thematic accuracy indicator for road attributes available in production by marking it as core (roads-thematic-accuracy) ([f454a7a2])
