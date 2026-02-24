@@ -2,6 +2,22 @@
 
 ## Current Main
 
+- feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
+
+
+[#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
+
+
+## Release 1.16.1
+
+- fix: mapping-saturation does not fail if result value is 0
+
+## Release 1.16.0
+
+- feat: make thematic accuracy indicator for road attributes available in production by marking it as core (roads-thematic-accuracy) ([f454a7a2])
+
+## Release 1.15.0
+
 - refactor: remove ohsomedb api parameter ([#974])
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
 - refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
@@ -13,7 +29,12 @@
 - build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
 * build: migrate pre-commit hooks to prek ([a3edf214])
 * tests: migrate from approvaltests to pytest_approval ([#997])
-- feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
+* round asymptote and fitted values to second decimal place ([55174400] [87c47075])
+* fix: wrap rpy2 calls in rpy2 default_converter context manager ([74a64e6c])
+- build: migrate pre-commit hooks to prek ([a3edf214])
+- i18n: add some missing translations to german ([#996])
+- currentness: add minor edge cases for length and area aggregation type ([#996]) 
+- mapping-saturation: create plot when no model could be fitted ([#996]) 
 
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
@@ -27,7 +48,6 @@
 [e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 [a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
 [#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
-[#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
 
 ## Release 1.14.0
 

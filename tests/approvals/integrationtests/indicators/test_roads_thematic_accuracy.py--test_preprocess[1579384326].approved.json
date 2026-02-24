@@ -1,10 +1,10 @@
 {
- "total_dlm": 10.335665494130623,
- "present_in_both": 6.452208747801436,
- "only_dlm": 0.9380884648928797,
- "only_osm": 2.3911510470909954,
- "missing_both": 0.5542172343452861,
- "present_in_both_agree": 5.58845932447084,
- "present_in_both_not_agree": 0.8637494233305927,
- "not_matched": 0.4945458609868195
+ "total_dlm": 0.010335665494130623,
+ "present_in_both": 0.006452208747801435,
+ "only_dlm": 0.0009380884648928796,
+ "only_osm": 0.0023911510470909954,
+ "missing_both": 0.0005542172343452861,
+ "present_in_both_agree": 0.00558845932447084,
+ "present_in_both_not_agree": 0.0008637494233305927,
+ "not_matched": 0.0004945458609868195
 }

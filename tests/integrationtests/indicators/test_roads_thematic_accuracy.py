@@ -156,6 +156,7 @@ async def test_create_figure(feature, topic_roads, attribute):
         topic=topic_roads,
         attribute=attribute,
     )
+
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()

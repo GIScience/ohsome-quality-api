@@ -144,6 +144,7 @@ class MappingSaturation(BaseIndicator):
             logger.info("No model has been run successfully.")
             return
         self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
+        self.best_fit.fitted_values = np.round(self.best_fit.fitted_values, 2)
         logger.info("Best fitting model: " + self.best_fit.name)
         # Saturation of the last 3 years of the fitted curve
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
@@ -165,6 +166,8 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.result.value > self.above_one_upper_threshold:
             self.result.class_ = 1
+        elif self.result.value == 0:
+            self.result.class_ = None
         else:
             raise ValueError(
                 "Result value (saturation) is an unexpected value: {}".format(
@@ -184,8 +187,14 @@ class MappingSaturation(BaseIndicator):
 
     def create_figure(self) -> None:
         if self.result.label == "undefined":
-            logger.info("Result is undefined. Skipping figure creation.")
-            return
+            if not self.fitted_models and self.check_edge_cases() == "":
+                self.result.description = _(
+                    "We could not fit any saturation curve onto the data, "
+                    "therefore we could not determine any saturation level."
+                )
+            else:
+                logger.info("Result is undefined. Skipping figure creation.")
+                return
 
         fig = pgo.Figure()
         fig.add_trace(
@@ -196,14 +205,37 @@ class MappingSaturation(BaseIndicator):
                 line=dict(color=Color.BLUE.value),
             ),
         )
-        fig.add_trace(
-            pgo.Scatter(
-                x=self.timestamps,
-                y=self.best_fit.fitted_values.tolist(),
-                name=_("Modelled saturation curve"),
-                line=dict(color=Color.RED.value),
-            ),
-        )
+        if self.fitted_models:
+            fig.add_trace(
+                pgo.Scatter(
+                    x=self.timestamps,
+                    y=self.best_fit.fitted_values.tolist(),
+                    name=_("Modelled saturation curve"),
+                    line=dict(color=Color.RED.value),
+                ),
+            )
+            # plot asymptote
+            asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
+            if asymptote < max(self.values) * 5:
+                hovertext = _("Estimated total data: {asymptote}").format(
+                    asymptote=asymptote
+                )
+                asymptote_line_values = [asymptote for _ in self.values]
+                fig.add_trace(
+                    pgo.Scatter(
+                        x=self.timestamps,
+                        y=asymptote_line_values,
+                        name=_("Estimated total data"),
+                        showlegend=True,
+                        line=dict(color=Color.RED.value, dash="dash"),
+                        hovertext=hovertext,
+                    )
+                )
+                y_max = max(
+                    max(self.values), max(self.best_fit.fitted_values), asymptote
+                )
+                fig.update_yaxes(range=[min(self.values), y_max * 1.05])
+
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(
             title_text=_("Date"),
@@ -212,27 +244,17 @@ class MappingSaturation(BaseIndicator):
         if isinstance(self.topic, TopicData):
             fig.update_yaxes(title_text=_("Value"))
         else:
-            fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
+            aggregation_type_mapping = {
+                "area": _("Area"),
+                "count": _("Count"),
+                "length": _("Lenght"),
+                "perimeter": _("Perimeter"),
+                "area/density": _("Density"),
+            }
 
-        # plot asymptote
-        asymptote = self.data["best_fit"]["asymptote"]
-        if asymptote < max(self.values) * 5:
-            hovertext = _("Estimated total data: {asymptote}").format(
-                asymptote=asymptote
+            fig.update_yaxes(
+                title_text=aggregation_type_mapping[self.topic.aggregation_type]
             )
-            asymptote_line_values = [asymptote for _ in self.values]
-            fig.add_trace(
-                pgo.Scatter(
-                    x=self.timestamps,
-                    y=asymptote_line_values,
-                    name=_("Estimated total data"),
-                    showlegend=True,
-                    line=dict(color=Color.RED.value, dash="dash"),
-                    hovertext=hovertext,
-                )
-            )
-            y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)
-            fig.update_yaxes(range=[min(self.values), y_max * 1.05])
 
         fig.update_layout(showlegend=True)
         # fixed legend, because we do not expect high contributions in 2008

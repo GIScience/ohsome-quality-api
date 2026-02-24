@@ -13,6 +13,11 @@ R: "singular gradient matrix at initial parameter estimates". In this case `rpy2
 raise an `RRuntimeError`.
 """
 
+# NOTE: All calls to rpy2 need to be wrapped in
+#     `with robjects.default_converter.context()`
+#     because of
+#     https://github.com/rpy2/rpy2/pull/1076/changes#diff-0f477f4ec1a1057412d1907d470a84b42251161f3581383d2713e7775b6a62bf
+
 import os
 from abc import ABC, abstractmethod
 
@@ -205,21 +210,22 @@ class SSlogis(BaseStatModel):
 
     def __init__(self, xdata, ydata):
         super().__init__(xdata, ydata)
-        rstats = rpackages.importr("stats")
-        fmla = robjects.Formula("y ~ SSlogis(x, Asym, xmid, scal)")
-        env = fmla.environment
-        env["x"] = robjects.FloatVector(xdata)
-        env["y"] = robjects.FloatVector(ydata)
-        fm = rstats.nls(fmla)
-        coef = np.array(rstats.coef(fm))
-        self.coefficients = {
-            "Asym": coef[0],
-            "xmid": coef[1],
-            "scal": coef[2],
-        }
-        # Confidence interval of asymptote
-        self.asym_conf_int = np.array(rstats.confint(fm, "Asym", 0.95))
-        self.fitted_values = np.array(rstats.fitted(fm))
+        with robjects.default_converter.context():
+            rstats = rpackages.importr("stats")
+            fmla = robjects.Formula("y ~ SSlogis(x, Asym, xmid, scal)")
+            env = fmla.environment
+            env["x"] = robjects.FloatVector(xdata)
+            env["y"] = robjects.FloatVector(ydata)
+            fm = rstats.nls(fmla)
+            coef = np.array(rstats.coef(fm))
+            self.coefficients = {
+                "Asym": coef[0],
+                "xmid": coef[1],
+                "scal": coef[2],
+            }
+            # Confidence interval of asymptote
+            self.asym_conf_int = np.array(rstats.confint(fm, "Asym", 0.95))
+            self.fitted_values = np.array(rstats.fitted(fm))
 
     @property
     def asymptote(self):
@@ -254,28 +260,31 @@ class SSdoubleS(BaseStatModel):
             xdata = xdata + 1
         if ydata.min(initial=0) == 0:
             ydata = ydata + 1
-        rstats = rpackages.importr("stats")
-        fp = os.path.join(os.path.dirname(os.path.realpath(__file__)), "ssdoubles.R")
-        with open(fp, "r") as f:
-            ssdoubles = f.read()
-        robjects.r(ssdoubles)
-        fmla = robjects.Formula("y ~ SSdoubleS(x, e, f, k, b, Z, c)")
-        env = fmla.environment
-        env["x"] = robjects.FloatVector(xdata)
-        env["y"] = robjects.FloatVector(ydata)
-        fm = rstats.nls(fmla)
-        coef = np.array(rstats.coef(fm))
-        self.coefficients = {
-            "e": coef[0],
-            "f": coef[1],
-            "k": coef[2],
-            "b": coef[3],
-            "Z": coef[4],
-            "c": coef[5],
-        }
-        self.asym_conf_int = np.array(rstats.confint(fm, "Z", 0.95))
-        # Substract 1 from fitted values to adjust manipulated ydata (ydata + 1)
-        self.fitted_values = np.array(rstats.fitted(fm)) - 1
+        with robjects.default_converter.context():
+            rstats = rpackages.importr("stats")
+            fp = os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), "ssdoubles.R"
+            )
+            with open(fp, "r") as f:
+                ssdoubles = f.read()
+            robjects.r(ssdoubles)
+            fmla = robjects.Formula("y ~ SSdoubleS(x, e, f, k, b, Z, c)")
+            env = fmla.environment
+            env["x"] = robjects.FloatVector(xdata)
+            env["y"] = robjects.FloatVector(ydata)
+            fm = rstats.nls(fmla)
+            coef = np.array(rstats.coef(fm))
+            self.coefficients = {
+                "e": coef[0],
+                "f": coef[1],
+                "k": coef[2],
+                "b": coef[3],
+                "Z": coef[4],
+                "c": coef[5],
+            }
+            self.asym_conf_int = np.array(rstats.confint(fm, "Z", 0.95))
+            # Substract 1 from fitted values to adjust manipulated ydata (ydata + 1)
+            self.fitted_values = np.array(rstats.fitted(fm)) - 1
 
     @property
     def asymptote(self):
@@ -315,21 +324,22 @@ class SSfpl(BaseStatModel):
 
     def __init__(self, xdata, ydata):
         super().__init__(xdata, ydata)
-        rstats = rpackages.importr("stats")
-        fmla = robjects.Formula("y ~ SSfpl(x, A, B, xmid, scal)")
-        env = fmla.environment
-        env["x"] = robjects.FloatVector(xdata)
-        env["y"] = robjects.FloatVector(ydata)
-        fm = rstats.nls(fmla)
-        coef = np.array(rstats.coef(fm))
-        self.coefficients = {
-            "A": coef[0],
-            "B": coef[1],
-            "xmid": coef[2],
-            "scal": coef[3],
-        }
-        self.asym_conf_int = np.array(rstats.confint(fm, "B", 0.95))
-        self.fitted_values = np.array(rstats.fitted(fm))
+        with robjects.default_converter.context():
+            rstats = rpackages.importr("stats")
+            fmla = robjects.Formula("y ~ SSfpl(x, A, B, xmid, scal)")
+            env = fmla.environment
+            env["x"] = robjects.FloatVector(xdata)
+            env["y"] = robjects.FloatVector(ydata)
+            fm = rstats.nls(fmla)
+            coef = np.array(rstats.coef(fm))
+            self.coefficients = {
+                "A": coef[0],
+                "B": coef[1],
+                "xmid": coef[2],
+                "scal": coef[3],
+            }
+            self.asym_conf_int = np.array(rstats.confint(fm, "B", 0.95))
+            self.fitted_values = np.array(rstats.fitted(fm))
 
     @property
     def asymptote(self):
@@ -366,20 +376,21 @@ class SSasymp(BaseStatModel):
 
     def __init__(self, xdata, ydata):
         super().__init__(xdata, ydata)
-        rstats = rpackages.importr("stats")
-        fmla = robjects.Formula("y ~ SSasymp(x, asym, R0, lrc)")
-        env = fmla.environment
-        env["x"] = robjects.FloatVector(xdata)
-        env["y"] = robjects.FloatVector(ydata)
-        fm = rstats.nls(fmla)
-        coef = np.array(rstats.coef(fm))
-        self.coefficients = {
-            "asym": coef[0],
-            "R0": coef[1],
-            "lrc": coef[2],
-        }
-        self.asym_conf_int = np.array(rstats.confint(fm, "asym", 0.95))
-        self.fitted_values = np.array(rstats.fitted(fm))
+        with robjects.default_converter.context():
+            rstats = rpackages.importr("stats")
+            fmla = robjects.Formula("y ~ SSasymp(x, asym, R0, lrc)")
+            env = fmla.environment
+            env["x"] = robjects.FloatVector(xdata)
+            env["y"] = robjects.FloatVector(ydata)
+            fm = rstats.nls(fmla)
+            coef = np.array(rstats.coef(fm))
+            self.coefficients = {
+                "asym": coef[0],
+                "R0": coef[1],
+                "lrc": coef[2],
+            }
+            self.asym_conf_int = np.array(rstats.confint(fm, "asym", 0.95))
+            self.fitted_values = np.array(rstats.fitted(fm))
 
     @property
     def asymptote(self):
@@ -416,20 +427,21 @@ class SSmicmen(BaseStatModel):
             xdata = xdata + 1
         if ydata.min(initial=0) == 0:
             ydata = ydata + 1
-        rstats = rpackages.importr("stats")
-        fmla = robjects.Formula("y ~ SSmicmen(x, Vm, K)")
-        env = fmla.environment
-        env["x"] = robjects.FloatVector(xdata)
-        env["y"] = robjects.FloatVector(ydata)
-        fm = rstats.nls(fmla)
-        coef = np.array(rstats.coef(fm))
-        self.coefficients = {
-            "Vm": coef[0],
-            "K": coef[1],
-        }
-        self.asym_conf_int = np.array(rstats.confint(fm, "Vm", 0.95))
-        # Substract 1 from fitted values to adjust manipulated ydata (ydata + 1)
-        self.fitted_values = np.array(rstats.fitted(fm)) - 1
+        with robjects.default_converter.context():
+            rstats = rpackages.importr("stats")
+            fmla = robjects.Formula("y ~ SSmicmen(x, Vm, K)")
+            env = fmla.environment
+            env["x"] = robjects.FloatVector(xdata)
+            env["y"] = robjects.FloatVector(ydata)
+            fm = rstats.nls(fmla)
+            coef = np.array(rstats.coef(fm))
+            self.coefficients = {
+                "Vm": coef[0],
+                "K": coef[1],
+            }
+            self.asym_conf_int = np.array(rstats.confint(fm, "Vm", 0.95))
+            # Substract 1 from fitted values to adjust manipulated ydata (ydata + 1)
+            self.fitted_values = np.array(rstats.fitted(fm)) - 1
 
     @property
     def asymptote(self):

@@ -21,6 +21,10 @@ Each aggregation of features (e.g. length of roads or count of building)
 has a maximum. After increased mapping activity saturation is reached near this
 maximum.
 
+### Limitations
+Informativeness varies across topics: performs better for small, discrete objects (e.g., houses) but worse for large 
+polygons (e.g., land use), where a single abrupt mapping step can lead to low completeness.
+
 ### References
 
 - Gröchenig S et al. (2014): Digging into the history of VGI data-sets: results from
@@ -45,7 +49,7 @@ The ratio is computed by dividing the total area of the area of interest by the 
 
 ### Limitations
 
-The are of overlapping OSM land cover polygons will be counted multiple times.
+Overlapping OSM land cover polygons will be counted multiple times and falsely improve the land cover completeness ratio.
 
 
 
@@ -108,7 +112,8 @@ These calculations consider the area / size of the land cover polygons.
 
 #### Basis-DLM
 
-The Basic DLM is published by the German Federal Agency for Cartography and Geodesy and describes the topographical
+The [Basis-DLM](https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851) 
+is published by the German Federal Agency for Cartography and Geodesy and describes the topographical
 objects of the landscape and the relief of the Earth's surface in vector format. The objects are defined by their spatial
 location, geometric type, descriptive attributes, and relationships to other objects. Each object has a unique 
 identification number throughout Germany. The roads from this dataset are used for this indicator.
@@ -155,3 +160,95 @@ To check the direction of the road, the vector of both geometries is calculated.
 ### References
 
 - A. Wöltche, "Open source map matching with Markov decision processes: A new method and a detailed benchmark with existing approaches", Transactions in GIS, vol. 27, no. 7, pp. 1959–1991, Oct. 2023, doi: [10.1111/tgis.13107](https://onlinelibrary.wiley.com/doi/full/10.1111/tgis.13107).
+
+
+## Attribute Completeness
+Derive the ratio of OSM features with present attributes.
+
+### Methods and Data
+- intrinsic method
+
+Calculates the percentage of features that contain a certain attribute filter. There are predefined
+attributes, but you can also define your own.
+
+### Limitations
+Only explicitly tagged attributes are considered. Implicit attributes like the speed limit on paths are not considered. 
+This indicator has the same threshold for all attributes and expects an optimal ratio of 100% of elements to have the specified 
+attributes, which may be not the case for some indicators.
+
+
+## Building Comparison
+Compares the total building area of OSM with the building area of two reference datasets.
+
+### Methods and Data
+- extrinsic method
+
+The result is the ratio of the total area of buildings in OSM divided by the total area of buildings in the reference dataset.
+
+Reference datasets:
+- [EUBUCCO](https://docs.eubucco.com/): Europe wide building footprints, derived from administrative datasets
+- [Microsoft Buildings](https://planetarycomputer.microsoft.com/dataset/ms-buildings): Worldwide building footprints, derived from satellite imagery using machine learning
+
+### Limitations
+- Compares only the overall square meters of building polygons of OSM and reference dataset, not the actual overlap
+- No quality assessment of reference dataset. OSM may represent the real world more accurate than the reference data
+
+
+## Currentness Indicator
+
+The Currentness Indicator measures how up-to-date OpenStreetMap (OSM) elements are by analyzing the distribution of 
+their most recent contributions. It evaluates the recency of geometry and tag edits (excluding deletions) and classifies
+features into quality levels based on the time since their last update.
+All contributions since 2008 are considered and aggregated in monthly intervals. Each feature is assigned to a quality 
+class depending on how recently it was last edited. Thresholds are defined in months relative to the current date and 
+are used to distinguish between highly current, intermediate, and outdated features.
+For each feature class, the relative share of contributions falling into these recency classes is calculated. Based on 
+these shares, an overall currentness class is assigned.
+
+### Methods and Data
+- intrinsic approach.
+
+
+Premise:
+The timestamp of the most recent edit reflects how well a feature represents current real-world conditions. Features 
+updated recently are more likely to be accurate and up-to-date, while features not edited for a long period have a higher probability of being outdated.
+Quality classification is performed using predefined recency thresholds expressed in months since the current date. 
+Contributions are grouped into three recency bins (up-to-date, in-between and out-of-date), which are then used to derive the final indicator class.
+
+### Limitations
+
+- Recency of edits does not necessarily guarantee correctness or thematic accuracy
+- Some features may be correct but unchanged for long periods and therefore classified as outdated
+- Mapping activity varies strongly between feature classes and regions
+- The choice of time thresholds influences class assignment and comparability
+
+
+## Road Comparison
+Compare the road network of OSM with that of a reference dataset.
+The result is a ratio of the length of reference roads which are covered by OSM roads to the total length of reference roads.
+
+### Methods and Data
+- extrinsic method
+
+Identifies corresponding road geometries in OSM and the reference dataset to calculate the ratio of matched road length.
+
+
+Reference dataset: 
+- [Microsoft Roads](https://github.com/microsoft/RoadDetections): Worldwide dataset of roads, derived from satellite imagery using machine learning.
+
+### Limitation
+- No quality assessment of reference dataset. OSM may represent the real world more accurate than the reference data
+
+
+## User Activity
+Calculates how many unique users contributed to a specific topic, grouped by month.
+
+
+### Methods and Data
+- intrinsic method
+
+Monthly amount of unique users who edited a specific topic in the area of interest are derived for the entire time range of OSM.
+Additionally, the median for the last 3 years are calculated as well as a regression line to see the current tendency of user activity.
+
+### Limitations
+- Does not give information about data quality on its own but can be used additionally to other indicators

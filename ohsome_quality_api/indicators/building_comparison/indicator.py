@@ -205,7 +205,7 @@ class BuildingComparison(BaseIndicator):
         fig = pgo.Figure(
             data=[
                 pgo.Bar(
-                    name="OSM building area"
+                    name=_("OSM building area")
                     + " ("
                     + " km², ".join(map(str, osm_area))
                     + " km²)",

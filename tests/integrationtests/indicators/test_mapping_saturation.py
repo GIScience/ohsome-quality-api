@@ -104,7 +104,7 @@ class TestCalculation:
 
 
 class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     @oqapi_vcr.use_cassette
     def indicator(self, topic_building_count, feature_germany_heidelberg):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -115,6 +115,18 @@ class TestFigure:
     def test_create_figure(self, indicator):
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
+        assert verify_plotly(indicator.result.figure)
+
+    def test_create_figure_no_fitted_model(self, indicator):
+        indicator.result.class_ = None
+        indicator.fitted_models = []
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert (
+            indicator.result.description
+            == "We could not fit any saturation curve onto the data, "
+            "therefore we could not determine any saturation level."
+        )
         assert verify_plotly(indicator.result.figure)
 
 
@@ -146,3 +158,15 @@ def test_immutable_attribute(
         for fm in indicator.fitted_models:
             fitted_values_2.extend(list(fm.fitted_values))
     assert fitted_values == fitted_values_2
+
+
+@oqapi_vcr.use_cassette
+def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
+    indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+
+    asyncio.run(indicator.preprocess())
+    indicator.values = [0 for _ in range(len(indicator.values))]
+    indicator.calculate()
+
+    assert indicator.result.label == "undefined"
+    assert indicator.result.class_ is None
