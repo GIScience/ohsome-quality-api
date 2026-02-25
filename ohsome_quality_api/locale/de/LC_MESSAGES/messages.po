@@ -1128,7 +1128,7 @@ msgid ""
 "km are covered by roads in OSM. "
 msgstr ""
 "{name} hat eine Straßenlänge von {total_length} km, von denen "
-"{matched_length}km von den Straßen in OSM gedeckt sind."
+"{matched_length}km von den Straßen in OSM gedeckt sind. "
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:185
 #, python-brace-format
@@ -1143,7 +1143,7 @@ msgstr "{matched_percentage} von {name} sind von OSM abgedeckt"
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:218
 #, python-brace-format
 msgid "{not_matched_percentage} of {name} are not matched by OSM"
-msgstr "{not_matched_percentage}% von {name} sind nicht von OSM abgedeckt"
+msgstr "{not_matched_percentage} von {name} sind nicht von OSM abgedeckt"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:231
 #, python-brace-format
@@ -1175,7 +1175,7 @@ msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "The completeness of OSM roads in your area-of-interest is low."
-msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist niedrig."
+msgstr "Die Vollständigkeit der OSM-Straßen im Untersuchungsgebiet ist niedrig."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
 msgid "The completeness of OSM roads in your area-of-interest is medium."

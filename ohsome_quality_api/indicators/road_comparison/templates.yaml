@@ -10,6 +10,5 @@ label_description:
   undefined: >-
     Comparison could not be made.
 result_description: >-
-    The completeness in comparison to $dataset is $ratio.
-    $dataset have a total length of $length_total.
-    $length_matched of $dataset are covered by OSM roads.
+  <a href=$dataset_url target="_blank">$dataset_name</a> has a road length of $total_length km, of which $matched_length 
+  km are covered by roads in OSM.
