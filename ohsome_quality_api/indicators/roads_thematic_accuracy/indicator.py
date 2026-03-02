@@ -181,7 +181,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
 
-def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
+def plot_presence(result: MatchedData) -> pgo.Bar:
     labels = [
         _("In both"),
         _("Only in DLM"),
@@ -204,9 +204,10 @@ def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
             format="##0.#%",
             locale=get_locale(),
         )
-        text.append(
-            f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
-        )
+        display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
+
+        text.append(f"{display_value} ({value_formatted})")
+
     bar = pgo.Bar(
         x=labels,
         y=values,
@@ -242,9 +243,9 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
                 format="##0.#%",
                 locale=get_locale(),
             )
-            text.append(
-                f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
-            )
+            display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
+
+            text.append(f"{display_value} ({value_formatted})")
     bar = pgo.Bar(
         x=labels,
         y=values,
