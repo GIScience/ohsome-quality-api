@@ -39,7 +39,8 @@ class RoadsThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = None,
+        attribute: Literal[_("surface"), _("oneway"), _("lanes"), _("name"), _("width")]
+        | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.attribute: str | None = attribute

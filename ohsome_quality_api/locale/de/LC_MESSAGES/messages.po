@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 15:56+0100\n"
+"POT-Creation-Date: 2026-03-02 10:54+0100\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -998,7 +998,7 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:171
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:173
 msgid ""
 "We could not fit any saturation curve onto the data, therefore we could "
 "not determine any saturation level."
@@ -1006,62 +1006,62 @@ msgstr ""
 "Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten "
 "wir keinen Sättigungsgrad bestimmen."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:183
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:185
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:192
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:194
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:199
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:201
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:207
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:209
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:220
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:222
 #: ohsome_quality_api/indicators/user_activity/indicator.py:189
 msgid "Date"
 msgstr "Datum"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:224
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:226
 msgid "Value"
 msgstr "Wert"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:227
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:229
 #, fuzzy
 msgid "Area"
 msgstr "Fläche"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:228
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:230
 msgid "Count"
 msgstr "Anzahl"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:229
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:231
 msgid "Lenght"
 msgstr "Länge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:230
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
 msgid "Perimeter"
 msgstr "Durchmesser"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:231
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:233
 msgid "Density"
 msgstr "Dichte"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:253
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:255
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:257
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:259
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:262
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1069,7 +1069,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:266
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1196,6 +1196,30 @@ msgstr ""
 "Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%.$dataset hat"
 " eine Gesamtlänge von $length_total.$length_matched von $dataset werden "
 "von OSM-Straßen abgedeckt."
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
+#, fuzzy
+msgid "surface"
+msgstr "Oberfläche"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
+#, fuzzy
+msgid "oneway"
+msgstr "Einbahnstraße"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
+#, fuzzy
+msgid "lanes"
+msgstr "Fahrspuren"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
+#, fuzzy
+msgid "name"
+msgstr "Name"
+
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
+msgid "width"
+msgstr "Breite"
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:98
 msgid ""
