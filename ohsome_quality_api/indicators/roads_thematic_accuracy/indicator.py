@@ -21,6 +21,9 @@ logger = logging.getLogger(__name__)
 
 QUERIES_DIR = Path(__file__).parent / "queries"
 
+# Mark attributes for gettext extractor (to be translated)
+[_(attribute) for attribute in ["surface", "oneway", "lanes", "name", "width"]]
+
 
 @dataclass
 class MatchedData:
@@ -39,8 +42,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
-        attribute: Literal[_("surface"), _("oneway"), _("lanes"), _("name"), _("width")]
-        | None = None,
+        attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
         self.attribute: str | None = attribute
@@ -115,9 +117,7 @@ class RoadsThematicAccuracy(BaseIndicator):
             description = ""
 
         if self.attribute is not None:
-            attribute_text = (
-                f"'{self.attribute.capitalize()}'"  # Is this already translated?
-            )
+            attribute_text = f"'{_(self.attribute).capitalize()}'"
         else:
             attribute_text = _("'All attributes'")
         raw = Template(self.templates.result_description)
@@ -150,7 +150,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
 
         fig.add_trace(
-            plot_presence(self.matched_data, self.attribute),
+            plot_presence(self.matched_data),
             row=1,
             col=1,
         )
