@@ -103,21 +103,30 @@ class TestCalculation:
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
 
+@pytest.mark.asyncio()
 class TestFigure:
-    @pytest.fixture
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
-
-    def test_create_figure(self, indicator):
+    async def test_create_figure(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    def test_create_figure_no_fitted_model(self, indicator):
+    @oqapi_vcr.use_cassette
+    async def test_create_figure_no_fitted_model(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
         indicator.result.class_ = None
         indicator.fitted_models = []
         indicator.create_figure()
