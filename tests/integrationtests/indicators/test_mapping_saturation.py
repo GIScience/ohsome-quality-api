@@ -1,14 +1,30 @@
-import asyncio
 from datetime import datetime
 
+import asyncpg_recorder
 import numpy as np
 import pytest
+import pytest_asyncio
 from pytest_approval.main import verify, verify_plotly
 
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 from tests.integrationtests.utils import oqapi_vcr
+
+
+@pytest.fixture(autouse=True, params=[True, False])
+def ohsomedb_feature_flag(request, monkeypatch):
+    def get_config_value_(key: str):
+        if key == "ohsomedb_enabled":
+            return request.param
+        else:
+            return get_config_value(key)
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.currentness.indicator.get_config_value",
+        get_config_value_,
+    )
 
 
 class TestCheckEdgeCases:
@@ -48,10 +64,12 @@ class TestCheckEdgeCases:
 
 
 class TestPreprocess:
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+    async def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert len(indicator.values) > 0
         assert indicator.values[-1] is not None
         assert indicator.values[-1] > 0
@@ -60,13 +78,17 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @pytest.fixture(scope="class")
+    @pytest_asyncio.fixture
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(
-        self, topic_building_count, feature_germany_heidelberg, locale_de_class
+    async def indicator(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        locale_de_class,
     ):
         i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
+        await i.preprocess()
         i.calculate()
         return i
 
@@ -105,6 +127,7 @@ class TestCalculation:
 
 @pytest.mark.asyncio()
 class TestFigure:
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure(
         self,
@@ -118,6 +141,7 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_no_fitted_model(
         self,
@@ -139,8 +163,10 @@ class TestFigure:
         assert verify_plotly(indicator.result.figure)
 
 
+@pytest.mark.asyncio()
+@asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
-def test_immutable_attribute(
+async def test_immutable_attribute(
     topic_building_count,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
@@ -157,7 +183,7 @@ def test_immutable_attribute(
         "features"
     ]:
         indicator = MappingSaturation(topic_building_count, feature)
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         indicator.calculate()
         for fm in indicator.fitted_models:
             fitted_values.extend(list(fm.fitted_values))
@@ -169,11 +195,13 @@ def test_immutable_attribute(
     assert fitted_values == fitted_values_2
 
 
+@pytest.mark.asyncio()
+@asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
-def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
+async def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
     indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
 
-    asyncio.run(indicator.preprocess())
+    await indicator.preprocess()
     indicator.values = [0 for _ in range(len(indicator.values))]
     indicator.calculate()
 

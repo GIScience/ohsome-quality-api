@@ -1,5 +1,13 @@
 # Changelog
 
+## Current Main
+
+- feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
+
+
+[#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
+
+
 ## Release 1.16.1
 
 - fix: mapping-saturation does not fail if result value is 0
@@ -40,10 +48,6 @@
 [e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
 [a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
 [#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
-[87c47075]: https://github.com/GIScience/ohsome-quality-api/commit/87c47075
-[74a64e6c]: https://github.com/GIScience/ohsome-quality-api/commit/74a64e6c
-[#996]: https://github.com/GIScience/ohsome-quality-api/pull/996
-[f454a7a2]: https://github.com/GIScience/ohsome-quality-api/commit/f454a7a2
 
 ## Release 1.14.0
 
