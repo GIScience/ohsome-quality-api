@@ -1,6 +1,7 @@
 import logging
 import os
 from pathlib import Path
+from string import Template
 
 import geojson
 import plotly.graph_objects as pgo
@@ -8,6 +9,7 @@ import yaml
 from async_lru import alru_cache
 from babel.dates import format_date
 from babel.numbers import format_decimal, format_percent
+from dateutil import parser
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 from numpy import mean
@@ -123,19 +125,32 @@ class RoadComparison(BaseIndicator):
             self.ratio[key] = self.length_matched[key] / self.length_total[key]
 
             self.result.description += self.warnings[key] + "\n"
-            self.result.description += _(
-                "{name} has a road length of "
-                "{total_length} km, of which "
-                "{matched_length}"
-                " km are covered by roads in "
-                "OSM. "
-            ).format(
-                name=self.data_ref[key]["name"],
+            self.result.description += Template(
+                self.templates.result_description
+            ).substitute(
+                dataset_url=self.data_ref[key]["link"],
+                dataset_name=self.data_ref[key]["name"],
                 total_length=format_decimal(
                     round(self.length_total[key] / 1000, 2), locale=get_locale()
                 ),
                 matched_length=format_decimal(
                     round(self.length_matched[key] / 1000, 2), locale=get_locale()
+                ),
+            )
+            self.result.description += _(
+                " The data of {name} is from {data_timestamp} and was"
+                " processed with OSM data from {processing_timestamp}."
+            ).format(
+                name=self.data_ref[key]["name"],
+                data_timestamp=format_date(
+                    parser.parse(self.data_ref[key]["date"]),
+                    format="MMM yyyy",
+                    locale=get_locale(),
+                ),
+                processing_timestamp=format_date(
+                    parser.parse(self.data_ref[key]["processing_date"]),
+                    format="MMM yyyy",
+                    locale=get_locale(),
                 ),
             )
 
@@ -152,7 +167,7 @@ class RoadComparison(BaseIndicator):
                 self.result.class_ = 1
 
         label_description = getattr(self.templates.label_description, self.result.label)
-        self.result.description += label_description
+        self.result.description += " " + label_description
         # remove double white spaces
         self.result.description = " ".join(self.result.description.split())
 
@@ -186,13 +201,17 @@ class RoadComparison(BaseIndicator):
                 length_matched=format_decimal(
                     round(self.length_matched[name] / 1000, 2), locale=get_locale()
                 ),
-                date=format_date(date, format="MMM yyyy", locale=get_locale()),
+                date=format_date(
+                    parser.parse(date), format="MMM yyyy", locale=get_locale()
+                ),
             )
             fig.add_trace(
                 pgo.Bar(
                     x=[name],
                     y=[ratio * 100],
-                    name=_("{matched_percentage} of {name} are matched by OSM").format(
+                    name=_(
+                        "{matched_percentage} of {name} <br> are matched by OSM"
+                    ).format(
                         matched_percentage=format_percent(
                             ratio, format="##0.##%", locale=get_locale()
                         ),
@@ -215,7 +234,7 @@ class RoadComparison(BaseIndicator):
                     x=[name],
                     y=[100 - ratio * 100],
                     name=_(
-                        "{not_matched_percentage} of {name} are not matched by OSM"
+                        "{not_matched_percentage} of {name} <br> are not matched by OSM"
                     ).format(
                         not_matched_percentage=format_percent(
                             1 - ratio, format="##0.##%", locale=get_locale()
@@ -255,7 +274,7 @@ class RoadComparison(BaseIndicator):
                 "yanchor": "top",
                 "y": -0.1,
                 "xanchor": "center",
-                "x": 0.5,
+                "x": 0.6,
             },
         )
 
