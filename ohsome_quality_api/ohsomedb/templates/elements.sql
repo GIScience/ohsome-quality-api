@@ -3,7 +3,7 @@
 WITH bpoly AS (
     SELECT ST_GeomFromGeoJSON (${{ geom }}) AS geom
 ),
-WITH serie AS (
+series AS (
     SELECT
         Generate_series(
             '2007-10-01'::timestamp,
@@ -48,11 +48,11 @@ SELECT
         COUNT(*)
     {% endif %}
         AS element
-FROM {{ contributions }} c, serie s, bpoly b
+FROM {{ contributions }} c, series s, bpoly b
 WHERE 1=1
     -- ohsome-filter-to-sql generated clause
     AND ({{ filter }})
-    AND ST_Intersects(c.geom, b.geom))
+    AND ST_Intersects(c.geom, b.geom)
     AND c.valid_from <= s.ts AND s.ts < c.valid_to
 GROUP BY ts
 ORDER BY ts;
