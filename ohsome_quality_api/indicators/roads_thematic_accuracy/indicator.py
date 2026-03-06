@@ -21,6 +21,9 @@ logger = logging.getLogger(__name__)
 
 QUERIES_DIR = Path(__file__).parent / "queries"
 
+# Mark attributes for gettext extractor (to be translated)
+[_(attribute) for attribute in ["surface", "oneway", "lanes", "name", "width"]]
+
 
 @dataclass
 class MatchedData:
@@ -114,9 +117,7 @@ class RoadsThematicAccuracy(BaseIndicator):
             description = ""
 
         if self.attribute is not None:
-            attribute_text = (
-                f"'{self.attribute.capitalize()}'"  # Is this already translated?
-            )
+            attribute_text = f"'{_(self.attribute).capitalize()}'"
         else:
             attribute_text = _("'All attributes'")
         raw = Template(self.templates.result_description)
@@ -149,7 +150,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         )
 
         fig.add_trace(
-            plot_presence(self.matched_data, self.attribute),
+            plot_presence(self.matched_data),
             row=1,
             col=1,
         )
@@ -180,7 +181,7 @@ class RoadsThematicAccuracy(BaseIndicator):
         self.result.figure = raw
 
 
-def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
+def plot_presence(result: MatchedData) -> pgo.Bar:
     labels = [
         _("In both"),
         _("Only in DLM"),
@@ -203,9 +204,10 @@ def plot_presence(result: MatchedData, attribute: str | None) -> pgo.Bar:
             format="##0.#%",
             locale=get_locale(),
         )
-        text.append(
-            f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
-        )
+        display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
+
+        text.append(f"{display_value} ({value_formatted})")
+
     bar = pgo.Bar(
         x=labels,
         y=values,
@@ -241,9 +243,9 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
                 format="##0.#%",
                 locale=get_locale(),
             )
-            text.append(
-                f"{value:.2f}" if value >= 0.01 else "< 0.01" + f"({value_formatted})"
-            )
+            display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
+
+            text.append(f"{display_value} ({value_formatted})")
     bar = pgo.Bar(
         x=labels,
         y=values,
