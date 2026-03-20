@@ -3,7 +3,14 @@
 ## Current Main
 
 - feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
-
+    * fix: additionally return timestamp in ohsomedb elements sql query ([#8cb812e6])
+    * tests: update asyncpg recorder cassette for tests_ohsomdb.py ([#aa14fcd5])
+* build: upgrade dependencies
+    * build: upgrade dependencies (uv sync --upgrade) ([#e60a96fd])
+    * build: upgrade pytest from 8.x to 9.x ([@96cc1f87])
+    * build: upgrade dev dependency versions of ruff and prek ([#85bf2184])
+    * build: add ty as dev dependency ([#cf6bc153])
+* build: restrict Python version to below 3.14 and bump uv_build version ([#00bfd6ad])
 
 [#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
 
