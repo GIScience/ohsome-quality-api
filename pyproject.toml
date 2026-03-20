@@ -49,12 +49,12 @@ dev = [
     "pytest-mock>=3.14.0",
     "pytest-sugar>=1.0.0",
     "pytest-xdist>=3.6.1",
-    "ruff==0.11.9", # fixed because of pre-commit
+    "ruff==0.15.5", # fixed because of pre-commit
     "vcrpy>=7.0.0",
     "babel>=2.17.0",
     "pytest-approval>=0.7.0",
     "pytest-randomly>=4.0.1",
-    "prek>=0.3.0",
+    "prek>=0.3.5",
     "ty>=0.0.24",
 ]
 
