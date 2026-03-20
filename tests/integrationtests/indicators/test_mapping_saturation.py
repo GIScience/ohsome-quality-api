@@ -22,7 +22,7 @@ def ohsomedb_feature_flag(request, monkeypatch):
             return get_config_value(key)
 
     monkeypatch.setattr(
-        "ohsome_quality_api.indicators.currentness.indicator.get_config_value",
+        "ohsome_quality_api.indicators.mapping_saturation.indicator.get_config_value",
         get_config_value_,
     )
 

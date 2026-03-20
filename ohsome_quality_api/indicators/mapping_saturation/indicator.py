@@ -99,7 +99,7 @@ class MappingSaturation(BaseIndicator):
             filter_=self.topic.filter,
         )
         for item in results:
-            self.values.append(float(item["value"]))
+            self.values.append(float(item["element"]))
             self.timestamps.append(item["timestamp"])
 
     def calculate(self) -> None:  # noqa: C901

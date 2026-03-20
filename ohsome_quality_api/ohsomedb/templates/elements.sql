@@ -47,7 +47,8 @@ SELECT
     {% else %}
         COUNT(*)
     {% endif %}
-        AS element
+        AS element,
+    ts AS timestamp
 FROM {{ contributions }} c, series s, bpoly b
 WHERE 1=1
     -- ohsome-filter-to-sql generated clause
