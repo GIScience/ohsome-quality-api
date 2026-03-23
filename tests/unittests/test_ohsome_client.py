@@ -76,8 +76,8 @@ class TestOhsomeClientQuery(TestCase):
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.topic, self.bpolys))
 
-    def test_not_implemeted(self) -> None:
-        """Query for topic type is not implemeted."""
+    def test_not_implemented(self) -> None:
+        """Query for topic type is not implemented."""
         with self.assertRaises(NotImplementedError):
             asyncio.run(ohsome_client.query(""))
 
