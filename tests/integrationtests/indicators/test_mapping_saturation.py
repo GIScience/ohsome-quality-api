@@ -4,6 +4,7 @@ import asyncpg_recorder
 import numpy as np
 import pytest
 import pytest_asyncio
+from geojson.feature import Feature
 from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.config import get_config_value
@@ -155,11 +156,33 @@ class TestFigure:
         indicator.fitted_models = []
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        assert (
-            indicator.result.description
-            == "We could not fit any saturation curve onto the data, "
-            "therefore we could not determine any saturation level."
+        assert verify_plotly(indicator.result.figure)
+
+    async def test_negative_saturation(self, topic_roads_all_highways):
+        """Data declines instead of increases."""
+        feature = Feature(
+            geometry={
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [-4.496583, 17.010514],
+                            [-4.561602, 16.948611],
+                            [-4.644929, 16.965846],
+                            [-4.663319, 17.045094],
+                            [-4.598226, 17.107103],
+                            [-4.514817, 17.089758],
+                            [-4.496583, 17.010514],
+                        ]
+                    ]
+                ],
+            },
         )
+        indicator = MappingSaturation(topic_roads_all_highways, feature)
+        await indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
+        assert verify(indicator.result.description)
         assert verify_plotly(indicator.result.figure)
 
 

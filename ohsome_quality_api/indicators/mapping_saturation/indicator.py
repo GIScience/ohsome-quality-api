@@ -19,6 +19,8 @@ from ohsome_quality_api.topics.models import Topic, TopicData
 
 logger = logging.getLogger(__name__)
 
+np.seterr(all="raise")  # Raise error on division by zero
+
 
 class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator.
@@ -149,13 +151,20 @@ class MappingSaturation(BaseIndicator):
         # Saturation of the last 3 years of the fitted curve
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
-        self.result.value = y1 / y2  # Saturation
-        if 1.0 >= self.result.value > self.upper_threshold:
+
+        try:
+            self.result.value = y1 / y2  # Saturation
+        except FloatingPointError:  # Probably zero division
+            self.result.description = _("Unexpected saturation value.")
+            return
+
+        if 1 >= self.result.value > self.upper_threshold:
             self.result.class_ = 5
         elif self.upper_threshold >= self.result.value > self.lower_threshold:
             self.result.class_ = 3
-        elif self.lower_threshold >= self.result.value > 0:
+        elif self.lower_threshold >= self.result.value >= 0:
             self.result.class_ = 1
+
         elif self.above_one_lower_threshold >= self.result.value > 1:
             self.result.class_ = 5
         elif (
@@ -166,8 +175,7 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.result.value > self.above_one_upper_threshold:
             self.result.class_ = 1
-        elif self.result.value == 0:
-            self.result.class_ = None
+
         else:
             raise ValueError(
                 "Result value (saturation) is an unexpected value: {}".format(
@@ -186,7 +194,7 @@ class MappingSaturation(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        if self.result.label == "undefined":
+        if self.result.label == "undefined" and self.best_fit is None:
             if not self.fitted_models and self.check_edge_cases() == "":
                 self.result.description = _(
                     "We could not fit any saturation curve onto the data, "
