@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
+from asyncpg import Record
 from geojson_pydantic.geometries import MultiPolygon, Polygon
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from ohsome_filter_to_sql.main import OhsomeFilter, ohsome_filter_to_sql
@@ -21,7 +22,7 @@ async def contributions(
     aggregation: Literal["count", "length", "area"],
     bpolys: Polygon | MultiPolygon,
     filter_: OhsomeFilter,
-):
+) -> list[Record]:
     sql_filter, sql_filter_args = ohsome_filter_to_sql(filter_)
     template = ENV.get_template("contributions.sql")
     query = template.render(
@@ -46,7 +47,7 @@ async def users(
     aggregation: Literal["count"] = "count",
     bpolys: Polygon | MultiPolygon,
     filter_: OhsomeFilter,
-):
+) -> list[Record]:
     sql_filter, sql_filter_args = ohsome_filter_to_sql(filter_)
     template = ENV.get_template("users.sql")
     query = template.render(
@@ -71,7 +72,7 @@ async def elements(
     aggregation: Literal["count", "length", "area"],
     bpolys: Polygon | MultiPolygon,
     filter_: OhsomeFilter,
-):
+) -> list[Record]:
     sql_filter, sql_filter_args = ohsome_filter_to_sql(filter_)
     template = ENV.get_template("elements.sql")
     query = template.render(
