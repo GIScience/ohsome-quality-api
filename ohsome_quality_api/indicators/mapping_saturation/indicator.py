@@ -106,8 +106,8 @@ class MappingSaturation(BaseIndicator):
 
     def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results
-        self.result.timestamp_osm = self.timestamps[-1]
         edge_case_description = self.check_edge_cases()
+        self.result.timestamp_osm = self.timestamps[-1]
         if edge_case_description:
             logger.info("Edge case is present. Skipping indicator calculation.")
             self.result.description = edge_case_description
@@ -278,7 +278,7 @@ class MappingSaturation(BaseIndicator):
         Returns
             str: Returns description of edge case. Empty string if no edge is present.
         """
-        if max(self.values) == 0:  # no data
+        if max(self.values) == 0 or len(self.values) == 0:  # no data
             return _("No features were mapped in this region.")
         # TODO: Decide on the minimal number/length/area of features have to be present
         # to run models (#511).
