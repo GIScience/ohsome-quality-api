@@ -10,7 +10,12 @@
     * build: upgrade pytest from 8.x to 9.x ([@96cc1f87])
     * build: upgrade dev dependency versions of ruff and prek ([#85bf2184])
     * build: add ty as dev dependency ([#cf6bc153])
+    * fix: create series based on contributions_state.last_timestamp instead of NOW(). Use left join with on series to fill data gaps. Use 0 if SUM aggregation returns None. ([c064b63d])
+    * fix: do not abort, but plot best fit even if result value is unexpected (Catch numpy zero division error)
 * build: restrict Python version to below 3.14 and bump uv_build version ([#00bfd6ad])
+* build: upgrade dependencies (various commits)
+* fix(mapping-saturation): access latest timestamp after checking edge cases ([fef8a645])
+* feat: add timestamps and link to source to RoadComparison description ([8641d55d])
 
 [#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
 
