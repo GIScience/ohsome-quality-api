@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## Release 1.17.0
 
 - feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
     * fix: additionally return timestamp in ohsomedb elements sql query ([#8cb812e6])
