@@ -781,7 +781,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "asyncpg-recorder", specifier = ">=0.1.0" },
+    { name = "asyncpg-recorder", specifier = ">=0.8.0" },
     { name = "babel", specifier = ">=2.17.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },

@@ -38,7 +38,7 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "asyncpg-recorder>=0.1.0",
+    "asyncpg-recorder>=0.8.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "kaleido>=1.2.0",
