@@ -1,4 +1,9 @@
-# Changelog
+# Changelo
+
+## Current Main
+
+- fix: fix syntax error in query template for length and area based aggregation types ([#9a4c16b8])
+
 
 ## Release 1.17.0
 
