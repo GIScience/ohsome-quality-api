@@ -3,7 +3,6 @@ from datetime import datetime
 import asyncpg_recorder
 import numpy as np
 import pytest
-import pytest_asyncio
 from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.config import get_config_value
@@ -78,21 +77,26 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @pytest_asyncio.fixture
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types
+        ["topic_building_count", "topic_building_area", "topic_roads"],
+    )
     @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    async def indicator(
+    async def test_calculate(
         self,
-        topic_building_count,
+        request,
+        topic_key,
         feature_germany_heidelberg,
         locale_de_class,
     ):
-        i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        await i.preprocess()
-        i.calculate()
-        return i
+        topic = request.getfixturevalue(topic_key)
+        indicator = MappingSaturation(topic, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
 
-    def test_calculate(self, indicator):
         assert indicator.best_fit is not None
         assert len(indicator.fitted_models) > 0
 
@@ -107,7 +111,14 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
 
-    def test_as_feature(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_as_feature(self, topic_building_count, feature_germany_heidelberg):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+
         indicator_feature = indicator.as_feature()
         properties = indicator_feature.properties
         assert properties["result"]["value"] >= 0.0
@@ -115,7 +126,18 @@ class TestCalculation:
         assert properties["result"]["description"] is not None
         assert "data" not in properties
 
-    def test_as_feature_data(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_as_feature_data(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+
         indicator_feature = indicator.as_feature(include_data=True)
         properties = indicator_feature.properties
         assert properties["data"]["best_fit"]["name"] is not None
@@ -157,30 +179,33 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    # TODO: Create cassette
     # @asyncpg_recorder.use_cassette
     # @oqapi_vcr.use_cassette
-    # async def test_negative_saturation(self, topic_roads_all_highways):
+    # @pytest.mark.parametrize(
+    #     "topic_key",
+    #     # three different aggregation types
+    #     ["topic_building_count", "topic_building_area", "topic_roads"],
+    # )
+    # async def test_negative_saturation(self, request, topic_key):
     #     """Data declines instead of increases."""
+    #     # At some point this led to internal server error due to invalid
+    #     # (not handled) result value.
+    #     topic = request.getfixturevalue(topic_key)
     #     feature = Feature(
     #         geometry={
-    #             "type": "MultiPolygon",
+    #             "type": "Polygon",
     #             "coordinates": [
     #                 [
-    #                     [
-    #                         [-4.496583, 17.010514],
-    #                         [-4.561602, 16.948611],
-    #                         [-4.644929, 16.965846],
-    #                         [-4.663319, 17.045094],
-    #                         [-4.598226, 17.107103],
-    #                         [-4.514817, 17.089758],
-    #                         [-4.496583, 17.010514],
-    #                     ]
+    #                     [8.3795644, 48.9974453],
+    #                     [8.4315496, 48.9974453],
+    #                     [8.4315496, 49.0218769],
+    #                     [8.3795644, 49.0218769],
+    #                     [8.3795644, 48.9974453],
     #                 ]
     #             ],
-    #         },
+    #         }
     #     )
-    #     indicator = MappingSaturation(topic_roads_all_highways, feature)
+    #     indicator = MappingSaturation(topic, feature)
     #     await indicator.preprocess()
     #     indicator.calculate()
     #     indicator.create_figure()

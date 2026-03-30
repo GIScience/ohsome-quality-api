@@ -35,13 +35,13 @@ stats AS (
                 CASE
                     WHEN ST_Within(
                         c.geom,
-                        b.geom,
+                        b.geom
                     )
                     THEN c.area -- Use precomputed area from ohsome-planet
                     ELSE ST_Area(
                         ST_Intersection(
                             c.geom,
-                            b.geom,
+                            b.geom
                         )::geography
                     )
                 END
