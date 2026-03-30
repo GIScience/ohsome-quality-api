@@ -4,6 +4,7 @@ import unittest
 import geojson
 import pytest
 from geojson import Feature
+from pytest_approval import verify
 
 import ohsome_quality_api.geodatabase.client as db_client
 
@@ -24,6 +25,13 @@ async def test_get_connection_ohsomedb():
     async with db_client.get_connection() as conn:
         result = await conn.fetchrow("SELECT 1")
     assert result[0] == 1
+
+
+@pytest.mark.asyncio
+async def test_get_connection_ohsomedb_query_logger(caplog):
+    async with db_client.get_connection(database="ohsomedb") as conn:
+        await conn.execute("SELECT $1", "1")
+    assert verify(caplog.text)
 
 
 def test_get_shdi_single_intersection_feature(feature):

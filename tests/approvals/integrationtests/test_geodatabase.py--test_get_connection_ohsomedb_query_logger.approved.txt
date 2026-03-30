@@ -1,0 +1,4 @@
+INFO     ohsome_quality_api:client.py:35 Query:
+SELECT $1
+INFO     ohsome_quality_api:client.py:36 Args:
+('1',)
