@@ -153,8 +153,10 @@ class MappingSaturation(BaseIndicator):
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
 
         try:
-            self.result.value = y1 / y2  # Saturation
-        except FloatingPointError:  # Probably zero division
+            if y2 == 0 or y2 is None:
+                self.result.description = _("Unexpected saturation value.")
+            self.result.value = y1 / y2
+        except FloatingPointError:
             self.result.description = _("Unexpected saturation value.")
             return
 
