@@ -21,6 +21,7 @@ dependencies = [
     "geojson>=3.2.0",
     "geojson-pydantic>=2.0.0",
     "httpx>=0.28.1",
+    "numpy>=2.4.3",
     "ohsome-filter-to-sql>=0.1.0",
     "plotly>=6.0.1",
     "pydantic>=2.11.4",
