@@ -146,6 +146,42 @@ class TestCalculation:
             assert not np.isnan(np.sum(fm["fitted_values"]))
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_result_value_zero_division_error(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        monkeypatch: pytest.MonkeyPatch,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        monkeypatch.setattr(
+            "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
+            lambda *args: 0,
+        )
+        indicator.calculate()
+        assert indicator.result.value is None
+
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_result_value_nan(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        monkeypatch: pytest.MonkeyPatch,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        monkeypatch.setattr(
+            "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
+            lambda *args: np.nan,
+        )
+        indicator.calculate()
+        assert indicator.result.value is None
+
 
 @pytest.mark.asyncio()
 class TestFigure:
