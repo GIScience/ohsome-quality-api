@@ -153,10 +153,12 @@ class MappingSaturation(BaseIndicator):
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
 
         try:
-            if y2 == 0 or y2 is None:
-                self.result.description = _("Unexpected saturation value.")
-            self.result.value = y1 / y2
-        except FloatingPointError:
+            result = y1 / y2
+            if np.isnan(result):
+                raise FloatingPointError("Result value is NaN.")  # noqa: TRY301
+            else:
+                self.result.value = result
+        except (FloatingPointError, ZeroDivisionError):
             self.result.description = _("Unexpected saturation value.")
             return
 
