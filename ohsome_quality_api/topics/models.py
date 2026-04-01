@@ -51,9 +51,3 @@ class Topic(BaseTopic):
             raise ValueError("Filter does not contain geometry or type specification.")
         else:
             return value
-
-
-class TopicData(BaseTopic):
-    """Includes the data associated with the topic."""
-
-    data: dict

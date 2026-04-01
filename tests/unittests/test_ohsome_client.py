@@ -7,13 +7,12 @@ import geojson
 import httpx
 import pytest
 from geojson import FeatureCollection
-from schema import Schema
+from schema import Schema, SchemaError
 
 from ohsome_quality_api.attributes.definitions import build_attribute_filter
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
-    SchemaError,
 )
 
 from .utils import get_geojson_fixture, get_topic_fixture

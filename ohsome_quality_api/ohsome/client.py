@@ -1,5 +1,6 @@
 import datetime
 import json
+from functools import singledispatch
 
 import geojson
 import httpx
@@ -18,7 +19,16 @@ from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.exceptions import OhsomeApiError
 
 
-async def query(
+@singledispatch
+async def query(topic) -> dict:
+    """Query ohsome API."""
+    raise NotImplementedError(
+        "Cannot query ohsome API for Topic of type: " + str(type(topic))
+    )
+
+
+@query.register
+async def _(
     topic: Topic,
     bpolys: Feature | FeatureCollection,
     time: str | None = None,
