@@ -1,18 +1,29 @@
-import asyncio
 from datetime import datetime
 
+import asyncpg_recorder
 import numpy as np
 import pytest
-from approvaltests import Options, verify, verify_as_json
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
-from tests.approvaltests_scrubbers import scrub_mapping_saturation_figure
 from tests.integrationtests.utils import oqapi_vcr
+
+
+@pytest.fixture(autouse=True, params=[True, False])
+def ohsomedb_feature_flag(request, monkeypatch):
+    def get_config_value_(key: str):
+        if key == "ohsomedb_enabled":
+            return request.param
+        else:
+            return get_config_value(key)
+
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.mapping_saturation.indicator.get_config_value",
+        get_config_value_,
+    )
 
 
 class TestCheckEdgeCases:
@@ -52,10 +63,12 @@ class TestCheckEdgeCases:
 
 
 class TestPreprocess:
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
+    async def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert len(indicator.values) > 0
         assert indicator.values[-1] is not None
         assert indicator.values[-1] > 0
@@ -64,17 +77,26 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @pytest.fixture(scope="class")
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types
+        ["topic_building_count", "topic_building_area", "topic_roads"],
+    )
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(
-        self, topic_building_count, feature_germany_heidelberg, locale_de_class
+    async def test_calculate(
+        self,
+        request,
+        topic_key,
+        feature_germany_heidelberg,
+        locale_de_class,
     ):
-        i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
+        topic = request.getfixturevalue(topic_key)
+        indicator = MappingSaturation(topic, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
 
-    def test_calculate(self, indicator):
         assert indicator.best_fit is not None
         assert len(indicator.fitted_models) > 0
 
@@ -84,20 +106,38 @@ class TestCalculation:
 
         assert indicator.result.value >= 0.0
         assert indicator.result.label in ["green", "yellow", "red", "undefined"]
-        verify(indicator.result.description, namer=PytestNamer())
+        assert verify(indicator.result.description)
 
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
 
-    def test_as_feature(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_as_feature(self, topic_building_count, feature_germany_heidelberg):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+
         indicator_feature = indicator.as_feature()
         properties = indicator_feature.properties
         assert properties["result"]["value"] >= 0.0
         assert properties["result"]["label"] in ["green", "yellow", "red", "undefined"]
         assert properties["result"]["description"] is not None
-        assert "data" not in properties.keys()
+        assert "data" not in properties
 
-    def test_as_feature_data(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_as_feature_data(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+
         indicator_feature = indicator.as_feature(include_data=True)
         properties = indicator_feature.properties
         assert properties["data"]["best_fit"]["name"] is not None
@@ -106,30 +146,113 @@ class TestCalculation:
             assert not np.isnan(np.sum(fm["fitted_values"]))
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
-
-class TestFigure:
-    @pytest.fixture(scope="class")
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = MappingSaturation(topic_building_count, feature_germany_heidelberg)
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
+    async def test_result_value_zero_division_error(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        monkeypatch: pytest.MonkeyPatch,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        monkeypatch.setattr(
+            "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
+            lambda *args: 0,
+        )
+        indicator.calculate()
+        assert indicator.result.value is None
 
-    def test_create_figure(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_result_value_nan(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        monkeypatch: pytest.MonkeyPatch,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        monkeypatch.setattr(
+            "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
+            lambda *args: np.nan,
+        )
+        indicator.calculate()
+        assert indicator.result.value is None
+
+
+@pytest.mark.asyncio()
+class TestFigure:
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_create_figure(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
-        verify_as_json(
-            to_jsonable_python(indicator.result.figure),
-            options=Options()
-            .with_scrubber(scrub_mapping_saturation_figure)
-            .with_reporter(PlotlyDiffReporter())
-            .with_namer(PytestNamer()),
-        )
+        assert verify_plotly(indicator.result.figure)
+
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_create_figure_no_fitted_model(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+        indicator.result.class_ = None
+        indicator.fitted_models = []
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert verify_plotly(indicator.result.figure)
+
+    # @asyncpg_recorder.use_cassette
+    # @oqapi_vcr.use_cassette
+    # @pytest.mark.parametrize(
+    #     "topic_key",
+    #     # three different aggregation types
+    #     ["topic_building_count", "topic_building_area", "topic_roads"],
+    # )
+    # async def test_negative_saturation(self, request, topic_key):
+    #     """Data declines instead of increases."""
+    #     # At some point this led to internal server error due to invalid
+    #     # (not handled) result value.
+    #     topic = request.getfixturevalue(topic_key)
+    #     feature = Feature(
+    #         geometry={
+    #             "type": "Polygon",
+    #             "coordinates": [
+    #                 [
+    #                     [8.3795644, 48.9974453],
+    #                     [8.4315496, 48.9974453],
+    #                     [8.4315496, 49.0218769],
+    #                     [8.3795644, 49.0218769],
+    #                     [8.3795644, 48.9974453],
+    #                 ]
+    #             ],
+    #         }
+    #     )
+    #     indicator = MappingSaturation(topic, feature)
+    #     await indicator.preprocess()
+    #     indicator.calculate()
+    #     indicator.create_figure()
+    #     assert verify(indicator.result.description)
+    #     assert verify_plotly(indicator.result.figure)
 
 
+@pytest.mark.asyncio()
+@asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
-def test_immutable_attribute(
+async def test_immutable_attribute(
     topic_building_count,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
@@ -146,7 +269,7 @@ def test_immutable_attribute(
         "features"
     ]:
         indicator = MappingSaturation(topic_building_count, feature)
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         indicator.calculate()
         for fm in indicator.fitted_models:
             fitted_values.extend(list(fm.fitted_values))
@@ -156,3 +279,17 @@ def test_immutable_attribute(
         for fm in indicator.fitted_models:
             fitted_values_2.extend(list(fm.fitted_values))
     assert fitted_values == fitted_values_2
+
+
+@pytest.mark.asyncio()
+@asyncpg_recorder.use_cassette
+@oqapi_vcr.use_cassette
+async def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
+    indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+
+    await indicator.preprocess()
+    indicator.values = [0 for _ in range(len(indicator.values))]
+    indicator.calculate()
+
+    assert indicator.result.label == "undefined"
+    assert indicator.result.class_ is None

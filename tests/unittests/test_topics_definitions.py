@@ -1,8 +1,7 @@
 import pytest
-from approvaltests import verify
+from pytest_approval.main import verify
 
 from ohsome_quality_api.topics import definitions, models
-from tests.approvaltests_namers import PytestNamer
 
 
 def test_get_topic_keys():
@@ -17,8 +16,8 @@ def test_get_valid_topics():
 
 def test_load_topic_definition():
     topics = definitions.load_topic_presets()
-    for topic in topics:
-        assert isinstance(topics[topic], models.Topic)
+    for topic in topics.values():
+        assert isinstance(topic, models.Topic)
 
 
 def test_get_topic_definition():
@@ -50,4 +49,4 @@ def test_get_topic_definitions_with_project():
 
 def test_get_topic_preset_translated(locale_de):
     topic = definitions.get_topic_preset("minimal")
-    verify(topic.model_dump_json(indent=2), namer=PytestNamer())
+    assert verify(topic.model_dump_json(indent=2))

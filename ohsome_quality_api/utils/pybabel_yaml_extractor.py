@@ -50,7 +50,7 @@ def pybabel_yaml_extractor(
     Complies with the following interface:
     https://babel.readthedocs.io/en/latest/messages.html#writing-extraction-methods
     """
-    if "keys" in options.keys():
+    if "keys" in options:
         keys = options["keys"].split(",")
     else:
         raise ValueError("Options should contain non-empty `keys` item.")

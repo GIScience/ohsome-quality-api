@@ -1,10 +1,9 @@
 import os
 
 import pytest
-from approvaltests import verify
+from pytest_approval.main import verify
 
 from ohsome_quality_api.utils.helper import get_project_root
-from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.utils import oqapi_vcr
 
 ENDPOINT = "/indicators/"
@@ -34,7 +33,7 @@ def indicator(client, bpolys, monkeypatch):
 
 
 def test_translation_indicator_metadata_description(indicator):
-    verify(indicator["result"][0]["metadata"]["description"], namer=PytestNamer())
+    assert verify(indicator["result"][0]["metadata"]["description"])
 
 
 def test_translation_indicator_result_description(indicator):
@@ -43,4 +42,4 @@ def test_translation_indicator_result_description(indicator):
     Result description are string templates. This tests checks if translations
     of string templates is working as expected.
     """
-    verify(indicator["result"][0]["result"]["description"], namer=PytestNamer())
+    assert verify(indicator["result"][0]["result"]["description"])

@@ -55,6 +55,11 @@ def topic_roads() -> Topic:
 
 
 @pytest.fixture(scope="class")
+def topic_roads_all_highways() -> Topic:
+    return get_topic_preset("roads-all-highways")
+
+
+@pytest.fixture(scope="class")
 def topic_minimal(topic_key_minimal) -> Topic:
     return get_topic_preset(topic_key_minimal)
 

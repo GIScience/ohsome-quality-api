@@ -23,7 +23,7 @@ def load_topic_presets() -> dict[str, Topic]:
 
 
 def get_topic_keys() -> list[str]:
-    return [str(t) for t in load_topic_presets().keys()]
+    return [str(t) for t in load_topic_presets()]
 
 
 def get_topic_presets(project: ProjectEnum = None) -> dict[str, Topic]:

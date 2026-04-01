@@ -31,7 +31,7 @@ class TestHelper(unittest.TestCase):
         assert results == ["OK", "OK", "OK", "OK", "OK"]
 
     def test_gather_with_semaphore_return_exceptions_error(self):
-        tasks = self.tasks + [self.bar()]
+        tasks = [*self.tasks, self.bar()]
         results = asyncio.run(
             helper_asyncio.gather_with_semaphore(tasks, return_exceptions=True)
         )
@@ -39,7 +39,7 @@ class TestHelper(unittest.TestCase):
         assert isinstance(results[-1], ValueError)
 
     def test_filter_exceptions(self):
-        tasks = self.tasks + [self.bar()]
+        tasks = [*self.tasks, self.bar()]
         results = asyncio.run(
             helper_asyncio.gather_with_semaphore(tasks, return_exceptions=True)
         )

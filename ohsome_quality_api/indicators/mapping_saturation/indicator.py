@@ -9,6 +9,8 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
+from ohsome_quality_api import ohsomedb
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
@@ -16,6 +18,8 @@ from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
+
+np.seterr(all="raise")  # Raise error on division by zero
 
 
 class MappingSaturation(BaseIndicator):
@@ -73,7 +77,14 @@ class MappingSaturation(BaseIndicator):
         self.best_fit: models.BaseStatModel | None = None
         self.fitted_models: list[models.BaseStatModel] = []
 
-    async def preprocess(self) -> None:
+    async def preprocess(self):
+        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomeapi(self) -> None:
         query_results = await ohsome_client.query(
             self.topic,
             self.feature,
@@ -83,10 +94,20 @@ class MappingSaturation(BaseIndicator):
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
 
+    async def preprocess_ohsomedb(self) -> None:
+        results = await ohsomedb.elements(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
+        )
+        for item in results:
+            self.values.append(float(item["element"]))
+            self.timestamps.append(item["timestamp"])
+
     def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results
-        self.result.timestamp_osm = self.timestamps[-1]
         edge_case_description = self.check_edge_cases()
+        self.result.timestamp_osm = self.timestamps[-1]
         if edge_case_description:
             logger.info("Edge case is present. Skipping indicator calculation.")
             self.result.description = edge_case_description
@@ -125,17 +146,29 @@ class MappingSaturation(BaseIndicator):
             logger.info("No model has been run successfully.")
             return
         self.best_fit = min(self.fitted_models, key=lambda m: m.mae)
+        self.best_fit.fitted_values = np.round(self.best_fit.fitted_values, 2)
         logger.info("Best fitting model: " + self.best_fit.name)
         # Saturation of the last 3 years of the fitted curve
         y1 = np.interp(xdata[-36], xdata, self.best_fit.fitted_values)
         y2 = np.interp(xdata[-1], xdata, self.best_fit.fitted_values)
-        self.result.value = y1 / y2  # Saturation
-        if 1.0 >= self.result.value > self.upper_threshold:
+
+        try:
+            result = y1 / y2
+            if np.isnan(result):
+                raise FloatingPointError("Result value is NaN.")  # noqa: TRY301
+            else:
+                self.result.value = result
+        except (FloatingPointError, ZeroDivisionError):
+            self.result.description = _("Unexpected saturation value.")
+            return
+
+        if 1 >= self.result.value > self.upper_threshold:
             self.result.class_ = 5
         elif self.upper_threshold >= self.result.value > self.lower_threshold:
             self.result.class_ = 3
-        elif self.lower_threshold >= self.result.value > 0:
+        elif self.lower_threshold >= self.result.value >= 0:
             self.result.class_ = 1
+
         elif self.above_one_lower_threshold >= self.result.value > 1:
             self.result.class_ = 5
         elif (
@@ -146,6 +179,7 @@ class MappingSaturation(BaseIndicator):
             self.result.class_ = 3
         elif self.result.value > self.above_one_upper_threshold:
             self.result.class_ = 1
+
         else:
             raise ValueError(
                 "Result value (saturation) is an unexpected value: {}".format(
@@ -164,9 +198,15 @@ class MappingSaturation(BaseIndicator):
         )
 
     def create_figure(self) -> None:
-        if self.result.label == "undefined":
-            logger.info("Result is undefined. Skipping figure creation.")
-            return
+        if self.result.label == "undefined" and self.best_fit is None:
+            if not self.fitted_models and self.check_edge_cases() == "":
+                self.result.description = _(
+                    "We could not fit any saturation curve onto the data, "
+                    "therefore we could not determine any saturation level."
+                )
+            else:
+                logger.info("Result is undefined. Skipping figure creation.")
+                return
 
         fig = pgo.Figure()
         fig.add_trace(
@@ -177,40 +217,54 @@ class MappingSaturation(BaseIndicator):
                 line=dict(color=Color.BLUE.value),
             ),
         )
-        fig.add_trace(
-            pgo.Scatter(
-                x=self.timestamps,
-                y=self.best_fit.fitted_values.tolist(),
-                name=_("Modelled saturation curve"),
-                line=dict(color=Color.RED.value),
-            ),
-        )
+        if self.fitted_models:
+            fig.add_trace(
+                pgo.Scatter(
+                    x=self.timestamps,
+                    y=self.best_fit.fitted_values.tolist(),
+                    name=_("Modelled saturation curve"),
+                    line=dict(color=Color.RED.value),
+                ),
+            )
+            # plot asymptote
+            asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
+            if asymptote < max(self.values) * 5:
+                hovertext = _("Estimated total data: {asymptote}").format(
+                    asymptote=asymptote
+                )
+                asymptote_line_values = [asymptote for _ in self.values]
+                fig.add_trace(
+                    pgo.Scatter(
+                        x=self.timestamps,
+                        y=asymptote_line_values,
+                        name=_("Estimated total data"),
+                        showlegend=True,
+                        line=dict(color=Color.RED.value, dash="dash"),
+                        hovertext=hovertext,
+                    )
+                )
+                y_max = max(
+                    max(self.values), max(self.best_fit.fitted_values), asymptote
+                )
+                fig.update_yaxes(range=[min(self.values), y_max * 1.05])
+
         fig.update_layout(title_text="Mapping Saturation")
         fig.update_xaxes(
             title_text=_("Date"),
             ticks="outside",
         )
-        fig.update_yaxes(title_text=self.topic.aggregation_type.capitalize())
 
-        # plot asymptote
-        asymptote = self.data["best_fit"]["asymptote"]
-        if asymptote < max(self.values) * 5:
-            hovertext = _("Estimated total data: {asymptote}").format(
-                asymptote=asymptote
-            )
-            asymptote_line_values = [asymptote for _ in self.values]
-            fig.add_trace(
-                pgo.Scatter(
-                    x=self.timestamps,
-                    y=asymptote_line_values,
-                    name=_("Estimated total data"),
-                    showlegend=True,
-                    line=dict(color=Color.RED.value, dash="dash"),
-                    hovertext=hovertext,
-                )
-            )
-            y_max = max(max(self.values), max(self.best_fit.fitted_values), asymptote)
-            fig.update_yaxes(range=[min(self.values), y_max * 1.05])
+        aggregation_type_mapping = {
+            "area": _("Area"),
+            "count": _("Count"),
+            "length": _("Lenght"),
+            "perimeter": _("Perimeter"),
+            "area/density": _("Density"),
+        }
+
+        fig.update_yaxes(
+            title_text=aggregation_type_mapping[self.topic.aggregation_type]
+        )
 
         fig.update_layout(showlegend=True)
         # fixed legend, because we do not expect high contributions in 2008
@@ -226,7 +280,7 @@ class MappingSaturation(BaseIndicator):
         Returns
             str: Returns description of edge case. Empty string if no edge is present.
         """
-        if max(self.values) == 0:  # no data
+        if max(self.values) == 0 or len(self.values) == 0:  # no data
             return _("No features were mapped in this region.")
         # TODO: Decide on the minimal number/length/area of features have to be present
         # to run models (#511).

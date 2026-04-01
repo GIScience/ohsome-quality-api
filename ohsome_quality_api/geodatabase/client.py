@@ -14,6 +14,7 @@ On preventing SQL injections:
     please make sure no SQL injection attack is possible.
 """
 
+import logging
 import os
 from contextlib import asynccontextmanager
 from typing import Literal
@@ -25,7 +26,14 @@ from geojson import Feature, FeatureCollection, MultiPolygon
 
 from ohsome_quality_api.config import get_config_value
 
+logger = logging.getLogger("ohsome_quality_api")
+
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def log_query(record):
+    logger.info("Query:\n" + record.query)
+    logger.info("Args:\n" + str(record.args))
 
 
 @asynccontextmanager
@@ -52,7 +60,8 @@ async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
             raise ValueError()
     conn = await asyncpg.connect(dns)
     try:
-        yield conn
+        with conn.query_logger(log_query):
+            yield conn
     finally:
         await conn.close()
 

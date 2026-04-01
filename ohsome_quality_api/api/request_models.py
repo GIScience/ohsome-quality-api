@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Literal
 
 import geojson
 from fastapi_i18n import _
@@ -7,6 +8,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    computed_field,
     field_validator,
     model_validator,
 )
@@ -15,7 +17,7 @@ from ohsome_quality_api.api.request_context import RequestContext, request_conte
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
 from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
-from ohsome_quality_api.topics.models import Topic
+from ohsome_quality_api.topics.models import Topic, TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
 
@@ -79,6 +81,11 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     )
     include_figure: bool = True
 
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return self.request_context.path_parameters["key"]
+
     @field_validator("topic")
     @classmethod
     def transform_topic(cls, value) -> Topic:
@@ -86,12 +93,12 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self):
-        indicator = self.request_context.path_parameters["key"]
         valid_indicators = get_valid_indicators(self.topic.key)
-        if indicator not in valid_indicators:
+        if self.indicator not in valid_indicators:
             raise ValueError(
                 "Invalid combination of indicator and topic: {} and {}".format(
-                    indicator, self.topic.key
+                    self.indicator,
+                    self.topic.key,
                 )
             )
         return self
@@ -104,25 +111,15 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
         alias="attributes",
     )
 
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "attribute-completeness"
+
     @field_validator("attribute_keys")
     @classmethod
     def transform_attributes(cls, value) -> list[str]:
         return [attribute.value for attribute in value]
-
-    @model_validator(mode="after")
-    def validate_indicator_topic_combination(self):
-        # NOTE: overrides parent validator. That is because endpoint of
-        # indicator/attribute-completeness is fixed and therefore path parameters of
-        # request context empty
-        valid_indicators = get_valid_indicators(self.topic.key)
-        if "attribute-completeness" not in valid_indicators:
-            raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
-                    "attribute-completeness",
-                    self.topic.key,
-                )
-            )
-        return self
 
     @model_validator(mode="after")
     def validate_attributes(self):
@@ -155,20 +152,10 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
         ),
     )
 
-    @model_validator(mode="after")
-    def validate_indicator_topic_combination(self):
-        # NOTE: overrides parent validator. That is because endpoint of
-        # indicator/attribute-completeness is fixed and therefore path parameters of
-        # request context empty
-        valid_indicators = get_valid_indicators(self.topic.key)
-        if "attribute-completeness" not in valid_indicators:
-            raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
-                    "attribute-completeness",
-                    self.topic.key,
-                )
-            )
-        return self
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "attribute-completeness"
 
 
 class CorineLandCoverClassLevel1(Enum):
@@ -207,7 +194,7 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         description=_(
             "CORINE Land Cover is a pan-European land cover"
             " inventory with thematic classes."
-        ),  # noqa
+        ),
     )
 
     @field_validator("corine_land_cover_class", mode="before")
@@ -217,17 +204,38 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
             return None
         return value
 
-    @model_validator(mode="after")
-    def validate_indicator_topic_combination(self):
-        # NOTE: overrides parent validator. That is because endpoint of
-        # indicator/land-cover-thematic-accuracy is fixed and therefore path
-        # parameters of request context are empty
-        valid_indicators = get_valid_indicators(self.topic.key)
-        if "land-cover-thematic-accuracy" not in valid_indicators:
-            raise ValueError(
-                "Invalid combination of indicator and topic: {} and {}".format(
-                    "land-cover-thematic-accuracy",
-                    self.topic.key,
-                )
-            )
-        return self
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "land-cover-thematic-accuracy"
+
+
+class RoadsThematicAccuracyRequest(IndicatorRequest):
+    attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = Field(
+        default=None,
+        title="Attribute",
+        description=_("Attribute to compare between DLM and OSM."),
+    )
+
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "roads-thematic-accuracy"
+
+    @field_validator("attribute", mode="before")
+    @classmethod
+    def empty_string_to_none(cls, value):
+        if value == "":
+            return None
+        return value
+
+
+class IndicatorDataRequest(BaseBpolys):
+    """Model for the `/indicators/mapping-saturation/data` endpoint.
+
+    The Topic consists of name, description and data.
+    """
+
+    topic: TopicData = Field(..., title="Topic", alias="topic")
+    include_figure: bool = True
+    include_data: bool = False

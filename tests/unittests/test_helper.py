@@ -29,7 +29,7 @@ def test_name_to_class():
     assert get_class_from_key(class_type="indicator", key="minimal") == Minimal
 
     indicators = get_indicator_metadata()
-    for indicator_name in indicators.keys():
+    for indicator_name in indicators:
         assert issubclass(
             get_class_from_key(class_type="indicator", key=indicator_name),
             BaseIndicator,

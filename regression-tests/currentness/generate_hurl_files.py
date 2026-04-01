@@ -17,10 +17,7 @@ for topic in ("building-count", "roads"):
                 bpolys=json.dumps(bpolys),
                 ohsomedb=ohsomedb,
             )
-            if ohsomedb == "true":
-                ohsomedb_text = "-ohsomedb"
-            else:
-                ohsomedb_text = ""
+            ohsomedb_text = "-ohsomedb" if ohsomedb == "true" else ""
             path = Path(dir_) / f"indicator-{topic}-{region}{ohsomedb_text}.hurl"
             with open(path, "w") as f:
                 f.write(hurl_file)

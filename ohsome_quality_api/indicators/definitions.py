@@ -15,7 +15,7 @@ from ohsome_quality_api.utils.helper import (
 
 
 def get_indicator_keys() -> list[str]:
-    return [str(t) for t in load_indicators().keys()]
+    return [str(t) for t in load_indicators()]
 
 
 def load_indicators() -> dict[str, IndicatorMetadata]:

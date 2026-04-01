@@ -1,0 +1,1 @@
+<a href=https://github.com/microsoft/RoadDetections target="_blank">Microsoft Roads</a> has a road length of 0.03 km, of which 0.02 km are covered by roads in OSM. The data of Microsoft Roads is from Feb 2023 and was processed with OSM data from Apr 2024. The completeness of OSM roads in your area-of-interest is medium.

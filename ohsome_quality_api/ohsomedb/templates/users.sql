@@ -4,9 +4,10 @@ WITH serie AS (
     SELECT
         Generate_series(
             '2007-10-01'::timestamp,
-            NOW()::timestamp,
+            contributions_state.last_timestamp::timestamp,
             '1 month'::interval
         )::date AS month
+    FROM contributions_state
 ),
 user_count AS (
     SELECT

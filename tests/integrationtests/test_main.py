@@ -1,34 +1,57 @@
 import asyncio
 from unittest import mock
 
+import asyncpg_recorder
 import pytest
 
 from ohsome_quality_api import main
 from tests.integrationtests.utils import oqapi_vcr
 
 
-@oqapi_vcr.use_cassette
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "indicator,topic",
+    "indicator_key,topic,kwargs",
     [
-        ("minimal", "topic_minimal"),
-        ("mapping-saturation", "topic_building_count"),
-        ("currentness", "topic_building_count"),
+        ("minimal", "topic_minimal", {}),
+        ("mapping-saturation", "topic_building_count", {}),
+        ("currentness", "topic_building_count", {}),
+        (
+            "attribute-completeness",
+            "topic_building_count",
+            {"attribute_keys": ["height"]},
+        ),
+        (
+            "attribute-completeness",
+            "topic_building_count",
+            {"attribute_keys": ["height", "house-number"]},
+        ),
+        ("roads-thematic-accuracy", "topic_roads", {}),
+        (
+            "roads-thematic-accuracy",
+            "topic_roads",
+            {"attribute": "surface"},
+        ),
     ],
 )
-def test_create_indicator_public_feature_collection_single(
+@oqapi_vcr.use_cassette
+async def test_create_indicator_public_feature_collection_single(
     bpolys,
-    indicator,
+    indicator_key,
     topic,
+    kwargs,
     request,
 ):
     """Test create indicators for a feature collection with one feature."""
     topic = request.getfixturevalue(topic)
-    indicators = asyncio.run(main.create_indicator(indicator, bpolys, topic))
+    indicators = await main.create_indicator(indicator_key, bpolys, topic, **kwargs)
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
-        assert indicator.result.value is not None
+        if indicator_key == "roads-thematic-accuracy":
+            assert indicator.result.value is None
+        else:
+            assert indicator.result.value is not None
         assert indicator.result.description is not None
         assert indicator.result.figure is not None
 
@@ -54,21 +77,48 @@ def test_create_indicator_public_feature_collection_multi(
         assert indicator.result.figure is not None
 
 
-@oqapi_vcr.use_cassette
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "indicator,topic",
+    "indicator_key,topic,kwargs",
     [
-        ("minimal", "topic_minimal"),
-        ("mapping-saturation", "topic_building_count"),
-        ("currentness", "topic_building_count"),
+        ("minimal", "topic_minimal", {}),
+        ("mapping-saturation", "topic_building_count", {}),
+        ("currentness", "topic_building_count", {}),
+        (
+            "attribute-completeness",
+            "topic_building_count",
+            {"attribute_keys": ["height"]},
+        ),
+        (
+            "attribute-completeness",
+            "topic_building_count",
+            {"attribute_keys": ["height", "house-number"]},
+        ),
+        ("roads-thematic-accuracy", "topic_roads", {}),
+        (
+            "roads-thematic-accuracy",
+            "topic_roads",
+            {"attribute": "surface"},
+        ),
     ],
 )
-def test_create_indicator_private_feature(feature, indicator, topic, request):
+@oqapi_vcr.use_cassette
+async def test_create_indicator_private_feature(
+    feature,
+    indicator_key,
+    topic,
+    kwargs,
+    request,
+):
     """Test private method to create a single indicator for a single feature."""
     topic = request.getfixturevalue(topic)
-    indicator = asyncio.run(main._create_indicator(indicator, feature, topic))
+    indicator = await main._create_indicator(indicator_key, feature, topic, **kwargs)
     assert indicator.result.label is not None
-    assert indicator.result.value is not None
+    if indicator_key == "roads-thematic-accuracy":
+        assert indicator.result.value is None
+    else:
+        assert indicator.result.value is not None
     assert indicator.result.description is not None
     assert indicator.result.figure is not None
 

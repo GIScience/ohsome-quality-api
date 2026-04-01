@@ -1,12 +1,9 @@
 import pytest
-from approvaltests import Options, verify, verify_as_json
-from pydantic_core import to_jsonable_python
+from pytest_approval.main import verify, verify_plotly
 
 from ohsome_quality_api.indicators.land_cover_completeness.indicator import (
     LandCoverCompleteness,
 )
-from tests.approvaltests_namers import PytestNamer
-from tests.approvaltests_reporters import PlotlyDiffReporter
 from tests.integrationtests.utils import oqapi_vcr
 
 
@@ -20,8 +17,8 @@ async def test_create_land_cover_completeness_preprocess(
         feature=feature_land_cover,
     )
     await indicator.preprocess()
-    verify(indicator.osm_area_ratio, namer=PytestNamer(postfix="osm_area_ratio"))
-    verify(indicator.result.timestamp_osm, namer=PytestNamer(postfix="timestamp_osm"))
+    assert verify(str(indicator.osm_area_ratio))
+    assert verify(indicator.result.timestamp_osm.isoformat())
 
 
 @pytest.mark.asyncio
@@ -36,10 +33,10 @@ async def test_create_land_cover_completeness_calculate(
     await indicator.preprocess()
     indicator.calculate()
     assert indicator.result.label == "green"
-    verify(indicator.osm_area_ratio, namer=PytestNamer(postfix="osm_area_ratio"))
-    verify(indicator.result.value, namer=PytestNamer(postfix="value"))
-    verify(indicator.result.class_, namer=PytestNamer(postfix="class_"))
-    verify(indicator.result.description, namer=PytestNamer(postfix="description"))
+    assert verify(str(indicator.osm_area_ratio))
+    assert verify(str(indicator.result.value))
+    assert verify(str(indicator.result.class_))
+    assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio
@@ -55,9 +52,7 @@ async def test_create_land_cover_completeness_calculate_above_100(
     indicator.osm_area_ratio = 1300000
     indicator.calculate()
     assert indicator.result.label == "green"
-    verify(
-        indicator.result.description, namer=PytestNamer(postfix="description_above_100")
-    )
+    assert verify(indicator.result.description)
 
 
 @pytest.mark.asyncio
@@ -70,7 +65,4 @@ async def test_create_figure(topic_land_cover, feature_land_cover):
     await indicator.preprocess()
     indicator.calculate()
     indicator.create_figure()
-    verify_as_json(
-        to_jsonable_python(indicator.result.figure),
-        options=Options().with_reporter(PlotlyDiffReporter()).with_namer(PytestNamer()),
-    )
+    assert verify_plotly(indicator.result.figure)

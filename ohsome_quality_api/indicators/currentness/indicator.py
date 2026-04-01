@@ -451,6 +451,16 @@ def check_minor_edge_cases(contrib_sum, bin_total, aggregation_type) -> str:
             "Please note that in the area of interest less than 25 features of the "
             "selected topic are present today. "
         )
+    elif contrib_sum < 1 and aggregation_type == "length":
+        return _(
+            "Please note that in the area of interest less than 1 km of the "
+            "selected topic are present today. "
+        )
+    elif contrib_sum < 1 and aggregation_type == "area":
+        return _(
+            "Please note that in the area of interest less than 1 km² of the "
+            "selected topic are present today. "
+        )
     elif num_months >= 12:
         return _(
             "Please note that there was no mapping activity for {num_months} months "

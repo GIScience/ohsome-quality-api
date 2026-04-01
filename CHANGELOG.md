@@ -2,12 +2,64 @@
 
 ## Current Main
 
+## Release 1.17.1
+
+### Bug Fixes
+
+- fix: fix syntax error in query template for length and area based aggregation types ([#9a4c16b8])
+- road-accuracy: roads matched to multiple OSM roads are not counted multiple ([#1009])
+
+[#1009]: https://github.com/GIScience/ohsome-quality-api/pull/1009
+
+
+## Release 1.17.0
+
+- feat: get data for the Mapping Saturation indicator from ohsomeDB ([#994])
+    * fix: additionally return timestamp in ohsomedb elements sql query ([#8cb812e6])
+    * tests: update asyncpg recorder cassette for tests_ohsomdb.py ([#aa14fcd5])
+* build: upgrade dependencies
+    * build: upgrade dependencies (uv sync --upgrade) ([#e60a96fd])
+    * build: upgrade pytest from 8.x to 9.x ([@96cc1f87])
+    * build: upgrade dev dependency versions of ruff and prek ([#85bf2184])
+    * build: add ty as dev dependency ([#cf6bc153])
+    * fix: create series based on contributions_state.last_timestamp instead of NOW(). Use left join with on series to fill data gaps. Use 0 if SUM aggregation returns None. ([c064b63d])
+    * fix: do not abort, but plot best fit even if result value is unexpected (Catch numpy zero division error)
+* build: restrict Python version to below 3.14 and bump uv_build version ([#00bfd6ad])
+* build: upgrade dependencies (various commits)
+* fix(mapping-saturation): access latest timestamp after checking edge cases ([fef8a645])
+* feat: add timestamps and link to source to RoadComparison description ([8641d55d])
+
+[#994]: https://github.com/GIScience/ohsome-quality-api/pull/994
+
+
+## Release 1.16.1
+
+- fix: mapping-saturation does not fail if result value is 0
+
+## Release 1.16.0
+
+- feat: make thematic accuracy indicator for road attributes available in production by marking it as core (roads-thematic-accuracy) ([f454a7a2])
+
+## Release 1.15.0
+
 - refactor: remove ohsomedb api parameter ([#974])
 - refactor: use query args return by new version of ohsome-filter-to-sql ([c33c1d43])
-refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
+- refactor: set default logging level to info & use module level loggers as well as move logging config to `__init__.py` ([f592cebc])
 - refactor: move ohsomedb interactions to own module ([#976])
 - refactor: rename oqt.py to main.py ([d757b9b8])
 - refactor: rename TopicDefintion to Topic and fix type hints ([2b333562])
+- feat: add thematic accuracy indicator for road attributes (roads-thematic-accuracy) ([#980])
+- build: run uv sync --upgrade to upgrade dependencies ([2987bc5f])
+- build/tests: run tests in random order via pytest-randomly ([e6cd0d6d])
+* build: migrate pre-commit hooks to prek ([a3edf214])
+* tests: migrate from approvaltests to pytest_approval ([#997])
+* round asymptote and fitted values to second decimal place ([55174400] [87c47075])
+* fix: wrap rpy2 calls in rpy2 default_converter context manager ([74a64e6c])
+- build: migrate pre-commit hooks to prek ([a3edf214])
+- i18n: add some missing translations to german ([#996])
+- currentness: add minor edge cases for length and area aggregation type ([#996]) 
+- mapping-saturation: create plot when no model could be fitted ([#996]) 
+
 
 [#974]: https://github.com/GIScience/ohsome-quality-api/pull/974
 [c33c1d43]: https://github.com/GIScience/ohsome-quality-api/commit/c33c1d43
@@ -15,6 +67,11 @@ refactor: set default logging level to info & use module level loggers as well a
 [#976]: https://github.com/GIScience/ohsome-quality-api/pull/976
 [d757b9b8]: https://github.com/GIScience/ohsome-quality-api/commit/d757b9b8
 [2b333562]: https://github.com/GIScience/ohsome-quality-api/commit/2b333562
+[#980]: https://github.com/GIScience/ohsome-quality-api/pull/980
+[2987bc5f]: https://github.com/GIScience/ohsome-quality-api/commit/2987bc5f
+[e6cd0d6d]: https://github.com/GIScience/ohsome-quality-api/commit/e6cd0d6d
+[a3edf214]: https://github.com/GIScience/ohsome-quality-api/commit/a3edf214
+[#997]: https://github.com/GIScience/ohsome-quality-api/pull/997
 
 ## Release 1.14.0
 

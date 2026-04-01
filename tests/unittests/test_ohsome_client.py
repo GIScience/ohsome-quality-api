@@ -7,11 +7,14 @@ import geojson
 import httpx
 import pytest
 from geojson import FeatureCollection
-from schema import Schema, SchemaError
+from schema import Schema
 
 from ohsome_quality_api.attributes.definitions import build_attribute_filter
 from ohsome_quality_api.ohsome import client as ohsome_client
-from ohsome_quality_api.utils.exceptions import OhsomeApiError
+from ohsome_quality_api.utils.exceptions import (
+    OhsomeApiError,
+    SchemaError,
+)
 
 from .utils import get_geojson_fixture, get_topic_fixture
 
@@ -70,6 +73,11 @@ class TestOhsomeClientQuery(TestCase):
             )
             with self.assertRaises(OhsomeApiError):
                 asyncio.run(ohsome_client.query(self.topic, self.bpolys))
+
+    def test_not_implemented(self) -> None:
+        """Query for topic type is not implemented."""
+        with self.assertRaises(NotImplementedError):
+            asyncio.run(ohsome_client.query(""))
 
     def test_user_agent(self) -> None:
         with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_request:

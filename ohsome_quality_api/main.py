@@ -28,7 +28,7 @@ async def create_indicator(
     """
     tasks: list[Coroutine] = []
     for i, feature in enumerate(bpolys.features):
-        if "id" not in feature.keys():
+        if "id" not in feature:
             feature["id"] = i
         # Disable size limit for the Mapping Saturation indicator
         # TODO: Remove size restriction
@@ -41,6 +41,7 @@ async def create_indicator(
             "land-cover-thematic-accuracy",
             "land-cover-completeness",
             "user-activity",
+            "roads-thematic-accuracy",
         ]:
             validate_area(feature)
         tasks.append(

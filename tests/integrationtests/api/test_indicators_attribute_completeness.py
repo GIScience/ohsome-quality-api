@@ -1,7 +1,6 @@
 import pytest
-from approvaltests import verify
+from pytest_approval.main import verify
 
-from tests.approvaltests_namers import PytestNamer
 from tests.integrationtests.api.test_indicators import (
     RESPONSE_SCHEMA_GEOJSON,
     RESPONSE_SCHEMA_JSON,
@@ -86,7 +85,7 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "RequestValidationError"
-    verify(content["detail"][0]["msg"], namer=PytestNamer())
+    assert verify(content["detail"][0]["msg"])
 
 
 @oqapi_vcr.use_cassette
@@ -144,4 +143,4 @@ def test_indicators_attribute_completeness_filter_invalid(
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-    verify(content["detail"][0]["msg"], namer=PytestNamer())
+    assert verify(content["detail"][0]["msg"])

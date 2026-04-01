@@ -1,0 +1,10 @@
+{
+ "total_dlm": 608.4705960139487,
+ "present_in_both": 255.40974864532393,
+ "only_dlm": 270.37226278967586,
+ "only_osm": 25.333763214952395,
+ "missing_both": 2.17174005804762,
+ "present_in_both_agree": 165.53327791522852,
+ "present_in_both_not_agree": 89.8764707300953,
+ "not_matched": 55.18308130594919
+}

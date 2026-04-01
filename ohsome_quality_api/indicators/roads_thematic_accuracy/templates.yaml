@@ -1,0 +1,13 @@
+---
+label_description:
+  red: >-
+
+  yellow: >-
+
+  green: >-
+
+  undefined: >-
+    This is a no-quality indicator. No quality estimation will be calculated.
+result_description: >-
+    The indicator shows the alignment between OSM and the DLM data for the attribute $attribute.
+    $percent of all DLM roads in the area of interest could be matched to OSM roads.

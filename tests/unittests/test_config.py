@@ -101,7 +101,7 @@ class TestConfig(unittest.TestCase):
     def test_get_config_value(self):
         for key in self.keys:
             val = config.get_config_value(key)
-            assert isinstance(val, int) or isinstance(val, str) or isinstance(val, dict)
+            assert isinstance(val, (int, str, dict))
 
     @mock.patch.dict(
         "os.environ",

@@ -1,1 +1,0 @@
-Microsoft Roads has a road length of 0.03 km, of which 0.02 km are covered by roads in OSM. The completeness of OSM roads in your area-of-interest is medium.
