@@ -5,28 +5,28 @@ WITH bpoly AS (
 )
 
 select
-        SUM(dlm_length) as total_dlm,
+        SUM(matched_length) + SUM(not_matched_length) as total_dlm,
         SUM(
             CASE
-                WHEN lanes is not NULL AND fsz is not NULL THEN dlm_length
+                WHEN lanes is not NULL AND fsz is not NULL THEN matched_length
                 ELSE 0
             END
         ) AS present_in_both,
         SUM(
         CASE
-            WHEN lanes is not NULL AND fsz is NULL THEN dlm_length
+            WHEN lanes is not NULL AND fsz is NULL THEN matched_length
             ELSE 0
         END
     ) AS only_osm,
 		SUM(
 			CASE
-				WHEN lanes IS NULL AND fsz IS NOT NULL THEN dlm_length
+				WHEN lanes IS NULL AND fsz IS NOT NULL THEN matched_length
 				ELSE 0
 			end
 		) AS only_dlm,
         SUM(
         CASE
-            WHEN lanes is NULL AND fsz is NULL THEN dlm_length
+            WHEN lanes is NULL AND fsz is NULL THEN matched_length
             ELSE 0
         END
         ) AS missing_both,
@@ -34,7 +34,7 @@ select
             CASE
                 WHEN lanes is not NULL
                      AND fsz is not NULL
-                     AND lanes = fsz THEN dlm_length
+                     AND lanes = fsz THEN matched_length
                 ELSE 0
             END
         ) AS present_in_both_agree,
@@ -42,16 +42,11 @@ select
             CASE
                 WHEN lanes is not NULL
                      AND fsz is not NULL
-                     AND lanes != fsz THEN dlm_length
+                     AND lanes != fsz THEN matched_length
                 ELSE 0
             END
         ) AS present_in_both_not_agree,
-        SUM(
-            CASE
-                WHEN osm_id IS NULL THEN dlm_length
-                ELSE 0
-            END
-        ) AS not_matched
+        SUM(not_matched_length) AS not_matched
 FROM road_thematic_accuracy as ora, bpoly b
 WHERE
     ST_Intersects(ora.geom, b.geometry);
