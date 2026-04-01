@@ -1,10 +1,10 @@
 {
- "total_dlm": 905.0544001775659,
+ "total_dlm": 608.4705960139487,
  "present_in_both": 0.0,
  "only_dlm": 0.0,
- "only_osm": 854.9165253733742,
- "missing_both": 50.137874804190616,
+ "only_osm": 553.0865696139997,
+ "missing_both": 0.20094509400000002,
  "present_in_both_agree": 0.0,
  "present_in_both_not_agree": 0.0,
- "not_matched": 43.92146451467821
+ "not_matched": 55.18308130594919
 }
