@@ -4,14 +4,14 @@ WITH bpoly AS (
     (ST_Dump (ST_SetSRID (ST_GeomFromGeoJSON ($1), 4326))).geom AS geometry
 )
 SELECT
-    SUM(dlm_length) as total_dlm,
+    SUM(matched_length) + SUM(not_matched_length) as total_dlm,
     SUM(
         CASE
             WHEN lanes is not NULL AND fsz is not NULL
                  AND (name is not NULL OR ref is not null) AND nam is not NULL
                  AND oneway is not NULL AND far is not NULL
                  AND surface is not NULL AND ofm is not NULL
-                 AND width is not NULL AND brf is not NULL THEN dlm_length
+                 AND width is not NULL AND brf is not NULL THEN matched_length
             ELSE 0
         END
     ) AS present_in_both,
@@ -29,7 +29,7 @@ SELECT
                      OR ofm is NULL
                      OR brf is NULL
                      )
-                 THEN dlm_length
+                 THEN matched_length
             ELSE 0
         END
     ) AS only_osm,
@@ -47,7 +47,7 @@ SELECT
                      OR surface is NULL
                      OR width is NULL
                      )
-                THEN dlm_length
+                THEN matched_length
             ELSE 0
         END
     ) AS only_dlm,
@@ -65,7 +65,7 @@ SELECT
                  AND ((angle_osm > 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm < 0))
                  AND surface = ofm
                  AND abs(width - brf) > 1
-                THEN dlm_length
+                THEN matched_length
             ELSE 0
         END
     ) AS present_in_both_agree,
@@ -83,16 +83,11 @@ SELECT
                  OR ((angle_osm < 0 AND angle_dlm > 0) OR (angle_osm < 0 AND angle_dlm > 0)))
                  AND surface != ofm
                  AND abs(width - brf) <= 1
-                THEN dlm_length
+                THEN matched_length
             ELSE 0
         END
     ) AS present_in_both_not_agree,
-            SUM(
-            CASE
-                WHEN osm_id IS NULL THEN dlm_length
-                ELSE 0
-            END
-        ) AS not_matched,
+            SUM(not_matched_length) AS not_matched,
     SUM(
         CASE
             WHEN lanes is not NULL
@@ -155,7 +150,7 @@ SELECT
                  AND abs(width - brf) <= 1
                 THEN 0
             WHEN osm_id IS NULL THEN 0
-            ELSE dlm_length
+            ELSE matched_length
         END
     ) AS missing_both
 FROM road_thematic_accuracy as ora, bpoly b

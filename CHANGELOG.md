@@ -1,8 +1,13 @@
-# Changelo
+# Changelog
 
 ## Current Main
 
+### Bug Fixes
+
 - fix: fix syntax error in query template for length and area based aggregation types ([#9a4c16b8])
+- road-accuracy: roads matched to multiple OSM roads are not counted multiple ([#1009])
+
+[#1009]: https://github.com/GIScience/ohsome-quality-api/pull/1009
 
 
 ## Release 1.17.0
