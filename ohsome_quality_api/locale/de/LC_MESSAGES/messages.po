@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-02 10:54+0100\n"
+"POT-Creation-Date: 2026-04-01 12:39+0200\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -402,7 +402,7 @@ msgstr ""
 "aktuell, dazwischen und veraltet."
 
 #: ohsome_quality_api/indicators/indicators.yaml
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:247
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:266
 msgid "Road Comparison"
 msgstr "Straßenvergleich"
 
@@ -597,7 +597,7 @@ msgid "{dataset} does not contain buildings for your area-of-interest."
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:288
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:295
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:314
 #, python-brace-format
 msgid ""
 "{dataset} does only cover {coverage} of your area-of-interest. Comparison"
@@ -998,7 +998,12 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:173
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:162
+#, fuzzy
+msgid "Unexpected saturation value."
+msgstr "Modellierte Sättigungskurve"
+
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:204
 msgid ""
 "We could not fit any saturation curve onto the data, therefore we could "
 "not determine any saturation level."
@@ -1006,62 +1011,62 @@ msgstr ""
 "Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten "
 "wir keinen Sättigungsgrad bestimmen."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:185
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:216
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:194
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:225
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:201
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:209
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:240
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:222
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:253
 #: ohsome_quality_api/indicators/user_activity/indicator.py:189
 msgid "Date"
 msgstr "Datum"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:226
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:257
 msgid "Value"
 msgstr "Wert"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:229
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
 #, fuzzy
 msgid "Area"
 msgstr "Fläche"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:230
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:261
 msgid "Count"
 msgstr "Anzahl"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:231
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:262
 msgid "Lenght"
 msgstr "Länge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:263
 msgid "Perimeter"
 msgstr "Durchmesser"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:233
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
 msgid "Density"
 msgstr "Dichte"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:255
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:286
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:259
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:290
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:262
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:293
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1069,7 +1074,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:266
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:297
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1121,45 +1126,43 @@ msgstr ""
 "Microsoft Road Detections ist ein weltweiter Datensatz von Straßen. Er "
 "wurdeaus Satellitenbildern erstellt."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:127
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:141
 #, python-brace-format
 msgid ""
-"{name} has a road length of {total_length} km, of which {matched_length} "
-"km are covered by roads in OSM. "
+" The data of {name} is from {data_timestamp} and was processed with OSM "
+"data from {processing_timestamp}."
 msgstr ""
-"{name} hat eine Straßenlänge von {total_length} km, von denen "
-"{matched_length}km von den Straßen in OSM gedeckt sind. "
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:185
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:200
 #, python-brace-format
 msgid "OSM Covered: {length_matched} km ({date})"
 msgstr "von OSM abgedeckt: {length_matched} km {date}"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:195
-#, python-brace-format
-msgid "{matched_percentage} of {name} are matched by OSM"
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:213
+#, fuzzy, python-brace-format
+msgid "{matched_percentage} of {name} <br> are matched by OSM"
 msgstr "{matched_percentage} von {name} sind von OSM abgedeckt"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:218
-#, python-brace-format
-msgid "{not_matched_percentage} of {name} are not matched by OSM"
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:237
+#, fuzzy, python-brace-format
+msgid "{not_matched_percentage} of {name} <br> are not matched by OSM"
 msgstr "{not_matched_percentage} von {name} sind nicht von OSM abgedeckt"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:231
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:250
 #, python-brace-format
 msgid "Not OSM Covered: {length_difference_km} km ({date})"
 msgstr "Nicht von OSM abgedeckt: {length_difference_km} km ({date})"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:248
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:267
 msgid "Matched road length [%]"
 msgstr "Abgeglichene Straßenlänge [%]"
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:271
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:290
 #, python-brace-format
 msgid "Reference dataset {dataset} does not cover area-of-interest. "
 msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:275
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:294
 #, python-brace-format
 msgid ""
 "Only {a} of the area-of-interest is covered by the reference dataset "
@@ -1168,7 +1171,7 @@ msgstr ""
 "Nur {a} des Untersuchungsgebiets sind vom Referenzdatensatz ({b}) "
 "abgedecktKeine Qualitätsabschätzung mit Referenz {c} ist möglich."
 
-#: ohsome_quality_api/indicators/road_comparison/indicator.py:285
+#: ohsome_quality_api/indicators/road_comparison/indicator.py:304
 #, python-brace-format
 msgid "{dataset} does not contain roads for your area-of-interest. "
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
@@ -1188,40 +1191,16 @@ msgid "The completeness of OSM roads in your area-of-interest is high."
 msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
+#, fuzzy, python-brace-format
 msgid ""
-"The completeness in comparison to $dataset is $ratio. $dataset have a "
-"total length of $length_total. $length_matched of $dataset are covered by"
-" OSM roads."
+"<a href=$dataset_url target=\"_blank\">$dataset_name</a> has a road "
+"length of $total_length km, of which $matched_length  km are covered by "
+"roads in OSM."
 msgstr ""
-"Die Vollständigkeit im Vergleich zu $dataset beträgt $ratio%.$dataset hat"
-" eine Gesamtlänge von $length_total.$length_matched von $dataset werden "
-"von OSM-Straßen abgedeckt."
+"{name} hat eine Straßenlänge von {total_length} km, von denen "
+"{matched_length}km von den Straßen in OSM gedeckt sind. "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
-#, fuzzy
-msgid "surface"
-msgstr "Oberfläche"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
-#, fuzzy
-msgid "oneway"
-msgstr "Einbahnstraße"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
-#, fuzzy
-msgid "lanes"
-msgstr "Fahrspuren"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
-#, fuzzy
-msgid "name"
-msgstr "Name"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:42
-msgid "width"
-msgstr "Breite"
-
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:98
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:101
 msgid ""
 " The graph on the left shows information for the presence of attributes "
 "in the two datasets."
@@ -1229,7 +1208,7 @@ msgstr ""
 " Die Grafik auf der linken Seite zeigt Informationen zum Vorhandensein "
 "von Attributen in den beiden Datensätzen."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:103
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:106
 msgid ""
 " The right graphs shows the agreement for all elements that contain the "
 "selected attribute(s) in both datasets."
@@ -1237,7 +1216,7 @@ msgstr ""
 " Die rechte Grafik zeigt die Übereinstimmung für alle Elemente, die "
 "das/die ausgewählte(n) Attribut(e) in beiden Datensätzen enthalten."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:109
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:112
 msgid ""
 " There are no matched roads where the selected attribute(s) are present "
 "in both datasets"
@@ -1245,70 +1224,70 @@ msgstr ""
 " Es gibt keine übereinstimmenden Straßen, bei denen das/die "
 "ausgewählte(n) Attribut(e) in beiden Datensätzen vorhanden ist/sind."
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:121
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:122
 #, fuzzy
 msgid "'All attributes'"
 msgstr "'Alle Attribute'"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:132
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:133
 #, fuzzy
 msgid " The DLM data is from "
 msgstr "Die DLM-Daten sind von "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:134
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:135
 #, fuzzy
 msgid " and the OSM data is from "
 msgstr " und die OSM-Daten sind von "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:165
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:166
 msgid "Length (in km)"
 msgstr "Länge (in km)"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:185
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:186
 #, fuzzy
 msgid "In both"
 msgstr "In beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:186
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:187
 #, fuzzy
 msgid "Only in DLM"
 msgstr "Nur im DLM"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:187
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:188
 #, fuzzy
 msgid "Only in OSM"
 msgstr "Nur in OSM"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:188
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:189
 #, fuzzy
 msgid "Missing in both"
 msgstr "Fehlt in beiden"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:215
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:217
 #, fuzzy
 msgid "Attribute Presence [# (%)]"
 msgstr "Attributvollständigkeit"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:223
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:225
 #, fuzzy
 msgid "Attributes are the same"
 msgstr "Attribut ist gleich "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:224
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:226
 msgid "Attributes are different"
 msgstr "Attribute sind unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:228
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:230
 #, fuzzy
 msgid "Attribute is the same"
 msgstr "Attribut ist gleich "
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:229
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:231
 #, fuzzy
 msgid "Attribute is different"
 msgstr "Attribute sind unterschiedlich"
 
-#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:253
+#: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:255
 msgid "Attribute Alignment [# (%)]"
 msgstr ""
 
@@ -2343,4 +2322,32 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ "Es wurde kein Modell erfolgreich "
 #~ "ausgeführt. Die Sättigung konnte nicht "
 #~ "bestimmt werden."
+
+#~ msgid ""
+#~ "The completeness in comparison to "
+#~ "$dataset is $ratio. $dataset have a "
+#~ "total length of $length_total. $length_matched"
+#~ " of $dataset are covered by OSM "
+#~ "roads."
+#~ msgstr ""
+#~ "Die Vollständigkeit im Vergleich zu "
+#~ "$dataset beträgt $ratio%.$dataset hat eine "
+#~ "Gesamtlänge von $length_total.$length_matched von"
+#~ " $dataset werden von OSM-Straßen "
+#~ "abgedeckt."
+
+#~ msgid "surface"
+#~ msgstr "Oberfläche"
+
+#~ msgid "oneway"
+#~ msgstr "Einbahnstraße"
+
+#~ msgid "lanes"
+#~ msgstr "Fahrspuren"
+
+#~ msgid "name"
+#~ msgstr "Name"
+
+#~ msgid "width"
+#~ msgstr "Breite"
 
