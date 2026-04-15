@@ -32,7 +32,7 @@ def get_topic_presets(project: ProjectEnum = None) -> dict[str, Topic]:
     if project is not None:
         return {k: v for k, v in topics_sorted.items() if project in v.projects}
     else:
-        return topics
+        return topics_sorted
 
 
 def get_topic_preset(topic_key: str) -> Topic:
