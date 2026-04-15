@@ -28,6 +28,7 @@ def get_topic_keys() -> list[str]:
 
 def get_topic_presets(project: ProjectEnum = None) -> dict[str, Topic]:
     topics = load_topic_presets()
+    # sort by dict value (name)
     topics_sorted = dict(sorted(topics.items(), key=lambda item: item[1].name))
     if project is not None:
         return {k: v for k, v in topics_sorted.items() if project in v.projects}
