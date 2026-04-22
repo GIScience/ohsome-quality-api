@@ -2,6 +2,8 @@
 
 ## Current Main
 
+- build: upgrade dependencies via uv sync --upgrade (03ffef0d)
+
 ## Release 1.17.1
 
 ### Bug Fixes
