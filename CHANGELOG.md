@@ -3,6 +3,9 @@
 ## Current Main
 
 - build: upgrade dependencies via uv sync --upgrade (03ffef0d)
+- build: upgrade pytest-approval and recreate approval files (4bdf27b5)
+    - Upgrade of pytest-approval included breaking changes to the approval
+    file naming scheme. All approval files are recreate (--auto-approve).
 
 ## Release 1.17.1
 
