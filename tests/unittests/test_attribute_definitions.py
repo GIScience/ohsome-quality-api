@@ -31,13 +31,21 @@ def test_get_attribute_wrong_key():
         definitions.get_attribute("foo", "bar")
 
 
-def test_build_attribute_filter(attribute_key, topic_key_building_count):
-    attribute = definitions.build_attribute_filter(
-        attribute_key, topic_key_building_count
+def test_build_attribute_filter_ohsomedb(attribute_key, topic_key_building_count):
+    filter_ = definitions.build_attribute_filter_ohsomedb(
+        None, attribute_key, topic_key_building_count
     )
-    assert isinstance(attribute, str)
+    assert isinstance(filter_, str)
+    assert filter_ == "(height=* or building:levels=*)"
+
+
+def test_build_attribute_filter_ohsomeapi(attribute_key, topic_key_building_count):
+    filter_ = definitions.build_attribute_filter_ohsomeapi(
+        None, attribute_key, topic_key_building_count
+    )
+    assert isinstance(filter_, str)
     assert (
-        attribute == "building=* and building!=no and geometry:polygon"
+        filter_ == "building=* and building!=no and geometry:polygon"
         " and (height=* or building:levels=*)"
     )
 
@@ -45,15 +53,15 @@ def test_build_attribute_filter(attribute_key, topic_key_building_count):
 def test_build_attribute_filter_multiple_attributes(
     attribute_key_multiple, topic_key_building_count
 ):
-    attribute = definitions.build_attribute_filter(
-        attribute_key_multiple, topic_key_building_count
+    attribute = definitions.build_attribute_filter_ohsomedb(
+        None, attribute_key_multiple, topic_key_building_count
     )
     assert isinstance(attribute, str)
 
 
 def test_build_attribute_filter_wrong_key():
     with pytest.raises(KeyError):
-        definitions.build_attribute_filter("foo", "bar")
+        definitions.build_attribute_filter_ohsomedb(None, ["foo"], "bar")
 
 
 def test_get_attribute_preset(topic_key_building_count):
