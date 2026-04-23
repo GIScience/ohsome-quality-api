@@ -56,7 +56,8 @@ dev = [
     "pytest-sugar>=1.1.1",
     "pytest-xdist>=3.8.0",
     "pytest-randomly>=4.0.1",
-    "pytest-approval>=0.14.0",
+    "pytest-approval==0.16.0",
+    "pytest-nodeid-to-filepath",
 ]
 
 [build-system]
@@ -65,6 +66,9 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-root = ""
+
+[tool.uv.sources]
+pytest-nodeid-to-filepath = { git = "https://github.com/GIScience/pytest-nodeid-to-filepath" }
 
 [tool.ruff]
 extend-exclude = ["scripts"]

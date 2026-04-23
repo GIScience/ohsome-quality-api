@@ -751,6 +751,7 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-mock" },
+    { name = "pytest-nodeid-to-filepath" },
     { name = "pytest-randomly" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
@@ -792,10 +793,11 @@ dev = [
     { name = "prek", specifier = ">=0.3.5" },
     { name = "pygments", specifier = ">=2.19.1" },
     { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-approval", specifier = ">=0.14.0" },
+    { name = "pytest-approval", specifier = "==0.16.0" },
     { name = "pytest-asyncio", specifier = ">=1.3.0" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
+    { name = "pytest-nodeid-to-filepath", git = "https://github.com/GIScience/pytest-nodeid-to-filepath" },
     { name = "pytest-randomly", specifier = ">=4.0.1" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "pytest-xdist", specifier = ">=3.8.0" },
@@ -1063,14 +1065,15 @@ wheels = [
 
 [[package]]
 name = "pytest-approval"
-version = "0.15.1"
+version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
+    { name = "pytest-nodeid-to-filepath" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/0a/cd2a89bf77ab5b2b82797f735e0fc013663595d3315c62245e7e6abec4b7/pytest_approval-0.15.1.tar.gz", hash = "sha256:8a874aa29e405bbc6f3f924c4ab05d8fcfe104d96c0e814a15225498ddc19fe1", size = 63255, upload-time = "2026-03-24T07:52:14.656Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/f7/8e91f4dbc6bef8497bcfcb7189700c3bc7b60c74ec1d77a73c10f833db3b/pytest_approval-0.16.0.tar.gz", hash = "sha256:59b74f15cda183cfee43d3032509eea4baf867e45725639a5dccd0d263724237", size = 62728, upload-time = "2026-04-22T06:35:50.642Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/30/f122af44e73f1bc08d291e7c84d18eb702428f78cb35749307c07f79d427/pytest_approval-0.15.1-py3-none-any.whl", hash = "sha256:8c8b6a58dec4a14c77c340f334d3b477ed3a4ee27e016fd122bfde53835108da", size = 74416, upload-time = "2026-03-24T07:52:15.754Z" },
+    { url = "https://files.pythonhosted.org/packages/dc/ed/aa0bf5c0f864396ebb6e6cbef597539ab34f90e08b671401eaf8f8bbd50c/pytest_approval-0.16.0-py3-none-any.whl", hash = "sha256:c7d493959d852e4f40854269ef9aa6f7161a1b07a73735b87c387fdb691c74a2", size = 73862, upload-time = "2026-04-22T06:35:49.055Z" },
 ]
 
 [[package]]
@@ -1110,6 +1113,14 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/68/14/eb014d26be205d38ad5ad20d9a80f7d201472e08167f0bb4361e251084a9/pytest_mock-3.15.1.tar.gz", hash = "sha256:1849a238f6f396da19762269de72cb1814ab44416fa73a8686deac10b0d87a0f", size = 34036, upload-time = "2025-09-16T16:37:27.081Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5a/cc/06253936f4a7fa2e0f48dfe6d851d9c56df896a9ab09ac019d70b760619c/pytest_mock-3.15.1-py3-none-any.whl", hash = "sha256:0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d", size = 10095, upload-time = "2025-09-16T16:37:25.734Z" },
+]
+
+[[package]]
+name = "pytest-nodeid-to-filepath"
+version = "0.1.0"
+source = { git = "https://github.com/GIScience/pytest-nodeid-to-filepath#445e530cc8f6ecdf6458de29b9cc67fdd89ee536" }
+dependencies = [
+    { name = "pytest" },
 ]
 
 [[package]]
