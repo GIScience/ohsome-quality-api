@@ -1,7 +1,7 @@
-import asyncio
 import os
 from datetime import datetime
 
+import asyncpg_recorder
 import geojson
 import pytest
 from pytest_approval.main import verify, verify_plotly
@@ -16,37 +16,57 @@ from tests.integrationtests.utils import (
 )
 
 
+@pytest.fixture(autouse=True, params=[True, False])
+def ohsomedb_feature_flag(request, monkeypatch):
+    monkeypatch.setattr(
+        "ohsome_quality_api.indicators.attribute_completeness.indicator.is_ohsomedb_enabled",
+        lambda: request.param,
+    )
+
+
 class TestPreprocess:
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess_attribute_keys_single(
-        self, topic_building_count, feature_germany_heidelberg, attribute_key
+    async def test_preprocess_attribute_keys_single(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_key,
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
             attribute_keys=attribute_key,
         )
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert indicator.result.value is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess_attribute_keys_multiple(
-        self, topic_building_count, feature_germany_heidelberg, attribute_key_multiple
+    async def test_preprocess_attribute_keys_multiple(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_key_multiple,
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
             attribute_keys=attribute_key_multiple,
         )
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert indicator.result.value is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_preprocess_attribute_filter(
+    async def test_preprocess_attribute_filter(
         self,
         topic_building_count,
         feature_germany_heidelberg,
@@ -59,43 +79,28 @@ class TestPreprocess:
             attribute_filter=attribute_filter,
             attribute_title=attribute_title,
         )
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert indicator.result.value is not None
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
 class TestCalculation:
-    @pytest.fixture(
-        scope="class",
-        params=(
-            ["height"],
-            {
-                "attribute_filter": "height=* or building:levels=*",
-                "attribute_title": "Height",
-            },
-        ),
-    )
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(self, request, topic_building_count, feature_germany_heidelberg):
-        if isinstance(request.param, list):
-            i = AttributeCompleteness(
-                topic_building_count,
-                feature_germany_heidelberg,
-                attribute_keys=request.param,
-            )
-        else:
-            i = AttributeCompleteness(
-                topic_building_count,
-                feature_germany_heidelberg,
-                attribute_filter=request.param["attribute_filter"],
-                attribute_title=request.param["attribute_title"],
-            )
-        asyncio.run(i.preprocess())
-        i.calculate()
-        return i
-
-    def test_calculate(self, indicator):
+    async def test_calculate_with_attribute_keys(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_keys=["height"],
+        )
+        await indicator.preprocess()
+        indicator.calculate()
         assert indicator.result.value is not None
         assert indicator.result.value >= 0.0
         assert indicator.result.label != "red"
@@ -104,8 +109,34 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert verify(indicator.result.description)
 
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def test_no_features(self):
+    async def test_calculate_with_attribute_filter(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_filter="height=* or building:levels=*",
+            attribute_title="Heigit",
+        )
+        await indicator.preprocess()
+        indicator.calculate()
+        assert indicator.result.value is not None
+        assert indicator.result.value >= 0.0
+        assert indicator.result.label != "red"
+        assert indicator.result.description is not None
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+        assert verify(indicator.result.description)
+
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_no_features(self):
         """Test area with no features"""
         infile = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -121,7 +152,7 @@ class TestCalculation:
             feature=feature,
             attribute_keys=["leaf-type"],
         )
-        asyncio.run(indicator.preprocess())
+        await indicator.preprocess()
         assert indicator.absolute_value_1 == 0
 
         indicator.calculate()
@@ -130,74 +161,82 @@ class TestCalculation:
 
 
 class TestFigure:
-    @pytest.fixture(
-        scope="class",
-        params=(
-            ["height"],
-            {
-                "attribute_filter": "height=* or building:levels=*",
-                "attribute_title": "Height",
-            },
-        ),
-    )
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    def indicator(
+    async def test_create_figure_with_attribute_keys(
         self,
-        request,
         topic_building_count,
         feature_germany_heidelberg,
     ):
-        if isinstance(request.param, list):
-            indicator = AttributeCompleteness(
-                topic_building_count, feature_germany_heidelberg, request.param
-            )
-        else:
-            indicator = AttributeCompleteness(
-                topic_building_count,
-                feature_germany_heidelberg,
-                attribute_filter=request.param["attribute_filter"],
-                attribute_title=request.param["attribute_title"],
-            )
-        asyncio.run(indicator.preprocess())
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            ["height"],
+        )
+        await indicator.preprocess()
         indicator.calculate()
-        return indicator
+        indicator.create_figure()
+        assert isinstance(indicator.result.figure, dict)
+        assert verify_plotly(indicator.result.figure)
 
-    def test_create_figure(self, indicator):
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_create_figure_with_attribute_filter(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_filter="height=* or building:levels=*",
+            attribute_title="Height",
+        )
+        await indicator.preprocess()
+        indicator.calculate()
         indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
 
-def test_create_description_attribute_keys_single():
+def test_create_description_attribute_keys_single(feature_germany_heidelberg):
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),
-        "foo",
+        feature_germany_heidelberg,
         ["height"],
     )
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
     indicator.create_description()
+    assert indicator.description is not None
     assert verify(indicator.description)
 
 
-def test_create_description_attribute_keys_multiple():
+def test_create_description_attribute_keys_multiple(feature_germany_heidelberg):
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),
-        "foo",
+        feature_germany_heidelberg,
         ["height", "house-number", "address-street"],
     )
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
     indicator.create_description()
+    assert indicator.description is not None
     assert verify(indicator.description)
 
 
-def test_create_description_attribute_filter(attribute_filter, attribute_title):
+def test_create_description_attribute_filter(
+    attribute_filter,
+    attribute_title,
+    feature_germany_heidelberg,
+):
     indicator = AttributeCompleteness(
         get_topic_fixture("building-count"),
-        "foo",
+        feature_germany_heidelberg,
         attribute_filter=attribute_filter,
         attribute_title=attribute_title,
     )
@@ -205,6 +244,7 @@ def test_create_description_attribute_filter(attribute_filter, attribute_title):
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
     indicator.create_description()
+    assert indicator.description is not None
     assert verify(indicator.description)
 
 
@@ -224,35 +264,43 @@ def test_create_description_multiple_aggregation_types(
     result_value,
     absolute_value_1,
     absolute_value_2,
+    feature_germany_heidelberg,
 ):
     indicator = AttributeCompleteness(
         get_topic_fixture(topic_key),
-        "foo",
+        feature_germany_heidelberg,
         [attribute_key],
     )
     indicator.result.value = result_value
     indicator.absolute_value_1 = absolute_value_1
     indicator.absolute_value_2 = absolute_value_2
     indicator.create_description()
+    assert indicator.description is not None
     assert aggregation in indicator.description
 
 
-def test_filters_match(topic_key_building_count, attribute_key_height):
+def test_filters_match(
+    topic_key_building_count,
+    feature_germany_heidelberg,
+    attribute_key_height,
+):
     indicator_attribute_keys = AttributeCompleteness(
         get_topic_fixture(topic_key_building_count),
-        "foo",
+        feature_germany_heidelberg,
         attribute_keys=attribute_key_height,
     )
 
     attributes = get_attributes()
+
+    attribute_filter = attributes[topic_key_building_count][
+        attribute_key_height[0]
+    ].filter
     indicator_attribute_filter = AttributeCompleteness(
         get_topic_fixture(topic_key_building_count),
-        "foo",
-        attribute_filter=attributes[topic_key_building_count][
-            attribute_key_height[0]
-        ].filter,
+        feature_germany_heidelberg,
+        attribute_filter=attribute_filter,
+        attribute_title="foo",
     )
-
     assert (
         indicator_attribute_filter.attribute_filter
         == indicator_attribute_keys.attribute_filter

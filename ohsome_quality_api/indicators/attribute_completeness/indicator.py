@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone
 from string import Template
 
 import dateutil.parser
@@ -7,15 +8,25 @@ from babel.numbers import format_decimal, format_percent
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
+from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
-    get_attribute,
+    build_attribute_title,
 )
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
+
+
+def is_ohsomedb_enabled() -> bool:
+    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
+        return True
+    else:
+        return False
 
 
 class AttributeCompleteness(BaseIndicator):
@@ -54,30 +65,38 @@ class AttributeCompleteness(BaseIndicator):
         super().__init__(topic=topic, feature=feature)
         self.threshold_yellow = 0.75
         self.threshold_red = 0.25
-        self.attribute_keys = attribute_keys
-        self.attribute_filter = attribute_filter
-        self.attribute_title = attribute_title
         self.absolute_value_1 = None
         self.absolute_value_2 = None
         self.description = None
-        if self.attribute_keys:
-            self.attribute_filter = build_attribute_filter(
-                self.attribute_keys,
-                self.topic.key,
-            )
-            self.attribute_title = ", ".join(
-                [
-                    get_attribute(self.topic.key, k).name.lower()
-                    for k in self.attribute_keys
-                ]
-            )
-        else:
-            self.attribute_filter = build_attribute_filter(
-                self.attribute_filter,
-                self.topic.key,
-            )
 
-    async def preprocess(self) -> None:
+        self.attribute_keys = attribute_keys
+        self.attribute_filter = build_attribute_filter(
+            attribute_filter, attribute_keys, topic.key
+        )
+        self.attribute_title = build_attribute_title(
+            attribute_title, attribute_keys, topic.key
+        )
+
+    async def preprocess(self):
+        if is_ohsomedb_enabled():
+            await self.preprocess_ohsomedb()
+        else:
+            await self.preprocess_ohsomeapi()
+
+    async def preprocess_ohsomedb(self) -> None:
+        # Get attribute filter
+        result = await ohsomedb.attribute_completeness(
+            aggregation=self.topic.aggregation_type,
+            bpolys=self.feature.geometry,
+            filter_=self.topic.filter,
+            attribute_filter_=self.attribute_filter,
+        )
+        self.result.timestamp_osm = datetime.now(timezone.utc)
+        self.result.value = result[0]["attribute_completeness"]
+        self.absolute_value_1 = result[0]["total_aggregation"]
+        self.absolute_value_2 = result[0]["aggregation_with_attribute"]
+
+    async def preprocess_ohsomeapi(self) -> None:
         # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
@@ -92,7 +111,7 @@ class AttributeCompleteness(BaseIndicator):
 
     def calculate(self) -> None:
         # result (ratio) can be NaN if no features matching filter1
-        if self.result.value == "NaN":
+        if self.result.value == "NaN" or self.absolute_value_1 == 0:
             self.result.value = None
         if self.result.value is None:
             self.result.description += _(" No features in this region")

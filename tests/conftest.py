@@ -2,7 +2,6 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import List
 
 import geojson
 import pytest
@@ -80,7 +79,7 @@ def topic_major_roads_length() -> Topic:
 
 
 @pytest.fixture(scope="class")
-def attribute_key_height() -> List[str]:
+def attribute_key_height() -> list[str]:
     return ["height"]
 
 
