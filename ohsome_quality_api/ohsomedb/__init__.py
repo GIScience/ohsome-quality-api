@@ -1,6 +1,7 @@
 from .requests import (
     attribute_completeness,
     contributions,
+    density,
     elements,
     users,
 )
@@ -8,6 +9,7 @@ from .requests import (
 __all__ = (
     "attribute_completeness",
     "contributions",
+    "density",
     "elements",
     "users",
 )
