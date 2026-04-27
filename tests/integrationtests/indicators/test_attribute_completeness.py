@@ -25,9 +25,9 @@ def ohsomedb_feature_flag(request, monkeypatch):
 
 
 class TestPreprocess:
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_single(
         self,
         topic_building_count,
@@ -44,9 +44,9 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_multiple(
         self,
         topic_building_count,
@@ -63,9 +63,9 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_filter(
         self,
         topic_building_count,
@@ -86,9 +86,9 @@ class TestPreprocess:
 
 
 class TestCalculation:
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_keys(
         self,
         topic_building_count,
@@ -109,9 +109,9 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert verify(indicator.result.description)
 
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_filter(
         self,
         topic_building_count,
@@ -133,9 +133,9 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert verify(indicator.result.description)
 
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_no_features(self):
         """Test area with no features"""
         infile = os.path.join(
@@ -161,9 +161,9 @@ class TestCalculation:
 
 
 class TestFigure:
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_keys(
         self,
         topic_building_count,
@@ -180,9 +180,9 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    @oqapi_vcr.use_cassette
-    @asyncpg_recorder.use_cassette
     @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_filter(
         self,
         topic_building_count,
