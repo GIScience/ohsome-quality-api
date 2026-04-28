@@ -8,33 +8,49 @@ from ohsome_quality_api import main
 from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqapi_vcr
 
+# TODO: add user-activity and land-cover-... indicators (ohsomedb)
+PARAMETERS = [
+    ("minimal", "topic_minimal", {}),
+    ("minimal", "topic_custom", {}),
+    ("mapping-saturation", "topic_building_count", {}),
+    ("mapping-saturation", "topic_custom", {}),
+    ("currentness", "topic_building_count", {}),
+    ("currentness", "topic_custom", {}),
+    (
+        "attribute-completeness",
+        "topic_building_count",
+        {"attribute_keys": ["height"]},
+    ),
+    (
+        "attribute-completeness",
+        "topic_building_count",
+        {"attribute_keys": ["height", "house-number"]},
+    ),
+    (
+        "attribute-completeness",
+        "topic_building_count",
+        {"attribute_filter": "height=*", "attribute_title": "Height"},
+    ),
+    (
+        "attribute-completeness",
+        "topic_custom",
+        {
+            "attribute_filter": "drinking_water=no",
+            "attribute_title": "No drinking water",
+        },
+    ),
+    ("roads-thematic-accuracy", "topic_roads", {}),
+    (
+        "roads-thematic-accuracy",
+        "topic_roads",
+        {"attribute": "surface"},
+    ),
+]
+
 
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "indicator_key,topic,kwargs",
-    [
-        ("minimal", "topic_minimal", {}),
-        ("mapping-saturation", "topic_building_count", {}),
-        ("currentness", "topic_building_count", {}),
-        (
-            "attribute-completeness",
-            "topic_building_count",
-            {"attribute_keys": ["height"]},
-        ),
-        (
-            "attribute-completeness",
-            "topic_building_count",
-            {"attribute_keys": ["height", "house-number"]},
-        ),
-        ("roads-thematic-accuracy", "topic_roads", {}),
-        (
-            "roads-thematic-accuracy",
-            "topic_roads",
-            {"attribute": "surface"},
-        ),
-    ],
-)
+@pytest.mark.parametrize("indicator_key,topic,kwargs", PARAMETERS)
 @oqapi_vcr.use_cassette
 async def test_create_indicator_public_feature_collection_single(
     bpolys,
@@ -80,30 +96,7 @@ def test_create_indicator_public_feature_collection_multi(
 
 @asyncpg_recorder.use_cassette
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "indicator_key,topic,kwargs",
-    [
-        ("minimal", "topic_minimal", {}),
-        ("mapping-saturation", "topic_building_count", {}),
-        ("currentness", "topic_building_count", {}),
-        (
-            "attribute-completeness",
-            "topic_building_count",
-            {"attribute_keys": ["height"]},
-        ),
-        (
-            "attribute-completeness",
-            "topic_building_count",
-            {"attribute_keys": ["height", "house-number"]},
-        ),
-        ("roads-thematic-accuracy", "topic_roads", {}),
-        (
-            "roads-thematic-accuracy",
-            "topic_roads",
-            {"attribute": "surface"},
-        ),
-    ],
-)
+@pytest.mark.parametrize("indicator_key,topic,kwargs", PARAMETERS)
 @oqapi_vcr.use_cassette
 async def test_create_indicator_private_feature(
     feature,

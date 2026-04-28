@@ -22,6 +22,10 @@ def ohsomedb_feature_flag(request, monkeypatch):
         "ohsome_quality_api.indicators.attribute_completeness.indicator.is_ohsomedb_enabled",
         lambda: request.param,
     )
+    monkeypatch.setattr(
+        "ohsome_quality_api.attributes.definitions.is_ohsomedb_enabled",
+        lambda: request.param,
+    )
 
 
 class TestPreprocess:

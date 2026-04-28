@@ -1,1 +1,1 @@
-42% of all "Buildings (count)" features (all: 31107 elements) in your area of interest have the selected additional attribute Heigit (matched: 12926 elements). The attribute completeness is medium (25%-75%).
+41% of all "Buildings (count)" features (all: 31340 elements) in your area of interest have the selected additional attribute Heigit (matched: 12986 elements). The attribute completeness is medium (25%-75%).

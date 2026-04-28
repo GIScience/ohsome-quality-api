@@ -1,9 +1,10 @@
 from enum import Enum
-from typing import Literal
+from typing import Literal, Self
 
 import geojson
 from fastapi_i18n import _
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Polygon
+from ohsome_filter_to_sql import OhsomeFilter
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -16,8 +17,8 @@ from pydantic import (
 from ohsome_quality_api.api.request_context import RequestContext, request_context
 from ohsome_quality_api.attributes.definitions import AttributeEnum, get_attributes
 from ohsome_quality_api.indicators.definitions import get_valid_indicators
-from ohsome_quality_api.topics.definitions import TopicEnum, get_topic_preset
-from ohsome_quality_api.topics.models import Topic, TopicData
+from ohsome_quality_api.topics.definitions import TopicEnum
+from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
 
@@ -25,7 +26,7 @@ class BaseConfig(BaseModel):
     model_config = ConfigDict(
         alias_generator=snake_to_lower_camel,
         populate_by_name=True,
-        frozen=True,
+        frozen=False,
         extra="forbid",
     )
 
@@ -75,9 +76,13 @@ class BaseBpolys(BaseConfig):
 
 class IndicatorRequest(BaseBpolys, BaseRequestContext):
     topic: TopicEnum = Field(
-        ...,
         title="Topic Key",
         alias="topic",
+    )
+    topic_title: str | None = None
+    topic_filter: OhsomeFilter | None = Field(
+        default=None,
+        examples=["building=yes and geometry:polygon"],
     )
     include_figure: bool = True
 
@@ -86,19 +91,30 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     def indicator(self) -> str:
         return self.request_context.path_parameters["key"]
 
-    @field_validator("topic")
-    @classmethod
-    def transform_topic(cls, value) -> Topic:
-        return get_topic_preset(value.value)
+    @model_validator(mode="after")
+    def validate_custom_topic_has_a_filter_and_title(self) -> Self:
+        match self.topic.value:
+            case "custom-topic":
+                if self.topic_filter is None or self.topic_title is None:
+                    raise ValueError(
+                        "Topic filter and title are requeired for custom topic."
+                    )
+                return self
+            case _:
+                if self.topic_filter is not None or self.topic_title is not None:
+                    raise ValueError(
+                        "Topic filter and title parameter are only allowed for custom topic."  # noqa
+                    )
+                return self
 
     @model_validator(mode="after")
     def validate_indicator_topic_combination(self):
-        valid_indicators = get_valid_indicators(self.topic.key)
+        valid_indicators = get_valid_indicators(self.topic.value)
         if self.indicator not in valid_indicators:
             raise ValueError(
                 "Invalid combination of indicator and topic: {} and {}".format(
                     self.indicator,
-                    self.topic.key,
+                    self.topic.value,
                 )
             )
         return self
@@ -123,19 +139,26 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
 
     @model_validator(mode="after")
     def validate_attributes(self):
-        valid_attributes = tuple(get_attributes()[self.topic.key].keys())
-        for attribute in self.attribute_keys:
-            if attribute not in valid_attributes:
+        match self.topic.value:
+            case "custom-topic":
                 raise ValueError(
-                    "Invalid combination of attribute {} and topic {}. "
-                    "Topic {} supports these attributes: {}".format(
-                        attribute,
-                        self.topic.key,
-                        self.topic.key,
-                        ", ".join(valid_attributes),
-                    )
+                    "Custom topics work only with custom attributes. "
+                    "Please define a custom attribute by providing attribute filter and title parameters."  # noqa
                 )
-        return self
+            case _:
+                valid_attributes = tuple(get_attributes()[self.topic.value].keys())
+                for attribute in self.attribute_keys:
+                    if attribute not in valid_attributes:
+                        raise ValueError(
+                            "Invalid combination of attribute {} and topic {}. "
+                            "Topic {} supports these attributes: {}".format(
+                                attribute,
+                                self.topic.value,
+                                self.topic.value,
+                                ", ".join(valid_attributes),
+                            )
+                        )
+                return self
 
 
 class AttributeCompletenessFilterRequest(IndicatorRequest):

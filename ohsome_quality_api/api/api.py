@@ -351,7 +351,17 @@ async def _post_indicator(
     key: str,
     parameters: IndicatorRequest,
 ) -> Any:
-    indicators = await main.create_indicator(key=key, **dict(parameters))
+    parameters_ = dict(parameters)
+    topic_key = parameters_.pop("topic").value
+    topic_filter = parameters_.pop("topic_filter")
+    topic_name = parameters_.pop("topic_title")
+    topic = get_topic_preset(topic_key)
+
+    if topic.key == "custom-topic":
+        topic.filter = topic_filter
+        topic.name = topic_name
+
+    indicators = await main.create_indicator(key=key, topic=topic, **parameters_)
 
     if request.headers["accept"] == MEDIA_TYPE_JSON:
         return {

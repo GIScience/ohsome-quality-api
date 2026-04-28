@@ -123,6 +123,33 @@ def test_indicators(
 
 
 @oqapi_vcr.use_cassette
+@pytest.mark.parametrize("indicator", ("minimal", "mapping-saturation", "currentness"))
+def test_indicators_custom_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+    indicator,
+):
+    """Minimal viable request for a single bpoly."""
+    endpoint = ENDPOINT + indicator
+    ohsome_filter = "spring=yes and geometry:point"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "custom-topic",
+        "topicFilter": ohsome_filter,
+        "topicTitle": "Custom Topic",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    result = response.json()
+    assert schema.is_valid(result)
+    if headers["accept"] == "application/json":
+        assert result["result"][0]["topic"]["filter"] == ohsome_filter
+    else:
+        assert result["features"][0]["properties"]["topic"]["filter"] == ohsome_filter
+
+
+@oqapi_vcr.use_cassette
 def test_indicators_attribute_completeness(
     client,
     bpolys,
@@ -131,6 +158,25 @@ def test_indicators_attribute_completeness(
 ):
     endpoint = ENDPOINT + "attribute-completeness"
     parameters = {"bpolys": bpolys, "topic": "building-count", "attributes": ["height"]}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_custom_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    ohsome_filter = "height=*"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "building-count",
+        "attributeFilter": ohsome_filter,
+        "attributeTitle": "height",
+    }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
@@ -170,6 +216,48 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     content = response.json()
     assert content["type"] == "RequestValidationError"
     assert verify(content["detail"][0]["msg"])
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_with_custom_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "custom-topic",
+        "topicFilter": "spring=yes and geometry:point",
+        "topicTitle": "",
+        "attributes": ["height"],
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "RequestValidationError"
+    assert verify(content["detail"][0]["msg"])
+
+
+@oqapi_vcr.use_cassette
+def test_indicators_attribute_completeness_with_custom_topic_and_custom_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "attribute-completeness"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "custom-topic",
+        "topicFilter": "spring=yes and geometry:point",
+        "topicTitle": "Spring",
+        "attributeFilter": "man_made=spring_box",
+        "attributeTitle": "Spring Box",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
 
 
 @oqapi_vcr.use_cassette
@@ -229,6 +317,29 @@ def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
 def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "minimal"
     parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "height"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "RequestValidationError"
+
+
+def test_minimal_custom_topic_missing_filter(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {"bpolys": bpolys, "topic": "custom-topic"}  # missing topic_filter
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    content = response.json()
+    assert content["type"] == "RequestValidationError"
+
+
+def test_minimal_custom_topic_key_with_filter(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "minimal"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "minimal",
+        "topicFilter": "spring=yes and geometry:point",  # invalid with topic `minimal`
+        "topicTitle": "Spring",  # invalid with topic `minimal`
+    }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()

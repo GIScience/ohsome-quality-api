@@ -116,7 +116,7 @@ def build_attribute_filter_ohsomedb(
                     )
             return attribute_filter
         elif attribute_filter is not None:
-            return attribute_filter
+            return "(" + attribute_filter + ")"
         else:
             raise ValueError("Attribute filter or keys has to be given.")
     except KeyError as error:

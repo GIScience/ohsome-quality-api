@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 16:11+0200\n"
+"POT-Creation-Date: 2026-05-07 10:38+0200\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ohsome_quality_api/api/request_models.py:145
+#: ohsome_quality_api/api/request_models.py:168
 msgid "ohsome filter query representing custom attributes."
 msgstr "ohsome-Filterabfrage, die benutzerdefinierte Attribute darstellt."
 
-#: ohsome_quality_api/api/request_models.py:151
+#: ohsome_quality_api/api/request_models.py:174
 msgid "Title describing the attributes represented by the Attribute Filter."
 msgstr ""
 "Titel, der die durch den Attributfilter dargestellten Attribute "
 "beschreibt."
 
-#: ohsome_quality_api/api/request_models.py:195
+#: ohsome_quality_api/api/request_models.py:218
 msgid ""
 "CORINE Land Cover is a pan-European land cover inventory with thematic "
 "classes."
@@ -36,7 +36,7 @@ msgstr ""
 "CORINE Land Cover ist eine paneuropäische Bodenbedeckungsdatenbank mit "
 "thematischen Klassen."
 
-#: ohsome_quality_api/api/request_models.py:217
+#: ohsome_quality_api/api/request_models.py:240
 msgid "Attribute to compare between DLM and OSM."
 msgstr "Attributvollständigkeit"
 
@@ -412,7 +412,7 @@ msgstr ""
 "Verleich der Straßenlänge in OSM mit der Straßenlänge in einem "
 "Referenzdatensatz."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:247
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:295
 #: ohsome_quality_api/indicators/indicators.yaml
 msgid "Building Comparison"
 msgstr "Gebäudevergleich"
@@ -560,7 +560,7 @@ msgid ""
 " world. It is derived from satellite imagery."
 msgstr ""
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:154
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:202
 msgid ""
 "OSM has substantivly more buildings than the reference datasets. The "
 "reference dataset is likely to miss many buildings."
@@ -568,35 +568,35 @@ msgstr ""
 "OSM enthält deutlich mehr Gebäude als die Referenzdatensätze. Im "
 "Referenzdatensatz fehlen wahrscheinlich viele Gebäude."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:208
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:256
 msgid "OSM building area"
 msgstr "OSM-Gebäudefläche"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:225
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:234
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:273
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:282
 msgid "Reference"
 msgstr "Referenz"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:250
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:298
 msgid "Building Area [km²]"
 msgstr "Gebäudefläche [km²]"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:270
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:318
 #, python-brace-format
 msgid "{} does not cover your area-of-interest."
 msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:272
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:320
 #, python-brace-format
 msgid "Only {} of your area-of-interest is covered by {}"
 msgstr "Nur {:.2f}% des Untersuchungsgebiets sind von  {} bedeckt"
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:278
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:326
 #, python-brace-format
 msgid "{dataset} does not contain buildings for your area-of-interest."
 msgstr "enthält keine Gebäude im Untersuchungsgebiet."
 
-#: ohsome_quality_api/indicators/building_comparison/indicator.py:288
+#: ohsome_quality_api/indicators/building_comparison/indicator.py:336
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:314
 #, python-brace-format
 msgid ""
@@ -996,12 +996,12 @@ msgstr ""
 "die Vollständigkeit der Landbedeckungskategorien unter Gewichtung nach "
 "Fläche berücksichtigt."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:162
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:169
 #, fuzzy
 msgid "Unexpected saturation value."
 msgstr "Unerwartete Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:204
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:211
 msgid ""
 "We could not fit any saturation curve onto the data, therefore we could "
 "not determine any saturation level."
@@ -1009,61 +1009,61 @@ msgstr ""
 "Wir konnten keine Sättigungskurve auf die Daten anpassen, daher konnten "
 "wir keinen Sättigungsgrad bestimmen."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:216
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:223
 msgid "OSM data"
 msgstr "OSM-Daten"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:225
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
 msgid "Modelled saturation curve"
 msgstr "Modellierte Sättigungskurve"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:232
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:239
 #, python-brace-format
 msgid "Estimated total data: {asymptote}"
 msgstr "Geschätzte Gesamtdatenmenge:"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:240
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:247
 msgid "Estimated total data"
 msgstr "Geschätzte Gesamtdatenmenge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:253
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
 #: ohsome_quality_api/indicators/user_activity/indicator.py:189
 msgid "Date"
 msgstr "Datum"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:257
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
 msgid "Value"
 msgstr "Wert"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:260
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:267
 msgid "Area"
 msgstr "Fläche"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:261
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:268
 msgid "Count"
 msgstr "Anzahl"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:262
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:269
 msgid "Lenght"
 msgstr "Länge"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:263
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:270
 msgid "Perimeter"
 msgstr "Durchmesser"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:264
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:271
 msgid "Density"
 msgstr "Dichte"
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:286
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:293
 msgid "No features were mapped in this region."
 msgstr "In dieser Region wurden keine Objekte erfasst."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:290
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:297
 msgid "Not enough data in total available in this region."
 msgstr "In dieser Region stehen insgesamt nicht genügend Daten zur Verfügung."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:293
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:300
 msgid ""
 "Not enough data points available in this regions. The Mapping Saturation "
 "indicator needs data for at least 36 months."
@@ -1071,7 +1071,7 @@ msgstr ""
 "Nicht genügend Datenpunkte in dieser Region verfügbar. Der Mapping-"
 "Saturation-Indikator benötigt Daten für mindestens 36 Monate."
 
-#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:297
+#: ohsome_quality_api/indicators/mapping_saturation/indicator.py:304
 msgid "All mapped features in this region have been deleted."
 msgstr "Alle erfassten Objekte in dieser Region wurden gelöscht."
 
@@ -1188,7 +1188,6 @@ msgid "The completeness of OSM roads in your area-of-interest is high."
 msgstr "Die Vollständigkeit der OSM Straßen im Untersuchungsgebiet ist hoch."
 
 #: ohsome_quality_api/indicators/road_comparison/templates.yaml
-#, python-brace-format
 msgid ""
 "<a href=$dataset_url target=\"_blank\">$dataset_name</a> has a road "
 "length of $total_length km, of which $matched_length  km are covered by "
@@ -1414,6 +1413,14 @@ msgid "No specific quality dimension"
 msgstr "Keine spezifische Qualitätsdimension"
 
 #: ohsome_quality_api/topics/presets.yaml
+msgid "Custom Topic"
+msgstr "Anpassbares Thema"
+
+#: ohsome_quality_api/topics/presets.yaml
+msgid "A custom topic for user defined filters."
+msgstr "Ein anpassbares Thema für selbst definierte Filter."
+
+#: ohsome_quality_api/topics/presets.yaml
 msgid "Buildings (count)"
 msgstr "Gebäude (Anzahl)"
 
@@ -1538,6 +1545,11 @@ msgstr ""
 "Alle linearen OSM-Objekte, die üblicherweise zum Gehen genutzt werden, "
 "einschließlich ausgewiesener Fußwege, gemeinsamer Nutzungspfade sowie "
 "Straßen, auf denen Fußverkehr erlaubt ist oder Gehwege existieren."
+
+#: ohsome_quality_api/topics/presets.yaml
+#, fuzzy
+msgid "Footway"
+msgstr "Fußweg"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "POI"
@@ -2336,4 +2348,7 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "width"
 #~ msgstr "Breite"
+
+#~ msgid "Custom Topic."
+#~ msgstr "benutzerdefiniertes Thema."
 

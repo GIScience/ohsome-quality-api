@@ -79,6 +79,14 @@ def topic_major_roads_length() -> Topic:
 
 
 @pytest.fixture(scope="class")
+def topic_custom() -> Topic:
+    topic = get_topic_preset("custom-topic")
+    topic.filter = "amenity=fountain and geometry:point"
+    topic.name = "Fountains"
+    return topic
+
+
+@pytest.fixture(scope="class")
 def attribute_key_height() -> list[str]:
     return ["height"]
 
