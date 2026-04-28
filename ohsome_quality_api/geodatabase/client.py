@@ -32,8 +32,8 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def log_query(record):
-    logger.info("Query:\n" + record.query)
-    logger.info("Args:\n" + str(record.args))
+    logger.debug("Query:\n" + record.query)
+    logger.debug("Args:\n" + str(record.args))
 
 
 @asynccontextmanager
