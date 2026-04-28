@@ -214,7 +214,7 @@ def validate_query_results(
                 {
                     "value": Or(float, int),
                     "value2": Or(float, int),
-                    "ratio": Or(float, int, "NaN"),
+                    "ratio": Or(float, int, "NaN", "Infinity"),
                     Or("timestamp", "fromTimestamp", "toTimestamp"): Use(
                         lambda t: isoparse(t)
                     ),

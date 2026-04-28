@@ -1,0 +1,1 @@
+Value error, Custom topics work only with custom attributes. Please define a custom attribute by providing attribute filter and title parameters.
