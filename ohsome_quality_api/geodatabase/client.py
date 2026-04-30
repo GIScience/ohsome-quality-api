@@ -59,6 +59,7 @@ async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
         case _:
             raise ValueError()
     conn = await asyncpg.connect(dns)
+    await conn.execute('set search_path to "global_2026-04-13",public')
     try:
         with conn.query_logger(log_query):
             yield conn
