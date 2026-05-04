@@ -3,6 +3,7 @@ from .requests import (
     contributions,
     density,
     elements,
+    single_snapshot_aggregation,
     users,
 )
 
@@ -11,5 +12,6 @@ __all__ = (
     "contributions",
     "density",
     "elements",
+    "single_snapshot_aggregation",
     "users",
 )
