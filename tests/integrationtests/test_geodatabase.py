@@ -99,16 +99,16 @@ def test_get_eubucco_coverage_intersection_area_none(
     assert result == pytest.approx(0.0)
 
 
-def test_get_eubucco_coverage_intersection_area(feature_germany_berlin):
-    bpoly = feature_germany_berlin
+def test_get_eubucco_coverage_intersection_area(feature_germany_heidelberg):
+    bpoly = feature_germany_heidelberg
     result = asyncio.run(
         db_client.get_intersection_area(bpoly, "eubucco_coverage_simple")
     )
     assert pytest.approx(1.0, 0.1) == result
 
 
-def test_get_coverage_intersection(feature_germany_berlin):
-    bpoly = feature_germany_berlin
+def test_get_coverage_intersection(feature_germany_heidelberg):
+    bpoly = feature_germany_heidelberg
     result = asyncio.run(
         db_client.get_intersection_geom(bpoly, "eubucco_coverage_simple")
     )
