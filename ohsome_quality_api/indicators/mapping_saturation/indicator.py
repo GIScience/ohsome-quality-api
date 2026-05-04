@@ -22,6 +22,14 @@ logger = logging.getLogger(__name__)
 np.seterr(all="raise")  # Raise error on division by zero
 
 
+def is_ohsomedb_enabled() -> bool:
+    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
+    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
+        return True
+    else:
+        return False
+
+
 class MappingSaturation(BaseIndicator):
     """The Mapping Saturation Indicator.
 
@@ -78,8 +86,7 @@ class MappingSaturation(BaseIndicator):
         self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self):
-        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
+        if is_ohsomedb_enabled():
             await self.preprocess_ohsomedb()
         else:
             await self.preprocess_ohsomeapi()
