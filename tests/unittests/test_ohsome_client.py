@@ -7,15 +7,12 @@ import geojson
 import httpx
 import pytest
 from geojson import FeatureCollection
-from schema import Schema
+from schema import Schema, SchemaError
 
 from ohsome_quality_api.attributes.definitions import build_attribute_filter_ohsomedb
 from ohsome_quality_api.ohsome import client as ohsome_client
-from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
-    SchemaError,
-    TopicDataSchemaError,
 )
 
 from .utils import get_geojson_fixture, get_topic_fixture
@@ -92,102 +89,6 @@ class TestOhsomeClientQuery(TestCase):
             self.assertEqual(
                 "ohsome-quality-api",
                 mock_request.call_args[1]["headers"]["user-agent"].split("/")[0],
-            )
-
-    def test_topic_data_valid_1(self):
-        data = asyncio.run(
-            ohsome_client.query(
-                TopicData(
-                    key="key",
-                    name="name",
-                    description="description",
-                    data={
-                        "result": [
-                            {"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}
-                        ]
-                    },
-                ),
-                self.bpolys,
-            )
-        )
-        self.assertDictEqual(
-            {"result": [{"value": 1.0, "timestamp": "2020-03-20T01:30:08.180856"}]},
-            data,
-        )
-
-    def test_topic_data_valid_2(self):
-        data = asyncio.run(
-            ohsome_client.query(
-                TopicData(
-                    key="key",
-                    name="name",
-                    description="description",
-                    data={
-                        "result": [
-                            {
-                                "value": 1.0,
-                                "fromTimestamp": "2020-03-20T01:30:08.180856",
-                                "toTimestamp": "2020-04-20T01:30:08.180856",
-                            }
-                        ]
-                    },
-                ),
-                self.bpolys,
-            )
-        )
-        self.assertDictEqual(
-            {
-                "result": [
-                    {
-                        "value": 1.0,
-                        "fromTimestamp": "2020-03-20T01:30:08.180856",
-                        "toTimestamp": "2020-04-20T01:30:08.180856",
-                    }
-                ]
-            },
-            data,
-        )
-
-    def test_topic_data_invalid_empty(self):
-        with self.assertRaises(TopicDataSchemaError):
-            asyncio.run(
-                ohsome_client.query(
-                    TopicData(
-                        key="key",
-                        name="name",
-                        description="description",
-                        data={},
-                    ),
-                    self.bpolys,
-                )
-            )
-
-    def test_topic_data_invalid_empty_list(self):
-        with self.assertRaises(TopicDataSchemaError):
-            asyncio.run(
-                ohsome_client.query(
-                    TopicData(
-                        key="key",
-                        name="name",
-                        description="description",
-                        data={"result": []},
-                    ),
-                    self.bpolys,
-                )
-            )
-
-    def test_topic_data_invalid_missing_key(self):
-        with self.assertRaises(TopicDataSchemaError):
-            asyncio.run(
-                ohsome_client.query(
-                    TopicData(
-                        key="key",
-                        name="name",
-                        description="description",
-                        data={"result": [{"value": 1.0}]},
-                    ),
-                    self.bpolys,
-                )
             )
 
 
