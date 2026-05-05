@@ -239,6 +239,33 @@ footpath:
     - core
     - bkg
 
+footway:
+  name: Footway
+  description: >-
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    (
+      (footway=sidewalk)
+      or (footway=crossing)
+      or (highway=footway)
+      or (highway=path and foot=designated)
+      or (highway=path and foot=yes)
+      or (highway=pedestrian)
+      or (highway=steps)
+      or (highway=cycleway and foot=yes)
+      or (foot=yes)
+    )
+    and geometry:line
+  indicators:
+    - mapping-saturation
+    - currentness
+    - user-activity
+    - attribute-completeness
+  projects:
+    - core
+
+
 poi:
   name: POI
   description: >-

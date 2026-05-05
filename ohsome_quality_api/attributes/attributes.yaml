@@ -419,3 +419,13 @@ power_substation:
     name: Location
     description: To define the location of a feature which may be above or under ground or in relation to objects such as roofs, bridges or buildings.
     filter: location=*
+
+footway:
+  width:
+    name: Width
+    description: width
+    filter: width=*
+  surface:
+    name: Surface
+    description: surface
+    filter: surface=*
