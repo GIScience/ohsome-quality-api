@@ -2,6 +2,7 @@
 
 ## Current Main
 
+- feat: support querying ohsomedb to fetch data for building-comparison (e9091455)
 - build: upgrade dependencies via uv sync --upgrade (03ffef0d)
 - build: upgrade pytest-approval and recreate approval files (4bdf27b5)
     - Upgrade of pytest-approval included breaking changes to the approval
