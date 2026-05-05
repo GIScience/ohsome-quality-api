@@ -429,3 +429,7 @@ footway:
     name: Surface
     description: surface
     filter: surface=*
+  smoothness:
+    name: Smoothness
+    description: smoothness
+    filter: smoothness=*
