@@ -6,7 +6,7 @@ WITH bpoly AS (
 series AS (
     SELECT
         Generate_series(
-            '2007-10-01'::timestamp,
+            '2012-10-01'::timestamp,
             contributions_state.last_timestamp::timestamp,
             '1 month'::interval
         ) AS ts
