@@ -2,11 +2,16 @@
 
 ## Current Main
 
+- feat: enable custom topics with own filter and title ([#1017])
+    - tests: add missing path of ohsomedb enabled flag
+    - i18n: translate custom topic
 - feat: support querying ohsomedb to fetch data for building-comparison (e9091455)
 - build: upgrade dependencies via uv sync --upgrade (03ffef0d)
 - build: upgrade pytest-approval and recreate approval files (4bdf27b5)
     - Upgrade of pytest-approval included breaking changes to the approval
     file naming scheme. All approval files are recreate (--auto-approve).
+
+[#1017] https://github.com/GIScience/ohsome-quality-api/pull/1017
 
 ## Release 1.17.1
 
