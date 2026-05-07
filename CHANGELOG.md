@@ -10,8 +10,10 @@
 - build: upgrade pytest-approval and recreate approval files (4bdf27b5)
     - Upgrade of pytest-approval included breaking changes to the approval
     file naming scheme. All approval files are recreate (--auto-approve).
+- fix: topic cycleway did include ways with cycleway features with value “no” ([1018])
 
-[#1017] https://github.com/GIScience/ohsome-quality-api/pull/1017
+[#1017]: https://github.com/GIScience/ohsome-quality-api/pull/1017
+[#1018]: https://github.com/GIScience/ohsome-quality-api/pull/1018
 
 ## Release 1.17.1
 
