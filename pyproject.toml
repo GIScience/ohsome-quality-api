@@ -56,7 +56,7 @@ dev = [
     "pytest-sugar>=1.1.1",
     "pytest-xdist>=3.8.0",
     "pytest-randomly>=4.0.1",
-    "pytest-approval==0.16.0",
+    "pytest-approval>=0.16.2",
     "pytest-nodeid-to-filepath",
 ]
 
