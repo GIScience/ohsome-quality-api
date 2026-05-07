@@ -1,3 +1,4 @@
+import json
 from enum import Enum
 from typing import Literal, Self
 
@@ -21,6 +22,28 @@ from ohsome_quality_api.topics.definitions import TopicEnum
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
+BPOLYS_EXAMPLE = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [8.674092292785645, 49.40427147224242],
+                        [8.695850372314453, 49.40427147224242],
+                        [8.695850372314453, 49.415552187316095],
+                        [8.674092292785645, 49.415552187316095],
+                        [8.674092292785645, 49.40427147224242],
+                    ]
+                ],
+            },
+            "properties": {},
+        }
+    ],
+}
+
 
 class BaseConfig(BaseModel):
     model_config = ConfigDict(
@@ -41,29 +64,7 @@ FeatureCollection_ = FeatureCollection[Feature[Polygon | MultiPolygon, dict]]
 
 
 class BaseBpolys(BaseConfig):
-    bpolys: FeatureCollection_ = Field(
-        {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [8.674092292785645, 49.40427147224242],
-                                [8.695850372314453, 49.40427147224242],
-                                [8.695850372314453, 49.415552187316095],
-                                [8.674092292785645, 49.415552187316095],
-                                [8.674092292785645, 49.40427147224242],
-                            ]
-                        ],
-                    },
-                    "properties": {},
-                }
-            ],
-        }
-    )
+    bpolys: FeatureCollection_ = Field(examples=[json.dumps(BPOLYS_EXAMPLE)])
 
     @field_validator("bpolys")
     @classmethod
@@ -78,13 +79,36 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     topic: TopicEnum = Field(
         title="Topic Key",
         alias="topic",
+        examples=["building-count", "roads"],
     )
     topic_title: str | None = None
     topic_filter: OhsomeFilter | None = Field(
         default=None,
-        examples=["building=yes and geometry:polygon"],
+        examples=["spring=yes and geometry:point"],
     )
     include_figure: bool = True
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "building-count",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+                json.dumps(
+                    {
+                        "topic": "custom-topic",
+                        "topicTitle": "My very own topic",
+                        "topicFilter": "spring=yes and geometry:point",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
+    )
 
     @computed_field
     @property
@@ -122,9 +146,24 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
 
 class AttributeCompletenessKeyRequest(IndicatorRequest):
     attribute_keys: list[AttributeEnum] = Field(
-        ...,
         title="Attribute Keys",
         alias="attributes",
+        examples=[["height"]],
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "building-count",
+                        "attributes": ["height"],
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
     )
 
     @computed_field
@@ -163,16 +202,32 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
 
 class AttributeCompletenessFilterRequest(IndicatorRequest):
     attribute_filter: str = Field(
-        ...,
         title="Attribute Filter",
         description=_("ohsome filter query representing custom attributes."),
+        examples=["height=*"],
     )
     attribute_title: str = Field(
-        ...,
         title="Attribute Title",
         description=(
             _("Title describing the attributes represented by the Attribute Filter.")
         ),
+        examples=["Height"],
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "building-count",
+                        "attributeTitle": "Height",
+                        "attributeFilter": "height=*",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
     )
 
     @computed_field
@@ -220,6 +275,20 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         ),
     )
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "land-cover",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
+    )
+
     @field_validator("corine_land_cover_class", mode="before")
     @classmethod
     def empty_string_to_none(cls, value):
@@ -238,6 +307,20 @@ class RoadsThematicAccuracyRequest(IndicatorRequest):
         default=None,
         title="Attribute",
         description=_("Attribute to compare between DLM and OSM."),
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "roads",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
     )
 
     @computed_field
