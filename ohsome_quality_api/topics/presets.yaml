@@ -5,6 +5,23 @@
 
 ### CORE TOPICS ###
 
+custom-topic:
+  name: Custom Topic
+  description: >-
+     A custom topic for user defined filters.
+  endpoint: elements
+  aggregation_type: count
+  filter: building=* and building!=no and geometry:polygon
+  indicators:
+    - minimal
+    - mapping-saturation
+    - currentness
+    - attribute-completeness
+    - user-activity
+  projects:
+    - core
+    - bkg
+
 building-count:
   name: Buildings (count)
   description: >-
@@ -238,6 +255,33 @@ footpath:
     - silverways
     - core
     - bkg
+
+footway:
+  name: Footway
+  description: >-
+    All linear OSM features commonly used for walking, including dedicated pedestrian paths,
+    shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    (
+      (highway=footway)
+      or (highway=path and (foot=designated or foot=yes))
+      or (highway=pedestrian)
+      or (highway=steps)
+      or (highway=cycleway and foot=yes)
+      or (foot=yes)
+      or (footway=sidewalk)
+      or (footway=crossing)
+    )
+    and geometry:line
+  source: https://wiki.openstreetmap.org/wiki/Key:foot
+  indicators:
+    - mapping-saturation
+    - currentness
+    - user-activity
+  projects:
+    - core
 
 poi:
   name: POI

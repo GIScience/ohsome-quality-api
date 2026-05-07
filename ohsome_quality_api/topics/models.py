@@ -22,7 +22,7 @@ class BaseTopic(BaseModel):
     model_config = ConfigDict(
         alias_generator=snake_to_lower_camel,
         extra="forbid",
-        frozen=True,
+        frozen=False,
         populate_by_name=True,
         title="Topic",
     )

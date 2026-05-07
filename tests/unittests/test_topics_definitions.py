@@ -11,7 +11,7 @@ def test_get_topic_keys():
 
 def test_get_valid_topics():
     topics = definitions.get_valid_topics("minimal")
-    assert topics == ("minimal",)
+    assert topics == ("custom-topic", "minimal")
 
 
 def test_load_topic_definition():
