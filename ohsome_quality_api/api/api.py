@@ -1,8 +1,10 @@
 import json
 import os
+from collections.abc import AsyncIterator
 from typing import Any, Union
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi.concurrency import asynccontextmanager
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,6 +48,7 @@ from ohsome_quality_api.api.response_models import (
 )
 from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
+from ohsome_quality_api.geodatabase.client import create_pool
 from ohsome_quality_api.indicators.definitions import (
     IndicatorEnum,
     IndicatorEnumRequest,
@@ -103,6 +106,12 @@ if "FASTAPI_I18N__LOCALE_DIR" not in os.environ:
     )
 
 
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    async with create_pool():
+        yield
+
+
 app = FastAPI(
     title=__title__,
     description=description,
@@ -114,6 +123,7 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url=None,
     redoc_url=None,
+    lifespan=lifespan,
     dependencies=[
         Depends(set_request_context),
         Depends(i18n),
@@ -360,6 +370,7 @@ async def _post_indicator(
     if topic.key == "custom-topic":
         topic.filter = topic_filter
         topic.name = topic_name
+        # TODO: Run topic validator again
 
     indicators = await main.create_indicator(key=key, topic=topic, **parameters_)
 

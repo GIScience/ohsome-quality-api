@@ -17,11 +17,12 @@ On preventing SQL injections:
 import logging
 import os
 from contextlib import asynccontextmanager
+from contextvars import ContextVar
 from typing import Literal
 
 import asyncpg
 import geojson
-from asyncpg import Record
+from asyncpg import Pool, Record
 from geojson import Feature, FeatureCollection, MultiPolygon
 
 from ohsome_quality_api.config import get_config_value
@@ -31,40 +32,61 @@ logger = logging.getLogger("ohsome_quality_api")
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
+OQAPIDB_POOL: ContextVar[Pool] = ContextVar("OQAPIDB_POOL")
+OHSOMEDB_POOL: ContextVar[Pool] = ContextVar("OHSOMEDB_POOL")
+
+
 def log_query(record):
     logger.debug("Query:\n" + record.query)
     logger.debug("Args:\n" + str(record.args))
 
 
 @asynccontextmanager
+async def create_pool():
+    # DSN in libpq connection URI format
+    oqapidb_dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("postgres_host"),
+        port=get_config_value("postgres_port"),
+        database=get_config_value("postgres_db"),
+        user=get_config_value("postgres_user"),
+        password=get_config_value("postgres_password"),
+    )
+    ohsomedb_dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+        host=get_config_value("ohsomedb_host"),
+        port=get_config_value("ohsomedb_port"),
+        database=get_config_value("ohsomedb_db"),
+        user=get_config_value("ohsomedb_user"),
+        password=get_config_value("ohsomedb_password"),
+    )
+    async with (
+        asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool,
+        asyncpg.create_pool(ohsomedb_dsn) as ohsomedb_pool,
+    ):
+        sql = 'set search_path to "global_2026-04-13",public'
+        await oqapidb_pool.execute(sql)
+        await ohsomedb_pool.execute(sql)
+        oqapidb_pool_token = OQAPIDB_POOL.set(oqapidb_pool)
+        ohsomedb_pool_token = OHSOMEDB_POOL.set(ohsomedb_pool)
+        try:
+            yield
+        finally:
+            OQAPIDB_POOL.reset(oqapidb_pool_token)
+            OHSOMEDB_POOL.reset(ohsomedb_pool_token)
+
+
+@asynccontextmanager
 async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
-    # DNS in libpq connection URI format
     match database:
         case "oqapidb":
-            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-                host=get_config_value("postgres_host"),
-                port=get_config_value("postgres_port"),
-                database=get_config_value("postgres_db"),
-                user=get_config_value("postgres_user"),
-                password=get_config_value("postgres_password"),
-            )
+            pool = OQAPIDB_POOL.get()
         case "ohsomedb":
-            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-                host=get_config_value("ohsomedb_host"),
-                port=get_config_value("ohsomedb_port"),
-                database=get_config_value("ohsomedb_db"),
-                user=get_config_value("ohsomedb_user"),
-                password=get_config_value("ohsomedb_password"),
-            )
-        case _:
-            raise ValueError()
-    conn = await asyncpg.connect(dns)
-    await conn.execute('set search_path to "global_2026-04-13",public')
-    try:
-        with conn.query_logger(log_query):
-            yield conn
-    finally:
-        await conn.close()
+            pool = OHSOMEDB_POOL.get()
+    async with pool.acquire() as conn:
+        try:
+            with conn.query_logger(log_query):
+                yield conn
+        finally:
+            await conn.close()
 
 
 async def fetch(
