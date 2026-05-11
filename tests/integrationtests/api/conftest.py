@@ -1,13 +1,24 @@
 import pytest
+from fastapi import Request
 from fastapi.testclient import TestClient
 
 from ohsome_quality_api import __version__
 from ohsome_quality_api.api.api import app
+from ohsome_quality_api.geodatabase.client import set_pool_for_request
 
 
 @pytest.fixture
-def client():
-    return TestClient(app)
+def client(monkeypatch):
+    monkeypatch.setattr(
+        "ohsome_quality_api.geodatabase.client.set_pool_for_request",
+        lambda _: None,
+    )
+
+    def set_pool_for_request_(request: Request):
+        yield
+
+    app.dependency_overrides[set_pool_for_request] = set_pool_for_request_
+    yield TestClient(app)
 
 
 @pytest.fixture
