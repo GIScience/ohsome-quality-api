@@ -5,7 +5,7 @@ from ohsome_quality_api import __version__
 from ohsome_quality_api.api.api import app
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def client():
     return TestClient(app)
 

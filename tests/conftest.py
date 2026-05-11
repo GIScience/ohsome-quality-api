@@ -1,10 +1,8 @@
 import json
 import logging
 import os
-from contextlib import asynccontextmanager
 from pathlib import Path
 
-import asyncpg
 import geojson
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -12,7 +10,6 @@ from fastapi_i18n.main import Translator, translator
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.currentness.indicator import Bin
 from ohsome_quality_api.indicators.definitions import (
     get_indicator,
@@ -39,43 +36,6 @@ FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fix
 # https://github.com/pytest-dev/pytest/issues/5502
 logger = logging.getLogger("rpy2")
 logger.propagate = False
-vcr_logger = logging.getLogger("vcr")
-vcr_logger.setLevel(logging.DEBUG)
-vcr_logger.propagate = False
-
-
-# TODO: remove once ohsomedb has been replaced by ohsome-api
-@pytest.fixture(autouse=True)
-def get_connection(monkeypatch):
-    @asynccontextmanager
-    async def get_connection_(database="oqapidb"):
-        match database:
-            case "oqapidb":
-                dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-                    host=get_config_value("postgres_host"),
-                    port=get_config_value("postgres_port"),
-                    database=get_config_value("postgres_db"),
-                    user=get_config_value("postgres_user"),
-                    password=get_config_value("postgres_password"),
-                )
-            case "ohsomedb":
-                dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-                    host=get_config_value("ohsomedb_host"),
-                    port=get_config_value("ohsomedb_port"),
-                    database=get_config_value("ohsomedb_db"),
-                    user=get_config_value("ohsomedb_user"),
-                    password=get_config_value("ohsomedb_password"),
-                )
-        connection = await asyncpg.connect(dsn)
-        try:
-            yield connection
-        finally:
-            await connection.close()
-
-    monkeypatch.setattr(
-        "ohsome_quality_api.geodatabase.client.get_connection",
-        get_connection_,
-    )
 
 
 @pytest.fixture(scope="class")
