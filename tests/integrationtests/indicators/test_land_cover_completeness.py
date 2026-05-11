@@ -30,8 +30,8 @@ async def test_create_land_cover_completeness_preprocess(
     await indicator.preprocess()
     assert indicator.osm_area_ratio in (0.95454328, 0.8178082640896415)
     assert indicator.result.timestamp_osm.strftime("%Y-%m-%d") in (
+        "2026-05-11",
         "2026-02-19",
-        "2026-04-28",
     )
 
 
