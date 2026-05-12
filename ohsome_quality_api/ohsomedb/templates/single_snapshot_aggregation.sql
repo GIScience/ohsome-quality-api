@@ -22,7 +22,7 @@ SELECT
     {% else %}
         COUNT(*) AS value
     {% endif %}
-FROM current.{{ contributions }} c, poly AS p
+FROM {{ contributions }} c, poly AS p
 WHERE 1=1
     AND (status_geom_type).status IN ('latest')
     AND valid_to >= NOW()::timestamp

@@ -149,8 +149,8 @@ class TestPreprocess:
         await indicator.preprocess()
         assert indicator.area_osm in [
             {
-                "EUBUCCO": 6.592363,
-                "Microsoft Buildings": 6.592363,
+                "EUBUCCO": 6.585865,
+                "Microsoft Buildings": 6.585865,
             },
             {
                 "EUBUCCO": 6.58471776,
@@ -218,7 +218,7 @@ class TestCalculate:
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.ratio in [
-            {"EUBUCCO": 1.3184723912475542, "Microsoft Buildings": 1.3184723912475542},
+            {"EUBUCCO": 1.3171727914533187, "Microsoft Buildings": 1.3171727914533187},
             {"EUBUCCO": 1.316943343489647, "Microsoft Buildings": 1.316943343489647},
         ]
         assert indicator.result.value in [None, 1.0104228420207384]
