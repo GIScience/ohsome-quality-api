@@ -58,9 +58,17 @@ async def create_pool_for_lifespan(app: FastAPI):
         user=get_config_value("ohsomedb_user"),
         password=get_config_value("ohsomedb_password"),
     )
+    server_settings = {
+        "application_name": get_config_value("user_agent"),
+    }
     async with (
         asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool,
-        asyncpg.create_pool(ohsomedb_dsn) as ohsomedb_pool,
+        asyncpg.create_pool(
+            ohsomedb_dsn,
+            min_size=5,  # TODO put into config value
+            max_size=30,  # TODO put info config value
+            server_settings=server_settings,
+        ) as ohsomedb_pool,
     ):
         app.state.oqapidb_pool = await oqapidb_pool
         app.state.ohsomedb_pool = await ohsomedb_pool
