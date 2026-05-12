@@ -33,7 +33,7 @@ class BaseTopic(BaseModel):
         return _(value)
 
 
-class Topic(BaseTopic):
+class Topic(BaseTopic, validate_assignment=True):
     """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
 
     endpoint: Literal["elements"]
@@ -48,7 +48,7 @@ class Topic(BaseTopic):
     @classmethod
     def ensure_filter_geometry_or_type(cls, value: str) -> str:
         if "geometry" not in value and "type" not in value:
-            raise ValueError("Filter does not contain geometry or type specification.")
+            raise ValueError("Filter must contain geometry or type specification.")
         else:
             return value
 

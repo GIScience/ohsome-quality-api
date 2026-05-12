@@ -5,7 +5,7 @@ Validate the response from requests to the `/indicators` endpoint of the API.
 
 import asyncpg_recorder
 import pytest
-from pytest_approval.main import verify
+from pytest_approval.main import verify, verify_json
 from schema import Optional, Or, Schema
 
 from tests.integrationtests.utils import oqapi_vcr
@@ -147,6 +147,29 @@ def test_indicators_custom_topic(
         assert result["result"][0]["topic"]["filter"] == ohsome_filter
     else:
         assert result["features"][0]["properties"]["topic"]["filter"] == ohsome_filter
+
+
+@oqapi_vcr.use_cassette
+@pytest.mark.parametrize("indicator", ("minimal", "mapping-saturation", "currentness"))
+def test_indicators_custom_topic_missing_geom_or_osm_type(
+    client,
+    bpolys,
+    headers,
+    schema,
+    indicator,
+):
+    """Minimal viable request for a single bpoly."""
+    endpoint = ENDPOINT + indicator
+    ohsome_filter = "spring=yes"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "custom-topic",
+        "topicFilter": ohsome_filter,
+        "topicTitle": "Custom Topic",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+    assert verify_json(response.json())
 
 
 @oqapi_vcr.use_cassette

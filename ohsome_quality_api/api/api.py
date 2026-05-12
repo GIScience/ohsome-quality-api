@@ -16,6 +16,7 @@ from fastapi.openapi.docs import (
 from fastapi.responses import JSONResponse
 from fastapi_i18n import i18n
 from geojson import FeatureCollection
+from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.staticfiles import StaticFiles
 
@@ -372,9 +373,11 @@ async def _post_indicator(
     topic = get_topic_preset(topic_key)
 
     if topic.key == "custom-topic":
-        topic.filter = topic_filter
+        try:
+            topic.filter = topic_filter
+        except ValidationError as error:
+            raise RequestValidationError(errors=error.errors()) from error
         topic.name = topic_name
-        # TODO: Run topic validator again
 
     indicators = await main.create_indicator(key=key, topic=topic, **parameters_)
 

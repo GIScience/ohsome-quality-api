@@ -1,0 +1,18 @@
+{
+ "apiVersion": "1.17.1",
+ "type": "RequestValidationError",
+ "detail": [
+  {
+   "type": "value_error",
+   "loc": [
+    "filter"
+   ],
+   "msg": "Value error, Filter must contain geometry or type specification.",
+   "input": "spring=yes",
+   "ctx": {
+    "error": {}
+   },
+   "url": "https://errors.pydantic.dev/2.13/v/value_error"
+  }
+ ]
+}
