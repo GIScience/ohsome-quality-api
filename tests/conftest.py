@@ -66,7 +66,7 @@ def get_connection(monkeypatch):
         connection = await asyncpg.connect(dsn)
         try:
             if database == "ohsomedb":
-                sql = 'set search_path to "current",public'
+                sql = 'set search_path to "global_2026-04-27",public'
                 await connection.execute(sql)
             yield connection
         finally:

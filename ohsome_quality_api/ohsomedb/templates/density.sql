@@ -7,7 +7,7 @@ SELECT
 		ST_UNION(
             ST_Intersection(c.geom, p.geom)
         )::geography) / ST_Area(p.geom::geography) as value
-FROM current.{{ contributions }} c, poly p
+FROM {{ contributions }} c, poly p
 WHERE
     (status_geom_type).status = 'latest'
     AND valid_to >= NOW()::timestamp
