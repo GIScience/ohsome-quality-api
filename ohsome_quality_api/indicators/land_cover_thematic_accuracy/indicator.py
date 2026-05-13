@@ -138,6 +138,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 sample_weight=self.areas,
                 labels=list(set(self.clc_classes_corine)),
                 pos_label="1",
+                zero_division=0.0,
             )
             self.confusion_matrix_normalized = confusion_matrix(
                 self.clc_classes_corine,
@@ -158,6 +159,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 average="micro",
                 sample_weight=self.areas,
                 labels=list(set(self.clc_classes_corine)),
+                zero_division=0.0,
             )
             (
                 self.precision_scores,
@@ -171,6 +173,7 @@ class LandCoverThematicAccuracy(BaseIndicator):
                 sample_weight=self.areas,
                 # reverse for result figure
                 labels=list(sorted(set(self.clc_classes_corine), reverse=True)),
+                zero_division=0.0,
             )
 
         # NOTE: For introspection/testing only
