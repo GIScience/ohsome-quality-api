@@ -1,5 +1,5 @@
 import pytest
-from pytest_approval.main import verify
+from pytest_approval.main import verify, verify_json
 
 from tests.integrationtests.api.test_indicators import (
     RESPONSE_SCHEMA_GEOJSON,
@@ -137,10 +137,11 @@ def test_indicators_attribute_completeness_filter_invalid(
     parameters = {
         "bpolys": bpolys,
         "topic": "building-count",
-        "attribute_filter": "invalid filter",
+        "attribute_filter": "foo",  # invalid
         "attribute_title": attribute_title,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
-    assert verify(content["detail"][0]["msg"])
+    content["detail"][0].pop("input")
+    assert verify_json(content)

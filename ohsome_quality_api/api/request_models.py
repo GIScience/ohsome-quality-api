@@ -201,7 +201,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
 
 
 class AttributeCompletenessFilterRequest(IndicatorRequest):
-    attribute_filter: str = Field(
+    attribute_filter: OhsomeFilter = Field(
         title="Attribute Filter",
         description=_("ohsome filter query representing custom attributes."),
         examples=["height=*"],

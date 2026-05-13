@@ -1,0 +1,48 @@
+{
+ "apiVersion": "1.17.1",
+ "type": "RequestValidationError",
+ "detail": [
+  {
+   "type": "missing",
+   "loc": [
+    "body",
+    "function-after[validate_attributes(), function-after[validate_indicator_topic_combination(), function-after[validate_custom_topic_has_a_filter_and_title(), AttributeCompletenessKeyRequest]]]",
+    "attributes"
+   ],
+   "msg": "Field required"
+  },
+  {
+   "type": "extra_forbidden",
+   "loc": [
+    "body",
+    "function-after[validate_attributes(), function-after[validate_indicator_topic_combination(), function-after[validate_custom_topic_has_a_filter_and_title(), AttributeCompletenessKeyRequest]]]",
+    "attribute_filter"
+   ],
+   "msg": "Extra inputs are not permitted",
+   "input": "foo"
+  },
+  {
+   "type": "extra_forbidden",
+   "loc": [
+    "body",
+    "function-after[validate_attributes(), function-after[validate_indicator_topic_combination(), function-after[validate_custom_topic_has_a_filter_and_title(), AttributeCompletenessKeyRequest]]]",
+    "attribute_title"
+   ],
+   "msg": "Extra inputs are not permitted",
+   "input": "Height"
+  },
+  {
+   "type": "value_error",
+   "loc": [
+    "body",
+    "function-after[validate_indicator_topic_combination(), function-after[validate_custom_topic_has_a_filter_and_title(), AttributeCompletenessFilterRequest]]",
+    "attribute_filter"
+   ],
+   "msg": "Value error, line 1:3 no viable alternative at input 'foo'",
+   "input": "foo",
+   "ctx": {
+    "error": {}
+   }
+  }
+ ]
+}
