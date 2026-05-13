@@ -44,7 +44,31 @@ class TestPreprocess:
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
-        assert indicator.result.value is not None
+        # approx to account for difference in ohsomedb vs ohsomeapi
+        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.absolute_value_1 == pytest.approx(31_330, abs=300)
+        assert indicator.absolute_value_2 == pytest.approx(13_000, abs=100)
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
+    @pytest.mark.asyncio
+    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_preprocess_attribute_keys_single_length(
+        self,
+        topic_roads,
+        feature_germany_heidelberg,
+    ):
+        indicator = AttributeCompleteness(
+            topic_roads,
+            feature_germany_heidelberg,
+            attribute_keys=["name"],
+        )
+        await indicator.preprocess()
+        # approx to account for difference in ohsomedb vs ohsomeapi
+        assert indicator.result.value == pytest.approx(0.67, abs=0.01)
+        assert indicator.absolute_value_1 == pytest.approx(787, abs=1)  # km
+        assert indicator.absolute_value_2 == pytest.approx(530, abs=1)  # km
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -63,7 +87,8 @@ class TestPreprocess:
             attribute_keys=attribute_key_multiple,
         )
         await indicator.preprocess()
-        assert indicator.result.value is not None
+        # approx to account for difference in ohsomedb vs ohsomeapi
+        assert indicator.result.value == pytest.approx(0.36, abs=0.01)
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -84,7 +109,8 @@ class TestPreprocess:
             attribute_title=attribute_title,
         )
         await indicator.preprocess()
-        assert indicator.result.value is not None
+        # approx to account for difference in ohsomedb vs ohsomeapi
+        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 

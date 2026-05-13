@@ -84,7 +84,6 @@ class AttributeCompleteness(BaseIndicator):
             await self.preprocess_ohsomeapi()
 
     async def preprocess_ohsomedb(self) -> None:
-        # Get attribute filter
         result = await ohsomedb.attribute_completeness(
             aggregation=self.topic.aggregation_type,
             bpolys=self.feature.geometry,
@@ -93,11 +92,10 @@ class AttributeCompleteness(BaseIndicator):
         )
         self.result.timestamp_osm = datetime.now(timezone.utc)
         self.result.value = result[0]["attribute_completeness"]
-        self.absolute_value_1 = result[0]["total_aggregation"]
-        self.absolute_value_2 = result[0]["aggregation_with_attribute"]
+        self.absolute_value_1 = float(result[0]["total_aggregation"])
+        self.absolute_value_2 = float(result[0]["aggregation_with_attribute"])
 
     async def preprocess_ohsomeapi(self) -> None:
-        # Get attribute filter
         response = await ohsome_client.query(
             self.topic,
             self.feature,
@@ -106,8 +104,20 @@ class AttributeCompleteness(BaseIndicator):
         timestamp = response["ratioResult"][0]["timestamp"]
         self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
         self.result.value = response["ratioResult"][0]["ratio"]
-        self.absolute_value_1 = response["ratioResult"][0]["value"]
-        self.absolute_value_2 = response["ratioResult"][0]["value2"]
+        absolute_value_1 = response["ratioResult"][0]["value"]
+        absolute_value_2 = response["ratioResult"][0]["value2"]
+        match self.topic.aggregation_type:
+            case "count":
+                self.absolute_value_1 = absolute_value_1
+                self.absolute_value_2 = absolute_value_2
+            case "length":
+                self.absolute_value_1 = absolute_value_1 * 0.001  # in km
+                self.absolute_value_2 = absolute_value_2 * 0.001  # in km
+            case "area":
+                self.absolute_value_1 = absolute_value_1 * 0.001 * 0.001  # in square km
+                self.absolute_value_2 = absolute_value_2 * 0.001 * 0.001  # in square km
+            case _:
+                raise ValueError("Unexpected aggregation type.")
 
     def calculate(self) -> None:
         # result (ratio) can be NaN if no features matching filter1

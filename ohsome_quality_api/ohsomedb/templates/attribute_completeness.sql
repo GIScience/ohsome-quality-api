@@ -3,13 +3,13 @@
 with stats AS (
     SELECT
         {% if aggregation == 'length' %}
-            0.001 * SUM(
+            0.001 * SUM(  -- in km
                 CASE
                     WHEN ST_Within(
                         c.geom,
                         ST_GeomFromGeoJSON(${{ geom }})
                     )
-                    THEN c.length -- Use precomputed area from ohsome-planet
+                    THEN c.length -- Use precomputed length from ohsome-planet
                     ELSE ST_Length(
                           ST_Intersection(
                             c.geom,
@@ -19,7 +19,7 @@ with stats AS (
                 END
             )::BIGINT
         {% elif aggregation == 'area' or aggregation == 'area\density' %}
-            0.001 * 0.001 * SUM(
+            0.001 * 0.001 * SUM(  -- km2
                 CASE
                     WHEN ST_Within(
                         c.geom,
