@@ -15,6 +15,7 @@ class TestConfig(unittest.TestCase):
             "ohsomedb_user",
             "ohsomedb_password",
             "ohsomedb_contributions_table",
+            "ohsomedb_search_path",
             "postgres_host",
             "postgres_port",
             "postgres_db",

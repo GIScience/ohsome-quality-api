@@ -60,7 +60,7 @@ async def create_pool_for_lifespan(app: FastAPI):
     )
     server_settings = {
         "application_name": get_config_value("user_agent"),
-        "search_path": '"global_2026-04-27",public',
+        "search_path": get_config_value("ohsomedb_search_path"),
     }
     async with (
         asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool,

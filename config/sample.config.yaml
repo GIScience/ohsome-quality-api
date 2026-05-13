@@ -5,6 +5,8 @@ ohsomedb_port: 5432
 ohsomedb_db: postgres
 ohsomedb_user: postgres
 ohsomedb_password: mylocalpassword
+ohsomedb_search_path: >
+  "global_2026-04-27",public
 postgres_host: localhost
 postgres_port: 5445
 postgres_db: oqapi
