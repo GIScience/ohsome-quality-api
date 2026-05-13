@@ -13,16 +13,15 @@ mapping-saturation:
     - unicef
   quality_dimension: completeness
   description: >-
-    Calculate if mapping has saturated.
-    High saturation has been reached if the growth of the fitted curve is
-    minimal.
+    Calculate if mapping has saturated. High saturation has been reached if the
+    growth of the fitted curve is minimal.
 minimal:
   name: Minimal
   projects:
     - misc
   quality_dimension: minimal
   description: >-
-      An minimal Indicator for testing purposes.
+    An minimal Indicator for testing purposes.
 currentness:
   name: Currentness
   projects:
@@ -31,41 +30,41 @@ currentness:
     - unicef
   quality_dimension: currentness
   description: >-
-    Estimate currentness of features by classifying contributions based on
-    topic specific temporal thresholds into three groups: up-to-date,
-    in-between and out-of-date.
+    Estimate currentness of features by classifying contributions based on topic
+    specific temporal thresholds into three groups: up-to-date, in-between and
+    out-of-date.
 road-comparison:
   name: Road Comparison
   projects:
-    - bkg
     - core
+    - bkg
     - unicef
   quality_dimension: completeness
   description: >-
-    Compare the road length of OSM roads with the road length of
-    reference data.
+    Compare the road length of OSM roads with the road length of reference data.
 building-comparison:
   name: Building Comparison
   projects:
-    - bkg
     - core
+    - bkg
   quality_dimension: completeness
   description: >-
     Comparison of OSM buildings with the buildings of reference datasets.
 attribute-completeness:
   name: Attribute Completeness
   projects:
-    - bkg
     - core
+    - bkg
   quality_dimension: completeness
   description: >-
-      Derive the ratio of OSM features compared to features which
-      match additional expected tags (e.g. amenity=hospital vs
-      amenity=hospital and wheelchair=yes).
+    Derive the ratio of OSM features compared to features which match additional
+    expected tags (e.g. amenity=hospital vs amenity=hospital and
+    wheelchair=yes).
 land-cover-thematic-accuracy:
   name: Land Cover Thematic Accuracy
   projects:
     - core
+    - bkg
   quality_dimension: thematic-accuracy
   description: >-
     Thematic accuracy OpenStreetMap land cover data in comparison to the <a
@@ -75,22 +74,28 @@ land-cover-completeness:
   name: Land Cover Completeness
   projects:
     - core
+    - bkg
   quality_dimension: completeness
   description: >-
-    Percentage of the area of interest that is covered by OpenStreetMap land cover data.
+    Percentage of the area of interest that is covered by OpenStreetMap land
+    cover data.
 user-activity:
   name: User Activity
   projects:
+    - core
     - bkg
   quality_dimension: none
   description: >-
-    Shows the count of unique mappers per month for the selected topic. None-quality indicator.
+    Shows the count of unique mappers per month for the selected topic.
+    None-quality indicator.
 roads-thematic-accuracy:
   name: Road Accuracy
   projects:
-    - bkg
     - core
+    - bkg
   quality_dimension: none
   description: >-
-    Comparison of OSM road attributes with the attributes from the <a target="_blank"
-    href="https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851">Digitales Landschaftsmodell (DLM) </a> dataset.
+    Comparison of OSM road attributes with the attributes from the <a
+    target="_blank"
+    href="https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851">Digitales
+    Landschaftsmodell (DLM) </a> dataset.
