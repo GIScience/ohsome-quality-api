@@ -49,6 +49,7 @@ building-area:
     - mapping-saturation
     - currentness
     - building-comparison
+    - attribute-completeness
     - user-activity
   projects:
     - core
@@ -71,7 +72,7 @@ roads-all-highways:
     - mapping-saturation
     - road-comparison
     - attribute-completeness
-    - currentness  # currentness always requests /contributions/latest/count [count!]
+    - currentness
     - user-activity
   projects:
     - core
@@ -111,6 +112,7 @@ railway-length:
     - mapping-saturation
     - currentness # currentness always requests /contributions/latest/count [count!]
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -127,6 +129,7 @@ bridges_cars:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -143,6 +146,7 @@ bridges_all_ways:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -159,6 +163,7 @@ bridges_count:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -188,6 +193,7 @@ cycleway:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -207,6 +213,7 @@ power_lines:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - ohmygrid
     - core
@@ -224,6 +231,7 @@ power_substations:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - ohmygrid
     - core
@@ -251,6 +259,7 @@ footpath:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - silverways
     - core
@@ -280,6 +289,7 @@ footway:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
 
@@ -343,6 +353,7 @@ poi:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -566,6 +577,7 @@ industrial-landuse-count:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - experimental
 
@@ -580,6 +592,7 @@ industrial-landuse-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - experimental
 
@@ -610,6 +623,7 @@ fire-stations:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
     - bkg
@@ -650,7 +664,7 @@ roads-unicef:
     - mapping-saturation
     - road-comparison
     - attribute-completeness
-    - currentness  # currentness always requests /contributions/latest/count [count!]
+    - currentness
     - user-activity
   projects:
     - unicef
@@ -666,6 +680,7 @@ healthcare-primary:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - unicef
 
@@ -682,6 +697,7 @@ mapaction-settlements-count:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - mapaction
 
@@ -695,6 +711,7 @@ mapaction-capital-city-count:
   indicators:
     - mapping-saturation
     - currentness
+    - attribute-completeness
   projects:
     - mapaction
 
@@ -707,7 +724,8 @@ mapaction-rail-length:
   filter: railway=rail and type:way
   indicators:
     - mapping-saturation
-    - currentness # currentness always requests /contributions/latest/count [count!]
+    - currentness
+    - attribute-completeness
     - user-activity
   projects:
     - mapaction
@@ -721,7 +739,8 @@ mapaction-major-roads-length:
   filter: highway in (motorway, trunk, primary) and type:way
   indicators:
     - mapping-saturation
-    - currentness # currentness always requests /contributions/latest/count [count!]
+    - currentness
+    - attribute-completeness
     - user-activity
   projects:
     - mapaction
@@ -736,6 +755,7 @@ mapaction-lakes-count:
   indicators:
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - mapaction
 
@@ -750,6 +770,7 @@ mapaction-lakes-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - mapaction
 
@@ -762,7 +783,8 @@ mapaction-rivers-length:
   filter: waterway in (riverbank,river) and type:way
   indicators:
     - mapping-saturation
-    - currentness # currentness always requests /contributions/latest/count [count!]
+    - currentness
+    - attribute-completeness
     - user-activity
   projects:
     - mapaction
@@ -785,7 +807,8 @@ land-cover:
     and geometry:polygon
   indicators:
     - mapping-saturation
-    - currentness  # currentness always requests /contributions/latest/count [count!]
+    - currentness
+    - attribute-completeness
     - land-cover-thematic-accuracy
     - land-cover-completeness
     - user-activity
@@ -805,6 +828,7 @@ local-food-shops:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -818,6 +842,7 @@ fast-food-restaurants:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -831,6 +856,7 @@ restaurants:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -844,6 +870,7 @@ convenience-stores:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -857,6 +884,7 @@ pubs-and-biergartens:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -870,6 +898,7 @@ alcohol-and-beverages:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -883,6 +912,7 @@ sweets-and-pasteries:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - expanse
 
@@ -900,6 +930,7 @@ clc-arable-land-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -913,6 +944,7 @@ clc-permanent-crops-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -926,6 +958,7 @@ clc-pastures-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -940,6 +973,7 @@ clc-forest-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -958,6 +992,7 @@ clc-leaf-type:
     - currentness
     - attribute-completeness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -971,6 +1006,7 @@ clc-shrub-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -985,6 +1021,7 @@ clc-open-spaces-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -998,6 +1035,7 @@ clc-wetland-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -1014,6 +1052,7 @@ clc-water-area:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -1027,6 +1066,7 @@ clc-waterway-len:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - corine-land-cover
 
@@ -1055,5 +1095,6 @@ infrastructure-lines:
     - mapping-saturation
     - currentness  # currentness always requests /contributions/latest/count [count!]
     - user-activity
+    - attribute-completeness
   projects:
     - experimental
