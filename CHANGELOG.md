@@ -2,7 +2,12 @@
 
 ## Current Main
 
-- fix(attribute-completeness): convert ohsome api result to km (12f8e573)
+* fix(mapping-saturation): avoid using ohsomedb if topic has data attached (9b035628)
+* feat: make ohsomedb search_path configuriable (e68827e6)
+* refactor: validate attribute filter through ohsome-filter-to-sql lib (b26ad5e1)
+* refactor(db): set search path via server settings and not via sql query (52cc8080)
+* build: upgrade dependencies with uv sync --upgrade (c1618bfa)
+- fix(attribute-completeness): convert ohsome api result to km and format units correctly (12f8e573, b8e03093 )
 - mark user-activity as core indicator (795a3048)
 - feat: enable custom topics with own filter and title ([#1017])
     - tests: add missing path of ohsomedb enabled flag
