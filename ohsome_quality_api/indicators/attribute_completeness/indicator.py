@@ -225,34 +225,22 @@ class AttributeCompleteness(BaseIndicator):
         raw["layout"].pop("template")  # remove boilerplate
         self.result.figure = raw
 
-    def compute_units_for_all_and_matched(self):
+    def compute_units_for_all_and_matched(self) -> tuple[str, str]:
+        assert self.absolute_value_1 is not None  # noqa
+        assert self.absolute_value_2 is not None  # noqa
         if self.topic.aggregation_type == "count":
             all_ = _("{absolute_value} elements").format(
                 absolute_value=int(self.absolute_value_1)
             )
             matched = f"{int(self.absolute_value_2)} {_('elements')}"
         elif self.topic.aggregation_type == "area":
-            all_ = f"{
-                format_decimal(
-                    round(self.absolute_value_1 / 1000000, 2), locale=get_locale()
-                )
-            } km²"
-            matched = f"{
-                format_decimal(
-                    round(self.absolute_value_2 / 1000000, 2), locale=get_locale()
-                )
-            } km²"
+            all_ = f"{format_decimal(self.absolute_value_1, locale=get_locale())} km²"
+            matched = (
+                f"{format_decimal(self.absolute_value_2, locale=get_locale())} km²"
+            )
         elif self.topic.aggregation_type == "length":
-            all_ = f"{
-                format_decimal(
-                    round(self.absolute_value_1 / 1000, 2), locale=get_locale()
-                )
-            } km"
-            matched = f"{
-                format_decimal(
-                    round(self.absolute_value_2 / 1000, 2), locale=get_locale()
-                )
-            } km"
+            all_ = f"{format_decimal(self.absolute_value_1, locale=get_locale())} km"
+            matched = f"{format_decimal(self.absolute_value_2, locale=get_locale())} km"
         else:
             raise ValueError("Invalid aggregation_type")
         return all_, matched
