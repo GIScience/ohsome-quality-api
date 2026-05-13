@@ -186,7 +186,7 @@ async def validation_exception_handler(
 ):
     """Exception handler for validation exceptions."""
     return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content=jsonable_encoder(
             {
                 "apiVersion": __version__,
@@ -205,7 +205,7 @@ async def custom_exception_handler(
 ):
     """Exception handler for custom exceptions."""
     return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content={
             "apiVersion": __version__,
             "type": exception.name,
