@@ -2,6 +2,7 @@
 
 ## Current Main
 
+- mark user-activity as core indicator (795a3048)
 - feat: enable custom topics with own filter and title ([#1017])
     - tests: add missing path of ohsomedb enabled flag
     - i18n: translate custom topic
