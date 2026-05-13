@@ -86,7 +86,7 @@ class MappingSaturation(BaseIndicator):
         self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self):
-        if is_ohsomedb_enabled():
+        if is_ohsomedb_enabled() and not isinstance(self.topic, TopicData):
             await self.preprocess_ohsomedb()
         else:
             await self.preprocess_ohsomeapi()
