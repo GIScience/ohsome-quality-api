@@ -60,6 +60,7 @@ async def create_pool_for_lifespan(app: FastAPI):
     )
     server_settings = {
         "application_name": get_config_value("user_agent"),
+        "search_path": '"global_2026-04-27",public',
     }
     async with (
         asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool,
@@ -95,9 +96,6 @@ async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
     async with pool.acquire() as conn:
         try:
             with conn.query_logger(log_query):
-                if database == "ohsomedb":
-                    sql = 'set search_path to "global_2026-04-27",public'
-                    await conn.execute(sql)
                 yield conn
         finally:
             await conn.close()
