@@ -535,7 +535,7 @@ msgid ""
 "$result of all \"$topic\" features (all: $all) in your area of interest "
 "have the selected additional $tags (matched: $matched). "
 msgstr ""
-"$result% aller \"$topic\" Features (alle: $all) im Untersuchungsgebiet "
+"$result aller \"$topic\" Features (alle: $all) im Untersuchungsgebiet "
 "haben die ausgewählten zusätzlichen $tags (übereinstimmend: $matched). "
 
 #: ohsome_quality_api/indicators/building_comparison/datasets.yaml
