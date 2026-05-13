@@ -283,6 +283,30 @@ footway:
   projects:
     - core
 
+bikeway:
+  name: bikeway
+  description: >-
+    It collects OSM road and path features that support bicycle connectivity
+  endpoint: elements
+  aggregation_type: length
+  filter: >-
+    (
+      (highway=*) and ((bicycle=yes) or (bicycle=designated)) 
+      or (highway=cycleway) 
+      or (highway=living_street)
+      and not  ((access=no) or (motorroad=yes) or (bicycle=no) or not 
+            ((highway=pedestrian) or (highway=path) or (highway=cycleway) or (highway=footway) or (highway=steps) or (highway=platform) or (highway=primary)
+            or (highway=primary_link) or (highway= secondary) or (highway=secondary_link) or (highway=tertiary) or (highway=tertiary_link) or (highway=road)
+            or (highway=unclassified) or (highway=residential) or (highway=track) or (highway=living_street) or (highway=service))
+    and geometry:line
+  source: https://wiki.openstreetmap.org/wiki/Key:foot
+  indicators:
+    - mapping-saturation
+    - currentness
+    - user-activity
+  projects:
+    - core
+
 poi:
   name: POI
   description: >-
