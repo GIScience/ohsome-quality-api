@@ -199,7 +199,7 @@ class TestCalculation:
         assert verify(indicator.result.description)
 
 
-@pytest.mark.asyncio(scope="class")
+@pytest.mark.asyncio(loop_scope="class")
 class TestFigure:
     @pytest_asyncio.fixture
     @asyncpg_recorder.use_cassette
