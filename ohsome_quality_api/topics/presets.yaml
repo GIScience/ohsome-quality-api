@@ -300,6 +300,7 @@ hibike:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
 
@@ -320,6 +321,7 @@ bike_and_cars:
     - mapping-saturation
     - currentness
     - user-activity
+    - attribute-completeness
   projects:
     - core
 

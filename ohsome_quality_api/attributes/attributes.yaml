@@ -424,27 +424,39 @@ hibike:
   surface:
     name: Surface
     description: For assessing the cycling quality based on the material conditions
-    filter: surface=*
+    filter: >-
+      (surface=*)
+      or (cycleway:both:surface=*)
+      or (cycleway:left:surface=*)
+      or (cycleway:right:surface=*)
   smoothness:
     name: Smoothness
     description: Reflecting the quality of the surface for cycling conditions
-    filter: smoothness=*
+    filter: >-
+      (smoothness=*)
+      or (cycleway:both:smoothness=*)
+      or (cycleway:left:smoothness=*)
+      or (cycleway:right:smoothness=*)
+
 
 bike_and_cars:
-  Dooring_risk:
+  dooring_risk:
     name: DooringRisk
     description: Parking-related attributes used for assessing dooring risk while cycling
     filter: >-
       (parking:both=*)
+      or (parking:left=*)
+      or (parking:right=*)
       or (parking:lane:both=*)
-      or ((parking:lane:left=*) and (parking:lane:right=*))
+      or (parking:lane:left=*)
+      or (parking:lane:right=*)
       or (parking:both:orientation=*)
-      or ((parking:left:orientation=*) and (parking:right:orientation=*)) 
+      or (parking:left:orientation=*)
+      or (parking:right:orientation=*)
       or ((parking:both:restriction=*) and not (parking:both:restriction:conditional=*)) 
-      or (
-        ((parking:left:restriction=*) and not (parking:left:restriction:conditional=*)) 
-        and ((parking:right:restriction=*) and not (parking:left:restriction:conditional=*)) 
-      )
+      or ((parking:left:restriction=*) and not (parking:left:restriction:conditional=*)) 
+      or ((parking:right:restriction=*) and not (parking:left:restriction:conditional=*)) 
+      
   maxspeed:
     name: Maxspeed
     description: Indicating the speed limits for the safety assessment
