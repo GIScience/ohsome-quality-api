@@ -4,8 +4,9 @@ services:
     build: .
     environment:
       OQAPI_CONFIG: /config/config.yaml
-    command: uv run python scripts/start_api.py --host 0.0.0.0
+    # command: uv run python scripts/start_api.py --host 0.0.0.0
     volumes:
       - ./config:/config
     ports:
       - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8000:8000"     
