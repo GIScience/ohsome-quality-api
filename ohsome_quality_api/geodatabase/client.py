@@ -41,38 +41,34 @@ def log_query(record):
 
 
 @asynccontextmanager
-async def create_pool_for_lifespan(app: FastAPI):
-    # DSN in libpq connection URI format
-    oqapidb_dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-        host=get_config_value("postgres_host"),
-        port=get_config_value("postgres_port"),
-        database=get_config_value("postgres_db"),
-        user=get_config_value("postgres_user"),
-        password=get_config_value("postgres_password"),
-    )
-    async with asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool:
-        app.state.oqapidb_pool = await oqapidb_pool
-        yield
-
-
-def set_pool_for_request(request: Request):
-    global OQAPIDB_POOL
-    OQAPIDB_POOL = request.app.state.oqapidb_pool
-    yield
-
-
-@asynccontextmanager
-async def get_connection(database: Literal["oqapidb"] = "oqapidb"):
-    global OQAPIDB_POOL
+async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
+    # DNS in libpq connection URI format
     match database:
         case "oqapidb":
-            pool = OQAPIDB_POOL
-    async with pool.acquire() as conn:
-        try:
-            with conn.query_logger(log_query):
-                yield conn
-        finally:
-            await conn.close()
+            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+                host=get_config_value("postgres_host"),
+                port=get_config_value("postgres_port"),
+                database=get_config_value("postgres_db"),
+                user=get_config_value("postgres_user"),
+                password=get_config_value("postgres_password"),
+            )
+        case "ohsomedb":
+            dns = "postgres://{user}:{password}@{host}:{port}/{database}".format(
+                host=get_config_value("ohsomedb_host"),
+                port=get_config_value("ohsomedb_port"),
+                database=get_config_value("ohsomedb_db"),
+                user=get_config_value("ohsomedb_user"),
+                password=get_config_value("ohsomedb_password"),
+            )
+        case _:
+            raise ValueError()
+    conn = await asyncpg.connect(dns)
+    await conn.execute('set search_path to "global_2026-04-27",public')
+    try:
+        with conn.query_logger(log_query):
+            yield conn
+    finally:
+        await conn.close()
 
 
 async def fetch(
