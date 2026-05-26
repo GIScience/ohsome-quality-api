@@ -21,7 +21,7 @@ stats AS (
                         c.geom,
                         b.geom
                     )
-                    THEN c.length -- Use precomputed area from ohsome-planet
+                    THEN c.length -- Use precomputed length from ohsome-planet
                     ELSE ST_Length(
                         ST_Intersection(
                             c.geom,
