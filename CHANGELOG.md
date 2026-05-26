@@ -3,6 +3,7 @@
 ## Current Main
 
 * fix(attributes): add missing `ref=*` tag to the road name attribute (99fbaa50)
+* refactor(currentness): use ohsome-api v2 to get osm data ([#1029])
 * fix(mapping-saturation): avoid using ohsomedb if topic has data attached (9b035628)
 * feat: make ohsomedb search_path configuriable (e68827e6)
 * refactor: validate attribute filter through ohsome-filter-to-sql lib (b26ad5e1)
@@ -23,6 +24,7 @@
 
 [#1017]: https://github.com/GIScience/ohsome-quality-api/pull/1017
 [#1018]: https://github.com/GIScience/ohsome-quality-api/pull/1018
+[#1029]: https://github.com/GIScience/ohsome-quality-api/pull/1029
 
 ## Release 1.17.1
 
