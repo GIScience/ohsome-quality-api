@@ -54,14 +54,6 @@ def test_get_indicator_metadata():
         assert isinstance(indicator, models.IndicatorMetadata)
 
 
-def test_get_indicator_metadata_filtered_by_project():
-    indicators = definitions.get_indicator_metadata("core")
-    assert isinstance(indicators, dict)
-    for indicator in indicators.values():
-        assert isinstance(indicator, models.IndicatorMetadata)
-        assert indicator.projects == ["core"]
-
-
 def test_get_indicator(metadata_indicator_minimal):
     indicator = definitions.get_indicator("minimal")
     assert indicator == metadata_indicator_minimal["minimal"]

@@ -8,7 +8,6 @@ import asyncpg
 import geojson
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
-from fastapi_i18n.main import Translator, translator
 from geojson import Feature, FeatureCollection, Polygon
 
 from ohsome_quality_api.attributes.models import Attribute
@@ -19,8 +18,6 @@ from ohsome_quality_api.indicators.definitions import (
     get_indicator_metadata,
 )
 from ohsome_quality_api.indicators.models import IndicatorMetadata
-from ohsome_quality_api.projects.definitions import get_project, load_projects
-from ohsome_quality_api.projects.models import Project
 from ohsome_quality_api.quality_dimensions.definitions import (
     get_quality_dimension,
     load_quality_dimensions,
@@ -31,7 +28,6 @@ from ohsome_quality_api.topics.definitions import (
     load_topic_presets,
 )
 from ohsome_quality_api.topics.models import Topic
-from ohsome_quality_api.utils.helper import get_project_root
 
 FIXTURE_DIR = Path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures"))
 
@@ -167,26 +163,6 @@ def metadata_quality_dimension_completeness(
 @pytest.fixture()
 def quality_dimensions() -> dict[str, QualityDimension]:
     return load_quality_dimensions()
-
-
-@pytest.fixture(scope="class")
-def project_key_core() -> str:
-    return "core"
-
-
-@pytest.fixture(scope="class")
-def project_core(project_key_core) -> Project:
-    return get_project(project_key_core)
-
-
-@pytest.fixture(scope="class")
-def metadata_project_core(project_key_core, project_core) -> dict[str, Project]:
-    return {project_key_core: project_core}
-
-
-@pytest.fixture()
-def projects() -> dict[str, Project]:
-    return load_projects()
 
 
 @pytest.fixture(scope="class")
@@ -353,30 +329,8 @@ def bin_total_factory():
     return _factory
 
 
-@pytest.fixture
-def locale_de(monkeypatch):
-    monkeypatch.setenv(
-        "FASTAPI_I18N__LOCALE_DIR",
-        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
-    )
-    token = translator.set(Translator(locale="de"))
-    yield
-    translator.reset(token)
-
-
 @pytest.fixture(scope="class")
 def monkeysession(request):
     mpatch = MonkeyPatch()
     yield mpatch
     mpatch.undo()
-
-
-@pytest.fixture(scope="class")
-def locale_de_class(monkeysession):
-    monkeysession.setenv(
-        "FASTAPI_I18N__LOCALE_DIR",
-        os.path.join(get_project_root(), "ohsome_quality_api/locale"),
-    )
-    token = translator.set(Translator(locale="de"))
-    yield
-    translator.reset(token)

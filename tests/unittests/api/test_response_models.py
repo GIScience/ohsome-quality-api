@@ -7,7 +7,6 @@ from ohsome_quality_api.api.response_models import (
     IndicatorMetadata,
     IndicatorMetadataCoverageResponse,
     IndicatorMetadataResponse,
-    ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
     TopicMetadata,
     TopicMetadataResponse,
@@ -29,7 +28,6 @@ def test_topic_metadata():
         aggregation_type="area",
         filter="foo",
         indicators=["mapping-saturation"],
-        projects=["core"],
         source=None,
     )
 
@@ -44,7 +42,6 @@ def test_topic_metadata_response():
                 aggregation_type="area",
                 filter="foo",
                 indicators=["mapping-saturation"],
-                projects=["core"],
                 source=None,
             )
         }
@@ -89,34 +86,10 @@ def test_metadata_quality_dimensions_list(quality_dimensions):
     assert response.result == quality_dimensions
 
 
-def test_metadata_projects(metadata_project_core):
-    response = ProjectMetadataResponse(result=metadata_project_core)
-    assert response.result == metadata_project_core
-
-
-def test_metadata_projects_fail(project_core):
-    with pytest.raises(ValidationError):
-        ProjectMetadataResponse(result="")
-    with pytest.raises(ValidationError):
-        ProjectMetadataResponse(result="bar")
-    with pytest.raises(ValidationError):
-        ProjectMetadataResponse(result={})
-    with pytest.raises(ValidationError):
-        ProjectMetadataResponse(result={"foo": "bar"})
-    with pytest.raises(ValidationError):
-        ProjectMetadataResponse(result={"foo": project_core})
-
-
-def test_metadata_projects_list(projects):
-    response = ProjectMetadataResponse(result=projects)
-    assert response.result == projects
-
-
 def test_indicator_metadata():
     IndicatorMetadata(
         name="foo",
         description="foo",
-        projects=["core"],
         quality_dimension="completeness",
     )
 
@@ -127,7 +100,6 @@ def test_indicator_metadata_response():
             "mapping-saturation": IndicatorMetadata(
                 name="foo",
                 description="foo",
-                projects=["core"],
                 quality_dimension="completeness",
             )
         }

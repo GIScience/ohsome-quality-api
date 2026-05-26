@@ -49,7 +49,6 @@ def metadata_topic_building_count():
                 "attribute-completeness",
                 "user-activity",
             ],
-            "projects": ["core", "bkg"],
             "source": None,
         },
     }
@@ -64,17 +63,6 @@ def metadata_indicator_mapping_saturation():
                 "Calculate if mapping has saturated. High saturation has been reached "
                 + "if the growth of the fitted curve is minimal."
             ),
-            "projects": [
-                "core",
-                "corine-land-cover",
-                "expanse",
-                "experimental",
-                "idealvgi",
-                "mapaction",
-                "sketchmap",
-                "bkg",
-                "unicef",
-            ],
             "qualityDimension": "completeness",
         }
     }
@@ -93,16 +81,6 @@ def metadata_quality_dimension():
 
 
 @pytest.fixture
-def metadata_project_core():
-    return {
-        "core": {
-            "name": "TODO",
-            "description": "something that is still a TODO",
-        }
-    }
-
-
-@pytest.fixture
 def metadata_topic_minimal():
     return {
         "minimal": {
@@ -114,7 +92,6 @@ def metadata_topic_minimal():
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": ["minimal"],
             "ratioFilter": None,  # TODO: Should not be in response if None
-            "projects": ["misc"],
             "source": None,  # TODO: Should not be in response if None
         }
     }
@@ -126,7 +103,6 @@ def metadata_indicator_minimal():
         "minimal": {
             "name": "Minimal",
             "description": "An minimal Indicator for testing purposes.",
-            "projects": ["misc"],
             "qualityDimension": "minimal",
         }
     }

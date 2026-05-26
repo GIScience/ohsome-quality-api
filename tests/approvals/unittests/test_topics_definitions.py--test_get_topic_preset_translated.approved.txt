@@ -8,9 +8,6 @@
   "indicators": [
     "minimal"
   ],
-  "projects": [
-    "misc"
-  ],
   "source": null,
   "ratio_filter": null
 }
