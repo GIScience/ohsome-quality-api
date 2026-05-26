@@ -18,9 +18,6 @@ custom-topic:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 building-count:
   name: Buildings (count)
@@ -34,9 +31,6 @@ building-count:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 building-area:
   name: Buildings (area)
@@ -51,9 +45,6 @@ building-area:
     - building-comparison
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 roads-all-highways:
   name: Roads (all highways)
@@ -74,9 +65,6 @@ roads-all-highways:
     - attribute-completeness
     - currentness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 roads:
   name: Roads (cars)
@@ -96,9 +84,6 @@ roads:
     - currentness
     - user-activity
     - roads-thematic-accuracy
-  projects:
-    - core
-    - bkg
 
 railway-length:
   name: Railways
@@ -113,9 +98,6 @@ railway-length:
     - currentness # currentness always requests /contributions/latest/count [count!]
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_cars:
   name: Bridges (cars)
@@ -130,9 +112,6 @@ bridges_cars:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_all_ways:
   name: Bridges (all ways)
@@ -147,9 +126,6 @@ bridges_all_ways:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_count:
   name: Bridges (count)
@@ -164,9 +140,6 @@ bridges_count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 cycleway:
   name: Cycleway
@@ -194,9 +167,6 @@ cycleway:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 power_lines:
   name: Power Lines
@@ -214,9 +184,6 @@ power_lines:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - ohmygrid
-    - core
 
 power_substations:
   name: Power Substation
@@ -232,9 +199,6 @@ power_substations:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - ohmygrid
-    - core
 
 footpath:
   name: Footpath
@@ -260,10 +224,6 @@ footpath:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - silverways
-    - core
-    - bkg
 
 footway:
   name: Footway
@@ -290,8 +250,6 @@ footway:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
 
 poi:
   name: POI
@@ -354,9 +312,6 @@ poi:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 schools:
   name: Schools
@@ -370,10 +325,6 @@ schools:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
-    - unicef
 
 kindergarten:
   name: Kindergartens
@@ -387,9 +338,6 @@ kindergarten:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 clinics:
   name: Clinics
@@ -403,9 +351,6 @@ clinics:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 doctors:
   name: Doctors
@@ -419,9 +364,6 @@ doctors:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 bus-stops:
   name: Bus Stops
@@ -435,9 +377,6 @@ bus-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 tram-stops:
   name: Tram Stops
@@ -451,9 +390,6 @@ tram-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 public-transport-stops:
   name: Public Transport Stops
@@ -466,9 +402,6 @@ public-transport-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 subway-stations:
   name: Subway Stations
@@ -482,9 +415,6 @@ subway-stations:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 supermarkets:
   name: Supermarkets
@@ -498,9 +428,6 @@ supermarkets:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 marketplaces:
   name: Marketplaces
@@ -514,9 +441,6 @@ marketplaces:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 parks:
   name: Parks
@@ -530,9 +454,6 @@ parks:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 sports-pitch:
   name: Sports Pitches
@@ -546,9 +467,6 @@ sports-pitch:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 forests:
   name: Forests
@@ -562,9 +480,6 @@ forests:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 industrial-landuse-count:
   name: Industrial Landuse (count)
@@ -578,8 +493,6 @@ industrial-landuse-count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - experimental
 
 industrial-landuse-area:
   name: Industrial Landuse (area)
@@ -593,8 +506,6 @@ industrial-landuse-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - experimental
 
 fitness-centres:
   name: Fitness Centres
@@ -608,9 +519,6 @@ fitness-centres:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 fire-stations:
   name: Fire Stations
@@ -624,9 +532,6 @@ fire-stations:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 hospitals:
   name: Hospitals
@@ -640,10 +545,6 @@ hospitals:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
-    - unicef
 
 ### UNICEF PROJECT ###
 
@@ -666,8 +567,6 @@ roads-unicef:
     - attribute-completeness
     - currentness
     - user-activity
-  projects:
-    - unicef
 
 healthcare-primary:
   name: Primary Healthcare facilities for UNICEF Project
@@ -681,8 +580,6 @@ healthcare-primary:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - unicef
 
 ### MAPACTION PROJECT ###
 
@@ -698,8 +595,6 @@ mapaction-settlements-count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - mapaction
 
 mapaction-capital-city-count:
   name: MapAction Capital City Count
@@ -712,8 +607,6 @@ mapaction-capital-city-count:
     - mapping-saturation
     - currentness
     - attribute-completeness
-  projects:
-    - mapaction
 
 mapaction-rail-length:
   name: MapAction Rail Length
@@ -727,8 +620,6 @@ mapaction-rail-length:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - mapaction
 
 mapaction-major-roads-length:
   name: MapAction Major Roads length
@@ -742,8 +633,6 @@ mapaction-major-roads-length:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - mapaction
 
 mapaction-lakes-count:
   name: MapAction Lakes Count
@@ -756,8 +645,6 @@ mapaction-lakes-count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - mapaction
 
 mapaction-lakes-area:
   name: MapAction Lakes Area
@@ -771,8 +658,6 @@ mapaction-lakes-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - mapaction
 
 mapaction-rivers-length:
   name: MapAction Rivers Length
@@ -786,8 +671,6 @@ mapaction-rivers-length:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - mapaction
 
 ### IDEALVGI PROJECT ###
 
@@ -812,9 +695,6 @@ land-cover:
     - land-cover-thematic-accuracy
     - land-cover-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 ### EXPANSE PROJECT ###
 
@@ -829,8 +709,6 @@ local-food-shops:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 fast-food-restaurants:
   name: Fast food restaurants
@@ -843,8 +721,6 @@ fast-food-restaurants:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 restaurants:
   name: Restaurants
@@ -857,8 +733,6 @@ restaurants:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 convenience-stores:
   name: Convenience stores
@@ -871,8 +745,6 @@ convenience-stores:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 pubs-and-biergartens:
   name: Pubs and biergartens
@@ -885,8 +757,6 @@ pubs-and-biergartens:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 alcohol-and-beverages:
   name: Alcohol and beverages
@@ -899,8 +769,6 @@ alcohol-and-beverages:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 sweets-and-pasteries:
   name: Sweets and pastries
@@ -913,8 +781,6 @@ sweets-and-pasteries:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - expanse
 
 ### LAND-USE LAYERS (CORINE PROJECT) ###
 #
@@ -931,8 +797,6 @@ clc-arable-land-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-permanent-crops-area:
   name: Permanent Crops CLC
@@ -945,8 +809,6 @@ clc-permanent-crops-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-pastures-area:
   name: Pastures CLC
@@ -959,8 +821,6 @@ clc-pastures-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-forest-area:
   name: Forests CLC
@@ -974,8 +834,6 @@ clc-forest-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-leaf-type:
   name: Leaf Types of Forests CLC
@@ -993,8 +851,6 @@ clc-leaf-type:
     - attribute-completeness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-shrub-area:
   name: Shrubs CLC
@@ -1007,8 +863,6 @@ clc-shrub-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-open-spaces-area:
   name: Open Spaces CLC
@@ -1022,8 +876,6 @@ clc-open-spaces-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-wetland-area:
   name: Wetlands CLC
@@ -1036,8 +888,6 @@ clc-wetland-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-water-area:
   name: Water CLC
@@ -1053,8 +903,6 @@ clc-water-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 clc-waterway-len:
   name: Waterways CLC
@@ -1067,8 +915,6 @@ clc-waterway-len:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - corine-land-cover
 
 ### MISC TOPICS ###
 
@@ -1080,8 +926,6 @@ minimal:
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - minimal
-  projects:
-    - misc
 
 ### EXPERIMENTAL TOPICS ###
 
@@ -1096,5 +940,3 @@ infrastructure-lines:
     - currentness  # currentness always requests /contributions/latest/count [count!]
     - user-activity
     - attribute-completeness
-  projects:
-    - experimental

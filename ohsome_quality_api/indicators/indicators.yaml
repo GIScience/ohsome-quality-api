@@ -1,33 +1,17 @@
 ---
 mapping-saturation:
   name: Mapping Saturation
-  projects:
-    - core
-    - corine-land-cover
-    - expanse
-    - experimental
-    - idealvgi
-    - mapaction
-    - sketchmap
-    - bkg
-    - unicef
   quality_dimension: completeness
   description: >-
     Calculate if mapping has saturated. High saturation has been reached if the
     growth of the fitted curve is minimal.
 minimal:
   name: Minimal
-  projects:
-    - misc
   quality_dimension: minimal
   description: >-
     An minimal Indicator for testing purposes.
 currentness:
   name: Currentness
-  projects:
-    - core
-    - bkg
-    - unicef
   quality_dimension: currentness
   description: >-
     Estimate currentness of features by classifying contributions based on topic
@@ -35,26 +19,16 @@ currentness:
     out-of-date.
 road-comparison:
   name: Road Comparison
-  projects:
-    - core
-    - bkg
-    - unicef
   quality_dimension: completeness
   description: >-
     Compare the road length of OSM roads with the road length of reference data.
 building-comparison:
   name: Building Comparison
-  projects:
-    - core
-    - bkg
   quality_dimension: completeness
   description: >-
     Comparison of OSM buildings with the buildings of reference datasets.
 attribute-completeness:
   name: Attribute Completeness
-  projects:
-    - core
-    - bkg
   quality_dimension: completeness
   description: >-
     Derive the ratio of OSM features compared to features which match additional
@@ -62,9 +36,6 @@ attribute-completeness:
     wheelchair=yes).
 land-cover-thematic-accuracy:
   name: Land Cover Thematic Accuracy
-  projects:
-    - core
-    - bkg
   quality_dimension: thematic-accuracy
   description: >-
     Thematic accuracy OpenStreetMap land cover data in comparison to the <a
@@ -72,27 +43,18 @@ land-cover-thematic-accuracy:
     Cover (CLC)</a> dataset.
 land-cover-completeness:
   name: Land Cover Completeness
-  projects:
-    - core
-    - bkg
   quality_dimension: completeness
   description: >-
     Percentage of the area of interest that is covered by OpenStreetMap land
     cover data.
 user-activity:
   name: User Activity
-  projects:
-    - core
-    - bkg
   quality_dimension: none
   description: >-
     Shows the count of unique mappers per month for the selected topic.
     None-quality indicator.
 roads-thematic-accuracy:
   name: Road Accuracy
-  projects:
-    - core
-    - bkg
   quality_dimension: none
   description: >-
     Comparison of OSM road attributes with the attributes from the <a
