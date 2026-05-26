@@ -3,14 +3,11 @@ import os
 from datetime import datetime
 from unittest.mock import patch
 
-import asyncpg_recorder
 import geojson
 import pytest
-import pytest_asyncio
 from pydantic_core import to_jsonable_python
 from pytest_approval.main import verify, verify_plotly
 
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.currentness.indicator import (
     Bin,
@@ -24,20 +21,6 @@ from ohsome_quality_api.indicators.currentness.indicator import (
 )
 from ohsome_quality_api.topics.definitions import get_topic_preset
 from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
-
-
-@pytest.fixture(autouse=True, params=[True, False])
-def ohsomedb_feature_flag(request, monkeypatch):
-    def get_config_value_(key: str):
-        if key == "ohsomedb_enabled":
-            return request.param
-        else:
-            return get_config_value(key)
-
-    monkeypatch.setattr(
-        "ohsome_quality_api.indicators.currentness.indicator.get_config_value",
-        get_config_value_,
-    )
 
 
 class TestInit:
@@ -64,7 +47,6 @@ class TestInit:
 
 @pytest.mark.asyncio
 class TestPreprocess:
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess(
         self,
@@ -83,7 +65,6 @@ class TestPreprocess:
         # three different aggregation types: count, area and length
         ["building-count", "building-area", "roads"],
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_aggregation_types(
         self,
@@ -101,29 +82,36 @@ class TestPreprocess:
 
 @pytest.mark.asyncio
 class TestCalculation:
-    @pytest_asyncio.fixture
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    async def indicator(
-        self, topic_building_count, feature_germany_heidelberg, request
-    ):
-        i = Currentness(topic_building_count, feature_germany_heidelberg)
-        await i.preprocess()
-        return i
-
-    async def test_calculate(self, indicator):
+    async def test_calculate(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value >= 0.0
         assert indicator.result.label == "green"
         assert len(indicator.bin_up_to_date.timestamps) == indicator.up_to_date
         assert verify(indicator.result.description)
 
-    async def test_low_contributions(self, indicator):
+    @oqapi_vcr.use_cassette
+    async def test_low_contributions(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
         indicator.contrib_sum = 20
         indicator.calculate()
         assert verify(indicator.result.description)
 
-    async def test_months_without_edit(self, indicator):
+    @oqapi_vcr.use_cassette
+    async def test_months_without_edit(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
         indicator.contrib_sum = 30
         indicator.bin_total.contrib_abs = [
             0 if i < 13 else c for i, c in enumerate(indicator.bin_total.contrib_abs)
@@ -131,7 +119,6 @@ class TestCalculation:
         indicator.calculate()
         assert verify(indicator.result.description)
 
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_no_subway_stations(self):
         """Test area with no subway stations"""
@@ -154,16 +141,14 @@ class TestCalculation:
         assert indicator.result.value is None
         assert verify(indicator.result.description)
         indicator.create_figure()
-        # TODO: test figure
-        # assert isinstance(indicator.result.figure, dict)
-        # assert verify_plotly(indicator.result.figure)
+        assert isinstance(indicator.result.figure, dict)
+        assert verify_plotly(indicator.result.figure)
 
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
         ["building-count", "building-area", "roads"],
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types_no_data(
         self,
@@ -185,7 +170,6 @@ class TestCalculation:
         # three different aggregation types: count, area and length
         ["building-count", "building-area", "roads"],
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types(
         self,
@@ -201,21 +185,19 @@ class TestCalculation:
 
 @pytest.mark.asyncio(loop_scope="class")
 class TestFigure:
-    @pytest_asyncio.fixture
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
-    async def indicator(self, topic_building_count, feature_germany_heidelberg):
-        i = Currentness(topic_building_count, feature_germany_heidelberg)
-        await i.preprocess()
-        i.calculate()
-        i.create_figure()
-        return i
-
-    async def test_create_figure(self, indicator):
+    async def test_create_figure(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_outdated_features_plotting(
         self,
@@ -235,7 +217,10 @@ class TestFigure:
         i.create_figure()
         assert verify(json.dumps(to_jsonable_python(i.result.figure)))
 
-    async def test_get_source(self, indicator):
+    @oqapi_vcr.use_cassette
+    async def test_get_source(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
         indicator.th_source = "www.foo.org"
@@ -243,37 +228,19 @@ class TestFigure:
             indicator.get_source_text() == "<a href='www.foo.org' target='_blank'>*</a>"
         )
 
-    async def test_get_threshold_text(self, indicator):
+    @oqapi_vcr.use_cassette
+    async def test_get_threshold_text(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+    ):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        await indicator.preprocess()
         assert indicator.get_threshold_text(Color.RED) == "older than 8 years"
         assert (
             indicator.get_threshold_text(Color.YELLOW) == "between 3 years and 8 years"
         )
         assert indicator.get_threshold_text(Color.GREEN) == "younger than 3 years"
-
-
-@pytest.mark.asyncio
-class TestOhsomeAPIOhsomeDBComparison:
-    @asyncpg_recorder.use_cassette
-    @oqapi_vcr.use_cassette
-    async def test_indicator(self, topic_building_count, feature_germany_heidelberg):
-        i_api = Currentness(
-            topic_building_count,
-            feature_germany_heidelberg,
-        )
-        await i_api.preprocess()
-        i_api.calculate()
-        i_api.create_figure()
-
-        i_db = Currentness(
-            topic_building_count,
-            feature_germany_heidelberg,
-        )
-        await i_db.preprocess()
-        i_db.calculate()
-        i_db.create_figure()
-
-        assert verify_plotly(i_api.result.figure)
-        assert verify_plotly(i_db.result.figure)
 
 
 def test_get_last_edited_year():

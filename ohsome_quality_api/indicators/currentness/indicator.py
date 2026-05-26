@@ -12,6 +12,7 @@ import locale
 import logging
 import os
 from dataclasses import dataclass
+from datetime import datetime
 from string import Template
 
 import plotly.graph_objects as pgo
@@ -23,11 +24,9 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from plotly.subplots import make_subplots
 
-from ohsome_quality_api import ohsomedb
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.ohsome_api import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
@@ -72,36 +71,39 @@ class Currentness(BaseIndicator):
         self.bin_out_of_date: Bin
 
     async def preprocess(self):
-        ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-        if ohsomedb_enabled is True or ohsomedb_enabled in ("True", "true"):
-            await self.preprocess_ohsomedb()
-        else:
-            await self.preprocess_ohsomeapi()
-
-    async def preprocess_ohsomeapi(self):
         """Fetch all latest contributions in monthly buckets since 2008
 
         Beside the creation, latest contribution includes also the change to the
         geometry and the tag. It excludes deletion.
         """
-        latest_ohsome_stamp = await ohsome_client.get_latest_ohsome_timestamp()
-        end = latest_ohsome_stamp.strftime("%Y-%m-01")
-        start = "2008-" + latest_ohsome_stamp.strftime("%m-%d")
-        interval = "{}/{}/{}".format(start, end, "P1M")  # YYYY-MM-DD/YYYY-MM-DD/P1Y
-        response = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            time=interval,
-            count_latest_contributions=True,
-            contribution_type="geometryChange,creation,tagChange",  # exclude 'deletion'
+        raw = await ohsome_client.metadata()
+        latest_timestamp = datetime.fromisoformat(raw["latestTimestamp"])
+        end = latest_timestamp.strftime("%Y-%m-01")
+        start = "2008-" + latest_timestamp.strftime("%m-%d")
+        result = await ohsome_client.currentness(
+            aoi={"type": "FeatureCollection", "features": [self.feature]},
+            measure=self.topic.aggregation_type,
+            ohsome_filter=self.topic.filter,
+            time_bins={
+                "start": start,
+                "end": end,
+                "binSize": "P1M",
+            },
         )
         timestamps = []
         contrib_abs = []
         contrib_sum = 0
-        for c in reversed(response["result"]):  # latest contributions first
-            timestamps.append(isoparse(c["toTimestamp"]))
-            contrib_abs.append(c["value"])
-            contrib_sum += c["value"]
+        for c in reversed(result):  # latest contributions first
+            timestamps.append(isoparse(c["end"]))
+            match self.topic.aggregation_type:
+                case "count":
+                    value = c["value"]
+                case "length":
+                    value = c["value"] / 1000  # [km]
+                case "area":
+                    value = c["value"] / 1000 / 1000  # [km^2]
+            contrib_abs.append(value)
+            contrib_sum += value
         if contrib_sum == 0:
             contrib_rel = [0 for _ in contrib_abs]
         else:
@@ -113,36 +115,6 @@ class Currentness(BaseIndicator):
         )
         self.contrib_sum = contrib_sum
         self.result.timestamp_osm = timestamps[0]
-
-    async def preprocess_ohsomedb(self):
-        results = await ohsomedb.contributions(
-            aggregation=self.topic.aggregation_type,
-            bpolys=self.feature.geometry,
-            filter_=self.topic.filter,
-        )
-
-        if len(results) == 0:
-            # no data
-            self.contrib_sum = 0
-            return
-        timestamps = []
-        contrib_abs = []
-        contrib_sum = 0
-        for r in reversed(results[0:]):  # latest contributions first
-            timestamps.append(r[0])
-            contrib_abs.append(r[1])
-            contrib_sum += r[1]
-        if contrib_sum == 0:
-            contrib_rel = [0 for _ in contrib_abs]
-        else:
-            contrib_rel = [c / contrib_sum for c in contrib_abs]
-        self.bin_total = Bin(
-            contrib_abs,
-            contrib_rel,
-            timestamps,
-        )
-        self.contrib_sum = contrib_sum
-        self.result.timestamp_osm = self.bin_total.timestamps[0]
 
     def calculate(self):
         """Determine up-to-date, in-between and out-of-date contributions.
@@ -204,10 +176,10 @@ class Currentness(BaseIndicator):
                 aggregation = int(self.contrib_sum)
             case "length":
                 unit = " km"
-                aggregation = f"{self.contrib_sum:.1f}"
+                aggregation = f"{(self.contrib_sum):.1f}"
             case "area":
                 unit = " km<sup>2</sup>"
-                aggregation = f"{self.contrib_sum:.1f}"
+                aggregation = f"{(self.contrib_sum):.1f}"
 
         label_description = getattr(self.templates.label_description, self.result.label)
         self.result.description += Template(
