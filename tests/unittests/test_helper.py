@@ -12,7 +12,6 @@ from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     get_class_from_key,
     get_module_dir,
-    get_project_root,
     hyphen_to_camel,
     hyphen_to_snake,
     json_serialize,
@@ -76,12 +75,6 @@ def test_json_serialize_valid_input_fit():
 def test_json_serialize_invalid_input():
     with pytest.raises(TypeError):
         json_serialize("foo")
-
-
-def test_get_project_root():
-    expected = Path(__file__).resolve().parent.parent.parent.resolve()
-    result = get_project_root()
-    assert expected == result
 
 
 def test_camel_to_hyphen():
