@@ -43,7 +43,6 @@ from ohsome_quality_api.api.response_models import (
     IndicatorMetadataCoverageResponse,
     IndicatorMetadataResponse,
     MetadataResponse,
-    ProjectMetadataResponse,
     QualityDimensionMetadataResponse,
     TopicMetadataResponse,
 )
@@ -59,11 +58,6 @@ from ohsome_quality_api.indicators.definitions import (
     get_coverage,
     get_indicator,
     get_indicator_metadata,
-)
-from ohsome_quality_api.projects.definitions import (
-    ProjectEnum,
-    get_project,
-    get_project_metadata,
 )
 from ohsome_quality_api.quality_dimensions.definitions import (
     QualityDimensionEnum,
@@ -94,8 +88,6 @@ TAGS_METADATA = [
     {"name": "indicator", "description": "Request an Indicator"},
     {"name": "metadata", "description": "Request Metadata"},
 ]
-
-DEFAULT_PROJECT = ProjectEnum.core
 
 
 description = """
@@ -410,27 +402,22 @@ async def _post_indicator(
 
 
 @app.get("/metadata", tags=["metadata"], response_model=MetadataResponse)
-async def metadata(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
+async def metadata() -> Any:
     """All metadata."""
-    if project == ProjectEnum.all:
-        project = None
     return {
         "result": {
-            "topics": get_topic_presets(project=project),
+            "topics": get_topic_presets(),
             "quality_dimensions": get_quality_dimensions(),
-            "projects": get_project_metadata(),
-            "indicators": get_indicator_metadata(project=project),
+            "indicators": get_indicator_metadata(),
             "attributes": get_attributes(),
         }
     }
 
 
 @app.get("/metadata/topics", tags=["metadata"], response_model=TopicMetadataResponse)
-async def metadata_topic(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
+async def metadata_topic() -> Any:
     """Get topics."""
-    if project == ProjectEnum.all:
-        project = None
-    return {"result": get_topic_presets(project=project)}
+    return {"result": get_topic_presets()}
 
 
 @app.get(
@@ -473,35 +460,13 @@ async def metadata_quality_dimension_by_key(
 
 
 @app.get(
-    "/metadata/projects",
-    tags=["metadata"],
-)
-async def metadata_projects() -> ProjectMetadataResponse:
-    """Get projects."""
-    return ProjectMetadataResponse(result=get_project_metadata())
-
-
-@app.get(
-    "/metadata/projects/{key}",
-    tags=["metadata"],
-)
-async def metadata_project_by_key(
-    key: ProjectEnum,
-) -> ProjectMetadataResponse:
-    """Get project by key."""
-    return ProjectMetadataResponse(result={key.value: get_project(key.value)})
-
-
-@app.get(
     "/metadata/indicators",
     tags=["metadata"],
     response_model=IndicatorMetadataResponse,
 )
-async def metadata_indicators(project: ProjectEnum = DEFAULT_PROJECT) -> Any:
+async def metadata_indicators() -> Any:
     """Get metadata of all indicators."""
-    if project == ProjectEnum.all:
-        project = None
-    return {"result": get_indicator_metadata(project=project)}
+    return {"result": get_indicator_metadata()}
 
 
 @app.get(

@@ -3,7 +3,6 @@ from enum import Enum
 
 import yaml
 
-from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.topics.models import Topic
 from ohsome_quality_api.utils.helper import get_module_dir
 
@@ -26,14 +25,11 @@ def get_topic_keys() -> list[str]:
     return [str(t) for t in load_topic_presets()]
 
 
-def get_topic_presets(project: ProjectEnum = None) -> dict[str, Topic]:
+def get_topic_presets() -> dict[str, Topic]:
     topics = load_topic_presets()
     # sort by dict value (name)
     topics_sorted = dict(sorted(topics.items(), key=lambda item: item[1].name))
-    if project is not None:
-        return {k: v for k, v in topics_sorted.items() if project in v.projects}
-    else:
-        return topics_sorted
+    return topics_sorted
 
 
 def get_topic_preset(topic_key: str) -> Topic:

@@ -7,8 +7,6 @@ from ohsome_quality_api import __version__
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
 from ohsome_quality_api.indicators.definitions import IndicatorEnum
 from ohsome_quality_api.indicators.models import Result as IndicatorResult
-from ohsome_quality_api.projects.definitions import ProjectEnum
-from ohsome_quality_api.projects.models import Project
 from ohsome_quality_api.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
 from ohsome_quality_api.topics.definitions import TopicEnum
@@ -36,7 +34,6 @@ class TopicMetadata(BaseConfig):
     aggregation_type: Literal["area", "count", "length", "perimeter", "area/density"]
     filter: str
     indicators: list[str]
-    projects: list[ProjectEnum]
     source: str | None = None
     model_config = ConfigDict(title="Topic Metadata")
 
@@ -82,22 +79,9 @@ class QualityDimensionMetadataResponse(BaseResponse):
         return values
 
 
-class ProjectMetadataResponse(BaseResponse):
-    result: dict[str, Project]
-
-    @field_validator("result")
-    @classmethod
-    def check_project_dict(cls, value):
-        assert len(value) > 0
-        for key in value:
-            ProjectEnum(key)
-        return value
-
-
 class IndicatorMetadata(BaseConfig):
     name: str
     description: str
-    projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
     model_config = ConfigDict(title="Indicator Metadata")
 
@@ -125,7 +109,6 @@ class Metadata(BaseConfig):
     indicators: dict[str, IndicatorMetadata]
     topics: dict[str, TopicMetadata]
     quality_dimensions: dict[str, QualityDimension]
-    projects: dict[str, Project]
     attributes: dict[str, dict[str, AttributeMetadata]]
     model_config = ConfigDict(title="Metadata")
 

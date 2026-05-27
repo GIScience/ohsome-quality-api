@@ -6,7 +6,6 @@ from geojson import FeatureCollection
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.models import IndicatorMetadata
-from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.topics.definitions import load_topic_presets
 from ohsome_quality_api.utils.helper import (
     get_class_from_key,
@@ -32,22 +31,13 @@ def load_indicators() -> dict[str, IndicatorMetadata]:
     return indicators
 
 
-def get_indicator_metadata(project: ProjectEnum = None) -> dict[str, IndicatorMetadata]:
-    indicators = load_indicators()
-    if project is not None:
-        return {k: v for k, v in indicators.items() if project in v.projects}
-    else:
-        return indicators
+def get_indicator_metadata() -> dict[str, IndicatorMetadata]:
+    return load_indicators()
 
 
 def get_indicator(indicator_key: str) -> IndicatorMetadata:
     indicators = get_indicator_metadata()
-    try:
-        return indicators[indicator_key]
-    except KeyError as error:
-        raise KeyError(
-            "Invalid project key. Valid project keys are: " + str(indicators.keys())
-        ) from error
+    return indicators[indicator_key]
 
 
 def get_valid_indicators(topic_key: str) -> tuple:

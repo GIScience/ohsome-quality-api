@@ -4,7 +4,6 @@ from typing import Literal
 from fastapi_i18n import _
 from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 
-from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.quality_dimensions.definitions import QualityDimensionEnum
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
@@ -14,7 +13,6 @@ class IndicatorMetadata(BaseModel):
 
     name: str
     description: str
-    projects: list[ProjectEnum]
     quality_dimension: QualityDimensionEnum
     model_config = ConfigDict(
         alias_generator=snake_to_lower_camel,
