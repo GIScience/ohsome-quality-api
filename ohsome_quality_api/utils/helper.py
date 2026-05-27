@@ -118,3 +118,8 @@ def write_geojson(outfile: str, geojson_object: Feature | FeatureCollection) -> 
             allow_nan=True,
         )
         logger.info("Output file written:\t" + str(outfile))
+
+
+def get_project_root() -> Path:
+    """Get root of the Python project."""
+    return Path(__file__).resolve().parent.parent.parent.resolve()
