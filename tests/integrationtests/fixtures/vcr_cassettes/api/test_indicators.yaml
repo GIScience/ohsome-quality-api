@@ -948,4 +948,367 @@ interactions:
     status:
       code: 200
       message: ''
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api
+    method: GET
+    uri: https://api.ohsome.org/v1/metadata
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3SRTW7DIBCF9zkFYm0csKo4yb7L/qixumjVBXGnDpLtoTCWYkU5UK/RkxVI2ihV
+        IpAQH2/eG2A3YYxrImfWAxnsOVuyXWCBDq6NO74hsn45neLGYwc5umZaox2daTbkeXYQE2wpqb+/
+        2IOFfkUOgO60ZTX2B3d0ngfxPkuR1jyD88dErnIl85tkxsl0gENym0mZywSDvdM1PUFz3qS3moxu
+        b7cEPZ14tBktJO9HbMcmFGW/JzWieze9JvBR8JqGUPOYxcQiLOwtC+gqOQFxlRyr4ki5+7+H6iy6
+        ix1/OOyqcHlPurOp9ULKUigp5LyScpnmy+kehP/VxUzIQqhFpYokPUt2YFtT6/jLK/gcoK/hfujW
+        4GKxUmW5KOP3TPY/AAAA//8DAM4oIlQUAgAA
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 28 May 2026 10:58:21 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api
+    method: GET
+    uri: https://api.ohsome.org/v1/metadata
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3SRTW7DIBCF9zkFYm0csKo4yb7L/qixumjVBXGnDpLtoTCWYkU5UK/RkxVI2ihV
+        IpAQH2/eG2A3YYxrImfWAxnsOVuyXWCBDq6NO74hsn45neLGYwc5umZaox2daTbkeXYQE2wpqb+/
+        2IOFfkUOgO60ZTX2B3d0ngfxPkuR1jyD88dErnIl85tkxsl0gENym0mZywSDvdM1PUFz3qS3moxu
+        b7cEPZ14tBktJO9HbMcmFGW/JzWieze9JvBR8JqGUPOYxcQiLOwtC+gqOQFxlRyr4ki5+7+H6iy6
+        ix1/OOyqcHlPurOp9ULKUigp5LyScpnmy+kehP/VxUzIQqhFpYokPUt2YFtT6/jLK/gcoK/hfujW
+        4GKxUmW5KOP3TPY/AAAA//8DAM4oIlQUAgAA
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 28 May 2026 10:58:21 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.641543%2C+49.411303%5D%2C+%5B8.652386%2C+49.407391%5D%2C+%5B8.652606%2C+49.407365%5D%2C+%5B8.653961%2C+49.407038%5D%2C+%5B8.6543%2C+49.406824%5D%2C+%5B8.655838%2C+49.40599%5D%2C+%5B8.660063%2C+49.403751%5D%2C+%5B8.661088%2C+49.40313%5D%2C+%5B8.66298%2C+49.402053%5D%2C+%5B8.66549%2C+49.400802%5D%2C+%5B8.667152%2C+49.396417%5D%2C+%5B8.670565%2C+49.39681%5D%2C+%5B8.670855%2C+49.396698%5D%2C+%5B8.671368%2C+49.396856%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.661319%2C+49.407781%5D%2C+%5B8.658739%2C+49.40786%5D%2C+%5B8.656667%2C+49.408231%5D%2C+%5B8.654373%2C+49.408573%5D%2C+%5B8.654423%2C+49.40888%5D%2C+%5B8.653848%2C+49.408895%5D%2C+%5B8.653874%2C+49.409122%5D%2C+%5B8.651656%2C+49.409181%5D%2C+%5B8.649858%2C+49.409274%5D%2C+%5B8.647838%2C+49.409498%5D%2C+%5B8.646082%2C+49.409998%5D%2C+%5B8.64557%2C+49.409982%5D%2C+%5B8.642225%2C+49.411332%5D%2C+%5B8.641543%2C+49.411303%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283776%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Bahnstadt%22%2C+%22local_name%22%3A+%22Bahnstadt%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+2%7D%5D%7D&time=2008-02-19%2F2026-02-01%2FP1M&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1816'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/6ybz05bVxwG93kKy+tAfA9/DLxD1EWjLlp1QSM3IAG27EvVKsoD9TX6ZAUn7Sbz
+        6fyONFI2QTczHAOTA+j7/GaxWN7O8/7+t+f5fvu0XNwsPr+87eWtz/uH178t7+Z5d7h59257d9g+
+        bk63+0/vPm53f+3vP93Nh+Xbrw/Pmz/n49P//L34Ybd5+nHebzbz+9vd4uP26St9uz8sXx7+8vao
+        3N3/tNkfvhmX0+m0Oj0/wpb7zeH54Qj75b935ff99vHD/ePmMN8+7o7/oK1WVyerdjJdf1itbo5/
+        fv7/fdnSs2f47B+3D8+b16dWp6vjO9dTMoaV546SMay8cJSMYeWlo2QMK9eOkjGsvHKUjGHltaNk
+        DCqnlaIMGFZOjpIxrORsDCvL9bk+WRmnjBhWGqeMGFYajY0YVhqNjRhWGo2NGFYajY0YVhqNjRhW
+        Go2NGFYajY0YVCqNjRhWOvWpN/baaWzEfK98eTmMxmYMK4VTZgwrhcZmDCuFxmYMK4XGZgwrhcZm
+        DCuFxmYMK4XGZgwrhcZmDCqNxmYMK536lBv7+qxTn3pjJ6exEcNK45QRw0qjsRHDSqOxEcNKo7ER
+        w0qjsRHDSqOxEcNKo7ERw0qjsRGDSqWxEcNKpz71xk5OYyMGlM1pbMSw0jhlxLDSaGzEsNJobMSw
+        0mhsxLDSaGzEsNJobMSw0mhsxLDSaGzEoFJpbMSw0qlPvbHNaWzEgPLMaWzEsNI4ZcSw0mhsxLCy
+        09ipqCw39sxpbMSw0mhsxLDSaGzEsNJobMSw0mhsxKBSaWzEsNKpT72xZ05jIwaU505jI4aVxikj
+        hpVGYyOGlcY9NmJYaTQ2YlhpNDZiWGk0NmJYaTQ2YlhpNDZiUKk0NmJY6dSn3thzp7ERA8qLbmNL
+        162IYaVxyohhpdHYiGGl0diIYaXR2IhhpdHYiGGl0diIYaXR2IhhpdHYiEGl0tiIYWWnPpdF5UB9
+        lMZGDCgvnXtsxLDSOGXEsNJobMSw0mhsxLDSaGzEsNJobMSw0mhsxLDSaGzEsNJobMSgUmlsxLDS
+        qU+9sZdOYyMGlGunsRHDSuOUEcNKo7ERw0qjsRHDSqOxEcPKTmNL3wZFDCs7ja0qy41dO42NGFYa
+        jY0YVCqNjRhWOvWpN3btNDZiQHnlNDZiWGmccmDnNTk7r4xhpfE7r4Gd1+TsvDKGlcY9dmDnNTk7
+        r4xhpdHYgZ3X1N95VT99yo11dl4Zw0qnPvXG9ndexRe23lhn55UxrDQaO7DzmpydV8aw0rjHDuy8
+        JmfnlTGsNBo7sPOanJ1XxrDSaOzAzmtydl4Zg0qlsQM7r6m/8yoFb2DnNTk7r4z5XtmcnVfGsFL4
+        nyRjWCk0NmNYKTQ2Y1gpNDZjWCk0NmNYKTQ2Y1gpNDZjWCk0NmNQaTQ2Y1jp1Kfc2ObsvDIGlP2d
+        17qiHNh5tf7Oq6ocOaXR2IGdV+vvvFpRWW5sf+dVVZYb6+y8MoaVws9jM4aVRmMHdl7N2XllDCp7
+        jS1++tQb6+y8MoaVnfpUT1muj7PzyhhWGvfYgZ1X6++8qspyY52dV8aw0rjHDuy8Wn/ndV5Ulhvr
+        7LwyhpVGYwd2Xs3ZeWUMKpV77MDOqzk7r4xhpXGPHdh5tf7Oq1SfgZ1Xc3ZeGcPKTmPPispyY/s7
+        r+opy43t77yuispyY52dV8aw0mjswM6r9Xde1S+ScmOdnVfGoFJp7MDOqzk7r4xhpXHDG9h5NWfn
+        lTGsNBo7sPNqzs4rY1hpNHZg59WcnVfGsLLT2NJ3XgM7r+bsvDKGlZ3Glm7rAzuv1t95VV/YcmOd
+        nVfGsNKpT72xzs4rY0DZ33mVlAM7r+bsvDKGlcbPCgZ2Xq2/8yp9XQ7svFp/51X6uhzYebX+zqt0
+        dR7YebX+zqv0PcnAzqv1d14X1Q9mObL9ode0rn44y5ntT72ua8p6ZvtTr1b69czA1qs5W6+MAWV/
+        6/XtlV38+ubLvwAAAP//AwDAhw9OOmEAAA==
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - close
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 28 May 2026 11:02:54 GMT
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.670231%2C+49.405537%5D%2C+%5B8.676274%2C+49.40322%5D%2C+%5B8.679977%2C+49.401302%5D%2C+%5B8.677606%2C+49.400029%5D%2C+%5B8.675503%2C+49.398956%5D%2C+%5B8.673028%2C+49.39762%5D%2C+%5B8.673993%2C+49.397162%5D%2C+%5B8.67519%2C+49.396593%5D%2C+%5B8.677237%2C+49.395547%5D%2C+%5B8.678009%2C+49.395158%5D%2C+%5B8.679476%2C+49.394736%5D%2C+%5B8.680709%2C+49.394507%5D%2C+%5B8.681877%2C+49.394459%5D%2C+%5B8.683035%2C+49.394452%5D%2C+%5B8.684498%2C+49.394724%5D%2C+%5B8.685867%2C+49.395161%5D%2C+%5B8.6868%2C+49.395618%5D%2C+%5B8.687121%2C+49.395813%5D%2C+%5B8.688811%2C+49.397352%5D%2C+%5B8.688818%2C+49.398172%5D%2C+%5B8.688821%2C+49.398557%5D%2C+%5B8.69078%2C+49.398786%5D%2C+%5B8.691904%2C+49.397883%5D%2C+%5B8.693082%2C+49.397612%5D%2C+%5B8.694151%2C+49.397277%5D%2C+%5B8.694371%2C+49.396897%5D%2C+%5B8.69535%2C+49.396645%5D%2C+%5B8.697794%2C+49.396595%5D%2C+%5B8.698%2C+49.397244%5D%2C+%5B8.697383%2C+49.397369%5D%2C+%5B8.69755%2C+49.397912%5D%2C+%5B8.697462%2C+49.398931%5D%2C+%5B8.69804%2C+49.399857%5D%2C+%5B8.697702%2C+49.40023%5D%2C+%5B8.697911%2C+49.400589%5D%2C+%5B8.697249%2C+49.40193%5D%2C+%5B8.697251%2C+49.402692%5D%2C+%5B8.698847%2C+49.404381%5D%2C+%5B8.698289%2C+49.404777%5D%2C+%5B8.696815%2C+49.404328%5D%2C+%5B8.696045%2C+49.404998%5D%2C+%5B8.69498%2C+49.405405%5D%2C+%5B8.694901%2C+49.405606%5D%2C+%5B8.695544%2C+49.406012%5D%2C+%5B8.695469%2C+49.406699%5D%2C+%5B8.694151%2C+49.406813%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.670231%2C+49.405537%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283787%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Weststadt%22%2C+%22local_name%22%3A+%22Weststadt%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+0%7D%5D%7D&time=2008-04-06%2F2025-04-01%2FP1M&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2430'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - Keep-Alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 28 May 2026 11:02:54 GMT
+      keep-alive:
+      - timeout=5, max=100
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
+- request:
+    body: filter=building%3D%2A+and+building%21%3Dno+and+geometry%3Apolygon&bpolys=%7B%22type%22%3A+%22FeatureCollection%22%2C+%22features%22%3A+%5B%7B%22type%22%3A+%22Feature%22%2C+%22geometry%22%3A+%7B%22type%22%3A+%22Polygon%22%2C+%22coordinates%22%3A+%5B%5B%5B8.656512%2C+49.411047%5D%2C+%5B8.658857%2C+49.410217%5D%2C+%5B8.662864%2C+49.408734%5D%2C+%5B8.662656%2C+49.407493%5D%2C+%5B8.66543%2C+49.406804%5D%2C+%5B8.66702%2C+49.406341%5D%2C+%5B8.669404%2C+49.405746%5D%2C+%5B8.670231%2C+49.405537%5D%2C+%5B8.670667%2C+49.405696%5D%2C+%5B8.6771%2C+49.40437%5D%2C+%5B8.67815%2C+49.404317%5D%2C+%5B8.679435%2C+49.404443%5D%2C+%5B8.681117%2C+49.404832%5D%2C+%5B8.682522%2C+49.405074%5D%2C+%5B8.683802%2C+49.405287%5D%2C+%5B8.68525%2C+49.405729%5D%2C+%5B8.686198%2C+49.405954%5D%2C+%5B8.690952%2C+49.406788%5D%2C+%5B8.694012%2C+49.407422%5D%2C+%5B8.69333%2C+49.409643%5D%2C+%5B8.692388%2C+49.411912%5D%2C+%5B8.690156%2C+49.411761%5D%2C+%5B8.686451%2C+49.411243%5D%2C+%5B8.68244%2C+49.410751%5D%2C+%5B8.679021%2C+49.410418%5D%2C+%5B8.676393%2C+49.410229%5D%2C+%5B8.672043%2C+49.410311%5D%2C+%5B8.667241%2C+49.410724%5D%2C+%5B8.664269%2C+49.411243%5D%2C+%5B8.661813%2C+49.411766%5D%2C+%5B8.659763%2C+49.411702%5D%2C+%5B8.658441%2C+49.411733%5D%2C+%5B8.656567%2C+49.412318%5D%2C+%5B8.656542%2C+49.411595%5D%2C+%5B8.656512%2C+49.411047%5D%5D%5D%7D%2C+%22properties%22%3A+%7B%22osm_id%22%3A+-3283777%2C+%22boundary%22%3A+%22administrative%22%2C+%22admin_level%22%3A+9%2C+%22parents%22%3A+%22-285864%2C-22027%2C-62611%2C-51477%22%2C+%22name%22%3A+%22Bergheim%22%2C+%22local_name%22%3A+%22Bergheim%22%2C+%22name_en%22%3A+null%7D%2C+%22id%22%3A+1%7D%5D%7D&time=2008-02-19%2F2026-02-01%2FP1M&contributionType=geometryChange%2Ccreation%2CtagChange
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1726'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - api.ohsome.org
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://api.ohsome.org/v1/contributions/latest/count
+  response:
+    body:
+      string: !!binary |
+        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
+        5d2XfwAAAP//AAAA//8DAHBqfHhJYQAA
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+      access-control-allow-methods:
+      - POST, GET
+      access-control-allow-origin:
+      - '*'
+      access-control-max-age:
+      - '3600'
+      cache-control:
+      - no-transform, public, max-age=31556926
+      connection:
+      - close
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json
+      date:
+      - Thu, 28 May 2026 11:03:03 GMT
+      server:
+      - Apache/2.4.58 (Ubuntu)
+      strict-transport-security:
+      - max-age=63072000; includeSubdomains;
+      transfer-encoding:
+      - chunked
+      vary:
+      - accept-encoding
+    status:
+      code: 200
+      message: ''
 version: 1

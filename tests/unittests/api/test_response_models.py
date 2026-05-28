@@ -106,7 +106,7 @@ def test_indicator_metadata_response():
     )
 
 
-def test_indicator_metadata_response_fail(metadata_indicator_minimal):
+def test_indicator_metadata_response_fail(metadata_indicator_currentness):
     with pytest.raises(ValidationError):
         IndicatorMetadataResponse(result="")
     with pytest.raises(ValidationError):
@@ -116,7 +116,7 @@ def test_indicator_metadata_response_fail(metadata_indicator_minimal):
     with pytest.raises(ValidationError):
         IndicatorMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
-        IndicatorMetadataResponse(result={"foo": metadata_indicator_minimal})
+        IndicatorMetadataResponse(result={"foo": metadata_indicator_currentness})
 
 
 def test_indicator_metadata_coverage(bpolys):

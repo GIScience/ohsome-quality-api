@@ -5,7 +5,7 @@ import pytest
 from geojson import Feature
 from pytest_approval.main import verify
 
-from ohsome_quality_api.indicators.minimal.indicator import Minimal
+from ohsome_quality_api.indicators.currentness.indicator import Currentness
 from ohsome_quality_api.indicators.models import (
     IndicatorTemplates,
     Result,
@@ -21,22 +21,22 @@ class TestBaseIndicator:
 
     @pytest.fixture
     def topic(self):
-        return get_topic_fixture("minimal")
+        return get_topic_fixture("building-count")
 
     def test_as_dict(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         d = indicator.as_dict()
         assert set(("result", "metadata", "topic")) <= set(d.keys())  # subset
         assert "data" not in d
 
     def test_as_dict_include_data(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         d = indicator.as_dict(include_data=True)
         assert set(("result", "metadata", "topic", "data")) <= set(d.keys())  # subset
         assert "count" in d["data"]
 
     def test_as_feature(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         feature_indicator = indicator.as_feature()
         assert feature_indicator.is_valid
         assert feature_indicator.geometry == feature.geometry
@@ -45,7 +45,7 @@ class TestBaseIndicator:
         assert "data" not in feature_indicator["properties"]
 
     def test_as_feature_include_data(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         feature = indicator.as_feature(include_data=True)
         assert feature.is_valid
         for key in ("result", "metadata", "topic", "data"):
@@ -53,27 +53,27 @@ class TestBaseIndicator:
         assert "count" in feature["properties"]["data"]
 
     def test_data_property(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         assert indicator.data is not None
         for key in ("result", "metadata", "topic", "feature"):
             assert key not in feature["properties"]
 
     def test_attribution_class_property(self):
-        assert isinstance(Minimal.attribution(), str)
+        assert isinstance(Currentness.attribution(), str)
 
     def test_coverage(self):
-        coverage = asyncio.run(Minimal.coverage(inverse=False))
+        coverage = asyncio.run(Currentness.coverage(inverse=False))
         for feature in coverage:
             assert isinstance(feature, Feature)
             assert feature.is_valid
             assert feature["geometry"] is not None
-        coverage_default = asyncio.run(Minimal.coverage())
+        coverage_default = asyncio.run(Currentness.coverage())
         for feature in coverage_default:
             assert isinstance(feature, Feature)
             assert feature.is_valid
             assert feature["geometry"] is not None
         assert coverage_default == coverage
-        coverage_inversed = asyncio.run(Minimal.coverage(inverse=True))
+        coverage_inversed = asyncio.run(Currentness.coverage(inverse=True))
         for feature in coverage_inversed:
             assert isinstance(feature, Feature)
             assert feature.is_valid
@@ -82,20 +82,20 @@ class TestBaseIndicator:
         assert coverage_default != coverage_inversed
 
     def test_figure(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         assert isinstance(indicator.result.figure, dict)
         pgo.Figure(indicator.result.figure)  # test for valid Plotly figure
         # comment out for manual test
         # pio.show(indicator.result.figure)
 
     def test_get_template(self, feature, topic):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         indicator.get_template()
         assert isinstance(indicator.templates, IndicatorTemplates)
         assert isinstance(indicator.result, Result)
 
     def test_get_template_translated(self, feature, topic, locale_de):
-        indicator = Minimal(feature=feature, topic=topic)
+        indicator = Currentness(feature=feature, topic=topic)
         indicator.get_template()
         assert isinstance(indicator.templates, IndicatorTemplates)
         assert isinstance(indicator.result, Result)

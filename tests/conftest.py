@@ -75,13 +75,13 @@ def get_connection(monkeypatch):
 
 
 @pytest.fixture(scope="class")
-def topic_key_minimal() -> str:
-    return "minimal"
+def topic_key_building_count() -> str:
+    return "building-count"
 
 
 @pytest.fixture(scope="class")
-def topic_key_building_count() -> str:
-    return "building-count"
+def topic_key_building_area() -> str:
+    return "building-building-area"
 
 
 @pytest.fixture(scope="class")
@@ -92,11 +92,6 @@ def topic_roads() -> Topic:
 @pytest.fixture(scope="class")
 def topic_roads_all_highways() -> Topic:
     return get_topic_preset("roads-all-highways")
-
-
-@pytest.fixture(scope="class")
-def topic_minimal(topic_key_minimal) -> Topic:
-    return get_topic_preset(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
@@ -282,8 +277,8 @@ def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
 
 
 @pytest.fixture
-def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
-    return {"minimal": get_indicator("minimal")}
+def metadata_indicator_currentness() -> dict[str, IndicatorMetadata]:
+    return {"currentness": get_indicator("currentness")}
 
 
 @pytest.fixture

@@ -60,7 +60,8 @@ def metadata_indicator_mapping_saturation():
         "mapping-saturation": {
             "name": "Mapping Saturation",
             "description": (
-                "Calculate if mapping has saturated. High saturation has been reached "
+                "Calculate if mapping has saturated. "
+                + "High saturation has been reached "
                 + "if the growth of the fitted curve is minimal."
             ),
             "qualityDimension": "completeness",
@@ -71,39 +72,26 @@ def metadata_indicator_mapping_saturation():
 @pytest.fixture
 def metadata_quality_dimension():
     return {
-        "minimal": {
-            "name": "minimal",
-            "description": "A minimal quality dimension"
-            " definition for testing purposes.",
-            "source": None,
+        "currentness": {
+            "name": "currentness",
+            "description": "The degree to which data has "
+            + "attributes that are of the right age in a "
+            "specific context of use.",
+            "source": "https://www.iso.org/standard/35736.html",
         }
     }
 
 
 @pytest.fixture
-def metadata_topic_minimal():
+def metadata_indicator_currentness():
     return {
-        "minimal": {
-            "key": "minimal",
-            "name": "Minimal",
-            "description": "A minimal topic definition for testing purposes",
-            "endpoint": "elements",
-            "aggregationType": "count",
-            "filter": "building=* and building!=no and geometry:polygon",
-            "indicators": ["minimal"],
-            "ratioFilter": None,  # TODO: Should not be in response if None
-            "source": None,  # TODO: Should not be in response if None
-        }
-    }
-
-
-@pytest.fixture
-def metadata_indicator_minimal():
-    return {
-        "minimal": {
-            "name": "Minimal",
-            "description": "An minimal Indicator for testing purposes.",
-            "qualityDimension": "minimal",
+        "currentness": {
+            "name": "Currentness",
+            "description": "Estimate currentness of features by "
+            + "classifying contributions based on topic specific "
+            + "temporal thresholds into three groups: up-to-date, "
+            + "in-between and out-of-date.",
+            "qualityDimension": "currentness",
         }
     }
 

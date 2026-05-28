@@ -10,8 +10,6 @@ from tests.integrationtests.utils import oqapi_vcr
 
 # TODO: add user-activity and land-cover-... indicators (ohsomedb)
 PARAMETERS = [
-    ("minimal", "topic_minimal", {}),
-    ("minimal", "topic_custom", {}),
     ("mapping-saturation", "topic_building_count", {}),
     ("mapping-saturation", "topic_custom", {}),
     ("currentness", "topic_building_count", {}),
@@ -76,14 +74,14 @@ async def test_create_indicator_public_feature_collection_single(
 @oqapi_vcr.use_cassette
 def test_create_indicator_public_feature_collection_multi(
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-    topic_minimal,
+    topic_building_count,
 ):
     """Test create indicators for a feature collection with multiple features."""
     indicators = asyncio.run(
         main.create_indicator(
-            "minimal",
+            "currentness",
             feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-            topic_minimal,
+            topic_building_count,
         )
     )
     assert len(indicators) == 3
@@ -118,23 +116,16 @@ async def test_create_indicator_private_feature(
 
 
 @oqapi_vcr.use_cassette
-def test_create_indicator_private_include_figure(bpolys, topic_minimal):
+def test_create_indicator_private_include_figure(bpolys, topic_building_count):
     indicator = asyncio.run(
         main._create_indicator(
-            "minimal",
+            "currentness",
             bpolys,
-            topic_minimal,
+            topic_building_count,
             include_figure=False,
         )
     )
     assert indicator.result.figure is None
-
-
-@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqapi_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
-    with pytest.raises(ValueError):
-        asyncio.run(main.create_indicator("minimal", bpolys, topic_minimal))
 
 
 @mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)

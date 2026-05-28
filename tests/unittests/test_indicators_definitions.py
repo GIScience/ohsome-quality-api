@@ -54,9 +54,9 @@ def test_get_indicator_metadata():
         assert isinstance(indicator, models.IndicatorMetadata)
 
 
-def test_get_indicator(metadata_indicator_minimal):
+def test_get_indicator(metadata_indicator_currentness):
     indicator = definitions.get_indicator("minimal")
-    assert indicator == metadata_indicator_minimal["minimal"]
+    assert indicator == metadata_indicator_currentness["minimal"]
 
 
 @pytest.mark.usefixtures("locale_de")

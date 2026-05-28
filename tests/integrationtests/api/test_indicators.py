@@ -99,7 +99,6 @@ pytestmark = pytest.mark.parametrize(
 @pytest.mark.parametrize(
     "indicator,topic",
     [
-        ("minimal", "minimal"),
         ("mapping-saturation", "building-count"),
         ("currentness", "building-count"),
     ],
@@ -123,7 +122,7 @@ def test_indicators(
 
 
 @oqapi_vcr.use_cassette
-@pytest.mark.parametrize("indicator", ("minimal", "mapping-saturation", "currentness"))
+@pytest.mark.parametrize("indicator", ("mapping-saturation", "currentness"))
 def test_indicators_custom_topic(
     client,
     bpolys,
@@ -150,7 +149,7 @@ def test_indicators_custom_topic(
 
 
 @oqapi_vcr.use_cassette
-@pytest.mark.parametrize("indicator", ("minimal", "mapping-saturation", "currentness"))
+@pytest.mark.parametrize("indicator", ("mapping-saturation", "currentness"))
 def test_indicators_custom_topic_missing_geom_or_osm_type(
     client,
     bpolys,
@@ -284,26 +283,26 @@ def test_indicators_attribute_completeness_with_custom_topic_and_custom_attribut
 
 
 @oqapi_vcr.use_cassette
-def test_minimal_fc(
+def test_currentness_fc(
     client,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
     headers,
     schema,
 ):
     """Minimal viable request for multiple bpolys."""
-    endpoint = ENDPOINT + "minimal"
+    endpoint = ENDPOINT + "currentness"
     parameters = {
         "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-        "topic": "minimal",
+        "topic": "building-count",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
 
 @oqapi_vcr.use_cassette
-def test_minimal_include_figure_true(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": True}
+def test_currentness_include_figure_true(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "includeFigure": True}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -315,9 +314,9 @@ def test_minimal_include_figure_true(client, bpolys, headers, schema):
 
 
 @oqapi_vcr.use_cassette
-def test_minimal_include_figure_false(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "includeFigure": False}
+def test_currentness_include_figure_false(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "includeFigure": False}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -328,26 +327,26 @@ def test_minimal_include_figure_false(client, bpolys, headers, schema):
         raise AssertionError()
 
 
-def test_minimal_additional_parameter_foo(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "foo"}
+def test_currentness_additional_parameter_foo(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "foo"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "RequestValidationError"
 
 
-def test_minimal_additional_parameter_attribute(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
-    parameters = {"bpolys": bpolys, "topic": "minimal", "attribute": "height"}
+def test_currentness_additional_parameter_attribute(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
+    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "height"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "RequestValidationError"
 
 
-def test_minimal_custom_topic_missing_filter(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
+def test_currentness_custom_topic_missing_filter(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
     parameters = {"bpolys": bpolys, "topic": "custom-topic"}  # missing topic_filter
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
@@ -355,11 +354,11 @@ def test_minimal_custom_topic_missing_filter(client, bpolys, headers, schema):
     assert content["type"] == "RequestValidationError"
 
 
-def test_minimal_custom_topic_key_with_filter(client, bpolys, headers, schema):
-    endpoint = ENDPOINT + "minimal"
+def test_currentness_custom_topic_key_with_filter(client, bpolys, headers, schema):
+    endpoint = ENDPOINT + "currentness"
     parameters = {
         "bpolys": bpolys,
-        "topic": "minimal",
+        "topic": "building-count",
         "topicFilter": "spring=yes and geometry:point",  # invalid with topic `minimal`
         "topicTitle": "Spring",  # invalid with topic `minimal`
     }
@@ -367,18 +366,6 @@ def test_minimal_custom_topic_key_with_filter(client, bpolys, headers, schema):
     assert response.status_code == 422
     content = response.json()
     assert content["type"] == "RequestValidationError"
-
-
-def test_bpolys_size_limit(client, europe, headers, schema):
-    endpoint = ENDPOINT + "minimal"
-    parameters = {
-        "bpolys": europe,
-        "topic": "minimal",
-    }
-    response = client.post(endpoint, json=parameters, headers=headers)
-    assert response.status_code == 422
-    content = response.json()
-    assert content["type"] == "SizeRestrictionError"
 
 
 @asyncpg_recorder.use_cassette

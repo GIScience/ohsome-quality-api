@@ -19,7 +19,8 @@ def test_metadata(
     )
     # check quality dimensions result
     assert (
-        metadata_quality_dimension["minimal"] == result["qualityDimensions"]["minimal"]
+        metadata_quality_dimension["currentness"]
+        == result["qualityDimensions"]["currentness"]
     )
     # check indicators result
     assert (

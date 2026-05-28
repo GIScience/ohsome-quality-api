@@ -7,15 +7,15 @@ from ohsome_quality_api.api.response_models import (
     IndicatorGeoJSONResponse,
     IndicatorJSONResponse,
 )
-from ohsome_quality_api.indicators.minimal.indicator import Minimal
+from ohsome_quality_api.indicators.currentness.indicator import Currentness
 from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestIndicatorResponseModels:
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_minimal, feature_germany_heidelberg):
-        indicator = Minimal(topic_minimal, feature_germany_heidelberg)
+    def indicator(self, topic_building_count, feature_germany_heidelberg):
+        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()

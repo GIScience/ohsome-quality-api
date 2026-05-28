@@ -15,17 +15,16 @@ def test(client, response_template, metadata_indicator_mapping_saturation):
         metadata_indicator_mapping_saturation["mapping-saturation"]
         == result["mapping-saturation"]
     )
-    assert "minimal" not in result
 
 
-def test_by_key(client, response_template, metadata_indicator_minimal):
-    response = client.get("/metadata/indicators/minimal")
+def test_by_key(client, response_template, metadata_indicator_currentness):
+    response = client.get("/metadata/indicators/currentness")
     assert response.status_code == 200
 
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert result == metadata_indicator_minimal
+    assert result == metadata_indicator_currentness
 
 
 def test_by_key_not_found_error(client):
