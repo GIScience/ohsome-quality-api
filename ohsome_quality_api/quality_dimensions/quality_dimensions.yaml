@@ -22,11 +22,6 @@ thematic-accuracy:
   source:
     https://onlinelibrary.wiley.com/doi/full/10.1155/2014/372349
 
-minimal:
-  name: minimal
-  description: >-
-    A minimal quality dimension definition for testing purposes.
-
 none:
   name: none
   description: >-

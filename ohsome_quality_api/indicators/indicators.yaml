@@ -5,11 +5,6 @@ mapping-saturation:
   description: >-
     Calculate if mapping has saturated. High saturation has been reached if the
     growth of the fitted curve is minimal.
-minimal:
-  name: Minimal
-  quality_dimension: minimal
-  description: >-
-    An minimal Indicator for testing purposes.
 currentness:
   name: Currentness
   quality_dimension: currentness

@@ -13,7 +13,6 @@ custom-topic:
   aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   indicators:
-    - minimal
     - mapping-saturation
     - currentness
     - attribute-completeness
@@ -915,17 +914,6 @@ clc-waterway-len:
     - currentness
     - user-activity
     - attribute-completeness
-
-### MISC TOPICS ###
-
-minimal:
-  name: Minimal
-  description: A minimal topic definition for testing purposes.
-  endpoint: elements
-  aggregation_type: count
-  filter: building=* and building!=no and geometry:polygon
-  indicators:
-    - minimal
 
 ### EXPERIMENTAL TOPICS ###
 
