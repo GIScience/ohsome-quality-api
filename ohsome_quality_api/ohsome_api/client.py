@@ -14,7 +14,10 @@ async def request(
     method: Literal["get", "post"],
     json: dict | None = None,
 ) -> dict:
-    headers = {"user-agent": get_config_value("user_agent")}
+    headers = {
+        "user-agent": get_config_value("user_agent"),
+        "authorization": get_config_value("heigit_api_key"),
+    }
     async with httpx.AsyncClient(
         timeout=httpx.Timeout(300, read=660),
         verify=False,  # TODO: remove to veriyf SSL certificate  # noqa: S501
