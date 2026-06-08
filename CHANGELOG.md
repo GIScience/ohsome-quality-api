@@ -2,6 +2,7 @@
 
 ## Current Main
 
+* feat: get OSM data for User Activity indicator from ohsome-api v2 (69841b3e)
 * feat: include authorization header in requests to ohsome-api (2b2ebeea)
 * fix(attributes): add missing `ref=*` tag to the road name attribute (99fbaa50)
 * refactor(currentness): use ohsome-api v2 to get osm data ([#1029])
