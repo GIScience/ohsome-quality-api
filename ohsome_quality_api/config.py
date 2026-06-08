@@ -39,6 +39,7 @@ def load_config_default() -> dict:
         "ohsome_api": "https://api.ohsome.org/v1/",
         "concurrent_computations": 4,
         "user_agent": "ohsome-quality-api/{}".format(__version__),
+        "heigit_api_key": "",
         "datasets": {
             "regions": {
                 "default": "ogc_fid",
@@ -78,6 +79,7 @@ def load_config_from_env() -> dict:
         "ohsome_api": os.getenv("OQAPI_OHSOME_API"),
         "concurrent_computations": os.getenv("OQAPI_CONCURRENT_COMPUTATIONS"),
         "user_agent": os.getenv("OQAPI_USER_AGENT"),
+        "heigit_api_key": os.getenv("OQAPI_HEIGIT_API_KEY"),
     }
     return {k: v for k, v in cfg.items() if v is not None}
 
