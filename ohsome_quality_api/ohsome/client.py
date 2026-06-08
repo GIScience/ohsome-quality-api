@@ -1,18 +1,13 @@
 import datetime
 import json
 from functools import singledispatch
+from json import JSONDecodeError
 
 import geojson
 import httpx
 from dateutil.parser import isoparse
 from geojson import Feature, FeatureCollection
 from schema import Or, Schema, SchemaError, Use
-
-# `geojson` uses `simplejson` if it is installed
-try:
-    from simplejson import JSONDecodeError
-except ImportError:
-    from json import JSONDecodeError
 
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.topics.models import Topic, TopicData
