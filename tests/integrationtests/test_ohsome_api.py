@@ -3,9 +3,15 @@ import pytest
 from ohsome_quality_api.ohsome_api import client
 from tests.integrationtests.utils import oqapi_vcr
 
+pytestmark = pytest.mark.asyncio
+
+
+@oqapi_vcr.use_cassette
+async def test_metadata():
+    await client.metadata()
+
 
 @pytest.mark.parametrize("measure", ["count", "length", "area"])
-@pytest.mark.asyncio
 @oqapi_vcr.use_cassette()
 async def test_currentness(feature_collection_germany_heidelberg, measure):
     result = await client.currentness(
@@ -21,7 +27,15 @@ async def test_currentness(feature_collection_germany_heidelberg, measure):
     assert len(result) == 4
 
 
-@pytest.mark.asyncio
-@oqapi_vcr.use_cassette
-async def test_metadata():
-    await client.metadata()
+@oqapi_vcr.use_cassette()
+async def test_activity_user(feature_collection_germany_heidelberg):
+    result = await client.activity_users(
+        aoi=feature_collection_germany_heidelberg,
+        ohsome_filter="type:node and natural=tree",
+        time_bins={
+            "start": "2026-01-01T00:00:00Z",
+            "end": "2026-04-17T00:00:00Z",
+            "binSize": "P1M",
+        },
+    )
+    assert len(result) == 4

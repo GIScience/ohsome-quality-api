@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from datetime import datetime
 from statistics import median
 from string import Template
 
@@ -9,8 +10,8 @@ from babel.dates import format_date
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
-from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.indicators.base import BaseIndicator
+from ohsome_quality_api.ohsome_api import client as ohsome_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
@@ -37,17 +38,27 @@ class UserActivity(BaseIndicator):
         self.bin_total = None
 
     async def preprocess(self) -> None:
-        results = await ohsomedb.users(
-            bpolys=self.feature.geometry,
-            filter_=self.topic.filter,
+        raw = await ohsome_client.metadata()
+        latest_timestamp = datetime.fromisoformat(raw["latestTimestamp"])
+        end = latest_timestamp.strftime("%Y-%m-01")
+        start = "2008-" + latest_timestamp.strftime("%m-%d")
+        results = await ohsome_client.activity_users(
+            aoi={"type": "FeatureCollection", "features": [self.feature]},
+            ohsome_filter=self.topic.filter,
+            time_bins={
+                "start": start,
+                "end": end,
+                "binSize": "P1M",
+            },
         )
+        # TODO: What does it mean? Do we need this check?
         if len(results) == 0:
             return
         timestamps = []
         users_abs = []
-        for r in reversed(results):
-            timestamps.append(r[0])
-            users_abs.append(r[1])
+        for r in reversed(results):  # latest aggregation first
+            timestamps.append(datetime.fromisoformat(r["end"]))
+            users_abs.append(r["value"])
         self.bin_total = Bin(
             users_abs,
             timestamps,
