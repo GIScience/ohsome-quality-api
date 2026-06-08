@@ -58,3 +58,22 @@ async def currentness(
         json={"filter": ohsome_filter, "aoi": aoi, "timeBins": time_bins},
     )
     return response["result"]
+
+
+async def activity_users(
+    aoi: dict,
+    ohsome_filter: str,
+    time_bins: dict,
+) -> dict:
+    """Query the ohsome API.
+
+    Raises:
+        OhsomeApiError: In case of any response except 2xx status codes.
+    """
+    url = f"{BASE_URL}/activity/users.json"
+    response = await request(
+        url,
+        method="post",
+        json={"filter": ohsome_filter, "aoi": aoi, "timeBins": time_bins},
+    )
+    return response["result"]
