@@ -39,7 +39,7 @@ def load_config_default() -> dict:
         "ohsome_api": "https://api.ohsome.org/v1/",
         "concurrent_computations": 4,
         "user_agent": "ohsome-quality-api/{}".format(__version__),
-        "heigit_api_key": "",
+        "heigit_api_key": "foo",
         "datasets": {
             "regions": {
                 "default": "ogc_fid",
