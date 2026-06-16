@@ -359,8 +359,8 @@ def test_currentness_custom_topic_key_with_filter(client, bpolys, headers, schem
     parameters = {
         "bpolys": bpolys,
         "topic": "building-count",
-        "topicFilter": "spring=yes and geometry:point",  # invalid with topic `minimal`
-        "topicTitle": "Spring",  # invalid with topic `minimal`
+        "topicFilter": "spring=yes and geometry:point",
+        "topicTitle": "Spring",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422

@@ -55,8 +55,8 @@ def test_get_indicator_metadata():
 
 
 def test_get_indicator(metadata_indicator_currentness):
-    indicator = definitions.get_indicator("minimal")
-    assert indicator == metadata_indicator_currentness["minimal"]
+    indicator = definitions.get_indicator("currentness")
+    assert indicator == metadata_indicator_currentness["currentness"]
 
 
 @pytest.mark.usefixtures("locale_de")

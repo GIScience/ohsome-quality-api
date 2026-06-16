@@ -5,7 +5,7 @@ from ohsome_quality_api.quality_dimensions import definitions
 from ohsome_quality_api.quality_dimensions.models import QualityDimension
 
 
-@pytest.fixture(params=["minimal", "completeness", "currentness"])
+@pytest.fixture(params=["completeness", "currentness"])
 def valid_quality_dimension_keys(request):
     return request.param
 

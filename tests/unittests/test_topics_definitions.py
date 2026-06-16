@@ -10,8 +10,8 @@ def test_get_topic_keys():
 
 
 def test_get_valid_topics():
-    topics = definitions.get_valid_topics("minimal")
-    assert topics == ("custom-topic", "minimal")
+    topics = definitions.get_valid_topics("currentness")
+    assert "building-count" in topics
 
 
 def test_load_topic_definition():
@@ -21,7 +21,7 @@ def test_load_topic_definition():
 
 
 def test_get_topic_definition():
-    topic = definitions.get_topic_preset("minimal")
+    topic = definitions.get_topic_preset("building-count")
     assert isinstance(topic, models.Topic)
 
 

@@ -7,13 +7,13 @@ def test_metadata_quality_dimensions(
     content = response.json()
     result = content.pop("result")
     assert content == response_template
-    assert metadata_quality_dimension["minimal"] == result["minimal"]
+    assert metadata_quality_dimension["currentness"] == result["currentness"]
 
 
 def test_metadata_quality_dimensions_by_key(
     client, response_template, metadata_quality_dimension
 ):
-    response = client.get("/metadata/quality-dimensions/minimal")
+    response = client.get("/metadata/quality-dimensions/currentness")
     assert response.status_code == 200
 
     content = response.json()
