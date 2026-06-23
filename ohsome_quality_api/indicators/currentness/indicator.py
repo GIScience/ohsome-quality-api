@@ -215,10 +215,13 @@ class Currentness(BaseIndicator):
         match self.topic.aggregation_type:
             case "count":
                 unit = ""
+                yaxes_unit = "[#]"
             case "length":
                 unit = " km"
+                yaxes_unit = f"[{unit}]"
             case "area":
                 unit = " km<sup>2</sup>"
+                yaxes_unit = f"[{unit}]"
             case _:
                 raise ValueError()
 
@@ -306,7 +309,7 @@ class Currentness(BaseIndicator):
             secondary_y=False,
         )
         fig.update_yaxes(
-            title_text=_("Features [#]"),
+            title_text=_("Features ") + yaxes_unit,
             tickformat=".",
             secondary_y=True,
             griddash="dash",
