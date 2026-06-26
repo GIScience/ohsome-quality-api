@@ -45,7 +45,7 @@ class UserActivity(BaseIndicator):
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
         results = await ohsome_client.activity_users(
-            aoi={"type": "FeatureCollection", "features": [self.feature]},
+            aoi=self.feature["geometry"],
             ohsome_filter=self.topic.filter,
             time_bins={
                 "start": start,

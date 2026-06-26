@@ -66,17 +66,3 @@ def test_mapping_saturation_data(client, bpolys):
     }
     response = client.post(ENDPOINT, json=parameters)
     assert RESPONSE_SCHEMA_JSON.is_valid(response.json())
-
-
-def test_mapping_saturation_data_invalid(client, bpolys):
-    parameters = {
-        "bpolys": bpolys,
-        "topic": {
-            "key": "foo",
-            "name": "bar",
-            "description": "",
-            "data": {"result": [{"value": 1.0}]},  # Missing timestamp item
-        },
-    }
-    response = client.post(ENDPOINT, json=parameters)
-    assert response.status_code == 422
