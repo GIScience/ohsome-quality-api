@@ -402,4 +402,37 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQzZWYxYzI0N2I2MTRjMTZhOWJlMmJiNjY0ODhmYzkyIiwiaCI6Im11cm11cjEyOCJ9
+      connection:
+      - keep-alive
+      host:
+      - staging-ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api/1.17.1
+    method: GET
+    uri: https://staging-ohsome-api.heigitk8s.de//metadata
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a0+981f1cd\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"temporalExtent\":{\"latestTimestamp\":\"2026-06-26T11:28:31Z\",\"earliestTimestamp\":\"2007-10-08T00:00:00Z\"}}"
+    headers:
+      content-length:
+      - '228'
+      content-type:
+      - application/json
+      date:
+      - Fri, 26 Jun 2026 11:29:29 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
 version: 1
