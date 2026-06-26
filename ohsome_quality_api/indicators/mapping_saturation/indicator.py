@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from string import Template
 
 import numpy as np
@@ -9,25 +10,15 @@ from fastapi_i18n import _, get_locale
 from geojson import Feature
 from rpy2.rinterface_lib.embedded import RRuntimeError
 
-from ohsome_quality_api import ohsomedb
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.mapping_saturation import models
-from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.ohsome_api import client as ohsome_api_client
 from ohsome_quality_api.topics.models import Topic, TopicData
 
 logger = logging.getLogger(__name__)
 
 np.seterr(all="raise")  # Raise error on division by zero
-
-
-def is_ohsomedb_enabled() -> bool:
-    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
-        return True
-    else:
-        return False
 
 
 class MappingSaturation(BaseIndicator):
@@ -86,30 +77,25 @@ class MappingSaturation(BaseIndicator):
         self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self):
-        if is_ohsomedb_enabled() and not isinstance(self.topic, TopicData):
-            await self.preprocess_ohsomedb()
-        else:
-            await self.preprocess_ohsomeapi()
-
-    async def preprocess_ohsomeapi(self) -> None:
-        query_results = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            time=self.time_range,
+        raw = await ohsome_api_client.metadata()
+        latest_timestamp = datetime.fromisoformat(
+            raw["temporalExtent"]["latestTimestamp"]
         )
-        for item in query_results["result"]:
+        end = latest_timestamp.strftime("%Y-%m-01")
+        start = "2008-" + latest_timestamp.strftime("%m-%d")
+        result = await ohsome_api_client.features(
+            aoi={"type": "FeatureCollection", "features": [self.feature]},
+            measure=self.topic.aggregation_type,
+            ohsome_filter=self.topic.filter,
+            time_series={
+                "start": start,
+                "end": end,
+                "interval": "P1M",
+            },
+        )
+        for item in result:
             self.values.append(item["value"])
             self.timestamps.append(isoparse(item["timestamp"]))
-
-    async def preprocess_ohsomedb(self) -> None:
-        results = await ohsomedb.elements(
-            aggregation=self.topic.aggregation_type,
-            bpolys=self.feature.geometry,
-            filter_=self.topic.filter,
-        )
-        for item in results:
-            self.values.append(float(item["element"]))
-            self.timestamps.append(item["timestamp"])
 
     def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results

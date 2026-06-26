@@ -1,29 +1,14 @@
 from datetime import datetime
 
-import asyncpg_recorder
 import numpy as np
 import pytest
+from geojson.feature import Feature
 from pytest_approval.main import verify, verify_plotly
 
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.mapping_saturation.indicator import (
     MappingSaturation,
 )
 from tests.integrationtests.utils import oqapi_vcr
-
-
-@pytest.fixture(autouse=True, params=[True, False])
-def ohsomedb_feature_flag(request, monkeypatch):
-    def get_config_value_(key: str):
-        if key == "ohsomedb_enabled":
-            return request.param
-        else:
-            return get_config_value(key)
-
-    monkeypatch.setattr(
-        "ohsome_quality_api.indicators.mapping_saturation.indicator.get_config_value",
-        get_config_value_,
-    )
 
 
 class TestCheckEdgeCases:
@@ -64,7 +49,6 @@ class TestCheckEdgeCases:
 
 class TestPreprocess:
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -83,7 +67,6 @@ class TestCalculation:
         # three different aggregation types
         ["topic_building_count", "topic_building_area", "topic_roads"],
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate(
         self,
@@ -112,7 +95,6 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp, datetime)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_as_feature(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -127,7 +109,6 @@ class TestCalculation:
         assert "data" not in properties
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_as_feature_data(
         self,
@@ -147,7 +128,6 @@ class TestCalculation:
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_result_value_zero_division_error(
         self,
@@ -165,7 +145,6 @@ class TestCalculation:
         assert indicator.result.value is None
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_result_value_nan(
         self,
@@ -185,7 +164,6 @@ class TestCalculation:
 
 @pytest.mark.asyncio()
 class TestFigure:
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure(
         self,
@@ -199,7 +177,6 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_no_fitted_model(
         self,
@@ -215,42 +192,40 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    # @asyncpg_recorder.use_cassette
-    # @oqapi_vcr.use_cassette
-    # @pytest.mark.parametrize(
-    #     "topic_key",
-    #     # three different aggregation types
-    #     ["topic_building_count", "topic_building_area", "topic_roads"],
-    # )
-    # async def test_negative_saturation(self, request, topic_key):
-    #     """Data declines instead of increases."""
-    #     # At some point this led to internal server error due to invalid
-    #     # (not handled) result value.
-    #     topic = request.getfixturevalue(topic_key)
-    #     feature = Feature(
-    #         geometry={
-    #             "type": "Polygon",
-    #             "coordinates": [
-    #                 [
-    #                     [8.3795644, 48.9974453],
-    #                     [8.4315496, 48.9974453],
-    #                     [8.4315496, 49.0218769],
-    #                     [8.3795644, 49.0218769],
-    #                     [8.3795644, 48.9974453],
-    #                 ]
-    #             ],
-    #         }
-    #     )
-    #     indicator = MappingSaturation(topic, feature)
-    #     await indicator.preprocess()
-    #     indicator.calculate()
-    #     indicator.create_figure()
-    #     assert verify(indicator.result.description)
-    #     assert verify_plotly(indicator.result.figure)
+    @oqapi_vcr.use_cassette
+    @pytest.mark.parametrize(
+        "topic_key",
+        # three different aggregation types
+        ["topic_building_count", "topic_building_area", "topic_roads"],
+    )
+    async def test_negative_saturation(self, request, topic_key):
+        """Data declines instead of increases."""
+        # At some point this led to internal server error due to invalid
+        # (not handled) result value.
+        topic = request.getfixturevalue(topic_key)
+        feature = Feature(
+            geometry={
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [8.3795644, 48.9974453],
+                        [8.4315496, 48.9974453],
+                        [8.4315496, 49.0218769],
+                        [8.3795644, 49.0218769],
+                        [8.3795644, 48.9974453],
+                    ]
+                ],
+            }
+        )
+        indicator = MappingSaturation(topic, feature)
+        await indicator.preprocess()
+        indicator.calculate()
+        indicator.create_figure()
+        assert verify(indicator.result.description)
+        assert verify_plotly(indicator.result.figure)
 
 
 @pytest.mark.asyncio()
-@asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
 async def test_immutable_attribute(
     topic_building_count,
@@ -282,7 +257,6 @@ async def test_immutable_attribute(
 
 
 @pytest.mark.asyncio()
-@asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
 async def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
     indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
