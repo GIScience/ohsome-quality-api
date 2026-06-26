@@ -77,6 +77,12 @@ class MappingSaturation(BaseIndicator):
         self.fitted_models: list[models.BaseStatModel] = []
 
     async def preprocess(self):
+        if isinstance(self.topic, TopicData):
+            for item in self.topic.data["result"]:
+                self.values.append(item["value"])
+                self.timestamps.append(isoparse(item["timestamp"]))
+            return
+
         raw = await ohsome_api_client.metadata()
         latest_timestamp = datetime.fromisoformat(
             raw["temporalExtent"]["latestTimestamp"]
