@@ -13,6 +13,22 @@ async def test_metadata():
 
 @pytest.mark.parametrize("measure", ["count", "length", "area"])
 @oqapi_vcr.use_cassette()
+async def test_features(feature_collection_germany_heidelberg, measure):
+    result = await client.features(
+        aoi=feature_collection_germany_heidelberg,
+        measure=measure,
+        ohsome_filter="type:node and natural=tree",
+        time_series={
+            "start": "2026-01-01T00:00:00Z",
+            "end": "2026-04-17T00:00:00Z",
+            "interval": "P1M",
+        },
+    )
+    assert len(result) == 5
+
+
+@pytest.mark.parametrize("measure", ["count", "length", "area"])
+@oqapi_vcr.use_cassette()
 async def test_currentness(feature_collection_germany_heidelberg, measure):
     result = await client.currentness(
         aoi=feature_collection_germany_heidelberg,

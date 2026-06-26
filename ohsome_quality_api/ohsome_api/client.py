@@ -14,6 +14,11 @@ async def request(
     method: Literal["get", "post"],
     json: dict | None = None,
 ) -> dict:
+    """Query the ohsome API.
+
+    Raises:
+        OhsomeApiError: In case of any response except 2xx status codes.
+    """
     headers = {
         "user-agent": get_config_value("user_agent"),
         "authorization": get_config_value("heigit_api_key"),
@@ -40,17 +45,27 @@ async def metadata() -> dict:
     return await request(url, method="get")
 
 
+async def features(
+    aoi: dict,
+    measure: str,
+    ohsome_filter: str,
+    time_series: dict,
+):
+    url = f"{BASE_URL}/features/{measure}.json"
+    response = await request(
+        url,
+        method="post",
+        json={"filter": ohsome_filter, "aoi": aoi, "timeSeries": time_series},
+    )
+    return response["result"]
+
+
 async def currentness(
     aoi: dict,
     measure: str,
     ohsome_filter: str,
     time_bins: dict,
 ) -> dict:
-    """Query the ohsome API.
-
-    Raises:
-        OhsomeApiError: In case of any response except 2xx status codes.
-    """
     url = f"{BASE_URL}/currentness/{measure}.json"
     response = await request(
         url,
@@ -65,11 +80,6 @@ async def activity_users(
     ohsome_filter: str,
     time_bins: dict,
 ) -> dict:
-    """Query the ohsome API.
-
-    Raises:
-        OhsomeApiError: In case of any response except 2xx status codes.
-    """
     url = f"{BASE_URL}/activity/users.json"
     response = await request(
         url,
