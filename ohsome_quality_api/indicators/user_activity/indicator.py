@@ -39,7 +39,9 @@ class UserActivity(BaseIndicator):
 
     async def preprocess(self) -> None:
         raw = await ohsome_client.metadata()
-        latest_timestamp = datetime.fromisoformat(raw["latestTimestamp"])
+        latest_timestamp = datetime.fromisoformat(
+            raw["temporalExtent"]["latestTimestamp"]
+        )
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
         results = await ohsome_client.activity_users(
