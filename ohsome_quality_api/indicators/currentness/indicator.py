@@ -77,7 +77,9 @@ class Currentness(BaseIndicator):
         geometry and the tag. It excludes deletion.
         """
         raw = await ohsome_client.metadata()
-        latest_timestamp = datetime.fromisoformat(raw["latestTimestamp"])
+        latest_timestamp = datetime.fromisoformat(
+            raw["temporalExtent"]["latestTimestamp"]
+        )
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
         result = await ohsome_client.currentness(
