@@ -90,7 +90,7 @@ class MappingSaturation(BaseIndicator):
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
         result = await ohsome_api_client.features(
-            aoi={"type": "FeatureCollection", "features": [self.feature]},
+            aoi=self.feature["geometry"],
             measure=self.topic.aggregation_type,
             ohsome_filter=self.topic.filter,
             time_series={
