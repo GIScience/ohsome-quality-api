@@ -13,9 +13,9 @@ async def test_metadata():
 
 @pytest.mark.parametrize("measure", ["count", "length", "area"])
 @oqapi_vcr.use_cassette()
-async def test_features(feature_collection_germany_heidelberg, measure):
+async def test_features(feature, measure):
     result = await client.features(
-        aoi=feature_collection_germany_heidelberg,
+        aoi=feature["geometry"],
         measure=measure,
         ohsome_filter="type:node and natural=tree",
         time_series={
@@ -29,9 +29,9 @@ async def test_features(feature_collection_germany_heidelberg, measure):
 
 @pytest.mark.parametrize("measure", ["count", "length", "area"])
 @oqapi_vcr.use_cassette()
-async def test_currentness(feature_collection_germany_heidelberg, measure):
+async def test_currentness(feature, measure):
     result = await client.currentness(
-        aoi=feature_collection_germany_heidelberg,
+        aoi=feature["geometry"],
         measure=measure,
         ohsome_filter="type:node and natural=tree",
         time_bins={
@@ -44,9 +44,9 @@ async def test_currentness(feature_collection_germany_heidelberg, measure):
 
 
 @oqapi_vcr.use_cassette()
-async def test_activity_user(feature_collection_germany_heidelberg):
+async def test_activity_user(feature):
     result = await client.activity_users(
-        aoi=feature_collection_germany_heidelberg,
+        aoi=feature["geometry"],
         ohsome_filter="type:node and natural=tree",
         time_bins={
             "start": "2026-01-01T00:00:00Z",
