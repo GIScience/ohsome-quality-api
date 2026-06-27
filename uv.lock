@@ -81,16 +81,17 @@ wheels = [
 
 [[package]]
 name = "asyncpg-recorder"
-version = "0.10.4"
+version = "0.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncpg" },
     { name = "pytest" },
+    { name = "pytest-nodeid-to-filepath" },
     { name = "testcontainers" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/78/5e/c0e319d59aab8a7b5f42a3dc233887fb3d50784eb16b08501b2f331164aa/asyncpg_recorder-0.10.4.tar.gz", hash = "sha256:d78e701959ecd69cba8b206b9d706e817d90983fa91f9b31bad03f8de204bada", size = 20339, upload-time = "2026-05-18T08:05:29.66Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c7/f4/cb3cc9cd91eaeae18b5ad33a0f8b1c71a55232f136223b34e6510e8b4399/asyncpg_recorder-0.11.0.tar.gz", hash = "sha256:73b4e9e6a6abc0953a531fb80537c239b347f69ea20df3ec997e321c26c20de6", size = 20332, upload-time = "2026-06-23T12:05:13.153Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f9/98/cf8174f782492f8ea4d347f7444625542f3a658a630b3ba5220a3c84cfe4/asyncpg_recorder-0.10.4-py3-none-any.whl", hash = "sha256:b27706391df62dbaeee6180354c84e4e52fb4984f7a900b85f44e5caa6adf537", size = 21716, upload-time = "2026-05-18T08:05:28.543Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/92/546b28bae49513b53b41b588cd820fe1c0d6aca3b0dfc4f4d50c01477b9e/asyncpg_recorder-0.11.0-py3-none-any.whl", hash = "sha256:bdaaae4c1d4dba97aaf786720ba3f5905a558f30ece1f80b70d2a3e902386b62", size = 21718, upload-time = "2026-06-23T12:05:12.042Z" },
 ]
 
 [[package]]
@@ -769,7 +770,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "asyncpg-recorder", specifier = ">=0.8.0" },
+    { name = "asyncpg-recorder", specifier = ">=0.11.0" },
     { name = "babel", specifier = ">=2.17.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
@@ -777,7 +778,7 @@ dev = [
     { name = "prek", specifier = ">=0.3.5" },
     { name = "pygments", specifier = ">=2.19.1" },
     { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-approval", specifier = ">=0.16.2" },
+    { name = "pytest-approval", specifier = ">=0.17.0" },
     { name = "pytest-asyncio", specifier = ">=1.3.0" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
@@ -1058,15 +1059,15 @@ wheels = [
 
 [[package]]
 name = "pytest-approval"
-version = "0.16.2"
+version = "0.17.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
     { name = "pytest-nodeid-to-filepath" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/78/ac/6b9487c9c8b5a6248c6e52cf0602dac2bfaa12c8ad77add3a56b724d8ee5/pytest_approval-0.16.2.tar.gz", hash = "sha256:139af4800afdd8f81d1cd575cc7e18adcd617897e09799f42f768ec635214759", size = 62986, upload-time = "2026-05-05T07:49:05.538Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/66/95/adaf55845d10aeaf9538e05f9d03e7a82d80b3ff7182e8cabea06dc92514/pytest_approval-0.17.0.tar.gz", hash = "sha256:48d91d3c2450a0bf743d66e26b50fe9fc93b2b47ec0d3e2459ca60237c04a33e", size = 62982, upload-time = "2026-06-23T12:01:55.559Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/56/0f5792a44b7df2f6f44cbfc7523afd4226961290aa7a6d6a0b416e42c9f0/pytest_approval-0.16.2-py3-none-any.whl", hash = "sha256:f3218295ddd253e8199db88a049b119c8d478c902fe0f544b48879d6b3aa174b", size = 73861, upload-time = "2026-05-05T07:49:06.833Z" },
+    { url = "https://files.pythonhosted.org/packages/27/87/190053d4c03d123914624f66109672f55bda550c0f5eb35911ceb34ef21a/pytest_approval-0.17.0-py3-none-any.whl", hash = "sha256:7294299d098012886f4976b199b9a7f4d7ab112e4c71165008d9f546095ca243", size = 73852, upload-time = "2026-06-23T12:01:54.328Z" },
 ]
 
 [[package]]
