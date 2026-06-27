@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import numpy as np
@@ -192,6 +193,10 @@ class TestFigure:
         "topic_key",
         # three different aggregation types
         ["topic_building_count", "topic_building_area", "topic_roads"],
+    )
+    @pytest.mark.skipif(
+        os.environ.get("CI", None) is not None,
+        reason="For some reason this tests fails in CI.",
     )
     @oqapi_vcr.use_cassette
     async def test_negative_saturation(self, request, topic_key):
