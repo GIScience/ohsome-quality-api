@@ -47,8 +47,8 @@ class TestCheckEdgeCases:
         assert indicator.check_edge_cases() == ""
 
 
+@pytest.mark.asyncio
 class TestPreprocess:
-    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -60,8 +60,8 @@ class TestPreprocess:
             assert isinstance(t, datetime)
 
 
+@pytest.mark.asyncio
 class TestCalculation:
-    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
@@ -94,7 +94,6 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp_osm, datetime)
         assert isinstance(indicator.result.timestamp, datetime)
 
-    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_as_feature(self, topic_building_count, feature_germany_heidelberg):
         indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
@@ -108,7 +107,6 @@ class TestCalculation:
         assert properties["result"]["description"] is not None
         assert "data" not in properties
 
-    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_as_feature_data(
         self,
@@ -127,7 +125,6 @@ class TestCalculation:
             assert not np.isnan(np.sum(fm["fitted_values"]))
             assert np.isfinite(np.sum(fm["fitted_values"]))
 
-    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_result_value_zero_division_error(
         self,
@@ -144,7 +141,6 @@ class TestCalculation:
         indicator.calculate()
         assert indicator.result.value is None
 
-    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_result_value_nan(
         self,
@@ -162,7 +158,7 @@ class TestCalculation:
         assert indicator.result.value is None
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure(
@@ -225,7 +221,7 @@ class TestFigure:
         assert verify_plotly(indicator.result.figure)
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 @oqapi_vcr.use_cassette
 async def test_immutable_attribute(
     topic_building_count,
@@ -256,7 +252,7 @@ async def test_immutable_attribute(
     assert fitted_values == fitted_values_2
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 @oqapi_vcr.use_cassette
 async def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
     indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
