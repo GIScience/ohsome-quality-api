@@ -9,7 +9,7 @@ import pytest
 from geojson import FeatureCollection
 from schema import Schema
 
-from ohsome_quality_api.attributes.definitions import build_attribute_filter_ohsomedb
+from ohsome_quality_api.attributes.definitions import build_attribute_filter
 from ohsome_quality_api.ohsome import client as ohsome_client
 from ohsome_quality_api.topics.models import TopicData
 from ohsome_quality_api.utils.exceptions import (
@@ -195,7 +195,7 @@ class TestOhsomeClientBuildUrl(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.topic = get_topic_fixture("building-count")
-        self.attribute_filter = build_attribute_filter_ohsomedb(
+        self.attribute_filter = build_attribute_filter(
             attribute_filter=None, attribute_keys=["height"], topic_key=self.topic.key
         )
 
@@ -230,9 +230,7 @@ class TestOhsomeClientBuildData(TestCase):
         self.ohsome_api = "https://api.ohsome.org/v1"
         self.bpolys = get_geojson_fixture("heidelberg-altstadt-feature.geojson")
         self.topic = get_topic_fixture("building-count")
-        self.attribute_filter = build_attribute_filter_ohsomedb(
-            None, ["height"], self.topic.key
-        )
+        self.attribute_filter = build_attribute_filter(None, ["height"], self.topic.key)
 
     def test_feature(self) -> None:
         schema = Schema(
@@ -306,7 +304,7 @@ class TestOhsomeClientBuildData(TestCase):
 class TestOhsomeClientValidateQuery(TestCase):
     def setUp(self) -> None:
         self.ohsome_api = "https://api.ohsome.org/v1/"
-        self.attribute_filter = build_attribute_filter_ohsomedb(
+        self.attribute_filter = build_attribute_filter(
             None, ["height"], "building-count"
         )
 

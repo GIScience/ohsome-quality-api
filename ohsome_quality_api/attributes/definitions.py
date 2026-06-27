@@ -1,21 +1,10 @@
 import os
 from enum import Enum
-from typing import List
 
 import yaml
 
 from ohsome_quality_api.attributes.models import Attribute
-from ohsome_quality_api.config import get_config_value
-from ohsome_quality_api.topics.definitions import get_topic_preset, load_topic_presets
 from ohsome_quality_api.utils.helper import get_module_dir
-
-
-def is_ohsomedb_enabled() -> bool:
-    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
-        return True
-    else:
-        return False
 
 
 def load_attributes() -> dict[str, dict[str, Attribute]]:
@@ -48,38 +37,6 @@ def get_attribute(topic_key, a_key: str | None) -> Attribute:
         raise KeyError("Invalid topic or attribute key(s).") from error
 
 
-# TODO: Remove since it is the same as above?
-def get_attribute_preset(topic_key: str) -> List[Attribute]:
-    """Get ohsome API parameters of a list of Attributes based on topic key."""
-    attributes = load_attributes()
-    try:
-        return attributes[topic_key]
-    except KeyError as error:
-        topics = load_topic_presets()
-        raise KeyError(
-            "Invalid topic key. Valid topic keys are: " + str(topics.keys())
-        ) from error
-
-
-def build_attribute_filter(
-    attribute_filter: str | None,
-    attribute_keys: list[str],
-    topic_key: str,
-):
-    if is_ohsomedb_enabled():
-        return build_attribute_filter_ohsomedb(
-            attribute_filter,
-            attribute_keys,
-            topic_key,
-        )
-    else:
-        return build_attribute_filter_ohsomeapi(
-            attribute_filter,
-            attribute_keys,
-            topic_key,
-        )
-
-
 def build_attribute_title(
     attribute_title: str | None,
     attribute_keys: list[str] | None,
@@ -95,7 +52,7 @@ def build_attribute_title(
         raise ValueError("Attribute keys or title has to be given.")
 
 
-def build_attribute_filter_ohsomedb(
+def build_attribute_filter(
     attribute_filter: str | None,
     attribute_keys: list[str] | None,
     topic_key: str,
@@ -117,31 +74,6 @@ def build_attribute_filter_ohsomedb(
             return attribute_filter
         elif attribute_filter is not None:
             return "(" + attribute_filter + ")"
-        else:
-            raise ValueError("Attribute filter or keys has to be given.")
-    except KeyError as error:
-        raise KeyError("Invalid topic or attribute key(s).") from error
-
-
-def build_attribute_filter_ohsomeapi(
-    attribute_filter: str | None,
-    attribute_keys: list[str] | None,
-    topic_key: str,
-) -> str:
-    """Build attribute filter for ohsome API query."""
-    attributes = get_attributes()
-    try:
-        if attribute_keys is not None:
-            attribute_filter = get_topic_preset(topic_key).filter
-            for attribute_key in attribute_keys:
-                attribute_filter += (
-                    " and (" + attributes[topic_key][attribute_key].filter + ")"
-                )
-            return attribute_filter
-        elif attribute_filter is not None:
-            return (
-                get_topic_preset(topic_key).filter + " and (" + attribute_filter + ")"
-            )
         else:
             raise ValueError("Attribute filter or keys has to be given.")
     except KeyError as error:

@@ -92,7 +92,7 @@ class AttributeCompleteness(BaseIndicator):
         result_2 = await ohsome_api_client.features(
             aoi=self.feature.geometry,
             measure=self.topic.aggregation_type,
-            ohsome_filter=self.attribute_filter,
+            ohsome_filter=f"({self.topic.filter}) and ({self.attribute_filter})",
             time_series={"start": start, "end": end},
         )
 
