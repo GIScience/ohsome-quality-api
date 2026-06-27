@@ -1,0 +1,1 @@
+41% of all "Buildings (count)" features (all: 31335 elements) in your area of interest have the selected additional attribute Height (matched: 12988 elements). The attribute completeness is medium (25%-75%).

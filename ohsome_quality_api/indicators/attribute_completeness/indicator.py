@@ -1,21 +1,20 @@
 import logging
-from datetime import datetime, timezone
+from datetime import datetime
 from string import Template
 
-import dateutil.parser
 import plotly.graph_objects as go
 from babel.numbers import format_decimal, format_percent
+from dateutil.parser import isoparse
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
-from ohsome_quality_api import ohsomedb
 from ohsome_quality_api.attributes.definitions import (
     build_attribute_filter,
     build_attribute_title,
 )
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.ohsome_api import client as ohsome_api_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
@@ -63,11 +62,10 @@ class AttributeCompleteness(BaseIndicator):
         attribute_title: str | None = None,
     ) -> None:
         super().__init__(topic=topic, feature=feature)
-        self.threshold_yellow = 0.75
-        self.threshold_red = 0.25
-        self.absolute_value_1 = None
-        self.absolute_value_2 = None
-        self.description = None
+        self.threshold_yellow: float = 0.75
+        self.threshold_red: float = 0.25
+        self.absolute_value_1: float = 0
+        self.absolute_value_2: float = 0
 
         self.attribute_keys = attribute_keys
         self.attribute_filter = build_attribute_filter(
@@ -78,34 +76,29 @@ class AttributeCompleteness(BaseIndicator):
         )
 
     async def preprocess(self):
-        if is_ohsomedb_enabled():
-            await self.preprocess_ohsomedb()
-        else:
-            await self.preprocess_ohsomeapi()
-
-    async def preprocess_ohsomedb(self) -> None:
-        result = await ohsomedb.attribute_completeness(
-            aggregation=self.topic.aggregation_type,
-            bpolys=self.feature.geometry,
-            filter_=self.topic.filter,
-            attribute_filter_=self.attribute_filter,
+        raw = await ohsome_api_client.metadata()
+        latest_timestamp = datetime.fromisoformat(
+            raw["temporalExtent"]["latestTimestamp"]
         )
-        self.result.timestamp_osm = datetime.now(timezone.utc)
-        self.result.value = result[0]["attribute_completeness"]
-        self.absolute_value_1 = float(result[0]["total_aggregation"])
-        self.absolute_value_2 = float(result[0]["aggregation_with_attribute"])
+        end = latest_timestamp.strftime("%Y-%m-01")
+        start = "2008-" + latest_timestamp.strftime("%m-%d")
 
-    async def preprocess_ohsomeapi(self) -> None:
-        response = await ohsome_client.query(
-            self.topic,
-            self.feature,
-            attribute_filter=self.attribute_filter,
+        result_1 = await ohsome_api_client.features(
+            aoi=self.feature.geometry,
+            measure=self.topic.aggregation_type,
+            ohsome_filter=self.topic.filter,
+            time_series={"start": start, "end": end},
         )
-        timestamp = response["ratioResult"][0]["timestamp"]
-        self.result.timestamp_osm = dateutil.parser.isoparse(timestamp)
-        self.result.value = response["ratioResult"][0]["ratio"]
-        absolute_value_1 = response["ratioResult"][0]["value"]
-        absolute_value_2 = response["ratioResult"][0]["value2"]
+        result_2 = await ohsome_api_client.features(
+            aoi=self.feature.geometry,
+            measure=self.topic.aggregation_type,
+            ohsome_filter=self.attribute_filter,
+            time_series={"start": start, "end": end},
+        )
+
+        absolute_value_1 = result_1[-1]["value"]
+        absolute_value_2 = result_2[-1]["value"]
+
         match self.topic.aggregation_type:
             case "count":
                 self.absolute_value_1 = absolute_value_1
@@ -119,30 +112,33 @@ class AttributeCompleteness(BaseIndicator):
             case _:
                 raise ValueError("Unexpected aggregation type.")
 
+        self.result.timestamp_osm = isoparse(result_1[-1]["timestamp"])
+
     def calculate(self) -> None:
-        # result (ratio) can be NaN if no features matching filter1
-        if self.result.value == "NaN" or self.absolute_value_1 == 0:
-            self.result.value = None
-        if self.result.value is None:
+        if (
+            self.absolute_value_1 == 0
+            or self.absolute_value_1 is None
+            or self.absolute_value_2 is None
+        ):
             self.result.description += _(" No features in this region")
             return
-        self.create_description()
+
+        self.result.value = self.absolute_value_2 / self.absolute_value_1
+        description = self.create_description()
 
         if self.result.value >= self.threshold_yellow:
             self.result.class_ = 5
             self.result.description = (
-                self.description + self.templates.label_description.green
+                description + self.templates.label_description.green
             )
         elif self.threshold_yellow > self.result.value >= self.threshold_red:
             self.result.class_ = 3
             self.result.description = (
-                self.description + self.templates.label_description.yellow
+                description + self.templates.label_description.yellow
             )
         else:
             self.result.class_ = 1
-            self.result.description = (
-                self.description + self.templates.label_description.red
-            )
+            self.result.description = description + self.templates.label_description.red
 
     def create_description(self):
         if self.result.value is None:
@@ -158,7 +154,7 @@ class AttributeCompleteness(BaseIndicator):
                 else _("attribute ") + self.attribute_title
             )
         all_, matched = self.compute_units_for_all_and_matched()
-        self.description = Template(self.templates.result_description).substitute(
+        return Template(self.templates.result_description).substitute(
             result=result,
             all=all_,
             matched=matched,

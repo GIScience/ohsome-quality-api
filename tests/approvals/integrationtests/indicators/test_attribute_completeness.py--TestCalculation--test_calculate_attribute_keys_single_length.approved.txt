@@ -1,0 +1,1 @@
+67% of all "Roads (cars)" features (all: 788.229 km) in your area of interest have the selected additional attribute road name (matched: 529.274 km). The attribute completeness is medium (25%-75%).

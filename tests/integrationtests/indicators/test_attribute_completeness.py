@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 
-import asyncpg_recorder
 import geojson
 import pytest
 from pytest_approval.main import verify, verify_plotly
@@ -16,21 +15,8 @@ from tests.integrationtests.utils import (
 )
 
 
-@pytest.fixture(autouse=True, params=[True, False])
-def ohsomedb_feature_flag(request, monkeypatch):
-    monkeypatch.setattr(
-        "ohsome_quality_api.indicators.attribute_completeness.indicator.is_ohsomedb_enabled",
-        lambda: request.param,
-    )
-    monkeypatch.setattr(
-        "ohsome_quality_api.attributes.definitions.is_ohsomedb_enabled",
-        lambda: request.param,
-    )
-
-
 class TestPreprocess:
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_single(
         self,
@@ -44,15 +30,12 @@ class TestPreprocess:
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
-        # approx to account for difference in ohsomedb vs ohsomeapi
-        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
-        assert indicator.absolute_value_1 == pytest.approx(31_330, abs=300)
-        assert indicator.absolute_value_2 == pytest.approx(13_000, abs=100)
+        assert indicator.absolute_value_1 == 31_335
+        assert indicator.absolute_value_2 == 12_988
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_single_length(
         self,
@@ -65,15 +48,12 @@ class TestPreprocess:
             attribute_keys=["name"],
         )
         await indicator.preprocess()
-        # approx to account for difference in ohsomedb vs ohsomeapi
-        assert indicator.result.value == pytest.approx(0.67, abs=0.01)
-        assert indicator.absolute_value_1 == pytest.approx(787, abs=1)  # km
-        assert indicator.absolute_value_2 == pytest.approx(530, abs=1)  # km
+        assert indicator.absolute_value_1 == 788.229
+        assert indicator.absolute_value_2 == 529.274
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_multiple(
         self,
@@ -87,13 +67,12 @@ class TestPreprocess:
             attribute_keys=attribute_key_multiple,
         )
         await indicator.preprocess()
-        # approx to account for difference in ohsomedb vs ohsomeapi
-        assert indicator.result.value == pytest.approx(0.36, abs=0.01)
+        assert indicator.absolute_value_1 == 31_335
+        assert indicator.absolute_value_2 == 11_372
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_filter(
         self,
@@ -109,62 +88,91 @@ class TestPreprocess:
             attribute_title=attribute_title,
         )
         await indicator.preprocess()
-        # approx to account for difference in ohsomedb vs ohsomeapi
-        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.absolute_value_1 == 31_335
+        assert indicator.absolute_value_2 == 12_988
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
 
 class TestCalculation:
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_keys(
         self,
         topic_building_count,
         feature_germany_heidelberg,
+        attribute_key,
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
-            attribute_keys=["height"],
+            attribute_keys=attribute_key,
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value is not None
-        assert indicator.result.value >= 0.0
-        assert indicator.result.label != "red"
-        assert indicator.result.description is not None
-        assert isinstance(indicator.result.timestamp, datetime)
-        assert isinstance(indicator.result.timestamp_osm, datetime)
+        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
+    @oqapi_vcr.use_cassette
+    async def test_calculate_attribute_keys_single_length(
+        self,
+        topic_roads,
+        feature_germany_heidelberg,
+    ):
+        indicator = AttributeCompleteness(
+            topic_roads,
+            feature_germany_heidelberg,
+            attribute_keys=["name"],
+        )
+        await indicator.preprocess()
+        indicator.calculate()
+        assert indicator.result.value == pytest.approx(0.67, abs=0.01)
+        assert indicator.result.label == "yellow"
+        assert verify(indicator.result.description)
+
+    @pytest.mark.asyncio
+    @oqapi_vcr.use_cassette
+    async def test_calculate_attribute_keys_multiple(
+        self,
+        topic_building_count,
+        feature_germany_heidelberg,
+        attribute_key_multiple,
+    ):
+        indicator = AttributeCompleteness(
+            topic_building_count,
+            feature_germany_heidelberg,
+            attribute_keys=attribute_key_multiple,
+        )
+        await indicator.preprocess()
+        indicator.calculate()
+        assert indicator.result.value == pytest.approx(0.36, abs=0.01)
+        assert indicator.result.label == "yellow"
+        assert verify(indicator.result.description)
+
+    @pytest.mark.asyncio
     @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_filter(
         self,
         topic_building_count,
         feature_germany_heidelberg,
+        attribute_filter,
+        attribute_title,
     ):
         indicator = AttributeCompleteness(
             topic_building_count,
             feature_germany_heidelberg,
-            attribute_filter="height=* or building:levels=*",
-            attribute_title="Heigit",
+            attribute_filter=attribute_filter,
+            attribute_title=attribute_title,
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value is not None
-        assert indicator.result.value >= 0.0
-        assert indicator.result.label != "red"
-        assert indicator.result.description is not None
-        assert isinstance(indicator.result.timestamp, datetime)
-        assert isinstance(indicator.result.timestamp_osm, datetime)
+        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_no_features(self):
         """Test area with no features"""
@@ -192,7 +200,6 @@ class TestCalculation:
 
 class TestFigure:
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_keys(
         self,
@@ -211,7 +218,6 @@ class TestFigure:
         assert verify_plotly(indicator.result.figure)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_filter(
         self,
@@ -240,9 +246,8 @@ def test_create_description_attribute_keys_single(feature_germany_heidelberg):
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
-    indicator.create_description()
-    assert indicator.description is not None
-    assert verify(indicator.description)
+    description = indicator.create_description()
+    assert verify(description)
 
 
 def test_create_description_attribute_keys_multiple(feature_germany_heidelberg):
@@ -254,9 +259,8 @@ def test_create_description_attribute_keys_multiple(feature_germany_heidelberg):
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
-    indicator.create_description()
-    assert indicator.description is not None
-    assert verify(indicator.description)
+    description = indicator.create_description()
+    assert verify(description)
 
 
 def test_create_description_attribute_filter(
@@ -273,9 +277,8 @@ def test_create_description_attribute_filter(
     indicator.result.value = 0.2
     indicator.absolute_value_1 = 10
     indicator.absolute_value_2 = 2
-    indicator.create_description()
-    assert indicator.description is not None
-    assert verify(indicator.description)
+    description = indicator.create_description()
+    assert verify(description)
 
 
 @pytest.mark.parametrize(
@@ -304,9 +307,8 @@ def test_create_description_multiple_aggregation_types(
     indicator.result.value = result_value
     indicator.absolute_value_1 = absolute_value_1
     indicator.absolute_value_2 = absolute_value_2
-    indicator.create_description()
-    assert indicator.description is not None
-    assert aggregation in indicator.description
+    description = indicator.create_description()
+    assert aggregation in description
 
 
 def test_filters_match(
