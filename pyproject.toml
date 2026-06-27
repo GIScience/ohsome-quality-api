@@ -39,7 +39,6 @@ Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
 dev = [
-    "asyncpg-recorder>=0.8.0",
     "click>=8.2.0",
     "fastapi[standard]>=0.115.12",
     "kaleido>=1.2.0",
@@ -56,8 +55,9 @@ dev = [
     "pytest-sugar>=1.1.1",
     "pytest-xdist>=3.8.0",
     "pytest-randomly>=4.0.1",
-    "pytest-approval>=0.16.2",
     "pytest-nodeid-to-filepath",
+    "pytest-approval>=0.17.0",
+    "asyncpg-recorder>=0.11.0",
 ]
 
 [build-system]
