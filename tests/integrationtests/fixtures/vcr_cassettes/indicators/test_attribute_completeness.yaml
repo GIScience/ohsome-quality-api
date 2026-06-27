@@ -15,18 +15,18 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: GET
-    uri: https://staging-ohsome-api.heigitk8s.de//metadata
+    uri: https://staging-ohsome-api.heigitk8s.de/metadata
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
-        OpenStreetMap contributors\"},\"temporalExtent\":{\"latestTimestamp\":\"2026-06-27T08:37:02Z\",\"earliestTimestamp\":\"2007-10-08T00:00:00Z\"}}"
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"temporalExtent\":{\"latestTimestamp\":\"2026-06-27T11:46:07Z\",\"earliestTimestamp\":\"2007-10-08T00:00:00Z\"}}"
     headers:
       content-length:
       - '228'
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:37:59 GMT
+      - Sat, 27 Jun 2026 11:47:18 GMT
       server:
       - uvicorn
     status:
@@ -52,10 +52,10 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/count.json
+    uri: https://staging-ohsome-api.heigitk8s.de/features/count.json
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
         OpenStreetMap contributors\"},\"result\":[{\"value\":41,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":31335,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
     headers:
       content-length:
@@ -63,7 +63,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:37:59 GMT
+      - Sat, 27 Jun 2026 11:47:18 GMT
       server:
       - uvicorn
     status:
@@ -90,10 +90,10 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/count.json
+    uri: https://staging-ohsome-api.heigitk8s.de/features/count.json
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
         OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":12988,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
     headers:
       content-length:
@@ -101,7 +101,82 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:38:00 GMT
+      - Sat, 27 Jun 2026 11:47:19 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter":"(natural=wood or landuse=forest) and geometry:polygon","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-06-27","end":"2026-06-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQzZWYxYzI0N2I2MTRjMTZhOWJlMmJiNjY0ODhmYzkyIiwiaCI6Im11cm11cjEyOCJ9
+      connection:
+      - keep-alive
+      content-length:
+      - '276'
+      content-type:
+      - application/json
+      host:
+      - staging-ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api/1.17.1
+    method: POST
+    uri: https://staging-ohsome-api.heigitk8s.de/features/area.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":0,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
+    headers:
+      content-length:
+      - '230'
+      content-type:
+      - application/json
+      date:
+      - Sat, 27 Jun 2026 11:47:20 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter":"(natural=wood or landuse=forest) and geometry:polygon and (leaf_type
+      in (broadleaved, needleleaved, mixed))","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-06-27","end":"2026-06-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQzZWYxYzI0N2I2MTRjMTZhOWJlMmJiNjY0ODhmYzkyIiwiaCI6Im11cm11cjEyOCJ9
+      connection:
+      - keep-alive
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      host:
+      - staging-ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api/1.17.1
+    method: POST
+    uri: https://staging-ohsome-api.heigitk8s.de/features/area.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":0,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
+    headers:
+      content-length:
+      - '230'
+      content-type:
+      - application/json
+      date:
+      - Sat, 27 Jun 2026 11:47:20 GMT
       server:
       - uvicorn
     status:
@@ -129,10 +204,10 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/length.json
+    uri: https://staging-ohsome-api.heigitk8s.de/features/length.json
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
         OpenStreetMap contributors\"},\"result\":[{\"value\":315944,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":788229,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
     headers:
       content-length:
@@ -140,7 +215,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:38:01 GMT
+      - Sat, 27 Jun 2026 11:47:21 GMT
       server:
       - uvicorn
     status:
@@ -168,10 +243,10 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/length.json
+    uri: https://staging-ohsome-api.heigitk8s.de/features/length.json
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
         OpenStreetMap contributors\"},\"result\":[{\"value\":218407,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":529274,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
     headers:
       content-length:
@@ -179,7 +254,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:38:01 GMT
+      - Sat, 27 Jun 2026 11:47:21 GMT
       server:
       - uvicorn
     status:
@@ -206,10 +281,10 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/count.json
+    uri: https://staging-ohsome-api.heigitk8s.de/features/count.json
   response:
     body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+      string: "{\"apiVersion\":\"2.0.0a0+9221903\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
         OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":11372,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
     headers:
       content-length:
@@ -217,82 +292,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Sat, 27 Jun 2026 08:38:01 GMT
-      server:
-      - uvicorn
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"filter":"(natural=wood or landuse=forest) and geometry:polygon","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-06-27","end":"2026-06-01"}}'
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      authorization:
-      - eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQzZWYxYzI0N2I2MTRjMTZhOWJlMmJiNjY0ODhmYzkyIiwiaCI6Im11cm11cjEyOCJ9
-      connection:
-      - keep-alive
-      content-length:
-      - '276'
-      content-type:
-      - application/json
-      host:
-      - staging-ohsome-api.heigitk8s.de
-      user-agent:
-      - ohsome-quality-api/1.17.1
-    method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/area.json
-  response:
-    body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
-        OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":0,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
-    headers:
-      content-length:
-      - '230'
-      content-type:
-      - application/json
-      date:
-      - Sat, 27 Jun 2026 08:38:14 GMT
-      server:
-      - uvicorn
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"filter":"(natural=wood or landuse=forest) and geometry:polygon and (leaf_type
-      in (broadleaved, needleleaved, mixed))","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-06-27","end":"2026-06-01"}}'
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      authorization:
-      - eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImQzZWYxYzI0N2I2MTRjMTZhOWJlMmJiNjY0ODhmYzkyIiwiaCI6Im11cm11cjEyOCJ9
-      connection:
-      - keep-alive
-      content-length:
-      - '330'
-      content-type:
-      - application/json
-      host:
-      - staging-ohsome-api.heigitk8s.de
-      user-agent:
-      - ohsome-quality-api/1.17.1
-    method: POST
-    uri: https://staging-ohsome-api.heigitk8s.de//features/area.json
-  response:
-    body:
-      string: "{\"apiVersion\":\"2.0.0a0+894141b\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
-        OpenStreetMap contributors\"},\"result\":[{\"value\":0,\"timestamp\":\"2008-06-27T00:00:00Z\"},{\"value\":0,\"timestamp\":\"2026-06-01T00:00:00Z\"}]}"
-    headers:
-      content-length:
-      - '230'
-      content-type:
-      - application/json
-      date:
-      - Sat, 27 Jun 2026 08:38:14 GMT
+      - Sat, 27 Jun 2026 11:47:22 GMT
       server:
       - uvicorn
     status:

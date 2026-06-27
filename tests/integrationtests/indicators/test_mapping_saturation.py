@@ -192,12 +192,12 @@ class TestFigure:
         assert isinstance(indicator.result.figure, dict)
         assert verify_plotly(indicator.result.figure)
 
-    @oqapi_vcr.use_cassette
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
         ["topic_building_count", "topic_building_area", "topic_roads"],
     )
+    @oqapi_vcr.use_cassette
     async def test_negative_saturation(self, request, topic_key):
         """Data declines instead of increases."""
         # At some point this led to internal server error due to invalid
