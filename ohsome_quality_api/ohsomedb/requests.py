@@ -16,31 +16,6 @@ ENV = Environment(
 
 
 @validate_call
-async def density(
-    *,
-    aggregation: Literal["area"],
-    bpolys: Polygon | MultiPolygon,
-    filter_: OhsomeFilter,
-):
-    sql_filter, sql_filter_args = ohsome_filter_to_sql(filter_)
-    template = ENV.get_template("density.sql")
-    query = template.render(
-        **{
-            "aggregation": aggregation,
-            "contributions": get_config_value("ohsomedb_contributions_table"),
-            "geom": len(sql_filter_args) + 1,
-            "filter": sql_filter,
-        }
-    )
-    return await client.fetch(
-        query,
-        *sql_filter_args,
-        bpolys.model_dump_json(),
-        database="ohsomedb",
-    )
-
-
-@validate_call
 async def single_snapshot_aggregation(
     *,
     aggregation: Literal["count", "length", "area"],
