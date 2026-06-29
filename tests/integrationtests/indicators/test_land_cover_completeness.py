@@ -8,14 +8,6 @@ from ohsome_quality_api.indicators.land_cover_completeness.indicator import (
 from tests.integrationtests.utils import oqapi_vcr
 
 
-@pytest.fixture(autouse=True, params=[True, False])
-def ohsomedb_feature_flag(request, monkeypatch):
-    monkeypatch.setattr(
-        "ohsome_quality_api.indicators.land_cover_completeness.indicator.is_ohsomedb_enabled",
-        lambda: request.param,
-    )
-
-
 @pytest.mark.asyncio
 @asyncpg_recorder.use_cassette
 @oqapi_vcr.use_cassette
@@ -28,7 +20,8 @@ async def test_create_land_cover_completeness_preprocess(
         feature=feature_germany_heidelberg,
     )
     await indicator.preprocess()
-    assert indicator.osm_area_ratio is not None
+    assert indicator.area_feature == pytest.approx(108, abs=1)
+    assert indicator.area_osm == pytest.approx(104, abs=1)
     assert indicator.result.timestamp_osm.strftime("%Y-%m-%d")
 
 
@@ -62,7 +55,8 @@ async def test_create_land_cover_completeness_calculate_above_100(
         feature=feature_germany_heidelberg,
     )
     await indicator.preprocess()
-    indicator.osm_area_ratio = 1.3
+    indicator.area_osm = 130
+    indicator.area_feature = 100
     indicator.calculate()
     assert indicator.result.label == "green"
     assert verify(indicator.result.description)

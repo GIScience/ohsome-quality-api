@@ -177,3 +177,17 @@ async def get_intersection_geom(bpoly: Feature, table_name: str) -> Feature:
             return Feature(geometry=geojson.loads(result[0]["geom"]))
         else:
             return Feature(geometry=MultiPolygon(coordinates=[]))
+
+
+async def area(bpoly: Feature) -> float:
+    """Compute area of given geometry in Kilometer using PostGIS ST_Area."""
+    file_path = os.path.join(WORKING_DIR, "select_area.sql")
+    with open(file_path, "r") as file:
+        query = file.read()
+    geom = str(bpoly.geometry)
+    async with get_connection() as conn:
+        result = await conn.fetch(query, geom)
+    if result[0]["area"]:
+        return result[0]["area"] / 1_000_000
+    else:
+        return 0.0

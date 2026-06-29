@@ -1,27 +1,19 @@
 import logging
+from datetime import datetime
 from string import Template
 
 import plotly.graph_objects as pgo
 from babel.numbers import format_percent
-from dateutil import parser
+from dateutil.parser import isoparse
 from fastapi_i18n import _, get_locale
 from geojson import Feature
 
-from ohsome_quality_api import ohsomedb
-from ohsome_quality_api.config import get_config_value
+from ohsome_quality_api.geodatabase import client as geodatabase_client
 from ohsome_quality_api.indicators.base import BaseIndicator
-from ohsome_quality_api.ohsome import client as ohsome_client
+from ohsome_quality_api.ohsome_api import client as ohsome_api_client
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
-
-
-def is_ohsomedb_enabled() -> bool:
-    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
-        return True
-    else:
-        return False
 
 
 class LandCoverCompleteness(BaseIndicator):
@@ -34,30 +26,36 @@ class LandCoverCompleteness(BaseIndicator):
 
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
+        self.area_osm: float = 0
+        self.area_feature: float = 0
 
     async def preprocess(self):
-        if is_ohsomedb_enabled():
-            await self.preprocess_ohsomedb()
-        else:
-            await self.preprocess_ohsomeapi()
+        self.area_feature = await geodatabase_client.area(self.feature)
 
-    async def preprocess_ohsomeapi(self):
-        result = await ohsome_client.query(self.topic, self.feature, density=True)
-        self.osm_area_ratio = result["result"][0]["value"] / 1_000_000 or 0.0  # if None
-        timestamp = result["result"][0]["timestamp"]
-        self.result.timestamp_osm = parser.isoparse(timestamp)
-
-    async def preprocess_ohsomedb(self):
-        result = await ohsomedb.density(
-            aggregation="area",
-            bpolys=self.feature.geometry,
-            filter_=self.topic.filter,
+        raw = await ohsome_api_client.metadata()
+        latest_timestamp = datetime.fromisoformat(
+            raw["temporalExtent"]["latestTimestamp"]
         )
-        self.osm_area_ratio = result[0]["value"] or 0.0  # if None
-        self.result.timestamp_osm = result[0]["snapshot_ts"]
+        end = latest_timestamp.strftime("%Y-%m-01")
+        start = "2008-" + latest_timestamp.strftime("%m-%d")
+
+        result = await ohsome_api_client.features(
+            aoi=self.feature.geometry,
+            measure=self.topic.aggregation_type,
+            ohsome_filter=self.topic.filter,
+            time_series={"start": start, "end": end},
+        )
+
+        if result[-1]["value"]:
+            self.area_osm = result[-1]["value"] / 1_000_000
+        else:
+            self.area_osm = 0
+        self.result.timestamp_osm = isoparse(result[-1]["timestamp"])
 
     def calculate(self):
-        self.result.value = round(self.osm_area_ratio, 2)
+        area_ratio = self.area_osm / self.area_feature
+
+        self.result.value = round(area_ratio, 2)
         if self.result.value >= self.th_high:
             self.result.class_ = 5
         elif self.th_high > self.result.value >= self.th_low:

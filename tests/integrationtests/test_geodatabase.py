@@ -1,5 +1,4 @@
 import asyncio
-import unittest
 
 import geojson
 import pytest
@@ -116,5 +115,8 @@ def test_get_coverage_intersection(feature_germany_heidelberg):
     assert isinstance(result, geojson.feature.Feature)
 
 
-if __name__ == "__main__":
-    unittest.main()
+@pytest.mark.asyncio
+async def test_area(feature_germany_heidelberg):
+    result = await db_client.area(feature_germany_heidelberg)
+    # https://de.wikipedia.org/wiki/Heidelberg
+    assert result == pytest.approx(108, abs=1)
