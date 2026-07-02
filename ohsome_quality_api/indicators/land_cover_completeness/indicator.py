@@ -46,11 +46,11 @@ class LandCoverCompleteness(BaseIndicator):
             time_series={"start": start, "end": end},
         )
 
-        if result[-1]["value"]:
-            self.area_osm = result[-1]["value"] / 1_000_000
+        if result["value"][-1]:
+            self.area_osm = result["value"][-1] / 1_000_000
         else:
             self.area_osm = 0
-        self.result.timestamp_osm = isoparse(result[-1]["timestamp"])
+        self.result.timestamp_osm = isoparse(result["timestamp"][-1])
 
     def calculate(self):
         area_ratio = self.area_osm / self.area_feature
