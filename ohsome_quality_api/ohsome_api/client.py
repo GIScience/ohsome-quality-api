@@ -51,7 +51,7 @@ async def features(
     ohsome_filter: str,
     time_series: dict,
 ):
-    url = f"{BASE_URL}/features/{measure}.cjson"
+    url = f"{BASE_URL}/features/{measure}.json"
     response = await request(
         url,
         method="post",
@@ -66,7 +66,7 @@ async def currentness(
     ohsome_filter: str,
     time_bins: dict,
 ) -> dict:
-    url = f"{BASE_URL}/currentness/{measure}.cjson"
+    url = f"{BASE_URL}/currentness/{measure}.json"
     response = await request(
         url,
         method="post",
@@ -80,7 +80,7 @@ async def activity_users(
     ohsome_filter: str,
     time_bins: dict,
 ) -> dict:
-    url = f"{BASE_URL}/activity/users.cjson"
+    url = f"{BASE_URL}/activity/users.json"
     response = await request(
         url,
         method="post",
