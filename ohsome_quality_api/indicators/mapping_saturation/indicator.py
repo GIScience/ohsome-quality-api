@@ -99,9 +99,8 @@ class MappingSaturation(BaseIndicator):
                 "interval": "P1M",
             },
         )
-        for item in result:
-            self.values.append(item["value"])
-            self.timestamps.append(isoparse(item["timestamp"]))
+        self.values = result["value"]
+        self.timestamps = [isoparse(t) for t in result["timestamp"]]
 
     def calculate(self) -> None:  # noqa: C901
         # Latest timestamp of ohsome API results

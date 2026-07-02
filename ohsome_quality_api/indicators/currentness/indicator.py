@@ -92,18 +92,21 @@ class Currentness(BaseIndicator):
                 "binSize": "P1M",
             },
         )
-        timestamps = []
         contrib_abs = []
         contrib_sum = 0
-        for c in reversed(result):  # latest contributions first
-            timestamps.append(isoparse(c["end"]))
+
+        # latest contributions first
+        timestamps = [isoparse(t) for t in reversed(result["end"])]
+
+        # latest contributions first
+        for c in reversed(result["value"]):
             match self.topic.aggregation_type:
                 case "count":
-                    value = c["value"]
+                    value = c
                 case "length":
-                    value = c["value"] / 1000  # [km]
+                    value = c / 1000  # [km]
                 case "area":
-                    value = c["value"] / 1000 / 1000  # [km^2]
+                    value = c / 1000 / 1000  # [km^2]
             contrib_abs.append(value)
             contrib_sum += value
         if contrib_sum == 0:

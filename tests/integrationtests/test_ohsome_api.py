@@ -24,7 +24,7 @@ async def test_features(feature, measure):
             "interval": "P1M",
         },
     )
-    assert len(result) == 5
+    assert len(result["value"]) == 5
 
 
 @pytest.mark.parametrize("measure", ["count", "length", "area"])
@@ -40,7 +40,7 @@ async def test_currentness(feature, measure):
             "binSize": "P1M",
         },
     )
-    assert len(result) == 4
+    assert len(result["value"]) == 4
 
 
 @oqapi_vcr.use_cassette()
@@ -54,4 +54,4 @@ async def test_activity_user(feature):
             "binSize": "P1M",
         },
     )
-    assert len(result) == 4
+    assert len(result["value"]) == 4

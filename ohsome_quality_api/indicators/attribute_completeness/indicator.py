@@ -96,8 +96,8 @@ class AttributeCompleteness(BaseIndicator):
             time_series={"start": start, "end": end},
         )
 
-        absolute_value_1 = result_1[-1]["value"]
-        absolute_value_2 = result_2[-1]["value"]
+        absolute_value_1 = result_1["value"][-1]
+        absolute_value_2 = result_2["value"][-1]
 
         match self.topic.aggregation_type:
             case "count":
@@ -112,7 +112,7 @@ class AttributeCompleteness(BaseIndicator):
             case _:
                 raise ValueError("Unexpected aggregation type.")
 
-        self.result.timestamp_osm = isoparse(result_1[-1]["timestamp"])
+        self.result.timestamp_osm = isoparse(result_1["timestamp"][-1])
 
     def calculate(self) -> None:
         if (

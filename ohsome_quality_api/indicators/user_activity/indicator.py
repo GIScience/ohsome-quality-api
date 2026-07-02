@@ -44,7 +44,7 @@ class UserActivity(BaseIndicator):
         )
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
-        results = await ohsome_client.activity_users(
+        result = await ohsome_client.activity_users(
             aoi=self.feature["geometry"],
             ohsome_filter=self.topic.filter,
             time_bins={
@@ -54,13 +54,10 @@ class UserActivity(BaseIndicator):
             },
         )
         # TODO: What does it mean? Do we need this check?
-        if len(results) == 0:
+        if len(result["value"]) == 0:
             return
-        timestamps = []
-        users_abs = []
-        for r in reversed(results):  # latest aggregation first
-            timestamps.append(datetime.fromisoformat(r["end"]))
-            users_abs.append(r["value"])
+        timestamps = [datetime.fromisoformat(end) for end in reversed(result["end"])]
+        users_abs = list(reversed(result["value"]))
         self.bin_total = Bin(
             users_abs,
             timestamps,
