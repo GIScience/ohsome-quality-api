@@ -1,29 +1,13 @@
 from datetime import datetime
 from unittest.mock import AsyncMock
 
-import asyncpg_recorder
 import pytest
 from pytest_approval.main import verify, verify_plotly
 
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.indicators.building_comparison.indicator import (
     BuildingComparison,
 )
 from tests.integrationtests.utils import oqapi_vcr
-
-
-@pytest.fixture(autouse=True, params=[False, True])
-def ohsomedb_feature_flag(request, monkeypatch):
-    def get_config_value_(key: str):
-        if key == "ohsomedb_enabled":
-            return request.param
-        else:
-            return get_config_value(key)
-
-    monkeypatch.setattr(
-        "ohsome_quality_api.indicators.building_comparison.indicator.get_config_value",
-        get_config_value_,
-    )
 
 
 @pytest.fixture
@@ -142,26 +126,18 @@ class TestPreprocess:
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess(self, topic_building_area, feature_germany_heidelberg):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         await indicator.preprocess()
-        assert indicator.area_osm in [
-            {
-                "EUBUCCO": 6.585865,
-                "Microsoft Buildings": 6.585865,
-            },
-            {
-                "EUBUCCO": 6.58471776,
-                "Microsoft Buildings": 6.58471776,
-            },
-        ]
+        assert indicator.area_osm == {
+            "EUBUCCO": 6.583518,
+            "Microsoft Buildings": 6.583518,
+        }
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
     @pytest.mark.asyncio
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_no_intersection(
         self,
@@ -184,7 +160,6 @@ class TestPreprocess:
         "mock_get_intersection_geom",
         "mock_get_intersection_area_some",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_preprocess_some_intersection(
         self,
@@ -207,7 +182,6 @@ class TestCalculate:
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate(
         self,
@@ -217,10 +191,10 @@ class TestCalculate:
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.ratio in [
-            {"EUBUCCO": 1.3171727914533187, "Microsoft Buildings": 1.3171727914533187},
-            {"EUBUCCO": 1.316943343489647, "Microsoft Buildings": 1.316943343489647},
-        ]
+        assert indicator.ratio == {
+            "EUBUCCO": 1.3167033915276383,
+            "Microsoft Buildings": 1.3167033915276383,
+        }
         assert indicator.result.value in [None, 1.0104228420207384]
         assert indicator.result.class_ in [None, 5]
         assert verify(indicator.result.description)
@@ -231,7 +205,6 @@ class TestCalculate:
         "mock_get_intersection_area",
         "mock_get_intersection_geom",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_reference_area_0(
         self,
@@ -249,7 +222,6 @@ class TestCalculate:
         "mock_get_intersection_geom",
         "mock_get_building_area_low",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_above_one_th(
         self,
@@ -270,7 +242,6 @@ class TestCalculate:
 
     @pytest.mark.asyncio
     @pytest.mark.usefixtures("mock_get_intersection_area_none")
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_no_intersection(
         self,
@@ -291,7 +262,6 @@ class TestCalculate:
         "mock_get_intersection_geom",
         "mock_get_intersection_area_some",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_some_intersection(
         self,
@@ -313,7 +283,6 @@ class TestCalculate:
         "mock_get_intersection_area",
         "mock_get_building_area_low_some",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_calculate_above_one_th_and_expected(
         self,
@@ -338,7 +307,6 @@ class TestFigure:
         "mock_get_intersection_geom",
         "mock_get_intersection_area",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure(self, topic_building_area, feature_germany_heidelberg):
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
@@ -354,7 +322,6 @@ class TestFigure:
         "mock_get_intersection_geom",
         "mock_get_intersection_area",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_above_one_th(
         self,
@@ -375,7 +342,6 @@ class TestFigure:
         "mock_get_intersection_geom",
         "mock_get_intersection_area",
     )
-    @asyncpg_recorder.use_cassette
     @oqapi_vcr.use_cassette
     async def test_create_figure_building_area_zero(
         self,
