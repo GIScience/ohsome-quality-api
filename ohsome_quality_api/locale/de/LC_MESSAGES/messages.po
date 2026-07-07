@@ -1138,12 +1138,12 @@ msgstr "von OSM abgedeckt: {length_matched} km {date}"
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:213
 #, python-brace-format
 msgid "{matched_percentage} of {name} <br> are matched by OSM"
-msgstr "{matched_percentage} von {name} sind von OSM abgedeckt"
+msgstr "{matched_percentage} von {name} <br> sind von OSM abgedeckt"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:237
 #, python-brace-format
 msgid "{not_matched_percentage} of {name} <br> are not matched by OSM"
-msgstr "{not_matched_percentage} von {name} sind nicht von OSM abgedeckt"
+msgstr "{not_matched_percentage} von {name} <br> sind nicht von OSM abgedeckt"
 
 #: ohsome_quality_api/indicators/road_comparison/indicator.py:250
 #, python-brace-format
@@ -1193,8 +1193,9 @@ msgid ""
 "length of $total_length km, of which $matched_length  km are covered by "
 "roads in OSM."
 msgstr ""
-"{name} hat eine Straßenlänge von {total_length} km, von denen "
-"{matched_length}km von den Straßen in OSM gedeckt sind. "
+"<a href=$dataset_url target=\"_blank\">$dataset_name</a> hat eine Straßenlänge"
+" von $total_length km, von denen "
+"$matched_length km von den Straßen in OSM gedeckt sind. "
 
 #: ohsome_quality_api/indicators/roads_thematic_accuracy/indicator.py:101
 msgid ""
