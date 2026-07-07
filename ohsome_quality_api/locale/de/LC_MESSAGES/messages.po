@@ -783,31 +783,31 @@ msgstr "$value% des gesamten Gebietes ist von OSM Landbedeckungsdaten abgedeckt.
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:35
 msgid "Urban fabric"
-msgstr "Städtische Siedlungsgebiete"
+msgstr "Städtisch-geprägte Flächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:39
 msgid "Industrial, commercial and transport units"
-msgstr "Industrie-, Gewerbe- und Transportgebiete"
+msgstr "Industrie-, Gewerbe- und Verkehrsflächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:43
 msgid "Mine, dump and construction sites"
-msgstr "Bergbau-, Deponie- und Baustellen"
+msgstr "Abbau-, Deponie- und Baustellen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:47
 msgid "Artificial non-agricultural vegetated areas"
-msgstr "Künstliche nicht-landwirtschaftlich genutzte Grünflächen"
+msgstr "Grünflächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:50
 msgid "Arable land"
-msgstr "Ackerland"
+msgstr "Ackerflächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:51
 msgid "Permanent crops"
-msgstr "Dauerhafte Kulturen"
+msgstr "Dauerkulturen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:52
 msgid "Pastures"
-msgstr "Weiden"
+msgstr "Grünland"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:54
 msgid "Heterogeneous agricultural areas"
@@ -815,27 +815,27 @@ msgstr "Heterogene landwirtschaftliche Flächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:57
 msgid "Forest"
-msgstr "Wald"
+msgstr "Wälder"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:59
 msgid "Shrubs and/or herbaceous vegetation associations"
-msgstr "Sträucher und/oder krautige Vegetation"
+msgstr "Sträucher und Krautvegetation"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:63
 msgid "Open spaces with little or no vegetation"
-msgstr "Offene Flächen mit wenig oder keiner Vegetation"
+msgstr "Offene Flächen ohne / mit geringer Vegetation"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:66
 msgid "Inland wetlands"
-msgstr "Binnenfeuchtgebiete"
+msgstr "Feuchtflächen im Landesinneren"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:67
 msgid "Coastal wetlands"
-msgstr "Küstenfeuchtgebiete"
+msgstr "Feuchtflächen an der Küste"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:68
 msgid "Inland waters"
-msgstr "Binnengewässer"
+msgstr "Wasserflächen im Landesinneren"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:69
 msgid "Marine waters"
@@ -843,7 +843,7 @@ msgstr "Meeresgewässer"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:73
 msgid "Artificial areas"
-msgstr "Künstliche Flächen"
+msgstr "Bebaute Flächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:74
 msgid "Agricultural areas"
@@ -851,15 +851,15 @@ msgstr "Landwirtschaftliche Flächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:75
 msgid "Forest and semi-natural areas"
-msgstr "Wald- und halbnatürliche Flächen"
+msgstr "Wald- und naturnahe Flächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:76
 msgid "Wetlands"
-msgstr "Feuchtgebiete"
+msgstr "Feuchtflächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:77
 msgid "Water bodies"
-msgstr "Gewässer"
+msgstr "Wasserflächen"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:196
 msgid "all CORINE Land Cover (CLC) classes"
