@@ -257,7 +257,7 @@ class MappingSaturation(BaseIndicator):
             aggregation_type_mapping = {
                 "area": _("Area"),
                 "count": _("Count"),
-                "length": _("Lenght"),
+                "length": _("Length"),
                 "perimeter": _("Perimeter"),
                 "area/density": _("Density"),
             }

@@ -1044,7 +1044,7 @@ msgid "Count"
 msgstr "Anzahl"
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:269
-msgid "Lenght"
+msgid "Length"
 msgstr "Länge"
 
 #: ohsome_quality_api/indicators/mapping_saturation/indicator.py:270
