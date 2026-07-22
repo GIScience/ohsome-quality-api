@@ -9,6 +9,7 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessKeyRequest,
     BaseBpolys,
     IndicatorRequest,
+    LandCoverCompletenessRequest,
     LandCoverThematicAccuracyRequest,
     RoadsThematicAccuracyRequest,
 )
@@ -170,6 +171,15 @@ def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
         LandCoverThematicAccuracyRequest(
             bpolys=bpolys, topic="land-cover", corine_land_cover_class="1"
         )
+
+
+def test_land_cover_completeness_request(bpolys):
+    LandCoverCompletenessRequest(bpolys=bpolys, topic="land-cover")
+
+
+def test_land_cover_completeness_request_invalid_topic(bpolys):
+    with pytest.raises(ValidationError):
+        LandCoverCompletenessRequest(bpolys=bpolys, topic="building-count")
 
 
 def test_roads_thematic_accuracy_request_all_attributes(bpolys):
