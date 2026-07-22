@@ -302,6 +302,27 @@ class LandCoverThematicAccuracyRequest(IndicatorRequest):
         return "land-cover-thematic-accuracy"
 
 
+class LandCoverCompletenessRequest(IndicatorRequest):
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "land-cover",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
+    )
+
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "land-cover-completeness"
+
+
 class RoadsThematicAccuracyRequest(IndicatorRequest):
     attribute: Literal["surface", "oneway", "lanes", "name", "width"] | None = Field(
         default=None,
