@@ -84,9 +84,7 @@ class MappingSaturation(BaseIndicator):
             return
 
         raw = await ohsome_api_client.metadata()
-        latest_timestamp = datetime.fromisoformat(
-            raw["temporalExtent"]["latestTimestamp"]
-        )
+        latest_timestamp = datetime.fromisoformat(raw["temporalExtent"]["end"])
         end = latest_timestamp.strftime("%Y-%m-01")
         start = "2008-" + latest_timestamp.strftime("%m-%d")
         result = await ohsome_api_client.features(
