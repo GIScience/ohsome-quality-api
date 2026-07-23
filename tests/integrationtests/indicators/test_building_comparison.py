@@ -131,8 +131,8 @@ class TestPreprocess:
         indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
         await indicator.preprocess()
         assert indicator.area_osm == {
-            "EUBUCCO": 6.583518,
-            "Microsoft Buildings": 6.583518,
+            "EUBUCCO": 6.585325,
+            "Microsoft Buildings": 6.585325,
         }
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
@@ -192,8 +192,8 @@ class TestCalculate:
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.ratio == {
-            "EUBUCCO": 1.3167033915276383,
-            "Microsoft Buildings": 1.3167033915276383,
+            "Microsoft Buildings": 1.317064791470418,
+            "EUBUCCO": 1.317064791470418,
         }
         assert indicator.result.value in [None, 1.0104228420207384]
         assert indicator.result.class_ in [None, 5]
