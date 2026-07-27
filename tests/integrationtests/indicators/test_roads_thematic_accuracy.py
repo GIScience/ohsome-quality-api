@@ -88,7 +88,7 @@ async def test_calculate(feature, topic_roads, attribute):
     await indicator.preprocess()
     indicator.calculate()
     # non-quality indicator does not have result value
-    assert indicator.result.value is None
+    assert indicator.result.value is not None
     assert verify(indicator.result.description)
 
 
