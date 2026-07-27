@@ -87,13 +87,15 @@ class RoadsThematicAccuracy(BaseIndicator):
     def calculate(self) -> None:
         if self.matched_data is None:
             raise ValueError("Expected matched data to be present (not None).")
-        if self.matched_data.total_dlm is None:
+        if self.matched_data.total_dlm is None or self.matched_data.total_dlm == 0:
             self.result.description = "No data in the area of interest."
             return
-
+        self.result.value = 1 - (
+            self.matched_data.not_matched / self.matched_data.total_dlm
+        )
         if self.matched_data.total_dlm > 0:
             percentage = format_percent(
-                1 - (self.matched_data.not_matched / self.matched_data.total_dlm),
+                self.result.value,
                 format="##0.#%",
                 locale=get_locale(),
             )
