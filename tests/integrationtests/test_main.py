@@ -65,10 +65,8 @@ async def test_create_indicator_public_feature_collection_single(
     assert len(indicators) == 1
     for indicator in indicators:
         assert indicator.result.label is not None
-        if indicator_key == "roads-thematic-accuracy":
-            assert indicator.result.value is None
-        else:
-            assert indicator.result.value is not None
+        assert indicator.result.value is not None
+        assert indicator.result.value is not None
         assert indicator.result.description is not None
         assert indicator.result.figure is not None
 
@@ -109,10 +107,7 @@ async def test_create_indicator_private_feature(
     topic = request.getfixturevalue(topic)
     indicator = await main._create_indicator(indicator_key, feature, topic, **kwargs)
     assert indicator.result.label is not None
-    if indicator_key == "roads-thematic-accuracy":
-        assert indicator.result.value is None
-    else:
-        assert indicator.result.value is not None
+    assert indicator.result.value is not None
     assert indicator.result.description is not None
     assert indicator.result.figure is not None
 
