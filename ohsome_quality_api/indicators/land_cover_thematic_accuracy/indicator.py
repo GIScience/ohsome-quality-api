@@ -214,10 +214,15 @@ class LandCoverThematicAccuracy(BaseIndicator):
             }
         )
         note = ""
-        if not math.isclose(self.coverage_percent, 1):
-            note += _(
-                "Warning: There is only {coverage} coverage with the comparison data. "
-            ).format(coverage=int(self.coverage_percent))
+        if not math.isclose(self.coverage_percent, 1, abs_tol=0.001):
+            formatted_percent = format_percent(
+                self.coverage_percent,
+                locale=get_locale(),
+            )
+            note += (
+                _("Warning: There is only %s coverage with the comparison data. ")
+                % formatted_percent
+            )
         note += _(
             "Please take the Land Cover Completeness indicator into account for "
             + "interpretation of these results."
