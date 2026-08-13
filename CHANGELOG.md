@@ -23,6 +23,7 @@
     file naming scheme. All approval files are recreate (--auto-approve).
 - fix: topic cycleway did include ways with cycleway features with value “no” ([1018])
 - attribute-completeness: now avialable for every topic
+- fix(land-cover-thematic-accuracy): warning about coverage is now correctly displayed
 
 [#1017]: https://github.com/GIScience/ohsome-quality-api/pull/1017
 [#1018]: https://github.com/GIScience/ohsome-quality-api/pull/1018
